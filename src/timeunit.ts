@@ -3,61 +3,62 @@ import {isObject, isString} from 'vega-util';
 import {DateTimeExpr, dateTimeExprToExpr} from './datetime';
 import * as log from './log';
 import {accessPathWithDatum, Flag, keys, replaceAll, varName} from './util';
-
-export namespace TimeUnit {
-  export const YEAR: 'year' = 'year';
-  export const MONTH: 'month' = 'month';
-  export const DAY: 'day' = 'day';
-  export const DATE: 'date' = 'date';
-  export const HOURS: 'hours' = 'hours';
-  export const MINUTES: 'minutes' = 'minutes';
-  export const SECONDS: 'seconds' = 'seconds';
-  export const MILLISECONDS: 'milliseconds' = 'milliseconds';
-  export const YEARMONTH: 'yearmonth' = 'yearmonth';
-  export const YEARMONTHDATE: 'yearmonthdate' = 'yearmonthdate';
-  export const YEARMONTHDATEHOURS: 'yearmonthdatehours' = 'yearmonthdatehours';
-  export const YEARMONTHDATEHOURSMINUTES: 'yearmonthdatehoursminutes' = 'yearmonthdatehoursminutes';
-  export const YEARMONTHDATEHOURSMINUTESSECONDS: 'yearmonthdatehoursminutesseconds' =
-    'yearmonthdatehoursminutesseconds';
+export const TimeUnit = {
+  YEAR: 'year',
+  MONTH: 'month',
+  DAY: 'day',
+  DATE: 'date',
+  HOURS: 'hours',
+  MINUTES: 'minutes',
+  SECONDS: 'seconds',
+  MILLISECONDS: 'milliseconds',
+  YEARMONTH: 'yearmonth',
+  YEARMONTHDATE: 'yearmonthdate',
+  YEARMONTHDATEHOURS: 'yearmonthdatehours',
+  YEARMONTHDATEHOURSMINUTES: 'yearmonthdatehoursminutes',
+  YEARMONTHDATEHOURSMINUTESSECONDS: 'yearmonthdatehoursminutesseconds',
 
   // MONTHDATE and MONTHDATEHOURS always include 29 February since we use year 0th (which is a leap year);
-  export const MONTHDATE: 'monthdate' = 'monthdate';
-  export const MONTHDATEHOURS: 'monthdatehours' = 'monthdatehours';
-  export const HOURSMINUTES: 'hoursminutes' = 'hoursminutes';
-  export const HOURSMINUTESSECONDS: 'hoursminutesseconds' = 'hoursminutesseconds';
-  export const MINUTESSECONDS: 'minutesseconds' = 'minutesseconds';
-  export const SECONDSMILLISECONDS: 'secondsmilliseconds' = 'secondsmilliseconds';
-  export const QUARTER: 'quarter' = 'quarter';
-  export const YEARQUARTER: 'yearquarter' = 'yearquarter';
-  export const QUARTERMONTH: 'quartermonth' = 'quartermonth';
-  export const YEARQUARTERMONTH: 'yearquartermonth' = 'yearquartermonth';
-  export const UTCYEAR: 'utcyear' = 'utcyear';
-  export const UTCMONTH: 'utcmonth' = 'utcmonth';
-  export const UTCDAY: 'utcday' = 'utcday';
-  export const UTCDATE: 'utcdate' = 'utcdate';
-  export const UTCHOURS: 'utchours' = 'utchours';
-  export const UTCMINUTES: 'utcminutes' = 'utcminutes';
-  export const UTCSECONDS: 'utcseconds' = 'utcseconds';
-  export const UTCMILLISECONDS: 'utcmilliseconds' = 'utcmilliseconds';
-  export const UTCYEARMONTH: 'utcyearmonth' = 'utcyearmonth';
-  export const UTCYEARMONTHDATE: 'utcyearmonthdate' = 'utcyearmonthdate';
-  export const UTCYEARMONTHDATEHOURS: 'utcyearmonthdatehours' = 'utcyearmonthdatehours';
-  export const UTCYEARMONTHDATEHOURSMINUTES: 'utcyearmonthdatehoursminutes' = 'utcyearmonthdatehoursminutes';
-  export const UTCYEARMONTHDATEHOURSMINUTESSECONDS: 'utcyearmonthdatehoursminutesseconds' =
-    'utcyearmonthdatehoursminutesseconds';
+  MONTHDATE: 'monthdate',
+  MONTHDATEHOURS: 'monthdatehours',
+  HOURSMINUTES: 'hoursminutes',
+  HOURSMINUTESSECONDS: 'hoursminutesseconds',
+  MINUTESSECONDS: 'minutesseconds',
+  SECONDSMILLISECONDS: 'secondsmilliseconds',
+  QUARTER: 'quarter',
+  YEARQUARTER: 'yearquarter',
+  QUARTERMONTH: 'quartermonth',
+  YEARQUARTERMONTH: 'yearquartermonth',
+  UTCYEAR: 'utcyear',
+  UTCMONTH: 'utcmonth',
+  UTCDAY: 'utcday',
+  UTCDATE: 'utcdate',
+  UTCHOURS: 'utchours',
+  UTCMINUTES: 'utcminutes',
+  UTCSECONDS: 'utcseconds',
+  UTCMILLISECONDS: 'utcmilliseconds',
+  UTCYEARMONTH: 'utcyearmonth',
+  UTCYEARMONTHDATE: 'utcyearmonthdate',
+  UTCYEARMONTHDATEHOURS: 'utcyearmonthdatehours',
+  UTCYEARMONTHDATEHOURSMINUTES: 'utcyearmonthdatehoursminutes',
+  UTCYEARMONTHDATEHOURSMINUTESSECONDS: 'utcyearmonthdatehoursminutesseconds',
 
   // UTCMONTHDATE and UTCMONTHDATEHOURS always include 29 February since we use year 0th (which is a leap year);
-  export const UTCMONTHDATE: 'utcmonthdate' = 'utcmonthdate';
-  export const UTCMONTHDATEHOURS: 'utcmonthdatehours' = 'utcmonthdatehours';
-  export const UTCHOURSMINUTES: 'utchoursminutes' = 'utchoursminutes';
-  export const UTCHOURSMINUTESSECONDS: 'utchoursminutesseconds' = 'utchoursminutesseconds';
-  export const UTCMINUTESSECONDS: 'utcminutesseconds' = 'utcminutesseconds';
-  export const UTCSECONDSMILLISECONDS: 'utcsecondsmilliseconds' = 'utcsecondsmilliseconds';
-  export const UTCQUARTER: 'utcquarter' = 'utcquarter';
-  export const UTCYEARQUARTER: 'utcyearquarter' = 'utcyearquarter';
-  export const UTCQUARTERMONTH: 'utcquartermonth' = 'utcquartermonth';
-  export const UTCYEARQUARTERMONTH: 'utcyearquartermonth' = 'utcyearquartermonth';
-}
+  UTCMONTHDATE: 'utcmonthdate',
+  UTCMONTHDATEHOURS: 'utcmonthdatehours',
+  UTCHOURSMINUTES: 'utchoursminutes',
+  UTCHOURSMINUTESSECONDS: 'utchoursminutesseconds',
+  UTCMINUTESSECONDS: 'utcminutesseconds',
+  UTCSECONDSMILLISECONDS: 'utcsecondsmilliseconds',
+  UTCQUARTER: 'utcquarter',
+  UTCYEARQUARTER: 'utcyearquarter',
+  UTCQUARTERMONTH: 'utcquartermonth',
+  UTCYEARQUARTERMONTH: 'utcyearquartermonth'
+} as const;
+
+type ValueOf<T> = T[keyof T];
+
+export type TimeUnit = ValueOf<typeof TimeUnit>;
 
 export type LocalSingleTimeUnit =
   | typeof TimeUnit.YEAR
@@ -214,8 +215,6 @@ export function isUTCTimeUnit(t: string): t is UtcTimeUnit {
 export function getLocalTimeUnit(t: UtcTimeUnit): LocalTimeUnit {
   return t.substr(3) as LocalTimeUnit;
 }
-
-export type TimeUnit = SingleTimeUnit | MultiTimeUnit;
 
 const TIMEUNIT_INDEX: Flag<TimeUnit> = {
   ...LOCAL_SINGLE_TIMEUNIT_INDEX,
