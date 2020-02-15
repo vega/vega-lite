@@ -1,10 +1,12 @@
 _site/
 !build/vega-lite-schema.json
+!build-es5/vega-lite-schema.json
 !site/examples/index.md
 .DS_Store
 .jekyll-metadata
 .yarnclean
 build/*
+build-es5/*
 coverage
 examples/all-examples.json
 examples/compiled/*.png
