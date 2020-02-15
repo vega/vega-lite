@@ -9,8 +9,8 @@
   "spacing": {"row": 10},
   "facet": {"row": {"field": "age", "type": "ordinal"}},
   "spec": {
-    "mark": "bar",
     "height": {"step": 6},
+    "mark": "bar",
     "encoding": {
       "x": {
         "aggregate": "sum",
