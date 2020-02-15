@@ -14,7 +14,7 @@ permalink: /docs/config.html
     "header"    : { ... },   // - Header Configuration
     "legend"    : { ... },   // - Legend Configuration
     "mark"      : { ... },   // - Mark Configuration
-    "style"     : { ... },   // - Mark Style Configuration
+    "style"     : { ... },   // - Style Configuration
     "range"     : { ... },   // - Scale Range Configuration
     "scale"     : { ... },   // - Scale Configuration
     "projection": { ... },   // - Projection Configuration
@@ -88,15 +88,17 @@ In addition to axis, header, and legend styles, Vega-Lite also includes the foll
 
 See [the documentation about the style configuration](mark.html#style-config) for more information.
 
-## Mark and Mark Style Configurations
+## Mark Configurations
 
 The `mark` property of the [`config`](config.html) object sets the default properties for all marks. In addition, the `config` object also provides mark-specific config using its mark type as the property name (e.g., `config.area`) for defining default properties for each mark.
 
 {% include table.html props="mark,area,bar,circle,line,point,rect,geoshape,rule,square,text,tick" source="Config" %}
 
-In addition to the default mark properties above, default values can be further customized using named _styles_ defined under the `style` block. Styles can then be invoked by including a `style` property within a [mark definition object](mark.html#mark-def).
+## Style Configuration
 
-See [the documentation about the style configuration](mark.html#style-config) for more information.
+In addition to the axis and mark config above, default values can be further customized using named _styles_ defined under the `style` block. Styles can then be invoked by including a `style` property within a [mark definition object](mark.html#mark-def) or an [axis definition object](axis.html).
+
+See [the documentation about the mark style configuration](mark.html#style-config) for more information about how to use style configuration to customize mark style.
 
 {% include table.html props="style" source="Config" %}
 

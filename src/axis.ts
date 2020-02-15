@@ -231,6 +231,14 @@ export type AxisConfig = VlOnlyGuideConfig & AxisConfigBaseWithConditionalAndSig
 
 export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
   /**
+   * A string or array of strings indicating the name of custom styles to apply to the axis. A style is a named collection of axis property defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles. Any [axis properties](https://vega.github.io/vega-lite/docs/encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
+   *
+   * __Default value:__ (none)
+   * __Note:__ Any specified style will augment the default style. For example, a x-axis mark with `"style": "foo"` will receive from `config.axisX` and `config.style.foo` (the specified style `"foo"` has higher precedence).
+   */
+  style?: string | string[];
+
+  /**
    * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.
    *
    * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
@@ -467,6 +475,7 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
 
 const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
   ...COMMON_AXIS_PROPERTIES_INDEX,
+  style: 1,
   labelExpr: 1,
   encoding: 1
 };

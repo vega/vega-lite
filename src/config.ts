@@ -1,7 +1,7 @@
 import {scheme} from 'vega-scale';
 import {Color, InitSignal, NewSignal, RangeConfig, RangeScheme} from 'vega-typings';
 import {isObject, mergeConfig} from 'vega-util';
-import {AxisConfigMixins, isConditionalAxisValue} from './axis';
+import {Axis, AxisConfigMixins, isConditionalAxisValue} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
 import {VL_ONLY_LEGEND_CONFIG} from './guide';
 import {HeaderConfigMixins} from './header';
@@ -171,7 +171,7 @@ export interface VLOnlyConfig {
 }
 
 export interface StyleConfigIndex {
-  [style: string]: MarkConfig;
+  [style: string]: MarkConfig | Axis;
 }
 
 export interface Config
@@ -541,7 +541,7 @@ function redirectTitleConfig(config: Config) {
 
   const style: MarkConfig = {
     ...m,
-    ...config.style['group-title']
+    ...(config.style['group-title'] as MarkConfig)
   };
 
   // set config.style if it is not an empty object
@@ -571,7 +571,7 @@ function redirectConfigToStyleConfig(
 
   const style: MarkConfig = {
     ...propConfig,
-    ...config.style[toProp ?? prop]
+    ...(config.style[toProp ?? prop] as MarkConfig)
   };
 
   // set config.style if it is not an empty object

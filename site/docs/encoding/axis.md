@@ -52,7 +52,7 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### General
 
-{% include table.html props="bandPosition,maxExtent,minExtent,orient,offset,position,translate,zindex" source="Axis" %}
+{% include table.html props="bandPosition,maxExtent,minExtent,orient,offset,position,style,translate,zindex" source="Axis" %}
 
 #### Example: Using Axis `minExtent` to Align Multi-View Plots
 
