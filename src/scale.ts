@@ -503,7 +503,7 @@ export interface Scale {
    *
    * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`).
    */
-  range?: number[] | string[] | RangeEnum;
+  range?: number[] | string[] | RangeEnum | number[][];
 
   // ordinal
 
