@@ -12,9 +12,9 @@
     }
   },
   "spec": {
-    "mark": "area",
     "width": 300,
     "height": 40,
+    "mark": "area",
     "encoding": {
       "x": {
         "field": "date",

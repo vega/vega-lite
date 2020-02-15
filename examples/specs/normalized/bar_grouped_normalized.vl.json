@@ -9,8 +9,8 @@
   "spacing": {"column": 10},
   "facet": {"column": {"field": "age", "type": "ordinal"}},
   "spec": {
-    "mark": "bar",
     "width": {"step": 12},
+    "mark": "bar",
     "encoding": {
       "y": {
         "aggregate": "sum",

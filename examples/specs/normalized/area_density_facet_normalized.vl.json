@@ -10,9 +10,9 @@
   ],
   "facet": {"row": {"field": "organ", "type": "nominal"}},
   "spec": {
-    "mark": "area",
     "width": 300,
     "height": 50,
+    "mark": "area",
     "encoding": {
       "x": {"field": "value", "type": "quantitative"},
       "y": {"field": "density", "type": "quantitative"}
