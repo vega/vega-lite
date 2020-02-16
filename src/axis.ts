@@ -234,7 +234,7 @@ export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
    * A string or array of strings indicating the name of custom styles to apply to the axis. A style is a named collection of axis property defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles. Any [axis properties](https://vega.github.io/vega-lite/docs/encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
    *
    * __Default value:__ (none)
-   * __Note:__ Any specified style will augment the default style. For example, a x-axis mark with `"style": "foo"` will receive from `config.axisX` and `config.style.foo` (the specified style `"foo"` has higher precedence).
+   * __Note:__ Any specified style will augment the default style. For example, an x-axis mark with `"style": "foo"` will use `config.axisX` and `config.style.foo` (the specified style `"foo"` has higher precedence).
    */
   style?: string | string[];
 
