@@ -333,17 +333,16 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   minExtent: 'main',
   offset: 'both',
   position: 'main',
-  tickBand: 'main',
   tickColor: 'main',
   tickDash: 'main',
   tickDashOffset: 'main',
-  tickExtra: 'main',
   tickMinStep: 'main',
   tickOffset: 'both', // Need to be applied to grid axis too, so the grid will align with ticks.
   tickOpacity: 'main',
   tickRound: 'main',
   ticks: 'main',
   tickSize: 'main',
+  tickWidth: 'both',
   title: 'main',
   titleAlign: 'main',
   titleAnchor: 'main',
@@ -363,8 +362,9 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
 
   encode: 'both', // we hide this in Vega-Lite
   scale: 'both',
+  tickBand: 'both',
   tickCount: 'both',
-  tickWidth: 'both',
+  tickExtra: 'both',
   translate: 'both',
   values: 'both',
   zindex: 'both' // this is actually set afterward, so it doesn't matter
