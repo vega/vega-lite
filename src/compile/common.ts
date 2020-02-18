@@ -1,5 +1,6 @@
 import {SignalRef, Text} from 'vega-typings';
 import {array} from 'vega-util';
+import {Axis} from '../axis';
 import {isBinning} from '../bin';
 import {
   FieldDefBase,
@@ -64,8 +65,8 @@ export function getMarkConfig<P extends keyof MarkConfig>(
 ): MarkConfig[P] {
   return getFirstDefined(
     // style config has highest precedence
-    vgChannel ? getStyleConfig(channel, mark, config.style) : undefined,
-    getStyleConfig(channel, mark, config.style),
+    vgChannel ? getMarkStyleConfig(channel, mark, config.style) : undefined,
+    getMarkStyleConfig(channel, mark, config.style),
     // then mark-specific config
     vgChannel ? config[mark.type][vgChannel] : undefined,
     config[mark.type][channel],
@@ -75,21 +76,26 @@ export function getMarkConfig<P extends keyof MarkConfig>(
   );
 }
 
-export function getStyleConfig<P extends keyof AnyMarkConfig>(
+export function getMarkStyleConfig<P extends keyof AnyMarkConfig>(
   prop: P,
   mark: MarkDef,
   styleConfigIndex: StyleConfigIndex
 ) {
-  const styles = getStyles(mark);
+  return getStyleConfig(prop, getStyles(mark), styleConfigIndex);
+}
+
+export function getStyleConfig<P extends keyof AnyMarkConfig | keyof Axis>(
+  p: P,
+  styles: string | string[],
+  styleConfigIndex: StyleConfigIndex
+) {
+  styles = array(styles);
   let value;
   for (const style of styles) {
     const styleConfig = styleConfigIndex[style];
 
-    // MarkConfig extends VgMarkConfig so a prop may not be a valid property for style
-    // However here we also check if it is defined, so it is okay to cast here
-    const p = prop as keyof MarkConfig;
-    if (styleConfig && styleConfig[p] !== undefined) {
-      value = styleConfig[p];
+    if (styleConfig) {
+      value = styleConfig[p as string];
     }
   }
   return value;

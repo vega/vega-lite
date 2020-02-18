@@ -1,14 +1,26 @@
+import {Axis} from '../../axis';
 import {PositionScaleChannel} from '../../channel';
 import {Config} from '../../config';
 import {isQuantitative, ScaleType} from '../../scale';
+import {getStyleConfig} from '../common';
 
 export function getAxisConfig(
-  property: string,
+  property: keyof Axis,
   config: Config,
   channel: PositionScaleChannel,
   orient: string,
-  scaleType: ScaleType
+  scaleType: ScaleType,
+  style: string | string[]
 ) {
+  const styleConfig = getStyleConfig(property, style, config.style);
+
+  if (styleConfig !== undefined) {
+    return {
+      configFrom: 'style',
+      configValue: styleConfig
+    };
+  }
+
   // configTypes to loop, starting from higher precedence
   const configTypes = [
     ...(scaleType === 'band' ? ['axisBand'] : []),

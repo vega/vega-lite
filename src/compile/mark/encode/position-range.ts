@@ -2,7 +2,7 @@ import {isFieldDef} from '../../../channeldef';
 import {MarkConfig} from '../../../mark';
 import {getFirstDefined} from '../../../util';
 import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {getStyleConfig} from '../../common';
+import {getMarkStyleConfig} from '../../common';
 import {UnitModel} from '../../unit';
 import {getOffset} from './offset';
 import {alignedPositionChannel} from './position-align';
@@ -111,8 +111,8 @@ function pointPosition2(model: UnitModel, defaultPos: 'zeroOrMin' | 'zeroOrMax',
   return getFirstDefined<VgEncodeEntry>(
     position2orSize(channel, markDef),
     position2orSize(channel, {
-      [channel]: getStyleConfig(channel, markDef, config.style),
-      [sizeChannel]: getStyleConfig(sizeChannel, markDef, config.style)
+      [channel]: getMarkStyleConfig(channel, markDef, config.style),
+      [sizeChannel]: getMarkStyleConfig(sizeChannel, markDef, config.style)
     }),
     position2orSize(channel, config[mark]),
     position2orSize(channel, config.mark),

@@ -89,6 +89,28 @@ describe('Axis', () => {
       });
     });
 
+    it('should include axis property in style', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {
+            field: 'a',
+            type: 'quantitative',
+            axis: {style: 'foo'}
+          }
+        },
+        config: {
+          style: {
+            foo: {labelColor: 'red'}
+          }
+        }
+      });
+
+      const axisComponent = parseUnitAxes(model);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].implicit.labelColor).toEqual('red');
+    });
+
     it('should produce axis component with grid=false', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',

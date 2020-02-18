@@ -1,7 +1,7 @@
 import {scheme} from 'vega-scale';
 import {Color, InitSignal, NewSignal, RangeConfig, RangeScheme} from 'vega-typings';
 import {isObject, mergeConfig} from 'vega-util';
-import {AxisConfigMixins, isConditionalAxisValue} from './axis';
+import {Axis, AxisConfigMixins, isConditionalAxisValue} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
 import {VL_ONLY_LEGEND_CONFIG} from './guide';
 import {HeaderConfigMixins} from './header';
@@ -170,9 +170,31 @@ export interface VLOnlyConfig {
   selection?: SelectionConfig;
 }
 
-export interface StyleConfigIndex {
-  [style: string]: MarkConfig;
-}
+export type StyleConfigIndex = {
+  [style: string]: MarkConfig | Axis;
+} & {
+  [mark in Mark]?: MarkConfig;
+} & {
+    /**
+     * Default style for axis, legend, and header titles.
+     */
+    'guide-title'?: MarkConfig;
+
+    /**
+     * Default style for axis, legend, and header labels.
+     */
+    'guide-label'?: MarkConfig;
+
+    /**
+     * Default style for chart titles
+     */
+    'group-title'?: MarkConfig;
+
+    /**
+     * Default style for chart subtitles
+     */
+    'group-subtitle'?: MarkConfig;
+  };
 
 export interface Config
   extends TopLevelProperties,
@@ -571,7 +593,7 @@ function redirectConfigToStyleConfig(
 
   const style: MarkConfig = {
     ...propConfig,
-    ...config.style[toProp ?? prop]
+    ...(config.style[toProp ?? prop] as MarkConfig)
   };
 
   // set config.style if it is not an empty object

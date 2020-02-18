@@ -47,7 +47,8 @@ export function labelAngle(
       model.config,
       channel,
       orient(channel),
-      model.getScaleComponent(channel).get('type')
+      model.getScaleComponent(channel).get('type'),
+      specifiedAxis.style
     );
     if (angle !== undefined) {
       return normalizeAngle(angle);
