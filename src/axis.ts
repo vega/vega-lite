@@ -229,7 +229,7 @@ export interface AxisPropsWithConditionAndSignal {
 
 export type AxisConfig = VlOnlyGuideConfig &
   AxisConfigBaseWithConditionalAndSignal &
-  Pick<Axis, 'labelExpr' | 'tickCount'>;
+  Pick<Axis, 'labelExpr' | 'labelOffset' | 'tickCount'>;
 
 export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
   /**
@@ -246,6 +246,11 @@ export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
    * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
    */
   labelExpr?: string;
+
+  /**
+   *  Position offset in pixels to apply to labels, in addition to tickOffset.
+   */
+  labelOffset?: string;
 
   /**
    * The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.
@@ -489,6 +494,7 @@ const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
   ...COMMON_AXIS_PROPERTIES_INDEX,
   style: 1,
   labelExpr: 1,
+  labelOffset: 1,
   encoding: 1
 };
 
