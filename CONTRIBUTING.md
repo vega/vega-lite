@@ -105,7 +105,7 @@ brew install ruby
 For bundler:
 
 ```sh
-gem install bundler
+gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"
 ```
 
 For Jekyll and its dependencies, because we already have the `Gemfile` in the repo, you can simply run:
