@@ -242,10 +242,10 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
     } else if (
       // Cases that we need to implicit values
 
-      // 1. Grid and orient
+      // 1. Grid, orient, and tickCount
       // - Grid is an exception because we need to set grid = true to generate another grid axis
-      // - Orient is not an axis config in Vega, so we need to set too.
-      (contains(['grid', 'orient'], property) && configValue) ||
+      // - Orient and tickCount are not axis configs in Vega, so we need to set too.
+      (contains(['grid', 'orient', 'tickCount'], property) && configValue) ||
       // 2. Conditional axis values and signals
       isConditionalAxisValue<any>(configValue) || // need to set "any" as TS isn't smart enough to figure the generic parameter type yet
       isSignalRef(configValue) ||
