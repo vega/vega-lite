@@ -266,9 +266,7 @@ export interface TimeUnitParams {
 
 // matches vega time unit format specifier
 // matches vega time unit format specifier
-export type TimeFormatConfig = {
-  [unit in TimeUnitFormat]?: string;
-};
+export type TimeFormatConfig = Partial<Record<TimeUnitFormat, string>>;
 
 // In order of increasing specificity
 export const VEGALITE_TIMEFORMAT: TimeFormatConfig = {
@@ -322,7 +320,7 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string, {end}: {end: bo
       lastTimeUnit = tu;
     }
     return dateExpr;
-  }, {} as {[key in SingleTimeUnit]: string});
+  }, {} as Record<SingleTimeUnit, string>);
 
   if (end) {
     d[lastTimeUnit] += '+1';

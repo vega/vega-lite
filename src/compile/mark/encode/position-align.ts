@@ -5,17 +5,17 @@ import {getFirstDefined} from '../../../util';
 import {VgEncodeChannel} from '../../../vega.schema';
 import {getMarkConfig} from '../../common';
 
-const ALIGNED_X_CHANNEL: {[a in Align]: VgEncodeChannel} = {
+const ALIGNED_X_CHANNEL: Record<Align, VgEncodeChannel> = {
   left: 'x',
   center: 'xc',
   right: 'x2'
-} as const;
+};
 
 const BASELINED_Y_CHANNEL = {
   top: 'y',
   middle: 'yc',
   bottom: 'y2'
-} as const;
+};
 
 export function alignedPositionChannel(channel: 'x' | 'y', markDef: MarkDef, config: Config) {
   const alignChannel = channel === 'x' ? 'align' : 'baseline';

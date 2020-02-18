@@ -2,7 +2,7 @@ import {Align, Color, FontStyle, FontWeight, Orient, TextBaseline, TitleAnchor, 
 import {FormatMixins, Guide, VlOnlyGuideConfig} from './guide';
 import {keys} from './util';
 
-export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof CoreHeader]: keyof TitleConfig} = {
+export const HEADER_TITLE_PROPERTIES_MAP: Partial<Record<keyof CoreHeader, keyof TitleConfig>> = {
   titleAlign: 'align',
   titleAnchor: 'anchor',
   titleAngle: 'angle',
@@ -18,7 +18,7 @@ export const HEADER_TITLE_PROPERTIES_MAP: {[k in keyof CoreHeader]: keyof TitleC
   titlePadding: 'offset'
 };
 
-export const HEADER_LABEL_PROPERTIES_MAP: {[k in keyof CoreHeader]: keyof TitleConfig} = {
+export const HEADER_LABEL_PROPERTIES_MAP: Partial<Record<keyof CoreHeader, keyof TitleConfig>> = {
   labelAlign: 'align',
   labelAnchor: 'anchor',
   labelAngle: 'angle',

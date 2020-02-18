@@ -53,10 +53,7 @@ export type ScaleType =
  * Index for scale categories -- only scale of the same categories can be merged together.
  * Current implementation is trying to be conservative and avoid merging scale type that might not work together
  */
-const SCALE_CATEGORY_INDEX: {
-  // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-  [k in ScaleType]: ScaleType | 'numeric' | 'ordinal-position' | 'discretizing';
-} = {
+const SCALE_CATEGORY_INDEX: Record<ScaleType, ScaleType | 'numeric' | 'ordinal-position' | 'discretizing'> = {
   linear: 'numeric',
   log: 'numeric',
   pow: 'numeric',
@@ -91,10 +88,7 @@ export function scaleCompatible(scaleType1: ScaleType, scaleType2: ScaleType) {
 /**
  * Index for scale precedence -- high score = higher priority for merging.
  */
-const SCALE_PRECEDENCE_INDEX: {
-  // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-  [k in ScaleType]: number;
-} = {
+const SCALE_PRECEDENCE_INDEX: Record<ScaleType, number> = {
   // numeric
   linear: 0,
   log: 1,

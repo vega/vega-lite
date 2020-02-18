@@ -41,8 +41,6 @@ export type ExcludeMappedValueRefButKeepSignal<T> = ExcludeMapped<
   Exclude<ScaledValueRef<any> | NumericValueRef | ColorValueRef, SignalRef>
 >;
 
-export type ExcludeMappedSignalRefs<T> = ExcludeMapped<T, SignalRef>;
-
 export interface VgData {
   name: string;
   source?: string;

@@ -87,10 +87,7 @@ const scaleTypeTieBreaker = tieBreakByComparing(
 function parseNonUnitScaleCore(model: Model) {
   const scaleComponents: ScaleComponentIndex = (model.component.scales = {});
 
-  const scaleTypeWithExplicitIndex: {
-    // Using Mapped Type to declare type (https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types)
-    [k in ScaleChannel]?: Explicit<ScaleType>;
-  } = {};
+  const scaleTypeWithExplicitIndex: Partial<Record<ScaleChannel, Explicit<ScaleType>>> = {};
   const resolve = model.component.resolve;
 
   // Parse each child scale and determine if a particular channel can be merged.

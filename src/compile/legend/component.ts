@@ -29,6 +29,6 @@ export const LEGEND_COMPONENT_PROPERTIES = keys(LEGEND_COMPONENT_PROPERTY_INDEX)
 
 export class LegendComponent extends Split<LegendComponentProps> {}
 
-export type LegendComponentIndex = {[P in NonPositionScaleChannel]?: LegendComponent};
+export type LegendComponentIndex = Partial<Record<NonPositionScaleChannel, LegendComponent>>;
 
-export type LegendIndex = {[P in NonPositionScaleChannel]?: Legend};
+export type LegendIndex = Partial<Record<NonPositionScaleChannel, Legend>>;

@@ -254,7 +254,7 @@ export function assembleHeaderProperties(
   facetFieldDef: FacetFieldDef<string>,
   channel: FacetChannel,
   properties: (keyof CoreHeader)[],
-  propertiesMap: {[k in keyof CoreHeader]: keyof TitleConfig}
+  propertiesMap: Partial<Record<keyof CoreHeader, keyof TitleConfig>>
 ): Partial<VgTitle> {
   const props = {};
   for (const prop of properties) {
