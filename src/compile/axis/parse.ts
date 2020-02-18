@@ -238,21 +238,21 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
         )
       : {};
 
-    if (value !== undefined) {
-      const explicit = isExplicit(value, property, axis, model, channel);
+    const explicit = isExplicit(value, property, axis, model, channel);
+    if (value !== undefined && (explicit || configValue === undefined)) {
       // only set property if it is explicitly set or has no config value (otherwise we will accidentally override config)
-      if (explicit || configValue === undefined) {
-        // Do not apply implicit rule if there is a config value
-        axisComponent.set(property, value, explicit);
-      } else if (contains(['grid', 'orient'], property) && configValue) {
-        // - Grid is an exception because we need to set grid = true to generate another grid axis
-        // - Orient is not an axis config in Vega, so we need to set too.
-        axisComponent.set(property, configValue, false);
-      }
+      axisComponent.set(property, value, explicit);
     } else if (
-      isConditionalAxisValue<any>(configValue) ||
-      // need to set "any" as TS isn't smart enough to figure the generic parameter type yet
+      // Cases that we need to implicit values
+
+      // 1. Grid and orient
+      // - Grid is an exception because we need to set grid = true to generate another grid axis
+      // - Orient is not an axis config in Vega, so we need to set too.
+      (contains(['grid', 'orient'], property) && configValue) ||
+      // 2. Conditional axis values and signals
+      isConditionalAxisValue<any>(configValue) || // need to set "any" as TS isn't smart enough to figure the generic parameter type yet
       isSignalRef(configValue) ||
+      // 3. StyleAxis
       contains(['axisQuantitative', 'axisTemporal', 'style'], configFrom)
     ) {
       // If a config is specified and is conditional, copy conditional value from axis config
