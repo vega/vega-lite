@@ -170,9 +170,31 @@ export interface VLOnlyConfig {
   selection?: SelectionConfig;
 }
 
-export interface StyleConfigIndex {
+export type StyleConfigIndex = {
   [style: string]: MarkConfig | Axis;
-}
+} & {
+  [mark in Mark]?: MarkConfig;
+} & {
+    /**
+     * Default style for axis, legend, and header titles.
+     */
+    'guide-title'?: MarkConfig;
+
+    /**
+     * Default style for axis, legend, and header labels.
+     */
+    'guide-label'?: MarkConfig;
+
+    /**
+     * Default style for chart titles
+     */
+    'group-title'?: MarkConfig;
+
+    /**
+     * Default style for chart subtitles
+     */
+    'group-subtitle'?: MarkConfig;
+  };
 
 export interface Config
   extends TopLevelProperties,
@@ -541,7 +563,7 @@ function redirectTitleConfig(config: Config) {
 
   const style: MarkConfig = {
     ...m,
-    ...(config.style['group-title'] as MarkConfig)
+    ...config.style['group-title']
   };
 
   // set config.style if it is not an empty object

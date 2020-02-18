@@ -14838,6 +14838,63 @@
           }
         ]
       },
+      "properties": {
+        "area": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "bar": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "circle": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "geoshape": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "group-subtitle": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Default style for chart subtitles"
+        },
+        "group-title": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Default style for chart titles"
+        },
+        "guide-label": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Default style for axis, legend, and header labels."
+        },
+        "guide-title": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Default style for axis, legend, and header titles."
+        },
+        "image": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "line": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "point": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "rect": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "rule": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "square": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "text": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "tick": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "trail": {
+          "$ref": "#/definitions/MarkConfig"
+        }
+      },
       "type": "object"
     },
     "SymbolShape": {
