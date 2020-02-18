@@ -55,7 +55,7 @@ export function assembleLegend(legendCmpt: LegendComponent) {
     }
 
     if (legend.fill) {
-      // If top-level fill is defined, for non color channel's legend, we need remove fill.
+      // If top-level fill is defined, for non color channel's legend, we need to remove fill.
       delete out.fill;
     }
   }
