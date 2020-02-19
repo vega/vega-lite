@@ -490,7 +490,7 @@ export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): Fiel
   return arr;
 }
 
-export function forEach<U extends {[k in Channel]?: any}>(
+export function forEach<U extends Partial<Record<Channel, any>>>(
   mapping: U,
   f: (cd: ChannelDef, c: Channel) => void,
   thisArg?: any
@@ -511,7 +511,7 @@ export function forEach<U extends {[k in Channel]?: any}>(
   }
 }
 
-export function reduce<T, U extends {[k in Channel]?: any}>(
+export function reduce<T, U extends Partial<Record<Channel, any>>>(
   mapping: U,
   f: (acc: any, fd: TypedFieldDef<string>, c: Channel) => U,
   init: T,

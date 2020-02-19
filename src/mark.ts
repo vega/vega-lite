@@ -360,14 +360,10 @@ export interface RectConfig extends RectBinSpacingMixins, MarkConfig {
   discreteBandSize?: number;
 }
 
-export const BAR_CORNER_RADIUS_INDEX: {
-  [orient in Orientation]: (
-    | 'cornerRadiusTopLeft'
-    | 'cornerRadiusTopRight'
-    | 'cornerRadiusBottomLeft'
-    | 'cornerRadiusBottomRight'
-  )[];
-} = {
+export const BAR_CORNER_RADIUS_INDEX: Partial<Record<
+  Orientation,
+  ('cornerRadiusTopLeft' | 'cornerRadiusTopRight' | 'cornerRadiusBottomLeft' | 'cornerRadiusBottomRight')[]
+>> = {
   horizontal: ['cornerRadiusTopRight', 'cornerRadiusBottomRight'],
   vertical: ['cornerRadiusTopLeft', 'cornerRadiusTopRight']
 };

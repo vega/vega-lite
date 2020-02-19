@@ -310,7 +310,7 @@ export function isScaleChannel(channel: Channel): channel is ScaleChannel {
   return !!SCALE_CHANNEL_INDEX[channel];
 }
 
-export type SupportedMark = {[mark in Mark]?: 'always' | 'binned'};
+export type SupportedMark = Partial<Record<Mark, 'always' | 'binned'>>;
 
 /**
  * Return whether a channel supports a particular mark type.
@@ -322,8 +322,7 @@ export function supportMark(channel: Channel, mark: Mark) {
   return getSupportedMark(channel)[mark];
 }
 
-const ALL_MARKS: {[m in Mark]: 'always'} = {
-  // all marks
+const ALL_MARKS: Record<Mark, 'always'> = {
   area: 'always',
   bar: 'always',
   circle: 'always',
