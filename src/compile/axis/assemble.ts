@@ -42,7 +42,7 @@ export function assembleAxis(
     header: boolean; // whether this is called via a header
   } = {header: false}
 ): VgAxis {
-  const {orient, scale, labelExpr, title, zindex, ...axis} = axisCmpt.combine();
+  const {orient, scale, labelExpr, labelOffset, title, zindex, ...axis} = axisCmpt.combine();
 
   for (const prop in axis) {
     const propType = AXIS_PROPERTY_TYPE[prop];
@@ -145,6 +145,10 @@ export function assembleAxis(
       }
 
       setAxisEncode(axis, 'labels', 'text', {signal: expr});
+    }
+
+    if (labelOffset) {
+      setAxisEncode(axis, 'labels', orient === 'bottom' || orient === 'top' ? 'dx' : 'dy', {value: labelOffset});
     }
 
     // Remove unnecessary encode block

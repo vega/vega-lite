@@ -76,6 +76,24 @@ describe('compile/axis/assemble', () => {
       expect(axis.encode.labels.update.fill).toEqual({signal: 'a'});
     });
 
+    it('correctly redirect x-labelOffset', () => {
+      const axisCmpt = new AxisComponent({
+        orient: 'top',
+        labelOffset: 5
+      });
+      const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
+      expect(axis.encode.labels.update.dx).toEqual({value: 5});
+    });
+
+    it('correctly redirect y-labelOffset', () => {
+      const axisCmpt = new AxisComponent({
+        orient: 'left',
+        labelOffset: 5
+      });
+      const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
+      expect(axis.encode.labels.update.dy).toEqual({value: 5});
+    });
+
     it('correctly applies conditional axis tickSize', () => {
       const axisCmpt = new AxisComponent({
         tickSize: {
