@@ -16,7 +16,7 @@ import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
 import {AggregateTransform as VgAggregateTransform} from 'vega-typings';
 
-type Measures = Dict<{[key in AggregateOp]?: Set<string>}>;
+type Measures = Dict<Partial<Record<AggregateOp, Set<string>>>>;
 
 function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<string>, model: ModelWithField) {
   const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;

@@ -657,7 +657,7 @@ export abstract class ModelWithField extends Model {
     return vgField(fieldDef, opt);
   }
 
-  protected abstract getMapping(): {[key in Channel]?: any};
+  protected abstract getMapping(): Partial<Record<Channel, any>>;
 
   public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T): T {
     return reduce(

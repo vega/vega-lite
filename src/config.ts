@@ -170,11 +170,8 @@ export interface VLOnlyConfig {
   selection?: SelectionConfig;
 }
 
-export type StyleConfigIndex = {
-  [style: string]: MarkConfig | Axis;
-} & {
-  [mark in Mark]?: MarkConfig;
-} & {
+export type StyleConfigIndex = Partial<Record<string, MarkConfig | Axis>> &
+  Partial<Record<Mark, MarkConfig>> & {
     /**
      * Default style for axis, legend, and header titles.
      */
