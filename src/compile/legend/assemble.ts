@@ -1,4 +1,5 @@
 import {Legend as VgLegend, LegendEncode} from 'vega-typings';
+import {SIGNAL_LEGEND_PROP_INDEX} from '../../legend';
 import {keys, replaceAll, stringify, vals} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {Model} from '../model';
@@ -40,31 +41,45 @@ export function assembleLegends(model: Model): VgLegend[] {
 
   return vals(legendByDomain)
     .flat()
-    .map((legendCmpt: LegendComponent) => {
-      const {labelExpr, selections, ...legend} = legendCmpt.combine();
+    .map(assembleLegend);
+}
 
-      if (legend.encode?.symbols) {
-        const out = legend.encode.symbols.update;
-        if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
-          // For non color channel's legend, we need to override symbol stroke config from Vega config if stroke channel is not used.
-          out.stroke = {value: 'transparent'};
-        }
+export function assembleLegend(legendCmpt: LegendComponent) {
+  const {labelExpr, selections, ...legend} = legendCmpt.combine();
 
-        if (legend.fill) {
-          // If top-level fill is defined, for non color channel's legend, we need remove fill.
-          delete out.fill;
-        }
+  if (legend.encode?.symbols) {
+    const out = legend.encode.symbols.update;
+    if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
+      // For non color channel's legend, we need to override symbol stroke config from Vega config if stroke channel is not used.
+      out.stroke = {value: 'transparent'};
+    }
+
+    if (legend.fill) {
+      // If top-level fill is defined, for non color channel's legend, we need to remove fill.
+      delete out.fill;
+    }
+  }
+
+  if (labelExpr !== undefined) {
+    let expr = labelExpr;
+    if (legend.encode?.labels?.update?.text && isSignalRef(legend.encode.labels.update.text)) {
+      expr = replaceAll(labelExpr, 'datum.label', legend.encode.labels.update.text.signal);
+    }
+
+    setLegendEncode(legend, 'labels', 'text', {signal: expr});
+  }
+
+  for (const prop in legend) {
+    const propValue = legend[prop];
+    if (isSignalRef(propValue)) {
+      const propIndex = SIGNAL_LEGEND_PROP_INDEX[prop];
+      if (propIndex) {
+        const {vgProp, part} = propIndex;
+        setLegendEncode(legend, part, vgProp, propValue);
+        delete legend[prop];
       }
+    }
+  }
 
-      if (labelExpr !== undefined) {
-        let expr = labelExpr;
-        if (legend.encode?.labels?.update?.text && isSignalRef(legend.encode.labels.update.text)) {
-          expr = replaceAll(labelExpr, 'datum.label', legend.encode.labels.update.text.signal);
-        }
-
-        setLegendEncode(legend, 'labels', 'text', {signal: expr});
-      }
-
-      return legend;
-    });
+  return legend;
 }

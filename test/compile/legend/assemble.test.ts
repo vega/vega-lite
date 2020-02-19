@@ -1,3 +1,5 @@
+import {assembleLegend} from '../../../src/compile/legend/assemble';
+import {LegendComponent} from '../../../src/compile/legend/component';
 import {parseUnitModelWithScale} from '../../util';
 
 describe('legend/assemble', () => {
@@ -98,5 +100,15 @@ describe('legend/assemble', () => {
     expect(legends[0].fill).toBe('color');
     expect(legends[0].size).toBe('size');
     expect(legends[0].encode.symbols.update.fill).toBe(undefined);
+  });
+
+  describe('assembleLegend', () => {
+    it('correctly redirect color signal', () => {
+      const legendCmpt = new LegendComponent({
+        labelColor: {signal: 'a'}
+      });
+      const axis = assembleLegend(legendCmpt);
+      expect(axis.encode.labels.update.fill).toEqual({signal: 'a'});
+    });
   });
 });
