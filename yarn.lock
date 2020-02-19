@@ -7895,10 +7895,10 @@ vega-typings@0.12.0:
   dependencies:
     vega-util "^1.12.1"
 
-vega-typings@~0.12.3:
-  version "0.12.3"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.12.3.tgz#fc5f00219a0d99d3df5b19c563be77800c157cf0"
-  integrity sha512-ubOekVm60PjzP0b+FAakbti9PkoGu/as2SPX7iBo5IPp8pt+Ej5SNpQJPdCl9rSpKCzU4QNWz1ptZcXL3WSTcg==
+vega-typings@~0.12.4:
+  version "0.12.4"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.12.4.tgz#e3b298723db1a484aae6ca1cf760ff20fd46fae1"
+  integrity sha512-2tnAfFMxaGul1875q6v6vZW20s+j9hYGlt/lpp3yVYYGARG7hjgwyHpOKnHzw3C/huy4JaHaMhf3psXgG/VnHw==
   dependencies:
     vega-util "^1.12.1"
 

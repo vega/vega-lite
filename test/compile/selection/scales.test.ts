@@ -1,12 +1,12 @@
 import {NewSignal, PushSignal} from 'vega-typings';
 import {X} from '../../../src/channel';
+import {Model} from '../../../src/compile/model';
 import {assembleScalesForModel} from '../../../src/compile/scale/assemble';
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {UnitModel} from '../../../src/compile/unit';
 import * as log from '../../../src/log';
 import {Domain} from '../../../src/scale';
 import {parseConcatModel, parseRepeatModel, parseUnitModelWithScale} from '../../util';
-import {Model} from '../../../src/compile/model';
 
 describe('Selection + Scales', () => {
   describe('selectionExtent', () => {
@@ -72,19 +72,19 @@ describe('Selection + Scales', () => {
 
       expect(typeof xscale.domain).toBe('object');
       expect('domainRaw' in xscale).toBeTruthy();
-      expect(xscale.domainRaw.signal).toBe('brush["date"]');
+      expect(xscale.domainRaw).toEqual({signal: 'brush["date"]'});
 
       expect(typeof yscale.domain).toBe('object');
       expect('domainRaw' in yscale).toBeTruthy();
-      expect(yscale.domainRaw.signal).toBe('brush2["price"]');
+      expect(yscale.domainRaw).toEqual({signal: 'brush2["price"]'});
 
       expect(typeof cscale.domain).toBe('object');
       expect('domainRaw' in cscale).toBeTruthy();
-      expect(cscale.domainRaw.signal).toBe('brush2["price"]');
+      expect(cscale.domainRaw).toEqual({signal: 'brush2["price"]'});
 
       expect(typeof oscale.domain).toBe('object');
       expect('domainRaw' in oscale).toBeTruthy();
-      expect(oscale.domainRaw.signal).toBe('brush3["date"]');
+      expect(oscale.domainRaw).toEqual({signal: 'brush3["date"]'});
     });
 
     it('should bind both scales in diagonal repeated views', () => {
@@ -118,8 +118,8 @@ describe('Selection + Scales', () => {
       expect(scales.length === 2).toBe(true);
       expect('domainRaw' in scales[0]).toBeTruthy();
       expect('domainRaw' in scales[1]).toBeTruthy();
-      expect(scales[0].domainRaw.signal).toBe('grid["Acceleration"]');
-      expect(scales[1].domainRaw.signal).toBe('grid["Acceleration"]');
+      expect(scales[0].domainRaw).toEqual({signal: 'grid["Acceleration"]'});
+      expect(scales[1].domainRaw).toEqual({signal: 'grid["Acceleration"]'});
     });
 
     it('should be merged for layered views', () => {
@@ -158,7 +158,7 @@ describe('Selection + Scales', () => {
       model.parseSelections();
       const scales = assembleScalesForModel(model.children[0]);
       expect('domainRaw' in scales[0]).toBeTruthy();
-      expect(scales[0].domainRaw.signal).toBe('brush["date"]');
+      expect(scales[0].domainRaw).toEqual({signal: 'brush["date"]'});
     });
 
     it('should handle nested field references', () => {
@@ -188,9 +188,9 @@ describe('Selection + Scales', () => {
 
       let scales = assembleScalesForModel(model);
       expect('domainRaw' in scales[0]).toBeTruthy();
-      expect(scales[0].domainRaw.signal).toBe('grid["nested.b"]');
+      expect(scales[0].domainRaw).toEqual({signal: 'grid["nested.b"]'});
       expect('domainRaw' in scales[1]).toBeTruthy();
-      expect(scales[1].domainRaw.signal).toBe('grid["nested.a"]');
+      expect(scales[1].domainRaw).toEqual({signal: 'grid["nested.a"]'});
 
       model = parseConcatModel({
         vconcat: [
@@ -246,11 +246,11 @@ describe('Selection + Scales', () => {
 
       scales = assembleScalesForModel(model.children[1]);
       expect('domainRaw' in scales[0]).toBeTruthy();
-      expect(scales[0].domainRaw.signal).toBe('brush["nested.a"]');
+      expect(scales[0].domainRaw).toEqual({signal: 'brush["nested.a"]'});
 
       scales = assembleScalesForModel(model.children[2]);
       expect('domainRaw' in scales[0]).toBeTruthy();
-      expect(scales[0].domainRaw.signal).toBe('brush["nested.a"]');
+      expect(scales[0].domainRaw).toEqual({signal: 'brush["nested.a"]'});
     });
   });
 

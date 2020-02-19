@@ -1,3 +1,4 @@
+import {SignalRef, TimeInterval} from 'vega-typings/types';
 import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
 import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
@@ -11,7 +12,6 @@ import {
   hasContinuousDomain,
   isContinuousToContinuous,
   isContinuousToDiscrete,
-  NiceTime,
   Scale,
   ScaleConfig,
   ScaleType,
@@ -21,7 +21,7 @@ import {Sort} from '../../sort';
 import {Type} from '../../type';
 import * as util from '../../util';
 import {contains, getFirstDefined, keys} from '../../util';
-import {VgScale} from '../../vega.schema';
+import {isSignalRef, VgScale} from '../../vega.schema';
 import {getBinSignalName} from '../data/bin';
 import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
@@ -95,8 +95,8 @@ export function getDefaultValue(
   channel: Channel,
   fieldDef: ScaleFieldDef<string, Type>,
   scaleType: ScaleType,
-  scalePadding: number,
-  scalePaddingInner: number,
+  scalePadding: number | SignalRef,
+  scalePaddingInner: number | SignalRef,
   specifiedDomain: Scale['domain'],
   markDef: MarkDef,
   config: Config
@@ -201,7 +201,7 @@ export function interpolate(channel: Channel, type: Type) {
   return undefined;
 }
 
-export function nice(scaleType: ScaleType, channel: Channel, fieldDef: TypedFieldDef<string>): boolean | NiceTime {
+export function nice(scaleType: ScaleType, channel: Channel, fieldDef: TypedFieldDef<string>): boolean | TimeInterval {
   if (fieldDef.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return undefined;
   }
@@ -237,7 +237,7 @@ export function padding(
   return undefined;
 }
 
-export function paddingInner(paddingValue: number, channel: Channel, mark: Mark, scaleConfig: ScaleConfig) {
+export function paddingInner(paddingValue: number | SignalRef, channel: Channel, mark: Mark, scaleConfig: ScaleConfig) {
   if (paddingValue !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingInner.
     return undefined;
@@ -257,11 +257,11 @@ export function paddingInner(paddingValue: number, channel: Channel, mark: Mark,
 }
 
 export function paddingOuter(
-  paddingValue: number,
+  paddingValue: number | SignalRef,
   channel: Channel,
   scaleType: ScaleType,
   mark: Mark,
-  paddingInnerValue: number,
+  paddingInnerValue: number | SignalRef,
   scaleConfig: ScaleConfig
 ) {
   if (paddingValue !== undefined) {
@@ -281,7 +281,7 @@ export function paddingOuter(
           size (width/height) = step * (cardinality - paddingInner + 2 * paddingOuter).
           and we want the width/height to be integer by default.
           Note that step (by default) and cardinality are integers.) */
-        paddingInnerValue / 2
+        isSignalRef(paddingInnerValue) ? {signal: `${paddingInnerValue.signal}/2`} : paddingInnerValue / 2
       );
     }
   }
