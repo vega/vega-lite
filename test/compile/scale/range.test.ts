@@ -253,6 +253,20 @@ describe('compile/scale', () => {
           expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([2, 9]));
         });
 
+        it('returns formula signal if zero is signal', () => {
+          const model = parseUnitModelWithScaleExceptRange({
+            mark: 'bar',
+            encoding: {
+              size: {field: 'x', type: 'quantitative', scale: {zero: {signal: 'a'}}}
+            },
+            config: {
+              scale: {minBandSize: 2, maxBandSize: 9}
+            }
+          });
+
+          expect(parseRangeForChannel('size', model)).toEqual(makeImplicit([{signal: 'a ? 0 : 2'}, 9]));
+        });
+
         it('should return [continuousBandSize, xRangeStep-1] when zero is excluded by default since min/maxSize config are not specified', () => {
           const model = parseUnitModelWithScaleExceptRange({
             mark: 'bar',

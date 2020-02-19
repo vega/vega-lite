@@ -128,7 +128,7 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
   return makeImplicit(defaultRange(channel, model));
 }
 
-function parseScheme(scheme: Scheme): RangeScheme {
+function parseScheme(scheme: Scheme | SignalRef): RangeScheme {
   if (isExtendedScheme(scheme)) {
     return {
       scheme: scheme.name,
@@ -266,12 +266,17 @@ export function defaultContinuousToDiscreteCount(
  * @param rangeMax end of the range
  * @param cardinality number of values in the output range
  */
-export function interpolateRange(rangeMin: number, rangeMax: number | SignalRef, cardinality: number): SignalRef {
+export function interpolateRange(
+  rangeMin: number | SignalRef,
+  rangeMax: number | SignalRef,
+  cardinality: number
+): SignalRef {
   // always return a signal since it's better to compute the sequence in Vega later
   const f = () => {
     const rMax = isSignalRef(rangeMax) ? rangeMax.signal : rangeMax;
-    const step = `(${rMax} - ${rangeMin}) / (${cardinality} - 1)`;
-    return `sequence(${rangeMin}, ${rangeMax} + ${step}, ${step})`;
+    const rMin = isSignalRef(rangeMin) ? rangeMin.signal : rangeMin;
+    const step = `(${rMax} - ${rMin}) / (${cardinality} - 1)`;
+    return `sequence(${rMin}, ${rMax} + ${step}, ${step})`;
   };
   if (isSignalRef(rangeMax)) {
     return new SignalRefWrapper(f);
@@ -280,9 +285,13 @@ export function interpolateRange(rangeMin: number, rangeMax: number | SignalRef,
   }
 }
 
-function sizeRangeMin(mark: Mark, zero: boolean, config: Config) {
+function sizeRangeMin(mark: Mark, zero: boolean | SignalRef, config: Config): number | SignalRef {
   if (zero) {
-    return 0;
+    if (isSignalRef(zero)) {
+      return {signal: `${zero.signal} ? 0 : ${sizeRangeMin(mark, false, config)}`};
+    } else {
+      return 0;
+    }
   }
   switch (mark) {
     case 'bar':
