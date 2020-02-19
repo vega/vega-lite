@@ -7889,12 +7889,16 @@
         },
         "labelFont": {
           "description": "The font of the header label.",
-          "type": "string"
+          "type": [
+            "string"
+          ]
         },
         "labelFontSize": {
           "description": "The font size of the header label, in pixels.",
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "labelFontStyle": {
           "$ref": "#/definitions/FontStyle",
@@ -7902,7 +7906,9 @@
         },
         "labelLimit": {
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "labelOrient": {
           "$ref": "#/definitions/Orient",
@@ -7910,7 +7916,9 @@
         },
         "labelPadding": {
           "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "labels": {
           "description": "A boolean flag indicating if labels should be included as part of the header.\n\n__Default value:__ `true`.",
@@ -7951,12 +7959,16 @@
         },
         "titleFont": {
           "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
-          "type": "string"
+          "type": [
+            "string"
+          ]
         },
         "titleFontSize": {
           "description": "Font size of the header title.",
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "titleFontStyle": {
           "$ref": "#/definitions/FontStyle",
@@ -7968,11 +7980,15 @@
         },
         "titleLimit": {
           "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "titleLineHeight": {
           "description": "Line height in pixels for multi-line title text.",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "titleOrient": {
           "$ref": "#/definitions/Orient",
@@ -7980,7 +7996,9 @@
         },
         "titlePadding": {
           "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         }
       },
       "type": "object"
@@ -8024,12 +8042,16 @@
         },
         "labelFont": {
           "description": "The font of the header label.",
-          "type": "string"
+          "type": [
+            "string"
+          ]
         },
         "labelFontSize": {
           "description": "The font size of the header label, in pixels.",
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "labelFontStyle": {
           "$ref": "#/definitions/FontStyle",
@@ -8037,7 +8059,9 @@
         },
         "labelLimit": {
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "labelOrient": {
           "$ref": "#/definitions/Orient",
@@ -8045,7 +8069,9 @@
         },
         "labelPadding": {
           "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "labels": {
           "description": "A boolean flag indicating if labels should be included as part of the header.\n\n__Default value:__ `true`.",
@@ -8079,12 +8105,16 @@
         },
         "titleFont": {
           "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
-          "type": "string"
+          "type": [
+            "string"
+          ]
         },
         "titleFontSize": {
           "description": "Font size of the header title.",
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "titleFontStyle": {
           "$ref": "#/definitions/FontStyle",
@@ -8096,11 +8126,15 @@
         },
         "titleLimit": {
           "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "titleLineHeight": {
           "description": "Line height in pixels for multi-line title text.",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "titleOrient": {
           "$ref": "#/definitions/Orient",
@@ -8108,7 +8142,9 @@
         },
         "titlePadding": {
           "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         }
       },
       "type": "object"
