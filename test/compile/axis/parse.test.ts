@@ -41,6 +41,22 @@ describe('Axis', () => {
       expect(axisComponent['x'][0].explicit.grid).toEqual(true);
     });
 
+    it('should respect config even though the function could provide default value', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {
+            field: 'a',
+            type: 'quantitative'
+          }
+        },
+        config: {axisQuantitative: {labelAlign: 'right'}}
+      });
+      const axisComponent = parseUnitAxes(model);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].implicit.labelAlign).toEqual('right');
+    });
+
     it('should produce Vega grid when axis config is specified.', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
