@@ -13569,76 +13569,47 @@
     "ScaleInterpolate": {
       "anyOf": [
         {
-          "enum": [
-            "rgb"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/ScaleInterpolateEnum"
         },
         {
-          "enum": [
-            "lab"
-          ],
-          "type": "string"
+          "$ref": "#/definitions/ScaleInterpolateParams"
+        }
+      ]
+    },
+    "ScaleInterpolateEnum": {
+      "enum": [
+        "rgb",
+        "lab",
+        "hcl",
+        "hsl",
+        "hsl-long",
+        "hcl-long",
+        "cubehelix",
+        "cubehelix-long"
+      ],
+      "type": "string"
+    },
+    "ScaleInterpolateParams": {
+      "additionalProperties": false,
+      "properties": {
+        "gamma": {
+          "type": [
+            "number"
+          ]
         },
-        {
+        "type": {
           "enum": [
-            "hcl"
-          ],
-          "type": "string"
-        },
-        {
-          "enum": [
-            "hsl"
-          ],
-          "type": "string"
-        },
-        {
-          "enum": [
-            "hsl-long"
-          ],
-          "type": "string"
-        },
-        {
-          "enum": [
-            "hcl-long"
-          ],
-          "type": "string"
-        },
-        {
-          "enum": [
-            "cubehelix"
-          ],
-          "type": "string"
-        },
-        {
-          "enum": [
+            "rgb",
+            "cubehelix",
             "cubehelix-long"
           ],
           "type": "string"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "gamma": {
-              "type": [
-                "number"
-              ]
-            },
-            "type": {
-              "enum": [
-                "rgb",
-                "cubehelix",
-                "cubehelix-long"
-              ],
-              "type": "string"
-            }
-          },
-          "required": [
-            "type"
-          ],
-          "type": "object"
         }
-      ]
+      },
+      "required": [
+        "type"
+      ],
+      "type": "object"
     },
     "ScaleResolveMap": {
       "additionalProperties": false,
