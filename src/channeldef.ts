@@ -30,6 +30,7 @@ import {
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
 import {contains, flatAccessWithDatum, getFirstDefined, internalField, replacePathInField, titlecase} from './util';
+import {isSignalRef} from './vega.schema';
 
 export type Value = number | string | boolean | number[] | null;
 export {Gradient};
@@ -1058,7 +1059,7 @@ export function isTimeFieldDef(fieldDef: TypedFieldDef<any>) {
  * Convert the value to Vega expression if applicable (for datetime object, or string if the field def is temporal or has timeUnit)
  */
 export function valueExpr(
-  v: number | string | boolean | DateTime,
+  v: number | string | boolean | DateTime | SignalRef,
   {
     timeUnit,
     type,
@@ -1073,7 +1074,9 @@ export function valueExpr(
 ): string {
   const unit = normalizeTimeUnit(timeUnit)?.unit;
   let expr;
-  if (isDateTime(v)) {
+  if (isSignalRef(v)) {
+    expr = v.signal;
+  } else if (isDateTime(v)) {
     expr = dateTimeToExpr(v);
   } else if (isString(v) || isNumber(v)) {
     if (unit || type === 'temporal') {

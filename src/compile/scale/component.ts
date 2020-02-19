@@ -11,11 +11,10 @@ import {Explicit, Split} from '../split';
  * All VgDomain property except domain.
  * (We exclude domain as we have a special "domains" array that allow us merge them all at once in assemble.)
  */
-export type ScaleComponentProps = Omit<VgScale, 'domain' | 'domainRaw' | 'reverse' | 'zero'> & {
+export type ScaleComponentProps = Omit<VgScale, 'domain' | 'domainRaw' | 'reverse'> & {
   domains: VgNonUnionDomain[];
   selectionExtent?: SelectionExtent;
   reverse?: boolean | SignalRef; // Need override since Vega doesn't official support scale reverse yet (though it does in practice)
-  zero?: boolean; // VL can't allow SignalRef for zero as we have dependent logic
 };
 
 export type Range = ScaleComponentProps['range'];

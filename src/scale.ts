@@ -1,4 +1,12 @@
-import {RangeEnum, ScaleInterpolate, SignalRef, TimeInterval, TimeIntervalStep} from 'vega-typings';
+import {ScaleBins} from 'vega';
+import {
+  RangeEnum,
+  ScaleInterpolateEnum,
+  ScaleInterpolateParams,
+  SignalRef,
+  TimeInterval,
+  TimeIntervalStep
+} from 'vega-typings';
 import {isString, toSet} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, CHANNELS, isColorChannel} from './channel';
@@ -180,12 +188,12 @@ export interface ScaleConfig {
    * This can be helpful for snapping to the pixel grid.
    * (Only available for `x`, `y`, and `size` scales.)
    */
-  round?: boolean;
+  round?: boolean | SignalRef;
 
   /**
    * If true, values that exceed the data domain are clamped to either the minimum or maximum range value
    */
-  clamp?: boolean;
+  clamp?: boolean | SignalRef;
 
   /**
    * Default inner padding for `x` and `y` band-ordinal scales.
@@ -197,7 +205,7 @@ export interface ScaleConfig {
    * @minimum 0
    * @maximum 1
    */
-  bandPaddingInner?: number;
+  bandPaddingInner?: number | SignalRef;
 
   /**
    * Default outer padding for `x` and `y` band-ordinal scales.
@@ -207,7 +215,7 @@ export interface ScaleConfig {
    * @minimum 0
    * @maximum 1
    */
-  bandPaddingOuter?: number;
+  bandPaddingOuter?: number | SignalRef;
 
   /**
    * Default inner padding for `x` and `y` band-ordinal scales of `"bar"` marks.
@@ -217,7 +225,7 @@ export interface ScaleConfig {
    * @minimum 0
    * @maximum 1
    */
-  barBandPaddingInner?: number;
+  barBandPaddingInner?: number | SignalRef;
 
   /**
    * Default inner padding for `x` and `y` band-ordinal scales of `"rect"` marks.
@@ -227,7 +235,7 @@ export interface ScaleConfig {
    * @minimum 0
    * @maximum 1
    */
-  rectBandPaddingInner?: number;
+  rectBandPaddingInner?: number | SignalRef;
 
   /**
    * Default padding for continuous scales.
@@ -236,7 +244,7 @@ export interface ScaleConfig {
    *
    * @minimum 0
    */
-  continuousPadding?: number;
+  continuousPadding?: number | SignalRef;
 
   /**
    * Default outer padding for `x` and `y` point-ordinal scales.
@@ -246,7 +254,7 @@ export interface ScaleConfig {
    * @minimum 0
    * @maximum 1
    */
-  pointPadding?: number;
+  pointPadding?: number | SignalRef;
 
   /**
    * Use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.
@@ -400,23 +408,28 @@ export interface SchemeParams {
    *
    * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
-  name: string;
+  name: string | SignalRef;
 
   /**
    * The extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.
    */
-  extent?: number[];
+  extent?: (number | SignalRef)[] | SignalRef;
 
   /**
    * The number of colors to use in the scheme. This can be useful for scale types such as `"quantize"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.
    */
-  count?: number;
+  count?: number | SignalRef;
 }
 
-export type Domain = number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionExtent | DomainUnionWith;
+export type Domain =
+  | (null | string | number | boolean | DateTime | SignalRef)[]
+  | 'unaggregated'
+  | SelectionExtent
+  | SignalRef
+  | DomainUnionWith;
 export type Scheme = string | SchemeParams;
 
-export function isExtendedScheme(scheme: string | SchemeParams): scheme is SchemeParams {
+export function isExtendedScheme(scheme: string | SignalRef | SchemeParams): scheme is SchemeParams {
   return !isString(scheme) && !!scheme['name'];
 }
 
@@ -476,12 +489,17 @@ export interface Scale {
    *
    * 5) Domain can also takes an object defining a field or encoding of a selection that [interactively determines](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain.
    */
-  domain?: number[] | string[] | boolean[] | DateTime[] | 'unaggregated' | SelectionExtent | DomainUnionWith;
+  domain?:
+    | (null | string | number | boolean | DateTime | SignalRef)[]
+    | 'unaggregated'
+    | SelectionExtent
+    | DomainUnionWith
+    | SignalRef;
 
   /**
    * Inserts a single mid-point value into a two-element domain. The mid-point value must lie between the domain minimum and maximum values. This property can be useful for setting a midpoint for [diverging color scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). The domainMid property is only intended for use with scales supporting continuous, piecewise domains.
    */
-  domainMid?: number;
+  domainMid?: number | SignalRef;
 
   // Hide because we might not really need this.
   /**
@@ -507,7 +525,7 @@ export interface Scale {
    *
    * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`).
    */
-  range?: number[] | string[] | RangeEnum | number[][];
+  range?: RangeEnum | (number | string | number[] | SignalRef)[];
 
   // ordinal
 
@@ -518,7 +536,7 @@ export interface Scale {
    *
    * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
-  scheme?: string | SchemeParams;
+  scheme?: string | SchemeParams | SignalRef;
 
   /**
    * The alignment of the steps within the scale range.
@@ -527,19 +545,23 @@ export interface Scale {
    *
    * __Default value:__ `0.5`
    */
-  align?: number;
+  align?: number | SignalRef;
 
   /**
-   * An array of bin boundaries over the scale domain. If provided, axes and legends will use the bin boundaries to inform the choice of tick marks and text labels.
+   * Bin boundaries can be provided to scales as either an explicit array of bin boundaries or as a bin specification object. The legal values are:
+   * - An [array](../types/#Array) literal of bin boundary values. For example, `[0, 5, 10, 15, 20]`. The array must include both starting and ending boundaries. The previous example uses five values to indicate a total of four bin intervals: [0-5), [5-10), [10-15), [15-20]. Array literals may include signal references as elements.
+   * - A [bin specification object](https://vega.github.io/vega-lite/docs/scale.html#bins) that indicates the bin _step_ size, and optionally the _start_ and _stop_ boundaries.
+   * - An array of bin boundaries over the scale domain. If provided, axes and legends will use the bin boundaries to inform the choice of tick marks and text labels.
    */
-  bins?: number[];
+  // TODO: add - A [signal reference](../types/#Signal) that resolves to either an array or bin specification object.
+  bins?: ScaleBins;
 
   /**
    * If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.
    *
    * __Default value:__ `false`.
    */
-  round?: boolean;
+  round?: boolean | SignalRef;
 
   /**
    * For _[continuous](https://vega.github.io/vega-lite/docs/scale.html#continuous)_ scales, expands the scale domain to accommodate the specified number of pixels on each of the scale range. The scale range must represent pixels for this parameter to function as intended. Padding adjustment is performed prior to all other adjustments, including the effects of the `zero`, `nice`, `domainMin`, and `domainMax` properties.
@@ -553,7 +575,7 @@ export interface Scale {
    *
    * @minimum 0
    */
-  padding?: number;
+  padding?: number | SignalRef;
 
   /**
    * The inner padding (spacing) within each band step of band scales, as a fraction of the step size. This value must lie in the range [0,1].
@@ -565,7 +587,7 @@ export interface Scale {
    * @minimum 0
    * @maximum 1
    */
-  paddingInner?: number;
+  paddingInner?: number | SignalRef;
 
   /**
    * The outer padding (spacing) at the ends of the range of band and point scales,
@@ -577,7 +599,7 @@ export interface Scale {
    * @minimum 0
    * @maximum 1
    */
-  paddingOuter?: number;
+  paddingOuter?: number | SignalRef;
 
   // typical
   /**
@@ -585,7 +607,7 @@ export interface Scale {
    *
    * __Default value:__ derived from the [scale config](https://vega.github.io/vega-lite/docs/config.html#scale-config)'s `clamp` (`true` by default).
    */
-  clamp?: boolean;
+  clamp?: boolean | SignalRef;
 
   /**
    * Extending the domain so that it starts and ends on nice round values. This method typically modifies the scale’s domain, and may only extend the bounds to the nearest round value. Nicing is useful if the domain is computed from data and may be irregular. For example, for a domain of _[0.201479…, 0.996679…]_, a nice domain might be _[0.2, 1.0]_.
@@ -597,24 +619,24 @@ export interface Scale {
    * __Default value:__ `true` for unbinned _quantitative_ fields; `false` otherwise.
    *
    */
-  nice?: boolean | number | TimeInterval | TimeIntervalStep;
+  nice?: boolean | number | TimeInterval | TimeIntervalStep | SignalRef;
 
   /**
    * The logarithm base of the `log` scale (default `10`).
    */
-  base?: number;
+  base?: number | SignalRef;
 
   /**
    * The exponent of the `pow` scale.
    */
-  exponent?: number;
+  exponent?: number | SignalRef;
 
   /**
    * A constant determining the slope of the symlog function around zero. Only used for `symlog` scales.
    *
    * __Default value:__ `1`
    */
-  constant?: number;
+  constant?: number | SignalRef;
 
   /**
    * If `true`, ensures that a zero baseline value is included in the scale domain.
@@ -623,14 +645,14 @@ export interface Scale {
    *
    * __Note:__ Log, time, and utc scales do not support `zero`.
    */
-  zero?: boolean;
+  zero?: boolean | SignalRef;
 
   /**
    * The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in HCL space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include `rgb`, `hsl`, `hsl-long`, `lab`, `hcl`, `hcl-long`, `cubehelix` and `cubehelix-long` ('-long' variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued _type_ property and an optional numeric _gamma_ property applicable to rgb and cubehelix interpolators. For more, see the [d3-interpolate documentation](https://github.com/d3/d3-interpolate).
    *
    * * __Default value:__ `hcl`
    */
-  interpolate?: ScaleInterpolate;
+  interpolate?: ScaleInterpolateEnum | SignalRef | ScaleInterpolateParams;
 }
 
 const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {

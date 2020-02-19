@@ -23,6 +23,7 @@ import {
   isDataRefDomain,
   isDataRefUnionedDomain,
   isFieldRefUnionDomain,
+  isSignalRef,
   VgDomain,
   VgMultiFieldsRefWithSort,
   VgNonUnionDomain,
@@ -192,7 +193,11 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
   return parseSingleChannelDomain(scaleType, domain, model, channel);
 }
 
-function mapDomainToDataSignal<T>(domain: T[], type: Type, timeUnit: TimeUnit) {
+function mapDomainToDataSignal(
+  domain: (number | string | boolean | DateTime | SignalRef)[],
+  type: Type,
+  timeUnit: TimeUnit
+) {
   return domain.map(v => {
     const data = valueExpr(v, {timeUnit, type});
     return {signal: `{data: ${data}}`};
@@ -200,14 +205,14 @@ function mapDomainToDataSignal<T>(domain: T[], type: Type, timeUnit: TimeUnit) {
 }
 
 function convertDomainIfItIsDateTime(
-  domain: number[] | string[] | boolean[] | DateTime[],
+  domain: (number | string | boolean | DateTime | SignalRef)[],
   fieldDef: TypedFieldDef<string>
 ): [number[]] | [string[]] | [boolean[]] | SignalRef[] {
   // explicit value
   const {type} = fieldDef;
   const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.unit;
   if (type === 'temporal' || timeUnit) {
-    return mapDomainToDataSignal<number | string | boolean | DateTime>(domain, type, timeUnit);
+    return mapDomainToDataSignal(domain, type, timeUnit);
   }
 
   return [domain] as [number[]] | [string[]] | [boolean[]]; // Date time won't make sense
@@ -227,9 +232,9 @@ function parseSingleChannelDomain(
     const unionWith = convertDomainIfItIsDateTime(domain.unionWith, fieldDef);
 
     return makeExplicit([...defaultDomain.value, ...unionWith]);
-  }
-
-  if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
+  } else if (isSignalRef(domain)) {
+    return makeExplicit([domain]);
+  } else if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
     return makeExplicit(convertDomainIfItIsDateTime(domain, fieldDef));
   }
 
