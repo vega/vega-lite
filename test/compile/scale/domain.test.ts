@@ -54,6 +54,30 @@ describe('compile/scale', () => {
       expect(xDomain).toEqual([{data: 'main', field: 'a'}, [0, 100]]);
     });
 
+    it('correctly parse signal domain', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'quantitative', scale: {domain: {signal: 'a'}}}
+        }
+      });
+
+      const xDomain = testParseDomainForChannel(model, 'x');
+      expect(xDomain).toEqual([{signal: 'a'}]);
+    });
+
+    it('correctly parse signal domain array', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'quantitative', scale: {domain: [{signal: 'a'}, {signal: 'b'}]}}
+        }
+      });
+
+      const xDomain = testParseDomainForChannel(model, 'x');
+      expect(xDomain).toEqual([[{signal: 'a'}, {signal: 'b'}]]);
+    });
+
     it('should have correct domain for color', () => {
       const model = parseUnitModel({
         mark: 'bar',
@@ -532,6 +556,22 @@ describe('compile/scale', () => {
           {signal: '{data: datetime(1970, 0, 1, 0, 0, 0, 0)}'},
           {signal: '{data: datetime(1980, 0, 1, 0, 0, 0, 0)}'}
         ]);
+      });
+
+      it('should return the right custom domain with DateTime object and signal', () => {
+        const model = parseUnitModel({
+          mark: 'point',
+          encoding: {
+            y: {
+              field: 'year',
+              type: 'temporal',
+              scale: {domain: [{year: 1970}, {signal: 'a'}]}
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'y');
+
+        expect(_domain).toEqual([{signal: '{data: datetime(1970, 0, 1, 0, 0, 0, 0)}'}, {signal: '{data: a}'}]);
       });
 
       it('should return the right custom domain with date strings', () => {
