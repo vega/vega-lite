@@ -11400,18 +11400,6 @@
       ],
       "type": "object"
     },
-    "NiceTime": {
-      "enum": [
-        "second",
-        "minute",
-        "hour",
-        "day",
-        "week",
-        "month",
-        "year"
-      ],
-      "type": "string"
-    },
     "NonArgAggregateOp": {
       "enum": [
         "average",
@@ -12479,7 +12467,16 @@
       "type": "object"
     },
     "RangeConfig": {
-      "additionalProperties": false,
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/RangeScheme"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
       "properties": {
         "category": {
           "anyOf": [
@@ -13362,14 +13359,7 @@
           "type": "number"
         },
         "interpolate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ScaleInterpolate"
-            },
-            {
-              "$ref": "#/definitions/ScaleInterpolateParams"
-            }
-          ],
+          "$ref": "#/definitions/ScaleInterpolate",
           "description": "The interpolation method for range values. By default, a general interpolator for numbers, dates, strings and colors (in HCL space) is used. For color ranges, this property allows interpolation in alternative color spaces. Legal values include `rgb`, `hsl`, `hsl-long`, `lab`, `hcl`, `hcl-long`, `cubehelix` and `cubehelix-long` ('-long' variants use longer paths in polar coordinate spaces). If object-valued, this property accepts an object with a string-valued _type_ property and an optional numeric _gamma_ property applicable to rgb and cubehelix interpolators. For more, see the [d3-interpolate documentation](https://github.com/d3/d3-interpolate).\n\n* __Default value:__ `hcl`"
         },
         "nice": {
@@ -13381,23 +13371,10 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/NiceTime"
+              "$ref": "#/definitions/TimeInterval"
             },
             {
-              "additionalProperties": false,
-              "properties": {
-                "interval": {
-                  "type": "string"
-                },
-                "step": {
-                  "type": "number"
-                }
-              },
-              "required": [
-                "interval",
-                "step"
-              ],
-              "type": "object"
+              "$ref": "#/definitions/TimeIntervalStep"
             }
           ],
           "description": "Extending the domain so that it starts and ends on nice round values. This method typically modifies the scale’s domain, and may only extend the bounds to the nearest round value. Nicing is useful if the domain is computed from data and may be irregular. For example, for a domain of _[0.201479…, 0.996679…]_, a nice domain might be _[0.2, 1.0]_.\n\nFor quantitative scales such as linear, `nice` can be either a boolean flag or a number. If `nice` is a number, it will represent a desired tick count. This allows greater control over the step size used to extend the bounds, guaranteeing that the returned ticks will exactly cover the domain.\n\nFor temporal fields with time and utc scales, the `nice` value can be a string indicating the desired time interval. Legal values are `\"millisecond\"`, `\"second\"`, `\"minute\"`, `\"hour\"`, `\"day\"`, `\"week\"`, `\"month\"`, and `\"year\"`. Alternatively, `time` and `utc` scales can accept an object-valued interval specifier of the form `{\"interval\": \"month\", \"step\": 3}`, which includes a desired number of interval steps. Here, the domain would snap to quarter (Jan, Apr, Jul, Oct) boundaries.\n\n__Default value:__ `true` for unbinned _quantitative_ fields; `false` otherwise."
@@ -13590,37 +13567,78 @@
       "type": "object"
     },
     "ScaleInterpolate": {
-      "enum": [
-        "rgb",
-        "lab",
-        "hcl",
-        "hsl",
-        "hsl-long",
-        "hcl-long",
-        "cubehelix",
-        "cubehelix-long"
-      ],
-      "type": "string"
-    },
-    "ScaleInterpolateParams": {
-      "additionalProperties": false,
-      "properties": {
-        "gamma": {
-          "type": "number"
-        },
-        "type": {
+      "anyOf": [
+        {
           "enum": [
-            "rgb",
-            "cubehelix",
+            "rgb"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "lab"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "hcl"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "hsl"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "hsl-long"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "hcl-long"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "cubehelix"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
             "cubehelix-long"
           ],
           "type": "string"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "gamma": {
+              "type": [
+                "number"
+              ]
+            },
+            "type": {
+              "enum": [
+                "rgb",
+                "cubehelix",
+                "cubehelix-long"
+              ],
+              "type": "string"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "type": "object"
         }
-      },
-      "required": [
-        "type"
-      ],
-      "type": "object"
+      ]
     },
     "ScaleResolveMap": {
       "additionalProperties": false,
@@ -13671,6 +13689,8 @@
         "pow",
         "sqrt",
         "symlog",
+        "identity",
+        "sequential",
         "time",
         "utc",
         "quantile",
@@ -15091,6 +15111,22 @@
         "year"
       ],
       "type": "string"
+    },
+    "TimeIntervalStep": {
+      "additionalProperties": false,
+      "properties": {
+        "interval": {
+          "$ref": "#/definitions/TimeInterval"
+        },
+        "step": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "interval",
+        "step"
+      ],
+      "type": "object"
     },
     "TimeUnit": {
       "anyOf": [

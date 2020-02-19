@@ -1,28 +1,47 @@
 import {
   AggregateOp,
+  BandScale,
+  BaseScale,
+  BinOrdinalScale,
   ColorValueRef,
   Compare as VgCompare,
   ExprRef as VgExprRef,
-  Field as VgField,
   GeoShapeTransform as VgGeoShapeTransform,
+  IdentityScale,
   LayoutAlign,
+  LinearScale,
+  LogScale,
   MarkConfig as VgMarkConfig,
   NumericValueRef,
+  OrdinalScale,
+  PointScale,
+  PowScale,
   ProjectionType,
+  QuantileScale,
+  QuantizeScale,
   RangeBand,
   RangeRaw,
   RangeScheme,
   ScaleData,
+  ScaleDataRef,
   ScaledValueRef,
+  ScaleMultiDataRef,
+  ScaleMultiFieldsRef,
+  SequentialScale,
   SignalRef,
   SortField as VgSortField,
+  SqrtScale,
+  SymLogScale,
+  ThresholdScale,
+  TimeInterval,
+  TimeIntervalStep,
+  TimeScale,
   Title as VgTitle,
   Transforms as VgTransform,
   UnionSortField as VgUnionSortField
 } from 'vega-typings';
 import {isArray} from 'vega-util';
 import {ValueOrGradientOrText} from './channeldef';
-import {NiceTime, ScaleType} from './scale';
 import {SortOrder} from './sort';
 import {Flag, keys} from './util';
 
@@ -56,11 +75,9 @@ export interface VgData {
   transform?: VgTransform[];
 }
 
-export interface VgDataRef {
-  data: string;
-  field: VgField;
+export type VgScaleDataRefWithSort = ScaleDataRef & {
   sort?: VgSortField;
-}
+};
 
 export function isSignalRef(o: any): o is SignalRef {
   return o && !!o['signal'];
@@ -85,16 +102,14 @@ export interface VgValueRef {
 }
 
 // TODO: add vg prefix
-export interface DataRefUnionDomain {
-  fields: (any[] | VgDataRef | SignalRef)[];
+export type VgScaleMultiDataRefWithSort = ScaleMultiDataRef & {
+  fields: (any[] | VgScaleDataRefWithSort | SignalRef)[];
   sort?: VgUnionSortField;
-}
+};
 
-export interface VgFieldRefUnionDomain {
-  data: string;
-  fields: VgField[];
+export type VgMultiFieldsRefWithSort = ScaleMultiFieldsRef & {
   sort?: VgUnionSortField;
-}
+};
 
 export type VgRange = RangeScheme | ScaleData | RangeBand | RangeRaw;
 
@@ -106,41 +121,42 @@ export interface VgRangeStep {
   step: number | SignalRef;
 }
 // Domains that are not a union of domains
-export type VgNonUnionDomain = any[] | VgDataRef | SignalRef;
-export type VgDomain = VgNonUnionDomain | DataRefUnionDomain | VgFieldRefUnionDomain;
+export type VgNonUnionDomain = (null | string | number | boolean | SignalRef)[] | VgScaleDataRefWithSort | SignalRef;
+
+export type VgDomain = BaseScale['domain'];
 
 export type VgMarkGroup = any;
 
-// TODO: Eventually migrate to Vega-typings and make Vega typings take generic SR that can allow us to replace SignalRef with SignalComponent
-export interface VgScale {
-  name: string;
-  type: ScaleType;
-  align?: number;
-  domain?: VgDomain;
-  domainMid?: number;
-  domainRaw?: SignalRef;
-  bins?: number[] | SignalRef;
-  range: VgRange;
-  clamp?: boolean;
-  base?: number;
-  exponent?: number;
-  constant?: number;
-  interpolate?: ScaleInterpolate | ScaleInterpolateParams;
-  nice?: boolean | number | NiceTime | {interval: string; step: number};
-  padding?: number;
-  paddingInner?: number;
-  paddingOuter?: number;
-  reverse?: boolean;
-  round?: boolean;
-  zero?: boolean;
-}
+/**
+ * A combined type for any Vega scales that Vega-Lite can generate
+ */
+export type VgScale = Pick<BaseScale, 'type'> & {
+  range?: RangeScheme | RangeBand | ScaleData; // different Vega scales have conflicting range, need to union them here
+  nice?: boolean | number | TimeInterval | TimeIntervalStep | SignalRef; // different Vega scales have conflicting range, need to union them here
+  zero?: boolean | SignalRef; // LogScale only allow false, making the intersection type overly strict
+} & Omit<
+    // Continuous
 
-export type ScaleInterpolate = 'rgb' | 'lab' | 'hcl' | 'hsl' | 'hsl-long' | 'hcl-long' | 'cubehelix' | 'cubehelix-long';
-
-export interface ScaleInterpolateParams {
-  type: 'rgb' | 'cubehelix' | 'cubehelix-long';
-  gamma?: number;
-}
+    LinearScale &
+      LogScale &
+      SymLogScale &
+      Partial<PowScale> & // use partial so exponent is not required
+      SqrtScale &
+      IdentityScale &
+      TimeScale &
+      // discretizing
+      QuantileScale &
+      QuantizeScale &
+      ThresholdScale &
+      BinOrdinalScale &
+      // sequential
+      SequentialScale &
+      // discrete
+      BandScale &
+      PointScale &
+      OrdinalScale,
+    'type' | 'range' | 'nice' | 'zero'
+  >;
 
 export interface RowCol<T> {
   row?: T;
@@ -169,21 +185,21 @@ export interface VgLayout {
   align?: LayoutAlign | RowCol<LayoutAlign>;
 }
 
-export function isDataRefUnionedDomain(domain: VgDomain): domain is DataRefUnionDomain {
+export function isDataRefUnionedDomain(domain: VgDomain): domain is VgScaleMultiDataRefWithSort {
   if (!isArray(domain)) {
     return 'fields' in domain && !('data' in domain);
   }
   return false;
 }
 
-export function isFieldRefUnionDomain(domain: VgDomain): domain is VgFieldRefUnionDomain {
+export function isFieldRefUnionDomain(domain: VgDomain): domain is VgMultiFieldsRefWithSort {
   if (!isArray(domain)) {
     return 'fields' in domain && 'data' in domain;
   }
   return false;
 }
 
-export function isDataRefDomain(domain: VgDomain): domain is VgDataRef {
+export function isDataRefDomain(domain: VgDomain): domain is VgScaleDataRefWithSort {
   if (!isArray(domain)) {
     return 'field' in domain && 'data' in domain;
   }

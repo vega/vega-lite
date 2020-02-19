@@ -42,7 +42,7 @@ export function assembleScalesForModel(model: Model): VgScale[] {
       type,
       ...(domain ? {domain} : {}),
       ...(domainRaw ? {domainRaw} : {}),
-      range: range,
+      range,
       ...(reverse !== undefined ? {reverse: reverse as any} : {}),
       ...otherScaleProps
     });

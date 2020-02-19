@@ -1,4 +1,4 @@
-import {RangeEnum, SignalRef} from 'vega-typings';
+import {RangeEnum, ScaleInterpolate, SignalRef, TimeInterval, TimeIntervalStep} from 'vega-typings';
 import {isString, toSet} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, CHANNELS, isColorChannel} from './channel';
@@ -8,7 +8,6 @@ import {SelectionExtent} from './selection';
 import * as TYPE from './type';
 import {Type, TYPE_INDEX} from './type';
 import {contains, Flag, keys} from './util';
-import {ScaleInterpolate, ScaleInterpolateParams} from './vega.schema';
 
 export namespace ScaleType {
   // Continuous - Quantitative
@@ -17,6 +16,11 @@ export namespace ScaleType {
   export const POW: 'pow' = 'pow';
   export const SQRT: 'sqrt' = 'sqrt';
   export const SYMLOG: 'symlog' = 'symlog';
+
+  export const IDENTITY: 'identity' = 'identity';
+
+  export const SEQUENTIAL: 'sequential' = 'sequential';
+
   // Continuous - Time
   export const TIME: 'time' = 'time';
   export const UTC: 'utc' = 'utc';
@@ -39,6 +43,8 @@ export type ScaleType =
   | typeof ScaleType.POW
   | typeof ScaleType.SQRT
   | typeof ScaleType.SYMLOG
+  | typeof ScaleType.IDENTITY
+  | typeof ScaleType.SEQUENTIAL
   | typeof ScaleType.TIME
   | typeof ScaleType.UTC
   | typeof ScaleType.QUANTILE
@@ -59,6 +65,8 @@ const SCALE_CATEGORY_INDEX: Record<ScaleType, ScaleType | 'numeric' | 'ordinal-p
   pow: 'numeric',
   sqrt: 'numeric',
   symlog: 'numeric',
+  identity: 'numeric',
+  sequential: 'numeric',
   time: 'time',
   utc: 'time',
   ordinal: 'ordinal',
@@ -95,6 +103,8 @@ const SCALE_PRECEDENCE_INDEX: Record<ScaleType, number> = {
   pow: 1,
   sqrt: 1,
   symlog: 1,
+  identity: 1,
+  sequential: 1,
   // time
   time: 0,
   utc: 0,
@@ -161,8 +171,6 @@ export function isContinuousToContinuous(
 export function isContinuousToDiscrete(type: ScaleType): type is 'quantile' | 'quantize' | 'threshold' {
   return type in CONTINUOUS_TO_DISCRETE_INDEX;
 }
-
-export type NiceTime = 'second' | 'minute' | 'hour' | 'day' | 'week' | 'month' | 'year';
 
 export interface ScaleConfig {
   /**
@@ -587,7 +595,7 @@ export interface Scale {
    * __Default value:__ `true` for unbinned _quantitative_ fields; `false` otherwise.
    *
    */
-  nice?: boolean | number | NiceTime | {interval: string; step: number};
+  nice?: boolean | number | TimeInterval | TimeIntervalStep;
 
   /**
    * The logarithm base of the `log` scale (default `10`).
@@ -620,7 +628,7 @@ export interface Scale {
    *
    * * __Default value:__ `hcl`
    */
-  interpolate?: ScaleInterpolate | ScaleInterpolateParams;
+  interpolate?: ScaleInterpolate;
 }
 
 const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {

@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega-typings/types';
 import {isObject, isString} from 'vega-util';
 import {
   isAggregateOp,
@@ -22,10 +23,10 @@ import {
   isDataRefDomain,
   isDataRefUnionedDomain,
   isFieldRefUnionDomain,
-  VgDataRef,
   VgDomain,
-  VgFieldRefUnionDomain,
+  VgMultiFieldsRefWithSort,
   VgNonUnionDomain,
+  VgScaleDataRefWithSort,
   VgSortField,
   VgUnionSortField
 } from '../../vega.schema';
@@ -198,6 +199,20 @@ function mapDomainToDataSignal<T>(domain: T[], type: Type, timeUnit: TimeUnit) {
   });
 }
 
+function convertDomainIfItIsDateTime(
+  domain: number[] | string[] | boolean[] | DateTime[],
+  fieldDef: TypedFieldDef<string>
+): [number[]] | [string[]] | [boolean[]] | SignalRef[] {
+  // explicit value
+  const {type} = fieldDef;
+  const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.unit;
+  if (type === 'temporal' || timeUnit) {
+    return mapDomainToDataSignal<number | string | boolean | DateTime>(domain, type, timeUnit);
+  }
+
+  return [domain] as [number[]] | [string[]] | [boolean[]]; // Date time won't make sense
+}
+
 function parseSingleChannelDomain(
   scaleType: ScaleType,
   domain: Domain,
@@ -209,18 +224,13 @@ function parseSingleChannelDomain(
   if (isDomainUnionWith(domain)) {
     const defaultDomain = parseSingleChannelDomain(scaleType, undefined, model, channel);
 
-    return makeExplicit([...defaultDomain.value, domain.unionWith]);
+    const unionWith = convertDomainIfItIsDateTime(domain.unionWith, fieldDef);
+
+    return makeExplicit([...defaultDomain.value, ...unionWith]);
   }
 
   if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
-    // explicit value
-    const {type} = fieldDef;
-    const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.unit;
-    if (type === 'temporal' || timeUnit) {
-      return makeExplicit(mapDomainToDataSignal<number | string | boolean | DateTime>(domain, type, timeUnit));
-    }
-
-    return makeExplicit([domain]);
+    return makeExplicit(convertDomainIfItIsDateTime(domain, fieldDef));
   }
 
   const stack = model.stack;
@@ -582,9 +592,9 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
 
   if (allData.length === 1 && allData[0] !== null) {
     // create a union domain of different fields with a single data source
-    const domain: VgFieldRefUnionDomain = {
+    const domain: VgMultiFieldsRefWithSort = {
       data: allData[0],
-      fields: uniqueDomains.map(d => (d as VgDataRef).field),
+      fields: uniqueDomains.map(d => (d as VgScaleDataRefWithSort).field),
       ...(sort ? {sort} : {})
     };
 
