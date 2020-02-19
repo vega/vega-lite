@@ -1,4 +1,14 @@
-import {Align, Color, FontStyle, FontWeight, Orient, TextBaseline, TitleAnchor, TitleConfig} from 'vega-typings';
+import {
+  Align,
+  Color,
+  FontStyle,
+  FontWeight,
+  Orient,
+  SignalRef,
+  TextBaseline,
+  TitleAnchor,
+  TitleConfig
+} from 'vega-typings';
 import {FormatMixins, Guide, VlOnlyGuideConfig} from './guide';
 import {keys} from './util';
 
@@ -40,12 +50,12 @@ export interface CoreHeader extends FormatMixins {
   /**
    * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
    */
-  titleAnchor?: TitleAnchor;
+  titleAnchor?: TitleAnchor; // We don't allow signal for titleAnchor since there is a dependent logic
 
   /**
    * Horizontal text alignment (to the anchor) of header titles.
    */
-  titleAlign?: Align;
+  titleAlign?: Align | SignalRef;
 
   /**
    * The rotation angle of the header title.
@@ -55,54 +65,54 @@ export interface CoreHeader extends FormatMixins {
    * @minimum -360
    * @maximum 360
    */
-  titleAngle?: number;
+  titleAngle?: number; // We don't allow signal for titleAngle since there is a dependent logic
 
   /**
    * Vertical text baseline for the header title. One of `"top"`, `"bottom"`, `"middle"`.
    *
    * __Default value:__ `"middle"`
    */
-  titleBaseline?: TextBaseline;
+  titleBaseline?: TextBaseline | SignalRef;
 
   /**
    * Color of the header title, can be in hex color code or regular color name.
    */
-  titleColor?: Color;
+  titleColor?: Color | SignalRef;
 
   /**
    * Font of the header title. (e.g., `"Helvetica Neue"`).
    */
-  titleFont?: string;
+  titleFont?: string | SignalRef;
 
   /**
    * Font size of the header title.
    *
    * @minimum 0
    */
-  titleFontSize?: number;
+  titleFontSize?: number | SignalRef;
 
   /**
    * The font style of the header title.
    */
-  titleFontStyle?: FontStyle;
+  titleFontStyle?: FontStyle | SignalRef;
 
   /**
    * Font weight of the header title.
    * This can be either a string (e.g `"bold"`, `"normal"`) or a number (`100`, `200`, `300`, ..., `900` where `"normal"` = `400` and `"bold"` = `700`).
    */
-  titleFontWeight?: FontWeight;
+  titleFontWeight?: FontWeight | SignalRef;
 
   /**
    * The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.
    *
    * __Default value:__ `0`, indicating no limit
    */
-  titleLimit?: number;
+  titleLimit?: number | SignalRef;
 
   /**
    * Line height in pixels for multi-line title text.
    */
-  titleLineHeight?: number;
+  titleLineHeight?: number | SignalRef;
 
   /**
    * The orientation of the header title. One of `"top"`, `"bottom"`, `"left"` or `"right"`.
@@ -114,7 +124,7 @@ export interface CoreHeader extends FormatMixins {
    *
    * __Default value:__ `10`
    */
-  titlePadding?: number;
+  titlePadding?: number | SignalRef;
 
   // ---------- Label ----------
 
@@ -128,7 +138,7 @@ export interface CoreHeader extends FormatMixins {
   /**
    * Horizontal text alignment of header labels. One of `"left"`, `"center"`, or `"right"`.
    */
-  labelAlign?: Align;
+  labelAlign?: Align | SignalRef;
 
   /**
    * The anchor position for placing the labels. One of `"start"`, `"middle"`, or `"end"`. For example, with a label orientation of top these anchor positions map to a left-, center-, or right-aligned label.
@@ -150,48 +160,48 @@ export interface CoreHeader extends FormatMixins {
    * @minimum -360
    * @maximum 360
    */
-  labelAngle?: number;
+  labelAngle?: number; // no signal ref since there is a dependent logic
 
   /**
    * The color of the header label, can be in hex color code or regular color name.
    */
-  labelColor?: Color;
+  labelColor?: Color | SignalRef;
 
   /**
    * The font of the header label.
    */
-  labelFont?: string;
+  labelFont?: string | SignalRef;
 
   /**
    * The font size of the header label, in pixels.
    *
    * @minimum 0
    */
-  labelFontSize?: number;
+  labelFontSize?: number | SignalRef;
 
   /**
    * The font style of the header label.
    */
-  labelFontStyle?: FontStyle;
+  labelFontStyle?: FontStyle | SignalRef;
 
   /**
    * The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.
    *
    * __Default value:__ `0`, indicating no limit
    */
-  labelLimit?: number;
+  labelLimit?: number | SignalRef;
 
   /**
    * The orientation of the header label. One of `"top"`, `"bottom"`, `"left"` or `"right"`.
    */
-  labelOrient?: Orient;
+  labelOrient?: Orient; // no signal ref since there is a dependent logic
 
   /**
    * The padding, in pixel, between facet header's label and the plot.
    *
    * __Default value:__ `10`
    */
-  labelPadding?: number;
+  labelPadding?: number | SignalRef;
 }
 
 export interface HeaderConfig extends CoreHeader, VlOnlyGuideConfig {}
