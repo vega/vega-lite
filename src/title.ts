@@ -1,9 +1,11 @@
 import {BaseTitle, Text, TextEncodeEntry, TitleAnchor} from 'vega-typings';
 import {isArray, isString} from 'vega-util';
 import {MarkConfig} from './mark';
-import {ExcludeMappedValueRef} from './vega.schema';
+import {ExcludeMappedValueRef, ExcludeMappedValueRefButKeepSignal} from './vega.schema';
 
-export type BaseTitleNoValueRefs = ExcludeMappedValueRef<BaseTitle>;
+export type BaseTitleNoValueRefs = ExcludeMappedValueRefButKeepSignal<Omit<BaseTitle, 'align' | 'baseline'>> &
+  // Since some logic depends on align/baseline, Vega-Lite does NOT allow signal for them.
+  ExcludeMappedValueRef<Pick<BaseTitle, 'align' | 'baseline'>>;
 
 export type TitleConfig = BaseTitleNoValueRefs;
 
