@@ -227,7 +227,9 @@ export interface AxisPropsWithConditionAndSignal {
   title?: TitleMixins['title'];
 }
 
-export type AxisConfig = VlOnlyGuideConfig & AxisConfigBaseWithConditionalAndSignal;
+export type AxisConfig = VlOnlyGuideConfig &
+  AxisConfigBaseWithConditionalAndSignal &
+  Pick<Axis, 'labelExpr' | 'tickCount'>;
 
 export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
   /**
