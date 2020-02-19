@@ -22,12 +22,13 @@ export type SignalLegendProp =
   | 'symbolStrokeColor'
   | 'titleColor';
 
-export const SIGNAL_LEGEND_PROP_INDEX: {
-  [prop in SignalLegendProp]: {
+export const SIGNAL_LEGEND_PROP_INDEX: Record<
+  SignalLegendProp,
+  {
     part: keyof LegendEncode;
     vgProp: VgEncodeChannel;
-  } | null; // null if we need to convert condition to signal
-} = {
+  } | null // null if we need to convert condition to signal
+> = {
   fillColor: {
     part: 'legend',
     vgProp: 'fill'

@@ -87,12 +87,13 @@ export type ConditionalAxisProp =
   | 'tickSize'
   | 'tickWidth';
 
-export const CONDITIONAL_AXIS_PROP_INDEX: {
-  [prop in ConditionalAxisProp | SignalAxisProp]: {
+export const CONDITIONAL_AXIS_PROP_INDEX: Record<
+  ConditionalAxisProp | SignalAxisProp,
+  {
     part: keyof AxisEncode;
     vgProp: VgEncodeChannel;
-  } | null; // null if we need to convert condition to signal
-} = {
+  } | null // null if we need to convert condition to signal
+> = {
   domainColor: {
     part: 'domain',
     vgProp: 'stroke'
