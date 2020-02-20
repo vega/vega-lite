@@ -304,6 +304,8 @@ Legend:
   link: legend.html
 Scale:
   link: 'scale.html'
+ScaleBinParams:
+  link: 'scale.html#bins'
 SelectionExtent:
   name: Object
 Sort:

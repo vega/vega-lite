@@ -3,9 +3,9 @@
   "data": {"url": "data/movies.json"},
   "facet": {"column": {"field": "MPAA_Rating", "type": "ordinal"}},
   "spec": {
-    "mark": "point",
     "width": 75,
     "height": 75,
+    "mark": "point",
     "encoding": {
       "x": {"field": "Worldwide_Gross", "type": "quantitative"},
       "y": {"field": "US_DVD_Sales", "type": "quantitative"}

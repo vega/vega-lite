@@ -330,6 +330,18 @@ For example, the following plot has a binned field on the `color` channel.
 
 Similar to [ordinal](#ordinal) color scales, a custom [`range`](#range) or [`scheme`](#scheme) can be specified for binned ordinal scales.
 
+In addition, `bins` property can be used to specify bin boundaries over the scale domain.
+
+{% include table.html props="bins" source="Scale" %}
+
+{:#bins}
+
+#### Bins Parameter
+
+The bin specification object for the scale `bins` properties support the following parameters:
+
+{% include table.html props="bins" source="ScaleBinParams" %}
+
 {:#quantile}
 
 ### Quantile Scales

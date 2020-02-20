@@ -52,7 +52,7 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### General
 
-{% include table.html props="bandPosition,maxExtent,minExtent,orient,offset,position,translate,zindex" source="Axis" %}
+{% include table.html props="bandPosition,maxExtent,minExtent,orient,offset,position,style,translate,zindex" source="Axis" %}
 
 #### Example: Using Axis `minExtent` to Align Multi-View Plots
 
@@ -154,7 +154,7 @@ Axis configuration defines default settings for axes. Properties defined under t
 
 Additional property blocks can target more specific axis types based on the orientation (`"axisX"`, `"axisY"`, `"axisLeft"`, `"axisTop"`, etc.), band scale type (`"axisBand"`), or scale's data type (`"axisQuantitative"` and `"axisTemporal"`). For example, properties defined under the `"axisBand"` property will only apply to axes visualizing `"band"` scales. If multiple axis config blocks apply to a single axis, type-based options take precedence over orientation-based options, which in turn take precedence over general options.
 
-An axis configuration supports all [axis properties](#properties) except `position`, `orient`, `format`, `tickCount`, `values`, and `zindex`.
+An axis configuration supports all [axis properties](#properties) except `position`, `orient`, `format`, `values`, and `zindex`.
 
 **See also:** [Axis Labels Properties](#labels) and [`guide-label` style config](mark.html#style-config) (common styles for by axis, [legend](legend.html), and [header](facet.html#header) labels).
 

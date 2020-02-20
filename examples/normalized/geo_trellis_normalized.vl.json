@@ -16,10 +16,10 @@
   ],
   "facet": {"row": {"field": "group", "type": "nominal"}},
   "spec": {
-    "projection": {"type": "albersUsa"},
-    "mark": "geoshape",
     "width": 500,
     "height": 300,
+    "projection": {"type": "albersUsa"},
+    "mark": "geoshape",
     "encoding": {
       "shape": {"field": "geo", "type": "geojson"},
       "color": {"field": "pct", "type": "quantitative"}

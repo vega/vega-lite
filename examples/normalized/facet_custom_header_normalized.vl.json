@@ -14,8 +14,8 @@
     }
   },
   "spec": {
-    "mark": "bar",
     "width": {"step": 17},
+    "mark": "bar",
     "encoding": {
       "y": {
         "aggregate": "sum",

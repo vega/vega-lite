@@ -796,6 +796,10 @@
           "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
           "type": "number"
         },
+        "labelOffset": {
+          "description": "Position offset in pixels to apply to labels, in addition to tickOffset.",
+          "type": "string"
+        },
         "labelOpacity": {
           "anyOf": [
             {
@@ -849,6 +853,20 @@
         "position": {
           "description": "The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
           "type": "number"
+        },
+        "style": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A string or array of strings indicating the name of custom styles to apply to the axis. A style is a named collection of axis property defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles. Any [axis properties](https://vega.github.io/vega-lite/docs/encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.\n\n__Default value:__ (none)\n__Note:__ Any specified style will augment the default style. For example, an x-axis mark with `\"style\": \"foo\"` will use `config.axisX` and `config.style.foo` (the specified style `\"foo\"` has higher precedence)."
         },
         "tickBand": {
           "description": "For band scales, indicates if ticks and grid lines should be placed at the center of a band (default) or at the band extents to indicate intervals.",
@@ -1250,6 +1268,10 @@
             }
           ]
         },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
+          "type": "string"
+        },
         "labelFlush": {
           "description": "Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `true` for axis of a continuous x-scale. Otherwise, `false`.",
           "type": [
@@ -1309,6 +1331,10 @@
         "labelLimit": {
           "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
           "type": "number"
+        },
+        "labelOffset": {
+          "description": "Position offset in pixels to apply to labels, in addition to tickOffset.",
+          "type": "string"
         },
         "labelOpacity": {
           "anyOf": [
@@ -1385,6 +1411,11 @@
               "$ref": "#/definitions/ConditionalAxisColor"
             }
           ]
+        },
+        "tickCount": {
+          "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.\n\n__Default value__: Determine using a formula `ceil(width/40)` for x and `ceil(height/40)` for y.",
+          "minimum": 0,
+          "type": "number"
         },
         "tickDash": {
           "anyOf": [
@@ -1937,7 +1968,126 @@
       "type": "object"
     },
     "BaseTitleNoValueRefs": {
-      "$ref": "#/definitions/ExcludeMappedValueRef<BaseTitle>"
+      "additionalProperties": false,
+      "properties": {
+        "align": {
+          "$ref": "#/definitions/Align",
+          "description": "Horizontal text alignment for title text. One of `\"left\"`, `\"center\"`, or `\"right\"`."
+        },
+        "anchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor position for placing the title and subtitle text. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
+        },
+        "angle": {
+          "description": "Angle in degrees of title and subtitle text.",
+          "type": "number"
+        },
+        "baseline": {
+          "$ref": "#/definitions/TextBaseline",
+          "description": "Vertical text baseline for title and subtitle text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+        },
+        "color": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
+          "description": "Text color for title text."
+        },
+        "dx": {
+          "description": "Delta offset for title and subtitle text x-coordinate.",
+          "type": "number"
+        },
+        "dy": {
+          "description": "Delta offset for title and subtitle text y-coordinate.",
+          "type": "number"
+        },
+        "font": {
+          "description": "Font name for title text.",
+          "type": "string"
+        },
+        "fontSize": {
+          "description": "Font size in pixels for title text.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "fontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "Font style for title text."
+        },
+        "fontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight for title text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "frame": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TitleFrame"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "The reference frame for the anchor position, one of `\"bounds\"` (to anchor relative to the full bounding box) or `\"group\"` (to anchor relative to the group width or height)."
+        },
+        "limit": {
+          "description": "The maximum allowed length in pixels of title and subtitle text.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "lineHeight": {
+          "description": "Line height in pixels for multi-line title text.",
+          "type": "number"
+        },
+        "offset": {
+          "description": "The orthogonal offset in pixels by which to displace the title group from its position along the edge of the chart.",
+          "type": "number"
+        },
+        "orient": {
+          "$ref": "#/definitions/TitleOrient",
+          "description": "Default title orientation (`\"top\"`, `\"bottom\"`, `\"left\"`, or `\"right\"`)"
+        },
+        "subtitleColor": {
+          "anyOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/Color"
+            }
+          ],
+          "description": "Text color for subtitle text."
+        },
+        "subtitleFont": {
+          "description": "Font name for subtitle text.",
+          "type": "string"
+        },
+        "subtitleFontSize": {
+          "description": "Font size in pixels for subtitle text.",
+          "minimum": 0,
+          "type": "number"
+        },
+        "subtitleFontStyle": {
+          "$ref": "#/definitions/FontStyle",
+          "description": "Font style for subtitle text."
+        },
+        "subtitleFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "Font weight for subtitle text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+        },
+        "subtitleLineHeight": {
+          "description": "Line height in pixels for multi-line subtitle text.",
+          "type": "number"
+        },
+        "subtitlePadding": {
+          "description": "The padding in pixels between title and subtitle text.",
+          "type": "number"
+        }
+      },
+      "type": "object"
     },
     "Baseline": {
       "enum": [
@@ -5452,413 +5602,6 @@
       ],
       "type": "string"
     },
-    "ExcludeMappedValueRef<BaseTitle>": {
-      "additionalProperties": false,
-      "properties": {
-        "align": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment for title text. One of `\"left\"`, `\"center\"`, or `\"right\"`."
-        },
-        "anchor": {
-          "$ref": "#/definitions/TitleAnchor",
-          "description": "The anchor position for placing the title and subtitle text. One of `\"start\"`, `\"middle\"`, or `\"end\"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title."
-        },
-        "angle": {
-          "description": "Angle in degrees of title and subtitle text.",
-          "type": "number"
-        },
-        "baseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for title and subtitle text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
-        },
-        "color": {
-          "anyOf": [
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/Color"
-            }
-          ],
-          "description": "Text color for title text."
-        },
-        "dx": {
-          "description": "Delta offset for title and subtitle text x-coordinate.",
-          "type": "number"
-        },
-        "dy": {
-          "description": "Delta offset for title and subtitle text y-coordinate.",
-          "type": "number"
-        },
-        "font": {
-          "description": "Font name for title text.",
-          "type": "string"
-        },
-        "fontSize": {
-          "description": "Font size in pixels for title text.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "fontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "Font style for title text."
-        },
-        "fontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "Font weight for title text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
-        },
-        "frame": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TitleFrame"
-            },
-            {
-              "type": "string"
-            }
-          ],
-          "description": "The reference frame for the anchor position, one of `\"bounds\"` (to anchor relative to the full bounding box) or `\"group\"` (to anchor relative to the group width or height)."
-        },
-        "limit": {
-          "description": "The maximum allowed length in pixels of title and subtitle text.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "lineHeight": {
-          "description": "Line height in pixels for multi-line title text.",
-          "type": "number"
-        },
-        "offset": {
-          "description": "The orthogonal offset in pixels by which to displace the title group from its position along the edge of the chart.",
-          "type": "number"
-        },
-        "orient": {
-          "$ref": "#/definitions/TitleOrient",
-          "description": "Default title orientation (`\"top\"`, `\"bottom\"`, `\"left\"`, or `\"right\"`)"
-        },
-        "subtitleColor": {
-          "anyOf": [
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/Color"
-            }
-          ],
-          "description": "Text color for subtitle text."
-        },
-        "subtitleFont": {
-          "description": "Font name for subtitle text.",
-          "type": "string"
-        },
-        "subtitleFontSize": {
-          "description": "Font size in pixels for subtitle text.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "subtitleFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "Font style for subtitle text."
-        },
-        "subtitleFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "Font weight for subtitle text.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
-        },
-        "subtitleLineHeight": {
-          "description": "Line height in pixels for multi-line subtitle text.",
-          "type": "number"
-        },
-        "subtitlePadding": {
-          "description": "The padding in pixels between title and subtitle text.",
-          "type": "number"
-        }
-      },
-      "type": "object"
-    },
-    "ExcludeMappedValueRefButKeepSignal<BaseLegend>": {
-      "additionalProperties": false,
-      "properties": {
-        "clipHeight": {
-          "description": "The height in pixels to clip symbol legend entries and limit their size.",
-          "type": "number"
-        },
-        "columnPadding": {
-          "description": "The horizontal padding in pixels between symbol legend entries.\n\n__Default value:__ `10`.",
-          "type": "number"
-        },
-        "columns": {
-          "description": "The number of columns in which to arrange symbol legend entries. A value of `0` or lower indicates a single row with one column per entry.",
-          "type": "number"
-        },
-        "cornerRadius": {
-          "description": "Corner radius for the full legend.",
-          "type": "number"
-        },
-        "fillColor": {
-          "anyOf": [
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/Color"
-            }
-          ],
-          "description": "Background fill color for the full legend."
-        },
-        "gradientLength": {
-          "description": "The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.\n\n__Default value:__ `200`.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "gradientOpacity": {
-          "description": "Opacity of the color gradient.",
-          "type": "number"
-        },
-        "gradientStrokeColor": {
-          "anyOf": [
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/Color"
-            }
-          ],
-          "description": "The color of the gradient stroke, can be in hex color code or regular color name.\n\n__Default value:__ `\"lightGray\"`."
-        },
-        "gradientStrokeWidth": {
-          "description": "The width of the gradient stroke, in pixels.\n\n__Default value:__ `0`.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "gradientThickness": {
-          "description": "The thickness in pixels of the color gradient. This value corresponds to the width of a vertical gradient or the height of a horizontal gradient.\n\n__Default value:__ `16`.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "gridAlign": {
-          "$ref": "#/definitions/LayoutAlign",
-          "description": "The alignment to apply to symbol legends rows and columns. The supported string values are `\"all\"`, `\"each\"` (the default), and `none`. For more information, see the [grid layout documentation](https://vega.github.io/vega/docs/layout).\n\n__Default value:__ `\"each\"`."
-        },
-        "labelAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "The alignment of the legend label, can be left, center, or right."
-        },
-        "labelBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "The position of the baseline of legend label, can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`.\n\n__Default value:__ `\"middle\"`."
-        },
-        "labelColor": {
-          "anyOf": [
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/Color"
-            }
-          ],
-          "description": "The color of the legend label, can be in hex color code or regular color name."
-        },
-        "labelFont": {
-          "description": "The font of the legend label.",
-          "type": "string"
-        },
-        "labelFontSize": {
-          "description": "The font size of legend label.\n\n__Default value:__ `10`.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "labelFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "The font style of legend label."
-        },
-        "labelFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "The font weight of legend label."
-        },
-        "labelLimit": {
-          "description": "Maximum allowed pixel width of legend tick labels.\n\n__Default value:__ `160`.",
-          "type": "number"
-        },
-        "labelOffset": {
-          "description": "The offset of the legend label.",
-          "type": "number"
-        },
-        "labelOpacity": {
-          "description": "Opacity of labels.",
-          "type": "number"
-        },
-        "labelOverlap": {
-          "$ref": "#/definitions/LabelOverlap",
-          "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` (default) or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true`."
-        },
-        "labelPadding": {
-          "description": "Padding in pixels between the legend and legend labels.",
-          "type": "number"
-        },
-        "labelSeparation": {
-          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
-          "type": "number"
-        },
-        "legendX": {
-          "description": "Custom x-position for legend with orient \"none\".",
-          "type": "number"
-        },
-        "legendY": {
-          "description": "Custom y-position for legend with orient \"none\".",
-          "type": "number"
-        },
-        "offset": {
-          "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
-          "type": "number"
-        },
-        "orient": {
-          "$ref": "#/definitions/LegendOrient",
-          "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of \"left\", \"right\", \"top-left\", \"top-right\", \"bottom-left\", \"bottom-right\", \"none\".\n\n__Default value:__ `\"right\"`"
-        },
-        "padding": {
-          "description": "The padding between the border and content of the legend group.\n\n__Default value:__ `0`.",
-          "type": "number"
-        },
-        "rowPadding": {
-          "description": "The vertical padding in pixels between symbol legend entries.\n\n__Default value:__ `2`.",
-          "type": "number"
-        },
-        "strokeColor": {
-          "anyOf": [
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/Color"
-            }
-          ],
-          "description": "Border stroke color for the full legend."
-        },
-        "symbolDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed symbol strokes.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        "symbolDashOffset": {
-          "description": "The pixel offset at which to start drawing with the symbol stroke dash array.",
-          "type": "number"
-        },
-        "symbolFillColor": {
-          "anyOf": [
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/Color"
-            }
-          ],
-          "description": "The color of the legend symbol,"
-        },
-        "symbolLimit": {
-          "description": "The maximum number of allowed entries for a symbol legend. Additional entries will be dropped.",
-          "type": "number"
-        },
-        "symbolOffset": {
-          "description": "Horizontal pixel offset for legend symbols.\n\n__Default value:__ `0`.",
-          "type": "number"
-        },
-        "symbolOpacity": {
-          "description": "Opacity of the legend symbols.",
-          "type": "number"
-        },
-        "symbolSize": {
-          "description": "The size of the legend symbol, in pixels.\n\n__Default value:__ `100`.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "symbolStrokeColor": {
-          "anyOf": [
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/Color"
-            }
-          ],
-          "description": "Stroke color for legend symbols."
-        },
-        "symbolStrokeWidth": {
-          "description": "The width of the symbol's stroke.\n\n__Default value:__ `1.5`.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "symbolType": {
-          "$ref": "#/definitions/SymbolShape",
-          "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
-        },
-        "tickCount": {
-          "$ref": "#/definitions/TickCount",
-          "description": "The desired number of tick values for quantitative legends."
-        },
-        "titleAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment for legend titles.\n\n__Default value:__ `\"left\"`."
-        },
-        "titleAnchor": {
-          "$ref": "#/definitions/TitleAnchor",
-          "description": "Text anchor position for placing legend titles."
-        },
-        "titleBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for legend titles.\n\n__Default value:__ `\"top\"`."
-        },
-        "titleColor": {
-          "anyOf": [
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/Color"
-            }
-          ],
-          "description": "The color of the legend title, can be in hex color code or regular color name."
-        },
-        "titleFont": {
-          "description": "The font of the legend title.",
-          "type": "string"
-        },
-        "titleFontSize": {
-          "description": "The font size of the legend title.",
-          "type": "number"
-        },
-        "titleFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "The font style of the legend title."
-        },
-        "titleFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "The font weight of the legend title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
-        },
-        "titleLimit": {
-          "description": "Maximum allowed pixel width of legend titles.\n\n__Default value:__ `180`.",
-          "minimum": 0,
-          "type": "number"
-        },
-        "titleLineHeight": {
-          "description": "Line height in pixels for multi-line title text.",
-          "type": "number"
-        },
-        "titleOpacity": {
-          "description": "Opacity of the legend title.",
-          "type": "number"
-        },
-        "titleOrient": {
-          "$ref": "#/definitions/Orient",
-          "description": "Orientation of the legend title."
-        },
-        "titlePadding": {
-          "description": "The padding, in pixels, between title and legend.\n\n__Default value:__ `5`.",
-          "type": "number"
-        }
-      },
-      "type": "object"
-    },
     "Expr": {
       "type": "string"
     },
@@ -7416,6 +7159,22 @@
       ],
       "type": "object"
     },
+    "Fit": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/GeoJsonFeature"
+        },
+        {
+          "$ref": "#/definitions/GeoJsonFeatureCollection"
+        },
+        {
+          "items": {
+            "$ref": "#/definitions/GeoJsonFeature"
+          },
+          "type": "array"
+        }
+      ]
+    },
     "FlattenTransform": {
       "additionalProperties": false,
       "properties": {
@@ -8017,6 +7776,10 @@
       ],
       "type": "object"
     },
+    "GeoJsonFeature": {
+    },
+    "GeoJsonFeatureCollection": {
+    },
     "Gradient": {
       "anyOf": [
         {
@@ -8146,12 +7909,16 @@
         },
         "labelFont": {
           "description": "The font of the header label.",
-          "type": "string"
+          "type": [
+            "string"
+          ]
         },
         "labelFontSize": {
           "description": "The font size of the header label, in pixels.",
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "labelFontStyle": {
           "$ref": "#/definitions/FontStyle",
@@ -8159,7 +7926,9 @@
         },
         "labelLimit": {
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "labelOrient": {
           "$ref": "#/definitions/Orient",
@@ -8167,7 +7936,9 @@
         },
         "labelPadding": {
           "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "labels": {
           "description": "A boolean flag indicating if labels should be included as part of the header.\n\n__Default value:__ `true`.",
@@ -8208,12 +7979,16 @@
         },
         "titleFont": {
           "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
-          "type": "string"
+          "type": [
+            "string"
+          ]
         },
         "titleFontSize": {
           "description": "Font size of the header title.",
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "titleFontStyle": {
           "$ref": "#/definitions/FontStyle",
@@ -8225,11 +8000,15 @@
         },
         "titleLimit": {
           "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "titleLineHeight": {
           "description": "Line height in pixels for multi-line title text.",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "titleOrient": {
           "$ref": "#/definitions/Orient",
@@ -8237,7 +8016,9 @@
         },
         "titlePadding": {
           "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         }
       },
       "type": "object"
@@ -8281,12 +8062,16 @@
         },
         "labelFont": {
           "description": "The font of the header label.",
-          "type": "string"
+          "type": [
+            "string"
+          ]
         },
         "labelFontSize": {
           "description": "The font size of the header label, in pixels.",
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "labelFontStyle": {
           "$ref": "#/definitions/FontStyle",
@@ -8294,7 +8079,9 @@
         },
         "labelLimit": {
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "labelOrient": {
           "$ref": "#/definitions/Orient",
@@ -8302,7 +8089,9 @@
         },
         "labelPadding": {
           "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "labels": {
           "description": "A boolean flag indicating if labels should be included as part of the header.\n\n__Default value:__ `true`.",
@@ -8336,12 +8125,16 @@
         },
         "titleFont": {
           "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
-          "type": "string"
+          "type": [
+            "string"
+          ]
         },
         "titleFontSize": {
           "description": "Font size of the header title.",
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "titleFontStyle": {
           "$ref": "#/definitions/FontStyle",
@@ -8353,11 +8146,15 @@
         },
         "titleLimit": {
           "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "titleLineHeight": {
           "description": "Line height in pixels for multi-line title text.",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "titleOrient": {
           "$ref": "#/definitions/Orient",
@@ -8365,7 +8162,9 @@
         },
         "titlePadding": {
           "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         }
       },
       "type": "object"
@@ -11621,18 +11420,6 @@
       ],
       "type": "object"
     },
-    "NiceTime": {
-      "enum": [
-        "second",
-        "minute",
-        "hour",
-        "day",
-        "week",
-        "month",
-        "year"
-      ],
-      "type": "string"
-    },
     "NonArgAggregateOp": {
       "enum": [
         "average",
@@ -12498,78 +12285,134 @@
       "additionalProperties": false,
       "properties": {
         "center": {
-          "$ref": "#/definitions/Vector2<number>",
-          "description": "The projection’s center to the specified center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`"
+          "$ref": "#/definitions/Vector2<(number)>",
+          "description": "The projection's center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`"
         },
         "clipAngle": {
-          "description": "The projection’s clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
-          "type": "number"
+          "description": "The projection's clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
+          "type": [
+            "number"
+          ]
         },
         "clipExtent": {
-          "$ref": "#/definitions/Vector2<Vector2<number>>",
-          "description": "The projection’s viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed."
+          "$ref": "#/definitions/Vector2<Vector2<(number)>>",
+          "description": "The projection's viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed."
         },
         "coefficient": {
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "distance": {
-          "type": "number"
+          "type": [
+            "number"
+          ]
+        },
+        "extent": {
+          "$ref": "#/definitions/Vector2<Vector2<(number)>>"
+        },
+        "fit": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Fit"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/Fit"
+              },
+              "type": "array"
+            }
+          ]
         },
         "fraction": {
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "lobes": {
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "parallel": {
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "parallels": {
+          "description": "For conic projections, the [two standard parallels](https://en.wikipedia.org/wiki/Map_projection#Conic) that define the map layout. The default depends on the specific conic projection used.",
           "items": {
-            "type": "number"
+            "type": [
+              "number"
+            ]
           },
           "type": "array"
         },
+        "pointRadius": {
+          "description": "The default radius (in pixels) to use when drawing GeoJSON `Point` and `MultiPoint` geometries. This parameter sets a constant default value. To modify the point radius in response to data, see the corresponding parameter of the GeoPath and GeoShape transforms.\n\n__Default value:__ `4.5`",
+          "type": [
+            "number"
+          ]
+        },
         "precision": {
-          "description": "The threshold for the projection’s [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection’s current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
-          "type": "number"
+          "description": "The threshold for the projection's [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection's current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
+          "type": [
+            "number"
+          ]
         },
         "radius": {
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "ratio": {
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "reflectX": {
-          "type": "boolean"
+          "type": [
+            "boolean"
+          ]
         },
         "reflectY": {
-          "type": "boolean"
+          "type": [
+            "boolean"
+          ]
         },
         "rotate": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Vector2<number>"
+              "$ref": "#/definitions/Vector2<(number)>"
             },
             {
-              "$ref": "#/definitions/Vector3<number>"
+              "$ref": "#/definitions/Vector3<(number)>"
             }
           ],
-          "description": "The projection’s three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`"
+          "description": "The projection's three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`"
         },
         "scale": {
-          "description": "The projection's scale (zoom) value, overriding automatic fitting.",
-          "type": "number"
+          "description": "The projection’s scale (zoom) factor, overriding automatic fitting. The default scale is projection-specific. The scale factor corresponds linearly to the distance between projected points; however, scale factor values are not equivalent across projections.",
+          "type": [
+            "number"
+          ]
+        },
+        "size": {
+          "$ref": "#/definitions/Vector2<(number)>"
         },
         "spacing": {
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "tilt": {
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "translate": {
           "$ref": "#/definitions/Vector2<number>",
-          "description": "The projection's translation (pan) value, overriding automatic fitting."
+          "description": "The projection’s translation offset as a two-element array `[tx, ty]`."
         },
         "type": {
           "$ref": "#/definitions/ProjectionType",
@@ -12700,7 +12543,16 @@
       "type": "object"
     },
     "RangeConfig": {
-      "additionalProperties": false,
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "$ref": "#/definitions/RangeScheme"
+          },
+          {
+            "type": "array"
+          }
+        ]
+      },
       "properties": {
         "category": {
           "anyOf": [
@@ -13512,50 +13364,53 @@
       "properties": {
         "align": {
           "description": "The alignment of the steps within the scale range.\n\nThis value must lie in the range `[0,1]`. A value of `0.5` indicates that the steps should be centered within the range. A value of `0` or `1` may be used to shift the bands to one side, say to position them adjacent to an axis.\n\n__Default value:__ `0.5`",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "base": {
           "description": "The logarithm base of the `log` scale (default `10`).",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "bins": {
-          "description": "An array of bin boundaries over the scale domain. If provided, axes and legends will use the bin boundaries to inform the choice of tick marks and text labels.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "$ref": "#/definitions/ScaleBins",
+          "description": "Bin boundaries can be provided to scales as either an explicit array of bin boundaries or as a bin specification object. The legal values are:\n- An [array](../types/#Array) literal of bin boundary values. For example, `[0, 5, 10, 15, 20]`. The array must include both starting and ending boundaries. The previous example uses five values to indicate a total of four bin intervals: [0-5), [5-10), [10-15), [15-20]. Array literals may include signal references as elements.\n- A [bin specification object](https://vega.github.io/vega-lite/docs/scale.html#bins) that indicates the bin _step_ size, and optionally the _start_ and _stop_ boundaries.\n- An array of bin boundaries over the scale domain. If provided, axes and legends will use the bin boundaries to inform the choice of tick marks and text labels."
         },
         "clamp": {
           "description": "If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value\n\n__Default value:__ derived from the [scale config](https://vega.github.io/vega-lite/docs/config.html#scale-config)'s `clamp` (`true` by default).",
-          "type": "boolean"
+          "type": [
+            "boolean"
+          ]
         },
         "constant": {
           "description": "A constant determining the slope of the symlog function around zero. Only used for `symlog` scales.\n\n__Default value:__ `1`",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "domain": {
           "anyOf": [
             {
               "items": {
-                "type": "number"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "type": "boolean"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/DateTime"
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "$ref": "#/definitions/DateTime"
+                  }
+                ]
               },
               "type": "array"
             },
@@ -13576,16 +13431,20 @@
         },
         "domainMid": {
           "description": "Inserts a single mid-point value into a two-element domain. The mid-point value must lie between the domain minimum and maximum values. This property can be useful for setting a midpoint for [diverging color scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). The domainMid property is only intended for use with scales supporting continuous, piecewise domains.",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "exponent": {
           "description": "The exponent of the `pow` scale.",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "interpolate": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ScaleInterpolate"
+              "$ref": "#/definitions/ScaleInterpolateEnum"
             },
             {
               "$ref": "#/definitions/ScaleInterpolateParams"
@@ -13602,23 +13461,10 @@
               "type": "number"
             },
             {
-              "$ref": "#/definitions/NiceTime"
+              "$ref": "#/definitions/TimeInterval"
             },
             {
-              "additionalProperties": false,
-              "properties": {
-                "interval": {
-                  "type": "string"
-                },
-                "step": {
-                  "type": "number"
-                }
-              },
-              "required": [
-                "interval",
-                "step"
-              ],
-              "type": "object"
+              "$ref": "#/definitions/TimeIntervalStep"
             }
           ],
           "description": "Extending the domain so that it starts and ends on nice round values. This method typically modifies the scale’s domain, and may only extend the bounds to the nearest round value. Nicing is useful if the domain is computed from data and may be irregular. For example, for a domain of _[0.201479…, 0.996679…]_, a nice domain might be _[0.2, 1.0]_.\n\nFor quantitative scales such as linear, `nice` can be either a boolean flag or a number. If `nice` is a number, it will represent a desired tick count. This allows greater control over the step size used to extend the bounds, guaranteeing that the returned ticks will exactly cover the domain.\n\nFor temporal fields with time and utc scales, the `nice` value can be a string indicating the desired time interval. Legal values are `\"millisecond\"`, `\"second\"`, `\"minute\"`, `\"hour\"`, `\"day\"`, `\"week\"`, `\"month\"`, and `\"year\"`. Alternatively, `time` and `utc` scales can accept an object-valued interval specifier of the form `{\"interval\": \"month\", \"step\": 3}`, which includes a desired number of interval steps. Here, the domain would snap to quarter (Jan, Apr, Jul, Oct) boundaries.\n\n__Default value:__ `true` for unbinned _quantitative_ fields; `false` otherwise."
@@ -13626,43 +13472,58 @@
         "padding": {
           "description": "For _[continuous](https://vega.github.io/vega-lite/docs/scale.html#continuous)_ scales, expands the scale domain to accommodate the specified number of pixels on each of the scale range. The scale range must represent pixels for this parameter to function as intended. Padding adjustment is performed prior to all other adjustments, including the effects of the `zero`, `nice`, `domainMin`, and `domainMax` properties.\n\nFor _[band](https://vega.github.io/vega-lite/docs/scale.html#band)_ scales, shortcut for setting `paddingInner` and `paddingOuter` to the same value.\n\nFor _[point](https://vega.github.io/vega-lite/docs/scale.html#point)_ scales, alias for `paddingOuter`.\n\n__Default value:__ For _continuous_ scales, derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `continuousPadding`.\nFor _band and point_ scales, see `paddingInner` and `paddingOuter`. By default, Vega-Lite sets padding such that _width/height = number of unique values * step_.",
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "paddingInner": {
           "description": "The inner padding (spacing) within each band step of band scales, as a fraction of the step size. This value must lie in the range [0,1].\n\nFor point scale, this property is invalid as point scales do not have internal band widths (only step sizes between bands).\n\n__Default value:__ derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `bandPaddingInner`.",
           "maximum": 1,
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "paddingOuter": {
           "description": "The outer padding (spacing) at the ends of the range of band and point scales,\nas a fraction of the step size. This value must lie in the range [0,1].\n\n__Default value:__ derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `bandPaddingOuter` for band scales and `pointPadding` for point scales.\nBy default, Vega-Lite sets outer padding such that _width/height = number of unique values * step_.",
           "maximum": 1,
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "range": {
           "anyOf": [
             {
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
-            },
-            {
-              "items": {
-                "type": "string"
-              },
-              "type": "array"
-            },
-            {
               "$ref": "#/definitions/RangeEnum"
+            },
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "items": {
+                      "type": "number"
+                    },
+                    "type": "array"
+                  }
+                ]
+              },
+              "type": "array"
             }
           ],
           "description": "The range of the scale. One of:\n\n- A string indicating a [pre-defined named scale range](https://vega.github.io/vega-lite/docs/scale.html#range-config) (e.g., example, `\"symbol\"`, or `\"diverging\"`).\n\n- For [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](https://vega.github.io/vega-lite/docs/scale.html#piecewise).\n\n- For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values.\n\n__Notes:__\n\n1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.\n\n2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`)."
         },
         "round": {
           "description": "If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default value:__ `false`.",
-          "type": "boolean"
+          "type": [
+            "boolean"
+          ]
         },
         "scheme": {
           "anyOf": [
@@ -13681,10 +13542,71 @@
         },
         "zero": {
           "description": "If `true`, ensures that a zero baseline value is included in the scale domain.\n\n__Default value:__ `true` for x and y channels if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.\n\n__Note:__ Log, time, and utc scales do not support `zero`.",
-          "type": "boolean"
+          "type": [
+            "boolean"
+          ]
         }
       },
       "type": "object"
+    },
+    "ScaleBins": {
+      "anyOf": [
+        {
+          "items": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "$ref": "#/definitions/SignalRef"
+              }
+            ]
+          },
+          "type": "array"
+        },
+        {
+          "$ref": "#/definitions/SignalRef"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "start": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ]
+            },
+            "step": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ]
+            },
+            "stop": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/SignalRef"
+                }
+              ]
+            }
+          },
+          "required": [
+            "step"
+          ],
+          "type": "object"
+        }
+      ]
     },
     "ScaleConfig": {
       "additionalProperties": false,
@@ -13693,28 +13615,38 @@
           "description": "Default inner padding for `x` and `y` band-ordinal scales.\n\n__Default value:__\n- `barBandPaddingInner` for bar marks (`0.1` by default)\n- `rectBandPaddingInner` for rect and other marks (`0` by default)",
           "maximum": 1,
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "bandPaddingOuter": {
           "description": "Default outer padding for `x` and `y` band-ordinal scales.\n\n__Default value:__ `paddingInner/2` (which makes _width/height = number of unique values * step_)",
           "maximum": 1,
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "barBandPaddingInner": {
           "description": "Default inner padding for `x` and `y` band-ordinal scales of `\"bar\"` marks.\n\n__Default value:__ `0.1`",
           "maximum": 1,
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "clamp": {
           "description": "If true, values that exceed the data domain are clamped to either the minimum or maximum range value",
-          "type": "boolean"
+          "type": [
+            "boolean"
+          ]
         },
         "continuousPadding": {
           "description": "Default padding for continuous scales.\n\n__Default:__ `5` for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.",
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "maxBandSize": {
           "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\n\nIf undefined (default), we will use the axis's size (width or height) - 1.",
@@ -13772,7 +13704,9 @@
           "description": "Default outer padding for `x` and `y` point-ordinal scales.\n\n__Default value:__ `0.5` (which makes _width/height = number of unique values * step_)",
           "maximum": 1,
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "quantileCount": {
           "description": "Default range cardinality for [`quantile`](https://vega.github.io/vega-lite/docs/scale.html#quantile) scale.\n\n__Default value:__ `4`",
@@ -13788,11 +13722,15 @@
           "description": "Default inner padding for `x` and `y` band-ordinal scales of `\"rect\"` marks.\n\n__Default value:__ `0`",
           "maximum": 1,
           "minimum": 0,
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "round": {
           "description": "If true, rounds numeric output values to integers.\nThis can be helpful for snapping to the pixel grid.\n(Only available for `x`, `y`, and `size` scales.)",
-          "type": "boolean"
+          "type": [
+            "boolean"
+          ]
         },
         "useUnaggregatedDomain": {
           "description": "Use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.\n\nThis is equivalent to setting `domain` to `\"unaggregate\"` for aggregated _quantitative_ fields by default.\n\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.\n\n__Default value:__ `false`",
@@ -13801,7 +13739,7 @@
       },
       "type": "object"
     },
-    "ScaleInterpolate": {
+    "ScaleInterpolateEnum": {
       "enum": [
         "rgb",
         "lab",
@@ -13818,7 +13756,9 @@
       "additionalProperties": false,
       "properties": {
         "gamma": {
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "type": {
           "enum": [
@@ -13883,6 +13823,8 @@
         "pow",
         "sqrt",
         "symlog",
+        "identity",
+        "sequential",
         "time",
         "utc",
         "quantile",
@@ -13900,18 +13842,24 @@
       "properties": {
         "count": {
           "description": "The number of colors to use in the scheme. This can be useful for scale types such as `\"quantize\"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.",
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         "extent": {
           "description": "The extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.",
           "items": {
-            "type": "number"
+            "type": [
+              "number"
+            ]
           },
           "type": "array"
         },
         "name": {
           "description": "A color scheme name for ordinal scales (e.g., `\"category10\"` or `\"blues\"`).\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.",
-          "type": "string"
+          "type": [
+            "string"
+          ]
         }
       },
       "required": [
@@ -14246,6 +14194,18 @@
     },
     "ShapeValueWithCondition": {
       "$ref": "#/definitions/StringValueWithCondition<TypeForShape>"
+    },
+    "SignalRef": {
+      "additionalProperties": false,
+      "properties": {
+        "signal": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "signal"
+      ],
+      "type": "object"
     },
     "SingleDefUnitChannel": {
       "enum": [
@@ -14815,7 +14775,71 @@
     },
     "StyleConfigIndex": {
       "additionalProperties": {
-        "$ref": "#/definitions/MarkConfig"
+        "anyOf": [
+          {
+            "$ref": "#/definitions/MarkConfig"
+          },
+          {
+            "$ref": "#/definitions/Axis"
+          }
+        ]
+      },
+      "properties": {
+        "area": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "bar": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "circle": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "geoshape": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "group-subtitle": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Default style for chart subtitles"
+        },
+        "group-title": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Default style for chart titles"
+        },
+        "guide-label": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Default style for axis, legend, and header labels."
+        },
+        "guide-title": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Default style for axis, legend, and header titles."
+        },
+        "image": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "line": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "point": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "rect": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "rule": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "square": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "text": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "tick": {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        "trail": {
+          "$ref": "#/definitions/MarkConfig"
+        }
       },
       "type": "object"
     },
@@ -15239,6 +15263,22 @@
         "year"
       ],
       "type": "string"
+    },
+    "TimeIntervalStep": {
+      "additionalProperties": false,
+      "properties": {
+        "interval": {
+          "$ref": "#/definitions/TimeInterval"
+        },
+        "step": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "interval",
+        "step"
+      ],
+      "type": "object"
     },
     "TimeUnit": {
       "anyOf": [
@@ -17292,6 +17332,23 @@
     "ValueWithCondition<StringFieldDef,Text>": {
       "$ref": "#/definitions/ValueDefWithCondition<StringFieldDef,Text>"
     },
+    "Vector2<(number)>": {
+      "items": [
+        {
+          "type": [
+            "number"
+          ]
+        },
+        {
+          "type": [
+            "number"
+          ]
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
     "Vector2<DateTime>": {
       "items": [
         {
@@ -17299,6 +17356,19 @@
         },
         {
           "$ref": "#/definitions/DateTime"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 2,
+      "type": "array"
+    },
+    "Vector2<Vector2<(number)>>": {
+      "items": [
+        {
+          "$ref": "#/definitions/Vector2<(number)>"
+        },
+        {
+          "$ref": "#/definitions/Vector2<(number)>"
         }
       ],
       "maxItems": 2,
@@ -17357,16 +17427,22 @@
       "minItems": 2,
       "type": "array"
     },
-    "Vector3<number>": {
+    "Vector3<(number)>": {
       "items": [
         {
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         {
-          "type": "number"
+          "type": [
+            "number"
+          ]
         },
         {
-          "type": "number"
+          "type": [
+            "number"
+          ]
         }
       ],
       "maxItems": 3,
