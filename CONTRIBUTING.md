@@ -108,6 +108,12 @@ For bundler:
 gem install bundler
 ```
 
+Or to install the same version that was used to create the bundle:
+
+```sh
+gem install bundler -v "$(grep -A 1 "BUNDLED WITH" Gemfile.lock | tail -n 1)"
+```
+
 For Jekyll and its dependencies, because we already have the `Gemfile` in the repo, you can simply run:
 
 ```sh
