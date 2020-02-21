@@ -64,7 +64,7 @@
       "domain": {
         "data": "data_0",
         "field": "id",
-        "sort": {"op": "min", "field": "id", "order": "descending"}
+        "sort": {"order": "descending"}
       },
       "range": [0, {"signal": "height"}],
       "padding": 0.5

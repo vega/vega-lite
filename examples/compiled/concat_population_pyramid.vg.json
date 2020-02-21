@@ -240,7 +240,7 @@
       "domain": {
         "data": "data_1",
         "field": "age",
-        "sort": {"op": "min", "field": "age", "order": "descending"}
+        "sort": {"order": "descending"}
       },
       "range": {"step": {"signal": "concat_0_y_step"}},
       "paddingInner": 0.1,
@@ -252,7 +252,7 @@
       "domain": {
         "data": "source_0",
         "field": "age",
-        "sort": {"op": "min", "field": "age", "order": "descending"}
+        "sort": {"order": "descending"}
       },
       "range": {"step": {"signal": "concat_1_y_step"}},
       "padding": 0.5
@@ -274,7 +274,7 @@
       "domain": {
         "data": "data_3",
         "field": "age",
-        "sort": {"op": "min", "field": "age", "order": "descending"}
+        "sort": {"order": "descending"}
       },
       "range": {"step": {"signal": "concat_2_y_step"}},
       "paddingInner": 0.1,

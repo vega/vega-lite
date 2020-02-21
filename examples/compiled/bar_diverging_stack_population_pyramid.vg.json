@@ -82,7 +82,7 @@
       "domain": {
         "data": "source_0",
         "field": "age",
-        "sort": {"op": "min", "field": "age", "order": "descending"}
+        "sort": {"order": "descending"}
       },
       "range": [0, {"signal": "height"}],
       "paddingInner": 0.1,
