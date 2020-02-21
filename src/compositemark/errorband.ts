@@ -125,7 +125,7 @@ export function normalizeErrorBand(
   let bordersMark: MarkDef = {type: is2D ? 'line' : 'rule'};
   const interpolate = {
     ...(errorBandDef.interpolate ? {interpolate: errorBandDef.interpolate} : {}),
-    ...(errorBandDef.tension && errorBandDef.interpolate ? {interpolate: errorBandDef.tension} : {})
+    ...(errorBandDef.tension && errorBandDef.interpolate ? {tension: errorBandDef.tension} : {})
   };
 
   if (is2D) {
