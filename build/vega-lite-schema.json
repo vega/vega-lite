@@ -288,9 +288,7 @@
           "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "order": {
           "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
@@ -339,9 +337,7 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "stroke": {
           "anyOf": [
@@ -930,9 +926,7 @@
         },
         "tickMinStep": {
           "description": "The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.\n\n__Default value__: `undefined`",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "tickOffset": {
           "description": "Position offset in pixels to apply to ticks, labels, and gridlines.",
@@ -1774,9 +1768,7 @@
           "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "order": {
           "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
@@ -1808,9 +1800,7 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "stroke": {
           "anyOf": [
@@ -3169,8 +3159,6 @@
         }
       },
       "type": "object"
-    },
-    "Conditional": {
     },
     "ConditionalMarkPropFieldDef": {
       "anyOf": [
@@ -7909,16 +7897,12 @@
         },
         "labelFont": {
           "description": "The font of the header label.",
-          "type": [
-            "string"
-          ]
+          "type": "string"
         },
         "labelFontSize": {
           "description": "The font size of the header label, in pixels.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "labelFontStyle": {
           "$ref": "#/definitions/FontStyle",
@@ -7926,9 +7910,7 @@
         },
         "labelLimit": {
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "labelOrient": {
           "$ref": "#/definitions/Orient",
@@ -7936,9 +7918,7 @@
         },
         "labelPadding": {
           "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "labels": {
           "description": "A boolean flag indicating if labels should be included as part of the header.\n\n__Default value:__ `true`.",
@@ -7979,16 +7959,12 @@
         },
         "titleFont": {
           "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
-          "type": [
-            "string"
-          ]
+          "type": "string"
         },
         "titleFontSize": {
           "description": "Font size of the header title.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "titleFontStyle": {
           "$ref": "#/definitions/FontStyle",
@@ -8000,15 +7976,11 @@
         },
         "titleLimit": {
           "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "titleLineHeight": {
           "description": "Line height in pixels for multi-line title text.",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "titleOrient": {
           "$ref": "#/definitions/Orient",
@@ -8016,9 +7988,7 @@
         },
         "titlePadding": {
           "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         }
       },
       "type": "object"
@@ -8062,16 +8032,12 @@
         },
         "labelFont": {
           "description": "The font of the header label.",
-          "type": [
-            "string"
-          ]
+          "type": "string"
         },
         "labelFontSize": {
           "description": "The font size of the header label, in pixels.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "labelFontStyle": {
           "$ref": "#/definitions/FontStyle",
@@ -8079,9 +8045,7 @@
         },
         "labelLimit": {
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "labelOrient": {
           "$ref": "#/definitions/Orient",
@@ -8089,9 +8053,7 @@
         },
         "labelPadding": {
           "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "labels": {
           "description": "A boolean flag indicating if labels should be included as part of the header.\n\n__Default value:__ `true`.",
@@ -8125,16 +8087,12 @@
         },
         "titleFont": {
           "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
-          "type": [
-            "string"
-          ]
+          "type": "string"
         },
         "titleFontSize": {
           "description": "Font size of the header title.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "titleFontStyle": {
           "$ref": "#/definitions/FontStyle",
@@ -8146,15 +8104,11 @@
         },
         "titleLimit": {
           "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "titleLineHeight": {
           "description": "Line height in pixels for multi-line title text.",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "titleOrient": {
           "$ref": "#/definitions/Orient",
@@ -8162,9 +8116,7 @@
         },
         "titlePadding": {
           "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         }
       },
       "type": "object"
@@ -9104,9 +9056,7 @@
         },
         "tickMinStep": {
           "description": "The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.\n\n__Default value__: `undefined`",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "title": {
           "anyOf": [
@@ -9822,9 +9772,7 @@
           "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "order": {
           "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
@@ -9873,9 +9821,7 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "stroke": {
           "anyOf": [
@@ -10532,9 +10478,7 @@
           "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "order": {
           "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
@@ -10566,9 +10510,7 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "stroke": {
           "anyOf": [
@@ -10902,9 +10844,7 @@
           "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "order": {
           "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
@@ -10953,9 +10893,7 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "stroke": {
           "anyOf": [
@@ -11697,9 +11635,7 @@
           "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "order": {
           "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
@@ -11731,9 +11667,7 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "stroke": {
           "anyOf": [
@@ -12285,31 +12219,25 @@
       "additionalProperties": false,
       "properties": {
         "center": {
-          "$ref": "#/definitions/Vector2<(number)>",
+          "$ref": "#/definitions/Vector2<number>",
           "description": "The projection's center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`"
         },
         "clipAngle": {
           "description": "The projection's clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "clipExtent": {
-          "$ref": "#/definitions/Vector2<Vector2<(number)>>",
+          "$ref": "#/definitions/Vector2<Vector2<number>>",
           "description": "The projection's viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed."
         },
         "coefficient": {
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "distance": {
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "extent": {
-          "$ref": "#/definitions/Vector2<Vector2<(number)>>"
+          "$ref": "#/definitions/Vector2<Vector2<number>>"
         },
         "fit": {
           "anyOf": [
@@ -12325,90 +12253,64 @@
           ]
         },
         "fraction": {
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "lobes": {
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "parallel": {
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "parallels": {
           "description": "For conic projections, the [two standard parallels](https://en.wikipedia.org/wiki/Map_projection#Conic) that define the map layout. The default depends on the specific conic projection used.",
           "items": {
-            "type": [
-              "number"
-            ]
+            "type": "number"
           },
           "type": "array"
         },
         "pointRadius": {
           "description": "The default radius (in pixels) to use when drawing GeoJSON `Point` and `MultiPoint` geometries. This parameter sets a constant default value. To modify the point radius in response to data, see the corresponding parameter of the GeoPath and GeoShape transforms.\n\n__Default value:__ `4.5`",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "precision": {
           "description": "The threshold for the projection's [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection's current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "radius": {
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "ratio": {
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "reflectX": {
-          "type": [
-            "boolean"
-          ]
+          "type": "boolean"
         },
         "reflectY": {
-          "type": [
-            "boolean"
-          ]
+          "type": "boolean"
         },
         "rotate": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Vector2<(number)>"
+              "$ref": "#/definitions/Vector2<number>"
             },
             {
-              "$ref": "#/definitions/Vector3<(number)>"
+              "$ref": "#/definitions/Vector3<number>"
             }
           ],
           "description": "The projection's three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`"
         },
         "scale": {
           "description": "The projection’s scale (zoom) factor, overriding automatic fitting. The default scale is projection-specific. The scale factor corresponds linearly to the distance between projected points; however, scale factor values are not equivalent across projections.",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "size": {
-          "$ref": "#/definitions/Vector2<(number)>"
+          "$ref": "#/definitions/Vector2<number>"
         },
         "spacing": {
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "tilt": {
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "translate": {
           "$ref": "#/definitions/Vector2<number>",
@@ -12671,9 +12573,7 @@
     },
     "RangeRawArray": {
       "items": {
-        "type": [
-          "number"
-        ]
+        "type": "number"
       },
       "type": "array"
     },
@@ -12689,15 +12589,11 @@
           "additionalProperties": false,
           "properties": {
             "count": {
-              "type": [
-                "number"
-              ]
+              "type": "number"
             },
             "extent": {
               "items": {
-                "type": [
-                  "number"
-                ]
+                "type": "number"
               },
               "type": "array"
             },
@@ -12893,9 +12789,7 @@
           "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "order": {
           "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
@@ -12927,9 +12821,7 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "stroke": {
           "anyOf": [
@@ -13364,15 +13256,11 @@
       "properties": {
         "align": {
           "description": "The alignment of the steps within the scale range.\n\nThis value must lie in the range `[0,1]`. A value of `0.5` indicates that the steps should be centered within the range. A value of `0` or `1` may be used to shift the bands to one side, say to position them adjacent to an axis.\n\n__Default value:__ `0.5`",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "base": {
           "description": "The logarithm base of the `log` scale (default `10`).",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "bins": {
           "$ref": "#/definitions/ScaleBins",
@@ -13380,15 +13268,11 @@
         },
         "clamp": {
           "description": "If `true`, values that exceed the data domain are clamped to either the minimum or maximum range value\n\n__Default value:__ derived from the [scale config](https://vega.github.io/vega-lite/docs/config.html#scale-config)'s `clamp` (`true` by default).",
-          "type": [
-            "boolean"
-          ]
+          "type": "boolean"
         },
         "constant": {
           "description": "A constant determining the slope of the symlog function around zero. Only used for `symlog` scales.\n\n__Default value:__ `1`",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "domain": {
           "anyOf": [
@@ -13431,15 +13315,11 @@
         },
         "domainMid": {
           "description": "Inserts a single mid-point value into a two-element domain. The mid-point value must lie between the domain minimum and maximum values. This property can be useful for setting a midpoint for [diverging color scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). The domainMid property is only intended for use with scales supporting continuous, piecewise domains.",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "exponent": {
           "description": "The exponent of the `pow` scale.",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "interpolate": {
           "anyOf": [
@@ -13472,25 +13352,19 @@
         "padding": {
           "description": "For _[continuous](https://vega.github.io/vega-lite/docs/scale.html#continuous)_ scales, expands the scale domain to accommodate the specified number of pixels on each of the scale range. The scale range must represent pixels for this parameter to function as intended. Padding adjustment is performed prior to all other adjustments, including the effects of the `zero`, `nice`, `domainMin`, and `domainMax` properties.\n\nFor _[band](https://vega.github.io/vega-lite/docs/scale.html#band)_ scales, shortcut for setting `paddingInner` and `paddingOuter` to the same value.\n\nFor _[point](https://vega.github.io/vega-lite/docs/scale.html#point)_ scales, alias for `paddingOuter`.\n\n__Default value:__ For _continuous_ scales, derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `continuousPadding`.\nFor _band and point_ scales, see `paddingInner` and `paddingOuter`. By default, Vega-Lite sets padding such that _width/height = number of unique values * step_.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "paddingInner": {
           "description": "The inner padding (spacing) within each band step of band scales, as a fraction of the step size. This value must lie in the range [0,1].\n\nFor point scale, this property is invalid as point scales do not have internal band widths (only step sizes between bands).\n\n__Default value:__ derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `bandPaddingInner`.",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "paddingOuter": {
           "description": "The outer padding (spacing) at the ends of the range of band and point scales,\nas a fraction of the step size. This value must lie in the range [0,1].\n\n__Default value:__ derived from the [scale config](https://vega.github.io/vega-lite/docs/scale.html#config)'s `bandPaddingOuter` for band scales and `pointPadding` for point scales.\nBy default, Vega-Lite sets outer padding such that _width/height = number of unique values * step_.",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "range": {
           "anyOf": [
@@ -13521,9 +13395,7 @@
         },
         "round": {
           "description": "If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default value:__ `false`.",
-          "type": [
-            "boolean"
-          ]
+          "type": "boolean"
         },
         "scheme": {
           "anyOf": [
@@ -13542,9 +13414,7 @@
         },
         "zero": {
           "description": "If `true`, ensures that a zero baseline value is included in the scale domain.\n\n__Default value:__ `true` for x and y channels if the quantitative field is not binned and no custom `domain` is provided; `false` otherwise.\n\n__Note:__ Log, time, and utc scales do not support `zero`.",
-          "type": [
-            "boolean"
-          ]
+          "type": "boolean"
         }
       },
       "type": "object"
@@ -13615,38 +13485,28 @@
           "description": "Default inner padding for `x` and `y` band-ordinal scales.\n\n__Default value:__\n- `barBandPaddingInner` for bar marks (`0.1` by default)\n- `rectBandPaddingInner` for rect and other marks (`0` by default)",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "bandPaddingOuter": {
           "description": "Default outer padding for `x` and `y` band-ordinal scales.\n\n__Default value:__ `paddingInner/2` (which makes _width/height = number of unique values * step_)",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "barBandPaddingInner": {
           "description": "Default inner padding for `x` and `y` band-ordinal scales of `\"bar\"` marks.\n\n__Default value:__ `0.1`",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "clamp": {
           "description": "If true, values that exceed the data domain are clamped to either the minimum or maximum range value",
-          "type": [
-            "boolean"
-          ]
+          "type": "boolean"
         },
         "continuousPadding": {
           "description": "Default padding for continuous scales.\n\n__Default:__ `5` for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "maxBandSize": {
           "description": "The default max value for mapping quantitative fields to bar's size/bandSize.\n\nIf undefined (default), we will use the axis's size (width or height) - 1.",
@@ -13704,9 +13564,7 @@
           "description": "Default outer padding for `x` and `y` point-ordinal scales.\n\n__Default value:__ `0.5` (which makes _width/height = number of unique values * step_)",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "quantileCount": {
           "description": "Default range cardinality for [`quantile`](https://vega.github.io/vega-lite/docs/scale.html#quantile) scale.\n\n__Default value:__ `4`",
@@ -13722,15 +13580,11 @@
           "description": "Default inner padding for `x` and `y` band-ordinal scales of `\"rect\"` marks.\n\n__Default value:__ `0`",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "round": {
           "description": "If true, rounds numeric output values to integers.\nThis can be helpful for snapping to the pixel grid.\n(Only available for `x`, `y`, and `size` scales.)",
-          "type": [
-            "boolean"
-          ]
+          "type": "boolean"
         },
         "useUnaggregatedDomain": {
           "description": "Use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.\n\nThis is equivalent to setting `domain` to `\"unaggregate\"` for aggregated _quantitative_ fields by default.\n\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.\n\n__Default value:__ `false`",
@@ -13756,9 +13610,7 @@
       "additionalProperties": false,
       "properties": {
         "gamma": {
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "type": {
           "enum": [
@@ -13842,24 +13694,18 @@
       "properties": {
         "count": {
           "description": "The number of colors to use in the scheme. This can be useful for scale types such as `\"quantize\"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.",
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "extent": {
           "description": "The extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.",
           "items": {
-            "type": [
-              "number"
-            ]
+            "type": "number"
           },
           "type": "array"
         },
         "name": {
           "description": "A color scheme name for ordinal scales (e.g., `\"category10\"` or `\"blues\"`).\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.",
-          "type": [
-            "string"
-          ]
+          "type": "string"
         }
       },
       "required": [
@@ -15043,9 +14889,7 @@
           "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
           "maximum": 1,
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "order": {
           "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
@@ -15077,9 +14921,7 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         "stroke": {
           "anyOf": [
@@ -17195,15 +17037,6 @@
             "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
           },
           "type": "array"
-        },
-        {
-          "$ref": "#/definitions/Conditional"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/Conditional"
-          },
-          "type": "array"
         }
       ]
     },
@@ -17215,15 +17048,6 @@
         {
           "items": {
             "$ref": "#/definitions/ConditionalStringValueDef"
-          },
-          "type": "array"
-        },
-        {
-          "$ref": "#/definitions/Conditional"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/Conditional"
           },
           "type": "array"
         }
@@ -17239,15 +17063,6 @@
             "$ref": "#/definitions/ConditionalValueDef<Text>"
           },
           "type": "array"
-        },
-        {
-          "$ref": "#/definitions/Conditional"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/Conditional"
-          },
-          "type": "array"
         }
       ]
     },
@@ -17259,15 +17074,6 @@
         {
           "items": {
             "$ref": "#/definitions/ConditionalNumberValueDef"
-          },
-          "type": "array"
-        },
-        {
-          "$ref": "#/definitions/Conditional"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/Conditional"
           },
           "type": "array"
         }
@@ -17283,15 +17089,6 @@
             "$ref": "#/definitions/ConditionalValueDef<number[]>"
           },
           "type": "array"
-        },
-        {
-          "$ref": "#/definitions/Conditional"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/Conditional"
-          },
-          "type": "array"
         }
       ]
     },
@@ -17303,15 +17100,6 @@
         {
           "items": {
             "$ref": "#/definitions/ConditionalValueDef<string>"
-          },
-          "type": "array"
-        },
-        {
-          "$ref": "#/definitions/Conditional"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/Conditional"
           },
           "type": "array"
         }
@@ -17332,23 +17120,6 @@
     "ValueWithCondition<StringFieldDef,Text>": {
       "$ref": "#/definitions/ValueDefWithCondition<StringFieldDef,Text>"
     },
-    "Vector2<(number)>": {
-      "items": [
-        {
-          "type": [
-            "number"
-          ]
-        },
-        {
-          "type": [
-            "number"
-          ]
-        }
-      ],
-      "maxItems": 2,
-      "minItems": 2,
-      "type": "array"
-    },
     "Vector2<DateTime>": {
       "items": [
         {
@@ -17356,19 +17127,6 @@
         },
         {
           "$ref": "#/definitions/DateTime"
-        }
-      ],
-      "maxItems": 2,
-      "minItems": 2,
-      "type": "array"
-    },
-    "Vector2<Vector2<(number)>>": {
-      "items": [
-        {
-          "$ref": "#/definitions/Vector2<(number)>"
-        },
-        {
-          "$ref": "#/definitions/Vector2<(number)>"
         }
       ],
       "maxItems": 2,
@@ -17427,22 +17185,16 @@
       "minItems": 2,
       "type": "array"
     },
-    "Vector3<(number)>": {
+    "Vector3<number>": {
       "items": [
         {
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         {
-          "type": [
-            "number"
-          ]
+          "type": "number"
         },
         {
-          "type": [
-            "number"
-          ]
+          "type": "number"
         }
       ],
       "maxItems": 3,
