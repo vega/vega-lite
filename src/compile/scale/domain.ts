@@ -555,6 +555,14 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
       if (sorts.length > 1) {
         log.warn(log.message.MORE_THAN_ONE_SORT);
         sort = true;
+      } else {
+        // Simplify domain sort by removing field and op when the field is the same as the domain field.
+        if (isObject(sort) && 'field' in sort) {
+          const sortField = sort.field;
+          if (domain.field === sortField) {
+            sort = {order: sort.order};
+          }
+        }
       }
       return {
         ...domain,
@@ -610,9 +618,8 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
 }
 
 /**
- * Return a field if a scale single field.
+ * Return a field if a scale uses a single field.
  * Return `undefined` otherwise.
- *
  */
 export function getFieldFromDomain(domain: VgDomain): string {
   if (isDataRefDomain(domain) && isString(domain.field)) {

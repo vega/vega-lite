@@ -1125,6 +1125,28 @@ describe('compile/scale', () => {
 
       expect(domain).toEqual([1, 2, 3, 4]);
     });
+
+    it('should simplify sort', () => {
+      const domain = mergeDomains([
+        {
+          data: 'foo',
+          field: 'a',
+          sort: {
+            field: 'a',
+            op: 'min',
+            order: 'descending'
+          }
+        }
+      ]);
+
+      expect(domain).toEqual({
+        data: 'foo',
+        field: 'a',
+        sort: {
+          order: 'descending'
+        }
+      });
+    });
   });
 
   describe('domainSort()', () => {
@@ -1208,7 +1230,7 @@ describe('compile/scale', () => {
       expect(sort).toEqual(true);
     });
 
-    it('should return undefined if sort is specified', () => {
+    it('should return sort if it is specified', () => {
       const model = parseUnitModel({
         mark: 'bar',
         encoding: {
