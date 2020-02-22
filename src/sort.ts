@@ -26,7 +26,7 @@ export interface SortFields {
   order?: SortOrder[];
 }
 
-export const DEFAULT_SORT_OP = 'mean';
+export const DEFAULT_SORT_OP = 'min';
 
 /**
  * A sort definition for sorting a discrete scale in an encoding field definition.
@@ -46,7 +46,7 @@ export interface EncodingSortField<F> {
    *
    * For a full list of operations, please see the documentation for [aggregate](https://vega.github.io/vega-lite/docs/aggregate.html#ops).
    *
-   * __Default value:__ `"sum"` for stacked plots. Otherwise, `"mean"`.
+   * __Default value:__ `"sum"` for stacked plots. Otherwise, `"min"`.
    */
   op?: NonArgAggregateOp;
 

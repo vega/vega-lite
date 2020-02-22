@@ -210,7 +210,7 @@ describe('compile/data/facet', () => {
             type: 'aggregate',
             groupby: ['c'],
             fields: ['a'],
-            ops: ['mean'],
+            ops: ['min'],
             as: ['a']
           }
         ]
