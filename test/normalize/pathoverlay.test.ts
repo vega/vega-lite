@@ -10,7 +10,7 @@ describe('PathOverlayNormalizer', () => {
 
   it('correctly normalizes line with overlayed point.', () => {
     const spec: TopLevel<NormalizedUnitSpec> & DataMixins = {
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       mark: 'line',
       encoding: {
         x: {field: 'date', type: 'temporal'},
@@ -23,7 +23,7 @@ describe('PathOverlayNormalizer', () => {
 
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       layer: [
         {
           mark: 'line',
@@ -46,7 +46,7 @@ describe('PathOverlayNormalizer', () => {
 
   it('correctly normalizes line with transparent point overlayed.', () => {
     const spec: TopLevelSpec = {
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       mark: {type: 'line', point: 'transparent', tooltip: ''},
       encoding: {
         x: {field: 'date', type: 'temporal'},
@@ -55,7 +55,7 @@ describe('PathOverlayNormalizer', () => {
     };
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       layer: [
         {
           mark: {type: 'line', tooltip: ''},
@@ -77,7 +77,7 @@ describe('PathOverlayNormalizer', () => {
 
   it('correctly normalizes line with point overlayed via mark definition.', () => {
     const spec: TopLevelSpec = {
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       mark: {type: 'line', point: {color: 'red'}},
       encoding: {
         x: {field: 'date', type: 'temporal'},
@@ -86,7 +86,7 @@ describe('PathOverlayNormalizer', () => {
     };
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       layer: [
         {
           mark: 'line',
@@ -108,7 +108,7 @@ describe('PathOverlayNormalizer', () => {
 
   it('correctly normalizes faceted line plots with overlayed point.', () => {
     const spec: TopLevelSpec = {
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       mark: 'line',
       encoding: {
         row: {field: 'symbol', type: 'nominal'},
@@ -119,7 +119,7 @@ describe('PathOverlayNormalizer', () => {
     };
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       facet: {
         row: {field: 'symbol', type: 'nominal'}
       },
@@ -147,7 +147,7 @@ describe('PathOverlayNormalizer', () => {
 
   it('correctly normalizes area with overlay line and point', () => {
     const spec: TopLevelSpec = {
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       mark: 'area',
       encoding: {
         x: {field: 'date', type: 'temporal'},
@@ -157,7 +157,7 @@ describe('PathOverlayNormalizer', () => {
     };
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       layer: [
         {
           mark: {type: 'area', opacity: 0.7},
@@ -187,7 +187,7 @@ describe('PathOverlayNormalizer', () => {
 
   it('correctly normalizes interpolated area with overlay line', () => {
     const spec: TopLevelSpec = {
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       mark: {type: 'area', interpolate: 'monotone'},
       encoding: {
         x: {field: 'date', type: 'temporal'},
@@ -197,7 +197,7 @@ describe('PathOverlayNormalizer', () => {
     };
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       layer: [
         {
           mark: {type: 'area', opacity: 0.7, interpolate: 'monotone'},
@@ -221,7 +221,7 @@ describe('PathOverlayNormalizer', () => {
   it('correctly normalizes area with overlay point and line disabled in config.', () => {
     for (const overlay of [null, false]) {
       const spec: TopLevelSpec = {
-        data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+        data: {url: 'data/stocks.csv'},
         mark: 'area',
         encoding: {
           x: {field: 'date', type: 'temporal'},
@@ -233,7 +233,7 @@ describe('PathOverlayNormalizer', () => {
       };
       const normalizedSpec = normalize(spec);
       expect(normalizedSpec).toEqual({
-        data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+        data: {url: 'data/stocks.csv'},
         mark: 'area',
         encoding: {
           x: {field: 'date', type: 'temporal'},
@@ -248,7 +248,7 @@ describe('PathOverlayNormalizer', () => {
 
   it('correctly normalizes stacked area with overlay line', () => {
     const spec: TopLevelSpec = {
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       mark: 'area',
       encoding: {
         x: {field: 'date', type: 'temporal'},
@@ -259,7 +259,7 @@ describe('PathOverlayNormalizer', () => {
     };
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       layer: [
         {
           mark: {type: 'area', opacity: 0.7},
@@ -284,7 +284,7 @@ describe('PathOverlayNormalizer', () => {
 
   it('correctly normalizes streamgraph with overlay line', () => {
     const spec: TopLevelSpec = {
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       mark: 'area',
       encoding: {
         x: {field: 'date', type: 'temporal'},
@@ -296,7 +296,7 @@ describe('PathOverlayNormalizer', () => {
 
     const normalizedSpec = normalize(spec);
     expect(normalizedSpec).toEqual({
-      data: {url: 'data/stocks.csv', format: {type: 'csv'}},
+      data: {url: 'data/stocks.csv'},
       layer: [
         {
           mark: {type: 'area', opacity: 0.7},
@@ -316,6 +316,43 @@ describe('PathOverlayNormalizer', () => {
         }
       ],
       config: {area: {line: {}}}
+    });
+  });
+
+  it('correctly normalizes opacity for area with line', () => {
+    const spec: TopLevelSpec = {
+      data: {url: 'data/stocks.csv'},
+      mark: {
+        type: 'area',
+        line: true,
+        opacity: 1,
+        color: 'red'
+      },
+      encoding: {
+        x: {field: 'date', type: 'temporal'},
+        y: {field: 'price', type: 'quantitative'}
+      }
+    };
+
+    const normalizedSpec = normalize(spec);
+    expect(normalizedSpec).toEqual({
+      data: {url: 'data/stocks.csv'},
+      layer: [
+        {
+          mark: {type: 'area', opacity: 1, color: 'red'},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'}
+          }
+        },
+        {
+          mark: {type: 'line'},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'}
+          }
+        }
+      ]
     });
   });
 });

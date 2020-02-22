@@ -5,7 +5,7 @@
   "transform": [{"filter": "datum.symbol==='GOOG'"}],
   "layer": [
     {
-      "mark": {"type": "area", "opacity": 0.7},
+      "mark": {"opacity": 0.7, "type": "area"},
       "encoding": {
         "x": {"field": "date", "type": "temporal"},
         "y": {"field": "price", "type": "quantitative"}
