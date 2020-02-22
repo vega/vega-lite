@@ -268,7 +268,7 @@ export type VgEncodeChannel =
   | 'scaleX'
   | 'scaleY';
 
-export type VgEncodeEntry = {[k in VgEncodeChannel]?: VgValueRef | (VgValueRef & {test?: string})[]};
+export type VgEncodeEntry = Partial<Record<VgEncodeChannel, VgValueRef | (VgValueRef & {test?: string})[]>>;
 
 // TODO: make export interface VgEncodeEntry {
 //   x?: VgValueRef<number>

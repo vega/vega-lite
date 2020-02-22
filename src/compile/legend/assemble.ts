@@ -21,7 +21,7 @@ function setLegendEncode(
 
 export function assembleLegends(model: Model): VgLegend[] {
   const legendComponentIndex = model.component.legends;
-  const legendByDomain: {[domainHash: string]: LegendComponent[]} = {};
+  const legendByDomain: Record<string, LegendComponent[]> = {};
 
   for (const channel of keys(legendComponentIndex)) {
     const scaleComponent = model.getScaleComponent(channel);

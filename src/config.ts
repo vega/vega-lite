@@ -104,9 +104,9 @@ export function isVgScheme(rangeScheme: string[] | RangeScheme): rangeScheme is 
   return rangeScheme && !!rangeScheme['scheme'];
 }
 
-export type ColorConfig = {[name: string]: Color};
+export type ColorConfig = Record<string, Color>;
 
-export type FontSizeConfig = {[name: string]: number};
+export type FontSizeConfig = Record<string, number>;
 
 export interface VLOnlyConfig {
   /**

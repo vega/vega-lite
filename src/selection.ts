@@ -83,7 +83,7 @@ export interface SingleSelectionConfig extends BaseSelectionConfig {
    *
    * __See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.
    */
-  bind?: Binding | {[key: string]: Binding} | LegendBinding;
+  bind?: Binding | Record<string, Binding> | LegendBinding;
 
   /**
    * When true, an invisible voronoi diagram is computed to accelerate discrete
