@@ -70,6 +70,7 @@ function getLineOverlay(markDef: MarkDef, markConfig: AreaConfig = {}): MarkConf
 
 export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWithPathOverlay> {
   public name = 'path-overlay';
+
   public hasMatchingType(spec: GenericUnitSpec<any, Mark | MarkDef>, config: Config): spec is UnitSpecWithPathOverlay {
     if (isUnitSpec(spec)) {
       const {mark, encoding} = spec;
@@ -89,6 +90,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     }
     return false;
   }
+
   public run(spec: UnitSpecWithPathOverlay, params: NormalizerParams, normalize: NormalizeLayerOrUnit) {
     const {config} = params;
     const {selection, projection, encoding, mark, ...outerSpec} = spec;
@@ -100,12 +102,12 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     const layer: NormalizedUnitSpec[] = [
       {
         ...(selection ? {selection} : {}),
-        // Do not include point / line overlay in the normalize spec
         mark: dropLineAndPoint({
-          ...markDef,
-          // make area mark translucent by default
           // TODO: extract this 0.7 to be shared with default opacity for point/tick/...
-          ...(markDef.type === 'area' ? {opacity: 0.7} : {})
+          ...(markDef.type === 'area' && markDef.opacity === undefined && markDef.fillOpacity === undefined
+            ? {opacity: 0.7}
+            : {}),
+          ...markDef
         }),
         // drop shape from encoding as this might be used to trigger point overlay
         encoding: omit(encoding, ['shape'])
