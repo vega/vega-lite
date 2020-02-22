@@ -405,7 +405,7 @@ describe('compile/scale', () => {
               sort: sortDef
             },
             y: {
-              aggregate: 'mean',
+              aggregate: 'min',
               field: 'precipitation',
               type: 'quantitative'
             }
@@ -417,7 +417,7 @@ describe('compile/scale', () => {
           {
             data: 'raw',
             field: 'month_date',
-            sort: {...sortDef, op: 'mean'}
+            sort: {...sortDef, op: 'min'}
           }
         ]);
       });

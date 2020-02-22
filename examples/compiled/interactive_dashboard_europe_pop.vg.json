@@ -1438,7 +1438,7 @@
         "data": "source_0",
         "field": "Country",
         "sort": {
-          "op": "mean",
+          "op": "min",
           "field": "Population_ages_15_64_of_total",
           "order": "descending"
         }
@@ -1465,7 +1465,7 @@
         "data": "source_0",
         "field": "Country",
         "sort": {
-          "op": "mean",
+          "op": "min",
           "field": "Population_ages_65_and_above_of_total",
           "order": "descending"
         }
