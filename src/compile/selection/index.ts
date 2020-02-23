@@ -1,16 +1,17 @@
 import {Binding, NewSignal, Stream} from 'vega-typings';
-import {hasOwnProperty, stringValue} from 'vega-util';
+import {stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel';
 import {
   BrushConfig,
+  LegendBinding,
   SelectionInit,
   SelectionInitInterval,
   SelectionResolution,
   SelectionType,
-  SELECTION_ID,
-  LegendBinding
+  SELECTION_ID
 } from '../../selection';
-import {Dict} from '../../util';
+import {Dict, vals} from '../../util';
+import {OutputNode} from '../data/dataflow';
 import {FacetModel} from '../facet';
 import {isFacetModel, Model} from '../model';
 import {UnitModel} from '../unit';
@@ -18,7 +19,6 @@ import interval from './interval';
 import multi from './multi';
 import single from './single';
 import {SelectionProjection, SelectionProjectionComponent} from './transforms/project';
-import {OutputNode} from '../data/dataflow';
 
 export const STORE = '_store';
 export const TUPLE = '_tuple';
@@ -69,12 +69,9 @@ export function forEachSelection(
 ) {
   const selections = model.component.selection;
   if (selections) {
-    for (const name in selections) {
-      if (hasOwnProperty(selections, name)) {
-        const sel = selections[name];
-        const success = cb(sel, compilers[sel.type]);
-        if (success === true) break;
-      }
+    for (const sel of vals(selections)) {
+      const success = cb(sel, compilers[sel.type]);
+      if (success === true) break;
     }
   }
 }
