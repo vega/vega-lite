@@ -7,7 +7,6 @@ import {
   SignalRef,
   Title as VgTitle
 } from 'vega-typings';
-import {hasOwnProperty} from 'vega-util';
 import {
   Channel,
   FACET_CHANNELS,
@@ -39,6 +38,7 @@ import {contains, Dict, duplicate, keys, varName} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
+import {signalOrValueRef} from './common';
 import {ConcatModel} from './concat';
 import {DataComponent} from './data';
 import {FacetModel} from './facet';
@@ -311,12 +311,10 @@ export abstract class Model {
     const {style: _, ...baseView} = view;
 
     const e = {};
-    for (const property in baseView) {
-      if (hasOwnProperty(baseView, property)) {
-        const value = baseView[property];
-        if (value !== undefined) {
-          e[property] = {value};
-        }
+    for (const property of keys(baseView)) {
+      const value = baseView[property];
+      if (value !== undefined) {
+        e[property] = signalOrValueRef(value);
       }
     }
     return e;

@@ -87,5 +87,17 @@ describe('Model', () => {
         stroke: {value: 'blue'}
       });
     });
+
+    it('should support signals', () => {
+      const model = parseModel({
+        data: {values: []},
+        mark: 'point',
+        view: {fill: {signal: '"red"'}}
+      });
+
+      expect(model.assembleGroupEncodeEntry(true)).toEqual({
+        fill: {signal: '"red"'}
+      });
+    });
   });
 });
