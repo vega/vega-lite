@@ -24,7 +24,7 @@ export function draw(roots: readonly DataFlowNode[]) {
   // check the graph before printing it since the logic below assumes a consistent graph
   checkLinks(roots);
 
-  const nodes: {[key: string]: {id: string | number; label: string; hash: string | number}} = {};
+  const nodes: Record<string, {id: string | number; label: string; hash: string | number}> = {};
   const edges: [string, string][] = [];
 
   function getId(node: DataFlowNode) {

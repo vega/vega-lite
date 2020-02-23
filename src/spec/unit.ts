@@ -31,7 +31,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
   /**
    * A key-value mapping between selection names and definitions.
    */
-  selection?: {[name: string]: SelectionDef};
+  selection?: Record<string, SelectionDef>;
 }
 
 /**
