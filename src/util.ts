@@ -294,7 +294,7 @@ export function titlecase(s: string) {
 }
 
 function escapePathAccess(string: string) {
-  return string.replace(/(\[|\]|\.)/g, '\\$1');
+  return string.replace(/(\[|\]|\.|'|")/g, '\\$1');
 }
 
 /**

@@ -186,6 +186,14 @@ describe('util', () => {
     it('should keep escaped brackets', () => {
       expect(replacePathInField('y\\[foo\\]')).toBe('y\\[foo\\]');
     });
+
+    it('should keep escaped single quotes', () => {
+      expect(replacePathInField("foo\\'")).toBe("foo\\'");
+    });
+
+    it('should keep escaped double quotes', () => {
+      expect(replacePathInField('foo\\"')).toBe('foo\\"');
+    });
   });
 
   describe('prefixGenerator', () => {
