@@ -221,15 +221,7 @@ export function fieldIntersection(a: ReadonlySet<string>, b: ReadonlySet<string>
 // This is a stricter version of Object.keys but with better types. See https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
 export const keys = Object.keys as <T>(o: T) => Extract<keyof T, string>[];
 
-export function vals<T>(x: {[key: string]: T}): T[] {
-  const _vals: T[] = [];
-  for (const k in x) {
-    if (hasOwnProperty(x, k)) {
-      _vals.push(x[k]);
-    }
-  }
-  return _vals;
-}
+export const vals = Object.values;
 
 export function entries<T>(x: {[key: string]: T}): {key: string; value: T}[] {
   const _entries: {key: string; value: T}[] = [];
