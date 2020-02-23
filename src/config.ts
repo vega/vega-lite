@@ -559,8 +559,8 @@ function redirectTitleConfig(config: Config) {
   const {mark: m, subtitle} = extractTitleConfig(config.title);
 
   const style: MarkConfig = {
-    ...m,
-    ...config.style['group-title']
+    ...config.style['group-title'],
+    ...m
   };
 
   // set config.style if it is not an empty object
