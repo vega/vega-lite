@@ -30,7 +30,7 @@ export interface BaseSpec {
   name?: string;
 
   /**
-   * Description of this mark for commenting purpose.
+   * Description of this specification for commenting purposes.
    */
   description?: string;
 

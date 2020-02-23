@@ -1,5 +1,5 @@
 import {Field} from '../channeldef';
-import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark';
+import {FacetedCompositeEncoding} from '../compositemark';
 import {Encoding} from '../encoding';
 import {AnyMark, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
@@ -42,9 +42,9 @@ export type NormalizedUnitSpec = GenericUnitSpec<Encoding<Field>, Mark | MarkDef
 /**
  * A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types).
  */
-export type UnitSpec = GenericUnitSpec<CompositeEncoding, AnyMark> & DeprecatedFrameMixins;
+export type UnitSpec = GenericUnitSpec<FacetedCompositeEncoding, AnyMark> & DeprecatedFrameMixins;
 
-export type UnitSpecWithFrame = GenericUnitSpec<CompositeEncoding, AnyMark> & FrameMixins;
+export type UnitSpecWithFrame = GenericUnitSpec<FacetedCompositeEncoding, AnyMark> & FrameMixins;
 
 /**
  * Unit spec that can have a composite mark and row or column channels (shorthand for a facet spec).

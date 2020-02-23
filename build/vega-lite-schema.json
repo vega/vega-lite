@@ -6180,7 +6180,7 @@
           "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "encoding": {
@@ -7310,7 +7310,7 @@
           "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "name": {
@@ -7406,7 +7406,7 @@
           "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "facet": {
@@ -7503,7 +7503,7 @@
           "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "hconcat": {
@@ -7599,7 +7599,7 @@
           "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "name": {
@@ -7718,7 +7718,7 @@
           "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "name": {
@@ -8708,7 +8708,7 @@
           "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "encoding": {
@@ -15468,7 +15468,7 @@
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "name": {
@@ -15577,7 +15577,7 @@
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "hconcat": {
@@ -15708,7 +15708,7 @@
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "name": {
@@ -15836,7 +15836,7 @@
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "name": {
@@ -15933,7 +15933,7 @@
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "encoding": {
@@ -16113,7 +16113,7 @@
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "facet": {
@@ -16268,7 +16268,7 @@
           "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "encoding": {
@@ -16547,11 +16547,11 @@
           "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "encoding": {
-          "$ref": "#/definitions/Encoding",
+          "$ref": "#/definitions/FacetedEncoding",
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
@@ -16650,11 +16650,11 @@
           "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
         },
         "description": {
-          "description": "Description of this mark for commenting purpose.",
+          "description": "Description of this specification for commenting purposes.",
           "type": "string"
         },
         "encoding": {
-          "$ref": "#/definitions/Encoding",
+          "$ref": "#/definitions/FacetedEncoding",
           "description": "A key-value mapping between encoding channels and definition of fields."
         },
         "height": {
