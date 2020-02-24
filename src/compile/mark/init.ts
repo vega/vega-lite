@@ -49,7 +49,11 @@ export function normalizeMarkDef(
         config
       );
     if (cornerRadiusEnd !== undefined) {
-      const newProps = BAR_CORNER_RADIUS_END_INDEX[markDef.orient];
+      const newProps =
+        (markDef.orient === 'horizontal' && encoding.x2) || (markDef.orient === 'vertical' && encoding.y2)
+          ? ['cornerRadius']
+          : BAR_CORNER_RADIUS_END_INDEX[markDef.orient];
+
       for (const newProp of newProps) {
         markDef[newProp] = cornerRadiusEnd;
       }
