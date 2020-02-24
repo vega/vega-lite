@@ -832,7 +832,7 @@ export function getTypedFieldDef<F extends Field>(channelDef: ChannelDef<TypedFi
 /**
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
-export function normalize(channelDef: ChannelDef, channel: Channel): ChannelDef<any> {
+export function initChannelDef(channelDef: ChannelDef, channel: Channel): ChannelDef<any> {
   if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
     const primitiveType = isString(channelDef) ? 'string' : isNumber(channelDef) ? 'number' : 'boolean';
     log.warn(log.message.primitiveChannelDef(channel, primitiveType, channelDef));
@@ -841,17 +841,17 @@ export function normalize(channelDef: ChannelDef, channel: Channel): ChannelDef<
 
   // If a fieldDef contains a field, we need type.
   if (isFieldDef(channelDef)) {
-    return normalizeFieldDef(channelDef, channel);
+    return initFieldDef(channelDef, channel);
   } else if (hasConditionalFieldDef(channelDef)) {
     return {
       ...channelDef,
       // Need to cast as normalizeFieldDef normally return FieldDef, but here we know that it is definitely Condition<FieldDef>
-      condition: normalizeFieldDef(channelDef.condition, channel) as Conditional<TypedFieldDef<string>>
+      condition: initFieldDef(channelDef.condition, channel) as Conditional<TypedFieldDef<string>>
     };
   }
   return channelDef;
 }
-export function normalizeFieldDef(fd: FieldDef<string>, channel: Channel) {
+export function initFieldDef(fd: FieldDef<string>, channel: Channel) {
   const {aggregate, timeUnit, bin, field} = fd;
   const fieldDef = {...fd};
 
