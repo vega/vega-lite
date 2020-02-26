@@ -1,0 +1,37 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": { "url": "https://vega.github.io/editor/data/cars.json"},
+  "mark": {
+    "type": "bar",
+    "tooltip": true
+  },
+  "width": 100,
+  "encoding": {
+    "column": {
+      "field": "Cylinders", "type": "nominal",
+      "spacing": -2,
+      "header": {
+        "titleOrient": "bottom",
+        "labelOrient": "bottom"
+      }
+    },
+    "x": {
+      "field": "Origin", "type": "nominal",
+      "title": null,
+      "axis": {
+        "labels": false,
+        "ticks": false
+      }
+    },
+    "y": {
+      "aggregate": "count", "type": "quantitative"
+    },
+    "color": {
+      "field": "Origin", "type": "nominal"
+    }
+  },
+  "config": {
+    "view": {"stroke": "transparent"},
+    "axis": {"domainWidth": 1}
+  }
+}
