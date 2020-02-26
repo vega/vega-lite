@@ -1,0 +1,28 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {"url": "data/cars.json"},
+  "transform": [{
+      "aggregate": [{"op": "count", "as": "Count"}],
+      "groupby": ["Cylinders"]
+    }, {
+      "joinaggregate": [{"op": "sum", "field": "Count", "as": "TotalCount"}]
+    }, {
+      "calculate": "datum.Count/datum.TotalCount", "as": "PercentOfTotal"
+    }
+  ],
+  "mark": {"type": "bar", "tooltip": true},
+  "encoding": {
+    "x": {
+      "field": "Cylinders",
+      "type": "ordinal"
+    },
+    "y": {
+      "field": "PercentOfTotal",
+      "type": "quantitative",
+      "axis": {
+        "title": "Relative Frequency",
+        "format": ".1~%"
+        }
+    }
+  }
+}
