@@ -1,0 +1,175 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "url": "https://vega.github.io/editor/data/cars.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["Origin", "Cylinders"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "column_domain",
+      "source": "source_0",
+      "transform": [{"type": "aggregate", "groupby": ["Cylinders"]}]
+    }
+  ],
+  "signals": [
+    {"name": "child_width", "value": 100},
+    {"name": "child_height", "value": 200}
+  ],
+  "layout": {
+    "padding": {"row": 20, "column": -2},
+    "titleAnchor": {"column": "end"},
+    "offset": {"columnTitle": 10},
+    "columns": {"signal": "length(data('column_domain'))"},
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "name": "column-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {
+        "text": "Cylinders",
+        "style": "guide-title",
+        "orient": "bottom",
+        "offset": 10
+      }
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "Count of Records",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "from": {"data": "column_domain"},
+      "sort": {"field": "datum[\"Cylinders\"]", "order": "ascending"},
+      "title": {
+        "text": {"signal": "''+parent[\"Cylinders\"]"},
+        "style": "guide-label",
+        "frame": "group",
+        "orient": "bottom",
+        "offset": 10
+      },
+      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "labels": false,
+          "ticks": false,
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "style": "cell",
+      "from": {
+        "facet": {"name": "facet", "data": "source_0", "groupby": ["Cylinders"]}
+      },
+      "sort": {"field": ["datum[\"Cylinders\"]"], "order": ["ascending"]},
+      "encode": {
+        "update": {
+          "width": {"signal": "child_width"},
+          "height": {"signal": "child_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "rect",
+          "style": ["bar"],
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "tooltip": {
+                "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
+              },
+              "fill": {"scale": "color", "field": "Origin"},
+              "x": {"scale": "x", "field": "Origin"},
+              "width": {"scale": "x", "band": true},
+              "y": {"scale": "y", "field": "__count"},
+              "y2": {"scale": "y", "value": 0}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "gridScale": "x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "domain": false,
+          "labels": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "range": [0, {"signal": "child_width"}],
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "__count"},
+      "range": [{"signal": "child_height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "range": "category"
+    }
+  ],
+  "legends": [{"fill": "color", "symbolType": "square", "title": "Origin"}],
+  "config": {
+    "axis": {"domainWidth": 1},
+    "style": {"cell": {"stroke": "transparent"}}
+  }
+}
