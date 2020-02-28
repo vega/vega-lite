@@ -61,10 +61,8 @@ export interface BinTransform {
 
   /**
    * The output fields at which to write the start and end bin values.
-   * This can be either a string or an array of strings with
-   * two elements denoting the name for the fields for bin start and bin end
-   * respectively.
-   * If a single string (eg."val") is provided, the end field will be "val_end".
+   * This can be either a string or an array of strings with two elements denoting the name for the fields for bin start and bin end respectively.
+   * If a single string (e.g., `"val"`) is provided, the end field will be `"val_end"`.
    */
   as: FieldName | FieldName[];
 }
