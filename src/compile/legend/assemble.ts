@@ -1,4 +1,4 @@
-import {Legend as VgLegend, LegendEncode} from 'vega-typings';
+import {Legend as VgLegend, LegendEncode} from 'vega';
 import {SIGNAL_LEGEND_PROP_INDEX} from '../../legend';
 import {keys, replaceAll, stringify, vals} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';

@@ -1,4 +1,4 @@
-import {Stream} from 'vega-typings';
+import {Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from '.';
 import {UnitModel} from '../unit';

@@ -13419,62 +13419,37 @@
       },
       "type": "object"
     },
+    "ScaleBinParams": {
+      "additionalProperties": false,
+      "properties": {
+        "start": {
+          "description": "The starting (lowest-valued) bin boundary.\n\n__Default value:__ The lowest value of the scale domain will be used.",
+          "type": "number"
+        },
+        "step": {
+          "description": "The step size defining the bin interval width.",
+          "type": "number"
+        },
+        "stop": {
+          "description": "The stopping (highest-valued) bin boundary.\n\n__Default value:__ The highest value of the scale domain will be used.",
+          "type": "number"
+        }
+      },
+      "required": [
+        "step"
+      ],
+      "type": "object"
+    },
     "ScaleBins": {
       "anyOf": [
         {
           "items": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "$ref": "#/definitions/SignalRef"
-              }
-            ]
+            "type": "number"
           },
           "type": "array"
         },
         {
-          "$ref": "#/definitions/SignalRef"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "start": {
-              "anyOf": [
-                {
-                  "type": "number"
-                },
-                {
-                  "$ref": "#/definitions/SignalRef"
-                }
-              ]
-            },
-            "step": {
-              "anyOf": [
-                {
-                  "type": "number"
-                },
-                {
-                  "$ref": "#/definitions/SignalRef"
-                }
-              ]
-            },
-            "stop": {
-              "anyOf": [
-                {
-                  "type": "number"
-                },
-                {
-                  "$ref": "#/definitions/SignalRef"
-                }
-              ]
-            }
-          },
-          "required": [
-            "step"
-          ],
-          "type": "object"
+          "$ref": "#/definitions/ScaleBinParams"
         }
       ]
     },
@@ -14040,18 +14015,6 @@
     },
     "ShapeValueWithCondition": {
       "$ref": "#/definitions/StringValueWithCondition<TypeForShape>"
-    },
-    "SignalRef": {
-      "additionalProperties": false,
-      "properties": {
-        "signal": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "signal"
-      ],
-      "type": "object"
     },
     "SingleDefUnitChannel": {
       "enum": [

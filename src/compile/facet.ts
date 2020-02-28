@@ -1,4 +1,4 @@
-import {AggregateOp, LayoutAlign, NewSignal} from 'vega-typings';
+import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
 import {Channel, COLUMN, FacetChannel, FACET_CHANNELS, ROW, ScaleChannel} from '../channel';

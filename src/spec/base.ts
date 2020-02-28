@@ -1,4 +1,4 @@
-import {Color, Cursor, SignalRef, Text} from 'vega-typings';
+import {Color, Cursor, SignalRef, Text} from 'vega';
 import {isArray, isNumber, isObject} from 'vega-util';
 import {NormalizedSpec} from '.';
 import {Config} from '../config';

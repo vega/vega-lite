@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega-typings/types';
+import {SignalRef} from 'vega';
 import {isNumber} from 'vega-util';
 import {isBinned, isBinning} from '../../../bin';
 import {PositionChannel, X, X2, Y2} from '../../../channel';

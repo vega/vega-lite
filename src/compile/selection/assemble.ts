@@ -1,4 +1,4 @@
-import {Signal, SignalRef} from 'vega-typings';
+import {Signal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
 import {forEachSelection, MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE} from '.';

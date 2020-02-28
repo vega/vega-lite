@@ -1,4 +1,4 @@
-import {FilterTransform as VgFilterTransform} from 'vega-typings';
+import {FilterTransform as VgFilterTransform} from 'vega';
 import {LogicalComposition} from '../../logical';
 import {Predicate} from '../../predicate';
 import {duplicate} from '../../util';

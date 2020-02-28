@@ -1,4 +1,4 @@
-import {NewSignal, OnEvent, Stream} from 'vega-typings';
+import {NewSignal, OnEvent, Stream} from 'vega';
 import {array, stringValue} from 'vega-util';
 import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
 import {ScaleChannel, X, Y} from '../../channel';

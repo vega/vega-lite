@@ -1,4 +1,4 @@
-import {NewSignal, InitSignal} from 'vega-typings';
+import {NewSignal, InitSignal} from 'vega';
 import {hasDiscreteDomain} from '../../scale';
 import {getFirstDefined} from '../../util';
 import {isVgRangeStep, VgRangeStep} from '../../vega.schema';

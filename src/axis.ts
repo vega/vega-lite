@@ -10,7 +10,7 @@ import {
   LabelOverlap,
   SignalRef,
   TextBaseline
-} from 'vega-typings';
+} from 'vega';
 import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, TitleMixins, VlOnlyGuideConfig} from './guide';

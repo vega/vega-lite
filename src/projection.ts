@@ -1,4 +1,4 @@
-import {BaseProjection, SignalRef, Vector2} from 'vega-typings';
+import {BaseProjection, SignalRef, Vector2} from 'vega';
 import {ProjectionType} from './vega.schema';
 
 export interface Projection extends BaseProjection {

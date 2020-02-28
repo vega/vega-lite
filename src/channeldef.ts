@@ -1,4 +1,4 @@
-import {Gradient, SignalRef, Text} from 'vega-typings';
+import {Gradient, SignalRef, Text} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';

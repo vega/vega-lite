@@ -1,4 +1,4 @@
-import {AggregateOp, WindowTransform as VgWindowTransform} from 'vega-typings';
+import {AggregateOp, WindowTransform as VgWindowTransform} from 'vega';
 import {isAggregateOp} from '../../aggregate';
 import {vgField} from '../../channeldef';
 import {SortOrder} from '../../sort';

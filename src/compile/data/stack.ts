@@ -1,4 +1,4 @@
-import {Transforms as VgTransform} from 'vega-typings';
+import {Transforms as VgTransform} from 'vega';
 import {isArray, isString} from 'vega-util';
 import {FieldName, getTypedFieldDef, isFieldDef, PositionFieldDef, vgField} from '../../channeldef';
 import {SortFields, SortOrder} from '../../sort';

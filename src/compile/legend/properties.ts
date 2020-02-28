@@ -1,4 +1,4 @@
-import {LabelOverlap, LegendOrient, LegendType, SignalRef, SymbolShape} from 'vega-typings';
+import {LabelOverlap, LegendOrient, LegendType, SignalRef, SymbolShape} from 'vega';
 import {isArray} from 'vega-util';
 import {Channel, isColorChannel} from '../../channel';
 import {

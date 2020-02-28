@@ -5,7 +5,7 @@ import {NonPositionScaleChannel} from '../../../channel';
 import {LegendComponent} from '../../legend/component';
 import {forEachSelection, SelectionComponent, TUPLE} from '..';
 import {array, isString} from 'vega-util';
-import {Stream, MergedStream} from 'vega-typings';
+import {Stream, MergedStream} from 'vega';
 import {SELECTION_ID, isLegendBinding, isLegendStreamBinding} from '../../../selection';
 import * as log from '../../../log';
 import {duplicate, varName} from '../../../util';

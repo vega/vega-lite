@@ -1,4 +1,4 @@
-import {Binding, NewSignal, Stream} from 'vega-typings';
+import {Binding, NewSignal, Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel';
 import {

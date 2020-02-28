@@ -1,4 +1,4 @@
-import {AggregateOp, Orientation, Text} from 'vega-typings';
+import {AggregateOp, Orientation, Text} from 'vega';
 import {PositionChannel} from '../channel';
 import {Field, isContinuous, isFieldDef, PositionFieldDef, SecondaryFieldDef, title, ValueDef} from '../channeldef';
 import {Config} from '../config';

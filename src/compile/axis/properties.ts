@@ -1,4 +1,4 @@
-import {Align, AxisOrient, SignalRef} from 'vega-typings';
+import {Align, AxisOrient, SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {Axis} from '../../axis';
 import {isBinning} from '../../bin';

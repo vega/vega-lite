@@ -1,4 +1,4 @@
-import {BaseTitle, Text, TextEncodeEntry, TitleAnchor} from 'vega-typings';
+import {BaseTitle, Text, TextEncodeEntry, TitleAnchor} from 'vega';
 import {isArray, isString} from 'vega-util';
 import {MarkConfig} from './mark';
 import {ExcludeMappedValueRef, ExcludeMappedValueRefButKeepSignal} from './vega.schema';

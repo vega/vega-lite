@@ -1,4 +1,4 @@
-import {SignalRef, Text} from 'vega-typings';
+import {SignalRef, Text} from 'vega';
 import {array} from 'vega-util';
 import {Axis} from '../axis';
 import {isBinning} from '../bin';

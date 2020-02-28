@@ -1,4 +1,4 @@
-import {Orient} from 'vega-typings';
+import {Orient} from 'vega';
 import {FacetChannel} from '../../channel';
 import {Config} from '../../config';
 import {Header} from '../../header';

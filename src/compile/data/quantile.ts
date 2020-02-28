@@ -1,4 +1,4 @@
-import {QuantileTransform as VgQuantileTransform} from 'vega-typings';
+import {QuantileTransform as VgQuantileTransform} from 'vega';
 import {QuantileTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {DataFlowNode} from './dataflow';

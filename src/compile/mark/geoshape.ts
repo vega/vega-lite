@@ -1,4 +1,4 @@
-import {GeoShapeTransform as VgGeoShapeTransform} from 'vega-typings';
+import {GeoShapeTransform as VgGeoShapeTransform} from 'vega';
 import {isFieldDef, vgField} from '../../channeldef';
 import {GEOJSON} from '../../type';
 import {VgPostEncodingTransform} from '../../vega.schema';
