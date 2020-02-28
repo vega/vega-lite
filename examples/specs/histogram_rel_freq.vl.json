@@ -2,8 +2,10 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/cars.json"},
   "transform": [{
+      "bin": true, "field": "Horsepower", "as": "bin_Horsepwoer"
+    }, {
       "aggregate": [{"op": "count", "as": "Count"}],
-      "groupby": ["Cylinders"]
+      "groupby": ["bin_Horsepwoer", "bin_Horsepwoer_end"]
     }, {
       "joinaggregate": [{"op": "sum", "field": "Count", "as": "TotalCount"}]
     }, {
@@ -13,14 +15,17 @@
   "mark": {"type": "bar", "tooltip": true},
   "encoding": {
     "x": {
-      "field": "Cylinders",
-      "type": "ordinal"
+      "title": "Horsepower",
+      "field": "bin_Horsepwoer",
+      "type": "quantitative",
+      "bin": {"binned": true}
     },
+    "x2": {"field": "bin_Horsepwoer_end"},
     "y": {
+      "title": "Relative Frequency",
       "field": "PercentOfTotal",
       "type": "quantitative",
       "axis": {
-        "title": "Relative Frequency",
         "format": ".1~%"
         }
     }
