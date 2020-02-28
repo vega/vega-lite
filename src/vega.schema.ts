@@ -39,7 +39,7 @@ import {
   Title as VgTitle,
   Transforms as VgTransform,
   UnionSortField as VgUnionSortField
-} from 'vega-typings';
+} from 'vega';
 import {isArray} from 'vega-util';
 import {ValueOrGradientOrText} from './channeldef';
 import {SortOrder} from './sort';

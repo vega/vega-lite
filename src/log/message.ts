@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega-typings';
+import {AggregateOp} from 'vega';
 import {Aggregate} from '../aggregate';
 import {Channel, FacetChannel, GeoPositionChannel, getSizeType, PositionScaleChannel} from '../channel';
 import {HiddenCompositeAggregate, TypedFieldDef, Value} from '../channeldef';

@@ -1,4 +1,4 @@
-import {Update} from 'vega-typings';
+import {Update} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {isString} from 'vega-util';
 import {TUPLE} from '..';

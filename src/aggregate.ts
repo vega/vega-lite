@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega-typings';
+import {AggregateOp} from 'vega';
 import {isString, toSet} from 'vega-util';
 import {contains, Flag, keys} from './util';
 

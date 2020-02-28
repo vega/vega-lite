@@ -1,4 +1,4 @@
-import {NewSignal} from 'vega-typings';
+import {NewSignal} from 'vega';
 import {Config} from '../config';
 import {Resolve} from '../resolve';
 import {SpecType} from '../spec/base';

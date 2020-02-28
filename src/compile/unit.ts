@@ -1,4 +1,4 @@
-import {NewSignal} from 'vega-typings';
+import {NewSignal} from 'vega';
 import {Axis} from '../axis';
 import {
   Channel,

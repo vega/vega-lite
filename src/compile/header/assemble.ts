@@ -1,7 +1,7 @@
 /**
  * Utility for generating row / column headers
  */
-import {TitleAnchor, TitleConfig} from 'vega-typings';
+import {TitleAnchor, TitleConfig} from 'vega';
 import {isArray} from 'vega-util';
 import {FACET_CHANNELS, FacetChannel} from '../../channel';
 import {vgField} from '../../channeldef';

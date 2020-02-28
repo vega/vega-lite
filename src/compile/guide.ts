@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega-typings/types';
+import {SignalRef} from 'vega';
 import {ValueDef} from '../channeldef';
 import {GuideEncodingEntry} from '../guide';
 import {keys} from '../util';

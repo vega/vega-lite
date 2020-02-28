@@ -1,4 +1,4 @@
-import {AxisOrient} from 'vega-typings';
+import {AxisOrient} from 'vega';
 import {FacetChannel, FACET_CHANNELS} from '../../channel';
 import {title as fieldDefTitle} from '../../channeldef';
 import {contains, getFirstDefined} from '../../util';

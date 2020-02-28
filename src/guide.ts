@@ -1,4 +1,4 @@
-import {SignalRef, Text} from 'vega-typings';
+import {SignalRef, Text} from 'vega';
 import {ConditionValueDefMixins, ValueDef} from './channeldef';
 import {LegendConfig} from './legend';
 import {VgEncodeChannel} from './vega.schema';

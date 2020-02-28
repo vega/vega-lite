@@ -1,4 +1,4 @@
-import {GraticuleTransform as VgGraticuleTransform} from 'vega-typings';
+import {GraticuleTransform as VgGraticuleTransform} from 'vega';
 import {GraticuleParams} from '../../data';
 import {hash} from '../../util';
 import {DataFlowNode} from './dataflow';

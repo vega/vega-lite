@@ -1,4 +1,4 @@
-import {TimeUnitTransform as VgTimeUnitTransform} from 'vega-typings';
+import {TimeUnitTransform as VgTimeUnitTransform} from 'vega';
 import {getSecondaryRangeChannel} from '../../channel';
 import {hasBand, vgField} from '../../channeldef';
 import {getTimeUnitParts, normalizeTimeUnit} from '../../timeunit';

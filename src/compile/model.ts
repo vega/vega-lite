@@ -6,7 +6,7 @@ import {
   Projection as VgProjection,
   SignalRef,
   Title as VgTitle
-} from 'vega-typings';
+} from 'vega';
 import {
   Channel,
   FACET_CHANNELS,

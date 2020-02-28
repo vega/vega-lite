@@ -3,7 +3,7 @@ import {
   ImputeTransform as VgImputeTransform,
   SignalRef,
   WindowTransform as VgWindowTransform
-} from 'vega-typings';
+} from 'vega';
 import {isFieldDef} from '../../channeldef';
 import {pathGroupingFields} from '../../encoding';
 import {ImputeSequence, ImputeTransform, isImputeSequence} from '../../transform';

@@ -1,4 +1,4 @@
-import {NewSignal} from 'vega-typings';
+import {NewSignal} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {stringValue} from 'vega-util';
 import {SelectionComponent} from '..';

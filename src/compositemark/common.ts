@@ -1,4 +1,4 @@
-import {Orientation, SignalRef, Text} from 'vega-typings';
+import {Orientation, SignalRef, Text} from 'vega';
 import {isArray, isBoolean, isString} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from '.';
 import {

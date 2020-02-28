@@ -1,4 +1,4 @@
-import {Binding, Color, Cursor, Stream, Vector2} from 'vega-typings';
+import {Binding, Color, Cursor, Stream, Vector2} from 'vega';
 import {isObject} from 'vega-util';
 import {SingleDefUnitChannel} from './channel';
 import {FieldName, Value} from './channeldef';

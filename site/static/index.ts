@@ -71,7 +71,7 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
 export function embedExample($target: any, spec: TopLevelSpec, actions = true, tooltip = true) {
   const {spec: vgSpec} = compile(spec);
 
-  const view = new vega.View(vega.parse(vgSpec as any), {loader: loader}).renderer('svg').initialize($target);
+  const view = new vega.View(vega.parse(vgSpec), {loader: loader}).renderer('svg').initialize($target);
 
   if (tooltip) {
     const handler = new Handler().call;

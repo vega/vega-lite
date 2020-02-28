@@ -1,4 +1,4 @@
-import {Align, Color, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega-typings';
+import {Align, Color, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
 import {toSet} from 'vega-util';
 import {Gradient} from './channeldef';
 import {CompositeMark, CompositeMarkDef} from './compositemark';

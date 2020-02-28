@@ -7,7 +7,7 @@ import {
   LegendOrient,
   Orientation,
   SignalRef
-} from 'vega-typings';
+} from 'vega';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';

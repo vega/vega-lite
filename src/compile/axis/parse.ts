@@ -1,4 +1,4 @@
-import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef, Text} from 'vega-typings';
+import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef, Text} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
 import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';

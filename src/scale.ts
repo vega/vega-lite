@@ -1,12 +1,5 @@
 import {ScaleBins} from 'vega';
-import {
-  RangeEnum,
-  ScaleInterpolateEnum,
-  ScaleInterpolateParams,
-  SignalRef,
-  TimeInterval,
-  TimeIntervalStep
-} from 'vega-typings';
+import {RangeEnum, ScaleInterpolateEnum, ScaleInterpolateParams, SignalRef, TimeInterval, TimeIntervalStep} from 'vega';
 import {isString, toSet} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, CHANNELS, isColorChannel} from './channel';

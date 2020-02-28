@@ -1,4 +1,4 @@
-import {FormulaTransform as VgFormulaTransform} from 'vega-typings';
+import {FormulaTransform as VgFormulaTransform} from 'vega';
 import {SingleDefChannel} from '../../channel';
 import {FieldRefOption, isScaleFieldDef, TypedFieldDef, vgField} from '../../channeldef';
 import {DateTime} from '../../datetime';

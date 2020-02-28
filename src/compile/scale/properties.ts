@@ -1,4 +1,4 @@
-import {SignalRef, TimeInterval} from 'vega-typings/types';
+import {SignalRef, TimeInterval} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
 import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';

@@ -1,4 +1,4 @@
-import {Legend as VgLegend, LegendEncode, SignalRef} from 'vega-typings';
+import {Legend as VgLegend, LegendEncode, SignalRef} from 'vega';
 import {
   COLOR,
   FILL,

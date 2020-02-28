@@ -1,7 +1,7 @@
 /**
  * Utility for generating row / column headers
  */
-import {Axis as VgAxis, SignalRef, Text} from 'vega-typings';
+import {Axis as VgAxis, SignalRef, Text} from 'vega';
 import {FacetFieldDef} from '../../spec/facet';
 
 export type HeaderChannel = 'row' | 'column';

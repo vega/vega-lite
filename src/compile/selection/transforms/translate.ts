@@ -1,4 +1,4 @@
-import {NewSignal} from 'vega-typings';
+import {NewSignal} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {SelectionComponent} from '..';
 import {ScaleChannel, X, Y} from '../../../channel';
