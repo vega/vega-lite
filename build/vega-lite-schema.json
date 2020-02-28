@@ -124,6 +124,166 @@
         }
       ]
     },
+    "AnyMarkConfig": {
+      "anyOf": [
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AreaConfig"
+            },
+            {
+              "not": {
+              }
+            }
+          ],
+          "description": "Area-Specific Config"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/BarConfig"
+            },
+            {
+              "not": {
+              }
+            }
+          ],
+          "description": "Bar-Specific Config"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LineConfig"
+            },
+            {
+              "not": {
+              }
+            }
+          ],
+          "description": "Line-Specific Config"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/RectConfig"
+            },
+            {
+              "not": {
+              }
+            }
+          ],
+          "description": "Image-specific Config"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LineConfig"
+            },
+            {
+              "not": {
+              }
+            }
+          ],
+          "description": "Trail-Specific Config"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkConfig"
+            },
+            {
+              "not": {
+              }
+            }
+          ],
+          "description": "Point-Specific Config"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkConfig"
+            },
+            {
+              "not": {
+              }
+            }
+          ],
+          "description": "Text-Specific Config"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TickConfig"
+            },
+            {
+              "not": {
+              }
+            }
+          ],
+          "description": "Tick-Specific Config"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/RectConfig"
+            },
+            {
+              "not": {
+              }
+            }
+          ],
+          "description": "Rect-Specific Config"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkConfig"
+            },
+            {
+              "not": {
+              }
+            }
+          ],
+          "description": "Rule-Specific Config"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkConfig"
+            },
+            {
+              "not": {
+              }
+            }
+          ],
+          "description": "Circle-Specific Config"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkConfig"
+            },
+            {
+              "not": {
+              }
+            }
+          ],
+          "description": "Square-Specific Config"
+        },
+        {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/MarkConfig"
+            },
+            {
+              "not": {
+              }
+            }
+          ],
+          "description": "Geoshape-Specific Config"
+        }
+      ]
+    },
     "AreaConfig": {
       "additionalProperties": false,
       "properties": {
@@ -14586,7 +14746,7 @@
       "additionalProperties": {
         "anyOf": [
           {
-            "$ref": "#/definitions/MarkConfig"
+            "$ref": "#/definitions/AnyMarkConfig"
           },
           {
             "$ref": "#/definitions/Axis"
@@ -14595,16 +14755,20 @@
       },
       "properties": {
         "area": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/AreaConfig",
+          "description": "Area-Specific Config"
         },
         "bar": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/BarConfig",
+          "description": "Bar-Specific Config"
         },
         "circle": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Circle-Specific Config"
         },
         "geoshape": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Geoshape-Specific Config"
         },
         "group-subtitle": {
           "$ref": "#/definitions/MarkConfig",
@@ -14623,31 +14787,44 @@
           "description": "Default style for axis, legend, and header titles."
         },
         "image": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/RectConfig",
+          "description": "Image-specific Config"
         },
         "line": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/LineConfig",
+          "description": "Line-Specific Config"
+        },
+        "mark": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Mark Config"
         },
         "point": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Point-Specific Config"
         },
         "rect": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/RectConfig",
+          "description": "Rect-Specific Config"
         },
         "rule": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Rule-Specific Config"
         },
         "square": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Square-Specific Config"
         },
         "text": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Text-Specific Config"
         },
         "tick": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/TickConfig",
+          "description": "Tick-Specific Config"
         },
         "trail": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/LineConfig",
+          "description": "Trail-Specific Config"
         }
       },
       "type": "object"

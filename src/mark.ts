@@ -296,7 +296,7 @@ export const defaultMarkConfig: MarkConfig = {
   timeUnitBand: 1
 };
 
-export type AnyMarkConfig = MarkConfig | AreaConfig | BarConfig | RectConfig | LineConfig | TickConfig;
+export type AnyMarkConfig = MarkConfigMixins[Mark];
 
 export interface MarkConfigMixins {
   /** Mark Config */
