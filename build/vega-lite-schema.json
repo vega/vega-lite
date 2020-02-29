@@ -2184,7 +2184,7 @@
               "type": "array"
             }
           ],
-          "description": "The output fields at which to write the start and end bin values."
+          "description": "The output fields at which to write the start and end bin values.\nThis can be either a string or an array of strings with two elements denoting the name for the fields for bin start and bin end respectively.\nIf a single string (e.g., `\"val\"`) is provided, the end field will be `\"val_end\"`."
         },
         "bin": {
           "anyOf": [
