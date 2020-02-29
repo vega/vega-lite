@@ -794,7 +794,7 @@
         },
         "labelOffset": {
           "description": "Position offset in pixels to apply to labels, in addition to tickOffset.",
-          "type": "string"
+          "type": "number"
         },
         "labelOpacity": {
           "anyOf": [
@@ -1328,7 +1328,7 @@
         },
         "labelOffset": {
           "description": "Position offset in pixels to apply to labels, in addition to tickOffset.",
-          "type": "string"
+          "type": "number"
         },
         "labelOpacity": {
           "anyOf": [
