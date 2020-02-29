@@ -1,8 +1,48 @@
+import {normalizeMarkDef} from '../../../src/compile/mark/init';
+import {defaultConfig} from '../../../src/config';
 import {CIRCLE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
 import {without} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/mark/init', () => {
+  describe('normalizeMarkDef', () => {
+    it('applies cornerRadiusEnd to all cornerRadius for ranged bars', () => {
+      expect(
+        normalizeMarkDef(
+          {type: 'bar', cornerRadiusEnd: 5},
+          {x: {field: 'x', type: 'quantitative'}, x2: {field: 'x2'}},
+          defaultConfig,
+          {graticule: false}
+        )
+      ).toMatchObject({cornerRadius: 5});
+
+      expect(
+        normalizeMarkDef(
+          {type: 'bar', cornerRadiusEnd: 5},
+          {y: {field: 'x', type: 'quantitative'}, y2: {field: 'x2'}},
+          defaultConfig,
+          {graticule: false}
+        )
+      ).toMatchObject({cornerRadius: 5});
+    });
+
+    it('applies cornerRadiusEnd to top cornerRadius for vertical bars', () => {
+      expect(
+        normalizeMarkDef({type: 'bar', cornerRadiusEnd: 5}, {y: {field: 'x', type: 'quantitative'}}, defaultConfig, {
+          graticule: false
+        })
+      ).toMatchObject({cornerRadiusTopLeft: 5, cornerRadiusTopRight: 5});
+    });
+
+    it('applies cornerRadiusEnd to top cornerRadius for vertical bars', () => {
+      expect(
+        normalizeMarkDef({type: 'bar', cornerRadiusEnd: 5}, {x: {field: 'x', type: 'quantitative'}}, defaultConfig, {
+          graticule: false
+        })
+      ).toMatchObject({cornerRadiusBottomRight: 5, cornerRadiusTopRight: 5});
+    });
+  });
+
   describe('defaultOpacity', () => {
     it('should return 0.7 by default for unaggregated point, tick, circle, and square', () => {
       for (const mark of [POINT, TICK, CIRCLE, SQUARE]) {
