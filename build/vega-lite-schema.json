@@ -4513,9 +4513,17 @@
           "$ref": "#/definitions/AxisConfig",
           "description": "Config for x-axis along the bottom edge of the chart."
         },
+        "axisDiscrete": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for axes with \"point\" or \"band\" scales."
+        },
         "axisLeft": {
           "$ref": "#/definitions/AxisConfig",
           "description": "Config for y-axis along the left edge of the chart."
+        },
+        "axisPoint": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for axes with \"point\" scales."
         },
         "axisQuantitative": {
           "$ref": "#/definitions/AxisConfig",
