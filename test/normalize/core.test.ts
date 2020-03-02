@@ -14,7 +14,7 @@ describe('normalize()', () => {
 
   describe('normalizeRepeat', () => {
     it(
-      'should drop columns from repeat with row/column',
+      'should ignore columns from repeat with row/column',
       log.wrap((localLogger: LocalLogger) => {
         const spec: TopLevelSpec = {
           $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
@@ -35,7 +35,7 @@ describe('normalize()', () => {
           }
         };
         const normalized = normalize(spec);
-        expect(normalized['columns']).toBeUndefined();
+        expect(normalized['columns']).toBe(4);
         expect(localLogger.warns[0]).toEqual(log.message.columnsNotSupportByRowCol('repeat'));
       })
     );
@@ -127,7 +127,6 @@ describe('normalize()', () => {
       'should drop columns from facet with row/column',
       log.wrap((localLogger: LocalLogger) => {
         const spec: TopLevelSpec = {
-          $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
           data: {url: 'data/cars.json'},
           facet: {column: {field: 'a', type: 'nominal'}},
           columns: 2,

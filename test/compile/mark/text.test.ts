@@ -3,7 +3,7 @@ import {text} from '../../../src/compile/mark/text';
 import {UnitModel} from '../../../src/compile/unit';
 import {NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../../src/spec';
 import {parseModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
-import {BIN_RANGE_DELIMITER} from './../../../src/compile/common';
+import {BIN_RANGE_DELIMITER} from '../../../src/compile/common';
 
 describe('Mark: Text', () => {
   describe('with stacked x', () => {

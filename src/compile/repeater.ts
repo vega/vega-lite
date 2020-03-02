@@ -9,7 +9,8 @@ import {
   isRepeatRef,
   isSortableFieldDef,
   ScaleFieldDef,
-  ValueDef
+  ValueDef,
+  FieldName
 } from '../channeldef';
 import {Encoding} from '../encoding';
 import * as log from '../log';
@@ -26,15 +27,23 @@ export interface RepeaterValue {
 export function replaceRepeaterInFacet(
   facet: FacetFieldDef<Field> | FacetMapping<Field>,
   repeater: RepeaterValue
-): FacetFieldDef<string> | FacetMapping<string> {
-  if (isFacetMapping(facet)) {
-    return replaceRepeater(facet, repeater) as FacetMapping<string>;
+): FacetFieldDef<FieldName> | FacetMapping<FieldName> {
+  if (!repeater) {
+    return facet as FacetFieldDef<FieldName>;
   }
-  return replaceRepeaterInFieldDef(facet, repeater) as FacetFieldDef<string>;
+
+  if (isFacetMapping(facet)) {
+    return replaceRepeater(facet, repeater) as FacetMapping<FieldName>;
+  }
+  return replaceRepeaterInFieldDef(facet, repeater) as FacetFieldDef<FieldName>;
 }
 
-export function replaceRepeaterInEncoding(encoding: Encoding<Field>, repeater: RepeaterValue): Encoding<string> {
-  return replaceRepeater(encoding, repeater) as Encoding<string>;
+export function replaceRepeaterInEncoding(encoding: Encoding<Field>, repeater: RepeaterValue): Encoding<FieldName> {
+  if (!repeater) {
+    return encoding as Encoding<FieldName>;
+  }
+
+  return replaceRepeater(encoding, repeater) as Encoding<FieldName>;
 }
 
 /**
@@ -43,8 +52,7 @@ export function replaceRepeaterInEncoding(encoding: Encoding<Field>, repeater: R
 function replaceRepeat<T extends {field?: Field}>(o: T, repeater: RepeaterValue): T {
   if (isRepeatRef(o.field)) {
     if (o.field.repeat in repeater) {
-      // any needed to calm down ts compiler
-      return {...(o as any), field: repeater[o.field.repeat]};
+      return {...o, field: repeater[o.field.repeat]};
     } else {
       log.warn(log.message.noSuchRepeatedValue(o.field.repeat));
       return undefined;
@@ -56,7 +64,7 @@ function replaceRepeat<T extends {field?: Field}>(o: T, repeater: RepeaterValue)
 /**
  * Replace repeater values in a field def with the concrete field name.
  */
-function replaceRepeaterInFieldDef(fieldDef: FieldDef<Field>, repeater: RepeaterValue): FieldDef<string> {
+function replaceRepeaterInFieldDef(fieldDef: FieldDef<Field>, repeater: RepeaterValue): FieldDef<FieldName> {
   fieldDef = replaceRepeat(fieldDef, repeater);
 
   if (fieldDef === undefined) {
@@ -74,7 +82,7 @@ function replaceRepeaterInFieldDef(fieldDef: FieldDef<Field>, repeater: Repeater
     };
   }
 
-  return fieldDef as ScaleFieldDef<string>;
+  return fieldDef as ScaleFieldDef<FieldName>;
 }
 
 function replaceRepeaterInChannelDef(channelDef: ChannelDef<FieldDef<Field>>, repeater: RepeaterValue): ChannelDef {
@@ -105,8 +113,8 @@ function replaceRepeaterInChannelDef(channelDef: ChannelDef<FieldDef<Field>>, re
 
 type EncodingOrFacet<F extends Field> = Encoding<F> | FacetMapping<F>;
 
-function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValue): EncodingOrFacet<string> {
-  const out: EncodingOrFacet<string> = {};
+function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValue): EncodingOrFacet<FieldName> {
+  const out: EncodingOrFacet<FieldName> = {};
   for (const channel in mapping) {
     if (hasOwnProperty(mapping, channel)) {
       const channelDef: ChannelDef<FieldDef<Field>> | ChannelDef<FieldDef<Field>>[] = mapping[channel];

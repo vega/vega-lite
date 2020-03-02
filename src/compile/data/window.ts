@@ -5,7 +5,7 @@ import {SortOrder} from '../../sort';
 import {WindowFieldDef, WindowOnlyOp, WindowTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {VgComparator, VgJoinAggregateTransform} from '../../vega.schema';
-import {unique} from './../../util';
+import {unique} from '../../util';
 import {DataFlowNode} from './dataflow';
 
 /**

@@ -1,3 +1,4 @@
+import {FieldName} from '../channeldef';
 import {LayoutAlign} from 'vega';
 import {BinParams} from '../bin';
 import {ChannelDef, Field, FieldDef, TypedFieldDef} from '../channeldef';
@@ -101,16 +102,17 @@ export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef
 /**
  * Base interface for a facet specification.
  */
-export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
-  extends BaseSpec,
-    GenericCompositionLayoutWithColumns,
-    ResolveMixins {
+export interface GenericFacetSpec<
+  U extends GenericUnitSpec<any, any>,
+  L extends GenericLayerSpec<any>,
+  F extends Field
+> extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {
   /**
    * Definition for how to facet the data. One of:
    * 1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)
    * 2) [An object that maps `row` and `column` channels to their field definitions](https://vega.github.io/vega-lite/docs/facet.html#mapping)
    */
-  facet: FacetFieldDef<Field> | FacetMapping<Field>;
+  facet: FacetFieldDef<F> | FacetMapping<F>;
 
   /**
    * A specification of the view that gets faceted.
@@ -122,8 +124,8 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends
 /**
  * A facet specification without any shortcut / expansion syntax
  */
-export type NormalizedFacetSpec = GenericFacetSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
+export type NormalizedFacetSpec = GenericFacetSpec<NormalizedUnitSpec, NormalizedLayerSpec, FieldName>;
 
-export function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<any, any> {
+export function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<any, any, any> {
   return spec['facet'] !== undefined;
 }

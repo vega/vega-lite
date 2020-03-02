@@ -18,7 +18,7 @@ import {VgSortField} from '../vega.schema';
  * Collection of all Vega-Lite Error Messages
  */
 
-export function invalidSpec(spec: GenericSpec<any, any>) {
+export function invalidSpec(spec: GenericSpec<any, any, any, any>) {
   return `Invalid specification ${JSON.stringify(
     spec
   )}. Make sure the specification includes at least one of the following properties: "mark", "layer", "facet", "hconcat", "vconcat", "concat", or "repeat".`;
@@ -85,13 +85,9 @@ export function columnsNotSupportByRowCol(type: 'facet' | 'repeat') {
   return `The "columns" property cannot be used when "${type}" has nested row/column.`;
 }
 
-// CONCAT
+// CONCAT / REPEAT
 export const CONCAT_CANNOT_SHARE_AXIS =
-  'Axes cannot be shared in concatenated views yet (https://github.com/vega/vega-lite/issues/2415).';
-
-// REPEAT
-export const REPEAT_CANNOT_SHARE_AXIS =
-  'Axes cannot be shared in repeated views yet (https://github.com/vega/vega-lite/issues/2415).';
+  'Axes cannot be shared in concatenated or concatenated views yet (https://github.com/vega/vega-lite/issues/2415).';
 
 // DATA
 export function unrecognizedParse(p: string) {

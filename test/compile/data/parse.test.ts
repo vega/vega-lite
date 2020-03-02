@@ -14,7 +14,7 @@ import {TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {WindowTransformNode} from '../../../src/compile/data/window';
 import {Transform} from '../../../src/transform';
 import {parseUnitModel} from '../../util';
-import {SourceNode} from './../../../src/compile/data/source';
+import {SourceNode} from '../../../src/compile/data/source';
 import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/parse', () => {

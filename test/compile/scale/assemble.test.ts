@@ -1,12 +1,6 @@
 import {assembleScaleRange, assembleScales} from '../../../src/compile/scale/assemble';
 import {SignalRefWrapper} from '../../../src/compile/signal';
-import {
-  parseConcatModel,
-  parseFacetModelWithScale,
-  parseLayerModel,
-  parseRepeatModel,
-  parseUnitModelWithScale
-} from '../../util';
+import {parseConcatModel, parseFacetModelWithScale, parseLayerModel, parseUnitModelWithScale} from '../../util';
 
 describe('compile/scale/assemble', () => {
   describe('assembleScales', () => {
@@ -62,24 +56,6 @@ describe('compile/scale/assemble', () => {
       model.parseScale();
       const scales = assembleScales(model);
       expect(scales).toHaveLength(3); // 2 x, 1 y
-    });
-
-    it('includes all scales for repeat', () => {
-      const model = parseRepeatModel({
-        repeat: {
-          row: ['Acceleration', 'Horsepower']
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: {repeat: 'row'}, type: 'quantitative'}
-          }
-        }
-      });
-
-      model.parseScale();
-      const scales = assembleScales(model);
-      expect(scales).toHaveLength(2);
     });
 
     it('includes shared scales, but not independent scales (as they are nested) for facet.', () => {

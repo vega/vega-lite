@@ -20,7 +20,7 @@ type RangedLineSpec = GenericUnitSpec<Encoding<Field> & (EncodingX2Mixins | Enco
 export class RuleForRangedLineNormalizer implements NonFacetUnitNormalizer<RangedLineSpec> {
   public name = 'RuleForRangedLine';
 
-  public hasMatchingType(spec: GenericSpec<any, any>): spec is RangedLineSpec {
+  public hasMatchingType(spec: GenericSpec<any, any, any, any>): spec is RangedLineSpec {
     if (isUnitSpec(spec)) {
       const {encoding, mark} = spec;
       if (mark === 'line') {

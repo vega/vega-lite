@@ -1,3 +1,4 @@
+import {SelectionExtent} from './../../selection';
 import {SignalRef} from 'vega';
 import {isObject, isString} from 'vega-util';
 import {
@@ -50,7 +51,7 @@ export function parseScaleDomain(model: Model) {
 function parseUnitScaleDomain(model: UnitModel) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
-  util.keys(localScaleComponents).forEach((channel: ScaleChannel) => {
+  for (const channel of util.keys(localScaleComponents)) {
     const domains = parseDomainForChannel(model, channel);
     const localScaleCmpt = localScaleComponents[channel];
     localScaleCmpt.setWithExplicit('domains', domains);
@@ -75,7 +76,7 @@ function parseUnitScaleDomain(model: UnitModel) {
         }
       }
     }
-  });
+  }
 }
 
 function parseNonUnitScaleDomain(model: Model) {
@@ -85,9 +86,9 @@ function parseNonUnitScaleDomain(model: Model) {
 
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
-  util.keys(localScaleComponents).forEach((channel: ScaleChannel) => {
+  for (const channel of util.keys(localScaleComponents)) {
     let domains: Explicit<VgNonUnionDomain[]>;
-    let selectionExtent = null;
+    let selectionExtent: SelectionExtent = null;
 
     for (const child of model.children) {
       const childComponent = child.component.scales[channel];
@@ -117,7 +118,7 @@ function parseNonUnitScaleDomain(model: Model) {
     if (selectionExtent) {
       localScaleComponents[channel].set('selectionExtent', selectionExtent, true);
     }
-  });
+  }
 }
 
 /**

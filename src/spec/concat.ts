@@ -1,7 +1,5 @@
+import {GenericSpec, NormalizedSpec} from '.';
 import {BaseSpec, BoundsMixins, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
-import {GenericSpec} from '.';
-import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
-import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
 /**
  * Base layout mixins for V/HConcatSpec, which should not have RowCol<T> generic fo its property.
@@ -25,58 +23,58 @@ export interface OneDirectionalConcatLayout extends BoundsMixins, ResolveMixins 
 /**
  * Base interface for a generalized concatenation specification.
  */
-export interface GenericConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
+export interface GenericConcatSpec<S extends GenericSpec<any, any, any, any>>
   extends BaseSpec,
     GenericCompositionLayoutWithColumns,
     ResolveMixins {
   /**
    * A list of views to be concatenated.
    */
-  concat: GenericSpec<U, L>[];
+  concat: S[];
 }
 
 /**
  * Base interface for a vertical concatenation specification.
  */
-export interface GenericVConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
+export interface GenericVConcatSpec<S extends GenericSpec<any, any, any, any>>
   extends BaseSpec,
     OneDirectionalConcatLayout {
   /**
    * A list of views to be concatenated and put into a column.
    */
-  vconcat: GenericSpec<U, L>[];
+  vconcat: S[];
 }
 
 /**
  * Base interface for a horizontal concatenation specification.
  */
-export interface GenericHConcatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
+export interface GenericHConcatSpec<S extends GenericSpec<any, any, any, any>>
   extends BaseSpec,
     OneDirectionalConcatLayout {
   /**
    * A list of views to be concatenated and put into a row.
    */
-  hconcat: GenericSpec<U, L>[];
+  hconcat: S[];
 }
 
 /** A concat spec without any shortcut/expansion syntax */
 export type NormalizedConcatSpec =
-  | GenericConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>
-  | GenericVConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>
-  | GenericHConcatSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
+  | GenericConcatSpec<NormalizedSpec>
+  | GenericVConcatSpec<NormalizedSpec>
+  | GenericHConcatSpec<NormalizedSpec>;
 
-export function isAnyConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any, any> | GenericHConcatSpec<any, any> {
+export function isAnyConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any> | GenericHConcatSpec<any> {
   return isVConcatSpec(spec) || isHConcatSpec(spec) || isConcatSpec(spec);
 }
 
-export function isConcatSpec(spec: BaseSpec): spec is GenericConcatSpec<any, any> {
+export function isConcatSpec(spec: BaseSpec): spec is GenericConcatSpec<any> {
   return spec['concat'] !== undefined;
 }
 
-export function isVConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any, any> {
+export function isVConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any> {
   return spec['vconcat'] !== undefined;
 }
 
-export function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<any, any> {
+export function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<any> {
   return spec['hconcat'] !== undefined;
 }

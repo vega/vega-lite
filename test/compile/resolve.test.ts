@@ -1,6 +1,6 @@
 import {defaultScaleResolve, parseGuideResolve} from '../../src/compile/resolve';
 import * as log from '../../src/log';
-import {parseConcatModel, parseFacetModel, parseLayerModel, parseRepeatModel} from '../util';
+import {parseConcatModel, parseFacetModel, parseLayerModel, parseModel} from '../util';
 
 describe('compile/resolve', () => {
   describe('defaultScaleResolve', () => {
@@ -36,7 +36,7 @@ describe('compile/resolve', () => {
     });
 
     it('separates xy scales for repeat model by default.', () => {
-      const model = parseRepeatModel({
+      const model = parseModel({
         repeat: {
           row: ['a', 'b']
         },
@@ -52,7 +52,7 @@ describe('compile/resolve', () => {
     });
 
     it('shares non-xy scales for repeat model by default.', () => {
-      const model = parseRepeatModel({
+      const model = parseModel({
         repeat: {
           row: ['a', 'b']
         },

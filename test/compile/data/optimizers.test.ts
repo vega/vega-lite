@@ -4,7 +4,7 @@ import {MergeIdenticalNodes, MergeParse, MergeTimeUnits} from '../../../src/comp
 import {TimeUnitComponent, TimeUnitNode} from '../../../src/compile/data/timeunit';
 import {Transform} from '../../../src/transform';
 import {hash} from '../../../src/util';
-import {FilterNode} from './../../../src/compile/data/filter';
+import {FilterNode} from '../../../src/compile/data/filter';
 import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/optimizer', () => {

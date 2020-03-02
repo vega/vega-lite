@@ -15,7 +15,7 @@ import {
   TopLevelProperties
 } from '../spec/toplevel';
 import {keys} from '../util';
-import {Config} from './../config';
+import {Config} from '../config';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
 import {optimizeDataflow} from './data/optimize';
@@ -96,8 +96,8 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     // 3. Build Model: normalized spec -> Model (a tree structure)
 
     // This phases instantiates the models with default config by doing a top-down traversal. This allows us to pass properties that child models derive from their parents via their constructors.
-    // See the abstract `Model` class and its children (UnitModel, LayerModel, FacetModel, RepeatModel, ConcatModel) for different types of models.
-    const model: Model = buildModel(spec, null, '', undefined, undefined, config);
+    // See the abstract `Model` class and its children (UnitModel, LayerModel, FacetModel, ConcatModel) for different types of models.
+    const model: Model = buildModel(spec, null, '', undefined, config);
 
     // 4 Parse: Model --> Model with components
 

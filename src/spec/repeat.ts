@@ -1,7 +1,7 @@
+import {FieldName} from '../channeldef';
+import {GenericSpec, LayerSpec} from '.';
+import {FacetedUnitSpec} from './unit';
 import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
-import {GenericSpec} from '.';
-import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
-import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
 export interface RepeatMapping {
   /**
@@ -18,10 +18,7 @@ export interface RepeatMapping {
 /**
  * Base interface for a repeat specification.
  */
-export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>>
-  extends BaseSpec,
-    GenericCompositionLayoutWithColumns,
-    ResolveMixins {
+export interface RepeatSpec extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {
   /**
    * Definition for fields to be repeated. One of:
    * 1) An array of fields to be repeated. If `"repeat"` is an array, the field can be referred using `{"repeat": "repeat"}`
@@ -32,14 +29,9 @@ export interface GenericRepeatSpec<U extends GenericUnitSpec<any, any>, L extend
   /**
    * A specification of the view that gets repeated.
    */
-  spec: GenericSpec<U, L>;
+  spec: GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, FieldName>;
 }
 
-/**
- * A repeat specification without any shortcut/expansion syntax.
- */
-export type NormalizedRepeatSpec = GenericRepeatSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
-
-export function isRepeatSpec(spec: BaseSpec): spec is GenericRepeatSpec<any, any> {
+export function isRepeatSpec(spec: BaseSpec): spec is RepeatSpec {
   return spec['repeat'] !== undefined;
 }

@@ -17,8 +17,6 @@ export function parseLayerLayoutSize(model: Model) {
   layoutSizeCmpt.setWithExplicit('height', parseNonUnitLayoutSizeForChannel(model, 'height'));
 }
 
-export const parseRepeatLayoutSize = parseLayerLayoutSize;
-
 const SIZE_TYPE_TO_MERGE = {
   vconcat: 'width',
   hconcat: 'height'

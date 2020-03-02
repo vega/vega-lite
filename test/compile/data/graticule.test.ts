@@ -1,4 +1,4 @@
-import {GraticuleParams} from './../../../src/data';
+import {GraticuleParams} from '../../../src/data';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {GraticuleNode} from '../../../src/compile/data/graticule';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';

@@ -11,7 +11,6 @@ import {assembleLayoutSignals} from './layoutsize/assemble';
 import {parseLayerLayoutSize} from './layoutsize/parse';
 import {assembleLegends} from './legend/assemble';
 import {Model} from './model';
-import {RepeaterValue} from './repeater';
 import {assembleLayerSelectionMarks} from './selection/assemble';
 import {UnitModel} from './unit';
 
@@ -25,10 +24,9 @@ export class LayerModel extends Model {
     parent: Model,
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins,
-    repeater: RepeaterValue,
     config: Config
   ) {
-    super(spec, 'layer', parent, parentGivenName, config, repeater, spec.resolve, spec.view);
+    super(spec, 'layer', parent, parentGivenName, config, spec.resolve, spec.view);
 
     const layoutSize = {
       ...parentGivenSize,
@@ -38,9 +36,9 @@ export class LayerModel extends Model {
 
     this.children = spec.layer.map((layer, i) => {
       if (isLayerSpec(layer)) {
-        return new LayerModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config);
+        return new LayerModel(layer, this, this.getName('layer_' + i), layoutSize, config);
       } else if (isUnitSpec(layer)) {
-        return new UnitModel(layer, this, this.getName('layer_' + i), layoutSize, repeater, config);
+        return new UnitModel(layer, this, this.getName('layer_' + i), layoutSize, config);
       }
 
       throw new Error(log.message.invalidSpec(layer));

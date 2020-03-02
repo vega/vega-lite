@@ -3,7 +3,7 @@ import {normalize} from '../../src/normalize';
 import {isLayerSpec, isUnitSpec, TopLevelSpec} from '../../src/spec';
 import {isCalculate} from '../../src/transform';
 import {defaultConfig} from '.././../src/config';
-import {NormalizedUnitSpec} from './../../src/spec/unit';
+import {NormalizedUnitSpec} from '../../src/spec/unit';
 import {assertIsUnitSpec} from '../util';
 
 describe('common feature of composite marks', () => {

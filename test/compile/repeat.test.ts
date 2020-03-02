@@ -1,10 +1,8 @@
-import {replaceRepeaterInEncoding} from '../../src/compile/repeater';
+import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from '../../src/compile/repeater';
 import * as log from '../../src/log';
-import {keys} from '../../src/util';
-import {parseRepeatModel} from '../util';
 
 describe('Repeat', () => {
-  describe('resolveRepeat', () => {
+  describe('replaceRepeaterInEncoding', () => {
     it('should resolve repeated fields', () => {
       const resolved = replaceRepeaterInEncoding(
         {
@@ -154,86 +152,20 @@ describe('Repeat', () => {
     );
   });
 
-  describe('initialize children', () => {
-    it('should create a model per repeated value', () => {
-      const model = parseRepeatModel({
-        repeat: {
-          row: ['Acceleration', 'Horsepower']
+  describe('replaceRepeaterInFacet', () => {
+    it('should resolve repeated fields', () => {
+      const resolved = replaceRepeaterInFacet(
+        {
+          row: {field: {repeat: 'row'}, type: 'quantitative'},
+          column: {field: 'bar', type: 'quantitative'}
         },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: {repeat: 'row'}, type: 'quantitative'}
-          }
-        }
+        {row: 'foo'}
+      );
+
+      expect(resolved).toEqual({
+        row: {field: 'foo', type: 'quantitative'},
+        column: {field: 'bar', type: 'quantitative'}
       });
-
-      expect(model.children).toHaveLength(2);
     });
-
-    it('should create n*m models if row and column are specified', () => {
-      const model = parseRepeatModel({
-        repeat: {
-          row: ['Acceleration', 'Horsepower', 'Displacement'],
-          column: ['Origin', 'NumCylinders']
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: {repeat: 'row'}, type: 'quantitative'},
-            y: {field: {repeat: 'column'}, type: 'ordinal'}
-          }
-        }
-      });
-
-      expect(model.children).toHaveLength(6);
-    });
-
-    it('should union color scales and legends', () => {
-      const model = parseRepeatModel({
-        repeat: {
-          row: ['foo', 'bar'],
-          column: ['foo', 'bar']
-        },
-        spec: {
-          mark: 'point',
-          encoding: {
-            x: {field: {repeat: 'row'}, type: 'quantitative'},
-            y: {field: {repeat: 'column'}, type: 'ordinal'},
-            color: {field: 'baz', type: 'nominal'}
-          }
-        }
-      });
-
-      model.parseScale();
-      const colorScale = model.component.scales['color'];
-
-      expect(colorScale.get('domains')).toHaveLength(4);
-
-      model.parseLegends();
-
-      expect(keys(model.component.legends)).toHaveLength(1);
-    });
-  });
-
-  describe('resolve', () => {
-    it(
-      'cannot share axes',
-      log.wrap(localLogger => {
-        parseRepeatModel({
-          repeat: {},
-          spec: {
-            mark: 'point',
-            encoding: {}
-          },
-          resolve: {
-            axis: {
-              x: 'shared'
-            }
-          }
-        });
-        expect(localLogger.warns[0]).toEqual(log.message.REPEAT_CANNOT_SHARE_AXIS);
-      })
-    );
   });
 });

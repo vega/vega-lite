@@ -53,8 +53,6 @@ import {parseLegend} from './legend/parse';
 import {assembleProjections} from './projection/assemble';
 import {ProjectionComponent} from './projection/component';
 import {parseProjection} from './projection/parse';
-import {RepeatModel} from './repeat';
-import {RepeaterValue} from './repeater';
 import {assembleScales} from './scale/assemble';
 import {ScaleComponent, ScaleComponentIndex} from './scale/component';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
@@ -145,10 +143,6 @@ export function isFacetModel(model: Model): model is FacetModel {
   return model?.type === 'facet';
 }
 
-export function isRepeatModel(model: Model): model is RepeatModel {
-  return model?.type === 'repeat';
-}
-
 export function isConcatModel(model: Model): model is ConcatModel {
   return model?.type === 'concat';
 }
@@ -188,13 +182,11 @@ export abstract class Model {
     public readonly parent: Model,
     parentGivenName: string,
     public readonly config: Config,
-    public readonly repeater: RepeaterValue,
     resolve: Resolve,
     public readonly view?: ViewBackground
   ) {
     this.parent = parent;
     this.config = config;
-    this.repeater = repeater;
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this.name = spec.name ?? parentGivenName;

@@ -37,7 +37,6 @@ import {LegendIndex} from './legend/component';
 import {initMarkdef} from './mark/init';
 import {parseMarkGroups} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
-import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
 import {ScaleIndex} from './scale/component';
 import {
   assembleTopLevelSignals,
@@ -72,31 +71,21 @@ export class UnitModel extends ModelWithField {
     parent: Model,
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins = {},
-    repeater: RepeaterValue,
     config: Config
   ) {
-    super(
-      spec,
-      'unit',
-      parent,
-      parentGivenName,
-      config,
-      repeater,
-      undefined,
-      isFrameMixins(spec) ? spec.view : undefined
-    );
+    super(spec, 'unit', parent, parentGivenName, config, undefined, isFrameMixins(spec) ? spec.view : undefined);
 
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
 
-    const encodingWithRepeaterReplaced = replaceRepeaterInEncoding(spec.encoding ?? {}, repeater);
+    const encoding = spec.encoding ?? {};
 
-    this.markDef = initMarkdef(spec.mark, encodingWithRepeaterReplaced, config, {
+    this.markDef = initMarkdef(spec.mark, encoding, config, {
       graticule: spec.data && isGraticuleGenerator(spec.data)
     });
-    const encoding = (this.encoding = initEncoding(encodingWithRepeaterReplaced, this.markDef));
+    const normalizedEncoding = (this.encoding = initEncoding(encoding, this.markDef));
 
     this.size = initLayoutSize({
-      encoding,
+      encoding: normalizedEncoding,
       size: isFrameMixins(spec)
         ? {
             ...parentGivenSize,
@@ -107,11 +96,11 @@ export class UnitModel extends ModelWithField {
     });
 
     // calculate stack properties
-    this.stack = stack(mark, encoding);
-    this.specifiedScales = this.initScales(mark, encoding);
+    this.stack = stack(mark, normalizedEncoding);
+    this.specifiedScales = this.initScales(mark, normalizedEncoding);
 
-    this.specifiedAxes = this.initAxes(encoding);
-    this.specifiedLegends = this.initLegend(encoding);
+    this.specifiedAxes = this.initAxes(normalizedEncoding);
+    this.specifiedLegends = this.initLegend(normalizedEncoding);
     this.specifiedProjection = spec.projection;
 
     // Selections will be initialized upon parse.

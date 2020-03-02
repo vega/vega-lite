@@ -1,3 +1,4 @@
+import {Field, FieldName} from './../channeldef';
 import * as log from '../log';
 import {
   GenericConcatSpec,
@@ -10,16 +11,18 @@ import {
 import {GenericFacetSpec, isFacetSpec} from './facet';
 import {GenericSpec} from '.';
 import {GenericLayerSpec, isLayerSpec} from './layer';
-import {GenericRepeatSpec, isRepeatSpec} from './repeat';
+import {RepeatSpec, isRepeatSpec} from './repeat';
 import {GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
 
 export abstract class SpecMapper<
   P,
   UI extends GenericUnitSpec<any, any>,
   LI extends GenericLayerSpec<any> = GenericLayerSpec<UI>,
-  UO extends GenericUnitSpec<any, any> = NormalizedUnitSpec
+  UO extends GenericUnitSpec<any, any> = NormalizedUnitSpec,
+  RO extends RepeatSpec = never,
+  FO extends Field = FieldName
 > {
-  public map(spec: GenericSpec<UI, LI>, params: P): GenericSpec<UO, GenericLayerSpec<UO>> {
+  public map(spec: GenericSpec<UI, LI, RepeatSpec, Field>, params: P): GenericSpec<UO, GenericLayerSpec<UO>, RO, FO> {
     if (isFacetSpec(spec)) {
       return this.mapFacet(spec, params);
     } else if (isRepeatSpec(spec)) {
@@ -53,21 +56,30 @@ export abstract class SpecMapper<
     };
   }
 
-  protected mapHConcat(spec: GenericHConcatSpec<UI, LI>, params: P): GenericHConcatSpec<UO, GenericLayerSpec<UO>> {
+  protected mapHConcat(
+    spec: GenericHConcatSpec<GenericSpec<UI, LI, RepeatSpec, Field>>,
+    params: P
+  ): GenericHConcatSpec<GenericSpec<UO, GenericLayerSpec<UO>, RO, FO>> {
     return {
       ...spec,
       hconcat: spec.hconcat.map(subspec => this.map(subspec, params))
     };
   }
 
-  protected mapVConcat(spec: GenericVConcatSpec<UI, LI>, params: P): GenericVConcatSpec<UO, GenericLayerSpec<UO>> {
+  protected mapVConcat(
+    spec: GenericVConcatSpec<GenericSpec<UI, LI, RepeatSpec, Field>>,
+    params: P
+  ): GenericVConcatSpec<GenericSpec<UO, GenericLayerSpec<UO>, RO, FO>> {
     return {
       ...spec,
       vconcat: spec.vconcat.map(subspec => this.map(subspec, params))
     };
   }
 
-  protected mapConcat(spec: GenericConcatSpec<UI, LI>, params: P): GenericConcatSpec<UO, GenericLayerSpec<UO>> {
+  protected mapConcat(
+    spec: GenericConcatSpec<GenericSpec<UI, LI, RepeatSpec, Field>>,
+    params: P
+  ): GenericConcatSpec<GenericSpec<UO, GenericLayerSpec<UO>, RO, FO>> {
     const {concat, ...rest} = spec;
 
     return {
@@ -76,18 +88,19 @@ export abstract class SpecMapper<
     };
   }
 
-  protected mapFacet(spec: GenericFacetSpec<UI, LI>, params: P): GenericFacetSpec<UO, GenericLayerSpec<UO>> {
+  protected mapFacet(spec: GenericFacetSpec<UI, LI, Field>, params: P): GenericFacetSpec<UO, GenericLayerSpec<UO>, FO> {
     return {
-      ...spec,
+      // as any is required here since TS cannot infer that FO may only be FieldName or Field, but not RepeatRef
+      ...(spec as any),
       // TODO: remove "any" once we support all facet listed in https://github.com/vega/vega-lite/issues/2760
       spec: this.map(spec.spec, params) as any
     };
   }
 
-  protected mapRepeat(spec: GenericRepeatSpec<UI, LI>, params: P): GenericRepeatSpec<UO, GenericLayerSpec<UO>> {
+  protected mapRepeat(spec: RepeatSpec, params: P): GenericSpec<UO, any, RO, FO> {
     return {
       ...spec,
-      spec: this.map(spec.spec, params)
+      spec: this.map(spec.spec as any, params)
     };
   }
 }

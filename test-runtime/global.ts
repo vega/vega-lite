@@ -1,6 +1,6 @@
 import {parse, View} from 'vega-typings';
 import {compile} from '../src';
-import {TopLevelSpec} from './../src/spec';
+import {TopLevelSpec} from '../src/spec';
 
 interface Opts {
   bubbles?: boolean;

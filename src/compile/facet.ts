@@ -1,3 +1,4 @@
+import {FieldName} from '../channeldef';
 import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
@@ -22,7 +23,6 @@ import {HEADER_CHANNELS, HEADER_TYPES} from './header/component';
 import {parseFacetHeaders} from './header/parse';
 import {parseChildrenLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
-import {RepeaterValue, replaceRepeaterInFacet} from './repeater';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
 import {assembleFacetSignals} from './selection/assemble';
 
@@ -41,24 +41,16 @@ export class FacetModel extends ModelWithField {
 
   public readonly children: Model[];
 
-  constructor(
-    spec: NormalizedFacetSpec,
-    parent: Model,
-    parentGivenName: string,
-    repeater: RepeaterValue,
-    config: Config
-  ) {
-    super(spec, 'facet', parent, parentGivenName, config, repeater, spec.resolve);
+  constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, config: Config) {
+    super(spec, 'facet', parent, parentGivenName, config, spec.resolve);
 
-    this.child = buildModel(spec.spec, this, this.getName('child'), undefined, repeater, config);
+    this.child = buildModel(spec.spec, this, this.getName('child'), undefined, config);
     this.children = [this.child];
 
-    const facet = replaceRepeaterInFacet(spec.facet, repeater);
-
-    this.facet = this.initFacet(facet);
+    this.facet = this.initFacet(spec.facet);
   }
 
-  private initFacet(facet: FacetFieldDef<string> | FacetMapping<string>): EncodingFacetMapping<string> {
+  private initFacet(facet: FacetFieldDef<FieldName> | FacetMapping<FieldName>): EncodingFacetMapping<FieldName> {
     // clone to prevent side effect to the original spec
     if (!isFacetMapping(facet)) {
       return {facet: initChannelDef(facet, 'facet')};

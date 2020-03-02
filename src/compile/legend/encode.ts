@@ -22,7 +22,7 @@ import {applyMarkConfig, signalOrValueRef, timeFormatExpression} from '../common
 import * as mixins from '../mark/encode';
 import {STORE} from '../selection';
 import {UnitModel} from '../unit';
-import {ScaleChannel} from './../../channel';
+import {ScaleChannel} from '../../channel';
 import {LegendComponent} from './component';
 import {defaultType} from './properties';
 

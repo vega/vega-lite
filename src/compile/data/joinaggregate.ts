@@ -3,8 +3,8 @@ import {vgField} from '../../channeldef';
 import {JoinAggregateTransform} from '../../transform';
 import {duplicate, hash} from '../../util';
 import {VgJoinAggregateTransform} from '../../vega.schema';
-import {JoinAggregateFieldDef} from './../../transform';
-import {unique} from './../../util';
+import {JoinAggregateFieldDef} from '../../transform';
+import {unique} from '../../util';
 import {DataFlowNode} from './dataflow';
 
 /**
