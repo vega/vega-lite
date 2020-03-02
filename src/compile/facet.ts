@@ -2,7 +2,7 @@ import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
 import {Channel, COLUMN, FacetChannel, FACET_CHANNELS, ROW, ScaleChannel} from '../channel';
-import {FieldRefOption, normalize, TypedFieldDef, vgField} from '../channeldef';
+import {FieldRefOption, initChannelDef, TypedFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import * as log from '../log';
@@ -61,7 +61,7 @@ export class FacetModel extends ModelWithField {
   private initFacet(facet: FacetFieldDef<string> | FacetMapping<string>): EncodingFacetMapping<string> {
     // clone to prevent side effect to the original spec
     if (!isFacetMapping(facet)) {
-      return {facet: normalize(facet, 'facet')};
+      return {facet: initChannelDef(facet, 'facet')};
     }
 
     return reduce(
@@ -79,7 +79,7 @@ export class FacetModel extends ModelWithField {
         }
 
         // Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
-        normalizedFacet[channel] = normalize(fieldDef, channel);
+        normalizedFacet[channel] = initChannelDef(fieldDef, channel);
         return normalizedFacet;
       },
       {}

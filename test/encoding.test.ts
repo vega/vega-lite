@@ -16,8 +16,8 @@ import {
   Encoding,
   extractTransformsFromEncoding,
   fieldDefs,
+  initEncoding,
   markChannelCompatible,
-  normalizeEncoding,
   pathGroupingFields
 } from '../src/encoding';
 import * as log from '../src/log';
@@ -25,11 +25,11 @@ import {CIRCLE, Mark, POINT, SQUARE, TICK} from '../src/mark';
 import {internalField} from '../src/util';
 
 describe('encoding', () => {
-  describe('normalizeEncoding', () => {
+  describe('initEncoding', () => {
     it(
       'should drop color channel if fill is specified and filled = true',
       log.wrap(logger => {
-        const encoding = normalizeEncoding(
+        const encoding = initEncoding(
           {
             color: {field: 'a', type: 'quantitative'},
             fill: {field: 'b', type: 'quantitative'}
@@ -47,7 +47,7 @@ describe('encoding', () => {
     it(
       'should drop color channel if stroke is specified and filled is false',
       log.wrap(logger => {
-        const encoding = normalizeEncoding(
+        const encoding = initEncoding(
           {
             color: {field: 'a', type: 'quantitative'},
             stroke: {field: 'b', type: 'quantitative'}
@@ -65,7 +65,7 @@ describe('encoding', () => {
 
   describe('extractTransformsFromEncoding', () => {
     function normalizeEncodingWithMark(encoding: Encoding<string>, mark: Mark) {
-      return normalizeEncoding(encoding, {type: mark});
+      return initEncoding(encoding, {type: mark});
     }
 
     it('should indlude axis in extracted encoding', () => {
