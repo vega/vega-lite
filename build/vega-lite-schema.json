@@ -127,160 +127,22 @@
     "AnyMarkConfig": {
       "anyOf": [
         {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/AreaConfig"
-            },
-            {
-              "not": {
-              }
-            }
-          ],
-          "description": "Area-Specific Config"
+          "$ref": "#/definitions/MarkConfig"
         },
         {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/BarConfig"
-            },
-            {
-              "not": {
-              }
-            }
-          ],
-          "description": "Bar-Specific Config"
+          "$ref": "#/definitions/AreaConfig"
         },
         {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LineConfig"
-            },
-            {
-              "not": {
-              }
-            }
-          ],
-          "description": "Line-Specific Config"
+          "$ref": "#/definitions/BarConfig"
         },
         {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/RectConfig"
-            },
-            {
-              "not": {
-              }
-            }
-          ],
-          "description": "Image-specific Config"
+          "$ref": "#/definitions/RectConfig"
         },
         {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LineConfig"
-            },
-            {
-              "not": {
-              }
-            }
-          ],
-          "description": "Trail-Specific Config"
+          "$ref": "#/definitions/LineConfig"
         },
         {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/MarkConfig"
-            },
-            {
-              "not": {
-              }
-            }
-          ],
-          "description": "Point-Specific Config"
-        },
-        {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/MarkConfig"
-            },
-            {
-              "not": {
-              }
-            }
-          ],
-          "description": "Text-Specific Config"
-        },
-        {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TickConfig"
-            },
-            {
-              "not": {
-              }
-            }
-          ],
-          "description": "Tick-Specific Config"
-        },
-        {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/RectConfig"
-            },
-            {
-              "not": {
-              }
-            }
-          ],
-          "description": "Rect-Specific Config"
-        },
-        {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/MarkConfig"
-            },
-            {
-              "not": {
-              }
-            }
-          ],
-          "description": "Rule-Specific Config"
-        },
-        {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/MarkConfig"
-            },
-            {
-              "not": {
-              }
-            }
-          ],
-          "description": "Circle-Specific Config"
-        },
-        {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/MarkConfig"
-            },
-            {
-              "not": {
-              }
-            }
-          ],
-          "description": "Square-Specific Config"
-        },
-        {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/MarkConfig"
-            },
-            {
-              "not": {
-              }
-            }
-          ],
-          "description": "Geoshape-Specific Config"
+          "$ref": "#/definitions/TickConfig"
         }
       ]
     },

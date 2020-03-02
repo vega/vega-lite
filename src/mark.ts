@@ -296,7 +296,8 @@ export const defaultMarkConfig: MarkConfig = {
   timeUnitBand: 1
 };
 
-export type AnyMarkConfig = MarkConfigMixins[Mark];
+// TODO: replace with MarkConfigMixins[Mark] once https://github.com/vega/ts-json-schema-generator/issues/344 is fixed
+export type AnyMarkConfig = MarkConfig | AreaConfig | BarConfig | RectConfig | LineConfig | TickConfig;
 
 export interface MarkConfigMixins {
   /** Mark Config */
