@@ -548,6 +548,16 @@ export interface AxisConfigMixins {
   axisBand?: AxisConfig;
 
   /**
+   * Config for axes with "point" scales.
+   */
+  axisPoint?: AxisConfig;
+
+  /**
+   * Config for axes with "point" or "band" scales.
+   */
+  axisDiscrete?: AxisConfig;
+
+  /**
    * Config for quantitative axes.
    */
   axisQuantitative?: AxisConfig;

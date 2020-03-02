@@ -23,7 +23,8 @@ export function getAxisConfig(
 
   // configTypes to loop, starting from higher precedence
   const configTypes = [
-    ...(scaleType === 'band' ? ['axisBand'] : []),
+    ...(scaleType === 'band' ? ['axisBand', 'axisDiscrete'] : []),
+    ...(scaleType === 'point' ? ['axisPoint', 'axisDiscrete'] : []),
     ...(isQuantitative(scaleType) ? ['axisQuantitative'] : []),
     ...(scaleType === 'time' || scaleType === 'utc' ? ['axisTemporal'] : []),
 
@@ -34,6 +35,7 @@ export function getAxisConfig(
     ...(orient ? ['axis' + orient.substr(0, 1).toUpperCase() + orient.substr(1)] : []),
     'axis'
   ];
+
   for (const configType of configTypes) {
     if (config[configType]?.[property] !== undefined) {
       return {
