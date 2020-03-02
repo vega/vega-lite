@@ -7456,16 +7456,16 @@ ts-jest@^25.2.1:
     semver "^5.5"
     yargs-parser "^16.1.0"
 
-ts-json-schema-generator@0.61.0:
-  version "0.61.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.61.0.tgz#eafcf10cb5c26e96115a29449d71d4d90b81db01"
-  integrity sha512-YiWP8quUiU6X15V0YxkD4Ya7XvKEAdXDxb0keziRmO456lryJHrrOrSWaNB3vkkQTYuRVRMHXxDpGBoCsrNNpw==
+ts-json-schema-generator@0.61.1:
+  version "0.61.1"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.61.1.tgz#92b5022b1f4678037312c5d56ff5bf44a067143e"
+  integrity sha512-JLoFdVhQh9dXAMjJVFd3dok0LX+Ko5oGilPMEePxjrQDNBeh9nHbQFK1SGAQKf5kk7Fe120dXqeapjUBTTePQg==
   dependencies:
     "@types/json-schema" "^7.0.4"
     commander "~4.1.1"
     glob "~7.1.6"
     json-stable-stringify "^1.0.1"
-    typescript "~3.8.2"
+    typescript "~3.8.3"
 
 tslib@^1.8.1, tslib@^1.9.0, tslib@~1.11.1:
   version "1.11.1"
@@ -7520,10 +7520,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@~3.8.2:
-  version "3.8.2"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.2.tgz#91d6868aaead7da74f493c553aeff76c0c0b1d5a"
-  integrity sha512-EgOVgL/4xfVrCMbhYKUQTdF37SQn4Iw73H5BgCrF1Abdun7Kwy/QZsE/ssAy0y4LxBbvua3PIbFsbRczWWnDdQ==
+typescript@~3.8.2, typescript@~3.8.3:
+  version "3.8.3"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.8.3.tgz#409eb8544ea0335711205869ec458ab109ee1061"
+  integrity sha512-MYlEfn5VrLNsgudQTVJeNaQFUAI7DkhnOjdpAp4T+ku1TfQClewlbSuTVHiA+8skNBgaf02TL/kLOvig4y3G8w==
 
 uglify-js@^3.1.4:
   version "3.8.0"
