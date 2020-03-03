@@ -6,8 +6,8 @@ import sourcemaps from 'rollup-plugin-sourcemaps';
 export function disallowedImports() {
   return {
     resolveId: module => {
-      if (module === 'vega' || module === 'util') {
-        throw new Error('Cannot import from Vega or Node Util in Vega-Lite.');
+      if (module === 'vega' || module === 'util' || module === 'd3') {
+        throw new Error('Cannot import from Vega, Node Util, or D3 in Vega-Lite.');
       }
       return null;
     }
