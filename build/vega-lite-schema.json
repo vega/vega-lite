@@ -13437,6 +13437,10 @@
           ],
           "description": "The range of the scale. One of:\n\n- A string indicating a [pre-defined named scale range](https://vega.github.io/vega-lite/docs/scale.html#range-config) (e.g., example, `\"symbol\"`, or `\"diverging\"`).\n\n- For [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](https://vega.github.io/vega-lite/docs/scale.html#piecewise).\n\n- For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values.\n\n__Notes:__\n\n1) For color scales you can also specify a color [`scheme`](https://vega.github.io/vega-lite/docs/scale.html#scheme) instead of `range`.\n\n2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`)."
         },
+        "reverse": {
+          "description": "If true, reverses the order of the scale range.\n__Default value:__ `false`.",
+          "type": "boolean"
+        },
         "round": {
           "description": "If `true`, rounds numeric output values to integers. This can be helpful for snapping to the pixel grid.\n\n__Default value:__ `false`.",
           "type": "boolean"
@@ -13607,6 +13611,10 @@
         },
         "useUnaggregatedDomain": {
           "description": "Use the source data range before aggregation as scale domain instead of aggregated data for aggregate axis.\n\nThis is equivalent to setting `domain` to `\"unaggregate\"` for aggregated _quantitative_ fields by default.\n\nThis property only works with aggregate functions that produce values within the raw data domain (`\"mean\"`, `\"average\"`, `\"median\"`, `\"q1\"`, `\"q3\"`, `\"min\"`, `\"max\"`). For other aggregations that produce values outside of the raw data domain (e.g. `\"count\"`, `\"sum\"`), this property is ignored.\n\n__Default value:__ `false`",
+          "type": "boolean"
+        },
+        "xReverse": {
+          "description": "Reverse x-scale by default (useful for right-to-left charts).",
           "type": "boolean"
         }
       },

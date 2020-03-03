@@ -377,6 +377,11 @@ export interface ScaleConfig {
    * @minimum 0
    */
   quantizeCount?: number;
+
+  /**
+   * Reverse x-scale by default (useful for right-to-left charts).
+   */
+  xReverse?: boolean | SignalRef;
 }
 
 export const defaultScaleConfig: ScaleConfig = {
@@ -501,12 +506,9 @@ export interface Scale {
    */
   domainMid?: number | SignalRef;
 
-  // Hide because we might not really need this.
   /**
    * If true, reverses the order of the scale range.
    * __Default value:__ `false`.
-   *
-   * @hidden
    */
   reverse?: boolean | SignalRef;
 
