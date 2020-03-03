@@ -57,7 +57,7 @@ describe('Axis', () => {
       expect(axisComponent['x'][0].implicit.labelAlign).toEqual('right');
     });
 
-    it('should produce Vega grid when axis config is specified.', () => {
+    it('should produce grid, orient, tickCount, labelExpr in the component when axis config is specified.', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
         encoding: {
@@ -66,11 +66,14 @@ describe('Axis', () => {
             type: 'quantitative'
           }
         },
-        config: {axisX: {grid: true}}
+        config: {axisX: {grid: true, orient: 'right', tickCount: 20, labelExpr: 'abc'}}
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
       expect(axisComponent['x'][0].implicit.grid).toEqual(true);
+      expect(axisComponent['x'][0].implicit.orient).toEqual('right');
+      expect(axisComponent['x'][0].implicit.tickCount).toEqual(20);
+      expect(axisComponent['x'][0].implicit.labelExpr).toEqual('abc');
     });
 
     it('should include conditional axis config', () => {

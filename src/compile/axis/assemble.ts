@@ -148,7 +148,25 @@ export function assembleAxis(
     }
 
     if (labelOffset) {
-      setAxisEncode(axis, 'labels', orient === 'bottom' || orient === 'top' ? 'dx' : 'dy', {value: labelOffset});
+      let ref: VgValueRef | VgValueRef[];
+      if (isConditionalAxisValue(labelOffset)) {
+        const {condition, value} = labelOffset;
+        const conditions = array(condition);
+        ref = [
+          ...conditions.map(c => {
+            const {value: v, test} = c;
+            return {
+              test: expression(null, test),
+              value: v
+            };
+          }),
+          {value}
+        ];
+      } else {
+        ref = {value: labelOffset};
+      }
+
+      setAxisEncode(axis, 'labels', orient === 'bottom' || orient === 'top' ? 'dx' : 'dy', ref);
     }
 
     // Remove unnecessary encode block

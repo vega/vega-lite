@@ -1,14 +1,14 @@
-import {normalizeMarkDef} from '../../../src/compile/mark/init';
+import {initMarkdef} from '../../../src/compile/mark/init';
 import {defaultConfig} from '../../../src/config';
 import {CIRCLE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
 import {without} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/mark/init', () => {
-  describe('normalizeMarkDef', () => {
+  describe('initMarkDef', () => {
     it('applies cornerRadiusEnd to all cornerRadius for ranged bars', () => {
       expect(
-        normalizeMarkDef(
+        initMarkdef(
           {type: 'bar', cornerRadiusEnd: 5},
           {x: {field: 'x', type: 'quantitative'}, x2: {field: 'x2'}},
           defaultConfig,
@@ -17,7 +17,7 @@ describe('compile/mark/init', () => {
       ).toMatchObject({cornerRadius: 5});
 
       expect(
-        normalizeMarkDef(
+        initMarkdef(
           {type: 'bar', cornerRadiusEnd: 5},
           {y: {field: 'x', type: 'quantitative'}, y2: {field: 'x2'}},
           defaultConfig,
@@ -28,7 +28,7 @@ describe('compile/mark/init', () => {
 
     it('applies cornerRadiusEnd to top cornerRadius for vertical bars', () => {
       expect(
-        normalizeMarkDef({type: 'bar', cornerRadiusEnd: 5}, {y: {field: 'x', type: 'quantitative'}}, defaultConfig, {
+        initMarkdef({type: 'bar', cornerRadiusEnd: 5}, {y: {field: 'x', type: 'quantitative'}}, defaultConfig, {
           graticule: false
         })
       ).toMatchObject({cornerRadiusTopLeft: 5, cornerRadiusTopRight: 5});
@@ -36,7 +36,7 @@ describe('compile/mark/init', () => {
 
     it('applies cornerRadiusEnd to top cornerRadius for vertical bars', () => {
       expect(
-        normalizeMarkDef({type: 'bar', cornerRadiusEnd: 5}, {x: {field: 'x', type: 'quantitative'}}, defaultConfig, {
+        initMarkdef({type: 'bar', cornerRadiusEnd: 5}, {x: {field: 'x', type: 'quantitative'}}, defaultConfig, {
           graticule: false
         })
       ).toMatchObject({cornerRadiusBottomRight: 5, cornerRadiusTopRight: 5});

@@ -124,6 +124,28 @@
         }
       ]
     },
+    "AnyMarkConfig": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/MarkConfig"
+        },
+        {
+          "$ref": "#/definitions/AreaConfig"
+        },
+        {
+          "$ref": "#/definitions/BarConfig"
+        },
+        {
+          "$ref": "#/definitions/RectConfig"
+        },
+        {
+          "$ref": "#/definitions/LineConfig"
+        },
+        {
+          "$ref": "#/definitions/TickConfig"
+        }
+      ]
+    },
     "AreaConfig": {
       "additionalProperties": false,
       "properties": {
@@ -793,8 +815,15 @@
           "type": "number"
         },
         "labelOffset": {
-          "description": "Position offset in pixels to apply to labels, in addition to tickOffset.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisNumber"
+            }
+          ],
+          "description": "Position offset in pixels to apply to labels, in addition to tickOffset."
         },
         "labelOpacity": {
           "anyOf": [
@@ -1327,8 +1356,15 @@
           "type": "number"
         },
         "labelOffset": {
-          "description": "Position offset in pixels to apply to labels, in addition to tickOffset.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisNumber"
+            }
+          ],
+          "description": "Position offset in pixels to apply to labels, in addition to tickOffset."
         },
         "labelOpacity": {
           "anyOf": [
@@ -4513,9 +4549,17 @@
           "$ref": "#/definitions/AxisConfig",
           "description": "Config for x-axis along the bottom edge of the chart."
         },
+        "axisDiscrete": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for axes with \"point\" or \"band\" scales."
+        },
         "axisLeft": {
           "$ref": "#/definitions/AxisConfig",
           "description": "Config for y-axis along the left edge of the chart."
+        },
+        "axisPoint": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for axes with \"point\" scales."
         },
         "axisQuantitative": {
           "$ref": "#/definitions/AxisConfig",
@@ -14586,7 +14630,7 @@
       "additionalProperties": {
         "anyOf": [
           {
-            "$ref": "#/definitions/MarkConfig"
+            "$ref": "#/definitions/AnyMarkConfig"
           },
           {
             "$ref": "#/definitions/Axis"
@@ -14595,16 +14639,20 @@
       },
       "properties": {
         "area": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/AreaConfig",
+          "description": "Area-Specific Config"
         },
         "bar": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/BarConfig",
+          "description": "Bar-Specific Config"
         },
         "circle": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Circle-Specific Config"
         },
         "geoshape": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Geoshape-Specific Config"
         },
         "group-subtitle": {
           "$ref": "#/definitions/MarkConfig",
@@ -14623,31 +14671,44 @@
           "description": "Default style for axis, legend, and header titles."
         },
         "image": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/RectConfig",
+          "description": "Image-specific Config"
         },
         "line": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/LineConfig",
+          "description": "Line-Specific Config"
+        },
+        "mark": {
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Mark Config"
         },
         "point": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Point-Specific Config"
         },
         "rect": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/RectConfig",
+          "description": "Rect-Specific Config"
         },
         "rule": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Rule-Specific Config"
         },
         "square": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Square-Specific Config"
         },
         "text": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/MarkConfig",
+          "description": "Text-Specific Config"
         },
         "tick": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/TickConfig",
+          "description": "Tick-Specific Config"
         },
         "trail": {
-          "$ref": "#/definitions/MarkConfig"
+          "$ref": "#/definitions/LineConfig",
+          "description": "Trail-Specific Config"
         }
       },
       "type": "object"

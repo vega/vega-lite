@@ -15,13 +15,13 @@ import {
   getGuide,
   getTypedFieldDef,
   hasConditionalFieldDef,
+  initChannelDef,
+  initFieldDef,
   isConditionalDef,
   isFieldDef,
   isTypedFieldDef,
   isValueDef,
   LatLongFieldDef,
-  normalize,
-  normalizeFieldDef,
   NumericArrayFieldDefWithCondition,
   NumericArrayValueDefWithCondition,
   NumericFieldDefWithCondition,
@@ -401,7 +401,7 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
   return true;
 }
 
-export function normalizeEncoding(encoding: Encoding<string>, markDef: MarkDef): Encoding<string> {
+export function initEncoding(encoding: Encoding<string>, markDef: MarkDef): Encoding<string> {
   const mark = markDef.type;
 
   return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel | string) => {
@@ -446,7 +446,7 @@ export function normalizeEncoding(encoding: Encoding<string>, markDef: MarkDef):
             if (!isFieldDef(fieldDef)) {
               log.warn(log.message.emptyFieldDef(fieldDef, channel));
             } else {
-              defs.push(normalizeFieldDef(fieldDef, channel));
+              defs.push(initFieldDef(fieldDef, channel));
             }
             return defs;
           },
@@ -466,7 +466,7 @@ export function normalizeEncoding(encoding: Encoding<string>, markDef: MarkDef):
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         return normalizedEncoding;
       }
-      normalizedEncoding[channel] = normalize(channelDef as ChannelDef, channel);
+      normalizedEncoding[channel] = initChannelDef(channelDef as ChannelDef, channel);
     }
     return normalizedEncoding;
   }, {});

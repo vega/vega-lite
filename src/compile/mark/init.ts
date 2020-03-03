@@ -25,7 +25,7 @@ import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, getFirstDefined} from '../../util';
 import {getMarkConfig} from '../common';
 
-export function normalizeMarkDef(
+export function initMarkdef(
   mark: Mark | MarkDef,
   encoding: Encoding<string>,
   config: Config,

@@ -5,7 +5,7 @@ import {
   defaultTitle,
   defaultType,
   functionalTitleFormatter,
-  normalize,
+  initChannelDef,
   TypedFieldDef,
   vgField
 } from '../src/channeldef';
@@ -54,23 +54,23 @@ describe('fieldDef', () => {
     });
   });
 
-  describe('normalize()', () => {
+  describe('initChannelDef()', () => {
     it(
       'should convert primitive type to value def',
       log.wrap(localLogger => {
-        expect(normalize(5 as any, 'x')).toEqual({value: 5});
+        expect(initChannelDef(5 as any, 'x')).toEqual({value: 5});
         expect(localLogger.warns.length).toEqual(1);
       })
     );
 
     it('should return fieldDef with full type name.', () => {
       const fieldDef: TypedFieldDef<string> = {field: 'a', type: 'q' as any};
-      expect(normalize(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
+      expect(initChannelDef(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
     });
 
-    it('should normalize non-string field to string', () => {
+    it('should standardize non-string field to string', () => {
       const fieldDef: TypedFieldDef<string> = {field: 1 as any, type: 'q' as any};
-      expect(normalize(fieldDef, 'x')).toEqual({field: '1', type: 'quantitative'});
+      expect(initChannelDef(fieldDef, 'x')).toEqual({field: '1', type: 'quantitative'});
     });
 
     it(
@@ -81,7 +81,7 @@ describe('fieldDef', () => {
           field: 'a',
           type: 'temporal'
         };
-        expect(normalize(fieldDef, 'x')).toEqual({
+        expect(initChannelDef(fieldDef, 'x')).toEqual({
           timeUnit: {
             unit: 'yearmonthdate'
           },
@@ -97,7 +97,7 @@ describe('fieldDef', () => {
       log.wrap(localLogger => {
         for (const aggregate of COUNTING_OPS) {
           const fieldDef: TypedFieldDef<string> = {aggregate, field: 'a', type: 'nominal'};
-          expect(normalize(fieldDef, 'x')).toEqual({aggregate, field: 'a', type: 'quantitative'});
+          expect(initChannelDef(fieldDef, 'x')).toEqual({aggregate, field: 'a', type: 'quantitative'});
         }
         expect(localLogger.warns.length).toEqual(4);
       })
@@ -107,7 +107,7 @@ describe('fieldDef', () => {
       'should return fieldDef with default type and throw warning if type is missing.',
       log.wrap(localLogger => {
         const fieldDef = {field: 'a'};
-        expect(normalize(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
+        expect(initChannelDef(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
         expect(localLogger.warns[0]).toEqual(log.message.missingFieldType('x', 'quantitative'));
       })
     );
@@ -116,7 +116,7 @@ describe('fieldDef', () => {
       'should drop invalid aggregate ops and throw warning.',
       log.wrap(localLogger => {
         const fieldDef: TypedFieldDef<string> = {aggregate: 'boxplot', field: 'a', type: 'quantitative'};
-        expect(normalize(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
+        expect(initChannelDef(fieldDef, 'x')).toEqual({field: 'a', type: 'quantitative'});
         expect(localLogger.warns[0]).toEqual(log.message.invalidAggregate('boxplot'));
       })
     );

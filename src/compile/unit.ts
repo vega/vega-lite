@@ -15,7 +15,7 @@ import {getTypedFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} fro
 import {Config} from '../config';
 import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
-import {Encoding, normalizeEncoding} from '../encoding';
+import {Encoding, initEncoding} from '../encoding';
 import {Legend} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
@@ -34,7 +34,7 @@ import {assembleLayoutSignals} from './layoutsize/assemble';
 import {initLayoutSize} from './layoutsize/init';
 import {parseUnitLayoutSize} from './layoutsize/parse';
 import {LegendIndex} from './legend/component';
-import {normalizeMarkDef} from './mark/init';
+import {initMarkdef} from './mark/init';
 import {parseMarkGroups} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
 import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
@@ -90,10 +90,10 @@ export class UnitModel extends ModelWithField {
 
     const encodingWithRepeaterReplaced = replaceRepeaterInEncoding(spec.encoding ?? {}, repeater);
 
-    this.markDef = normalizeMarkDef(spec.mark, encodingWithRepeaterReplaced, config, {
+    this.markDef = initMarkdef(spec.mark, encodingWithRepeaterReplaced, config, {
       graticule: spec.data && isGraticuleGenerator(spec.data)
     });
-    const encoding = (this.encoding = normalizeEncoding(encodingWithRepeaterReplaced, this.markDef));
+    const encoding = (this.encoding = initEncoding(encodingWithRepeaterReplaced, this.markDef));
 
     this.size = initLayoutSize({
       encoding,

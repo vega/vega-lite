@@ -90,6 +90,10 @@
         "name": "histogram_log",
         "title": "Log-scaled Histogram"
       },
+      {
+        "name": "histogram_rel_freq",
+        "title": "Relative Frequency Histogram"
+      },
 
       {
         "name": "area_density",

@@ -244,8 +244,8 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
       // 1. Grid, orient, and tickCount
       // - Grid is an exception because we need to set grid = true to generate another grid axis
-      // - Orient and tickCount are not axis configs in Vega, so we need to set too.
-      (contains(['grid', 'orient', 'tickCount'], property) && configValue) ||
+      // - Orient, labelExpr, and tickCount are not axis configs in Vega, so we need to set too.
+      (contains(['grid', 'orient', 'tickCount', 'labelExpr'], property) && configValue) ||
       // 2. Conditional axis values and signals
       isConditionalAxisValue<any>(configValue) || // need to set "any" as TS isn't smart enough to figure the generic parameter type yet
       isSignalRef(configValue) ||

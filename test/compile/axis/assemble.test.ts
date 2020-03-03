@@ -94,6 +94,18 @@ describe('compile/axis/assemble', () => {
       expect(axis.encode.labels.update.dy).toEqual({value: 5});
     });
 
+    it('correctly redirect conditional y-labelOffset', () => {
+      const axisCmpt = new AxisComponent({
+        orient: 'left',
+        labelOffset: {
+          condition: {test: 'datum.index===0', value: 10},
+          value: -10
+        }
+      });
+      const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
+      expect(axis.encode.labels.update.dy).toEqual([{test: 'datum.index===0', value: 10}, {value: -10}]);
+    });
+
     it('correctly applies conditional axis tickSize', () => {
       const axisCmpt = new AxisComponent({
         tickSize: {

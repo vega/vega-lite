@@ -1,3 +1,4 @@
+import {LEGEND_SCALE_CHANNELS} from './../../legend';
 import {Legend as VgLegend, LegendEncode} from 'vega';
 import {SIGNAL_LEGEND_PROP_INDEX} from '../../legend';
 import {keys, replaceAll, stringify, vals} from '../../util';
@@ -54,9 +55,11 @@ export function assembleLegend(legendCmpt: LegendComponent) {
       out.stroke = {value: 'transparent'};
     }
 
-    if (legend.fill) {
-      // If top-level fill is defined, for non color channel's legend, we need to remove fill.
-      delete out.fill;
+    // Remove properties that the legend is encoding.
+    for (const property of LEGEND_SCALE_CHANNELS) {
+      if (legend[property]) {
+        delete out[property];
+      }
     }
   }
 

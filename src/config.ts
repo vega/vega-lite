@@ -8,6 +8,7 @@ import {HeaderConfigMixins} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import * as mark from './mark';
 import {
+  AnyMarkConfig,
   Mark,
   MarkConfig,
   MarkConfigMixins,
@@ -170,8 +171,8 @@ export interface VLOnlyConfig {
   selection?: SelectionConfig;
 }
 
-export type StyleConfigIndex = Partial<Record<string, MarkConfig | Axis>> &
-  Partial<Record<Mark, MarkConfig>> & {
+export type StyleConfigIndex = Partial<Record<string, AnyMarkConfig | Axis>> &
+  MarkConfigMixins & {
     /**
      * Default style for axis, legend, and header titles.
      */
