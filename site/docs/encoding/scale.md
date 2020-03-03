@@ -161,6 +161,12 @@ The `scheme` property can also be a **scheme parameter object**, which contain t
 
 {:#continuous}
 
+## Common Scale Properties
+
+In addition to `type`, `domain`, and `range`, all scales share the following properties:
+
+{% include table.html props="reverse,round" source="Scale" %}
+
 ## Continuous Scales
 
 Continuous scales map a continuous domain (numbers or dates) to a continuous output range (pixel locations, sizes, colors). Supported continuous scale types for _quantitative_ fields are [`"linear"`](#linear), [`"log"`](#log), [`"pow"`](#pow), [`"sqrt"`](#sqrt), and [`"symlog"`](#symlog). Meanwhile, supported continuous scale types for _temporal_ fields are [`"time"`](#time), [`"utc"`](#utc), and [`"symlog"`](#symlog).
@@ -169,7 +175,7 @@ By default, Vega-Lite uses `"linear"` scales for quantitative fields and uses `"
 
 In addition to [`type`](#type), [`domain`](#domain), and [`range`](#range), continuous scales support the following properties:
 
-{% include table.html props="clamp,interpolate,nice,padding,round,zero" source="Scale" %}
+{% include table.html props="clamp,interpolate,nice,padding,zero" source="Scale" %}
 
 {:#linear}
 
@@ -300,7 +306,7 @@ or set the width per discrete step:
 
 To customize the range of band and point scales, users can provide the following properties:
 
-{% include table.html props="align,padding,paddingInner,paddingOuter,round" source="Scale" %}
+{% include table.html props="align,padding,paddingInner,paddingOuter" source="Scale" %}
 
 {:#discretizing}
 
