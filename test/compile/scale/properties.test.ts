@@ -124,8 +124,14 @@ describe('compile/scale', () => {
       expect(rules.reverse('point', 'descending', 'x', {})).not.toBeDefined();
     });
 
-    it('should return xReverse for x scale.', () => {
-      expect(rules.reverse('linear', 'descending', 'x', {xReverse: {signal: 'rtl'}})).toEqual({signal: 'rtl'});
+    it('should return xReverse for continuous x scale.', () => {
+      expect(rules.reverse('linear', 'ascending', 'x', {xReverse: {signal: 'rtl'}})).toEqual({signal: 'rtl'});
+    });
+
+    it('should return flip xReverse for continuous x scale with descending sort.', () => {
+      expect(rules.reverse('linear', 'descending', 'x', {xReverse: {signal: 'rtl'}})).toEqual({signal: '!rtl'});
+
+      expect(rules.reverse('linear', 'descending', 'x', {xReverse: true})).toEqual(false);
     });
   });
 

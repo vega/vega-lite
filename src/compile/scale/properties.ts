@@ -289,11 +289,20 @@ export function paddingOuter(
 }
 
 export function reverse(scaleType: ScaleType, sort: Sort<string>, channel: Channel, scaleConfig: ScaleConfig) {
+  const isDescendingSort = hasContinuousDomain(scaleType) && sort === 'descending';
+
   if (channel === 'x' && scaleConfig.xReverse !== undefined) {
+    if (isDescendingSort) {
+      if (isSignalRef(scaleConfig.xReverse)) {
+        return {signal: `!${scaleConfig.xReverse.signal}`};
+      } else {
+        return !scaleConfig.xReverse;
+      }
+    }
     return scaleConfig.xReverse;
   }
 
-  if (hasContinuousDomain(scaleType) && sort === 'descending') {
+  if (isDescendingSort) {
     // For continuous domain scales, Vega does not support domain sort.
     // Thus, we reverse range instead if sort is descending
     return true;
