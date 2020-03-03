@@ -1,12 +1,12 @@
 import * as CHANNEL from '../src/channel';
-import {SCALE_CHANNELS, ScaleChannel} from '../src/channel';
+import {ScaleChannel, SCALE_CHANNELS} from '../src/channel';
 import * as scale from '../src/scale';
 import {
   channelSupportScaleType,
   CONTINUOUS_TO_CONTINUOUS_SCALES,
   getSupportedScaleType,
-  SCALE_TYPES,
-  ScaleType
+  ScaleType,
+  SCALE_TYPES
 } from '../src/scale';
 import * as TYPE from '../src/type';
 import {some, without} from '../src/util';
@@ -72,12 +72,23 @@ describe('scale', () => {
       }
     });
 
-    it('x, y, size, opacity should support all continuous scale type as well as band and point', () => {
+    it('x and y support all continuous scale type as well as band and point', () => {
       // x,y should use either band or point for ordinal input
       const scaleTypes = [...CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType.BAND, ScaleType.POINT];
 
-      for (const channel of ['x', 'y', 'size', 'opacity'] as ScaleChannel[]) {
+      for (const channel of ['x', 'y'] as ScaleChannel[]) {
         expect(channelSupportScaleType(channel, 'ordinal')).toBeFalsy();
+        for (const scaleType of scaleTypes) {
+          expect(channelSupportScaleType(channel, scaleType)).toBeTruthy();
+        }
+      }
+    });
+
+    it('size and opacity support all continuous scale type as well as band and point', () => {
+      // x,y should use either band or point for ordinal input
+      const scaleTypes = [...CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType.BAND, ScaleType.POINT];
+
+      for (const channel of ['size', 'opacity'] as ScaleChannel[]) {
         for (const scaleType of scaleTypes) {
           expect(channelSupportScaleType(channel, scaleType)).toBeTruthy();
         }
