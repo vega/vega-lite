@@ -251,7 +251,7 @@ export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
   /**
    *  Position offset in pixels to apply to labels, in addition to tickOffset.
    */
-  labelOffset?: number;
+  labelOffset?: number | ConditionalAxisNumber;
 
   /**
    * The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.
