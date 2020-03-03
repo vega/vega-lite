@@ -1,11 +1,10 @@
-import {keys} from 'd3';
 import {selector as parseSelector} from 'vega-event-selector';
 import {isString, stringValue} from 'vega-util';
 import {forEachSelection, SelectionComponent, STORE} from '.';
 import {warn} from '../../log';
 import {LogicalComposition} from '../../logical';
 import {SelectionDef, SelectionExtent} from '../../selection';
-import {Dict, duplicate, logicalExpr, varName} from '../../util';
+import {Dict, duplicate, keys, logicalExpr, varName} from '../../util';
 import {DataFlowNode, OutputNode} from '../data/dataflow';
 import {FilterNode} from '../data/filter';
 import {Model} from '../model';
@@ -16,7 +15,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
   const selectionConfig = model.config.selection;
 
-  for (const name of keys(selDefs)) {
+  for (const name of keys(selDefs ?? {})) {
     const selDef = duplicate(selDefs[name]);
     const {fields, encodings, ...cfg} = selectionConfig[selDef.type]; // Project transform applies its defaults.
 
