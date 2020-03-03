@@ -417,7 +417,7 @@ To provide themes for all scales, the scale config (`config: {scale: {...}}`) ca
 
 #### Other
 
-{% include table.html props="clamp,round,useUnaggregatedDomain" source="ScaleConfig" %}
+{% include table.html props="clamp,round,xReverse,useUnaggregatedDomain" source="ScaleConfig" %}
 
 {:#range-config}
 

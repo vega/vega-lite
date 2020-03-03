@@ -1,5 +1,12 @@
-import {ScaleBins} from 'vega';
-import {RangeEnum, ScaleInterpolateEnum, ScaleInterpolateParams, SignalRef, TimeInterval, TimeIntervalStep} from 'vega';
+import {
+  RangeEnum,
+  ScaleBins,
+  ScaleInterpolateEnum,
+  ScaleInterpolateParams,
+  SignalRef,
+  TimeInterval,
+  TimeIntervalStep
+} from 'vega';
 import {isString, toSet} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, CHANNELS, isColorChannel} from './channel';
@@ -370,6 +377,11 @@ export interface ScaleConfig {
    * @minimum 0
    */
   quantizeCount?: number;
+
+  /**
+   * Reverse x-scale by default (useful for right-to-left charts).
+   */
+  xReverse?: boolean | SignalRef;
 }
 
 export const defaultScaleConfig: ScaleConfig = {
