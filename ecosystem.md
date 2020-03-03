@@ -43,6 +43,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Vizsla](https://github.com/gjmcn/vizsla) is a simple JavaScript API for Vega-Lite.
 - [Vega node for Node-RED Dashboard](https://flows.nodered.org/node/node-red-node-ui-vega) supports Vega and Vega-Lite visualizations on the [Node-RED](https://nodered.org/) flow-based programming tool.
 - [hvega](https://hackage.haskell.org/package/hvega) generates Vega-Lite specifications in Haskell and is based on Elm-Vega.
+- [Vega-Lite "bindings" for Rust](https://github.com/procyon-rs/vega_lite_3.rs), create vega-lite v3, or [v4](https://github.com/procyon-rs/vega_lite_4.rs), vizualizations in Rust A high-level like Altair in under construction at [procyon](https://github.com/procyon-rs/procyon)
 
 ## Programming / Data Science Environment that supports Vega-Lite
 
@@ -80,3 +81,4 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [gulp-marked-vega](https://github.com/e2fyi/gulp-marked-vega) is a gulp plugin (comes with a cli tool also) to replace [marked-vega](https://www.webcomponents.org/element/PolymerVis/marked-vega) markdown syntax with base64 embedded image tags, so that any standard markdown parser can render the Vega and Vega-Lite charts without modifying their render rules.
 - [idyll-vega-lite](https://github.com/idyll-lang/idyll-vega-lite) is a component that allows you to embed Vega-Lite graphics inside of [Idyll markup](https://idyll-lang.org), an interactive markup language.
 - [generator-veeg](https://github.com/millette/generator-veeg) is a Vega and Vega-Lite boilerplate generator for [Yeoman](https://yeoman.io/).
+- [Kroki](https://kroki.io/) is a service to render Vega and Vega-Lite as PNG, SVG, or PDF.
