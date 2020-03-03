@@ -506,12 +506,9 @@ export interface Scale {
    */
   domainMid?: number | SignalRef;
 
-  // Hide because we might not really need this.
   /**
    * If true, reverses the order of the scale range.
    * __Default value:__ `false`.
-   *
-   * @hidden
    */
   reverse?: boolean | SignalRef;
 
