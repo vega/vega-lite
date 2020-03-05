@@ -120,6 +120,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
     return {
       data: data ?? childSpec.data, // data from child spec should have precedence
+      align: 'all',
       ...remainingProperties,
       columns,
       concat: children
