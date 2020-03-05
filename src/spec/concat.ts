@@ -68,13 +68,13 @@ export function isAnyConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any>
 }
 
 export function isConcatSpec(spec: BaseSpec): spec is GenericConcatSpec<any> {
-  return spec['concat'] !== undefined;
+  return 'concat' in spec;
 }
 
 export function isVConcatSpec(spec: BaseSpec): spec is GenericVConcatSpec<any> {
-  return spec['vconcat'] !== undefined;
+  return 'vconcat' in spec;
 }
 
 export function isHConcatSpec(spec: BaseSpec): spec is GenericHConcatSpec<any> {
-  return spec['hconcat'] !== undefined;
+  return 'hconcat' in spec;
 }
