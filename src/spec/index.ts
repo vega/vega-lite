@@ -1,19 +1,18 @@
-import {FieldName} from './../channeldef';
 /**
  * Definition for specifications in Vega-Lite. In general, there are 3 variants of specs for each type of specs:
  * - Generic specs are generic versions of specs and they are parameterized differently for internal and external specs.
  * - The external specs (no prefix) would allow composite marks, row/column encodings, and mark macros like point/line overlay.
  * - The internal specs (with `Normalized` prefix) would only support primitive marks and support no macros/shortcuts.
  */
-
 import {Field} from '../channeldef';
+import {FieldName} from './../channeldef';
 import {DataMixins} from './base';
 import {GenericConcatSpec, GenericHConcatSpec, GenericVConcatSpec} from './concat';
 import {GenericFacetSpec} from './facet';
 import {GenericLayerSpec, LayerSpec, NormalizedLayerSpec} from './layer';
+import {RepeatSpec} from './repeat';
 import {TopLevel} from './toplevel';
 import {FacetedUnitSpec, GenericUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec, UnitSpecWithFrame} from './unit';
-import {RepeatSpec} from './repeat';
 
 export {BaseSpec, LayoutSizeMixins} from './base';
 export {
@@ -52,11 +51,6 @@ export type GenericSpec<
  */
 export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec, never, FieldName>;
 
-/**
- * Spec with composite marks and repeat.
- */
-export type Spec = GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>;
-
 export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<UnitSpecWithFrame, LayerSpec, Field>> & DataMixins;
 
 /**
@@ -69,6 +63,6 @@ export type TopLevelSpec =
   | TopLevelFacetSpec
   | TopLevel<LayerSpec>
   | TopLevel<RepeatSpec>
-  | TopLevel<GenericConcatSpec<Spec>>
-  | TopLevel<GenericVConcatSpec<Spec>>
-  | TopLevel<GenericHConcatSpec<Spec>>;
+  | TopLevel<GenericConcatSpec<GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>>>
+  | TopLevel<GenericVConcatSpec<GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>>>
+  | TopLevel<GenericHConcatSpec<GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>>>;

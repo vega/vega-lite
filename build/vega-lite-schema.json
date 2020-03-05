@@ -7415,7 +7415,7 @@
         }
       ]
     },
-    "GenericConcatSpec<alias-src/spec/index.ts-1542-1923-src/spec/index.ts-0-2730<def-alias-src/spec/unit.ts-1814-2057-src/spec/unit.ts-0-2249659491184,def-interface-src/spec/layer.ts-760-1287-src/spec/layer.ts-0-15531006326072,def-interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285491144667,def-alias-src/channeldef.ts-7211-7254-src/channeldef.ts-0-41067>>": {
+    "NormalizedConcatSpec<GenericSpec>": {
       "additionalProperties": false,
       "description": "Base interface for a generalized concatenation specification.",
       "properties": {
@@ -7456,7 +7456,7 @@
         "concat": {
           "description": "A list of views to be concatenated.",
           "items": {
-            "$ref": "#/definitions/GenericSpec<FacetedUnitSpec,LayerSpec,RepeatSpec,Field>"
+            "$ref": "#/definitions/NormalizedSpec"
           },
           "type": "array"
         },
@@ -7518,7 +7518,7 @@
       ],
       "type": "object"
     },
-    "GenericConcatSpec<alias-src/spec/index.ts-1542-1923-src/spec/index.ts-0-2730<def-alias-src/spec/unit.ts-1814-2057-src/spec/unit.ts-0-2249659491184,def-interface-src/spec/layer.ts-760-1287-src/spec/layer.ts-0-15531006326072,interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285,def-alias-src/channeldef.ts-7178-7211-src/channeldef.ts-0-41067>>": {
+    "ConcatSpec<GenericSpec>": {
       "additionalProperties": false,
       "description": "Base interface for a generalized concatenation specification.",
       "properties": {
@@ -7559,7 +7559,7 @@
         "concat": {
           "description": "A list of views to be concatenated.",
           "items": {
-            "$ref": "#/definitions/GenericSpec<FacetedUnitSpec,LayerSpec,interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285,FieldName>"
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         },
@@ -7859,7 +7859,7 @@
       ],
       "type": "object"
     },
-    "GenericHConcatSpec<alias-src/spec/index.ts-1542-1923-src/spec/index.ts-0-2730<def-alias-src/spec/unit.ts-1814-2057-src/spec/unit.ts-0-2249659491184,def-interface-src/spec/layer.ts-760-1287-src/spec/layer.ts-0-15531006326072,def-interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285491144667,def-alias-src/channeldef.ts-7211-7254-src/channeldef.ts-0-41067>>": {
+    "NormalizedHConcatSpec<GenericSpec>": {
       "additionalProperties": false,
       "description": "Base interface for a horizontal concatenation specification.",
       "properties": {
@@ -7893,7 +7893,7 @@
         "hconcat": {
           "description": "A list of views to be concatenated and put into a row.",
           "items": {
-            "$ref": "#/definitions/GenericSpec<FacetedUnitSpec,LayerSpec,RepeatSpec,Field>"
+            "$ref": "#/definitions/NormalizedSpec"
           },
           "type": "array"
         },
@@ -7933,7 +7933,7 @@
       ],
       "type": "object"
     },
-    "GenericHConcatSpec<alias-src/spec/index.ts-1542-1923-src/spec/index.ts-0-2730<def-alias-src/spec/unit.ts-1814-2057-src/spec/unit.ts-0-2249659491184,def-interface-src/spec/layer.ts-760-1287-src/spec/layer.ts-0-15531006326072,interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285,def-alias-src/channeldef.ts-7178-7211-src/channeldef.ts-0-41067>>": {
+    "HConcatSpec<GenericSpec>": {
       "additionalProperties": false,
       "description": "Base interface for a horizontal concatenation specification.",
       "properties": {
@@ -7967,7 +7967,7 @@
         "hconcat": {
           "description": "A list of views to be concatenated and put into a row.",
           "items": {
-            "$ref": "#/definitions/GenericSpec<FacetedUnitSpec,LayerSpec,interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285,FieldName>"
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         },
@@ -8007,7 +8007,7 @@
       ],
       "type": "object"
     },
-    "GenericSpec<FacetedUnitSpec,LayerSpec,RepeatSpec,Field>": {
+    "NormalizedSpec": {
       "anyOf": [
         {
           "$ref": "#/definitions/FacetedUnitSpec"
@@ -8022,18 +8022,18 @@
           "$ref": "#/definitions/GenericFacetSpec<FacetedUnitSpec,LayerSpec,Field>"
         },
         {
-          "$ref": "#/definitions/GenericConcatSpec<alias-src/spec/index.ts-1542-1923-src/spec/index.ts-0-2730<def-alias-src/spec/unit.ts-1814-2057-src/spec/unit.ts-0-2249659491184,def-interface-src/spec/layer.ts-760-1287-src/spec/layer.ts-0-15531006326072,def-interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285491144667,def-alias-src/channeldef.ts-7211-7254-src/channeldef.ts-0-41067>>"
+          "$ref": "#/definitions/NormalizedConcatSpec<GenericSpec>"
         },
         {
-          "$ref": "#/definitions/GenericVConcatSpec<alias-src/spec/index.ts-1542-1923-src/spec/index.ts-0-2730<def-alias-src/spec/unit.ts-1814-2057-src/spec/unit.ts-0-2249659491184,def-interface-src/spec/layer.ts-760-1287-src/spec/layer.ts-0-15531006326072,def-interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285491144667,def-alias-src/channeldef.ts-7211-7254-src/channeldef.ts-0-41067>>"
+          "$ref": "#/definitions/NormalizedVConcatSpec<GenericSpec>"
         },
         {
-          "$ref": "#/definitions/GenericHConcatSpec<alias-src/spec/index.ts-1542-1923-src/spec/index.ts-0-2730<def-alias-src/spec/unit.ts-1814-2057-src/spec/unit.ts-0-2249659491184,def-interface-src/spec/layer.ts-760-1287-src/spec/layer.ts-0-15531006326072,def-interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285491144667,def-alias-src/channeldef.ts-7211-7254-src/channeldef.ts-0-41067>>"
+          "$ref": "#/definitions/NormalizedHConcatSpec<GenericSpec>"
         }
       ],
       "description": "Any specification in Vega-Lite."
     },
-    "GenericSpec<FacetedUnitSpec,LayerSpec,interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285,FieldName>": {
+    "Spec": {
       "anyOf": [
         {
           "$ref": "#/definitions/FacetedUnitSpec"
@@ -8048,18 +8048,18 @@
           "$ref": "#/definitions/GenericFacetSpec<FacetedUnitSpec,LayerSpec,FieldName>"
         },
         {
-          "$ref": "#/definitions/GenericConcatSpec<alias-src/spec/index.ts-1542-1923-src/spec/index.ts-0-2730<def-alias-src/spec/unit.ts-1814-2057-src/spec/unit.ts-0-2249659491184,def-interface-src/spec/layer.ts-760-1287-src/spec/layer.ts-0-15531006326072,interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285,def-alias-src/channeldef.ts-7178-7211-src/channeldef.ts-0-41067>>"
+          "$ref": "#/definitions/ConcatSpec<GenericSpec>"
         },
         {
-          "$ref": "#/definitions/GenericVConcatSpec<alias-src/spec/index.ts-1542-1923-src/spec/index.ts-0-2730<def-alias-src/spec/unit.ts-1814-2057-src/spec/unit.ts-0-2249659491184,def-interface-src/spec/layer.ts-760-1287-src/spec/layer.ts-0-15531006326072,interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285,def-alias-src/channeldef.ts-7178-7211-src/channeldef.ts-0-41067>>"
+          "$ref": "#/definitions/VConcatSpec<GenericSpec>"
         },
         {
-          "$ref": "#/definitions/GenericHConcatSpec<alias-src/spec/index.ts-1542-1923-src/spec/index.ts-0-2730<def-alias-src/spec/unit.ts-1814-2057-src/spec/unit.ts-0-2249659491184,def-interface-src/spec/layer.ts-760-1287-src/spec/layer.ts-0-15531006326072,interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285,def-alias-src/channeldef.ts-7178-7211-src/channeldef.ts-0-41067>>"
+          "$ref": "#/definitions/HConcatSpec<GenericSpec>"
         }
       ],
       "description": "Any specification in Vega-Lite."
     },
-    "GenericVConcatSpec<alias-src/spec/index.ts-1542-1923-src/spec/index.ts-0-2730<def-alias-src/spec/unit.ts-1814-2057-src/spec/unit.ts-0-2249659491184,def-interface-src/spec/layer.ts-760-1287-src/spec/layer.ts-0-15531006326072,def-interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285491144667,def-alias-src/channeldef.ts-7211-7254-src/channeldef.ts-0-41067>>": {
+    "NormalizedVConcatSpec<GenericSpec>": {
       "additionalProperties": false,
       "description": "Base interface for a vertical concatenation specification.",
       "properties": {
@@ -8123,7 +8123,7 @@
         "vconcat": {
           "description": "A list of views to be concatenated and put into a column.",
           "items": {
-            "$ref": "#/definitions/GenericSpec<FacetedUnitSpec,LayerSpec,RepeatSpec,Field>"
+            "$ref": "#/definitions/NormalizedSpec"
           },
           "type": "array"
         }
@@ -8133,7 +8133,7 @@
       ],
       "type": "object"
     },
-    "GenericVConcatSpec<alias-src/spec/index.ts-1542-1923-src/spec/index.ts-0-2730<def-alias-src/spec/unit.ts-1814-2057-src/spec/unit.ts-0-2249659491184,def-interface-src/spec/layer.ts-760-1287-src/spec/layer.ts-0-15531006326072,interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285,def-alias-src/channeldef.ts-7178-7211-src/channeldef.ts-0-41067>>": {
+    "VConcatSpec<GenericSpec>": {
       "additionalProperties": false,
       "description": "Base interface for a vertical concatenation specification.",
       "properties": {
@@ -8197,7 +8197,7 @@
         "vconcat": {
           "description": "A list of views to be concatenated and put into a column.",
           "items": {
-            "$ref": "#/definitions/GenericSpec<FacetedUnitSpec,LayerSpec,interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285,FieldName>"
+            "$ref": "#/definitions/Spec"
           },
           "type": "array"
         }
@@ -12363,114 +12363,6 @@
         }
       ]
     },
-    "PartsMixins<BoxPlotPart>": {
-      "additionalProperties": false,
-      "properties": {
-        "box": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "median": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "outliers": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "rule": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "ticks": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        }
-      },
-      "type": "object"
-    },
-    "PartsMixins<ErrorBandPart>": {
-      "additionalProperties": false,
-      "properties": {
-        "band": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "borders": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        }
-      },
-      "type": "object"
-    },
-    "PartsMixins<ErrorBarPart>": {
-      "additionalProperties": false,
-      "properties": {
-        "rule": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "ticks": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        }
-      },
-      "type": "object"
-    },
     "PivotTransform": {
       "additionalProperties": false,
       "properties": {
@@ -13619,7 +13511,7 @@
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "spec": {
-          "$ref": "#/definitions/GenericSpec<FacetedUnitSpec,LayerSpec,interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285,FieldName>",
+          "$ref": "#/definitions/Spec",
           "description": "A specification of the view that gets repeated."
         },
         "title": {
@@ -14930,10 +14822,6 @@
       ],
       "type": "string"
     },
-    "Spec": {
-      "$ref": "#/definitions/GenericSpec<FacetedUnitSpec,LayerSpec,RepeatSpec,Field>",
-      "description": "Spec with composite marks and repeat."
-    },
     "SphereGenerator": {
       "additionalProperties": false,
       "properties": {
@@ -15934,7 +15822,7 @@
       ],
       "type": "object"
     },
-    "TopLevelGenericConcatSpec<Spec>": {
+    "TopLevelNormalizedConcatSpec<GenericSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -15994,7 +15882,7 @@
         "concat": {
           "description": "A list of views to be concatenated.",
           "items": {
-            "$ref": "#/definitions/Spec"
+            "$ref": "#/definitions/NormalizedSpec"
           },
           "type": "array"
         },
@@ -16072,7 +15960,7 @@
       ],
       "type": "object"
     },
-    "TopLevelGenericHConcatSpec<Spec>": {
+    "TopLevelNormalizedHConcatSpec<GenericSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -16133,7 +16021,7 @@
         "hconcat": {
           "description": "A list of views to be concatenated and put into a row.",
           "items": {
-            "$ref": "#/definitions/Spec"
+            "$ref": "#/definitions/NormalizedSpec"
           },
           "type": "array"
         },
@@ -16181,7 +16069,7 @@
       ],
       "type": "object"
     },
-    "TopLevelGenericVConcatSpec<Spec>": {
+    "TopLevelNormalizedVConcatSpec<GenericSpec>": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -16280,7 +16168,7 @@
         "vconcat": {
           "description": "A list of views to be concatenated and put into a column.",
           "items": {
-            "$ref": "#/definitions/Spec"
+            "$ref": "#/definitions/NormalizedSpec"
           },
           "type": "array"
         }
@@ -16554,7 +16442,7 @@
           "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "spec": {
-          "$ref": "#/definitions/GenericSpec<FacetedUnitSpec,LayerSpec,interface-src/spec/repeat.ts-411-1175-src/spec/repeat.ts-0-1285,FieldName>",
+          "$ref": "#/definitions/Spec",
           "description": "A specification of the view that gets repeated."
         },
         "title": {
@@ -16756,13 +16644,13 @@
           "$ref": "#/definitions/TopLevelRepeatSpec"
         },
         {
-          "$ref": "#/definitions/TopLevelGenericConcatSpec<Spec>"
+          "$ref": "#/definitions/TopLevelNormalizedConcatSpec<GenericSpec>"
         },
         {
-          "$ref": "#/definitions/TopLevelGenericVConcatSpec<Spec>"
+          "$ref": "#/definitions/TopLevelNormalizedVConcatSpec<GenericSpec>"
         },
         {
-          "$ref": "#/definitions/TopLevelGenericHConcatSpec<Spec>"
+          "$ref": "#/definitions/TopLevelNormalizedHConcatSpec<GenericSpec>"
         }
       ],
       "description": "A Vega-Lite top-level specification.\nThis is the root class for all Vega-Lite specifications.\n(The json schema is generated from this type.)"
