@@ -7,8 +7,8 @@ perl -pi -e s,'<Field\,','<',g build/vega-lite-schema.json
 perl -pi -e s,'<StandardType>','',g build/vega-lite-schema.json
 
 perl -pi -e s,'CompositeEncoding','Encoding',g build/vega-lite-schema.json
-perl -pi -e s,'Generic(.*)<FacetedUnitSpec\,LayerSpec\,.*\,FieldName>','\1',g build/vega-lite-schema.json
-perl -pi -e s,'Generic(.*)<FacetedUnitSpec\,LayerSpec\,.*\,Field>','Normalized\1',g build/vega-lite-schema.json
+perl -pi -e s,'Generic(.*)<FacetedUnitSpec\,LayerSpec\,?.*\,FieldName>','\1',g build/vega-lite-schema.json
+perl -pi -e s,'Generic(.*)<FacetedUnitSpec\,LayerSpec\,?.*\,Field>','Normalized\1',g build/vega-lite-schema.json
 
 perl -pi -e s,'ValueDef(.*)\<\(number\|\\\"width\\\"\)\>','XValueDef\1',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDef(.*)\<\(number\|\\\"height\\\"\)\>','YValueDef\1',g build/vega-lite-schema.json

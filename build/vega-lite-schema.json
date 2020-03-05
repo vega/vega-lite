@@ -7621,7 +7621,7 @@
       ],
       "type": "object"
     },
-    "GenericFacetSpec<FacetedUnitSpec,LayerSpec,Field>": {
+    "NormalizedFacetSpec": {
       "additionalProperties": false,
       "description": "Base interface for a facet specification.",
       "properties": {
@@ -7740,7 +7740,7 @@
       ],
       "type": "object"
     },
-    "GenericFacetSpec<FacetedUnitSpec,LayerSpec,FieldName>": {
+    "FacetSpec": {
       "additionalProperties": false,
       "description": "Base interface for a facet specification.",
       "properties": {
@@ -8019,7 +8019,7 @@
           "$ref": "#/definitions/RepeatSpec"
         },
         {
-          "$ref": "#/definitions/GenericFacetSpec<FacetedUnitSpec,LayerSpec,Field>"
+          "$ref": "#/definitions/NormalizedFacetSpec"
         },
         {
           "$ref": "#/definitions/NormalizedConcatSpec<GenericSpec>"
@@ -8045,7 +8045,7 @@
           "$ref": "#/definitions/RepeatSpec"
         },
         {
-          "$ref": "#/definitions/GenericFacetSpec<FacetedUnitSpec,LayerSpec,FieldName>"
+          "$ref": "#/definitions/FacetSpec"
         },
         {
           "$ref": "#/definitions/ConcatSpec<GenericSpec>"
