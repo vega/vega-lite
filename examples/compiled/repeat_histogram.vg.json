@@ -2,6 +2,8 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "width": 200,
+  "height": 200,
   "data": [
     {
       "name": "source_0",
@@ -208,16 +210,6 @@
       ]
     }
   ],
-  "signals": [
-    {"name": "child__repeat_repeat_Horsepower_width", "value": 200},
-    {"name": "child__repeat_repeat_Horsepower_height", "value": 200},
-    {"name": "child__repeat_repeat_Miles_per_Gallon_width", "value": 200},
-    {"name": "child__repeat_repeat_Miles_per_Gallon_height", "value": 200},
-    {"name": "child__repeat_repeat_Acceleration_width", "value": 200},
-    {"name": "child__repeat_repeat_Acceleration_height", "value": 200},
-    {"name": "child__repeat_repeat_Displacement_width", "value": 200},
-    {"name": "child__repeat_repeat_Displacement_height", "value": 200}
-  ],
   "layout": {"padding": 20, "bounds": "full", "align": "all", "columns": 2},
   "marks": [
     {
@@ -225,10 +217,7 @@
       "name": "child__repeat_repeat_Horsepower_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "child__repeat_repeat_Horsepower_width"},
-          "height": {"signal": "child__repeat_repeat_Horsepower_height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -278,9 +267,7 @@
           "orient": "left",
           "gridScale": "child__repeat_repeat_Horsepower_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_repeat_Horsepower_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -295,9 +282,7 @@
           "title": "Horsepower (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_repeat_Horsepower_width/10)"
-          },
+          "tickCount": {"signal": "ceil(width/10)"},
           "zindex": 0
         },
         {
@@ -306,9 +291,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_repeat_Horsepower_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -318,10 +301,7 @@
       "name": "child__repeat_repeat_Miles_per_Gallon_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "child__repeat_repeat_Miles_per_Gallon_width"},
-          "height": {"signal": "child__repeat_repeat_Miles_per_Gallon_height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -371,9 +351,7 @@
           "orient": "left",
           "gridScale": "child__repeat_repeat_Miles_per_Gallon_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_repeat_Miles_per_Gallon_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -388,9 +366,7 @@
           "title": "Miles_per_Gallon (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_repeat_Miles_per_Gallon_width/10)"
-          },
+          "tickCount": {"signal": "ceil(width/10)"},
           "zindex": 0
         },
         {
@@ -399,9 +375,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_repeat_Miles_per_Gallon_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -411,10 +385,7 @@
       "name": "child__repeat_repeat_Acceleration_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "child__repeat_repeat_Acceleration_width"},
-          "height": {"signal": "child__repeat_repeat_Acceleration_height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -464,9 +435,7 @@
           "orient": "left",
           "gridScale": "child__repeat_repeat_Acceleration_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_repeat_Acceleration_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -481,9 +450,7 @@
           "title": "Acceleration (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_repeat_Acceleration_width/10)"
-          },
+          "tickCount": {"signal": "ceil(width/10)"},
           "zindex": 0
         },
         {
@@ -492,9 +459,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_repeat_Acceleration_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -504,10 +469,7 @@
       "name": "child__repeat_repeat_Displacement_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "child__repeat_repeat_Displacement_width"},
-          "height": {"signal": "child__repeat_repeat_Displacement_height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -557,9 +519,7 @@
           "orient": "left",
           "gridScale": "child__repeat_repeat_Displacement_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_repeat_Displacement_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -574,9 +534,7 @@
           "title": "Displacement (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_repeat_Displacement_width/10)"
-          },
+          "tickCount": {"signal": "ceil(width/10)"},
           "zindex": 0
         },
         {
@@ -585,9 +543,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_repeat_Displacement_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -614,7 +570,7 @@
       "domain": {
         "signal": "[child__repeat_repeat_Horsepower_bin_maxbins_10_Horsepower_bins.start, child__repeat_repeat_Horsepower_bin_maxbins_10_Horsepower_bins.stop]"
       },
-      "range": [0, {"signal": "child__repeat_repeat_Horsepower_width"}],
+      "range": [0, {"signal": "width"}],
       "bins": {
         "signal": "child__repeat_repeat_Horsepower_bin_maxbins_10_Horsepower_bins"
       },
@@ -624,7 +580,7 @@
       "name": "child__repeat_repeat_Horsepower_y",
       "type": "linear",
       "domain": {"data": "data_1", "fields": ["__count_start", "__count_end"]},
-      "range": [{"signal": "child__repeat_repeat_Horsepower_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -634,7 +590,7 @@
       "domain": {
         "signal": "[child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.start, child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.stop]"
       },
-      "range": [0, {"signal": "child__repeat_repeat_Miles_per_Gallon_width"}],
+      "range": [0, {"signal": "width"}],
       "bins": {
         "signal": "child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins"
       },
@@ -644,7 +600,7 @@
       "name": "child__repeat_repeat_Miles_per_Gallon_y",
       "type": "linear",
       "domain": {"data": "data_2", "fields": ["__count_start", "__count_end"]},
-      "range": [{"signal": "child__repeat_repeat_Miles_per_Gallon_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -654,7 +610,7 @@
       "domain": {
         "signal": "[child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_bins.start, child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_bins.stop]"
       },
-      "range": [0, {"signal": "child__repeat_repeat_Acceleration_width"}],
+      "range": [0, {"signal": "width"}],
       "bins": {
         "signal": "child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_bins"
       },
@@ -664,7 +620,7 @@
       "name": "child__repeat_repeat_Acceleration_y",
       "type": "linear",
       "domain": {"data": "data_3", "fields": ["__count_start", "__count_end"]},
-      "range": [{"signal": "child__repeat_repeat_Acceleration_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -674,7 +630,7 @@
       "domain": {
         "signal": "[child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_bins.start, child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_bins.stop]"
       },
-      "range": [0, {"signal": "child__repeat_repeat_Displacement_width"}],
+      "range": [0, {"signal": "width"}],
       "bins": {
         "signal": "child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_bins"
       },
@@ -684,7 +640,7 @@
       "name": "child__repeat_repeat_Displacement_y",
       "type": "linear",
       "domain": {"data": "data_0", "fields": ["__count_start", "__count_end"]},
-      "range": [{"signal": "child__repeat_repeat_Displacement_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     }

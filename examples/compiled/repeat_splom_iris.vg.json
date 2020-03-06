@@ -2,6 +2,8 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "width": 150,
+  "height": 150,
   "data": [
     {"name": "source_0", "url": "data/iris.json", "format": {"type": "json"}},
     {
@@ -105,136 +107,6 @@
       ]
     }
   ],
-  "signals": [
-    {
-      "name": "child__repeat_row_petalWidthchild__repeat_column_sepalLength_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalWidthchild__repeat_column_sepalLength_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalWidthchild__repeat_column_sepalWidth_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalWidthchild__repeat_column_sepalWidth_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalWidthchild__repeat_column_petalLength_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalWidthchild__repeat_column_petalLength_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalWidthchild__repeat_column_petalWidth_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalWidthchild__repeat_column_petalWidth_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalLengthchild__repeat_column_sepalLength_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalLengthchild__repeat_column_sepalLength_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalLengthchild__repeat_column_sepalWidth_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalLengthchild__repeat_column_sepalWidth_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalLengthchild__repeat_column_petalLength_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalLengthchild__repeat_column_petalLength_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalLengthchild__repeat_column_petalWidth_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_petalLengthchild__repeat_column_petalWidth_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalWidthchild__repeat_column_sepalLength_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalWidthchild__repeat_column_sepalLength_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalWidthchild__repeat_column_petalLength_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalWidthchild__repeat_column_petalLength_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalWidthchild__repeat_column_petalWidth_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalWidthchild__repeat_column_petalWidth_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalLengthchild__repeat_column_sepalLength_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalLengthchild__repeat_column_sepalLength_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalLengthchild__repeat_column_petalLength_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalLengthchild__repeat_column_petalLength_height",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalLengthchild__repeat_column_petalWidth_width",
-      "value": 150
-    },
-    {
-      "name": "child__repeat_row_sepalLengthchild__repeat_column_petalWidth_height",
-      "value": 150
-    }
-  ],
   "layout": {"padding": 20, "bounds": "full", "align": "all", "columns": 4},
   "marks": [
     {
@@ -242,14 +114,7 @@
       "name": "child__repeat_row_petalWidthchild__repeat_column_sepalLength_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_petalWidthchild__repeat_column_sepalLength_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_petalWidthchild__repeat_column_sepalLength_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -292,9 +157,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidthchild__repeat_column_sepalLength_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_sepalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -307,9 +170,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_petalWidthchild__repeat_column_sepalLength_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_sepalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -324,9 +185,7 @@
           "title": "sepalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_sepalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -335,9 +194,7 @@
           "grid": false,
           "title": "petalWidth",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_sepalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -347,14 +204,7 @@
       "name": "child__repeat_row_petalWidthchild__repeat_column_sepalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_petalWidthchild__repeat_column_sepalWidth_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_petalWidthchild__repeat_column_sepalWidth_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -397,9 +247,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidthchild__repeat_column_sepalWidth_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_sepalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -412,9 +260,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_petalWidthchild__repeat_column_sepalWidth_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_sepalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -429,9 +275,7 @@
           "title": "sepalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_sepalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -440,9 +284,7 @@
           "grid": false,
           "title": "petalWidth",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_sepalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -452,14 +294,7 @@
       "name": "child__repeat_row_petalWidthchild__repeat_column_petalLength_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_petalWidthchild__repeat_column_petalLength_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_petalWidthchild__repeat_column_petalLength_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -502,9 +337,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidthchild__repeat_column_petalLength_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_petalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -517,9 +350,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_petalWidthchild__repeat_column_petalLength_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_petalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -534,9 +365,7 @@
           "title": "petalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_petalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -545,9 +374,7 @@
           "grid": false,
           "title": "petalWidth",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_petalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -557,14 +384,7 @@
       "name": "child__repeat_row_petalWidthchild__repeat_column_petalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_petalWidthchild__repeat_column_petalWidth_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_petalWidthchild__repeat_column_petalWidth_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -607,9 +427,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidthchild__repeat_column_petalWidth_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_petalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -622,9 +440,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_petalWidthchild__repeat_column_petalWidth_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_petalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -639,9 +455,7 @@
           "title": "petalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_petalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -650,9 +464,7 @@
           "grid": false,
           "title": "petalWidth",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalWidthchild__repeat_column_petalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -662,14 +474,7 @@
       "name": "child__repeat_row_petalLengthchild__repeat_column_sepalLength_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_petalLengthchild__repeat_column_sepalLength_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_petalLengthchild__repeat_column_sepalLength_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -712,9 +517,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalLengthchild__repeat_column_sepalLength_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_sepalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -727,9 +530,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_petalLengthchild__repeat_column_sepalLength_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_sepalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -744,9 +545,7 @@
           "title": "sepalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_sepalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -755,9 +554,7 @@
           "grid": false,
           "title": "petalLength",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_sepalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -767,14 +564,7 @@
       "name": "child__repeat_row_petalLengthchild__repeat_column_sepalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_petalLengthchild__repeat_column_sepalWidth_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_petalLengthchild__repeat_column_sepalWidth_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -817,9 +607,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalLengthchild__repeat_column_sepalWidth_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_sepalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -832,9 +620,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_petalLengthchild__repeat_column_sepalWidth_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_sepalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -849,9 +635,7 @@
           "title": "sepalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_sepalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -860,9 +644,7 @@
           "grid": false,
           "title": "petalLength",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_sepalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -872,14 +654,7 @@
       "name": "child__repeat_row_petalLengthchild__repeat_column_petalLength_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_petalLengthchild__repeat_column_petalLength_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_petalLengthchild__repeat_column_petalLength_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -922,9 +697,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalLengthchild__repeat_column_petalLength_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_petalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -937,9 +710,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_petalLengthchild__repeat_column_petalLength_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_petalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -954,9 +725,7 @@
           "title": "petalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_petalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -965,9 +734,7 @@
           "grid": false,
           "title": "petalLength",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_petalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -977,14 +744,7 @@
       "name": "child__repeat_row_petalLengthchild__repeat_column_petalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_petalLengthchild__repeat_column_petalWidth_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_petalLengthchild__repeat_column_petalWidth_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -1027,9 +787,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalLengthchild__repeat_column_petalWidth_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_petalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1042,9 +800,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_petalLengthchild__repeat_column_petalWidth_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_petalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1059,9 +815,7 @@
           "title": "petalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_petalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -1070,9 +824,7 @@
           "grid": false,
           "title": "petalLength",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_petalLengthchild__repeat_column_petalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1082,14 +834,7 @@
       "name": "child__repeat_row_sepalWidthchild__repeat_column_sepalLength_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_sepalWidthchild__repeat_column_sepalLength_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_sepalWidthchild__repeat_column_sepalLength_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -1132,9 +877,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidthchild__repeat_column_sepalLength_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_sepalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1147,9 +890,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_sepalWidthchild__repeat_column_sepalLength_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_sepalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1164,9 +905,7 @@
           "title": "sepalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_sepalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -1175,9 +914,7 @@
           "grid": false,
           "title": "sepalWidth",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_sepalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1187,14 +924,7 @@
       "name": "child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -1237,9 +967,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1252,9 +980,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1269,9 +995,7 @@
           "title": "sepalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -1280,9 +1004,7 @@
           "grid": false,
           "title": "sepalWidth",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1292,14 +1014,7 @@
       "name": "child__repeat_row_sepalWidthchild__repeat_column_petalLength_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_sepalWidthchild__repeat_column_petalLength_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_sepalWidthchild__repeat_column_petalLength_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -1342,9 +1057,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidthchild__repeat_column_petalLength_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_petalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1357,9 +1070,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_sepalWidthchild__repeat_column_petalLength_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_petalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1374,9 +1085,7 @@
           "title": "petalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_petalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -1385,9 +1094,7 @@
           "grid": false,
           "title": "sepalWidth",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_petalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1397,14 +1104,7 @@
       "name": "child__repeat_row_sepalWidthchild__repeat_column_petalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_sepalWidthchild__repeat_column_petalWidth_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_sepalWidthchild__repeat_column_petalWidth_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -1447,9 +1147,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidthchild__repeat_column_petalWidth_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_petalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1462,9 +1160,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_sepalWidthchild__repeat_column_petalWidth_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_petalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1479,9 +1175,7 @@
           "title": "petalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_petalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -1490,9 +1184,7 @@
           "grid": false,
           "title": "sepalWidth",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalWidthchild__repeat_column_petalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1502,14 +1194,7 @@
       "name": "child__repeat_row_sepalLengthchild__repeat_column_sepalLength_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_sepalLengthchild__repeat_column_sepalLength_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_sepalLengthchild__repeat_column_sepalLength_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -1552,9 +1237,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLengthchild__repeat_column_sepalLength_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_sepalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1567,9 +1250,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_sepalLengthchild__repeat_column_sepalLength_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_sepalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1584,9 +1265,7 @@
           "title": "sepalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_sepalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -1595,9 +1274,7 @@
           "grid": false,
           "title": "sepalLength",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_sepalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1607,14 +1284,7 @@
       "name": "child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -1657,9 +1327,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1672,9 +1340,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1689,9 +1355,7 @@
           "title": "sepalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -1700,9 +1364,7 @@
           "grid": false,
           "title": "sepalLength",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1712,14 +1374,7 @@
       "name": "child__repeat_row_sepalLengthchild__repeat_column_petalLength_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_sepalLengthchild__repeat_column_petalLength_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_sepalLengthchild__repeat_column_petalLength_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -1762,9 +1417,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLengthchild__repeat_column_petalLength_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_petalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1777,9 +1430,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_sepalLengthchild__repeat_column_petalLength_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_petalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1794,9 +1445,7 @@
           "title": "petalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_petalLength_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -1805,9 +1454,7 @@
           "grid": false,
           "title": "sepalLength",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_petalLength_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1817,14 +1464,7 @@
       "name": "child__repeat_row_sepalLengthchild__repeat_column_petalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {
-            "signal": "child__repeat_row_sepalLengthchild__repeat_column_petalWidth_width"
-          },
-          "height": {
-            "signal": "child__repeat_row_sepalLengthchild__repeat_column_petalWidth_height"
-          }
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -1867,9 +1507,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLengthchild__repeat_column_petalWidth_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_petalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1882,9 +1520,7 @@
           "orient": "left",
           "gridScale": "child__repeat_row_sepalLengthchild__repeat_column_petalWidth_x",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_petalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1899,9 +1535,7 @@
           "title": "petalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_petalWidth_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -1910,9 +1544,7 @@
           "grid": false,
           "title": "sepalLength",
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_row_sepalLengthchild__repeat_column_petalWidth_height/40)"
-          },
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1943,12 +1575,7 @@
       "name": "child__repeat_row_petalWidthchild__repeat_column_sepalLength_x",
       "type": "linear",
       "domain": {"data": "data_0", "field": "sepalLength"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_petalWidthchild__repeat_column_sepalLength_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -1956,12 +1583,7 @@
       "name": "child__repeat_row_petalWidthchild__repeat_column_sepalLength_y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "petalWidth"},
-      "range": [
-        {
-          "signal": "child__repeat_row_petalWidthchild__repeat_column_sepalLength_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1969,12 +1591,7 @@
       "name": "child__repeat_row_petalWidthchild__repeat_column_sepalWidth_x",
       "type": "linear",
       "domain": {"data": "data_1", "field": "sepalWidth"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_petalWidthchild__repeat_column_sepalWidth_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -1982,12 +1599,7 @@
       "name": "child__repeat_row_petalWidthchild__repeat_column_sepalWidth_y",
       "type": "linear",
       "domain": {"data": "data_1", "field": "petalWidth"},
-      "range": [
-        {
-          "signal": "child__repeat_row_petalWidthchild__repeat_column_sepalWidth_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1995,12 +1607,7 @@
       "name": "child__repeat_row_petalWidthchild__repeat_column_petalLength_x",
       "type": "linear",
       "domain": {"data": "data_2", "field": "petalLength"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_petalWidthchild__repeat_column_petalLength_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2008,12 +1615,7 @@
       "name": "child__repeat_row_petalWidthchild__repeat_column_petalLength_y",
       "type": "linear",
       "domain": {"data": "data_2", "field": "petalWidth"},
-      "range": [
-        {
-          "signal": "child__repeat_row_petalWidthchild__repeat_column_petalLength_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -2021,12 +1623,7 @@
       "name": "child__repeat_row_petalWidthchild__repeat_column_petalWidth_x",
       "type": "linear",
       "domain": {"data": "data_3", "field": "petalWidth"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_petalWidthchild__repeat_column_petalWidth_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2034,12 +1631,7 @@
       "name": "child__repeat_row_petalWidthchild__repeat_column_petalWidth_y",
       "type": "linear",
       "domain": {"data": "data_3", "field": "petalWidth"},
-      "range": [
-        {
-          "signal": "child__repeat_row_petalWidthchild__repeat_column_petalWidth_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -2047,12 +1639,7 @@
       "name": "child__repeat_row_petalLengthchild__repeat_column_sepalLength_x",
       "type": "linear",
       "domain": {"data": "data_4", "field": "sepalLength"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_petalLengthchild__repeat_column_sepalLength_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2060,12 +1647,7 @@
       "name": "child__repeat_row_petalLengthchild__repeat_column_sepalLength_y",
       "type": "linear",
       "domain": {"data": "data_4", "field": "petalLength"},
-      "range": [
-        {
-          "signal": "child__repeat_row_petalLengthchild__repeat_column_sepalLength_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -2073,12 +1655,7 @@
       "name": "child__repeat_row_petalLengthchild__repeat_column_sepalWidth_x",
       "type": "linear",
       "domain": {"data": "data_5", "field": "sepalWidth"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_petalLengthchild__repeat_column_sepalWidth_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2086,12 +1663,7 @@
       "name": "child__repeat_row_petalLengthchild__repeat_column_sepalWidth_y",
       "type": "linear",
       "domain": {"data": "data_5", "field": "petalLength"},
-      "range": [
-        {
-          "signal": "child__repeat_row_petalLengthchild__repeat_column_sepalWidth_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -2099,12 +1671,7 @@
       "name": "child__repeat_row_petalLengthchild__repeat_column_petalLength_x",
       "type": "linear",
       "domain": {"data": "data_6", "field": "petalLength"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_petalLengthchild__repeat_column_petalLength_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2112,12 +1679,7 @@
       "name": "child__repeat_row_petalLengthchild__repeat_column_petalLength_y",
       "type": "linear",
       "domain": {"data": "data_6", "field": "petalLength"},
-      "range": [
-        {
-          "signal": "child__repeat_row_petalLengthchild__repeat_column_petalLength_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -2125,12 +1687,7 @@
       "name": "child__repeat_row_petalLengthchild__repeat_column_petalWidth_x",
       "type": "linear",
       "domain": {"data": "data_2", "field": "petalWidth"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_petalLengthchild__repeat_column_petalWidth_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2138,12 +1695,7 @@
       "name": "child__repeat_row_petalLengthchild__repeat_column_petalWidth_y",
       "type": "linear",
       "domain": {"data": "data_2", "field": "petalLength"},
-      "range": [
-        {
-          "signal": "child__repeat_row_petalLengthchild__repeat_column_petalWidth_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -2151,12 +1703,7 @@
       "name": "child__repeat_row_sepalWidthchild__repeat_column_sepalLength_x",
       "type": "linear",
       "domain": {"data": "data_7", "field": "sepalLength"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_sepalWidthchild__repeat_column_sepalLength_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2164,12 +1711,7 @@
       "name": "child__repeat_row_sepalWidthchild__repeat_column_sepalLength_y",
       "type": "linear",
       "domain": {"data": "data_7", "field": "sepalWidth"},
-      "range": [
-        {
-          "signal": "child__repeat_row_sepalWidthchild__repeat_column_sepalLength_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -2177,12 +1719,7 @@
       "name": "child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_x",
       "type": "linear",
       "domain": {"data": "data_8", "field": "sepalWidth"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2190,12 +1727,7 @@
       "name": "child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_y",
       "type": "linear",
       "domain": {"data": "data_8", "field": "sepalWidth"},
-      "range": [
-        {
-          "signal": "child__repeat_row_sepalWidthchild__repeat_column_sepalWidth_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -2203,12 +1735,7 @@
       "name": "child__repeat_row_sepalWidthchild__repeat_column_petalLength_x",
       "type": "linear",
       "domain": {"data": "data_5", "field": "petalLength"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_sepalWidthchild__repeat_column_petalLength_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2216,12 +1743,7 @@
       "name": "child__repeat_row_sepalWidthchild__repeat_column_petalLength_y",
       "type": "linear",
       "domain": {"data": "data_5", "field": "sepalWidth"},
-      "range": [
-        {
-          "signal": "child__repeat_row_sepalWidthchild__repeat_column_petalLength_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -2229,12 +1751,7 @@
       "name": "child__repeat_row_sepalWidthchild__repeat_column_petalWidth_x",
       "type": "linear",
       "domain": {"data": "data_1", "field": "petalWidth"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_sepalWidthchild__repeat_column_petalWidth_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2242,12 +1759,7 @@
       "name": "child__repeat_row_sepalWidthchild__repeat_column_petalWidth_y",
       "type": "linear",
       "domain": {"data": "data_1", "field": "sepalWidth"},
-      "range": [
-        {
-          "signal": "child__repeat_row_sepalWidthchild__repeat_column_petalWidth_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -2255,12 +1767,7 @@
       "name": "child__repeat_row_sepalLengthchild__repeat_column_sepalLength_x",
       "type": "linear",
       "domain": {"data": "data_9", "field": "sepalLength"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_sepalLengthchild__repeat_column_sepalLength_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2268,12 +1775,7 @@
       "name": "child__repeat_row_sepalLengthchild__repeat_column_sepalLength_y",
       "type": "linear",
       "domain": {"data": "data_9", "field": "sepalLength"},
-      "range": [
-        {
-          "signal": "child__repeat_row_sepalLengthchild__repeat_column_sepalLength_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -2281,12 +1783,7 @@
       "name": "child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_x",
       "type": "linear",
       "domain": {"data": "data_7", "field": "sepalWidth"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2294,12 +1791,7 @@
       "name": "child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_y",
       "type": "linear",
       "domain": {"data": "data_7", "field": "sepalLength"},
-      "range": [
-        {
-          "signal": "child__repeat_row_sepalLengthchild__repeat_column_sepalWidth_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -2307,12 +1799,7 @@
       "name": "child__repeat_row_sepalLengthchild__repeat_column_petalLength_x",
       "type": "linear",
       "domain": {"data": "data_4", "field": "petalLength"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_sepalLengthchild__repeat_column_petalLength_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2320,12 +1807,7 @@
       "name": "child__repeat_row_sepalLengthchild__repeat_column_petalLength_y",
       "type": "linear",
       "domain": {"data": "data_4", "field": "sepalLength"},
-      "range": [
-        {
-          "signal": "child__repeat_row_sepalLengthchild__repeat_column_petalLength_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -2333,12 +1815,7 @@
       "name": "child__repeat_row_sepalLengthchild__repeat_column_petalWidth_x",
       "type": "linear",
       "domain": {"data": "data_0", "field": "petalWidth"},
-      "range": [
-        0,
-        {
-          "signal": "child__repeat_row_sepalLengthchild__repeat_column_petalWidth_width"
-        }
-      ],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -2346,12 +1823,7 @@
       "name": "child__repeat_row_sepalLengthchild__repeat_column_petalWidth_y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "sepalLength"},
-      "range": [
-        {
-          "signal": "child__repeat_row_sepalLengthchild__repeat_column_petalWidth_height"
-        },
-        0
-      ],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     }

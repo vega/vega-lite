@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "width": 200,
   "height": 200,
   "data": [
     {
@@ -16,10 +17,6 @@
       ]
     }
   ],
-  "signals": [
-    {"name": "child__repeat_column_Origin_width", "value": 200},
-    {"name": "child__repeat_column_Cylinders_width", "value": 200}
-  ],
   "layout": {"padding": 20, "bounds": "full", "align": "all", "columns": 2},
   "marks": [
     {
@@ -27,10 +24,7 @@
       "name": "child__repeat_column_Origin_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "child__repeat_column_Origin_width"},
-          "height": {"signal": "height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -64,7 +58,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_column_Origin_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(child__repeat_column_Origin_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -92,7 +86,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child__repeat_column_Origin_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -126,10 +120,7 @@
       "name": "child__repeat_column_Cylinders_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "child__repeat_column_Cylinders_width"},
-          "height": {"signal": "height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -163,9 +154,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_column_Cylinders_y",
           "grid": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_column_Cylinders_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -193,9 +182,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_column_Cylinders_width/40)"
-          },
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -230,7 +217,7 @@
       "name": "child__repeat_column_Origin_x",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Horsepower"},
-      "range": [0, {"signal": "child__repeat_column_Origin_width"}],
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
     },
@@ -252,7 +239,7 @@
       "name": "child__repeat_column_Cylinders_x",
       "type": "linear",
       "domain": {"data": "source_0", "field": "Horsepower"},
-      "range": [0, {"signal": "child__repeat_column_Cylinders_width"}],
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
     },

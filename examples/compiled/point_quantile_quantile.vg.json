@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "width": 200,
   "height": 200,
   "data": [
     {
@@ -35,10 +36,6 @@
       ]
     }
   ],
-  "signals": [
-    {"name": "concat_0_width", "value": 200},
-    {"name": "concat_1_width", "value": 200}
-  ],
   "layout": {"padding": 20, "bounds": "full", "align": "each"},
   "marks": [
     {
@@ -46,10 +43,7 @@
       "name": "concat_0_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "concat_0_width"},
-          "height": {"signal": "height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -74,7 +68,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -102,7 +96,7 @@
           "title": "unif",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -121,10 +115,7 @@
       "name": "concat_1_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "concat_1_width"},
-          "height": {"signal": "height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -149,7 +140,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -177,7 +168,7 @@
           "title": "norm",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -197,7 +188,7 @@
       "name": "concat_0_x",
       "type": "linear",
       "domain": {"data": "data_0", "field": "unif"},
-      "range": [0, {"signal": "concat_0_width"}],
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
     },
@@ -213,7 +204,7 @@
       "name": "concat_1_x",
       "type": "linear",
       "domain": {"data": "data_1", "field": "norm"},
-      "range": [0, {"signal": "concat_1_width"}],
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
     },

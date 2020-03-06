@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "width": 200,
   "height": 200,
   "data": [
     {"name": "brush_store"},
@@ -182,9 +183,6 @@
     }
   ],
   "signals": [
-    {"name": "child__repeat_column_distance_width", "value": 200},
-    {"name": "child__repeat_column_delay_width", "value": 200},
-    {"name": "child__repeat_column_time_width", "value": 200},
     {
       "name": "unit",
       "value": {},
@@ -204,10 +202,7 @@
       "name": "child__repeat_column_distance_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "child__repeat_column_distance_width"},
-          "height": {"signal": "height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "signals": [
         {
@@ -351,9 +346,7 @@
           "title": "distance (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {
-            "signal": "ceil(child__repeat_column_distance_width/10)"
-          },
+          "tickCount": {"signal": "ceil(width/10)"},
           "zindex": 0
         },
         {
@@ -372,10 +365,7 @@
       "name": "child__repeat_column_delay_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "child__repeat_column_delay_width"},
-          "height": {"signal": "height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "signals": [
         {
@@ -519,7 +509,7 @@
           "title": "delay (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child__repeat_column_delay_width/10)"},
+          "tickCount": {"signal": "ceil(width/10)"},
           "zindex": 0
         },
         {
@@ -538,10 +528,7 @@
       "name": "child__repeat_column_time_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "child__repeat_column_time_width"},
-          "height": {"signal": "height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "signals": [
         {
@@ -679,7 +666,7 @@
           "title": "time (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(child__repeat_column_time_width/10)"},
+          "tickCount": {"signal": "ceil(width/10)"},
           "zindex": 0
         },
         {
@@ -701,7 +688,7 @@
       "domain": {
         "signal": "[child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins.start, child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins.stop]"
       },
-      "range": [0, {"signal": "child__repeat_column_distance_width"}],
+      "range": [0, {"signal": "width"}],
       "bins": {
         "signal": "child__repeat_column_distance_layer_0_bin_maxbins_20_distance_bins"
       },
@@ -726,7 +713,7 @@
       "domain": {
         "signal": "[child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins.start, child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins.stop]"
       },
-      "range": [0, {"signal": "child__repeat_column_delay_width"}],
+      "range": [0, {"signal": "width"}],
       "bins": {
         "signal": "child__repeat_column_delay_layer_1_bin_maxbins_20_delay_bins"
       },
@@ -751,7 +738,7 @@
       "domain": {
         "signal": "[child__repeat_column_time_layer_1_bin_maxbins_20_time_bins.start, child__repeat_column_time_layer_1_bin_maxbins_20_time_bins.stop]"
       },
-      "range": [0, {"signal": "child__repeat_column_time_width"}],
+      "range": [0, {"signal": "width"}],
       "bins": {
         "signal": "child__repeat_column_time_layer_1_bin_maxbins_20_time_bins"
       },

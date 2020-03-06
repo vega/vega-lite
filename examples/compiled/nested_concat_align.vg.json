@@ -3,6 +3,8 @@
   "description": "Nested concatenation aligned by setting axis minExtent",
   "background": "white",
   "padding": 5,
+  "width": 150,
+  "height": 50,
   "data": [
     {
       "name": "source_0",
@@ -158,14 +160,6 @@
       ]
     }
   ],
-  "signals": [
-    {"name": "concat_0_height", "value": 50},
-    {"name": "child__repeat_column_Rotten_Tomatoes_Rating_width", "value": 150},
-    {"name": "child__repeat_column_IMDB_Rating_width", "value": 150},
-    {"name": "concat_1_height", "value": 50},
-    {"name": "child__repeat_column_US_Gross_width", "value": 150},
-    {"name": "child__repeat_column_Worldwide_Gross_width", "value": 150}
-  ],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
     {
@@ -180,10 +174,8 @@
           "style": "cell",
           "encode": {
             "update": {
-              "width": {
-                "signal": "child__repeat_column_Rotten_Tomatoes_Rating_width"
-              },
-              "height": {"signal": "concat_0_height"}
+              "width": {"signal": "width"},
+              "height": {"signal": "height"}
             }
           },
           "marks": [
@@ -234,7 +226,7 @@
               "orient": "left",
               "gridScale": "child__repeat_column_Rotten_Tomatoes_Rating_x",
               "grid": true,
-              "tickCount": {"signal": "ceil(concat_0_height/40)"},
+              "tickCount": {"signal": "ceil(height/40)"},
               "domain": false,
               "labels": false,
               "maxExtent": 0,
@@ -249,9 +241,7 @@
               "title": "Rotten_Tomatoes_Rating (binned)",
               "labelFlush": true,
               "labelOverlap": true,
-              "tickCount": {
-                "signal": "ceil(child__repeat_column_Rotten_Tomatoes_Rating_width/10)"
-              },
+              "tickCount": {"signal": "ceil(width/10)"},
               "zindex": 0
             },
             {
@@ -260,7 +250,7 @@
               "grid": false,
               "title": "Count",
               "labelOverlap": true,
-              "tickCount": {"signal": "ceil(concat_0_height/40)"},
+              "tickCount": {"signal": "ceil(height/40)"},
               "zindex": 0
             }
           ]
@@ -271,8 +261,8 @@
           "style": "cell",
           "encode": {
             "update": {
-              "width": {"signal": "child__repeat_column_IMDB_Rating_width"},
-              "height": {"signal": "concat_0_height"}
+              "width": {"signal": "width"},
+              "height": {"signal": "height"}
             }
           },
           "marks": [
@@ -323,7 +313,7 @@
               "orient": "left",
               "gridScale": "child__repeat_column_IMDB_Rating_x",
               "grid": true,
-              "tickCount": {"signal": "ceil(concat_0_height/40)"},
+              "tickCount": {"signal": "ceil(height/40)"},
               "domain": false,
               "labels": false,
               "maxExtent": 0,
@@ -338,9 +328,7 @@
               "title": "IMDB_Rating (binned)",
               "labelFlush": true,
               "labelOverlap": true,
-              "tickCount": {
-                "signal": "ceil(child__repeat_column_IMDB_Rating_width/10)"
-              },
+              "tickCount": {"signal": "ceil(width/10)"},
               "zindex": 0
             },
             {
@@ -349,7 +337,7 @@
               "grid": false,
               "title": "Count",
               "labelOverlap": true,
-              "tickCount": {"signal": "ceil(concat_0_height/40)"},
+              "tickCount": {"signal": "ceil(height/40)"},
               "zindex": 0
             }
           ]
@@ -368,8 +356,8 @@
           "style": "cell",
           "encode": {
             "update": {
-              "width": {"signal": "child__repeat_column_US_Gross_width"},
-              "height": {"signal": "concat_1_height"}
+              "width": {"signal": "width"},
+              "height": {"signal": "height"}
             }
           },
           "marks": [
@@ -417,7 +405,7 @@
               "orient": "left",
               "gridScale": "child__repeat_column_US_Gross_x",
               "grid": true,
-              "tickCount": {"signal": "ceil(concat_1_height/40)"},
+              "tickCount": {"signal": "ceil(height/40)"},
               "domain": false,
               "labels": false,
               "maxExtent": 0,
@@ -432,9 +420,7 @@
               "title": "US_Gross (binned)",
               "labelFlush": true,
               "labelOverlap": true,
-              "tickCount": {
-                "signal": "ceil(child__repeat_column_US_Gross_width/10)"
-              },
+              "tickCount": {"signal": "ceil(width/10)"},
               "zindex": 0
             },
             {
@@ -443,7 +429,7 @@
               "grid": false,
               "title": "Count",
               "labelOverlap": true,
-              "tickCount": {"signal": "ceil(concat_1_height/40)"},
+              "tickCount": {"signal": "ceil(height/40)"},
               "zindex": 0
             }
           ]
@@ -454,8 +440,8 @@
           "style": "cell",
           "encode": {
             "update": {
-              "width": {"signal": "child__repeat_column_Worldwide_Gross_width"},
-              "height": {"signal": "concat_1_height"}
+              "width": {"signal": "width"},
+              "height": {"signal": "height"}
             }
           },
           "marks": [
@@ -506,7 +492,7 @@
               "orient": "left",
               "gridScale": "child__repeat_column_Worldwide_Gross_x",
               "grid": true,
-              "tickCount": {"signal": "ceil(concat_1_height/40)"},
+              "tickCount": {"signal": "ceil(height/40)"},
               "domain": false,
               "labels": false,
               "maxExtent": 0,
@@ -521,9 +507,7 @@
               "title": "Worldwide_Gross (binned)",
               "labelFlush": true,
               "labelOverlap": true,
-              "tickCount": {
-                "signal": "ceil(child__repeat_column_Worldwide_Gross_width/10)"
-              },
+              "tickCount": {"signal": "ceil(width/10)"},
               "zindex": 0
             },
             {
@@ -532,7 +516,7 @@
               "grid": false,
               "title": "Count",
               "labelOverlap": true,
-              "tickCount": {"signal": "ceil(concat_1_height/40)"},
+              "tickCount": {"signal": "ceil(height/40)"},
               "zindex": 0
             }
           ]
@@ -547,10 +531,7 @@
       "domain": {
         "signal": "[child__repeat_column_Rotten_Tomatoes_Rating_bin_maxbins_20_Rotten_Tomatoes_Rating_bins.start, child__repeat_column_Rotten_Tomatoes_Rating_bin_maxbins_20_Rotten_Tomatoes_Rating_bins.stop]"
       },
-      "range": [
-        0,
-        {"signal": "child__repeat_column_Rotten_Tomatoes_Rating_width"}
-      ],
+      "range": [0, {"signal": "width"}],
       "bins": {
         "signal": "child__repeat_column_Rotten_Tomatoes_Rating_bin_maxbins_20_Rotten_Tomatoes_Rating_bins"
       },
@@ -560,7 +541,7 @@
       "name": "child__repeat_column_Rotten_Tomatoes_Rating_y",
       "type": "linear",
       "domain": {"data": "data_1", "field": "__count"},
-      "range": [{"signal": "concat_0_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -570,7 +551,7 @@
       "domain": {
         "signal": "[child__repeat_column_IMDB_Rating_bin_maxbins_20_IMDB_Rating_bins.start, child__repeat_column_IMDB_Rating_bin_maxbins_20_IMDB_Rating_bins.stop]"
       },
-      "range": [0, {"signal": "child__repeat_column_IMDB_Rating_width"}],
+      "range": [0, {"signal": "width"}],
       "bins": {
         "signal": "child__repeat_column_IMDB_Rating_bin_maxbins_20_IMDB_Rating_bins"
       },
@@ -580,7 +561,7 @@
       "name": "child__repeat_column_IMDB_Rating_y",
       "type": "linear",
       "domain": {"data": "data_2", "field": "__count"},
-      "range": [{"signal": "concat_0_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -590,7 +571,7 @@
       "domain": {
         "signal": "[child__repeat_column_US_Gross_bin_maxbins_20_US_Gross_bins.start, child__repeat_column_US_Gross_bin_maxbins_20_US_Gross_bins.stop]"
       },
-      "range": [0, {"signal": "child__repeat_column_US_Gross_width"}],
+      "range": [0, {"signal": "width"}],
       "bins": {
         "signal": "child__repeat_column_US_Gross_bin_maxbins_20_US_Gross_bins"
       },
@@ -600,7 +581,7 @@
       "name": "child__repeat_column_US_Gross_y",
       "type": "linear",
       "domain": {"data": "data_3", "field": "__count"},
-      "range": [{"signal": "concat_1_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -610,7 +591,7 @@
       "domain": {
         "signal": "[child__repeat_column_Worldwide_Gross_bin_maxbins_20_Worldwide_Gross_bins.start, child__repeat_column_Worldwide_Gross_bin_maxbins_20_Worldwide_Gross_bins.stop]"
       },
-      "range": [0, {"signal": "child__repeat_column_Worldwide_Gross_width"}],
+      "range": [0, {"signal": "width"}],
       "bins": {
         "signal": "child__repeat_column_Worldwide_Gross_bin_maxbins_20_Worldwide_Gross_bins"
       },
@@ -620,7 +601,7 @@
       "name": "child__repeat_column_Worldwide_Gross_y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "__count"},
-      "range": [{"signal": "concat_1_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     }
