@@ -12,8 +12,6 @@ import {RepeaterValue} from './repeater';
 export class ConcatModel extends BaseConcatModel {
   public readonly children: Model[];
 
-  public readonly concatType: 'vconcat' | 'hconcat' | 'concat';
-
   constructor(
     spec: NormalizedConcatSpec,
     parent: Model,
@@ -26,8 +24,6 @@ export class ConcatModel extends BaseConcatModel {
     if (spec.resolve?.axis?.x === 'shared' || spec.resolve?.axis?.y === 'shared') {
       log.warn(log.message.CONCAT_CANNOT_SHARE_AXIS);
     }
-
-    this.concatType = isVConcatSpec(spec) ? 'vconcat' : isHConcatSpec(spec) ? 'hconcat' : 'concat';
 
     this.children = this.getChildren(spec).map((child, i) => {
       return buildModel(child, this, this.getName('concat_' + i), undefined, repeater, config);
@@ -52,8 +48,9 @@ export class ConcatModel extends BaseConcatModel {
   }
 
   protected assembleDefaultLayout(): VgLayout {
+    const columns = this.layout.columns;
     return {
-      ...(this.concatType === 'vconcat' ? {columns: 1} : {}),
+      ...(columns != null ? {columns: columns} : {}),
       bounds: 'full',
       // Use align each so it can work with multiple plots with different size
       align: 'each'
