@@ -3,6 +3,7 @@
   "description": "Drag out a rectangular brush to highlight points.",
   "background": "white",
   "padding": 5,
+  "width": 200,
   "height": 200,
   "data": [
     {"name": "hover_store"},
@@ -61,8 +62,6 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_width", "value": 200},
-    {"name": "concat_1_width", "value": 200},
     {
       "name": "unit",
       "value": {},
@@ -82,10 +81,7 @@
       "name": "concat_0_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "concat_0_width"},
-          "height": {"signal": "height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "signals": [
         {
@@ -156,7 +152,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -184,7 +180,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -203,10 +199,7 @@
       "name": "concat_1_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "concat_1_width"},
-          "height": {"signal": "height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "signals": [
         {
@@ -277,7 +270,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -305,7 +298,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -330,7 +323,7 @@
           {"data": "data_2", "field": "Horsepower"}
         ]
       },
-      "range": [0, {"signal": "concat_0_width"}],
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
     },
@@ -356,7 +349,7 @@
           {"data": "data_3", "field": "Horsepower"}
         ]
       },
-      "range": [0, {"signal": "concat_1_width"}],
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
     },

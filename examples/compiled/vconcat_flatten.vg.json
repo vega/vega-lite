@@ -4,6 +4,7 @@
   "background": "white",
   "padding": 5,
   "width": 300,
+  "height": 200,
   "data": [
     {"name": "pts_store"},
     {
@@ -75,8 +76,6 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_height", "value": 200},
-    {"name": "concat_1_height", "value": 200},
     {
       "name": "unit",
       "value": {},
@@ -97,10 +96,7 @@
       "title": {"text": "Sky position", "frame": "group"},
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "width"},
-          "height": {"signal": "concat_0_height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "signals": [
         {
@@ -192,7 +188,7 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -216,7 +212,7 @@
           "grid": false,
           "title": "dec",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -227,10 +223,7 @@
       "title": {"text": "Light curve", "frame": "group"},
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "width"},
-          "height": {"signal": "concat_1_height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "marks": [
         {
@@ -290,7 +283,7 @@
           "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -314,7 +307,7 @@
           "grid": false,
           "title": "lc.mag",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -333,7 +326,7 @@
       "name": "concat_0_y",
       "type": "linear",
       "domain": {"data": "data_1", "field": "dec"},
-      "range": [{"signal": "concat_0_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -349,7 +342,7 @@
       "name": "concat_1_y",
       "type": "linear",
       "domain": {"data": "data_2", "field": "lc\\.mag"},
-      "range": [{"signal": "concat_1_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     }

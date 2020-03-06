@@ -3,6 +3,7 @@
   "background": "white",
   "padding": 5,
   "width": 200,
+  "height": 200,
   "data": [
     {"name": "brush_store"},
     {"name": "grid_store"},
@@ -29,8 +30,6 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_height", "value": 200},
-    {"name": "concat_1_height", "value": 200},
     {
       "name": "unit",
       "value": {},
@@ -56,10 +55,7 @@
       "name": "concat_0_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "width"},
-          "height": {"signal": "concat_0_height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "signals": [
         {
@@ -151,7 +147,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_y[0], clamp(y(unit), 0, concat_0_height)]"
+              "update": "[brush_y[0], clamp(y(unit), 0, height)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -159,11 +155,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, concat_0_height)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, height)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, concat_0_height)"
+              "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, height)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -414,7 +410,7 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -438,7 +434,7 @@
           "grid": false,
           "title": "Horsepower",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -448,10 +444,7 @@
       "name": "concat_1_group",
       "style": "cell",
       "encode": {
-        "update": {
-          "width": {"signal": "width"},
-          "height": {"signal": "concat_1_height"}
-        }
+        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
       },
       "signals": [
         {
@@ -477,7 +470,7 @@
           "on": [
             {
               "events": {"signal": "grid_translate_delta"},
-              "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / concat_1_height)"
+              "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / height)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
@@ -609,7 +602,7 @@
           "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -633,7 +626,7 @@
           "grid": false,
           "title": "Acceleration",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -652,7 +645,7 @@
       "name": "concat_0_y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "Horsepower"},
-      "range": [{"signal": "concat_0_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -670,7 +663,7 @@
       "type": "linear",
       "domain": {"data": "data_1", "field": "Acceleration"},
       "domainRaw": {"signal": "grid[\"Acceleration\"]"},
-      "range": [{"signal": "concat_1_height"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     }
