@@ -46,7 +46,12 @@ import {assembleHeaderGroups, assembleLayoutTitleBand, assembleTitleGroup} from 
 import {HEADER_CHANNELS, LayoutHeaderComponent} from './header/component';
 import {LayerModel} from './layer';
 import {sizeExpr} from './layoutsize/assemble';
-import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';
+import {
+  getSizeTypeFromLayoutSizeType,
+  LayoutSizeComponent,
+  LayoutSizeIndex,
+  LayoutSizeType
+} from './layoutsize/component';
 import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
 import {parseLegend} from './legend/parse';
@@ -481,8 +486,9 @@ export abstract class Model {
     return fullName;
   }
 
-  public getSizeSignalRef(sizeType: 'width' | 'height'): SignalRef {
+  public getSizeSignalRef(layoutSizeType: LayoutSizeType): SignalRef {
     if (isFacetModel(this.parent)) {
+      const sizeType = getSizeTypeFromLayoutSizeType(layoutSizeType);
       const channel = getPositionScaleChannel(sizeType);
       const scaleComponent = this.component.scales[channel];
 
@@ -509,7 +515,7 @@ export abstract class Model {
     }
 
     return {
-      signal: this.signalNameMap.get(this.getName(sizeType))
+      signal: this.signalNameMap.get(this.getName(layoutSizeType))
     };
   }
 

@@ -1,4 +1,4 @@
-import {getSizeType, POSITION_SCALE_CHANNELS} from '../../channel';
+import {getPositionScaleChannel, getSizeType, POSITION_SCALE_CHANNELS} from '../../channel';
 import {getViewConfigContinuousSize, getViewConfigDiscreteSize} from '../../config';
 import {hasDiscreteDomain} from '../../scale';
 import {isStep} from '../../spec/base';
@@ -7,37 +7,28 @@ import {ConcatModel} from '../concat';
 import {Model} from '../model';
 import {Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
-import {LayoutSize, LayoutSizeIndex} from './component';
+import {getSizeTypeFromLayoutSizeType, LayoutSize, LayoutSizeIndex, LayoutSizeType} from './component';
 
 export function parseLayerLayoutSize(model: Model) {
   parseChildrenLayoutSize(model);
 
-  const layoutSizeCmpt = model.component.layoutSize;
-  layoutSizeCmpt.setWithExplicit('width', parseNonUnitLayoutSizeForChannel(model, 'width'));
-  layoutSizeCmpt.setWithExplicit('height', parseNonUnitLayoutSizeForChannel(model, 'height'));
+  parseNonUnitLayoutSizeForChannel(model, 'width');
+  parseNonUnitLayoutSizeForChannel(model, 'height');
 }
 
 export const parseRepeatLayoutSize = parseLayerLayoutSize;
 
-function sizeTypeToMerge(columns: number | undefined) {
-  switch (columns) {
-    case 1:
-      return 'width';
-    case undefined:
-      return 'height';
-    default:
-      return undefined;
-  }
-}
-
 export function parseConcatLayoutSize(model: ConcatModel) {
   parseChildrenLayoutSize(model);
-  const layoutSizeCmpt = model.component.layoutSize;
 
-  const sizeType = sizeTypeToMerge(model.layout.columns);
-  if (sizeType) {
-    layoutSizeCmpt.setWithExplicit(sizeType, parseNonUnitLayoutSizeForChannel(model, sizeType));
-  }
+  // for columns === 1 (vconcat), we can completely merge width. Otherwise, we can treat merged width as childWidth.
+  const widthType = model.layout.columns === 1 ? 'width' : 'childWidth';
+
+  // for columns === undefined (hconcat), we can completely merge height. Otherwise, we can treat merged height as childHeight.
+  const heightType = model.layout.columns === undefined ? 'height' : 'childHeight';
+
+  parseNonUnitLayoutSizeForChannel(model, widthType);
+  parseNonUnitLayoutSizeForChannel(model, heightType);
 }
 
 export function parseChildrenLayoutSize(model: Model) {
@@ -46,9 +37,21 @@ export function parseChildrenLayoutSize(model: Model) {
   }
 }
 
-function parseNonUnitLayoutSizeForChannel(model: Model, sizeType: 'width' | 'height'): Explicit<LayoutSize> {
-  const channel = sizeType === 'width' ? 'x' : 'y';
+/**
+ * Merge child layout size (width or height).
+ */
+function parseNonUnitLayoutSizeForChannel(model: Model, layoutSizeType: LayoutSizeType) {
+  /*
+   * For concat, the parent width or height might not be the same as the children's shared height.
+   * For example, hconcat's subviews may share width, but the shared width is not the hconcat view's width.
+   *
+   * layoutSizeType represents the output of the view (could be childWidth/childHeight/width/height)
+   * while the sizeType represents the properties of the child.
+   */
+  const sizeType = getSizeTypeFromLayoutSizeType(layoutSizeType);
+  const channel = getPositionScaleChannel(sizeType);
   const resolve = model.component.resolve;
+  const layoutSizeCmpt = model.component.layoutSize;
 
   let mergedSize: Explicit<LayoutSize>;
   // Try to merge layout size
@@ -78,16 +81,15 @@ function parseNonUnitLayoutSizeForChannel(model: Model, sizeType: 'width' | 'hei
   if (mergedSize) {
     // If merged, rename size and set size of all children.
     for (const child of model.children) {
-      model.renameSignal(child.getName(sizeType), model.getName(sizeType));
+      model.renameSignal(child.getName(sizeType), model.getName(layoutSizeType));
       child.component.layoutSize.set(sizeType, 'merged', false);
     }
-    return mergedSize;
+    layoutSizeCmpt.setWithExplicit(layoutSizeType, mergedSize);
   } else {
-    // Otherwise, there is no merged size.
-    return {
+    layoutSizeCmpt.setWithExplicit(layoutSizeType, {
       explicit: false,
       value: undefined
-    };
+    });
   }
 }
 
