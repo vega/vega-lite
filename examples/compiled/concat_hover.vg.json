@@ -34,8 +34,7 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_width", "value": 200},
-    {"name": "concat_1_width", "value": 200},
+    {"name": "childWidth", "value": 200},
     {
       "name": "unit",
       "value": {},
@@ -56,7 +55,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "concat_0_width"},
+          "width": {"signal": "childWidth"},
           "height": {"signal": "height"}
         }
       },
@@ -120,7 +119,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -148,7 +147,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -168,7 +167,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "concat_1_width"},
+          "width": {"signal": "childWidth"},
           "height": {"signal": "height"}
         }
       },
@@ -232,7 +231,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -260,7 +259,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -293,7 +292,7 @@
       "name": "concat_0_x",
       "type": "linear",
       "domain": {"data": "data_0", "field": "Horsepower"},
-      "range": [0, {"signal": "concat_0_width"}],
+      "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
     },
@@ -309,7 +308,7 @@
       "name": "concat_1_x",
       "type": "linear",
       "domain": {"data": "data_1", "field": "Horsepower"},
-      "range": [0, {"signal": "concat_1_width"}],
+      "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
     },

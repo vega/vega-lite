@@ -88,8 +88,7 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_height", "value": 100},
-    {"name": "concat_1_height", "value": 100},
+    {"name": "childHeight", "value": 100},
     {
       "name": "unit",
       "value": {},
@@ -111,7 +110,7 @@
       "encode": {
         "update": {
           "width": {"signal": "width"},
-          "height": {"signal": "concat_0_height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "signals": [
@@ -403,7 +402,7 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -427,7 +426,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "zindex": 0
         }
       ]
@@ -439,7 +438,7 @@
       "encode": {
         "update": {
           "width": {"signal": "width"},
-          "height": {"signal": "concat_1_height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "marks": [
@@ -486,7 +485,7 @@
           "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -510,7 +509,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "zindex": 0
         }
       ]
@@ -531,7 +530,7 @@
       "name": "concat_0_y",
       "type": "linear",
       "domain": {"data": "data_1", "field": "__count"},
-      "range": [{"signal": "concat_0_height"}, 0],
+      "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
     },
@@ -552,7 +551,7 @@
       "name": "concat_1_y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "__count"},
-      "range": [{"signal": "concat_1_height"}, 0],
+      "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
     }
