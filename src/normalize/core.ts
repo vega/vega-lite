@@ -105,10 +105,11 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
           const child = this.map(childSpec, {...params, repeater: childRepeater});
 
+          // TODO: remove child__repeat_ prefix
           child.name =
-            (repeatValue ? `__repeat_repeat_${varName(repeatValue)}` : '') +
-            (rowValue ? `__repeat_row_${varName(rowValue)}` : '') +
-            (columnValue ? `__repeat_column_${varName(columnValue)}` : '');
+            (repeatValue ? `child__repeat_repeat_${varName(repeatValue)}` : '') +
+            (rowValue ? `child__repeat_row_${varName(rowValue)}` : '') +
+            (columnValue ? `child__repeat_column_${varName(columnValue)}` : '');
 
           // we move data up
           children.push(omit(child, ['data']) as NormalizedSpec);

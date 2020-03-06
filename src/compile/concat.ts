@@ -91,9 +91,13 @@ export class ConcatModel extends Model {
   }
 
   public assembleLayoutSignals(): NewSignal[] {
-    return this.children.reduce((signals, child) => {
-      return [...signals, ...child.assembleLayoutSignals()];
-    }, assembleLayoutSignals(this));
+    const layoutSignals = assembleLayoutSignals(this);
+
+    for (const child of this.children) {
+      layoutSignals.push(...child.assembleLayoutSignals());
+    }
+
+    return layoutSignals;
   }
 
   public assembleSelectionData(data: readonly VgData[]): readonly VgData[] {
