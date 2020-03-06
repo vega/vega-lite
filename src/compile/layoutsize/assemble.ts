@@ -1,16 +1,22 @@
-import {NewSignal, InitSignal} from 'vega';
+import {InitSignal, NewSignal} from 'vega';
+import {getViewConfigContinuousSize} from '../../config';
 import {hasDiscreteDomain} from '../../scale';
 import {getFirstDefined} from '../../util';
 import {isVgRangeStep, VgRangeStep} from '../../vega.schema';
 import {isFacetModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
-import {getViewConfigContinuousSize} from '../../config';
+import {LayoutSizeType} from './component';
 
 export function assembleLayoutSignals(model: Model): NewSignal[] {
-  return [...sizeSignals(model, 'width'), ...sizeSignals(model, 'height')];
+  return [
+    ...sizeSignals(model, 'width'),
+    ...sizeSignals(model, 'height'),
+    ...sizeSignals(model, 'childWidth'),
+    ...sizeSignals(model, 'childHeight')
+  ];
 }
 
-export function sizeSignals(model: Model, sizeType: 'width' | 'height'): (NewSignal | InitSignal)[] {
+export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal | InitSignal)[] {
   const channel = sizeType === 'width' ? 'x' : 'y';
   const size = model.component.layoutSize.get(sizeType);
   if (!size || size === 'merged') {
