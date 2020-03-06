@@ -1,7 +1,6 @@
 import {Color, Cursor, SignalRef, Text} from 'vega';
 import {isArray, isNumber, isObject} from 'vega-util';
 import {NormalizedSpec} from '.';
-import {Config} from '../config';
 import {Data} from '../data';
 import {MarkConfig} from '../mark';
 import {Resolve} from '../resolve';
@@ -9,7 +8,7 @@ import {TitleParams} from '../title';
 import {Transform} from '../transform';
 import {Flag, keys} from '../util';
 import {LayoutAlign, RowCol} from '../vega.schema';
-import {isConcatSpec} from './concat';
+import {isConcatSpec, isVConcatSpec} from './concat';
 import {isFacetMapping, isFacetSpec} from './facet';
 import {isRepeatSpec} from './repeat';
 
@@ -292,8 +291,8 @@ export type SpecType = 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
 
 export function extractCompositionLayout(
   spec: NormalizedSpec,
-  specType: SpecType,
-  config: Config
+  specType: keyof CompositionConfigMixins,
+  config: CompositionConfigMixins
 ): GenericCompositionLayoutWithColumns {
   const compositionConfig = config[specType];
   const layout: GenericCompositionLayoutWithColumns = {};
@@ -312,6 +311,10 @@ export function extractCompositionLayout(
     ) {
       layout.columns = columns;
     }
+  }
+
+  if (isVConcatSpec(spec)) {
+    layout.columns = 1;
   }
 
   // Then copy properties from the spec

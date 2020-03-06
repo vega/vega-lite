@@ -23,7 +23,7 @@ import {forEach, reduce} from '../encoding';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
-import {isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
+import {isFacetSpec} from '../spec';
 import {
   extractCompositionLayout,
   GenericCompositionLayoutWithColumns,
@@ -209,7 +209,7 @@ export abstract class Model {
 
     this.description = spec.description;
     this.transforms = normalizeTransform(spec.transform ?? []);
-    this.layout = isUnitSpec(spec) || isLayerSpec(spec) ? {} : extractCompositionLayout(spec, type, config);
+    this.layout = type === 'layer' || type === 'unit' ? {} : extractCompositionLayout(spec, type, config);
 
     this.component = {
       data: {
