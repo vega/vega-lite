@@ -12,9 +12,8 @@ import {LayoutSize, LayoutSizeIndex} from './component';
 export function parseLayerLayoutSize(model: Model) {
   parseChildrenLayoutSize(model);
 
-  const layoutSizeCmpt = model.component.layoutSize;
-  layoutSizeCmpt.setWithExplicit('width', parseNonUnitLayoutSizeForChannel(model, 'width'));
-  layoutSizeCmpt.setWithExplicit('height', parseNonUnitLayoutSizeForChannel(model, 'height'));
+  parseNonUnitLayoutSizeForChannel(model, 'width');
+  parseNonUnitLayoutSizeForChannel(model, 'height');
 }
 
 export const parseRepeatLayoutSize = parseLayerLayoutSize;
@@ -32,11 +31,10 @@ function sizeTypeToMerge(columns: number | undefined) {
 
 export function parseConcatLayoutSize(model: ConcatModel) {
   parseChildrenLayoutSize(model);
-  const layoutSizeCmpt = model.component.layoutSize;
 
   const sizeType = sizeTypeToMerge(model.layout.columns);
   if (sizeType) {
-    layoutSizeCmpt.setWithExplicit(sizeType, parseNonUnitLayoutSizeForChannel(model, sizeType));
+    parseNonUnitLayoutSizeForChannel(model, sizeType);
   }
 }
 
@@ -46,9 +44,10 @@ export function parseChildrenLayoutSize(model: Model) {
   }
 }
 
-function parseNonUnitLayoutSizeForChannel(model: Model, sizeType: 'width' | 'height'): Explicit<LayoutSize> {
+function parseNonUnitLayoutSizeForChannel(model: Model, sizeType: 'width' | 'height') {
   const channel = sizeType === 'width' ? 'x' : 'y';
   const resolve = model.component.resolve;
+  const layoutSizeCmpt = model.component.layoutSize;
 
   let mergedSize: Explicit<LayoutSize>;
   // Try to merge layout size
@@ -81,13 +80,12 @@ function parseNonUnitLayoutSizeForChannel(model: Model, sizeType: 'width' | 'hei
       model.renameSignal(child.getName(sizeType), model.getName(sizeType));
       child.component.layoutSize.set(sizeType, 'merged', false);
     }
-    return mergedSize;
+    layoutSizeCmpt.setWithExplicit(sizeType, mergedSize);
   } else {
-    // Otherwise, there is no merged size.
-    return {
+    layoutSizeCmpt.setWithExplicit(sizeType, {
       explicit: false,
       value: undefined
-    };
+    });
   }
 }
 
