@@ -68,7 +68,7 @@
       "update": "bandspace(domain('child__repeat_column_wind_x').length, 1, 0.5) * child__repeat_column_wind_x_step"
     }
   ],
-  "layout": {"padding": 20, "columns": 3, "bounds": "full", "align": "all"},
+  "layout": {"padding": 20, "bounds": "full", "align": "all", "columns": 3},
   "marks": [
     {
       "type": "group",
