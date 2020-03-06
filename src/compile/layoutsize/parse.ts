@@ -3,7 +3,6 @@ import {getViewConfigContinuousSize, getViewConfigDiscreteSize} from '../../conf
 import {hasDiscreteDomain} from '../../scale';
 import {isStep} from '../../spec/base';
 import {isVgRangeStep} from '../../vega.schema';
-import {ConcatModel} from '../concat';
 import {Model} from '../model';
 import {Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
@@ -17,30 +16,7 @@ export function parseLayerLayoutSize(model: Model) {
   layoutSizeCmpt.setWithExplicit('height', parseNonUnitLayoutSizeForChannel(model, 'height'));
 }
 
-const SIZE_TYPE_TO_MERGE = {
-  vconcat: 'width',
-  hconcat: 'height'
-};
-
-export function parseConcatLayoutSize(model: ConcatModel) {
-  parseChildrenLayoutSize(model);
-  const layoutSizeCmpt = model.component.layoutSize;
-
-  const {columns} = model.layout;
-  const concatType =
-    model.concatType === 'concat'
-      ? columns === 1
-        ? 'vconcat'
-        : columns === model.children.length
-        ? 'hconcat'
-        : 'concat'
-      : model.concatType;
-
-  const sizeTypeToMerge = SIZE_TYPE_TO_MERGE[concatType];
-  if (sizeTypeToMerge) {
-    layoutSizeCmpt.setWithExplicit(sizeTypeToMerge, parseNonUnitLayoutSizeForChannel(model, sizeTypeToMerge));
-  }
-}
+export const parseConcatLayoutSize = parseLayerLayoutSize;
 
 export function parseChildrenLayoutSize(model: Model) {
   for (const child of model.children) {
