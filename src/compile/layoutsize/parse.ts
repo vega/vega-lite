@@ -19,14 +19,24 @@ export function parseLayerLayoutSize(model: Model) {
 
 export const parseRepeatLayoutSize = parseLayerLayoutSize;
 
+function sizeTypeToMerge(columns: number | undefined) {
+  switch (columns) {
+    case 1:
+      return 'width';
+    case undefined:
+      return 'height';
+    default:
+      return undefined;
+  }
+}
+
 export function parseConcatLayoutSize(model: ConcatModel) {
   parseChildrenLayoutSize(model);
   const layoutSizeCmpt = model.component.layoutSize;
 
-  const columns = model.layout.columns;
-  const sizeTypeToMerge = columns === 1 ? 'width' : columns === undefined ? 'height' : undefined;
-  if (sizeTypeToMerge) {
-    layoutSizeCmpt.setWithExplicit(sizeTypeToMerge, parseNonUnitLayoutSizeForChannel(model, sizeTypeToMerge));
+  const sizeType = sizeTypeToMerge(model.layout.columns);
+  if (sizeType) {
+    layoutSizeCmpt.setWithExplicit(sizeType, parseNonUnitLayoutSizeForChannel(model, sizeType));
   }
 }
 
