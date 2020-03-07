@@ -17,7 +17,7 @@ import {
   isFacetMapping,
   NormalizedFacetSpec
 } from '../spec/facet';
-import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer';
+import {NormalizedLayerSpec} from '../spec/layer';
 import {SpecMapper} from '../spec/map';
 import {GenericRepeatSpec} from '../spec/repeat';
 import {isUnitSpec, NormalizedUnitSpec} from '../spec/unit';
@@ -200,7 +200,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
   public mapLayer(
     spec: ExtendedLayerSpec,
     {parentEncoding, parentProjection, ...otherParams}: NormalizerParams
-  ): GenericLayerSpec<NormalizedUnitSpec> {
+  ): NormalizedLayerSpec {
     // Special handling for extended layer spec
 
     const {encoding, projection, ...rest} = spec;
