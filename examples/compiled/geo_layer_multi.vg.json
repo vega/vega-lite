@@ -12,29 +12,13 @@
   ],
   "projections": [
     {
-      "name": "concat_0_projection",
-      "size": {"signal": "[concat_0_width, height]"},
-      "fit": {"signal": "data('source_0')"},
-      "type": "orthographic"
-    },
-    {
-      "name": "concat_1_projection",
-      "size": {"signal": "[concat_1_width, height]"},
-      "fit": {"signal": "data('source_0')"},
-      "type": "orthographic"
-    },
-    {
-      "name": "concat_2_projection",
-      "size": {"signal": "[concat_2_width, height]"},
+      "name": "projection",
+      "size": {"signal": "[childWidth, height]"},
       "fit": {"signal": "data('source_0')"},
       "type": "orthographic"
     }
   ],
-  "signals": [
-    {"name": "concat_0_width", "value": 100},
-    {"name": "concat_1_width", "value": 100},
-    {"name": "concat_2_width", "value": 100}
-  ],
+  "signals": [{"name": "childWidth", "value": 100}],
   "layout": {"padding": 20, "bounds": "full", "align": "each"},
   "marks": [
     {
@@ -43,7 +27,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "concat_0_width"},
+          "width": {"signal": "childWidth"},
           "height": {"signal": "height"}
         }
       },
@@ -59,9 +43,7 @@
               "stroke": {"value": "#4c78a8"}
             }
           },
-          "transform": [
-            {"type": "geoshape", "projection": "concat_0_projection"}
-          ]
+          "transform": [{"type": "geoshape", "projection": "projection"}]
         }
       ]
     },
@@ -71,7 +53,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "concat_1_width"},
+          "width": {"signal": "childWidth"},
           "height": {"signal": "height"}
         }
       },
@@ -87,9 +69,7 @@
               "stroke": {"value": "#4c78a8"}
             }
           },
-          "transform": [
-            {"type": "geoshape", "projection": "concat_1_projection"}
-          ]
+          "transform": [{"type": "geoshape", "projection": "projection"}]
         }
       ]
     },
@@ -99,7 +79,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "concat_2_width"},
+          "width": {"signal": "childWidth"},
           "height": {"signal": "height"}
         }
       },
@@ -115,9 +95,7 @@
               "stroke": {"value": "#4c78a8"}
             }
           },
-          "transform": [
-            {"type": "geoshape", "projection": "concat_2_projection"}
-          ]
+          "transform": [{"type": "geoshape", "projection": "projection"}]
         }
       ]
     }

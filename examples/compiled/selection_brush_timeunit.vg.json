@@ -60,8 +60,7 @@
     }
   ],
   "signals": [
-    {"name": "concat_0_width", "value": 200},
-    {"name": "concat_1_width", "value": 200},
+    {"name": "childWidth", "value": 200},
     {
       "name": "unit",
       "value": {},
@@ -82,7 +81,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "concat_0_width"},
+          "width": {"signal": "childWidth"},
           "height": {"signal": "height"}
         }
       },
@@ -117,7 +116,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, concat_0_width)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -125,11 +124,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, concat_0_width)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, concat_0_width)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -365,7 +364,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -393,7 +392,7 @@
           "title": "date (seconds)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "encode": {
             "labels": {
               "update": {
@@ -422,7 +421,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "concat_1_width"},
+          "width": {"signal": "childWidth"},
           "height": {"signal": "height"}
         }
       },
@@ -450,7 +449,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -478,7 +477,7 @@
           "title": "date (minutes)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "encode": {
             "labels": {
               "update": {
@@ -507,7 +506,7 @@
       "name": "concat_0_x",
       "type": "time",
       "domain": {"data": "data_2", "field": "seconds_date"},
-      "range": [0, {"signal": "concat_0_width"}]
+      "range": [0, {"signal": "childWidth"}]
     },
     {
       "name": "concat_0_y",
@@ -521,7 +520,7 @@
       "name": "concat_1_x",
       "type": "time",
       "domain": {"data": "data_1", "field": "minutes_date"},
-      "range": [0, {"signal": "concat_1_width"}]
+      "range": [0, {"signal": "childWidth"}]
     },
     {
       "name": "concat_1_y",

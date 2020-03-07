@@ -27,7 +27,6 @@ describe('ConcatModel', () => {
       });
 
       expect(model.layout).toMatchObject({columns: 1, spacing: DEFAULT_SPACING});
-      expect(model.concatType).toBe('concat');
     });
   });
 
@@ -52,7 +51,7 @@ describe('ConcatModel', () => {
       });
 
       expect(model.children).toHaveLength(2);
-      expect(model.concatType).toBe('vconcat');
+      expect(model.layout.columns).toBe(1);
     });
 
     it('should instantiate all children in hconcat', () => {
@@ -75,7 +74,7 @@ describe('ConcatModel', () => {
       });
 
       expect(model.children).toHaveLength(2);
-      expect(model.concatType).toBe('hconcat');
+      expect(model.layout.columns).toBe(undefined);
     });
 
     it('should create correct layout for vconcat', () => {
@@ -114,7 +113,7 @@ describe('ConcatModel', () => {
         ]
       });
 
-      expect(model.concatType).toBe('hconcat');
+      expect(model.layout.columns).toBe(undefined);
 
       expect(model.assembleLayout()).toEqual({
         padding: DEFAULT_SPACING,

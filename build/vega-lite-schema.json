@@ -1524,14 +1524,6 @@
           "type": "boolean"
         },
         "title": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text"
-            },
-            {
-              "type": "null"
-            }
-          ],
           "description": "Set to null to disable title for the axis, legend, or header.",
           "type": "null"
         },

@@ -53,19 +53,17 @@
   "signals": [
     {"name": "concat_0_width", "value": 200},
     {"name": "concat_0_height", "value": 200},
-    {"name": "concat_1_concat_0_width", "value": 50},
+    {"name": "concat_1_childWidth", "value": 50},
     {"name": "concat_1_concat_0_y_step", "value": 20},
     {
       "name": "concat_1_concat_0_height",
       "update": "bandspace(domain('concat_1_concat_0_y').length, 1, 0.5) * concat_1_concat_0_y_step"
     },
-    {"name": "concat_1_concat_1_width", "value": 50},
     {"name": "concat_1_concat_1_y_step", "value": 20},
     {
       "name": "concat_1_concat_1_height",
       "update": "bandspace(domain('concat_1_concat_1_y').length, 1, 0.5) * concat_1_concat_1_y_step"
     },
-    {"name": "concat_1_concat_2_width", "value": 50},
     {"name": "concat_1_concat_2_y_step", "value": 20},
     {
       "name": "concat_1_concat_2_height",
@@ -511,7 +509,7 @@
           "style": "cell",
           "encode": {
             "update": {
-              "width": {"signal": "concat_1_concat_0_width"},
+              "width": {"signal": "concat_1_childWidth"},
               "height": {"signal": "concat_1_concat_0_height"}
             }
           },
@@ -525,7 +523,7 @@
               "encode": {
                 "update": {
                   "fill": {"value": "black"},
-                  "x": {"signal": "concat_1_concat_0_width", "mult": 0.5},
+                  "x": {"signal": "concat_1_childWidth", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_0_y", "field": "row_number"},
                   "text": {"signal": "''+datum[\"Horsepower\"]"},
                   "align": {"value": "center"},
@@ -542,7 +540,7 @@
           "style": "cell",
           "encode": {
             "update": {
-              "width": {"signal": "concat_1_concat_1_width"},
+              "width": {"signal": "concat_1_childWidth"},
               "height": {"signal": "concat_1_concat_1_height"}
             }
           },
@@ -556,7 +554,7 @@
               "encode": {
                 "update": {
                   "fill": {"value": "black"},
-                  "x": {"signal": "concat_1_concat_1_width", "mult": 0.5},
+                  "x": {"signal": "concat_1_childWidth", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_1_y", "field": "row_number"},
                   "text": {"signal": "''+datum[\"Miles_per_Gallon\"]"},
                   "align": {"value": "center"},
@@ -573,7 +571,7 @@
           "style": "cell",
           "encode": {
             "update": {
-              "width": {"signal": "concat_1_concat_2_width"},
+              "width": {"signal": "concat_1_childWidth"},
               "height": {"signal": "concat_1_concat_2_height"}
             }
           },
@@ -587,7 +585,7 @@
               "encode": {
                 "update": {
                   "fill": {"value": "black"},
-                  "x": {"signal": "concat_1_concat_2_width", "mult": 0.5},
+                  "x": {"signal": "concat_1_childWidth", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_2_y", "field": "row_number"},
                   "text": {"signal": "''+datum[\"Origin\"]"},
                   "align": {"value": "center"},

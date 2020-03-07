@@ -23,7 +23,7 @@ import {forEach, reduce} from '../encoding';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
-import {isFacetSpec, isLayerSpec, isUnitSpec} from '../spec';
+import {isFacetSpec} from '../spec';
 import {
   extractCompositionLayout,
   GenericCompositionLayoutWithColumns,
@@ -46,7 +46,12 @@ import {assembleHeaderGroups, assembleLayoutTitleBand, assembleTitleGroup} from 
 import {HEADER_CHANNELS, LayoutHeaderComponent} from './header/component';
 import {LayerModel} from './layer';
 import {sizeExpr} from './layoutsize/assemble';
-import {LayoutSizeComponent, LayoutSizeIndex} from './layoutsize/component';
+import {
+  getSizeTypeFromLayoutSizeType,
+  LayoutSizeComponent,
+  LayoutSizeIndex,
+  LayoutSizeType
+} from './layoutsize/component';
 import {assembleLegends} from './legend/assemble';
 import {LegendComponentIndex} from './legend/component';
 import {parseLegend} from './legend/parse';
@@ -201,7 +206,7 @@ export abstract class Model {
 
     this.description = spec.description;
     this.transforms = normalizeTransform(spec.transform ?? []);
-    this.layout = isUnitSpec(spec) || isLayerSpec(spec) ? {} : extractCompositionLayout(spec, type, config);
+    this.layout = type === 'layer' || type === 'unit' ? {} : extractCompositionLayout(spec, type, config);
 
     this.component = {
       data: {
@@ -473,8 +478,9 @@ export abstract class Model {
     return fullName;
   }
 
-  public getSizeSignalRef(sizeType: 'width' | 'height'): SignalRef {
+  public getSizeSignalRef(layoutSizeType: LayoutSizeType): SignalRef {
     if (isFacetModel(this.parent)) {
+      const sizeType = getSizeTypeFromLayoutSizeType(layoutSizeType);
       const channel = getPositionScaleChannel(sizeType);
       const scaleComponent = this.component.scales[channel];
 
@@ -501,7 +507,7 @@ export abstract class Model {
     }
 
     return {
-      signal: this.signalNameMap.get(this.getName(sizeType))
+      signal: this.signalNameMap.get(this.getName(layoutSizeType))
     };
   }
 

@@ -79,22 +79,20 @@
     }
   ],
   "signals": [
+    {"name": "childHeight", "value": 200},
     {"name": "concat_0_x_step", "value": 20},
     {
       "name": "concat_0_width",
       "update": "bandspace(domain('concat_0_x').length, 0.1, 0.05) * concat_0_x_step"
     },
-    {"name": "concat_0_height", "value": 200},
     {"name": "concat_1_x_step", "value": 20},
     {
       "name": "concat_1_width",
       "update": "bandspace(domain('concat_1_x').length, 0.1, 0.05) * concat_1_x_step"
     },
-    {"name": "concat_1_height", "value": 200},
-    {"name": "concat_2_width", "value": 200},
-    {"name": "concat_2_height", "value": 200}
+    {"name": "concat_2_width", "value": 200}
   ],
-  "layout": {"padding": 20, "bounds": "full", "align": "each", "columns": 2},
+  "layout": {"padding": 20, "columns": 2, "bounds": "full", "align": "each"},
   "marks": [
     {
       "type": "group",
@@ -103,7 +101,7 @@
       "encode": {
         "update": {
           "width": {"signal": "concat_0_width"},
-          "height": {"signal": "concat_0_height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "marks": [
@@ -129,7 +127,7 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -163,7 +161,7 @@
           "grid": false,
           "title": "Mean of precipitation",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_0_height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "zindex": 0
         }
       ]
@@ -175,7 +173,7 @@
       "encode": {
         "update": {
           "width": {"signal": "concat_1_width"},
-          "height": {"signal": "concat_1_height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "marks": [
@@ -201,7 +199,7 @@
           "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -235,7 +233,7 @@
           "grid": false,
           "title": "Median of precipitation",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "zindex": 0
         }
       ]
@@ -247,7 +245,7 @@
       "encode": {
         "update": {
           "width": {"signal": "concat_2_width"},
-          "height": {"signal": "concat_2_height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "marks": [
@@ -300,7 +298,7 @@
           "grid": false,
           "title": "temp_max (binned)",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(concat_2_height/10)"},
+          "tickCount": {"signal": "ceil(childHeight/10)"},
           "zindex": 0
         }
       ]
@@ -314,7 +312,7 @@
       "range": [
         0,
         {
-          "signal": "pow(0.95 * min(concat_2_width / ((concat_2_bin_maxbins_10_temp_min_bins.stop - concat_2_bin_maxbins_10_temp_min_bins.start) / concat_2_bin_maxbins_10_temp_min_bins.step), concat_2_height / ((concat_2_bin_maxbins_10_temp_max_bins.stop - concat_2_bin_maxbins_10_temp_max_bins.start) / concat_2_bin_maxbins_10_temp_max_bins.step)), 2)"
+          "signal": "pow(0.95 * min(concat_2_width / ((concat_2_bin_maxbins_10_temp_min_bins.stop - concat_2_bin_maxbins_10_temp_min_bins.start) / concat_2_bin_maxbins_10_temp_min_bins.step), childHeight / ((concat_2_bin_maxbins_10_temp_max_bins.stop - concat_2_bin_maxbins_10_temp_max_bins.start) / concat_2_bin_maxbins_10_temp_max_bins.step)), 2)"
         }
       ],
       "zero": true
@@ -331,7 +329,7 @@
       "name": "concat_0_y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "mean_precipitation"},
-      "range": [{"signal": "concat_0_height"}, 0],
+      "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
     },
@@ -347,7 +345,7 @@
       "name": "concat_1_y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "median_precipitation"},
-      "range": [{"signal": "concat_1_height"}, 0],
+      "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
     },
@@ -367,7 +365,7 @@
       "domain": {
         "signal": "[concat_2_bin_maxbins_10_temp_max_bins.start, concat_2_bin_maxbins_10_temp_max_bins.stop]"
       },
-      "range": [{"signal": "concat_2_height"}, 0],
+      "range": [{"signal": "childHeight"}, 0],
       "bins": {"signal": "concat_2_bin_maxbins_10_temp_max_bins"},
       "zero": false
     }
@@ -375,7 +373,7 @@
   "legends": [
     {
       "size": "size",
-      "gradientLength": {"signal": "clamp(concat_2_height, 64, 200)"},
+      "gradientLength": {"signal": "clamp(childHeight, 64, 200)"},
       "symbolType": "circle",
       "title": "Count of Records",
       "encode": {
