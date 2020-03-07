@@ -4595,7 +4595,7 @@
         },
         "concat": {
           "$ref": "#/definitions/CompositionConfig",
-          "description": "Default configuration for all concatenation view composition operators (`concat`, `hconcat`, and `vconcat`)"
+          "description": "Default configuration for all concatenation and repeat view composition operators (`concat`, `hconcat`, `vconcat`, and `repeat`)"
         },
         "countTitle": {
           "description": "Default axis and legend title for count fields.\n\n__Default value:__ `'Count of Records`.",
@@ -4685,10 +4685,6 @@
         "rect": {
           "$ref": "#/definitions/RectConfig",
           "description": "Rect-Specific Config"
-        },
-        "repeat": {
-          "$ref": "#/definitions/CompositionConfig",
-          "description": "Default configuration for the `repeat` view composition operator"
         },
         "rule": {
           "$ref": "#/definitions/MarkConfig",

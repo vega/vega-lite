@@ -1,5 +1,5 @@
 import {Color, Cursor, SignalRef, Text} from 'vega';
-import {isArray, isNumber, isObject} from 'vega-util';
+import {isNumber, isObject} from 'vega-util';
 import {NormalizedSpec} from '.';
 import {Data} from '../data';
 import {MarkConfig} from '../mark';
@@ -10,7 +10,6 @@ import {Flag, keys} from '../util';
 import {LayoutAlign, RowCol} from '../vega.schema';
 import {isConcatSpec, isVConcatSpec} from './concat';
 import {isFacetMapping, isFacetSpec} from './facet';
-import {isRepeatSpec} from './repeat';
 
 export {TopLevel} from './toplevel';
 
@@ -270,11 +269,8 @@ export interface CompositionConfigMixins {
   /** Default configuration for the `facet` view composition operator */
   facet?: CompositionConfig;
 
-  /** Default configuration for all concatenation view composition operators (`concat`, `hconcat`, and `vconcat`) */
+  /** Default configuration for all concatenation and repeat view composition operators (`concat`, `hconcat`, `vconcat`, and `repeat`) */
   concat?: CompositionConfig;
-
-  /** Default configuration for the `repeat` view composition operator */
-  repeat?: CompositionConfig;
 }
 
 const COMPOSITION_LAYOUT_INDEX: Flag<keyof GenericCompositionLayoutWithColumns> = {
@@ -287,7 +283,7 @@ const COMPOSITION_LAYOUT_INDEX: Flag<keyof GenericCompositionLayoutWithColumns> 
 
 const COMPOSITION_LAYOUT_PROPERTIES = keys(COMPOSITION_LAYOUT_INDEX);
 
-export type SpecType = 'unit' | 'facet' | 'layer' | 'concat' | 'repeat';
+export type SpecType = 'unit' | 'facet' | 'layer' | 'concat';
 
 export function extractCompositionLayout(
   spec: NormalizedSpec,
@@ -304,11 +300,7 @@ export function extractCompositionLayout(
   }
 
   if (columns !== undefined) {
-    if (
-      (isFacetSpec(spec) && !isFacetMapping(spec.facet)) ||
-      (isRepeatSpec(spec) && isArray(spec.repeat)) ||
-      isConcatSpec(spec)
-    ) {
+    if ((isFacetSpec(spec) && !isFacetMapping(spec.facet)) || isConcatSpec(spec)) {
       layout.columns = columns;
     }
   }
@@ -318,7 +310,6 @@ export function extractCompositionLayout(
   }
 
   // Then copy properties from the spec
-
   for (const prop of COMPOSITION_LAYOUT_PROPERTIES) {
     if (spec[prop] !== undefined) {
       if (prop === 'spacing') {

@@ -98,6 +98,8 @@ In addition to [common properties of a view specification](spec.html#common), a 
 
 The default [resolutions](resolve.html) for concatenation are independent scales and axes for [position channels](encoding.html#position) and shared scales and legends for all other channels. Currently, Vega-Lite does not support shared axes for concatenated views.
 
+{:#config}
+
 ## Concat Configuration
 
 ```js

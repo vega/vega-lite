@@ -130,6 +130,8 @@ To override this behavior, you can set `resolve` to `"independent"`:
 
 <span class="vl-example" data-name="trellis_barley_independent"></span>
 
+{:#config}
+
 ## Facet Configuration
 
 ```js
