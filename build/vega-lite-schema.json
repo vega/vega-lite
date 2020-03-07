@@ -1524,14 +1524,6 @@
           "type": "boolean"
         },
         "title": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text"
-            },
-            {
-              "type": "null"
-            }
-          ],
           "description": "Set to null to disable title for the axis, legend, or header.",
           "type": "null"
         },
@@ -11963,114 +11955,6 @@
           "type": "string"
         }
       ]
-    },
-    "PartsMixins<BoxPlotPart>": {
-      "additionalProperties": false,
-      "properties": {
-        "box": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "median": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "outliers": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "rule": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "ticks": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        }
-      },
-      "type": "object"
-    },
-    "PartsMixins<ErrorBandPart>": {
-      "additionalProperties": false,
-      "properties": {
-        "band": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "borders": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        }
-      },
-      "type": "object"
-    },
-    "PartsMixins<ErrorBarPart>": {
-      "additionalProperties": false,
-      "properties": {
-        "rule": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        },
-        "ticks": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/MarkConfig"
-            }
-          ]
-        }
-      },
-      "type": "object"
     },
     "PivotTransform": {
       "additionalProperties": false,
