@@ -105,5 +105,9 @@ jobs:
           bin/vl2svg examples/specs/bar.vl.json > bar.svg
           bin/vl2pdf examples/specs/bar.vl.json > bar.pdf
 
-      - name: Compile with stdin
-        run: cat examples/specs/bar.vl.json | bin/vl2vg -p > bar-stdin.vg.json
+      - name: Compile from stdin
+        run: |
+          cat examples/specs/bar.vl.json | bin/vl2vg -p > bar-stdin.vg.json
+          cat examples/specs/bar.vl.json | bin/vl2png > bar-stdin.png
+          cat examples/specs/bar.vl.json | bin/vl2svg > bar-stdin.svg
+          cat examples/specs/bar.vl.json | bin/vl2pdf > bar-stdin.pdf
