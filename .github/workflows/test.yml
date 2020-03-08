@@ -73,3 +73,37 @@ jobs:
         run: yarn codecov
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
+  test-cli:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    name: CLI
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Build
+        run: yarn build:only
+
+      - name: Compile Vega
+        run: |
+          bin/vl2vg examples/specs/bar.vl.json -p > bar.vg.json
+          cat bar.vg.json
+
+      - name: Diff compiled Vega
+        run: diff bar.vg.json examples/compiled/bar.vg.json
+
+      - name: Compile PNG, SVG, PDF
+        run: |
+          bin/vl2png examples/specs/bar.vl.json > bar.png
+          bin/vl2svg examples/specs/bar.vl.json > bar.svg
+          bin/vl2pdf examples/specs/bar.vl.json > bar.pdf
+
+      - name: Compile with stdin
+        run: cat examples/specs/bar.vl.json | bin/vl2vg -p > bar-stdin.vg.json
