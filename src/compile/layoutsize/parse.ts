@@ -5,6 +5,7 @@ import {isStep} from '../../spec/base';
 import {isVgRangeStep} from '../../vega.schema';
 import {ConcatModel} from '../concat';
 import {Model} from '../model';
+import {RepeatModel} from '../repeat';
 import {Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {getSizeTypeFromLayoutSizeType, LayoutSize, LayoutSizeIndex, LayoutSizeType} from './component';
@@ -16,9 +17,9 @@ export function parseLayerLayoutSize(model: Model) {
   parseNonUnitLayoutSizeForChannel(model, 'height');
 }
 
-export const parseRepeatLayoutSize = parseLayerLayoutSize;
+export const parseRepeatLayoutSize = parseConcatLayoutSize;
 
-export function parseConcatLayoutSize(model: ConcatModel) {
+export function parseConcatLayoutSize(model: ConcatModel | RepeatModel) {
   parseChildrenLayoutSize(model);
 
   // for columns === 1 (vconcat), we can completely merge width. Otherwise, we can treat merged width as childWidth.

@@ -2,7 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
   "height": 200,
   "data": [
     {"name": "brush_store"},
@@ -69,6 +68,7 @@
     }
   ],
   "signals": [
+    {"name": "childWidth", "value": 200},
     {
       "name": "unit",
       "value": {},
@@ -88,7 +88,10 @@
       "name": "child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "signals": [
         {
@@ -121,7 +124,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -129,11 +132,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -402,7 +405,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -430,7 +433,7 @@
           "title": "Miles_per_Gallon",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -449,7 +452,10 @@
       "name": "child__repeat_row_Horsepower__repeat_column_Acceleration_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "signals": [
         {
@@ -482,7 +488,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -490,11 +496,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -761,7 +767,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_Horsepower__repeat_column_Acceleration_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -789,7 +795,7 @@
           "title": "Acceleration",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -808,7 +814,10 @@
       "name": "child__repeat_row_Horsepower__repeat_column_Horsepower_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "signals": [
         {
@@ -841,7 +850,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -849,11 +858,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -1052,7 +1061,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_Horsepower__repeat_column_Horsepower_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1080,7 +1089,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -1099,7 +1108,10 @@
       "name": "child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "signals": [
         {
@@ -1132,7 +1144,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -1140,11 +1152,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -1413,7 +1425,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1441,7 +1453,7 @@
           "title": "Miles_per_Gallon",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -1460,7 +1472,10 @@
       "name": "child__repeat_row_Acceleration__repeat_column_Acceleration_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "signals": [
         {
@@ -1493,7 +1508,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -1501,11 +1516,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -1704,7 +1719,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_Acceleration__repeat_column_Acceleration_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1732,7 +1747,7 @@
           "title": "Acceleration",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -1751,7 +1766,10 @@
       "name": "child__repeat_row_Acceleration__repeat_column_Horsepower_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "signals": [
         {
@@ -1784,7 +1802,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -1792,11 +1810,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -2063,7 +2081,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_Acceleration__repeat_column_Horsepower_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -2091,7 +2109,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -2110,7 +2128,10 @@
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "signals": [
         {
@@ -2143,7 +2164,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -2151,11 +2172,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -2354,7 +2375,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -2382,7 +2403,7 @@
           "title": "Miles_per_Gallon",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -2401,7 +2422,10 @@
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "signals": [
         {
@@ -2434,7 +2458,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -2442,11 +2466,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -2715,7 +2739,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -2743,7 +2767,7 @@
           "title": "Acceleration",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -2762,7 +2786,10 @@
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "signals": [
         {
@@ -2795,7 +2822,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -2803,11 +2830,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -3076,7 +3103,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -3104,7 +3131,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -3140,7 +3167,7 @@
       "name": "child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon_x",
       "type": "linear",
       "domain": {"data": "data_0", "field": "Miles_per_Gallon"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
     },
@@ -3156,7 +3183,7 @@
       "name": "child__repeat_row_Horsepower__repeat_column_Acceleration_x",
       "type": "linear",
       "domain": {"data": "data_1", "field": "Acceleration"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
     },
@@ -3172,7 +3199,7 @@
       "name": "child__repeat_row_Horsepower__repeat_column_Horsepower_x",
       "type": "linear",
       "domain": {"data": "data_2", "field": "Horsepower"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
     },
@@ -3188,7 +3215,7 @@
       "name": "child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon_x",
       "type": "linear",
       "domain": {"data": "data_3", "field": "Miles_per_Gallon"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
     },
@@ -3204,7 +3231,7 @@
       "name": "child__repeat_row_Acceleration__repeat_column_Acceleration_x",
       "type": "linear",
       "domain": {"data": "data_4", "field": "Acceleration"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
     },
@@ -3220,7 +3247,7 @@
       "name": "child__repeat_row_Acceleration__repeat_column_Horsepower_x",
       "type": "linear",
       "domain": {"data": "data_1", "field": "Horsepower"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
     },
@@ -3236,7 +3263,7 @@
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_x",
       "type": "linear",
       "domain": {"data": "data_5", "field": "Miles_per_Gallon"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
     },
@@ -3252,7 +3279,7 @@
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration_x",
       "type": "linear",
       "domain": {"data": "data_3", "field": "Acceleration"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
     },
@@ -3268,7 +3295,7 @@
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower_x",
       "type": "linear",
       "domain": {"data": "data_0", "field": "Horsepower"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
     },

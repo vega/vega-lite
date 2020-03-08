@@ -2,7 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
-  "width": 150,
   "height": 150,
   "data": [
     {"name": "source_0", "url": "data/iris.json", "format": {"type": "json"}},
@@ -107,6 +106,7 @@
       ]
     }
   ],
+  "signals": [{"name": "childWidth", "value": 150}],
   "layout": {"padding": 20, "columns": 4, "bounds": "full", "align": "all"},
   "marks": [
     {
@@ -114,7 +114,10 @@
       "name": "child__repeat_row_petalWidth__repeat_column_sepalLength_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -157,7 +160,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_sepalLength_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -185,7 +188,7 @@
           "title": "sepalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -204,7 +207,10 @@
       "name": "child__repeat_row_petalWidth__repeat_column_sepalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -247,7 +253,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_sepalWidth_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -275,7 +281,7 @@
           "title": "sepalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -294,7 +300,10 @@
       "name": "child__repeat_row_petalWidth__repeat_column_petalLength_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -337,7 +346,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_petalLength_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -365,7 +374,7 @@
           "title": "petalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -384,7 +393,10 @@
       "name": "child__repeat_row_petalWidth__repeat_column_petalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -427,7 +439,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalWidth__repeat_column_petalWidth_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -455,7 +467,7 @@
           "title": "petalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -474,7 +486,10 @@
       "name": "child__repeat_row_petalLength__repeat_column_sepalLength_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -517,7 +532,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalLength__repeat_column_sepalLength_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -545,7 +560,7 @@
           "title": "sepalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -564,7 +579,10 @@
       "name": "child__repeat_row_petalLength__repeat_column_sepalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -607,7 +625,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalLength__repeat_column_sepalWidth_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -635,7 +653,7 @@
           "title": "sepalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -654,7 +672,10 @@
       "name": "child__repeat_row_petalLength__repeat_column_petalLength_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -697,7 +718,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalLength__repeat_column_petalLength_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -725,7 +746,7 @@
           "title": "petalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -744,7 +765,10 @@
       "name": "child__repeat_row_petalLength__repeat_column_petalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -787,7 +811,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_petalLength__repeat_column_petalWidth_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -815,7 +839,7 @@
           "title": "petalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -834,7 +858,10 @@
       "name": "child__repeat_row_sepalWidth__repeat_column_sepalLength_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -877,7 +904,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_sepalLength_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -905,7 +932,7 @@
           "title": "sepalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -924,7 +951,10 @@
       "name": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -967,7 +997,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -995,7 +1025,7 @@
           "title": "sepalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -1014,7 +1044,10 @@
       "name": "child__repeat_row_sepalWidth__repeat_column_petalLength_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -1057,7 +1090,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_petalLength_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1085,7 +1118,7 @@
           "title": "petalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -1104,7 +1137,10 @@
       "name": "child__repeat_row_sepalWidth__repeat_column_petalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -1147,7 +1183,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalWidth__repeat_column_petalWidth_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1175,7 +1211,7 @@
           "title": "petalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -1194,7 +1230,10 @@
       "name": "child__repeat_row_sepalLength__repeat_column_sepalLength_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -1237,7 +1276,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_sepalLength_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1265,7 +1304,7 @@
           "title": "sepalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -1284,7 +1323,10 @@
       "name": "child__repeat_row_sepalLength__repeat_column_sepalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -1327,7 +1369,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_sepalWidth_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1355,7 +1397,7 @@
           "title": "sepalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -1374,7 +1416,10 @@
       "name": "child__repeat_row_sepalLength__repeat_column_petalLength_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -1417,7 +1462,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_petalLength_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1445,7 +1490,7 @@
           "title": "petalLength",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -1464,7 +1509,10 @@
       "name": "child__repeat_row_sepalLength__repeat_column_petalWidth_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -1507,7 +1555,7 @@
           "orient": "bottom",
           "gridScale": "child__repeat_row_sepalLength__repeat_column_petalWidth_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1535,7 +1583,7 @@
           "title": "petalWidth",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -1575,7 +1623,7 @@
       "name": "child__repeat_row_petalWidth__repeat_column_sepalLength_x",
       "type": "linear",
       "domain": {"data": "data_0", "field": "sepalLength"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1591,7 +1639,7 @@
       "name": "child__repeat_row_petalWidth__repeat_column_sepalWidth_x",
       "type": "linear",
       "domain": {"data": "data_1", "field": "sepalWidth"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1607,7 +1655,7 @@
       "name": "child__repeat_row_petalWidth__repeat_column_petalLength_x",
       "type": "linear",
       "domain": {"data": "data_2", "field": "petalLength"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1623,7 +1671,7 @@
       "name": "child__repeat_row_petalWidth__repeat_column_petalWidth_x",
       "type": "linear",
       "domain": {"data": "data_3", "field": "petalWidth"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1639,7 +1687,7 @@
       "name": "child__repeat_row_petalLength__repeat_column_sepalLength_x",
       "type": "linear",
       "domain": {"data": "data_4", "field": "sepalLength"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1655,7 +1703,7 @@
       "name": "child__repeat_row_petalLength__repeat_column_sepalWidth_x",
       "type": "linear",
       "domain": {"data": "data_5", "field": "sepalWidth"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1671,7 +1719,7 @@
       "name": "child__repeat_row_petalLength__repeat_column_petalLength_x",
       "type": "linear",
       "domain": {"data": "data_6", "field": "petalLength"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1687,7 +1735,7 @@
       "name": "child__repeat_row_petalLength__repeat_column_petalWidth_x",
       "type": "linear",
       "domain": {"data": "data_2", "field": "petalWidth"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1703,7 +1751,7 @@
       "name": "child__repeat_row_sepalWidth__repeat_column_sepalLength_x",
       "type": "linear",
       "domain": {"data": "data_7", "field": "sepalLength"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1719,7 +1767,7 @@
       "name": "child__repeat_row_sepalWidth__repeat_column_sepalWidth_x",
       "type": "linear",
       "domain": {"data": "data_8", "field": "sepalWidth"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1735,7 +1783,7 @@
       "name": "child__repeat_row_sepalWidth__repeat_column_petalLength_x",
       "type": "linear",
       "domain": {"data": "data_5", "field": "petalLength"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1751,7 +1799,7 @@
       "name": "child__repeat_row_sepalWidth__repeat_column_petalWidth_x",
       "type": "linear",
       "domain": {"data": "data_1", "field": "petalWidth"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1767,7 +1815,7 @@
       "name": "child__repeat_row_sepalLength__repeat_column_sepalLength_x",
       "type": "linear",
       "domain": {"data": "data_9", "field": "sepalLength"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1783,7 +1831,7 @@
       "name": "child__repeat_row_sepalLength__repeat_column_sepalWidth_x",
       "type": "linear",
       "domain": {"data": "data_7", "field": "sepalWidth"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1799,7 +1847,7 @@
       "name": "child__repeat_row_sepalLength__repeat_column_petalLength_x",
       "type": "linear",
       "domain": {"data": "data_4", "field": "petalLength"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },
@@ -1815,7 +1863,7 @@
       "name": "child__repeat_row_sepalLength__repeat_column_petalWidth_x",
       "type": "linear",
       "domain": {"data": "data_0", "field": "petalWidth"},
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     },

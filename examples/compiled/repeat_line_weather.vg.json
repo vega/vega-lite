@@ -2,7 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
   "height": 200,
   "data": [
     {
@@ -26,6 +25,7 @@
       ]
     }
   ],
+  "signals": [{"name": "childWidth", "value": 200}],
   "layout": {"padding": 20, "bounds": "full", "align": "all"},
   "marks": [
     {
@@ -33,7 +33,10 @@
       "name": "child__repeat_repeat_temp_max_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -141,7 +144,10 @@
       "name": "child__repeat_repeat_precipitation_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -249,7 +255,10 @@
       "name": "child__repeat_repeat_wind_group",
       "style": "cell",
       "encode": {
-        "update": {"width": {"signal": "width"}, "height": {"signal": "height"}}
+        "update": {
+          "width": {"signal": "childWidth"},
+          "height": {"signal": "height"}
+        }
       },
       "marks": [
         {
@@ -362,7 +371,7 @@
       "name": "child__repeat_repeat_temp_max_x",
       "type": "time",
       "domain": {"data": "source_0", "field": "month_date"},
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "childWidth"}]
     },
     {
       "name": "child__repeat_repeat_temp_max_y",
@@ -376,7 +385,7 @@
       "name": "child__repeat_repeat_precipitation_x",
       "type": "time",
       "domain": {"data": "source_0", "field": "month_date"},
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "childWidth"}]
     },
     {
       "name": "child__repeat_repeat_precipitation_y",
@@ -390,7 +399,7 @@
       "name": "child__repeat_repeat_wind_x",
       "type": "time",
       "domain": {"data": "source_0", "field": "month_date"},
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "childWidth"}]
     },
     {
       "name": "child__repeat_repeat_wind_y",
