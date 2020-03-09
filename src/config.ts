@@ -203,13 +203,6 @@ export interface Config
     HeaderConfigMixins,
     CompositionConfigMixins {
   /**
-   * CSS color property to use as the background of the entire view.
-   *
-   * __Default value:__ `"white"`
-   */
-  background?: Color;
-
-  /**
    * An object hash that defines default range arrays or schemes for using with scales.
    * For a full list of scale range configuration options, please see the [corresponding section of the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#config).
    */

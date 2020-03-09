@@ -7887,9 +7887,9 @@ vega-transforms@~4.7.0:
     vega-util "^1.13.1"
 
 vega-typings@~0.14.0:
-  version "0.14.0"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.14.0.tgz#4ceaf70b2ba3e5518b9d3e3e09cc60478e95887f"
-  integrity sha512-N+5xGuBodnd3mpIYTSLHX5vg+jgjE152tfrnN47+u6u22rCVagntELdq6sMheWBEwQNCh7nm7kKq1BcEzxXj1w==
+  version "0.14.2"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.14.2.tgz#30a401c3abad96745aa50563f7443e6d430cf3a4"
+  integrity sha512-mx+CaMBk2n8CfCFk0yVYqlBetzyQ7qXaq4l3OzaMO3GOjatkeccD9Gn5dEoemnjrKbVTZOacR+jjURNipsLkdQ==
   dependencies:
     vega-util "^1.13.1"
 

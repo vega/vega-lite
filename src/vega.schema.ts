@@ -287,6 +287,7 @@ export type StrokeJoin = 'miter' | 'round' | 'bevel';
 export type Dir = 'ltr' | 'rtl';
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
+  blend: 1,
   opacity: 1,
   fill: 1,
   fillOpacity: 1,

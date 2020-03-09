@@ -27,6 +27,7 @@
         "median",
         "min",
         "missing",
+        "product",
         "q1",
         "q3",
         "ci0",
@@ -166,6 +167,10 @@
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+        },
+        "blend": {
+          "$ref": "#/definitions/Blend",
+          "description": "The color blend mode for drawing an item on its current background. Any valid [CSS mix-blend-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode) value can be used.\n\n__Default value: `\"source-over\"`"
         },
         "color": {
           "anyOf": [
@@ -1647,6 +1652,10 @@
           "minimum": 0,
           "type": "number"
         },
+        "blend": {
+          "$ref": "#/definitions/Blend",
+          "description": "The color blend mode for drawing an item on its current background. Any valid [CSS mix-blend-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode) value can be used.\n\n__Default value: `\"source-over\"`"
+        },
         "color": {
           "anyOf": [
             {
@@ -2354,6 +2363,30 @@
         {
           "$ref": "#/definitions/InputBinding"
         }
+      ]
+    },
+    "Blend": {
+      "enum": [
+        null,
+        "multiply",
+        "screen",
+        "overlay",
+        "darken",
+        "lighten",
+        "color-dodge",
+        "color-burn",
+        "hard-light",
+        "soft-light",
+        "difference",
+        "exclusion",
+        "hue",
+        "saturation",
+        "color",
+        "luminosity"
+      ],
+      "type": [
+        "null",
+        "string"
       ]
     },
     "BoxPlot": {
@@ -9698,6 +9731,10 @@
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
         },
+        "blend": {
+          "$ref": "#/definitions/Blend",
+          "description": "The color blend mode for drawing an item on its current background. Any valid [CSS mix-blend-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode) value can be used.\n\n__Default value: `\"source-over\"`"
+        },
         "color": {
           "anyOf": [
             {
@@ -10404,6 +10441,10 @@
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
         },
+        "blend": {
+          "$ref": "#/definitions/Blend",
+          "description": "The color blend mode for drawing an item on its current background. Any valid [CSS mix-blend-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode) value can be used.\n\n__Default value: `\"source-over\"`"
+        },
         "color": {
           "anyOf": [
             {
@@ -10750,6 +10791,10 @@
           "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
           "minimum": 0,
           "type": "number"
+        },
+        "blend": {
+          "$ref": "#/definitions/Blend",
+          "description": "The color blend mode for drawing an item on its current background. Any valid [CSS mix-blend-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode) value can be used.\n\n__Default value: `\"source-over\"`"
         },
         "clip": {
           "description": "Whether a mark be clipped to the enclosing group’s width and height.",
@@ -11426,6 +11471,7 @@
         "median",
         "min",
         "missing",
+        "product",
         "q1",
         "q3",
         "ci0",
@@ -11556,6 +11602,10 @@
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+        },
+        "blend": {
+          "$ref": "#/definitions/Blend",
+          "description": "The color blend mode for drawing an item on its current background. Any valid [CSS mix-blend-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode) value can be used.\n\n__Default value: `\"source-over\"`"
         },
         "clip": {
           "description": "Whether a mark be clipped to the enclosing group’s width and height.",
@@ -12596,6 +12646,10 @@
           "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
           "minimum": 0,
           "type": "number"
+        },
+        "blend": {
+          "$ref": "#/definitions/Blend",
+          "description": "The color blend mode for drawing an item on its current background. Any valid [CSS mix-blend-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode) value can be used.\n\n__Default value: `\"source-over\"`"
         },
         "color": {
           "anyOf": [
@@ -14709,6 +14763,10 @@
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+        },
+        "blend": {
+          "$ref": "#/definitions/Blend",
+          "description": "The color blend mode for drawing an item on its current background. Any valid [CSS mix-blend-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode) value can be used.\n\n__Default value: `\"source-over\"`"
         },
         "color": {
           "anyOf": [
