@@ -24,6 +24,7 @@ jest-puppeteer.config.js
 npm-debug.log*
 prettier*
 rollup.config.js
+tsconfig.base.json
 tsconfig.json
 yarn-debug.log*
 yarn-error.log*
