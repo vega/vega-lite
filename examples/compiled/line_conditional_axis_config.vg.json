@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Line chart with conditional grid dash.",
+  "description": "Line chart with conditional axis ticks, labels, and grid.",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "width": 400,
   "height": 200,
   "style": "cell",
   "data": [
@@ -15,7 +15,7 @@
         {"type": "filter", "expr": "datum.symbol==='GOOG'"},
         {
           "type": "filter",
-          "expr": "inrange(time(datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)), [time(datetime(2006, 0, 1, 0, 0, 0, 0)), time(datetime(2008, 0, 1, 0, 0, 0, 0))])"
+          "expr": "inrange(time(datetime(year(datum[\"date\"]), 0, 1, 0, 0, 0, 0)), [time(datetime(2006, 0, 1, 0, 0, 0, 0)), time(datetime(2007, 0, 1, 0, 0, 0, 0))])"
         }
       ]
     }
@@ -59,7 +59,7 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "tickCount": 20,
+      "tickCount": 8,
       "gridScale": "y",
       "grid": true,
       "encode": {
@@ -68,7 +68,7 @@
             "strokeDash": [
               {
                 "test": "time(datetime(0, month(datum[\"value\"]), date(datum[\"value\"]), 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))",
-                "value": [1, 0]
+                "value": null
               },
               {"value": [2, 2]}
             ]
@@ -100,9 +100,29 @@
       "orient": "bottom",
       "grid": false,
       "title": "date",
-      "tickCount": 20,
+      "tickCount": 8,
       "labelFlush": true,
       "labelOverlap": true,
+      "encode": {
+        "ticks": {
+          "update": {
+            "strokeDash": [
+              {
+                "test": "time(datetime(0, month(datum[\"value\"]), date(datum[\"value\"]), 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))",
+                "value": null
+              },
+              {"value": [2, 2]}
+            ]
+          }
+        },
+        "labels": {
+          "update": {
+            "text": {
+              "signal": "[timeFormat(datum.value, '%b'), timeFormat(datum.value, '%m') == '01' ? timeFormat(datum.value, '%Y') : '']"
+            }
+          }
+        }
+      },
       "zindex": 0
     },
     {
@@ -114,5 +134,37 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ]
+  ],
+  "config": {
+    "axis": {"domainColor": "#ddd", "tickColor": "#ddd"},
+    "axisX": {
+      "labelAlign": "left",
+      "labelExpr": "[timeFormat(datum.value, '%b'), timeFormat(datum.value, '%m') == '01' ? timeFormat(datum.value, '%Y') : '']",
+      "labelPadding": -24,
+      "labelOffset": 4,
+      "tickSize": 30,
+      "gridDash": {
+        "condition": {
+          "test": {
+            "field": "value",
+            "timeUnit": "monthdate",
+            "equal": {"month": 1, "date": 1}
+          },
+          "value": null
+        },
+        "value": [2, 2]
+      },
+      "tickDash": {
+        "condition": {
+          "test": {
+            "field": "value",
+            "timeUnit": "monthdate",
+            "equal": {"month": 1, "date": 1}
+          },
+          "value": null
+        },
+        "value": [2, 2]
+      }
+    }
+  }
 }
