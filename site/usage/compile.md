@@ -75,8 +75,20 @@ var vgSpec = vegaLite.compile(vlSpec, {
 
 ## From the Command Line
 
-If you want to compile your Vega-Lite specs from the command line, we provide a set of scripts which make it easy to go from Vega-Lite to Vega, SVG, or PNG. These scripts are `vl2vg`, `vl2svg`, and `vl2png` respectively.
+If you want to compile your Vega-Lite specs from the command line, we provide a set of scripts which make it easy to go from Vega-Lite to Vega, SVG, PNG, or PDF. These scripts are `vl2vg`, `vl2png`, `vl2svg`, and `vl2pdf` respectively.
 
 Each script simply accepts your Vega-Lite specification as its first argument.
 
-`vl2svg vega-lite-spec.json`
+`vl2svg spec.vl.json`
+
+You can also pass in data via stdin.
+
+`cat spec.vl.json | vl2svg`
+
+The `vg2vg` command supports an optional argument `p` that formats the generated Vega spec.
+
+`vl2vg spec.vl.json -p`
+
+The easiest way to run these commands is to use [`npx`](https://github.com/npm/npx). `npx` will automatically run the commands from the local `node_modules/.bin`, or from a central cache, installing any packages needed in order for the commands to run. It Is not necessary to have Vega or Vega-Lite installed ahead of time for `npx` to work.
+
+`npx vl2vg spec.vl.json`
