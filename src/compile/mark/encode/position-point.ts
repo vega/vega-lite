@@ -104,7 +104,7 @@ export function pointPositionDefaultRef({
   scaleName: string;
   scale: ScaleComponent;
   checkBarAreaWithoutZero: boolean;
-}) {
+}): () => VgValueRef {
   const {mark, markDef, config} = model;
   return () => {
     const mainChannel = getMainRangeChannel(channel);
