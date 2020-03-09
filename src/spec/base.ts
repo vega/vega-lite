@@ -81,7 +81,7 @@ export interface LayoutSizeMixins {
    *
    * __See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation.
    */
-  width?: number | 'container' | Step;
+  width?: number | 'container' | Step; // Vega also supports SignalRef for width and height. However, we need to know if width is a step or not in VL and it's very difficult to check this at runtime, so we intentionally do not support SignalRef here.
 
   /**
    * The height of a visualization.
@@ -96,7 +96,7 @@ export interface LayoutSizeMixins {
    *
    * __See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation.
    */
-  height?: number | 'container' | Step;
+  height?: number | 'container' | Step; // Vega also supports SignalRef for width and height. However, we need to know if width is a step or not in VL and it's very difficult to check this at runtime, so we intentionally do not support SignalRef here.
 }
 
 export function isFrameMixins(o: any): o is FrameMixins {

@@ -76,7 +76,7 @@ Note: If [mark property encoding channels](encoding.html#mark-prop) are specifie
 
 ### Color Properties
 
-{% include table.html props="filled,color,fill,stroke,opacity,fillOpacity,strokeOpacity" source="MarkDef" %}
+{% include table.html props="filled,color,fill,stroke,blend,opacity,fillOpacity,strokeOpacity" source="MarkDef" %}
 
 {:#stroke}
 
