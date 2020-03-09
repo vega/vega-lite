@@ -112,11 +112,3 @@ jobs:
           bin/vl2png < examples/specs/bar.vl.json > bar-stdin.png
           bin/vl2svg < examples/specs/bar.vl.json > bar-stdin.svg
           bin/vl2pdf < examples/specs/bar.vl.json > bar-stdin.pdf
-
-      - name: Compile from stdin (Windows)
-        if: matrix.os == 'windows-latest'
-        run: |
-          type examples/specs/bar.vl.json | bin/vl2vg -p > bar-stdin.vg.json
-          type examples/specs/bar.vl.json | bin/vl2png > bar-stdin.png
-          type examples/specs/bar.vl.json | bin/vl2svg > bar-stdin.svg
-          type examples/specs/bar.vl.json | bin/vl2pdf > bar-stdin.pdf
