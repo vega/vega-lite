@@ -27,11 +27,11 @@
       "labelOffset": 4,
       "tickSize": 30,
       "gridDash": {
-        "condition": {"test": {"field": "value", "timeUnit": "monthdate", "equal": {"month": 1, "date": 1}}, "value": null},
+        "condition": {"test": {"field": "value", "timeUnit": "monthdate", "equal": {"month": 1, "date": 1}}, "value": []},
         "value": [2,2]
       },
       "tickDash": {
-        "condition": {"test": {"field": "value", "timeUnit": "monthdate", "equal": {"month": 1, "date": 1}}, "value": null},
+        "condition": {"test": {"field": "value", "timeUnit": "monthdate", "equal": {"month": 1, "date": 1}}, "value": []},
         "value": [2,2]
       }
     }
