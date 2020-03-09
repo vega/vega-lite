@@ -814,16 +814,13 @@
           "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
           "type": "number"
         },
+        "labelLineHeight": {
+          "description": "Line height in pixels for multi-line label text.",
+          "type": "number"
+        },
         "labelOffset": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ConditionalAxisNumber"
-            }
-          ],
-          "description": "Position offset in pixels to apply to labels, in addition to tickOffset."
+          "description": "Position offset in pixels to apply to labels, in addition to tickOffset.\n\n__Default value:__ `0`",
+          "type": "number"
         },
         "labelOpacity": {
           "anyOf": [
@@ -1355,16 +1352,13 @@
           "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
           "type": "number"
         },
+        "labelLineHeight": {
+          "description": "Line height in pixels for multi-line label text.",
+          "type": "number"
+        },
         "labelOffset": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ConditionalAxisNumber"
-            }
-          ],
-          "description": "Position offset in pixels to apply to labels, in addition to tickOffset."
+          "description": "Position offset in pixels to apply to labels, in addition to tickOffset.\n\n__Default value:__ `0`",
+          "type": "number"
         },
         "labelOpacity": {
           "anyOf": [
@@ -14631,6 +14625,18 @@
         },
         {
           "$ref": "#/definitions/Baseline"
+        },
+        {
+          "enum": [
+            "line-top"
+          ],
+          "type": "string"
+        },
+        {
+          "enum": [
+            "line-bottom"
+          ],
+          "type": "string"
         }
       ]
     },
