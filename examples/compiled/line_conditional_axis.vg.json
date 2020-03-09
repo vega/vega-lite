@@ -68,7 +68,7 @@
             "strokeDash": [
               {
                 "test": "time(datetime(0, month(datum[\"value\"]), 1, 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))",
-                "value": null
+                "value": []
               },
               {"value": [2, 2]}
             ]
@@ -112,7 +112,7 @@
             "strokeDash": [
               {
                 "test": "time(datetime(0, month(datum[\"value\"]), 1, 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))",
-                "value": null
+                "value": []
               },
               {"value": [2, 2]}
             ]
