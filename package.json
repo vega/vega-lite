@@ -18,6 +18,7 @@
   "bin": {
     "vl2png": "./bin/vl2png",
     "vl2svg": "./bin/vl2svg",
+    "vl2pdf": "./bin/vl2pdf",
     "vl2vg": "./bin/vl2vg"
   },
   "directories": {
