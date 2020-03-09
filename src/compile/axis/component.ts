@@ -4,7 +4,6 @@ import {
   AxisPart,
   AxisPropsWithConditionAndSignal,
   COMMON_AXIS_PROPERTIES_INDEX,
-  ConditionalAxisNumber,
   ConditionalAxisProp,
   SignalAxisProp
 } from '../../axis';
@@ -20,7 +19,6 @@ export type AxisComponentProps = Omit<VgAxis, 'title' | ConditionalAxisProp | Si
   Omit<AxisPropsWithConditionAndSignal, 'title'> & {
     title: Text | FieldDefBase<string>[];
     labelExpr: string;
-    labelOffset: number | ConditionalAxisNumber;
   };
 
 const AXIS_COMPONENT_PROPERTIES_INDEX: Flag<keyof AxisComponentProps> = {
@@ -28,7 +26,6 @@ const AXIS_COMPONENT_PROPERTIES_INDEX: Flag<keyof AxisComponentProps> = {
   scale: 1,
   ...COMMON_AXIS_PROPERTIES_INDEX,
   labelExpr: 1,
-  labelOffset: 1,
   encode: 1
 };
 
