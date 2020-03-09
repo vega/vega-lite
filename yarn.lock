@@ -7894,9 +7894,9 @@ vega-typings@~0.13.0:
     vega-util "^1.12.1"
 
 vega-util@^1.11.0, vega-util@^1.12.0, vega-util@^1.12.1, vega-util@^1.12.2, vega-util@^1.13.0, vega-util@^1.8.0, vega-util@~1.13.0:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.13.0.tgz#3f933bff56f93f2c9346be0fb1a68b5f25d62496"
-  integrity sha512-QYVAq7TLFGps18oA13Nwm82lMkQ7oak2dnQAYgEqCRaX5Nx4YFJ7R3R+iymDM0xFmwvervsTtD5arvMIY+HfFA==
+  version "1.13.1"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.13.1.tgz#3eae51043184c6b873c17b148755c21b01274a0e"
+  integrity sha512-TmvZSMKqhGlS7eAXphqJUhq+NZVYbvXX2ahargTRkVckGWjEUpWhMC7T13vYihrU2Lf/OevKbrruSXKOBxke2w==
 
 vega-view-transforms@~4.5.0:
   version "4.5.0"
