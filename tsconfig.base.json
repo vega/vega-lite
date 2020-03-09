@@ -10,7 +10,6 @@
 
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "inlineSources": true,
     "importHelpers": true,
     "isolatedModules": false,
     "noImplicitAny": true,
