@@ -211,7 +211,13 @@ export interface AxisPropsWithConditionAndSignal {
   labelFontSize?: BaseAxisNoValueRefs['labelFontSize'] | ConditionalAxisNumber;
   labelFontStyle?: BaseAxisNoValueRefs['labelFontStyle'] | ConditionalAxisLabelFontStyle;
   labelFontWeight?: BaseAxisNoValueRefs['labelFontWeight'] | ConditionalAxisLabelFontWeight;
+
+  labelLineHeight?: BaseAxisNoValueRefs['labelLineHeight'] | ConditionalAxisNumber | SignalRef;
+
   labelOpacity?: BaseAxisNoValueRefs['labelOpacity'] | ConditionalAxisNumber;
+
+  labelOffset?: BaseAxisNoValueRefs['labelOffset'] | ConditionalAxisNumber | SignalRef;
+
   labelPadding?: BaseAxisNoValueRefs['labelPadding'] | ConditionalAxisNumber;
   gridColor?: BaseAxisNoValueRefs['gridColor'] | ConditionalAxisColor | SignalRef;
   gridDash?: BaseAxisNoValueRefs['gridDash'] | ConditionalAxisNumberArray;
@@ -247,11 +253,6 @@ export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
    * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
    */
   labelExpr?: string;
-
-  /**
-   *  Position offset in pixels to apply to labels, in addition to tickOffset.
-   */
-  labelOffset?: number | ConditionalAxisNumber;
 
   /**
    * The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.
@@ -340,7 +341,9 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   labelFontWeight: 'main',
 
   labelLimit: 'main',
+  labelLineHeight: 'main',
   labelOpacity: 'main',
+  labelOffset: 'main',
   labelOverlap: 'main',
   labelPadding: 'main',
   labels: 'main',
@@ -448,6 +451,8 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   labelFontStyle: 1,
   labelFontWeight: 1,
   labelLimit: 1,
+  labelLineHeight: 1,
+  labelOffset: 1,
   labelOpacity: 1,
   labelOverlap: 1,
   labelPadding: 1,
@@ -495,7 +500,6 @@ const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
   ...COMMON_AXIS_PROPERTIES_INDEX,
   style: 1,
   labelExpr: 1,
-  labelOffset: 1,
   encoding: 1
 };
 
