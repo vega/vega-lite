@@ -1040,12 +1040,11 @@ export function channelCompatibility(
   }
 }
 
-// TODO: rename to isFieldDefForTimeFormat
 /**
  * Check if the field def uses a time format or does not use any format but is temporal
  * (this does not cover field defs that are temporal but use a number format).
  */
-export function isTimeFormatFieldDef(fieldDef: TypedFieldDef<string>): boolean {
+export function isFieldDefForTimeFormat(fieldDef: TypedFieldDef<string>): boolean {
   const guide = getGuide(fieldDef);
   const formatType = (guide && guide.formatType) || (isTextFieldDef(fieldDef) && fieldDef.formatType);
   return formatType === 'time' || (!formatType && isTimeFieldDef(fieldDef));

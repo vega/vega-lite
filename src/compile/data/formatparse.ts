@@ -3,7 +3,7 @@ import {isNumber, isString} from 'vega-util';
 import {AncestorParse} from '.';
 import {isMinMaxOp} from '../../aggregate';
 import {getMainRangeChannel, SingleDefChannel} from '../../channel';
-import {isFieldDef, isScaleFieldDef, isTimeFormatFieldDef, isTypedFieldDef, TypedFieldDef} from '../../channeldef';
+import {isFieldDef, isFieldDefForTimeFormat, isScaleFieldDef, isTypedFieldDef, TypedFieldDef} from '../../channeldef';
 import {isGenerator, Parse} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import * as log from '../../log';
@@ -101,7 +101,7 @@ export function getImplicitFromEncoding(model: Model) {
   const implicit: Dict<string> = {};
 
   function add(fieldDef: TypedFieldDef<string>) {
-    if (isTimeFormatFieldDef(fieldDef)) {
+    if (isFieldDefForTimeFormat(fieldDef)) {
       implicit[fieldDef.field] = 'date';
     } else if (
       fieldDef.type === 'quantitative' &&
