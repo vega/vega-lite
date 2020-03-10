@@ -77,15 +77,13 @@ export class UnitModel extends ModelWithField {
 
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
 
-    const encoding = spec.encoding ?? {};
-
-    this.markDef = initMarkdef(spec.mark, encoding, config, {
+    this.markDef = initMarkdef(spec.mark, spec.encoding ?? {}, config, {
       graticule: spec.data && isGraticuleGenerator(spec.data)
     });
-    const normalizedEncoding = (this.encoding = initEncoding(encoding, this.markDef));
+    const encoding = (this.encoding = initEncoding(spec.encoding ?? {}, this.markDef));
 
     this.size = initLayoutSize({
-      encoding: normalizedEncoding,
+      encoding: encoding,
       size: isFrameMixins(spec)
         ? {
             ...parentGivenSize,
@@ -96,11 +94,11 @@ export class UnitModel extends ModelWithField {
     });
 
     // calculate stack properties
-    this.stack = stack(mark, normalizedEncoding);
-    this.specifiedScales = this.initScales(mark, normalizedEncoding);
+    this.stack = stack(mark, encoding);
+    this.specifiedScales = this.initScales(mark, encoding);
 
-    this.specifiedAxes = this.initAxes(normalizedEncoding);
-    this.specifiedLegends = this.initLegend(normalizedEncoding);
+    this.specifiedAxes = this.initAxes(encoding);
+    this.specifiedLegends = this.initLegend(encoding);
     this.specifiedProjection = spec.projection;
 
     // Selections will be initialized upon parse.
