@@ -1,5 +1,5 @@
 import {SignalRef, Text} from 'vega';
-import {array} from 'vega-util';
+import {array, isString} from 'vega-util';
 import {Axis} from '../axis';
 import {isBinning} from '../bin';
 import {
@@ -12,6 +12,7 @@ import {
   vgField
 } from '../channeldef';
 import {Config, StyleConfigIndex} from '../config';
+import {isCustomFormatType} from '../guide';
 import {AnyMarkConfig, MarkConfig, MarkDef} from '../mark';
 import {fieldValidPredicate} from '../predicate';
 import {ScaleType} from '../scale';
@@ -101,19 +102,35 @@ export function getStyleConfig<P extends keyof AnyMarkConfig | keyof Axis>(
   return value;
 }
 
+export function customFormatExpr({
+  formatType,
+  field,
+  format
+}: {
+  formatType: string;
+  field: string;
+  format: string | object;
+}) {
+  return `${formatType}(${field}, ${JSON.stringify(format)})`;
+}
+
 export function formatSignalRef(
   fieldDef: TypedFieldDef<string>,
-  specifiedFormat: string,
+  specifiedFormat: string | object,
+  specifiedFormatType: string,
   expr: 'datum' | 'parent' | 'datum.datum',
   config: Config
 ) {
-  if (isTimeFormatFieldDef(fieldDef)) {
+  const field = vgField(fieldDef, {
+    expr
+  });
+  if (isCustomFormatType(specifiedFormatType)) {
+    return {signal: customFormatExpr({formatType: specifiedFormatType, format: specifiedFormat, field})};
+  } else if (isTimeFormatFieldDef(fieldDef)) {
     const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
     return {
       signal: timeFormatExpression(
-        vgField(fieldDef, {
-          expr
-        }),
+        field,
         normalizeTimeUnit(fieldDef.timeUnit)?.unit,
         specifiedFormat,
         config.timeFormat,
@@ -124,10 +141,9 @@ export function formatSignalRef(
   } else {
     const format = numberFormat(fieldDef, specifiedFormat, config);
     if (isBinning(fieldDef.bin)) {
-      const startField = vgField(fieldDef, {expr});
       const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
       return {
-        signal: binFormatExpression(startField, endField, format, config)
+        signal: binFormatExpression(field, endField, format, specifiedFormatType, config)
       };
     } else if (fieldDef.type === 'quantitative' || format) {
       return {
@@ -142,9 +158,9 @@ export function formatSignalRef(
 /**
  * Returns number format for a fieldDef
  */
-export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: string, config: Config) {
+export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: string | object, config: Config) {
   // Specified format in axis/legend has higher precedence than fieldDef.format
-  if (specifiedFormat) {
+  if (isString(specifiedFormat)) {
     return specifiedFormat;
   }
 
@@ -159,16 +175,24 @@ function formatExpr(field: string, format: string) {
   return `format(${field}, "${format || ''}")`;
 }
 
-export function numberFormatExpr(field: string, specifiedFormat: string, config: Config) {
-  return formatExpr(field, specifiedFormat ?? config.numberFormat);
+function binNumberFormatExpr(field: string, format: string | object, formatType: string, config: Config) {
+  if (isCustomFormatType(formatType)) {
+    return customFormatExpr({formatType, field, format});
+  }
+
+  return formatExpr(field, (isString(format) ? format : undefined) ?? config.numberFormat);
 }
 
-export function binFormatExpression(startField: string, endField: string, format: string, config: Config) {
-  return `${fieldValidPredicate(startField, false)} ? "null" : ${numberFormatExpr(
-    startField,
-    format,
-    config
-  )} + "${BIN_RANGE_DELIMITER}" + ${numberFormatExpr(endField, format, config)}`;
+export function binFormatExpression(
+  startField: string,
+  endField: string,
+  format: string | object,
+  formatType: string,
+  config: Config
+) {
+  const start = binNumberFormatExpr(startField, format, formatType, config);
+  const end = binNumberFormatExpr(endField, format, formatType, config);
+  return `${fieldValidPredicate(startField, false)} ? "null" : ${start} + "${BIN_RANGE_DELIMITER}" + ${end}`;
 }
 
 /**
@@ -177,14 +201,14 @@ export function binFormatExpression(startField: string, endField: string, format
 export function timeFormatExpression(
   field: string,
   timeUnit: TimeUnit,
-  format: string,
+  format: string | object,
   rawTimeFormat: string, // should be provided only for actual text and headers, not axis/legend labels
   isUTCScale: boolean,
   alwaysReturn = false
 ): string {
   if (!timeUnit || format) {
     // If there is not time unit, or if user explicitly specify format for axis/legend/text.
-    format = format ?? rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
+    format = isString(format) ? format : rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
     if (format || alwaysReturn) {
       return `${isUTCScale ? 'utc' : 'time'}Format(${field}, '${format}')`;
     } else {

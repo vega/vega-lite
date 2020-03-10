@@ -2,6 +2,7 @@ import {SignalRef} from 'vega-typings';
 import {COLOR, SIZE} from '../../../src/channel';
 import {LegendComponent} from '../../../src/compile/legend/component';
 import * as encode from '../../../src/compile/legend/encode';
+import {Encoding} from '../../../src/encoding';
 import {TimeUnit} from '../../../src/timeunit';
 import {TEMPORAL} from '../../../src/type';
 import {parseUnitModelWithScale} from '../../util';
@@ -109,6 +110,21 @@ describe('compile/legend', () => {
   });
 
   describe('encode.labels', () => {
+    it('returns correct expression for custom format Type', () => {
+      const fieldDef: Encoding<string>['color'] = {
+        field: 'a',
+        type: 'temporal',
+        legend: {format: 'abc', formatType: 'customDateFormat'}
+      };
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {color: fieldDef}
+      });
+
+      const label = encode.labels(fieldDef, {}, model, COLOR, symbolLegend);
+      expect(label.text).toEqual({signal: 'customDateFormat(datum.value, "abc")'});
+    });
+
     it('should return correct expression for the timeUnit: TimeUnit.MONTH', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',

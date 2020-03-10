@@ -20,25 +20,29 @@ export interface TitleMixins {
 
 export interface FormatMixins {
   /**
-   * The text formatting pattern for labels of guides (axes, legends, headers) and text marks.
+   * When used with the default `"number"` and `"time"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.
    *
    * - If the format type is `"number"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).
    * - If the format type is `"time"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).
    *
    * See the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.
    *
+   * When used with a custom `"formatType"` (in the form of a [registered Vega expression function](https://vega.github.io/vega/docs/api/extensibility/#expressions) that takes `datum.value` and format parameter as input), this property represents the format parameter.
+   *
    * __Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format.
    */
-  format?: string;
+  format?: string | object;
 
   /**
    * The format type for labels (`"number"` or `"time"`).
+   *
+   * If a custom formatter is registered (in the form of a [registered Vega expression function](https://vega.github.io/vega/docs/api/extensibility/#expressions) that takes `datum.value` and format parameter as input), this property can represent the registered function name.
    *
    * __Default value:__
    * - `"time"` for temporal fields and ordinal and nomimal fields with `timeUnit`.
    * - `"number"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.
    */
-  formatType?: 'number' | 'time';
+  formatType?: 'number' | 'time' | string;
 
   /**
    * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.
@@ -46,6 +50,10 @@ export interface FormatMixins {
    * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
    */
   labelExpr?: string;
+}
+
+export function isCustomFormatType(formatType: string) {
+  return formatType && formatType !== 'number' && formatType !== 'time';
 }
 
 export interface Guide extends TitleMixins, FormatMixins {}

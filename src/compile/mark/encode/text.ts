@@ -1,4 +1,11 @@
-import {ChannelDefWithCondition, FieldDef, format, isTypedFieldDef, isValueDef, Value} from '../../../channeldef';
+import {
+  ChannelDefWithCondition,
+  FieldDef,
+  getFormatMixins,
+  isTypedFieldDef,
+  isValueDef,
+  Value
+} from '../../../channeldef';
 import {Config} from '../../../config';
 import {VgValueRef} from '../../../vega.schema';
 import {formatSignalRef} from '../../common';
@@ -21,7 +28,8 @@ export function textRef(
       return {value: channelDef.value};
     }
     if (isTypedFieldDef(channelDef)) {
-      return formatSignalRef(channelDef, format(channelDef), expr, config);
+      const {format, formatType} = getFormatMixins(channelDef);
+      return formatSignalRef(channelDef, format, formatType, expr, config);
     }
   }
   return undefined;

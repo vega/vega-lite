@@ -26,6 +26,17 @@ describe('compile/axis/encode', () => {
       expect(labels.angle).toBeUndefined();
     });
 
+    it('applies custom format type', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'quantitative', axis: {format: 'abc', formatType: 'customNumberFormat'}}
+        }
+      });
+      const labels = encode.labels(model, 'x', {});
+      expect(labels.text.signal).toEqual('customNumberFormat(datum.value, "abc")');
+    });
+
     it('should have correct text.signal for quarter timeUnits', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
