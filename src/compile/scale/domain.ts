@@ -16,7 +16,8 @@ import {DateTime} from '../../datetime';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isDomainUnionWith, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
-import {normalizeTimeUnit} from '../../timeunit';
+import {normalizeTimeUnit, TimeUnit} from '../../timeunit';
+import {Type} from '../../type';
 import * as util from '../../util';
 import {
   isDataRefDomain,
@@ -192,6 +193,17 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
   return parseSingleChannelDomain(scaleType, domain, model, channel);
 }
 
+function mapDomainToDataSignal(
+  domain: (number | string | boolean | DateTime | SignalRef)[],
+  type: Type,
+  timeUnit: TimeUnit
+) {
+  return domain.map(v => {
+    const data = valueExpr(v, {timeUnit, type});
+    return {signal: `{data: ${data}}`};
+  });
+}
+
 function convertDomainIfItIsDateTime(
   domain: (number | string | boolean | DateTime | SignalRef)[],
   fieldDef: TypedFieldDef<string>
@@ -200,9 +212,7 @@ function convertDomainIfItIsDateTime(
   const {type} = fieldDef;
   const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.unit;
   if (type === 'temporal' || timeUnit) {
-    return domain.map(v => {
-      return {signal: valueExpr(v, {timeUnit, type})};
-    });
+    return mapDomainToDataSignal(domain, type, timeUnit);
   }
 
   return [domain] as [number[]] | [string[]] | [boolean[]]; // Date time won't make sense
