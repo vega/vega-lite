@@ -8,7 +8,7 @@ import {
 } from '../../../channeldef';
 import {Config} from '../../../config';
 import {VgValueRef} from '../../../vega.schema';
-import {formatSignalRef} from '../../common';
+import {formatSignalRef} from '../../format';
 import {UnitModel} from '../../unit';
 import {wrapCondition} from './conditional';
 

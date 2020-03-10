@@ -1,7 +1,7 @@
 import {PositionScaleChannel} from '../../channel';
 import {ScaleType} from '../../scale';
 import {keys} from '../../util';
-import {formatSignalRef} from '../common';
+import {formatSignalRef} from '../format';
 import {UnitModel} from '../unit';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {

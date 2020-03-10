@@ -16,7 +16,8 @@ import {
 import {FILL_STROKE_CONFIG} from '../../mark';
 import {ScaleType} from '../../scale';
 import {getFirstDefined, keys, varName} from '../../util';
-import {applyMarkConfig, formatSignalRef, signalOrValueRef} from '../common';
+import {applyMarkConfig, signalOrValueRef} from '../common';
+import {formatSignalRef} from '../format';
 import * as mixins from '../mark/encode';
 import {STORE} from '../selection';
 import {UnitModel} from '../unit';

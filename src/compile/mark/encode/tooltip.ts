@@ -15,7 +15,8 @@ import {
 import {Config} from '../../../config';
 import {Encoding, forEach} from '../../../encoding';
 import {getFirstDefined} from '../../../util';
-import {binFormatExpression, getMarkConfig} from '../../common';
+import {getMarkConfig} from '../../common';
+import {binFormatExpression} from '../../format';
 import {UnitModel} from '../../unit';
 import {wrapCondition} from './conditional';
 import {textRef} from './text';
