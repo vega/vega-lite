@@ -3,7 +3,7 @@
  */
 import {TitleAnchor, TitleConfig} from 'vega';
 import {isArray} from 'vega-util';
-import {FACET_CHANNELS, FacetChannel} from '../../channel';
+import {FacetChannel, FACET_CHANNELS} from '../../channel';
 import {vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {
@@ -23,10 +23,10 @@ import {sortArrayIndexField} from '../data/calculate';
 import {isFacetModel, Model} from '../model';
 import {getHeaderChannel, getHeaderProperties, getHeaderProperty} from './common';
 import {
-  HEADER_TYPES,
   HeaderChannel,
   HeaderComponent,
   HeaderType,
+  HEADER_TYPES,
   LayoutHeaderComponent,
   LayoutHeaderComponentIndex
 } from './component';
@@ -113,14 +113,14 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): 
 }
 
 export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel: FacetChannel, config: Config) {
-  const {format, labelAngle, labelAnchor, labelOrient, labelExpr} = getHeaderProperties(
-    ['format', 'labelAngle', 'labelAnchor', 'labelOrient', 'labelExpr'],
+  const {format, formatType, labelAngle, labelAnchor, labelOrient, labelExpr} = getHeaderProperties(
+    ['format', 'formatType', 'labelAngle', 'labelAnchor', 'labelOrient', 'labelExpr'],
     facetFieldDef,
     config,
     channel
   );
 
-  const titleTextExpr = formatSignalRef(facetFieldDef, format, 'parent', config).signal;
+  const titleTextExpr = formatSignalRef(facetFieldDef, format, formatType, 'parent', config).signal;
   const headerChannel = getHeaderChannel(channel, labelOrient);
 
   return {

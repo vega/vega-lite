@@ -6,6 +6,7 @@ import {
   FieldDefWithCondition,
   Gradient,
   hasConditionalValueDef,
+  isFieldDefWithCustomTimeFormat,
   isTimeFormatFieldDef,
   isValueDef,
   MarkPropFieldDef,
@@ -18,7 +19,7 @@ import {FILL_STROKE_CONFIG} from '../../mark';
 import {ScaleType} from '../../scale';
 import {normalizeTimeUnit} from '../../timeunit';
 import {getFirstDefined, keys, varName} from '../../util';
-import {applyMarkConfig, signalOrValueRef, timeFormatExpression} from '../common';
+import {applyMarkConfig, customFormatExpr, signalOrValueRef, timeFormatExpression} from '../common';
 import * as mixins from '../mark/encode';
 import {STORE} from '../selection';
 import {UnitModel} from '../unit';
@@ -145,13 +146,20 @@ export function labels(
   const legend = model.legend(channel);
   const config = model.config;
   const condition = selectedCondition(model, legendCmp, fieldDef);
+  const {format, formatType} = legend;
+  const field = 'datum.value';
 
   let out: SymbolEncodeEntry = {};
 
-  if (isTimeFormatFieldDef(fieldDef)) {
+  if (isFieldDefWithCustomTimeFormat(fieldDef)) {
+    labelsSpec = {
+      text: {signal: customFormatExpr({field, format, formatType})},
+      ...labelsSpec
+    };
+  } else if (isTimeFormatFieldDef(fieldDef)) {
     const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
     const expr = timeFormatExpression(
-      'datum.value',
+      field,
       normalizeTimeUnit(fieldDef.timeUnit)?.unit,
       legend.format,
       config.timeFormat,

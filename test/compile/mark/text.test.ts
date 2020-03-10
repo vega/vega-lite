@@ -59,6 +59,21 @@ describe('Mark: Text', () => {
     });
   });
 
+  describe('with custom formatType', () => {
+    const spec: NormalizedUnitSpec = {
+      mark: 'text',
+      encoding: {
+        text: {field: 'foo', type: 'quantitative', format: 'd', formatType: 'numberFormat'}
+      }
+    };
+    const model = parseUnitModelWithScaleAndLayoutSize(spec);
+    const props = text.encodeEntry(model);
+
+    it('should use custom formatter', () => {
+      expect(props.text).toEqual({signal: `numberFormat(datum["foo"], "d")`});
+    });
+  });
+
   describe('with binned quantitative', () => {
     const spec: NormalizedUnitSpec = {
       mark: 'text',

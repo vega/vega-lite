@@ -2,8 +2,8 @@ import {array, isArray, isObject, isString, stringValue} from 'vega-util';
 import {isBinned} from '../../../bin';
 import {Channel, getMainRangeChannel} from '../../../channel';
 import {
-  format,
   getFieldDef,
+  getFormatMixins,
   hasConditionalFieldDef,
   isFieldDef,
   isTypedFieldDef,
@@ -93,7 +93,8 @@ export function tooltipRefForEncoding(
       if (isBinned(fieldDef.bin) && fieldDef2) {
         const startField = vgField(fieldDef, {expr});
         const endField = vgField(fieldDef2, {expr});
-        value = binFormatExpression(startField, endField, format(fieldDef), config);
+        const {format, formatType} = getFormatMixins(fieldDef);
+        value = binFormatExpression(startField, endField, format, formatType, config);
         toSkip[channel2] = true;
       }
     }

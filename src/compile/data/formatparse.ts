@@ -1,3 +1,4 @@
+import {FormulaTransform as VgFormulaTransform} from 'vega';
 import {isNumber, isString} from 'vega-util';
 import {AncestorParse} from '.';
 import {isMinMaxOp} from '../../aggregate';
@@ -11,8 +12,7 @@ import {isPathMark} from '../../mark';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
-import {accessPathDepth, accessPathWithDatum, duplicate, hash, keys, removePathFromField, Dict} from '../../util';
-import {FormulaTransform as VgFormulaTransform} from 'vega';
+import {accessPathDepth, accessPathWithDatum, Dict, duplicate, hash, keys, removePathFromField} from '../../util';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
 import {DataFlowNode} from './dataflow';
