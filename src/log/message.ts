@@ -1,3 +1,7 @@
+/**
+ * Collection of all Vega-Lite Error Messages
+ */
+
 import {AggregateOp} from 'vega';
 import {Aggregate} from '../aggregate';
 import {Channel, FacetChannel, GeoPositionChannel, getSizeType, PositionScaleChannel} from '../channel';
@@ -13,10 +17,6 @@ import {GenericSpec} from '../spec';
 import {Type} from '../type';
 import {replaceAll, stringify} from '../util';
 import {VgSortField} from '../vega.schema';
-
-/**
- * Collection of all Vega-Lite Error Messages
- */
 
 export function invalidSpec(spec: GenericSpec<any, any, any, any>) {
   return `Invalid specification ${JSON.stringify(

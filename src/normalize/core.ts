@@ -1,7 +1,6 @@
 import {isArray} from 'vega-util';
 import {COLUMN, FACET, ROW} from '../channel';
 import {Field, FieldName} from '../channeldef';
-import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from '../compile/repeater';
 import {boxPlotNormalizer} from '../compositemark/boxplot';
 import {errorBandNormalizer} from '../compositemark/errorband';
 import {errorBarNormalizer} from '../compositemark/errorbar';
@@ -28,6 +27,7 @@ import {keys, omit, varName} from '../util';
 import {NonFacetUnitNormalizer, NormalizerParams} from './base';
 import {PathOverlayNormalizer} from './pathoverlay';
 import {RangeStepNormalizer} from './rangestep';
+import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from './repeater';
 import {RuleForRangedLineNormalizer} from './ruleforrangedline';
 
 export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec, LayerSpec> {

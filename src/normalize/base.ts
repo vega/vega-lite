@@ -1,11 +1,11 @@
-import {FieldName} from './../channeldef';
-import {RepeaterValue} from '../compile/repeater';
 import {Config} from '../config';
 import {Encoding} from '../encoding';
 import {Projection} from '../projection';
 import {GenericSpec, NormalizedSpec} from '../spec';
 import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec/unit';
+import {FieldName} from './../channeldef';
+import {RepeaterValue} from './repeater';
 
 export type Normalize<S extends GenericSpec<any, any, any, any>, NS extends NormalizedSpec> = (
   spec: S,

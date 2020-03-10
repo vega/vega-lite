@@ -1,5 +1,5 @@
-import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from '../../src/compile/repeater';
 import * as log from '../../src/log';
+import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from '../../src/normalize/repeater';
 
 describe('Repeat', () => {
   describe('replaceRepeaterInEncoding', () => {

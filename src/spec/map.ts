@@ -1,5 +1,6 @@
-import {Field, FieldName} from './../channeldef';
+import {GenericSpec} from '.';
 import * as log from '../log';
+import {Field, FieldName} from './../channeldef';
 import {
   GenericConcatSpec,
   GenericHConcatSpec,
@@ -9,9 +10,8 @@ import {
   isVConcatSpec
 } from './concat';
 import {GenericFacetSpec, isFacetSpec} from './facet';
-import {GenericSpec} from '.';
 import {GenericLayerSpec, isLayerSpec} from './layer';
-import {RepeatSpec, isRepeatSpec} from './repeat';
+import {isRepeatSpec, RepeatSpec} from './repeat';
 import {GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from './unit';
 
 export abstract class SpecMapper<
