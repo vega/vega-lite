@@ -48,8 +48,8 @@
       "type": "time",
       "domain": {
         "fields": [
-          {"signal": "datetime(1500000000000)"},
-          {"signal": "datetime(1500900000000)"}
+          {"signal": "{data: datetime(1500000000000)}"},
+          {"signal": "{data: datetime(1500900000000)}"}
         ]
       },
       "range": [0, {"signal": "width"}]
