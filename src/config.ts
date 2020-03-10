@@ -147,7 +147,7 @@ export interface VLOnlyConfig {
   fieldTitle?: 'verbal' | 'functional' | 'plain';
 
   /**
-   * D3 Number format for guide labels and text marks. For example "s" for SI units. Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
+   * D3 Number format for guide labels and text marks. For example `"s"` for SI units. Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
    */
   numberFormat?: string;
 
@@ -155,7 +155,7 @@ export interface VLOnlyConfig {
    * Default time format for raw time values (without time units) in text marks, legend labels and header labels.
    *
    * __Default value:__ `"%b %d, %Y"`
-   * __Note:__ Axes automatically determine format each label automatically so this config would not affect axes.
+   * __Note:__ Axes automatically determine the format for each label automatically so this config does not affect axes.
    */
   timeFormat?: string;
 
