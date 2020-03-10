@@ -100,6 +100,7 @@ export abstract class SpecMapper<
   protected mapRepeat(spec: RepeatSpec, params: P): GenericSpec<UO, any, RO, FO> {
     return {
       ...spec,
+      // as any is required here since TS cannot infer that the output type satisfies the input type
       spec: this.map(spec.spec as any, params)
     };
   }

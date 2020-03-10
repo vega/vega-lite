@@ -87,7 +87,7 @@ export function columnsNotSupportByRowCol(type: 'facet' | 'repeat') {
 
 // CONCAT / REPEAT
 export const CONCAT_CANNOT_SHARE_AXIS =
-  'Axes cannot be shared in concatenated or concatenated views yet (https://github.com/vega/vega-lite/issues/2415).';
+  'Axes cannot be shared in concatenated or repeated views yet (https://github.com/vega/vega-lite/issues/2415).';
 
 // DATA
 export function unrecognizedParse(p: string) {
