@@ -6,8 +6,6 @@ import {
   FieldDefWithCondition,
   Gradient,
   hasConditionalValueDef,
-  isFieldDefWithCustomTimeFormat,
-  isTimeFormatFieldDef,
   isValueDef,
   MarkPropFieldDef,
   TypedFieldDef,
@@ -17,9 +15,8 @@ import {
 } from '../../channeldef';
 import {FILL_STROKE_CONFIG} from '../../mark';
 import {ScaleType} from '../../scale';
-import {normalizeTimeUnit} from '../../timeunit';
 import {getFirstDefined, keys, varName} from '../../util';
-import {applyMarkConfig, customFormatExpr, signalOrValueRef, timeFormatExpression} from '../common';
+import {applyMarkConfig, formatSignalRef, signalOrValueRef} from '../common';
 import * as mixins from '../mark/encode';
 import {STORE} from '../selection';
 import {UnitModel} from '../unit';
@@ -138,7 +135,7 @@ export function gradient(
 
 export function labels(
   fieldDef: TypedFieldDef<string>,
-  labelsSpec: any,
+  specifiedlabelsSpec: any,
   model: UnitModel,
   channel: NonPositionScaleChannel,
   legendCmp: LegendComponent
@@ -146,38 +143,27 @@ export function labels(
   const legend = model.legend(channel);
   const config = model.config;
   const condition = selectedCondition(model, legendCmp, fieldDef);
+  const opacity = condition ? [{test: condition, value: 1}, {value: config.legend.unselectedOpacity}] : undefined;
+
   const {format, formatType} = legend;
-  const field = 'datum.value';
 
-  let out: SymbolEncodeEntry = {};
+  const text = formatSignalRef({
+    fieldDef,
+    format,
+    formatType,
+    field: 'datum.value',
+    config,
+    isUTCScale: model.getScaleComponent(channel).get('type') === ScaleType.UTC,
+    omitNumberFormatAndEmptyTimeFormat: true // no need to generate number format for encoding block as we can use Vega's legend format
+  });
 
-  if (isFieldDefWithCustomTimeFormat(fieldDef)) {
-    labelsSpec = {
-      text: {signal: customFormatExpr({field, format, formatType})},
-      ...labelsSpec
-    };
-  } else if (isTimeFormatFieldDef(fieldDef)) {
-    const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
-    const expr = timeFormatExpression(
-      field,
-      normalizeTimeUnit(fieldDef.timeUnit)?.unit,
-      legend.format,
-      config.timeFormat,
-      isUTCScale
-    );
-    labelsSpec = {
-      ...(expr ? {text: {signal: expr}} : {}),
-      ...labelsSpec
-    };
-  }
+  const labelsSpec = {
+    ...(opacity ? {opacity} : {}),
+    ...(text ? {text} : {}),
+    ...specifiedlabelsSpec
+  };
 
-  if (condition) {
-    labelsSpec.opacity = [{test: condition, value: 1}, {value: config.legend.unselectedOpacity}];
-  }
-
-  out = {...out, ...labelsSpec};
-
-  return keys(out).length > 0 ? out : undefined;
+  return keys(labelsSpec).length > 0 ? labelsSpec : undefined;
 }
 
 export function entries(

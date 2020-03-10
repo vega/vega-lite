@@ -120,7 +120,15 @@ describe('Common', () => {
 
   describe('formatSignalRef()', () => {
     it('should format ordinal field defs if format is present', () => {
-      expect(formatSignalRef({field: 'foo', type: 'ordinal'}, '.2f', undefined, 'parent', {})).toEqual({
+      expect(
+        formatSignalRef({
+          fieldDef: {field: 'foo', type: 'ordinal'},
+          format: '.2f',
+          formatType: undefined,
+          expr: 'parent',
+          config: {}
+        })
+      ).toEqual({
         signal: 'format(parent["foo"], ".2f")'
       });
     });
