@@ -114,36 +114,51 @@ export function customFormatExpr({
   return `${formatType}(${field}, ${JSON.stringify(format)})`;
 }
 
-export function formatSignalRef(
-  fieldDef: TypedFieldDef<string>,
-  specifiedFormat: string | object,
-  specifiedFormatType: string,
-  expr: 'datum' | 'parent' | 'datum.datum',
-  config: Config
-) {
-  const field = vgField(fieldDef, {
-    expr
-  });
-  if (isCustomFormatType(specifiedFormatType)) {
-    return {signal: customFormatExpr({formatType: specifiedFormatType, format: specifiedFormat, field})};
+export function formatSignalRef({
+  fieldDef,
+  format,
+  formatType,
+  expr,
+  config,
+  field,
+  omitNumberFormatAndEmptyTimeFormat,
+  omitTimeFormatConfig,
+  isUTCScale
+}: {
+  fieldDef: TypedFieldDef<string>;
+  format: string | object;
+  formatType: string;
+  expr?: 'datum' | 'parent' | 'datum.datum';
+  config: Config;
+  omitTimeFormatConfig?: boolean; // axis doesn't use config.timeFormat
+  field?: string; // axis/legend "use datum.value"
+  omitNumberFormatAndEmptyTimeFormat?: boolean; // axis/legend's encoding block doesn't need explicit encoding format
+  isUTCScale?: boolean;
+}) {
+  field = field ?? vgField(fieldDef, {expr});
+  isUTCScale =
+    isUTCScale ?? (isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC);
+
+  const defaultTimeFormat = omitTimeFormatConfig ? null : config.timeFormat;
+
+  if (isCustomFormatType(formatType)) {
+    return {signal: customFormatExpr({formatType, format, field})};
   } else if (isTimeFormatFieldDef(fieldDef)) {
-    const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
-    return {
-      signal: timeFormatExpression(
-        field,
-        normalizeTimeUnit(fieldDef.timeUnit)?.unit,
-        specifiedFormat,
-        config.timeFormat,
-        isUTCScale,
-        true
-      )
-    };
-  } else {
-    const format = numberFormat(fieldDef, specifiedFormat, config);
+    const signal = timeFormatExpression(
+      field,
+      normalizeTimeUnit(fieldDef.timeUnit)?.unit,
+      format,
+      defaultTimeFormat,
+      isUTCScale,
+      !omitNumberFormatAndEmptyTimeFormat
+    );
+    return signal ? {signal} : undefined;
+  } else if (!omitNumberFormatAndEmptyTimeFormat) {
+    format = numberFormat(fieldDef, format, config);
     if (isBinning(fieldDef.bin)) {
       const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
       return {
-        signal: binFormatExpression(field, endField, format, specifiedFormatType, config)
+        signal: binFormatExpression(field, endField, format, formatType, config)
       };
     } else if (fieldDef.type === 'quantitative' || format) {
       return {
@@ -153,6 +168,7 @@ export function formatSignalRef(
       return {signal: `''+${vgField(fieldDef, {expr})}`};
     }
   }
+  return undefined;
 }
 
 /**
