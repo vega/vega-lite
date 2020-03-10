@@ -5,7 +5,8 @@ import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel
 import {FieldDefBase, isFieldDefWithCustomTimeFormat, isTimeFormatFieldDef, toFieldDefBase} from '../../channeldef';
 import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
-import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
+import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs} from '../common';
+import {numberFormat} from '../format';
 import {guideEncodeEntry} from '../guide';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';

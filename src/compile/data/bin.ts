@@ -6,7 +6,7 @@ import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDe
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, replacePathInField, unique, vals, varName} from '../../util';
-import {binFormatExpression} from '../common';
+import {binFormatExpression} from '../format';
 import {isUnitModel, Model, ModelWithField} from '../model';
 import {parseSelectionBinExtent} from '../selection/parse';
 import {DataFlowNode} from './dataflow';
