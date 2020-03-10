@@ -1,9 +1,7 @@
 import {PositionScaleChannel} from '../../channel';
-import {isFieldDefWithCustomTimeFormat, isTimeFormatFieldDef} from '../../channeldef';
 import {ScaleType} from '../../scale';
-import {normalizeTimeUnit} from '../../timeunit';
 import {keys} from '../../util';
-import {customFormatExpr, timeFormatExpression} from '../common';
+import {formatSignalRef} from '../common';
 import {UnitModel} from '../unit';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
@@ -12,22 +10,23 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
     (channel === 'x' ? model.fieldDef('x2') : channel === 'y' ? model.fieldDef('y2') : undefined);
   const axis = model.axis(channel);
   const {format, formatType} = axis;
-  const field = 'datum.value';
+  const {config} = model;
 
-  let labelsSpec: any = {};
+  const text = formatSignalRef({
+    fieldDef,
+    field: 'datum.value',
+    format,
+    formatType,
+    config,
+    isUTCScale: model.getScaleComponent(channel).get('type') === ScaleType.UTC,
+    omitTimeFormatConfig: true, // Vega axes automatically determine the format for each label so we don't apply config.timeFormat
+    omitNumberFormatAndEmptyTimeFormat: true // no need to generate number format for encoding block as we can use Vega's axis format
+  });
 
-  // We use a label encoding instead of setting the `format` property because Vega does not let us determine how the format should be interpreted.
-  if (isFieldDefWithCustomTimeFormat(fieldDef)) {
-    labelsSpec.text = {signal: customFormatExpr({field, format, formatType})};
-  } else if (isTimeFormatFieldDef(fieldDef)) {
-    const isUTCScale = model.getScaleComponent(channel).get('type') === ScaleType.UTC;
-
-    const expr = timeFormatExpression(field, normalizeTimeUnit(fieldDef.timeUnit)?.unit, axis.format, null, isUTCScale);
-
-    if (expr) {
-      labelsSpec.text = {signal: expr};
-    }
-  }
+  let labelsSpec: any = {
+    ...(text ? {text} : {}),
+    ...specifiedLabelsSpec
+  };
 
   labelsSpec = {
     ...labelsSpec,
