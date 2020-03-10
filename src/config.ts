@@ -1,5 +1,5 @@
-import {scheme} from 'vega-scale';
 import {Color, InitSignal, NewSignal, RangeConfig, RangeScheme} from 'vega';
+import {scheme} from 'vega-scale';
 import {isObject, mergeConfig} from 'vega-util';
 import {Axis, AxisConfigMixins, isConditionalAxisValue} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
@@ -155,7 +155,7 @@ export interface VLOnlyConfig {
    * Default time format for raw time values (without time units) in text marks, legend labels and header labels.
    *
    * __Default value:__ `"%b %d, %Y"`
-   * __Note:__ Axes automatically determine format each label automatically so this config would not affect axes.
+   * __Note:__ Axes automatically determine format for each label automatically so this config would not affect axes.
    */
   timeFormat?: string;
 

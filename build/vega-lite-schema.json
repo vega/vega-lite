@@ -4719,7 +4719,7 @@
           "description": "Tick-Specific Config"
         },
         "timeFormat": {
-          "description": "Default time format for raw time values (without time units) in text marks, legend labels and header labels.\n\n__Default value:__ `\"%b %d, %Y\"`\n__Note:__ Axes automatically determine format each label automatically so this config would not affect axes.",
+          "description": "Default time format for raw time values (without time units) in text marks, legend labels and header labels.\n\n__Default value:__ `\"%b %d, %Y\"`\n__Note:__ Axes automatically determine format for each label automatically so this config would not affect axes.",
           "type": "string"
         },
         "title": {
