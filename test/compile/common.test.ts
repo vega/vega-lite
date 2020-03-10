@@ -1,5 +1,5 @@
 import {vgField} from '../../src/channeldef';
-import {mergeTitle, numberFormat, timeFormatExpression, formatSignalRef} from '../../src/compile/common';
+import {formatSignalRef, mergeTitle, numberFormat, timeFormatExpression} from '../../src/compile/common';
 import {defaultConfig} from '../../src/config';
 import {TimeUnit} from '../../src/timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
@@ -120,7 +120,7 @@ describe('Common', () => {
 
   describe('formatSignalRef()', () => {
     it('should format ordinal field defs if format is present', () => {
-      expect(formatSignalRef({field: 'foo', type: 'ordinal'}, '.2f', 'parent', {})).toEqual({
+      expect(formatSignalRef({field: 'foo', type: 'ordinal'}, '.2f', undefined, 'parent', {})).toEqual({
         signal: 'format(parent["foo"], ".2f")'
       });
     });

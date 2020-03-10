@@ -22,7 +22,7 @@ function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, ch
 
     return {
       formulaAs: vgField(fieldDef, {binSuffix: 'range', forAs: true}),
-      formula: binFormatExpression(startField, endField, guide.format, config)
+      formula: binFormatExpression(startField, endField, guide.format, guide.formatType, config)
     };
   }
   return {};
