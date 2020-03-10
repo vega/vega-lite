@@ -18,8 +18,8 @@ import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
 import {contains, keys, replaceAll} from '../../util';
 import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema';
 import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties';
-import {formatSignalRef} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
+import {formatSignalRef} from '../format';
 import {isFacetModel, Model} from '../model';
 import {getHeaderChannel, getHeaderProperties, getHeaderProperty} from './common';
 import {
