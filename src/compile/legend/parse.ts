@@ -15,7 +15,7 @@ import {
 import {
   getTypedFieldDef,
   isFieldDef,
-  isTimeFormatFieldDef,
+  isFieldDefForTimeFormat,
   title as fieldDefTitle,
   TypedFieldDef
 } from '../../channeldef';
@@ -172,14 +172,14 @@ function getProperty<K extends keyof LegendComponentProps>(
 
     case 'format':
       // We don't include temporal field here as we apply format in encode block
-      if (isTimeFormatFieldDef(fieldDef)) {
+      if (isFieldDefForTimeFormat(fieldDef)) {
         return undefined;
       }
       return numberFormat(fieldDef, legend.format, model.config) as LegendComponentProps[K];
 
     case 'formatType':
       // As with format, we don't include temporal field here as we apply format in encode block
-      if (isTimeFormatFieldDef(fieldDef)) {
+      if (isFieldDefForTimeFormat(fieldDef)) {
         return undefined;
       }
       return legend.formatType as LegendComponentProps[K];

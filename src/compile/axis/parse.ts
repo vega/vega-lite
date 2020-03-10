@@ -2,7 +2,7 @@ import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef, Text} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
 import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
-import {FieldDefBase, isFieldDefWithCustomTimeFormat, isTimeFormatFieldDef, toFieldDefBase} from '../../channeldef';
+import {FieldDefBase, isFieldDefForTimeFormat, isFieldDefWithCustomTimeFormat, toFieldDefBase} from '../../channeldef';
 import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs} from '../common';
@@ -307,13 +307,13 @@ function getProperty<K extends keyof AxisComponentProps>(
       return properties.gridScale(model, channel) as AxisComponentProps[K];
     case 'format':
       // We don't include temporal field and custom format as we apply format in encode block
-      if (isTimeFormatFieldDef(fieldDef) || isFieldDefWithCustomTimeFormat(fieldDef)) {
+      if (isFieldDefForTimeFormat(fieldDef) || isFieldDefWithCustomTimeFormat(fieldDef)) {
         return undefined;
       }
       return numberFormat(fieldDef, specifiedAxis.format, config) as AxisComponentProps[K];
     case 'formatType':
       // As with format, we don't include temporal field and custom format here as we apply format in encode block
-      if (isTimeFormatFieldDef(fieldDef) || isFieldDefWithCustomTimeFormat(fieldDef)) {
+      if (isFieldDefForTimeFormat(fieldDef) || isFieldDefWithCustomTimeFormat(fieldDef)) {
         return undefined;
       }
       return specifiedAxis.formatType as AxisComponentProps[K];

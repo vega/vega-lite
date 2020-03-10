@@ -1,6 +1,6 @@
 import {isString} from 'vega-util';
 import {isBinning} from '../bin';
-import {isScaleFieldDef, isTimeFormatFieldDef, TypedFieldDef, vgField} from '../channeldef';
+import {isFieldDefForTimeFormat, isScaleFieldDef, TypedFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
 import {fieldValidPredicate} from '../predicate';
 import {ScaleType} from '../scale';
@@ -56,7 +56,7 @@ export function formatSignalRef({
     formatType = undefined; // drop unregistered custom formatType
   }
 
-  if (isTimeFormatFieldDef(fieldDef)) {
+  if (isFieldDefForTimeFormat(fieldDef)) {
     const signal = timeFormatExpression(
       field,
       normalizeTimeUnit(fieldDef.timeUnit)?.unit,
