@@ -1,4 +1,5 @@
 import {X, Y} from '../../../src/channel';
+import {setCustomFormatTypes} from '../../../src/compile/format';
 import {text} from '../../../src/compile/mark/text';
 import {UnitModel} from '../../../src/compile/unit';
 import {NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../../src/spec';
@@ -66,8 +67,10 @@ describe('Mark: Text', () => {
         text: {field: 'foo', type: 'quantitative', format: 'd', formatType: 'numberFormat'}
       }
     };
+    setCustomFormatTypes(['numberFormat']);
     const model = parseUnitModelWithScaleAndLayoutSize(spec);
     const props = text.encodeEntry(model);
+    setCustomFormatTypes([]);
 
     it('should use custom formatter', () => {
       expect(props.text).toEqual({signal: `numberFormat(datum["foo"], "d")`});

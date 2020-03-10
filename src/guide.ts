@@ -27,16 +27,15 @@ export interface FormatMixins {
    *
    * See the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.
    *
-   * When used with a custom `"formatType"` (in the form of a [registered Vega expression function](https://vega.github.io/vega/docs/api/extensibility/#expressions) that takes `datum.value` and format parameter as input), this property represents the format parameter.
+   * When used with a [custom `"formatType"`](https://vega.github.io/vega-lite/usage/compile.html#format-type) that takes `datum.value` and format parameter as input), this property represents the format parameter.
    *
    * __Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format.
    */
   format?: string | object;
 
   /**
-   * The format type for labels (`"number"` or `"time"`).
+   * The format type for labels (`"number"` or `"time"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/compile.html#format-type)).
    *
-   * If a custom formatter is registered (in the form of a [registered Vega expression function](https://vega.github.io/vega/docs/api/extensibility/#expressions) that takes `datum.value` and format parameter as input), this property can represent the registered function name.
    *
    * __Default value:__
    * - `"time"` for temporal fields and ordinal and nomimal fields with `timeUnit`.
@@ -50,10 +49,6 @@ export interface FormatMixins {
    * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
    */
   labelExpr?: string;
-}
-
-export function isCustomFormatType(formatType: string) {
-  return formatType && formatType !== 'number' && formatType !== 'time';
 }
 
 export interface Guide extends TitleMixins, FormatMixins {}

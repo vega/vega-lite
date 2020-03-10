@@ -2,13 +2,22 @@ import {isString} from 'vega-util';
 import {isBinning} from '../bin';
 import {isScaleFieldDef, isTimeFormatFieldDef, TypedFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
-import {isCustomFormatType} from '../guide';
 import {fieldValidPredicate} from '../predicate';
 import {ScaleType} from '../scale';
 import {formatExpression, normalizeTimeUnit, TimeUnit} from '../timeunit';
 import {QUANTITATIVE} from '../type';
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
+
+let customFormatTypeIndex = new Set();
+
+export function setCustomFormatTypes(formatTypes: string[]) {
+  customFormatTypeIndex = new Set(formatTypes);
+}
+
+export function isCustomFormatType(formatType: string) {
+  return formatType && formatType !== 'number' && formatType !== 'time' && customFormatTypeIndex.has(formatType);
+}
 
 function customFormatExpr({formatType, field, format}: {formatType: string; field: string; format: string | object}) {
   return `${formatType}(${field}, ${JSON.stringify(format)})`;
@@ -43,7 +52,11 @@ export function formatSignalRef({
 
   if (isCustomFormatType(formatType)) {
     return {signal: customFormatExpr({formatType, format, field})};
-  } else if (isTimeFormatFieldDef(fieldDef)) {
+  } else if (formatType) {
+    formatType = undefined; // drop unregistered custom formatType
+  }
+
+  if (isTimeFormatFieldDef(fieldDef)) {
     const signal = timeFormatExpression(
       field,
       normalizeTimeUnit(fieldDef.timeUnit)?.unit,
@@ -99,7 +112,7 @@ function binNumberFormatExpr(field: string, format: string | object, formatType:
   return formatExpr(field, (isString(format) ? format : undefined) ?? config.numberFormat);
 }
 
-function binFormatExpression(
+export function binFormatExpression(
   startField: string,
   endField: string,
   format: string | object,
