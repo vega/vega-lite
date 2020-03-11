@@ -103,6 +103,7 @@ The supported **aggregation operations** are:
 | missing | The count of `null` or `undefined` field values. |
 | distinct | The count of distinct field values. |
 | sum | The sum of field values. |
+| product | The product of field values. |
 | mean | The mean (average) field value. |
 | average | The mean (average) field value. Identical to _mean_. |
 | variance | The sample variance of field values. |
