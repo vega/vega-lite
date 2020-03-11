@@ -534,7 +534,7 @@ describe('compile/scale', () => {
           {
             data: 'raw',
             field: 'month_date',
-            sort: {...sortDef, op: 'sum'}
+            sort: {...sortDef, op: 'min'}
           }
         ]);
       });

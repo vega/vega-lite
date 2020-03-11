@@ -362,14 +362,11 @@ function parseSingleChannelDomain(
   }
 }
 
-function normalizeSortField(sort: EncodingSortField<string>, isStacked: boolean) {
+function normalizeSortField(sort: EncodingSortField<string>) {
   const {op, field, order} = sort;
   return {
-    // Apply default op
-    op: op ?? (isStacked ? 'sum' : DEFAULT_SORT_OP),
-    // flatten nested fields
+    op: op ?? DEFAULT_SORT_OP,
     ...(field ? {field: util.replacePathInField(field)} : {}),
-
     ...(order ? {order} : {})
   };
 }
@@ -411,32 +408,25 @@ export function domainSort(
     };
   }
 
-  const isStacked = model.stack !== null;
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {
-    return normalizeSortField(sort, isStacked);
+    return normalizeSortField(sort);
   } else if (isSortByEncoding(sort)) {
     const {encoding, order} = sort;
     const fieldDefToSortBy = model.fieldDef(encoding);
     const {aggregate, field} = fieldDefToSortBy;
 
     if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
-      return normalizeSortField(
-        {
-          field: vgField(fieldDefToSortBy),
-          order
-        },
-        isStacked
-      );
+      return normalizeSortField({
+        field: vgField(fieldDefToSortBy),
+        order
+      });
     } else if (isAggregateOp(aggregate) || !aggregate) {
-      return normalizeSortField(
-        {
-          op: aggregate as NonArgAggregateOp, // can't be argmin/argmax since we don't support them in encoding field def
-          field,
-          order
-        },
-        isStacked
-      );
+      return normalizeSortField({
+        op: aggregate as NonArgAggregateOp, // can't be argmin/argmax since we don't support them in encoding field def
+        field,
+        order
+      });
     }
   } else if (sort === 'descending') {
     return {
