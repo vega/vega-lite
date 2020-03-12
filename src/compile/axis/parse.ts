@@ -251,7 +251,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
       isConditionalAxisValue<any>(configValue) || // need to set "any" as TS isn't smart enough to figure the generic parameter type yet
       isSignalRef(configValue) ||
       // 3. StyleAxis
-      contains(['axisQuantitative', 'axisTemporal', 'style'], configFrom)
+      contains(['axisQuantitative', 'axisTemporal', 'style', 'axis-config-style'], configFrom)
     ) {
       // If a config is specified and is conditional, copy conditional value from axis config
       axisComponent.set(property, configValue, false);

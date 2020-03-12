@@ -12,7 +12,7 @@ export function getAxisConfig(
   scaleType: ScaleType,
   style: string | string[]
 ) {
-  const styleConfig = getStyleConfig(property, style, config.style);
+  let styleConfig = getStyleConfig(property, style, config.style);
 
   if (styleConfig !== undefined) {
     return {
@@ -36,12 +36,27 @@ export function getAxisConfig(
     'axis'
   ];
 
+  // apply properties in config Types first
+
   for (const configType of configTypes) {
     if (config[configType]?.[property] !== undefined) {
       return {
         configFrom: configType,
         configValue: config[configType][property]
       };
+    }
+  }
+
+  // then apply style in config types
+  for (const configType of configTypes) {
+    if (config[configType]?.style) {
+      styleConfig = getStyleConfig(property, config[configType]?.style, config.style);
+      if (styleConfig !== undefined) {
+        return {
+          configFrom: 'axis-config-style',
+          configValue: styleConfig
+        };
+      }
     }
   }
 
