@@ -289,4 +289,17 @@ describe('compile/data/aggregate', () => {
       expect(agg1.producedFields()).toEqual(new Set(['a_mean', 'b_mean']));
     });
   });
+
+  describe('assemble', () => {
+    it('should escape nested accesses', () => {
+      const agg = new AggregateNode(null, new Set(['foo.bar']), {'foo.baz': {mean: new Set(['foo_baz_mean'])}});
+      expect(agg.assemble()).toEqual({
+        as: ['foo_baz_mean'],
+        fields: ['foo\\.baz'],
+        groupby: ['foo\\.bar'],
+        ops: ['mean'],
+        type: 'aggregate'
+      });
+    });
+  });
 });
