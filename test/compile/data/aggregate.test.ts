@@ -290,7 +290,7 @@ describe('compile/data/aggregate', () => {
     });
   });
 
-  describe('assemble', () => {
+  describe('assemble()', () => {
     it('should escape nested accesses', () => {
       const agg = new AggregateNode(null, new Set(['foo.bar']), {'foo.baz': {mean: new Set(['foo_baz_mean'])}});
       expect(agg.assemble()).toEqual({
