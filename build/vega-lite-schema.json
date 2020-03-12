@@ -827,8 +827,15 @@
           "type": "number"
         },
         "labelOffset": {
-          "description": "Position offset in pixels to apply to labels, in addition to tickOffset.\n\n__Default value:__ `0`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Position offset in pixels to apply to labels, in addition to tickOffset.\n\n__Default value:__ `0`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisNumber"
+            }
+          ]
         },
         "labelOpacity": {
           "anyOf": [
@@ -1365,8 +1372,15 @@
           "type": "number"
         },
         "labelOffset": {
-          "description": "Position offset in pixels to apply to labels, in addition to tickOffset.\n\n__Default value:__ `0`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Position offset in pixels to apply to labels, in addition to tickOffset.\n\n__Default value:__ `0`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ConditionalAxisNumber"
+            }
+          ]
         },
         "labelOpacity": {
           "anyOf": [
