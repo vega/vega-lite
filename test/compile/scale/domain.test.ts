@@ -1158,7 +1158,46 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.LINEAR);
-      expect(sort).toEqual(undefined);
+      expect(sort).toBeUndefined();
+    });
+
+    it('should sort stacked groupby dimension', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'nominal'},
+          color: {field: 'c', type: 'quantitative'}
+        }
+      });
+      const sort = domainSort(model, 'y', ScaleType.BAND);
+      expect(sort).toBe(true);
+    });
+
+    it('should use sum aggregation for stacked measure', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'nominal', sort: 'x'},
+          color: {field: 'c', type: 'quantitative'}
+        }
+      });
+      const sort = domainSort(model, 'y', ScaleType.BAND);
+      expect(sort).toEqual({field: 'a', op: 'sum'});
+    });
+
+    it('should use min aggregation for stacked dimension', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'nominal', sort: 'color'},
+          color: {field: 'c', type: 'quantitative'}
+        }
+      });
+      const sort = domainSort(model, 'y', ScaleType.BAND);
+      expect(sort).toEqual({field: 'c', op: 'min'});
     });
 
     it('should return true by default for discrete domain', () => {
@@ -1169,7 +1208,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      expect(sort).toEqual(true);
+      expect(sort).toBe(true);
     });
 
     it('should return true for ascending', () => {
