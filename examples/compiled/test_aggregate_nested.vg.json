@@ -61,6 +61,10 @@
           "sort": {"field": ["properties\\.site"], "order": ["descending"]},
           "as": ["sum_properties.yield_start", "sum_properties.yield_end"],
           "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_properties.yield\"]) && isFinite(+datum[\"sum_properties.yield\"])"
         }
       ]
     }

@@ -18,6 +18,10 @@
           "ops": ["sum"],
           "fields": ["people"],
           "as": ["sum_people"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_people\"]) && isFinite(+datum[\"sum_people\"])"
         }
       ]
     }

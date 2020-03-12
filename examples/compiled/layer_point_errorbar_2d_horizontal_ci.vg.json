@@ -25,6 +25,16 @@
       "transform": [
         {
           "type": "filter",
+          "expr": "isValid(datum[\"mean_yield\"]) && isFinite(+datum[\"mean_yield\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
           "expr": "isValid(datum[\"lower_yield\"]) && isFinite(+datum[\"lower_yield\"])"
         }
       ]
@@ -39,7 +49,7 @@
       "name": "layer_0_marks",
       "type": "rule",
       "style": ["rule", "errorbar-rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -68,7 +78,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
@@ -90,9 +100,9 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "lower_yield"},
-          {"data": "data_0", "field": "upper_yield"},
-          {"data": "source_0", "field": "mean_yield"}
+          {"data": "data_1", "field": "lower_yield"},
+          {"data": "data_1", "field": "upper_yield"},
+          {"data": "data_0", "field": "mean_yield"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -104,8 +114,8 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "variety"},
-          {"data": "source_0", "field": "variety"}
+          {"data": "data_1", "field": "variety"},
+          {"data": "data_0", "field": "variety"}
         ],
         "sort": true
       },

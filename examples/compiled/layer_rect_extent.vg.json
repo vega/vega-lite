@@ -34,6 +34,26 @@
           "as": ["max_Miles_per_Gallon", "min_Miles_per_Gallon"]
         }
       ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"max_Miles_per_Gallon\"]) && isFinite(+datum[\"max_Miles_per_Gallon\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "data_1",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"min_Miles_per_Gallon\"]) && isFinite(+datum[\"min_Miles_per_Gallon\"])"
+        }
+      ]
     }
   ],
   "marks": [
@@ -56,7 +76,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -70,7 +90,7 @@
       "name": "layer_2_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -84,7 +104,7 @@
       "name": "layer_3_marks",
       "type": "rect",
       "style": ["rect"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -112,8 +132,9 @@
       "domain": {
         "fields": [
           {"data": "data_0", "field": "Miles_per_Gallon"},
-          {"data": "data_1", "field": "min_Miles_per_Gallon"},
-          {"data": "data_1", "field": "max_Miles_per_Gallon"}
+          {"data": "data_3", "field": "min_Miles_per_Gallon"},
+          {"data": "data_2", "field": "max_Miles_per_Gallon"},
+          {"data": "data_2", "field": "min_Miles_per_Gallon"}
         ]
       },
       "range": [{"signal": "height"}, 0],

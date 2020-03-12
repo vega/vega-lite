@@ -52,6 +52,10 @@
           "ops": ["median"],
           "fields": ["yield"],
           "as": ["median_yield"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"median_yield\"]) && isFinite(+datum[\"median_yield\"])"
         }
       ]
     }
@@ -147,6 +151,10 @@
               "ops": ["median"],
               "fields": ["yield"],
               "as": ["median_yield"]
+            },
+            {
+              "type": "filter",
+              "expr": "isValid(datum[\"median_yield\"]) && isFinite(+datum[\"median_yield\"])"
             }
           ]
         }

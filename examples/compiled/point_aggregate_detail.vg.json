@@ -18,6 +18,10 @@
           "ops": ["mean", "mean"],
           "fields": ["Horsepower", "Displacement"],
           "as": ["mean_Horsepower", "mean_Displacement"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_Horsepower\"]) && isFinite(+datum[\"mean_Horsepower\"]) && isValid(datum[\"mean_Displacement\"]) && isFinite(+datum[\"mean_Displacement\"])"
         }
       ]
     }

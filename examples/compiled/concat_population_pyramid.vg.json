@@ -42,6 +42,10 @@
           "sort": {"field": ["gender"], "order": ["descending"]},
           "as": ["sum_people_start", "sum_people_end"],
           "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_people\"]) && isFinite(+datum[\"sum_people\"])"
         }
       ]
     },
@@ -68,6 +72,10 @@
           "sort": {"field": ["gender"], "order": ["descending"]},
           "as": ["sum_people_start", "sum_people_end"],
           "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_people\"]) && isFinite(+datum[\"sum_people\"])"
         }
       ]
     }

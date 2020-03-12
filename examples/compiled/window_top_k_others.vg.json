@@ -47,6 +47,10 @@
           "ops": ["mean"],
           "fields": ["aggregate_gross"],
           "as": ["mean_aggregate_gross"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_aggregate_gross\"]) && isFinite(+datum[\"mean_aggregate_gross\"])"
         }
       ]
     }
