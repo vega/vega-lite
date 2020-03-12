@@ -1,4 +1,4 @@
-import {FormulaTransform as VgFormulaTransform} from 'vega';
+import {FormulaTransform as VgFormulaTransform, SignalRef} from 'vega';
 import {isNumber, isString} from 'vega-util';
 import {AncestorParse} from '.';
 import {isMinMaxOp} from '../../aggregate';
@@ -63,7 +63,7 @@ export function getImplicitFromFilterTransform(transform: FilterTransform) {
   forEachLeaf(transform.filter, filter => {
     if (isFieldPredicate(filter)) {
       // Automatically add a parse node for filters with filter objects
-      let val: string | number | boolean | DateTime = null;
+      let val: string | number | boolean | DateTime | SignalRef = null;
 
       // For EqualFilter, just use the equal property.
       // For RangeFilter and OneOfFilter, all array members should have
