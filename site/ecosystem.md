@@ -82,3 +82,4 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [idyll-vega-lite](https://github.com/idyll-lang/idyll-vega-lite) is a component that allows you to embed Vega-Lite graphics inside of [Idyll markup](https://idyll-lang.org), an interactive markup language.
 - [generator-veeg](https://github.com/millette/generator-veeg) is a Vega and Vega-Lite boilerplate generator for [Yeoman](https://yeoman.io/).
 - [Kroki](https://kroki.io/) is a service to render Vega and Vega-Lite as PNG, SVG, or PDF.
+- [vega_embed_flutter](https://pub.dev/packages/vega_embed_flutter) is a flutter-web  widget to embed Vega-Lite specs into flutter-web application using the HTMLElementView widget. A page built completely in flutter with a subset of demos from vega-lite [example page](https://vega.github.io/vega-lite/examples/), is available [here](https://abhilash-chandran.github.io/vega_embed_flutter_demo_page/#/).
