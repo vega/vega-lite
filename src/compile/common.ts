@@ -81,7 +81,7 @@ export function getStyleConfig<P extends keyof AnyMarkConfig | keyof Axis>(
   for (const style of styles) {
     const styleConfig = styleConfigIndex[style];
 
-    if (styleConfig) {
+    if (styleConfig && styleConfig[p as string] !== undefined) {
       value = styleConfig[p as string];
     }
   }
