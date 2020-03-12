@@ -1,7 +1,6 @@
 import {COLOR, X, Y} from '../../../src/channel';
 import {rule} from '../../../src/compile/mark/rule';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
-import * as log from '../../../src/log';
 
 describe('Mark: Rule', () => {
   describe('without encoding', () => {
@@ -49,7 +48,7 @@ describe('Mark: Rule', () => {
   });
 
   describe('with y-only and log scale', () => {
-    log.wrap(localLogger => {
+    () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'rule',
         encoding: {y: {field: 'a', type: 'quantitative', scale: {type: 'log'}}}
@@ -61,12 +60,8 @@ describe('Mark: Rule', () => {
         expect(props.y).toEqual({scale: Y, field: 'a'});
         expect(props.x).toEqual({value: 0});
         expect(props.x2).toEqual({field: {group: 'width'}});
-
-        expect(localLogger.warns[0]).toEqual(
-          log.message.nonZeroScaleUsedWithLengthMark('rule', 'y', {scaleType: 'log'})
-        );
       });
-    });
+    };
   });
 
   describe('with x and x2 only', () => {
