@@ -9,7 +9,7 @@ import {
   SHARED_DOMAIN_OP_INDEX
 } from '../../aggregate';
 import {isBinning, isBinParams, isSelectionExtent} from '../../bin';
-import {getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
+import {getMainRangeChannel, getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
 import {binRequiresRange, hasBand, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
@@ -38,6 +38,7 @@ import {isFacetModel, isUnitModel, Model} from '../model';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
+import {TimeUnitParams} from './../../timeunit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
 
 export function parseScaleDomain(model: Model) {
@@ -51,7 +52,7 @@ export function parseScaleDomain(model: Model) {
 function parseUnitScaleDomain(model: UnitModel) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
-  util.keys(localScaleComponents).forEach((channel: ScaleChannel) => {
+  for (const channel of util.keys(localScaleComponents)) {
     const domains = parseDomainForChannel(model, channel);
     const localScaleCmpt = localScaleComponents[channel];
     localScaleCmpt.setWithExplicit('domains', domains);
@@ -76,7 +77,7 @@ function parseUnitScaleDomain(model: UnitModel) {
         }
       }
     }
-  });
+  }
 }
 
 function parseNonUnitScaleDomain(model: Model) {
@@ -86,7 +87,7 @@ function parseNonUnitScaleDomain(model: Model) {
 
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
-  util.keys(localScaleComponents).forEach((channel: ScaleChannel) => {
+  for (const channel of util.keys(localScaleComponents)) {
     let domains: Explicit<VgNonUnionDomain[]>;
     let selectionExtent = null;
 
@@ -118,7 +119,7 @@ function parseNonUnitScaleDomain(model: Model) {
     if (selectionExtent) {
       localScaleComponents[channel].set('selectionExtent', selectionExtent, true);
     }
-  });
+  }
 }
 
 /**
@@ -206,13 +207,13 @@ function mapDomainToDataSignal(
 
 function convertDomainIfItIsDateTime(
   domain: (number | string | boolean | DateTime | SignalRef)[],
-  fieldDef: TypedFieldDef<string>
+  type: Type,
+  timeUnit: TimeUnit | TimeUnitParams
 ): [number[]] | [string[]] | [boolean[]] | SignalRef[] {
   // explicit value
-  const {type} = fieldDef;
-  const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.unit;
-  if (type === 'temporal' || timeUnit) {
-    return mapDomainToDataSignal(domain, type, timeUnit);
+  const normalizedTimeUnit = normalizeTimeUnit(timeUnit)?.unit;
+  if (type === 'temporal' || normalizedTimeUnit) {
+    return mapDomainToDataSignal(domain, type, normalizedTimeUnit);
   }
 
   return [domain] as [number[]] | [string[]] | [boolean[]]; // Date time won't make sense
@@ -225,17 +226,18 @@ function parseSingleChannelDomain(
   channel: ScaleChannel | 'x2' | 'y2'
 ): Explicit<VgNonUnionDomain[]> {
   const fieldDef = model.fieldDef(channel);
+  const mainFieldDef = model.fieldDef(getMainRangeChannel(channel));
 
   if (isDomainUnionWith(domain)) {
     const defaultDomain = parseSingleChannelDomain(scaleType, undefined, model, channel);
 
-    const unionWith = convertDomainIfItIsDateTime(domain.unionWith, fieldDef);
+    const unionWith = convertDomainIfItIsDateTime(domain.unionWith, mainFieldDef.type, fieldDef.timeUnit);
 
     return makeExplicit([...defaultDomain.value, ...unionWith]);
   } else if (isSignalRef(domain)) {
     return makeExplicit([domain]);
   } else if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
-    return makeExplicit(convertDomainIfItIsDateTime(domain, fieldDef));
+    return makeExplicit(convertDomainIfItIsDateTime(domain, mainFieldDef.type, fieldDef.timeUnit));
   }
 
   const stack = model.stack;
