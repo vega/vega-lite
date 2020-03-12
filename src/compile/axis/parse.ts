@@ -1,4 +1,5 @@
 import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef, Text} from 'vega';
+import {toSet} from 'vega-util';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
 import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
@@ -217,6 +218,13 @@ function isExplicit<T extends string | number | boolean | object>(
   return value === axis[property];
 }
 
+const TYPE_SUFFIX = ['Band', 'Point', 'Discrete', 'Quantitative', 'Temporal'];
+
+const ORIENTATION_TYPE_AXIS_CONFIG_INDEX = toSet([
+  ...TYPE_SUFFIX.map(t => `axisX${t}`),
+  ...TYPE_SUFFIX.map(t => `axisY${t}`)
+]);
+
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {
   const axis = model.axis(channel);
 
@@ -251,7 +259,10 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
       isConditionalAxisValue<any>(configValue) || // need to set "any" as TS isn't smart enough to figure the generic parameter type yet
       isSignalRef(configValue) ||
       // 3. StyleAxis
-      contains(['axisQuantitative', 'axisTemporal', 'style', 'axis-config-style'], configFrom)
+      contains(['style', 'axis-config-style'], configFrom) ||
+      // 4. Vega-Lite only config
+      contains(['axisQuantitative', 'axisTemporal'], configFrom) ||
+      configFrom in ORIENTATION_TYPE_AXIS_CONFIG_INDEX // axisXTemporal, ...
     ) {
       // If a config is specified and is conditional, copy conditional value from axis config
       axisComponent.set(property, configValue, false);

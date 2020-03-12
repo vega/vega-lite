@@ -4623,9 +4623,49 @@
           "$ref": "#/definitions/AxisConfig",
           "description": "X-axis specific config."
         },
+        "axisXBand": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for x-axes with \"band\" scales."
+        },
+        "axisXDiscrete": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for x-axes with \"point\" or \"band\" scales."
+        },
+        "axisXPoint": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for x-axes with \"point\" scales."
+        },
+        "axisXQuantitative": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for x-quantitative axes."
+        },
+        "axisXTemporal": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for x-temporal axes."
+        },
         "axisY": {
           "$ref": "#/definitions/AxisConfig",
           "description": "Y-axis specific config."
+        },
+        "axisYBand": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for y-axes with \"band\" scales."
+        },
+        "axisYDiscrete": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for y-axes with \"point\" or \"band\" scales."
+        },
+        "axisYPoint": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for y-axes with \"point\" scales."
+        },
+        "axisYQuantitative": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for y-quantitative axes."
+        },
+        "axisYTemporal": {
+          "$ref": "#/definitions/AxisConfig",
+          "description": "Config for y-temporal axes."
         },
         "background": {
           "$ref": "#/definitions/Color",

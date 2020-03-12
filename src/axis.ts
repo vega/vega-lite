@@ -570,4 +570,54 @@ export interface AxisConfigMixins {
    * Config for temporal axes.
    */
   axisTemporal?: AxisConfig;
+
+  /**
+   * Config for x-axes with "band" scales.
+   */
+  axisXBand?: AxisConfig;
+
+  /**
+   * Config for x-axes with "point" scales.
+   */
+  axisXPoint?: AxisConfig;
+
+  /**
+   * Config for x-axes with "point" or "band" scales.
+   */
+  axisXDiscrete?: AxisConfig;
+
+  /**
+   * Config for x-quantitative axes.
+   */
+  axisXQuantitative?: AxisConfig;
+
+  /**
+   * Config for x-temporal axes.
+   */
+  axisXTemporal?: AxisConfig;
+
+  /**
+   * Config for y-axes with "band" scales.
+   */
+  axisYBand?: AxisConfig;
+
+  /**
+   * Config for y-axes with "point" scales.
+   */
+  axisYPoint?: AxisConfig;
+
+  /**
+   * Config for y-axes with "point" or "band" scales.
+   */
+  axisYDiscrete?: AxisConfig;
+
+  /**
+   * Config for y-quantitative axes.
+   */
+  axisYQuantitative?: AxisConfig;
+
+  /**
+   * Config for y-temporal axes.
+   */
+  axisYTemporal?: AxisConfig;
 }
