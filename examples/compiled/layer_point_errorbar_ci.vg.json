@@ -28,6 +28,16 @@
           "expr": "isValid(datum[\"lower_yield\"]) && isFinite(+datum[\"lower_yield\"])"
         }
       ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_yield\"]) && isFinite(+datum[\"mean_yield\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -39,7 +49,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
@@ -90,7 +100,7 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "mean_yield"},
+          {"data": "data_1", "field": "mean_yield"},
           {"data": "data_0", "field": "lower_yield"},
           {"data": "data_0", "field": "upper_yield"}
         ]
@@ -104,7 +114,7 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "variety"},
+          {"data": "data_1", "field": "variety"},
           {"data": "data_0", "field": "variety"}
         ],
         "sort": true

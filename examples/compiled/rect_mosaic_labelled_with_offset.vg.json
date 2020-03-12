@@ -90,6 +90,10 @@
           "ops": ["min"],
           "fields": ["xc"],
           "as": ["min_xc"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"min_xc\"]) && isFinite(+datum[\"min_xc\"])"
         }
       ]
     },

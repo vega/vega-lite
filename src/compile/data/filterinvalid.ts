@@ -34,7 +34,7 @@ export class FilterInvalidNode extends DataFlowNode {
         // While discrete domain scales can handle invalid values, continuous scales can't.
         // Thus, for non-path marks, we have to filter null for scales with continuous domains.
         // (For path marks, we will use "defined" property and skip these values instead.)
-        if (hasContinuousDomain(scaleType) && !fieldDef.aggregate && !isPathMark(mark)) {
+        if (hasContinuousDomain(scaleType) && fieldDef.aggregate !== 'count' && !isPathMark(mark)) {
           aggregator[fieldDef.field] = fieldDef as any; // we know that the fieldDef is a typed field def
         }
       }

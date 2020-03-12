@@ -22,6 +22,10 @@
           "ops": ["mean"],
           "fields": ["price"],
           "as": ["mean_price"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_price\"]) && isFinite(+datum[\"mean_price\"])"
         }
       ]
     }

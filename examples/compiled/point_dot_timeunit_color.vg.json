@@ -26,7 +26,7 @@
         },
         {
           "type": "filter",
-          "expr": "(isDate(datum[\"yearmonth_date\"]) || (isValid(datum[\"yearmonth_date\"]) && isFinite(+datum[\"yearmonth_date\"])))"
+          "expr": "(isDate(datum[\"yearmonth_date\"]) || (isValid(datum[\"yearmonth_date\"]) && isFinite(+datum[\"yearmonth_date\"]))) && isValid(datum[\"mean_temp\"]) && isFinite(+datum[\"mean_temp\"])"
         }
       ]
     }

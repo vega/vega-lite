@@ -31,6 +31,10 @@
           "ops": ["max"],
           "fields": ["temp"],
           "as": ["max_temp"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"max_temp\"]) && isFinite(+datum[\"max_temp\"])"
         }
       ]
     }

@@ -53,6 +53,10 @@
           "ops": ["mean"],
           "fields": ["IMDB_Rating"],
           "as": ["mean_IMDB_Rating"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_IMDB_Rating\"]) && isFinite(+datum[\"mean_IMDB_Rating\"])"
         }
       ]
     }

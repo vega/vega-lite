@@ -36,6 +36,16 @@
           "as": ["distinct_age"]
         }
       ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_people\"]) && isFinite(+datum[\"sum_people\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -110,6 +120,18 @@
         }
       },
       "sort": {"field": ["datum[\"gender\"]"], "order": ["ascending"]},
+      "data": [
+        {
+          "source": "facet",
+          "name": "data_0",
+          "transform": [
+            {
+              "type": "filter",
+              "expr": "isValid(datum[\"sum_people\"]) && isFinite(+datum[\"sum_people\"])"
+            }
+          ]
+        }
+      ],
       "encode": {
         "update": {
           "width": {
@@ -159,7 +181,7 @@
           "name": "child_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "facet"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": {"value": "transparent"},
@@ -174,7 +196,13 @@
         {
           "name": "child_x",
           "type": "point",
-          "domain": {"data": "facet", "field": "age", "sort": true},
+          "domain": {
+            "fields": [
+              {"data": "facet", "field": "age"},
+              {"data": "data_0", "field": "age"}
+            ],
+            "sort": true
+          },
           "range": {"step": {"signal": "child_x_step"}},
           "padding": 0.5
         }
@@ -211,7 +239,12 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "sum_people"},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "sum_people"},
+          {"data": "data_2", "field": "sum_people"}
+        ]
+      },
       "range": [{"signal": "child_height"}, 0],
       "nice": true,
       "zero": true
@@ -219,7 +252,13 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "gender", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "gender"},
+          {"data": "data_2", "field": "gender"}
+        ],
+        "sort": true
+      },
       "range": ["#675193", "#ca8861"]
     }
   ],
