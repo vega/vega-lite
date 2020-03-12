@@ -364,11 +364,11 @@ function parseSingleChannelDomain(
   }
 }
 
-function normalizeSortField(sort: EncodingSortField<string>, isStacked: boolean) {
+function normalizeSortField(sort: EncodingSortField<string>, isStackedMeasure: boolean): VgSortField {
   const {op, field, order} = sort;
   return {
     // Apply default op
-    op: op ?? (isStacked ? 'sum' : DEFAULT_SORT_OP),
+    op: op ?? (isStackedMeasure ? 'sum' : DEFAULT_SORT_OP),
     // flatten nested fields
     ...(field ? {field: util.replacePathInField(field)} : {}),
 
@@ -413,14 +413,21 @@ export function domainSort(
     };
   }
 
-  const isStacked = model.stack !== null;
+  const {stack} = model;
+  const stackDimensions = stack
+    ? [...(stack.groupbyField ? [stack.groupbyField] : []), ...stack.stackBy.map(s => s.fieldDef.field)]
+    : undefined;
+
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {
-    return normalizeSortField(sort, isStacked);
+    const isStackedMeasure = stack && !util.contains(stackDimensions, sort.field);
+    return normalizeSortField(sort, isStackedMeasure);
   } else if (isSortByEncoding(sort)) {
     const {encoding, order} = sort;
     const fieldDefToSortBy = model.fieldDef(encoding);
     const {aggregate, field} = fieldDefToSortBy;
+
+    const isStackedMeasure = stack && !util.contains(stackDimensions, field);
 
     if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
       return normalizeSortField(
@@ -428,7 +435,7 @@ export function domainSort(
           field: vgField(fieldDefToSortBy),
           order
         },
-        isStacked
+        isStackedMeasure
       );
     } else if (isAggregateOp(aggregate) || !aggregate) {
       return normalizeSortField(
@@ -437,7 +444,7 @@ export function domainSort(
           field,
           order
         },
-        isStacked
+        isStackedMeasure
       );
     }
   } else if (sort === 'descending') {
@@ -562,7 +569,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
         if (isObject(sort) && 'field' in sort) {
           const sortField = sort.field;
           if (domain.field === sortField) {
-            sort = {order: sort.order};
+            sort = sort.order ? {order: sort.order} : true;
           }
         }
       }

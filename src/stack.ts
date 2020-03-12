@@ -8,7 +8,8 @@ import {
   isStringFieldDef,
   PositionFieldDef,
   TypedFieldDef,
-  vgField
+  vgField,
+  FieldName
 } from './channeldef';
 import {channelHasField, Encoding, isAggregate} from './encoding';
 import * as log from './log';
@@ -31,6 +32,9 @@ export function isStackOffset(s: string): s is StackOffset {
 export interface StackProperties {
   /** Dimension axis of the stack. */
   groupbyChannel: 'x' | 'y';
+
+  /** Field for groupbyChannel. */
+  groupbyField?: FieldName;
 
   /** Measure axis of the stack. */
   fieldChannel: 'x' | 'y';
@@ -181,6 +185,7 @@ export function stack(
 
   return {
     groupbyChannel: dimensionDef ? dimensionChannel : undefined,
+    groupbyField: dimensionField,
     fieldChannel,
     impute: stackedFieldDef.impute === null ? false : isPathMark(mark),
     stackBy,
