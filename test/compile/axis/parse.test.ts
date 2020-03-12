@@ -152,6 +152,25 @@ describe('Axis', () => {
       expect(axisComponent['x'][0].implicit.labelColor).toEqual('red');
     });
 
+    it('should include axis property in orientation and type based axis config style', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {
+            field: 'a',
+            type: 'quantitative'
+          }
+        },
+        config: {
+          axisXQuantitative: {labelColor: 'red'}
+        }
+      });
+
+      const axisComponent = parseUnitAxes(model);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].implicit.labelColor).toEqual('red');
+    });
+
     it('should include axis property in axis config over axis config style', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
