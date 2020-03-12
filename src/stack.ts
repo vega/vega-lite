@@ -34,7 +34,7 @@ export interface StackProperties {
   groupbyChannel: 'x' | 'y';
 
   /** Field for groupbyChannel. */
-  groupbyField: FieldName;
+  groupbyField?: FieldName;
 
   /** Measure axis of the stack. */
   fieldChannel: 'x' | 'y';
