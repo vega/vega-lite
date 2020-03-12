@@ -206,34 +206,34 @@ export type AxisConfigBaseWithConditionalAndSignal = Omit<BaseAxisNoValueRefs, C
 
 export interface AxisPropsWithConditionAndSignal {
   domainColor?: BaseAxisNoValueRefs['domainColor'] | SignalRef;
-  labelAlign?: BaseAxisNoValueRefs['labelAlign'] | ConditionalAxisLabelAlign;
-  labelBaseline?: BaseAxisNoValueRefs['labelBaseline'] | ConditionalAxisLabelBaseline;
+  labelAlign?: BaseAxisNoValueRefs['labelAlign'] | ConditionalAxisLabelAlign | SignalRef;
+  labelBaseline?: BaseAxisNoValueRefs['labelBaseline'] | ConditionalAxisLabelBaseline | SignalRef;
   labelColor?: BaseAxisNoValueRefs['labelColor'] | ConditionalAxisColor | SignalRef;
-  labelFont?: BaseAxisNoValueRefs['labelFont'] | ConditionalAxisString;
-  labelFontSize?: BaseAxisNoValueRefs['labelFontSize'] | ConditionalAxisNumber;
-  labelFontStyle?: BaseAxisNoValueRefs['labelFontStyle'] | ConditionalAxisLabelFontStyle;
-  labelFontWeight?: BaseAxisNoValueRefs['labelFontWeight'] | ConditionalAxisLabelFontWeight;
+  labelFont?: BaseAxisNoValueRefs['labelFont'] | ConditionalAxisString | SignalRef;
+  labelFontSize?: BaseAxisNoValueRefs['labelFontSize'] | ConditionalAxisNumber | SignalRef;
+  labelFontStyle?: BaseAxisNoValueRefs['labelFontStyle'] | ConditionalAxisLabelFontStyle | SignalRef;
+  labelFontWeight?: BaseAxisNoValueRefs['labelFontWeight'] | ConditionalAxisLabelFontWeight | SignalRef;
 
   labelLineHeight?: BaseAxisNoValueRefs['labelLineHeight'] | ConditionalAxisNumber | SignalRef;
 
-  labelOpacity?: BaseAxisNoValueRefs['labelOpacity'] | ConditionalAxisNumber;
+  labelOpacity?: BaseAxisNoValueRefs['labelOpacity'] | ConditionalAxisNumber | SignalRef;
 
   labelOffset?: BaseAxisNoValueRefs['labelOffset'] | ConditionalAxisNumber | SignalRef;
 
-  labelPadding?: BaseAxisNoValueRefs['labelPadding'] | ConditionalAxisNumber;
+  labelPadding?: BaseAxisNoValueRefs['labelPadding'] | ConditionalAxisNumber | SignalRef;
   gridColor?: BaseAxisNoValueRefs['gridColor'] | ConditionalAxisColor | SignalRef;
-  gridDash?: BaseAxisNoValueRefs['gridDash'] | ConditionalAxisNumberArray;
+  gridDash?: BaseAxisNoValueRefs['gridDash'] | ConditionalAxisNumberArray | SignalRef;
   gridDashOffset?: BaseAxisNoValueRefs['gridDashOffset'] | ConditionalAxisNumber;
-  gridOpacity?: BaseAxisNoValueRefs['gridOpacity'] | ConditionalAxisNumber;
-  gridWidth?: BaseAxisNoValueRefs['gridWidth'] | ConditionalAxisNumber;
+  gridOpacity?: BaseAxisNoValueRefs['gridOpacity'] | ConditionalAxisNumber | SignalRef;
+  gridWidth?: BaseAxisNoValueRefs['gridWidth'] | ConditionalAxisNumber | SignalRef;
   tickColor?: BaseAxisNoValueRefs['tickColor'] | ConditionalAxisColor | SignalRef;
-  tickDash?: BaseAxisNoValueRefs['tickDash'] | ConditionalAxisNumberArray;
-  tickDashOffset?: BaseAxisNoValueRefs['tickDashOffset'] | ConditionalAxisNumber;
-  tickOpacity?: BaseAxisNoValueRefs['tickOpacity'] | ConditionalAxisNumber;
-  tickSize?: BaseAxisNoValueRefs['tickSize'] | ConditionalAxisNumber;
-  tickWidth?: BaseAxisNoValueRefs['tickWidth'] | ConditionalAxisNumber;
+  tickDash?: BaseAxisNoValueRefs['tickDash'] | ConditionalAxisNumberArray | SignalRef;
+  tickDashOffset?: BaseAxisNoValueRefs['tickDashOffset'] | ConditionalAxisNumber | SignalRef;
+  tickOpacity?: BaseAxisNoValueRefs['tickOpacity'] | ConditionalAxisNumber | SignalRef;
+  tickSize?: BaseAxisNoValueRefs['tickSize'] | ConditionalAxisNumber | SignalRef;
+  tickWidth?: BaseAxisNoValueRefs['tickWidth'] | ConditionalAxisNumber | SignalRef;
   titleColor?: BaseAxisNoValueRefs['titleColor'] | SignalRef;
-  title?: TitleMixins['title'];
+  title?: TitleMixins['title'] | SignalRef;
 }
 
 export type AxisConfig = VlOnlyGuideConfig &
