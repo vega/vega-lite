@@ -396,9 +396,6 @@ export function parseData(model: Model): DataComponent {
   if (isFacetModel(model)) {
     const facetName = model.getName('facet');
 
-    // Derive new sort index field for facet's sort array
-    head = CalculateNode.parseAllForSortIndex(head, model);
-
     // Derive new aggregate for facet's sort field
     // augment data source with new fields for crossed facet
     head = makeJoinAggregateFromFacet(head, model.facet) ?? head;
