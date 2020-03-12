@@ -37,6 +37,7 @@
       "y": {
         "field": "temp",
         "type": "quantitative",
+        "scale": {"zero": false},
         "axis": {"title": null, "labels": false, "ticks": false}
       }
     }

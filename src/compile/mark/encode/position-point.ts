@@ -1,6 +1,5 @@
 import {getMainRangeChannel, PositionChannel, X, X2, Y2} from '../../../channel';
 import {isFieldDef, isPositionFieldDef} from '../../../channeldef';
-import * as log from '../../../log';
 import {ScaleType} from '../../../scale';
 import {contains, getFirstDefined} from '../../../util';
 import {VgValueRef} from '../../../vega.schema';
@@ -33,8 +32,7 @@ export function pointPosition(
     defaultPos,
     channel,
     scaleName,
-    scale,
-    checkBarAreaWithoutZero: !channel2Def // only check for non-ranged marks
+    scale
   });
 
   const valueRef =
@@ -95,17 +93,15 @@ export function pointPositionDefaultRef({
   defaultPos,
   channel,
   scaleName,
-  scale,
-  checkBarAreaWithoutZero: checkBarAreaWithZero
+  scale
 }: {
   model: UnitModel;
   defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax';
   channel: PositionChannel;
   scaleName: string;
   scale: ScaleComponent;
-  checkBarAreaWithoutZero: boolean;
 }): () => VgValueRef {
-  const {mark, markDef, config} = model;
+  const {markDef, config} = model;
   return () => {
     const mainChannel = getMainRangeChannel(channel);
 
@@ -122,20 +118,12 @@ export function pointPositionDefaultRef({
           // Zero in time scale is arbitrary, and does not affect ratio.
           // (Time is an interval level of measurement, not ratio).
           // See https://en.wikipedia.org/wiki/Level_of_measurement for more info.
-          if (checkBarAreaWithZero && (mark === 'bar' || mark === 'area' || mark === 'rule')) {
-            log.warn(log.message.nonZeroScaleUsedWithLengthMark(mark, mainChannel, {scaleType}));
-          }
         } else {
           if (scale.domainDefinitelyIncludesZero()) {
             return {
               scale: scaleName,
               value: 0
             };
-          }
-          if (checkBarAreaWithZero && (mark === 'bar' || mark === 'area')) {
-            log.warn(
-              log.message.nonZeroScaleUsedWithLengthMark(mark, mainChannel, {zeroFalse: scale.explicit.zero === false})
-            );
           }
         }
       }
