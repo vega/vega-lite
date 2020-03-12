@@ -191,7 +191,8 @@ describe('Axis', () => {
 
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x'].length).toEqual(1);
-      expect(axisComponent['x'][0].implicit.labelColor).toEqual(undefined); // blue would get applied with Vega's logic
+      expect(axisComponent['x'][0].implicit.labelColor).toEqual(undefined); 
+      // Vega-Lite doesn't have to output "blue" here since Vega will apply config.axisX.labelColor and renders blue label color anyway.
     });
 
     it('should produce axis component with grid=false', () => {
