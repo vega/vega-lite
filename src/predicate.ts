@@ -4,6 +4,7 @@ import {FieldName, valueExpr, vgField} from './channeldef';
 import {DateTime} from './datetime';
 import {LogicalComposition} from './logical';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit, TimeUnitParams} from './timeunit';
+import {isSignalRef} from './vega.schema';
 
 export type Predicate =
   // a) FieldPredicate (but we don't type FieldFilter here so the schema has no nesting
@@ -118,12 +119,14 @@ export interface FieldRangePredicate extends FieldPredicateBase {
    * @maxItems 2
    * @minItems 2
    */
-  range: (number | DateTime | null | SignalRef)[];
+  range: (number | DateTime | null | SignalRef)[] | SignalRef;
 }
 
 export function isFieldRangePredicate(predicate: any): predicate is FieldRangePredicate {
   if (predicate && predicate.field) {
     if (isArray(predicate.range) && predicate.range.length === 2) {
+      return true;
+    } else if (isSignalRef(predicate.range)) {
       return true;
     }
   }
@@ -214,8 +217,9 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
   } else if (isFieldValidPredicate(predicate)) {
     return fieldValidPredicate(fieldExpr, predicate.valid);
   } else if (isFieldRangePredicate(predicate)) {
-    const lower = predicate.range[0];
-    const upper = predicate.range[1];
+    const {range} = predicate;
+    const lower = isSignalRef(range) ? {signal: `${range.signal}[0]`} : range[0];
+    const upper = isSignalRef(range) ? {signal: `${range.signal}[1]`} : range[1];
 
     if (lower !== null && upper !== null && useInRange) {
       return (
