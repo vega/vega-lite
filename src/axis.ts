@@ -74,6 +74,7 @@ export type ConditionalAxisProp =
   | 'labelFontStyle'
   | 'labelFontWeight'
   | 'labelOpacity'
+  | 'labelOffset'
   | 'labelPadding'
   | 'gridColor'
   | 'gridDash'
@@ -130,6 +131,7 @@ export const CONDITIONAL_AXIS_PROP_INDEX: Record<
     part: 'labels',
     vgProp: 'opacity'
   },
+  labelOffset: null,
   labelPadding: null, // There is no fixed vgProp for tickSize, need to use signal.
   gridColor: {
     part: 'grid',
@@ -236,7 +238,7 @@ export interface AxisPropsWithConditionAndSignal {
 
 export type AxisConfig = VlOnlyGuideConfig &
   AxisConfigBaseWithConditionalAndSignal &
-  Pick<Axis, 'labelExpr' | 'labelOffset' | 'tickCount' | 'style'>;
+  Pick<Axis, 'labelExpr' | 'tickCount' | 'style'>;
 
 export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
   /**
