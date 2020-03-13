@@ -34,6 +34,13 @@ function setAxisEncode(
   (axis.encode[part].update[vgProp] as any) = vgRef;
 }
 
+function exprFromValueOrSignalRef(ref: VgValueRef | SignalRef): string {
+  if (isSignalRef(ref)) {
+    return ref.signal;
+  }
+  return stringValue(ref.value);
+}
+
 export function assembleAxis(
   axisCmpt: AxisComponent,
   kind: 'main' | 'grid',
@@ -54,7 +61,7 @@ export function assembleAxis(
     } else if (isConditionalAxisValue(propValue)) {
       // deal with conditional axis value
 
-      const {condition, value} = propValue;
+      const {condition, ...valueOrSignalRef} = propValue;
       const conditions = array(condition);
 
       const propIndex = CONDITIONAL_AXIS_PROP_INDEX[prop];
@@ -65,13 +72,13 @@ export function assembleAxis(
 
         const vgRef = [
           ...conditions.map(c => {
-            const {value: v, test} = c;
+            const {test, ...valueOrSignalCRef} = c;
             return {
               test: expression(null, test),
-              value: v
+              ...valueOrSignalCRef
             };
           }),
-          {value}
+          valueOrSignalRef
         ];
         setAxisEncode(axis, part, vgProp, vgRef);
         delete axis[prop];
@@ -81,10 +88,10 @@ export function assembleAxis(
           signal:
             conditions
               .map(c => {
-                const {value: v, test} = c;
-                return `${expression(null, test)} ? ${stringValue(v)} : `;
+                const {test, ...valueOrSignalCRef} = c;
+                return `${expression(null, test)} ? ${exprFromValueOrSignalRef(valueOrSignalCRef)} : `;
               })
-              .join('') + stringValue(value)
+              .join('') + exprFromValueOrSignalRef(valueOrSignalRef)
         };
         axis[prop] = signalRef;
       }
