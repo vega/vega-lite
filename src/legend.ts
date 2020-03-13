@@ -11,7 +11,7 @@ import {
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {ExcludeMappedValueRef, ExcludeMappedValueRefButKeepSignal, VgEncodeChannel} from './vega.schema';
+import {ExcludeMappedValueRefButKeepSignal, VgEncodeChannel} from './vega.schema';
 
 export type LegendScaleChannels = 'size' | 'shape' | 'fill' | 'stroke' | 'strokeDash' | 'strokeWidth' | 'opacity';
 
@@ -87,7 +87,7 @@ export interface LegendPropsWithSignal {
 
 export type LegendConfig = LegendMixins &
   VlOnlyGuideConfig &
-  Omit<ExcludeMappedValueRef<VgLegendConfig>, SignalLegendProp> &
+  Omit<ExcludeMappedValueRefButKeepSignal<VgLegendConfig>, SignalLegendProp> &
   LegendPropsWithSignal & {
     /**
      * Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
@@ -142,7 +142,7 @@ export type LegendConfig = LegendMixins &
  * Properties of a legend or boolean flag for determining whether to show it.
  */
 export interface Legend
-  extends Omit<BaseLegendNoValueRefs, SignalLegendProp>,
+  extends Omit<BaseLegendNoValueRefs, SignalLegendProp | 'orient'>,
     LegendPropsWithSignal,
     LegendMixins,
     Guide {
@@ -188,23 +188,6 @@ export interface Legend
    * @minimum 0
    */
   zindex?: number;
-
-  /**
-   * The direction of the legend, one of `"vertical"` or `"horizontal"`.
-   *
-   * __Default value:__
-   * - For top-/bottom-`orient`ed legends, `"horizontal"`
-   * - For left-/right-`orient`ed legends, `"vertical"`
-   * - For top/bottom-left/right-`orient`ed legends, `"horizontal"` for gradient legends and `"vertical"` for symbol legends.
-   */
-  direction?: Orientation;
-
-  /**
-   * The orientation of the legend, which determines how the legend is positioned within the scene. One of `"left"`, `"right"`, `"top"`, `"bottom"`, `"top-left"`, `"top-right"`, `"bottom-left"`, `"bottom-right"`, `"none"`.
-   *
-   * __Default value:__ `"right"`
-   */
-  orient?: LegendOrient;
 }
 
 // Change comments to be Vega-Lite specific
@@ -215,6 +198,23 @@ interface LegendMixins {
    * __Default value:__ `"greedy"` for `log scales otherwise `true`.
    */
   labelOverlap?: LabelOverlap | SignalRef; // override comment since our default differs from Vega
+
+  /**
+   * The direction of the legend, one of `"vertical"` or `"horizontal"`.
+   *
+   * __Default value:__
+   * - For top-/bottom-`orient`ed legends, `"horizontal"`
+   * - For left-/right-`orient`ed legends, `"vertical"`
+   * - For top/bottom-left/right-`orient`ed legends, `"horizontal"` for gradient legends and `"vertical"` for symbol legends.
+   */
+  direction?: Orientation; // Omit SignalRef
+
+  /**
+   * The orientation of the legend, which determines how the legend is positioned within the scene. One of `"left"`, `"right"`, `"top"`, `"bottom"`, `"top-left"`, `"top-right"`, `"bottom-left"`, `"bottom-right"`, `"none"`.
+   *
+   * __Default value:__ `"right"`
+   */
+  orient?: LegendOrient; // Omit SignalRef
 }
 
 export interface LegendEncoding {

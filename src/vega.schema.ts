@@ -52,12 +52,16 @@ type ExcludeMapped<T, E> = {
   [P in keyof T]: Exclude<T[P], E>;
 };
 
+type ExcludeMappedButKeepSignals<T, E> = {
+  [P in keyof T]: SignalRef extends T[P] ? Exclude<T[P], E> | SignalRef : Exclude<T[P], E>;
+};
+
 // Remove ValueRefs from mapped types
 export type ExcludeMappedValueRef<T> = ExcludeMapped<T, ScaledValueRef<any> | NumericValueRef | ColorValueRef>;
 
-export type ExcludeMappedValueRefButKeepSignal<T> = ExcludeMapped<
+export type ExcludeMappedValueRefButKeepSignal<T> = ExcludeMappedButKeepSignals<
   T,
-  Exclude<ScaledValueRef<any> | NumericValueRef | ColorValueRef, SignalRef>
+  ScaledValueRef<any> | NumericValueRef | ColorValueRef
 >;
 
 export interface VgData {
