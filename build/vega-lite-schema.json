@@ -9365,6 +9365,10 @@
           "description": "Corner radius for the full legend.",
           "type": "number"
         },
+        "direction": {
+          "$ref": "#/definitions/Orientation",
+          "description": "The direction of the legend, one of `\"vertical\"` or `\"horizontal\"`.\n\n__Default value:__\n- For top-/bottom-`orient`ed legends, `\"horizontal\"`\n- For left-/right-`orient`ed legends, `\"vertical\"`\n- For top/bottom-left/right-`orient`ed legends, `\"horizontal\"` for gradient legends and `\"vertical\"` for symbol legends."
+        },
         "fillColor": {
           "anyOf": [
             {
@@ -9517,7 +9521,7 @@
         },
         "orient": {
           "$ref": "#/definitions/LegendOrient",
-          "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of \"left\", \"right\", \"top-left\", \"top-right\", \"bottom-left\", \"bottom-right\", \"none\".\n\n__Default value:__ `\"right\"`"
+          "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of `\"left\"`, `\"right\"`, `\"top\"`, `\"bottom\"`, `\"top-left\"`, `\"top-right\"`, `\"bottom-left\"`, `\"bottom-right\"`, `\"none\"`.\n\n__Default value:__ `\"right\"`"
         },
         "padding": {
           "description": "The padding between the border and content of the legend group.\n\n__Default value:__ `0`.",
