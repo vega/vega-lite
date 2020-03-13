@@ -181,8 +181,8 @@ export const CONDITIONAL_AXIS_PROP_INDEX: Record<
   title: null // title supports signal, let's use it.
 };
 
-export type ConditionalAxisProperty<V extends Value | number[]> = ValueDef<V> & {
-  condition: ConditionalPredicate<ValueDef<V>> | ConditionalPredicate<ValueDef<V>>[];
+export type ConditionalAxisProperty<V extends Value | number[]> = (ValueDef<V> | SignalRef) & {
+  condition: ConditionalPredicate<ValueDef<V> | SignalRef> | ConditionalPredicate<ValueDef<V> | SignalRef>[];
 };
 
 export function isConditionalAxisValue<V extends Value | number[]>(v: any): v is ConditionalAxisProperty<V> {

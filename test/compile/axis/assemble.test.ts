@@ -86,5 +86,16 @@ describe('compile/axis/assemble', () => {
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
       expect(axis.tickSize).toEqual({signal: 'datum.index === 0 || datum.index === 1 ? 4 : 2'});
     });
+
+    it('correctly applies conditional signal for axis tickSize', () => {
+      const axisCmpt = new AxisComponent({
+        tickSize: {
+          condition: {test: 'datum.index === 0 || datum.index === 1', signal: 'a'},
+          signal: 'b'
+        }
+      });
+      const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
+      expect(axis.tickSize).toEqual({signal: 'datum.index === 0 || datum.index === 1 ? a : b'});
+    });
   });
 });
