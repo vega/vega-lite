@@ -1082,9 +1082,18 @@ export function valueExpr(
   }
 ): string {
   const unit = normalizeTimeUnit(timeUnit)?.unit;
+
   let expr;
   if (isSignalRef(v)) {
-    expr = v.signal;
+    const s = v.signal;
+
+    if (time && !unit && type !== 'temporal') {
+      // We don't know if this is a date or not, so we need to check
+      return time ? `isDate(${s}) ? time(${s}) : ${s}` : s;
+    } else {
+      // TODO: support isLocalSingleTimeUnit(unit) -- we can't do that until DateTime object supports signal
+      expr = s;
+    }
   } else if (isDateTime(v)) {
     expr = dateTimeToExpr(v);
   } else if (isString(v) || isNumber(v)) {

@@ -16,6 +16,7 @@ describe('filter', () => {
   const equalFilter = {field: 'color', equal: 'red'};
   const oneOfFilter = {field: 'color', oneOf: ['red', 'yellow']};
   const rangeFilter = {field: 'x', range: [0, 5]};
+  const rangeSignalFilter = {field: 'x', range: {signal: 'range'}};
   const exprFilter = 'datum["x"]===5';
   const lessThanEqualsFilter = {field: 'x', lte: 'z'};
   const validFilter: FieldValidPredicate = {field: 'x', valid: true};
@@ -68,6 +69,10 @@ describe('filter', () => {
   describe('isRangeFilter', () => {
     it('should return true for a range filter', () => {
       expect(isFieldRangePredicate(rangeFilter)).toBe(true);
+    });
+
+    it('should return true for a range predicate with range signal', () => {
+      expect(isFieldRangePredicate(rangeSignalFilter)).toBe(true);
     });
 
     it('should return false for other filters', () => {
@@ -196,6 +201,11 @@ describe('filter', () => {
     it('should return a correct expression for a RangeFilter', () => {
       const expr = expression(null, {field: 'x', range: [0, 5]});
       expect(expr).toBe('inrange(datum["x"], [0, 5])');
+    });
+
+    it('should return a correct expression for a RangeFilter with signal range', () => {
+      const expr = expression(null, {field: 'x', range: {signal: 'r'}});
+      expect(expr).toBe('inrange(datum["x"], [isDate(r[0]) ? time(r[0]) : r[0], isDate(r[1]) ? time(r[1]) : r[1]])');
     });
 
     it('should return a correct expression for a RangeFilter with no lower bound', () => {
