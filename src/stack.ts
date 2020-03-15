@@ -31,7 +31,7 @@ export function isStackOffset(s: string): s is StackOffset {
 
 export interface StackProperties {
   /** Dimension axis of the stack. */
-  groupbyChannel: 'x' | 'y';
+  groupbyChannel?: 'x' | 'y';
 
   /** Field for groupbyChannel. */
   groupbyField?: FieldName;

@@ -28,6 +28,7 @@ export function formatSignalRef({
   format,
   formatType,
   expr,
+  normalizeStack,
   config,
   field,
   omitNumberFormatAndEmptyTimeFormat,
@@ -38,19 +39,32 @@ export function formatSignalRef({
   format: string | object;
   formatType: string;
   expr?: 'datum' | 'parent' | 'datum.datum';
+  normalizeStack?: boolean;
   config: Config;
   omitTimeFormatConfig?: boolean; // axis doesn't use config.timeFormat
   field?: string; // axis/legend "use datum.value"
   omitNumberFormatAndEmptyTimeFormat?: boolean; // axis/legend's encoding block doesn't need explicit encoding format
   isUTCScale?: boolean;
 }) {
-  field = field ?? vgField(fieldDef, {expr});
+  if (!field) {
+    if (normalizeStack) {
+      field = `${vgField(fieldDef, {expr, suffix: 'end'})}-${vgField(fieldDef, {expr, suffix: 'start'})}`;
+    } else {
+      field = vgField(fieldDef, {expr});
+    }
+  }
   isUTCScale =
     isUTCScale ?? (isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC);
 
   const defaultTimeFormat = omitTimeFormatConfig ? null : config.timeFormat;
 
   if (isCustomFormatType(formatType)) {
+    if (isBinning(fieldDef.bin)) {
+      const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
+      return {
+        signal: binFormatExpression(field, endField, format, formatType, config)
+      };
+    }
     return {signal: customFormatExpr({formatType, format, field})};
   } else if (formatType) {
     formatType = undefined; // drop unregistered custom formatType
@@ -75,10 +89,10 @@ export function formatSignalRef({
       };
     } else if (fieldDef.type === 'quantitative' || format) {
       return {
-        signal: `${formatExpr(vgField(fieldDef, {expr, binSuffix: 'range'}), format)}`
+        signal: `${formatExpr(field, format)}`
       };
     } else {
-      return {signal: `''+${vgField(fieldDef, {expr})}`};
+      return {signal: `''+${field}`};
     }
   }
   return undefined;
