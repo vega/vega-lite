@@ -3,7 +3,6 @@
   "description": "the population per state, engineers per state, and hurricanes per state",
   "background": "white",
   "padding": 5,
-  "height": 300,
   "data": [
     {
       "name": "source_0",
@@ -85,14 +84,17 @@
   "projections": [
     {
       "name": "projection",
-      "size": {"signal": "[childWidth, height]"},
+      "size": {"signal": "[childWidth, childHeight]"},
       "fit": {
         "signal": "[child__repeat_row_population_geojson_0, child__repeat_row_engineers_geojson_0, child__repeat_row_hurricanes_geojson_0]"
       },
       "type": "albersUsa"
     }
   ],
-  "signals": [{"name": "childWidth", "value": 500}],
+  "signals": [
+    {"name": "childWidth", "value": 500},
+    {"name": "childHeight", "value": 300}
+  ],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "all"},
   "marks": [
     {
@@ -102,7 +104,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "marks": [
@@ -131,7 +133,7 @@
       "legends": [
         {
           "fill": "child__repeat_row_population_color",
-          "gradientLength": {"signal": "clamp(height, 64, 200)"},
+          "gradientLength": {"signal": "clamp(childHeight, 64, 200)"},
           "symbolType": "circle",
           "title": "population"
         }
@@ -144,7 +146,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "marks": [
@@ -173,7 +175,7 @@
       "legends": [
         {
           "fill": "child__repeat_row_engineers_color",
-          "gradientLength": {"signal": "clamp(height, 64, 200)"},
+          "gradientLength": {"signal": "clamp(childHeight, 64, 200)"},
           "symbolType": "circle",
           "title": "engineers"
         }
@@ -186,7 +188,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "marks": [
@@ -215,7 +217,7 @@
       "legends": [
         {
           "fill": "child__repeat_row_hurricanes_color",
-          "gradientLength": {"signal": "clamp(height, 64, 200)"},
+          "gradientLength": {"signal": "clamp(childHeight, 64, 200)"},
           "symbolType": "circle",
           "title": "hurricanes"
         }
