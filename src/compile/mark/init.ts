@@ -149,7 +149,7 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
     // falls through
     case RULE:
       // return undefined for line segment rule and bar with both axis ranged
-      // we have to ignore that case that the data are already binned though
+      // we have to ignore the case that the data are already binned
       if (x2 && !(isFieldDef(x) && isBinned(x.bin)) && y2 && !(isFieldDef(y) && isBinned(y.bin))) {
         return undefined;
       }
