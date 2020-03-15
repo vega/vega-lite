@@ -8077,6 +8077,10 @@
           "description": "A boolean flag indicating if labels should be included as part of the header.\n\n__Default value:__ `true`.",
           "type": "boolean"
         },
+        "orient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Shortcut for setting both labelOrient and titleOrient."
+        },
         "title": {
           "anyOf": [
             {
@@ -8214,6 +8218,10 @@
         "labels": {
           "description": "A boolean flag indicating if labels should be included as part of the header.\n\n__Default value:__ `true`.",
           "type": "boolean"
+        },
+        "orient": {
+          "$ref": "#/definitions/Orient",
+          "description": "Shortcut for setting both labelOrient and titleOrient."
         },
         "title": {
           "description": "Set to null to disable title for the axis, legend, or header.",
