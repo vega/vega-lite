@@ -115,7 +115,6 @@
   "legends": [
     {
       "orient": "top",
-      "title": null,
       "fill": "color",
       "direction": "horizontal",
       "symbolType": "square"
