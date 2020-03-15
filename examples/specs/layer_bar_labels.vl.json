@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "Bar chart with text labels. Apply scale padding to make the frame covers the labels.",
+  "description": "Bar chart with text labels. Apply scale padding to make the frame cover the labels.",
   "data": {
     "values": [
       {"a": "A", "b": 28},
