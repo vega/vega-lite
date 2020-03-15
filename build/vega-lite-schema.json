@@ -1144,6 +1144,10 @@
           "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
           "type": "number"
         },
+        "disable": {
+          "description": "Disable axis by default",
+          "type": "boolean"
+        },
         "domain": {
           "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
           "type": "boolean"
@@ -9368,6 +9372,10 @@
         "direction": {
           "$ref": "#/definitions/Orientation",
           "description": "The direction of the legend, one of `\"vertical\"` or `\"horizontal\"`.\n\n__Default value:__\n- For top-/bottom-`orient`ed legends, `\"horizontal\"`\n- For left-/right-`orient`ed legends, `\"vertical\"`\n- For top/bottom-left/right-`orient`ed legends, `\"horizontal\"` for gradient legends and `\"vertical\"` for symbol legends."
+        },
+        "disable": {
+          "description": "Disable legend by default",
+          "type": "boolean"
         },
         "fillColor": {
           "anyOf": [
