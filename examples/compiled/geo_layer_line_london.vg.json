@@ -135,6 +135,7 @@
     {
       "offset": 0,
       "orient": "bottom-right",
+      "title": null,
       "stroke": "color",
       "symbolType": "circle",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
