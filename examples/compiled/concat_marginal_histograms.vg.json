@@ -110,7 +110,7 @@
   "signals": [
     {"name": "concat_0_width", "value": 200},
     {"name": "concat_0_height", "value": 60},
-    {"name": "concat_1_height", "value": 200},
+    {"name": "concat_1_childHeight", "value": 200},
     {"name": "concat_1_concat_0_width", "value": 200},
     {"name": "concat_1_concat_1_width", "value": 60}
   ],
@@ -198,7 +198,7 @@
           "encode": {
             "update": {
               "width": {"signal": "concat_1_concat_0_width"},
-              "height": {"signal": "concat_1_height"}
+              "height": {"signal": "concat_1_childHeight"}
             }
           },
           "marks": [
@@ -271,7 +271,7 @@
               "grid": false,
               "title": "Rotten_Tomatoes_Rating (binned)",
               "labelOverlap": true,
-              "tickCount": {"signal": "ceil(concat_1_height/10)"},
+              "tickCount": {"signal": "ceil(concat_1_childHeight/10)"},
               "zindex": 1
             }
           ]
@@ -283,7 +283,7 @@
           "encode": {
             "update": {
               "width": {"signal": "concat_1_concat_1_width"},
-              "height": {"signal": "concat_1_height"}
+              "height": {"signal": "concat_1_childHeight"}
             }
           },
           "marks": [
@@ -393,7 +393,7 @@
       "domain": {
         "signal": "[concat_1_concat_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.start, concat_1_concat_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.stop]"
       },
-      "range": [{"signal": "concat_1_height"}, 0],
+      "range": [{"signal": "concat_1_childHeight"}, 0],
       "bins": {
         "signal": "concat_1_concat_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins"
       },
@@ -413,7 +413,7 @@
       "domain": {
         "signal": "[concat_1_concat_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.start, concat_1_concat_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins.stop]"
       },
-      "range": [{"signal": "concat_1_height"}, 0],
+      "range": [{"signal": "concat_1_childHeight"}, 0],
       "bins": {
         "signal": "concat_1_concat_1_bin_maxbins_10_Rotten_Tomatoes_Rating_bins"
       },
@@ -423,7 +423,7 @@
   "legends": [
     {
       "fill": "color",
-      "gradientLength": {"signal": "clamp(concat_1_height, 64, 200)"},
+      "gradientLength": {"signal": "clamp(concat_1_childHeight, 64, 200)"},
       "symbolType": "square",
       "title": "Count of Records"
     }

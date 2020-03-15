@@ -2,7 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
-  "height": 100,
   "data": [
     {
       "name": "source_0",
@@ -13,12 +12,15 @@
   "projections": [
     {
       "name": "projection",
-      "size": {"signal": "[childWidth, height]"},
+      "size": {"signal": "[childWidth, childHeight]"},
       "fit": {"signal": "data('source_0')"},
       "type": "orthographic"
     }
   ],
-  "signals": [{"name": "childWidth", "value": 100}],
+  "signals": [
+    {"name": "childWidth", "value": 100},
+    {"name": "childHeight", "value": 100}
+  ],
   "layout": {"padding": 20, "bounds": "full", "align": "each"},
   "marks": [
     {
@@ -28,7 +30,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "marks": [
@@ -54,7 +56,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "marks": [
@@ -80,7 +82,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "marks": [

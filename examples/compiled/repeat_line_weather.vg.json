@@ -2,7 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
-  "height": 200,
   "data": [
     {
       "name": "source_0",
@@ -25,7 +24,10 @@
       ]
     }
   ],
-  "signals": [{"name": "childWidth", "value": 200}],
+  "signals": [
+    {"name": "childWidth", "value": 200},
+    {"name": "childHeight", "value": 200}
+  ],
   "layout": {"padding": 20, "bounds": "full", "align": "all"},
   "marks": [
     {
@@ -35,7 +37,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "marks": [
@@ -102,7 +104,7 @@
           "orient": "left",
           "gridScale": "child__repeat_repeat_temp_max_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -134,7 +136,7 @@
           "grid": false,
           "title": "Mean of temp_max",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "zindex": 0
         }
       ]
@@ -146,7 +148,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "marks": [
@@ -213,7 +215,7 @@
           "orient": "left",
           "gridScale": "child__repeat_repeat_precipitation_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -245,7 +247,7 @@
           "grid": false,
           "title": "Mean of precipitation",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "zindex": 0
         }
       ]
@@ -257,7 +259,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "height"}
+          "height": {"signal": "childHeight"}
         }
       },
       "marks": [
@@ -322,7 +324,7 @@
           "orient": "left",
           "gridScale": "child__repeat_repeat_wind_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -354,7 +356,7 @@
           "grid": false,
           "title": "Mean of wind",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(height/40)"},
+          "tickCount": {"signal": "ceil(childHeight/40)"},
           "zindex": 0
         }
       ]
@@ -377,7 +379,7 @@
       "name": "child__repeat_repeat_temp_max_y",
       "type": "linear",
       "domain": {"data": "source_0", "field": "mean_temp_max"},
-      "range": [{"signal": "height"}, 0],
+      "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
     },
@@ -391,7 +393,7 @@
       "name": "child__repeat_repeat_precipitation_y",
       "type": "linear",
       "domain": {"data": "source_0", "field": "mean_precipitation"},
-      "range": [{"signal": "height"}, 0],
+      "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
     },
@@ -405,7 +407,7 @@
       "name": "child__repeat_repeat_wind_y",
       "type": "linear",
       "domain": {"data": "source_0", "field": "mean_wind"},
-      "range": [{"signal": "height"}, 0],
+      "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
     }
