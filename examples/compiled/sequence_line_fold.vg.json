@@ -126,5 +126,5 @@
       "zindex": 0
     }
   ],
-  "legends": [{"stroke": "color", "symbolType": "stroke"}]
+  "legends": [{"title": null, "stroke": "color", "symbolType": "stroke"}]
 }

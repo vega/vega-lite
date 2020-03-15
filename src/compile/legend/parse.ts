@@ -209,7 +209,7 @@ function getProperty<K extends keyof LegendComponentProps>(
       ) as LegendComponentProps[K];
 
     case 'title':
-      return (fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined) as LegendComponentProps[K];
+      return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) as LegendComponentProps[K];
 
     case 'type':
       return type({legend, channel, timeUnit, scaleType, alwaysReturn: false}) as LegendComponentProps[K];
