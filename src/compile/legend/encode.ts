@@ -141,7 +141,7 @@ export function labels(
   channel: NonPositionScaleChannel,
   legendCmp: LegendComponent
 ) {
-  const legend = model.legend(channel);
+  const legend = model.legend(channel) || {};
   const config = model.config;
   const condition = selectedCondition(model, legendCmp, fieldDef);
   const opacity = condition ? [{test: condition, value: 1}, {value: config.legend.unselectedOpacity}] : undefined;

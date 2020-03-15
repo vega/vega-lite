@@ -84,8 +84,10 @@ function mergeChildAxis(model: FacetModel, channel: 'x' | 'y') {
 
         // FIXME: assemble shouldn't be called here, but we do it this way so we only extract the main part of the axes
         const mainAxis = assembleAxis(axisComponent, 'main', model.config, {header: true});
-        // LayoutHeader no longer keep track of property precedence, thus let's combine.
-        layoutHeader[headerType][0].axes.push(mainAxis);
+        if (mainAxis) {
+          // LayoutHeader no longer keep track of property precedence, thus let's combine.
+          layoutHeader[headerType][0].axes.push(mainAxis);
+        }
         axisComponent.mainExtracted = true;
       }
     } else {

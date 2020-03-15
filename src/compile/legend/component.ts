@@ -7,10 +7,12 @@ import {Split} from '../split';
 export type LegendComponentProps = VgLegend & {
   labelExpr?: string;
   selections?: string[];
+  disable?: boolean;
 };
 
 const LEGEND_COMPONENT_PROPERTY_INDEX: Flag<keyof LegendComponentProps> = {
   ...COMMON_LEGEND_PROPERTY_INDEX,
+  disable: 1,
   labelExpr: 1,
   selections: 1,
   // channel scales

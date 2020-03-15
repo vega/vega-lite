@@ -38,8 +38,8 @@ export function labelAngle(
   fieldDef: TypedFieldDef<string>
 ) {
   // try axis value
-  if (specifiedAxis.labelAngle !== undefined) {
-    return normalizeAngle(specifiedAxis.labelAngle);
+  if (specifiedAxis?.labelAngle !== undefined) {
+    return normalizeAngle(specifiedAxis?.labelAngle);
   } else {
     // try axis config value
     const {configValue: angle} = getAxisConfig(
@@ -48,7 +48,7 @@ export function labelAngle(
       channel,
       orient(channel),
       model.getScaleComponent(channel).get('type'),
-      specifiedAxis.style
+      specifiedAxis?.style
     );
     if (angle !== undefined) {
       return normalizeAngle(angle);

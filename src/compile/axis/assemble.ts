@@ -49,7 +49,11 @@ export function assembleAxis(
     header: boolean; // whether this is called via a header
   } = {header: false}
 ): VgAxis {
-  const {orient, scale, labelExpr, title, zindex, ...axis} = axisCmpt.combine();
+  const {disable, orient, scale, labelExpr, title, zindex, ...axis} = axisCmpt.combine();
+
+  if (disable) {
+    return undefined;
+  }
 
   for (const prop in axis) {
     const propType = AXIS_PROPERTY_TYPE[prop];

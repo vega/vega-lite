@@ -136,6 +136,11 @@ export type LegendConfig = LegendMixins &
      * __Default value:__ 0.35.
      */
     unselectedOpacity?: number;
+
+    /**
+     * Disable legend by default
+     */
+    disable?: boolean;
   };
 
 /**

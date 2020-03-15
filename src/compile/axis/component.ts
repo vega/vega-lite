@@ -19,9 +19,11 @@ export type AxisComponentProps = Omit<VgAxis, 'title' | ConditionalAxisProp | Si
   Omit<AxisPropsWithConditionAndSignal, 'title'> & {
     title: Text | FieldDefBase<string>[];
     labelExpr: string;
+    disable: boolean;
   };
 
 const AXIS_COMPONENT_PROPERTIES_INDEX: Flag<keyof AxisComponentProps> = {
+  disable: 1,
   gridScale: 1,
   scale: 1,
   ...COMMON_AXIS_PROPERTIES_INDEX,

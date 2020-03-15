@@ -50,7 +50,7 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
     (legendComponent, channel) => {
       const def = encoding[channel];
       if (
-        model.legend(channel) &&
+        model.channelHasField(channel) &&
         model.getScaleComponent(channel) &&
         !(isFieldDef(def) && channel === SHAPE && def.type === GEOJSON)
       ) {
@@ -86,9 +86,12 @@ function isExplicit<T extends string | number | object | boolean>(
   fieldDef: TypedFieldDef<string>
 ) {
   switch (property) {
+    case 'disable':
+      return legend !== undefined; // if axis is specified or null/false, then it's enable/disable state is explicit
+
     case 'values':
       // specified legend.values is already respected, but may get transformed.
-      return !!legend.values;
+      return !!legend?.values;
     case 'title':
       // title can be explicit if fieldDef.title is set
       if (property === 'title' && value === fieldDef.title) {
@@ -96,7 +99,7 @@ function isExplicit<T extends string | number | object | boolean>(
       }
   }
   // Otherwise, things are explicit if the returned value matches the specified property
-  return value === legend[property];
+  return value === (legend || {})[property];
 }
 
 export function parseLegendForChannel(model: UnitModel, channel: NonPositionScaleChannel): LegendComponent {
@@ -116,7 +119,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
     }
   }
 
-  const legendEncoding = legend.encoding ?? {};
+  const legendEncoding = legend?.encoding ?? {};
   const selections = legendCmpt.get('selections');
   const legendEncode = (['labels', 'legend', 'title', 'symbols', 'gradient', 'entries'] as const).reduce(
     (e: LegendEncode, part) => {
@@ -137,7 +140,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   );
 
   if (keys(legendEncode).length > 0) {
-    legendCmpt.set('encode', legendEncode, !!legend.encoding);
+    legendCmpt.set('encode', legendEncode, !!legend?.encoding);
   }
 
   return legendCmpt;
@@ -149,6 +152,11 @@ function getProperty<K extends keyof LegendComponentProps>(
   channel: NonPositionScaleChannel,
   model: UnitModel
 ): LegendComponentProps[K] {
+  if (property === 'disable') {
+    return legend !== undefined && (!legend as LegendComponentProps[K]);
+  }
+  legend = legend || {}; // assign object so the rest doesn't have to check if legend exists
+
   const {encoding, mark} = model;
   const fieldDef = getTypedFieldDef(encoding[channel]);
   const legendConfig = model.config.legend;
