@@ -316,17 +316,5 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ],
-  "legends": [
-    {
-      "stroke": "color",
-      "symbolType": "circle",
-      "title": "symbol",
-      "encode": {
-        "symbols": {
-          "update": {"fill": {"value": "transparent"}, "opacity": {"value": 1}}
-        }
-      }
-    }
   ]
 }
