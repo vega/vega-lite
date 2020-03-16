@@ -14,9 +14,10 @@ import {
 } from '../../../channeldef';
 import {Config} from '../../../config';
 import {Encoding, forEach} from '../../../encoding';
+import {StackProperties} from '../../../stack';
 import {getFirstDefined} from '../../../util';
 import {getMarkConfig} from '../../common';
-import {binFormatExpression} from '../../format';
+import {binFormatExpression, formatSignalRef} from '../../format';
 import {UnitModel} from '../../unit';
 import {wrapCondition} from './conditional';
 import {textRef} from './text';
@@ -25,7 +26,7 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   const {encoding, markDef, config} = model;
   const channelDef = encoding.tooltip;
   if (isArray(channelDef)) {
-    return {tooltip: tooltipRefForEncoding({tooltip: channelDef}, config, opt)};
+    return {tooltip: tooltipRefForEncoding({tooltip: channelDef}, model.stack, config, opt)};
   } else {
     return wrapCondition(model, channelDef, 'tooltip', cDef => {
       // use valueRef based on channelDef first
@@ -51,7 +52,7 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
       } else if (isObject(markTooltip)) {
         // `tooltip` is `{fields: 'encodings' | 'fields'}`
         if (markTooltip.content === 'encoding') {
-          return tooltipRefForEncoding(encoding, config, opt);
+          return tooltipRefForEncoding(encoding, model.stack, config, opt);
         } else {
           return {signal: 'datum'};
         }
@@ -64,6 +65,7 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
 
 export function tooltipRefForEncoding(
   encoding: Encoding<string>,
+  stack: StackProperties,
   config: Config,
   {reactiveGeom}: {reactiveGeom?: boolean} = {}
 ) {
@@ -97,6 +99,9 @@ export function tooltipRefForEncoding(
         const {format, formatType} = getFormatMixins(fieldDef);
         value = binFormatExpression(startField, endField, format, formatType, config);
         toSkip[channel2] = true;
+      } else if (stack && stack.fieldChannel === channel && stack.offset === 'normalize') {
+        const {format, formatType} = getFormatMixins(fieldDef);
+        value = formatSignalRef({fieldDef, format, formatType, expr, config, normalizeStack: true}).signal;
       }
     }
 
