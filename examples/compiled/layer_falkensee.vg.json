@@ -202,6 +202,19 @@
   ],
   "axes": [
     {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "gridScale": "y",
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
       "scale": "y",
       "orient": "left",
       "gridScale": "x",
@@ -212,6 +225,25 @@
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "year (year)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "labels": {
+          "update": {
+            "text": {
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            }
+          }
+        }
+      },
       "zindex": 0
     },
     {
