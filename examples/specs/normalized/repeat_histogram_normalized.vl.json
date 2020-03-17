@@ -1,0 +1,44 @@
+{
+  "data": {"url": "data/cars.json"},
+  "align": "all",
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "columns": 2,
+  "concat": [
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "Horsepower", "bin": true, "type": "quantitative"},
+        "y": {"aggregate": "count", "type": "quantitative"},
+        "color": {"field": "Origin", "type": "nominal"}
+      },
+      "name": "child__repeat_repeat_Horsepower"
+    },
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "Miles_per_Gallon", "bin": true, "type": "quantitative"},
+        "y": {"aggregate": "count", "type": "quantitative"},
+        "color": {"field": "Origin", "type": "nominal"}
+      },
+      "name": "child__repeat_repeat_Miles_per_Gallon"
+    },
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "Acceleration", "bin": true, "type": "quantitative"},
+        "y": {"aggregate": "count", "type": "quantitative"},
+        "color": {"field": "Origin", "type": "nominal"}
+      },
+      "name": "child__repeat_repeat_Acceleration"
+    },
+    {
+      "mark": "bar",
+      "encoding": {
+        "x": {"field": "Displacement", "bin": true, "type": "quantitative"},
+        "y": {"aggregate": "count", "type": "quantitative"},
+        "color": {"field": "Origin", "type": "nominal"}
+      },
+      "name": "child__repeat_repeat_Displacement"
+    }
+  ]
+}

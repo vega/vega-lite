@@ -1,3 +1,4 @@
+import {SelectionExtent} from './../../selection';
 import {SignalRef} from 'vega';
 import {isObject, isString} from 'vega-util';
 import {
@@ -89,7 +90,7 @@ function parseNonUnitScaleDomain(model: Model) {
 
   for (const channel of util.keys(localScaleComponents)) {
     let domains: Explicit<VgNonUnionDomain[]>;
-    let selectionExtent = null;
+    let selectionExtent: SelectionExtent = null;
 
     for (const child of model.children) {
       const childComponent = child.component.scales[channel];

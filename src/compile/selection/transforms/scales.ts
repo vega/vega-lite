@@ -1,6 +1,6 @@
 import {stringValue} from 'vega-util';
 import {VL_SELECTION_RESOLVE} from '..';
-import {Channel, isScaleChannel, X, Y} from '../../../channel';
+import {Channel, isScaleChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
 import {UnitModel} from '../../unit';
@@ -34,12 +34,6 @@ const scaleBindings: TransformCompiler = {
       const extent = {selection: selCmpt.name, field: proj.field};
       scale.set('selectionExtent', extent, true);
       bound.push(proj);
-
-      // Bind both x/y for diag plot of repeated views.
-      if (model.repeater && model.repeater.row === model.repeater.column) {
-        const scale2 = model.getScaleComponent(channel === X ? Y : X);
-        scale2.set('selectionExtent', extent, true);
-      }
     }
   },
 

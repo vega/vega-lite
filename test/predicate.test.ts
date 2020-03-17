@@ -10,7 +10,7 @@ import {
 } from '../src/predicate';
 import {TimeUnit} from '../src/timeunit';
 import {without} from '../src/util';
-import {FieldValidPredicate} from './../src/predicate';
+import {FieldValidPredicate} from '../src/predicate';
 
 describe('filter', () => {
   const equalFilter = {field: 'color', equal: 'red'};

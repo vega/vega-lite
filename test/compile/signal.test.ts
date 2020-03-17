@@ -1,5 +1,5 @@
 import {SignalRefWrapper} from '../../src/compile/signal';
-import {keys} from './../../src/util';
+import {keys} from '../../src/util';
 
 describe('SignalRefWrapper', () => {
   const s = new SignalRefWrapper(() => 'hello world');

@@ -1,7 +1,7 @@
 import {Data, DataFormatType, isGenerator, isInlineData, isNamedData, isSphereGenerator, isUrlData} from '../../data';
 import {contains, keys, omit} from '../../util';
 import {VgData} from '../../vega.schema';
-import {DataFormat} from './../../data';
+import {DataFormat} from '../../data';
 import {DataFlowNode} from './dataflow';
 
 export class SourceNode extends DataFlowNode {

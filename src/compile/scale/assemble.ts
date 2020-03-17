@@ -1,13 +1,13 @@
 import {Channel, ScaleChannel} from '../../channel';
 import {keys} from '../../util';
 import {isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
-import {isConcatModel, isLayerModel, isRepeatModel, Model} from '../model';
+import {isConcatModel, isLayerModel, Model} from '../model';
 import {assembleSelectionScaleDomain} from '../selection/assemble';
 import {assembleDomain} from './domain';
 
 export function assembleScales(model: Model): VgScale[] {
-  if (isLayerModel(model) || isConcatModel(model) || isRepeatModel(model)) {
-    // For concat / layer / repeat, include scales of children too
+  if (isLayerModel(model) || isConcatModel(model)) {
+    // For concat and layer, include scales of children too
     return model.children.reduce((scales, child) => {
       return scales.concat(assembleScales(child));
     }, assembleScalesForModel(model));

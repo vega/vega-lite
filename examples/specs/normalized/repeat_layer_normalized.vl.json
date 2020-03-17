@@ -1,0 +1,94 @@
+{
+  "data": {"url": "data/weather.csv"},
+  "align": "all",
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "Summarized and per year weather information for Seatle and New York.",
+  "columns": 3,
+  "concat": [
+    {
+      "layer": [
+        {
+          "mark": "line",
+          "encoding": {
+            "y": {
+              "aggregate": "mean",
+              "field": "temp_max",
+              "type": "quantitative"
+            },
+            "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
+            "detail": {"timeUnit": "year", "type": "temporal", "field": "date"},
+            "color": {"type": "nominal", "field": "location"},
+            "opacity": {"value": 0.2}
+          }
+        },
+        {
+          "mark": "line",
+          "encoding": {
+            "y": {
+              "aggregate": "mean",
+              "field": "temp_max",
+              "type": "quantitative"
+            },
+            "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
+            "color": {"type": "nominal", "field": "location"}
+          }
+        }
+      ],
+      "name": "child__repeat_column_temp_max"
+    },
+    {
+      "layer": [
+        {
+          "mark": "line",
+          "encoding": {
+            "y": {
+              "aggregate": "mean",
+              "field": "precipitation",
+              "type": "quantitative"
+            },
+            "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
+            "detail": {"timeUnit": "year", "type": "temporal", "field": "date"},
+            "color": {"type": "nominal", "field": "location"},
+            "opacity": {"value": 0.2}
+          }
+        },
+        {
+          "mark": "line",
+          "encoding": {
+            "y": {
+              "aggregate": "mean",
+              "field": "precipitation",
+              "type": "quantitative"
+            },
+            "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
+            "color": {"type": "nominal", "field": "location"}
+          }
+        }
+      ],
+      "name": "child__repeat_column_precipitation"
+    },
+    {
+      "layer": [
+        {
+          "mark": "line",
+          "encoding": {
+            "y": {"aggregate": "mean", "field": "wind", "type": "quantitative"},
+            "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
+            "detail": {"timeUnit": "year", "type": "temporal", "field": "date"},
+            "color": {"type": "nominal", "field": "location"},
+            "opacity": {"value": 0.2}
+          }
+        },
+        {
+          "mark": "line",
+          "encoding": {
+            "y": {"aggregate": "mean", "field": "wind", "type": "quantitative"},
+            "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
+            "color": {"type": "nominal", "field": "location"}
+          }
+        }
+      ],
+      "name": "child__repeat_column_wind"
+    }
+  ]
+}

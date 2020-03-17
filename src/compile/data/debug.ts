@@ -1,4 +1,4 @@
-import {entries, uniqueId} from './../../util';
+import {entries, uniqueId} from '../../util';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {SourceNode} from './source';
 

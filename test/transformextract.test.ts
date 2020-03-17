@@ -4,7 +4,7 @@ import {normalize} from '../src/normalize';
 import {NormalizedSpec, TopLevelSpec} from '../src/spec';
 import {extractTransforms} from '../src/transformextract';
 import {internalField} from '../src/util';
-import {initConfig} from './../src/config';
+import {initConfig} from '../src/config';
 
 describe('extractTransforms()', () => {
   const specsDir = './examples/specs/';

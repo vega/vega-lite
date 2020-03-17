@@ -12,7 +12,7 @@ import {Step} from '../spec/base';
 import {TitleParams} from '../title';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys, replaceAll, titlecase} from '../util';
-import {NormalizedUnitSpec} from './../spec/unit';
+import {NormalizedUnitSpec} from '../spec/unit';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,

@@ -1,11 +1,10 @@
-import {FacetedUnitSpec} from './../src/spec/unit';
-import {BaseSpec} from './../src/spec/base';
+import {FacetedUnitSpec} from '../src/spec/unit';
+import {BaseSpec} from '../src/spec/base';
 import {buildModel} from '../src/compile/buildmodel';
 import {ConcatModel} from '../src/compile/concat';
 import {FacetModel} from '../src/compile/facet';
 import {LayerModel} from '../src/compile/layer';
 import {Model} from '../src/compile/model';
-import {RepeatModel} from '../src/compile/repeat';
 import {parseScales} from '../src/compile/scale/parse';
 import {UnitModel} from '../src/compile/unit';
 import {initConfig} from '../src/config';
@@ -14,7 +13,6 @@ import {
   NormalizedConcatSpec,
   NormalizedFacetSpec,
   NormalizedLayerSpec,
-  NormalizedRepeatSpec,
   NormalizedUnitSpec,
   TopLevel,
   TopLevelSpec,
@@ -27,7 +25,7 @@ export type TopLevelNormalizedUnitSpecForTest = TopLevel<NormalizedUnitSpec> & F
 export function parseModel(inputSpec: TopLevelSpec): Model {
   const config = initConfig(inputSpec.config);
   const spec = normalize(inputSpec, config);
-  return buildModel(spec, null, '', undefined, undefined, config);
+  return buildModel(spec, null, '', undefined, config);
 }
 
 export function parseModelWithScale(inputSpec: TopLevelSpec): Model {
@@ -37,7 +35,7 @@ export function parseModelWithScale(inputSpec: TopLevelSpec): Model {
 }
 
 export function parseUnitModel(spec: TopLevelNormalizedUnitSpecForTest) {
-  return new UnitModel(spec, null, '', undefined, undefined, initConfig(spec.config));
+  return new UnitModel(spec, null, '', undefined, initConfig(spec.config));
 }
 
 export function parseUnitModelWithScale(spec: TopLevelNormalizedUnitSpecForTest) {
@@ -66,11 +64,11 @@ export function parseUnitModelWithScaleAndLayoutSize(spec: TopLevelNormalizedUni
 }
 
 export function parseLayerModel(spec: TopLevel<NormalizedLayerSpec>) {
-  return new LayerModel(spec, null, '', undefined, undefined, initConfig(spec.config));
+  return new LayerModel(spec, null, '', undefined, initConfig(spec.config));
 }
 
 export function parseFacetModel(spec: TopLevel<NormalizedFacetSpec>) {
-  return new FacetModel(spec, null, '', undefined, initConfig(spec.config));
+  return new FacetModel(spec, null, '', initConfig(spec.config));
 }
 
 export function parseFacetModelWithScale(spec: TopLevel<NormalizedFacetSpec>) {
@@ -79,12 +77,8 @@ export function parseFacetModelWithScale(spec: TopLevel<NormalizedFacetSpec>) {
   return model;
 }
 
-export function parseRepeatModel(spec: TopLevel<NormalizedRepeatSpec>) {
-  return new RepeatModel(spec, null, '', undefined, initConfig(spec.config));
-}
-
 export function parseConcatModel(spec: TopLevel<NormalizedConcatSpec>) {
-  return new ConcatModel(spec, null, '', undefined, initConfig(spec.config));
+  return new ConcatModel(spec, null, '', initConfig(spec.config));
 }
 
 export function assertIsUnitSpec(spec: BaseSpec): asserts spec is FacetedUnitSpec | NormalizedUnitSpec {

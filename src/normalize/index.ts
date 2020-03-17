@@ -1,8 +1,9 @@
+import {Field} from '../channeldef';
 import {isString} from 'vega-util';
 import {Config, initConfig} from '../config';
 import * as log from '../log';
 import {
-  ExtendedLayerSpec,
+  LayerSpec,
   FacetedUnitSpec,
   GenericSpec,
   isLayerSpec,
@@ -10,7 +11,8 @@ import {
   LayoutSizeMixins,
   NormalizedSpec,
   TopLevelSpec,
-  UnitSpec
+  UnitSpec,
+  RepeatSpec
 } from '../spec';
 import {AutoSizeParams, AutosizeType, TopLevel} from '../spec/toplevel';
 import {deepEqual} from '../util';
@@ -41,7 +43,10 @@ const normalizer = new CoreNormalizer();
 /**
  * Decompose extended unit specs into composition of pure unit specs.
  */
-function normalizeGenericSpec(spec: GenericSpec<UnitSpec, ExtendedLayerSpec> | FacetedUnitSpec, config: Config = {}) {
+function normalizeGenericSpec(
+  spec: GenericSpec<UnitSpec, LayerSpec, RepeatSpec, Field> | FacetedUnitSpec | RepeatSpec,
+  config: Config = {}
+) {
   return normalizer.map(spec, {config});
 }
 

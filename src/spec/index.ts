@@ -4,12 +4,13 @@
  * - The external specs (no prefix) would allow composite marks, row/column encodings, and mark macros like point/line overlay.
  * - The internal specs (with `Normalized` prefix) would only support primitive marks and support no macros/shortcuts.
  */
-
+import {Field} from '../channeldef';
+import {FieldName} from './../channeldef';
 import {DataMixins} from './base';
 import {GenericConcatSpec, GenericHConcatSpec, GenericVConcatSpec} from './concat';
 import {GenericFacetSpec} from './facet';
 import {GenericLayerSpec, LayerSpec, NormalizedLayerSpec} from './layer';
-import {GenericRepeatSpec} from './repeat';
+import {RepeatSpec} from './repeat';
 import {TopLevel} from './toplevel';
 import {FacetedUnitSpec, GenericUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec, UnitSpecWithFrame} from './unit';
 
@@ -23,29 +24,34 @@ export {
   NormalizedConcatSpec
 } from './concat';
 export {GenericFacetSpec, isFacetSpec, NormalizedFacetSpec} from './facet';
-export {GenericLayerSpec, isLayerSpec, LayerSpec as ExtendedLayerSpec, NormalizedLayerSpec} from './layer';
-export {GenericRepeatSpec, isRepeatSpec, NormalizedRepeatSpec} from './repeat';
+export {GenericLayerSpec, isLayerSpec, LayerSpec, NormalizedLayerSpec} from './layer';
+export {isRepeatSpec, RepeatSpec} from './repeat';
 export {TopLevel} from './toplevel';
 export {FacetedUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
 
 /**
  * Any specification in Vega-Lite.
  */
-export type GenericSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>> =
+export type GenericSpec<
+  U extends GenericUnitSpec<any, any>,
+  L extends GenericLayerSpec<any>,
+  R extends RepeatSpec,
+  F extends Field
+> =
   | U
   | L
-  | GenericFacetSpec<U, L>
-  | GenericRepeatSpec<U, L>
-  | GenericConcatSpec<U, L>
-  | GenericVConcatSpec<U, L>
-  | GenericHConcatSpec<U, L>;
+  | R
+  | GenericFacetSpec<U, L, F>
+  | GenericConcatSpec<GenericSpec<U, L, R, F>>
+  | GenericVConcatSpec<GenericSpec<U, L, R, F>>
+  | GenericHConcatSpec<GenericSpec<U, L, R, F>>;
 
 /**
  * Specs with only primitive marks and without other macros.
  */
-export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec>;
+export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec, never, FieldName>;
 
-export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<UnitSpecWithFrame, LayerSpec>> & DataMixins;
+export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<UnitSpecWithFrame, LayerSpec, Field>> & DataMixins;
 
 /**
  * A Vega-Lite top-level specification.
@@ -56,7 +62,7 @@ export type TopLevelSpec =
   | TopLevelUnitSpec
   | TopLevelFacetSpec
   | TopLevel<LayerSpec>
-  | TopLevel<GenericRepeatSpec<FacetedUnitSpec, LayerSpec>>
-  | TopLevel<GenericConcatSpec<FacetedUnitSpec, LayerSpec>>
-  | TopLevel<GenericVConcatSpec<FacetedUnitSpec, LayerSpec>>
-  | TopLevel<GenericHConcatSpec<FacetedUnitSpec, LayerSpec>>;
+  | TopLevel<RepeatSpec>
+  | TopLevel<GenericConcatSpec<GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>>>
+  | TopLevel<GenericVConcatSpec<GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>>>
+  | TopLevel<GenericHConcatSpec<GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>>>;

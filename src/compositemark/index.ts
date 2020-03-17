@@ -1,4 +1,4 @@
-import {NormalizedUnitSpec} from './../spec/unit';
+import {NormalizedUnitSpec} from '../spec/unit';
 import {Field} from '../channeldef';
 import {Encoding} from '../encoding';
 import {NormalizerParams} from '../normalize';

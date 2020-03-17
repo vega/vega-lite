@@ -308,7 +308,6 @@ export const defaultConfig: Config = {
   title: {},
 
   facet: {spacing: DEFAULT_SPACING},
-  repeat: {spacing: DEFAULT_SPACING},
   concat: {spacing: DEFAULT_SPACING}
 };
 
@@ -464,7 +463,6 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'padding',
   'facet',
   'concat',
-  'repeat',
   'numberFormat',
   'timeFormat',
   'countTitle',

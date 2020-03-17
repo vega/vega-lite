@@ -130,8 +130,10 @@ See [the documentation about the mark style configuration](mark.html#style-confi
 
 ## View & View Composition Configuration
 
-{% include table.html props="view,concat,facet,repeat" source="Config" %}
+{% include table.html props="view,concat,facet" source="Config" %}
 
-Each of the view composition configurations (`concat`, `facet`, `repeat`) supports the following properties:
+Each of the view composition configurations (`concat` and `facet`) supports the following properties:
 
 {% include table.html props="columns,spacing" source="CompositionConfig" %}
+
+Repeat uses the same configuration as concatenation.

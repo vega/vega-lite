@@ -26,7 +26,7 @@ import {getBinSignalName} from '../data/bin';
 import {isUnitModel, Model} from '../model';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
-import {SignalRefWrapper} from './../signal';
+import {SignalRefWrapper} from '../signal';
 import {ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseUnitScaleRange} from './range';
 

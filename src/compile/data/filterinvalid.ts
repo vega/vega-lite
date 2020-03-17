@@ -6,7 +6,7 @@ import {Dict, hash, keys} from '../../util';
 import {FilterTransform as VgFilterTransform} from 'vega';
 import {getMarkPropOrConfig} from '../common';
 import {UnitModel} from '../unit';
-import {TypedFieldDef} from './../../channeldef';
+import {TypedFieldDef} from '../../channeldef';
 import {DataFlowNode} from './dataflow';
 
 export class FilterInvalidNode extends DataFlowNode {

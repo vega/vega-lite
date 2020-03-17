@@ -3,7 +3,7 @@ import {BinNode, getBinSignalName} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';
 import {parseUnitModelWithScale, parseUnitModelWithScaleAndSelection} from '../../util';
-import {BIN_RANGE_DELIMITER} from './../../../src/compile/common';
+import {BIN_RANGE_DELIMITER} from '../../../src/compile/common';
 import {PlaceholderDataFlowNode} from './util';
 
 function assembleFromEncoding(model: ModelWithField) {

@@ -13,7 +13,7 @@ type UnitSpecWithRangeStep = GenericUnitSpec<Encoding<string>, any>; // this is 
 export class RangeStepNormalizer implements NonFacetUnitNormalizer<UnitSpecWithRangeStep> {
   public name = 'RangeStep';
 
-  public hasMatchingType(spec: GenericSpec<any, any>): spec is UnitSpecWithRangeStep {
+  public hasMatchingType(spec: GenericSpec<any, any, any, any>): spec is UnitSpecWithRangeStep {
     if (isUnitSpec(spec) && spec.encoding) {
       for (const channel of POSITION_SCALE_CHANNELS) {
         const def = spec.encoding[channel];

@@ -5,7 +5,6 @@ import {isStep} from '../../spec/base';
 import {isVgRangeStep} from '../../vega.schema';
 import {ConcatModel} from '../concat';
 import {Model} from '../model';
-import {RepeatModel} from '../repeat';
 import {Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {getSizeTypeFromLayoutSizeType, LayoutSize, LayoutSizeIndex, LayoutSizeType} from './component';
@@ -19,7 +18,7 @@ export function parseLayerLayoutSize(model: Model) {
 
 export const parseRepeatLayoutSize = parseConcatLayoutSize;
 
-export function parseConcatLayoutSize(model: ConcatModel | RepeatModel) {
+export function parseConcatLayoutSize(model: ConcatModel) {
   parseChildrenLayoutSize(model);
 
   parseNonUnitLayoutSizeForChannel(model, 'childWidth');

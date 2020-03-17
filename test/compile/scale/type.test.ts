@@ -6,7 +6,7 @@ import {ScaleType} from '../../../src/scale';
 import {TIMEUNITS, isUTCTimeUnit} from '../../../src/timeunit';
 import {NOMINAL, ORDINAL} from '../../../src/type';
 import * as util from '../../../src/util';
-import {RECT} from './../../../src/mark';
+import {RECT} from '../../../src/mark';
 
 describe('compile/scale', () => {
   describe('type()', () => {

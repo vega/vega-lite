@@ -37,7 +37,6 @@ import {LegendIndex} from './legend/component';
 import {initMarkdef} from './mark/init';
 import {parseMarkGroups} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
-import {RepeaterValue, replaceRepeaterInEncoding} from './repeater';
 import {ScaleIndex} from './scale/component';
 import {
   assembleTopLevelSignals,
@@ -72,31 +71,19 @@ export class UnitModel extends ModelWithField {
     parent: Model,
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins = {},
-    repeater: RepeaterValue,
     config: Config
   ) {
-    super(
-      spec,
-      'unit',
-      parent,
-      parentGivenName,
-      config,
-      repeater,
-      undefined,
-      isFrameMixins(spec) ? spec.view : undefined
-    );
+    super(spec, 'unit', parent, parentGivenName, config, undefined, isFrameMixins(spec) ? spec.view : undefined);
 
     const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
 
-    const encodingWithRepeaterReplaced = replaceRepeaterInEncoding(spec.encoding ?? {}, repeater);
-
-    this.markDef = initMarkdef(spec.mark, encodingWithRepeaterReplaced, config, {
+    this.markDef = initMarkdef(spec.mark, spec.encoding ?? {}, config, {
       graticule: spec.data && isGraticuleGenerator(spec.data)
     });
-    const encoding = (this.encoding = initEncoding(encodingWithRepeaterReplaced, this.markDef));
+    const encoding = (this.encoding = initEncoding(spec.encoding ?? {}, this.markDef));
 
     this.size = initLayoutSize({
-      encoding,
+      encoding: encoding,
       size: isFrameMixins(spec)
         ? {
             ...parentGivenSize,

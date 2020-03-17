@@ -103,7 +103,9 @@ function parseNonUnitProjections(model: Model): ProjectionComponent {
   let nonUnitProjection: ProjectionComponent;
 
   // parse all children first
-  model.children.forEach(child => parseProjection(child));
+  for (const child of model.children) {
+    parseProjection(child);
+  }
 
   // analyze parsed projections, attempt to merge
   const mergable = every(model.children, child => {
@@ -136,7 +138,7 @@ function parseNonUnitProjections(model: Model): ProjectionComponent {
     );
 
     // rename and assign all others as merged
-    model.children.forEach(child => {
+    for (const child of model.children) {
       const projection = child.component.projection;
       if (projection) {
         if (projection.isFit) {
@@ -145,7 +147,7 @@ function parseNonUnitProjections(model: Model): ProjectionComponent {
         child.renameProjection(projection.get('name'), name);
         projection.merged = true;
       }
-    });
+    }
 
     return modelProjection;
   }
