@@ -4488,7 +4488,6 @@
       "name": "child__repeat_row_Horsepower__repeat_column_Horsepower_y",
       "type": "linear",
       "domain": {"data": "data_2", "field": "Horsepower"},
-      "domainRaw": {"signal": "grid[\"Horsepower\"]"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -4524,7 +4523,6 @@
       "name": "child__repeat_row_Acceleration__repeat_column_Acceleration_y",
       "type": "linear",
       "domain": {"data": "data_4", "field": "Acceleration"},
-      "domainRaw": {"signal": "grid[\"Acceleration\"]"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -4560,7 +4558,6 @@
       "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon_y",
       "type": "linear",
       "domain": {"data": "data_6", "field": "Miles_per_Gallon"},
-      "domainRaw": {"signal": "grid[\"Miles_per_Gallon\"]"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
