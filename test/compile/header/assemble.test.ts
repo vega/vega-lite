@@ -1,11 +1,12 @@
+import {setCustomFormatTypes} from '../../../src/compile/format';
 import {
   assembleHeaderGroups,
   assembleHeaderProperties,
+  assembleLabelTitle,
   assembleTitleGroup,
   defaultHeaderGuideAlign,
   defaultHeaderGuideBaseline,
-  getLayoutTitleBand,
-  assembleLabelTitle
+  getLayoutTitleBand
 } from '../../../src/compile/header/assemble';
 import {HEADER_CHANNELS} from '../../../src/compile/header/component';
 import {
@@ -299,6 +300,17 @@ describe('compile/header/index', () => {
       );
 
       expect(title.text).toEqual({signal: 'format(parent["foo"], "d")[0]'});
+    });
+
+    it('correctly applies custom format type', () => {
+      setCustomFormatTypes(['foo']);
+      const title = assembleLabelTitle(
+        {field: 'foo', type: 'ordinal', header: {format: 'abc', formatType: 'foo'}},
+        'column',
+        {headerColumn: {format: 'd'}, header: {format: 'd'}}
+      );
+      expect(title.text).toEqual({signal: 'foo(parent["foo"], "abc")'});
+      setCustomFormatTypes([]);
     });
 
     it('correctly applies labelExpr when accessing the value', () => {

@@ -189,7 +189,7 @@ export function isSecondaryRangeChannel(c: Channel): c is SecondaryRangeChannel 
 /**
  * Get the main channel for a range channel. E.g. `x` for `x2`.
  */
-export function getMainRangeChannel(channel: Channel): Channel {
+export function getMainRangeChannel<C extends Channel>(channel: C): C | 'x' | 'y' | 'latitude' | 'longitude' {
   switch (channel) {
     case 'x2':
       return 'x';

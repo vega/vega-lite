@@ -20,25 +20,28 @@ export interface TitleMixins {
 
 export interface FormatMixins {
   /**
-   * The text formatting pattern for labels of guides (axes, legends, headers) and text marks.
+   * When used with the default `"number"` and `"time"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.
    *
    * - If the format type is `"number"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).
    * - If the format type is `"time"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).
    *
    * See the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.
    *
+   * When used with a [custom `"formatType"`](https://vega.github.io/vega-lite/usage/compile.html#format-type) that takes `datum.value` and format parameter as input), this property represents the format parameter.
+   *
    * __Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format.
    */
-  format?: string;
+  format?: string | object;
 
   /**
-   * The format type for labels (`"number"` or `"time"`).
+   * The format type for labels (`"number"` or `"time"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/compile.html#format-type)).
+   *
    *
    * __Default value:__
    * - `"time"` for temporal fields and ordinal and nomimal fields with `timeUnit`.
    * - `"number"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.
    */
-  formatType?: 'number' | 'time';
+  formatType?: 'number' | 'time' | string;
 
   /**
    * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.

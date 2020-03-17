@@ -76,36 +76,6 @@ describe('compile/axis/assemble', () => {
       expect(axis.encode.labels.update.fill).toEqual({signal: 'a'});
     });
 
-    it('correctly redirect x-labelOffset', () => {
-      const axisCmpt = new AxisComponent({
-        orient: 'top',
-        labelOffset: 5
-      });
-      const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
-      expect(axis.encode.labels.update.dx).toEqual({value: 5});
-    });
-
-    it('correctly redirect y-labelOffset', () => {
-      const axisCmpt = new AxisComponent({
-        orient: 'left',
-        labelOffset: 5
-      });
-      const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
-      expect(axis.encode.labels.update.dy).toEqual({value: 5});
-    });
-
-    it('correctly redirect conditional y-labelOffset', () => {
-      const axisCmpt = new AxisComponent({
-        orient: 'left',
-        labelOffset: {
-          condition: {test: 'datum.index===0', value: 10},
-          value: -10
-        }
-      });
-      const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
-      expect(axis.encode.labels.update.dy).toEqual([{test: 'datum.index===0', value: 10}, {value: -10}]);
-    });
-
     it('correctly applies conditional axis tickSize', () => {
       const axisCmpt = new AxisComponent({
         tickSize: {
@@ -115,6 +85,17 @@ describe('compile/axis/assemble', () => {
       });
       const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
       expect(axis.tickSize).toEqual({signal: 'datum.index === 0 || datum.index === 1 ? 4 : 2'});
+    });
+
+    it('correctly applies conditional signal for axis tickSize', () => {
+      const axisCmpt = new AxisComponent({
+        tickSize: {
+          condition: {test: 'datum.index === 0 || datum.index === 1', signal: 'a'},
+          signal: 'b'
+        }
+      });
+      const axis = assembleAxis(axisCmpt, 'main', defaultConfig);
+      expect(axis.tickSize).toEqual({signal: 'datum.index === 0 || datum.index === 1 ? a : b'});
     });
   });
 });

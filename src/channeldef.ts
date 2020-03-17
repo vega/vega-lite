@@ -5,6 +5,7 @@ import {Axis} from './axis';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin';
 import {Channel, isScaleChannel, isSecondaryRangeChannel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
 import {getMarkConfig} from './compile/common';
+import {isCustomFormatType} from './compile/format';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeToExpr, isDateTime} from './datetime';
@@ -778,12 +779,14 @@ export function defaultTitle(fieldDef: FieldDefBase<string>, config: Config) {
   return titleFormatter(fieldDef, config);
 }
 
-export function format(fieldDef: TypedFieldDef<string>) {
-  if (isTextFieldDef(fieldDef) && fieldDef.format) {
-    return fieldDef.format;
+export function getFormatMixins(fieldDef: TypedFieldDef<string>) {
+  if (isTextFieldDef(fieldDef)) {
+    const {format, formatType} = fieldDef;
+    return {format, formatType};
   } else {
     const guide = getGuide(fieldDef) ?? {};
-    return guide.format;
+    const {format, formatType} = guide;
+    return {format, formatType};
   }
 }
 
@@ -1041,14 +1044,20 @@ export function channelCompatibility(
  * Check if the field def uses a time format or does not use any format but is temporal
  * (this does not cover field defs that are temporal but use a number format).
  */
-export function isTimeFormatFieldDef(fieldDef: TypedFieldDef<string>): boolean {
+export function isFieldDefForTimeFormat(fieldDef: TypedFieldDef<string>): boolean {
   const guide = getGuide(fieldDef);
   const formatType = (guide && guide.formatType) || (isTextFieldDef(fieldDef) && fieldDef.formatType);
   return formatType === 'time' || (!formatType && isTimeFieldDef(fieldDef));
 }
 
+export function isFieldDefWithCustomTimeFormat(fieldDef: TypedFieldDef<string>): boolean {
+  const guide = getGuide(fieldDef);
+  const formatType = (guide && guide.formatType) || (isTextFieldDef(fieldDef) && fieldDef.formatType);
+  return formatType && isCustomFormatType(formatType);
+}
+
 /**
- * Check if field def has tye `temporal`. If you want to also cover field defs that use a time format, use `isTimeFormatFieldDef`.
+ * Check if field def has type `temporal`. If you want to also cover field defs that use a time format, use `isTimeFormatFieldDef`.
  */
 export function isTimeFieldDef(fieldDef: TypedFieldDef<any>) {
   return fieldDef.type === 'temporal' || !!fieldDef.timeUnit;
@@ -1073,9 +1082,18 @@ export function valueExpr(
   }
 ): string {
   const unit = normalizeTimeUnit(timeUnit)?.unit;
+
   let expr;
   if (isSignalRef(v)) {
-    expr = v.signal;
+    const s = v.signal;
+
+    if (time && !unit && type !== 'temporal') {
+      // We don't know if this is a date or not, so we need to check
+      return time ? `isDate(${s}) ? time(${s}) : ${s}` : s;
+    } else {
+      // TODO: support isLocalSingleTimeUnit(unit) -- we can't do that until DateTime object supports signal
+      expr = s;
+    }
   } else if (isDateTime(v)) {
     expr = dateTimeToExpr(v);
   } else if (isString(v) || isNumber(v)) {

@@ -1,4 +1,5 @@
 import * as encode from '../../../src/compile/axis/encode';
+import {setCustomFormatTypes} from '../../../src/compile/format';
 import {parseUnitModelWithScale} from '../../util';
 
 describe('compile/axis/encode', () => {
@@ -24,6 +25,19 @@ describe('compile/axis/encode', () => {
       });
       const labels = encode.labels(model, 'x', {});
       expect(labels.angle).toBeUndefined();
+    });
+
+    it('applies custom format type', () => {
+      setCustomFormatTypes(['customNumberFormat']);
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'quantitative', axis: {format: 'abc', formatType: 'customNumberFormat'}}
+        }
+      });
+      const labels = encode.labels(model, 'x', {});
+      expect(labels.text.signal).toEqual('customNumberFormat(datum.value, "abc")');
+      setCustomFormatTypes([]);
     });
 
     it('should have correct text.signal for quarter timeUnits', () => {

@@ -24,6 +24,10 @@
           "sort": {"field": ["site"], "order": ["descending"]},
           "as": ["sum_yield_start", "sum_yield_end"],
           "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_yield\"]) && isFinite(+datum[\"sum_yield\"])"
         }
       ]
     }

@@ -209,7 +209,7 @@ export class AggregateNode extends DataFlowNode {
 
     const result: VgAggregateTransform = {
       type: 'aggregate',
-      groupby: [...this.dimensions],
+      groupby: [...this.dimensions].map(replacePathInField),
       ops,
       fields,
       as

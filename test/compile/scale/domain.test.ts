@@ -553,8 +553,8 @@ describe('compile/scale', () => {
         const _domain = testParseDomainForChannel(model, 'y');
 
         expect(_domain).toEqual([
-          {signal: 'datetime(1970, 0, 1, 0, 0, 0, 0)'},
-          {signal: 'datetime(1980, 0, 1, 0, 0, 0, 0)'}
+          {signal: '{data: datetime(1970, 0, 1, 0, 0, 0, 0)}'},
+          {signal: '{data: datetime(1980, 0, 1, 0, 0, 0, 0)}'}
         ]);
       });
 
@@ -571,7 +571,7 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model, 'y');
 
-        expect(_domain).toEqual([{signal: 'datetime(1970, 0, 1, 0, 0, 0, 0)'}, {signal: 'a'}]);
+        expect(_domain).toEqual([{signal: '{data: datetime(1970, 0, 1, 0, 0, 0, 0)}'}, {signal: '{data: a}'}]);
       });
 
       it('should return the right custom domain with date strings', () => {
@@ -587,7 +587,10 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model, 'y');
 
-        expect(_domain).toEqual([{signal: `datetime("Jan 1, 2007")`}, {signal: `datetime("Jan 1, 2009")`}]);
+        expect(_domain).toEqual([
+          {signal: `{data: datetime("Jan 1, 2007")}`},
+          {signal: `{data: datetime("Jan 1, 2009")}`}
+        ]);
       });
 
       it('should return the right custom domain when timeUnit is used', () => {
@@ -604,7 +607,10 @@ describe('compile/scale', () => {
         });
         const _domain = testParseDomainForChannel(model, 'y');
 
-        expect(_domain).toEqual([{signal: `datetime("Jan 1, 2007")`}, {signal: `datetime("Jan 1, 2009")`}]);
+        expect(_domain).toEqual([
+          {signal: `{data: datetime("Jan 1, 2007")}`},
+          {signal: `{data: datetime("Jan 1, 2009")}`}
+        ]);
       });
 
       describe('for ordinal', () => {
@@ -1152,7 +1158,46 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.LINEAR);
-      expect(sort).toEqual(undefined);
+      expect(sort).toBeUndefined();
+    });
+
+    it('should sort stacked groupby dimension', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'nominal'},
+          color: {field: 'c', type: 'quantitative'}
+        }
+      });
+      const sort = domainSort(model, 'y', ScaleType.BAND);
+      expect(sort).toBe(true);
+    });
+
+    it('should use sum aggregation for stacked measure', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'nominal', sort: 'x'},
+          color: {field: 'c', type: 'quantitative'}
+        }
+      });
+      const sort = domainSort(model, 'y', ScaleType.BAND);
+      expect(sort).toEqual({field: 'a', op: 'sum'});
+    });
+
+    it('should use min aggregation for stacked dimension', () => {
+      const model = parseUnitModel({
+        mark: 'bar',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'},
+          y: {field: 'b', type: 'nominal', sort: 'color'},
+          color: {field: 'c', type: 'quantitative'}
+        }
+      });
+      const sort = domainSort(model, 'y', ScaleType.BAND);
+      expect(sort).toEqual({field: 'c', op: 'min'});
     });
 
     it('should return true by default for discrete domain', () => {
@@ -1163,7 +1208,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      expect(sort).toEqual(true);
+      expect(sort).toBe(true);
     });
 
     it('should return true for ascending', () => {

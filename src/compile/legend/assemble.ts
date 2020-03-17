@@ -1,9 +1,9 @@
-import {LEGEND_SCALE_CHANNELS} from './../../legend';
 import {Legend as VgLegend, LegendEncode} from 'vega';
 import {SIGNAL_LEGEND_PROP_INDEX} from '../../legend';
 import {keys, replaceAll, stringify, vals} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {Model} from '../model';
+import {LEGEND_SCALE_CHANNELS} from './../../legend';
 import {LegendComponent} from './component';
 import {mergeLegendComponent} from './parse';
 
@@ -61,6 +61,11 @@ export function assembleLegend(legendCmpt: LegendComponent) {
         delete out[property];
       }
     }
+  }
+
+  if (!legend.title) {
+    // title schema doesn't include null, ''
+    delete legend.title;
   }
 
   if (labelExpr !== undefined) {

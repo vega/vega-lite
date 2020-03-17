@@ -2,7 +2,6 @@ import {PositionFieldDef, SecondaryFieldDef} from '../../../src/channeldef';
 import {bar} from '../../../src/compile/mark/bar';
 import {fieldInvalidPredicate, fieldInvalidTestValueRef} from '../../../src/compile/mark/encode/valueref';
 import {DEFAULT_STEP} from '../../../src/config';
-import * as log from '../../../src/log';
 import {defaultBarConfig} from '../../../src/mark';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
@@ -71,83 +70,68 @@ describe('Mark: Bar', () => {
     expect(props.height).toBeUndefined();
   });
 
-  it(
-    'should draw vertical bar, with y from "group: height" to field value when domain that excludes zero is specified',
-    log.wrap(logger => {
-      const y: PositionFieldDef<string> = {
-        type: 'quantitative',
-        field: 'Acceleration',
-        aggregate: 'mean',
-        scale: {domain: [1, 2]}
-      };
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        data: {url: 'data/cars.json'},
-        mark: 'bar',
-        encoding: {
-          x: {field: 'Origin', type: 'nominal'},
-          y
-        }
-      });
-      const props = bar.encodeEntry(model);
+  it('should draw vertical bar, with y from "group: height" to field value when domain that excludes zero is specified', () => {
+    const y: PositionFieldDef<string> = {
+      type: 'quantitative',
+      field: 'Acceleration',
+      aggregate: 'mean',
+      scale: {domain: [1, 2]}
+    };
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: 'bar',
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        y
+      }
+    });
+    const props = bar.encodeEntry(model);
 
-      expect(props.y).toEqual([fieldInvalidTestValueRef(y, 'y'), {scale: 'y', field: 'mean_Acceleration'}]);
-      expect(props.y2).toEqual({field: {group: 'height'}});
-      expect(props.height).toBeUndefined();
+    expect(props.y).toEqual([fieldInvalidTestValueRef(y, 'y'), {scale: 'y', field: 'mean_Acceleration'}]);
+    expect(props.y2).toEqual({field: {group: 'height'}});
+    expect(props.height).toBeUndefined();
+  });
 
-      expect(logger.warns[0]).toEqual(log.message.nonZeroScaleUsedWithLengthMark('bar', 'y', {zeroFalse: false}));
-    })
-  );
+  it('should draw vertical bar, with y from "group: height" to field value when zero=false for y-scale', () => {
+    const y: PositionFieldDef<string> = {
+      type: 'quantitative',
+      field: 'Acceleration',
+      aggregate: 'mean',
+      scale: {zero: false}
+    };
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: 'bar',
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        y
+      }
+    });
+    const props = bar.encodeEntry(model);
 
-  it(
-    'should draw vertical bar, with y from "group: height" to field value when zero=false for y-scale',
-    log.wrap(logger => {
-      const y: PositionFieldDef<string> = {
-        type: 'quantitative',
-        field: 'Acceleration',
-        aggregate: 'mean',
-        scale: {zero: false}
-      };
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        data: {url: 'data/cars.json'},
-        mark: 'bar',
-        encoding: {
-          x: {field: 'Origin', type: 'nominal'},
-          y
-        }
-      });
-      const props = bar.encodeEntry(model);
+    expect(props.y).toEqual([
+      {test: fieldInvalidPredicate(y), field: {group: 'height'}},
+      {scale: 'y', field: 'mean_Acceleration'}
+    ]);
+    expect(props.y2).toEqual({field: {group: 'height'}});
+    expect(props.height).toBeUndefined();
+  });
 
-      expect(props.y).toEqual([
-        {test: fieldInvalidPredicate(y), field: {group: 'height'}},
-        {scale: 'y', field: 'mean_Acceleration'}
-      ]);
-      expect(props.y2).toEqual({field: {group: 'height'}});
-      expect(props.height).toBeUndefined();
+  it('should draw vertical bar, with y from "group: height" to field value when y-scale type is log', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: 'bar',
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean', scale: {type: 'log'}}
+      }
+    });
+    const props = bar.encodeEntry(model);
 
-      expect(logger.warns[0]).toEqual(log.message.nonZeroScaleUsedWithLengthMark('bar', 'y', {zeroFalse: true}));
-    })
-  );
-
-  it(
-    'should draw vertical bar, with y from "group: height" to field value when y-scale type is log',
-    log.wrap(logger => {
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        data: {url: 'data/cars.json'},
-        mark: 'bar',
-        encoding: {
-          x: {field: 'Origin', type: 'nominal'},
-          y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean', scale: {type: 'log'}}
-        }
-      });
-      const props = bar.encodeEntry(model);
-
-      expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
-      expect(props.y2).toEqual({field: {group: 'height'}});
-      expect(props.height).toBeUndefined();
-
-      expect(logger.warns[0]).toEqual(log.message.nonZeroScaleUsedWithLengthMark('bar', 'y', {scaleType: 'log'}));
-    })
-  );
+    expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
+    expect(props.y2).toEqual({field: {group: 'height'}});
+    expect(props.height).toBeUndefined();
+  });
 
   describe('simple horizontal', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({

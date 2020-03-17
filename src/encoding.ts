@@ -502,9 +502,9 @@ export function forEach<U extends Partial<Record<Channel, any>>>(
   for (const channel of keys(mapping)) {
     const el = mapping[channel];
     if (isArray(el)) {
-      el.forEach((channelDef: ChannelDef) => {
+      for (const channelDef of el) {
         f.call(thisArg, channelDef, channel);
-      });
+      }
     } else {
       f.call(thisArg, el, channel);
     }

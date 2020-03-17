@@ -1,24 +1,11 @@
 import {SignalRef, Text} from 'vega';
 import {array} from 'vega-util';
 import {Axis} from '../axis';
-import {isBinning} from '../bin';
-import {
-  FieldDefBase,
-  FieldRefOption,
-  isScaleFieldDef,
-  isTimeFormatFieldDef,
-  OrderFieldDef,
-  TypedFieldDef,
-  vgField
-} from '../channeldef';
+import {FieldDefBase, FieldRefOption, OrderFieldDef, vgField} from '../channeldef';
 import {Config, StyleConfigIndex} from '../config';
 import {AnyMarkConfig, MarkConfig, MarkDef} from '../mark';
-import {fieldValidPredicate} from '../predicate';
-import {ScaleType} from '../scale';
 import {SortFields} from '../sort';
-import {formatExpression, normalizeTimeUnit, TimeUnit} from '../timeunit';
 import {isText} from '../title';
-import {QUANTITATIVE} from '../type';
 import {deepEqual, getFirstDefined} from '../util';
 import {isSignalRef, VgEncodeEntry} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
@@ -93,105 +80,11 @@ export function getStyleConfig<P extends keyof AnyMarkConfig | keyof Axis>(
   for (const style of styles) {
     const styleConfig = styleConfigIndex[style];
 
-    if (styleConfig) {
+    if (styleConfig && styleConfig[p as string] !== undefined) {
       value = styleConfig[p as string];
     }
   }
   return value;
-}
-
-export function formatSignalRef(
-  fieldDef: TypedFieldDef<string>,
-  specifiedFormat: string,
-  expr: 'datum' | 'parent' | 'datum.datum',
-  config: Config
-) {
-  if (isTimeFormatFieldDef(fieldDef)) {
-    const isUTCScale = isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC;
-    return {
-      signal: timeFormatExpression(
-        vgField(fieldDef, {
-          expr
-        }),
-        normalizeTimeUnit(fieldDef.timeUnit)?.unit,
-        specifiedFormat,
-        config.timeFormat,
-        isUTCScale,
-        true
-      )
-    };
-  } else {
-    const format = numberFormat(fieldDef, specifiedFormat, config);
-    if (isBinning(fieldDef.bin)) {
-      const startField = vgField(fieldDef, {expr});
-      const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
-      return {
-        signal: binFormatExpression(startField, endField, format, config)
-      };
-    } else if (fieldDef.type === 'quantitative' || format) {
-      return {
-        signal: `${formatExpr(vgField(fieldDef, {expr, binSuffix: 'range'}), format)}`
-      };
-    } else {
-      return {signal: `''+${vgField(fieldDef, {expr})}`};
-    }
-  }
-}
-
-/**
- * Returns number format for a fieldDef
- */
-export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: string, config: Config) {
-  // Specified format in axis/legend has higher precedence than fieldDef.format
-  if (specifiedFormat) {
-    return specifiedFormat;
-  }
-
-  if (fieldDef.type === QUANTITATIVE) {
-    // we only apply the default if the field is quantitative
-    return config.numberFormat;
-  }
-  return undefined;
-}
-
-function formatExpr(field: string, format: string) {
-  return `format(${field}, "${format || ''}")`;
-}
-
-export function numberFormatExpr(field: string, specifiedFormat: string, config: Config) {
-  return formatExpr(field, specifiedFormat ?? config.numberFormat);
-}
-
-export function binFormatExpression(startField: string, endField: string, format: string, config: Config) {
-  return `${fieldValidPredicate(startField, false)} ? "null" : ${numberFormatExpr(
-    startField,
-    format,
-    config
-  )} + "${BIN_RANGE_DELIMITER}" + ${numberFormatExpr(endField, format, config)}`;
-}
-
-/**
- * Returns the time expression used for axis/legend labels or text mark for a temporal field
- */
-export function timeFormatExpression(
-  field: string,
-  timeUnit: TimeUnit,
-  format: string,
-  rawTimeFormat: string, // should be provided only for actual text and headers, not axis/legend labels
-  isUTCScale: boolean,
-  alwaysReturn = false
-): string {
-  if (!timeUnit || format) {
-    // If there is not time unit, or if user explicitly specify format for axis/legend/text.
-    format = format ?? rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
-    if (format || alwaysReturn) {
-      return `${isUTCScale ? 'utc' : 'time'}Format(${field}, '${format}')`;
-    } else {
-      return undefined;
-    }
-  } else {
-    return formatExpression(timeUnit, field, isUTCScale);
-  }
 }
 
 /**

@@ -17,6 +17,10 @@
           "ops": ["argmax"],
           "fields": ["US_Gross"],
           "as": ["argmax_US_Gross"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"argmax_US_Gross\"].Production_Budget) && isFinite(+datum[\"argmax_US_Gross\"].Production_Budget)"
         }
       ]
     }

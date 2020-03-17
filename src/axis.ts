@@ -15,9 +15,11 @@ import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, TitleMixins, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {ExcludeMappedValueRefButKeepSignal, VgEncodeChannel} from './vega.schema';
+import {ExcludeMappedValueRef, ExcludeMappedValueRefButKeepSignal, VgEncodeChannel} from './vega.schema';
 
-export type BaseAxisNoValueRefs = AxisMixins & ExcludeMappedValueRefButKeepSignal<BaseAxis>;
+export type BaseAxisNoValueRefs = AxisMixins &
+  Omit<ExcludeMappedValueRefButKeepSignal<BaseAxis>, 'labelAngle' | 'titleAngle'> &
+  ExcludeMappedValueRef<Pick<BaseAxis, 'labelAngle' | 'titleAngle'>>; // label/titleAngle don't support signal as we don't want to implement labelAlign logic in signal world yet (part of https://github.com/vega/vega-lite/issues/5824)
 
 interface AxisMixins {
   // Override comments to be Vega-Lite specific
@@ -74,6 +76,7 @@ export type ConditionalAxisProp =
   | 'labelFontStyle'
   | 'labelFontWeight'
   | 'labelOpacity'
+  | 'labelOffset'
   | 'labelPadding'
   | 'gridColor'
   | 'gridDash'
@@ -130,6 +133,7 @@ export const CONDITIONAL_AXIS_PROP_INDEX: Record<
     part: 'labels',
     vgProp: 'opacity'
   },
+  labelOffset: null,
   labelPadding: null, // There is no fixed vgProp for tickSize, need to use signal.
   gridColor: {
     part: 'grid',
@@ -179,8 +183,8 @@ export const CONDITIONAL_AXIS_PROP_INDEX: Record<
   title: null // title supports signal, let's use it.
 };
 
-export type ConditionalAxisProperty<V extends Value | number[]> = ValueDef<V> & {
-  condition: ConditionalPredicate<ValueDef<V>> | ConditionalPredicate<ValueDef<V>>[];
+export type ConditionalAxisProperty<V extends Value | number[]> = (ValueDef<V> | SignalRef) & {
+  condition: ConditionalPredicate<ValueDef<V> | SignalRef> | ConditionalPredicate<ValueDef<V> | SignalRef>[];
 };
 
 export function isConditionalAxisValue<V extends Value | number[]>(v: any): v is ConditionalAxisProperty<V> {
@@ -211,7 +215,13 @@ export interface AxisPropsWithConditionAndSignal {
   labelFontSize?: BaseAxisNoValueRefs['labelFontSize'] | ConditionalAxisNumber;
   labelFontStyle?: BaseAxisNoValueRefs['labelFontStyle'] | ConditionalAxisLabelFontStyle;
   labelFontWeight?: BaseAxisNoValueRefs['labelFontWeight'] | ConditionalAxisLabelFontWeight;
+
+  labelLineHeight?: BaseAxisNoValueRefs['labelLineHeight'] | ConditionalAxisNumber | SignalRef;
+
   labelOpacity?: BaseAxisNoValueRefs['labelOpacity'] | ConditionalAxisNumber;
+
+  labelOffset?: BaseAxisNoValueRefs['labelOffset'] | ConditionalAxisNumber | SignalRef;
+
   labelPadding?: BaseAxisNoValueRefs['labelPadding'] | ConditionalAxisNumber;
   gridColor?: BaseAxisNoValueRefs['gridColor'] | ConditionalAxisColor | SignalRef;
   gridDash?: BaseAxisNoValueRefs['gridDash'] | ConditionalAxisNumberArray;
@@ -230,11 +240,11 @@ export interface AxisPropsWithConditionAndSignal {
 
 export type AxisConfig = VlOnlyGuideConfig &
   AxisConfigBaseWithConditionalAndSignal &
-  Pick<Axis, 'labelExpr' | 'labelOffset' | 'tickCount'>;
+  Pick<Axis, 'labelExpr' | 'tickCount' | 'style'>;
 
 export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
   /**
-   * A string or array of strings indicating the name of custom styles to apply to the axis. A style is a named collection of axis property defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles. Any [axis properties](https://vega.github.io/vega-lite/docs/encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
+   * A string or array of strings indicating the name of custom styles to apply to the axis. A style is a named collection of axis property defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles.
    *
    * __Default value:__ (none)
    * __Note:__ Any specified style will augment the default style. For example, an x-axis mark with `"style": "foo"` will use `config.axisX` and `config.style.foo` (the specified style `"foo"` has higher precedence).
@@ -247,11 +257,6 @@ export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
    * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
    */
   labelExpr?: string;
-
-  /**
-   *  Position offset in pixels to apply to labels, in addition to tickOffset.
-   */
-  labelOffset?: number | ConditionalAxisNumber;
 
   /**
    * The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.
@@ -340,7 +345,9 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   labelFontWeight: 'main',
 
   labelLimit: 'main',
+  labelLineHeight: 'main',
   labelOpacity: 'main',
+  labelOffset: 'main',
   labelOverlap: 'main',
   labelPadding: 'main',
   labels: 'main',
@@ -448,6 +455,8 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   labelFontStyle: 1,
   labelFontWeight: 1,
   labelLimit: 1,
+  labelLineHeight: 1,
+  labelOffset: 1,
   labelOpacity: 1,
   labelOverlap: 1,
   labelPadding: 1,
@@ -495,7 +504,6 @@ const AXIS_PROPERTIES_INDEX: Flag<keyof Axis> = {
   ...COMMON_AXIS_PROPERTIES_INDEX,
   style: 1,
   labelExpr: 1,
-  labelOffset: 1,
   encoding: 1
 };
 
@@ -566,4 +574,54 @@ export interface AxisConfigMixins {
    * Config for temporal axes.
    */
   axisTemporal?: AxisConfig;
+
+  /**
+   * Config for x-axes with "band" scales.
+   */
+  axisXBand?: AxisConfig;
+
+  /**
+   * Config for x-axes with "point" scales.
+   */
+  axisXPoint?: AxisConfig;
+
+  /**
+   * Config for x-axes with "point" or "band" scales.
+   */
+  axisXDiscrete?: AxisConfig;
+
+  /**
+   * Config for x-quantitative axes.
+   */
+  axisXQuantitative?: AxisConfig;
+
+  /**
+   * Config for x-temporal axes.
+   */
+  axisXTemporal?: AxisConfig;
+
+  /**
+   * Config for y-axes with "band" scales.
+   */
+  axisYBand?: AxisConfig;
+
+  /**
+   * Config for y-axes with "point" scales.
+   */
+  axisYPoint?: AxisConfig;
+
+  /**
+   * Config for y-axes with "point" or "band" scales.
+   */
+  axisYDiscrete?: AxisConfig;
+
+  /**
+   * Config for y-quantitative axes.
+   */
+  axisYQuantitative?: AxisConfig;
+
+  /**
+   * Config for y-temporal axes.
+   */
+  axisYTemporal?: AxisConfig;
 }

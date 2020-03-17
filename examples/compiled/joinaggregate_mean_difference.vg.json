@@ -43,6 +43,10 @@
           "ops": ["average"],
           "fields": ["AverageRating"],
           "as": ["average_AverageRating"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"average_AverageRating\"]) && isFinite(+datum[\"average_AverageRating\"])"
         }
       ]
     }

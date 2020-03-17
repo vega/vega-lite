@@ -10,14 +10,15 @@ import {
   SHARED_DOMAIN_OP_INDEX
 } from '../../aggregate';
 import {isBinning, isBinParams, isSelectionExtent} from '../../bin';
-import {getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
+import {getMainRangeChannel, getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
 import {binRequiresRange, hasBand, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isDomainUnionWith, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
-import {normalizeTimeUnit} from '../../timeunit';
+import {normalizeTimeUnit, TimeUnit} from '../../timeunit';
+import {Type} from '../../type';
 import * as util from '../../util';
 import {
   isDataRefDomain,
@@ -38,6 +39,7 @@ import {isFacetModel, isUnitModel, Model} from '../model';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
+import {TimeUnitParams} from './../../timeunit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
 
 export function parseScaleDomain(model: Model) {
@@ -193,17 +195,26 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
   return parseSingleChannelDomain(scaleType, domain, model, channel);
 }
 
+function mapDomainToDataSignal(
+  domain: (number | string | boolean | DateTime | SignalRef)[],
+  type: Type,
+  timeUnit: TimeUnit
+) {
+  return domain.map(v => {
+    const data = valueExpr(v, {timeUnit, type});
+    return {signal: `{data: ${data}}`};
+  });
+}
+
 function convertDomainIfItIsDateTime(
   domain: (number | string | boolean | DateTime | SignalRef)[],
-  fieldDef: TypedFieldDef<string>
+  type: Type,
+  timeUnit: TimeUnit | TimeUnitParams
 ): [number[]] | [string[]] | [boolean[]] | SignalRef[] {
   // explicit value
-  const {type} = fieldDef;
-  const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.unit;
-  if (type === 'temporal' || timeUnit) {
-    return domain.map(v => {
-      return {signal: valueExpr(v, {timeUnit, type})};
-    });
+  const normalizedTimeUnit = normalizeTimeUnit(timeUnit)?.unit;
+  if (type === 'temporal' || normalizedTimeUnit) {
+    return mapDomainToDataSignal(domain, type, normalizedTimeUnit);
   }
 
   return [domain] as [number[]] | [string[]] | [boolean[]]; // Date time won't make sense
@@ -216,17 +227,18 @@ function parseSingleChannelDomain(
   channel: ScaleChannel | 'x2' | 'y2'
 ): Explicit<VgNonUnionDomain[]> {
   const fieldDef = model.fieldDef(channel);
+  const mainFieldDef = model.fieldDef(getMainRangeChannel(channel));
 
   if (isDomainUnionWith(domain)) {
     const defaultDomain = parseSingleChannelDomain(scaleType, undefined, model, channel);
 
-    const unionWith = convertDomainIfItIsDateTime(domain.unionWith, fieldDef);
+    const unionWith = convertDomainIfItIsDateTime(domain.unionWith, mainFieldDef.type, fieldDef.timeUnit);
 
     return makeExplicit([...defaultDomain.value, ...unionWith]);
   } else if (isSignalRef(domain)) {
     return makeExplicit([domain]);
   } else if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
-    return makeExplicit(convertDomainIfItIsDateTime(domain, fieldDef));
+    return makeExplicit(convertDomainIfItIsDateTime(domain, mainFieldDef.type, fieldDef.timeUnit));
   }
 
   const stack = model.stack;
@@ -353,11 +365,11 @@ function parseSingleChannelDomain(
   }
 }
 
-function normalizeSortField(sort: EncodingSortField<string>, isStacked: boolean) {
+function normalizeSortField(sort: EncodingSortField<string>, isStackedMeasure: boolean): VgSortField {
   const {op, field, order} = sort;
   return {
     // Apply default op
-    op: op ?? (isStacked ? 'sum' : DEFAULT_SORT_OP),
+    op: op ?? (isStackedMeasure ? 'sum' : DEFAULT_SORT_OP),
     // flatten nested fields
     ...(field ? {field: util.replacePathInField(field)} : {}),
 
@@ -402,14 +414,21 @@ export function domainSort(
     };
   }
 
-  const isStacked = model.stack !== null;
+  const {stack} = model;
+  const stackDimensions = stack
+    ? [...(stack.groupbyField ? [stack.groupbyField] : []), ...stack.stackBy.map(s => s.fieldDef.field)]
+    : undefined;
+
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {
-    return normalizeSortField(sort, isStacked);
+    const isStackedMeasure = stack && !util.contains(stackDimensions, sort.field);
+    return normalizeSortField(sort, isStackedMeasure);
   } else if (isSortByEncoding(sort)) {
     const {encoding, order} = sort;
     const fieldDefToSortBy = model.fieldDef(encoding);
     const {aggregate, field} = fieldDefToSortBy;
+
+    const isStackedMeasure = stack && !util.contains(stackDimensions, field);
 
     if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
       return normalizeSortField(
@@ -417,7 +436,7 @@ export function domainSort(
           field: vgField(fieldDefToSortBy),
           order
         },
-        isStacked
+        isStackedMeasure
       );
     } else if (isAggregateOp(aggregate) || !aggregate) {
       return normalizeSortField(
@@ -426,7 +445,7 @@ export function domainSort(
           field,
           order
         },
-        isStacked
+        isStackedMeasure
       );
     }
   } else if (sort === 'descending') {
@@ -551,7 +570,7 @@ export function mergeDomains(domains: VgNonUnionDomain[]): VgDomain {
         if (isObject(sort) && 'field' in sort) {
           const sortField = sort.field;
           if (domain.field === sortField) {
-            sort = {order: sort.order};
+            sort = sort.order ? {order: sort.order} : true;
           }
         }
       }

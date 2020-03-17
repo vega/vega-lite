@@ -1,4 +1,4 @@
-import {Color, InitSignal, NewSignal, RangeConfig, RangeScheme} from 'vega';
+import {Color, InitSignal, NewSignal, RangeConfig, RangeScheme, SignalRef} from 'vega';
 import {scheme} from 'vega-scale';
 import {isObject, mergeConfig} from 'vega-util';
 import {Axis, AxisConfigMixins, isConditionalAxisValue} from './axis';
@@ -203,13 +203,6 @@ export interface Config
     HeaderConfigMixins,
     CompositionConfigMixins {
   /**
-   * CSS color property to use as the background of the entire view.
-   *
-   * __Default value:__ `"white"`
-   */
-  background?: Color;
-
-  /**
    * An object hash that defines default range arrays or schemes for using with scales.
    * For a full list of scale range configuration options, please see the [corresponding section of the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#config).
    */
@@ -232,6 +225,11 @@ export interface Config
 
   /** An object hash that defines key-value mappings to determine default properties for marks with a given [style](https://vega.github.io/vega-lite/docs/mark.html#mark-def). The keys represent styles names; the values have to be valid [mark configuration objects](https://vega.github.io/vega-lite/docs/mark.html#config). */
   style?: StyleConfigIndex;
+
+  /**
+   * A delimiter, such as a newline character, upon which to break text strings into multiple lines. This property provides a global default for text marks, which is overridden by mark or style config settings, and by the lineBreak mark encoding channel. If signal-valued, either string or regular expression (regexp) values are valid.
+   */
+  lineBreak?: string | SignalRef;
 
   /**
    * @hidden

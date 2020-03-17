@@ -6,7 +6,7 @@ import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDe
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, replacePathInField, unique, vals, varName} from '../../util';
-import {binFormatExpression} from '../common';
+import {binFormatExpression} from '../format';
 import {isUnitModel, Model, ModelWithField} from '../model';
 import {parseSelectionBinExtent} from '../selection/parse';
 import {DataFlowNode} from './dataflow';
@@ -22,7 +22,7 @@ function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, ch
 
     return {
       formulaAs: vgField(fieldDef, {binSuffix: 'range', forAs: true}),
-      formula: binFormatExpression(startField, endField, guide.format, config)
+      formula: binFormatExpression(startField, endField, guide.format, guide.formatType, config)
     };
   }
   return {};

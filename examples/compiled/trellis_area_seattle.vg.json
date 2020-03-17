@@ -1,0 +1,185 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Average temperatures in Seattle, broken down by hour. Derived from [Seattle Annual Temperate](https://vega.github.io/vega/examples/annual-temperature/) example from the Vega example gallery.",
+  "background": "white",
+  "padding": 5,
+  "title": {"text": "Seattle Annual Temperatures", "anchor": "start"},
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/seattle-temps.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "(hours(datum.date) + 18) % 24",
+          "as": "order"
+        },
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["hours"],
+          "as": ["hours_date", "hours_date_end"]
+        }
+      ]
+    },
+    {
+      "name": "row_domain",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["hours_date"],
+          "fields": ["order"],
+          "ops": ["min"],
+          "as": ["order"]
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "child_width", "value": 800},
+    {"name": "child_height", "value": 25}
+  ],
+  "layout": {
+    "padding": {"row": 1, "column": 20},
+    "offset": {"rowTitle": 10},
+    "columns": 1,
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "name": "row-title",
+      "type": "group",
+      "role": "row-title",
+      "title": {
+        "text": "date (hours)",
+        "orient": "left",
+        "style": "guide-title",
+        "offset": -4
+      }
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {"data": "row_domain"},
+      "sort": {"field": "datum[\"order\"]", "order": "ascending"},
+      "title": {
+        "text": {
+          "signal": "hours(parent[\"hours_date\"]) == 0 ? 'Midnight' : hours(parent[\"hours_date\"]) == 12 ? 'Noon' : timeFormat(parent[\"hours_date\"], '%I:%M %p')"
+        },
+        "orient": "left",
+        "style": "guide-label",
+        "frame": "group",
+        "baseline": "middle",
+        "align": "left",
+        "angle": 0,
+        "offset": 2
+      },
+      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "labels": false,
+          "ticks": false,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Month",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_width/40)"},
+          "encode": {
+            "labels": {
+              "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
+            }
+          },
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "style": "cell",
+      "from": {
+        "facet": {
+          "name": "facet",
+          "data": "source_0",
+          "groupby": ["hours_date"],
+          "aggregate": {
+            "fields": ["order"],
+            "ops": ["min"],
+            "as": ["order_by_hours_date"]
+          }
+        }
+      },
+      "sort": {
+        "field": ["datum[\"order_by_hours_date\"]"],
+        "order": ["ascending"]
+      },
+      "encode": {
+        "update": {
+          "width": {"signal": "child_width"},
+          "height": {"signal": "child_height"},
+          "stroke": {"value": null}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "area",
+          "style": ["area"],
+          "sort": {"field": "datum[\"date\"]"},
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "orient": {"value": "vertical"},
+              "fill": {"value": "#4c78a8"},
+              "x": {"scale": "x", "field": "date"},
+              "y": {"scale": "y", "field": "temp"},
+              "y2": {"field": {"group": "height"}},
+              "defined": {
+                "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"temp\"]) && isFinite(+datum[\"temp\"])"
+              }
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "field": "date"},
+      "range": [0, {"signal": "child_width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "temp"},
+      "range": [{"signal": "child_height"}, 0],
+      "zero": false,
+      "nice": true
+    }
+  ],
+  "config": {"axis": {"grid": false, "domain": false}}
+}

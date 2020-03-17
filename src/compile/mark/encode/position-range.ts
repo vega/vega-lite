@@ -100,8 +100,7 @@ function pointPosition2(model: UnitModel, defaultPos: 'zeroOrMin' | 'zeroOrMax',
     defaultPos,
     channel,
     scaleName,
-    scale,
-    checkBarAreaWithoutZero: !encoding[channel] // only check for non-ranged marks
+    scale
   })();
 
   // TODO: check width/height encoding here once we add them

@@ -92,9 +92,9 @@
       "orient": "bottom",
       "grid": false,
       "title": "a",
-      "labelAlign": "right",
-      "labelAngle": 270,
-      "labelBaseline": "middle",
+      "labelAngle": 0,
+      "labelAlign": "center",
+      "labelBaseline": "top",
       "labelOverlap": true,
       "zindex": 0
     },

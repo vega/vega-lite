@@ -1,5 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "Bar chart with text labels. Apply scale padding to make the frame cover the labels.",
   "data": {
     "values": [
       {"a": "A", "b": 28},
@@ -9,7 +10,7 @@
   },
   "encoding": {
     "y": {"field": "a", "type": "ordinal"},
-    "x": {"field": "b", "type": "quantitative"}
+    "x": {"field": "b", "type": "quantitative", "scale": {"padding": 10}}
   },
   "layer": [{
     "mark": "bar"

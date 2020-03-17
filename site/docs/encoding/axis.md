@@ -154,9 +154,27 @@ We can also conditionally hide some labels and ticks in the following Lasagna pl
 
 Axis configuration defines default settings for axes. Properties defined under the `"axis"` property in the top-level [`config`](config.html) object are applied to _all_ axes.
 
-Additional property blocks can target more specific axis types based on the orientation (`"axisX"`, `"axisY"`, `"axisLeft"`, `"axisTop"`, etc.), band scale type (`"axisBand"`), or scale's data type (`"axisQuantitative"` and `"axisTemporal"`). For example, properties defined under the `"axisBand"` property will only apply to axes visualizing `"band"` scales. If multiple axis config blocks apply to a single axis, type-based options take precedence over orientation-based options, which in turn take precedence over general options.
+Additional property blocks can target more specific axis types based on the orientation (`"axisX"`, `"axisY"`, `"axisLeft"`, `"axisTop"`, etc.), band scale type (`"axisBand"`), scale's data type (`"axisDiscrete"`, `"axisQuantitative"`, and `"axisTemporal"`), or both orientation and scale/data type (e.g., `"axisXTemporal"`). For example, properties defined under the `"axisBand"` property will only apply to axes visualizing `"band"` scales.
 
 An axis configuration supports all [axis properties](#properties) except `position`, `orient`, `format`, `values`, and `zindex`.
+
+**Note:**
+
+- If multiple axis config blocks apply to a single axis, type-based options take precedence over orientation-based options, which in turn take precedence over general options.
+
+- If an axis config has a style property, the style will have lower precedence than any of the axis config properties.
+
+- In summary, here is the precedence level order for each axis property (from the highest to the lowest):
+  - Axis properties (`axis.*`)
+  - Axis style (`config.axis[axis.style].*`)
+  - Orientation and type based axis config (e.g., `config.axisXBand.*`)
+  - Type-based axis config (e.g., `config.axisBand.*`)
+  - Orientation-based axis config (`config.axisX/Y.*`)
+  - General axis config (`config.axis.*`)
+  - Style of orientation and type based axis config (e.g., `config.style[config.axisXBand.style].*`)
+  - Style of type-based axis config (e.g., `config.style[config.axisBand.style].*`)
+  - Style of orientation-based axis config (e.g., `config.style[config.axisX.style].*`)
+  - Style general axis config (`config.style[config.axis.style].*`)
 
 **See also:** [Axis Labels Properties](#labels) and [`guide-label` style config](mark.html#style-config) (common styles for by axis, [legend](legend.html), and [header](facet.html#header) labels).
 

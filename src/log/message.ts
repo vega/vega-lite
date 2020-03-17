@@ -130,22 +130,6 @@ export function invalidFieldType(type: Type) {
   return `Invalid field type "${type}".`;
 }
 
-export function nonZeroScaleUsedWithLengthMark(
-  mark: 'bar' | 'area' | 'rule',
-  channel: Channel,
-  opt: {scaleType?: ScaleType; zeroFalse?: boolean}
-) {
-  const scaleText = opt.scaleType
-    ? `${opt.scaleType} scale`
-    : opt.zeroFalse
-    ? 'scale with zero=false'
-    : 'scale with custom domain that excludes zero';
-
-  return `A ${scaleText} is used to encode ${mark}'s ${channel}. This can be misleading as the ${
-    channel === 'x' ? 'width' : 'height'
-  } of the ${mark} can be arbitrary based on the scale domain. You may want to use point mark instead.`;
-}
-
 export function invalidFieldTypeForCountAggregate(type: Type, aggregate: Aggregate | string) {
   return `Invalid field type "${type}" for aggregate: "${aggregate}", using "quantitative" instead.`;
 }

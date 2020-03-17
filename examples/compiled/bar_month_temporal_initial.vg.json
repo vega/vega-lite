@@ -27,7 +27,7 @@
         },
         {
           "type": "filter",
-          "expr": "(isDate(datum[\"month_date\"]) || (isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"])))"
+          "expr": "(isDate(datum[\"month_date\"]) || (isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]))) && isValid(datum[\"mean_precipitation\"]) && isFinite(+datum[\"mean_precipitation\"])"
         }
       ]
     }

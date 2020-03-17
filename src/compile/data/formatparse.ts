@@ -1,8 +1,9 @@
+import {FormulaTransform as VgFormulaTransform, SignalRef} from 'vega';
 import {isNumber, isString} from 'vega-util';
 import {AncestorParse} from '.';
 import {isMinMaxOp} from '../../aggregate';
 import {getMainRangeChannel, SingleDefChannel} from '../../channel';
-import {isFieldDef, isScaleFieldDef, isTimeFormatFieldDef, isTypedFieldDef, TypedFieldDef} from '../../channeldef';
+import {isFieldDef, isFieldDefForTimeFormat, isScaleFieldDef, isTypedFieldDef, TypedFieldDef} from '../../channeldef';
 import {isGenerator, Parse} from '../../data';
 import {DateTime, isDateTime} from '../../datetime';
 import * as log from '../../log';
@@ -11,8 +12,7 @@ import {isPathMark} from '../../mark';
 import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
-import {accessPathDepth, accessPathWithDatum, duplicate, hash, keys, removePathFromField, Dict} from '../../util';
-import {FormulaTransform as VgFormulaTransform} from 'vega';
+import {accessPathDepth, accessPathWithDatum, Dict, duplicate, hash, keys, removePathFromField} from '../../util';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
 import {DataFlowNode} from './dataflow';
@@ -63,7 +63,7 @@ export function getImplicitFromFilterTransform(transform: FilterTransform) {
   forEachLeaf(transform.filter, filter => {
     if (isFieldPredicate(filter)) {
       // Automatically add a parse node for filters with filter objects
-      let val: string | number | boolean | DateTime = null;
+      let val: string | number | boolean | DateTime | SignalRef = null;
 
       // For EqualFilter, just use the equal property.
       // For RangeFilter and OneOfFilter, all array members should have
@@ -101,7 +101,7 @@ export function getImplicitFromEncoding(model: Model) {
   const implicit: Dict<string> = {};
 
   function add(fieldDef: TypedFieldDef<string>) {
-    if (isTimeFormatFieldDef(fieldDef)) {
+    if (isFieldDefForTimeFormat(fieldDef)) {
       implicit[fieldDef.field] = 'date';
     } else if (
       fieldDef.type === 'quantitative' &&

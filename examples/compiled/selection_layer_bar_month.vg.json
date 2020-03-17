@@ -33,6 +33,10 @@
           "ops": ["mean"],
           "fields": ["precipitation"],
           "as": ["mean_precipitation"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_precipitation\"]) && isFinite(+datum[\"mean_precipitation\"])"
         }
       ]
     },
@@ -46,6 +50,10 @@
           "ops": ["mean"],
           "fields": ["precipitation"],
           "as": ["mean_precipitation"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_precipitation\"]) && isFinite(+datum[\"mean_precipitation\"])"
         }
       ]
     }

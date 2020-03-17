@@ -15,7 +15,7 @@ import {
 import {
   getTypedFieldDef,
   isFieldDef,
-  isTimeFormatFieldDef,
+  isFieldDefForTimeFormat,
   title as fieldDefTitle,
   TypedFieldDef
 } from '../../channeldef';
@@ -23,7 +23,8 @@ import {Legend} from '../../legend';
 import {normalizeTimeUnit} from '../../timeunit';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, getFirstDefined, keys, varName} from '../../util';
-import {mergeTitleComponent, numberFormat} from '../common';
+import {mergeTitleComponent} from '../common';
+import {numberFormat} from '../format';
 import {guideEncodeEntry} from '../guide';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
@@ -171,14 +172,14 @@ function getProperty<K extends keyof LegendComponentProps>(
 
     case 'format':
       // We don't include temporal field here as we apply format in encode block
-      if (isTimeFormatFieldDef(fieldDef)) {
+      if (isFieldDefForTimeFormat(fieldDef)) {
         return undefined;
       }
       return numberFormat(fieldDef, legend.format, model.config) as LegendComponentProps[K];
 
     case 'formatType':
       // As with format, we don't include temporal field here as we apply format in encode block
-      if (isTimeFormatFieldDef(fieldDef)) {
+      if (isFieldDefForTimeFormat(fieldDef)) {
         return undefined;
       }
       return legend.formatType as LegendComponentProps[K];
@@ -208,7 +209,7 @@ function getProperty<K extends keyof LegendComponentProps>(
       ) as LegendComponentProps[K];
 
     case 'title':
-      return (fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) || undefined) as LegendComponentProps[K];
+      return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) as LegendComponentProps[K];
 
     case 'type':
       return type({legend, channel, timeUnit, scaleType, alwaysReturn: false}) as LegendComponentProps[K];

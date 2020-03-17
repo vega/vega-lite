@@ -1,4 +1,5 @@
 import {Color} from 'vega';
+import {SignalRef} from 'vega-typings/types';
 import {BaseSpec} from '.';
 import {getPositionScaleChannel} from '../channel';
 import {Config} from '../config';
@@ -44,7 +45,7 @@ export interface TopLevelProperties {
    *
    * __Default value:__ `"white"`
    */
-  background?: Color;
+  background?: Color | SignalRef;
 
   /**
    * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.
@@ -52,7 +53,7 @@ export interface TopLevelProperties {
    *
    * __Default value__: `5`
    */
-  padding?: Padding;
+  padding?: Padding | SignalRef;
 
   /**
    * How the visualization size should be determined. If a string, should be one of `"pad"`, `"fit"` or `"none"`.
@@ -60,7 +61,7 @@ export interface TopLevelProperties {
    *
    * __Default value__: `pad`
    */
-  autosize?: AutosizeType | AutoSizeParams;
+  autosize?: AutosizeType | AutoSizeParams; // Vega actually supports signal for autosize. However, we need to check autosize at compile time to infer the rest of the spec. Thus VL's autosize won't support SignalRef for now.
 }
 
 export type FitType = 'fit' | 'fit-x' | 'fit-y';

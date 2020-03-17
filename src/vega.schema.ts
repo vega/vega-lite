@@ -52,12 +52,16 @@ type ExcludeMapped<T, E> = {
   [P in keyof T]: Exclude<T[P], E>;
 };
 
+type ExcludeMappedButKeepSignals<T, E> = {
+  [P in keyof T]: SignalRef extends T[P] ? Exclude<T[P], E> | SignalRef : Exclude<T[P], E>;
+};
+
 // Remove ValueRefs from mapped types
 export type ExcludeMappedValueRef<T> = ExcludeMapped<T, ScaledValueRef<any> | NumericValueRef | ColorValueRef>;
 
-export type ExcludeMappedValueRefButKeepSignal<T> = ExcludeMapped<
+export type ExcludeMappedValueRefButKeepSignal<T> = ExcludeMappedButKeepSignals<
   T,
-  Exclude<ScaledValueRef<any> | NumericValueRef | ColorValueRef, SignalRef>
+  ScaledValueRef<any> | NumericValueRef | ColorValueRef
 >;
 
 export interface VgData {
@@ -287,6 +291,7 @@ export type StrokeJoin = 'miter' | 'round' | 'bevel';
 export type Dir = 'ltr' | 'rtl';
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
+  blend: 1,
   opacity: 1,
   fill: 1,
   fillOpacity: 1,

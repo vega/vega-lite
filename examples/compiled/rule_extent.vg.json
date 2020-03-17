@@ -17,6 +17,10 @@
           "ops": ["min", "max"],
           "fields": ["Horsepower", "Horsepower"],
           "as": ["min_Horsepower", "max_Horsepower"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"min_Horsepower\"]) && isFinite(+datum[\"min_Horsepower\"])"
         }
       ]
     }

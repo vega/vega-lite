@@ -103,7 +103,7 @@ describe('compile/legend', () => {
         });
 
         const def = legendParse.parseLegendForChannel(model, COLOR).combine();
-        expect(def).not.toHaveProperty('title');
+        expect(def.title).toEqual(val);
       }
     });
 

@@ -1,9 +1,10 @@
 /**
  * Utility for generating row / column headers
  */
+
 import {TitleAnchor, TitleConfig} from 'vega';
 import {isArray} from 'vega-util';
-import {FACET_CHANNELS, FacetChannel} from '../../channel';
+import {FacetChannel, FACET_CHANNELS} from '../../channel';
 import {vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {
@@ -18,15 +19,15 @@ import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
 import {contains, keys, replaceAll} from '../../util';
 import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema';
 import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties';
-import {formatSignalRef} from '../common';
 import {sortArrayIndexField} from '../data/calculate';
+import {formatSignalRef} from '../format';
 import {isFacetModel, Model} from '../model';
 import {getHeaderChannel, getHeaderProperties, getHeaderProperty} from './common';
 import {
-  HEADER_TYPES,
   HeaderChannel,
   HeaderComponent,
   HeaderType,
+  HEADER_TYPES,
   LayoutHeaderComponent,
   LayoutHeaderComponentIndex
 } from './component';
@@ -84,8 +85,11 @@ export function assembleHeaderGroups(model: Model, channel: HeaderChannel): VgMa
   const groups = [];
   for (const headerType of HEADER_TYPES) {
     if (layoutHeader[headerType]) {
-      for (const headerCmpt of layoutHeader[headerType]) {
-        groups.push(assembleHeaderGroup(model, channel, headerType, layoutHeader, headerCmpt));
+      for (const headerComponent of layoutHeader[headerType]) {
+        const group = assembleHeaderGroup(model, channel, headerType, layoutHeader, headerComponent);
+        if (group != null) {
+          groups.push(group);
+        }
       }
     }
   }
@@ -113,14 +117,14 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): 
 }
 
 export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel: FacetChannel, config: Config) {
-  const {format, labelAngle, labelAnchor, labelOrient, labelExpr} = getHeaderProperties(
-    ['format', 'labelAngle', 'labelAnchor', 'labelOrient', 'labelExpr'],
+  const {format, formatType, labelAngle, labelAnchor, labelOrient, labelExpr} = getHeaderProperties(
+    ['format', 'formatType', 'labelAngle', 'labelAnchor', 'labelOrient', 'labelExpr'],
     facetFieldDef,
     config,
     channel
   );
 
-  const titleTextExpr = formatSignalRef(facetFieldDef, format, 'parent', config).signal;
+  const titleTextExpr = formatSignalRef({fieldDef: facetFieldDef, format, formatType, expr: 'parent', config}).signal;
   const headerChannel = getHeaderChannel(channel, labelOrient);
 
   return {
@@ -147,13 +151,13 @@ export function assembleHeaderGroup(
   channel: HeaderChannel,
   headerType: HeaderType,
   layoutHeader: LayoutHeaderComponent,
-  headerCmpt: HeaderComponent
+  headerComponent: HeaderComponent
 ) {
-  if (headerCmpt) {
+  if (headerComponent) {
     let title = null;
     const {facetFieldDef} = layoutHeader;
     const config = model.config ? model.config : undefined;
-    if (facetFieldDef && headerCmpt.labels) {
+    if (facetFieldDef && headerComponent.labels) {
       const {labelOrient} = getHeaderProperties(['labelOrient'], facetFieldDef, config, channel);
 
       // Include label title in the header if orient aligns with the channel
@@ -167,7 +171,7 @@ export function assembleHeaderGroup(
 
     const isFacetWithoutRowCol = isFacetModel(model) && !isFacetMapping(model.facet);
 
-    const axes = headerCmpt.axes;
+    const axes = headerComponent.axes;
 
     const hasAxes = axes?.length > 0;
     if (title || hasAxes) {
@@ -191,11 +195,11 @@ export function assembleHeaderGroup(
           : {}),
 
         ...(title ? {title} : {}),
-        ...(headerCmpt.sizeSignal
+        ...(headerComponent.sizeSignal
           ? {
               encode: {
                 update: {
-                  [sizeChannel]: headerCmpt.sizeSignal
+                  [sizeChannel]: headerComponent.sizeSignal
                 }
               }
             }

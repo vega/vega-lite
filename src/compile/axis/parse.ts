@@ -1,11 +1,13 @@
 import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef, Text} from 'vega';
+import {toSet} from 'vega-util';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
 import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
-import {FieldDefBase, isTimeFormatFieldDef, toFieldDefBase} from '../../channeldef';
+import {FieldDefBase, isFieldDefForTimeFormat, isFieldDefWithCustomTimeFormat, toFieldDefBase} from '../../channeldef';
 import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
-import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs, numberFormat} from '../common';
+import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs} from '../common';
+import {numberFormat} from '../format';
 import {guideEncodeEntry} from '../guide';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
@@ -216,6 +218,13 @@ function isExplicit<T extends string | number | boolean | object>(
   return value === axis[property];
 }
 
+const TYPE_SUFFIX = ['Band', 'Point', 'Discrete', 'Quantitative', 'Temporal'];
+
+const ORIENTATION_TYPE_AXIS_CONFIG_INDEX = toSet([
+  ...TYPE_SUFFIX.map(t => `axisX${t}`),
+  ...TYPE_SUFFIX.map(t => `axisY${t}`)
+]);
+
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {
   const axis = model.axis(channel);
 
@@ -250,7 +259,10 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
       isConditionalAxisValue<any>(configValue) || // need to set "any" as TS isn't smart enough to figure the generic parameter type yet
       isSignalRef(configValue) ||
       // 3. StyleAxis
-      contains(['axisQuantitative', 'axisTemporal', 'style'], configFrom)
+      contains(['style', 'axis-config-style'], configFrom) ||
+      // 4. Vega-Lite only config
+      contains(['axisQuantitative', 'axisTemporal'], configFrom) ||
+      configFrom in ORIENTATION_TYPE_AXIS_CONFIG_INDEX // axisXTemporal, ...
     ) {
       // If a config is specified and is conditional, copy conditional value from axis config
       axisComponent.set(property, configValue, false);
@@ -305,14 +317,14 @@ function getProperty<K extends keyof AxisComponentProps>(
     case 'gridScale':
       return properties.gridScale(model, channel) as AxisComponentProps[K];
     case 'format':
-      // We don't include temporal field here as we apply format in encode block
-      if (isTimeFormatFieldDef(fieldDef)) {
+      // We don't include temporal field and custom format as we apply format in encode block
+      if (isFieldDefForTimeFormat(fieldDef) || isFieldDefWithCustomTimeFormat(fieldDef)) {
         return undefined;
       }
       return numberFormat(fieldDef, specifiedAxis.format, config) as AxisComponentProps[K];
     case 'formatType':
-      // As with format, we don't include temporal field here as we apply format in encode block
-      if (isTimeFormatFieldDef(fieldDef)) {
+      // As with format, we don't include temporal field and custom format here as we apply format in encode block
+      if (isFieldDefForTimeFormat(fieldDef) || isFieldDefWithCustomTimeFormat(fieldDef)) {
         return undefined;
       }
       return specifiedAxis.formatType as AxisComponentProps[K];

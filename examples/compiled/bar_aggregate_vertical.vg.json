@@ -16,6 +16,10 @@
           "ops": ["mean"],
           "fields": ["Acceleration"],
           "as": ["mean_Acceleration"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_Acceleration\"]) && isFinite(+datum[\"mean_Acceleration\"])"
         }
       ]
     }

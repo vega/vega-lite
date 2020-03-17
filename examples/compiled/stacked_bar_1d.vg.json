@@ -25,6 +25,10 @@
           "sort": {"field": ["Origin"], "order": ["descending"]},
           "as": ["sum_Acceleration_start", "sum_Acceleration_end"],
           "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_Acceleration\"]) && isFinite(+datum[\"sum_Acceleration\"])"
         }
       ]
     }

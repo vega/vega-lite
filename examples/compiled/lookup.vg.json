@@ -28,6 +28,10 @@
           "ops": ["mean"],
           "fields": ["age"],
           "as": ["mean_age"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_age\"]) && isFinite(+datum[\"mean_age\"])"
         }
       ]
     }

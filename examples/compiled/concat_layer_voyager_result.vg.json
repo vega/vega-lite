@@ -2,7 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
-  "width": 200,
   "data": [
     {
       "name": "source_0",
@@ -108,6 +107,7 @@
     }
   ],
   "signals": [
+    {"name": "childWidth", "value": 200},
     {"name": "concat_0_y_step", "value": 20},
     {
       "name": "concat_0_height",
@@ -124,7 +124,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "width"},
+          "width": {"signal": "childWidth"},
           "height": {"signal": "concat_0_height"}
         }
       },
@@ -167,7 +167,7 @@
           "gridDash": [3, 3],
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "encode": {
             "grid": {
               "update": {
@@ -191,7 +191,7 @@
           "grid": false,
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(width/40)"},
+          "tickCount": {"signal": "ceil(childWidth/40)"},
           "zindex": 0
         },
         {
@@ -211,7 +211,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "width"},
+          "width": {"signal": "childWidth"},
           "height": {"signal": "concat_1_height"}
         }
       },
@@ -325,7 +325,7 @@
       "name": "concat_0_x",
       "type": "linear",
       "domain": [-3, 3],
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
     },
@@ -355,7 +355,7 @@
           {"data": "data_7", "field": "from"}
         ]
       },
-      "range": [0, {"signal": "width"}],
+      "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
     }

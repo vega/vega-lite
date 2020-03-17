@@ -18,6 +18,16 @@
           "as": ["__count", "mean_IMDB_Rating"]
         }
       ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_IMDB_Rating\"]) && isFinite(+datum[\"mean_IMDB_Rating\"])"
+        }
+      ]
     }
   ],
   "signals": [
@@ -32,7 +42,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"value": "#ddd"},
@@ -72,7 +82,13 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "source_0", "field": "Major_Genre", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "Major_Genre"},
+          {"data": "source_0", "field": "Major_Genre"}
+        ],
+        "sort": true
+      },
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

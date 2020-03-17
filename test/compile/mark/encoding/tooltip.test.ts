@@ -130,10 +130,29 @@ describe('compile/mark/encoding/tooltip', () => {
               type: 'quantitative'
             }
           },
+          null,
           defaultConfig
         )
       ).toEqual({
         signal: `{"IMDB_Rating (binned)": !isValid(datum["bin_maxbins_10_IMDB_Rating"]) || !isFinite(+datum["bin_maxbins_10_IMDB_Rating"]) ? "null" : format(datum["bin_maxbins_10_IMDB_Rating"], "") + "${BIN_RANGE_DELIMITER}" + format(datum["bin_maxbins_10_IMDB_Rating_end"], "")}`
+      });
+    });
+
+    it('returns correct tooltip signal for normalized stacked field', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            x: {
+              aggregate: 'sum',
+              field: 'IMDB_Rating',
+              type: 'quantitative'
+            }
+          },
+          {fieldChannel: 'x', offset: 'normalize', impute: false, stackBy: []},
+          defaultConfig
+        )
+      ).toEqual({
+        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], "")}`
       });
     });
 
@@ -151,6 +170,7 @@ describe('compile/mark/encoding/tooltip', () => {
               field: 'bin_IMDB_rating_end'
             }
           },
+          null,
           defaultConfig
         )
       ).toEqual({
