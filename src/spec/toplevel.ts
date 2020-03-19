@@ -22,13 +22,14 @@ export type TopLevel<S extends BaseSpec> = S &
     $schema?: string;
 
     /**
-     * Vega-Lite configuration object. This property can only be defined at the top-level of a specification.
+     * Vega-Lite configuration object.
+     * This property can only be defined at the top-level of a specification. Learn more in the [Vega-Lite config docs](https://vega.github.io/vega-lite/docs/config.html).
      */
     config?: Config;
 
     /**
      * A global data store for named datasets. This is a mapping from names to inline datasets.
-     * This can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property.
+     * This can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property. Learn more in the [Vega-Lite datasets docs](https://vega.github.io/vega-lite/docs/data.html#datasets).
      */
     datasets?: Datasets;
 

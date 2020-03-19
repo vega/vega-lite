@@ -16075,7 +16075,7 @@
         },
         "config": {
           "$ref": "#/definitions/Config",
-          "description": "Vega-Lite configuration object. This property can only be defined at the top-level of a specification."
+          "description": "Vega-Lite configuration object.\nThis property can only be defined at the top-level of a specification. Learn more in the [Vega-Lite config docs](https://vega.github.io/vega-lite/docs/config.html)."
         },
         "data": {
           "anyOf": [
@@ -16090,7 +16090,7 @@
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
-          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property. Learn more in the [Vega-Lite datasets docs](https://vega.github.io/vega-lite/docs/data.html#datasets)."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -16184,7 +16184,7 @@
         },
         "config": {
           "$ref": "#/definitions/Config",
-          "description": "Vega-Lite configuration object. This property can only be defined at the top-level of a specification."
+          "description": "Vega-Lite configuration object.\nThis property can only be defined at the top-level of a specification. Learn more in the [Vega-Lite config docs](https://vega.github.io/vega-lite/docs/config.html)."
         },
         "data": {
           "anyOf": [
@@ -16199,7 +16199,7 @@
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
-          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property. Learn more in the [Vega-Lite datasets docs](https://vega.github.io/vega-lite/docs/data.html#datasets)."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -16293,7 +16293,7 @@
         },
         "config": {
           "$ref": "#/definitions/Config",
-          "description": "Vega-Lite configuration object. This property can only be defined at the top-level of a specification."
+          "description": "Vega-Lite configuration object.\nThis property can only be defined at the top-level of a specification. Learn more in the [Vega-Lite config docs](https://vega.github.io/vega-lite/docs/config.html)."
         },
         "data": {
           "anyOf": [
@@ -16308,7 +16308,7 @@
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
-          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property. Learn more in the [Vega-Lite datasets docs](https://vega.github.io/vega-lite/docs/data.html#datasets)."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -16390,7 +16390,7 @@
         },
         "config": {
           "$ref": "#/definitions/Config",
-          "description": "Vega-Lite configuration object. This property can only be defined at the top-level of a specification."
+          "description": "Vega-Lite configuration object.\nThis property can only be defined at the top-level of a specification. Learn more in the [Vega-Lite config docs](https://vega.github.io/vega-lite/docs/config.html)."
         },
         "data": {
           "anyOf": [
@@ -16405,7 +16405,7 @@
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
-          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property. Learn more in the [Vega-Lite datasets docs](https://vega.github.io/vega-lite/docs/data.html#datasets)."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -16570,7 +16570,7 @@
         },
         "config": {
           "$ref": "#/definitions/Config",
-          "description": "Vega-Lite configuration object. This property can only be defined at the top-level of a specification."
+          "description": "Vega-Lite configuration object.\nThis property can only be defined at the top-level of a specification. Learn more in the [Vega-Lite config docs](https://vega.github.io/vega-lite/docs/config.html)."
         },
         "data": {
           "anyOf": [
@@ -16585,7 +16585,7 @@
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
-          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property. Learn more in the [Vega-Lite datasets docs](https://vega.github.io/vega-lite/docs/data.html#datasets)."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -16720,7 +16720,7 @@
         },
         "config": {
           "$ref": "#/definitions/Config",
-          "description": "Vega-Lite configuration object. This property can only be defined at the top-level of a specification."
+          "description": "Vega-Lite configuration object.\nThis property can only be defined at the top-level of a specification. Learn more in the [Vega-Lite config docs](https://vega.github.io/vega-lite/docs/config.html)."
         },
         "data": {
           "anyOf": [
@@ -16735,7 +16735,7 @@
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
-          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property. Learn more in the [Vega-Lite datasets docs](https://vega.github.io/vega-lite/docs/data.html#datasets)."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
@@ -16875,7 +16875,7 @@
         },
         "config": {
           "$ref": "#/definitions/Config",
-          "description": "Vega-Lite configuration object. This property can only be defined at the top-level of a specification."
+          "description": "Vega-Lite configuration object.\nThis property can only be defined at the top-level of a specification. Learn more in the [Vega-Lite config docs](https://vega.github.io/vega-lite/docs/config.html)."
         },
         "data": {
           "anyOf": [
@@ -16890,7 +16890,7 @@
         },
         "datasets": {
           "$ref": "#/definitions/Datasets",
-          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property."
+          "description": "A global data store for named datasets. This is a mapping from names to inline datasets.\nThis can be an array of objects or primitive values or a string. Arrays of primitive values are ingested as objects with a `data` property. Learn more in the [Vega-Lite datasets docs](https://vega.github.io/vega-lite/docs/data.html#datasets)."
         },
         "description": {
           "description": "Description of this mark for commenting purpose.",
