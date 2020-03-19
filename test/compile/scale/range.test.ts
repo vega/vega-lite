@@ -67,6 +67,20 @@ describe('compile/scale', () => {
         }
       });
 
+      it('should return signal for width and height strings in range', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            x: {field: 'x', type: 'nominal', scale: {range: [40, 'width']}},
+            y: {field: 'y', type: 'nominal', scale: {range: ['height', 40]}}
+          }
+        });
+
+        expect(parseRangeForChannel('x', model)).toEqual(makeExplicit([40, {signal: 'width'}]));
+
+        expect(parseRangeForChannel('y', model)).toEqual(makeExplicit([{signal: 'height'}, 40]));
+      });
+
       it('should return config.view.discreteWidth for x/y-band/point scales by default.', () => {
         for (const scaleType of [ScaleType.BAND, ScaleType.POINT]) {
           const model = parseUnitModelWithScaleExceptRange({

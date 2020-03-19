@@ -105,7 +105,23 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
       } else {
         switch (property) {
           case 'range':
-            return makeExplicit(specifiedScale[property]);
+            if (isArray(specifiedScale.range) && (channel === 'x' || channel === 'y')) {
+              return makeExplicit(
+                specifiedScale.range.map(v => {
+                  if (v === 'width' || v === 'height') {
+                    // get signal for width/height
+
+                    // Just like default range logic below, we use SignalRefWrapper to account for potential merges and renames.
+
+                    const sizeSignal = model.getName(v);
+                    const getSignalName = model.getSignalName.bind(model);
+                    return SignalRefWrapper.fromName(getSignalName, sizeSignal);
+                  }
+                  return v;
+                })
+              );
+            }
+            return makeExplicit(specifiedScale.range);
           case 'scheme':
             return makeExplicit(parseScheme(specifiedScale[property]));
         }
@@ -169,11 +185,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       }
 
       // If step is null, use zero to width or height.
-      // Note that these range signals are temporary
-      // as they can be merged and renamed.
-      // (We do not have the right size signal here since parseLayoutSize() happens after parseScale().)
-      // We will later replace these temporary names with
-      // the final name in assembleScaleRange()
+      // Note that we use SignalRefWrapper to account for potential merges and renames.
 
       const sizeType = getSizeType(channel);
       const sizeSignal = model.getName(sizeType);
