@@ -38,7 +38,7 @@
           "value": "grey"
         }
       },
-      "name": "child__repeat_row_Horsepower__repeat_column_Miles_per_Gallon"
+      "name": "child__row_Horsepowercolumn_Miles_per_Gallon"
     },
     {
       "mark": "point",
@@ -74,7 +74,7 @@
           "value": "grey"
         }
       },
-      "name": "child__repeat_row_Horsepower__repeat_column_Acceleration"
+      "name": "child__row_Horsepowercolumn_Acceleration"
     },
     {
       "mark": "point",
@@ -110,7 +110,7 @@
           "value": "grey"
         }
       },
-      "name": "child__repeat_row_Horsepower__repeat_column_Horsepower"
+      "name": "child__row_Horsepowercolumn_Horsepower"
     },
     {
       "mark": "point",
@@ -146,7 +146,7 @@
           "value": "grey"
         }
       },
-      "name": "child__repeat_row_Acceleration__repeat_column_Miles_per_Gallon"
+      "name": "child__row_Accelerationcolumn_Miles_per_Gallon"
     },
     {
       "mark": "point",
@@ -182,7 +182,7 @@
           "value": "grey"
         }
       },
-      "name": "child__repeat_row_Acceleration__repeat_column_Acceleration"
+      "name": "child__row_Accelerationcolumn_Acceleration"
     },
     {
       "mark": "point",
@@ -218,7 +218,7 @@
           "value": "grey"
         }
       },
-      "name": "child__repeat_row_Acceleration__repeat_column_Horsepower"
+      "name": "child__row_Accelerationcolumn_Horsepower"
     },
     {
       "mark": "point",
@@ -254,7 +254,7 @@
           "value": "grey"
         }
       },
-      "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Miles_per_Gallon"
+      "name": "child__row_Miles_per_Galloncolumn_Miles_per_Gallon"
     },
     {
       "mark": "point",
@@ -290,7 +290,7 @@
           "value": "grey"
         }
       },
-      "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Acceleration"
+      "name": "child__row_Miles_per_Galloncolumn_Acceleration"
     },
     {
       "mark": "point",
@@ -326,7 +326,7 @@
           "value": "grey"
         }
       },
-      "name": "child__repeat_row_Miles_per_Gallon__repeat_column_Horsepower"
+      "name": "child__row_Miles_per_Galloncolumn_Horsepower"
     }
   ]
 }

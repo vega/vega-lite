@@ -34,7 +34,7 @@
           }
         }
       ],
-      "name": "child__repeat_column_temp_max"
+      "name": "child__column_temp_max"
     },
     {
       "layer": [
@@ -65,7 +65,7 @@
           }
         }
       ],
-      "name": "child__repeat_column_precipitation"
+      "name": "child__column_precipitation"
     },
     {
       "layer": [
@@ -88,7 +88,7 @@
           }
         }
       ],
-      "name": "child__repeat_column_wind"
+      "name": "child__column_wind"
     }
   ]
 }

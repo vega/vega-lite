@@ -21,7 +21,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_petalWidth__repeat_column_sepalLength"
+      "name": "child__row_petalWidthcolumn_sepalLength"
     },
     {
       "width": 150,
@@ -40,7 +40,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_petalWidth__repeat_column_sepalWidth"
+      "name": "child__row_petalWidthcolumn_sepalWidth"
     },
     {
       "width": 150,
@@ -59,7 +59,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_petalWidth__repeat_column_petalLength"
+      "name": "child__row_petalWidthcolumn_petalLength"
     },
     {
       "width": 150,
@@ -78,7 +78,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_petalWidth__repeat_column_petalWidth"
+      "name": "child__row_petalWidthcolumn_petalWidth"
     },
     {
       "width": 150,
@@ -97,7 +97,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_petalLength__repeat_column_sepalLength"
+      "name": "child__row_petalLengthcolumn_sepalLength"
     },
     {
       "width": 150,
@@ -116,7 +116,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_petalLength__repeat_column_sepalWidth"
+      "name": "child__row_petalLengthcolumn_sepalWidth"
     },
     {
       "width": 150,
@@ -135,7 +135,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_petalLength__repeat_column_petalLength"
+      "name": "child__row_petalLengthcolumn_petalLength"
     },
     {
       "width": 150,
@@ -154,7 +154,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_petalLength__repeat_column_petalWidth"
+      "name": "child__row_petalLengthcolumn_petalWidth"
     },
     {
       "width": 150,
@@ -173,7 +173,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_sepalWidth__repeat_column_sepalLength"
+      "name": "child__row_sepalWidthcolumn_sepalLength"
     },
     {
       "width": 150,
@@ -192,7 +192,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_sepalWidth__repeat_column_sepalWidth"
+      "name": "child__row_sepalWidthcolumn_sepalWidth"
     },
     {
       "width": 150,
@@ -211,7 +211,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_sepalWidth__repeat_column_petalLength"
+      "name": "child__row_sepalWidthcolumn_petalLength"
     },
     {
       "width": 150,
@@ -230,7 +230,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_sepalWidth__repeat_column_petalWidth"
+      "name": "child__row_sepalWidthcolumn_petalWidth"
     },
     {
       "width": 150,
@@ -249,7 +249,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_sepalLength__repeat_column_sepalLength"
+      "name": "child__row_sepalLengthcolumn_sepalLength"
     },
     {
       "width": 150,
@@ -268,7 +268,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_sepalLength__repeat_column_sepalWidth"
+      "name": "child__row_sepalLengthcolumn_sepalWidth"
     },
     {
       "width": 150,
@@ -287,7 +287,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_sepalLength__repeat_column_petalLength"
+      "name": "child__row_sepalLengthcolumn_petalLength"
     },
     {
       "width": 150,
@@ -306,7 +306,7 @@
         },
         "color": {"field": "species", "type": "nominal"}
       },
-      "name": "child__repeat_row_sepalLength__repeat_column_petalWidth"
+      "name": "child__row_sepalLengthcolumn_petalWidth"
     }
   ]
 }

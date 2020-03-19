@@ -20,7 +20,7 @@
             },
             "y": {"aggregate": "count", "type": "quantitative"}
           },
-          "name": "child__repeat_column_Rotten_Tomatoes_Rating"
+          "name": "child__column_Rotten_Tomatoes_Rating"
         },
         {
           "width": 150,
@@ -34,7 +34,7 @@
             },
             "y": {"aggregate": "count", "type": "quantitative"}
           },
-          "name": "child__repeat_column_IMDB_Rating"
+          "name": "child__column_IMDB_Rating"
         }
       ]
     },
@@ -55,7 +55,7 @@
             "y": {"aggregate": "count", "type": "quantitative"}
           },
           "mark": "bar",
-          "name": "child__repeat_column_US_Gross"
+          "name": "child__column_US_Gross"
         },
         {
           "width": 150,
@@ -69,7 +69,7 @@
             "y": {"aggregate": "count", "type": "quantitative"}
           },
           "mark": "bar",
-          "name": "child__repeat_column_Worldwide_Gross"
+          "name": "child__column_Worldwide_Gross"
         }
       ]
     }

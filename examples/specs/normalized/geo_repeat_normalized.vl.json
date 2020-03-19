@@ -28,7 +28,7 @@
         "shape": {"field": "geo", "type": "geojson"},
         "color": {"field": "population", "type": "quantitative"}
       },
-      "name": "child__repeat_row_population"
+      "name": "child__row_population"
     },
     {
       "width": 500,
@@ -52,7 +52,7 @@
         "shape": {"field": "geo", "type": "geojson"},
         "color": {"field": "engineers", "type": "quantitative"}
       },
-      "name": "child__repeat_row_engineers"
+      "name": "child__row_engineers"
     },
     {
       "width": 500,
@@ -76,7 +76,7 @@
         "shape": {"field": "geo", "type": "geojson"},
         "color": {"field": "hurricanes", "type": "quantitative"}
       },
-      "name": "child__repeat_row_hurricanes"
+      "name": "child__row_hurricanes"
     }
   ]
 }

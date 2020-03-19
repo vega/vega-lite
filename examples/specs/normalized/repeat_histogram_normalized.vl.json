@@ -11,7 +11,7 @@
         "y": {"aggregate": "count", "type": "quantitative"},
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__repeat_repeat_Horsepower"
+      "name": "child__Horsepower"
     },
     {
       "mark": "bar",
@@ -20,7 +20,7 @@
         "y": {"aggregate": "count", "type": "quantitative"},
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__repeat_repeat_Miles_per_Gallon"
+      "name": "child__Miles_per_Gallon"
     },
     {
       "mark": "bar",
@@ -29,7 +29,7 @@
         "y": {"aggregate": "count", "type": "quantitative"},
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__repeat_repeat_Acceleration"
+      "name": "child__Acceleration"
     },
     {
       "mark": "bar",
@@ -38,7 +38,7 @@
         "y": {"aggregate": "count", "type": "quantitative"},
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__repeat_repeat_Displacement"
+      "name": "child__Displacement"
     }
   ]
 }

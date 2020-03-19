@@ -11,7 +11,7 @@
         {
           "type": "extent",
           "field": "Displacement",
-          "signal": "child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_extent"
+          "signal": "child__Displacement_bin_maxbins_10_Displacement_extent"
         },
         {
           "type": "bin",
@@ -20,31 +20,31 @@
             "bin_maxbins_10_Displacement",
             "bin_maxbins_10_Displacement_end"
           ],
-          "signal": "child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_bins",
+          "signal": "child__Displacement_bin_maxbins_10_Displacement_bins",
           "extent": {
-            "signal": "child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_extent"
+            "signal": "child__Displacement_bin_maxbins_10_Displacement_extent"
           },
           "maxbins": 10
         },
         {
           "type": "extent",
           "field": "Horsepower",
-          "signal": "child__repeat_repeat_Horsepower_bin_maxbins_10_Horsepower_extent"
+          "signal": "child__Horsepower_bin_maxbins_10_Horsepower_extent"
         },
         {
           "type": "bin",
           "field": "Horsepower",
           "as": ["bin_maxbins_10_Horsepower", "bin_maxbins_10_Horsepower_end"],
-          "signal": "child__repeat_repeat_Horsepower_bin_maxbins_10_Horsepower_bins",
+          "signal": "child__Horsepower_bin_maxbins_10_Horsepower_bins",
           "extent": {
-            "signal": "child__repeat_repeat_Horsepower_bin_maxbins_10_Horsepower_extent"
+            "signal": "child__Horsepower_bin_maxbins_10_Horsepower_extent"
           },
           "maxbins": 10
         },
         {
           "type": "extent",
           "field": "Miles_per_Gallon",
-          "signal": "child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_extent"
+          "signal": "child__Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_extent"
         },
         {
           "type": "bin",
@@ -53,16 +53,16 @@
             "bin_maxbins_10_Miles_per_Gallon",
             "bin_maxbins_10_Miles_per_Gallon_end"
           ],
-          "signal": "child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins",
+          "signal": "child__Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins",
           "extent": {
-            "signal": "child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_extent"
+            "signal": "child__Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_extent"
           },
           "maxbins": 10
         },
         {
           "type": "extent",
           "field": "Acceleration",
-          "signal": "child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_extent"
+          "signal": "child__Acceleration_bin_maxbins_10_Acceleration_extent"
         },
         {
           "type": "bin",
@@ -71,9 +71,9 @@
             "bin_maxbins_10_Acceleration",
             "bin_maxbins_10_Acceleration_end"
           ],
-          "signal": "child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_bins",
+          "signal": "child__Acceleration_bin_maxbins_10_Acceleration_bins",
           "extent": {
-            "signal": "child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_extent"
+            "signal": "child__Acceleration_bin_maxbins_10_Acceleration_extent"
           },
           "maxbins": 10
         }
@@ -216,7 +216,7 @@
   "marks": [
     {
       "type": "group",
-      "name": "child__repeat_repeat_Horsepower_group",
+      "name": "child__Horsepower_group",
       "style": "cell",
       "encode": {
         "update": {
@@ -226,7 +226,7 @@
       },
       "marks": [
         {
-          "name": "child__repeat_repeat_Horsepower_marks",
+          "name": "child__Horsepower_marks",
           "type": "rect",
           "style": ["bar"],
           "from": {"data": "data_1"},
@@ -239,7 +239,7 @@
                   "value": 0
                 },
                 {
-                  "scale": "child__repeat_repeat_Horsepower_x",
+                  "scale": "child__Horsepower_x",
                   "field": "bin_maxbins_10_Horsepower",
                   "offset": 1
                 }
@@ -250,27 +250,21 @@
                   "value": 0
                 },
                 {
-                  "scale": "child__repeat_repeat_Horsepower_x",
+                  "scale": "child__Horsepower_x",
                   "field": "bin_maxbins_10_Horsepower_end"
                 }
               ],
-              "y": {
-                "scale": "child__repeat_repeat_Horsepower_y",
-                "field": "__count_end"
-              },
-              "y2": {
-                "scale": "child__repeat_repeat_Horsepower_y",
-                "field": "__count_start"
-              }
+              "y": {"scale": "child__Horsepower_y", "field": "__count_end"},
+              "y2": {"scale": "child__Horsepower_y", "field": "__count_start"}
             }
           }
         }
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_Horsepower_y",
+          "scale": "child__Horsepower_y",
           "orient": "left",
-          "gridScale": "child__repeat_repeat_Horsepower_x",
+          "gridScale": "child__Horsepower_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -281,7 +275,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_Horsepower_x",
+          "scale": "child__Horsepower_x",
           "orient": "bottom",
           "grid": false,
           "title": "Horsepower (binned)",
@@ -291,7 +285,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_Horsepower_y",
+          "scale": "child__Horsepower_y",
           "orient": "left",
           "grid": false,
           "title": "Count of Records",
@@ -303,7 +297,7 @@
     },
     {
       "type": "group",
-      "name": "child__repeat_repeat_Miles_per_Gallon_group",
+      "name": "child__Miles_per_Gallon_group",
       "style": "cell",
       "encode": {
         "update": {
@@ -313,7 +307,7 @@
       },
       "marks": [
         {
-          "name": "child__repeat_repeat_Miles_per_Gallon_marks",
+          "name": "child__Miles_per_Gallon_marks",
           "type": "rect",
           "style": ["bar"],
           "from": {"data": "data_2"},
@@ -326,7 +320,7 @@
                   "value": 0
                 },
                 {
-                  "scale": "child__repeat_repeat_Miles_per_Gallon_x",
+                  "scale": "child__Miles_per_Gallon_x",
                   "field": "bin_maxbins_10_Miles_per_Gallon",
                   "offset": 1
                 }
@@ -337,16 +331,16 @@
                   "value": 0
                 },
                 {
-                  "scale": "child__repeat_repeat_Miles_per_Gallon_x",
+                  "scale": "child__Miles_per_Gallon_x",
                   "field": "bin_maxbins_10_Miles_per_Gallon_end"
                 }
               ],
               "y": {
-                "scale": "child__repeat_repeat_Miles_per_Gallon_y",
+                "scale": "child__Miles_per_Gallon_y",
                 "field": "__count_end"
               },
               "y2": {
-                "scale": "child__repeat_repeat_Miles_per_Gallon_y",
+                "scale": "child__Miles_per_Gallon_y",
                 "field": "__count_start"
               }
             }
@@ -355,9 +349,9 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_Miles_per_Gallon_y",
+          "scale": "child__Miles_per_Gallon_y",
           "orient": "left",
-          "gridScale": "child__repeat_repeat_Miles_per_Gallon_x",
+          "gridScale": "child__Miles_per_Gallon_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -368,7 +362,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_Miles_per_Gallon_x",
+          "scale": "child__Miles_per_Gallon_x",
           "orient": "bottom",
           "grid": false,
           "title": "Miles_per_Gallon (binned)",
@@ -378,7 +372,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_Miles_per_Gallon_y",
+          "scale": "child__Miles_per_Gallon_y",
           "orient": "left",
           "grid": false,
           "title": "Count of Records",
@@ -390,7 +384,7 @@
     },
     {
       "type": "group",
-      "name": "child__repeat_repeat_Acceleration_group",
+      "name": "child__Acceleration_group",
       "style": "cell",
       "encode": {
         "update": {
@@ -400,7 +394,7 @@
       },
       "marks": [
         {
-          "name": "child__repeat_repeat_Acceleration_marks",
+          "name": "child__Acceleration_marks",
           "type": "rect",
           "style": ["bar"],
           "from": {"data": "data_3"},
@@ -413,7 +407,7 @@
                   "value": 0
                 },
                 {
-                  "scale": "child__repeat_repeat_Acceleration_x",
+                  "scale": "child__Acceleration_x",
                   "field": "bin_maxbins_10_Acceleration",
                   "offset": 1
                 }
@@ -424,27 +418,21 @@
                   "value": 0
                 },
                 {
-                  "scale": "child__repeat_repeat_Acceleration_x",
+                  "scale": "child__Acceleration_x",
                   "field": "bin_maxbins_10_Acceleration_end"
                 }
               ],
-              "y": {
-                "scale": "child__repeat_repeat_Acceleration_y",
-                "field": "__count_end"
-              },
-              "y2": {
-                "scale": "child__repeat_repeat_Acceleration_y",
-                "field": "__count_start"
-              }
+              "y": {"scale": "child__Acceleration_y", "field": "__count_end"},
+              "y2": {"scale": "child__Acceleration_y", "field": "__count_start"}
             }
           }
         }
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_Acceleration_y",
+          "scale": "child__Acceleration_y",
           "orient": "left",
-          "gridScale": "child__repeat_repeat_Acceleration_x",
+          "gridScale": "child__Acceleration_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -455,7 +443,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_Acceleration_x",
+          "scale": "child__Acceleration_x",
           "orient": "bottom",
           "grid": false,
           "title": "Acceleration (binned)",
@@ -465,7 +453,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_Acceleration_y",
+          "scale": "child__Acceleration_y",
           "orient": "left",
           "grid": false,
           "title": "Count of Records",
@@ -477,7 +465,7 @@
     },
     {
       "type": "group",
-      "name": "child__repeat_repeat_Displacement_group",
+      "name": "child__Displacement_group",
       "style": "cell",
       "encode": {
         "update": {
@@ -487,7 +475,7 @@
       },
       "marks": [
         {
-          "name": "child__repeat_repeat_Displacement_marks",
+          "name": "child__Displacement_marks",
           "type": "rect",
           "style": ["bar"],
           "from": {"data": "data_0"},
@@ -500,7 +488,7 @@
                   "value": 0
                 },
                 {
-                  "scale": "child__repeat_repeat_Displacement_x",
+                  "scale": "child__Displacement_x",
                   "field": "bin_maxbins_10_Displacement",
                   "offset": 1
                 }
@@ -511,27 +499,21 @@
                   "value": 0
                 },
                 {
-                  "scale": "child__repeat_repeat_Displacement_x",
+                  "scale": "child__Displacement_x",
                   "field": "bin_maxbins_10_Displacement_end"
                 }
               ],
-              "y": {
-                "scale": "child__repeat_repeat_Displacement_y",
-                "field": "__count_end"
-              },
-              "y2": {
-                "scale": "child__repeat_repeat_Displacement_y",
-                "field": "__count_start"
-              }
+              "y": {"scale": "child__Displacement_y", "field": "__count_end"},
+              "y2": {"scale": "child__Displacement_y", "field": "__count_start"}
             }
           }
         }
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_Displacement_y",
+          "scale": "child__Displacement_y",
           "orient": "left",
-          "gridScale": "child__repeat_repeat_Displacement_x",
+          "gridScale": "child__Displacement_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -542,7 +524,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_Displacement_x",
+          "scale": "child__Displacement_x",
           "orient": "bottom",
           "grid": false,
           "title": "Displacement (binned)",
@@ -552,7 +534,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_Displacement_y",
+          "scale": "child__Displacement_y",
           "orient": "left",
           "grid": false,
           "title": "Count of Records",
@@ -579,19 +561,17 @@
       "range": "category"
     },
     {
-      "name": "child__repeat_repeat_Horsepower_x",
+      "name": "child__Horsepower_x",
       "type": "linear",
       "domain": {
-        "signal": "[child__repeat_repeat_Horsepower_bin_maxbins_10_Horsepower_bins.start, child__repeat_repeat_Horsepower_bin_maxbins_10_Horsepower_bins.stop]"
+        "signal": "[child__Horsepower_bin_maxbins_10_Horsepower_bins.start, child__Horsepower_bin_maxbins_10_Horsepower_bins.stop]"
       },
       "range": [0, {"signal": "childWidth"}],
-      "bins": {
-        "signal": "child__repeat_repeat_Horsepower_bin_maxbins_10_Horsepower_bins"
-      },
+      "bins": {"signal": "child__Horsepower_bin_maxbins_10_Horsepower_bins"},
       "zero": false
     },
     {
-      "name": "child__repeat_repeat_Horsepower_y",
+      "name": "child__Horsepower_y",
       "type": "linear",
       "domain": {"data": "data_1", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "childHeight"}, 0],
@@ -599,19 +579,19 @@
       "zero": true
     },
     {
-      "name": "child__repeat_repeat_Miles_per_Gallon_x",
+      "name": "child__Miles_per_Gallon_x",
       "type": "linear",
       "domain": {
-        "signal": "[child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.start, child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.stop]"
+        "signal": "[child__Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.start, child__Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins.stop]"
       },
       "range": [0, {"signal": "childWidth"}],
       "bins": {
-        "signal": "child__repeat_repeat_Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins"
+        "signal": "child__Miles_per_Gallon_bin_maxbins_10_Miles_per_Gallon_bins"
       },
       "zero": false
     },
     {
-      "name": "child__repeat_repeat_Miles_per_Gallon_y",
+      "name": "child__Miles_per_Gallon_y",
       "type": "linear",
       "domain": {"data": "data_2", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "childHeight"}, 0],
@@ -619,19 +599,19 @@
       "zero": true
     },
     {
-      "name": "child__repeat_repeat_Acceleration_x",
+      "name": "child__Acceleration_x",
       "type": "linear",
       "domain": {
-        "signal": "[child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_bins.start, child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_bins.stop]"
+        "signal": "[child__Acceleration_bin_maxbins_10_Acceleration_bins.start, child__Acceleration_bin_maxbins_10_Acceleration_bins.stop]"
       },
       "range": [0, {"signal": "childWidth"}],
       "bins": {
-        "signal": "child__repeat_repeat_Acceleration_bin_maxbins_10_Acceleration_bins"
+        "signal": "child__Acceleration_bin_maxbins_10_Acceleration_bins"
       },
       "zero": false
     },
     {
-      "name": "child__repeat_repeat_Acceleration_y",
+      "name": "child__Acceleration_y",
       "type": "linear",
       "domain": {"data": "data_3", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "childHeight"}, 0],
@@ -639,19 +619,19 @@
       "zero": true
     },
     {
-      "name": "child__repeat_repeat_Displacement_x",
+      "name": "child__Displacement_x",
       "type": "linear",
       "domain": {
-        "signal": "[child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_bins.start, child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_bins.stop]"
+        "signal": "[child__Displacement_bin_maxbins_10_Displacement_bins.start, child__Displacement_bin_maxbins_10_Displacement_bins.stop]"
       },
       "range": [0, {"signal": "childWidth"}],
       "bins": {
-        "signal": "child__repeat_repeat_Displacement_bin_maxbins_10_Displacement_bins"
+        "signal": "child__Displacement_bin_maxbins_10_Displacement_bins"
       },
       "zero": false
     },
     {
-      "name": "child__repeat_repeat_Displacement_y",
+      "name": "child__Displacement_y",
       "type": "linear",
       "domain": {"data": "data_0", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "childHeight"}, 0],
