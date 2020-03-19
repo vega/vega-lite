@@ -1145,7 +1145,7 @@
           "type": "number"
         },
         "disable": {
-          "description": "Disable axis by default",
+          "description": "Disable axis by default.",
           "type": "boolean"
         },
         "domain": {
