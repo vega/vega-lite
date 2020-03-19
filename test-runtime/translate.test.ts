@@ -141,7 +141,7 @@ for (const bind of [bound, unbound]) {
         }
       });
     } else {
-      compositeTypes.forEach(specType => {
+      for (const specType of compositeTypes) {
         const assertExtents = {
           repeat: {
             x: ['isBelow', 'isBelow', 'isBelow'],
@@ -166,7 +166,7 @@ for (const bind of [bound, unbound]) {
             await testRender(`${specType}_${i}`);
           }
         });
-      });
+      }
     }
   });
 }
