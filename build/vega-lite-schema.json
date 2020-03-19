@@ -8437,7 +8437,7 @@
         },
         "labelBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline for the header labels. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone."
+          "description": "The vertical text baseline for the header labels. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`.\nThe `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone."
         },
         "labelColor": {
           "$ref": "#/definitions/Color",
@@ -8469,7 +8469,7 @@
           "type": "number"
         },
         "labelLineHeight": {
-          "description": "Line height in pixels for multi-line header labels.",
+          "description": "Line height in pixels for multi-line header labels or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
           "type": "number"
         },
         "labelOrient": {
@@ -8511,7 +8511,7 @@
         },
         "titleBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline for the header title. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.\n\n__Default value:__ `\"middle\"`"
+          "description": "The vertical text baseline for the header title. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`.\nThe `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.\n\n__Default value:__ `\"middle\"`"
         },
         "titleColor": {
           "$ref": "#/definitions/Color",
@@ -8587,7 +8587,7 @@
         },
         "labelBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline for the header labels. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone."
+          "description": "The vertical text baseline for the header labels. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`.\nThe `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone."
         },
         "labelColor": {
           "$ref": "#/definitions/Color",
@@ -8619,7 +8619,7 @@
           "type": "number"
         },
         "labelLineHeight": {
-          "description": "Line height in pixels for multi-line header labels.",
+          "description": "Line height in pixels for multi-line header labels or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
           "type": "number"
         },
         "labelOrient": {
@@ -8654,7 +8654,7 @@
         },
         "titleBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline for the header title. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.\n\n__Default value:__ `\"middle\"`"
+          "description": "The vertical text baseline for the header title. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`.\nThe `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.\n\n__Default value:__ `\"middle\"`"
         },
         "titleColor": {
           "$ref": "#/definitions/Color",
