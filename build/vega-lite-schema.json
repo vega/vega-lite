@@ -166,7 +166,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "blend": {
           "$ref": "#/definitions/Blend",
@@ -1673,7 +1673,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "binSpacing": {
           "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
@@ -8435,6 +8435,10 @@
           "minimum": -360,
           "type": "number"
         },
+        "labelBaseline": {
+          "$ref": "#/definitions/TextBaseline",
+          "description": "The vertical text baseline for the header labels. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone."
+        },
         "labelColor": {
           "$ref": "#/definitions/Color",
           "description": "The color of the header label, can be in hex color code or regular color name."
@@ -8456,8 +8460,16 @@
           "$ref": "#/definitions/FontStyle",
           "description": "The font style of the header label."
         },
+        "labelFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight of the header label."
+        },
         "labelLimit": {
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
+          "type": "number"
+        },
+        "labelLineHeight": {
+          "description": "Line height in pixels for multi-line header labels.",
           "type": "number"
         },
         "labelOrient": {
@@ -8499,7 +8511,7 @@
         },
         "titleBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for the header title. One of `\"top\"`, `\"bottom\"`, `\"middle\"`.\n\n__Default value:__ `\"middle\"`"
+          "description": "The vertical text baseline for the header title. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.\n\n__Default value:__ `\"middle\"`"
         },
         "titleColor": {
           "$ref": "#/definitions/Color",
@@ -8527,7 +8539,7 @@
           "type": "number"
         },
         "titleLineHeight": {
-          "description": "Line height in pixels for multi-line title text.",
+          "description": "Line height in pixels for multi-line header title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
           "type": "number"
         },
         "titleOrient": {
@@ -8573,6 +8585,10 @@
           "minimum": -360,
           "type": "number"
         },
+        "labelBaseline": {
+          "$ref": "#/definitions/TextBaseline",
+          "description": "The vertical text baseline for the header labels. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone."
+        },
         "labelColor": {
           "$ref": "#/definitions/Color",
           "description": "The color of the header label, can be in hex color code or regular color name."
@@ -8594,8 +8610,16 @@
           "$ref": "#/definitions/FontStyle",
           "description": "The font style of the header label."
         },
+        "labelFontWeight": {
+          "$ref": "#/definitions/FontWeight",
+          "description": "The font weight of the header label."
+        },
         "labelLimit": {
           "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
+          "type": "number"
+        },
+        "labelLineHeight": {
+          "description": "Line height in pixels for multi-line header labels.",
           "type": "number"
         },
         "labelOrient": {
@@ -8630,7 +8654,7 @@
         },
         "titleBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for the header title. One of `\"top\"`, `\"bottom\"`, `\"middle\"`.\n\n__Default value:__ `\"middle\"`"
+          "description": "The vertical text baseline for the header title. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.\n\n__Default value:__ `\"middle\"`"
         },
         "titleColor": {
           "$ref": "#/definitions/Color",
@@ -8658,7 +8682,7 @@
           "type": "number"
         },
         "titleLineHeight": {
-          "description": "Line height in pixels for multi-line title text.",
+          "description": "Line height in pixels for multi-line header title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
           "type": "number"
         },
         "titleOrient": {
@@ -10196,7 +10220,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "blend": {
           "$ref": "#/definitions/Blend",
@@ -10906,7 +10930,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "blend": {
           "$ref": "#/definitions/Blend",
@@ -11252,7 +11276,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "binSpacing": {
           "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
@@ -12068,7 +12092,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "blend": {
           "$ref": "#/definitions/Blend",
@@ -13107,7 +13131,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "binSpacing": {
           "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
@@ -15344,7 +15368,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `\"top\"`, `\"bottom\"`, `\"middle\"`, `\"alphabetic\"` (for text only)."
+          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "blend": {
           "$ref": "#/definitions/Blend",
