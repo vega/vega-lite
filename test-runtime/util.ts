@@ -4,6 +4,7 @@ import {Page} from 'puppeteer';
 import {stringValue} from 'vega-util';
 import {SelectionResolution, SelectionType} from '../src/selection';
 import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec';
+import {promisify} from 'util';
 
 const generate = process.env.VL_GENERATE_TESTS;
 const output = 'test-runtime/resources';
@@ -160,7 +161,7 @@ function base(iter: number, sel: any, opts: any = {}): NormalizedUnitSpec | Norm
 export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {}): TopLevelSpec {
   const {data, ...specification} = base(iter, sel, opts);
   const resolve = opts.resolve;
-  const config = {view: {discreteWidth: {step: 21}, discreteHeight: {step: 21}}}; // A lot of magic number in this file uses the old step = 21
+  const config = {view: {discreteWidth: {step: 21}, discreteHeight: {step: 21}}}; // A lot of magic numbers in this file use the old step = 21
   switch (compose) {
     case 'unit':
       return {data, ...specification, config};
@@ -181,8 +182,6 @@ export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {
         config
       };
   }
-
-  return null;
 }
 
 export function unitNameRegex(specType: ComposeType, idx: number) {
@@ -214,14 +213,17 @@ export function embedFn(page: Page) {
   };
 }
 
+const readFileAsync = promisify(fs.readFile);
+const writeFileAsync = promisify(fs.writeFile);
+
 export async function svg(page: Page, path: string, filename: string) {
   const svgString = await page.evaluate(
-    `new Promise((resolve, reject) => { vega.resetSVGClipId(); view.runAsync().then(view => view.toSVG().then(resolve)) })`
+    `(async () => { vega.resetSVGClipId(); await view.runAsync(); return await view.toSVG() })()`
   );
 
   if (generate) {
     mkdirp((path = `${output}/${path}`));
-    fs.writeFileSync(`${path}/${filename}.svg`, svgString);
+    await writeFileAsync(`${path}/${filename}.svg`, svgString);
   }
 
   return svgString;
@@ -230,7 +232,7 @@ export async function svg(page: Page, path: string, filename: string) {
 export function testRenderFn(page: Page, path: string) {
   return async (filename: string) => {
     const render = await svg(page, path, filename);
-    const file = fs.readFileSync(`${output}/${path}/${filename}.svg`);
+    const file = await readFileAsync(`${output}/${path}/${filename}.svg`);
     expect(render).toBe(file.toString());
   };
 }
