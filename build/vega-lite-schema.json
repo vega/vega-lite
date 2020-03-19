@@ -166,7 +166,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
+          "description": "The vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "blend": {
           "$ref": "#/definitions/Blend",
@@ -1673,7 +1673,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
+          "description": "The vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "binSpacing": {
           "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
@@ -10220,7 +10220,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
+          "description": "The vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "blend": {
           "$ref": "#/definitions/Blend",
@@ -10930,7 +10930,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
+          "description": "The vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "blend": {
           "$ref": "#/definitions/Blend",
@@ -11276,7 +11276,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
+          "description": "The vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "binSpacing": {
           "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
@@ -12092,7 +12092,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
+          "description": "The vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "blend": {
           "$ref": "#/definitions/Blend",
@@ -13131,7 +13131,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
+          "description": "The vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "binSpacing": {
           "description": "Offset between bars for binned field. The ideal value for this is either 0 (preferred by statisticians) or 1 (Vega-Lite default, D3 example style).\n\n__Default value:__ `1`",
@@ -15368,7 +15368,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "The vertical text baseline. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.\nThe `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
+          "description": "The vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
         },
         "blend": {
           "$ref": "#/definitions/Blend",
