@@ -61,8 +61,8 @@ export interface CoreHeader extends FormatMixins {
   titleAngle?: number; // We don't allow signal for titleAngle since there is a dependent logic
 
   /**
-   * The vertical text baseline for the header title. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.
-   * The `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.
+   * The vertical text baseline for the header title. One of `"alphabetic"` (default), `"top"`, `"middle"`, `"bottom"`, `"line-top"`, or `"line-bottom"`.
+   * The `"line-top"` and `"line-bottom"` values operate similarly to `"top"` and `"bottom"`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.
    *
    * __Default value:__ `"middle"`
    */
@@ -135,8 +135,8 @@ export interface CoreHeader extends FormatMixins {
   labelAlign?: Align | SignalRef;
 
   /**
-   * The vertical text baseline for the header labels. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.
-   * The `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.
+   * The vertical text baseline for the header labels. One of `"alphabetic"` (default), `"top"`, `"middle"`, `"bottom"`, `"line-top"`, or `"line-bottom"`.
+   * The `"line-top"` and `"line-bottom"` values operate similarly to `"top"` and `"bottom"`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.
    *
    */
   labelBaseline?: TextBaseline | SignalRef;
@@ -198,7 +198,7 @@ export interface CoreHeader extends FormatMixins {
   labelLimit?: number | SignalRef;
 
   /**
-   * Line height in pixels for multi-line header labels.
+   * Line height in pixels for multi-line header labels or title text with `"line-top"` or `"line-bottom"` baseline.
    */
   labelLineHeight?: number | SignalRef;
 
