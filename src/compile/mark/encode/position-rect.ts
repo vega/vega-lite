@@ -83,18 +83,14 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
     }
 
     // sized bin, normal point-ordinal axis, quantitative x-axis, or no x
-    return centeredPointPositionWithSize(
-      channel,
-      model,
-      defaultSizeRef(mark, markDef, sizeChannel, scaleName, scale, config)
-    );
+    return pointPositionWithSize(channel, model, defaultSizeRef(mark, markDef, sizeChannel, scaleName, scale, config));
   } else {
     return rangePosition(channel, model, {defaultPos: 'zeroOrMax', defaultPos2: 'zeroOrMin'});
   }
 }
 
-function centeredPointPositionWithSize(channel: 'x' | 'y', model: UnitModel, sizeRef: VgValueRef) {
-  const centerChannel: 'xc' | 'yc' = channel === 'x' ? 'xc' : 'yc';
+function pointPositionWithSize(channel: 'x' | 'y', model: UnitModel, sizeRef: VgValueRef) {
+  const centerChannel: 'xc' | 'yc' = alignedPositionChannel(channel, model.markDef, model.config);
   const sizeChannel = channel === 'x' ? 'width' : 'height';
   return {
     ...pointPosition(channel, model, {defaultPos: 'mid', vgChannel: centerChannel}),
