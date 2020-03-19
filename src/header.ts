@@ -22,11 +22,14 @@ export const HEADER_LABEL_PROPERTIES_MAP: Partial<Record<keyof CoreHeader, keyof
   labelAlign: 'align',
   labelAnchor: 'anchor',
   labelAngle: 'angle',
+  labelBaseline: 'baseline',
   labelColor: 'color',
   labelFont: 'font',
   labelFontSize: 'fontSize',
   labelFontStyle: 'fontStyle',
+  labelFontWeight: 'fontWeight',
   labelLimit: 'limit',
+  labelLineHeight: 'lineHeight',
   labelOrient: 'orient',
   labelPadding: 'offset'
 };
@@ -58,7 +61,8 @@ export interface CoreHeader extends FormatMixins {
   titleAngle?: number; // We don't allow signal for titleAngle since there is a dependent logic
 
   /**
-   * Vertical text baseline for the header title. One of `"top"`, `"bottom"`, `"middle"`.
+   * The vertical text baseline for the header title. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.
+   * The `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.
    *
    * __Default value:__ `"middle"`
    */
@@ -100,7 +104,7 @@ export interface CoreHeader extends FormatMixins {
   titleLimit?: number | SignalRef;
 
   /**
-   * Line height in pixels for multi-line title text.
+   * Line height in pixels for multi-line header title text or title text with `"line-top"` or `"line-bottom"` baseline.
    */
   titleLineHeight?: number | SignalRef;
 
@@ -129,6 +133,13 @@ export interface CoreHeader extends FormatMixins {
    * Horizontal text alignment of header labels. One of `"left"`, `"center"`, or `"right"`.
    */
   labelAlign?: Align | SignalRef;
+
+  /**
+   * The vertical text baseline for the header labels. One of `alphabetic` (default), `top`, `middle`, `bottom`, `line-top`, or `line-bottom`.
+   * The `line-top` and `line-bottom` values operate similarly to `top` and `bottom`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.
+   *
+   */
+  labelBaseline?: TextBaseline | SignalRef;
 
   /**
    * The anchor position for placing the labels. One of `"start"`, `"middle"`, or `"end"`. For example, with a label orientation of top these anchor positions map to a left-, center-, or right-aligned label.
@@ -175,11 +186,21 @@ export interface CoreHeader extends FormatMixins {
   labelFontStyle?: FontStyle | SignalRef;
 
   /**
+   * The font weight of the header label.
+   */
+  labelFontWeight?: FontWeight | SignalRef;
+
+  /**
    * The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.
    *
    * __Default value:__ `0`, indicating no limit
    */
   labelLimit?: number | SignalRef;
+
+  /**
+   * Line height in pixels for multi-line header labels.
+   */
+  labelLineHeight?: number | SignalRef;
 
   /**
    * The orientation of the header label. One of `"top"`, `"bottom"`, `"left"` or `"right"`.
