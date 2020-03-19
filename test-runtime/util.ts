@@ -51,7 +51,7 @@ export const tuples = [
 ];
 
 const UNIT_NAMES = {
-  repeat: ['child__repeat_row_d', 'child__repeat_row_e', 'child__repeat_row_f'],
+  repeat: ['child__row_d', 'child__row_e', 'child__row_f'],
   facet: ['child__facet_row_0', 'child__facet_row_1', 'child__facet_row_2']
 };
 
