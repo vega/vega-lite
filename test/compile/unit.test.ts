@@ -63,19 +63,6 @@ describe('UnitModel', () => {
   });
 
   describe('initAxes', () => {
-    it('should not include properties of non-VlOnlyAxisConfig in config.axis', () => {
-      const model = parseUnitModel({
-        mark: 'point',
-        encoding: {
-          x: {field: 'a', type: 'ordinal'},
-          y: {field: 'b', type: 'ordinal'}
-        },
-        config: {axis: {domainWidth: 123}}
-      });
-
-      expect(model.axis(X)['domainWidth']).toEqual(undefined);
-    });
-
     it('it should have axis.offset = encode.x.axis.offset', () => {
       const model = parseUnitModel({
         mark: 'point',

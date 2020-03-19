@@ -240,7 +240,12 @@ export interface AxisPropsWithConditionAndSignal {
 
 export type AxisConfig = VlOnlyGuideConfig &
   AxisConfigBaseWithConditionalAndSignal &
-  Pick<Axis, 'labelExpr' | 'tickCount' | 'style'>;
+  Pick<Axis, 'labelExpr' | 'tickCount' | 'style'> & {
+    /**
+     * Disable axis by default.
+     */
+    disable?: boolean;
+  };
 
 export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
   /**

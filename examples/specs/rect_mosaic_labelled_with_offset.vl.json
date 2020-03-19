@@ -172,8 +172,7 @@
             },
             "y": {
               "field": "ny",
-              "type": "quantitative",
-              "axis": null
+              "type": "quantitative"
             },
             "y2": {
               "field": "ny2"

@@ -20,7 +20,7 @@ import * as properties from './properties';
 
 export function parseUnitAxes(model: UnitModel): AxisComponentIndex {
   return POSITION_SCALE_CHANNELS.reduce((axis, channel) => {
-    if (model.component.scales[channel] && model.axis(channel)) {
+    if (model.component.scales[channel]) {
       axis[channel] = [parseAxis(channel, model)];
     }
     return axis;
@@ -198,6 +198,12 @@ function isExplicit<T extends string | number | boolean | object>(
   model: UnitModel,
   channel: PositionScaleChannel
 ) {
+  if (property === 'disable') {
+    return axis !== undefined; // if axis is specified or null/false, then it's enable/disable state is explicit
+  }
+
+  axis = axis || {};
+
   switch (property) {
     case 'titleAngle':
     case 'labelAngle':
@@ -240,7 +246,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
           channel,
           axisComponent.get('orient'),
           model.getScaleComponent(channel).get('type'),
-          axis.style
+          axis?.style
         )
       : {};
 
@@ -270,7 +276,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   }
 
   // 2) Add guide encode definition groups
-  const axisEncoding = axis.encoding ?? {};
+  const axisEncoding = axis?.encoding ?? {};
   const axisEncode = AXIS_PARTS.reduce((e: VgAxisEncode, part) => {
     if (!axisComponent.hasAxisPart(part)) {
       // No need to create encode for a disabled part.
@@ -289,7 +295,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
   // FIXME: By having encode as one property, we won't have fine grained encode merging.
   if (keys(axisEncode).length > 0) {
-    axisComponent.set('encode', axisEncode, !!axis.encoding || axis.labelAngle !== undefined);
+    axisComponent.set('encode', axisEncode, !!axis?.encoding || axis?.labelAngle !== undefined);
   }
 
   return axisComponent;
@@ -301,6 +307,12 @@ function getProperty<K extends keyof AxisComponentProps>(
   channel: PositionScaleChannel,
   model: UnitModel
 ): AxisComponentProps[K] {
+  if (property === 'disable') {
+    return specifiedAxis !== undefined && (!specifiedAxis as AxisComponentProps[K]);
+  }
+
+  specifiedAxis = specifiedAxis || {}; // assign object so the rest doesn't have to check if legend exists
+
   const fieldDef = model.fieldDef(channel);
 
   // Some properties depend on labelAngle so we have to declare it here.

@@ -322,11 +322,8 @@
       "stroke": "color",
       "symbolType": "circle",
       "title": "symbol",
-      "encode": {
-        "symbols": {
-          "update": {"fill": {"value": "transparent"}, "opacity": {"value": 1}}
-        }
-      }
+      "encode": {"symbols": {"update": {"opacity": {"value": 1}}}},
+      "fill": "color"
     }
   ]
 }

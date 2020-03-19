@@ -215,6 +215,7 @@
           "height": {"signal": "concat_1_height"}
         }
       },
+      "signals": [{"name": "height", "update": "concat_1_height"}],
       "marks": [
         {
           "name": "concat_1_layer_0_marks",

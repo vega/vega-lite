@@ -71,8 +71,7 @@
         "x": {
           "field": "start",
           "type": "temporal",
-          "timeUnit": "year",
-          "axis": null
+          "timeUnit": "year"
         },
         "x2": {
           "field": "end",
@@ -87,7 +86,8 @@
         "x": {
           "field": "year",
           "type": "temporal",
-          "timeUnit": "year"
+          "timeUnit": "year",
+          "title": "year (year)"
         },
         "y": {"field": "population", "type": "quantitative"},
         "color": {"value": "#333"}

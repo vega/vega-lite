@@ -155,6 +155,7 @@
           "stroke": {"value": null}
         }
       },
+      "signals": [{"name": "width", "update": "concat_1_width"}],
       "marks": [
         {
           "name": "concat_1_marks",

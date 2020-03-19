@@ -8,7 +8,7 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   const fieldDef =
     model.fieldDef(channel) ??
     (channel === 'x' ? model.fieldDef('x2') : channel === 'y' ? model.fieldDef('y2') : undefined);
-  const axis = model.axis(channel);
+  const axis = model.axis(channel) || {};
   const {format, formatType} = axis;
   const {config} = model;
 

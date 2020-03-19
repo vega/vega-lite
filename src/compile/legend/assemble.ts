@@ -42,11 +42,16 @@ export function assembleLegends(model: Model): VgLegend[] {
 
   return vals(legendByDomain)
     .flat()
-    .map(assembleLegend);
+    .map(assembleLegend)
+    .filter(l => l !== undefined);
 }
 
 export function assembleLegend(legendCmpt: LegendComponent) {
-  const {labelExpr, selections, ...legend} = legendCmpt.combine();
+  const {disable, labelExpr, selections, ...legend} = legendCmpt.combine();
+
+  if (disable) {
+    return undefined;
+  }
 
   if (legend.encode?.symbols) {
     const out = legend.encode.symbols.update;

@@ -163,13 +163,9 @@ export class UnitModel extends ModelWithField {
         (channel === X && isFieldDef(encoding.x2)) ||
         (channel === Y && isFieldDef(encoding.y2))
       ) {
-        const axisSpec = isFieldDef(channelDef) ? channelDef.axis : null;
+        const axisSpec = isFieldDef(channelDef) ? channelDef.axis : undefined;
 
-        if (axisSpec !== null) {
-          _axis[channel] = {
-            ...axisSpec
-          };
-        }
+        _axis[channel] = axisSpec ? {...axisSpec} : axisSpec; // convert truthy value to object
       }
       return _axis;
     }, {});
@@ -183,10 +179,10 @@ export class UnitModel extends ModelWithField {
           ? channelDef.legend
           : hasConditionalFieldDef<string, any>(channelDef) // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
           ? channelDef.condition['legend']
-          : null;
+          : undefined;
 
-        if (legend !== null && legend !== false && supportLegend(channel)) {
-          _legend[channel] = {...legend};
+        if (supportLegend(channel)) {
+          _legend[channel] = legend ? {...legend} : legend; // convert truthy value to object
         }
       }
 

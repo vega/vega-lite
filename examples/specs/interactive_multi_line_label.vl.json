@@ -63,7 +63,7 @@
             {
               "mark": {"type": "text", "align": "left", "dx": 5, "dy": -5},
               "encoding": {
-                "color": {"type": "nominal", "field": "symbol", "legend": null}
+                "color": {"type": "nominal", "field": "symbol"}
               }
             }
           ]
