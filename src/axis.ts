@@ -242,7 +242,7 @@ export type AxisConfig = VlOnlyGuideConfig &
   AxisConfigBaseWithConditionalAndSignal &
   Pick<Axis, 'labelExpr' | 'tickCount' | 'style'> & {
     /**
-     * Disable axis by default
+     * Disable axis by default.
      */
     disable?: boolean;
   };
