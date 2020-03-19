@@ -12,7 +12,7 @@
         "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
         "color": {"field": "Origin", "type": "nominal"}
       },
-      "name": "child__repeat_column_Origin"
+      "name": "child__column_Origin"
     },
     {
       "mark": "point",
@@ -21,7 +21,7 @@
         "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
         "color": {"field": "Cylinders", "type": "nominal"}
       },
-      "name": "child__repeat_column_Cylinders"
+      "name": "child__column_Cylinders"
     }
   ]
 }

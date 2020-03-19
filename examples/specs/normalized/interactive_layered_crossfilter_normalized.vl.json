@@ -36,7 +36,7 @@
           }
         }
       ],
-      "name": "child__repeat_column_distance"
+      "name": "child__column_distance"
     },
     {
       "layer": [
@@ -66,7 +66,7 @@
           }
         }
       ],
-      "name": "child__repeat_column_delay"
+      "name": "child__column_delay"
     },
     {
       "layer": [
@@ -96,7 +96,7 @@
           }
         }
       ],
-      "name": "child__repeat_column_time"
+      "name": "child__column_time"
     }
   ]
 }

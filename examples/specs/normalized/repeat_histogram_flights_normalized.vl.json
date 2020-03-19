@@ -18,7 +18,7 @@
         },
         "y": {"aggregate": "count", "type": "quantitative"}
       },
-      "name": "child__repeat_column_distance"
+      "name": "child__column_distance"
     },
     {
       "mark": "bar",
@@ -26,7 +26,7 @@
         "x": {"field": "delay", "bin": {"maxbins": 20}, "type": "quantitative"},
         "y": {"aggregate": "count", "type": "quantitative"}
       },
-      "name": "child__repeat_column_delay"
+      "name": "child__column_delay"
     },
     {
       "mark": "bar",
@@ -34,7 +34,7 @@
         "x": {"field": "time", "bin": {"maxbins": 20}, "type": "quantitative"},
         "y": {"aggregate": "count", "type": "quantitative"}
       },
-      "name": "child__repeat_column_time"
+      "name": "child__column_time"
     }
   ]
 }

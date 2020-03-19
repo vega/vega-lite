@@ -28,7 +28,7 @@
         {
           "type": "geojson",
           "geojson": "geo",
-          "signal": "child__repeat_row_population_geojson_0"
+          "signal": "child__row_population_geojson_0"
         },
         {
           "type": "filter",
@@ -50,7 +50,7 @@
         {
           "type": "geojson",
           "geojson": "geo",
-          "signal": "child__repeat_row_engineers_geojson_0"
+          "signal": "child__row_engineers_geojson_0"
         },
         {
           "type": "filter",
@@ -72,7 +72,7 @@
         {
           "type": "geojson",
           "geojson": "geo",
-          "signal": "child__repeat_row_hurricanes_geojson_0"
+          "signal": "child__row_hurricanes_geojson_0"
         },
         {
           "type": "filter",
@@ -86,7 +86,7 @@
       "name": "projection",
       "size": {"signal": "[childWidth, childHeight]"},
       "fit": {
-        "signal": "[child__repeat_row_population_geojson_0, child__repeat_row_engineers_geojson_0, child__repeat_row_hurricanes_geojson_0]"
+        "signal": "[child__row_population_geojson_0, child__row_engineers_geojson_0, child__row_hurricanes_geojson_0]"
       },
       "type": "albersUsa"
     }
@@ -99,7 +99,7 @@
   "marks": [
     {
       "type": "group",
-      "name": "child__repeat_row_population_group",
+      "name": "child__row_population_group",
       "style": "cell",
       "encode": {
         "update": {
@@ -109,14 +109,14 @@
       },
       "marks": [
         {
-          "name": "child__repeat_row_population_marks",
+          "name": "child__row_population_marks",
           "type": "shape",
           "style": ["geoshape"],
           "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": {
-                "scale": "child__repeat_row_population_color",
+                "scale": "child__row_population_color",
                 "field": "population"
               }
             }
@@ -132,7 +132,7 @@
       ],
       "legends": [
         {
-          "fill": "child__repeat_row_population_color",
+          "fill": "child__row_population_color",
           "gradientLength": {"signal": "clamp(childHeight, 64, 200)"},
           "symbolType": "circle",
           "title": "population"
@@ -141,7 +141,7 @@
     },
     {
       "type": "group",
-      "name": "child__repeat_row_engineers_group",
+      "name": "child__row_engineers_group",
       "style": "cell",
       "encode": {
         "update": {
@@ -151,14 +151,14 @@
       },
       "marks": [
         {
-          "name": "child__repeat_row_engineers_marks",
+          "name": "child__row_engineers_marks",
           "type": "shape",
           "style": ["geoshape"],
           "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": {
-                "scale": "child__repeat_row_engineers_color",
+                "scale": "child__row_engineers_color",
                 "field": "engineers"
               }
             }
@@ -174,7 +174,7 @@
       ],
       "legends": [
         {
-          "fill": "child__repeat_row_engineers_color",
+          "fill": "child__row_engineers_color",
           "gradientLength": {"signal": "clamp(childHeight, 64, 200)"},
           "symbolType": "circle",
           "title": "engineers"
@@ -183,7 +183,7 @@
     },
     {
       "type": "group",
-      "name": "child__repeat_row_hurricanes_group",
+      "name": "child__row_hurricanes_group",
       "style": "cell",
       "encode": {
         "update": {
@@ -193,14 +193,14 @@
       },
       "marks": [
         {
-          "name": "child__repeat_row_hurricanes_marks",
+          "name": "child__row_hurricanes_marks",
           "type": "shape",
           "style": ["geoshape"],
           "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": {
-                "scale": "child__repeat_row_hurricanes_color",
+                "scale": "child__row_hurricanes_color",
                 "field": "hurricanes"
               }
             }
@@ -216,7 +216,7 @@
       ],
       "legends": [
         {
-          "fill": "child__repeat_row_hurricanes_color",
+          "fill": "child__row_hurricanes_color",
           "gradientLength": {"signal": "clamp(childHeight, 64, 200)"},
           "symbolType": "circle",
           "title": "hurricanes"
@@ -226,7 +226,7 @@
   ],
   "scales": [
     {
-      "name": "child__repeat_row_population_color",
+      "name": "child__row_population_color",
       "type": "linear",
       "domain": {"data": "data_0", "field": "population"},
       "range": "heatmap",
@@ -234,7 +234,7 @@
       "zero": false
     },
     {
-      "name": "child__repeat_row_engineers_color",
+      "name": "child__row_engineers_color",
       "type": "linear",
       "domain": {"data": "data_1", "field": "engineers"},
       "range": "heatmap",
@@ -242,7 +242,7 @@
       "zero": false
     },
     {
-      "name": "child__repeat_row_hurricanes_color",
+      "name": "child__row_hurricanes_color",
       "type": "linear",
       "domain": {"data": "data_2", "field": "hurricanes"},
       "range": "heatmap",

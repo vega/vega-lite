@@ -11,7 +11,7 @@
         "y": {"field": "temp_max", "type": "quantitative", "aggregate": "mean"},
         "color": {"field": "location", "type": "nominal"}
       },
-      "name": "child__repeat_repeat_temp_max"
+      "name": "child__temp_max"
     },
     {
       "mark": "line",
@@ -24,7 +24,7 @@
         },
         "color": {"field": "location", "type": "nominal"}
       },
-      "name": "child__repeat_repeat_precipitation"
+      "name": "child__precipitation"
     },
     {
       "mark": "line",
@@ -33,7 +33,7 @@
         "y": {"field": "wind", "type": "quantitative", "aggregate": "mean"},
         "color": {"field": "location", "type": "nominal"}
       },
-      "name": "child__repeat_repeat_wind"
+      "name": "child__wind"
     }
   ]
 }

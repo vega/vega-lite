@@ -32,7 +32,7 @@
   "marks": [
     {
       "type": "group",
-      "name": "child__repeat_repeat_temp_max_group",
+      "name": "child__temp_max_group",
       "style": "cell",
       "encode": {
         "update": {
@@ -42,11 +42,11 @@
       },
       "marks": [
         {
-          "name": "child__repeat_repeat_temp_max_pathgroup",
+          "name": "child__temp_max_pathgroup",
           "type": "group",
           "from": {
             "facet": {
-              "name": "faceted_path_child__repeat_repeat_temp_max_main",
+              "name": "faceted_path_child__temp_max_main",
               "data": "source_0",
               "groupby": ["location"]
             }
@@ -59,24 +59,16 @@
           },
           "marks": [
             {
-              "name": "child__repeat_repeat_temp_max_marks",
+              "name": "child__temp_max_marks",
               "type": "line",
               "style": ["line"],
               "sort": {"field": "datum[\"month_date\"]"},
-              "from": {
-                "data": "faceted_path_child__repeat_repeat_temp_max_main"
-              },
+              "from": {"data": "faceted_path_child__temp_max_main"},
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
-                  "x": {
-                    "scale": "child__repeat_repeat_temp_max_x",
-                    "field": "month_date"
-                  },
-                  "y": {
-                    "scale": "child__repeat_repeat_temp_max_y",
-                    "field": "mean_temp_max"
-                  },
+                  "x": {"scale": "child__temp_max_x", "field": "month_date"},
+                  "y": {"scale": "child__temp_max_y", "field": "mean_temp_max"},
                   "defined": {
                     "signal": "isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]) && isValid(datum[\"mean_temp_max\"]) && isFinite(+datum[\"mean_temp_max\"])"
                   }
@@ -88,9 +80,9 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_temp_max_x",
+          "scale": "child__temp_max_x",
           "orient": "bottom",
-          "gridScale": "child__repeat_repeat_temp_max_y",
+          "gridScale": "child__temp_max_y",
           "grid": true,
           "domain": false,
           "labels": false,
@@ -100,9 +92,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_temp_max_y",
+          "scale": "child__temp_max_y",
           "orient": "left",
-          "gridScale": "child__repeat_repeat_temp_max_x",
+          "gridScale": "child__temp_max_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -113,7 +105,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_temp_max_x",
+          "scale": "child__temp_max_x",
           "orient": "bottom",
           "grid": false,
           "title": "date (month)",
@@ -131,7 +123,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_temp_max_y",
+          "scale": "child__temp_max_y",
           "orient": "left",
           "grid": false,
           "title": "Mean of temp_max",
@@ -143,7 +135,7 @@
     },
     {
       "type": "group",
-      "name": "child__repeat_repeat_precipitation_group",
+      "name": "child__precipitation_group",
       "style": "cell",
       "encode": {
         "update": {
@@ -153,11 +145,11 @@
       },
       "marks": [
         {
-          "name": "child__repeat_repeat_precipitation_pathgroup",
+          "name": "child__precipitation_pathgroup",
           "type": "group",
           "from": {
             "facet": {
-              "name": "faceted_path_child__repeat_repeat_precipitation_main",
+              "name": "faceted_path_child__precipitation_main",
               "data": "source_0",
               "groupby": ["location"]
             }
@@ -170,22 +162,20 @@
           },
           "marks": [
             {
-              "name": "child__repeat_repeat_precipitation_marks",
+              "name": "child__precipitation_marks",
               "type": "line",
               "style": ["line"],
               "sort": {"field": "datum[\"month_date\"]"},
-              "from": {
-                "data": "faceted_path_child__repeat_repeat_precipitation_main"
-              },
+              "from": {"data": "faceted_path_child__precipitation_main"},
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
                   "x": {
-                    "scale": "child__repeat_repeat_precipitation_x",
+                    "scale": "child__precipitation_x",
                     "field": "month_date"
                   },
                   "y": {
-                    "scale": "child__repeat_repeat_precipitation_y",
+                    "scale": "child__precipitation_y",
                     "field": "mean_precipitation"
                   },
                   "defined": {
@@ -199,9 +189,9 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_precipitation_x",
+          "scale": "child__precipitation_x",
           "orient": "bottom",
-          "gridScale": "child__repeat_repeat_precipitation_y",
+          "gridScale": "child__precipitation_y",
           "grid": true,
           "domain": false,
           "labels": false,
@@ -211,9 +201,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_precipitation_y",
+          "scale": "child__precipitation_y",
           "orient": "left",
-          "gridScale": "child__repeat_repeat_precipitation_x",
+          "gridScale": "child__precipitation_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -224,7 +214,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_precipitation_x",
+          "scale": "child__precipitation_x",
           "orient": "bottom",
           "grid": false,
           "title": "date (month)",
@@ -242,7 +232,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_precipitation_y",
+          "scale": "child__precipitation_y",
           "orient": "left",
           "grid": false,
           "title": "Mean of precipitation",
@@ -254,7 +244,7 @@
     },
     {
       "type": "group",
-      "name": "child__repeat_repeat_wind_group",
+      "name": "child__wind_group",
       "style": "cell",
       "encode": {
         "update": {
@@ -264,11 +254,11 @@
       },
       "marks": [
         {
-          "name": "child__repeat_repeat_wind_pathgroup",
+          "name": "child__wind_pathgroup",
           "type": "group",
           "from": {
             "facet": {
-              "name": "faceted_path_child__repeat_repeat_wind_main",
+              "name": "faceted_path_child__wind_main",
               "data": "source_0",
               "groupby": ["location"]
             }
@@ -281,22 +271,16 @@
           },
           "marks": [
             {
-              "name": "child__repeat_repeat_wind_marks",
+              "name": "child__wind_marks",
               "type": "line",
               "style": ["line"],
               "sort": {"field": "datum[\"month_date\"]"},
-              "from": {"data": "faceted_path_child__repeat_repeat_wind_main"},
+              "from": {"data": "faceted_path_child__wind_main"},
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
-                  "x": {
-                    "scale": "child__repeat_repeat_wind_x",
-                    "field": "month_date"
-                  },
-                  "y": {
-                    "scale": "child__repeat_repeat_wind_y",
-                    "field": "mean_wind"
-                  },
+                  "x": {"scale": "child__wind_x", "field": "month_date"},
+                  "y": {"scale": "child__wind_y", "field": "mean_wind"},
                   "defined": {
                     "signal": "isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]) && isValid(datum[\"mean_wind\"]) && isFinite(+datum[\"mean_wind\"])"
                   }
@@ -308,9 +292,9 @@
       ],
       "axes": [
         {
-          "scale": "child__repeat_repeat_wind_x",
+          "scale": "child__wind_x",
           "orient": "bottom",
-          "gridScale": "child__repeat_repeat_wind_y",
+          "gridScale": "child__wind_y",
           "grid": true,
           "domain": false,
           "labels": false,
@@ -320,9 +304,9 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_wind_y",
+          "scale": "child__wind_y",
           "orient": "left",
-          "gridScale": "child__repeat_repeat_wind_x",
+          "gridScale": "child__wind_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -333,7 +317,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_wind_x",
+          "scale": "child__wind_x",
           "orient": "bottom",
           "grid": false,
           "title": "date (month)",
@@ -351,7 +335,7 @@
           "zindex": 0
         },
         {
-          "scale": "child__repeat_repeat_wind_y",
+          "scale": "child__wind_y",
           "orient": "left",
           "grid": false,
           "title": "Mean of wind",
@@ -370,13 +354,13 @@
       "range": "category"
     },
     {
-      "name": "child__repeat_repeat_temp_max_x",
+      "name": "child__temp_max_x",
       "type": "time",
       "domain": {"data": "source_0", "field": "month_date"},
       "range": [0, {"signal": "childWidth"}]
     },
     {
-      "name": "child__repeat_repeat_temp_max_y",
+      "name": "child__temp_max_y",
       "type": "linear",
       "domain": {"data": "source_0", "field": "mean_temp_max"},
       "range": [{"signal": "childHeight"}, 0],
@@ -384,13 +368,13 @@
       "zero": true
     },
     {
-      "name": "child__repeat_repeat_precipitation_x",
+      "name": "child__precipitation_x",
       "type": "time",
       "domain": {"data": "source_0", "field": "month_date"},
       "range": [0, {"signal": "childWidth"}]
     },
     {
-      "name": "child__repeat_repeat_precipitation_y",
+      "name": "child__precipitation_y",
       "type": "linear",
       "domain": {"data": "source_0", "field": "mean_precipitation"},
       "range": [{"signal": "childHeight"}, 0],
@@ -398,13 +382,13 @@
       "zero": true
     },
     {
-      "name": "child__repeat_repeat_wind_x",
+      "name": "child__wind_x",
       "type": "time",
       "domain": {"data": "source_0", "field": "month_date"},
       "range": [0, {"signal": "childWidth"}]
     },
     {
-      "name": "child__repeat_repeat_wind_y",
+      "name": "child__wind_y",
       "type": "linear",
       "domain": {"data": "source_0", "field": "mean_wind"},
       "range": [{"signal": "childHeight"}, 0],
