@@ -111,11 +111,7 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
                   if (v === 'width' || v === 'height') {
                     // get signal for width/height
 
-                    // Note that, just like default range logic below, these range signals are temporary
-                    // as they can be merged and renamed.
-                    // (We do not have the right size signal here since parseLayoutSize() happens after parseScale().)
-                    // We will later replace these temporary names with
-                    // the final name in assembleScaleRange()
+                    // Just like default range logic below, we use SignalRefWrapper to account for potential merges and renames.
 
                     const sizeSignal = model.getName(v);
                     const getSignalName = model.getSignalName.bind(model);
@@ -189,11 +185,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       }
 
       // If step is null, use zero to width or height.
-      // Note that these range signals are temporary
-      // as they can be merged and renamed.
-      // (We do not have the right size signal here since parseLayoutSize() happens after parseScale().)
-      // We will later replace these temporary names with
-      // the final name in assembleScaleRange()
+      // Note that we use SignalRefWrapper to account for potential merges and renames.
 
       const sizeType = getSizeType(channel);
       const sizeSignal = model.getName(sizeType);
