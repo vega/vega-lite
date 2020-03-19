@@ -315,12 +315,6 @@ function getProperty<K extends keyof AxisComponentProps>(
 
   const fieldDef = model.fieldDef(channel);
 
-  // Some properties depend on labelAngle so we have to declare it here.
-  // Also, we don't use `getFirstDefined` for labelAngle
-  // as we want to normalize specified value to be within [0,360)
-  const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldDef);
-  const orient = getFirstDefined(specifiedAxis.orient, properties.orient(channel));
-
   const {mark, config} = model;
 
   switch (property) {
@@ -351,18 +345,26 @@ function getProperty<K extends keyof AxisComponentProps>(
         ) as AxisComponentProps[K];
       }
     }
-    case 'labelAlign':
+    case 'labelAlign': {
+      const orient = getFirstDefined(specifiedAxis.orient, properties.orient(channel));
+      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldDef);
       return getFirstDefined(
         specifiedAxis.labelAlign,
         properties.defaultLabelAlign(labelAngle, orient)
       ) as AxisComponentProps[K];
-    case 'labelAngle':
+    }
+    case 'labelAngle': {
+      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldDef);
       return labelAngle as AxisComponentProps[K];
-    case 'labelBaseline':
+    }
+    case 'labelBaseline': {
+      const orient = getFirstDefined(specifiedAxis.orient, properties.orient(channel));
+      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldDef);
       return getFirstDefined(
         specifiedAxis.labelBaseline,
         properties.defaultLabelBaseline(labelAngle, orient)
       ) as AxisComponentProps[K];
+    }
     case 'labelFlush':
       return getFirstDefined(
         specifiedAxis.labelFlush,
@@ -375,8 +377,10 @@ function getProperty<K extends keyof AxisComponentProps>(
         properties.defaultLabelOverlap(fieldDef, scaleType)
       ) as AxisComponentProps[K];
     }
-    case 'orient':
+    case 'orient': {
+      const orient = getFirstDefined(specifiedAxis.orient, properties.orient(channel));
       return orient as AxisComponentProps[K];
+    }
     case 'tickCount': {
       const scaleType = model.getScaleComponent(channel).get('type');
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
