@@ -928,6 +928,21 @@ export function initFieldDef(fd: FieldDef<string>, channel: Channel) {
     }
   }
 
+  if (isFacetFieldDef(fieldDef)) {
+    const {header} = fieldDef;
+    const {orient, ...rest} = header;
+    if (orient) {
+      return {
+        ...fieldDef,
+        header: {
+          ...rest,
+          labelOrient: header.labelOrient || orient,
+          titleOrient: header.titleOrient || orient
+        }
+      };
+    }
+  }
+
   return fieldDef;
 }
 

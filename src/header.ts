@@ -213,6 +213,11 @@ export interface CoreHeader extends FormatMixins {
    * __Default value:__ `10`
    */
   labelPadding?: number | SignalRef;
+
+  /**
+   * Shortcut for setting both labelOrient and titleOrient.
+   */
+  orient?: Orient; // no signal ref since there is a dependent logic
 }
 
 export interface HeaderConfig extends CoreHeader, VlOnlyGuideConfig {}

@@ -10,6 +10,7 @@ import {
   vgField
 } from '../src/channeldef';
 import * as log from '../src/log';
+import {FacetFieldDef} from '../src/spec/facet';
 import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
 
@@ -71,6 +72,15 @@ describe('fieldDef', () => {
     it('should standardize non-string field to string', () => {
       const fieldDef: TypedFieldDef<string> = {field: 1 as any, type: 'q' as any};
       expect(initChannelDef(fieldDef, 'x')).toEqual({field: '1', type: 'quantitative'});
+    });
+
+    it('converts header orient to labelOrient and titleOrient', () => {
+      const fieldDef: FacetFieldDef<string> = {field: 1 as any, type: 'quantitative', header: {orient: 'bottom'}};
+      expect(initChannelDef(fieldDef, 'row')).toEqual({
+        field: '1',
+        type: 'quantitative',
+        header: {labelOrient: 'bottom', titleOrient: 'bottom'}
+      });
     });
 
     it(
