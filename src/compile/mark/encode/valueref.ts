@@ -32,7 +32,7 @@ import {StackProperties} from '../../../stack';
 import {QUANTITATIVE, TEMPORAL} from '../../../type';
 import {contains, getFirstDefined} from '../../../util';
 import {isSignalRef, VgValueRef} from '../../../vega.schema';
-import {signalOrValueRef} from '../../common';
+import {getMarkConfig, signalOrValueRef} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 
 export function midPointRefWithPositionInvalidTest(
@@ -40,7 +40,7 @@ export function midPointRefWithPositionInvalidTest(
     channel: PositionChannel;
   }
 ) {
-  const {channel, channelDef, markDef, scale} = params;
+  const {channel, channelDef, markDef, scale, config} = params;
   const ref = midPoint(params);
 
   // Wrap to check if the positional value is invalid, if so, plot the point on the min value
@@ -57,7 +57,8 @@ export function midPointRefWithPositionInvalidTest(
       fieldDef: channelDef,
       channel,
       markDef,
-      ref
+      ref,
+      config
     });
   }
   return ref;
@@ -67,19 +68,27 @@ export function wrapPositionInvalidTest({
   fieldDef,
   channel,
   markDef,
-  ref
+  ref,
+  config
 }: {
   fieldDef: FieldDef<string>;
   channel: PositionChannel;
   markDef: MarkDef<Mark>;
   ref: VgValueRef;
+  config: Config;
 }): VgValueRef | VgValueRef[] {
-  if (!isPathMark(markDef.type)) {
-    // Only do this for non-path mark (as path marks will already use "defined" to skip points)
-
-    return [fieldInvalidTestValueRef(fieldDef, channel), ref];
+  if (isPathMark(markDef.type)) {
+    // path mark already use defined to skip points, no need to do it here.
+    return ref;
   }
-  return ref;
+
+  const invalid = getFirstDefined(markDef.invalid, getMarkConfig('invalid', markDef, config));
+  if (invalid === null) {
+    // if there is no invalid filter, don't do the invalid test
+    return ref;
+  }
+
+  return [fieldInvalidTestValueRef(fieldDef, channel), ref];
 }
 
 export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: PositionChannel) {

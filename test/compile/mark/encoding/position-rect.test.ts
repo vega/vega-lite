@@ -1,8 +1,10 @@
 import {TypedFieldDef} from '../../../../src/channeldef';
 import {rectBinPosition} from '../../../../src/compile/mark/encode';
+import {defaultConfig} from '../../../../src/config';
 import * as log from '../../../../src/log';
 
 describe('compile/mark/encoding/position-rect', () => {
+  const config = defaultConfig;
   describe('rectBinPosition', () => {
     it('produces correct x-mixins for signal reverse', () => {
       const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
@@ -13,7 +15,8 @@ describe('compile/mark/encoding/position-rect', () => {
         scaleName: undefined,
         reverse: {signal: 'r'},
         spacing: 2,
-        markDef: {type: 'bar'}
+        markDef: {type: 'bar'},
+        config
       });
       expect(props.x[1].offset).toEqual({
         signal: 'r ? 2 : 0'
@@ -32,7 +35,8 @@ describe('compile/mark/encoding/position-rect', () => {
         scaleName: undefined,
         reverse: {signal: 'r'},
         spacing: 2,
-        markDef: {type: 'bar'}
+        markDef: {type: 'bar'},
+        config
       });
       expect(props.y2[1].offset).toEqual({
         signal: 'r ? 2 : 0'
@@ -52,7 +56,8 @@ describe('compile/mark/encoding/position-rect', () => {
           band: 1,
           scaleName: undefined,
           reverse: false,
-          markDef: {type: 'bar'}
+          markDef: {type: 'bar'},
+          config
         });
         expect(props).not.toBeDefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('x2'));
@@ -69,7 +74,8 @@ describe('compile/mark/encoding/position-rect', () => {
           band: 1,
           scaleName: undefined,
           reverse: false,
-          markDef: {type: 'bar'}
+          markDef: {type: 'bar'},
+          config
         });
         expect(props).not.toBeDefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('y2'));

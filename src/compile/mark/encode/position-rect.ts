@@ -68,7 +68,8 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
       scaleName,
       band,
       spacing: getFirstDefined(markDef.binSpacing, config[mark].binSpacing),
-      reverse: scale.get('reverse')
+      reverse: scale.get('reverse'),
+      config
     });
   } else if (((isFieldDef(fieldDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !fieldDef2) {
     // vertical
@@ -238,7 +239,8 @@ export function rectBinPosition({
   scaleName,
   markDef,
   spacing = 0,
-  reverse
+  reverse,
+  config
 }: {
   fieldDef: TypedFieldDef<string>;
   fieldDef2?: ValueDef | SecondaryFieldDef<string> | SignalRef;
@@ -248,6 +250,7 @@ export function rectBinPosition({
   markDef: MarkDef<Mark>;
   spacing?: number;
   reverse: boolean | SignalRef;
+  config: Config;
 }) {
   const channel2 = channel === X ? X2 : Y2;
   if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
@@ -258,7 +261,8 @@ export function rectBinPosition({
         scaleName,
         markDef,
         band: (1 - band) / 2,
-        offset: getBinSpacing(channel2, spacing, reverse)
+        offset: getBinSpacing(channel2, spacing, reverse),
+        config
       }),
       [channel]: rectBinRef({
         channel,
@@ -266,7 +270,8 @@ export function rectBinPosition({
         scaleName,
         markDef,
         band: 1 - (1 - band) / 2,
-        offset: getBinSpacing(channel, spacing, reverse)
+        offset: getBinSpacing(channel, spacing, reverse),
+        config
       })
     };
   } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
@@ -289,7 +294,8 @@ export function rectBinRef({
   scaleName,
   markDef,
   band,
-  offset
+  offset,
+  config
 }: {
   channel: PositionChannel;
   fieldDef: TypedFieldDef<string>;
@@ -297,6 +303,7 @@ export function rectBinRef({
   markDef: MarkDef<Mark>;
   band: number;
   offset?: number | SignalRef;
+  config?: Config;
 }) {
   const r = ref.interpolatedSignalRef({
     scaleName,
@@ -309,6 +316,7 @@ export function rectBinRef({
     fieldDef,
     channel,
     markDef,
-    ref: r
+    ref: r,
+    config
   });
 }
