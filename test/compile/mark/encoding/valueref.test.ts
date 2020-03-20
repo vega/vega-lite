@@ -1,5 +1,5 @@
 import {SecondaryFieldDef, TypedFieldDef} from '../../../../src/channeldef';
-import {midPoint} from '../../../../src/compile/mark/encode/valueref';
+import {midPoint, wrapPositionInvalidTest} from '../../../../src/compile/mark/encode/valueref';
 import {defaultConfig} from '../../../../src/config';
 
 describe('compile/mark/valueref', () => {
@@ -43,6 +43,20 @@ describe('compile/mark/valueref', () => {
         defaultRef
       });
       expect(ref).toEqual({signal: 'scale("x", 0.5 * datum["bin_start"] + 0.5 * datum["bin_end"])'});
+    });
+  });
+
+  describe('wrapPositionInvalidTest()', () => {
+    it('does not wrap ref with test if markDef.invalid is null', () => {
+      expect(
+        wrapPositionInvalidTest({
+          ref: {value: 1},
+          markDef: {type: 'bar', invalid: null},
+          fieldDef: null,
+          channel: null,
+          config: defaultConfig
+        })
+      ).toEqual({value: 1});
     });
   });
 });
