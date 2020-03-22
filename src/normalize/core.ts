@@ -104,6 +104,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
           };
 
           const childName =
+            (childSpec.name || '') +
             repeaterPrefix +
             'child__' +
             (isArray(repeat)
