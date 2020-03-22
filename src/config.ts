@@ -467,8 +467,24 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'timeFormat',
   'countTitle',
   'header',
+
   'axisQuantitative',
   'axisTemporal',
+  'axisDiscrete',
+  'axisPoint',
+
+  'axisXBand',
+  'axisXPoint',
+  'axisXDiscrete',
+  'axisXQuantitative',
+  'axisXTemporal',
+
+  'axisYBand',
+  'axisYPoint',
+  'axisYDiscrete',
+  'axisYQuantitative',
+  'axisYTemporal',
+
   'scale',
   'selection',
   'overlay' as keyof Config // FIXME: Redesign and unhide this

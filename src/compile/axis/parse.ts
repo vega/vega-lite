@@ -1,5 +1,4 @@
 import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef, Text} from 'vega';
-import {toSet} from 'vega-util';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
 import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
@@ -224,12 +223,16 @@ function isExplicit<T extends string | number | boolean | object>(
   return value === axis[property];
 }
 
-const TYPE_SUFFIX = ['Band', 'Point', 'Discrete', 'Quantitative', 'Temporal'];
-
-const ORIENTATION_TYPE_AXIS_CONFIG_INDEX = toSet([
-  ...TYPE_SUFFIX.map(t => `axisX${t}`),
-  ...TYPE_SUFFIX.map(t => `axisY${t}`)
-]);
+const VEGA_AXIS_CONFIG = {
+  axis: 1,
+  axisX: 1,
+  axisY: 1,
+  axisLeft: 1,
+  axisTop: 1,
+  axisBottom: 1,
+  axisRight: 1,
+  axisBand: 1
+};
 
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {
   const axis = model.axis(channel);
@@ -256,19 +259,15 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
       axisComponent.set(property, value, explicit);
     } else if (
       // Cases that we need to implicit values
-
-      // 1. Grid, orient, and tickCount
+      // 1. Axis config that aren't available in Vega
+      !(configFrom in VEGA_AXIS_CONFIG) ||
+      // 2. Grid, orient, and tickCount
       // - Grid is an exception because we need to set grid = true to generate another grid axis
       // - Orient, labelExpr, and tickCount are not axis configs in Vega, so we need to set too.
       (contains(['grid', 'orient', 'tickCount', 'labelExpr'], property) && configValue) ||
-      // 2. Conditional axis values and signals
+      // 3. Conditional axis values and signals
       isConditionalAxisValue<any>(configValue) || // need to set "any" as TS isn't smart enough to figure the generic parameter type yet
-      isSignalRef(configValue) ||
-      // 3. StyleAxis
-      contains(['style', 'axis-config-style'], configFrom) ||
-      // 4. Vega-Lite only config
-      contains(['axisQuantitative', 'axisTemporal'], configFrom) ||
-      configFrom in ORIENTATION_TYPE_AXIS_CONFIG_INDEX // axisXTemporal, ...
+      isSignalRef(configValue)
     ) {
       // If a config is specified and is conditional, copy conditional value from axis config
       axisComponent.set(property, configValue, false);
