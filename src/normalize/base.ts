@@ -39,4 +39,5 @@ export interface NormalizerParams {
   parentEncoding?: Encoding<FieldName>;
   parentProjection?: Projection;
   repeater?: RepeaterValue;
+  repeaterPrefix?: string;
 }
