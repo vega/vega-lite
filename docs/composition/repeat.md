@@ -74,7 +74,11 @@ You can also check the [interactive SPLOM example](https://vega.github.io/vega-l
 
 The default [resolutions](resolve.html) for repeat are independent scales and axes for [position channels](encoding.html#position) and shared scales and legends for all other channels. Currently, Vega-Lite does not support shared axes for repeated views.
 
+{:#config}
+
 ## Repeat Configuration
+
+Since repeat is a shorthand for concatenation, the [concat configuration](concat.html#config) is also used for repeated views.
 
 ```js
 // Top-level View Specification
@@ -82,7 +86,7 @@ The default [resolutions](resolve.html) for repeat are independent scales and ax
   ...,
   "config": { // Configuration Object
 
-    "repeat": { // - Repeat Configuration
+    "concat": { // - Concat Configuration
       "spacing": ...,
       "columns": ...,
     },

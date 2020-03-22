@@ -73,6 +73,10 @@
       {
         "name": "bar_month_temporal_initial",
         "title": "Bar Chart showing Initials of Month Names"
+      },
+      {
+        "name": "bar_negative",
+        "title": "Bar Chart with negative values and a zero-baseline"
       }
     ],
     "Histograms, Density Plots, and Dot Plots": [

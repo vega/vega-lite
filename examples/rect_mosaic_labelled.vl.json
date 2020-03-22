@@ -119,8 +119,7 @@
             },
             "y": {
               "field": "y",
-              "type": "quantitative",
-              "axis": null
+              "type": "quantitative"
             },
             "y2": {
               "field": "y2"

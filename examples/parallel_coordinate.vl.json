@@ -53,7 +53,7 @@
         "field": "sepalWidth"
       }]
     }
-  },{
+  }, {
     "encoding": {
       "x": {"type": "nominal", "field": "key"},
       "y": {"value": 0}
@@ -66,8 +66,7 @@
     }, {
       "mark": {"type": "tick", "style": "tick", "size": 8, "color": "#ccc"}
     }]
-  },{
-
+  }, {
     "encoding": {
       "x": {"type": "nominal", "field": "key"},
       "y": {"value": 150}
@@ -80,7 +79,7 @@
     }, {
       "mark": {"type": "tick", "style": "tick", "size": 8, "color": "#ccc"}
     }]
-  },{
+  }, {
     "encoding": {
       "x": {"type": "nominal", "field": "key"},
       "y": {"value": 300}
