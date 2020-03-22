@@ -75,7 +75,7 @@
         "title": "Bar Chart showing Initials of Month Names"
       },
       {
-        "name": "bar_negative.vl.json",
+        "name": "bar_negative",
         "title": "Bar Chart with negative values and a zero-baseline"
       }
     ],
