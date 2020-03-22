@@ -1,7 +1,8 @@
-import {FieldName} from '../channeldef';
+import {isArray} from 'vega-util';
 import {GenericSpec, LayerSpec} from '.';
-import {FacetedUnitSpec} from './unit';
+import {FieldName} from '../channeldef';
 import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
+import {FacetedUnitSpec, UnitSpec} from './unit';
 
 export interface RepeatMapping {
   /**
@@ -15,10 +16,19 @@ export interface RepeatMapping {
   column?: string[];
 }
 
+export interface LayerRepeatMapping extends RepeatMapping {
+  /**
+   * An array of fields to be repeated layers.
+   */
+  layer: string[];
+}
+
+export type RepeatSpec = NonLayerRepeatSpec | LayerRepeatSpec;
+
 /**
  * Base interface for a repeat specification.
  */
-export interface RepeatSpec extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {
+export interface NonLayerRepeatSpec extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {
   /**
    * Definition for fields to be repeated. One of:
    * 1) An array of fields to be repeated. If `"repeat"` is an array, the field can be referred to as `{"repeat": "repeat"}`. The repeated views are laid out in a wrapped row. You can set the number of columns to control the wrapping.
@@ -32,6 +42,24 @@ export interface RepeatSpec extends BaseSpec, GenericCompositionLayoutWithColumn
   spec: GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, FieldName>;
 }
 
+export interface LayerRepeatSpec extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {
+  /**
+   * Definition for fields to be repeated. One of:
+   * 1) An array of fields to be repeated. If `"repeat"` is an array, the field can be referred to as `{"repeat": "repeat"}`. The repeated views are laid out in a wrapped row. You can set the number of columns to control the wrapping.
+   * 2) An object that maps `"row"` and/or `"column"` to the listed fields to be repeated along the particular orientations. The objects `{"repeat": "row"}` and `{"repeat": "column"}` can be used to refer to the repeated field respectively.
+   */
+  repeat: LayerRepeatMapping;
+
+  /**
+   * A specification of the view that gets repeated.
+   */
+  spec: LayerSpec | UnitSpec;
+}
+
 export function isRepeatSpec(spec: BaseSpec): spec is RepeatSpec {
   return spec['repeat'] !== undefined;
+}
+
+export function isLayerRepeatSpec(spec: RepeatSpec): spec is LayerRepeatSpec {
+  return !isArray(spec.repeat) && spec.repeat['layer'];
 }

@@ -95,7 +95,7 @@ describe('extractTransforms()', () => {
     'repeat_histogram_flights.vl.json',
     'repeat_histogram.vl.json',
     'repeat_histogram.vl.json',
-    'repeat_layer.vl.json',
+    'repeat_child_layer.vl.json',
     'repeat_line_weather.vl.json',
     'rule_extent.vl.json',
     'selection_brush_timeunit.vl.json',
