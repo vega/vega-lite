@@ -100,7 +100,7 @@
     "jest-puppeteer": "^4.4.0",
     "lint-staged": "^10.0.8",
     "mkdirp": "^1.0.3",
-    "prettier": "^1.19.1",
+    "prettier": "^2.0.1",
     "puppeteer": "^2.1.1",
     "rollup": "^2.1.0",
     "rollup-plugin-sourcemaps": "^0.5.0",
