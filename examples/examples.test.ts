@@ -23,7 +23,7 @@ const ajv = new Ajv({
 ajv.addMetaSchema(draft6Schema);
 ajv.addFormat('color-hex', () => true);
 
-console.warn = function() {
+console.warn = () => {
   throw new Error('We should not call console.warn.');
 };
 
