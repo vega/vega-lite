@@ -87,7 +87,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
     const children: NormalizedSpec[] = [];
 
-    const repeater = params.repeater;
+    const {repeater, repeaterPrefix = ''} = params;
 
     const row = (!isArray(repeat) && repeat.row) || [repeater ? repeater.row : null];
     const column = (!isArray(repeat) && repeat.column) || [repeater ? repeater.column : null];
@@ -103,13 +103,17 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
             column: columnValue
           };
 
-          const child = this.map(childSpec, {...params, repeater: childRepeater});
-
-          child.name =
+          const childName =
+            (childSpec.name || '') +
+            repeaterPrefix +
             'child__' +
-            (repeatValue ? `${varName(repeatValue)}` : '') +
-            (rowValue ? `row_${varName(rowValue)}` : '') +
-            (columnValue ? `column_${varName(columnValue)}` : '');
+            (isArray(repeat)
+              ? `${varName(repeatValue)}`
+              : (repeat.row ? `row_${varName(rowValue)}` : '') +
+                (repeat.column ? `column_${varName(columnValue)}` : ''));
+
+          const child = this.map(childSpec, {...params, repeater: childRepeater, repeaterPrefix: childName});
+          child.name = childName;
 
           // we move data up
           children.push(omit(child, ['data']) as NormalizedSpec);
@@ -120,7 +124,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     const columns = isArray(repeat) ? spec.columns : repeat.column ? repeat.column.length : 1;
 
     return {
-      data: data ?? childSpec.data, // data from child spec should have precedence
+      data: childSpec.data ?? data, // data from child spec should have precedence
       align: 'all',
       ...remainingProperties,
       columns,
