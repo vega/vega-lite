@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import {compile} from '../src/compile/compile';
+import {initConfig} from '../src/config';
 import {normalize} from '../src/normalize';
 import {NormalizedSpec, TopLevelSpec} from '../src/spec';
 import {extractTransforms} from '../src/transformextract';
 import {internalField} from '../src/util';
-import {initConfig} from '../src/config';
 
 describe('extractTransforms()', () => {
   const specsDir = './examples/specs/';
@@ -96,6 +96,7 @@ describe('extractTransforms()', () => {
     'repeat_histogram.vl.json',
     'repeat_histogram.vl.json',
     'repeat_child_layer.vl.json',
+    'repeat_layer.vl.json',
     'repeat_line_weather.vl.json',
     'rule_extent.vl.json',
     'selection_brush_timeunit.vl.json',
