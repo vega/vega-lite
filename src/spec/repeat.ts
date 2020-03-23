@@ -18,7 +18,7 @@ export interface RepeatMapping {
 
 export interface LayerRepeatMapping extends RepeatMapping {
   /**
-   * An array of fields to be repeated layers.
+   * An array of fields to be repeated as layers.
    */
   layer: string[];
 }
