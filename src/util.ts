@@ -40,7 +40,7 @@ export function omit<T extends object, K extends keyof T>(obj: T, props: readonl
 /**
  * Monkey patch Set so that `stringify` produces a string representation of sets.
  */
-Set.prototype['toJSON'] = function() {
+Set.prototype['toJSON'] = function () {
   return `Set(${[...this].map(x => stableStringify(x)).join(',')})`;
 };
 
@@ -298,10 +298,7 @@ export function accessPathWithDatum(path: string, datum = 'datum') {
   const pieces = splitAccessPath(path);
   const prefixes = [];
   for (let i = 1; i <= pieces.length; i++) {
-    const prefix = `[${pieces
-      .slice(0, i)
-      .map(stringValue)
-      .join('][')}]`;
+    const prefix = `[${pieces.slice(0, i).map(stringValue).join('][')}]`;
     prefixes.push(`${datum}${prefix}`);
   }
   return prefixes.join(' && ');
@@ -322,9 +319,7 @@ export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' | 'd
  * For example, `foo["bar"].baz` becomes `foo\\.bar\\.baz`.
  */
 export function replacePathInField(path: string) {
-  return `${splitAccessPath(path)
-    .map(escapePathAccess)
-    .join('\\.')}`;
+  return `${splitAccessPath(path).map(escapePathAccess).join('\\.')}`;
 }
 
 /**

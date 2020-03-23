@@ -31,11 +31,7 @@ export function getDependentFields(expression: string) {
   const dependents = new Set<string>();
   ast.visit((node: any) => {
     if (node.type === 'MemberExpression' && startsWithDatum(node)) {
-      dependents.add(
-        getName(node)
-          .slice(1)
-          .join('.')
-      );
+      dependents.add(getName(node).slice(1).join('.'));
     }
   });
 

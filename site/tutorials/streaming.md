@@ -29,7 +29,7 @@ Putting it together, we have:
 var changeSet = vega
   .changeset()
   .insert(valueGenerator())
-  .remove(function(t) {
+  .remove(function (t) {
     return t.x < minimumX;
   });
 view.change('table', changeSet).run();
@@ -53,23 +53,23 @@ var vlSpec = {
     color: {field: 'category', type: 'nominal'}
   }
 };
-vegaEmbed('#chart', vlSpec).then(function(res) {
+vegaEmbed('#chart', vlSpec).then(function (res) {
   /**
    * Generates a new tuple with random walk.
    */
   function newGenerator() {
     var counter = -1;
     var previousY = [5, 5, 5, 5];
-    return function() {
+    return function () {
       counter++;
-      var newVals = previousY.map(function(v, c) {
+      var newVals = previousY.map(function (v, c) {
         return {
           x: counter,
           y: v + Math.round(Math.random() * 10 - c * 3),
           category: c
         };
       });
-      previousY = newVals.map(function(v) {
+      previousY = newVals.map(function (v) {
         return v.y;
       });
       return newVals;
@@ -78,12 +78,12 @@ vegaEmbed('#chart', vlSpec).then(function(res) {
 
   var valueGenerator = newGenerator();
   var minimumX = -100;
-  window.setInterval(function() {
+  window.setInterval(function () {
     minimumX++;
     var changeSet = vega
       .changeset()
       .insert(valueGenerator())
-      .remove(function(t) {
+      .remove(function (t) {
         return t.x < minimumX;
       });
     res.view.change('table', changeSet).run();
