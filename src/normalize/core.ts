@@ -21,7 +21,7 @@ import {
 import {NormalizedSpec} from '../spec/index';
 import {NormalizedLayerSpec} from '../spec/layer';
 import {SpecMapper} from '../spec/map';
-import {RepeatSpec} from '../spec/repeat';
+import {isLayerRepeatSpec, LayerRepeatSpec, NonLayerRepeatSpec, RepeatSpec} from '../spec/repeat';
 import {isUnitSpec, NormalizedUnitSpec} from '../spec/unit';
 import {keys, omit, varName} from '../util';
 import {NonFacetUnitNormalizer, NormalizerParams} from './base';
@@ -76,7 +76,62 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     return specWithReplacedEncoding as NormalizedUnitSpec;
   }
 
-  protected mapRepeat(spec: RepeatSpec, params: NormalizerParams): GenericConcatSpec<NormalizedSpec> {
+  protected mapRepeat(
+    spec: RepeatSpec,
+    params: NormalizerParams
+  ): GenericConcatSpec<NormalizedSpec> | NormalizedLayerSpec {
+    if (isLayerRepeatSpec(spec)) {
+      return this.mapLayerRepeat(spec, params);
+    } else {
+      return this.mapNonLayerRepeat(spec, params);
+    }
+  }
+
+  private mapLayerRepeat(
+    spec: LayerRepeatSpec,
+    params: NormalizerParams
+  ): GenericConcatSpec<NormalizedSpec> | NormalizedLayerSpec {
+    const {repeat, spec: childSpec, ...rest} = spec;
+    const {row, column, layer} = repeat;
+
+    const {repeater = {}, repeaterPrefix = ''} = params;
+
+    if (row || column) {
+      return this.mapRepeat(
+        {
+          ...spec,
+          repeat: {
+            ...(row ? {row} : {}),
+            ...(column ? {column} : {})
+          },
+          spec: {
+            repeat: {layer},
+            spec: childSpec
+          }
+        },
+        params
+      );
+    } else {
+      return {
+        ...rest,
+        layer: layer.map(layerValue => {
+          const childRepeater = {
+            ...repeater,
+            layer: layerValue
+          };
+
+          const childName = (childSpec.name || '') + repeaterPrefix + `child__layer_${varName(layerValue)}`;
+
+          const child = this.mapLayerOrUnit(childSpec, {...params, repeater: childRepeater, repeaterPrefix: childName});
+          child.name = childName;
+
+          return child;
+        })
+      };
+    }
+  }
+
+  private mapNonLayerRepeat(spec: NonLayerRepeatSpec, params: NormalizerParams): GenericConcatSpec<NormalizedSpec> {
     const {repeat, spec: childSpec, data, ...remainingProperties} = spec;
 
     if (!isArray(repeat) && spec.columns) {
@@ -85,12 +140,13 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
       log.warn(log.message.columnsNotSupportByRowCol('repeat'));
     }
 
-    const children: NormalizedSpec[] = [];
+    const concat: NormalizedSpec[] = [];
 
-    const {repeater, repeaterPrefix = ''} = params;
+    const {repeater = {}, repeaterPrefix = ''} = params;
 
     const row = (!isArray(repeat) && repeat.row) || [repeater ? repeater.row : null];
     const column = (!isArray(repeat) && repeat.column) || [repeater ? repeater.column : null];
+
     const repeatValues = (isArray(repeat) && repeat) || [repeater ? repeater.repeat : null];
 
     // cross product
@@ -100,7 +156,8 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
           const childRepeater = {
             repeat: repeatValue,
             row: rowValue,
-            column: columnValue
+            column: columnValue,
+            layer: repeater.layer
           };
 
           const childName =
@@ -116,19 +173,18 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
           child.name = childName;
 
           // we move data up
-          children.push(omit(child, ['data']) as NormalizedSpec);
+          concat.push(omit(child, ['data']) as NormalizedSpec);
         }
       }
     }
 
     const columns = isArray(repeat) ? spec.columns : repeat.column ? repeat.column.length : 1;
-
     return {
       data: childSpec.data ?? data, // data from child spec should have precedence
       align: 'all',
       ...remainingProperties,
       columns,
-      concat: children
+      concat
     };
   }
 

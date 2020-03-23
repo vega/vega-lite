@@ -3,14 +3,14 @@ import {
   ChannelDef,
   Field,
   FieldDef,
+  FieldName,
   hasConditionalFieldDef,
   isConditionalDef,
   isFieldDef,
   isRepeatRef,
   isSortableFieldDef,
   ScaleFieldDef,
-  ValueDef,
-  FieldName
+  ValueDef
 } from '../channeldef';
 import {Encoding} from '../encoding';
 import * as log from '../log';
@@ -22,6 +22,8 @@ export interface RepeaterValue {
   column?: string;
 
   repeat?: string;
+
+  layer?: string;
 }
 
 export function replaceRepeaterInFacet(

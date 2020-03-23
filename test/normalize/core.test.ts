@@ -39,6 +39,34 @@ describe('normalize()', () => {
         expect(localLogger.warns[0]).toEqual(log.message.columnsNotSupportByRowCol('repeat'));
       })
     );
+
+    it('normalizes repeat layer', () => {
+      const spec: TopLevelSpec = {
+        data: {
+          url: 'data/movies.json'
+        },
+        repeat: {
+          layer: ['US_Gross', 'Worldwide_Gross']
+        },
+        spec: {
+          mark: 'line',
+          encoding: {
+            x: {
+              bin: true,
+              field: 'IMDB_Rating',
+              type: 'quantitative'
+            },
+            y: {
+              aggregate: 'mean',
+              field: {repeat: 'layer'},
+              type: 'quantitative'
+            }
+          }
+        }
+      };
+      const normalized = normalize(spec);
+      expect(normalized['layer'].length).toBe(2);
+    });
   });
 
   describe('normalizeFacetedUnit', () => {

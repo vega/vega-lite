@@ -302,7 +302,7 @@
     - [Repeat]({{site.baseurl}}/docs/repeat.html)
         - [Documentation Overview]({{site.baseurl}}/docs/repeat.html#documentation-overview)
         - [Repeat Operator]({{site.baseurl}}/docs/repeat.html#repeat-operator)
-        - [Row/Column Repeat Mapping]({{site.baseurl}}/docs/repeat.html#repeat-mapping)
+        - [Row/Column/Layer Repeat Mapping]({{site.baseurl}}/docs/repeat.html#repeat-mapping)
         - [Examples]({{site.baseurl}}/docs/repeat.html#examples)
         - [Resolve]({{site.baseurl}}/docs/repeat.html#resolve)
         - [Repeat Configuration]({{site.baseurl}}/docs/repeat.html#config)

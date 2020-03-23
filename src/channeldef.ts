@@ -204,7 +204,7 @@ export type StringFieldDefWithCondition<F extends Field> = FieldDefWithCondition
  * Reference to a repeated value.
  */
 export interface RepeatRef {
-  repeat: 'row' | 'column' | 'repeat';
+  repeat: 'row' | 'column' | 'repeat' | 'layer';
 }
 
 export type FieldName = string;
