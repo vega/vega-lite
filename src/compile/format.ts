@@ -1,6 +1,6 @@
 import {isString} from 'vega-util';
 import {isBinning} from '../bin';
-import {isFieldDefForTimeFormat, isScaleFieldDef, TypedFieldDef, vgField} from '../channeldef';
+import {FieldDef, isFieldDefForTimeFormat, isScaleFieldDef, isTypedFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
 import {fieldValidPredicate} from '../predicate';
 import {ScaleType} from '../scale';
@@ -35,7 +35,7 @@ export function formatSignalRef({
   omitTimeFormatConfig,
   isUTCScale
 }: {
-  fieldDef: TypedFieldDef<string>;
+  fieldDef: FieldDef<string>;
   format: string | object;
   formatType: string;
   expr?: 'datum' | 'parent' | 'datum.datum';
@@ -87,7 +87,7 @@ export function formatSignalRef({
       return {
         signal: binFormatExpression(field, endField, format, formatType, config)
       };
-    } else if (fieldDef.type === 'quantitative' || format) {
+    } else if (format || (isTypedFieldDef(fieldDef) && fieldDef.type === 'quantitative')) {
       return {
         signal: `${formatExpr(field, format)}`
       };
@@ -101,13 +101,13 @@ export function formatSignalRef({
 /**
  * Returns number format for a fieldDef
  */
-export function numberFormat(fieldDef: TypedFieldDef<string>, specifiedFormat: string | object, config: Config) {
+export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string | object, config: Config) {
   // Specified format in axis/legend has higher precedence than fieldDef.format
   if (isString(specifiedFormat)) {
     return specifiedFormat;
   }
 
-  if (fieldDef.type === QUANTITATIVE) {
+  if (isTypedFieldDef(fieldDef) && fieldDef.type === QUANTITATIVE) {
     // we only apply the default if the field is quantitative
     return config.numberFormat;
   }

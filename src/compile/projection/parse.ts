@@ -48,7 +48,7 @@ function gatherFitData(model: UnitModel) {
     }
   }
 
-  if (model.channelHasField(SHAPE) && model.fieldDef(SHAPE).type === GEOJSON) {
+  if (model.channelHasField(SHAPE) && model.typedFieldDef(SHAPE).type === GEOJSON) {
     data.push({
       signal: model.getName(`geojson_${data.length}`)
     });

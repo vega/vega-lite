@@ -1,9 +1,8 @@
-import {FieldName} from '../channeldef';
 import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
 import {Channel, COLUMN, FacetChannel, FACET_CHANNELS, ROW, ScaleChannel} from '../channel';
-import {FieldRefOption, initChannelDef, TypedFieldDef, vgField} from '../channeldef';
+import {FieldName, FieldRefOption, initChannelDef, TypedFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
 import {reduce} from '../encoding';
 import * as log from '../log';
@@ -53,7 +52,7 @@ export class FacetModel extends ModelWithField {
   private initFacet(facet: FacetFieldDef<FieldName> | FacetMapping<FieldName>): EncodingFacetMapping<FieldName> {
     // clone to prevent side effect to the original spec
     if (!isFacetMapping(facet)) {
-      return {facet: initChannelDef(facet, 'facet')};
+      return {facet: initChannelDef(facet, 'facet') as FacetFieldDef<FieldName>};
     }
 
     return reduce(

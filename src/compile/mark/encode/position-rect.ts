@@ -4,16 +4,14 @@ import {isBinned, isBinning} from '../../../bin';
 import {PositionChannel, X, X2, Y2} from '../../../channel';
 import {
   getBand,
-  getTypedFieldDef,
   isFieldDef,
   isPositionFieldDef,
   isValueDef,
   PositionFieldDef,
-  SecondaryFieldDef,
-  TypedFieldDef,
-  ValueDef
+  TypedFieldDef
 } from '../../../channeldef';
 import {Config, DEFAULT_STEP, getViewConfigDiscreteStep} from '../../../config';
+import {Encoding} from '../../../encoding';
 import * as log from '../../../log';
 import {Mark, MarkDef} from '../../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../../scale';
@@ -183,7 +181,7 @@ function rectBandPosition(
   if (encoding.size || (markDef.size !== null && markDef.size !== undefined)) {
     const orient = markDef.orient;
     if (orient) {
-      if (getTypedFieldDef(encoding.size) || isValueDef(encoding.size)) {
+      if (isFieldDef(encoding.size) || isValueDef(encoding.size)) {
         return {
           ...centeredBandPositionMixins,
           ...nonPosition('size', model, {vgChannel: sizeChannel})
@@ -243,7 +241,7 @@ export function rectBinPosition({
   config
 }: {
   fieldDef: TypedFieldDef<string>;
-  fieldDef2?: ValueDef | SecondaryFieldDef<string> | SignalRef;
+  fieldDef2?: Encoding<string>['x2' | 'y2'];
   channel: 'x' | 'y';
   band: number;
   scaleName: string;

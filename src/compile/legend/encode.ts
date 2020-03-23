@@ -1,18 +1,16 @@
-import {ColorValueRef, SymbolEncodeEntry} from 'vega';
+import {ColorValueRef, SignalRef, SymbolEncodeEntry} from 'vega';
 import {array, isArray, stringValue} from 'vega-util';
-import {COLOR, NonPositionScaleChannel, OPACITY} from '../../channel';
+import {COLOR, NonPositionScaleChannel, OPACITY, ScaleChannel} from '../../channel';
 import {
   Conditional,
-  FieldDefWithCondition,
   Gradient,
   hasConditionalValueDef,
   isValueDef,
-  MarkPropFieldDef,
   TypedFieldDef,
   Value,
-  ValueDef,
-  ValueDefWithCondition
+  ValueDef
 } from '../../channeldef';
+import {Encoding} from '../../encoding';
 import {FILL_STROKE_CONFIG} from '../../mark';
 import {ScaleType} from '../../scale';
 import {getFirstDefined, keys, varName} from '../../util';
@@ -21,7 +19,6 @@ import {formatSignalRef} from '../format';
 import * as mixins from '../mark/encode';
 import {STORE} from '../selection';
 import {UnitModel} from '../unit';
-import {ScaleChannel} from '../../channel';
 import {LegendComponent} from './component';
 import {defaultType} from './properties';
 
@@ -83,8 +80,8 @@ export function symbols(
         // For others, remove stroke field
         delete out.stroke;
       } else if (isArray(out.stroke)) {
-        const stroke = getFirstDefined(
-          getFirstConditionValue(encoding.stroke || encoding.color),
+        const stroke = getFirstDefined<string | Gradient | SignalRef>(
+          getFirstConditionValue<string | Gradient>(encoding.stroke || encoding.color),
           markDef.stroke,
           filled ? markDef.color : undefined
         );
@@ -178,24 +175,20 @@ export function entries(
   return selections?.length ? {fill: {value: 'transparent'}} : undefined;
 }
 
-function getMaxValue(
-  channelDef:
-    | FieldDefWithCondition<MarkPropFieldDef<string>, number>
-    | ValueDefWithCondition<MarkPropFieldDef<string>, number>
-) {
+function getMaxValue(channelDef: Encoding<string>['opacity']) {
   return getConditionValue<number>(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
 }
 
 export function getFirstConditionValue<V extends Value | Gradient>(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, V> | ValueDefWithCondition<MarkPropFieldDef<string>, V>
+  channelDef: Encoding<string>['fill' | 'stroke' | 'shape']
 ): V {
-  return getConditionValue(channelDef, (v: V, conditionalDef: Conditional<ValueDef<V>>) => {
+  return getConditionValue<V>(channelDef, (v: V, conditionalDef: Conditional<ValueDef<V>>) => {
     return getFirstDefined<V>(v, conditionalDef.value);
   });
 }
 
 function getConditionValue<V extends Value | Gradient>(
-  channelDef: FieldDefWithCondition<MarkPropFieldDef<string>, V> | ValueDefWithCondition<MarkPropFieldDef<string>, V>,
+  channelDef: Encoding<string>['fill' | 'stroke' | 'shape' | 'opacity'],
   reducer: (val: V, conditionalDef: Conditional<ValueDef<V>>) => V
 ): V {
   if (hasConditionalValueDef(channelDef)) {

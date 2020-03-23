@@ -1,7 +1,6 @@
-import {FieldName} from '../channeldef';
 import {LayoutAlign} from 'vega';
 import {BinParams} from '../bin';
-import {ChannelDef, Field, FieldDef, TypedFieldDef} from '../channeldef';
+import {ChannelDef, Field, FieldName, TypedFieldDef} from '../channeldef';
 import {Header} from '../header';
 import {EncodingSortField, SortArray, SortOrder} from '../sort';
 import {StandardType} from '../type';
@@ -95,7 +94,7 @@ export interface EncodingFacetMapping<F extends Field> extends FacetMapping<F, R
   facet?: FacetEncodingFieldDef<F>;
 }
 
-export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<FieldDef<F>>): channelDef is FacetFieldDef<F> {
+export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is FacetFieldDef<F> {
   return !!channelDef && !!channelDef['header'];
 }
 

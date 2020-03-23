@@ -312,7 +312,7 @@ function getProperty<K extends keyof AxisComponentProps>(
 
   specifiedAxis = specifiedAxis || {}; // assign object so the rest doesn't have to check if legend exists
 
-  const fieldDef = model.fieldDef(channel);
+  const fieldDef = model.typedFieldDef(channel);
 
   const {mark, config} = model;
 

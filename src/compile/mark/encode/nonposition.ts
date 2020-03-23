@@ -1,6 +1,6 @@
 import {SignalRef} from 'vega';
 import {NonPositionScaleChannel} from '../../../channel';
-import {FieldDef, ValueOrGradient} from '../../../channeldef';
+import {ValueOrGradient} from '../../../channeldef';
 import {getFirstDefined} from '../../../util';
 import {VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {getMarkConfig, signalOrValueRef} from '../../common';
@@ -40,7 +40,7 @@ export function nonPosition(
 
   const channelDef = encoding[channel];
 
-  return wrapCondition<FieldDef<string>, ValueOrGradient>(model, channelDef, vgChannel, cDef => {
+  return wrapCondition(model, channelDef, vgChannel, cDef => {
     return ref.midPoint({
       channel,
       channelDef: cDef,

@@ -18,6 +18,7 @@ import {
   isPositionFieldDef,
   isTypedFieldDef,
   isValueDef,
+  SecondaryChannelDef,
   SecondaryFieldDef,
   TypedFieldDef,
   ValueOrGradientOrText,
@@ -172,7 +173,7 @@ export function interpolatedSignalRef({
 export interface MidPointParams {
   channel: Channel;
   channelDef: ChannelDef;
-  channel2Def?: ChannelDef<SecondaryFieldDef<string>>;
+  channel2Def?: SecondaryChannelDef<string>;
 
   markDef: MarkDef<Mark>;
   config: Config;

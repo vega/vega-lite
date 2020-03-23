@@ -1,12 +1,6 @@
-import {
-  ChannelDefWithCondition,
-  FieldDef,
-  getFormatMixins,
-  isTypedFieldDef,
-  isValueDef,
-  Value
-} from '../../../channeldef';
+import {getFormatMixins, isTypedFieldDef, isValueDef} from '../../../channeldef';
 import {Config} from '../../../config';
+import {Encoding} from '../../../encoding';
 import {VgValueRef} from '../../../vega.schema';
 import {formatSignalRef} from '../../format';
 import {UnitModel} from '../../unit';
@@ -18,7 +12,7 @@ export function text(model: UnitModel, channel: 'text' | 'href' | 'url' = 'text'
 }
 
 export function textRef(
-  channelDef: ChannelDefWithCondition<FieldDef<string>, Value | string[]>,
+  channelDef: Encoding<string>['text' | 'tooltip'],
   config: Config,
   expr: 'datum' | 'datum.datum' = 'datum'
 ): VgValueRef {

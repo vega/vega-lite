@@ -11,7 +11,7 @@ import {
   X,
   Y
 } from '../channel';
-import {getTypedFieldDef, hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../channeldef';
+import {getFieldDef, hasConditionalFieldDef, isFieldDef, isTypedFieldDef, TypedFieldDef} from '../channeldef';
 import {Config} from '../config';
 import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
@@ -139,7 +139,7 @@ export class UnitModel extends ModelWithField {
       if (isFieldDef(channelDef)) {
         fieldDef = channelDef;
         specifiedScale = channelDef.scale;
-      } else if (hasConditionalFieldDef<string, any>(channelDef)) {
+      } else if (hasConditionalFieldDef<string>(channelDef)) {
         // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
         fieldDef = channelDef.condition;
         specifiedScale = channelDef.condition['scale'];
@@ -177,7 +177,7 @@ export class UnitModel extends ModelWithField {
       if (channelDef) {
         const legend = isFieldDef(channelDef)
           ? channelDef.legend
-          : hasConditionalFieldDef<string, any>(channelDef) // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
+          : hasConditionalFieldDef<string>(channelDef) // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
           ? channelDef.condition['legend']
           : undefined;
 
@@ -257,6 +257,13 @@ export class UnitModel extends ModelWithField {
 
   public fieldDef(channel: SingleDefChannel) {
     const channelDef = this.encoding[channel];
-    return getTypedFieldDef<string>(channelDef);
+    return getFieldDef<string>(channelDef);
+  }
+  public typedFieldDef(channel: SingleDefChannel) {
+    const fieldDef = this.fieldDef(channel);
+    if (isTypedFieldDef(fieldDef)) {
+      return fieldDef;
+    }
+    return null;
   }
 }
