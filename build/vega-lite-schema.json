@@ -9290,7 +9290,7 @@
           "type": "array"
         },
         "layer": {
-          "description": "An array of fields to be repeated layers.",
+          "description": "An array of fields to be repeated as layers.",
           "items": {
             "type": "string"
           },
