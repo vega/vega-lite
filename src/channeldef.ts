@@ -337,11 +337,13 @@ export function isSortableFieldDef<F extends Field>(fieldDef: FieldDef<F>): fiel
   return isTypedFieldDef(fieldDef) && !!fieldDef['sort'];
 }
 
-export interface ScaleFieldDef<
+export type ScaleFieldDef<
   F extends Field,
   T extends Type = StandardType,
   B extends Bin = boolean | BinParams | null
-> extends SortableFieldDef<F, T, B> {
+> = SortableFieldDef<F, T, B> & ScaleMixins;
+
+export interface ScaleMixins {
   /**
    * An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.
    *
@@ -368,12 +370,14 @@ export type LatLongFieldDef<F extends Field> = FieldDefBase<F, null> &
   TitleMixins &
   Partial<TypeMixins<'quantitative'>>; // Lat long shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
-export interface PositionFieldDef<F extends Field>
-  extends ScaleFieldDef<
-    F,
-    StandardType,
-    boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
-  > {
+export type PositionFieldDef<F extends Field> = ScaleFieldDef<
+  F,
+  StandardType,
+  boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
+> &
+  PositionMixins;
+
+export interface PositionMixins {
   /**
    * An object defining properties of axis's gridlines, ticks and labels.
    * If `null`, the axis for the encoding channel will be removed.
@@ -465,11 +469,10 @@ export function hasBand(
 /**
  * Field definition of a mark property, which can contain a legend.
  */
-export type MarkPropFieldDef<F extends Field, T extends Type = Type> = ScaleFieldDef<
-  F,
-  T,
-  boolean | BinParams | null
-> & {
+export type MarkPropFieldDef<F extends Field, T extends Type = Type> = ScaleFieldDef<F, T, boolean | BinParams | null> &
+  LegendMixins;
+
+export interface LegendMixins {
   /**
    * An object defining properties of the legend.
    * If `null`, the legend for the encoding channel will be removed.
@@ -479,7 +482,7 @@ export type MarkPropFieldDef<F extends Field, T extends Type = Type> = ScaleFiel
    * __See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation.
    */
   legend?: Legend | null;
-};
+}
 
 // Detail
 
