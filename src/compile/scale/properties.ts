@@ -24,9 +24,9 @@ import {contains, getFirstDefined, keys} from '../../util';
 import {isSignalRef, VgScale} from '../../vega.schema';
 import {getBinSignalName} from '../data/bin';
 import {isUnitModel, Model} from '../model';
+import {SignalRefWrapper} from '../signal';
 import {Explicit, mergeValuesWithExplicit, tieBreakByComparing} from '../split';
 import {UnitModel} from '../unit';
-import {SignalRefWrapper} from '../signal';
 import {ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseUnitScaleRange} from './range';
 
@@ -45,7 +45,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
     const specifiedScale = model.specifiedScales[channel];
     const localScaleCmpt = localScaleComponents[channel];
     const mergedScaleCmpt = model.getScaleComponent(channel);
-    const fieldDef = model.fieldDef(channel);
+    const fieldDef = model.fieldDef(channel) as ScaleFieldDef<string>;
     const config = model.config;
 
     const specifiedValue = specifiedScale[property];

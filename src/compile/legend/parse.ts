@@ -12,13 +12,7 @@ import {
   STROKEOPACITY,
   STROKEWIDTH
 } from '../../channel';
-import {
-  getTypedFieldDef,
-  isFieldDef,
-  isFieldDefForTimeFormat,
-  title as fieldDefTitle,
-  TypedFieldDef
-} from '../../channeldef';
+import {FieldDef, isFieldDef, isFieldDefForTimeFormat, title as fieldDefTitle} from '../../channeldef';
 import {Legend} from '../../legend';
 import {normalizeTimeUnit} from '../../timeunit';
 import {GEOJSON} from '../../type';
@@ -83,7 +77,7 @@ function isExplicit<T extends string | number | object | boolean>(
   value: T,
   property: keyof LegendComponentProps,
   legend: Legend,
-  fieldDef: TypedFieldDef<string>
+  fieldDef: FieldDef<string>
 ) {
   switch (property) {
     case 'disable':
@@ -158,7 +152,7 @@ function getProperty<K extends keyof LegendComponentProps>(
   legend = legend || {}; // assign object so the rest doesn't have to check if legend exists
 
   const {encoding, mark} = model;
-  const fieldDef = getTypedFieldDef(encoding[channel]);
+  const fieldDef = model.typedFieldDef(channel);
   const legendConfig = model.config.legend;
   const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.unit;
 

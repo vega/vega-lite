@@ -1,13 +1,8 @@
 import {LabelOverlap, LegendOrient, LegendType, SignalRef, SymbolShape} from 'vega';
 import {isArray} from 'vega-util';
 import {Channel, isColorChannel} from '../../channel';
-import {
-  FieldDefWithCondition,
-  MarkPropFieldDef,
-  TypedFieldDef,
-  valueArray,
-  ValueDefWithCondition
-} from '../../channeldef';
+import {TypedFieldDef, valueArray} from '../../channeldef';
+import {Encoding} from '../../encoding';
 import {Legend, LegendConfig} from '../../legend';
 import {Mark} from '../../mark';
 import {isContinuousToContinuous, ScaleType} from '../../scale';
@@ -31,14 +26,12 @@ export function values(legend: Legend, fieldDef: TypedFieldDef<string>) {
 export function defaultSymbolType(
   mark: Mark,
   channel: Channel,
-  shapeChannelDef:
-    | FieldDefWithCondition<MarkPropFieldDef<string>, SymbolShape>
-    | ValueDefWithCondition<MarkPropFieldDef<string>, SymbolShape>,
+  shapeChannelDef: Encoding<string>['shape'],
   markShape: SymbolShape | SignalRef
 ): SymbolShape | SignalRef {
   if (channel !== 'shape') {
     // use the value from the shape encoding or the mark config if they exist
-    const shape = getFirstConditionValue(shapeChannelDef) ?? markShape;
+    const shape = getFirstConditionValue<string>(shapeChannelDef) ?? markShape;
     if (shape) {
       return shape;
     }

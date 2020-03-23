@@ -6,7 +6,7 @@ import {UnitModel} from '../unit';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
   const fieldDef =
-    model.fieldDef(channel) ??
+    model.typedFieldDef(channel) ??
     (channel === 'x' ? model.fieldDef('x2') : channel === 'y' ? model.fieldDef('y2') : undefined);
   const axis = model.axis(channel) || {};
   const {format, formatType} = axis;

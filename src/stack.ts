@@ -1,16 +1,7 @@
-import {isBoolean, array} from 'vega-util';
+import {array, isBoolean} from 'vega-util';
 import {SUM_OPS} from './aggregate';
 import {NonPositionChannel, NONPOSITION_CHANNELS, X, X2, Y2} from './channel';
-import {
-  Field,
-  getTypedFieldDef,
-  isFieldDef,
-  isStringFieldDef,
-  PositionFieldDef,
-  TypedFieldDef,
-  vgField,
-  FieldName
-} from './channeldef';
+import {Field, FieldName, getFieldDef, isFieldDef, PositionFieldDef, TypedFieldDef, vgField} from './channeldef';
 import {channelHasField, Encoding, isAggregate} from './encoding';
 import * as log from './log';
 import {AREA, BAR, CIRCLE, isMarkDef, isPathMark, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
@@ -91,7 +82,7 @@ function potentialStackedChannel(encoding: Encoding<Field>): 'x' | 'y' | undefin
 // If required properties change, make sure to update CompassQL.
 export function stack(
   m: Mark | MarkDef,
-  encoding: Encoding<Field>,
+  encoding: Encoding<string>,
   opt: {
     disallowNonLinearStack?: boolean; // This option is for CompassQL
   } = {}
@@ -108,11 +99,11 @@ export function stack(
   }
 
   const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string>;
-  const stackedField = isStringFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
+  const stackedField = vgField(stackedFieldDef, {});
 
   const dimensionChannel = fieldChannel === 'x' ? 'y' : 'x';
   const dimensionDef = encoding[dimensionChannel];
-  const dimensionField = isStringFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
+  const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
 
   // Should have grouping level of detail that is different from the dimension field
   const stackBy = NONPOSITION_CHANNELS.reduce((sc, channel) => {
@@ -120,13 +111,13 @@ export function stack(
     if (channel !== 'tooltip' && channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       array(channelDef).forEach(cDef => {
-        const fieldDef = getTypedFieldDef(cDef);
+        const fieldDef = getFieldDef(cDef);
         if (fieldDef.aggregate) {
           return;
         }
 
         // Check whether the channel's field is identical to x/y's field or if the channel is a repeat
-        const f = isStringFieldDef(fieldDef) ? vgField(fieldDef, {}) : undefined;
+        const f = vgField(fieldDef, {});
         if (
           // if fielddef is a repeat, just include it in the stack by
           !f ||

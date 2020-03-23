@@ -60,7 +60,9 @@ export interface VlOnlyGuideConfig {
   title?: null;
 }
 
-export type GuideEncodingEntry = Partial<Record<VgEncodeChannel, (ValueDef & ConditionValueDefMixins) | SignalRef>>;
+export type GuideEncodingConditonalValueDef = ValueDef & ConditionValueDefMixins;
+
+export type GuideEncodingEntry = Partial<Record<VgEncodeChannel, GuideEncodingConditonalValueDef | SignalRef>>;
 
 export const VL_ONLY_LEGEND_CONFIG: (keyof LegendConfig)[] = [
   'gradientHorizontalMaxLength',

@@ -13,7 +13,6 @@ import {
   FieldDefWithoutScale,
   getFieldDef,
   getGuide,
-  getTypedFieldDef,
   hasConditionalFieldDef,
   initChannelDef,
   initFieldDef,
@@ -39,7 +38,6 @@ import {
   title,
   TypedFieldDef,
   ValueDef,
-  ValueOrGradientOrText,
   vgField
 } from './channeldef';
 import {Config} from './config';
@@ -246,7 +244,7 @@ export function channelHasField<F extends Field>(encoding: EncodingWithFacet<F>,
     if (isArray(channelDef)) {
       return some(channelDef, fieldDef => !!fieldDef.field);
     } else {
-      return isFieldDef(channelDef) || hasConditionalFieldDef<Field, ValueOrGradientOrText>(channelDef);
+      return isFieldDef(channelDef) || hasConditionalFieldDef<Field>(channelDef);
     }
   }
   return false;
@@ -419,7 +417,7 @@ export function initEncoding(encoding: Encoding<string>, markDef: MarkDef): Enco
 
     // Drop line's size if the field is aggregated.
     if (channel === 'size' && mark === 'line') {
-      const fieldDef = getTypedFieldDef(encoding[channel]);
+      const fieldDef = getFieldDef(encoding[channel]);
       if (fieldDef?.aggregate) {
         log.warn(log.message.LINE_WITH_VARYING_SIZE);
         return normalizedEncoding;
@@ -481,7 +479,7 @@ export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): Fiel
       for (const def of channelDefArray) {
         if (isFieldDef(def)) {
           arr.push(def);
-        } else if (hasConditionalFieldDef<F, ValueOrGradientOrText>(def)) {
+        } else if (hasConditionalFieldDef<F>(def)) {
           arr.push(def.condition);
         }
       }
@@ -602,7 +600,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
         // TODO strokeDashOffset:
         // falls through
 
-        const fieldDef = getTypedFieldDef<string>(encoding[channel]);
+        const fieldDef = getFieldDef<string>(encoding[channel]);
         if (fieldDef && !fieldDef.aggregate) {
           details.push(vgField(fieldDef, {}));
         }

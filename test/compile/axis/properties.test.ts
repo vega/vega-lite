@@ -64,7 +64,10 @@ describe('compile/axis', () => {
     });
 
     it('should return undefined by default for log scale', () => {
-      const tickCount = properties.defaultTickCount({fieldDef: {field: 'a', type: 'quantitative'}, scaleType: 'log'});
+      const tickCount = properties.defaultTickCount({
+        fieldDef: {field: 'a', type: 'quantitative'},
+        scaleType: 'log'
+      });
       expect(tickCount).toBeUndefined();
     });
 
@@ -110,7 +113,7 @@ describe('compile/axis', () => {
         },
         data: {url: 'data/movies.json'}
       });
-      const values = properties.values({}, model1, model1.fieldDef('y'));
+      const values = properties.values({}, model1, model1.typedFieldDef('y'));
 
       expect(values).toBeUndefined();
     });
@@ -195,23 +198,23 @@ describe('compile/axis', () => {
     });
 
     it('should return the correct labelAngle from the axis definition', () => {
-      expect(240).toEqual(labelAngle(axisModel, axisModel.axis('y'), 'y', axisModel.fieldDef('y')));
+      expect(240).toEqual(labelAngle(axisModel, axisModel.axis('y'), 'y', axisModel.typedFieldDef('y')));
     });
 
     it('should return the correct labelAngle from the axis config definition', () => {
-      expect(140).toEqual(labelAngle(configModel, configModel.axis('y'), 'y', configModel.fieldDef('y')));
+      expect(140).toEqual(labelAngle(configModel, configModel.axis('y'), 'y', configModel.typedFieldDef('y')));
     });
 
     it('should return the correct default labelAngle when not specified', () => {
-      expect(270).toEqual(labelAngle(defaultModel, defaultModel.axis('x'), 'x', defaultModel.fieldDef('x')));
+      expect(270).toEqual(labelAngle(defaultModel, defaultModel.axis('x'), 'x', defaultModel.typedFieldDef('x')));
     });
 
     it('should return the labelAngle declared in the axis when both the axis and axis config have labelAngle', () => {
-      expect(240).toEqual(labelAngle(bothModel, bothModel.axis('y'), 'y', bothModel.fieldDef('y')));
+      expect(240).toEqual(labelAngle(bothModel, bothModel.axis('y'), 'y', bothModel.typedFieldDef('y')));
     });
 
     it('should return undefined when there is no default and no specified labelAngle', () => {
-      expect(undefined).toEqual(labelAngle(neitherModel, neitherModel.axis('y'), 'y', neitherModel.fieldDef('y')));
+      expect(undefined).toEqual(labelAngle(neitherModel, neitherModel.axis('y'), 'y', neitherModel.typedFieldDef('y')));
     });
   });
 

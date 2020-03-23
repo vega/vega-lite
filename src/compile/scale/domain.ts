@@ -1,4 +1,3 @@
-import {SelectionExtent} from './../../selection';
 import {SignalRef} from 'vega';
 import {isObject, isString} from 'vega-util';
 import {
@@ -39,6 +38,7 @@ import {isFacetModel, isUnitModel, Model} from '../model';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
+import {SelectionExtent} from './../../selection';
 import {TimeUnitParams} from './../../timeunit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
 
@@ -155,7 +155,7 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
 
   const domain = normalizeUnaggregatedDomain(
     model.scaleDomain(channel),
-    model.fieldDef(channel),
+    model.typedFieldDef(channel),
     scaleType,
     model.config.scale
   );
@@ -227,7 +227,7 @@ function parseSingleChannelDomain(
   channel: ScaleChannel | 'x2' | 'y2'
 ): Explicit<VgNonUnionDomain[]> {
   const fieldDef = model.fieldDef(channel);
-  const mainFieldDef = model.fieldDef(getMainRangeChannel(channel));
+  const mainFieldDef = model.typedFieldDef(getMainRangeChannel(channel));
 
   if (isDomainUnionWith(domain)) {
     const defaultDomain = parseSingleChannelDomain(scaleType, undefined, model, channel);

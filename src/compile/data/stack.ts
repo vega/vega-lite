@@ -1,6 +1,6 @@
 import {Transforms as VgTransform} from 'vega';
 import {isArray, isString} from 'vega-util';
-import {FieldName, getTypedFieldDef, isFieldDef, PositionFieldDef, vgField} from '../../channeldef';
+import {FieldName, getFieldDef, isFieldDef, PositionFieldDef, vgField} from '../../channeldef';
 import {SortFields, SortOrder} from '../../sort';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
@@ -127,7 +127,7 @@ export class StackNode extends DataFlowNode {
     let dimensionFieldDef: PositionFieldDef<string>;
     if (stackProperties.groupbyChannel) {
       const cDef = encoding[stackProperties.groupbyChannel];
-      dimensionFieldDef = getTypedFieldDef(cDef) as PositionFieldDef<string>; // Fair to cast as groupByChannel is always either x or y
+      dimensionFieldDef = getFieldDef(cDef) as PositionFieldDef<string>; // Fair to cast as groupByChannel is always either x or y
     }
 
     const stackby = getStackByFields(model);

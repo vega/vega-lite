@@ -87,12 +87,12 @@ function replaceRepeaterInFieldDef(fieldDef: FieldDef<Field>, repeater: Repeater
   return fieldDef as ScaleFieldDef<FieldName>;
 }
 
-function replaceRepeaterInChannelDef(channelDef: ChannelDef<FieldDef<Field>>, repeater: RepeaterValue): ChannelDef {
+function replaceRepeaterInChannelDef(channelDef: ChannelDef<Field>, repeater: RepeaterValue) {
   if (isFieldDef(channelDef)) {
     const fd = replaceRepeaterInFieldDef(channelDef, repeater);
     if (fd) {
       return fd;
-    } else if (isConditionalDef(channelDef)) {
+    } else if (isConditionalDef<ChannelDef<Field>>(channelDef)) {
       return {condition: channelDef.condition};
     }
   } else {
@@ -119,11 +119,13 @@ function replaceRepeater(mapping: EncodingOrFacet<Field>, repeater: RepeaterValu
   const out: EncodingOrFacet<FieldName> = {};
   for (const channel in mapping) {
     if (hasOwnProperty(mapping, channel)) {
-      const channelDef: ChannelDef<FieldDef<Field>> | ChannelDef<FieldDef<Field>>[] = mapping[channel];
+      const channelDef: ChannelDef<Field> | ChannelDef<Field>[] = mapping[channel];
 
       if (isArray(channelDef)) {
         // array cannot have condition
-        out[channel] = channelDef.map(cd => replaceRepeaterInChannelDef(cd, repeater)).filter(cd => cd);
+        out[channel] = (channelDef as ChannelDef<Field>[]) // somehow we need to cast it here
+          .map(cd => replaceRepeaterInChannelDef(cd, repeater))
+          .filter(cd => cd);
       } else {
         const cd = replaceRepeaterInChannelDef(channelDef, repeater);
         if (cd !== undefined) {
