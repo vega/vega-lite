@@ -467,6 +467,10 @@
         "style": "background-size: auto 70%; background-position-y: center;"
       },
       {
+        "name": "layer_bar_fruit",
+        "title": "Simple Bar Chart with Labels and Emojis"
+      },
+      {
         "name": "layer_text_heatmap",
         "title": "Layering text over heatmap",
         "style": "background-size: auto 55%; background-position-y: center !important;"
@@ -512,10 +516,6 @@
         "name": "concat_layer_voyager_result",
         "title": "Comparative Likert Scale Ratings",
         "description": "Comparing Likert scale ratings between two conditions. (Figure 10. from @kanitw et al.'s \"Voyager 2: Augmenting Visual Analysis with Partial View Specifications\" -- http://idl.cs.washington.edu/files/2017-Voyager2-CHI.pdf)."
-      },
-      {
-        "name": "layer_bar_labels",
-        "title": "Bar with Label Overlays"
       }
     ],
     "Other Layered Plots": [
