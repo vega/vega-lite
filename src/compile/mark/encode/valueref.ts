@@ -9,13 +9,16 @@ import {Channel, getMainRangeChannel, PositionChannel, X, X2, Y, Y2} from '../..
 import {
   binRequiresRange,
   ChannelDef,
+  DatumDef,
   FieldDef,
   FieldDefBase,
   FieldName,
   FieldRefOption,
   getBand,
+  isDatumDef,
   isFieldDef,
-  isPositionFieldDef,
+  isFieldOrDatumDef,
+  isPositionFieldOrDatumDef,
   isTypedFieldDef,
   isValueDef,
   SecondaryChannelDef,
@@ -104,24 +107,32 @@ export function fieldInvalidPredicate(field: FieldName | FieldDef<string>, inval
   return fieldValidPredicate(isString(field) ? field : vgField(field, {expr: 'datum'}), !invalid);
 }
 
-export function fieldRef(
-  fieldDef: FieldDefBase<string>,
+export function valueRefForFieldOrDatumDef(
+  fieldDef: FieldDefBase<string> | DatumDef<string>,
   scaleName: string,
   opt: FieldRefOption,
   encode: {offset?: number | VgValueRef; band?: number | boolean}
 ): VgValueRef {
-  const ref: VgValueRef = {
-    ...(scaleName ? {scale: scaleName} : {}),
-    field: vgField(fieldDef, opt)
-  };
+  const ref: VgValueRef = {};
+
+  if (scaleName) {
+    ref.scale = scaleName;
+  }
+
+  if (isDatumDef<string>(fieldDef)) {
+    ref.value = fieldDef.datum;
+  } else {
+    ref.field = vgField(fieldDef, opt);
+  }
 
   if (encode) {
     const {offset, band} = encode;
-    return {
-      ...ref,
-      ...(offset ? {offset} : {}),
-      ...(band ? {band} : {})
-    };
+    if (offset) {
+      ref.offset = offset;
+    }
+    if (band) {
+      ref.band = band;
+    }
   }
   return ref;
 }
@@ -131,43 +142,49 @@ export function fieldRef(
  */
 export function interpolatedSignalRef({
   scaleName,
-  fieldDef,
-  fieldDef2,
+  fieldOrDatumDef,
+  fieldOrDatumDef2,
   offset,
   startSuffix,
   band = 0.5
 }: {
   scaleName: string;
-  fieldDef: TypedFieldDef<string>;
-  fieldDef2?: SecondaryFieldDef<string>;
+  fieldOrDatumDef: TypedFieldDef<string> | DatumDef;
+  fieldOrDatumDef2?: SecondaryFieldDef<string> | DatumDef;
   startSuffix?: string;
   offset: number | SignalRef;
   band: number;
-}) {
+}): VgValueRef {
   const expr = 0 < band && band < 1 ? 'datum' : undefined;
-  const start = vgField(fieldDef, {expr, suffix: startSuffix});
-  const end = fieldDef2 !== undefined ? vgField(fieldDef2, {expr}) : vgField(fieldDef, {suffix: 'end', expr});
+  const start = isFieldDef(fieldOrDatumDef) ? vgField(fieldOrDatumDef, {expr, suffix: startSuffix}) : fieldOrDatumDef;
+  const end =
+    fieldOrDatumDef2 !== undefined
+      ? isFieldDef(fieldOrDatumDef2)
+        ? vgField(fieldOrDatumDef2, {expr})
+        : fieldOrDatumDef2
+      : isFieldDef(fieldOrDatumDef)
+      ? vgField(fieldOrDatumDef, {suffix: 'end', expr})
+      : fieldOrDatumDef;
 
-  if (band === 0) {
-    return {
-      scale: scaleName,
-      field: start,
-      ...(offset ? {offset} : {})
-    };
-  } else if (band === 1) {
-    return {
-      scale: scaleName,
-      field: end,
-      ...(offset ? {offset} : {})
-    };
+  const ref: VgValueRef = {};
+
+  if (band === 0 || band === 1) {
+    ref.scale = scaleName;
+    const val = band === 0 ? start : end;
+    if (isString(val)) {
+      ref.field = val;
+    } else {
+      ref.value = val.datum;
+    }
   } else {
     const datum = `${band} * ${start} + ${1 - band} * ${end}`;
-
-    return {
-      signal: `scale("${scaleName}", ${datum})`,
-      ...(offset ? {offset} : {})
-    };
+    ref.signal = `scale("${scaleName}", ${datum})`;
   }
+
+  if (offset) {
+    ref.offset = offset;
+  }
+  return ref;
 }
 
 export interface MidPointParams {
@@ -204,7 +221,7 @@ export function midPoint({
   if (channelDef) {
     /* istanbul ignore else */
 
-    if (isFieldDef(channelDef)) {
+    if (isFieldOrDatumDef(channelDef)) {
       if (isTypedFieldDef(channelDef)) {
         const band = getBand(channel, channelDef, channel2Def, markDef, config, {isMidPoint: true});
 
@@ -214,17 +231,28 @@ export function midPoint({
           if (contains([X, Y], channel) && contains([QUANTITATIVE, TEMPORAL], channelDef.type)) {
             if (stack && stack.impute) {
               // For stack, we computed bin_mid so we can impute.
-              return fieldRef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
+              return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
             }
             // For non-stack, we can just calculate bin mid on the fly using signal.
-            return interpolatedSignalRef({scaleName, fieldDef: channelDef, band, offset});
+            return interpolatedSignalRef({scaleName, fieldOrDatumDef: channelDef, band, offset});
           }
-          return fieldRef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {}, {
-            offset
-          });
+          return valueRefForFieldOrDatumDef(
+            channelDef,
+            scaleName,
+            binRequiresRange(channelDef, channel) ? {binSuffix: 'range'} : {},
+            {
+              offset
+            }
+          );
         } else if (isBinned(channelDef.bin)) {
           if (isFieldDef(channel2Def)) {
-            return interpolatedSignalRef({scaleName, fieldDef: channelDef, fieldDef2: channel2Def, band, offset});
+            return interpolatedSignalRef({
+              scaleName,
+              fieldOrDatumDef: channelDef,
+              fieldOrDatumDef2: channel2Def,
+              band,
+              offset
+            });
           } else {
             const channel2 = channel === X ? X2 : Y2;
             log.warn(log.message.channelRequiredForBinned(channel2));
@@ -237,13 +265,13 @@ export function midPoint({
         if (hasDiscreteDomain(scaleType)) {
           if (scaleType === 'band') {
             // For band, to get mid point, need to offset by half of the band
-            const band = getFirstDefined(isPositionFieldDef(channelDef) ? channelDef.band : undefined, 0.5);
-            return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {band, offset});
+            const band = getFirstDefined(isPositionFieldOrDatumDef(channelDef) ? channelDef.band : undefined, 0.5);
+            return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'range'}, {band, offset});
           }
-          return fieldRef(channelDef, scaleName, {binSuffix: 'range'}, {offset});
+          return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'range'}, {offset});
         }
       }
-      return fieldRef(channelDef, scaleName, {}, {offset}); // no need for bin suffix
+      return valueRefForFieldOrDatumDef(channelDef, scaleName, {}, {offset}); // no need for bin suffix
     } else if (isValueDef(channelDef)) {
       const value = channelDef.value;
       const offsetMixins = offset ? {offset} : {};

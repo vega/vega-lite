@@ -1,11 +1,19 @@
 import {isString} from 'vega-util';
 import {isBinning} from '../bin';
-import {FieldDef, isFieldDefForTimeFormat, isScaleFieldDef, isTypedFieldDef, vgField} from '../channeldef';
+import {
+  channelDefType,
+  DatumDef,
+  FieldDef,
+  isFieldDef,
+  isFieldOrDatumDefForTimeFormat,
+  isScaleFieldDef,
+  vgField
+} from '../channeldef';
 import {Config} from '../config';
 import {fieldValidPredicate} from '../predicate';
 import {ScaleType} from '../scale';
 import {formatExpression, normalizeTimeUnit, TimeUnit} from '../timeunit';
-import {QUANTITATIVE} from '../type';
+import {QUANTITATIVE, Type} from '../type';
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
@@ -24,7 +32,7 @@ function customFormatExpr({formatType, field, format}: {formatType: string; fiel
 }
 
 export function formatSignalRef({
-  fieldDef,
+  fieldOrDatumDef,
   format,
   formatType,
   expr,
@@ -35,7 +43,7 @@ export function formatSignalRef({
   omitTimeFormatConfig,
   isUTCScale
 }: {
-  fieldDef: FieldDef<string>;
+  fieldOrDatumDef: FieldDef<string> | DatumDef<string>;
   format: string | object;
   formatType: string;
   expr?: 'datum' | 'parent' | 'datum.datum';
@@ -47,20 +55,26 @@ export function formatSignalRef({
   isUTCScale?: boolean;
 }) {
   if (!field) {
-    if (normalizeStack) {
-      field = `${vgField(fieldDef, {expr, suffix: 'end'})}-${vgField(fieldDef, {expr, suffix: 'start'})}`;
+    if (isFieldDef(fieldOrDatumDef)) {
+      if (normalizeStack) {
+        field = `${vgField(fieldOrDatumDef, {expr, suffix: 'end'})}-${vgField(fieldOrDatumDef, {
+          expr,
+          suffix: 'start'
+        })}`;
+      } else {
+        field = vgField(fieldOrDatumDef, {expr});
+      }
     } else {
-      field = vgField(fieldDef, {expr});
+      field = `${fieldOrDatumDef.datum}`;
     }
   }
-  isUTCScale =
-    isUTCScale ?? (isScaleFieldDef(fieldDef) && fieldDef['scale'] && fieldDef['scale'].type === ScaleType.UTC);
+  isUTCScale = isUTCScale ?? (isScaleFieldDef(fieldOrDatumDef) && fieldOrDatumDef.scale?.type === ScaleType.UTC);
 
   const defaultTimeFormat = omitTimeFormatConfig ? null : config.timeFormat;
 
   if (isCustomFormatType(formatType)) {
-    if (isBinning(fieldDef.bin)) {
-      const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
+    if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
+      const endField = vgField(fieldOrDatumDef, {expr, binSuffix: 'end'});
       return {
         signal: binFormatExpression(field, endField, format, formatType, config)
       };
@@ -70,10 +84,10 @@ export function formatSignalRef({
     formatType = undefined; // drop unregistered custom formatType
   }
 
-  if (isFieldDefForTimeFormat(fieldDef)) {
+  if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
     const signal = timeFormatExpression(
       field,
-      normalizeTimeUnit(fieldDef.timeUnit)?.unit,
+      isFieldDef(fieldOrDatumDef) ? normalizeTimeUnit(fieldOrDatumDef.timeUnit)?.unit : undefined,
       format,
       defaultTimeFormat,
       isUTCScale,
@@ -81,13 +95,13 @@ export function formatSignalRef({
     );
     return signal ? {signal} : undefined;
   } else if (!omitNumberFormatAndEmptyTimeFormat) {
-    format = numberFormat(fieldDef, format, config);
-    if (isBinning(fieldDef.bin)) {
-      const endField = vgField(fieldDef, {expr, binSuffix: 'end'});
+    format = numberFormat(channelDefType(fieldOrDatumDef), format, config);
+    if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
+      const endField = vgField(fieldOrDatumDef, {expr, binSuffix: 'end'});
       return {
         signal: binFormatExpression(field, endField, format, formatType, config)
       };
-    } else if (format || (isTypedFieldDef(fieldDef) && fieldDef.type === 'quantitative')) {
+    } else if (format || channelDefType(fieldOrDatumDef) === 'quantitative') {
       return {
         signal: `${formatExpr(field, format)}`
       };
@@ -101,13 +115,13 @@ export function formatSignalRef({
 /**
  * Returns number format for a fieldDef
  */
-export function numberFormat(fieldDef: FieldDef<string>, specifiedFormat: string | object, config: Config) {
+export function numberFormat(type: Type, specifiedFormat: string | object, config: Config) {
   // Specified format in axis/legend has higher precedence than fieldDef.format
   if (isString(specifiedFormat)) {
     return specifiedFormat;
   }
 
-  if (isTypedFieldDef(fieldDef) && fieldDef.type === QUANTITATIVE) {
+  if (type === QUANTITATIVE) {
     // we only apply the default if the field is quantitative
     return config.numberFormat;
   }

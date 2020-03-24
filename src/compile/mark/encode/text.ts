@@ -23,7 +23,7 @@ export function textRef(
     }
     if (isTypedFieldDef(channelDef)) {
       const {format, formatType} = getFormatMixins(channelDef);
-      return formatSignalRef({fieldDef: channelDef, format, formatType, expr, config});
+      return formatSignalRef({fieldOrDatumDef: channelDef, format, formatType, expr, config});
     }
   }
   return undefined;

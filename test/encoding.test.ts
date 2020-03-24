@@ -10,7 +10,7 @@ import {
   X2,
   Y2
 } from '../src/channel';
-import {isPositionFieldDef} from '../src/channeldef';
+import {isPositionFieldOrDatumDef} from '../src/channeldef';
 import {defaultConfig} from '../src/config';
 import {
   Encoding,
@@ -79,7 +79,7 @@ describe('encoding', () => {
 
       const x = encoding.x;
       expect(x).toBeDefined();
-      if (isPositionFieldDef(x)) {
+      if (isPositionFieldOrDatumDef(x)) {
         expect(x.axis).toBeDefined();
         expect(x.axis.labelAngle).toBe(15);
       } else {

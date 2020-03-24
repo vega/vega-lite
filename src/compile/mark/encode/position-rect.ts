@@ -5,8 +5,10 @@ import {PositionChannel, X, X2, Y2} from '../../../channel';
 import {
   getBand,
   isFieldDef,
-  isPositionFieldDef,
+  isFieldOrDatumDef,
+  isPositionFieldOrDatumDef,
   isValueDef,
+  PositionDatumDef,
   PositionFieldDef,
   TypedFieldDef
 } from '../../../channeldef';
@@ -69,10 +71,10 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
       reverse: scale.get('reverse'),
       config
     });
-  } else if (((isFieldDef(fieldDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !fieldDef2) {
+  } else if (((isFieldOrDatumDef(fieldDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !fieldDef2) {
     // vertical
-    if (isFieldDef(fieldDef) && scaleType === ScaleType.BAND) {
-      const band = isPositionFieldDef(fieldDef) ? fieldDef.band : undefined;
+    if (isFieldOrDatumDef(fieldDef) && scaleType === ScaleType.BAND) {
+      const band = isPositionFieldOrDatumDef(fieldDef) ? fieldDef.band : undefined;
       return rectBandPosition(
         fieldDef,
         channel,
@@ -162,7 +164,7 @@ function bandRef(scaleName: string, band: number | boolean = true): VgValueRef {
 }
 
 function rectBandPosition(
-  fieldDef: PositionFieldDef<string>,
+  fieldDef: PositionFieldDef<string> | PositionDatumDef<string>,
   channel: 'x' | 'y',
   model: UnitModel,
   sizeRef?: VgValueRef
@@ -175,13 +177,13 @@ function rectBandPosition(
   const offset = getOffset(channel, markDef);
 
   const centeredBandPositionMixins = {
-    [vgChannel]: ref.fieldRef(fieldDef, scaleName, {}, {band: 0.5, offset})
+    [vgChannel]: ref.valueRefForFieldOrDatumDef(fieldDef, scaleName, {}, {band: 0.5, offset})
   };
 
   if (encoding.size || (markDef.size !== null && markDef.size !== undefined)) {
     const orient = markDef.orient;
     if (orient) {
-      if (isFieldDef(encoding.size) || isValueDef(encoding.size)) {
+      if (isFieldOrDatumDef(encoding.size) || isValueDef(encoding.size)) {
         return {
           ...centeredBandPositionMixins,
           ...nonPosition('size', model, {vgChannel: sizeChannel})
@@ -206,7 +208,12 @@ function rectBandPosition(
   const {band = 1} = fieldDef;
 
   return {
-    [channel]: ref.fieldRef(fieldDef, scaleName, {binSuffix: 'range'}, {band: (1 - band) / 2, offset}),
+    [channel]: ref.valueRefForFieldOrDatumDef(
+      fieldDef,
+      scaleName,
+      {binSuffix: 'range'},
+      {band: (1 - band) / 2, offset}
+    ),
     [sizeChannel]: sizeRef ?? bandRef(scaleName, band)
   };
 }
@@ -274,8 +281,18 @@ export function rectBinPosition({
     };
   } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
     return {
-      [channel2]: ref.fieldRef(fieldDef, scaleName, {}, {offset: getBinSpacing(channel2, spacing, reverse)}),
-      [channel]: ref.fieldRef(fieldDef2, scaleName, {}, {offset: getBinSpacing(channel, spacing, reverse)})
+      [channel2]: ref.valueRefForFieldOrDatumDef(
+        fieldDef,
+        scaleName,
+        {},
+        {offset: getBinSpacing(channel2, spacing, reverse)}
+      ),
+      [channel]: ref.valueRefForFieldOrDatumDef(
+        fieldDef2,
+        scaleName,
+        {},
+        {offset: getBinSpacing(channel, spacing, reverse)}
+      )
     };
   } else {
     log.warn(log.message.channelRequiredForBinned(channel2));
@@ -305,7 +322,7 @@ export function rectBinRef({
 }) {
   const r = ref.interpolatedSignalRef({
     scaleName,
-    fieldDef,
+    fieldOrDatumDef: fieldDef,
     band,
     offset
   });

@@ -1,6 +1,6 @@
 import {Orientation} from 'vega';
 import {isBinned, isBinning} from '../../bin';
-import {isContinuous, isFieldDef, TypedFieldDef} from '../../channeldef';
+import {isContinuousFieldOrDatumDef, isFieldDef, isNumericDataDef, TypedFieldDef} from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
 import * as log from '../../log';
@@ -136,13 +136,17 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
         }
 
         // If y is range and x is non-range, non-bin Q, y is likely a prebinned field
-        if (!x2 && isFieldDef(x) && x.type === QUANTITATIVE && !isBinning(x.bin)) {
-          return 'horizontal';
+        if (!x2) {
+          if ((isFieldDef(x) && x.type === QUANTITATIVE && !isBinning(x.bin)) || isNumericDataDef(x)) {
+            return 'horizontal';
+          }
         }
 
         // If x is range and y is non-range, non-bin Q, x is likely a prebinned field
-        if (!y2 && isFieldDef(y) && y.type === QUANTITATIVE && !isBinning(y.bin)) {
-          return 'vertical';
+        if (!y2) {
+          if ((isFieldDef(y) && y.type === QUANTITATIVE && !isBinning(y.bin)) || isNumericDataDef(y)) {
+            return 'vertical';
+          }
         }
       }
 
@@ -181,8 +185,8 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
     case LINE:
     case TICK: {
       // Tick is opposite to bar, line, area and never have ranged mark.
-      const xIsContinuous = isFieldDef(x) && isContinuous(x);
-      const yIsContinuous = isFieldDef(y) && isContinuous(y);
+      const xIsContinuous = isContinuousFieldOrDatumDef(x);
+      const yIsContinuous = isContinuousFieldOrDatumDef(y);
       if (xIsContinuous && !yIsContinuous) {
         return mark !== 'tick' ? 'horizontal' : 'vertical';
       } else if (!xIsContinuous && yIsContinuous) {

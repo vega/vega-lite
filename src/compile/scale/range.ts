@@ -18,6 +18,7 @@ import {
   X,
   Y
 } from '../../channel';
+import {getFieldOrDatumDef, ScaleDatumDef, ScaleFieldDef} from '../../channeldef';
 import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config';
 import * as log from '../../log';
 import {Mark} from '../../mark';
@@ -155,11 +156,11 @@ function parseScheme(scheme: Scheme | SignalRef): RangeScheme {
 }
 
 function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
-  const {size, config, mark} = model;
+  const {size, config, mark, encoding} = model;
 
   const getSignalName = model.getSignalName.bind(model);
 
-  const {type} = model.typedFieldDef(channel);
+  const {type} = getFieldOrDatumDef(encoding[channel]) as ScaleFieldDef<string> | ScaleDatumDef;
 
   const mergedScaleCmpt = model.getScaleComponent(channel);
   const scaleType = mergedScaleCmpt.get('type');

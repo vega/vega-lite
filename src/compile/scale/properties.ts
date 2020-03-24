@@ -2,7 +2,14 @@ import {SignalRef, TimeInterval} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
 import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
-import {ScaleFieldDef, TypedFieldDef} from '../../channeldef';
+import {
+  getFieldDef,
+  getFieldOrDatumDef,
+  isFieldDef,
+  ScaleDatumDef,
+  ScaleFieldDef,
+  TypedFieldDef
+} from '../../channeldef';
 import {Config} from '../../config';
 import * as log from '../../log';
 import {Mark, MarkDef, RectConfig} from '../../mark';
@@ -40,13 +47,13 @@ export function parseScaleProperty(model: Model, property: keyof (Scale | ScaleC
 
 function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | ScaleComponentProps)) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
+  const {config, encoding, markDef, specifiedScales} = model;
 
   keys(localScaleComponents).forEach((channel: ScaleChannel) => {
-    const specifiedScale = model.specifiedScales[channel];
+    const specifiedScale = specifiedScales[channel];
     const localScaleCmpt = localScaleComponents[channel];
     const mergedScaleCmpt = model.getScaleComponent(channel);
-    const fieldDef = model.fieldDef(channel) as ScaleFieldDef<string>;
-    const config = model.config;
+    const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as ScaleFieldDef<string, Type> | ScaleDatumDef;
 
     const specifiedValue = specifiedScale[property];
     const sType = mergedScaleCmpt.get('type');
@@ -72,12 +79,12 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
           property,
           model,
           channel,
-          fieldDef,
+          fieldOrDatumDef,
           mergedScaleCmpt.get('type'),
           mergedScaleCmpt.get('padding'),
           mergedScaleCmpt.get('paddingInner'),
           specifiedScale.domain,
-          model.markDef,
+          markDef,
           config
         );
         if (value !== undefined) {
@@ -93,7 +100,7 @@ export function getDefaultValue(
   property: keyof Scale,
   model: Model,
   channel: Channel,
-  fieldDef: ScaleFieldDef<string, Type>,
+  fieldOrDatumDef: ScaleFieldDef<string, Type> | ScaleDatumDef,
   scaleType: ScaleType,
   scalePadding: number | SignalRef,
   scalePaddingInner: number | SignalRef,
@@ -102,26 +109,28 @@ export function getDefaultValue(
   config: Config
 ) {
   const scaleConfig = config.scale;
-  const {type, sort} = fieldDef;
+  const {type} = fieldOrDatumDef;
 
   // If we have default rule-base, determine default value first
   switch (property) {
     case 'bins':
-      return bins(model, fieldDef);
+      return isFieldDef(fieldOrDatumDef) ? bins(model, fieldOrDatumDef) : undefined;
     case 'interpolate':
       return interpolate(channel, type);
     case 'nice':
-      return nice(scaleType, channel, fieldDef);
+      return nice(scaleType, channel, fieldOrDatumDef);
     case 'padding':
-      return padding(channel, scaleType, scaleConfig, fieldDef, markDef, config.bar);
+      return padding(channel, scaleType, scaleConfig, fieldOrDatumDef, markDef, config.bar);
     case 'paddingInner':
       return paddingInner(scalePadding, channel, markDef.type, scaleConfig);
     case 'paddingOuter':
       return paddingOuter(scalePadding, channel, scaleType, markDef.type, scalePaddingInner, scaleConfig);
-    case 'reverse':
+    case 'reverse': {
+      const sort = isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined;
       return reverse(scaleType, sort, channel, scaleConfig);
+    }
     case 'zero':
-      return zero(channel, fieldDef, specifiedDomain, markDef, scaleType);
+      return zero(channel, fieldOrDatumDef, specifiedDomain, markDef, scaleType);
   }
   // Otherwise, use scale config
   return scaleConfig[property];
@@ -201,8 +210,12 @@ export function interpolate(channel: Channel, type: Type) {
   return undefined;
 }
 
-export function nice(scaleType: ScaleType, channel: Channel, fieldDef: TypedFieldDef<string>): boolean | TimeInterval {
-  if (fieldDef.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
+export function nice(
+  scaleType: ScaleType,
+  channel: Channel,
+  fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef
+): boolean | TimeInterval {
+  if (getFieldDef(fieldOrDatumDef)?.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return undefined;
   }
   return util.contains([X, Y], channel) ? true : undefined;
@@ -212,7 +225,7 @@ export function padding(
   channel: Channel,
   scaleType: ScaleType,
   scaleConfig: ScaleConfig,
-  fieldDef: TypedFieldDef<string>,
+  fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef,
   markDef: MarkDef,
   barConfig: RectConfig
 ) {
@@ -223,7 +236,7 @@ export function padding(
       }
 
       const {type, orient} = markDef;
-      if (type === 'bar' && !fieldDef.bin && !fieldDef.timeUnit) {
+      if (type === 'bar' && !(isFieldDef(fieldOrDatumDef) && (fieldOrDatumDef.bin || fieldOrDatumDef.timeUnit))) {
         if ((orient === 'vertical' && channel === 'x') || (orient === 'horizontal' && channel === 'y')) {
           return barConfig.continuousBandSize;
         }
@@ -289,10 +302,8 @@ export function paddingOuter(
 }
 
 export function reverse(scaleType: ScaleType, sort: Sort<string>, channel: Channel, scaleConfig: ScaleConfig) {
-  const isDescendingSort = hasContinuousDomain(scaleType) && sort === 'descending';
-
   if (channel === 'x' && scaleConfig.xReverse !== undefined) {
-    if (isDescendingSort) {
+    if (hasContinuousDomain(scaleType) && sort === 'descending') {
       if (isSignalRef(scaleConfig.xReverse)) {
         return {signal: `!${scaleConfig.xReverse.signal}`};
       } else {
@@ -302,7 +313,7 @@ export function reverse(scaleType: ScaleType, sort: Sort<string>, channel: Chann
     return scaleConfig.xReverse;
   }
 
-  if (isDescendingSort) {
+  if (hasContinuousDomain(scaleType) && sort === 'descending') {
     // For continuous domain scales, Vega does not support domain sort.
     // Thus, we reverse range instead if sort is descending
     return true;
@@ -312,7 +323,7 @@ export function reverse(scaleType: ScaleType, sort: Sort<string>, channel: Chann
 
 export function zero(
   channel: Channel,
-  fieldDef: TypedFieldDef<string>,
+  fieldDef: TypedFieldDef<string> | ScaleDatumDef,
   specifiedDomain: Domain,
   markDef: MarkDef,
   scaleType: ScaleType
@@ -346,7 +357,7 @@ export function zero(
 
   // 2) non-binned, quantitative x-scale or y-scale
   // (For binning, we should not include zero by default because binning are calculated without zero.)
-  if (!fieldDef.bin && util.contains([X, Y], channel)) {
+  if (!(isFieldDef(fieldDef) && fieldDef.bin) && util.contains([X, Y], channel)) {
     const {orient, type} = markDef;
     if (contains(['bar', 'area', 'line', 'trail'], type)) {
       if ((orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x')) {

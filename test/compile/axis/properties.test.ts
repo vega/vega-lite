@@ -36,7 +36,7 @@ describe('compile/axis', () => {
   describe('defaultTickCount()', () => {
     it('should return undefined by default for a binned field', () => {
       const tickCount = properties.defaultTickCount({
-        fieldDef: {bin: {maxbins: 10}, field: 'a', type: 'quantitative'},
+        fieldOrDatumDef: {bin: {maxbins: 10}, field: 'a', type: 'quantitative'},
         scaleType: 'linear',
         size: {signal: 'a'}
       });
@@ -46,7 +46,7 @@ describe('compile/axis', () => {
     for (const timeUnit of ['month', 'hours', 'day', 'quarter'] as TimeUnit[]) {
       it(`should return undefined by default for a temporal field with timeUnit=${timeUnit}`, () => {
         const tickCount = properties.defaultTickCount({
-          fieldDef: {timeUnit, field: 'a', type: 'temporal'},
+          fieldOrDatumDef: {timeUnit, field: 'a', type: 'temporal'},
           scaleType: 'linear',
           size: {signal: 'a'}
         });
@@ -56,7 +56,7 @@ describe('compile/axis', () => {
 
     it('should return size/40 by default for linear scale', () => {
       const tickCount = properties.defaultTickCount({
-        fieldDef: {field: 'a', type: 'quantitative'},
+        fieldOrDatumDef: {field: 'a', type: 'quantitative'},
         scaleType: 'linear',
         size: {signal: 'a'}
       });
@@ -65,7 +65,7 @@ describe('compile/axis', () => {
 
     it('should return undefined by default for log scale', () => {
       const tickCount = properties.defaultTickCount({
-        fieldDef: {field: 'a', type: 'quantitative'},
+        fieldOrDatumDef: {field: 'a', type: 'quantitative'},
         scaleType: 'log'
       });
       expect(tickCount).toBeUndefined();
@@ -73,7 +73,7 @@ describe('compile/axis', () => {
 
     it('should return undefined by default for point scale', () => {
       const tickCount = properties.defaultTickCount({
-        fieldDef: {field: 'a', type: 'quantitative'},
+        fieldOrDatumDef: {field: 'a', type: 'quantitative'},
         scaleType: 'point'
       });
       expect(tickCount).toBeUndefined();
@@ -82,7 +82,7 @@ describe('compile/axis', () => {
 
   describe('values', () => {
     it('should return correct timestamp values for DateTimes', () => {
-      const values = properties.values({values: [{year: 1970}, {year: 1980}]}, null, {field: 'a', type: 'temporal'});
+      const values = properties.values({values: [{year: 1970}, {year: 1980}]}, {field: 'a', type: 'temporal'});
 
       expect(values).toEqual([
         {signal: 'datetime(1970, 0, 1, 0, 0, 0, 0)'},
@@ -91,29 +91,24 @@ describe('compile/axis', () => {
     });
 
     it('should simply return values for non-DateTime', () => {
-      const values = properties.values({values: [1, 2, 3, 4]}, null, {field: 'a', type: 'quantitative'});
+      const values = properties.values({values: [1, 2, 3, 4]}, {field: 'a', type: 'quantitative'});
       expect(values).toEqual([1, 2, 3, 4]);
     });
 
     it('returns signal correctly for non-DateTime', () => {
-      const values = properties.values({values: {signal: 'a'}}, null, {field: 'a', type: 'quantitative'});
+      const values = properties.values({values: {signal: 'a'}}, {field: 'a', type: 'quantitative'});
       expect(values).toEqual({signal: 'a'});
     });
 
     it('should simply drop values when domain is specified', () => {
-      const model1 = parseUnitModelWithScale({
-        mark: 'bar',
-        encoding: {
-          y: {
-            type: 'quantitative',
-            field: 'US_Gross',
-            scale: {domain: [-1, 2]},
-            bin: {extent: [0, 1]}
-          }
-        },
-        data: {url: 'data/movies.json'}
-      });
-      const values = properties.values({}, model1, model1.typedFieldDef('y'));
+      const values = properties.values(
+        {},
+        {
+          type: 'quantitative',
+          field: 'US_Gross',
+          bin: {extent: [0, 1]}
+        }
+      );
 
       expect(values).toBeUndefined();
     });

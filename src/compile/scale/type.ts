@@ -1,11 +1,11 @@
 import {isBinning} from '../../bin';
 import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
-import {TypedFieldDef} from '../../channeldef';
+import {DatumDef, isFieldDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {channelSupportScaleType, Scale, ScaleType, scaleTypeSupportDataType} from '../../scale';
-import * as util from '../../util';
 import {normalizeTimeUnit} from '../../timeunit';
+import * as util from '../../util';
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 
@@ -17,7 +17,7 @@ export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 export function scaleType(
   specifiedScale: Scale,
   channel: Channel,
-  fieldDef: TypedFieldDef<string>,
+  fieldDef: TypedFieldDef<string> | DatumDef,
   mark: Mark
 ): ScaleType {
   const defaultScaleType = defaultType(channel, fieldDef, mark);
@@ -35,7 +35,7 @@ export function scaleType(
     }
 
     // Check if explicitly specified scale type is supported by the data type
-    if (!scaleTypeSupportDataType(type, fieldDef.type)) {
+    if (isFieldDef(fieldDef) && !scaleTypeSupportDataType(type, fieldDef.type)) {
       log.warn(log.message.scaleTypeNotWorkWithFieldDef(type, defaultScaleType));
       return defaultScaleType;
     }
@@ -50,7 +50,7 @@ export function scaleType(
  * Determine appropriate default scale type.
  */
 // NOTE: Voyager uses this method.
-function defaultType(channel: Channel, fieldDef: TypedFieldDef<string>, mark: Mark): ScaleType {
+function defaultType(channel: Channel, fieldDef: TypedFieldDef<string> | ScaleDatumDef, mark: Mark): ScaleType {
   switch (fieldDef.type) {
     case 'nominal':
     case 'ordinal':
@@ -78,14 +78,14 @@ function defaultType(channel: Channel, fieldDef: TypedFieldDef<string>, mark: Ma
         log.warn(log.message.discreteChannelCannotEncode(channel, 'temporal'));
         // TODO: consider using quantize (equivalent to binning) once we have it
         return 'ordinal';
-      } else if (fieldDef.timeUnit && normalizeTimeUnit(fieldDef.timeUnit).utc) {
+      } else if (isFieldDef(fieldDef) && fieldDef.timeUnit && normalizeTimeUnit(fieldDef.timeUnit).utc) {
         return 'utc';
       }
       return 'time';
 
     case 'quantitative':
       if (isColorChannel(channel)) {
-        if (isBinning(fieldDef.bin)) {
+        if (isFieldDef(fieldDef) && isBinning(fieldDef.bin)) {
           return 'bin-ordinal';
         }
 

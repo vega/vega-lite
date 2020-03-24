@@ -1,7 +1,17 @@
 import {array, isBoolean} from 'vega-util';
 import {SUM_OPS} from './aggregate';
 import {NonPositionChannel, NONPOSITION_CHANNELS, X, X2, Y2} from './channel';
-import {Field, FieldName, getFieldDef, isFieldDef, PositionFieldDef, TypedFieldDef, vgField} from './channeldef';
+import {
+  channelDefType,
+  FieldName,
+  getFieldDef,
+  isFieldDef,
+  isFieldOrDatumDef,
+  PositionDatumDef,
+  PositionFieldDef,
+  TypedFieldDef,
+  vgField
+} from './channeldef';
 import {channelHasField, Encoding, isAggregate} from './encoding';
 import * as log from './log';
 import {AREA, BAR, CIRCLE, isMarkDef, isPathMark, LINE, Mark, MarkDef, POINT, RULE, SQUARE, TEXT, TICK} from './mark';
@@ -50,29 +60,31 @@ export interface StackProperties {
 export const STACKABLE_MARKS = [BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK];
 export const STACK_BY_DEFAULT_MARKS = [BAR, AREA];
 
-function potentialStackedChannel(encoding: Encoding<Field>): 'x' | 'y' | undefined {
+function potentialStackedChannel(encoding: Encoding<string>): 'x' | 'y' | undefined {
   const xDef = encoding.x;
   const yDef = encoding.y;
 
   if (isFieldDef(xDef) && isFieldDef(yDef)) {
-    if (xDef.type === 'quantitative' && yDef.type === 'quantitative') {
+    if (channelDefType(xDef) === 'quantitative' && channelDefType(yDef) === 'quantitative') {
       if (xDef.stack) {
         return 'x';
       } else if (yDef.stack) {
         return 'y';
       }
+      const xAggregate = isFieldDef(xDef) && !!xDef.aggregate;
+      const yAggregate = isFieldDef(yDef) && !!yDef.aggregate;
       // if there is no explicit stacking, only apply stack if there is only one aggregate for x or y
-      if (!!xDef.aggregate !== !!yDef.aggregate) {
-        return xDef.aggregate ? 'x' : 'y';
+      if (xAggregate !== yAggregate) {
+        return xAggregate ? 'x' : 'y';
       }
-    } else if (xDef.type === 'quantitative') {
+    } else if (channelDefType(xDef) === 'quantitative') {
       return 'x';
-    } else if (yDef.type === 'quantitative') {
+    } else if (channelDefType(yDef) === 'quantitative') {
       return 'y';
     }
-  } else if (isFieldDef(xDef) && xDef.type === 'quantitative') {
+  } else if (channelDefType(xDef) === 'quantitative') {
     return 'x';
-  } else if (isFieldDef(yDef) && yDef.type === 'quantitative') {
+  } else if (channelDefType(yDef) === 'quantitative') {
     return 'y';
   }
   return undefined;
@@ -98,8 +110,8 @@ export function stack(
     return null;
   }
 
-  const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string>;
-  const stackedField = vgField(stackedFieldDef, {});
+  const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string> | PositionDatumDef<string>;
+  const stackedField = isFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
 
   const dimensionChannel = fieldChannel === 'x' ? 'y' : 'x';
   const dimensionDef = encoding[dimensionChannel];
@@ -162,7 +174,7 @@ export function stack(
   }
 
   // Check if it is a ranged mark
-  if (channelHasField(encoding, fieldChannel === X ? X2 : Y2)) {
+  if (isFieldOrDatumDef(encoding[fieldChannel === X ? X2 : Y2])) {
     if (stackedFieldDef.stack !== undefined) {
       log.warn(log.message.cannotStackRangedMark(fieldChannel));
     }
@@ -170,7 +182,7 @@ export function stack(
   }
 
   // Warn if stacking non-summative aggregate
-  if (stackedFieldDef.aggregate && !contains(SUM_OPS, stackedFieldDef.aggregate)) {
+  if (isFieldDef(stackedFieldDef) && stackedFieldDef.aggregate && !contains(SUM_OPS, stackedFieldDef.aggregate)) {
     log.warn(log.message.stackNonSummativeAggregate(stackedFieldDef.aggregate));
   }
 

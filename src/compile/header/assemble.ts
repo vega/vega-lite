@@ -124,7 +124,8 @@ export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel
     channel
   );
 
-  const titleTextExpr = formatSignalRef({fieldDef: facetFieldDef, format, formatType, expr: 'parent', config}).signal;
+  const titleTextExpr = formatSignalRef({fieldOrDatumDef: facetFieldDef, format, formatType, expr: 'parent', config})
+    .signal;
   const headerChannel = getHeaderChannel(channel, labelOrient);
 
   return {

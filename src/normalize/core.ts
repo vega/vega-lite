@@ -59,7 +59,10 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
   public mapUnit(spec: UnitSpec, params: NormalizerParams): NormalizedUnitSpec | NormalizedLayerSpec {
     const {parentEncoding, parentProjection} = params;
 
-    const specWithReplacedEncoding = {...spec, encoding: replaceRepeaterInEncoding(spec.encoding, params.repeater)};
+    const specWithReplacedEncoding = {
+      ...spec,
+      encoding: replaceRepeaterInEncoding(spec.encoding, params.repeater)
+    };
 
     if (parentEncoding || parentProjection) {
       return this.mapUnitWithParentEncodingOrProjection(specWithReplacedEncoding, params);
@@ -235,6 +238,8 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
     const {facetMapping, layout} = this.getFacetMappingAndLayout({row, column, facet}, params);
 
+    const newEncoding = replaceRepeaterInEncoding(encoding, params.repeater);
+
     return this.mapFacet(
       {
         ...outerSpec,
@@ -248,7 +253,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
           ...(view ? {view} : {}),
           ...(projection ? {projection} : {}),
           mark,
-          encoding: replaceRepeaterInEncoding(encoding, params.repeater),
+          encoding: newEncoding,
           ...(selection ? {selection} : {})
         }
       },

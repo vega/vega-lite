@@ -1,5 +1,4 @@
 import {isObject} from 'vega-util';
-import {Field} from '../channeldef';
 import {Config} from '../config';
 import {Encoding} from '../encoding';
 import {AreaConfig, isMarkDef, LineConfig, Mark, MarkConfig, MarkDef} from '../mark';
@@ -30,7 +29,7 @@ function dropLineAndPointFromConfig(config: Config) {
   return config;
 }
 
-function getPointOverlay(markDef: MarkDef, markConfig: LineConfig = {}, encoding: Encoding<Field>): MarkConfig {
+function getPointOverlay(markDef: MarkDef, markConfig: LineConfig = {}, encoding: Encoding<string>): MarkConfig {
   if (markDef.point === 'transparent') {
     return {opacity: 0};
   } else if (markDef.point) {

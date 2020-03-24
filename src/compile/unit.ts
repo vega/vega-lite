@@ -11,7 +11,14 @@ import {
   X,
   Y
 } from '../channel';
-import {getFieldDef, hasConditionalFieldDef, isFieldDef, isTypedFieldDef, TypedFieldDef} from '../channeldef';
+import {
+  getFieldDef,
+  getFieldOrDatumDef,
+  isFieldOrDatumDef,
+  isTypedFieldDef,
+  MarkPropFieldOrDatumDef,
+  PositionFieldDef
+} from '../channeldef';
 import {Config} from '../config';
 import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
@@ -19,7 +26,7 @@ import {Encoding, initEncoding} from '../encoding';
 import {Legend} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
-import {Domain, Scale} from '../scale';
+import {Domain} from '../scale';
 import {SelectionDef} from '../selection';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {isFrameMixins} from '../spec/base';
@@ -108,7 +115,7 @@ export class UnitModel extends ModelWithField {
   public get hasProjection(): boolean {
     const {encoding} = this;
     const isGeoShapeMark = this.mark === GEOSHAPE;
-    const hasGeoPosition = encoding && GEOPOSITION_CHANNELS.some(channel => isFieldDef(encoding[channel]));
+    const hasGeoPosition = encoding && GEOPOSITION_CHANNELS.some(channel => isFieldOrDatumDef(encoding[channel]));
     return isGeoShapeMark || hasGeoPosition;
   }
 
@@ -131,22 +138,11 @@ export class UnitModel extends ModelWithField {
 
   private initScales(mark: Mark, encoding: Encoding<string>): ScaleIndex {
     return SCALE_CHANNELS.reduce((scales, channel) => {
-      let fieldDef: TypedFieldDef<string>;
-      let specifiedScale: Scale;
-
-      const channelDef = encoding[channel];
-
-      if (isFieldDef(channelDef)) {
-        fieldDef = channelDef;
-        specifiedScale = channelDef.scale;
-      } else if (hasConditionalFieldDef<string>(channelDef)) {
-        // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
-        fieldDef = channelDef.condition;
-        specifiedScale = channelDef.condition['scale'];
-      }
-
-      if (fieldDef) {
-        scales[channel] = specifiedScale ?? {};
+      const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as
+        | PositionFieldDef<string>
+        | MarkPropFieldOrDatumDef<string>;
+      if (fieldOrDatumDef) {
+        scales[channel] = fieldOrDatumDef.scale ?? {};
       }
       return scales;
     }, {} as ScaleIndex);
@@ -159,11 +155,11 @@ export class UnitModel extends ModelWithField {
       // TODO: handle ConditionFieldDef
       const channelDef = encoding[channel];
       if (
-        isFieldDef(channelDef) ||
-        (channel === X && isFieldDef(encoding.x2)) ||
-        (channel === Y && isFieldDef(encoding.y2))
+        isFieldOrDatumDef(channelDef) ||
+        (channel === X && isFieldOrDatumDef(encoding.x2)) ||
+        (channel === Y && isFieldOrDatumDef(encoding.y2))
       ) {
-        const axisSpec = isFieldDef(channelDef) ? channelDef.axis : undefined;
+        const axisSpec = isFieldOrDatumDef(channelDef) ? channelDef.axis : undefined;
 
         _axis[channel] = axisSpec ? {...axisSpec} : axisSpec; // convert truthy value to object
       }
@@ -173,17 +169,11 @@ export class UnitModel extends ModelWithField {
 
   private initLegend(encoding: Encoding<string>): LegendIndex {
     return NONPOSITION_SCALE_CHANNELS.reduce((_legend, channel) => {
-      const channelDef = encoding[channel];
-      if (channelDef) {
-        const legend = isFieldDef(channelDef)
-          ? channelDef.legend
-          : hasConditionalFieldDef<string>(channelDef) // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
-          ? channelDef.condition['legend']
-          : undefined;
+      const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as MarkPropFieldOrDatumDef<string>;
 
-        if (supportLegend(channel)) {
-          _legend[channel] = legend ? {...legend} : legend; // convert truthy value to object
-        }
+      if (fieldOrDatumDef && supportLegend(channel)) {
+        const legend = fieldOrDatumDef.legend;
+        _legend[channel] = legend ? {...legend} : legend; // convert truthy value to object
       }
 
       return _legend;
@@ -259,6 +249,7 @@ export class UnitModel extends ModelWithField {
     const channelDef = this.encoding[channel];
     return getFieldDef<string>(channelDef);
   }
+
   public typedFieldDef(channel: SingleDefChannel) {
     const fieldDef = this.fieldDef(channel);
     if (isTypedFieldDef(fieldDef)) {
