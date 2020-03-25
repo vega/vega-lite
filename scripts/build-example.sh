@@ -4,7 +4,8 @@ set -eo pipefail
 
 dir=${dir-"examples/compiled"}
 
-# mac osx doesn't have ms time, need to use perl -- https://apple.stackexchange.com/a/314573
+# calculate time taken by perl to call timer twice first, so we can deduct later
+# (mac osx doesn't have ms time, need to use perl -- https://apple.stackexchange.com/a/314573)
 start=`perl -MTime::HiRes=time -e 'printf "%d\n", time*1000'`
 end=`perl -MTime::HiRes=time -e 'printf "%d\n", time*1000'`
 timertime=$((end-start))
@@ -25,7 +26,7 @@ do
   bin/vl2vg -p examples/specs/$name.vl.json > examples/compiled/$name.vg.json
 
   end=`perl -MTime::HiRes=time -e 'printf "%d\n", time*1000'`
-  runtime=$((end-start-timertime)) # minus 100 because perl takes about 20ms to run the time
+  runtime=$((end-start-timertime)) # also minus time taken by perl
 
   echo "Compiling $name (~$runtime ms)" # to $dir (nopatch=$nopatch, forcesvg=$forcesvg)"
 
