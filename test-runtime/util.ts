@@ -1,10 +1,10 @@
 import * as fs from 'fs';
 import {sync as mkdirp} from 'mkdirp';
 import {Page} from 'puppeteer';
+import {promisify} from 'util';
 import {stringValue} from 'vega-util';
 import {SelectionResolution, SelectionType} from '../src/selection';
 import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec';
-import {promisify} from 'util';
 
 const generate = process.env.VL_GENERATE_TESTS;
 const output = 'test-runtime/resources';
@@ -164,7 +164,7 @@ export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {
   const config = {view: {discreteWidth: {step: 21}, discreteHeight: {step: 21}}}; // A lot of magic numbers in this file use the old step = 21
   switch (compose) {
     case 'unit':
-      return {data, ...specification, config};
+      return {data, ...specification, config} as TopLevelSpec;
     case 'facet':
       return {
         data,
@@ -172,7 +172,7 @@ export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {
         spec: specification,
         resolve,
         config
-      };
+      } as TopLevelSpec;
     case 'repeat':
       return {
         data,
@@ -180,7 +180,7 @@ export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {
         spec: specification,
         resolve,
         config
-      };
+      } as TopLevelSpec;
   }
 }
 

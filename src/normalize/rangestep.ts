@@ -1,5 +1,5 @@
 import {getSizeType, POSITION_SCALE_CHANNELS} from '../channel';
-import {isFieldDef} from '../channeldef';
+import {isFieldOrDatumDef} from '../channeldef';
 import {Encoding} from '../encoding';
 import * as log from '../log';
 import {Scale} from '../scale';
@@ -17,7 +17,7 @@ export class RangeStepNormalizer implements NonFacetUnitNormalizer<UnitSpecWithR
     if (isUnitSpec(spec) && spec.encoding) {
       for (const channel of POSITION_SCALE_CHANNELS) {
         const def = spec.encoding[channel];
-        if (def && isFieldDef(def)) {
+        if (def && isFieldOrDatumDef(def)) {
           if (def?.scale?.['rangeStep']) {
             return true;
           }
@@ -34,7 +34,7 @@ export class RangeStepNormalizer implements NonFacetUnitNormalizer<UnitSpecWithR
     for (const channel of POSITION_SCALE_CHANNELS) {
       const sizeType = getSizeType(channel);
       const def = encoding[channel];
-      if (def && isFieldDef(def)) {
+      if (def && isFieldOrDatumDef(def)) {
         if (def?.scale?.['rangeStep']) {
           const {scale, ...defWithoutScale} = def;
 

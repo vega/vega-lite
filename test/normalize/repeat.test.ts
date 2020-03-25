@@ -18,6 +18,21 @@ describe('Repeat', () => {
       });
     });
 
+    it('should resolve repeated datums', () => {
+      const resolved = replaceRepeaterInEncoding(
+        {
+          x: {datum: {repeat: 'row'}, type: 'quantitative'},
+          y: {field: 'bar', type: 'quantitative'}
+        },
+        {row: 'foo'}
+      );
+
+      expect(resolved).toEqual({
+        x: {datum: 'foo', type: 'quantitative'},
+        y: {field: 'bar', type: 'quantitative'}
+      });
+    });
+
     it(
       'should show warning if repeat in field def cannot be resolved',
       log.wrap(localLogger => {

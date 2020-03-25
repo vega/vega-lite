@@ -3,12 +3,12 @@ import {isArray} from 'vega-util';
 import {Axis} from '../../axis';
 import {isBinning} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
-import {isDiscrete, TypedFieldDef, valueArray} from '../../channeldef';
+import {DatumDef, isDiscrete, isFieldDef, TypedFieldDef, valueArray} from '../../channeldef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {normalizeTimeUnit} from '../../timeunit';
-import {NOMINAL, ORDINAL} from '../../type';
+import {NOMINAL, ORDINAL, Type} from '../../type';
 import {contains, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
@@ -19,8 +19,9 @@ import {getAxisConfig} from './config';
  * Default rules for whether to show a grid should be shown for a channel.
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
+
 export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string>) {
-  return !hasDiscreteDomain(scaleType) && !isBinning(fieldDef.bin);
+  return !hasDiscreteDomain(scaleType) && !isBinning(fieldDef?.bin);
 }
 
 export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
@@ -35,7 +36,7 @@ export function labelAngle(
   model: UnitModel,
   specifiedAxis: Axis,
   channel: PositionScaleChannel,
-  fieldDef: TypedFieldDef<string>
+  fieldOrDatumDef: TypedFieldDef<string> | DatumDef
 ) {
   // try axis value
   if (specifiedAxis?.labelAngle !== undefined) {
@@ -54,7 +55,7 @@ export function labelAngle(
       return normalizeAngle(angle);
     } else {
       // get default value
-      if (channel === X && contains([NOMINAL, ORDINAL], fieldDef.type)) {
+      if (channel === X && contains([NOMINAL, ORDINAL], fieldOrDatumDef.type)) {
         return 270;
       }
       // no default
@@ -111,16 +112,16 @@ export function defaultLabelAlign(angle: number, axisOrient: AxisOrient): Align 
   return undefined;
 }
 
-export function defaultLabelFlush(fieldDef: TypedFieldDef<string>, channel: PositionScaleChannel) {
-  if (channel === 'x' && contains(['quantitative', 'temporal'], fieldDef.type)) {
+export function defaultLabelFlush(type: Type, channel: PositionScaleChannel) {
+  if (channel === 'x' && contains(['quantitative', 'temporal'], type)) {
     return true;
   }
   return undefined;
 }
 
-export function defaultLabelOverlap(fieldDef: TypedFieldDef<string>, scaleType: ScaleType) {
+export function defaultLabelOverlap(type: Type, scaleType: ScaleType) {
   // do not prevent overlap for nominal data because there is no way to infer what the missing labels are
-  if (fieldDef.type !== 'nominal') {
+  if (type !== 'nominal') {
     if (scaleType === 'log') {
       return 'greedy';
     }
@@ -141,34 +142,40 @@ export function orient(channel: PositionScaleChannel) {
 }
 
 export function defaultTickCount({
-  fieldDef,
+  fieldOrDatumDef,
   scaleType,
   size
 }: {
-  fieldDef: TypedFieldDef<string>;
+  fieldOrDatumDef: TypedFieldDef<string> | DatumDef;
   scaleType: ScaleType;
   size?: SignalRef;
 }) {
-  if (
-    !hasDiscreteDomain(scaleType) &&
-    scaleType !== 'log' &&
-    !contains(['month', 'hours', 'day', 'quarter'], normalizeTimeUnit(fieldDef.timeUnit)?.unit)
-  ) {
-    if (isBinning(fieldDef.bin)) {
-      // for binned data, we don't want more ticks than maxbins
-      return {signal: `ceil(${size.signal}/10)`};
+  if (!hasDiscreteDomain(scaleType) && scaleType !== 'log') {
+    if (isFieldDef(fieldOrDatumDef)) {
+      if (isBinning(fieldOrDatumDef.bin)) {
+        // for binned data, we don't want more ticks than maxbins
+        return {signal: `ceil(${size.signal}/10)`};
+      }
+
+      if (
+        fieldOrDatumDef.timeUnit &&
+        contains(['month', 'hours', 'day', 'quarter'], normalizeTimeUnit(fieldOrDatumDef.timeUnit)?.unit)
+      ) {
+        return undefined;
+      }
     }
+
     return {signal: `ceil(${size.signal}/40)`};
   }
 
   return undefined;
 }
 
-export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: TypedFieldDef<string>) {
+export function values(specifiedAxis: Axis, fieldOrDatumDef: TypedFieldDef<string> | DatumDef) {
   const vals = specifiedAxis.values;
 
   if (isArray(vals)) {
-    return valueArray(fieldDef, vals);
+    return valueArray(fieldOrDatumDef, vals);
   } else if (isSignalRef(vals)) {
     return vals;
   }
@@ -176,7 +183,7 @@ export function values(specifiedAxis: Axis, model: UnitModel, fieldDef: TypedFie
   return undefined;
 }
 
-export function defaultZindex(mark: Mark, fieldDef: TypedFieldDef<string>) {
+export function defaultZindex(mark: Mark, fieldDef: TypedFieldDef<string> | DatumDef) {
   if (mark === 'rect' && isDiscrete(fieldDef)) {
     return 1;
   }

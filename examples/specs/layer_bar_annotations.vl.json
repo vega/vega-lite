@@ -35,40 +35,29 @@
         ],
         "encoding": {
           "x": {"field": "Day", "type": "ordinal"},
-          "y": {"field": "baseline", "type": "quantitative"},
+          "y": {"field": "baseline", "type": "quantitative", "title": "PM2.5 Value"},
           "y2": {"field": "Value"},
           "color": {"value": "#e45755"}
         }
       }
     ]}, {
       "data": {
-         "values": [
-          {"ThresholdValue": 300, "Threshold": "hazardous"}
-        ]
+         "values": [{}]
+      },
+      "encoding": {
+        "y": {"datum": 300}
       },
       "layer": [{
-        "mark": "rule",
-        "encoding": {
-          "y": {"field": "ThresholdValue", "type": "quantitative"}
-        }
+        "mark": "rule"
       }, {
         "mark": {
           "type": "text",
           "align": "right",
           "baseline": "bottom",
           "dx": -2,
-          "dy": -2
-        },
-        "encoding": {
-          "x": {
-            "value": "width"
-          },
-          "y": {
-            "field": "ThresholdValue",
-            "type": "quantitative",
-            "axis": {"title": "PM2.5 Value"}
-          },
-          "text": {"field": "Threshold", "type": "ordinal"}
+          "dy": -2,
+          "x": "width",
+          "text": "hazardous"
         }
       }]
     }

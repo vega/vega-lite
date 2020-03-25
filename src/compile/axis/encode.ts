@@ -1,19 +1,20 @@
-import {PositionScaleChannel} from '../../channel';
+import {getSecondaryRangeChannel, PositionScaleChannel} from '../../channel';
+import {getFieldOrDatumDef} from '../../channeldef';
 import {ScaleType} from '../../scale';
 import {keys} from '../../util';
 import {formatSignalRef} from '../format';
 import {UnitModel} from '../unit';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
-  const fieldDef =
-    model.typedFieldDef(channel) ??
-    (channel === 'x' ? model.fieldDef('x2') : channel === 'y' ? model.fieldDef('y2') : undefined);
+  const {encoding, config} = model;
+
+  const fieldOrDatumDef =
+    getFieldOrDatumDef<string>(encoding[channel]) ?? getFieldOrDatumDef(encoding[getSecondaryRangeChannel(channel)]);
   const axis = model.axis(channel) || {};
   const {format, formatType} = axis;
-  const {config} = model;
 
   const text = formatSignalRef({
-    fieldDef,
+    fieldOrDatumDef,
     field: 'datum.value',
     format,
     formatType,

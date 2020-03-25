@@ -1,9 +1,8 @@
 import {ScaleChannel, SCALE_CHANNELS, SHAPE} from '../../channel';
-import {hasConditionalFieldDef, isFieldDef, TypedFieldDef} from '../../channeldef';
+import {getFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
 import {GEOSHAPE} from '../../mark';
 import {
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES,
-  Scale,
   scaleCompatible,
   ScaleType,
   scaleTypePrecedence
@@ -47,29 +46,18 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
   const {encoding, mark} = model;
 
   return SCALE_CHANNELS.reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
-    let fieldDef: TypedFieldDef<string>;
-    let specifiedScale: Scale | null;
-
-    const channelDef = encoding[channel];
+    const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as TypedFieldDef<string> | ScaleDatumDef; // must be typed def to have scale
 
     // Don't generate scale for shape of geoshape
-    if (isFieldDef(channelDef) && mark === GEOSHAPE && channel === SHAPE && channelDef.type === GEOJSON) {
+    if (fieldOrDatumDef && mark === GEOSHAPE && channel === SHAPE && fieldOrDatumDef.type === GEOJSON) {
       return scaleComponents;
     }
+    let specifiedScale = fieldOrDatumDef && fieldOrDatumDef['scale'];
 
-    if (isFieldDef(channelDef)) {
-      fieldDef = channelDef;
-      specifiedScale = channelDef.scale;
-    } else if (hasConditionalFieldDef<string>(channelDef)) {
-      // Need to specify generic for hasConditionalFieldDef as the value type can vary across channels
-      fieldDef = channelDef.condition;
-      specifiedScale = channelDef.condition['scale']; // We use ['scale'] since we know that channel here has scale for sure
-    }
-
-    if (fieldDef && specifiedScale !== null && specifiedScale !== false) {
+    if (fieldOrDatumDef && specifiedScale !== null && specifiedScale !== false) {
       specifiedScale = specifiedScale ?? {};
 
-      const sType = scaleType(specifiedScale, channel, fieldDef, mark);
+      const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, mark);
       scaleComponents[channel] = new ScaleComponent(model.scaleName(channel + '', true), {
         value: sType,
         explicit: specifiedScale.type === sType

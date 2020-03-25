@@ -1,16 +1,16 @@
+import {MergedStream, Stream} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
-import {TransformCompiler} from './transforms';
-import {UnitModel} from '../../unit';
-import {NonPositionScaleChannel} from '../../../channel';
-import {LegendComponent} from '../../legend/component';
-import {forEachSelection, SelectionComponent, TUPLE} from '..';
 import {array, isString} from 'vega-util';
-import {Stream, MergedStream} from 'vega';
-import {SELECTION_ID, isLegendBinding, isLegendStreamBinding} from '../../../selection';
+import {forEachSelection, SelectionComponent, TUPLE} from '..';
+import {NonPositionScaleChannel} from '../../../channel';
 import * as log from '../../../log';
+import {isLegendBinding, isLegendStreamBinding, SELECTION_ID} from '../../../selection';
 import {duplicate, varName} from '../../../util';
+import {LegendComponent} from '../../legend/component';
+import {UnitModel} from '../../unit';
 import {TUPLE_FIELDS} from './project';
 import {TOGGLE} from './toggle';
+import {TransformCompiler} from './transforms';
 
 const legendBindings: TransformCompiler = {
   has: (selCmpt: SelectionComponent<'single' | 'multi'>) => {
@@ -118,7 +118,7 @@ export function parseInteractiveLegend(
   channel: NonPositionScaleChannel,
   legendCmpt: LegendComponent
 ) {
-  const field = model.fieldDef(channel).field;
+  const field = model.fieldDef(channel)?.field;
   forEachSelection(model, selCmpt => {
     const proj = selCmpt.project.hasField[field] ?? selCmpt.project.hasChannel[channel];
     if (proj && legendBindings.has(selCmpt)) {

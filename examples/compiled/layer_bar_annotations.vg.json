@@ -26,10 +26,7 @@
         {"Day": 15, "Value": 130.5}
       ]
     },
-    {
-      "name": "source_1",
-      "values": [{"ThresholdValue": 300, "Threshold": "hazardous"}]
-    },
+    {"name": "source_1", "values": [{}]},
     {
       "name": "data_1",
       "source": "source_0",
@@ -49,26 +46,6 @@
         {
           "type": "filter",
           "expr": "isValid(datum[\"baseline\"]) && isFinite(+datum[\"baseline\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_4",
-      "source": "source_1",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"ThresholdValue\"]) && isFinite(+datum[\"ThresholdValue\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_5",
-      "source": "source_1",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"ThresholdValue\"]) && isFinite(+datum[\"ThresholdValue\"])"
         }
       ]
     }
@@ -115,13 +92,13 @@
       "name": "layer_1_layer_0_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_4"},
+      "from": {"data": "source_1"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
           "x": {"field": {"group": "width"}},
           "x2": {"value": 0},
-          "y": {"scale": "y", "field": "ThresholdValue"}
+          "y": {"scale": "y", "value": 300}
         }
       }
     },
@@ -129,17 +106,17 @@
       "name": "layer_1_layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_5"},
+      "from": {"data": "source_1"},
       "encode": {
         "update": {
           "align": {"value": "right"},
           "baseline": {"value": "bottom"},
+          "text": {"value": "hazardous"},
           "dx": {"value": -2},
           "dy": {"value": -2},
           "fill": {"value": "black"},
           "x": {"field": {"group": "width"}},
-          "y": {"scale": "y", "field": "ThresholdValue"},
-          "text": {"signal": "''+datum[\"Threshold\"]"}
+          "y": {"scale": "y", "value": 300}
         }
       }
     }
@@ -167,8 +144,7 @@
           {"data": "data_1", "field": "Value"},
           {"data": "data_2", "field": "baseline"},
           {"data": "data_2", "field": "Value"},
-          {"data": "data_4", "field": "ThresholdValue"},
-          {"data": "data_5", "field": "ThresholdValue"}
+          [300]
         ]
       },
       "range": [{"signal": "height"}, 0],

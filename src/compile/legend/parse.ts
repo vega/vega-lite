@@ -12,7 +12,16 @@ import {
   STROKEOPACITY,
   STROKEWIDTH
 } from '../../channel';
-import {FieldDef, isFieldDef, isFieldDefForTimeFormat, title as fieldDefTitle} from '../../channeldef';
+import {
+  DatumDef,
+  FieldDef,
+  getFieldOrDatumDef,
+  isFieldDef,
+  isFieldOrDatumDefForTimeFormat,
+  MarkPropDatumDef,
+  MarkPropFieldDef,
+  title as fieldDefTitle
+} from '../../channeldef';
 import {Legend} from '../../legend';
 import {normalizeTimeUnit} from '../../timeunit';
 import {GEOJSON} from '../../type';
@@ -42,12 +51,8 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   const {encoding} = model;
   return [COLOR, FILL, STROKE, STROKEWIDTH, STROKEDASH, SIZE, SHAPE, OPACITY, FILLOPACITY, STROKEOPACITY].reduce(
     (legendComponent, channel) => {
-      const def = encoding[channel];
-      if (
-        model.channelHasField(channel) &&
-        model.getScaleComponent(channel) &&
-        !(isFieldDef(def) && channel === SHAPE && def.type === GEOJSON)
-      ) {
+      const def = getFieldOrDatumDef(encoding[channel]) as MarkPropFieldDef<string> | MarkPropDatumDef<string>;
+      if (def && model.getScaleComponent(channel) && !(isFieldDef(def) && channel === SHAPE && def.type === GEOJSON)) {
         legendComponent[channel] = parseLegendForChannel(model, channel);
       }
       return legendComponent;
@@ -88,7 +93,7 @@ function isExplicit<T extends string | number | object | boolean>(
       return !!legend?.values;
     case 'title':
       // title can be explicit if fieldDef.title is set
-      if (property === 'title' && value === fieldDef.title) {
+      if (property === 'title' && value === fieldDef?.title) {
         return true;
       }
   }
@@ -97,7 +102,6 @@ function isExplicit<T extends string | number | object | boolean>(
 }
 
 export function parseLegendForChannel(model: UnitModel, channel: NonPositionScaleChannel): LegendComponent {
-  const fieldDef = model.fieldDef(channel);
   const legend = model.legend(channel);
 
   const legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
@@ -106,7 +110,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   for (const property of LEGEND_COMPONENT_PROPERTIES) {
     const value = getProperty(property, legend, channel, model);
     if (value !== undefined) {
-      const explicit = isExplicit(value, property, legend, fieldDef);
+      const explicit = isExplicit(value, property, legend, model.fieldDef(channel));
       if (explicit || model.config.legend[property] === undefined) {
         legendCmpt.set(property, value, explicit);
       }
@@ -118,12 +122,18 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   const legendEncode = (['labels', 'legend', 'title', 'symbols', 'gradient', 'entries'] as const).reduce(
     (e: LegendEncode, part) => {
       const legendEncodingPart = guideEncodeEntry(legendEncoding[part] ?? {}, model);
+
+      const fieldOrDatumDef = getFieldOrDatumDef(model.encoding[channel]);
+
       const value = encode[part]
-        ? encode[part](fieldDef, legendEncodingPart, model, channel, legendCmpt) // apply rule
+        ? encode[part](fieldOrDatumDef, legendEncodingPart, model, channel, legendCmpt) // apply rule
         : legendEncodingPart; // no rule -- just default values
+
       if (value !== undefined && keys(value).length > 0) {
         e[part] = {
-          ...(selections?.length ? {name: `${varName(fieldDef.field)}_legend_${part}`} : {}),
+          ...(selections?.length && isFieldDef(fieldOrDatumDef)
+            ? {name: `${varName(fieldOrDatumDef.field)}_legend_${part}`}
+            : {}),
           ...(selections?.length ? {interactive: !!selections} : {}),
           update: value
         };
@@ -152,9 +162,9 @@ function getProperty<K extends keyof LegendComponentProps>(
   legend = legend || {}; // assign object so the rest doesn't have to check if legend exists
 
   const {encoding, mark} = model;
-  const fieldDef = model.typedFieldDef(channel);
+  const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as MarkPropFieldDef<string> | DatumDef;
   const legendConfig = model.config.legend;
-  const timeUnit = normalizeTimeUnit(fieldDef.timeUnit)?.unit;
+  const timeUnit = isFieldDef(fieldOrDatumDef) ? normalizeTimeUnit(fieldOrDatumDef.timeUnit)?.unit : undefined;
 
   const scaleType = model.getScaleComponent(channel).get('type');
 
@@ -174,14 +184,14 @@ function getProperty<K extends keyof LegendComponentProps>(
 
     case 'format':
       // We don't include temporal field here as we apply format in encode block
-      if (isFieldDefForTimeFormat(fieldDef)) {
+      if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
         return undefined;
       }
-      return numberFormat(fieldDef, legend.format, model.config) as LegendComponentProps[K];
+      return numberFormat(fieldOrDatumDef.type, legend.format, model.config) as LegendComponentProps[K];
 
     case 'formatType':
       // As with format, we don't include temporal field here as we apply format in encode block
-      if (isFieldDefForTimeFormat(fieldDef)) {
+      if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
         return undefined;
       }
       return legend.formatType as LegendComponentProps[K];
@@ -211,13 +221,13 @@ function getProperty<K extends keyof LegendComponentProps>(
       ) as LegendComponentProps[K];
 
     case 'title':
-      return fieldDefTitle(fieldDef, model.config, {allowDisabling: true}) as LegendComponentProps[K];
+      return fieldDefTitle(fieldOrDatumDef, model.config, {allowDisabling: true}) as LegendComponentProps[K];
 
     case 'type':
       return type({legend, channel, timeUnit, scaleType, alwaysReturn: false}) as LegendComponentProps[K];
 
     case 'values':
-      return properties.values(legend, fieldDef) as LegendComponentProps[K];
+      return properties.values(legend, fieldOrDatumDef) as LegendComponentProps[K];
   }
 
   // Otherwise, return specified property.

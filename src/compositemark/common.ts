@@ -4,7 +4,7 @@ import {CompositeMark, CompositeMarkDef} from '.';
 import {
   Field,
   FieldDefBase,
-  isContinuous,
+  isContinuousFieldOrDatumDef,
   isFieldDef,
   PositionFieldDef,
   SecondaryFieldDef,
@@ -257,20 +257,24 @@ function filterAggregateFromChannelDef<M extends CompositeMark, F extends FieldD
 }
 
 export function compositeMarkOrient<M extends CompositeMark>(
-  spec: GenericUnitSpec<Encoding<Field>, CompositeMark | CompositeMarkDef>,
+  spec: GenericUnitSpec<Encoding<string>, CompositeMark | CompositeMarkDef>,
   compositeMark: M
 ): Orientation {
   const {mark, encoding} = spec;
+  const {x, y} = encoding;
 
-  if (isFieldDef(encoding.x) && isContinuous(encoding.x)) {
+  if (isContinuousFieldOrDatumDef(x)) {
     // x is continuous
-    if (isFieldDef(encoding.y) && isContinuous(encoding.y)) {
+    if (isContinuousFieldOrDatumDef(y)) {
       // both x and y are continuous
-      if (encoding.x.aggregate === undefined && encoding.y.aggregate === compositeMark) {
+      const xAggregate = isFieldDef(x) && x.aggregate;
+      const yAggregate = isFieldDef(y) && y.aggregate;
+
+      if (!xAggregate && yAggregate === compositeMark) {
         return 'vertical';
-      } else if (encoding.y.aggregate === undefined && encoding.x.aggregate === compositeMark) {
+      } else if (!yAggregate && xAggregate === compositeMark) {
         return 'horizontal';
-      } else if (encoding.x.aggregate === compositeMark && encoding.y.aggregate === compositeMark) {
+      } else if (xAggregate === compositeMark && yAggregate === compositeMark) {
         throw new Error('Both x and y cannot have aggregate');
       } else {
         if (isMarkDef(mark) && mark.orient) {
@@ -284,7 +288,7 @@ export function compositeMarkOrient<M extends CompositeMark>(
 
     // x is continuous but y is not
     return 'horizontal';
-  } else if (isFieldDef(encoding.y) && isContinuous(encoding.y)) {
+  } else if (isContinuousFieldOrDatumDef(y)) {
     // y is continuous but x is not
     return 'vertical';
   } else {

@@ -13,7 +13,7 @@ describe('compile/scale', () => {
 
     it('should not return nice for binned x and y.', () => {
       for (const c of ['x', 'y'] as Channel[]) {
-        expect(rules.nice('linear', c, {type: 'quantitative', bin: true})).toEqual(undefined);
+        expect(rules.nice('linear', c, {type: 'quantitative', field: 'a', bin: true})).toEqual(undefined);
       }
     });
 

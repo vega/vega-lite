@@ -1,6 +1,7 @@
 import {SignalRef} from 'vega';
 import {hasOwnProperty} from 'vega-util';
 import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
+import {getFieldOrDatumDef} from '../../channeldef';
 import {MAIN} from '../../data';
 import {PROJECTION_PROPERTIES} from '../../projection';
 import {GEOJSON} from '../../type';
@@ -37,11 +38,13 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
 function gatherFitData(model: UnitModel) {
   const data: (SignalRef | string)[] = [];
 
+  const {encoding} = model;
+
   for (const posssiblePair of [
     [LONGITUDE, LATITUDE],
     [LONGITUDE2, LATITUDE2]
   ]) {
-    if (model.channelHasField(posssiblePair[0]) || model.channelHasField(posssiblePair[1])) {
+    if (getFieldOrDatumDef(encoding[posssiblePair[0]]) || getFieldOrDatumDef(encoding[posssiblePair[1]])) {
       data.push({
         signal: model.getName(`geojson_${data.length}`)
       });

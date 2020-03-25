@@ -1,4 +1,4 @@
-import {isFieldDef} from '../../../channeldef';
+import {isFieldOrDatumDef} from '../../../channeldef';
 import {MarkConfig} from '../../../mark';
 import {getFirstDefined} from '../../../util';
 import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';
@@ -136,12 +136,12 @@ function position2Ref({
   channel: 'x2' | 'y2';
 }): VgValueRef | VgValueRef[] {
   if (
-    isFieldDef(channelDef) &&
+    isFieldOrDatumDef(channelDef) &&
     stack &&
     // If fieldChannel is X and channel is X2 (or Y and Y2)
     channel.charAt(0) === stack.fieldChannel.charAt(0)
   ) {
-    return ref.fieldRef(channelDef, scaleName, {suffix: 'start'}, {offset});
+    return ref.valueRefForFieldOrDatumDef(channelDef, scaleName, {suffix: 'start'}, {offset});
   }
   return ref.midPointRefWithPositionInvalidTest({
     channel,

@@ -1,7 +1,7 @@
 import {LabelOverlap, LegendOrient, LegendType, SignalRef, SymbolShape} from 'vega';
 import {isArray} from 'vega-util';
 import {Channel, isColorChannel} from '../../channel';
-import {TypedFieldDef, valueArray} from '../../channeldef';
+import {DatumDef, TypedFieldDef, valueArray} from '../../channeldef';
 import {Encoding} from '../../encoding';
 import {Legend, LegendConfig} from '../../legend';
 import {Mark} from '../../mark';
@@ -12,11 +12,11 @@ import {isSignalRef} from '../../vega.schema';
 import {Model} from '../model';
 import {getFirstConditionValue} from './encode';
 
-export function values(legend: Legend, fieldDef: TypedFieldDef<string>) {
+export function values(legend: Legend, fieldOrDatumDef: TypedFieldDef<string> | DatumDef) {
   const vals = legend.values;
 
   if (isArray(vals)) {
-    return valueArray(fieldDef, vals);
+    return valueArray(fieldOrDatumDef, vals);
   } else if (isSignalRef(vals)) {
     return vals;
   }

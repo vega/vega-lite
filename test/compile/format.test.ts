@@ -74,31 +74,31 @@ describe('Format', () => {
 
   describe('numberFormat()', () => {
     it('should use number format for quantitative scale', () => {
-      expect(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: 'd'})).toBe('d');
+      expect(numberFormat(QUANTITATIVE, undefined, {numberFormat: 'd'})).toBe('d');
     });
 
     it('should use number format for ordinal and nominal data but don not use config', () => {
       for (const type of [ORDINAL, NOMINAL]) {
-        expect(numberFormat({field: 'a', type: type}, undefined, {numberFormat: 'd'})).toBeUndefined();
-        expect(numberFormat({field: 'a', type: type}, 'd', {numberFormat: 'd'})).toBe('d');
+        expect(numberFormat(type, undefined, {numberFormat: 'd'})).toBeUndefined();
+        expect(numberFormat(type, 'd', {numberFormat: 'd'})).toBe('d');
       }
     });
 
     it('should support empty number format', () => {
-      expect(numberFormat({field: 'a', type: QUANTITATIVE}, undefined, {numberFormat: ''})).toBe('');
+      expect(numberFormat(QUANTITATIVE, undefined, {numberFormat: ''})).toBe('');
     });
 
     it('should use format if provided', () => {
-      expect(numberFormat({field: 'a', type: QUANTITATIVE}, 'a', {})).toBe('a');
+      expect(numberFormat(QUANTITATIVE, 'a', {})).toBe('a');
     });
 
     it('should not use number format for binned quantitative scale', () => {
-      expect(numberFormat({bin: true, field: 'a', type: QUANTITATIVE}, undefined, {})).toBeUndefined();
+      expect(numberFormat(QUANTITATIVE, undefined, {})).toBeUndefined();
     });
 
     it('should not use number format for temporal scale', () => {
-      expect(numberFormat({bin: true, field: 'a', type: TEMPORAL}, undefined, {})).toBeUndefined();
-      expect(numberFormat({bin: true, field: 'a', type: ORDINAL, timeUnit: 'month'}, undefined, {})).toBeUndefined();
+      expect(numberFormat(TEMPORAL, undefined, {})).toBeUndefined();
+      expect(numberFormat(ORDINAL, undefined, {})).toBeUndefined();
     });
   });
 
@@ -106,7 +106,7 @@ describe('Format', () => {
     it('should format ordinal field defs if format is present', () => {
       expect(
         formatSignalRef({
-          fieldDef: {field: 'foo', type: 'ordinal'},
+          fieldOrDatumDef: {field: 'foo', type: 'ordinal'},
           format: '.2f',
           formatType: undefined,
           expr: 'parent',

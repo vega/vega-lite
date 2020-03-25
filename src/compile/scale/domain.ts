@@ -10,7 +10,17 @@ import {
 } from '../../aggregate';
 import {isBinning, isBinParams, isSelectionExtent} from '../../bin';
 import {getMainRangeChannel, getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
-import {binRequiresRange, hasBand, ScaleFieldDef, TypedFieldDef, valueExpr, vgField} from '../../channeldef';
+import {
+  binRequiresRange,
+  getFieldOrDatumDef,
+  hasBand,
+  isDatumDef,
+  isFieldDef,
+  ScaleFieldDef,
+  TypedFieldDef,
+  valueExpr,
+  vgField
+} from '../../channeldef';
 import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
 import * as log from '../../log';
@@ -152,6 +162,7 @@ function normalizeUnaggregatedDomain(
 
 export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): Explicit<VgNonUnionDomain[]> {
   const scaleType = model.getScaleComponent(channel).get('type');
+  const {encoding} = model;
 
   const domain = normalizeUnaggregatedDomain(
     model.scaleDomain(channel),
@@ -167,8 +178,8 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
   }
 
   // If channel is either X or Y then union them with X2 & Y2 if they exist
-  if (channel === 'x' && model.channelHasField('x2')) {
-    if (model.channelHasField('x')) {
+  if (channel === 'x' && getFieldOrDatumDef(encoding.x2)) {
+    if (getFieldOrDatumDef(encoding.x)) {
       return mergeValuesWithExplicit(
         parseSingleChannelDomain(scaleType, domain, model, 'x'),
         parseSingleChannelDomain(scaleType, domain, model, 'x2'),
@@ -179,8 +190,8 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
     } else {
       return parseSingleChannelDomain(scaleType, domain, model, 'x2');
     }
-  } else if (channel === 'y' && model.channelHasField('y2')) {
-    if (model.channelHasField('y')) {
+  } else if (channel === 'y' && getFieldOrDatumDef(encoding.y2)) {
+    if (getFieldOrDatumDef(encoding.y)) {
       return mergeValuesWithExplicit(
         parseSingleChannelDomain(scaleType, domain, model, 'y'),
         parseSingleChannelDomain(scaleType, domain, model, 'y2'),
@@ -226,19 +237,22 @@ function parseSingleChannelDomain(
   model: UnitModel,
   channel: ScaleChannel | 'x2' | 'y2'
 ): Explicit<VgNonUnionDomain[]> {
-  const fieldDef = model.fieldDef(channel);
-  const mainFieldDef = model.typedFieldDef(getMainRangeChannel(channel));
+  const {encoding} = model;
+  const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]);
 
   if (isDomainUnionWith(domain)) {
     const defaultDomain = parseSingleChannelDomain(scaleType, undefined, model, channel);
 
-    const unionWith = convertDomainIfItIsDateTime(domain.unionWith, mainFieldDef.type, fieldDef.timeUnit);
+    const {type, timeUnit} = model.typedFieldDef(getMainRangeChannel(channel)) || {};
+
+    const unionWith = convertDomainIfItIsDateTime(domain.unionWith, type, timeUnit);
 
     return makeExplicit([...defaultDomain.value, ...unionWith]);
   } else if (isSignalRef(domain)) {
     return makeExplicit([domain]);
   } else if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
-    return makeExplicit(convertDomainIfItIsDateTime(domain, mainFieldDef.type, fieldDef.timeUnit));
+    const {type, timeUnit} = model.typedFieldDef(getMainRangeChannel(channel)) || {};
+    return makeExplicit(convertDomainIfItIsDateTime(domain, type, timeUnit));
   }
 
   const stack = model.stack;
@@ -260,13 +274,17 @@ function parseSingleChannelDomain(
     ]);
   }
 
-  const sort: undefined | true | VgSortField = isScaleChannel(channel)
-    ? domainSort(model, channel, scaleType)
-    : undefined;
+  const sort: undefined | true | VgSortField =
+    isScaleChannel(channel) && isFieldDef(fieldOrDatumDef) ? domainSort(model, channel, scaleType) : undefined;
 
+  if (isDatumDef(fieldOrDatumDef)) {
+    return makeImplicit([[fieldOrDatumDef.datum] as VgNonUnionDomain]);
+  }
+
+  const fieldDef = fieldOrDatumDef; // now we can be sure it's a fieldDef
   if (domain === 'unaggregated') {
     const data = model.requestDataName(MAIN);
-    const {field} = fieldDef;
+    const {field} = fieldOrDatumDef;
     return makeImplicit([
       {
         data,
@@ -380,7 +398,7 @@ function normalizeSortField(sort: EncodingSortField<string>, isStackedMeasure: b
 function parseSelectionDomain(model: UnitModel, channel: ScaleChannel) {
   const scale = model.component.scales[channel];
   const spec = model.specifiedScales[channel].domain;
-  const bin = model.fieldDef(channel).bin;
+  const bin = model.fieldDef(channel)?.bin;
   const domain = isSelectionDomain(spec) && spec;
   const extent = isBinParams(bin) && isSelectionExtent(bin.extent) && bin.extent;
 

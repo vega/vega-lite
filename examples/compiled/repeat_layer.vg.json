@@ -51,7 +51,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "stroke": {"value": "#4c78a8"},
+          "stroke": {"scale": "color", "value": "US_Gross"},
           "x": {
             "signal": "scale(\"x\", 0.5 * datum[\"bin_maxbins_10_IMDB_Rating\"] + 0.5 * datum[\"bin_maxbins_10_IMDB_Rating_end\"])"
           },
@@ -70,7 +70,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "stroke": {"value": "#4c78a8"},
+          "stroke": {"scale": "color", "value": "Worldwide_Gross"},
           "x": {
             "signal": "scale(\"x\", 0.5 * datum[\"bin_maxbins_10_IMDB_Rating\"] + 0.5 * datum[\"bin_maxbins_10_IMDB_Rating_end\"])"
           },
@@ -105,6 +105,12 @@
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"fields": [["US_Gross"], ["Worldwide_Gross"]]},
+      "range": "category"
     }
   ],
   "axes": [
@@ -135,10 +141,11 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Mean of US_Gross, Mean of Worldwide_Gross",
+      "title": "Mean of US and Worldwide Gross",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ]
+  ],
+  "legends": [{"stroke": "color", "symbolType": "stroke"}]
 }

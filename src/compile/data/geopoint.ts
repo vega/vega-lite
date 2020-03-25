@@ -1,7 +1,7 @@
 import {GeoPointTransform as VgGeoPointTransform, Vector2} from 'vega';
 import {isString} from 'vega-util';
 import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2} from '../../channel';
-import {isValueDef, ValueDef} from '../../channeldef';
+import {getFieldOrDatumDef, isDatumDef, isFieldDef, isValueDef} from '../../channeldef';
 import {duplicate, hash} from '../../util';
 import {VgExprRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
@@ -30,13 +30,16 @@ export class GeoPointNode extends DataFlowNode {
       [LONGITUDE, LATITUDE],
       [LONGITUDE2, LATITUDE2]
     ] as Vector2<GeoPositionChannel>[]) {
-      const pair = coordinates.map(channel =>
-        model.channelHasField(channel)
-          ? model.fieldDef(channel).field
-          : isValueDef(model.encoding[channel])
-          ? {expr: (model.encoding[channel] as ValueDef<number>).value + ''}
-          : undefined
-      ) as [GeoPositionChannel, GeoPositionChannel];
+      const pair = coordinates.map(channel => {
+        const def = getFieldOrDatumDef(model.encoding[channel]);
+        return isFieldDef(def)
+          ? def.field
+          : isDatumDef(def)
+          ? {expr: `${def.datum}`}
+          : isValueDef(def)
+          ? {expr: `${def['value']}`}
+          : undefined;
+      }) as [GeoPositionChannel, GeoPositionChannel];
 
       const suffix = coordinates[0] === LONGITUDE2 ? '2' : '';
 

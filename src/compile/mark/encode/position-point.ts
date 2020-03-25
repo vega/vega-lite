@@ -1,5 +1,5 @@
 import {getMainRangeChannel, PositionChannel, X, X2, Y2} from '../../../channel';
-import {isFieldDef, isPositionFieldDef} from '../../../channeldef';
+import {isFieldOrDatumDef, isPositionFieldOrDatumDef} from '../../../channeldef';
 import {ScaleType} from '../../../scale';
 import {contains, getFirstDefined} from '../../../util';
 import {VgValueRef} from '../../../vega.schema';
@@ -71,18 +71,18 @@ function positionRef(
   const {channel, channelDef, scaleName, stack, offset} = params;
 
   // This isn't a part of midPoint because we use midPoint for non-position too
-  if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
-    if (isPositionFieldDef(channelDef) && channelDef.band !== undefined) {
+  if (isFieldOrDatumDef(channelDef) && stack && channel === stack.fieldChannel) {
+    if (isPositionFieldOrDatumDef(channelDef) && channelDef.band !== undefined) {
       return ref.interpolatedSignalRef({
         scaleName,
-        fieldDef: channelDef,
+        fieldOrDatumDef: channelDef,
         startSuffix: 'start',
         band: channelDef.band,
         offset: 0
       });
     }
     // x or y use stack_end so that stacked line's point mark use stack_end too.
-    return ref.fieldRef(channelDef, scaleName, {suffix: 'end'}, {offset});
+    return ref.valueRefForFieldOrDatumDef(channelDef, scaleName, {suffix: 'end'}, {offset});
   }
 
   return ref.midPointRefWithPositionInvalidTest(params);

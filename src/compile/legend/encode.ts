@@ -3,8 +3,10 @@ import {array, isArray, stringValue} from 'vega-util';
 import {COLOR, NonPositionScaleChannel, OPACITY, ScaleChannel} from '../../channel';
 import {
   Conditional,
+  DatumDef,
   Gradient,
   hasConditionalValueDef,
+  isFieldDef,
   isValueDef,
   TypedFieldDef,
   Value,
@@ -28,7 +30,7 @@ function type(legendCmp: LegendComponent, model: UnitModel, channel: ScaleChanne
 }
 
 export function symbols(
-  fieldDef: TypedFieldDef<string>,
+  fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
   symbolsSpec: any,
   model: UnitModel,
   channel: ScaleChannel,
@@ -47,7 +49,6 @@ export function symbols(
   } as SymbolEncodeEntry; // FIXME: remove this when VgEncodeEntry is compatible with SymbolEncodeEntry
 
   const opacity = getMaxValue(encoding.opacity) ?? markDef.opacity;
-  const condition = selectedCondition(model, legendCmp, fieldDef);
 
   if (out.fill) {
     // for fill legend, we don't want any fill in symbol
@@ -93,6 +94,8 @@ export function symbols(
   }
 
   if (channel !== OPACITY) {
+    const condition = isFieldDef(fieldOrDatumDef) && selectedCondition(model, legendCmp, fieldOrDatumDef);
+
     if (condition) {
       out.opacity = [
         {test: condition, ...signalOrValueRef(opacity ?? 1)},
@@ -109,7 +112,7 @@ export function symbols(
 }
 
 export function gradient(
-  fieldDef: TypedFieldDef<string>,
+  fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
   gradientSpec: any,
   model: UnitModel,
   channel: ScaleChannel,
@@ -132,7 +135,7 @@ export function gradient(
 }
 
 export function labels(
-  fieldDef: TypedFieldDef<string>,
+  fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
   specifiedlabelsSpec: any,
   model: UnitModel,
   channel: NonPositionScaleChannel,
@@ -140,13 +143,14 @@ export function labels(
 ) {
   const legend = model.legend(channel) || {};
   const config = model.config;
-  const condition = selectedCondition(model, legendCmp, fieldDef);
+
+  const condition = isFieldDef(fieldOrDatumDef) ? selectedCondition(model, legendCmp, fieldOrDatumDef) : undefined;
   const opacity = condition ? [{test: condition, value: 1}, {value: config.legend.unselectedOpacity}] : undefined;
 
   const {format, formatType} = legend;
 
   const text = formatSignalRef({
-    fieldDef,
+    fieldOrDatumDef,
     format,
     formatType,
     field: 'datum.value',
@@ -165,7 +169,7 @@ export function labels(
 }
 
 export function entries(
-  fieldDef: TypedFieldDef<string>,
+  fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
   entriesSpec: any,
   model: UnitModel,
   channel: NonPositionScaleChannel,

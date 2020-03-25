@@ -17,6 +17,7 @@ describe('compile/mark/valueref', () => {
       });
       expect(ref).toEqual({field: {group: 'width'}});
     });
+
     it('should return correct value for height', () => {
       const ref = midPoint({
         channel: 'y',
@@ -29,6 +30,20 @@ describe('compile/mark/valueref', () => {
       });
       expect(ref).toEqual({field: {group: 'height'}});
     });
+
+    it('returns correct value for datum', () => {
+      const ref = midPoint({
+        channel: 'y',
+        channelDef: {datum: 5},
+        markDef: {type: 'point'},
+        config: defaultConfig,
+        scaleName: 'x',
+        scale: undefined,
+        defaultRef
+      });
+      expect(ref).toEqual({scale: 'x', value: 5});
+    });
+
     it('should return correct value for binned data', () => {
       const fieldDef: TypedFieldDef<string> = {field: 'bin_start', bin: 'binned', type: 'quantitative'};
       const fieldDef2: SecondaryFieldDef<string> = {field: 'bin_end'};

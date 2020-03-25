@@ -1,6 +1,14 @@
 import {AggregateOp, Orientation, Text} from 'vega';
 import {PositionChannel} from '../channel';
-import {Field, isContinuous, isFieldDef, PositionFieldDef, SecondaryFieldDef, title, ValueDef} from '../channeldef';
+import {
+  Field,
+  isContinuousFieldOrDatumDef,
+  isFieldOrDatumDef,
+  PositionFieldDef,
+  SecondaryFieldDef,
+  title,
+  ValueDef
+} from '../channeldef';
 import {Config} from '../config';
 import {Data} from '../data';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
@@ -9,10 +17,10 @@ import {isMarkDef, MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {Step} from '../spec/base';
+import {NormalizedUnitSpec} from '../spec/unit';
 import {TitleParams} from '../title';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
 import {Flag, keys, replaceAll, titlecase} from '../util';
-import {NormalizedUnitSpec} from '../spec/unit';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -168,7 +176,7 @@ export function normalizeErrorBar(
 }
 
 function errorBarOrientAndInputType(
-  spec: GenericUnitSpec<ErrorEncoding<Field>, ErrorBar | ErrorBand | ErrorBarDef | ErrorBandDef>,
+  spec: GenericUnitSpec<ErrorEncoding<string>, ErrorBar | ErrorBand | ErrorBarDef | ErrorBandDef>,
   compositeMark: ErrorBar | ErrorBand
 ): {
   orient: Orientation;
@@ -198,20 +206,20 @@ function errorBarOrientAndInputType(
     const x2 = encoding.x2;
     const y2 = encoding.y2;
 
-    if (isFieldDef(x2) && isFieldDef(y2)) {
+    if (isFieldOrDatumDef(x2) && isFieldOrDatumDef(y2)) {
       // having both x, x2 and y, y2
       throw new Error(`${compositeMark} cannot have both x2 and y2`);
-    } else if (isFieldDef(x2)) {
-      if (isFieldDef(x) && isContinuous(x)) {
+    } else if (isFieldOrDatumDef(x2)) {
+      if (isContinuousFieldOrDatumDef(x)) {
         // having x, x2 quantitative and field y, y2 are not specified
         return {orient: 'horizontal', inputType: 'aggregated-upper-lower'};
       } else {
         // having x, x2 that are not both quantitative
         throw new Error(`Both x and x2 have to be quantitative in ${compositeMark}`);
       }
-    } else if (isFieldDef(y2)) {
+    } else if (isFieldOrDatumDef(y2)) {
       // y2 is a FieldDef
-      if (isFieldDef(y) && isContinuous(y)) {
+      if (isContinuousFieldOrDatumDef(y)) {
         // having y, y2 quantitative and field x, x2 are not specified
         return {orient: 'vertical', inputType: 'aggregated-upper-lower'};
       } else {
@@ -228,29 +236,29 @@ function errorBarOrientAndInputType(
     const yError = encoding.yError;
     const yError2 = encoding.yError2;
 
-    if (isFieldDef(xError2) && !isFieldDef(xError)) {
+    if (isFieldOrDatumDef(xError2) && !isFieldOrDatumDef(xError)) {
       // having xError2 without xError
       throw new Error(`${compositeMark} cannot have xError2 without xError`);
     }
 
-    if (isFieldDef(yError2) && !isFieldDef(yError)) {
+    if (isFieldOrDatumDef(yError2) && !isFieldOrDatumDef(yError)) {
       // having yError2 without yError
       throw new Error(`${compositeMark} cannot have yError2 without yError`);
     }
 
-    if (isFieldDef(xError) && isFieldDef(yError)) {
+    if (isFieldOrDatumDef(xError) && isFieldOrDatumDef(yError)) {
       // having both xError and yError
       throw new Error(`${compositeMark} cannot have both xError and yError with both are quantiative`);
-    } else if (isFieldDef(xError)) {
-      if (isFieldDef(x) && isContinuous(x)) {
+    } else if (isFieldOrDatumDef(xError)) {
+      if (isContinuousFieldOrDatumDef(x)) {
         // having x and xError that are all quantitative
         return {orient: 'horizontal', inputType: 'aggregated-error'};
       } else {
         // having x, xError, and xError2 that are not all quantitative
         throw new Error('All x, xError, and xError2 (if exist) have to be quantitative');
       }
-    } else if (isFieldDef(yError)) {
-      if (isFieldDef(y) && isContinuous(y)) {
+    } else if (isFieldOrDatumDef(yError)) {
+      if (isContinuousFieldOrDatumDef(y)) {
         // having y and yError that are all quantitative
         return {orient: 'vertical', inputType: 'aggregated-error'};
       } else {
@@ -262,28 +270,28 @@ function errorBarOrientAndInputType(
   }
 }
 
-function errorBarIsInputTypeRaw(encoding: ErrorEncoding<Field>): boolean {
+function errorBarIsInputTypeRaw(encoding: ErrorEncoding<string>): boolean {
   return (
-    (isFieldDef(encoding.x) || isFieldDef(encoding.y)) &&
-    !isFieldDef(encoding.x2) &&
-    !isFieldDef(encoding.y2) &&
-    !isFieldDef(encoding.xError) &&
-    !isFieldDef(encoding.xError2) &&
-    !isFieldDef(encoding.yError) &&
-    !isFieldDef(encoding.yError2)
+    (isFieldOrDatumDef(encoding.x) || isFieldOrDatumDef(encoding.y)) &&
+    !isFieldOrDatumDef(encoding.x2) &&
+    !isFieldOrDatumDef(encoding.y2) &&
+    !isFieldOrDatumDef(encoding.xError) &&
+    !isFieldOrDatumDef(encoding.xError2) &&
+    !isFieldOrDatumDef(encoding.yError) &&
+    !isFieldOrDatumDef(encoding.yError2)
   );
 }
 
-function errorBarIsInputTypeAggregatedUpperLower(encoding: ErrorEncoding<Field>): boolean {
-  return isFieldDef(encoding.x2) || isFieldDef(encoding.y2);
+function errorBarIsInputTypeAggregatedUpperLower(encoding: ErrorEncoding<string>): boolean {
+  return isFieldOrDatumDef(encoding.x2) || isFieldOrDatumDef(encoding.y2);
 }
 
-function errorBarIsInputTypeAggregatedError(encoding: ErrorEncoding<Field>): boolean {
+function errorBarIsInputTypeAggregatedError(encoding: ErrorEncoding<string>): boolean {
   return (
-    isFieldDef(encoding.xError) ||
-    isFieldDef(encoding.xError2) ||
-    isFieldDef(encoding.yError) ||
-    isFieldDef(encoding.yError2)
+    isFieldOrDatumDef(encoding.xError) ||
+    isFieldOrDatumDef(encoding.xError2) ||
+    isFieldOrDatumDef(encoding.yError) ||
+    isFieldOrDatumDef(encoding.yError2)
   );
 }
 
