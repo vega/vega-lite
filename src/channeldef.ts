@@ -585,7 +585,7 @@ export function channelDefType<F extends Field>(channelDef: ChannelDef<F>): Type
 export function isDatumDef<F extends Field>(
   channelDef: ChannelDef<F> | FieldDefBase<F> | DatumDef<F, any>
 ): channelDef is DatumDef<F, any> {
-  return !!channelDef && !!channelDef['datum'];
+  return !!channelDef && 'datum' in channelDef;
 }
 
 export function isContinuousFieldOrDatumDef<F extends Field>(cd: ChannelDef<F>) {
