@@ -1,5 +1,4 @@
 import {Color, InitSignal, NewSignal, RangeConfig, RangeScheme, SignalRef} from 'vega';
-import {scheme} from 'vega-scale';
 import {isObject, mergeConfig} from 'vega-util';
 import {Axis, AxisConfigMixins, isConditionalAxisValue} from './axis';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
@@ -311,7 +310,17 @@ export const defaultConfig: Config = {
   concat: {spacing: DEFAULT_SPACING}
 };
 
-const tab10 = scheme('tableau10');
+const tab10 = [
+  '#4c78a8',
+  '#f58518',
+  '#e45756',
+  '#72b7b2',
+  '#54a24b…eeca3b',
+  '#b279a2',
+  '#ff9da6',
+  '#9d755d',
+  '#bab0ac'
+];
 
 export const DEFAULT_FONT_SIZE = {
   text: 11,
