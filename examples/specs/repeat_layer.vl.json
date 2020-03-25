@@ -17,7 +17,12 @@
       "y": {
         "aggregate": "mean",
         "field": {"repeat": "layer"},
-        "type": "quantitative"
+        "type": "quantitative",
+        "title": "Mean of US and Worldwide Gross"
+      },
+      "color": {
+        "datum": {"repeat": "layer"},
+        "type": "nominal"
       }
     }
   }
