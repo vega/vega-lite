@@ -248,9 +248,13 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
   const axisComponent = new AxisComponent();
 
+  const fieldOrDatumDef = getFieldOrDatumDef(model.encoding[channel]) as
+    | PositionFieldDef<string>
+    | PositionDatumDef<string>;
+
   // 1.2. Add properties
   for (const property of AXIS_COMPONENT_PROPERTIES) {
-    const value = getProperty(property, axis, channel, model);
+    const value = getProperty(fieldOrDatumDef, property, axis, channel, model);
     const {configValue = undefined, configFrom = undefined} = isAxisProperty(property)
       ? getAxisConfig(
           property,
@@ -310,6 +314,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 }
 
 function getProperty<K extends keyof AxisComponentProps>(
+  fieldOrDatumDef: PositionFieldDef<string> | PositionDatumDef<string>,
   property: K,
   specifiedAxis: Axis,
   channel: PositionScaleChannel,
@@ -321,8 +326,7 @@ function getProperty<K extends keyof AxisComponentProps>(
 
   specifiedAxis = specifiedAxis || {}; // assign object so the rest doesn't have to check if legend exists
 
-  const {mark, encoding, config} = model;
-  const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as PositionFieldDef<string> | PositionDatumDef<string>;
+  const {mark, config} = model;
 
   switch (property) {
     case 'scale':
