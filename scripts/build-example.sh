@@ -4,9 +4,9 @@ set -eo pipefail
 
 dir=${dir-"examples/compiled"}
 
-# mac osx doesn't have ms time, need to use python -- https://apple.stackexchange.com/a/314573
-start=`python -c 'from time import time; print int(round(time() * 1000))'`
-end=`python -c 'from time import time; print int(round(time() * 1000))'`
+# mac osx doesn't have ms time, need to use perl -- https://apple.stackexchange.com/a/314573
+start=`perl -MTime::HiRes=time -e 'printf "%d\n", time*1000'`
+end=`perl -MTime::HiRes=time -e 'printf "%d\n", time*1000'`
 timertime=$((end-start))
 
 for name in "$@"
@@ -20,12 +20,12 @@ do
   # compile Vega example
   rm -f examples/compiled/$name.vg.json
 
-  start=`python -c 'from time import time; print int(round(time() * 1000))'`
+  start=`perl -MTime::HiRes=time -e 'printf "%d\n", time*1000'`
 
   bin/vl2vg -p examples/specs/$name.vl.json > examples/compiled/$name.vg.json
 
-  end=`python -c 'from time import time; print int(round(time() * 1000))'`
-  runtime=$((end-start-timertime)) # minus 100 because python takes about 100ms to run the time
+  end=`perl -MTime::HiRes=time -e 'printf "%d\n", time*1000'`
+  runtime=$((end-start-timertime)) # minus 100 because perl takes about 20ms to run the time
 
   echo "Compiling $name (~$runtime ms)" # to $dir (nopatch=$nopatch, forcesvg=$forcesvg)"
 
