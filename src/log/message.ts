@@ -151,7 +151,7 @@ export function droppingColor(type: 'encoding' | 'property', opt: {fill?: boolea
 export function emptyFieldDef(fieldDef: TypedFieldDef<string>, channel: Channel) {
   return `Dropping ${stringify(
     fieldDef
-  )} from channel "${channel}" since it does not contain any data field, value, or signal.`;
+  )} from channel "${channel}" since it does not contain any data field, datum, value, or signal.`;
 }
 export function latLongDeprecated(channel: Channel, type: Type, newChannel: GeoPositionChannel) {
   return `${channel}-encoding with type ${type} is deprecated. Replacing with ${newChannel}-encoding.`;
