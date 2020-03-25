@@ -310,6 +310,7 @@ export const defaultConfig: Config = {
   concat: {spacing: DEFAULT_SPACING}
 };
 
+// Tableau10 color palette, copied from `vegaScale.scheme('tableau10')`
 const tab10 = [
   '#4c78a8',
   '#f58518',
