@@ -57,7 +57,7 @@ export interface LayerRepeatSpec extends BaseSpec, GenericCompositionLayoutWithC
 }
 
 export function isRepeatSpec(spec: BaseSpec): spec is RepeatSpec {
-  return spec['repeat'] !== undefined;
+  return 'repeat' in spec;
 }
 
 export function isLayerRepeatSpec(spec: RepeatSpec): spec is LayerRepeatSpec {

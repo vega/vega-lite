@@ -33,7 +33,7 @@ export interface FilterTransform {
 }
 
 export function isFilter(t: Transform): t is FilterTransform {
-  return t['filter'] !== undefined;
+  return 'filter' in t;
 }
 
 export interface CalculateTransform {
@@ -364,15 +364,15 @@ export interface LookupTransform {
 }
 
 export function isLookup(t: Transform): t is LookupTransform {
-  return t['lookup'] !== undefined;
+  return 'lookup' in t;
 }
 
 export function isLookupData(from: LookupData | LookupSelection): from is LookupData {
-  return from['data'] !== undefined;
+  return 'data' in from;
 }
 
 export function isLookupSelection(from: LookupData | LookupSelection): from is LookupData {
-  return from['selection'] !== undefined;
+  return 'selection' in from;
 }
 
 export interface FoldTransform {
@@ -419,7 +419,7 @@ export interface PivotTransform {
 }
 
 export function isPivot(t: Transform): t is PivotTransform {
-  return t['pivot'] !== undefined;
+  return 'pivot' in t;
 }
 
 export interface DensityTransform {
@@ -485,7 +485,7 @@ export interface DensityTransform {
 }
 
 export function isDensity(t: Transform): t is DensityTransform {
-  return t['density'] !== undefined;
+  return 'density' in t;
 }
 
 export interface QuantileTransform {
@@ -518,7 +518,7 @@ export interface QuantileTransform {
 }
 
 export function isQuantile(t: Transform): t is QuantileTransform {
-  return t['quantile'] !== undefined;
+  return 'quantile' in t;
 }
 
 export interface RegressionTransform {
@@ -574,7 +574,7 @@ export interface RegressionTransform {
 }
 
 export function isRegression(t: Transform): t is RegressionTransform {
-  return t['regression'] !== undefined;
+  return 'regression' in t;
 }
 
 export interface LoessTransform {
@@ -609,50 +609,50 @@ export interface LoessTransform {
 }
 
 export function isLoess(t: Transform): t is LoessTransform {
-  return t['loess'] !== undefined;
+  return 'loess' in t;
 }
 
 export function isSample(t: Transform): t is SampleTransform {
-  return t['sample'] !== undefined;
+  return 'sample' in t;
 }
 
 export function isWindow(t: Transform): t is WindowTransform {
-  return t['window'] !== undefined;
+  return 'window' in t;
 }
 
 export function isJoinAggregate(t: Transform): t is JoinAggregateTransform {
-  return t['joinaggregate'] !== undefined;
+  return 'joinaggregate' in t;
 }
 
 export function isFlatten(t: Transform): t is FlattenTransform {
-  return t['flatten'] !== undefined;
+  return 'flatten' in t;
 }
 export function isCalculate(t: Transform): t is CalculateTransform {
-  return t['calculate'] !== undefined;
+  return 'calculate' in t;
 }
 
 export function isBin(t: Transform): t is BinTransform {
-  return !!t['bin'];
+  return 'bin' in t;
 }
 
 export function isImpute(t: Transform): t is ImputeTransform {
-  return t['impute'] !== undefined;
+  return 'impute' in t;
 }
 
 export function isTimeUnit(t: Transform): t is TimeUnitTransform {
-  return t['timeUnit'] !== undefined;
+  return 'timeUnit' in t;
 }
 
 export function isAggregate(t: Transform): t is AggregateTransform {
-  return t['aggregate'] !== undefined;
+  return 'aggregate' in t;
 }
 
 export function isStack(t: Transform): t is StackTransform {
-  return t['stack'] !== undefined;
+  return 'stack' in t;
 }
 
 export function isFold(t: Transform): t is FoldTransform {
-  return t['fold'] !== undefined;
+  return 'fold' in t;
 }
 
 export type Transform =

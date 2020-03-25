@@ -354,7 +354,7 @@ export interface SortableFieldDef<
 }
 
 export function isSortableFieldDef<F extends Field>(fieldDef: FieldDef<F>): fieldDef is SortableFieldDef<F> {
-  return isTypedFieldDef(fieldDef) && !!fieldDef['sort'];
+  return isTypedFieldDef(fieldDef) && 'sort' in fieldDef;
 }
 
 export type ScaleFieldDef<
@@ -567,7 +567,7 @@ export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>
 export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingConditionalValueDef>(
   channelDef: CD
 ): channelDef is CD & {condition: Conditional<any>} {
-  return !!channelDef && !!channelDef['condition'];
+  return !!channelDef && 'condition' in channelDef;
 }
 
 /**
@@ -597,7 +597,7 @@ export function hasConditionalValueDef<F extends Field>(
 export function isFieldDef<F extends Field>(
   channelDef: ChannelDef<F> | FieldDefBase<F> | DatumDef<F, any>
 ): channelDef is FieldDefBase<F> | TypedFieldDef<F> | SecondaryFieldDef<F> {
-  return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
+  return !!channelDef && ('field' in channelDef || channelDef['aggregate'] === 'count');
 }
 
 export function channelDefType<F extends Field>(channelDef: ChannelDef<F>): Type | undefined {
@@ -631,23 +631,22 @@ export function isFieldOrDatumDef<F extends Field>(
 }
 
 export function isTypedFieldDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is TypedFieldDef<F> {
-  return !!channelDef && ((!!channelDef['field'] && !!channelDef['type']) || channelDef['aggregate'] === 'count');
+  return !!channelDef && (('field' in channelDef && 'type' in channelDef) || channelDef['aggregate'] === 'count');
 }
 
 export function isValueDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is ValueDef<any> {
-  return channelDef && 'value' in channelDef && channelDef['value'] !== undefined;
+  return channelDef && 'value' in channelDef && 'value' in channelDef;
 }
 
 export function isScaleFieldDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is ScaleFieldDef<F> {
-  return !!channelDef && (!!channelDef['scale'] || !!channelDef['sort']);
+  return !!channelDef && ('scale' in channelDef || 'sort' in channelDef);
 }
 
 export function isPositionFieldOrDatumDef<F extends Field>(
   channelDef: ChannelDef<F>
 ): channelDef is PositionFieldDef<F> | PositionDatumDef<F> {
   return (
-    !!channelDef &&
-    (!!channelDef['axis'] || !!channelDef['stack'] || !!channelDef['impute'] || channelDef['band'] !== undefined)
+    !!channelDef && ('axis' in channelDef || 'stack' in channelDef || 'impute' in channelDef || 'band' in channelDef)
   );
 }
 
@@ -660,11 +659,11 @@ export function isAnyPositionFieldOrDatumDef<F extends Field>(
 export function isMarkPropFieldOrDatumDef<F extends Field>(
   channelDef: ChannelDef<F>
 ): channelDef is MarkPropFieldDef<F, any> | MarkPropDatumDef<F> {
-  return !!channelDef && !!channelDef['legend'];
+  return !!channelDef && 'legend' in channelDef;
 }
 
 export function isTextFieldDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is StringFieldDef<F> {
-  return !!channelDef && !!channelDef['format'];
+  return !!channelDef && 'format' in channelDef;
 }
 
 export interface FieldRefOption {
@@ -688,7 +687,7 @@ export interface FieldRefOption {
 function isOpFieldDef(
   fieldDef: FieldDefBase<string> | WindowFieldDef | AggregatedFieldDef
 ): fieldDef is WindowFieldDef | AggregatedFieldDef {
-  return !!fieldDef['op'];
+  return 'op' in fieldDef;
 }
 
 /**
