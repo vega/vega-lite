@@ -381,7 +381,7 @@ export interface DatumDef<F extends Field = string, V extends Value = Value> ext
    * A constant value in data domain.
    */
   datum?: F extends RepeatRef ? V | RepeatRef : V;
-  // only apply Repeatref is field (F) can be RepeatRef
+  // only apply Repeatref if field (F) can be RepeatRef
   // FIXME(https://github.com/microsoft/TypeScript/issues/37586):
   // `F extends RepeatRef` probably should be `RepeatRef extends F` but there is likely a bug in TS.
 }
