@@ -574,7 +574,7 @@ export function hasConditionalValueDef<F extends Field>(
 
 export function isFieldDef<F extends Field>(
   channelDef: ChannelDef<F> | FieldDefBase<F> | DatumDef<F, any>
-): channelDef is FieldDefBase<F> | TypedFieldDef<F, any> | SecondaryFieldDef<F> {
+): channelDef is FieldDefBase<F> | TypedFieldDef<F> | SecondaryFieldDef<F> {
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
@@ -838,7 +838,7 @@ export function title(
   }
 }
 
-export function getGuide(fieldDef: TypedFieldDef<string, any> | SecondaryFieldDef<string> | DatumDef): Guide {
+export function getGuide(fieldDef: TypedFieldDef<string> | SecondaryFieldDef<string> | DatumDef): Guide {
   if (isPositionFieldOrDatumDef(fieldDef) && fieldDef.axis) {
     return fieldDef.axis;
   } else if (isMarkPropFieldOrDatumDef(fieldDef) && fieldDef.legend) {
