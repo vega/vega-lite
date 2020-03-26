@@ -70,7 +70,7 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 ### Labels
 
-{% include table.html props="format,formatType,labels,labelAlign,labelAngle,labelBaseline,labelBound,labelColor,labelExpr,labelFlush,labelFlushOffset,labelFont,labelFontSize,labelFontStyle,labelFontWeight,labelLimit,labelOpacity,labelOverlap,labelPadding,labelSeparation" source= "Axis" %}
+{% include table.html props="format,formatType,labels,labelAlign,labelAngle,labelBaseline,labelBound,labelColor,labelExpr,labelFlush,labelFlushOffset,labelFont,labelFontSize,labelFontStyle,labelFontWeight,labelLimit,labelLineHeight,labelOpacity,labelOverlap,labelPadding,labelSeparation" source= "Axis" %}
 
 **See also:** [`guide-label` style config](mark.html#style-config) (common styles for axis, [legend](legend.html), and [header](facet.html#header) labels).
 
@@ -88,7 +88,7 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 ### Title
 
-{% include table.html props="title,titleAlign,titleAnchor,titleAngle,titleBaseline,titleColor,titleFont,titleFontSize,titleFontStyle,titleFontWeight,titleLimit,titleOpacity,titlePadding,titleX,titleY" source="Axis" %}
+{% include table.html props="title,titleAlign,titleAnchor,titleAngle,titleBaseline,titleColor,titleFont,titleFontSize,titleFontStyle,titleFontWeight,titleLimit,titleLineHeight,titleOpacity,titlePadding,titleX,titleY" source="Axis" %}
 
 For example, the following plot has a customized x-axis title.
 
