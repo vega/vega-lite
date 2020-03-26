@@ -66,7 +66,7 @@ export function formatSignalRef({
         field = vgField(fieldOrDatumDef, {expr});
       }
     } else {
-      return {signal: datumDefToExpr(fieldOrDatumDef)};
+      field = datumDefToExpr(fieldOrDatumDef);
     }
   }
   isUTCScale = isUTCScale ?? (isScaleFieldDef(fieldOrDatumDef) && fieldOrDatumDef.scale?.type === ScaleType.UTC);
