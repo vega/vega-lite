@@ -144,7 +144,7 @@
           {"data": "data_1", "field": "Value"},
           {"data": "data_2", "field": "baseline"},
           {"data": "data_2", "field": "Value"},
-          [[300]]
+          [300]
         ]
       },
       "range": [{"signal": "height"}, 0],
