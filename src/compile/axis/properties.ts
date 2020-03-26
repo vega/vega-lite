@@ -135,13 +135,15 @@ export function orient(channel: PositionScaleChannel) {
 export function defaultTickCount({
   fieldOrDatumDef,
   scaleType,
-  size
+  size,
+  values: vals
 }: {
   fieldOrDatumDef: TypedFieldDef<string> | DatumDef;
   scaleType: ScaleType;
   size?: SignalRef;
+  values?: Axis['values'];
 }) {
-  if (!hasDiscreteDomain(scaleType) && scaleType !== 'log') {
+  if (!vals && !hasDiscreteDomain(scaleType) && scaleType !== 'log') {
     if (isFieldDef(fieldOrDatumDef)) {
       if (isBinning(fieldOrDatumDef.bin)) {
         // for binned data, we don't want more ticks than maxbins
