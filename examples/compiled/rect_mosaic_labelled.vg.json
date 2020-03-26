@@ -111,7 +111,9 @@
               "fill": {"scale": "color", "field": "Origin"},
               "x": {"scale": "x", "field": "min_xc"},
               "y": {"signal": "concat_0_height", "mult": 0.5},
-              "text": {"signal": "''+datum[\"Origin\"]"}
+              "text": {
+                "signal": "isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]"
+              }
             }
           }
         }
@@ -150,7 +152,7 @@
               "fill": {"scale": "color", "field": "Origin"},
               "opacity": {"scale": "opacity", "field": "Cylinders"},
               "tooltip": {
-                "signal": "{\"Origin\": ''+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
+                "signal": "{\"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
               },
               "x": {"scale": "x", "field": "x"},
               "x2": {"scale": "x", "field": "x2"},
@@ -170,7 +172,9 @@
               "fill": {"value": "black"},
               "x": {"scale": "x", "field": "xc"},
               "y": {"scale": "concat_1_y", "field": "yc"},
-              "text": {"signal": "''+datum[\"Cylinders\"]"},
+              "text": {
+                "signal": "isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]"
+              },
               "align": {"value": "center"}
             }
           }

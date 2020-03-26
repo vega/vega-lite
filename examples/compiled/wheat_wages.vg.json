@@ -239,7 +239,9 @@
             {"scale": "x", "field": "x"}
           ],
           "y": {"scale": "y", "field": "off2", "offset": 16},
-          "text": {"signal": "''+datum[\"name\"]"},
+          "text": {
+            "signal": "isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]"
+          },
           "align": {"value": "center"}
         }
       }

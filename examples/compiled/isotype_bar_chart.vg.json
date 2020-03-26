@@ -64,7 +64,9 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"country\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"country\"]"},
+        "text": {
+          "signal": "isValid(parent[\"country\"]) ? parent[\"country\"] : \"\"+parent[\"country\"]"
+        },
         "orient": "left",
         "style": "guide-label",
         "frame": "group",

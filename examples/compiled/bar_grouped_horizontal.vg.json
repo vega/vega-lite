@@ -67,7 +67,9 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"age\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"age\"]"},
+        "text": {
+          "signal": "isValid(parent[\"age\"]) ? parent[\"age\"] : \"\"+parent[\"age\"]"
+        },
         "orient": "left",
         "style": "guide-label",
         "frame": "group",

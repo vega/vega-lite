@@ -64,7 +64,9 @@
           "fill": {"value": "black"},
           "x": {"value": 5},
           "y": {"scale": "y", "field": "Major_Genre", "band": 0.5},
-          "text": {"signal": "''+datum[\"Major_Genre\"]"},
+          "text": {
+            "signal": "isValid(datum[\"Major_Genre\"]) ? datum[\"Major_Genre\"] : \"\"+datum[\"Major_Genre\"]"
+          },
           "baseline": {"value": "middle"}
         }
       }

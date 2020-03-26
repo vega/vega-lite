@@ -38,7 +38,9 @@
           "height": {"value": 50},
           "xc": {"scale": "x", "field": "x"},
           "yc": {"scale": "y", "field": "y"},
-          "url": {"signal": "''+datum[\"img\"]"}
+          "url": {
+            "signal": "isValid(datum[\"img\"]) ? datum[\"img\"] : \"\"+datum[\"img\"]"
+          }
         }
       }
     }

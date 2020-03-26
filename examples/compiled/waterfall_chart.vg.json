@@ -184,7 +184,9 @@
           "fill": {"value": "#404040"},
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "sum_inc"},
-          "text": {"signal": "''+datum[\"sum_inc\"]"},
+          "text": {
+            "signal": "isValid(datum[\"sum_inc\"]) ? datum[\"sum_inc\"] : \"\"+datum[\"sum_inc\"]"
+          },
           "align": {"value": "center"}
         }
       }
@@ -201,7 +203,9 @@
           "fill": {"value": "#404040"},
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "sum_dec"},
-          "text": {"signal": "''+datum[\"sum_dec\"]"},
+          "text": {
+            "signal": "isValid(datum[\"sum_dec\"]) ? datum[\"sum_dec\"] : \"\"+datum[\"sum_dec\"]"
+          },
           "align": {"value": "center"}
         }
       }
@@ -224,7 +228,9 @@
           ],
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "center"},
-          "text": {"signal": "''+datum[\"text_amount\"]"},
+          "text": {
+            "signal": "isValid(datum[\"text_amount\"]) ? datum[\"text_amount\"] : \"\"+datum[\"text_amount\"]"
+          },
           "align": {"value": "center"}
         }
       }

@@ -93,7 +93,9 @@
       "name": "cell",
       "type": "group",
       "title": {
-        "text": {"signal": "''+parent[\"MPAA_Rating\"]"},
+        "text": {
+          "signal": "isValid(parent[\"MPAA_Rating\"]) ? parent[\"MPAA_Rating\"] : \"\"+parent[\"MPAA_Rating\"]"
+        },
         "style": "guide-label",
         "frame": "group",
         "offset": 10

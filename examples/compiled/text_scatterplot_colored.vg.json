@@ -30,7 +30,9 @@
           "fill": {"scale": "color", "field": "Origin"},
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
-          "text": {"signal": "''+datum[\"OriginInitial\"]"},
+          "text": {
+            "signal": "isValid(datum[\"OriginInitial\"]) ? datum[\"OriginInitial\"] : \"\"+datum[\"OriginInitial\"]"
+          },
           "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }

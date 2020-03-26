@@ -58,7 +58,9 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"organ\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"organ\"]"},
+        "text": {
+          "signal": "isValid(parent[\"organ\"]) ? parent[\"organ\"] : \"\"+parent[\"organ\"]"
+        },
         "orient": "left",
         "style": "guide-label",
         "frame": "group",

@@ -98,7 +98,9 @@
           "fill": {"value": "black"},
           "x": {"field": "layer_1_layer_1_x"},
           "y": {"field": "layer_1_layer_1_y"},
-          "text": {"signal": "''+datum[\"city\"]"},
+          "text": {
+            "signal": "isValid(datum[\"city\"]) ? datum[\"city\"] : \"\"+datum[\"city\"]"
+          },
           "align": {"value": "center"},
           "baseline": {"value": "middle"}
         }

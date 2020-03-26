@@ -300,7 +300,9 @@
           "fill": {"value": "black"},
           "x": {"value": -5},
           "y": {"scale": "y", "field": "name"},
-          "text": {"signal": "''+datum[\"lo\"]"},
+          "text": {
+            "signal": "isValid(datum[\"lo\"]) ? datum[\"lo\"] : \"\"+datum[\"lo\"]"
+          },
           "baseline": {"value": "middle"}
         }
       }
@@ -316,7 +318,9 @@
           "fill": {"value": "black"},
           "x": {"value": 255},
           "y": {"scale": "y", "field": "name"},
-          "text": {"signal": "''+datum[\"hi\"]"},
+          "text": {
+            "signal": "isValid(datum[\"hi\"]) ? datum[\"hi\"] : \"\"+datum[\"hi\"]"
+          },
           "baseline": {"value": "middle"}
         }
       }

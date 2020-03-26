@@ -304,7 +304,9 @@
           "fill": {"value": "black"},
           "x": {"scale": "x", "field": "id", "band": 0.5},
           "y": {"value": -5},
-          "text": {"signal": "''+datum[\"day\"]"}
+          "text": {
+            "signal": "isValid(datum[\"day\"]) ? datum[\"day\"] : \"\"+datum[\"day\"]"
+          }
         }
       }
     }

@@ -75,7 +75,9 @@
           "opacity": {"value": 0.6},
           "x": {"field": "layer_1_x"},
           "y": {"field": "layer_1_y"},
-          "text": {"signal": "''+datum[\"bLabel\"]"},
+          "text": {
+            "signal": "isValid(datum[\"bLabel\"]) ? datum[\"bLabel\"] : \"\"+datum[\"bLabel\"]"
+          },
           "fontSize": {"value": 8},
           "align": {"value": "center"},
           "baseline": {"value": "middle"}

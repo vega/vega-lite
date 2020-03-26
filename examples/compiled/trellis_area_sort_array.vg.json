@@ -80,7 +80,9 @@
         "order": "ascending"
       },
       "title": {
-        "text": {"signal": "''+parent[\"symbol\"]"},
+        "text": {
+          "signal": "isValid(parent[\"symbol\"]) ? parent[\"symbol\"] : \"\"+parent[\"symbol\"]"
+        },
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
