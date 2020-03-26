@@ -163,24 +163,18 @@ export function interpolatedSignalRef({
   band = 0.5
 }: {
   scaleName: string;
-  fieldOrDatumDef: TypedFieldDef<string> | DatumDef;
-  fieldOrDatumDef2?: SecondaryFieldDef<string> | DatumDef;
+  fieldOrDatumDef: TypedFieldDef<string>;
+  fieldOrDatumDef2?: SecondaryFieldDef<string>;
   startSuffix?: string;
   offset: number | SignalRef;
   band: number;
 }): VgValueRef {
   const expr = 0 < band && band < 1 ? 'datum' : undefined;
-  const start: string = isFieldDef(fieldOrDatumDef)
-    ? vgField(fieldOrDatumDef, {expr, suffix: startSuffix})
-    : datumDefToExpr(fieldOrDatumDef);
-  const end: string =
+  const start = vgField(fieldOrDatumDef, {expr, suffix: startSuffix});
+  const end =
     fieldOrDatumDef2 !== undefined
-      ? isFieldDef(fieldOrDatumDef2)
-        ? vgField(fieldOrDatumDef2, {expr})
-        : datumDefToExpr(fieldOrDatumDef2)
-      : isFieldDef(fieldOrDatumDef)
-      ? vgField(fieldOrDatumDef, {suffix: 'end', expr})
-      : datumDefToExpr(fieldOrDatumDef);
+      ? vgField(fieldOrDatumDef2, {expr})
+      : vgField(fieldOrDatumDef, {suffix: 'end', expr});
 
   const ref: VgValueRef = {};
 
