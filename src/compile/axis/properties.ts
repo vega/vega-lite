@@ -4,7 +4,6 @@ import {Axis} from '../../axis';
 import {isBinning} from '../../bin';
 import {PositionScaleChannel, X, Y} from '../../channel';
 import {DatumDef, isDiscrete, isFieldDef, TypedFieldDef, valueArray} from '../../channeldef';
-import * as log from '../../log';
 import {Mark} from '../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../scale';
 import {normalizeTimeUnit} from '../../timeunit';
@@ -36,21 +35,15 @@ export function labelAngle(
   model: UnitModel,
   specifiedAxis: Axis,
   channel: PositionScaleChannel,
-  fieldOrDatumDef: TypedFieldDef<string> | DatumDef
+  fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
+  axisConfigTypes: string[]
 ) {
   // try axis value
   if (specifiedAxis?.labelAngle !== undefined) {
     return normalizeAngle(specifiedAxis?.labelAngle);
   } else {
     // try axis config value
-    const {configValue: angle} = getAxisConfig(
-      'labelAngle',
-      model.config,
-      channel,
-      orient(channel),
-      model.getScaleComponent(channel).get('type'),
-      specifiedAxis?.style
-    );
+    const {configValue: angle} = getAxisConfig('labelAngle', model.config, axisConfigTypes, specifiedAxis?.style);
     if (angle !== undefined) {
       return normalizeAngle(angle);
     } else {
@@ -137,8 +130,6 @@ export function orient(channel: PositionScaleChannel) {
     case Y:
       return 'left';
   }
-  /* istanbul ignore next: This should never happen. */
-  throw new Error(log.message.INVALID_CHANNEL_FOR_AXIS);
 }
 
 export function defaultTickCount({

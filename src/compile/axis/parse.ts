@@ -1,4 +1,4 @@
-import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef, Text} from 'vega';
+import {AxisEncode as VgAxisEncode, AxisOrient, ScaleType, SignalRef, Text} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
 import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
@@ -12,7 +12,8 @@ import {
   PositionFieldDef,
   toFieldDefBase
 } from '../../channeldef';
-import {contains, getFirstDefined, keys, normalizeAngle} from '../../util';
+import {isQuantitative} from '../../scale';
+import {contains, getFirstDefined, keys, normalizeAngle, titlecase} from '../../util';
 import {isSignalRef} from '../../vega.schema';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs} from '../common';
 import {numberFormat} from '../format';
@@ -243,6 +244,30 @@ const VEGA_AXIS_CONFIG = {
   axisBand: 1
 };
 
+function getAxisConfigTypes(channel: PositionScaleChannel, scaleType: ScaleType, orient: string) {
+  const typeBasedConfigs = [
+    ...(scaleType === 'band' ? ['axisBand', 'axisDiscrete'] : []),
+    ...(scaleType === 'point' ? ['axisPoint', 'axisDiscrete'] : []),
+    ...(isQuantitative(scaleType) ? ['axisQuantitative'] : []),
+    ...(scaleType === 'time' || scaleType === 'utc' ? ['axisTemporal'] : [])
+  ];
+
+  const channelBasedConfig = channel === 'x' ? 'axisX' : 'axisY';
+
+  // configTypes to loop, starting from higher precedence
+  return [
+    ...typeBasedConfigs.map(c => channelBasedConfig + c.substr(4)),
+
+    ...typeBasedConfigs,
+    // X/Y
+    channelBasedConfig,
+
+    // axisTop, axisBottom, ...
+    ...(orient ? ['axis' + titlecase(orient)] : []),
+    'axis'
+  ];
+}
+
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {
   const axis = model.axis(channel);
 
@@ -252,18 +277,17 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
     | PositionFieldDef<string>
     | PositionDatumDef<string>;
 
+  const axisConfigTypes = getAxisConfigTypes(
+    channel,
+    model.getScaleComponent(channel).get('type'),
+    getFirstDefined(axis?.orient, properties.orient(channel))
+  );
+
   // 1.2. Add properties
   for (const property of AXIS_COMPONENT_PROPERTIES) {
-    const value = getProperty(fieldOrDatumDef, property, axis, channel, model);
+    const value = getProperty(fieldOrDatumDef, property, axis, channel, model, axisConfigTypes);
     const {configValue = undefined, configFrom = undefined} = isAxisProperty(property)
-      ? getAxisConfig(
-          property,
-          model.config,
-          channel,
-          axisComponent.get('orient'),
-          model.getScaleComponent(channel).get('type'),
-          axis?.style
-        )
+      ? getAxisConfig(property, model.config, axisConfigTypes, axis?.style)
       : {};
 
     const explicit = isExplicit(value, property, axis, model, channel);
@@ -318,7 +342,8 @@ function getProperty<K extends keyof AxisComponentProps>(
   property: K,
   specifiedAxis: Axis,
   channel: PositionScaleChannel,
-  model: UnitModel
+  model: UnitModel,
+  axisConfigTypes: string[]
 ): AxisComponentProps[K] {
   if (property === 'disable') {
     return specifiedAxis !== undefined && (!specifiedAxis as AxisComponentProps[K]);
@@ -360,19 +385,19 @@ function getProperty<K extends keyof AxisComponentProps>(
     }
     case 'labelAlign': {
       const orient = getFirstDefined(specifiedAxis.orient, properties.orient(channel));
-      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef);
+      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes);
       return getFirstDefined(
         specifiedAxis.labelAlign,
         properties.defaultLabelAlign(labelAngle, orient)
       ) as AxisComponentProps[K];
     }
     case 'labelAngle': {
-      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef);
+      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes);
       return labelAngle as AxisComponentProps[K];
     }
     case 'labelBaseline': {
       const orient = getFirstDefined(specifiedAxis.orient, properties.orient(channel));
-      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef);
+      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes);
       return getFirstDefined(
         specifiedAxis.labelBaseline,
         properties.defaultLabelBaseline(labelAngle, orient)
