@@ -116,5 +116,19 @@ describe('Format', () => {
         signal: 'format(parent["foo"], ".2f")'
       });
     });
+
+    it('should formats datumDef if format is present', () => {
+      expect(
+        formatSignalRef({
+          fieldOrDatumDef: {datum: 200, type: 'quantitative'},
+          format: '.2f',
+          formatType: undefined,
+          expr: 'parent',
+          config: {}
+        })
+      ).toEqual({
+        signal: 'format(200, ".2f")'
+      });
+    });
   });
 });

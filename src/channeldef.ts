@@ -376,7 +376,8 @@ export interface ScaleMixins {
   scale?: Scale | null;
 }
 
-export interface DatumDef<F extends Field = string, V extends Value = Value> extends Partial<TypeMixins<Type>> {
+export interface DatumDef<F extends Field = string, V extends Value | DateTime = Value | DateTime>
+  extends Partial<TypeMixins<Type>> {
   /**
    * A constant value in data domain.
    */
@@ -1178,7 +1179,7 @@ export function isTimeFieldDef(def: FieldDef<any> | DatumDef): boolean {
  * Convert the value to Vega expression if applicable (for datetime object, or string if the field def is temporal or has timeUnit)
  */
 export function valueExpr(
-  v: number | string | boolean | DateTime | SignalRef,
+  v: number | string | boolean | DateTime | SignalRef | number[],
   {
     timeUnit,
     type,
