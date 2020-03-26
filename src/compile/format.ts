@@ -106,7 +106,7 @@ export function formatSignalRef({
         signal: `${formatExpr(field, format)}`
       };
     } else {
-      return {signal: `''+${field}`};
+      return {signal: `isValid(${field}) ? ${field} : ""+${field}`};
     }
   }
   return undefined;

@@ -79,7 +79,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"lower_yield\": format(datum[\"upper_upper_yield\"], \"\"), \"upper_yield\": format(datum[\"lower_upper_yield\"], \"\"), \"variety\": ''+datum[\"variety\"]}"
+            "signal": "{\"lower_yield\": format(datum[\"upper_upper_yield\"], \"\"), \"upper_yield\": format(datum[\"lower_upper_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]}"
           },
           "x": [
             {

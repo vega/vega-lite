@@ -118,7 +118,9 @@
             },
             {"scale": "y", "field": "CO2"}
           ],
-          "text": {"signal": "''+datum[\"year\"]"}
+          "text": {
+            "signal": "isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]"
+          }
         }
       }
     },
@@ -145,7 +147,9 @@
             },
             {"scale": "y", "field": "CO2"}
           ],
-          "text": {"signal": "''+datum[\"year\"]"}
+          "text": {
+            "signal": "isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]"
+          }
         }
       }
     }

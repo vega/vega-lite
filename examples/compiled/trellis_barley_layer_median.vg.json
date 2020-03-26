@@ -87,7 +87,9 @@
       "from": {"data": "trellis_barley_row_domain"},
       "sort": {"field": "datum[\"median_yield\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"site\"]"},
+        "text": {
+          "signal": "isValid(parent[\"site\"]) ? parent[\"site\"] : \"\"+parent[\"site\"]"
+        },
         "orient": "left",
         "style": "guide-label",
         "frame": "group",

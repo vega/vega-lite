@@ -71,7 +71,9 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"group\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"group\"]"},
+        "text": {
+          "signal": "isValid(parent[\"group\"]) ? parent[\"group\"] : \"\"+parent[\"group\"]"
+        },
         "orient": "left",
         "style": "guide-label",
         "frame": "group",

@@ -158,7 +158,9 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"title\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"title\"]"},
+        "text": {
+          "signal": "isValid(parent[\"title\"]) ? parent[\"title\"] : \"\"+parent[\"title\"]"
+        },
         "orient": "left",
         "style": "guide-label",
         "frame": "group",

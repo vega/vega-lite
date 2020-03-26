@@ -87,7 +87,9 @@
       "from": {"data": "row_domain"},
       "sort": {"field": "datum[\"r\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"r\"]"},
+        "text": {
+          "signal": "isValid(parent[\"r\"]) ? parent[\"r\"] : \"\"+parent[\"r\"]"
+        },
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
@@ -108,7 +110,9 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"c\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"c\"]"},
+        "text": {
+          "signal": "isValid(parent[\"c\"]) ? parent[\"c\"] : \"\"+parent[\"c\"]"
+        },
         "style": "guide-label",
         "frame": "group",
         "offset": 10

@@ -43,7 +43,9 @@
       "name": "trellis_barley_cell",
       "type": "group",
       "title": {
-        "text": {"signal": "''+parent[\"site\"]"},
+        "text": {
+          "signal": "isValid(parent[\"site\"]) ? parent[\"site\"] : \"\"+parent[\"site\"]"
+        },
         "style": "guide-label",
         "frame": "group",
         "offset": 10

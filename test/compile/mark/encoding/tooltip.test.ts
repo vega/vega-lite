@@ -114,7 +114,7 @@ describe('compile/mark/encoding/tooltip', () => {
       });
       const props = tooltip(model);
       expect(props.tooltip).toEqual({
-        signal: '{"baz": \'\'+datum["Foobar"]}'
+        signal: '{"baz": isValid(datum["Foobar"]) ? datum["Foobar"] : ""+datum["Foobar"]}'
       });
     });
   });

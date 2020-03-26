@@ -526,7 +526,9 @@
                   "fill": {"value": "black"},
                   "x": {"signal": "concat_1_childWidth", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_0_y", "field": "row_number"},
-                  "text": {"signal": "''+datum[\"Horsepower\"]"},
+                  "text": {
+                    "signal": "isValid(datum[\"Horsepower\"]) ? datum[\"Horsepower\"] : \"\"+datum[\"Horsepower\"]"
+                  },
                   "align": {"value": "center"},
                   "baseline": {"value": "middle"}
                 }
@@ -558,7 +560,9 @@
                   "fill": {"value": "black"},
                   "x": {"signal": "concat_1_childWidth", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_1_y", "field": "row_number"},
-                  "text": {"signal": "''+datum[\"Miles_per_Gallon\"]"},
+                  "text": {
+                    "signal": "isValid(datum[\"Miles_per_Gallon\"]) ? datum[\"Miles_per_Gallon\"] : \"\"+datum[\"Miles_per_Gallon\"]"
+                  },
                   "align": {"value": "center"},
                   "baseline": {"value": "middle"}
                 }
@@ -590,7 +594,9 @@
                   "fill": {"value": "black"},
                   "x": {"signal": "concat_1_childWidth", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_2_y", "field": "row_number"},
-                  "text": {"signal": "''+datum[\"Origin\"]"},
+                  "text": {
+                    "signal": "isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]"
+                  },
                   "align": {"value": "center"},
                   "baseline": {"value": "middle"}
                 }

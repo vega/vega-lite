@@ -73,7 +73,9 @@
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"key\"]", "order": "ascending"},
       "title": {
-        "text": {"signal": "''+parent[\"key\"]"},
+        "text": {
+          "signal": "isValid(parent[\"key\"]) ? parent[\"key\"] : \"\"+parent[\"key\"]"
+        },
         "style": "guide-label",
         "frame": "group",
         "offset": 10

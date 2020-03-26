@@ -91,7 +91,9 @@
           "fill": {"value": "firebrick"},
           "x": {"field": {"group": "width"}},
           "y": {"value": -5},
-          "text": {"signal": "''+datum[\"R2\"]"},
+          "text": {
+            "signal": "isValid(datum[\"R2\"]) ? datum[\"R2\"] : \"\"+datum[\"R2\"]"
+          },
           "baseline": {"value": "middle"}
         }
       }
