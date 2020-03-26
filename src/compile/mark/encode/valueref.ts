@@ -28,6 +28,7 @@ import {
   vgField
 } from '../../../channeldef';
 import {Config} from '../../../config';
+import {dateTimeToExpr, isDateTime} from '../../../datetime';
 import * as log from '../../../log';
 import {isPathMark, Mark, MarkDef} from '../../../mark';
 import {fieldValidPredicate} from '../../../predicate';
@@ -107,6 +108,14 @@ export function fieldInvalidPredicate(field: FieldName | FieldDef<string>, inval
   return fieldValidPredicate(isString(field) ? field : vgField(field, {expr: 'datum'}), !invalid);
 }
 
+export function datumDefToExpr(datumDef: DatumDef<string>) {
+  const {datum} = datumDef;
+  if (isDateTime(datum)) {
+    return dateTimeToExpr(datum);
+  }
+  return `${JSON.stringify(datum)}`;
+}
+
 export function valueRefForFieldOrDatumDef(
   fieldDef: FieldDefBase<string> | DatumDef<string>,
   scaleName: string,
@@ -120,7 +129,12 @@ export function valueRefForFieldOrDatumDef(
   }
 
   if (isDatumDef<string>(fieldDef)) {
-    ref.value = fieldDef.datum;
+    const {datum} = fieldDef;
+    if (isDateTime(datum)) {
+      ref.signal = dateTimeToExpr(datum);
+    } else {
+      ref.value = datum;
+    }
   } else {
     ref.field = vgField(fieldDef, opt);
   }
@@ -156,26 +170,24 @@ export function interpolatedSignalRef({
   band: number;
 }): VgValueRef {
   const expr = 0 < band && band < 1 ? 'datum' : undefined;
-  const start = isFieldDef(fieldOrDatumDef) ? vgField(fieldOrDatumDef, {expr, suffix: startSuffix}) : fieldOrDatumDef;
-  const end =
+  const start: string = isFieldDef(fieldOrDatumDef)
+    ? vgField(fieldOrDatumDef, {expr, suffix: startSuffix})
+    : datumDefToExpr(fieldOrDatumDef);
+  const end: string =
     fieldOrDatumDef2 !== undefined
       ? isFieldDef(fieldOrDatumDef2)
         ? vgField(fieldOrDatumDef2, {expr})
-        : fieldOrDatumDef2
+        : datumDefToExpr(fieldOrDatumDef2)
       : isFieldDef(fieldOrDatumDef)
       ? vgField(fieldOrDatumDef, {suffix: 'end', expr})
-      : fieldOrDatumDef;
+      : datumDefToExpr(fieldOrDatumDef);
 
   const ref: VgValueRef = {};
 
   if (band === 0 || band === 1) {
     ref.scale = scaleName;
     const val = band === 0 ? start : end;
-    if (isString(val)) {
-      ref.field = val;
-    } else {
-      ref.value = val.datum;
-    }
+    ref.field = val;
   } else {
     const datum = `${band} * ${start} + ${1 - band} * ${end}`;
     ref.signal = `scale("${scaleName}", ${datum})`;

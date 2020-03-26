@@ -14,6 +14,7 @@ import {fieldValidPredicate} from '../predicate';
 import {ScaleType} from '../scale';
 import {formatExpression, normalizeTimeUnit, TimeUnit} from '../timeunit';
 import {QUANTITATIVE, Type} from '../type';
+import {datumDefToExpr} from './mark/encode/valueref';
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
@@ -65,7 +66,7 @@ export function formatSignalRef({
         field = vgField(fieldOrDatumDef, {expr});
       }
     } else {
-      field = `${fieldOrDatumDef.datum}`;
+      return {signal: datumDefToExpr(fieldOrDatumDef)};
     }
   }
   isUTCScale = isUTCScale ?? (isScaleFieldDef(fieldOrDatumDef) && fieldOrDatumDef.scale?.type === ScaleType.UTC);

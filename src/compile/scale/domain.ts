@@ -9,13 +9,14 @@ import {
   SHARED_DOMAIN_OP_INDEX
 } from '../../aggregate';
 import {isBinning, isBinParams, isSelectionExtent} from '../../bin';
-import {getMainRangeChannel, getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
+import {getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
 import {
   binRequiresRange,
   getFieldOrDatumDef,
   hasBand,
   isDatumDef,
   isFieldDef,
+  ScaleDatumDef,
   ScaleFieldDef,
   TypedFieldDef,
   valueExpr,
@@ -207,7 +208,7 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
 }
 
 function mapDomainToDataSignal(
-  domain: (number | string | boolean | DateTime | SignalRef)[],
+  domain: (number | string | boolean | DateTime | SignalRef | number[])[],
   type: Type,
   timeUnit: TimeUnit
 ) {
@@ -218,7 +219,7 @@ function mapDomainToDataSignal(
 }
 
 function convertDomainIfItIsDateTime(
-  domain: (number | string | boolean | DateTime | SignalRef)[],
+  domain: (number | string | boolean | DateTime | SignalRef | number[])[],
   type: Type,
   timeUnit: TimeUnit | TimeUnitParams
 ): [number[]] | [string[]] | [boolean[]] | SignalRef[] {
@@ -238,12 +239,13 @@ function parseSingleChannelDomain(
   channel: ScaleChannel | 'x2' | 'y2'
 ): Explicit<VgNonUnionDomain[]> {
   const {encoding} = model;
-  const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]);
+  const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as ScaleDatumDef<string> | ScaleFieldDef<string>;
+
+  const {type} = fieldOrDatumDef;
+  const timeUnit = fieldOrDatumDef['timeUnit'];
 
   if (isDomainUnionWith(domain)) {
     const defaultDomain = parseSingleChannelDomain(scaleType, undefined, model, channel);
-
-    const {type, timeUnit} = model.typedFieldDef(getMainRangeChannel(channel)) || {};
 
     const unionWith = convertDomainIfItIsDateTime(domain.unionWith, type, timeUnit);
 
@@ -251,7 +253,6 @@ function parseSingleChannelDomain(
   } else if (isSignalRef(domain)) {
     return makeExplicit([domain]);
   } else if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
-    const {type, timeUnit} = model.typedFieldDef(getMainRangeChannel(channel)) || {};
     return makeExplicit(convertDomainIfItIsDateTime(domain, type, timeUnit));
   }
 
@@ -278,7 +279,8 @@ function parseSingleChannelDomain(
     isScaleChannel(channel) && isFieldDef(fieldOrDatumDef) ? domainSort(model, channel, scaleType) : undefined;
 
   if (isDatumDef(fieldOrDatumDef)) {
-    return makeImplicit([[fieldOrDatumDef.datum] as VgNonUnionDomain]);
+    const d = convertDomainIfItIsDateTime([fieldOrDatumDef.datum], type, timeUnit);
+    return makeImplicit([d as VgNonUnionDomain]);
   }
 
   const fieldDef = fieldOrDatumDef; // now we can be sure it's a fieldDef
