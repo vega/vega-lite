@@ -109,7 +109,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"fields": [["US_Gross"], ["Worldwide_Gross"]]},
+      "domain": {"fields": [[["US_Gross"]], [["Worldwide_Gross"]]]},
       "range": "category"
     }
   ],

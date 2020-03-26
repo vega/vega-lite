@@ -59,9 +59,9 @@
         "update": {
           "strokeDash": {"value": [2, 2]},
           "stroke": {"value": "black"},
-          "x": {"field": {"group": "width"}},
-          "x2": {"value": 0},
-          "y": {"scale": "y", "value": 300},
+          "x": {"scale": "x", "signal": "datetime(2006, 0, 1, 0, 0, 0, 0)"},
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}},
           "strokeWidth": {"value": 2}
         }
       }
@@ -71,13 +71,18 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "date"},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "date"},
+          [{"signal": "{data: datetime(2006, 0, 1, 0, 0, 0, 0)}"}]
+        ]
+      },
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"fields": [{"data": "source_0", "field": "price"}, [[300]]]},
+      "domain": {"data": "source_0", "field": "price"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
