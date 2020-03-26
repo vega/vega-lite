@@ -3787,6 +3787,9 @@
                   "$ref": "#/definitions/Value"
                 },
                 {
+                  "$ref": "#/definitions/DateTime"
+                },
+                {
                   "$ref": "#/definitions/RepeatRef"
                 }
               ],
@@ -3927,6 +3930,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/Value"
+                },
+                {
+                  "$ref": "#/definitions/DateTime"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -4456,6 +4462,9 @@
                   "$ref": "#/definitions/Value"
                 },
                 {
+                  "$ref": "#/definitions/DateTime"
+                },
+                {
                   "$ref": "#/definitions/RepeatRef"
                 }
               ],
@@ -4596,6 +4605,9 @@
               "anyOf": [
                 {
                   "$ref": "#/definitions/Value"
+                },
+                {
+                  "$ref": "#/definitions/DateTime"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -5313,6 +5325,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/Value"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
             },
             {
               "$ref": "#/definitions/RepeatRef"
@@ -7165,6 +7180,9 @@
               "$ref": "#/definitions/Value"
             },
             {
+              "$ref": "#/definitions/DateTime"
+            },
+            {
               "$ref": "#/definitions/RepeatRef"
             }
           ],
@@ -7189,6 +7207,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/Value"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
             },
             {
               "$ref": "#/definitions/RepeatRef"
@@ -7217,6 +7238,9 @@
               "$ref": "#/definitions/Value"
             },
             {
+              "$ref": "#/definitions/DateTime"
+            },
+            {
               "$ref": "#/definitions/RepeatRef"
             }
           ],
@@ -7241,6 +7265,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/Value"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
             },
             {
               "$ref": "#/definitions/RepeatRef"
@@ -13306,6 +13333,9 @@
           "anyOf": [
             {
               "$ref": "#/definitions/Value"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
             },
             {
               "$ref": "#/definitions/RepeatRef"
