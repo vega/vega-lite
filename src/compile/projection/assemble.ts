@@ -1,8 +1,7 @@
-import {SignalRef} from 'vega';
+import {Projection as VgProjection, SignalRef} from 'vega';
 import {contains} from '../../util';
 import {isSignalRef} from '../../vega.schema';
 import {isConcatModel, isLayerModel, Model} from '../model';
-import {Projection as VgProjection} from 'vega';
 
 export function assembleProjections(model: Model): VgProjection[] {
   if (isLayerModel(model) || isConcatModel(model)) {
@@ -25,7 +24,7 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
   }
 
   const projection = component.combine();
-  const {name, ...rest} = projection; // we need to extract name so that it is always present in the output and pass TS type validation
+  const {name} = projection; // we need to extract name so that it is always present in the output and pass TS type validation
 
   if (!component.data) {
     // generate custom projection, no automatic fitting
@@ -35,7 +34,7 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
         // translate to center by default
         ...{translate: {signal: '[width / 2, height / 2]'}},
         // parameters, overwrite default translate if specified
-        ...rest
+        ...projection
       }
     ];
   } else {
@@ -64,7 +63,7 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
         fit: {
           signal: fit.length > 1 ? `[${fit.join(', ')}]` : fit[0]
         },
-        ...rest
+        ...projection
       }
     ];
   }
