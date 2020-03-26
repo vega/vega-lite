@@ -134,7 +134,7 @@ describe('Mark: Text', () => {
     });
 
     it('should map to text without template', () => {
-      expect(props.text).toEqual({signal: `''+datum["Origin"]`});
+      expect(props.text).toEqual({signal: `isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"]`});
     });
   });
 
