@@ -357,7 +357,7 @@ function getProperty<K extends keyof AxisComponentProps>(
     case 'scale':
       return model.scaleName(channel) as AxisComponentProps[K];
     case 'gridScale':
-      return properties.gridScale(model, channel) as AxisComponentProps[K];
+      return undefined; // use the default scale instead of a grid scale
     case 'format': {
       // We don't include temporal field and custom format as we apply format in encode block
       if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) || isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef)) {

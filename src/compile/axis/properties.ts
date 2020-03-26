@@ -23,14 +23,6 @@ export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string
   return !hasDiscreteDomain(scaleType) && !isBinning(fieldDef?.bin);
 }
 
-export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
-  const gridChannel: PositionScaleChannel = channel === 'x' ? 'y' : 'x';
-  if (model.getScaleComponent(gridChannel)) {
-    return model.scaleName(gridChannel);
-  }
-  return undefined;
-}
-
 export function labelAngle(
   model: UnitModel,
   specifiedAxis: Axis,
