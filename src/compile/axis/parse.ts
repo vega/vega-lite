@@ -425,7 +425,7 @@ function getProperty<K extends keyof AxisComponentProps>(
       const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
       return getFirstDefined<number | SignalRef>(
         specifiedAxis.tickCount,
-        properties.defaultTickCount({fieldOrDatumDef, scaleType, size})
+        properties.defaultTickCount({fieldOrDatumDef, scaleType, size, values: specifiedAxis.values})
       ) as AxisComponentProps[K];
     }
     case 'title': {

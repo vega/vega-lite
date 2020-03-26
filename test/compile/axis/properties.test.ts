@@ -34,13 +34,23 @@ describe('compile/axis', () => {
   });
 
   describe('defaultTickCount()', () => {
-    it('should return undefined by default for a binned field', () => {
+    it('should return size/10 by default for a binned field', () => {
       const tickCount = properties.defaultTickCount({
         fieldOrDatumDef: {bin: {maxbins: 10}, field: 'a', type: 'quantitative'},
         scaleType: 'linear',
         size: {signal: 'a'}
       });
       expect(tickCount).toEqual({signal: 'ceil(a/10)'});
+    });
+
+    it('should return undefined if values is specified', () => {
+      const tickCount = properties.defaultTickCount({
+        fieldOrDatumDef: {bin: {maxbins: 10}, field: 'a', type: 'quantitative'},
+        scaleType: 'linear',
+        size: {signal: 'a'},
+        values: [1, 2, 3]
+      });
+      expect(tickCount).toBeUndefined();
     });
 
     for (const timeUnit of ['month', 'hours', 'day', 'quarter'] as TimeUnit[]) {
