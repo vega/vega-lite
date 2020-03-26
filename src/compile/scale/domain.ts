@@ -280,7 +280,7 @@ function parseSingleChannelDomain(
 
   if (isDatumDef(fieldOrDatumDef)) {
     const d = convertDomainIfItIsDateTime([fieldOrDatumDef.datum], type, timeUnit);
-    return makeImplicit([d as VgNonUnionDomain]);
+    return makeImplicit(d);
   }
 
   const fieldDef = fieldOrDatumDef; // now we can be sure it's a fieldDef
