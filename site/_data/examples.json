@@ -566,7 +566,7 @@
       },
       {
         "name": "trellis_scatter",
-        "title": "Trellis Scatter Plot",
+        "title": "Trellis Scatter Plot (wrapped)",
         "png": true
       },
       {
@@ -592,6 +592,10 @@
       {
         "name": "area_density_facet",
         "title": "Faceted Density Plot"
+      },
+      {
+        "name": "facet_grid_bar",
+        "title": "Compact Trellis Grid of Bar Charts"
       }
     ],
     "Repeat & Concatenation": [

@@ -4,7 +4,14 @@ import {Encoding} from '../encoding';
 import {AnyMark, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {SelectionDef} from '../selection';
-import {BaseSpec, BoundsMixins, DataMixins, DeprecatedFrameMixins, FrameMixins, ResolveMixins} from './base';
+import {
+  BaseSpec,
+  DataMixins,
+  DeprecatedFrameMixins,
+  FrameMixins,
+  GenericCompositionLayout,
+  ResolveMixins
+} from './base';
 import {TopLevel} from './toplevel';
 
 /**
@@ -51,7 +58,7 @@ export type UnitSpecWithFrame = GenericUnitSpec<CompositeEncoding, AnyMark> & Fr
  */
 export type FacetedUnitSpec = GenericUnitSpec<FacetedCompositeEncoding, AnyMark> &
   ResolveMixins &
-  BoundsMixins &
+  GenericCompositionLayout &
   FrameMixins;
 
 export type TopLevelUnitSpec = TopLevel<FacetedUnitSpec> & DataMixins;
