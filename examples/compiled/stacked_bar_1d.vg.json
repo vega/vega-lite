@@ -33,7 +33,6 @@
       ]
     }
   ],
-  "signals": [{"name": "height", "update": "height"}],
   "marks": [
     {
       "name": "marks",
