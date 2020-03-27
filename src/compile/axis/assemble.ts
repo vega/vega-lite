@@ -189,6 +189,8 @@ export function assembleAxis(
  */
 export function assembleAxisSignals(model: Model): NewSignal[] {
   const {axes} = model.component;
+  const signals: NewSignal[] = [];
+
   for (const channel of POSITION_SCALE_CHANNELS) {
     if (axes[channel]) {
       for (const axis of axes[channel]) {
@@ -196,17 +198,19 @@ export function assembleAxisSignals(model: Model): NewSignal[] {
           // If there is x-axis but no y-scale for gridScale, need to set height/weight so x-axis can draw the grid with the right height. Same for y-axis and width.
 
           const sizeType = channel === 'x' ? 'height' : 'width';
-          return [
-            {
+          const update = model.getSizeSignalRef(sizeType).signal;
+
+          if (sizeType !== update) {
+            signals.push({
               name: sizeType,
-              update: model.getSizeSignalRef(sizeType).signal
-            }
-          ];
+              update: update
+            });
+          }
         }
       }
     }
   }
-  return [];
+  return signals;
 }
 
 export function assembleAxes(axisComponents: AxisComponentIndex, config: Config): VgAxis[] {

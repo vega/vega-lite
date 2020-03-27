@@ -18,7 +18,6 @@
       ]
     }
   ],
-  "signals": [{"name": "width", "update": "width"}],
   "marks": [
     {
       "name": "marks",
