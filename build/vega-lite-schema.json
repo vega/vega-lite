@@ -6785,6 +6785,17 @@
       "additionalProperties": false,
       "description": "Unit spec that can have a composite mark and row or column channels (shorthand for a facet spec).",
       "properties": {
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<LayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
         "bounds": {
           "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used.\n- If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
           "enum": [
@@ -6792,6 +6803,17 @@
             "flush"
           ],
           "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "data": {
           "anyOf": [
@@ -6851,6 +6873,17 @@
           },
           "description": "A key-value mapping between selection names and definitions.",
           "type": "object"
+        },
+        "spacing": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/RowCol<number>"
+            }
+          ],
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "title": {
           "anyOf": [
@@ -17726,6 +17759,17 @@
           "format": "uri",
           "type": "string"
         },
+        "align": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LayoutAlign"
+            },
+            {
+              "$ref": "#/definitions/RowCol<LayoutAlign>"
+            }
+          ],
+          "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
         "autosize": {
           "anyOf": [
             {
@@ -17748,6 +17792,17 @@
             "flush"
           ],
           "type": "string"
+        },
+        "center": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/RowCol<boolean>"
+            }
+          ],
+          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
         },
         "config": {
           "$ref": "#/definitions/Config",
@@ -17819,6 +17874,17 @@
           },
           "description": "A key-value mapping between selection names and definitions.",
           "type": "object"
+        },
+        "spacing": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/RowCol<number>"
+            }
+          ],
+          "description": "The spacing in pixels between sub-views of the composition operator.\nAn object of the form `{\"row\": number, \"column\": number}` can be used to set\ndifferent spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "title": {
           "anyOf": [
