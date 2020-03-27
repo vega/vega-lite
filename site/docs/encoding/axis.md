@@ -84,6 +84,8 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 {% include table.html props="ticks,tickBand,tickColor,tickCount,tickDash,tickExtra,tickMinStep,tickOffset,tickOpacity,tickRound,tickSize,tickWidth,values" source="Axis" %}
 
+#### Example: Using Axis `tickBand` to Show Grid Between Marks
+
 Using `tickBand`, we can change the axis ticks and gridlines to be drawn between marks.
 
 <div class="vl-example" data-name="tick_strip_tick_band"></div>
@@ -93,6 +95,8 @@ Using `tickBand`, we can change the axis ticks and gridlines to be drawn between
 ### Title
 
 {% include table.html props="title,titleAlign,titleAnchor,titleAngle,titleBaseline,titleColor,titleFont,titleFontSize,titleFontStyle,titleFontWeight,titleLimit,titleLineHeight,titleOpacity,titlePadding,titleX,titleY" source="Axis" %}
+
+#### Example: Customize Title
 
 For example, the following plot has a customized x-axis title.
 
