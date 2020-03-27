@@ -10,7 +10,7 @@ import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeToExpr, isDateTime} from './datetime';
 import {Encoding} from './encoding';
-import {FormatMixins, Guide, GuideEncodingConditonalValueDef, TitleMixins} from './guide';
+import {FormatMixins, Guide, GuideEncodingConditionalValueDef, TitleMixins} from './guide';
 import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
@@ -543,7 +543,7 @@ export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F,
 export type FieldDef<F extends Field, T extends Type = any> = SecondaryFieldDef<F> | TypedFieldDef<F, T>;
 export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>];
 
-export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingConditonalValueDef>(
+export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingConditionalValueDef>(
   channelDef: CD
 ): channelDef is CD & {condition: Conditional<any>} {
   return !!channelDef && !!channelDef['condition'];
