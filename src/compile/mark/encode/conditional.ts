@@ -6,7 +6,7 @@ import {
   isConditionalDef,
   isConditionalSelection
 } from '../../../channeldef';
-import {GuideEncodingConditonalValueDef} from '../../../guide';
+import {GuideEncodingConditionalValueDef} from '../../../guide';
 import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {expression} from '../../predicate';
 import {parseSelectionPredicate} from '../../selection/parse';
@@ -16,7 +16,7 @@ import {UnitModel} from '../../unit';
  * Return a mixin that includes a Vega production rule for a Vega-Lite conditional channel definition.
  * or a simple mixin if channel def has no condition.
  */
-export function wrapCondition<CD extends ChannelDef | GuideEncodingConditonalValueDef>(
+export function wrapCondition<CD extends ChannelDef | GuideEncodingConditionalValueDef>(
   model: UnitModel,
   channelDef: CD,
   vgChannel: string,
