@@ -108,11 +108,17 @@ Here are examples of row-facet and wrapped facet plots that use encoding to spec
 
 {:#row-encoding}
 
-#### Row-Facet (with Row Encoding)
+#### Row Facet (with Row Encoding)
 
 <span class="vl-example" data-name="trellis_bar_histogram"></span>
 
 Under the hood, Vega-Lite translates this spec with `"row"` channel to the more flexible [specs with the facet operator above](#row-full).
+
+#### Grid Facet (with Row and column Encoding)
+
+Using both `"row"` and `"column"` channels produce a grid of small multiples.
+
+<span class="vl-example" data-name="facet_grid_bar"></span>
 
 {:#facet-encoding}
 
