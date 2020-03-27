@@ -431,12 +431,6 @@ describe('Axis', () => {
     globalRuleOverlay.parseLayoutSize();
     parseLayerAxes(globalRuleOverlay);
 
-    it('correctly merges scale if one layer does not have one of the axis', () => {
-      const axisComponents = globalRuleOverlay.component.axes;
-      expect(axisComponents.y.length).toEqual(1);
-      expect(axisComponents.y[0].get('scale')).toBe('y');
-    });
-
     it('correctly merges similar title', () => {
       const axisComponents = globalRuleOverlay.component.axes;
       expect(axisComponents.y[0].get('title')).toEqual([{aggregate: 'mean', field: 'a'}]);
