@@ -1,9 +1,8 @@
-import {AxisEncode as VgAxisEncode, AxisOrient, ScaleType, SignalRef, Text} from 'vega';
+import {AxisEncode as VgAxisEncode, AxisOrient, ScaleType, SignalRef} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
 import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
 import {
-  FieldDefBase,
   getFieldOrDatumDef,
   isFieldDef,
   isFieldDefWithCustomTimeFormat as isFieldOrDatumDefWithCustomTimeFormat,
@@ -384,24 +383,23 @@ function getProperty<K extends keyof AxisComponentProps>(
       }
     }
     case 'labelAlign': {
-      const orient = getFirstDefined(specifiedAxis.orient, properties.orient(channel));
-      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes);
-      return getFirstDefined(
-        specifiedAxis.labelAlign,
-        properties.defaultLabelAlign(labelAngle, orient)
-      ) as AxisComponentProps[K];
+      const orient = specifiedAxis.orient ?? properties.orient(channel);
+      return (specifiedAxis.labelAlign ??
+        properties.defaultLabelAlign(
+          properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes),
+          orient
+        )) as AxisComponentProps[K];
     }
     case 'labelAngle': {
       const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes);
       return labelAngle as AxisComponentProps[K];
     }
     case 'labelBaseline': {
-      const orient = getFirstDefined(specifiedAxis.orient, properties.orient(channel));
-      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes);
-      return getFirstDefined(
-        specifiedAxis.labelBaseline,
-        properties.defaultLabelBaseline(labelAngle, orient)
-      ) as AxisComponentProps[K];
+      return (specifiedAxis.labelBaseline ??
+        properties.defaultLabelBaseline(
+          properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes),
+          specifiedAxis.orient ?? properties.orient(channel)
+        )) as AxisComponentProps[K];
     }
     case 'labelFlush':
       return getFirstDefined(
@@ -429,18 +427,21 @@ function getProperty<K extends keyof AxisComponentProps>(
       ) as AxisComponentProps[K];
     }
     case 'title': {
+      if (specifiedAxis.title !== undefined) {
+        return specifiedAxis.title as AxisComponentProps[K];
+      }
+      const fieldDefTitle = getFieldDefTitle(model, channel);
+      if (fieldDefTitle !== undefined) {
+        return fieldDefTitle as AxisComponentProps[K];
+      }
       const fieldDef = model.typedFieldDef(channel);
       const channel2 = channel === 'x' ? 'x2' : 'y2';
       const fieldDef2 = model.fieldDef(channel2);
-      // Keep undefined so we use default if title is unspecified.
-      // For other falsy value, keep them so we will hide the title.
-      return getFirstDefined<Text | SignalRef | FieldDefBase<string>[]>(
-        specifiedAxis.title,
-        getFieldDefTitle(model, channel), // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
-        mergeTitleFieldDefs(
-          fieldDef ? [toFieldDefBase(fieldDef)] : [],
-          isFieldDef(fieldDef2) ? [toFieldDefBase(fieldDef2)] : []
-        )
+
+      // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
+      return mergeTitleFieldDefs(
+        fieldDef ? [toFieldDefBase(fieldDef)] : [],
+        isFieldDef(fieldDef2) ? [toFieldDefBase(fieldDef2)] : []
       ) as AxisComponentProps[K];
     }
     case 'values':
