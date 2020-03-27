@@ -2,12 +2,13 @@ import {isBinned, isBinning} from '../../../bin';
 import {getBand, isFieldDef} from '../../../channeldef';
 import {hasDiscreteDomain} from '../../../scale';
 import {VgEncodeChannel, VgValueRef} from '../../../vega.schema';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
 import {getOffset} from './offset';
 import {positionRef} from './position-point';
 import {position2Ref} from './position-range';
 import {rectBinPosition} from './position-rect';
-import {getValueFromMarkDefAndConfig, MidPointParams} from './valueref';
+import {MidPointParams} from './valueref';
 
 // This method is a simpler version of position-range, as we don't have to deal with lat/long and the fight between x2 and width (or y2 and height) here.
 export function arcRangePosition(
@@ -68,24 +69,19 @@ export function arcRangePosition(
     defaultRef: undefined // defining below
   };
 
-  const defaultValue = getValueFromMarkDefAndConfig({channel, vgChannel, markDef, config});
+  const defaultValue = getMarkPropOrConfig(channel, markDef, config, {vgChannel});
 
-  const defaultValue2 = getValueFromMarkDefAndConfig({
-    channel: channel2,
-    vgChannel: vgChannel2,
-    markDef,
-    config
-  });
+  const defaultValue2 = getMarkPropOrConfig(channel2, markDef, config, {vgChannel: vgChannel2});
 
   return {
     [vgChannel]: positionRef({
       ...sharedParams,
-      defaultRef: defaultValue ? {value: defaultValue} : defaultRef
+      defaultRef: defaultValue ? signalOrValueRef(defaultValue) : defaultRef
     }),
     [vgChannel2]: position2Ref({
       ...sharedParams,
       channel: channel2,
-      defaultRef: {value: defaultValue2 ?? 0}
+      defaultRef: signalOrValueRef(defaultValue2 ?? 0)
     })
   };
 }
@@ -93,7 +89,7 @@ export function arcRangePosition(
 export function arcPointPosition(channel: 'radius' | 'theta', model: UnitModel) {
   const {encoding, markDef, stack, config} = model;
 
-  const defaultValue = getValueFromMarkDefAndConfig({channel, markDef, config});
+  const defaultValue = getMarkPropOrConfig(channel, markDef, config);
 
   const ref = positionRef({
     channel,
@@ -105,7 +101,7 @@ export function arcPointPosition(channel: 'radius' | 'theta', model: UnitModel) 
     scale: model.getScaleComponent(channel),
     stack,
     offset: getOffset(channel, markDef),
-    defaultRef: defaultValue ? {value: defaultValue} : undefined
+    defaultRef: defaultValue ? signalOrValueRef(defaultValue) : undefined
   });
 
   return ref ? {[channel]: ref} : {};

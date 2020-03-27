@@ -2,7 +2,7 @@ import {SignalRef} from 'vega';
 import {NonPositionScaleChannel} from '../../../channel';
 import {ValueOrGradient} from '../../../channeldef';
 import {VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {signalOrValueRef} from '../../common';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
 import {wrapCondition} from './conditional';
 import * as ref from './valueref';
@@ -25,7 +25,7 @@ export function nonPosition(
 
   if (defaultRef === undefined) {
     // prettier-ignore
-    defaultValue = defaultValue ?? ref.getValueFromMarkDefAndConfig({channel, vgChannel, markDef, config});
+    defaultValue = defaultValue ?? getMarkPropOrConfig(channel, markDef, config, {vgChannel, ignoreVgConfig: true});
 
     if (defaultValue !== undefined) {
       defaultRef = signalOrValueRef(defaultValue);

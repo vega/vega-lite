@@ -1,12 +1,11 @@
+import {FilterTransform as VgFilterTransform} from 'vega';
 import {isScaleChannel} from '../../channel';
-import {vgField as fieldRef} from '../../channeldef';
+import {TypedFieldDef, vgField as fieldRef} from '../../channeldef';
 import {isPathMark} from '../../mark';
 import {hasContinuousDomain} from '../../scale';
 import {Dict, hash, keys} from '../../util';
-import {FilterTransform as VgFilterTransform} from 'vega';
 import {getMarkPropOrConfig} from '../common';
 import {UnitModel} from '../unit';
-import {TypedFieldDef} from '../../channeldef';
 import {DataFlowNode} from './dataflow';
 
 export class FilterInvalidNode extends DataFlowNode {

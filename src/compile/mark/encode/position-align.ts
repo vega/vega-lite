@@ -1,9 +1,8 @@
 import {Align} from 'vega';
 import {Config} from '../../../config';
 import {MarkDef} from '../../../mark';
-import {getFirstDefined} from '../../../util';
 import {VgEncodeChannel} from '../../../vega.schema';
-import {getMarkConfig} from '../../common';
+import {getMarkPropOrConfig} from '../../common';
 
 const ALIGNED_X_CHANNEL: Record<Align, VgEncodeChannel> = {
   left: 'x',
@@ -19,7 +18,7 @@ const BASELINED_Y_CHANNEL = {
 
 export function alignedPositionChannel(channel: 'x' | 'y', markDef: MarkDef, config: Config) {
   const alignChannel = channel === 'x' ? 'align' : 'baseline';
-  const align = getFirstDefined(markDef[alignChannel], getMarkConfig(alignChannel, markDef, config));
+  const align = getMarkPropOrConfig(alignChannel, markDef, config);
   if (channel === 'x') {
     return ALIGNED_X_CHANNEL[align ?? 'center'];
   } else {

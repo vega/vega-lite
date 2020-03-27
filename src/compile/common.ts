@@ -3,11 +3,11 @@ import {array} from 'vega-util';
 import {Axis} from '../axis';
 import {FieldDefBase, FieldRefOption, OrderFieldDef, vgField} from '../channeldef';
 import {Config, StyleConfigIndex} from '../config';
-import {AnyMarkConfig, MarkConfig, MarkDef} from '../mark';
+import {MarkConfig, MarkDef} from '../mark';
 import {SortFields} from '../sort';
 import {isText} from '../title';
 import {deepEqual, getFirstDefined} from '../util';
-import {isSignalRef, VgEncodeEntry} from '../vega.schema';
+import {isSignalRef, VgEncodeChannel, VgEncodeEntry} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
@@ -18,7 +18,7 @@ export function signalOrValueRef<T>(value: T | SignalRef): {value: T} | SignalRe
   if (isSignalRef(value)) {
     return value;
   }
-  return {value};
+  return value !== undefined ? {value} : undefined;
 }
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {
@@ -35,34 +35,53 @@ export function getStyles(mark: MarkDef): string[] {
   return [].concat(mark.type, mark.style ?? []);
 }
 
-export function getMarkPropOrConfig<P extends keyof MarkConfig>(channel: P, mark: MarkDef, config: Config) {
-  return getFirstDefined(mark[channel], getMarkConfig(channel, mark, config));
+export function getMarkPropOrConfig<P extends keyof MarkDef>(
+  channel: P,
+  mark: MarkDef,
+  config: Config,
+  opt: {
+    vgChannel?: VgEncodeChannel;
+    ignoreVgConfig?: boolean;
+  } = {} // Note: Ham: I use `any` here like in getMarkConfig below
+): MarkDef[P] {
+  const {vgChannel, ignoreVgConfig} = opt;
+  if (vgChannel && mark[vgChannel] !== undefined) {
+    return mark[vgChannel];
+  } else if (mark[channel] !== undefined) {
+    return mark[channel];
+  } else if (ignoreVgConfig && (!vgChannel || vgChannel === channel)) {
+    return undefined;
+  }
+
+  return getMarkConfig(channel, mark, config, opt);
 }
 
 /**
  * Return property value from style or mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
-export function getMarkConfig<P extends keyof MarkConfig>(
+export function getMarkConfig<P extends keyof MarkDef>(
   channel: P,
   mark: MarkDef,
   config: Config,
   {vgChannel}: {vgChannel?: any} = {} // Note: Ham: I use `any` here as it's too hard to make TS knows that MarkConfig[vgChannel] would have the same type as MarkConfig[P]
-): MarkConfig[P] {
-  return getFirstDefined(
+): MarkDef[P] {
+  return getFirstDefined<MarkDef[P]>(
     // style config has highest precedence
     vgChannel ? getMarkStyleConfig(channel, mark, config.style) : undefined,
     getMarkStyleConfig(channel, mark, config.style),
     // then mark-specific config
     vgChannel ? config[mark.type][vgChannel] : undefined,
-    config[mark.type][channel],
+
+    config[mark.type][channel as any], // Need to cast because MarkDef isn't 100% match with AnyMarkConfig, but if the type isn't available, we'll get nothing here, which is fine
+
     // If there is vgChannel, skip vl channel.
     // For example, vl size for text is vg fontSize, but config.mark.size is only for point size.
-    vgChannel ? config.mark[vgChannel] : config.mark[channel]
+    vgChannel ? config.mark[vgChannel] : config.mark[channel as any] // Need to cast for the same reason above
   );
 }
 
-export function getMarkStyleConfig<P extends keyof AnyMarkConfig>(
+export function getMarkStyleConfig<P extends keyof MarkDef>(
   prop: P,
   mark: MarkDef,
   styleConfigIndex: StyleConfigIndex
@@ -70,7 +89,7 @@ export function getMarkStyleConfig<P extends keyof AnyMarkConfig>(
   return getStyleConfig(prop, getStyles(mark), styleConfigIndex);
 }
 
-export function getStyleConfig<P extends keyof AnyMarkConfig | keyof Axis>(
+export function getStyleConfig<P extends keyof MarkDef | keyof Axis>(
   p: P,
   styles: string | string[],
   styleConfigIndex: StyleConfigIndex

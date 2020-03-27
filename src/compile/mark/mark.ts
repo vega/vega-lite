@@ -6,7 +6,7 @@ import {AREA, BAR, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortByEncoding, isSortField} from '../../sort';
 import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../util';
 import {VgCompare, VgEncodeEntry, VG_CORNERRADIUS_CHANNELS} from '../../vega.schema';
-import {getMarkConfig, getStyles, sortParams} from '../common';
+import {getMarkConfig, getMarkPropOrConfig, getStyles, sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {arc} from './arc';
 import {area} from './area';
@@ -96,9 +96,7 @@ const STACK_GROUP_PREFIX = 'stack_group_';
  */
 function getStackGroups(model: UnitModel) {
   // Don't use nested groups when cornerRadius is not specified, or specified as 0
-  const hasCornerRadius = VG_CORNERRADIUS_CHANNELS.some(
-    prop => model.markDef[prop] || getMarkConfig(prop, model.markDef, model.config)
-  );
+  const hasCornerRadius = VG_CORNERRADIUS_CHANNELS.some(prop => getMarkPropOrConfig(prop, model.markDef, model.config));
 
   // Activate groups if stack is used and the model doesn't have size encoding
   if (model.stack && !model.fieldDef('size') && hasCornerRadius) {
@@ -162,7 +160,7 @@ function getStackGroups(model: UnitModel) {
 
     // Deal with cornerRadius properties
     for (const key of VG_CORNERRADIUS_CHANNELS) {
-      const configValue = getMarkConfig(key, model.markDef, model.config);
+      const configValue = getMarkPropOrConfig(key, model.markDef, model.config);
       // Move from mark to group
       if (mark.encode.update[key]) {
         groupUpdate[key] = mark.encode.update[key];
@@ -256,8 +254,7 @@ export function getSort(model: UnitModel): VgCompare {
   const order = encoding.order;
   if (
     (!isArray(order) && isValueDef(order) && isNullOrFalse(order.value)) ||
-    (!order && isNullOrFalse(markDef.order)) ||
-    isNullOrFalse(getMarkConfig('order', markDef, config))
+    (!order && isNullOrFalse(getMarkPropOrConfig('order', markDef, config)))
   ) {
     return undefined;
   } else if ((isArray(order) || isFieldDef(order)) && !stack) {
