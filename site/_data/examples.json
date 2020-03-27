@@ -237,7 +237,7 @@
       {
         "name": "line_conditional_axis",
         "title": "Line Chart with Conditional Axis Properties",
-        "style": "background-size: auto 105%; background-position: center center !important;"
+        "style": "background-size: auto 105%"
       },
       {
         "name": "connected_scatterplot",

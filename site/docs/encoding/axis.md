@@ -84,6 +84,10 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 {% include table.html props="ticks,tickBand,tickColor,tickCount,tickDash,tickExtra,tickMinStep,tickOffset,tickOpacity,tickRound,tickSize,tickWidth,values" source="Axis" %}
 
+Using `tickBand`, we can change the axis ticks and gridlines to be drawn between marks.
+
+<div class="vl-example" data-name="tick_strip_tick_band"></div>
+
 {:#title}
 
 ### Title
