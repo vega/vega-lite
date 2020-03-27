@@ -195,12 +195,12 @@ export function assembleAxisSignals(model: Model): NewSignal[] {
     if (axes[channel]) {
       for (const axis of axes[channel]) {
         if (!axis.get('gridScale')) {
-          // If there is x-axis but no y-scale for gridScale, need to set height/weight so x-axis can draw the grid with the right height. Same for y-axis and width.
+          // If there is x-axis but no y-scale for gridScale, need to set height/width so x-axis can draw the grid with the right height. Same for y-axis and width.
 
           const sizeType = channel === 'x' ? 'height' : 'width';
           const update = model.getSizeSignalRef(sizeType).signal;
 
-          if (sizeType !== update) {
+          if (sizeType !== update && update.indexOf('datum') === -1) {
             signals.push({
               name: sizeType,
               update: update
