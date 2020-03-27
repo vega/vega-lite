@@ -112,6 +112,30 @@
     {
       "scale": "x",
       "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 1
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 1
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
       "grid": false,
       "title": "Cylinders",
       "labelAlign": "right",
@@ -138,5 +162,8 @@
       "symbolType": "square"
     }
   ],
-  "config": {"style": {"text": {"baseline": "middle"}}}
+  "config": {
+    "axis": {"grid": true, "tickBand": "extent"},
+    "style": {"text": {"baseline": "middle"}}
+  }
 }
