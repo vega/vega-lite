@@ -23,8 +23,7 @@
               "aggregate": {"argmax": "date"},
               "field": "price",
               "type": "quantitative"
-            },
-            "text": {"field": "symbol", "type": "nominal"}
+            }
           }
         },
         {
