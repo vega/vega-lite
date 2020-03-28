@@ -1,4 +1,5 @@
 import {AxisOrient} from 'vega';
+import {isArray} from 'vega-util';
 import {FacetChannel, FACET_CHANNELS} from '../../channel';
 import {title as fieldDefTitle} from '../../channeldef';
 import {contains, getFirstDefined} from '../../util';
@@ -7,7 +8,6 @@ import {FacetModel} from '../facet';
 import {parseGuideResolve} from '../resolve';
 import {getHeaderProperty} from './common';
 import {HeaderChannel, HeaderComponent} from './component';
-import {isArray} from 'vega-util';
 
 export function getHeaderType(orient: AxisOrient) {
   if (orient === 'top' || orient === 'left') {
@@ -26,30 +26,31 @@ export function parseFacetHeaders(model: FacetModel) {
 }
 
 function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
+  const {facet, config, child, component} = model;
   if (model.channelHasField(channel)) {
-    const fieldDef = model.facet[channel];
-    const titleConfig = getHeaderProperty('title', null, model.config, channel);
-    let title = fieldDefTitle(fieldDef, model.config, {
+    const fieldDef = facet[channel];
+    const titleConfig = getHeaderProperty('title', null, config, channel);
+    let title = fieldDefTitle(fieldDef, config, {
       allowDisabling: true,
       includeDefault: titleConfig === undefined || !!titleConfig
     });
 
-    if (model.child.component.layoutHeaders[channel].title) {
+    if (child.component.layoutHeaders[channel].title) {
       // TODO: better handle multiline titles
       title = isArray(title) ? title.join(', ') : title;
 
       // merge title with child to produce "Title / Subtitle / Sub-subtitle"
-      title += ' / ' + model.child.component.layoutHeaders[channel].title;
-      model.child.component.layoutHeaders[channel].title = null;
+      title += ' / ' + child.component.layoutHeaders[channel].title;
+      child.component.layoutHeaders[channel].title = null;
     }
 
-    const labelOrient = getHeaderProperty('labelOrient', fieldDef, model.config, channel);
+    const labelOrient = getHeaderProperty('labelOrient', fieldDef, config, channel);
 
     const header = fieldDef.header ?? {};
-    const labels = getFirstDefined(header.labels, true);
+    const labels = getFirstDefined(header.labels, config.header.labels, true);
     const headerType = contains(['bottom', 'right'], labelOrient) ? 'footer' : 'header';
 
-    model.component.layoutHeaders[channel] = {
+    component.layoutHeaders[channel] = {
       title,
       facetFieldDef: fieldDef,
       [headerType]: channel === 'facet' ? [] : [makeHeaderComponent(model, channel, labels)]
