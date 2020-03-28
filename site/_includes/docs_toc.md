@@ -223,6 +223,8 @@
     - [Condition]({{site.baseurl}}/docs/condition.html)
         - [Conditional Field Definition]({{site.baseurl}}/docs/condition.html#field)
         - [Conditional Value Definition]({{site.baseurl}}/docs/condition.html#value)
+    - [Datum]({{site.baseurl}}/docs/datum.html)
+        - [Examples]({{site.baseurl}}/docs/datum.html#examples)
     - [Field]({{site.baseurl}}/docs/field.html)
     - [Format]({{site.baseurl}}/docs/format.html)
         - [Formatting Text Marks and Tooltips]({{site.baseurl}}/docs/format.html#formatting-text-marks-and-tooltips)
