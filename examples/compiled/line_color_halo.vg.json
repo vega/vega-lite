@@ -1,0 +1,275 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Multi-series Line Chart with Halo. Use pivot and repeat-layer as a workaround to facet groups of lines and their halo strokes. See https://github.com/vega/vega-lite/issues/6192 for more discussion.",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv"},
+      "transform": [
+        {
+          "type": "pivot",
+          "field": "symbol",
+          "value": "price",
+          "groupby": ["date"]
+        },
+        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"}
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "child__layer_AAPL_layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"date\"]"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 4},
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "AAPL"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"AAPL\"]) && isFinite(+datum[\"AAPL\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "child__layer_AAPL_layer_1_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"date\"]"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"scale": "stroke", "value": "AAPL"},
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "AAPL"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"AAPL\"]) && isFinite(+datum[\"AAPL\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "child__layer_AMZN_layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"date\"]"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 4},
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "AMZN"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"AMZN\"]) && isFinite(+datum[\"AMZN\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "child__layer_AMZN_layer_1_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"date\"]"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"scale": "stroke", "value": "AMZN"},
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "AMZN"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"AMZN\"]) && isFinite(+datum[\"AMZN\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "child__layer_GOOG_layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"date\"]"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 4},
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "GOOG"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"GOOG\"]) && isFinite(+datum[\"GOOG\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "child__layer_GOOG_layer_1_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"date\"]"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"scale": "stroke", "value": "GOOG"},
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "GOOG"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"GOOG\"]) && isFinite(+datum[\"GOOG\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "child__layer_IBM_layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"date\"]"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 4},
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "IBM"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"IBM\"]) && isFinite(+datum[\"IBM\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "child__layer_IBM_layer_1_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"date\"]"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"scale": "stroke", "value": "IBM"},
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "IBM"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"IBM\"]) && isFinite(+datum[\"IBM\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "child__layer_MSFT_layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"date\"]"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "white"},
+          "strokeWidth": {"value": 4},
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "MSFT"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"MSFT\"]) && isFinite(+datum[\"MSFT\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "child__layer_MSFT_layer_1_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": "datum[\"date\"]"},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"scale": "stroke", "value": "MSFT"},
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "MSFT"},
+          "defined": {
+            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"MSFT\"]) && isFinite(+datum[\"MSFT\"])"
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "field": "date"},
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["AAPL", "AMZN", "GOOG", "IBM", "MSFT"]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "stroke",
+      "type": "ordinal",
+      "domain": {"fields": [["AAPL"], ["AMZN"], ["GOOG"], ["IBM"], ["MSFT"]]},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [{"stroke": "stroke", "symbolType": "stroke"}]
+}
