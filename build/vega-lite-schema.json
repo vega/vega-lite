@@ -2734,8 +2734,8 @@
     "ColorGradientFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>"
     },
-    "ColorGradientValueWithCondition": {
-      "$ref": "#/definitions/ValueWithCondition<MarkPropFieldOrDatumDef,(Gradient|string|null)>"
+    "ColorGradientValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,(Gradient|string|null)>"
     },
     "ColorName": {
       "enum": [
@@ -2935,7 +2935,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -2963,7 +2963,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -2977,7 +2977,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueWithCondition"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
@@ -2988,7 +2988,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueWithCondition"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "A URL to load upon mouse click."
@@ -3062,7 +3062,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueWithCondition"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
@@ -3093,7 +3093,7 @@
               "$ref": "#/definitions/StringDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ShapeValueWithCondition"
+              "$ref": "#/definitions/ShapeValueDefWithCondition"
             }
           ],
           "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:\n   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   - the line symbol `\"stroke\"`\n   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
@@ -3107,7 +3107,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueWithCondition"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
@@ -3121,7 +3121,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -3149,7 +3149,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueWithCondition"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
@@ -3163,7 +3163,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueWithCondition"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
@@ -3174,7 +3174,7 @@
               "$ref": "#/definitions/TextFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/TextValueWithCondition"
+              "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
           "description": "Text of the `text` mark."
@@ -3185,7 +3185,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueWithCondition"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             },
             {
               "items": {
@@ -3205,7 +3205,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueWithCondition"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "The URL of an image mark."
@@ -6451,7 +6451,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -6487,7 +6487,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -6501,7 +6501,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueWithCondition"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
@@ -6512,7 +6512,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueWithCondition"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "A URL to load upon mouse click."
@@ -6586,7 +6586,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueWithCondition"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
@@ -6621,7 +6621,7 @@
               "$ref": "#/definitions/StringDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ShapeValueWithCondition"
+              "$ref": "#/definitions/ShapeValueDefWithCondition"
             }
           ],
           "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:\n   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   - the line symbol `\"stroke\"`\n   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
@@ -6635,7 +6635,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueWithCondition"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
@@ -6649,7 +6649,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueWithCondition"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -6677,7 +6677,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueWithCondition"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
@@ -6691,7 +6691,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueWithCondition"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
@@ -6702,7 +6702,7 @@
               "$ref": "#/definitions/TextFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/TextValueWithCondition"
+              "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
           "description": "Text of the `text` mark."
@@ -6713,7 +6713,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueWithCondition"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             },
             {
               "items": {
@@ -6733,7 +6733,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueWithCondition"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "The URL of an image mark."
@@ -12888,8 +12888,8 @@
     "NumericFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<MarkPropFieldDef,number>"
     },
-    "NumericValueWithCondition": {
-      "$ref": "#/definitions/ValueWithCondition<MarkPropFieldOrDatumDef,number>"
+    "NumericValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,number>"
     },
     "OrderFieldDef": {
       "additionalProperties": false,
@@ -15540,8 +15540,8 @@
     "ShapeFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
     },
-    "ShapeValueWithCondition": {
-      "$ref": "#/definitions/StringValueWithCondition<TypeForShape>"
+    "ShapeValueDefWithCondition": {
+      "$ref": "#/definitions/StringValueDefWithCondition<TypeForShape>"
     },
     "SingleDefUnitChannel": {
       "enum": [
@@ -16110,11 +16110,11 @@
     "StringFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<StringFieldDef,string>"
     },
-    "StringValueWithCondition<TypeForShape>": {
-      "$ref": "#/definitions/ValueWithCondition<MarkPropFieldOrDatumDef<TypeForShape>,(string|null)>"
+    "StringValueDefWithCondition<TypeForShape>": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef<TypeForShape>,(string|null)>"
     },
-    "StringValueWithCondition": {
-      "$ref": "#/definitions/ValueWithCondition<MarkPropFieldOrDatumDef,(string|null)>"
+    "StringValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,(string|null)>"
     },
     "StyleConfigIndex": {
       "additionalProperties": {
@@ -16254,8 +16254,8 @@
     "TextFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<StringFieldDef,Text>"
     },
-    "TextValueWithCondition": {
-      "$ref": "#/definitions/ValueWithCondition<StringFieldDef,Text>"
+    "TextValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<StringFieldDef,Text>"
     },
     "TickConfig": {
       "additionalProperties": false,
@@ -18848,19 +18848,19 @@
         }
       ]
     },
-    "ValueWithCondition<MarkPropFieldOrDatumDef,(Gradient|string|null)>": {
+    "ValueDefWithCondition<MarkPropFieldOrDatumDef,(Gradient|string|null)>": {
       "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,(Gradient|string|null)>"
     },
-    "ValueWithCondition<MarkPropFieldOrDatumDef,(string|null)>": {
+    "ValueDefWithCondition<MarkPropFieldOrDatumDef,(string|null)>": {
       "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,(string|null)>"
     },
-    "ValueWithCondition<MarkPropFieldOrDatumDef,number>": {
+    "ValueDefWithCondition<MarkPropFieldOrDatumDef,number>": {
       "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,number>"
     },
-    "ValueWithCondition<MarkPropFieldOrDatumDef<TypeForShape>,(string|null)>": {
+    "ValueDefWithCondition<MarkPropFieldOrDatumDef<TypeForShape>,(string|null)>": {
       "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef<TypeForShape>,(string|null)>"
     },
-    "ValueWithCondition<StringFieldDef,Text>": {
+    "ValueDefWithCondition<StringFieldDef,Text>": {
       "$ref": "#/definitions/ValueDefWithCondition<StringFieldDef,Text>"
     },
     "Vector2<DateTime>": {

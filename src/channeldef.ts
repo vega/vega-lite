@@ -95,22 +95,22 @@ export type SignalRefWithCondition<
   condition?: Conditional<F> | ValueOrSignalCondition<V>;
 };
 
-export type ValueOrSignalWithCondition<
+export type ValueOrSignalDefWithCondition<
   F extends FieldDef<any> | DatumDef<any>,
   V extends ValueOrGradientOrText = Value
 > = ValueDefWithCondition<F, V> | SignalRefWithCondition<F, V>;
 
-export type StringValueOrSignalWithCondition<
+export type StringValueOrSignalDefWithCondition<
   F extends Field,
   T extends Type = StandardType
-> = ValueOrSignalWithCondition<MarkPropFieldOrDatumDef<F, T>, string | null>;
+> = ValueOrSignalDefWithCondition<MarkPropFieldOrDatumDef<F, T>, string | null>;
 
-export type ColorGradientValueOrSignalWithCondition<
+export type ColorGradientValueOrSignalDefWithCondition<
   F extends Field,
   T extends Type = StandardType
-> = ValueOrSignalWithCondition<MarkPropFieldOrDatumDef<F, T>, Gradient | string | null>;
+> = ValueOrSignalDefWithCondition<MarkPropFieldOrDatumDef<F, T>, Gradient | string | null>;
 
-export type NumericValueOrSignalWithCondition<F extends Field> = ValueOrSignalWithCondition<
+export type NumericValueOrSignalDefWithCondition<F extends Field> = ValueOrSignalDefWithCondition<
   MarkPropFieldOrDatumDef<F, StandardType>,
   number
 >;
@@ -121,9 +121,9 @@ export type NumericArrayValueDefWithCondition<F extends Field> = ValueDefWithCon
 
 export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
-export type ShapeValueOrSignalWithCondition<F extends Field> = StringValueOrSignalWithCondition<F, TypeForShape>;
+export type ShapeValueOrSignalDefWithCondition<F extends Field> = StringValueOrSignalDefWithCondition<F, TypeForShape>;
 
-export type TextValueOrSignalWithCondition<F extends Field> = ValueOrSignalWithCondition<StringFieldDef<F>, Text>;
+export type TextValueOrSignalDefWithCondition<F extends Field> = ValueOrSignalDefWithCondition<StringFieldDef<F>, Text>;
 
 export type Conditional<CD extends FieldDef<any> | DatumDef | ValueDef<any> | SignalRef> =
   | ConditionalPredicate<CD>
