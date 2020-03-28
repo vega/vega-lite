@@ -13,7 +13,7 @@ import {parseSelectionPredicate} from '../../selection/parse';
 import {UnitModel} from '../../unit';
 
 /**
- * Return a mixin that includes a Vega production rule for a Vega-Lite conditional channel definition.
+ * Return a mixin that includes a Vega production rule for a Vega-Lite conditional channel definition
  * or a simple mixin if channel def has no condition.
  */
 export function wrapCondition<CD extends ChannelDef | GuideEncodingConditionalValueDef>(

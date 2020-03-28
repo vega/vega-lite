@@ -39,7 +39,8 @@ import {
   X,
   X2,
   Y,
-  Y2
+  Y2,
+  ARIA_LABEL
 } from './channel';
 import {
   binRequiresRange,
@@ -320,6 +321,11 @@ export interface Encoding<F extends Field> {
    * The URL of an image mark.
    */
   url?: StringFieldDefWithCondition<F> | StringValueOrSignalDefWithCondition<F>;
+
+  /**
+   * A string that labels the axis group for accessibility.
+   */
+  ariaLabel?: StringFieldDefWithCondition<F> | StringValueOrSignalDefWithCondition<F>;
 
   /**
    * Order of the marks.
@@ -638,10 +644,11 @@ export function reduce<T, U extends Partial<Record<Channel, any>>>(
 export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): string[] {
   return keys(encoding).reduce((details, channel) => {
     switch (channel) {
-      // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, cursor should not cause lines to group
+      // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, aria label, cursor should not cause lines to group
       case X:
       case Y:
       case HREF:
+      case ARIA_LABEL:
       case URL:
       case X2:
       case Y2:

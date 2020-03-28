@@ -6,6 +6,7 @@ import {Dict, keys} from '../../../util';
 import {VgEncodeEntry, VgValueRef, VG_MARK_CONFIGS} from '../../../vega.schema';
 import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
+import {aria} from './aria';
 import {color} from './color';
 import {nonPosition} from './nonposition';
 import {text} from './text';
@@ -35,7 +36,8 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
     ...nonPosition('strokeWidth', model),
     ...nonPosition('strokeDash', model),
     ...tooltip(model),
-    ...text(model, 'href')
+    ...text(model, 'href'),
+    ...aria(model)
   };
 }
 
