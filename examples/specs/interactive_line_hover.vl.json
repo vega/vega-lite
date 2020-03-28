@@ -23,8 +23,8 @@
   },
   "layer": [{
     "encoding": {
-      "x": {"field": "date", "type": "temporal"},
-      "y": {"field": "price", "type": "quantitative"}
+      "x": {"field": "date", "type": "temporal", "title": "date"},
+      "y": {"field": "price", "type": "quantitative", "title": "price"}
     },
     "layer": [{
       "description": "transparent layer to make it easier to trigger selection",
