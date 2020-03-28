@@ -220,6 +220,10 @@
         "title": "Multi Series Line Chart"
       },
       {
+        "name": "line_color_halo",
+        "title": "Multi Series Line Chart with Halo Stroke"
+      },
+      {
         "name": "line_slope",
         "title": "Slope Graph",
         "style": "background-size: auto 105%; background-position: center center !important;"
