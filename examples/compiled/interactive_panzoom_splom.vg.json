@@ -127,6 +127,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "grid_Miles_per_Gallon",
           "on": [
@@ -269,7 +271,6 @@
         {
           "scale": "child__row_Horsepowercolumn_Miles_per_Gallon_x",
           "orient": "bottom",
-          "gridScale": "child__row_Horsepowercolumn_Miles_per_Gallon_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -282,7 +283,6 @@
         {
           "scale": "child__row_Horsepowercolumn_Miles_per_Gallon_y",
           "orient": "left",
-          "gridScale": "child__row_Horsepowercolumn_Miles_per_Gallon_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -325,6 +325,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "grid_Acceleration",
           "on": [
@@ -465,7 +467,6 @@
         {
           "scale": "child__row_Horsepowercolumn_Acceleration_x",
           "orient": "bottom",
-          "gridScale": "child__row_Horsepowercolumn_Acceleration_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -478,7 +479,6 @@
         {
           "scale": "child__row_Horsepowercolumn_Acceleration_y",
           "orient": "left",
-          "gridScale": "child__row_Horsepowercolumn_Acceleration_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -521,6 +521,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "grid_Horsepower",
           "on": [
@@ -640,7 +642,6 @@
         {
           "scale": "child__row_Horsepowercolumn_Horsepower_x",
           "orient": "bottom",
-          "gridScale": "child__row_Horsepowercolumn_Horsepower_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -653,7 +654,6 @@
         {
           "scale": "child__row_Horsepowercolumn_Horsepower_y",
           "orient": "left",
-          "gridScale": "child__row_Horsepowercolumn_Horsepower_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -696,6 +696,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "grid_Miles_per_Gallon",
           "on": [
@@ -838,7 +840,6 @@
         {
           "scale": "child__row_Accelerationcolumn_Miles_per_Gallon_x",
           "orient": "bottom",
-          "gridScale": "child__row_Accelerationcolumn_Miles_per_Gallon_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -851,7 +852,6 @@
         {
           "scale": "child__row_Accelerationcolumn_Miles_per_Gallon_y",
           "orient": "left",
-          "gridScale": "child__row_Accelerationcolumn_Miles_per_Gallon_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -894,6 +894,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "grid_Acceleration",
           "on": [
@@ -1013,7 +1015,6 @@
         {
           "scale": "child__row_Accelerationcolumn_Acceleration_x",
           "orient": "bottom",
-          "gridScale": "child__row_Accelerationcolumn_Acceleration_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -1026,7 +1027,6 @@
         {
           "scale": "child__row_Accelerationcolumn_Acceleration_y",
           "orient": "left",
-          "gridScale": "child__row_Accelerationcolumn_Acceleration_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -1069,6 +1069,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "grid_Horsepower",
           "on": [
@@ -1209,7 +1211,6 @@
         {
           "scale": "child__row_Accelerationcolumn_Horsepower_x",
           "orient": "bottom",
-          "gridScale": "child__row_Accelerationcolumn_Horsepower_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -1222,7 +1223,6 @@
         {
           "scale": "child__row_Accelerationcolumn_Horsepower_y",
           "orient": "left",
-          "gridScale": "child__row_Accelerationcolumn_Horsepower_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -1265,6 +1265,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "grid_Miles_per_Gallon",
           "on": [
@@ -1384,7 +1386,6 @@
         {
           "scale": "child__row_Miles_per_Galloncolumn_Miles_per_Gallon_x",
           "orient": "bottom",
-          "gridScale": "child__row_Miles_per_Galloncolumn_Miles_per_Gallon_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -1397,7 +1398,6 @@
         {
           "scale": "child__row_Miles_per_Galloncolumn_Miles_per_Gallon_y",
           "orient": "left",
-          "gridScale": "child__row_Miles_per_Galloncolumn_Miles_per_Gallon_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -1440,6 +1440,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "grid_Acceleration",
           "on": [
@@ -1582,7 +1584,6 @@
         {
           "scale": "child__row_Miles_per_Galloncolumn_Acceleration_x",
           "orient": "bottom",
-          "gridScale": "child__row_Miles_per_Galloncolumn_Acceleration_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -1595,7 +1596,6 @@
         {
           "scale": "child__row_Miles_per_Galloncolumn_Acceleration_y",
           "orient": "left",
-          "gridScale": "child__row_Miles_per_Galloncolumn_Acceleration_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -1638,6 +1638,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "grid_Horsepower",
           "on": [
@@ -1780,7 +1782,6 @@
         {
           "scale": "child__row_Miles_per_Galloncolumn_Horsepower_x",
           "orient": "bottom",
-          "gridScale": "child__row_Miles_per_Galloncolumn_Horsepower_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -1793,7 +1794,6 @@
         {
           "scale": "child__row_Miles_per_Galloncolumn_Horsepower_y",
           "orient": "left",
-          "gridScale": "child__row_Miles_per_Galloncolumn_Horsepower_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,

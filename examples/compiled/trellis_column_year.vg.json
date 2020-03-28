@@ -135,6 +135,10 @@
           "height": {"signal": "child_height"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "child_height"},
+        {"name": "width", "update": "child_width"}
+      ],
       "marks": [
         {
           "name": "child_pathgroup",
@@ -177,7 +181,6 @@
         {
           "scale": "y",
           "orient": "left",
-          "gridScale": "x",
           "grid": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
           "domain": false,

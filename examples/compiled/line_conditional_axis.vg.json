@@ -60,7 +60,6 @@
       "scale": "x",
       "orient": "bottom",
       "tickCount": 8,
-      "gridScale": "y",
       "grid": true,
       "encode": {
         "grid": {
@@ -85,7 +84,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,

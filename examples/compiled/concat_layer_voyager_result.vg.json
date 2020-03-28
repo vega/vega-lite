@@ -128,6 +128,10 @@
           "height": {"signal": "concat_0_height"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "concat_0_height"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "concat_0_layer_0_marks",
@@ -165,7 +169,6 @@
           "scale": "concat_0_x",
           "orient": "bottom",
           "gridDash": [3, 3],
-          "gridScale": "concat_0_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "encode": {

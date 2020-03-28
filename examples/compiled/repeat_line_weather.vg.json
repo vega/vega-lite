@@ -40,6 +40,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "child__temp_max_pathgroup",
@@ -82,7 +86,6 @@
         {
           "scale": "child__temp_max_x",
           "orient": "bottom",
-          "gridScale": "child__temp_max_y",
           "grid": true,
           "domain": false,
           "labels": false,
@@ -94,7 +97,6 @@
         {
           "scale": "child__temp_max_y",
           "orient": "left",
-          "gridScale": "child__temp_max_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -143,6 +145,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "child__precipitation_pathgroup",
@@ -191,7 +197,6 @@
         {
           "scale": "child__precipitation_x",
           "orient": "bottom",
-          "gridScale": "child__precipitation_y",
           "grid": true,
           "domain": false,
           "labels": false,
@@ -203,7 +208,6 @@
         {
           "scale": "child__precipitation_y",
           "orient": "left",
-          "gridScale": "child__precipitation_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -252,6 +256,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "child__wind_pathgroup",
@@ -294,7 +302,6 @@
         {
           "scale": "child__wind_x",
           "orient": "bottom",
-          "gridScale": "child__wind_y",
           "grid": true,
           "domain": false,
           "labels": false,
@@ -306,7 +313,6 @@
         {
           "scale": "child__wind_y",
           "orient": "left",
-          "gridScale": "child__wind_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,

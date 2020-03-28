@@ -122,6 +122,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "child__column_distance_marks",
@@ -162,7 +166,6 @@
         {
           "scale": "child__column_distance_y",
           "orient": "left",
-          "gridScale": "child__column_distance_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -203,6 +206,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "child__column_delay_marks",
@@ -243,7 +250,6 @@
         {
           "scale": "child__column_delay_y",
           "orient": "left",
-          "gridScale": "child__column_delay_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -284,6 +290,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "child__column_time_marks",
@@ -324,7 +334,6 @@
         {
           "scale": "child__column_time_y",
           "orient": "left",
-          "gridScale": "child__column_time_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,

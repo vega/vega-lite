@@ -80,6 +80,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "child__column_temp_max_width"}
+      ],
       "marks": [
         {
           "name": "child__column_temp_max_layer_0_pathgroup",
@@ -175,7 +179,6 @@
         {
           "scale": "child__column_temp_max_y",
           "orient": "left",
-          "gridScale": "child__column_temp_max_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -226,6 +229,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "child__column_precipitation_width"}
+      ],
       "marks": [
         {
           "name": "child__column_precipitation_layer_0_pathgroup",
@@ -321,7 +328,6 @@
         {
           "scale": "child__column_precipitation_y",
           "orient": "left",
-          "gridScale": "child__column_precipitation_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -372,6 +378,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "child__column_wind_width"}
+      ],
       "marks": [
         {
           "name": "child__column_wind_layer_0_pathgroup",
@@ -451,7 +461,6 @@
         {
           "scale": "child__column_wind_y",
           "orient": "left",
-          "gridScale": "child__column_wind_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,

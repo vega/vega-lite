@@ -117,6 +117,10 @@
           "height": {"signal": "child_height"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "child_height"},
+        {"name": "width", "update": "child_width"}
+      ],
       "marks": [
         {
           "name": "child_pathgroup",

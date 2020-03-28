@@ -167,6 +167,10 @@
           "height": {"signal": "trellis_barley_child_height"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "trellis_barley_child_height"},
+        {"name": "width", "update": "trellis_barley_child_width"}
+      ],
       "marks": [
         {
           "name": "trellis_barley_child_marks",
@@ -193,7 +197,6 @@
         {
           "scale": "trellis_barley_x",
           "orient": "bottom",
-          "gridScale": "trellis_barley_y",
           "grid": true,
           "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
           "domain": false,

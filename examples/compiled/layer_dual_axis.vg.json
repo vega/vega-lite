@@ -101,7 +101,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "gridScale": "layer_0_y",
       "grid": true,
       "domain": false,
       "labels": false,

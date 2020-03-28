@@ -38,6 +38,10 @@
           "height": {"signal": "concat_0_height"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "concat_0_height"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "concat_0_marks",
@@ -65,7 +69,6 @@
         {
           "scale": "concat_0_x",
           "orient": "bottom",
-          "gridScale": "concat_0_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -78,7 +81,6 @@
         {
           "scale": "concat_0_y",
           "orient": "left",
-          "gridScale": "concat_0_x",
           "grid": true,
           "tickCount": {"signal": "ceil(concat_0_height/40)"},
           "domain": false,
@@ -119,6 +121,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "concat_1_height"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "brush_x",
           "value": [],
@@ -393,7 +397,6 @@
         {
           "scale": "concat_1_x",
           "orient": "bottom",
-          "gridScale": "concat_1_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,

@@ -31,6 +31,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "child__column_Origin_marks",
@@ -58,7 +62,6 @@
         {
           "scale": "child__column_Origin_x",
           "orient": "bottom",
-          "gridScale": "child__column_Origin_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -71,7 +74,6 @@
         {
           "scale": "child__column_Origin_y",
           "orient": "left",
-          "gridScale": "child__column_Origin_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -127,6 +129,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "child__column_Cylinders_marks",
@@ -157,7 +163,6 @@
         {
           "scale": "child__column_Cylinders_x",
           "orient": "bottom",
-          "gridScale": "child__column_Cylinders_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -170,7 +175,6 @@
         {
           "scale": "child__column_Cylinders_y",
           "orient": "left",
-          "gridScale": "child__column_Cylinders_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,

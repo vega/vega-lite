@@ -136,6 +136,10 @@
           "height": {"signal": "concat_0_height"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "concat_0_height"},
+        {"name": "width", "update": "concat_0_width"}
+      ],
       "marks": [
         {
           "name": "concat_0_layer_0_marks",
@@ -275,6 +279,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "concat_1_height"},
+        {"name": "width", "update": "concat_1_width"},
         {
           "name": "pts_tuple",
           "on": [
@@ -331,7 +337,6 @@
         {
           "scale": "concat_1_y",
           "orient": "left",
-          "gridScale": "concat_1_x",
           "grid": true,
           "tickCount": {"signal": "ceil(concat_1_height/40)"},
           "domain": false,

@@ -152,6 +152,8 @@
             }
           ]
         },
+        {"name": "height", "update": "child_height"},
+        {"name": "width", "update": "child_width"},
         {
           "name": "brush_x",
           "value": [],
@@ -557,7 +559,6 @@
         {
           "scale": "x",
           "orient": "bottom",
-          "gridScale": "y",
           "grid": true,
           "tickCount": {"signal": "ceil(child_width/40)"},
           "domain": false,
@@ -570,7 +571,6 @@
         {
           "scale": "y",
           "orient": "left",
-          "gridScale": "x",
           "grid": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
           "domain": false,

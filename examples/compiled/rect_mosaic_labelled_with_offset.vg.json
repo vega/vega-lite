@@ -178,6 +178,10 @@
           "height": {"signal": "concat_1_height"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "concat_1_height"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "concat_1_layer_0_marks",

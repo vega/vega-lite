@@ -224,6 +224,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "child__Horsepower_marks",
@@ -264,7 +268,6 @@
         {
           "scale": "child__Horsepower_y",
           "orient": "left",
-          "gridScale": "child__Horsepower_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -305,6 +308,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "child__Miles_per_Gallon_marks",
@@ -351,7 +358,6 @@
         {
           "scale": "child__Miles_per_Gallon_y",
           "orient": "left",
-          "gridScale": "child__Miles_per_Gallon_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -392,6 +398,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "child__Acceleration_marks",
@@ -432,7 +442,6 @@
         {
           "scale": "child__Acceleration_y",
           "orient": "left",
-          "gridScale": "child__Acceleration_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -473,6 +482,10 @@
           "height": {"signal": "childHeight"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"}
+      ],
       "marks": [
         {
           "name": "child__Displacement_marks",
@@ -513,7 +526,6 @@
         {
           "scale": "child__Displacement_y",
           "orient": "left",
-          "gridScale": "child__Displacement_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,

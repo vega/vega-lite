@@ -87,6 +87,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "hover_tuple",
           "on": [
@@ -153,7 +155,6 @@
         {
           "scale": "concat_0_x",
           "orient": "bottom",
-          "gridScale": "concat_0_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -166,7 +167,6 @@
         {
           "scale": "concat_0_y",
           "orient": "left",
-          "gridScale": "concat_0_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -208,6 +208,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "hover_tuple",
           "on": [
@@ -274,7 +276,6 @@
         {
           "scale": "concat_1_x",
           "orient": "bottom",
-          "gridScale": "concat_1_y",
           "grid": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
@@ -287,7 +288,6 @@
         {
           "scale": "concat_1_y",
           "orient": "left",
-          "gridScale": "concat_1_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,

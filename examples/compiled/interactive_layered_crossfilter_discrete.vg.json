@@ -208,6 +208,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "brush_tuple",
           "on": [
@@ -326,7 +328,6 @@
         {
           "scale": "child__column_distance_y",
           "orient": "left",
-          "gridScale": "child__column_distance_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -368,6 +369,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "brush_tuple",
           "on": [
@@ -486,7 +489,6 @@
         {
           "scale": "child__column_delay_y",
           "orient": "left",
-          "gridScale": "child__column_delay_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
@@ -528,6 +530,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "childHeight"},
+        {"name": "width", "update": "childWidth"},
         {
           "name": "brush_tuple",
           "on": [
@@ -646,7 +650,6 @@
         {
           "scale": "child__column_time_y",
           "orient": "left",
-          "gridScale": "child__column_time_x",
           "grid": true,
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,

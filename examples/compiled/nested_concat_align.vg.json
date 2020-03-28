@@ -182,6 +182,10 @@
               "height": {"signal": "concat_0_childHeight"}
             }
           },
+          "signals": [
+            {"name": "height", "update": "concat_0_childHeight"},
+            {"name": "width", "update": "concat_0_childWidth"}
+          ],
           "marks": [
             {
               "name": "child__column_Rotten_Tomatoes_Rating_marks",
@@ -228,7 +232,6 @@
             {
               "scale": "child__column_Rotten_Tomatoes_Rating_y",
               "orient": "left",
-              "gridScale": "child__column_Rotten_Tomatoes_Rating_x",
               "grid": true,
               "tickCount": {"signal": "ceil(concat_0_childHeight/40)"},
               "domain": false,
@@ -269,6 +272,10 @@
               "height": {"signal": "concat_0_childHeight"}
             }
           },
+          "signals": [
+            {"name": "height", "update": "concat_0_childHeight"},
+            {"name": "width", "update": "concat_0_childWidth"}
+          ],
           "marks": [
             {
               "name": "child__column_IMDB_Rating_marks",
@@ -312,7 +319,6 @@
             {
               "scale": "child__column_IMDB_Rating_y",
               "orient": "left",
-              "gridScale": "child__column_IMDB_Rating_x",
               "grid": true,
               "tickCount": {"signal": "ceil(concat_0_childHeight/40)"},
               "domain": false,
@@ -361,6 +367,10 @@
               "height": {"signal": "concat_1_childHeight"}
             }
           },
+          "signals": [
+            {"name": "height", "update": "concat_1_childHeight"},
+            {"name": "width", "update": "concat_1_childWidth"}
+          ],
           "marks": [
             {
               "name": "child__column_US_Gross_marks",
@@ -404,7 +414,6 @@
             {
               "scale": "child__column_US_Gross_y",
               "orient": "left",
-              "gridScale": "child__column_US_Gross_x",
               "grid": true,
               "tickCount": {"signal": "ceil(concat_1_childHeight/40)"},
               "domain": false,
@@ -445,6 +454,10 @@
               "height": {"signal": "concat_1_childHeight"}
             }
           },
+          "signals": [
+            {"name": "height", "update": "concat_1_childHeight"},
+            {"name": "width", "update": "concat_1_childWidth"}
+          ],
           "marks": [
             {
               "name": "child__column_Worldwide_Gross_marks",
@@ -488,7 +501,6 @@
             {
               "scale": "child__column_Worldwide_Gross_y",
               "orient": "left",
-              "gridScale": "child__column_Worldwide_Gross_x",
               "grid": true,
               "tickCount": {"signal": "ceil(concat_1_childHeight/40)"},
               "domain": false,

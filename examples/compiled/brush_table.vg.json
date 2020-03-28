@@ -94,6 +94,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "concat_0_height"},
+        {"name": "width", "update": "concat_0_width"},
         {
           "name": "brush_x",
           "value": [],
@@ -438,7 +440,6 @@
         {
           "scale": "concat_0_x",
           "orient": "bottom",
-          "gridScale": "concat_0_y",
           "grid": true,
           "tickCount": {"signal": "ceil(concat_0_width/40)"},
           "domain": false,
@@ -451,7 +452,6 @@
         {
           "scale": "concat_0_y",
           "orient": "left",
-          "gridScale": "concat_0_x",
           "grid": true,
           "tickCount": {"signal": "ceil(concat_0_height/40)"},
           "domain": false,

@@ -106,6 +106,10 @@
           "height": {"signal": "child_height"}
         }
       },
+      "signals": [
+        {"name": "height", "update": "child_height"},
+        {"name": "width", "update": "child_width"}
+      ],
       "marks": [
         {
           "name": "child_marks",
@@ -139,7 +143,6 @@
         {
           "scale": "x",
           "orient": "bottom",
-          "gridScale": "y",
           "grid": true,
           "tickCount": {"signal": "ceil(child_width/40)"},
           "domain": false,
@@ -152,7 +155,6 @@
         {
           "scale": "y",
           "orient": "left",
-          "gridScale": "x",
           "grid": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
           "domain": false,

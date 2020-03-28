@@ -76,7 +76,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "gridScale": "y",
       "grid": true,
       "domain": false,
       "labels": false,
@@ -88,7 +87,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "gridScale": "x",
       "grid": true,
       "domain": false,
       "labels": false,

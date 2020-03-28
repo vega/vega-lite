@@ -71,7 +71,6 @@
     {
       "scale": "x",
       "orient": "bottom",
-      "gridScale": "y",
       "grid": true,
       "domain": false,
       "labels": false,
@@ -83,7 +82,6 @@
     {
       "scale": "y",
       "orient": "left",
-      "gridScale": "x",
       "grid": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,

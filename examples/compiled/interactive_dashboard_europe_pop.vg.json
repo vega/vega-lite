@@ -372,6 +372,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "concat_0_height"},
+        {"name": "width", "update": "concat_0_width"},
         {
           "name": "brush_y",
           "value": [],
@@ -648,7 +650,6 @@
         {
           "scale": "concat_0_x",
           "orient": "bottom",
-          "gridScale": "concat_0_y",
           "grid": true,
           "tickCount": {"signal": "ceil(concat_0_width/40)"},
           "domain": false,
@@ -689,6 +690,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "concat_1_height"},
+        {"name": "width", "update": "concat_1_width"},
         {
           "name": "brush_y",
           "value": [],
@@ -965,7 +968,6 @@
         {
           "scale": "concat_1_x",
           "orient": "bottom",
-          "gridScale": "concat_1_y",
           "grid": true,
           "tickCount": {"signal": "ceil(concat_1_width/40)"},
           "domain": false,
@@ -1006,6 +1008,8 @@
         }
       },
       "signals": [
+        {"name": "height", "update": "concat_2_height"},
+        {"name": "width", "update": "concat_2_width"},
         {
           "name": "brush_x",
           "value": [],
@@ -1377,7 +1381,6 @@
         {
           "scale": "concat_2_x",
           "orient": "bottom",
-          "gridScale": "concat_2_y",
           "grid": true,
           "tickCount": {"signal": "ceil(concat_2_width/40)"},
           "domain": false,
@@ -1390,7 +1393,6 @@
         {
           "scale": "concat_2_y",
           "orient": "left",
-          "gridScale": "concat_2_x",
           "grid": true,
           "tickCount": {"signal": "ceil(concat_2_height/40)"},
           "domain": false,
