@@ -171,7 +171,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "date, Max of date",
+      "title": "date",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -181,7 +181,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "price, price for max date",
+      "title": "price",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0

@@ -8,8 +8,8 @@
       "mark": "line",
       "encoding": {
         "color": {"field": "symbol", "type": "nominal", "legend": null},
-        "x": {"field": "date", "type": "temporal"},
-        "y": {"field": "price", "type": "quantitative"}
+        "x": {"field": "date", "type": "temporal", "title": "date"},
+        "y": {"field": "price", "type": "quantitative", "title": "price"}
       }
     },
     {
