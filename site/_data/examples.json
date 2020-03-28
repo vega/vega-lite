@@ -734,6 +734,11 @@
         "description": "The plot below uses an interval selection, which causes the chart to include an interactive brush (shown in grey). The brush selection parameterizes the red guideline, which visualizes the average value within the selected interval."
       },
       {
+        "name": "interactive_line_hover",
+        "title": "Multi Series Line Chart with Interactive Highlgiht",
+        "description": "The plot below uses argmax to position text labels at the end of line.  It also applies single selection to highlight a hovered line.  Note that we can hidden thick lines to make it easier to hover."
+      },
+      {
         "name": "interactive_multi_line_label",
         "title": "Multi Series Line Chart with Labels",
         "description": "The plot displays labels for all stock prices of the hovered time. The example is forked/modified from [@jakevdp's block](https://bl.ocks.org/jakevdp/a414950f61e4b224765f2439dd1f09b9).",
