@@ -204,13 +204,29 @@ NumericFieldDefWithCondition:
 NumericValueDefWithCondition:
   name: MarkPropValueDef
   link: 'encoding.html#mark-prop-value-def'
+NumericDatumDefWithCondition:
+  name: MarkPropDatumDef
+  link: 'encoding.html#mark-prop-datum-def'
+
+NumericArrayFieldDefWithCondition:
+  name: MarkPropFieldDef
+  link: 'encoding.html#mark-prop-field-def'
+NumericArrayValueDefWithCondition:
+  name: MarkPropValueDef
+  link: 'encoding.html#mark-prop-value-def'
+NumericArrayDatumDefWithCondition:
+  name: MarkPropDatumDef
+  link: 'encoding.html#mark-prop-datum-def'
 
 StringFieldDefWithCondition:
   name: MarkPropFieldDef
   link: 'encoding.html#mark-prop-field-def'
 StringValueDefWithCondition:
-  name: MarkPropValueDef
+  name: ValueDef
   link: 'encoding.html#mark-prop-value-def'
+StringDatumDefWithCondition:
+  name: MarkPropDatumDef
+  link: 'encoding.html#mark-prop-datum-def'
 
 ShapeFieldDefWithCondition:
   name: MarkPropFieldDef
@@ -218,6 +234,9 @@ ShapeFieldDefWithCondition:
 ShapeValueDefWithCondition:
   name: MarkPropValueDef
   link: 'encoding.html#mark-prop-value-def'
+ShapeDatumDefWithCondition:
+  name: MarkPropDatumDef
+  link: 'encoding.html#mark-prop-datum-def'
 
 ColorGradientFieldDefWithCondition:
   name: MarkPropFieldDef
@@ -225,6 +244,9 @@ ColorGradientFieldDefWithCondition:
 ColorGradientValueDefWithCondition:
   name: MarkPropValueDef
   link: 'encoding.html#mark-prop-value-def'
+ColorGradientDatumDefWithCondition:
+  name: MarkPropDatumDef
+  link: 'encoding.html#mark-prop-datum-def'
 
 TextFieldDefWithCondition:
   name: TextFieldDef
@@ -238,7 +260,7 @@ FieldDefWithCondition:
 ValueDefWithCondition:
   link: 'encoding.html#href-value-def'
 
-ConditionalMarkPropFieldDef:
+ConditionalMarkPropFieldOrDatumDef:
   name: ConditionalFieldDef
   link: 'condition.html#field'
 ConditionalTextFieldDef:
@@ -269,7 +291,11 @@ LatLongFieldDef:
 SecondaryFieldDef:
   name: FieldDef
   link: 'encoding.html#field'
-FacetFieldDef:
+FacetEncodingFieldDef:
+  name: FacetFieldDef
+  link: 'facet.html#facet-field-definition'
+RowColumnEncodingFieldDef:
+  name: FacetFieldDef
   link: 'facet.html#facet-field-definition'
 OrderFieldDef:
   link: 'encoding.html#order'
@@ -277,19 +303,25 @@ PositionFieldDef:
   link: 'encoding.html#position-field-def'
 
 ValueDef:
-  link: 'encoding.html#value'
+  link: 'encoding.html#value-def'
+
 NumberValueDef:
-  name: ValueDef
-  link: 'encoding.html#value'
+  name: MarkPropValueDef
+  link: 'encoding.html#value-def'
 XValueDef:
   name: ValueDef
-  link: 'encoding.html#value'
+  link: 'encoding.html#value-def'
 YValueDef:
   name: ValueDef
-  link: 'encoding.html#value'
+  link: 'encoding.html#value-def'
 StringValueDef:
   name: ValueDef
-  link: 'encoding.html#value'
+  link: 'encoding.html#value-def'
+
+PositionDatumDef:
+  link: 'encoding.html#position-datum-def'
+DatumDef:
+  link: 'encoding.html#datum-def'
 
 # Field Definition
 Aggregate:

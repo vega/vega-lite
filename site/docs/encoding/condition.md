@@ -38,11 +38,11 @@ There are two ways to specify the condition:
 
 (1) Specifying `selection` name:
 
-{% include table.html props="selection" source="ConditionalSelection<MarkPropFieldDef>" %}
+{% include table.html props="selection" source="ConditionalSelection<StringFieldDef>" %}
 
 (2) Specifying a `test` predicate:
 
-{% include table.html props="test" source="ConditionalPredicate<MarkPropFieldDef>" %}
+{% include table.html props="test" source="ConditionalPredicate<StringFieldDef>" %}
 
 In addition, there are two ways to encode the data that satisfy the specified condition:
 

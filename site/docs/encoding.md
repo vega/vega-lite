@@ -187,11 +187,11 @@ By default, Vega-Lite automatically generates a [scale](scale.html) and an [axis
 
 {% include table.html props="x,y,x2,y2" source="Encoding" %}
 
-{:#position-field-def}
+{:#position-field-def} {:#position-datum-def}
 
-### Position Field Definition
+### Position Field Definition and Datum Definition
 
-In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html), [field definitions](#field-def) for `x` and `y` channels may also include these properties:
+[Field definitions](#field-def) for `x` and `y` channels may also include the properties listed below (in addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html)). Similarly, [datum definitions](#datum-def) for `x` and `y` channels also support these properties.
 
 {% include table.html props="scale,axis,sort,band,impute,stack" source="PositionFieldDef" %}
 
@@ -217,15 +217,15 @@ Here are the list of mark property channels:
 
 {% include table.html props="angle,color,fill,stroke,opacity,fillOpacity,strokeOpacity,shape,size,strokeDash,strokeWidth" source="Encoding" %}
 
-{:#mark-prop-field-def}
+{:#mark-prop-field-def} {:#mark-prop-datum-def}
 
-### Mark Property Field Definition
+### Mark Property Field Definition and Datum Definition
 
-In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html), [field definitions](#field-def) for mark property channels may also include these properties:
+[Field definitions](#field-def) for mark property channels may also include the properties list below (in addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html)).
 
-<!-- {% include table.html props="scale,legend,condition" source="ColorFieldDefWithCondition" %} -->
+Similarly, [datum definitions](#datum-def) for mark property channels also support these properties.
 
-{% include table.html props="scale,legend,condition" source="FieldDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>" %}
+{% include table.html props="scale,legend,condition" source="FieldOrDatumDefWithCondition<MarkPropFieldDef,number>" %}
 
 {:#mark-prop-value-def}
 
@@ -236,7 +236,7 @@ In addition to the constant `value`, [value definitions](#value-def) of mark pro
 <!-- {% include table.html props="condition"
 source="ColorValueDefWithCondition" %} -->
 
-{% include table.html props="condition" source="ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>" %}
+{% include table.html props="condition" source="ValueDefWithCondition<MarkPropFieldOrDatumDef,number>" %}
 
 See [the `condition`](condition.html) page for examples how to specify condition logic.
 
@@ -256,7 +256,7 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 <!-- {% include table.html props="format,formatType,condition" source="TextFieldDefWithCondition" %} -->
 
-{% include table.html props="format,formatType,condition" source="FieldDefWithCondition<StringFieldDef,Text>" %}
+{% include table.html props="format,formatType,condition" source="FieldOrDatumDefWithCondition<StringFieldDef,Text>" %}
 
 {:#text-value-def}
 
@@ -266,7 +266,7 @@ In addition to the constant `value`, [value definitions](#value-def) of `text` a
 
 <!-- {% include table.html props="condition" source="TextValueDefWithCondition" %} -->
 
-{% include table.html props="condition" source="FieldDefWithCondition<StringFieldDef,Text>" %}
+{% include table.html props="condition" source="ValueDefWithCondition<StringFieldDef,Text>" %}
 
 ### Multiple Field Definitions for Tooltips
 
