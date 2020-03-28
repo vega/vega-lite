@@ -133,6 +133,7 @@ export function assembleAxis(
       ...axis,
       domain: false,
       labels: false,
+      ariaHidden: true, // always hide grid axis
 
       // Always set min/maxExtent to 0 to ensure that `config.axis*.minExtent` and `config.axis*.maxExtent`
       // would not affect gridAxis

@@ -28,7 +28,8 @@ const AXIS_COMPONENT_PROPERTIES_INDEX: Flag<keyof AxisComponentProps> = {
   scale: 1,
   ...COMMON_AXIS_PROPERTIES_INDEX,
   labelExpr: 1,
-  encode: 1
+  encode: 1,
+  tabindex: 1
 };
 
 export const AXIS_COMPONENT_PROPERTIES = keys(AXIS_COMPONENT_PROPERTIES_INDEX);

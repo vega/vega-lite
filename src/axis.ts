@@ -275,13 +275,9 @@ export interface AxisPropsWithConditionAndSignal {
   labelFontSize?: BaseAxisNoValueRefs['labelFontSize'] | ConditionalAxisNumber;
   labelFontStyle?: BaseAxisNoValueRefs['labelFontStyle'] | ConditionalAxisLabelFontStyle;
   labelFontWeight?: BaseAxisNoValueRefs['labelFontWeight'] | ConditionalAxisLabelFontWeight;
-
   labelLineHeight?: BaseAxisNoValueRefs['labelLineHeight'] | ConditionalAxisNumber | SignalRef;
-
   labelOpacity?: BaseAxisNoValueRefs['labelOpacity'] | ConditionalAxisNumber;
-
   labelOffset?: BaseAxisNoValueRefs['labelOffset'] | ConditionalAxisNumber | SignalRef;
-
   labelPadding?: BaseAxisNoValueRefs['labelPadding'] | ConditionalAxisNumber;
   gridColor?: BaseAxisNoValueRefs['gridColor'] | ConditionalAxisColor | SignalRef;
   gridDash?: BaseAxisNoValueRefs['gridDash'] | ConditionalAxisNumberArray;
@@ -334,6 +330,12 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   orient: 'main',
 
   bandPosition: 'both', // Need to be applied to grid axis too, so the grid will align with ticks.
+
+  ariaHidden: 'main',
+  ariaLabel: 'main',
+  ariaRole: 'main',
+  ariaRoleDescription: 'main',
+  tabindex: 'main',
   domain: 'main',
   domainColor: 'main',
   domainDash: 'main',
@@ -353,7 +355,6 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   labelFontSize: 'main',
   labelFontStyle: 'main',
   labelFontWeight: 'main',
-
   labelLimit: 'main',
   labelLineHeight: 'main',
   labelOpacity: 'main',
@@ -438,6 +439,10 @@ export interface AxisEncoding {
 export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   orient: 1, // other things can depend on orient
 
+  ariaHidden: 1,
+  ariaLabel: 1,
+  ariaRole: 1,
+  ariaRoleDescription: 1,
   bandPosition: 1,
   domain: 1,
   domainColor: 1,
