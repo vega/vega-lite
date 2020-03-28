@@ -5,7 +5,7 @@ title: Encoding
 permalink: /docs/encoding.html
 ---
 
-An integral part of the data visualization process is encoding data with visual properties of graphical marks. The `encoding` property of a single view specification represents the mapping between [encoding channels](#channels) (such as `x`, `y`, or `color`) and [data fields](#field-def) or [constant values](#value-def).
+An integral part of the data visualization process is encoding data with visual properties of graphical marks. The `encoding` property of a single view specification represents the mapping between [encoding channels](#channels) (such as `x`, `y`, or `color`) and [data fields](#field-def), constant [visual values](#value-def), or constant [data values (datum)](#datum-def).
 
 ```js
 // Specification of a Single View
@@ -81,7 +81,11 @@ The keys in the `encoding` object are encoding channels. Vega-Lite supports the 
 
 ## Channel Definition
 
-Each channel definition object is either a [field definition](#field-def), which describes the data field encoded by the channel, or a [value definition](#value-def), which describes an encoded constant value.
+Each channel definition object must be one of the following:
+
+- [field definition](#field-def), which describes the data field encoded by the channel.
+- [value definition](#value-def), which describes an encoded constant visual value.
+- [datum definition](#datum-def), which describes a constant data value encoded via a scale.
 
 {:#field-def}
 
@@ -145,9 +149,33 @@ To see a list of additional properties for each type of encoding channels, pleas
 }
 ```
 
-To map a constant value to an encoding channel, the channel's value definition must describe the `value` property. (See the [`value`](value.html) page for more examples.)
+To map a constant visual value to an encoding channel, the channel's value definition must describe the `value` property. (See the [`value`](value.html) page for more examples.)
 
 <!--{% include table.html props="value" source="ValueDef" %}-->
+
+{:#value-def}
+
+### Datum Definition
+
+```js
+// Specification of a Single View
+{
+  ...,
+  "encoding": {     // Encoding
+    ...: {
+      "datum": ...
+    },
+    ...
+  },
+  ...
+}
+```
+
+To map a constant data value (`datum`) via a scale to an encoding channel, the channel's value definition must describe the `datum` property. (See the [`datum`](datum.html) page for more examples.)
+
+{% include table.html props="datum" source="DatumDef" %}
+
+Similar to a field definition, datum definition of different encoding channels may support `scale`, `axis`, `legend`, `format`, or `condition` properties. However, data transforms (`aggregate`, `bin`, `timeUnit`, `sort` cannot be applied to a datum definition).
 
 {:#position}
 
