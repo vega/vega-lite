@@ -102,6 +102,10 @@ In addition, the `facet` channel should include the `columns` property:
 
 {% include table.html props="columns" source="FacetEncodingFieldDef" %}
 
+Meanwhile, the `row` and `column` channel could include the following properties:
+
+{% include table.html props="align,center,spacing" source="RowColumnEncodingFieldDef" %}
+
 ### Examples
 
 Here are examples of row-facet and wrapped facet plots that use encoding to specify the faceted fields. For more example, see the [example gallery]({{site.baseurl}}/examples/#trellis).
