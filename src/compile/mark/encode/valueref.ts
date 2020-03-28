@@ -230,11 +230,12 @@ export function midPoint({
     if (isFieldOrDatumDef(channelDef)) {
       if (isTypedFieldDef(channelDef)) {
         const band = getBand(channel, channelDef, channel2Def, markDef, config, {isMidPoint: true});
+        const {bin, timeUnit, type} = channelDef;
 
-        if (isBinning(channelDef.bin) || (band && channelDef.timeUnit)) {
+        if (isBinning(channelDef.bin) || (band && timeUnit && type === TEMPORAL)) {
           // Use middle only for x an y to place marks in the center between start and end of the bin range.
           // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
-          if (contains([X, Y], channel) && contains([QUANTITATIVE, TEMPORAL], channelDef.type)) {
+          if (contains([X, Y], channel) && contains([QUANTITATIVE, TEMPORAL], type)) {
             if (stack && stack.impute) {
               // For stack, we computed bin_mid so we can impute.
               return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
@@ -250,7 +251,7 @@ export function midPoint({
               offset
             }
           );
-        } else if (isBinned(channelDef.bin)) {
+        } else if (isBinned(bin)) {
           if (isFieldDef(channel2Def)) {
             return interpolatedSignalRef({
               scaleName,
