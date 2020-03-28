@@ -35,9 +35,8 @@ The pivot transform
 
 ```json
 {
-  "type": "pivot",
+  "pivot": "type",
   "groupby": ["country"],
-  "field": "type",
   "value": "count"
 }
 ```
