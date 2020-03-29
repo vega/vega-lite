@@ -162,7 +162,7 @@ export interface Encoding<F extends Field> {
   strokeWidth?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
 
   /**
-   * Size of the marks.
+   * Size of the mark.
    * - For `"point"`, `"square"` and `"circle"`, – the symbol size, or pixel area of the mark.
    * - For `"bar"` and `"tick"` – the bar and tick's size.
    * - For `"text"` – the text's font size.
