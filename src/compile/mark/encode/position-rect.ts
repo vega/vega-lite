@@ -58,7 +58,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
     !hasSizeDef &&
     !hasDiscreteDomain(scaleType)
   ) {
-    const band = getBand(channel, fieldDef, undefined, markDef, config);
+    const band = getBand({channel, fieldDef, mark: markDef, config});
 
     return rectBinPosition({
       fieldDef,

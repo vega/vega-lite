@@ -465,14 +465,21 @@ export interface PositionMixins {
   band?: number;
 }
 
-export function getBand(
-  channel: Channel,
-  fieldDef: FieldDef<string>,
-  fieldDef2: SecondaryChannelDef<string>,
-  mark: MarkDef,
-  config: Config,
-  {isMidPoint}: {isMidPoint?: boolean} = {}
-) {
+export function getBand({
+  channel,
+  fieldDef,
+  fieldDef2,
+  mark,
+  config,
+  isMidPoint
+}: {
+  isMidPoint?: boolean;
+  channel: Channel;
+  fieldDef: FieldDef<string>;
+  fieldDef2?: SecondaryChannelDef<string>;
+  mark: MarkDef;
+  config: Config;
+}) {
   const {timeUnit, bin} = fieldDef;
   if (contains(['x', 'y'], channel)) {
     if (isPositionFieldOrDatumDef(fieldDef) && fieldDef.band !== undefined) {
@@ -498,7 +505,7 @@ export function hasBand(
   config: Config
 ) {
   if (isBinning(fieldDef.bin) || (fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal')) {
-    return !!getBand(channel, fieldDef, fieldDef2, mark, config);
+    return !!getBand({channel, fieldDef, fieldDef2, mark, config});
   }
   return false;
 }
