@@ -2,6 +2,7 @@ import {RangeScheme, SignalRef} from 'vega';
 import {isArray, isNumber} from 'vega-util';
 import {isBinning} from '../../bin';
 import {
+  ANGLE,
   Channel,
   COLOR,
   FILL,
@@ -199,6 +200,10 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
         return [rangeMin, rangeMax];
       }
     }
+    case ANGLE:
+      // TODO: add config.scale.min/maxAngleDegree (for point and text) and config.scale.min/maxAngleRadian (for arc) once we add arc marks.
+      // (It's weird to add just config.scale.min/maxAngleDegree for now)
+      return [0, 360];
     case STROKEWIDTH:
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minStrokeWidth, config.scale.maxStrokeWidth];

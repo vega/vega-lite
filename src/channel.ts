@@ -38,6 +38,9 @@ export const STROKE: 'stroke' = 'stroke';
 
 export const SHAPE: 'shape' = 'shape';
 export const SIZE: 'size' = 'size';
+
+export const ANGLE: 'angle' = 'angle';
+
 export const OPACITY: 'opacity' = 'opacity';
 export const FILLOPACITY: 'fillOpacity' = 'fillOpacity';
 
@@ -113,6 +116,7 @@ const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
 
   strokeWidth: 1,
   size: 1,
+  angle: 1,
   shape: 1,
 
   // channels without scales
@@ -289,6 +293,7 @@ export function supportLegend(channel: NonPositionScaleChannel) {
       return true;
     case FILLOPACITY:
     case STROKEOPACITY:
+    case ANGLE:
       return false;
   }
 }
@@ -404,6 +409,8 @@ function getSupportedMark(channel: Channel): SupportedMark {
       return {point: 'always', geoshape: 'always'};
     case TEXT:
       return {text: 'always'};
+    case ANGLE:
+      return {point: 'always', text: 'always'};
 
     case URL:
       return {image: 'always'};
@@ -415,6 +422,7 @@ export function rangeType(channel: Channel): RangeType {
     case X:
     case Y:
     case SIZE:
+    case ANGLE:
     case STROKEWIDTH:
     case OPACITY:
     case FILLOPACITY:

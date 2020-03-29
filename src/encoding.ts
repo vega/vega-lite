@@ -171,6 +171,11 @@ export interface Encoding<F extends Field> {
   size?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
 
   /**
+   * Rotation angle of point and text marks.
+   */
+  angle?: NumericFieldDefWithCondition<F> | NumericValueDefWithCondition<F>;
+
+  /**
    * Shape of the mark.
    *
    * 1. For `point` marks the supported values include:
@@ -538,6 +543,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       // text, shape, shouldn't be a part of line/trail/area [falls through]
       case 'text':
       case 'shape':
+      case 'angle':
       // falls through
 
       // tooltip fields should not be added to group by [falls through]
