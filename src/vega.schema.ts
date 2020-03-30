@@ -304,6 +304,10 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
   strokeJoin: 1,
   strokeOffset: 1,
   strokeMiterLimit: 1,
+  startAngle: 1,
+  endAngle: 1,
+  innerRadius: 1,
+  outerRadius: 1,
   size: 1,
   shape: 1,
   interpolate: 1,
@@ -346,11 +350,7 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof VgMarkConfig> = {
 
   // xc'|'yc'
   // clip: 1,
-  // endAngle: 1,
-  // innerRadius: 1,
-  // outerRadius: 1,
   // path: 1,
-  // startAngle: 1,
   // url: 1,
 };
 

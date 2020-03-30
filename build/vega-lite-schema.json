@@ -223,6 +223,10 @@
           "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
+        "endAngle": {
+          "description": "The start angle in radians for arc marks.",
+          "type": "number"
+        },
         "fill": {
           "anyOf": [
             {
@@ -272,6 +276,10 @@
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
           "format": "uri",
           "type": "string"
+        },
+        "innerRadius": {
+          "description": "The inner radius in pixels of arc marks.",
+          "type": "number"
         },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
@@ -328,6 +336,10 @@
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
+        "outerRadius": {
+          "description": "The outer radius in pixels of arc marks.",
+          "type": "number"
+        },
         "point": {
           "anyOf": [
             {
@@ -364,6 +376,10 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
+          "type": "number"
+        },
+        "startAngle": {
+          "description": "The start angle in radians for arc marks.",
           "type": "number"
         },
         "stroke": {
@@ -726,7 +742,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TextBaseline",
-              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation.\nOne of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
             },
             {
               "$ref": "#/definitions/ConditionalAxisLabelBaseline"
@@ -823,7 +839,7 @@
           "type": "number"
         },
         "labelLineHeight": {
-          "description": "Line height in pixels for multi-line label text.",
+          "description": "Line height in pixels for multi-line label text or label text with `\"line-top\"` or `\"line-bottom\"` baseline.",
           "type": "number"
         },
         "labelOffset": {
@@ -906,7 +922,7 @@
           "description": "A string or array of strings indicating the name of custom styles to apply to the axis. A style is a named collection of axis property defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles.\n\n__Default value:__ (none)\n__Note:__ Any specified style will augment the default style. For example, an x-axis mark with `\"style\": \"foo\"` will use `config.axisX` and `config.style.foo` (the specified style `\"foo\"` has higher precedence)."
         },
         "tickBand": {
-          "description": "For band scales, indicates if ticks and grid lines should be placed at the center of a band (default) or at the band extents to indicate intervals.",
+          "description": "For band scales, indicates if ticks and grid lines should be placed at the `\"center\"` of a band (default) or at the band `\"extent\"`s to indicate intervals",
           "enum": [
             "center",
             "extent"
@@ -1041,7 +1057,7 @@
         },
         "titleBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for axis titles."
+          "description": "Vertical text baseline for axis titles. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
         },
         "titleColor": {
           "anyOf": [
@@ -1077,7 +1093,7 @@
           "type": "number"
         },
         "titleLineHeight": {
-          "description": "Line height in pixels for multi-line title text.",
+          "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
           "type": "number"
         },
         "titleOpacity": {
@@ -1275,7 +1291,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/TextBaseline",
-              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation. Can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+              "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation.\nOne of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
             },
             {
               "$ref": "#/definitions/ConditionalAxisLabelBaseline"
@@ -1372,7 +1388,7 @@
           "type": "number"
         },
         "labelLineHeight": {
-          "description": "Line height in pixels for multi-line label text.",
+          "description": "Line height in pixels for multi-line label text or label text with `\"line-top\"` or `\"line-bottom\"` baseline.",
           "type": "number"
         },
         "labelOffset": {
@@ -1451,7 +1467,7 @@
           "description": "A string or array of strings indicating the name of custom styles to apply to the axis. A style is a named collection of axis property defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles.\n\n__Default value:__ (none)\n__Note:__ Any specified style will augment the default style. For example, an x-axis mark with `\"style\": \"foo\"` will use `config.axisX` and `config.style.foo` (the specified style `\"foo\"` has higher precedence)."
         },
         "tickBand": {
-          "description": "For band scales, indicates if ticks and grid lines should be placed at the center of a band (default) or at the band extents to indicate intervals.",
+          "description": "For band scales, indicates if ticks and grid lines should be placed at the `\"center\"` of a band (default) or at the band `\"extent\"`s to indicate intervals",
           "enum": [
             "center",
             "extent"
@@ -1575,7 +1591,7 @@
         },
         "titleBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for axis titles."
+          "description": "Vertical text baseline for axis titles. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
         },
         "titleColor": {
           "anyOf": [
@@ -1611,7 +1627,7 @@
           "type": "number"
         },
         "titleLineHeight": {
-          "description": "Line height in pixels for multi-line title text.",
+          "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
           "type": "number"
         },
         "titleOpacity": {
@@ -1753,6 +1769,10 @@
           "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
+        "endAngle": {
+          "description": "The start angle in radians for arc marks.",
+          "type": "number"
+        },
         "fill": {
           "anyOf": [
             {
@@ -1803,6 +1823,10 @@
           "format": "uri",
           "type": "string"
         },
+        "innerRadius": {
+          "description": "The inner radius in pixels of arc marks.",
+          "type": "number"
+        },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
@@ -1847,6 +1871,10 @@
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
+        "outerRadius": {
+          "description": "The outer radius in pixels of arc marks.",
+          "type": "number"
+        },
         "radius": {
           "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
           "minimum": 0,
@@ -1866,6 +1894,10 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
+          "type": "number"
+        },
+        "startAngle": {
+          "description": "The start angle in radians for arc marks.",
           "type": "number"
         },
         "stroke": {
@@ -2040,7 +2072,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for title and subtitle text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+          "description": "Vertical text baseline for title and subtitle text. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
         },
         "color": {
           "anyOf": [
@@ -2095,7 +2127,7 @@
           "type": "number"
         },
         "lineHeight": {
-          "description": "Line height in pixels for multi-line title text.",
+          "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
           "type": "number"
         },
         "offset": {
@@ -10350,7 +10382,7 @@
         },
         "titleBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for legend titles.\n\n__Default value:__ `\"top\"`."
+          "description": "Vertical text baseline for legend titles.  One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone.\n\n__Default value:__ `\"top\"`."
         },
         "titleColor": {
           "anyOf": [
@@ -10385,7 +10417,7 @@
           "type": "number"
         },
         "titleLineHeight": {
-          "description": "Line height in pixels for multi-line title text.",
+          "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
           "type": "number"
         },
         "titleOpacity": {
@@ -10772,7 +10804,7 @@
         },
         "titleBaseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for legend titles.\n\n__Default value:__ `\"top\"`."
+          "description": "Vertical text baseline for legend titles.  One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone.\n\n__Default value:__ `\"top\"`."
         },
         "titleColor": {
           "anyOf": [
@@ -10807,7 +10839,7 @@
           "type": "number"
         },
         "titleLineHeight": {
-          "description": "Line height in pixels for multi-line title text.",
+          "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
           "type": "number"
         },
         "titleOpacity": {
@@ -10977,6 +11009,10 @@
           "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
+        "endAngle": {
+          "description": "The start angle in radians for arc marks.",
+          "type": "number"
+        },
         "fill": {
           "anyOf": [
             {
@@ -11027,6 +11063,10 @@
           "format": "uri",
           "type": "string"
         },
+        "innerRadius": {
+          "description": "The inner radius in pixels of arc marks.",
+          "type": "number"
+        },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
@@ -11071,6 +11111,10 @@
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
+        "outerRadius": {
+          "description": "The outer radius in pixels of arc marks.",
+          "type": "number"
+        },
         "point": {
           "anyOf": [
             {
@@ -11107,6 +11151,10 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
+          "type": "number"
+        },
+        "startAngle": {
+          "description": "The start angle in radians for arc marks.",
           "type": "number"
         },
         "stroke": {
@@ -11687,6 +11735,10 @@
           "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
+        "endAngle": {
+          "description": "The start angle in radians for arc marks.",
+          "type": "number"
+        },
         "fill": {
           "anyOf": [
             {
@@ -11737,6 +11789,10 @@
           "format": "uri",
           "type": "string"
         },
+        "innerRadius": {
+          "description": "The inner radius in pixels of arc marks.",
+          "type": "number"
+        },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
@@ -11781,6 +11837,10 @@
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
+        "outerRadius": {
+          "description": "The outer radius in pixels of arc marks.",
+          "type": "number"
+        },
         "radius": {
           "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
           "minimum": 0,
@@ -11800,6 +11860,10 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
+          "type": "number"
+        },
+        "startAngle": {
+          "description": "The start angle in radians for arc marks.",
           "type": "number"
         },
         "stroke": {
@@ -12046,6 +12110,10 @@
           "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
+        "endAngle": {
+          "description": "The start angle in radians for arc marks.",
+          "type": "number"
+        },
         "fill": {
           "anyOf": [
             {
@@ -12095,6 +12163,10 @@
           "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
           "format": "uri",
           "type": "string"
+        },
+        "innerRadius": {
+          "description": "The inner radius in pixels of arc marks.",
+          "type": "number"
         },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
@@ -12151,6 +12223,10 @@
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
+        "outerRadius": {
+          "description": "The outer radius in pixels of arc marks.",
+          "type": "number"
+        },
         "point": {
           "anyOf": [
             {
@@ -12187,6 +12263,10 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
+          "type": "number"
+        },
+        "startAngle": {
+          "description": "The start angle in radians for arc marks.",
           "type": "number"
         },
         "stroke": {
@@ -12974,6 +13054,10 @@
           "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
+        "endAngle": {
+          "description": "The start angle in radians for arc marks.",
+          "type": "number"
+        },
         "fill": {
           "anyOf": [
             {
@@ -13024,6 +13108,10 @@
           "format": "uri",
           "type": "string"
         },
+        "innerRadius": {
+          "description": "The inner radius in pixels of arc marks.",
+          "type": "number"
+        },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
@@ -13068,6 +13156,10 @@
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
+        "outerRadius": {
+          "description": "The outer radius in pixels of arc marks.",
+          "type": "number"
+        },
         "radius": {
           "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
           "minimum": 0,
@@ -13087,6 +13179,10 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
+          "type": "number"
+        },
+        "startAngle": {
+          "description": "The start angle in radians for arc marks.",
           "type": "number"
         },
         "stroke": {
@@ -14101,6 +14197,10 @@
           "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
+        "endAngle": {
+          "description": "The start angle in radians for arc marks.",
+          "type": "number"
+        },
         "fill": {
           "anyOf": [
             {
@@ -14151,6 +14251,10 @@
           "format": "uri",
           "type": "string"
         },
+        "innerRadius": {
+          "description": "The inner radius in pixels of arc marks.",
+          "type": "number"
+        },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
@@ -14195,6 +14299,10 @@
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
+        "outerRadius": {
+          "description": "The outer radius in pixels of arc marks.",
+          "type": "number"
+        },
         "radius": {
           "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
           "minimum": 0,
@@ -14214,6 +14322,10 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
+          "type": "number"
+        },
+        "startAngle": {
+          "description": "The start angle in radians for arc marks.",
           "type": "number"
         },
         "stroke": {
@@ -16226,6 +16338,10 @@
           "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
           "type": "string"
         },
+        "endAngle": {
+          "description": "The start angle in radians for arc marks.",
+          "type": "number"
+        },
         "fill": {
           "anyOf": [
             {
@@ -16276,6 +16392,10 @@
           "format": "uri",
           "type": "string"
         },
+        "innerRadius": {
+          "description": "The inner radius in pixels of arc marks.",
+          "type": "number"
+        },
         "interpolate": {
           "$ref": "#/definitions/Interpolate",
           "description": "The line interpolation method to use for line and area marks. One of the following:\n- `\"linear\"`: piecewise linear segments, as in a polyline.\n- `\"linear-closed\"`: close the linear segments to form a polygon.\n- `\"step\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function.\n- `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function.\n- `\"basis\"`: a B-spline, with control point duplication on the ends.\n- `\"basis-open\"`: an open B-spline; may not intersect the start or end.\n- `\"basis-closed\"`: a closed B-spline, as in a loop.\n- `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends.\n- `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points.\n- `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop.\n- `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline.\n- `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
@@ -16320,6 +16440,10 @@
           "$ref": "#/definitions/Orientation",
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
+        "outerRadius": {
+          "description": "The outer radius in pixels of arc marks.",
+          "type": "number"
+        },
         "radius": {
           "description": "Polar coordinate radial offset, in pixels, of the text label from the origin determined by the `x` and `y` properties.",
           "minimum": 0,
@@ -16339,6 +16463,10 @@
         "size": {
           "description": "Default size for marks.\n- For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value.\n- For `bar`, this represents the band size of the bar, in pixels.\n- For `text`, this represents the font size, in pixels.\n\n__Default value:__\n- `30` for point, circle, square marks; width/height's `step`\n- `2` for bar marks with discrete dimensions;\n- `5` for bar marks with continuous dimensions;\n- `11` for text marks.",
           "minimum": 0,
+          "type": "number"
+        },
+        "startAngle": {
+          "description": "The start angle in radians for arc marks.",
           "type": "number"
         },
         "stroke": {
@@ -16651,7 +16779,7 @@
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for title and subtitle text. One of `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`."
+          "description": "Vertical text baseline for title and subtitle text. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
         },
         "color": {
           "anyOf": [
@@ -16706,7 +16834,7 @@
           "type": "number"
         },
         "lineHeight": {
-          "description": "Line height in pixels for multi-line title text.",
+          "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
           "type": "number"
         },
         "offset": {
