@@ -39,7 +39,7 @@
           "type": "stack",
           "groupby": ["age"],
           "field": "sum_people",
-          "sort": {"field": ["gender"], "order": ["descending"]},
+          "sort": {"field": ["gender"], "order": ["ascending"]},
           "as": ["sum_people_start", "sum_people_end"],
           "offset": "zero"
         },
@@ -69,7 +69,7 @@
           "type": "stack",
           "groupby": ["age"],
           "field": "sum_people",
-          "sort": {"field": ["gender"], "order": ["descending"]},
+          "sort": {"field": ["gender"], "order": ["ascending"]},
           "as": ["sum_people_start", "sum_people_end"],
           "offset": "zero"
         },

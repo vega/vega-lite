@@ -40,7 +40,7 @@
           "type": "stack",
           "groupby": ["age"],
           "field": "sum_signed_people",
-          "sort": {"field": ["gender"], "order": ["descending"]},
+          "sort": {"field": ["gender"], "order": ["ascending"]},
           "as": ["sum_signed_people_start", "sum_signed_people_end"],
           "offset": "zero"
         },

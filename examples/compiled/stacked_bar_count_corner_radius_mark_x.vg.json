@@ -27,7 +27,7 @@
           "type": "stack",
           "groupby": ["month_date"],
           "field": "__count",
-          "sort": {"field": ["weather"], "order": ["descending"]},
+          "sort": {"field": ["weather"], "order": ["ascending"]},
           "as": ["__count_start", "__count_end"],
           "offset": "zero"
         }

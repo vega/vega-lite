@@ -58,7 +58,7 @@
           "type": "stack",
           "groupby": ["properties\\.variety"],
           "field": "sum_properties\\.yield",
-          "sort": {"field": ["properties\\.site"], "order": ["descending"]},
+          "sort": {"field": ["properties\\.site"], "order": ["ascending"]},
           "as": ["sum_properties.yield_start", "sum_properties.yield_end"],
           "offset": "zero"
         },

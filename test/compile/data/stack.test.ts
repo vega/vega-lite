@@ -30,7 +30,7 @@ describe('compile/data/stack', () => {
         stackby: ['c'],
         sort: {
           field: ['c'],
-          order: ['descending']
+          order: ['ascending']
         },
         offset: 'zero',
         impute: false,
@@ -55,7 +55,7 @@ describe('compile/data/stack', () => {
         stackby: ['c'],
         sort: {
           field: ['c'],
-          order: ['descending']
+          order: ['ascending']
         },
         offset: 'zero',
         impute: false,
@@ -79,7 +79,7 @@ describe('compile/data/stack', () => {
         stackby: ['c'],
         sort: {
           field: ['c'],
-          order: ['descending']
+          order: ['ascending']
         },
         offset: 'zero',
         impute: false,
@@ -93,7 +93,7 @@ describe('compile/data/stack', () => {
           field: 'sum_a',
           sort: {
             field: ['c'],
-            order: ['descending']
+            order: ['ascending']
           },
           as: ['sum_a_start', 'sum_a_end'],
           offset: 'zero'
@@ -166,7 +166,7 @@ describe('compile/data/stack', () => {
         stackby: ['c'],
         sort: {
           field: ['c'],
-          order: ['descending']
+          order: ['ascending']
         },
         offset: 'zero',
         impute: true,
@@ -193,7 +193,7 @@ describe('compile/data/stack', () => {
           field: 'sum_a',
           sort: {
             field: ['c'],
-            order: ['descending']
+            order: ['ascending']
           },
           as: ['sum_a_start', 'sum_a_end'],
           offset: 'zero'
@@ -324,7 +324,7 @@ describe('compile/data/stack', () => {
       });
       const stack = StackNode.makeFromEncoding(null, model);
       expect(stack.hash()).toEqual(
-        'Stack {"as":["sum_a_start","sum_a_end"],"dimensionFieldDef":{"field":"b","type":"nominal"},"facetby":[],"impute":false,"offset":"zero","sort":{"field":["c"],"order":["descending"]},"stackField":"sum_a","stackby":["c"]}'
+        'Stack {"as":["sum_a_start","sum_a_end"],"dimensionFieldDef":{"field":"b","type":"nominal"},"facetby":[],"impute":false,"offset":"zero","sort":{"field":["c"],"order":["ascending"]},"stackField":"sum_a","stackby":["c"]}'
       );
     });
 
