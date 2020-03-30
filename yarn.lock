@@ -8012,11 +8012,11 @@ vega-time@^1.0.0, vega-time@~1.0.0:
     vega-util "^1.12.0"
 
 vega-tooltip@^0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.22.0.tgz#b87175f6942d6fe8ac083359db0dc1fe30c8afc8"
-  integrity sha512-H5rK3wpjmMU2jsRqcSfVsqD9PDQkbwQp1daAmr7lBVzb33dgw3vGZAgOTCI9OwNSi2xV2Ylv0QRlUq2f7ojFVQ==
+  version "0.22.1"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.22.1.tgz#231d6c8a105b6ac531bf8275cd0950c30373e558"
+  integrity sha512-mPmzxwvi6+2ZgbZ/+mNC7XbSu5I6Ckon8zdgUfH9neb+vV7CKlV/FYypMdVN/9iDMFUqGzybYdqNOiSPPIxFEQ==
   dependencies:
-    vega-util "^1.13.0"
+    vega-util "^1.13.1"
 
 vega-transforms@~4.7.0:
   version "4.7.0"
@@ -8036,7 +8036,7 @@ vega-typings@~0.14.0, vega-typings@~0.14.2:
   dependencies:
     vega-util "^1.13.1"
 
-vega-util@^1.11.0, vega-util@^1.12.0, vega-util@^1.12.1, vega-util@^1.12.2, vega-util@^1.13.0, vega-util@^1.13.1, vega-util@^1.8.0, vega-util@~1.13.1:
+vega-util@^1.11.0, vega-util@^1.12.0, vega-util@^1.12.1, vega-util@^1.12.2, vega-util@^1.13.1, vega-util@^1.8.0, vega-util@~1.13.1:
   version "1.13.1"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.13.1.tgz#3eae51043184c6b873c17b148755c21b01274a0e"
   integrity sha512-TmvZSMKqhGlS7eAXphqJUhq+NZVYbvXX2ahargTRkVckGWjEUpWhMC7T13vYihrU2Lf/OevKbrruSXKOBxke2w==
