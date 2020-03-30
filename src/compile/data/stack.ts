@@ -124,9 +124,11 @@ export class StackNode extends DataFlowNode {
       return null;
     }
 
+    const {groupbyChannel, fieldChannel, offset, impute} = stackProperties;
+
     let dimensionFieldDef: PositionFieldDef<string>;
-    if (stackProperties.groupbyChannel) {
-      const cDef = encoding[stackProperties.groupbyChannel];
+    if (groupbyChannel) {
+      const cDef = encoding[groupbyChannel];
       dimensionFieldDef = getFieldDef(cDef) as PositionFieldDef<string>; // Fair to cast as groupByChannel is always either x or y
     }
 
@@ -142,7 +144,7 @@ export class StackNode extends DataFlowNode {
       sort = stackby.reduce(
         (s, field) => {
           s.field.push(field);
-          s.order.push('descending');
+          s.order.push(fieldChannel === 'y' ? 'descending' : 'ascending');
           return s;
         },
         {field: [], order: []}
@@ -151,15 +153,15 @@ export class StackNode extends DataFlowNode {
 
     return new StackNode(parent, {
       dimensionFieldDef,
-      stackField: model.vgField(stackProperties.fieldChannel),
+      stackField: model.vgField(fieldChannel),
       facetby: [],
       stackby,
       sort,
-      offset: stackProperties.offset,
-      impute: stackProperties.impute,
+      offset,
+      impute,
       as: [
-        model.vgField(stackProperties.fieldChannel, {suffix: 'start', forAs: true}),
-        model.vgField(stackProperties.fieldChannel, {suffix: 'end', forAs: true})
+        model.vgField(fieldChannel, {suffix: 'start', forAs: true}),
+        model.vgField(fieldChannel, {suffix: 'end', forAs: true})
       ]
     });
   }
