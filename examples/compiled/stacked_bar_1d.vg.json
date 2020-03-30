@@ -22,7 +22,7 @@
           "type": "stack",
           "groupby": [],
           "field": "sum_Acceleration",
-          "sort": {"field": ["Origin"], "order": ["descending"]},
+          "sort": {"field": ["Origin"], "order": ["ascending"]},
           "as": ["sum_Acceleration_start", "sum_Acceleration_end"],
           "offset": "zero"
         },
