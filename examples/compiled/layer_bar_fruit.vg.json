@@ -24,6 +24,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["name"],
+          "field": "count",
+          "sort": {"field": ["count"], "order": ["ascending"]},
+          "as": ["count_start", "count_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"count\"]) && isFinite(+datum[\"count\"])"
         }
@@ -56,8 +64,8 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "count"},
-          "x": {"scale": "x", "field": "count"},
-          "x2": {"scale": "x", "value": 0},
+          "x": {"scale": "x", "field": "count_end"},
+          "x2": {"scale": "x", "field": "count_start"},
           "y": {"scale": "y", "field": "name"},
           "height": {"scale": "y", "band": true}
         }
@@ -89,7 +97,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "count"},
+          {"data": "data_1", "field": "count_start"},
+          {"data": "data_1", "field": "count_end"},
           {"data": "data_2", "field": "count"}
         ]
       },
