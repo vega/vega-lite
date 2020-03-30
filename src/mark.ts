@@ -87,9 +87,7 @@ export interface TooltipContent {
 /** @hidden */
 export type Hide = 'hide';
 
-export interface MarkConfig extends ColorMixins, Omit<VgMarkConfig, 'tooltip'> {
-  // ========== VL-Specific ==========
-
+export interface VLOnlyMarkConfig extends ColorMixins {
   /**
    * Whether the mark's color should be used as fill color instead of stroke color.
    *
@@ -101,16 +99,16 @@ export interface MarkConfig extends ColorMixins, Omit<VgMarkConfig, 'tooltip'> {
   filled?: boolean;
 
   /**
-   * For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.
-   */
-  order?: null | boolean;
-
-  /**
    * Defines how Vega-Lite should handle marks for invalid values (`null` and `NaN`).
    * - If set to `"filter"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks).
    * - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.
    */
   invalid?: 'filter' | Hide | null;
+
+  /**
+   * For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.
+   */
+  order?: null | boolean;
 
   /**
    * Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step.
@@ -123,7 +121,9 @@ export interface MarkConfig extends ColorMixins, Omit<VgMarkConfig, 'tooltip'> {
    * If set to `0.5`, bandwidth of the marks will be half of the time unit band step.
    */
   timeUnitBand?: number;
+}
 
+export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'tooltip'> {
   // ========== Overriding Vega ==========
 
   /**
@@ -271,14 +271,16 @@ export const FILL_CONFIG = ['fill', 'fillOpacity'] as const;
 
 export const FILL_STROKE_CONFIG = [...STROKE_CONFIG, ...FILL_CONFIG];
 
-export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof MarkConfig)[] = [
-  'filled',
-  'color',
-  'tooltip',
-  'invalid',
-  'timeUnitBandPosition',
-  'timeUnitBand'
-];
+const VL_ONLY_MARK_CONFIG_INDEX: Flag<keyof VLOnlyMarkConfig> = {
+  color: 1,
+  filled: 1,
+  invalid: 1,
+  order: 1,
+  timeUnitBand: 1,
+  timeUnitBandPosition: 1
+};
+
+export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof VLOnlyMarkConfig)[] = keys(VL_ONLY_MARK_CONFIG_INDEX);
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   [k in Mark]?: (keyof Required<MarkConfigMixins>[k])[];
