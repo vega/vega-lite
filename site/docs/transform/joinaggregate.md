@@ -75,3 +75,13 @@ Another example is to show the "exemplar" movies based on the release year avera
 Rather than filtering the above two examples we can also calculate a residual by deriving the mean using the join aggregate transform first.
 
 <div class="vl-example" data-name="joinaggregate_residual_graph"></div>
+
+### Text Color with Contrast
+
+Here, we layer text on a table heatmap. The text is black or white depending on the values of `num_cars`. One issue with this specification is that we have to know the range of `num_cars` ahead of time to determine a suitable threshold (e.g. `40`).
+
+<div class="vl-example" data-name="layer_text_heatmap"></div>
+
+We can use a joinaggregate with a calculate to determine the threshold dynamically.
+
+<div class="vl-example" data-name="layer_text_heatmap_joinaggregate"></div>

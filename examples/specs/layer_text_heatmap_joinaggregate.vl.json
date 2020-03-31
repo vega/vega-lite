@@ -5,6 +5,13 @@
     {
       "aggregate": [{"op": "count", "as": "num_cars"}],
       "groupby": ["Origin", "Cylinders"]
+    },
+    {
+      "joinaggregate": [{"op": "max", "field": "num_cars", "as": "max_num_cars"}]
+    },
+    {
+      "calculate": "datum.num_cars > 0.5 * datum.max_num_cars",
+      "as": "more_than_half"
     }
   ],
   "encoding": {
@@ -28,8 +35,13 @@
       "encoding": {
         "text": {"field": "num_cars", "type": "quantitative"},
         "color": {
-          "condition": {"test": "datum['num_cars'] < 40", "value": "black"},
-          "value": "white"
+          "field": "more_than_half",
+          "type": "nominal",
+          "scale": {
+            "domain": [false, true],
+            "range": ["black", "white"]
+          },
+          "legend": null
         }
       }
     }

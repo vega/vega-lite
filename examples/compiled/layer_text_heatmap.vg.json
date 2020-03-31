@@ -58,10 +58,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {"test": "datum['num_cars'] < 40", "value": "black"},
-            {"value": "white"}
-          ],
+          "fill": [{"test": "datum['num_cars'] < 40", "value": "black"}, {"value": "white"}],
           "x": {"scale": "x", "field": "Cylinders", "band": 0.5},
           "y": {"scale": "y", "field": "Origin", "band": 0.5},
           "text": {"signal": "format(datum[\"num_cars\"], \"\")"},
@@ -163,7 +160,6 @@
     }
   ],
   "config": {
-    "axis": {"grid": true, "tickBand": "extent"},
-    "style": {"text": {"baseline": "middle"}}
+    "axis": {"grid": true, "tickBand": "extent"}
   }
 }
