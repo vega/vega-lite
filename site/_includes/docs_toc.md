@@ -196,6 +196,7 @@
     - [Encoding Channels]({{site.baseurl}}/docs/encoding.html#channels)
     - [Channel Definition]({{site.baseurl}}/docs/encoding.html#channel-definition)
     - [Position Channels]({{site.baseurl}}/docs/encoding.html#position)
+    - [Polar Position Channels]({{site.baseurl}}/docs/encoding.html#polar)
     - [Geographic Position Channels]({{site.baseurl}}/docs/encoding.html#geo)
     - [Mark Property Channels]({{site.baseurl}}/docs/encoding.html#mark-prop)
     - [Text and Tooltip Channels]({{site.baseurl}}/docs/encoding.html#text)
