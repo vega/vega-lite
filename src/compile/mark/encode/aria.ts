@@ -1,5 +1,5 @@
 import {entries} from '../../../util';
-import {getMarkConfig} from '../../common';
+import {getMarkPropOrConfig} from '../../common';
 import {UnitModel} from './../../unit';
 import {wrapCondition} from './conditional';
 import {textRef} from './text';
@@ -8,7 +8,7 @@ import {tooltipData} from './tooltip';
 export function aria(model: UnitModel) {
   const {mark, markDef, config} = model;
 
-  const ariaHidden = markDef.ariaHidden ?? getMarkConfig('ariaHidden', markDef, config);
+  const ariaHidden = getMarkPropOrConfig('ariaHidden', markDef, config);
 
   // we can ignore other aria properties if ariaHidden is true
   if (ariaHidden === true) {
@@ -33,7 +33,7 @@ export function ariaLabel(model: UnitModel) {
 
   // Use default from mark def or config if defined.
   // We usually just return undefined but since we are defining a default below, we need to check the default here.
-  const ariaLabelValue = markDef.ariaLabel ?? getMarkConfig('ariaLabel', markDef, config);
+  const ariaLabelValue = getMarkPropOrConfig('ariaLabel', markDef, config);
   if (ariaLabelValue) {
     return {
       ariaLabel: {
