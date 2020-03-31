@@ -201,7 +201,7 @@ AllSortString:
 NumericFieldDefWithCondition:
   name: MarkPropFieldDef
   link: 'encoding.html#mark-prop-field-def'
-NumericValueDefWithCondition:
+NumericValueDefWithConditionAlias:
   name: MarkPropValueDef
   link: 'encoding.html#mark-prop-value-def'
 NumericDatumDefWithCondition:
@@ -211,7 +211,7 @@ NumericDatumDefWithCondition:
 NumericArrayFieldDefWithCondition:
   name: MarkPropFieldDef
   link: 'encoding.html#mark-prop-field-def'
-NumericArrayValueDefWithCondition:
+NumericArrayValueDefWithConditionAlias:
   name: MarkPropValueDef
   link: 'encoding.html#mark-prop-value-def'
 NumericArrayDatumDefWithCondition:
@@ -221,7 +221,7 @@ NumericArrayDatumDefWithCondition:
 StringFieldDefWithCondition:
   name: MarkPropFieldDef
   link: 'encoding.html#mark-prop-field-def'
-StringValueDefWithCondition:
+StringValueDefWithConditionAlias:
   name: ValueDef
   link: 'encoding.html#mark-prop-value-def'
 StringDatumDefWithCondition:
@@ -231,7 +231,7 @@ StringDatumDefWithCondition:
 ShapeFieldDefWithCondition:
   name: MarkPropFieldDef
   link: 'encoding.html#mark-prop-field-def'
-ShapeValueDefWithCondition:
+ShapeValueDefWithConditionAlias:
   name: MarkPropValueDef
   link: 'encoding.html#mark-prop-value-def'
 ShapeDatumDefWithCondition:
@@ -241,7 +241,7 @@ ShapeDatumDefWithCondition:
 ColorGradientFieldDefWithCondition:
   name: MarkPropFieldDef
   link: 'encoding.html#mark-prop-field-def'
-ColorGradientValueDefWithCondition:
+ColorGradientValueDefWithConditionAlias:
   name: MarkPropValueDef
   link: 'encoding.html#mark-prop-value-def'
 ColorGradientDatumDefWithCondition:
@@ -251,7 +251,7 @@ ColorGradientDatumDefWithCondition:
 TextFieldDefWithCondition:
   name: TextFieldDef
   link: 'encoding.html#text-field-def'
-TextValueDefWithCondition:
+TextValueDefWithConditionAlias:
   name: TextValueDef
   link: 'encoding.html#text-value-def'
 
