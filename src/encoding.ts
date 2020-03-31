@@ -26,7 +26,7 @@ import {
   LatLongFieldDef,
   NumericArrayDatumDefWithCondition,
   NumericArrayFieldDefWithCondition,
-  NumericArrayValueDefWithCondition,
+  NumericArrayValueOrSignalDefWithCondition,
   NumericDatumDefWithCondition,
   NumericFieldDefWithCondition,
   NumericValueOrSignalDefWithCondition,
@@ -195,7 +195,7 @@ export interface Encoding<F extends Field> {
   strokeDash?:
     | NumericArrayFieldDefWithCondition<F>
     | NumericArrayDatumDefWithCondition<F>
-    | NumericArrayValueDefWithCondition<F>;
+    | NumericArrayValueOrSignalDefWithCondition<F>;
 
   /**
    * Size of the mark.
@@ -209,7 +209,7 @@ export interface Encoding<F extends Field> {
   /**
    * Rotation angle of point and text marks.
    */
-  angle?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalWithCondition<F>;
+  angle?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalDefWithCondition<F>;
 
   /**
    * Shape of the mark.

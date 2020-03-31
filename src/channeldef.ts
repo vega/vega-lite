@@ -114,7 +114,7 @@ export type NumericValueOrSignalDefWithCondition<F extends Field> = ValueOrSigna
   MarkPropFieldOrDatumDef<F, StandardType>,
   number
 >;
-export type NumericArrayValueDefWithCondition<F extends Field> = ValueDefWithCondition<
+export type NumericArrayValueOrSignalDefWithCondition<F extends Field> = ValueOrSignalDefWithCondition<
   MarkPropFieldOrDatumDef<F, StandardType>,
   number[]
 >;
