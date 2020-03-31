@@ -97,7 +97,7 @@ describe('extractTransforms()', () => {
     'rect_heatmap_weather.vl.json',
     'repeat_histogram_flights.vl.json',
     'repeat_histogram.vl.json',
-    'repeat_histogram.vl.json',
+    'repeat_histogram_autosize.vl.json',
     'repeat_child_layer.vl.json',
     'repeat_layer.vl.json',
     'repeat_line_weather.vl.json',
