@@ -12,7 +12,11 @@ export function aria(model: UnitModel) {
 
   // we can ignore other aria properties if ariaHidden is true
   if (ariaHidden === true) {
-    return {};
+    return {
+      ariaHidden: {
+        value: true
+      }
+    };
   }
 
   return {
@@ -42,7 +46,7 @@ export function ariaLabel(model: UnitModel) {
     };
   }
 
-  const data = tooltipData(encoding, stack, config, {});
+  const data = tooltipData(encoding, stack, config);
 
   return {
     ariaLabel: {

@@ -26,7 +26,7 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
   const {encoding, markDef, config, stack} = model;
   const channelDef = encoding.tooltip;
   if (isArray(channelDef)) {
-    return {tooltip: tooltipRefForEncoding(tooltipData({tooltip: channelDef}, stack, config, opt))};
+    return {tooltip: tooltipRefForEncoding({tooltip: channelDef}, stack, config, opt)};
   } else {
     const datum = opt.reactiveGeom ? 'datum.datum' : 'datum';
     return wrapCondition(model, channelDef, 'tooltip', cDef => {
@@ -52,7 +52,7 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
       } else if (isObject(markTooltip)) {
         // `tooltip` is `{fields: 'encodings' | 'fields'}`
         if (markTooltip.content === 'encoding') {
-          return tooltipRefForEncoding(tooltipData(encoding, stack, config, opt));
+          return tooltipRefForEncoding(encoding, stack, config, opt);
         } else {
           return {signal: datum};
         }
@@ -67,7 +67,7 @@ export function tooltipData(
   encoding: Encoding<string>,
   stack: StackProperties,
   config: Config,
-  {reactiveGeom}: {reactiveGeom?: boolean} = {}
+  reactiveGeom?: boolean
 ) {
   const toSkip = {};
   const expr = reactiveGeom ? 'datum.datum' : 'datum';
@@ -125,7 +125,16 @@ export function tooltipData(
   return out;
 }
 
-export function tooltipRefForEncoding(data: Dict<string>) {
+export function tooltipRefForEncoding(
+  encoding: Encoding<string>,
+  stack: StackProperties,
+  config: Config,
+  {reactiveGeom}: {reactiveGeom?: boolean} = {}
+) {
+  return tooltipRefData(tooltipData(encoding, stack, config, reactiveGeom));
+}
+
+export function tooltipRefData(data: Dict<string>) {
   const keyValues = entries(data).map(({key, value}) => `${key}: ${value}`);
   return keyValues.length > 0 ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
