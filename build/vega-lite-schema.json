@@ -2942,7 +2942,7 @@
               "$ref": "#/definitions/NumericValueDefWithConditionAlias"
             }
           ],
-          "description": "Rotation angle of point and text marks. For arc marks, `angle` is an alias for the `theta` channel."
+          "description": "Rotation angle of point and text marks."
         },
         "color": {
           "anyOf": [
@@ -6518,7 +6518,7 @@
               "$ref": "#/definitions/NumericValueDefWithConditionAlias"
             }
           ],
-          "description": "Rotation angle of point and text marks. For arc marks, `angle` is an alias for the `theta` channel."
+          "description": "Rotation angle of point and text marks."
         },
         "color": {
           "anyOf": [

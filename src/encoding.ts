@@ -232,7 +232,7 @@ export interface Encoding<F extends Field> {
   size?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalDefWithCondition<F>;
 
   /**
-   * Rotation angle of point and text marks. For arc marks, `angle` is an alias for the `theta` channel.
+   * Rotation angle of point and text marks.
    */
   angle?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalDefWithCondition<F>;
 
