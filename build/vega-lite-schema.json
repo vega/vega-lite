@@ -160,6 +160,25 @@
           "minimum": 0,
           "type": "number"
         },
+        "ariaHidden": {
+          "description": "If set to `true`, removes marks from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the mark for accessibility.\n\nBy default, Vega-Lite will generate a description based on fields from the encoding. Set to `null` to disable default aria labels.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark.",
+          "type": "string"
+        },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
@@ -609,6 +628,22 @@
     "Axis": {
       "additionalProperties": false,
       "properties": {
+        "ariaHidden": {
+          "description": "If set to `true`, removes the axis from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the axis group for accessibility.",
+          "type": "string"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the axis group for accessibility.\n\n__Default value__: `\"graphics-object\"`",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the axis group.\n\n__Default value__: `\"axis\"`",
+          "type": "string"
+        },
         "bandPosition": {
           "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
           "type": "number"
@@ -1179,6 +1214,22 @@
     "AxisConfig": {
       "additionalProperties": false,
       "properties": {
+        "ariaHidden": {
+          "description": "If set to `true`, removes the axis from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the axis group for accessibility.",
+          "type": "string"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the axis group for accessibility.\n\n__Default value__: `\"graphics-object\"`",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the axis group.\n\n__Default value__: `\"axis\"`",
+          "type": "string"
+        },
         "bandPosition": {
           "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
           "type": "number"
@@ -1784,6 +1835,25 @@
           "minimum": 0,
           "type": "number"
         },
+        "ariaHidden": {
+          "description": "If set to `true`, removes marks from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the mark for accessibility.\n\nBy default, Vega-Lite will generate a description based on fields from the encoding. Set to `null` to disable default aria labels.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark.",
+          "type": "string"
+        },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
@@ -2210,6 +2280,22 @@
           "description": "Angle in degrees of title and subtitle text.",
           "type": "number"
         },
+        "ariaHidden": {
+          "description": "If set to `true`, removes the subtitle from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the subtitle for accessibility.",
+          "type": "string"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the subtitle for accessibility.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the subtitle.\n\n__Default value__: `\"subtitle\"`",
+          "type": "string"
+        },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "Vertical text baseline for title and subtitle text. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
@@ -2312,6 +2398,10 @@
         },
         "subtitlePadding": {
           "description": "The padding in pixels between title and subtitle text.",
+          "type": "number"
+        },
+        "tabindex": {
+          "description": "Indicates that the subtitle can be focused, and where it participates in sequential keyboard navigation.",
           "type": "number"
         }
       },
@@ -3065,6 +3155,23 @@
             }
           ],
           "description": "Rotation angle of point and text marks."
+        },
+        "ariaLabel": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StringFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/StringValueWithCondition"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/StringFieldDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A string that labels the axis group for accessibility."
         },
         "color": {
           "anyOf": [
@@ -6725,6 +6832,23 @@
             }
           ],
           "description": "Rotation angle of point and text marks."
+        },
+        "ariaLabel": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StringFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/StringValueWithCondition"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/StringFieldDef"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "A string that labels the axis group for accessibility."
         },
         "color": {
           "anyOf": [
@@ -10528,6 +10652,22 @@
       "additionalProperties": false,
       "description": "Properties of a legend or boolean flag for determining whether to show it.",
       "properties": {
+        "ariaHidden": {
+          "description": "If set to `true`, removes the legend from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the legend group for accessibility.",
+          "type": "string"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the legend group for accessibility.\n\n__Default value__: `\"graphics-object\"`",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the legend group.\n\n__Default value__: `\"legend\"`",
+          "type": "string"
+        },
         "clipHeight": {
           "description": "The height in pixels to clip symbol legend entries and limit their size.",
           "type": "number"
@@ -10906,6 +11046,22 @@
     "LegendConfig": {
       "additionalProperties": false,
       "properties": {
+        "ariaHidden": {
+          "description": "If set to `true`, removes the legend from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the legend group for accessibility.",
+          "type": "string"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the legend group for accessibility.\n\n__Default value__: `\"graphics-object\"`",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the legend group.\n\n__Default value__: `\"legend\"`",
+          "type": "string"
+        },
         "clipHeight": {
           "description": "The height in pixels to clip symbol legend entries and limit their size.",
           "type": "number"
@@ -11411,6 +11567,25 @@
           "maximum": 360,
           "minimum": 0,
           "type": "number"
+        },
+        "ariaHidden": {
+          "description": "If set to `true`, removes marks from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the mark for accessibility.\n\nBy default, Vega-Lite will generate a description based on fields from the encoding. Set to `null` to disable default aria labels.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark.",
+          "type": "string"
         },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
@@ -12157,6 +12332,25 @@
           "minimum": 0,
           "type": "number"
         },
+        "ariaHidden": {
+          "description": "If set to `true`, removes marks from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the mark for accessibility.\n\nBy default, Vega-Lite will generate a description based on fields from the encoding. Set to `null` to disable default aria labels.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark.",
+          "type": "string"
+        },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
@@ -12531,6 +12725,25 @@
           "maximum": 360,
           "minimum": 0,
           "type": "number"
+        },
+        "ariaHidden": {
+          "description": "If set to `true`, removes marks from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the mark for accessibility.\n\nBy default, Vega-Lite will generate a description based on fields from the encoding. Set to `null` to disable default aria labels.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark.",
+          "type": "string"
         },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
@@ -13526,6 +13739,25 @@
           "maximum": 360,
           "minimum": 0,
           "type": "number"
+        },
+        "ariaHidden": {
+          "description": "If set to `true`, removes marks from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the mark for accessibility.\n\nBy default, Vega-Lite will generate a description based on fields from the encoding. Set to `null` to disable default aria labels.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark.",
+          "type": "string"
         },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
@@ -14846,6 +15078,25 @@
           "maximum": 360,
           "minimum": 0,
           "type": "number"
+        },
+        "ariaHidden": {
+          "description": "If set to `true`, removes marks from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the mark for accessibility.\n\nBy default, Vega-Lite will generate a description based on fields from the encoding. Set to `null` to disable default aria labels.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark.",
+          "type": "string"
         },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
@@ -16330,7 +16581,8 @@
         "key",
         "text",
         "href",
-        "url"
+        "url",
+        "ariaLabel"
       ],
       "type": "string"
     },
@@ -17059,6 +17311,25 @@
           "minimum": 0,
           "type": "number"
         },
+        "ariaHidden": {
+          "description": "If set to `true`, removes marks from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the mark for accessibility.\n\nBy default, Vega-Lite will generate a description based on fields from the encoding. Set to `null` to disable default aria labels.",
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark.",
+          "type": "string"
+        },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
@@ -17582,6 +17853,22 @@
           "description": "Angle in degrees of title and subtitle text.",
           "type": "number"
         },
+        "ariaHidden": {
+          "description": "If set to `true`, removes the subtitle from the accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaLabel": {
+          "description": "A string that labels the subtitle for accessibility.",
+          "type": "string"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the subtitle for accessibility.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the subtitle.\n\n__Default value__: `\"subtitle\"`",
+          "type": "string"
+        },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "Vertical text baseline for title and subtitle text. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
@@ -17702,6 +17989,10 @@
         },
         "subtitlePadding": {
           "description": "The padding in pixels between title and subtitle text.",
+          "type": "number"
+        },
+        "tabindex": {
+          "description": "Indicates that the subtitle can be focused, and where it participates in sequential keyboard navigation.",
           "type": "number"
         },
         "text": {

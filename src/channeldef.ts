@@ -5,6 +5,7 @@ import {Axis} from './axis';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin';
 import {
   ANGLE,
+  ARIA_LABEL,
   Channel,
   COLOR,
   COLUMN,
@@ -1160,6 +1161,7 @@ export function channelCompatibility(
     case ANGLE:
     case THETA:
     case RADIUS:
+    case ARIA_LABEL:
       return COMPATIBLE;
 
     case LONGITUDE:
