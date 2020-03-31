@@ -15,6 +15,17 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["num_cars"]
+        },
+        {
+          "type": "joinaggregate",
+          "as": ["max_num_cars"],
+          "ops": ["max"],
+          "fields": ["num_cars"]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.num_cars > 0.5 * datum.max_num_cars",
+          "as": "more_than_half"
         }
       ]
     },
@@ -43,7 +54,7 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "num_cars"},
+          "fill": {"scale": "layer_0_color", "field": "num_cars"},
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": true},
           "y": {"scale": "y", "field": "Origin"},
@@ -58,10 +69,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": [
-            {"test": "datum['num_cars'] < 40", "value": "black"},
-            {"value": "white"}
-          ],
+          "fill": {"scale": "layer_1_color", "field": "more_than_half"},
           "x": {"scale": "x", "field": "Cylinders", "band": 0.5},
           "y": {"scale": "y", "field": "Origin", "band": 0.5},
           "text": {"signal": "format(datum[\"num_cars\"], \"\")"},
@@ -101,12 +109,18 @@
       "paddingOuter": 0
     },
     {
-      "name": "color",
+      "name": "layer_0_color",
       "type": "linear",
       "domain": {"data": "data_0", "field": "num_cars"},
       "range": "heatmap",
       "interpolate": "hcl",
       "zero": false
+    },
+    {
+      "name": "layer_1_color",
+      "type": "ordinal",
+      "domain": [false, true],
+      "range": ["black", "white"]
     }
   ],
   "axes": [
@@ -159,7 +173,7 @@
       "direction": "horizontal",
       "gradientLength": 120,
       "title": "Count of Records",
-      "fill": "color",
+      "fill": "layer_0_color",
       "symbolType": "square"
     }
   ],
