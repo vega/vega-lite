@@ -4,6 +4,7 @@ import {
   MAX_SIZE_RANGE_STEP_RATIO,
   parseRangeForChannel
 } from '../../../src/compile/scale/range';
+import {SignalRefWrapper} from '../../../src/compile/signal';
 import {makeExplicit, makeImplicit} from '../../../src/compile/split';
 import {Config, defaultConfig, DEFAULT_STEP} from '../../../src/config';
 import * as log from '../../../src/log';
@@ -261,6 +262,20 @@ describe('compile/scale', () => {
         });
 
         expect(parseRangeForChannel('angle', model)).toEqual(makeImplicit([0, 360]));
+      });
+    });
+
+    describe('radius', () => {
+      it('should use default radius.', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'text',
+          encoding: {
+            radius: {field: 'x', type: 'quantitative'}
+          }
+        });
+        const r = parseRangeForChannel('radius', model);
+        expect(r.value[0]).toEqual(0);
+        expect(r.value[1]).toBeInstanceOf(SignalRefWrapper);
       });
     });
 
