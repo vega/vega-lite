@@ -3,6 +3,7 @@
   "description": "the population per state, engineers per state, and hurricanes per state",
   "background": "white",
   "padding": 5,
+  "width": 500,
   "data": [
     {
       "name": "source_0",
@@ -84,17 +85,14 @@
   "projections": [
     {
       "name": "projection",
-      "size": {"signal": "[childWidth, childHeight]"},
+      "size": {"signal": "[width, childHeight]"},
       "fit": {
         "signal": "[child__row_population_geojson_0, child__row_engineers_geojson_0, child__row_hurricanes_geojson_0]"
       },
       "type": "albersUsa"
     }
   ],
-  "signals": [
-    {"name": "childWidth", "value": 500},
-    {"name": "childHeight", "value": 300}
-  ],
+  "signals": [{"name": "childHeight", "value": 300}],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "all"},
   "marks": [
     {
@@ -103,7 +101,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "childHeight"}
         }
       },
@@ -145,7 +143,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "childHeight"}
         }
       },
@@ -187,7 +185,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "childHeight"}
         }
       },

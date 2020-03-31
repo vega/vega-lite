@@ -159,9 +159,10 @@
     }
   ],
   "signals": [
-    {"name": "childHeight", "value": 50},
     {"name": "concat_0_childWidth", "value": 150},
-    {"name": "concat_1_childWidth", "value": 150}
+    {"name": "concat_0_childHeight", "value": 50},
+    {"name": "concat_1_childWidth", "value": 150},
+    {"name": "concat_1_childHeight", "value": 50}
   ],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
@@ -178,7 +179,7 @@
           "encode": {
             "update": {
               "width": {"signal": "concat_0_childWidth"},
-              "height": {"signal": "childHeight"}
+              "height": {"signal": "concat_0_childHeight"}
             }
           },
           "marks": [
@@ -229,7 +230,7 @@
               "orient": "left",
               "gridScale": "child__column_Rotten_Tomatoes_Rating_x",
               "grid": true,
-              "tickCount": {"signal": "ceil(childHeight/40)"},
+              "tickCount": {"signal": "ceil(concat_0_childHeight/40)"},
               "domain": false,
               "labels": false,
               "maxExtent": 0,
@@ -253,7 +254,7 @@
               "grid": false,
               "title": "Count",
               "labelOverlap": true,
-              "tickCount": {"signal": "ceil(childHeight/40)"},
+              "tickCount": {"signal": "ceil(concat_0_childHeight/40)"},
               "zindex": 0
             }
           ]
@@ -265,7 +266,7 @@
           "encode": {
             "update": {
               "width": {"signal": "concat_0_childWidth"},
-              "height": {"signal": "childHeight"}
+              "height": {"signal": "concat_0_childHeight"}
             }
           },
           "marks": [
@@ -313,7 +314,7 @@
               "orient": "left",
               "gridScale": "child__column_IMDB_Rating_x",
               "grid": true,
-              "tickCount": {"signal": "ceil(childHeight/40)"},
+              "tickCount": {"signal": "ceil(concat_0_childHeight/40)"},
               "domain": false,
               "labels": false,
               "maxExtent": 0,
@@ -337,7 +338,7 @@
               "grid": false,
               "title": "Count",
               "labelOverlap": true,
-              "tickCount": {"signal": "ceil(childHeight/40)"},
+              "tickCount": {"signal": "ceil(concat_0_childHeight/40)"},
               "zindex": 0
             }
           ]
@@ -357,7 +358,7 @@
           "encode": {
             "update": {
               "width": {"signal": "concat_1_childWidth"},
-              "height": {"signal": "childHeight"}
+              "height": {"signal": "concat_1_childHeight"}
             }
           },
           "marks": [
@@ -405,7 +406,7 @@
               "orient": "left",
               "gridScale": "child__column_US_Gross_x",
               "grid": true,
-              "tickCount": {"signal": "ceil(childHeight/40)"},
+              "tickCount": {"signal": "ceil(concat_1_childHeight/40)"},
               "domain": false,
               "labels": false,
               "maxExtent": 0,
@@ -429,7 +430,7 @@
               "grid": false,
               "title": "Count",
               "labelOverlap": true,
-              "tickCount": {"signal": "ceil(childHeight/40)"},
+              "tickCount": {"signal": "ceil(concat_1_childHeight/40)"},
               "zindex": 0
             }
           ]
@@ -441,7 +442,7 @@
           "encode": {
             "update": {
               "width": {"signal": "concat_1_childWidth"},
-              "height": {"signal": "childHeight"}
+              "height": {"signal": "concat_1_childHeight"}
             }
           },
           "marks": [
@@ -489,7 +490,7 @@
               "orient": "left",
               "gridScale": "child__column_Worldwide_Gross_x",
               "grid": true,
-              "tickCount": {"signal": "ceil(childHeight/40)"},
+              "tickCount": {"signal": "ceil(concat_1_childHeight/40)"},
               "domain": false,
               "labels": false,
               "maxExtent": 0,
@@ -513,7 +514,7 @@
               "grid": false,
               "title": "Count",
               "labelOverlap": true,
-              "tickCount": {"signal": "ceil(childHeight/40)"},
+              "tickCount": {"signal": "ceil(concat_1_childHeight/40)"},
               "zindex": 0
             }
           ]
@@ -538,7 +539,7 @@
       "name": "child__column_Rotten_Tomatoes_Rating_y",
       "type": "linear",
       "domain": {"data": "data_1", "field": "__count"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "concat_0_childHeight"}, 0],
       "nice": true,
       "zero": true
     },
@@ -558,7 +559,7 @@
       "name": "child__column_IMDB_Rating_y",
       "type": "linear",
       "domain": {"data": "data_2", "field": "__count"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "concat_0_childHeight"}, 0],
       "nice": true,
       "zero": true
     },
@@ -576,7 +577,7 @@
       "name": "child__column_US_Gross_y",
       "type": "linear",
       "domain": {"data": "data_3", "field": "__count"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "concat_1_childHeight"}, 0],
       "nice": true,
       "zero": true
     },
@@ -596,7 +597,7 @@
       "name": "child__column_Worldwide_Gross_y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "__count"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "concat_1_childHeight"}, 0],
       "nice": true,
       "zero": true
     }
