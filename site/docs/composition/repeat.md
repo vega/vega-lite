@@ -58,6 +58,12 @@ Note how the field for the y channel refers to a repeated field.
 },
 ```
 
+### Multi-series Line Chart with Repeated Layers
+
+You can also use `repeat` with `layer` to create a multi-series line chart. Here we map a repeater field as data value ([`datum`](datum.html)) for the color encoding.
+
+<span class="vl-example" data-name="repeat_layer"></span>
+
 ### Repeated Histogram (Wrapped)
 
 <span class="vl-example" data-name="repeat_histogram"></span>

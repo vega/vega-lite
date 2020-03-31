@@ -5,7 +5,7 @@ title: Encoding
 permalink: /docs/encoding.html
 ---
 
-An integral part of the data visualization process is encoding data with visual properties of graphical marks. The `encoding` property of a single view specification represents the mapping between [encoding channels](#channels) (such as `x`, `y`, or `color`) and [data fields](#field-def) or [constant values](#value-def).
+An integral part of the data visualization process is encoding data with visual properties of graphical marks. The `encoding` property of a single view specification represents the mapping between [encoding channels](#channels) (such as `x`, `y`, or `color`) and [data fields](#field-def), constant [visual values](#value-def), or constant [data values (datum)](#datum-def).
 
 ```js
 // Specification of a Single View
@@ -81,7 +81,11 @@ The keys in the `encoding` object are encoding channels. Vega-Lite supports the 
 
 ## Channel Definition
 
-Each channel definition object is either a [field definition](#field-def), which describes the data field encoded by the channel, or a [value definition](#value-def), which describes an encoded constant value.
+Each channel definition object must be one of the following:
+
+- [field definition](#field-def), which describes the data field encoded by the channel.
+- [value definition](#value-def), which describes an encoded constant visual value.
+- [datum definition](#datum-def), which describes a constant data value encoded via a scale.
 
 {:#field-def}
 
@@ -145,9 +149,33 @@ To see a list of additional properties for each type of encoding channels, pleas
 }
 ```
 
-To map a constant value to an encoding channel, the channel's value definition must describe the `value` property. (See the [`value`](value.html) page for more examples.)
+To map a constant visual value to an encoding channel, the channel's value definition must describe the `value` property. (See the [`value`](value.html) page for more examples.)
 
 <!--{% include table.html props="value" source="ValueDef" %}-->
+
+{:#value-def}
+
+### Datum Definition
+
+```js
+// Specification of a Single View
+{
+  ...,
+  "encoding": {     // Encoding
+    ...: {
+      "datum": ...
+    },
+    ...
+  },
+  ...
+}
+```
+
+To map a constant data value (`datum`) via a scale to an encoding channel, the channel's value definition must describe the `datum` property. (See the [`datum`](datum.html) page for more examples.)
+
+{% include table.html props="datum" source="DatumDef" %}
+
+Similar to a field definition, datum definition of different encoding channels may support `scale`, `axis`, `legend`, `format`, or `condition` properties. However, data transforms (`aggregate`, `bin`, `timeUnit`, `sort` cannot be applied to a datum definition).
 
 {:#position}
 
@@ -159,11 +187,11 @@ By default, Vega-Lite automatically generates a [scale](scale.html) and an [axis
 
 {% include table.html props="x,y,x2,y2" source="Encoding" %}
 
-{:#position-field-def}
+{:#position-field-def} {:#position-datum-def}
 
-### Position Field Definition
+### Position Field Definition and Datum Definition
 
-In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html), [field definitions](#field-def) for `x` and `y` channels may also include these properties:
+[Field definitions](#field-def) for `x` and `y` channels may also include the properties listed below (in addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html)). Similarly, [datum definitions](#datum-def) for `x` and `y` channels also support these properties.
 
 {% include table.html props="scale,axis,sort,band,impute,stack" source="PositionFieldDef" %}
 
@@ -189,15 +217,15 @@ Here are the list of mark property channels:
 
 {% include table.html props="angle,color,fill,stroke,opacity,fillOpacity,strokeOpacity,shape,size,strokeDash,strokeWidth" source="Encoding" %}
 
-{:#mark-prop-field-def}
+{:#mark-prop-field-def} {:#mark-prop-datum-def}
 
-### Mark Property Field Definition
+### Mark Property Field Definition and Datum Definition
 
-In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html), [field definitions](#field-def) for mark property channels may also include these properties:
+[Field definitions](#field-def) for mark property channels may also include the properties list below (in addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html)).
 
-<!-- {% include table.html props="scale,legend,condition" source="ColorFieldDefWithCondition" %} -->
+Similarly, [datum definitions](#datum-def) for mark property channels also support these properties.
 
-{% include table.html props="scale,legend,condition" source="FieldDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>" %}
+{% include table.html props="scale,legend,condition" source="FieldOrDatumDefWithCondition<MarkPropFieldDef,number>" %}
 
 {:#mark-prop-value-def}
 
@@ -208,7 +236,7 @@ In addition to the constant `value`, [value definitions](#value-def) of mark pro
 <!-- {% include table.html props="condition"
 source="ColorValueDefWithCondition" %} -->
 
-{% include table.html props="condition" source="ValueDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>" %}
+{% include table.html props="condition" source="ValueDefWithCondition<MarkPropFieldOrDatumDef,number>" %}
 
 See [the `condition`](condition.html) page for examples how to specify condition logic.
 
@@ -228,7 +256,7 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 
 <!-- {% include table.html props="format,formatType,condition" source="TextFieldDefWithCondition" %} -->
 
-{% include table.html props="format,formatType,condition" source="FieldDefWithCondition<StringFieldDef,Text>" %}
+{% include table.html props="format,formatType,condition" source="FieldOrDatumDefWithCondition<StringFieldDef,Text>" %}
 
 {:#text-value-def}
 
@@ -238,7 +266,7 @@ In addition to the constant `value`, [value definitions](#value-def) of `text` a
 
 <!-- {% include table.html props="condition" source="TextValueDefWithCondition" %} -->
 
-{% include table.html props="condition" source="FieldDefWithCondition<StringFieldDef,Text>" %}
+{% include table.html props="condition" source="ValueDefWithCondition<StringFieldDef,Text>" %}
 
 ### Multiple Field Definitions for Tooltips
 

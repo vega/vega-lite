@@ -38,17 +38,17 @@ There are two ways to specify the condition:
 
 (1) Specifying `selection` name:
 
-{% include table.html props="selection" source="ConditionalSelection<MarkPropFieldDef>" %}
+{% include table.html props="selection" source="ConditionalSelection<StringFieldDef>" %}
 
 (2) Specifying a `test` predicate:
 
-{% include table.html props="test" source="ConditionalPredicate<MarkPropFieldDef>" %}
+{% include table.html props="test" source="ConditionalPredicate<StringFieldDef>" %}
 
 In addition, there are two ways to encode the data that satisfy the specified condition:
 
-1. Combining one [conditional field definition](#field) with one base value definition.
+1. Combining one [conditional field definition](#field) with a single base value or datum definition.
 
-2. Combining one or more [conditional value](#value) with a field definition or a value definition.
+2. Combining one or more [conditional datum or value definitions](#value) with a field, datum, or value definition.
 
 {:#field}
 
@@ -73,7 +73,7 @@ In addition, there are two ways to encode the data that satisfy the specified co
       },
 
       // (Optional else-clause) value if the data is NOT included in the `selection` / if the `test` precidate is NOT satisfied
-      "value": ...
+      "value/datum": ...
     },
     ...
   },
@@ -89,7 +89,7 @@ For example, in the following plot, the color of `rect` marks is driven by a con
 
 <div class="vl-example" data-name="selection_type_interval"></div>
 
-**Note:** When using a conditional field definition, only a `value` may be specified as the else (outer) branch.
+**Note:** When using a conditional field definition, only `value` or `datum` may be specified as the else (outer) branch.
 
 {:#value}
 
@@ -105,7 +105,7 @@ For example, in the following plot, the color of `rect` marks is driven by a con
       // A conditional value definition (if-clause)
       "condition": { // Selection name or a test predicate
         "selection/test": ..., // Value if the data is included in the `selection` or if the `test` precidate is satisfied
-        "value": ...
+        "value/datum": ...
       },
 
       // (Optional else-clause) field if the data is NOT included in the `selection` / if the `test` precidate is NOT satisfied
@@ -119,9 +119,9 @@ For example, in the following plot, the color of `rect` marks is driven by a con
 }
 ```
 
-A condition value definition uses a constant value encoding when data fall within a selection or satisfy a logical predicate. A field or value definition can be specified as the "else" case when the condition is not satisfied.
+Condition value definitions and conditional datum definitions use a constant value encoding when data fall within a selection or satisfy a logical predicate. Another field, datum, or value definition can be specified as the "else" case when the condition is not satisfied.
 
-A condition value definition must contain either [a `selection` name or a `test` predicate](#condition) in addition to the encoded constant [`value`](encoding.html#value-def).
+A condition value/datum definition must contain either [a `selection` name or a `test` predicate](#condition) in addition to the encoded constant [`value`](encoding.html#value-def) or constant data value ([`datum`]](encoding.html#datum-def)).
 
 For example, in the visualization below, a conditional value definition causes marks that fall within a dragged interval to be larger than those that lie outside it.
 

@@ -8,7 +8,7 @@ import {
   ChannelDef,
   ColorGradientDatumDefWithCondition,
   ColorGradientFieldDefWithCondition,
-  ColorGradientValueOrSignalWithCondition,
+  ColorGradientValueOrSignalDefWithCondition,
   DatumDef,
   Field,
   FieldDef,
@@ -26,22 +26,22 @@ import {
   LatLongFieldDef,
   NumericArrayDatumDefWithCondition,
   NumericArrayFieldDefWithCondition,
-  NumericArrayValueDefWithCondition,
+  NumericArrayValueOrSignalDefWithCondition,
   NumericDatumDefWithCondition,
   NumericFieldDefWithCondition,
-  NumericValueOrSignalWithCondition,
+  NumericValueOrSignalDefWithCondition,
   OrderFieldDef,
   PositionDatumDef,
   PositionFieldDef,
   SecondaryFieldDef,
   ShapeFieldDefWithCondition,
-  ShapeValueOrSignalWithCondition,
+  ShapeValueOrSignalDefWithCondition,
   StringDatumDefWithCondition,
   StringFieldDef,
   StringFieldDefWithCondition,
-  StringValueOrSignalWithCondition,
+  StringValueOrSignalDefWithCondition,
   TextFieldDefWithCondition,
-  TextValueOrSignalWithCondition,
+  TextValueOrSignalDefWithCondition,
   title,
   TypedFieldDef,
   ValueDef,
@@ -125,7 +125,7 @@ export interface Encoding<F extends Field> {
   color?:
     | ColorGradientFieldDefWithCondition<F>
     | ColorGradientDatumDefWithCondition<F>
-    | ColorGradientValueOrSignalWithCondition<F>;
+    | ColorGradientValueOrSignalDefWithCondition<F>;
 
   /**
    * Fill color of the marks.
@@ -136,7 +136,7 @@ export interface Encoding<F extends Field> {
   fill?:
     | ColorGradientFieldDefWithCondition<F>
     | ColorGradientDatumDefWithCondition<F>
-    | ColorGradientValueOrSignalWithCondition<F>;
+    | ColorGradientValueOrSignalDefWithCondition<F>;
 
   /**
    * Stroke color of the marks.
@@ -148,14 +148,14 @@ export interface Encoding<F extends Field> {
   stroke?:
     | ColorGradientFieldDefWithCondition<F>
     | ColorGradientDatumDefWithCondition<F>
-    | ColorGradientValueOrSignalWithCondition<F>;
+    | ColorGradientValueOrSignalDefWithCondition<F>;
 
   /**
    * Opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property.
    */
-  opacity?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalWithCondition<F>;
+  opacity?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalDefWithCondition<F>;
 
   /**
    * Fill opacity of the marks.
@@ -165,7 +165,7 @@ export interface Encoding<F extends Field> {
   fillOpacity?:
     | NumericFieldDefWithCondition<F>
     | NumericDatumDefWithCondition<F>
-    | NumericValueOrSignalWithCondition<F>;
+    | NumericValueOrSignalDefWithCondition<F>;
 
   /**
    * Stroke opacity of the marks.
@@ -175,7 +175,7 @@ export interface Encoding<F extends Field> {
   strokeOpacity?:
     | NumericFieldDefWithCondition<F>
     | NumericDatumDefWithCondition<F>
-    | NumericValueOrSignalWithCondition<F>;
+    | NumericValueOrSignalDefWithCondition<F>;
 
   /**
    * Stroke width of the marks.
@@ -185,7 +185,7 @@ export interface Encoding<F extends Field> {
   strokeWidth?:
     | NumericFieldDefWithCondition<F>
     | NumericDatumDefWithCondition<F>
-    | NumericValueOrSignalWithCondition<F>;
+    | NumericValueOrSignalDefWithCondition<F>;
 
   /**
    * Stroke dash of the marks.
@@ -195,7 +195,7 @@ export interface Encoding<F extends Field> {
   strokeDash?:
     | NumericArrayFieldDefWithCondition<F>
     | NumericArrayDatumDefWithCondition<F>
-    | NumericArrayValueDefWithCondition<F>;
+    | NumericArrayValueOrSignalDefWithCondition<F>;
 
   /**
    * Size of the mark.
@@ -204,12 +204,12 @@ export interface Encoding<F extends Field> {
    * - For `"text"` – the text's font size.
    * - Size is unsupported for `"line"`, `"area"`, and `"rect"`. (Use `"trail"` instead of line with varying size)
    */
-  size?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalWithCondition<F>;
+  size?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalDefWithCondition<F>;
 
   /**
    * Rotation angle of point and text marks.
    */
-  angle?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalWithCondition<F>;
+  angle?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalDefWithCondition<F>;
 
   /**
    * Shape of the mark.
@@ -224,7 +224,7 @@ export interface Encoding<F extends Field> {
    *
    * __Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`"circle"` if unset.)
    */
-  shape?: ShapeFieldDefWithCondition<F> | StringDatumDefWithCondition<F> | ShapeValueOrSignalWithCondition<F>;
+  shape?: ShapeFieldDefWithCondition<F> | StringDatumDefWithCondition<F> | ShapeValueOrSignalDefWithCondition<F>;
   /**
    * Additional levels of detail for grouping data in aggregate views and
    * in line, trail, and area marks without mapping data to a specific visual channel.
@@ -239,24 +239,24 @@ export interface Encoding<F extends Field> {
   /**
    * Text of the `text` mark.
    */
-  text?: TextFieldDefWithCondition<F> | TextValueOrSignalWithCondition<F>;
+  text?: TextFieldDefWithCondition<F> | TextValueOrSignalDefWithCondition<F>;
 
   /**
    * The tooltip text to show upon mouse hover. Specifying `tooltip` encoding overrides [the `tooltip` property in the mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
    *
    * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite.
    */
-  tooltip?: StringFieldDefWithCondition<F> | StringValueOrSignalWithCondition<F> | StringFieldDef<F>[] | null;
+  tooltip?: StringFieldDefWithCondition<F> | StringValueOrSignalDefWithCondition<F> | StringFieldDef<F>[] | null;
 
   /**
    * A URL to load upon mouse click.
    */
-  href?: StringFieldDefWithCondition<F> | StringValueOrSignalWithCondition<F>;
+  href?: StringFieldDefWithCondition<F> | StringValueOrSignalDefWithCondition<F>;
 
   /**
    * The URL of an image mark.
    */
-  url?: StringFieldDefWithCondition<F> | StringValueOrSignalWithCondition<F>;
+  url?: StringFieldDefWithCondition<F> | StringValueOrSignalDefWithCondition<F>;
 
   /**
    * Order of the marks.

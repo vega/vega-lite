@@ -15,7 +15,7 @@ perl -pi -e s,'ValueDef(.*)\<\(number\|\\\"height\\\"\)\>','YValueDef\1',g build
 perl -pi -e s,'ValueDef(.*)<\(string\|null\)>','StringValueDef\1',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDef(.*)<Value>','ValueDef\1',g build/vega-lite-schema.json
 perl -pi -e s,'ValueDef(.*)<number>','NumberValueDef\1',g build/vega-lite-schema.json
-perl -pi -e s,'ValueOrSignal','Value',g build/vega-lite-schema.json
+perl -pi -e s,'ValueOrSignalDefWithCondition','ValueDefWithConditionAlias',g build/vega-lite-schema.json
 
 perl -pi -e s,'Conditional<(.*)>','Conditional\1',g build/vega-lite-schema.json
 
