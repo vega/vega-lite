@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "width": 963,
   "data": [
     {"name": "brush_store"},
     {
@@ -87,7 +88,6 @@
     }
   ],
   "signals": [
-    {"name": "childWidth", "value": 963},
     {"name": "childHeight", "value": 100},
     {
       "name": "unit",
@@ -109,7 +109,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "childHeight"}
         }
       },
@@ -144,7 +144,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -152,11 +152,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -417,7 +417,7 @@
           "title": "time (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/10)"},
+          "tickCount": {"signal": "ceil(width/10)"},
           "zindex": 0
         },
         {
@@ -437,7 +437,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "childHeight"}
         }
       },
@@ -500,7 +500,7 @@
           "title": "time (binned)",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/10)"},
+          "tickCount": {"signal": "ceil(width/10)"},
           "zindex": 0
         },
         {
@@ -522,7 +522,7 @@
       "domain": {
         "signal": "[concat_0_bin_maxbins_30_time_bins.start, concat_0_bin_maxbins_30_time_bins.stop]"
       },
-      "range": [0, {"signal": "childWidth"}],
+      "range": [0, {"signal": "width"}],
       "bins": {"signal": "concat_0_bin_maxbins_30_time_bins"},
       "zero": false
     },
@@ -541,7 +541,7 @@
         "signal": "[concat_1_bin_maxbins_30_extent_selection_brush_time_bins.start, concat_1_bin_maxbins_30_extent_selection_brush_time_bins.stop]"
       },
       "domainRaw": {"signal": "brush[\"time\"]"},
-      "range": [0, {"signal": "childWidth"}],
+      "range": [0, {"signal": "width"}],
       "bins": {
         "signal": "concat_1_bin_maxbins_30_extent_selection_brush_time_bins"
       },

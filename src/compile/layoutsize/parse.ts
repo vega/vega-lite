@@ -21,8 +21,14 @@ export const parseRepeatLayoutSize = parseConcatLayoutSize;
 export function parseConcatLayoutSize(model: ConcatModel) {
   parseChildrenLayoutSize(model);
 
-  parseNonUnitLayoutSizeForChannel(model, 'childWidth');
-  parseNonUnitLayoutSizeForChannel(model, 'childHeight');
+  // for columns === 1 (vconcat), we can completely merge width. Otherwise, we can treat merged width as childWidth.
+  const widthType = model.layout.columns === 1 ? 'width' : 'childWidth';
+
+  // for columns === undefined (hconcat), we can completely merge height. Otherwise, we can treat merged height as childHeight.
+  const heightType = model.layout.columns === undefined ? 'height' : 'childHeight';
+
+  parseNonUnitLayoutSizeForChannel(model, widthType);
+  parseNonUnitLayoutSizeForChannel(model, heightType);
 }
 
 export function parseChildrenLayoutSize(model: Model) {

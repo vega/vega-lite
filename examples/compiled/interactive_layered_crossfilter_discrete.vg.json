@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "height": 200,
   "data": [
     {"name": "brush_store"},
     {
@@ -182,7 +183,6 @@
   ],
   "signals": [
     {"name": "childWidth", "value": 200},
-    {"name": "childHeight", "value": 200},
     {
       "name": "unit",
       "value": {},
@@ -204,7 +204,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "signals": [
@@ -328,7 +328,7 @@
           "orient": "left",
           "gridScale": "child__column_distance_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -352,7 +352,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -364,7 +364,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "signals": [
@@ -488,7 +488,7 @@
           "orient": "left",
           "gridScale": "child__column_delay_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -512,7 +512,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -524,7 +524,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "signals": [
@@ -648,7 +648,7 @@
           "orient": "left",
           "gridScale": "child__column_time_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -672,7 +672,7 @@
           "grid": false,
           "title": "Count of Records",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -700,7 +700,7 @@
           {"data": "data_5", "field": "__count"}
         ]
       },
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -725,7 +725,7 @@
           {"data": "data_4", "field": "__count"}
         ]
       },
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -748,7 +748,7 @@
           {"data": "data_1", "field": "__count"}
         ]
       },
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     }

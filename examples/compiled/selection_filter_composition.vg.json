@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "width": 200,
   "data": [
     {"name": "brush_store"},
     {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
@@ -31,7 +32,6 @@
     }
   ],
   "signals": [
-    {"name": "childWidth", "value": 200},
     {"name": "childHeight", "value": 200},
     {
       "name": "unit",
@@ -53,7 +53,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "childHeight"}
         }
       },
@@ -88,7 +88,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -96,11 +96,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -397,7 +397,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -425,7 +425,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -445,7 +445,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "childHeight"}
         }
       },
@@ -473,7 +473,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -501,7 +501,7 @@
           "title": "Acceleration",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -521,7 +521,7 @@
       "name": "concat_0_x",
       "type": "linear",
       "domain": {"data": "data_0", "field": "Horsepower"},
-      "range": [0, {"signal": "childWidth"}],
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
     },
@@ -537,7 +537,7 @@
       "name": "concat_1_x",
       "type": "linear",
       "domain": [0, 25],
-      "range": [0, {"signal": "childWidth"}],
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
     },

@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "height": 150,
   "data": [
     {"name": "source_0", "url": "data/iris.json", "format": {"type": "json"}},
     {
@@ -105,10 +106,7 @@
       ]
     }
   ],
-  "signals": [
-    {"name": "childWidth", "value": 150},
-    {"name": "childHeight", "value": 150}
-  ],
+  "signals": [{"name": "childWidth", "value": 150}],
   "layout": {"padding": 20, "columns": 4, "bounds": "full", "align": "all"},
   "marks": [
     {
@@ -118,7 +116,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -175,7 +173,7 @@
           "orient": "left",
           "gridScale": "child__row_petalWidthcolumn_sepalLength_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -199,7 +197,7 @@
           "grid": false,
           "title": "petalWidth",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -211,7 +209,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -268,7 +266,7 @@
           "orient": "left",
           "gridScale": "child__row_petalWidthcolumn_sepalWidth_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -292,7 +290,7 @@
           "grid": false,
           "title": "petalWidth",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -304,7 +302,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -361,7 +359,7 @@
           "orient": "left",
           "gridScale": "child__row_petalWidthcolumn_petalLength_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -385,7 +383,7 @@
           "grid": false,
           "title": "petalWidth",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -397,7 +395,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -454,7 +452,7 @@
           "orient": "left",
           "gridScale": "child__row_petalWidthcolumn_petalWidth_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -478,7 +476,7 @@
           "grid": false,
           "title": "petalWidth",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -490,7 +488,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -547,7 +545,7 @@
           "orient": "left",
           "gridScale": "child__row_petalLengthcolumn_sepalLength_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -571,7 +569,7 @@
           "grid": false,
           "title": "petalLength",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -583,7 +581,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -640,7 +638,7 @@
           "orient": "left",
           "gridScale": "child__row_petalLengthcolumn_sepalWidth_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -664,7 +662,7 @@
           "grid": false,
           "title": "petalLength",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -676,7 +674,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -733,7 +731,7 @@
           "orient": "left",
           "gridScale": "child__row_petalLengthcolumn_petalLength_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -757,7 +755,7 @@
           "grid": false,
           "title": "petalLength",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -769,7 +767,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -826,7 +824,7 @@
           "orient": "left",
           "gridScale": "child__row_petalLengthcolumn_petalWidth_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -850,7 +848,7 @@
           "grid": false,
           "title": "petalLength",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -862,7 +860,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -919,7 +917,7 @@
           "orient": "left",
           "gridScale": "child__row_sepalWidthcolumn_sepalLength_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -943,7 +941,7 @@
           "grid": false,
           "title": "sepalWidth",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -955,7 +953,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -1012,7 +1010,7 @@
           "orient": "left",
           "gridScale": "child__row_sepalWidthcolumn_sepalWidth_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1036,7 +1034,7 @@
           "grid": false,
           "title": "sepalWidth",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1048,7 +1046,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -1105,7 +1103,7 @@
           "orient": "left",
           "gridScale": "child__row_sepalWidthcolumn_petalLength_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1129,7 +1127,7 @@
           "grid": false,
           "title": "sepalWidth",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1141,7 +1139,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -1198,7 +1196,7 @@
           "orient": "left",
           "gridScale": "child__row_sepalWidthcolumn_petalWidth_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1222,7 +1220,7 @@
           "grid": false,
           "title": "sepalWidth",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1234,7 +1232,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -1291,7 +1289,7 @@
           "orient": "left",
           "gridScale": "child__row_sepalLengthcolumn_sepalLength_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1315,7 +1313,7 @@
           "grid": false,
           "title": "sepalLength",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1327,7 +1325,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -1384,7 +1382,7 @@
           "orient": "left",
           "gridScale": "child__row_sepalLengthcolumn_sepalWidth_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1408,7 +1406,7 @@
           "grid": false,
           "title": "sepalLength",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1420,7 +1418,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -1477,7 +1475,7 @@
           "orient": "left",
           "gridScale": "child__row_sepalLengthcolumn_petalLength_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1501,7 +1499,7 @@
           "grid": false,
           "title": "sepalLength",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1513,7 +1511,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "marks": [
@@ -1570,7 +1568,7 @@
           "orient": "left",
           "gridScale": "child__row_sepalLengthcolumn_petalWidth_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -1594,7 +1592,7 @@
           "grid": false,
           "title": "sepalLength",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -1633,7 +1631,7 @@
       "name": "child__row_petalWidthcolumn_sepalLength_y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "petalWidth"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1649,7 +1647,7 @@
       "name": "child__row_petalWidthcolumn_sepalWidth_y",
       "type": "linear",
       "domain": {"data": "data_1", "field": "petalWidth"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1665,7 +1663,7 @@
       "name": "child__row_petalWidthcolumn_petalLength_y",
       "type": "linear",
       "domain": {"data": "data_2", "field": "petalWidth"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1681,7 +1679,7 @@
       "name": "child__row_petalWidthcolumn_petalWidth_y",
       "type": "linear",
       "domain": {"data": "data_3", "field": "petalWidth"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1697,7 +1695,7 @@
       "name": "child__row_petalLengthcolumn_sepalLength_y",
       "type": "linear",
       "domain": {"data": "data_4", "field": "petalLength"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1713,7 +1711,7 @@
       "name": "child__row_petalLengthcolumn_sepalWidth_y",
       "type": "linear",
       "domain": {"data": "data_5", "field": "petalLength"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1729,7 +1727,7 @@
       "name": "child__row_petalLengthcolumn_petalLength_y",
       "type": "linear",
       "domain": {"data": "data_6", "field": "petalLength"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1745,7 +1743,7 @@
       "name": "child__row_petalLengthcolumn_petalWidth_y",
       "type": "linear",
       "domain": {"data": "data_2", "field": "petalLength"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1761,7 +1759,7 @@
       "name": "child__row_sepalWidthcolumn_sepalLength_y",
       "type": "linear",
       "domain": {"data": "data_7", "field": "sepalWidth"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1777,7 +1775,7 @@
       "name": "child__row_sepalWidthcolumn_sepalWidth_y",
       "type": "linear",
       "domain": {"data": "data_8", "field": "sepalWidth"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1793,7 +1791,7 @@
       "name": "child__row_sepalWidthcolumn_petalLength_y",
       "type": "linear",
       "domain": {"data": "data_5", "field": "sepalWidth"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1809,7 +1807,7 @@
       "name": "child__row_sepalWidthcolumn_petalWidth_y",
       "type": "linear",
       "domain": {"data": "data_1", "field": "sepalWidth"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1825,7 +1823,7 @@
       "name": "child__row_sepalLengthcolumn_sepalLength_y",
       "type": "linear",
       "domain": {"data": "data_9", "field": "sepalLength"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1841,7 +1839,7 @@
       "name": "child__row_sepalLengthcolumn_sepalWidth_y",
       "type": "linear",
       "domain": {"data": "data_7", "field": "sepalLength"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1857,7 +1855,7 @@
       "name": "child__row_sepalLengthcolumn_petalLength_y",
       "type": "linear",
       "domain": {"data": "data_4", "field": "sepalLength"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     },
@@ -1873,7 +1871,7 @@
       "name": "child__row_sepalLengthcolumn_petalWidth_y",
       "type": "linear",
       "domain": {"data": "data_0", "field": "sepalLength"},
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true
     }

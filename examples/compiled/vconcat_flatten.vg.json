@@ -3,6 +3,7 @@
   "description": "Show a line chart corresponding to selected points.",
   "background": "white",
   "padding": 5,
+  "width": 300,
   "data": [
     {"name": "pts_store"},
     {
@@ -74,7 +75,6 @@
     }
   ],
   "signals": [
-    {"name": "childWidth", "value": 300},
     {"name": "childHeight", "value": 200},
     {
       "name": "unit",
@@ -97,7 +97,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "childHeight"}
         }
       },
@@ -178,7 +178,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -206,7 +206,7 @@
           "title": "ra",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -227,7 +227,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "childHeight"}
         }
       },
@@ -276,7 +276,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -304,7 +304,7 @@
           "title": "lc.time",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -324,7 +324,7 @@
       "name": "concat_0_x",
       "type": "linear",
       "domain": {"data": "data_1", "field": "ra"},
-      "range": [0, {"signal": "childWidth"}],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },
@@ -340,7 +340,7 @@
       "name": "concat_1_x",
       "type": "linear",
       "domain": {"data": "data_2", "field": "lc\\.time"},
-      "range": [0, {"signal": "childWidth"}],
+      "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
     },

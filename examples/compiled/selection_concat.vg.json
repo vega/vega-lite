@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "width": 200,
   "data": [
     {"name": "brush_store"},
     {"name": "grid_store"},
@@ -28,7 +29,6 @@
     }
   ],
   "signals": [
-    {"name": "childWidth", "value": 200},
     {"name": "childHeight", "value": 200},
     {
       "name": "unit",
@@ -56,7 +56,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "childHeight"}
         }
       },
@@ -91,7 +91,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -99,11 +99,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -400,7 +400,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -428,7 +428,7 @@
           "title": "Miles_per_Gallon",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -448,7 +448,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "childHeight"}
         }
       },
@@ -458,7 +458,7 @@
           "on": [
             {
               "events": {"signal": "grid_translate_delta"},
-              "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / childWidth)"
+              "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / width)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
@@ -595,7 +595,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -623,7 +623,7 @@
           "title": "Displacement",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -643,7 +643,7 @@
       "name": "concat_0_x",
       "type": "linear",
       "domain": {"data": "data_0", "field": "Miles_per_Gallon"},
-      "range": [0, {"signal": "childWidth"}],
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
     },
@@ -660,7 +660,7 @@
       "type": "linear",
       "domain": {"data": "data_1", "field": "Displacement"},
       "domainRaw": {"signal": "grid[\"Displacement\"]"},
-      "range": [0, {"signal": "childWidth"}],
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
     },

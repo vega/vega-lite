@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "width": 480,
   "data": [
     {"name": "brush_store"},
     {
@@ -11,7 +12,6 @@
     }
   ],
   "signals": [
-    {"name": "childWidth", "value": 480},
     {"name": "concat_0_height", "value": 200},
     {"name": "concat_1_height", "value": 60},
     {
@@ -34,7 +34,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "concat_0_height"}
         }
       },
@@ -67,7 +67,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -94,7 +94,7 @@
           "grid": false,
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -114,7 +114,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "concat_1_height"}
         }
       },
@@ -149,7 +149,7 @@
                   {"source": "window", "type": "mouseup"}
                 ]
               },
-              "update": "[brush_x[0], clamp(x(unit), 0, childWidth)]"
+              "update": "[brush_x[0], clamp(x(unit), 0, width)]"
             },
             {
               "events": {"signal": "brush_scale_trigger"},
@@ -157,11 +157,11 @@
             },
             {
               "events": {"signal": "brush_translate_delta"},
-              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
+              "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
-              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
+              "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
             },
             {
               "events": [{"source": "scope", "type": "dblclick"}],
@@ -395,7 +395,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -410,7 +410,7 @@
           "title": "date",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -431,7 +431,7 @@
       "type": "time",
       "domain": {"data": "source_0", "field": "date"},
       "domainRaw": {"signal": "brush[\"date\"]"},
-      "range": [0, {"signal": "childWidth"}]
+      "range": [0, {"signal": "width"}]
     },
     {
       "name": "concat_0_y",
@@ -445,7 +445,7 @@
       "name": "concat_1_x",
       "type": "time",
       "domain": {"data": "source_0", "field": "date"},
-      "range": [0, {"signal": "childWidth"}]
+      "range": [0, {"signal": "width"}]
     },
     {
       "name": "concat_1_y",
