@@ -36,8 +36,8 @@ describe('Mark: Arc', () => {
     const props = arc.encodeEntry(model);
 
     it('applies binned to startAngle and endAngle', () => {
-      expect(props.startAngle).toEqual({scale: 'theta', field: 'bin_maxbins_10_field'});
-      expect(props.endAngle).toEqual({scale: 'theta', field: 'bin_maxbins_10_field_end'});
+      expect(props.endAngle).toEqual({scale: 'theta', field: 'bin_maxbins_10_field'});
+      expect(props.startAngle).toEqual({scale: 'theta', field: 'bin_maxbins_10_field_end'});
     });
   });
 });
