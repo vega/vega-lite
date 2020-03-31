@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "width": 200,
   "data": [
     {"name": "region_store"},
     {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
@@ -27,7 +28,6 @@
     }
   ],
   "signals": [
-    {"name": "childWidth", "value": 200},
     {"name": "childHeight", "value": 200},
     {
       "name": "unit",
@@ -51,7 +51,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "childHeight"}
         }
       },
@@ -61,7 +61,7 @@
           "on": [
             {
               "events": {"signal": "region_translate_delta"},
-              "update": "panLinear(region_translate_anchor.extent_x, -region_translate_delta.x / childWidth)"
+              "update": "panLinear(region_translate_anchor.extent_x, -region_translate_delta.x / width)"
             },
             {
               "events": {"signal": "region_zoom_delta"},
@@ -194,7 +194,7 @@
           "orient": "bottom",
           "gridScale": "concat_0_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -222,7 +222,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -242,7 +242,7 @@
       "style": "cell",
       "encode": {
         "update": {
-          "width": {"signal": "childWidth"},
+          "width": {"signal": "width"},
           "height": {"signal": "childHeight"}
         }
       },
@@ -271,7 +271,7 @@
           "orient": "bottom",
           "gridScale": "concat_1_y",
           "grid": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -299,7 +299,7 @@
           "title": "Horsepower",
           "labelFlush": true,
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childWidth/40)"},
+          "tickCount": {"signal": "ceil(width/40)"},
           "zindex": 0
         },
         {
@@ -325,7 +325,7 @@
         ]
       },
       "domainRaw": {"signal": "region[\"Horsepower\"]"},
-      "range": [0, {"signal": "childWidth"}],
+      "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
     },

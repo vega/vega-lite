@@ -3,6 +3,7 @@
   "description": "Drag out a rectangular brush to highlight points.",
   "background": "white",
   "padding": 5,
+  "height": 200,
   "data": [
     {"name": "hover_store"},
     {
@@ -61,7 +62,6 @@
   ],
   "signals": [
     {"name": "childWidth", "value": 200},
-    {"name": "childHeight", "value": 200},
     {
       "name": "unit",
       "value": {},
@@ -83,7 +83,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "signals": [
@@ -168,7 +168,7 @@
           "orient": "left",
           "gridScale": "concat_0_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -192,7 +192,7 @@
           "grid": false,
           "title": "Miles_per_Gallon",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -204,7 +204,7 @@
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
-          "height": {"signal": "childHeight"}
+          "height": {"signal": "height"}
         }
       },
       "signals": [
@@ -289,7 +289,7 @@
           "orient": "left",
           "gridScale": "concat_1_x",
           "grid": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
           "maxExtent": 0,
@@ -313,7 +313,7 @@
           "grid": false,
           "title": "Acceleration",
           "labelOverlap": true,
-          "tickCount": {"signal": "ceil(childHeight/40)"},
+          "tickCount": {"signal": "ceil(height/40)"},
           "zindex": 0
         }
       ]
@@ -342,7 +342,7 @@
           {"data": "data_2", "field": "Miles_per_Gallon"}
         ]
       },
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     },
@@ -368,7 +368,7 @@
           {"data": "data_3", "field": "Acceleration"}
         ]
       },
-      "range": [{"signal": "childHeight"}, 0],
+      "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
     }
