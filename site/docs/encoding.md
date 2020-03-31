@@ -23,9 +23,17 @@ An integral part of the data visualization process is encoding data with visual 
     "xError2": ...,
     "yError2": ...,
 
+    // Polar Position Channels
+    "theta": ...,
+    "radius": ...,
+    "theta2": ...,
+    "radius2": ...,
+
     // Geographic Position Channels
     "longtitude": ...,
     "latitude": ...,
+    "longtitude2": ...,
+    "latitude2": ...,
 
     // Mark Properties Channels
     "color": ...,
@@ -70,7 +78,7 @@ An integral part of the data visualization process is encoding data with visual 
 The keys in the `encoding` object are encoding channels. Vega-Lite supports the following groups of encoding channels
 
 - [Position Channels](#position): `x`, `y`, `x2`, `y2`, `xError`, `yError`, `xError2`, `yError2`
-- TODO: add angular channels
+- [Polar Position Channels](#polar): `theta`, `theta2`, `radius`, `radius2`
 - [Geographic Position Channels](#geo): `longitude`, `latitude`, `longitude2`, `latitude2`
 - [Mark Property Channels](#mark-prop): `angle`, `color` (and `fill` / `stroke`), `opacity`, `fillOpacity`, `strokeOpacity`, `shape`, `size`, `strokeDash`, `strokeWidth`
 - [Text and Tooltip Channels](#text): `text`, `tooltip`
@@ -188,7 +196,9 @@ By default, Vega-Lite automatically generates a [scale](scale.html) and an [axis
 
 {% include table.html props="x,y,x2,y2" source="Encoding" %}
 
-{:#position-field-def} {:#position-datum-def}
+{:#position-field-def}
+
+{:#position-datum-def}
 
 ### Position Field Definition and Datum Definition
 
@@ -197,6 +207,22 @@ By default, Vega-Lite automatically generates a [scale](scale.html) and an [axis
 {% include table.html props="scale,axis,sort,band,impute,stack" source="PositionFieldDef" %}
 
 **Note:** `x2` and `y2` do not have their own definitions for `scale`, `axis`, `sort`, and `stack` since they share the same scales and axes with `x` and `y` respectively.
+
+{:#polar}
+
+## Polar Position Channels
+
+`theta` and `radius` position channels determine the position or interval on polar coordindates for `arc` and `text` marks.
+
+{% include table.html props="theta,radius,theta2,radius2" source="Encoding" %}
+
+{:#polar-field-def}
+
+{:#polar-datum-def}
+
+### Polar Field Definition and Datum Definition
+
+Polar field and datum definitions may include `scale`, `stack`, and `sort` properties, similar to [position field and datum definitions](#position-field-def).
 
 {:#geo}
 
