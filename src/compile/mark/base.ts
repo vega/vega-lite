@@ -7,7 +7,7 @@ import {UnitModel} from '../unit';
  */
 export interface MarkCompiler {
   /**
-   * Underlying vega Mark type for the Vega-Lite mark.
+   * Underlying Vega Mark type for the Vega-Lite mark.
    */
   vgMark: Mark['type'];
 
