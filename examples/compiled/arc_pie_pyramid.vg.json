@@ -1,0 +1,81 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "encode": {"update": {"stroke": {"value": null}}},
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"category": "Sky", "value": 75, "order": 3},
+        {"category": "Shady side of a pyramid", "value": 10, "order": 1},
+        {"category": "Sunny side of a pyramid", "value": 15, "order": 2}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": [],
+          "field": "value",
+          "sort": {"field": ["order"], "order": ["ascending"]},
+          "as": ["value_start", "value_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "arc",
+      "style": ["arc"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "outerRadius": {"value": 80},
+          "fill": {"scale": "color", "field": "category"},
+          "x": {"signal": "width", "mult": 0.5},
+          "y": {"signal": "height", "mult": 0.5},
+          "innerRadius": {"value": 0},
+          "startAngle": {"scale": "theta", "field": "value_end"},
+          "endAngle": {"scale": "theta", "field": "value_start"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "theta",
+      "type": "linear",
+      "domain": {"data": "data_0", "fields": ["value_start", "value_end"]},
+      "range": [2.35619449, 8.639379797],
+      "zero": false
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": ["Sky", "Shady side of a pyramid", "Sunny side of a pyramid"],
+      "range": ["#416D9D", "#674028", "#DEAC58"]
+    }
+  ],
+  "legends": [
+    {
+      "columns": 1,
+      "legendX": 200,
+      "legendY": 80,
+      "orient": "none",
+      "fill": "color",
+      "symbolType": "circle"
+    }
+  ]
+}
