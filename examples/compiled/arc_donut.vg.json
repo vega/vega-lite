@@ -6,6 +6,7 @@
   "width": 200,
   "height": 200,
   "style": "cell",
+  "encode": {"update": {"stroke": {"value": null}}},
   "data": [
     {
       "name": "source_0",

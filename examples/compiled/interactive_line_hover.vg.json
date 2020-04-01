@@ -1,13 +1,22 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Multi-series line chart with labels and interactive highlight on hover.",
+  "description": "Multi-series line chart with labels and interactive highlight on hover.  We also set the selection's initial value to provide a better screenshot",
   "background": "white",
   "padding": 5,
   "width": 200,
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "hover_store"},
+    {
+      "name": "hover_store",
+      "values": [
+        {
+          "unit": "layer_0_layer_0",
+          "fields": [{"type": "E", "field": "symbol"}],
+          "values": ["AAPL"]
+        }
+      ]
+    },
     {
       "name": "source_0",
       "url": "data/stocks.csv",
