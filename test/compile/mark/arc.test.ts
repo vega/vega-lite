@@ -16,8 +16,8 @@ describe('Mark: Arc', () => {
     const props = arc.encodeEntry(model);
 
     it('applies theta to startAngle and endAngle', () => {
-      expect(props.startAngle).toEqual({scale: 'theta', field: 'field_start'});
-      expect(props.endAngle).toEqual({scale: 'theta', field: 'field_end'});
+      expect(props.startAngle).toEqual({scale: 'theta', field: 'field_end'});
+      expect(props.endAngle).toEqual({scale: 'theta', field: 'field_start'});
     });
   });
 
