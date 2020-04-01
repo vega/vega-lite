@@ -264,6 +264,20 @@ describe('compile/scale', () => {
       });
     });
 
+    describe('radius', () => {
+      it('should use default radius.', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'text',
+          encoding: {
+            radius: {field: 'x', type: 'quantitative'}
+          }
+        });
+        const r = parseRangeForChannel('radius', model);
+        expect(r.value[0]).toEqual(0);
+        expect(r.value[1]).toEqual({signal: 'min(width,height)/2'});
+      });
+    });
+
     describe('size', () => {
       describe('bar', () => {
         it('should return [minBandSize, maxBandSize] from config.bar when zero is excluded if both are specified', () => {

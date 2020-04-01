@@ -1,3 +1,4 @@
+import {Mark} from 'vega';
 import {VgEncodeEntry, VgPostEncodingTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 
@@ -6,9 +7,9 @@ import {UnitModel} from '../unit';
  */
 export interface MarkCompiler {
   /**
-   * Underlying vega Mark type for the Vega-Lite mark.
+   * Underlying Vega Mark type for the Vega-Lite mark.
    */
-  vgMark: 'area' | 'line' | 'image' | 'rect' | 'rule' | 'shape' | 'symbol' | 'text' | 'trail';
+  vgMark: Mark['type'];
 
   encodeEntry: (model: UnitModel) => VgEncodeEntry;
 

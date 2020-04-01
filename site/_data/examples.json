@@ -343,6 +343,28 @@
         "title": "Mosaic Chart with Labels"
       }
     ],
+    "Circular Plots": [
+      {
+        "name": "arc_pie",
+        "title": "Pie Chart",
+        "description": "A pie chart encodes proportional differences among a set of numeric values as the angular extent and area of a circular slice."
+      },
+      {
+        "name": "arc_donut",
+        "title": "Donut Chart",
+        "description": "A donut chart encodes proportional differences among a set of numeric values using angular extents."
+      },
+      {
+        "name": "layer_arc_label",
+        "title": "Pie Chart with Labels",
+        "description": "Layering text over arc marks to label pie charts. For now, [you need to add `stack: true`](https://github.com/vega/vega-lite/issues/5078) to theta to force the text to apply the same polar stacking layout."
+      },
+      {
+        "name": "arc_radial",
+        "title": "Radial Plot",
+        "description": "This radial plot uses both angular and radial extent to convey multiple dimensions of data. However, this approach is not perceptually effective, as viewers will most likely be drawn to the total area of the shape, conflating the two dimensions. This example also demonstrates a way to add labels to circular plots."
+      }
+    ],
     "Advanced Calculations": [
       {
         "name": "window_percent_of_total",

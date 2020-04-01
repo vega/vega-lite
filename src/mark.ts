@@ -4,6 +4,7 @@ import {Gradient} from './channeldef';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {contains, Flag, keys} from './util';
 
+export const ARC: 'arc' = 'arc';
 export const AREA: 'area' = 'area';
 export const BAR: 'bar' = 'bar';
 export const IMAGE: 'image' = 'image';
@@ -22,6 +23,7 @@ export const GEOSHAPE: 'geoshape' = 'geoshape';
  * All types of primitive marks.
  */
 export type Mark =
+  | typeof ARC
   | typeof AREA
   | typeof BAR
   | typeof LINE
@@ -38,6 +40,7 @@ export type Mark =
 
 // Using mapped type to declare index, ensuring we always have all marks when we add more.
 const MARK_INDEX: Flag<Mark> = {
+  arc: 1,
   area: 1,
   bar: 1,
   image: 1,
@@ -61,8 +64,8 @@ export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'tra
   return contains(['line', 'area', 'trail'], m);
 }
 
-export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 'image' {
-  return contains(['rect', 'bar', 'image'], m);
+export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 'image' | 'arc' {
+  return contains(['rect', 'bar', 'image', 'arc' /* arc is rect/interval in polar coordinate */], m);
 }
 
 export const PRIMITIVE_MARKS = keys(MARK_INDEX);
@@ -121,6 +124,19 @@ export interface VLOnlyMarkConfig extends ColorMixins {
    * If set to `0.5`, bandwidth of the marks will be half of the time unit band step.
    */
   timeUnitBand?: number;
+
+  /**
+   * The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise.
+   */
+  theta2?: number | SignalRef; // In Vega, this is called endAngle
+
+  /**
+   * The inner radius in pixels of arc marks.
+   *
+   * @minimum 0
+   * __Default value:__ `0`
+   */
+  radius2?: number | SignalRef; // In Vega, this is called innerRadius
 }
 
 export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'tooltip'> {
@@ -231,6 +247,27 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
    * The vertical text baseline. One of `"alphabetic"` (default), `"top"`, `"middle"`, `"bottom"`, `"line-top"`, or `"line-bottom"`. The `"line-top"` and `"line-bottom"` values operate similarly to `"top"` and `"bottom"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone.
    */
   baseline?: TextBaseline; // Vega doesn't apply align to ranged marks. Since some logic depends on this property, Vega-Lite does NOT allow signal for baseline.
+
+  /**
+   * - For arc marks, the arc length in radians if theta2 is not specified, otherwise the start arc angle. (A value of 0 indicates up or “north”, increasing values proceed clockwise.)
+   *
+   * - For text marks, polar coordinate angle in radians.
+   *
+   * @minimum 0
+   * @maximum 360
+   */
+  theta?: number | SignalRef; // overriding VG
+
+  /**
+   * For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.
+   *
+   * For arc mark, the outer radius in pixels.
+   *
+   * @minimum 0
+   *
+   * __Default value:__ `min(plot_width, plot_height)/2`
+   */
+  radius?: number | SignalRef; // overriding VG
 }
 
 export interface RectBinSpacingMixins {
@@ -276,6 +313,8 @@ const VL_ONLY_MARK_CONFIG_INDEX: Flag<keyof VLOnlyMarkConfig> = {
   filled: 1,
   invalid: 1,
   order: 1,
+  radius2: 1,
+  theta2: 1,
   timeUnitBand: 1,
   timeUnitBandPosition: 1
 };
@@ -306,6 +345,10 @@ export interface MarkConfigMixins {
   mark?: MarkConfig;
 
   // MARK-SPECIFIC CONFIGS
+
+  /** Arc-specific Config */
+  arc?: MarkConfig;
+
   /** Area-Specific Config */
   area?: AreaConfig;
 
@@ -471,6 +514,26 @@ export interface MarkDefMixins {
    * Offset for y2-position.
    */
   y2Offset?: number;
+
+  /**
+   * Offset for theta.
+   */
+  thetaOffset?: number;
+
+  /**
+   * Offset for theta2.
+   */
+  theta2Offset?: number;
+
+  /**
+   * Offset for radius.
+   */
+  radiusOffset?: number;
+
+  /**
+   * Offset for radius2.
+   */
+  radius2Offset?: number;
 }
 
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef

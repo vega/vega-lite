@@ -27,7 +27,8 @@ export class TimeUnitNode extends DataFlowNode {
 
       const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;
 
-      const band = isUnitModel(model) && hasBand(channel, fieldDef, channelDef2, model.markDef, model.config);
+      const band =
+        isUnitModel(model) && hasBand(channel, fieldDef, channelDef2, model.stack, model.markDef, model.config);
 
       if (timeUnit) {
         const as = vgField(fieldDef, {forAs: true});

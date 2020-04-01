@@ -31,6 +31,8 @@ import {
   NumericFieldDefWithCondition,
   NumericValueOrSignalDefWithCondition,
   OrderFieldDef,
+  PolarDatumDef,
+  PolarFieldDef,
   PositionDatumDef,
   PositionFieldDef,
   SecondaryFieldDef,
@@ -98,6 +100,29 @@ export interface Encoding<F extends Field> {
    * Latitude position of geographically projected marks.
    */
   latitude?: LatLongFieldDef<F> | DatumDef<F> | ValueDef<number>;
+
+  /**
+   * - For arc marks, the arc length in radians if theta2 is not specified, otherwise the start arc angle. (A value of 0 indicates up or “north”, increasing values proceed clockwise.)
+   *
+   * - For text marks, polar coordinate angle in radians.
+   */
+  theta?: PolarFieldDef<F> | PolarDatumDef<F> | ValueDef<number> | SignalRef;
+
+  /**
+   * The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise.
+   */
+  theta2?: SecondaryFieldDef<F> | DatumDef<F> | ValueDef<number> | SignalRef;
+
+  /**
+   * The outer radius in pixels of arc marks.
+   */
+
+  radius?: PolarFieldDef<F> | PolarDatumDef<F> | ValueDef<number> | SignalRef;
+
+  /**
+   * The inner radius in pixels of arc marks.
+   */
+  radius2?: SecondaryFieldDef<F> | DatumDef<F> | ValueDef<number> | SignalRef;
 
   /**
    * Longitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
@@ -578,6 +603,10 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'url':
       case 'x2':
       case 'y2':
+      case 'theta':
+      case 'theta2':
+      case 'radius':
+      case 'radius2':
       // falls through
 
       case 'latitude':

@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import {AggregateOp, AggregateTransform as VgAggregateTransform} from 'vega';
 import {isArgmaxDef, isArgminDef} from '../../aggregate';
 import {
   Channel,
@@ -14,7 +14,6 @@ import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../u
 import {isUnitModel, ModelWithField} from '../model';
 import {UnitModel} from '../unit';
 import {DataFlowNode} from './dataflow';
-import {AggregateTransform as VgAggregateTransform} from 'vega';
 
 type Measures = Dict<Partial<Record<AggregateOp, Set<string>>>>;
 
@@ -24,7 +23,7 @@ function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<st
   if (
     isTypedFieldDef(fieldDef) &&
     isUnitModel(model) &&
-    hasBand(channel, fieldDef, channelDef2, model.markDef, model.config)
+    hasBand(channel, fieldDef, channelDef2, model.stack, model.markDef, model.config)
   ) {
     dims.add(vgField(fieldDef, {}));
     dims.add(vgField(fieldDef, {suffix: 'end'}));

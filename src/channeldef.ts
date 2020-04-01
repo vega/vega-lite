@@ -20,7 +20,7 @@ import {Predicate} from './predicate';
 import {Scale} from './scale';
 import {isSortByChannel, Sort, SortOrder} from './sort';
 import {isFacetFieldDef} from './spec/facet';
-import {StackOffset} from './stack';
+import {StackOffset, StackProperties} from './stack';
 import {
   getTimeUnitParts,
   isLocalSingleTimeUnit,
@@ -405,14 +405,50 @@ export type LatLongFieldDef<F extends Field> = FieldDefBase<F, null> &
   TitleMixins &
   Partial<TypeMixins<'quantitative'>>; // Lat long shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
-export type PositionFieldDef<F extends Field> = ScaleFieldDef<
+export type PositionFieldDefBase<F extends Field> = ScaleFieldDef<
   F,
   StandardType,
   boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
 > &
-  PositionMixins;
+  PositionBaseMixins;
 
-export type PositionDatumDef<F extends Field> = PositionMixins & ScaleDatumDef<F>;
+export type PositionDatumDefBase<F extends Field> = ScaleDatumDef<F> & PositionBaseMixins;
+
+export interface PositionBaseMixins {
+  /**
+   * Type of stacking offset if the field should be stacked.
+   * `stack` is only applicable for `x`, `y`, `theta`, and `radius` channels with continuous domains.
+   * For example, `stack` of `y` can be used to customize stacking for a vertical bar chart.
+   *
+   * `stack` can be one of the following values:
+   * - `"zero"` or `true`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](https://vega.github.io/vega-lite/docs/stack.html#bar) and [area](https://vega.github.io/vega-lite/docs/stack.html#area) chart).
+   * - `"normalize"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](https://vega.github.io/vega-lite/docs/stack.html#normalized). <br/>
+   * -`"center"` - stacking with center baseline (for [streamgraph](https://vega.github.io/vega-lite/docs/stack.html#streamgraph)).
+   * - `null` or `false` - No-stacking. This will produce layered [bar](https://vega.github.io/vega-lite/docs/stack.html#layered-bar-chart) and area chart.
+   *
+   * __Default value:__ `zero` for plots with all of the following conditions are true:
+   * (1) the mark is `bar`, `area`, or `arc`;
+   * (2) the stacked measure channel (x or y) has a linear scale;
+   * (3) At least one of non-position channels mapped to an unaggregated field that is different from x and y. Otherwise, `null` by default.
+   *
+   * __See also:__ [`stack`](https://vega.github.io/vega-lite/docs/stack.html) documentation.
+   */
+  stack?: StackOffset | null | boolean;
+
+  /**
+   * For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.
+   *
+   * For other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  band?: number;
+}
+
+export type PositionFieldDef<F extends Field> = PositionFieldDefBase<F> & PositionMixins;
+
+export type PositionDatumDef<F extends Field> = PositionDatumDefBase<F> & PositionMixins;
 
 export interface PositionMixins {
   /**
@@ -426,26 +462,6 @@ export interface PositionMixins {
   axis?: Axis | null;
 
   /**
-   * Type of stacking offset if the field should be stacked.
-   * `stack` is only applicable for `x` and `y` channels with continuous domains.
-   * For example, `stack` of `y` can be used to customize stacking for a vertical bar chart.
-   *
-   * `stack` can be one of the following values:
-   * - `"zero"` or `true`: stacking with baseline offset at zero value of the scale (for creating typical stacked [bar](https://vega.github.io/vega-lite/docs/stack.html#bar) and [area](https://vega.github.io/vega-lite/docs/stack.html#area) chart).
-   * - `"normalize"` - stacking with normalized domain (for creating [normalized stacked bar and area charts](https://vega.github.io/vega-lite/docs/stack.html#normalized). <br/>
-   * -`"center"` - stacking with center baseline (for [streamgraph](https://vega.github.io/vega-lite/docs/stack.html#streamgraph)).
-   * - `null` or `false` - No-stacking. This will produce layered [bar](https://vega.github.io/vega-lite/docs/stack.html#layered-bar-chart) and area chart.
-   *
-   * __Default value:__ `zero` for plots with all of the following conditions are true:
-   * (1) the mark is `bar` or `area`;
-   * (2) the stacked measure channel (x or y) has a linear scale;
-   * (3) At least one of non-position channels mapped to an unaggregated field that is different from x and y. Otherwise, `null` by default.
-   *
-   * __See also:__ [`stack`](https://vega.github.io/vega-lite/docs/stack.html) documentation.
-   */
-  stack?: StackOffset | null | boolean;
-
-  /**
    * An object defining the properties of the Impute Operation to be applied.
    * The field value of the other positional channel is taken as `key` of the `Impute` Operation.
    * The field of the `color` channel if specified is used as `groupby` of the `Impute` Operation.
@@ -453,23 +469,17 @@ export interface PositionMixins {
    * __See also:__ [`impute`](https://vega.github.io/vega-lite/docs/impute.html) documentation.
    */
   impute?: ImputeParams | null;
-
-  /**
-   * For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.
-   *
-   * For other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.
-   *
-   * @minimum 0
-   * @maximum 1
-   */
-  band?: number;
 }
+
+export type PolarFieldDef<F extends Field> = PositionFieldDefBase<F>;
+export type PolarDatumDef<F extends Field> = PositionDatumDefBase<F>;
 
 export function getBand({
   channel,
   fieldDef,
   fieldDef2,
-  mark,
+  markDef: mark,
+  stack,
   config,
   isMidPoint
 }: {
@@ -477,12 +487,13 @@ export function getBand({
   channel: Channel;
   fieldDef: FieldDef<string>;
   fieldDef2?: SecondaryChannelDef<string>;
-  mark: MarkDef;
+  stack: StackProperties;
+  markDef: MarkDef;
   config: Config;
 }) {
   const {timeUnit, bin} = fieldDef;
-  if (contains(['x', 'y'], channel)) {
-    if (isPositionFieldOrDatumDef(fieldDef) && fieldDef.band !== undefined) {
+  if (contains(['x', 'y', 'theta', 'radius'], channel)) {
+    if (isAnyPositionFieldOrDatumDef(fieldDef) && fieldDef.band !== undefined) {
       return fieldDef.band;
     } else if (timeUnit && !fieldDef2) {
       if (isMidPoint) {
@@ -492,6 +503,8 @@ export function getBand({
       }
     } else if (isBinning(bin)) {
       return isRectBasedMark(mark.type) && !isMidPoint ? 1 : 0.5;
+    } else if (stack?.fieldChannel === channel && isMidPoint) {
+      return 0.5;
     }
   }
   return undefined;
@@ -501,11 +514,12 @@ export function hasBand(
   channel: Channel,
   fieldDef: FieldDef<string>,
   fieldDef2: SecondaryChannelDef<string>,
-  mark: MarkDef,
+  stack: StackProperties,
+  markDef: MarkDef,
   config: Config
 ) {
   if (isBinning(fieldDef.bin) || (fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal')) {
-    return !!getBand({channel, fieldDef, fieldDef2, mark, config});
+    return !!getBand({channel, fieldDef, fieldDef2, stack, markDef, config});
   }
   return false;
 }
@@ -635,6 +649,12 @@ export function isPositionFieldOrDatumDef<F extends Field>(
     !!channelDef &&
     (!!channelDef['axis'] || !!channelDef['stack'] || !!channelDef['impute'] || channelDef['band'] !== undefined)
   );
+}
+
+export function isAnyPositionFieldOrDatumDef<F extends Field>(
+  channelDef: ChannelDef<F>
+): channelDef is PositionFieldDefBase<F> | PositionDatumDefBase<F> {
+  return !!channelDef && ('stack' in channelDef || 'band' in channelDef);
 }
 
 export function isMarkPropFieldOrDatumDef<F extends Field>(
@@ -1101,6 +1121,8 @@ export function channelCompatibility(
     case 'href':
     case 'url':
     case 'angle':
+    case 'theta':
+    case 'radius':
       return COMPATIBLE;
 
     case 'longitude':
@@ -1120,6 +1142,8 @@ export function channelCompatibility(
     case 'strokeOpacity':
     case 'strokeWidth':
     case 'size':
+    case 'theta2':
+    case 'radius2':
     case 'x2':
     case 'y2':
       if (type === 'nominal' && !fieldDef['sort']) {

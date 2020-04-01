@@ -1,0 +1,130 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A simple pie chart with labels.",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"category": "a", "value": 4},
+        {"category": "b", "value": 6},
+        {"category": "c", "value": 10},
+        {"category": "d", "value": 3},
+        {"category": "e", "value": 7},
+        {"category": "f", "value": 8}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": [],
+          "field": "value",
+          "sort": {"field": ["category"], "order": ["ascending"]},
+          "as": ["value_start", "value_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": [],
+          "field": "value",
+          "sort": {
+            "field": ["category", "category"],
+            "order": ["ascending", "ascending"]
+          },
+          "as": ["value_start", "value_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "arc",
+      "style": ["arc"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "outerRadius": {"value": 80},
+          "fill": {"scale": "color", "field": "category"},
+          "x": {"signal": "width", "mult": 0.5},
+          "y": {"signal": "height", "mult": 0.5},
+          "innerRadius": {"value": 0},
+          "startAngle": {"scale": "theta", "field": "value_end"},
+          "endAngle": {"scale": "theta", "field": "value_start"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "radius": {"value": 90},
+          "fill": {"scale": "color", "field": "category"},
+          "x": {"signal": "width", "mult": 0.5},
+          "y": {"signal": "height", "mult": 0.5},
+          "text": {
+            "signal": "isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]"
+          },
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"},
+          "theta": {
+            "signal": "scale(\"theta\", 0.5 * datum[\"value_start\"] + 0.5 * datum[\"value_end\"])"
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "theta",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "value_start"},
+          {"data": "data_1", "field": "value_end"},
+          {"data": "data_2", "field": "value_start"},
+          {"data": "data_2", "field": "value_end"}
+        ]
+      },
+      "range": [0, 6.283185307179586],
+      "zero": false
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "category"},
+          {"data": "data_2", "field": "category"}
+        ],
+        "sort": true
+      },
+      "range": "category"
+    }
+  ]
+}

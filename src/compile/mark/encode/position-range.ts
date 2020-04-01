@@ -121,7 +121,7 @@ function pointPosition2(model: UnitModel, defaultPos: 'zeroOrMin' | 'zeroOrMax',
   );
 }
 
-function position2Ref({
+export function position2Ref({
   channel,
   channelDef,
   channel2Def,
@@ -133,7 +133,7 @@ function position2Ref({
   offset,
   defaultRef
 }: ref.MidPointParams & {
-  channel: 'x2' | 'y2';
+  channel: 'x2' | 'y2' | 'radius2' | 'theta2';
 }): VgValueRef | VgValueRef[] {
   if (
     isFieldOrDatumDef(channelDef) &&

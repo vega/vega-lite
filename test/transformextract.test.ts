@@ -11,6 +11,7 @@ describe('extractTransforms()', () => {
   // List of specs which don't compile to same Vega when their transforms are extracted due to
   // various bugs.
   const failsList = new Set([
+    'arc_radial_histogram.vl.json',
     'area_temperature_range.vl.json',
     'bar_aggregate_count.vl.json',
     'bar_aggregate_sort_by_encoding.vl.json',

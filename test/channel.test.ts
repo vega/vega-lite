@@ -32,6 +32,8 @@ describe('channel', () => {
           'yError',
           'xError2',
           'yError2',
+          'theta2',
+          'radius2',
           'latitude',
           'longitude',
           'latitude2',
@@ -51,7 +53,7 @@ describe('channel', () => {
 
   describe('NONPOSITION_SCALE_CHANNELS', () => {
     it('should be SCALE_CHANNELS without x, y, x2, y2', () => {
-      expect(NONPOSITION_SCALE_CHANNELS).toEqual(without(SCALE_CHANNELS, ['x', 'y']));
+      expect(NONPOSITION_SCALE_CHANNELS).toEqual(without(SCALE_CHANNELS, ['x', 'y', 'theta', 'radius']));
     });
   });
 

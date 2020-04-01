@@ -301,6 +301,10 @@ OrderFieldDef:
   link: 'encoding.html#order'
 PositionFieldDef:
   link: 'encoding.html#position-field-def'
+PolarFieldDef:
+  link: 'encoding.html#polar-field-def'
+PolarDatumDef:
+  link: 'encoding.html#polar-datum-def'
 
 ValueDef:
   link: 'encoding.html#value-def'

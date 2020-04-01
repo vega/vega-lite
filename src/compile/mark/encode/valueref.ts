@@ -5,7 +5,19 @@ import {SignalRef} from 'vega';
 import {isFunction, isString} from 'vega-util';
 import {isCountingAggregateOp} from '../../../aggregate';
 import {isBinned, isBinning} from '../../../bin';
-import {Channel, getMainRangeChannel, PositionChannel, X, X2, Y, Y2} from '../../../channel';
+import {
+  Channel,
+  getMainRangeChannel,
+  NonPositionScaleChannel,
+  PolarPositionChannel,
+  PositionChannel,
+  RADIUS,
+  THETA,
+  X,
+  X2,
+  Y,
+  Y2
+} from '../../../channel';
 import {
   binRequiresRange,
   ChannelDef,
@@ -15,10 +27,10 @@ import {
   FieldName,
   FieldRefOption,
   getBand,
+  isAnyPositionFieldOrDatumDef,
   isDatumDef,
   isFieldDef,
   isFieldOrDatumDef,
-  isPositionFieldOrDatumDef,
   isTypedFieldDef,
   isValueDef,
   SecondaryChannelDef,
@@ -36,13 +48,13 @@ import {hasDiscreteDomain, isContinuousToContinuous} from '../../../scale';
 import {StackProperties} from '../../../stack';
 import {QUANTITATIVE, TEMPORAL} from '../../../type';
 import {contains, getFirstDefined} from '../../../util';
-import {isSignalRef, VgValueRef} from '../../../vega.schema';
+import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../../vega.schema';
 import {getMarkConfig, signalOrValueRef} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 
 export function midPointRefWithPositionInvalidTest(
   params: MidPointParams & {
-    channel: PositionChannel;
+    channel: PositionChannel | PolarPositionChannel;
   }
 ) {
   const {channel, channelDef, markDef, scale, config} = params;
@@ -77,7 +89,7 @@ export function wrapPositionInvalidTest({
   config
 }: {
   fieldDef: FieldDef<string>;
-  channel: PositionChannel;
+  channel: PositionChannel | PolarPositionChannel;
   markDef: MarkDef<Mark>;
   ref: VgValueRef;
   config: Config;
@@ -96,10 +108,15 @@ export function wrapPositionInvalidTest({
   return [fieldInvalidTestValueRef(fieldDef, channel), ref];
 }
 
-export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: PositionChannel) {
+export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: PositionChannel | PolarPositionChannel) {
   const test = fieldInvalidPredicate(fieldDef, true);
-  const mainChannel = getMainRangeChannel(channel) as 'x' | 'y';
-  const zeroValueRef = mainChannel === 'x' ? {value: 0} : {field: {group: 'height'}};
+
+  const mainChannel = getMainRangeChannel(channel) as PositionChannel | PolarPositionChannel; // we can cast here as the output can't be other things.
+  const zeroValueRef =
+    mainChannel === 'y'
+      ? {field: {group: 'height'}}
+      : // x / angle / radius can all use 0
+        {value: 0};
 
   return {test, ...zeroValueRef};
 }
@@ -233,7 +250,8 @@ export function midPoint({
           channel,
           fieldDef: channelDef,
           fieldDef2: channel2Def,
-          mark: markDef,
+          markDef,
+          stack,
           config,
           isMidPoint: true
         });
@@ -242,7 +260,7 @@ export function midPoint({
         if (isBinning(channelDef.bin) || (band && timeUnit && type === TEMPORAL)) {
           // Use middle only for x an y to place marks in the center between start and end of the bin range.
           // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
-          if (contains([X, Y], channel) && contains([QUANTITATIVE, TEMPORAL], type)) {
+          if (contains([X, Y, RADIUS, THETA], channel) && contains([QUANTITATIVE, TEMPORAL], type)) {
             if (stack && stack.impute) {
               // For stack, we computed bin_mid so we can impute.
               return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
@@ -279,7 +297,7 @@ export function midPoint({
         if (hasDiscreteDomain(scaleType)) {
           if (scaleType === 'band') {
             // For band, to get mid point, need to offset by half of the band
-            const band = getFirstDefined(isPositionFieldOrDatumDef(channelDef) ? channelDef.band : undefined, 0.5);
+            const band = getFirstDefined(isAnyPositionFieldOrDatumDef(channelDef) ? channelDef.band : undefined, 0.5);
             return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'range'}, {band, offset});
           }
           return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'range'}, {offset});
@@ -322,4 +340,30 @@ export function widthHeightValueRef(channel: Channel, value: ValueOrGradientOrTe
     return {field: {group: 'height'}};
   }
   return signalOrValueRef(value);
+}
+
+export function getValueFromMarkDefAndConfig({
+  channel,
+  vgChannel,
+  markDef,
+  config
+}: {
+  channel: NonPositionScaleChannel | PolarPositionChannel;
+  vgChannel?: VgEncodeChannel;
+  markDef: MarkDef;
+  config: Config;
+}) {
+  if (!vgChannel || vgChannel === channel) {
+    // When vl channel is the same as Vega's, no need to read from config as Vega will apply them correctly
+
+    return markDef[channel];
+  }
+
+  // However, when they are different (e.g, vl's text size is vg fontSize), need to read vl channel from configs
+  return getFirstDefined(
+    // prioritize vl-specific names
+    markDef[channel],
+    markDef[vgChannel],
+    getMarkConfig(channel, markDef, config, {vgChannel})
+  );
 }

@@ -350,6 +350,7 @@ function parseSingleChannelDomain(
       channel,
       fieldDef,
       isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined,
+      model.stack,
       model.markDef,
       model.config
     )

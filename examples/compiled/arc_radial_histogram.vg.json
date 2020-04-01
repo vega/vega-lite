@@ -1,0 +1,162 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/movies.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "extent",
+          "field": "IMDB_Rating",
+          "signal": "layer_1_bin_maxbins_10_IMDB_Rating_extent"
+        },
+        {
+          "type": "bin",
+          "field": "IMDB_Rating",
+          "as": [
+            "bin_maxbins_10_IMDB_Rating",
+            "bin_maxbins_10_IMDB_Rating_end"
+          ],
+          "signal": "layer_1_bin_maxbins_10_IMDB_Rating_bins",
+          "extent": {"signal": "layer_1_bin_maxbins_10_IMDB_Rating_extent"},
+          "maxbins": 10
+        },
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_10_IMDB_Rating",
+            "bin_maxbins_10_IMDB_Rating_end"
+          ],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "arc",
+      "style": ["arc"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "white"},
+          "tooltip": {
+            "signal": "{\"IMDB_Rating (binned)\": !isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\"), \"Count of Records\": format(datum[\"__count\"], \"\")}"
+          },
+          "fill": {"value": "#4c78a8"},
+          "x": {"signal": "width", "mult": 0.5},
+          "y": {"signal": "height", "mult": 0.5},
+          "outerRadius": {"scale": "radius", "field": "__count"},
+          "innerRadius": {"value": 0},
+          "endAngle": [
+            {
+              "test": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])",
+              "value": 0
+            },
+            {"scale": "theta", "field": "bin_maxbins_10_IMDB_Rating"}
+          ],
+          "startAngle": [
+            {
+              "test": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])",
+              "value": 0
+            },
+            {"scale": "theta", "field": "bin_maxbins_10_IMDB_Rating_end"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "align": {"value": "right"},
+          "fill": {"value": "black"},
+          "x": {"signal": "width", "mult": 0.5},
+          "y": {"signal": "height", "mult": 0.5},
+          "text": {
+            "signal": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\")"
+          },
+          "angle": {"scale": "angle", "field": "bin_maxbins_10_IMDB_Rating"},
+          "baseline": {"value": "middle"},
+          "radius": {"scale": "radius", "field": "__count", "offset": 15},
+          "theta": [
+            {
+              "test": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])",
+              "value": 0
+            },
+            {
+              "signal": "scale(\"theta\", 0.5 * datum[\"bin_maxbins_10_IMDB_Rating\"] + 0.5 * datum[\"bin_maxbins_10_IMDB_Rating_end\"])"
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "theta",
+      "type": "linear",
+      "domain": {
+        "signal": "[layer_1_bin_maxbins_10_IMDB_Rating_bins.start, layer_1_bin_maxbins_10_IMDB_Rating_bins.stop]"
+      },
+      "range": [0, 6.283185307179586],
+      "bins": {"signal": "layer_1_bin_maxbins_10_IMDB_Rating_bins"},
+      "zero": false
+    },
+    {
+      "name": "radius",
+      "type": "sqrt",
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "__count"},
+          {"data": "data_1", "field": "__count"}
+        ]
+      },
+      "range": [0, {"signal": "min(width,height)/2"}],
+      "zero": false
+    },
+    {
+      "name": "angle",
+      "type": "linear",
+      "domain": {
+        "signal": "[layer_1_bin_maxbins_10_IMDB_Rating_bins.start, layer_1_bin_maxbins_10_IMDB_Rating_bins.stop]"
+      },
+      "range": [108, 468],
+      "bins": {"signal": "layer_1_bin_maxbins_10_IMDB_Rating_bins"},
+      "zero": false
+    }
+  ],
+  "config": {"style": {"cell": {"stroke": null}}}
+}

@@ -1,12 +1,12 @@
 import {SignalRef} from 'vega';
 import {isNumber} from 'vega-util';
 import {isBinned, isBinning} from '../../../bin';
-import {PositionChannel, X, X2, Y2} from '../../../channel';
+import {isPolarPositionChannel, PolarPositionChannel, PositionChannel, X, X2, Y2} from '../../../channel';
 import {
   getBand,
+  isAnyPositionFieldOrDatumDef,
   isFieldDef,
   isFieldOrDatumDef,
-  isPositionFieldOrDatumDef,
   isValueDef,
   PositionDatumDef,
   PositionFieldDef,
@@ -18,7 +18,7 @@ import * as log from '../../../log';
 import {Mark, MarkDef} from '../../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../../scale';
 import {getFirstDefined} from '../../../util';
-import {isSignalRef, isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
+import {isSignalRef, isVgRangeStep, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {getMarkConfig, signalOrValueRef} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
@@ -30,7 +30,7 @@ import {rangePosition} from './position-range';
 import * as ref from './valueref';
 
 export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' | 'rect' | 'image'): VgEncodeEntry {
-  const {config, encoding, markDef} = model;
+  const {config, encoding, markDef, stack} = model;
 
   const channel2 = channel === 'x' ? 'x2' : 'y2';
   const sizeChannel = channel === 'x' ? 'width' : 'height';
@@ -58,7 +58,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
     !hasSizeDef &&
     !hasDiscreteDomain(scaleType)
   ) {
-    const band = getBand({channel, fieldDef, mark: markDef, config});
+    const band = getBand({channel, fieldDef, stack, markDef, config});
 
     return rectBinPosition({
       fieldDef,
@@ -74,7 +74,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
   } else if (((isFieldOrDatumDef(fieldDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !fieldDef2) {
     // vertical
     if (isFieldOrDatumDef(fieldDef) && scaleType === ScaleType.BAND) {
-      const band = isPositionFieldOrDatumDef(fieldDef) ? fieldDef.band : undefined;
+      const band = isAnyPositionFieldOrDatumDef(fieldDef) ? fieldDef.band : undefined;
       return rectBandPosition(
         fieldDef,
         channel,
@@ -218,7 +218,11 @@ function rectBandPosition(
   };
 }
 
-function getBinSpacing(channel: PositionChannel, spacing: number, reverse: boolean | SignalRef) {
+function getBinSpacing(channel: PositionChannel | PolarPositionChannel, spacing: number, reverse: boolean | SignalRef) {
+  if (isPolarPositionChannel(channel)) {
+    return 0;
+  }
+
   if (isSignalRef(reverse)) {
     if (channel === 'x' || channel === 'y2') {
       return {signal: `${reverse.signal} ? ${spacing} : 0`};
@@ -240,6 +244,8 @@ export function rectBinPosition({
   fieldDef,
   fieldDef2,
   channel,
+  vgChannel,
+  vgChannel2,
   band,
   scaleName,
   markDef,
@@ -249,7 +255,9 @@ export function rectBinPosition({
 }: {
   fieldDef: TypedFieldDef<string>;
   fieldDef2?: Encoding<string>['x2' | 'y2'];
-  channel: 'x' | 'y';
+  channel: 'x' | 'y' | 'theta' | 'radius';
+  vgChannel?: VgEncodeChannel;
+  vgChannel2?: VgEncodeChannel;
   band: number;
   scaleName: string;
   markDef: MarkDef<Mark>;
@@ -258,9 +266,13 @@ export function rectBinPosition({
   config: Config;
 }) {
   const channel2 = channel === X ? X2 : Y2;
+
+  vgChannel = vgChannel || channel;
+  vgChannel2 = vgChannel2 || channel2;
+
   if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {
-      [channel2]: rectBinRef({
+      [vgChannel2]: rectBinRef({
         channel,
         fieldDef,
         scaleName,
@@ -269,7 +281,7 @@ export function rectBinPosition({
         offset: getBinSpacing(channel2, spacing, reverse),
         config
       }),
-      [channel]: rectBinRef({
+      [vgChannel]: rectBinRef({
         channel,
         fieldDef,
         scaleName,
@@ -281,13 +293,13 @@ export function rectBinPosition({
     };
   } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
     return {
-      [channel2]: ref.valueRefForFieldOrDatumDef(
+      [vgChannel2]: ref.valueRefForFieldOrDatumDef(
         fieldDef,
         scaleName,
         {},
         {offset: getBinSpacing(channel2, spacing, reverse)}
       ),
-      [channel]: ref.valueRefForFieldOrDatumDef(
+      [vgChannel]: ref.valueRefForFieldOrDatumDef(
         fieldDef2,
         scaleName,
         {},
@@ -312,7 +324,7 @@ export function rectBinRef({
   offset,
   config
 }: {
-  channel: PositionChannel;
+  channel: PositionChannel | PolarPositionChannel;
   fieldDef: TypedFieldDef<string>;
   scaleName: string;
   markDef: MarkDef<Mark>;
