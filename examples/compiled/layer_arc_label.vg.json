@@ -10,12 +10,12 @@
     {
       "name": "source_0",
       "values": [
-        {"id": "a", "field": 4},
-        {"id": "b", "field": 6},
-        {"id": "c", "field": 10},
-        {"id": "d", "field": 3},
-        {"id": "e", "field": 7},
-        {"id": "f", "field": 8}
+        {"category": "a", "value": 4},
+        {"category": "b", "value": 6},
+        {"category": "c", "value": 10},
+        {"category": "d", "value": 3},
+        {"category": "e", "value": 7},
+        {"category": "f", "value": 8}
       ]
     },
     {
@@ -25,14 +25,14 @@
         {
           "type": "stack",
           "groupby": [],
-          "field": "field",
-          "sort": {"field": ["id"], "order": ["ascending"]},
-          "as": ["field_start", "field_end"],
+          "field": "value",
+          "sort": {"field": ["category"], "order": ["ascending"]},
+          "as": ["value_start", "value_end"],
           "offset": "zero"
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"field\"]) && isFinite(+datum[\"field\"])"
+          "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
         }
       ]
     },
@@ -43,14 +43,17 @@
         {
           "type": "stack",
           "groupby": [],
-          "field": "field",
-          "sort": {"field": ["id", "id"], "order": ["ascending", "ascending"]},
-          "as": ["field_start", "field_end"],
+          "field": "value",
+          "sort": {
+            "field": ["category", "category"],
+            "order": ["ascending", "ascending"]
+          },
+          "as": ["value_start", "value_end"],
           "offset": "zero"
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"field\"]) && isFinite(+datum[\"field\"])"
+          "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
         }
       ]
     }
@@ -64,12 +67,12 @@
       "encode": {
         "update": {
           "outerRadius": {"value": 80},
-          "fill": {"scale": "color", "field": "id"},
+          "fill": {"scale": "color", "field": "category"},
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},
           "innerRadius": {"value": 0},
-          "startAngle": {"scale": "theta", "field": "field_end"},
-          "endAngle": {"scale": "theta", "field": "field_start"}
+          "startAngle": {"scale": "theta", "field": "value_end"},
+          "endAngle": {"scale": "theta", "field": "value_start"}
         }
       }
     },
@@ -81,16 +84,16 @@
       "encode": {
         "update": {
           "radius": {"value": 90},
-          "fill": {"scale": "color", "field": "id"},
+          "fill": {"scale": "color", "field": "category"},
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},
           "text": {
-            "signal": "isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]"
+            "signal": "isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]"
           },
           "align": {"value": "center"},
           "baseline": {"value": "middle"},
           "theta": {
-            "signal": "scale(\"theta\", 0.5 * datum[\"field_start\"] + 0.5 * datum[\"field_end\"])"
+            "signal": "scale(\"theta\", 0.5 * datum[\"value_start\"] + 0.5 * datum[\"value_end\"])"
           }
         }
       }
@@ -102,10 +105,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "field_start"},
-          {"data": "data_1", "field": "field_end"},
-          {"data": "data_2", "field": "field_start"},
-          {"data": "data_2", "field": "field_end"}
+          {"data": "data_1", "field": "value_start"},
+          {"data": "data_1", "field": "value_end"},
+          {"data": "data_2", "field": "value_start"},
+          {"data": "data_2", "field": "value_end"}
         ]
       },
       "range": [0, 6.283185307179586],
@@ -116,8 +119,8 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "id"},
-          {"data": "data_2", "field": "id"}
+          {"data": "data_1", "field": "category"},
+          {"data": "data_2", "field": "category"}
         ],
         "sort": true
       },
