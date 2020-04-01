@@ -1,5 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Reproducing http://robslink.com/SAS/democd91/pyramid_pie.htm",
   "background": "white",
   "padding": 5,
   "width": 200,
