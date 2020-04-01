@@ -3,17 +3,17 @@
   "description": "A simple donut chart with embedded data.",
   "data": {
     "values": [
-      {"id": 1, "field": 4},
-      {"id": 2, "field": 6},
-      {"id": 3, "field": 10},
-      {"id": 4, "field": 3},
-      {"id": 5, "field": 7},
-      {"id": 6, "field": 8}
+      {"category": 1, "value": 4},
+      {"category": 2, "value": 6},
+      {"category": 3, "value": 10},
+      {"category": 4, "value": 3},
+      {"category": 5, "value": 7},
+      {"category": 6, "value": 8}
     ]
   },
   "mark": {"type": "arc", "innerRadius": 50},
   "encoding": {
-    "theta": {"field": "field", "type": "quantitative"},
-    "color": {"field": "id", "type": "nominal"}
+    "theta": {"field": "value", "type": "quantitative"},
+    "color": {"field": "category", "type": "nominal"}
   }
 }
