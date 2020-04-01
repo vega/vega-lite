@@ -1,4 +1,4 @@
-import {Mark} from 'vega-typings/types';
+import {Mark} from 'vega';
 import {VgEncodeEntry, VgPostEncodingTransform} from '../../vega.schema';
 import {UnitModel} from '../unit';
 
