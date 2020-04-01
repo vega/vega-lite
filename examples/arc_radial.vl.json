@@ -17,7 +17,5 @@
     "radius": {"field": "data", "type": "quantitative", "scale": {"type": "sqrt", "zero": true, "range": [20, 100]}},
     "color": {"field": "data", "type": "nominal", "legend": null}
   },
-  "config": {
-    "view": {"stroke": null}
-  }
+  "view": {"stroke": null}
 }

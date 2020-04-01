@@ -1,0 +1,57 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {"url": "data/stocks.csv"},
+  "width": 400,
+  "height": 300,
+  "layer": [
+    {
+      "layer": [
+        {
+          "mark": "line",
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "color": {"field": "symbol", "type": "nominal"},
+            "y": {"field": "price", "type": "quantitative"}
+          }
+        },
+        {
+          "transform": [{"filter": {"selection": "hover"}}],
+          "mark": "point",
+          "encoding": {
+            "x": {"field": "date", "type": "temporal"},
+            "color": {"field": "symbol", "type": "nominal"},
+            "y": {"field": "price", "type": "quantitative"}
+          }
+        }
+      ]
+    },
+    {
+      "transform": [{"pivot": "symbol", "value": "price", "groupby": ["date"]}],
+      "mark": "rule",
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "opacity": {
+          "condition": {"value": 0.3, "selection": "hover"},
+          "value": 0
+        },
+        "tooltip": [
+          {"field": "AAPL", "type": "quantitative"},
+          {"field": "AMZN", "type": "quantitative"},
+          {"field": "GOOG", "type": "quantitative"},
+          {"field": "IBM", "type": "quantitative"},
+          {"field": "MSFT", "type": "quantitative"}
+        ]
+      },
+      "selection": {
+        "hover": {
+          "type": "single",
+          "fields": ["date"],
+          "nearest": true,
+          "on": "mouseover",
+          "empty": "none",
+          "clear": "mouseout"
+        }
+      }
+    }
+  ]
+}

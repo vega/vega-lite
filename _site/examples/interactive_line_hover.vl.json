@@ -1,0 +1,56 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "Multi-series line chart with labels and interactive highlight on hover.",
+  "data": {"url": "data/stocks.csv"},
+  "transform": [{"filter": "datum.symbol!=='IBM'"}],
+  "encoding": {
+    "color": {
+      "condition": {
+        "selection": "hover",
+        "field":"symbol",
+        "type":"nominal",
+        "legend": null
+      },
+      "value": "grey"
+    },
+    "opacity": {
+      "condition": {
+        "selection": "hover",
+        "value": 1
+      },
+      "value": 0.2
+    }
+  },
+  "layer": [{
+    "encoding": {
+      "x": {"field": "date", "type": "temporal", "title": "date"},
+      "y": {"field": "price", "type": "quantitative", "title": "price"}
+    },
+    "layer": [{
+      "description": "transparent layer to make it easier to trigger selection",
+      "selection": {
+        "hover": {
+          "type": "single",
+          "on": "mouseover",
+          "empty": "all",
+          "fields": ["symbol"]
+        }
+      },
+      "mark": {"type": "line", "strokeWidth": 8, "stroke": "transparent"}
+    }, {
+      "mark": "line"
+    }]
+  },{
+    "encoding": {
+      "x": {"aggregate": "max", "field": "date", "type": "temporal"},
+      "y": {"aggregate": {"argmax": "date"}, "field": "price", "type": "quantitative"}
+    },
+    "layer": [{
+      "mark": {"type": "circle"}
+    }, {
+      "mark": {"type": "text", "align": "left", "dx": 4},
+      "encoding": {"text": {"field":"symbol", "type": "nominal"}}
+    }]
+  }],
+  "config": {"view": {"stroke": null}}
+}

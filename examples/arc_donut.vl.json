@@ -15,5 +15,6 @@
   "encoding": {
     "theta": {"field": "value", "type": "quantitative"},
     "color": {"field": "category", "type": "nominal"}
-  }
+  },
+  "view": {"stroke": null}
 }
