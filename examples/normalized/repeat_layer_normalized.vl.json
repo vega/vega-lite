@@ -1,94 +1,34 @@
 {
-  "data": {"url": "data/weather.csv"},
-  "align": "all",
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "Summarized and per year weather information for Seatle and New York.",
-  "columns": 3,
-  "concat": [
+  "data": {"url": "data/movies.json"},
+  "layer": [
     {
-      "layer": [
-        {
-          "mark": "line",
-          "encoding": {
-            "y": {
-              "aggregate": "mean",
-              "field": "temp_max",
-              "type": "quantitative"
-            },
-            "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-            "detail": {"timeUnit": "year", "type": "temporal", "field": "date"},
-            "color": {"type": "nominal", "field": "location"},
-            "opacity": {"value": 0.2}
-          }
+      "mark": "line",
+      "encoding": {
+        "x": {"bin": true, "field": "IMDB_Rating", "type": "quantitative"},
+        "y": {
+          "aggregate": "mean",
+          "field": "US_Gross",
+          "type": "quantitative",
+          "title": "Mean of US and Worldwide Gross"
         },
-        {
-          "mark": "line",
-          "encoding": {
-            "y": {
-              "aggregate": "mean",
-              "field": "temp_max",
-              "type": "quantitative"
-            },
-            "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-            "color": {"type": "nominal", "field": "location"}
-          }
-        }
-      ],
-      "name": "child__column_temp_max"
+        "color": {"datum": "US_Gross", "type": "nominal"}
+      },
+      "name": "child__layer_US_Gross"
     },
     {
-      "layer": [
-        {
-          "mark": "line",
-          "encoding": {
-            "y": {
-              "aggregate": "mean",
-              "field": "precipitation",
-              "type": "quantitative"
-            },
-            "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-            "detail": {"timeUnit": "year", "type": "temporal", "field": "date"},
-            "color": {"type": "nominal", "field": "location"},
-            "opacity": {"value": 0.2}
-          }
+      "mark": "line",
+      "encoding": {
+        "x": {"bin": true, "field": "IMDB_Rating", "type": "quantitative"},
+        "y": {
+          "aggregate": "mean",
+          "field": "Worldwide_Gross",
+          "type": "quantitative",
+          "title": "Mean of US and Worldwide Gross"
         },
-        {
-          "mark": "line",
-          "encoding": {
-            "y": {
-              "aggregate": "mean",
-              "field": "precipitation",
-              "type": "quantitative"
-            },
-            "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-            "color": {"type": "nominal", "field": "location"}
-          }
-        }
-      ],
-      "name": "child__column_precipitation"
-    },
-    {
-      "layer": [
-        {
-          "mark": "line",
-          "encoding": {
-            "y": {"aggregate": "mean", "field": "wind", "type": "quantitative"},
-            "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-            "detail": {"timeUnit": "year", "type": "temporal", "field": "date"},
-            "color": {"type": "nominal", "field": "location"},
-            "opacity": {"value": 0.2}
-          }
-        },
-        {
-          "mark": "line",
-          "encoding": {
-            "y": {"aggregate": "mean", "field": "wind", "type": "quantitative"},
-            "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-            "color": {"type": "nominal", "field": "location"}
-          }
-        }
-      ],
-      "name": "child__column_wind"
+        "color": {"datum": "Worldwide_Gross", "type": "nominal"}
+      },
+      "name": "child__layer_Worldwide_Gross"
     }
   ]
 }

@@ -1,48 +1,29 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "Summarized and per year weather information for Seatle and New York.",
-  "data": {"url": "data/weather.csv"},
-  "repeat": {"column": ["temp_max", "precipitation", "wind"]},
+  "data": {
+    "url": "data/movies.json"
+  },
+  "repeat": {
+    "layer": ["US_Gross", "Worldwide_Gross"]
+  },
   "spec": {
-    "layer": [
-      {
-        "mark": "line",
-        "encoding": {
-          "y": {
-            "aggregate": "mean",
-            "field": {"repeat": "column"},
-            "type": "quantitative"
-          },
-          "x": {
-            "timeUnit": "month",
-            "field": "date",
-            "type": "ordinal"
-          },
-          "detail": {
-            "timeUnit": "year",
-            "type": "temporal",
-            "field": "date"
-          },
-          "color": {"type": "nominal", "field": "location"},
-          "opacity": {"value": 0.2}
-        }
+    "mark": "line",
+    "encoding": {
+      "x": {
+        "bin": true,
+        "field": "IMDB_Rating",
+        "type": "quantitative"
       },
-      {
-        "mark": "line",
-        "encoding": {
-          "y": {
-            "aggregate": "mean",
-            "field": {"repeat": "column"},
-            "type": "quantitative"
-          },
-          "x": {
-            "timeUnit": "month",
-            "field": "date",
-            "type": "ordinal"
-          },
-          "color": {"type": "nominal", "field": "location"}
-        }
+      "y": {
+        "aggregate": "mean",
+        "field": {"repeat": "layer"},
+        "type": "quantitative",
+        "title": "Mean of US and Worldwide Gross"
+      },
+      "color": {
+        "datum": {"repeat": "layer"},
+        "type": "nominal"
       }
-    ]
+    }
   }
 }

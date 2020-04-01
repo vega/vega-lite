@@ -1,7 +1,7 @@
 ---
 layout: page
 description: "Bar chart with text labels. Apply scale padding to make the frame cover the labels."
-title: Bar with Label Overlays
+title: Simple Bar Chart with Labels
 menu: examples
 permalink: /examples/layer_bar_labels.html
 image: /examples/layer_bar_labels.png

@@ -35,9 +35,9 @@ In addition to [common properties of a view specification](spec.html#common), a 
 
 {: #repeat-mapping}
 
-## Row/Column Repeat Mapping
+## Row/Column/Layer Repeat Mapping
 
-The `repeat` property can be an object with two optional properties (`"row"` and `"column"`), which define the list of fields that should be repeated into a row or column.
+The `repeat` property can be an object with at least one of `"row"`, `"column"` and `"layer"` properties, which define the list of fields that should be repeated into a row, a column, or a layer.
 
 {% include table.html props="row,column" source="RepeatMapping" %}
 
@@ -57,6 +57,12 @@ Note how the field for the y channel refers to a repeated field.
   ...
 },
 ```
+
+### Multi-series Line Chart with Repeated Layers
+
+You can also use `repeat` with `layer` to create a multi-series line chart. Here we map a repeater field as data value ([`datum`](datum.html)) for the color encoding.
+
+<span class="vl-example" data-name="repeat_layer"></span>
 
 ### Repeated Histogram (Wrapped)
 

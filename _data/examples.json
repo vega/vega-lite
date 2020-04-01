@@ -220,6 +220,10 @@
         "title": "Multi Series Line Chart"
       },
       {
+        "name": "line_color_halo",
+        "title": "Multi Series Line Chart with Halo Stroke"
+      },
+      {
         "name": "line_slope",
         "title": "Slope Graph",
         "style": "background-size: auto 105%; background-position: center center !important;"
@@ -237,7 +241,7 @@
       {
         "name": "line_conditional_axis",
         "title": "Line Chart with Conditional Axis Properties",
-        "style": "background-size: auto 105%; background-position: center center !important;"
+        "style": "background-size: auto 105%"
       },
       {
         "name": "connected_scatterplot",
@@ -337,6 +341,28 @@
       {
         "name": "rect_mosaic_labelled_with_offset",
         "title": "Mosaic Chart with Labels"
+      }
+    ],
+    "Circular Plots": [
+      {
+        "name": "arc_pie",
+        "title": "Pie Chart",
+        "description": "A pie chart encodes proportional differences among a set of numeric values as the angular extent and area of a circular slice."
+      },
+      {
+        "name": "arc_donut",
+        "title": "Donut Chart",
+        "description": "A donut chart encodes proportional differences among a set of numeric values using angular extents."
+      },
+      {
+        "name": "layer_arc_label",
+        "title": "Pie Chart with Labels",
+        "description": "Layering text over arc marks to label pie charts. For now, [you need to add `stack: true`](https://github.com/vega/vega-lite/issues/5078) to theta to force the text to apply the same polar stacking layout."
+      },
+      {
+        "name": "arc_radial",
+        "title": "Radial Plot",
+        "description": "This radial plot uses both angular and radial extent to convey multiple dimensions of data. However, this approach is not perceptually effective, as viewers will most likely be drawn to the total area of the shape, conflating the two dimensions. This example also demonstrates a way to add labels to circular plots."
       }
     ],
     "Advanced Calculations": [
@@ -467,6 +493,10 @@
         "style": "background-size: auto 70%; background-position-y: center;"
       },
       {
+        "name": "layer_bar_fruit",
+        "title": "Simple Bar Chart with Labels and Emojis"
+      },
+      {
         "name": "layer_text_heatmap",
         "title": "Layering text over heatmap",
         "style": "background-size: auto 55%; background-position-y: center !important;"
@@ -512,10 +542,6 @@
         "name": "concat_layer_voyager_result",
         "title": "Comparative Likert Scale Ratings",
         "description": "Comparing Likert scale ratings between two conditions. (Figure 10. from @kanitw et al.'s \"Voyager 2: Augmenting Visual Analysis with Partial View Specifications\" -- http://idl.cs.washington.edu/files/2017-Voyager2-CHI.pdf)."
-      },
-      {
-        "name": "layer_bar_labels",
-        "title": "Bar with Label Overlays"
       }
     ],
     "Other Layered Plots": [
@@ -566,7 +592,7 @@
       },
       {
         "name": "trellis_scatter",
-        "title": "Trellis Scatter Plot",
+        "title": "Trellis Scatter Plot (wrapped)",
         "png": true
       },
       {
@@ -592,6 +618,10 @@
       {
         "name": "area_density_facet",
         "title": "Faceted Density Plot"
+      },
+      {
+        "name": "facet_grid_bar",
+        "title": "Compact Trellis Grid of Bar Charts"
       }
     ],
     "Repeat & Concatenation": [
@@ -724,6 +754,11 @@
         "name": "selection_layer_bar_month",
         "title": "Interactive Average",
         "description": "The plot below uses an interval selection, which causes the chart to include an interactive brush (shown in grey). The brush selection parameterizes the red guideline, which visualizes the average value within the selected interval."
+      },
+      {
+        "name": "interactive_line_hover",
+        "title": "Multi Series Line Chart with Interactive Highlgiht",
+        "description": "The plot below uses argmax to position text labels at the end of line.  It also applies single selection to highlight a hovered line.  Note that we can hidden thick lines to make it easier to hover."
       },
       {
         "name": "interactive_multi_line_label",

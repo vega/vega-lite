@@ -1,7 +1,7 @@
 ---
 layout: page
 
-title: Trellis Scatter Plot
+title: Trellis Scatter Plot (wrapped)
 menu: examples
 permalink: /examples/trellis_scatter.html
 image: /examples/trellis_scatter.png

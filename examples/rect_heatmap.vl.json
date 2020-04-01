@@ -6,5 +6,8 @@
     "y": {"field": "Origin", "type": "nominal"},
     "x": {"field": "Cylinders", "type": "ordinal"},
     "color": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
+  },
+  "config": {
+    "axis": {"grid": true, "tickBand": "extent"}
   }
 }

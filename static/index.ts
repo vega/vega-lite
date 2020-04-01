@@ -39,7 +39,7 @@ const loader = vega.loader({
 const editorURL = 'https://vega.github.io/editor/';
 
 /* Anchors */
-selectAll('h2, h3, h4, h5, h6').each(function(this: d3.BaseType) {
+selectAll('h2, h3, h4, h5, h6').each(function (this: d3.BaseType) {
   const sel = select(this);
   const name = sel.attr('id');
   const title = sel.text();
@@ -55,12 +55,7 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
 
   // Decrease visual noise by removing $schema and description from code examples.
   const textClean = specText.replace(/(\s)+"(\$schema|description)": ".*?",/g, '');
-  const code = $target
-    .append('pre')
-    .attr('class', 'example-code')
-    .append('code')
-    .attr('class', 'json')
-    .text(textClean);
+  const code = $target.append('pre').attr('class', 'example-code').append('code').attr('class', 'json').text(textClean);
   hljs.highlightBlock(code.node() as any);
 
   const spec = JSON.parse(specText);
@@ -87,7 +82,7 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
       .append('a')
       .text('Open in Vega Editor')
       .attr('href', '#')
-      .on('click', function() {
+      .on('click', function () {
         post(window, editorURL, {
           mode: 'vega-lite',
           spec: compactStringify(spec),
@@ -145,7 +140,7 @@ window['buildSpecOpts'] = (id: string, baseName: string) => {
   }
 };
 
-selectAll('.vl-example').each(function(this: d3.BaseType) {
+selectAll('.vl-example').each(function (this: d3.BaseType) {
   getSpec(this);
 });
 

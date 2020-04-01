@@ -64,6 +64,14 @@ Adding a field to a [mark property channel](encoding.html#mark-prop) such as `co
 
 <span class="vl-example" data-name="line_color"></span>
 
+We can use text marks and [`argmax`](aggregate.html#argmax) to add labels to each line instead of using legends. Note that here we hide one of the line to avoid collision.
+
+<span class="vl-example" data-name="line_color_label"></span>
+
+We can further apply [`selection`](selection.html) to highlight a certain line on hover.
+
+<span class="vl-example" data-name="interactive_line_hover"></span>
+
 ### Multi-series Line Chart with Varying Dashes
 
 Adding a field to `strokeDash` also produces a multi-series line chart.

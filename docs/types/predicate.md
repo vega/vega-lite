@@ -5,7 +5,7 @@ title: Predicate
 permalink: /docs/predicate.html
 ---
 
-To test a data point in a [filter transform](filter.html) or a [`test` property in conditonal encoding](https://vega.github.io/vega-lite/docs/condition.html), a prediction definition of the following forms must be specified:
+To test a data point in a [filter transform](filter.html) or a [`test` property in conditional encoding](https://vega.github.io/vega-lite/docs/condition.html), a prediction definition of the following forms must be specified:
 
 1. a [Vega expression](https://vega.github.io/vega-lite/docs/types.html#expression) string, where `datum` can be used to refer to the current data object. For example, `datum.b2 > 60` would test if the value in the field `b2` for each data point is over 60.
 

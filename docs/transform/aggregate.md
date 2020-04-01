@@ -121,6 +121,8 @@ The supported **aggregation operations** are:
 | argmin | An input data object containing the minimum field value. <br/> **Note:** When used inside encoding, `argmin` must be specified as an object. (See below for an example.) |
 | argmax | An input data object containing the maximum field value. <br/> **Note:** When used inside encoding, `argmax` must be specified as an object. (See below for an example.) |
 
+{:#argmax}
+
 ## Argmin / Argmax
 
 The argmax and argmin operation can be specified in an encoding field definition by setting `aggregate` to an object with `argmax/min` describing the field to maximize/minimize. For example, the following plot shows the production budget of the movie that has the highest US Gross in each major genre.
@@ -130,3 +132,9 @@ The argmax and argmin operation can be specified in an encoding field definition
 This is equivalent to specifying argmax in an aggregate transform and encode its nested data.
 
 <div class="vl-example" data-name="bar_argmax_transform"></div>
+
+### Example: Labeling Line Chart
+
+`argmax` can be useful for getting the last value in a line for label placement.
+
+<span class="vl-example" data-name="line_color_label"></span>
