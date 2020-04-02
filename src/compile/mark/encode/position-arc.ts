@@ -76,7 +76,7 @@ export function arcRangePosition(
   return {
     [vgChannel]: positionRef({
       ...sharedParams,
-      defaultRef: defaultValue ? signalOrValueRef(defaultValue) : defaultRef
+      defaultRef: defaultValue !== undefined ? signalOrValueRef(defaultValue) : defaultRef
     }),
     [vgChannel2]: position2Ref({
       ...sharedParams,

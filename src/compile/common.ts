@@ -42,7 +42,7 @@ export function getMarkPropOrConfig<P extends keyof MarkDef>(
   opt: {
     vgChannel?: VgEncodeChannel;
     ignoreVgConfig?: boolean;
-  } = {} // Note: Ham: I use `any` here like in getMarkConfig below
+  } = {}
 ): MarkDef[P] {
   const {vgChannel, ignoreVgConfig} = opt;
   if (vgChannel && mark[vgChannel] !== undefined) {
@@ -64,7 +64,7 @@ export function getMarkConfig<P extends keyof MarkDef>(
   channel: P,
   mark: MarkDef,
   config: Config,
-  {vgChannel}: {vgChannel?: any} = {} // Note: Ham: I use `any` here as it's too hard to make TS knows that MarkConfig[vgChannel] would have the same type as MarkConfig[P]
+  {vgChannel}: {vgChannel?: VgEncodeChannel} = {}
 ): MarkDef[P] {
   return getFirstDefined<MarkDef[P]>(
     // style config has highest precedence
@@ -73,11 +73,11 @@ export function getMarkConfig<P extends keyof MarkDef>(
     // then mark-specific config
     vgChannel ? config[mark.type][vgChannel] : undefined,
 
-    config[mark.type][channel as any], // Need to cast because MarkDef isn't 100% match with AnyMarkConfig, but if the type isn't available, we'll get nothing here, which is fine
+    config[mark.type][channel as any], // Need to cast because MarkDef doesn't perfectly match with AnyMarkConfig, but if the type isn't available, we'll get nothing here, which is fine
 
     // If there is vgChannel, skip vl channel.
     // For example, vl size for text is vg fontSize, but config.mark.size is only for point size.
-    vgChannel ? config.mark[vgChannel] : config.mark[channel as any] // Need to cast for the same reason above
+    vgChannel ? config.mark[vgChannel] : config.mark[channel as any] // Need to cast for the same reason as above
   );
 }
 
