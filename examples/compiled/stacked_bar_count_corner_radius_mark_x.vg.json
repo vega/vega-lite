@@ -95,9 +95,7 @@
                   "fill": {"scale": "color", "field": "weather"},
                   "x": {"scale": "x", "field": "__count_end"},
                   "x2": {"scale": "x", "field": "__count_start"},
-                  "height": {"field": {"group": "height"}},
-                  "cornerRadiusTopRight": {"value": 0},
-                  "cornerRadiusBottomRight": {"value": 0}
+                  "height": {"field": {"group": "height"}}
                 }
               }
             }
