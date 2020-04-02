@@ -160,7 +160,7 @@ function getStackGroups(model: UnitModel) {
 
     // Deal with cornerRadius properties
     for (const key of VG_CORNERRADIUS_CHANNELS) {
-      const configValue = getMarkPropOrConfig(key, model.markDef, model.config);
+      const configValue = getMarkConfig(key, model.markDef, model.config);
       // Move from mark to group
       if (mark.encode.update[key]) {
         groupUpdate[key] = mark.encode.update[key];
