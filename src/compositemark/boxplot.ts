@@ -100,7 +100,11 @@ export function normalizeBoxPlot(
   }
 
   const extent = markDef.extent ?? config.boxplot.extent;
-  const sizeValue = getMarkPropOrConfig('size', markDef as any, config);
+  const sizeValue = getMarkPropOrConfig(
+    'size',
+    markDef as any, // TODO: https://github.com/vega/vega-lite/issues/6245
+    config
+  );
 
   const boxPlotType = getBoxPlotType(extent);
   const {
