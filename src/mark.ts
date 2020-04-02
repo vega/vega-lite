@@ -131,7 +131,7 @@ export interface VLOnlyMarkConfig extends ColorMixins {
   theta2?: number | SignalRef; // In Vega, this is called endAngle
 
   /**
-   * The inner radius in pixels of arc marks.
+   * The secondary (inner) radius in pixels of arc marks.
    *
    * @minimum 0
    * __Default value:__ `0`
@@ -259,15 +259,32 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
   theta?: number | SignalRef; // overriding VG
 
   /**
-   * For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.
    *
-   * For arc mark, the outer radius in pixels.
+   * For arc mark, the primary (outer) radius in pixels.
+   *
+   * For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.
    *
    * @minimum 0
    *
    * __Default value:__ `min(plot_width, plot_height)/2`
    */
   radius?: number | SignalRef; // overriding VG
+
+  /**
+   * The inner radius in pixels of arc marks. (An alias for `radius2`)
+   *
+   * @minimum 0
+   * __Default value:__ `0`
+   */
+  innerRadius?: number | SignalRef;
+
+  /**
+   * The outer radius in pixels of arc marks. (An alias for `radius`)
+   *
+   * @minimum 0
+   * __Default value:__ `0`
+   */
+  outerRadius?: number | SignalRef;
 }
 
 export interface RectBinSpacingMixins {
