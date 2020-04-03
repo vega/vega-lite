@@ -5,6 +5,7 @@ _site/
 .jekyll-metadata
 .yarnclean
 build/*
+build-es5/*
 coverage
 examples/all-examples.json
 examples/compiled/*.png
