@@ -14,15 +14,16 @@ describe('compile/mark/encoding/position-rect', () => {
         band: 1,
         scaleName: undefined,
         reverse: {signal: 'r'},
-        spacing: 2,
+        axisTranslate: 0.5, // Vega default
+        spacing: 1,
         markDef: {type: 'bar'},
         config
       });
       expect(props.x[1].offset).toEqual({
-        signal: 'r ? 2 : 0'
+        signal: 'r ? 1 : 0'
       });
       expect(props.x2[1].offset).toEqual({
-        signal: 'r ? 0 : 2'
+        signal: 'r ? 0 : 1'
       });
     });
 
@@ -33,16 +34,59 @@ describe('compile/mark/encoding/position-rect', () => {
         channel: 'y',
         band: 1,
         scaleName: undefined,
+        axisTranslate: 0.5, // Vega default
+        reverse: {signal: 'r'},
+        spacing: 1,
+        markDef: {type: 'bar'},
+        config
+      });
+      expect(props.y2[1].offset).toEqual({
+        signal: 'r ? 1 : 0'
+      });
+      expect(props.y[1].offset).toEqual({
+        signal: 'r ? 0 : 1'
+      });
+    });
+
+    it('produces correct x-mixins for signal reverse', () => {
+      const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
+      const props = rectBinPosition({
+        fieldDef,
+        channel: 'x',
+        band: 1,
+        scaleName: undefined,
+        axisTranslate: 0.5, // Vega default
+        reverse: {signal: 'r'},
+        spacing: 2,
+        markDef: {type: 'bar'},
+        config
+      });
+      expect(props.x[1].offset).toEqual({
+        signal: 'r ? 1.5 : -0.5'
+      });
+      expect(props.x2[1].offset).toEqual({
+        signal: 'r ? -0.5 : 1.5'
+      });
+    });
+
+    it('produces correct y-mixins for signal reverse', () => {
+      const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
+      const props = rectBinPosition({
+        fieldDef,
+        channel: 'y',
+        band: 1,
+        scaleName: undefined,
+        axisTranslate: 0.5, // Vega default
         reverse: {signal: 'r'},
         spacing: 2,
         markDef: {type: 'bar'},
         config
       });
       expect(props.y2[1].offset).toEqual({
-        signal: 'r ? 2 : 0'
+        signal: 'r ? 1.5 : -0.5'
       });
       expect(props.y[1].offset).toEqual({
-        signal: 'r ? 0 : 2'
+        signal: 'r ? -0.5 : 1.5'
       });
     });
 
@@ -55,6 +99,7 @@ describe('compile/mark/encoding/position-rect', () => {
           channel: 'x',
           band: 1,
           scaleName: undefined,
+          axisTranslate: 0.5, // Vega default
           reverse: false,
           markDef: {type: 'bar'},
           config
@@ -73,6 +118,7 @@ describe('compile/mark/encoding/position-rect', () => {
           channel: 'y',
           band: 1,
           scaleName: undefined,
+          axisTranslate: 0.5, // Vega default
           reverse: false,
           markDef: {type: 'bar'},
           config

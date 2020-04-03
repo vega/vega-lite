@@ -466,8 +466,14 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      expect(props.y2).toEqual([fieldInvalidTestValueRef(y, 'y'), {scale: 'y', field: 'bin_maxbins_10_Horsepower'}]);
-      expect(props.y).toEqual([fieldInvalidTestValueRef(y, 'y'), {scale: 'y', field: 'bin_maxbins_10_Horsepower_end'}]);
+      expect(props.y2).toEqual([
+        fieldInvalidTestValueRef(y, 'y'),
+        {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: 0.5}
+      ]);
+      expect(props.y).toEqual([
+        fieldInvalidTestValueRef(y, 'y'),
+        {scale: 'y', field: 'bin_maxbins_10_Horsepower_end', offset: 0.5}
+      ]);
       expect(props.height).toBeUndefined();
     });
   });
@@ -486,8 +492,14 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x and x2', () => {
-      expect(props.x2).toEqual([fieldInvalidTestValueRef(x, 'x'), {scale: 'x', field: 'bin_maxbins_10_Horsepower'}]);
-      expect(props.x).toEqual([fieldInvalidTestValueRef(x, 'x'), {scale: 'x', field: 'bin_maxbins_10_Horsepower_end'}]);
+      expect(props.x2).toEqual([
+        fieldInvalidTestValueRef(x, 'x'),
+        {scale: 'x', field: 'bin_maxbins_10_Horsepower', offset: 0.5}
+      ]);
+      expect(props.x).toEqual([
+        fieldInvalidTestValueRef(x, 'x'),
+        {scale: 'x', field: 'bin_maxbins_10_Horsepower_end', offset: 0.5}
+      ]);
       expect(props.width).toBeUndefined();
     });
   });
@@ -1004,8 +1016,8 @@ describe('Mark: Bar', () => {
       const props = bar.encodeEntry(model);
 
       it('should draw bar with x and x2', () => {
-        expect(props.x2).toEqual({scale: 'x', field: 'bin_start', offset: 10});
-        expect(props.x).toEqual({scale: 'x', field: 'bin_end'});
+        expect(props.x2).toEqual({scale: 'x', field: 'bin_start', offset: 5.5});
+        expect(props.x).toEqual({scale: 'x', field: 'bin_end', offset: -4.5});
         expect(props.y).toEqual({scale: 'y', field: 'count'});
         expect(props.y2).toEqual({scale: 'y', value: 0});
         expect(props.width).toBeUndefined();
@@ -1070,8 +1082,8 @@ describe('Mark: Bar', () => {
       const props = bar.encodeEntry(model);
 
       it('should draw bar with y and y2', () => {
-        expect(props.y2).toEqual({scale: 'y', field: 'bin_start'});
-        expect(props.y).toEqual({scale: 'y', field: 'bin_end', offset: 10});
+        expect(props.y2).toEqual({scale: 'y', field: 'bin_start', offset: -4.5});
+        expect(props.y).toEqual({scale: 'y', field: 'bin_end', offset: 5.5});
         expect(props.x).toEqual({scale: 'x', field: 'count'});
         expect(props.x2).toEqual({scale: 'x', value: 0});
         expect(props.width).toBeUndefined();

@@ -51,6 +51,7 @@ export function arcRangePosition(
       scaleName,
       band,
       spacing: 0,
+      axisTranslate: 0,
       reverse: scale.get('reverse'),
       config
     });
