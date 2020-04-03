@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "./build-es5",
+    "target": "ES5",
+    "downlevelIteration": true,
+    "allowJs": true,
+    "sourceMap": false
+  },
+  "files": ["build/vega-lite.js"]
+}
