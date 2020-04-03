@@ -8019,10 +8019,10 @@ vega-transforms@~4.7.1:
     vega-time "^1.0.0"
     vega-util "^1.13.1"
 
-vega-typings@~0.15.0, vega-typings@~0.15.1:
-  version "0.15.1"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.15.1.tgz#cd7f4080e16f583d6988c4e26b5b8b25cf24e8ff"
-  integrity sha512-fd7qNW17BAa9Cl4j1Taf9qynuy9RI9zv+y/kGIqrLFAOhnvGPEE1YOiY5hWNyuacxaTk3IJ+ZsIee7bzGZTXWw==
+vega-typings@~0.15.0, vega-typings@~0.15.2:
+  version "0.15.2"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.15.2.tgz#a8c869b64fc1f0b994ea52b71b96b10c8c790534"
+  integrity sha512-0saE+pVad5C2w2UN+1aHRyQ5uRn0JCpkW133Nb4YyUL1D6trsJ9tMXcgc0UUQRjUI4l1sBb9+YZ+++bP9eVo3A==
   dependencies:
     vega-util "^1.13.1"
 
