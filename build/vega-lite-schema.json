@@ -278,7 +278,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks. (An alias for `radius2`)",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -1833,7 +1833,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks. (An alias for `radius2`)",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -11198,7 +11198,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks. (An alias for `radius2`)",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -11934,7 +11934,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks. (An alias for `radius2`)",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -12318,7 +12318,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks. (An alias for `radius2`)",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -13287,7 +13287,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks. (An alias for `radius2`)",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -14614,7 +14614,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks. (An alias for `radius2`)",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -16778,7 +16778,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks. (An alias for `radius2`)",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
