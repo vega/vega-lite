@@ -79,7 +79,7 @@ export interface FacetMapping<F extends Field, FD extends FacetFieldDef<F> = Fac
 }
 
 export function isFacetMapping<F extends Field>(f: FacetFieldDef<F> | FacetMapping<F>): f is FacetMapping<F> {
-  return !!f['row'] || !!f['column'];
+  return 'row' in f || 'column' in f;
 }
 
 /**
@@ -95,7 +95,7 @@ export interface EncodingFacetMapping<F extends Field> extends FacetMapping<F, R
 }
 
 export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is FacetFieldDef<F> {
-  return !!channelDef && !!channelDef['header'];
+  return !!channelDef && 'header' in channelDef;
 }
 
 /**
@@ -126,5 +126,5 @@ export interface GenericFacetSpec<
 export type NormalizedFacetSpec = GenericFacetSpec<NormalizedUnitSpec, NormalizedLayerSpec, FieldName>;
 
 export function isFacetSpec(spec: BaseSpec): spec is GenericFacetSpec<any, any, any> {
-  return spec['facet'] !== undefined;
+  return 'facet' in spec;
 }

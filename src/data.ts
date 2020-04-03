@@ -1,9 +1,9 @@
 /*
  * Constants and utilities for data.
  */
-import {VgData} from './vega.schema';
-import {FieldName} from './channeldef';
 import {Vector2} from 'vega';
+import {FieldName} from './channeldef';
+import {VgData} from './vega.schema';
 
 export type ParseValue = null | string | 'string' | 'boolean' | 'date' | 'number';
 
@@ -120,15 +120,15 @@ export interface NamedData extends DataBase {
 }
 
 export function isUrlData(data: Partial<Data> | Partial<VgData>): data is UrlData {
-  return !!data['url'];
+  return 'url' in data;
 }
 
 export function isInlineData(data: Partial<Data> | Partial<VgData>): data is InlineData {
-  return !!data['values'];
+  return 'values' in data;
 }
 
 export function isNamedData(data: Partial<Data> | Partial<VgData>): data is NamedData {
-  return !!data['name'] && !isUrlData(data) && !isInlineData(data) && !isGenerator(data);
+  return 'name' in data && !isUrlData(data) && !isInlineData(data) && !isGenerator(data);
 }
 
 export function isGenerator(data: Partial<Data> | Partial<VgData>): data is Generator {
@@ -136,15 +136,15 @@ export function isGenerator(data: Partial<Data> | Partial<VgData>): data is Gene
 }
 
 export function isSequenceGenerator(data: Partial<Data> | Partial<VgData>): data is SequenceGenerator {
-  return !!data['sequence'];
+  return 'sequence' in data;
 }
 
 export function isSphereGenerator(data: Partial<Data> | Partial<VgData>): data is SphereGenerator {
-  return !!data['sphere'];
+  return 'sphere' in data;
 }
 
 export function isGraticuleGenerator(data: Partial<Data> | Partial<VgData>): data is GraticuleGenerator {
-  return !!data['graticule'];
+  return 'graticule' in data;
 }
 
 export type DataSourceType = 'raw' | 'main' | 'row' | 'column' | 'lookup';

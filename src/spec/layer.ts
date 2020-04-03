@@ -43,5 +43,5 @@ export interface LayerSpec extends BaseSpec, FrameMixins, ResolveMixins {
 export type NormalizedLayerSpec = GenericLayerSpec<NormalizedUnitSpec>;
 
 export function isLayerSpec(spec: BaseSpec): spec is GenericLayerSpec<any> {
-  return spec['layer'] !== undefined;
+  return 'layer' in spec;
 }
