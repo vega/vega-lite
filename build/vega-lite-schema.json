@@ -184,7 +184,7 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -400,8 +400,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -415,8 +415,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -1122,7 +1122,7 @@
           "type": "number"
         },
         "translate": {
-          "description": "Translation offset in pixels applied to the axis group mark x and y. If specified, overrides the default behavior of a 0.5 offset to pixel-align stroked lines.",
+          "description": "Coordinate space translation offset for axis layout. By default, axes are translated by a 0.5 pixel offset for both the x and y coordinates in order to align stroked lines with the pixel grid. However, for vector graphics output these pixel-specific adjustments may be undesirable, in which case translate can be changed (for example, to zero).\n\n__Default value:__ `0.5`",
           "type": "number"
         },
         "values": {
@@ -1656,7 +1656,7 @@
           "type": "number"
         },
         "translate": {
-          "description": "Translation offset in pixels applied to the axis group mark x and y. If specified, overrides the default behavior of a 0.5 offset to pixel-align stroked lines.",
+          "description": "Coordinate space translation offset for axis layout. By default, axes are translated by a 0.5 pixel offset for both the x and y coordinates in order to align stroked lines with the pixel grid. However, for vector graphics output these pixel-specific adjustments may be undesirable, in which case translate can be changed (for example, to zero).\n\n__Default value:__ `0.5`",
           "type": "number"
         }
       },
@@ -1730,7 +1730,7 @@
           "type": "number"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -1927,8 +1927,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -1942,8 +1942,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -2069,6 +2069,36 @@
             }
           ],
           "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+        }
+      },
+      "type": "object"
+    },
+    "BaseLegendLayout": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor point for legend orient group layout."
+        },
+        "bounds": {
+          "$ref": "#/definitions/LayoutBounds",
+          "description": "The bounds calculation to use for legend orient group layout."
+        },
+        "center": {
+          "description": "A flag to center legends within a shared orient group.",
+          "type": "boolean"
+        },
+        "direction": {
+          "$ref": "#/definitions/Orientation",
+          "description": "The layout direction for legend orient group layout."
+        },
+        "margin": {
+          "description": "The pixel margin between legends within a orient group.",
+          "type": "number"
+        },
+        "offset": {
+          "description": "The pixel offset from the chart body for a legend orient group.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -10245,6 +10275,13 @@
       ],
       "type": "string"
     },
+    "LayoutBounds": {
+      "enum": [
+        "full",
+        "flush"
+      ],
+      "type": "string"
+    },
     "Legend": {
       "additionalProperties": false,
       "description": "Properties of a legend or boolean flag for determining whether to show it.",
@@ -10628,19 +10665,15 @@
       "additionalProperties": false,
       "properties": {
         "clipHeight": {
-          "description": "The height in pixels to clip symbol legend entries and limit their size.",
           "type": "number"
         },
         "columnPadding": {
-          "description": "The horizontal padding in pixels between symbol legend entries.\n\n__Default value:__ `10`.",
           "type": "number"
         },
         "columns": {
-          "description": "The number of columns in which to arrange symbol legend entries. A value of `0` or lower indicates a single row with one column per entry.",
           "type": "number"
         },
         "cornerRadius": {
-          "description": "Corner radius for the full legend.",
           "type": "number"
         },
         "direction": {
@@ -10683,12 +10716,9 @@
           "type": "number"
         },
         "gradientLength": {
-          "description": "The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.\n\n__Default value:__ `200`.",
-          "minimum": 0,
           "type": "number"
         },
         "gradientOpacity": {
-          "description": "Opacity of the color gradient.",
           "type": "number"
         },
         "gradientStrokeColor": {
@@ -10703,13 +10733,9 @@
           "description": "The color of the gradient stroke, can be in hex color code or regular color name.\n\n__Default value:__ `\"lightGray\"`."
         },
         "gradientStrokeWidth": {
-          "description": "The width of the gradient stroke, in pixels.\n\n__Default value:__ `0`.",
-          "minimum": 0,
           "type": "number"
         },
         "gradientThickness": {
-          "description": "The thickness in pixels of the color gradient. This value corresponds to the width of a vertical gradient or the height of a horizontal gradient.\n\n__Default value:__ `16`.",
-          "minimum": 0,
           "type": "number"
         },
         "gradientVerticalMaxLength": {
@@ -10721,16 +10747,13 @@
           "type": "number"
         },
         "gridAlign": {
-          "$ref": "#/definitions/LayoutAlign",
-          "description": "The alignment to apply to symbol legends rows and columns. The supported string values are `\"all\"`, `\"each\"` (the default), and `none`. For more information, see the [grid layout documentation](https://vega.github.io/vega/docs/layout).\n\n__Default value:__ `\"each\"`."
+          "$ref": "#/definitions/LayoutAlign"
         },
         "labelAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "The alignment of the legend label, can be left, center, or right."
+          "$ref": "#/definitions/Align"
         },
         "labelBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "The position of the baseline of legend label, can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`.\n\n__Default value:__ `\"middle\"`."
+          "$ref": "#/definitions/TextBaseline"
         },
         "labelColor": {
           "anyOf": [
@@ -10744,32 +10767,24 @@
           "description": "The color of the legend label, can be in hex color code or regular color name."
         },
         "labelFont": {
-          "description": "The font of the legend label.",
           "type": "string"
         },
         "labelFontSize": {
-          "description": "The font size of legend label.\n\n__Default value:__ `10`.",
-          "minimum": 0,
           "type": "number"
         },
         "labelFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "The font style of legend label."
+          "$ref": "#/definitions/FontStyle"
         },
         "labelFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "The font weight of legend label."
+          "$ref": "#/definitions/FontWeight"
         },
         "labelLimit": {
-          "description": "Maximum allowed pixel width of legend tick labels.\n\n__Default value:__ `160`.",
           "type": "number"
         },
         "labelOffset": {
-          "description": "The offset of the legend label.",
           "type": "number"
         },
         "labelOpacity": {
-          "description": "Opacity of labels.",
           "type": "number"
         },
         "labelOverlap": {
@@ -10777,28 +10792,22 @@
           "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `\"greedy\"` for `log scales otherwise `true`."
         },
         "labelPadding": {
-          "description": "Padding in pixels between the legend and legend labels.",
           "type": "number"
         },
         "labelSeparation": {
-          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
           "type": "number"
         },
         "layout": {
-          "description": "Legend orient group layout parameters.",
-          "not": {
-          }
+          "$ref": "#/definitions/LegendLayout",
+          "description": "Legend orient group layout parameters."
         },
         "legendX": {
-          "description": "Custom x-position for legend with orient \"none\".",
           "type": "number"
         },
         "legendY": {
-          "description": "Custom y-position for legend with orient \"none\".",
           "type": "number"
         },
         "offset": {
-          "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
           "type": "number"
         },
         "orient": {
@@ -10806,11 +10815,9 @@
           "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of `\"left\"`, `\"right\"`, `\"top\"`, `\"bottom\"`, `\"top-left\"`, `\"top-right\"`, `\"bottom-left\"`, `\"bottom-right\"`, `\"none\"`.\n\n__Default value:__ `\"right\"`"
         },
         "padding": {
-          "description": "The padding between the border and content of the legend group.\n\n__Default value:__ `0`.",
           "type": "number"
         },
         "rowPadding": {
-          "description": "The vertical padding in pixels between symbol legend entries.\n\n__Default value:__ `2`.",
           "type": "number"
         },
         "strokeColor": {
@@ -10858,14 +10865,12 @@
           "description": "Default stroke color for legend symbols. Only applied if there is no `\"fill\"` scale color encoding for the legend.\n\n__Default value:__ `\"gray\"`."
         },
         "symbolDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed symbol strokes.",
           "items": {
             "type": "number"
           },
           "type": "array"
         },
         "symbolDashOffset": {
-          "description": "The pixel offset at which to start drawing with the symbol stroke dash array.",
           "type": "number"
         },
         "symbolDirection": {
@@ -10884,20 +10889,15 @@
           "description": "The color of the legend symbol,"
         },
         "symbolLimit": {
-          "description": "The maximum number of allowed entries for a symbol legend. Additional entries will be dropped.",
           "type": "number"
         },
         "symbolOffset": {
-          "description": "Horizontal pixel offset for legend symbols.\n\n__Default value:__ `0`.",
           "type": "number"
         },
         "symbolOpacity": {
-          "description": "Opacity of the legend symbols.",
           "type": "number"
         },
         "symbolSize": {
-          "description": "The size of the legend symbol, in pixels.\n\n__Default value:__ `100`.",
-          "minimum": 0,
           "type": "number"
         },
         "symbolStrokeColor": {
@@ -10912,33 +10912,26 @@
           "description": "Stroke color for legend symbols."
         },
         "symbolStrokeWidth": {
-          "description": "The width of the symbol's stroke.\n\n__Default value:__ `1.5`.",
-          "minimum": 0,
           "type": "number"
         },
         "symbolType": {
-          "$ref": "#/definitions/SymbolShape",
-          "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
+          "$ref": "#/definitions/SymbolShape"
         },
         "tickCount": {
-          "$ref": "#/definitions/TickCount",
-          "description": "The desired number of tick values for quantitative legends."
+          "$ref": "#/definitions/TickCount"
         },
         "title": {
           "description": "Set to null to disable title for the axis, legend, or header.",
           "type": "null"
         },
         "titleAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment for legend titles.\n\n__Default value:__ `\"left\"`."
+          "$ref": "#/definitions/Align"
         },
         "titleAnchor": {
-          "$ref": "#/definitions/TitleAnchor",
-          "description": "Text anchor position for placing legend titles."
+          "$ref": "#/definitions/TitleAnchor"
         },
         "titleBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for legend titles.  One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone.\n\n__Default value:__ `\"top\"`."
+          "$ref": "#/definitions/TextBaseline"
         },
         "titleColor": {
           "anyOf": [
@@ -10952,45 +10945,89 @@
           "description": "The color of the legend title, can be in hex color code or regular color name."
         },
         "titleFont": {
-          "description": "The font of the legend title.",
           "type": "string"
         },
         "titleFontSize": {
-          "description": "The font size of the legend title.",
           "type": "number"
         },
         "titleFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "The font style of the legend title."
+          "$ref": "#/definitions/FontStyle"
         },
         "titleFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "The font weight of the legend title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+          "$ref": "#/definitions/FontWeight"
         },
         "titleLimit": {
-          "description": "Maximum allowed pixel width of legend titles.\n\n__Default value:__ `180`.",
-          "minimum": 0,
           "type": "number"
         },
         "titleLineHeight": {
-          "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
           "type": "number"
         },
         "titleOpacity": {
-          "description": "Opacity of the legend title.",
           "type": "number"
         },
         "titleOrient": {
-          "$ref": "#/definitions/Orient",
-          "description": "Orientation of the legend title."
+          "$ref": "#/definitions/Orient"
         },
         "titlePadding": {
-          "description": "The padding, in pixels, between title and legend.\n\n__Default value:__ `5`.",
           "type": "number"
         },
         "unselectedOpacity": {
           "description": "The opacity of unselected legend entries.\n\n__Default value:__ 0.35.",
           "type": "number"
+        }
+      },
+      "type": "object"
+    },
+    "LegendLayout": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor point for legend orient group layout."
+        },
+        "bottom": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "bottom-left": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "bottom-right": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "bounds": {
+          "$ref": "#/definitions/LayoutBounds",
+          "description": "The bounds calculation to use for legend orient group layout."
+        },
+        "center": {
+          "description": "A flag to center legends within a shared orient group.",
+          "type": "boolean"
+        },
+        "direction": {
+          "$ref": "#/definitions/Orientation",
+          "description": "The layout direction for legend orient group layout."
+        },
+        "left": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "margin": {
+          "description": "The pixel margin between legends within a orient group.",
+          "type": "number"
+        },
+        "offset": {
+          "description": "The pixel offset from the chart body for a legend orient group.",
+          "type": "number"
+        },
+        "right": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "top": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "top-left": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "top-right": {
+          "$ref": "#/definitions/BaseLegendLayout"
         }
       },
       "type": "object"
@@ -11104,7 +11141,7 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -11309,8 +11346,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -11324,8 +11361,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -11840,7 +11877,7 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -12028,8 +12065,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -12043,8 +12080,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -12230,7 +12267,7 @@
           "type": "number"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -12463,8 +12500,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -12478,8 +12515,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -13208,7 +13245,7 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -13404,8 +13441,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -13419,8 +13456,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -14530,7 +14567,7 @@
           "type": "number"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -14723,8 +14760,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -14738,8 +14775,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -16512,6 +16549,22 @@
     "StringValueDefWithConditionAlias": {
       "$ref": "#/definitions/ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,(string|null)>"
     },
+    "StrokeCap": {
+      "enum": [
+        "butt",
+        "round",
+        "square"
+      ],
+      "type": "string"
+    },
+    "StrokeJoin": {
+      "enum": [
+        "miter",
+        "round",
+        "bevel"
+      ],
+      "type": "string"
+    },
     "StyleConfigIndex": {
       "additionalProperties": {
         "anyOf": [
@@ -16699,7 +16752,7 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -16887,8 +16940,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -16902,8 +16955,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -19360,7 +19413,7 @@
       "additionalProperties": false,
       "properties": {
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -19402,8 +19455,8 @@
           "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -19417,8 +19470,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -19468,7 +19521,7 @@
           "type": "number"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -19558,8 +19611,8 @@
           "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -19573,8 +19626,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
