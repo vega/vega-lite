@@ -1,7 +1,7 @@
 import * as log from '../../../log';
-import {contains, getFirstDefined} from '../../../util';
+import {contains} from '../../../util';
 import {VgEncodeEntry} from '../../../vega.schema';
-import {getMarkConfig, signalOrValueRef} from '../../common';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
 import {nonPosition} from './nonposition';
 
@@ -10,34 +10,24 @@ export function color(model: UnitModel, opt: {filled: boolean | undefined} = {fi
   const {type: markType} = markDef;
 
   // Allow filled to be overridden (for trail's "filled")
-  const filled = getFirstDefined(opt.filled, markDef.filled);
-
-  const configValue = {
-    fill: getMarkConfig('fill', markDef, config),
-    stroke: getMarkConfig('stroke', markDef, config),
-    color: getMarkConfig('color', markDef, config)
-  };
+  const filled = opt.filled ?? getMarkPropOrConfig('filled', markDef, config);
 
   const transparentIfNeeded = contains(['bar', 'point', 'circle', 'square', 'geoshape'], markType)
     ? 'transparent'
     : undefined;
 
-  const defaultFill = getFirstDefined(
-    markDef.fill,
-    filled === true ? markDef.color : undefined,
-    configValue.fill,
-    filled === true ? configValue.color : undefined,
+  const defaultFill =
+    getMarkPropOrConfig(filled === true ? 'color' : undefined, markDef, config, {vgChannel: 'fill'}) ??
+    // need to add this manually as getMarkConfig normally drops config.mark[channel] if vgChannel is specified
+    config.mark[filled === true && 'color'] ??
     // If there is no fill, always fill symbols, bar, geoshape
     // with transparent fills https://github.com/vega/vega-lite/issues/1316
-    transparentIfNeeded
-  );
+    transparentIfNeeded;
 
-  const defaultStroke = getFirstDefined(
-    markDef.stroke,
-    filled === false ? markDef.color : undefined,
-    configValue.stroke,
-    filled === false ? configValue.color : undefined
-  );
+  const defaultStroke =
+    getMarkPropOrConfig(filled === false ? 'color' : undefined, markDef, config, {vgChannel: 'stroke'}) ??
+    // need to add this manually as getMarkConfig normally drops config.mark[channel] if vgChannel is specified
+    config.mark[filled === false && 'color'];
 
   const colorVgChannel = filled ? 'fill' : 'stroke';
 

@@ -66,7 +66,7 @@ describe('Mark: Tick', () => {
       expect(props.xc).toEqual({scale: X, field: 'Horsepower'});
     });
 
-    it('width should tick thickness with orient vertical', () => {
+    it('has width equal to tick thickness with orient vertical', () => {
       expect(props.width).toEqual({value: 1});
     });
   });
@@ -90,7 +90,7 @@ describe('Mark: Tick', () => {
       expect(props.yc).toEqual({scale: Y, field: 'Cylinders'});
     });
 
-    it('height should tick thickness with orient horizontal', () => {
+    it('has height equal to tick thickness with orient horizontal', () => {
       expect(props.height).toEqual({value: 1});
     });
   });
@@ -114,7 +114,7 @@ describe('Mark: Tick', () => {
       expect(props.yc).toEqual({scale: Y, field: 'Cylinders'});
     });
 
-    it('wiidth should be tick thickness with default orient vertical', () => {
+    it('width should be tick thickness with default orient vertical', () => {
       expect(props.width).toEqual({value: 1});
     });
 

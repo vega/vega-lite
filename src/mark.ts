@@ -466,7 +466,7 @@ export interface TickThicknessMixins {
    *
    * @minimum 0
    */
-  thickness?: number;
+  thickness?: number | SignalRef;
 }
 
 export interface GenericMarkDef<M> {
@@ -541,12 +541,11 @@ export interface MarkDefMixins {
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 export interface MarkDef<M extends string | Mark = Mark>
   extends GenericMarkDef<M>,
-    BarCornerRadiusMixins,
-    RectBinSpacingMixins,
     MarkConfig,
-    PointOverlayMixins,
-    LineOverlayMixins,
-    TickThicknessMixins,
+    AreaConfig,
+    BarConfig, // always extends RectConfig
+    LineConfig,
+    TickConfig,
     MarkDefMixins {}
 
 const DEFAULT_RECT_BAND_SIZE = 5;

@@ -27,11 +27,7 @@ export function getHeaderProperty<P extends keyof Header>(
   const headerSpecificConfig =
     channel === 'row' ? config.headerRow : channel === 'column' ? config.headerColumn : config.headerFacet;
 
-  return getFirstDefined(
-    facetFieldDef && facetFieldDef.header ? facetFieldDef.header[prop] : undefined,
-    headerSpecificConfig[prop],
-    config.header[prop]
-  );
+  return getFirstDefined((facetFieldDef?.header || {})[prop], headerSpecificConfig[prop], config.header[prop]);
 }
 
 export function getHeaderProperties(

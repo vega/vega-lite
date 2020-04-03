@@ -1,9 +1,9 @@
 import {getMainRangeChannel, getSecondaryRangeChannel, PositionChannel} from '../../../channel';
 import {getBand, isAnyPositionFieldOrDatumDef, isFieldDef} from '../../../channeldef';
 import {ScaleType} from '../../../scale';
-import {contains, getFirstDefined} from '../../../util';
+import {contains} from '../../../util';
 import {VgValueRef} from '../../../vega.schema';
-import {getMarkConfig} from '../../common';
+import {getMarkPropOrConfig} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
 import {getOffset} from './offset';
@@ -116,7 +116,7 @@ export function pointPositionDefaultRef({
   return () => {
     const mainChannel = getMainRangeChannel(channel);
 
-    const definedValueOrConfig = getFirstDefined(markDef[channel], getMarkConfig(channel, markDef, config));
+    const definedValueOrConfig = getMarkPropOrConfig(channel, markDef, config);
     if (definedValueOrConfig !== undefined) {
       return ref.widthHeightValueRef(channel, definedValueOrConfig);
     }

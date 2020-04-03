@@ -8,7 +8,6 @@ import {isBinned, isBinning} from '../../../bin';
 import {
   Channel,
   getMainRangeChannel,
-  NonPositionScaleChannel,
   PolarPositionChannel,
   PositionChannel,
   RADIUS,
@@ -48,8 +47,8 @@ import {hasDiscreteDomain, isContinuousToContinuous} from '../../../scale';
 import {StackProperties} from '../../../stack';
 import {QUANTITATIVE, TEMPORAL} from '../../../type';
 import {contains, getFirstDefined} from '../../../util';
-import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../../vega.schema';
-import {getMarkConfig, signalOrValueRef} from '../../common';
+import {isSignalRef, VgValueRef} from '../../../vega.schema';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 
 export function midPointRefWithPositionInvalidTest(
@@ -99,7 +98,7 @@ export function wrapPositionInvalidTest({
     return ref;
   }
 
-  const invalid = getFirstDefined(markDef.invalid, getMarkConfig('invalid', markDef, config));
+  const invalid = getMarkPropOrConfig('invalid', markDef, config);
   if (invalid === null) {
     // if there is no invalid filter, don't do the invalid test
     return ref;
@@ -340,30 +339,4 @@ export function widthHeightValueRef(channel: Channel, value: ValueOrGradientOrTe
     return {field: {group: 'height'}};
   }
   return signalOrValueRef(value);
-}
-
-export function getValueFromMarkDefAndConfig({
-  channel,
-  vgChannel,
-  markDef,
-  config
-}: {
-  channel: NonPositionScaleChannel | PolarPositionChannel;
-  vgChannel?: VgEncodeChannel;
-  markDef: MarkDef;
-  config: Config;
-}) {
-  if (!vgChannel || vgChannel === channel) {
-    // When vl channel is the same as Vega's, no need to read from config as Vega will apply them correctly
-
-    return markDef[channel];
-  }
-
-  // However, when they are different (e.g, vl's text size is vg fontSize), need to read vl channel from configs
-  return getFirstDefined(
-    // prioritize vl-specific names
-    markDef[channel],
-    markDef[vgChannel],
-    getMarkConfig(channel, markDef, config, {vgChannel})
-  );
 }

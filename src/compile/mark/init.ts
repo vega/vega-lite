@@ -23,7 +23,7 @@ import {
 } from '../../mark';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, getFirstDefined} from '../../util';
-import {getMarkConfig} from '../common';
+import {getMarkConfig, getMarkPropOrConfig} from '../common';
 
 export function initMarkdef(
   mark: Mark | MarkDef,
@@ -34,20 +34,14 @@ export function initMarkdef(
   const markDef: MarkDef = isMarkDef(mark) ? {...mark} : {type: mark};
 
   // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
-  const specifiedOrient = markDef.orient ?? getMarkConfig('orient', markDef, config);
+  const specifiedOrient = getMarkPropOrConfig('orient', markDef, config);
   markDef.orient = orient(markDef.type, encoding, specifiedOrient);
   if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
     log.warn(log.message.orientOverridden(markDef.orient, specifiedOrient));
   }
 
   if (markDef.type === 'bar' && markDef.orient) {
-    const cornerRadiusEnd =
-      markDef.cornerRadiusEnd ??
-      getMarkConfig(
-        'cornerRadiusEnd' as any, // FIXME: make the typing work with getMarkConfig()
-        markDef,
-        config
-      );
+    const cornerRadiusEnd = getMarkPropOrConfig('cornerRadiusEnd', markDef, config);
     if (cornerRadiusEnd !== undefined) {
       const newProps =
         (markDef.orient === 'horizontal' && encoding.x2) || (markDef.orient === 'vertical' && encoding.y2)
@@ -65,7 +59,7 @@ export function initMarkdef(
   }
 
   // set opacity and filled if not specified in mark config
-  const specifiedOpacity = getFirstDefined(markDef.opacity, getMarkConfig('opacity', markDef, config));
+  const specifiedOpacity = getMarkPropOrConfig('opacity', markDef, config);
   if (specifiedOpacity === undefined) {
     markDef.opacity = opacity(markDef.type, encoding);
   }
@@ -76,7 +70,7 @@ export function initMarkdef(
   }
 
   // set cursor, which should be pointer if href channel is present unless otherwise specified
-  const specifiedCursor = markDef.cursor ?? getMarkConfig('cursor', markDef, config);
+  const specifiedCursor = getMarkPropOrConfig('cursor', markDef, config);
   if (specifiedCursor === undefined) {
     markDef.cursor = cursor(markDef, encoding, config);
   }
@@ -85,7 +79,7 @@ export function initMarkdef(
 }
 
 function cursor(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
-  if (encoding.href || markDef.href || getMarkConfig('href', markDef, config)) {
+  if (encoding.href || markDef.href || getMarkPropOrConfig('href', markDef, config)) {
     return 'pointer';
   }
   return markDef.cursor;

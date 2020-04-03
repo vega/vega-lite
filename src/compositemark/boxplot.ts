@@ -1,5 +1,6 @@
 import {Orientation} from 'vega';
 import {isNumber, isObject} from 'vega-util';
+import {getMarkPropOrConfig} from '../compile/common';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding} from '../encoding';
 import * as log from '../log';
@@ -7,7 +8,7 @@ import {isMarkDef, MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
-import {Flag, getFirstDefined, keys} from '../util';
+import {Flag, keys} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -99,7 +100,12 @@ export function normalizeBoxPlot(
   }
 
   const extent = markDef.extent ?? config.boxplot.extent;
-  const sizeValue = getFirstDefined(markDef.size, config.boxplot.size);
+  const sizeValue = getMarkPropOrConfig(
+    'size',
+    markDef as any, // TODO: https://github.com/vega/vega-lite/issues/6245
+    config
+  );
+
   const boxPlotType = getBoxPlotType(extent);
   const {
     transform,

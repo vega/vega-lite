@@ -1,7 +1,7 @@
 import {Config} from '../../config';
 import {Encoding} from '../../encoding';
 import {MarkDef} from '../../mark';
-import {getMarkConfig} from '../common';
+import {getMarkPropOrConfig} from '../common';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as encode from './encode';
@@ -36,7 +36,7 @@ export const text: MarkCompiler = {
 };
 
 function align(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
-  const a = markDef.align ?? getMarkConfig('align', markDef, config);
+  const a = getMarkPropOrConfig('align', markDef, config);
   if (a === undefined) {
     return 'center';
   }
@@ -45,7 +45,7 @@ function align(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
 }
 
 function baseline(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
-  const b = markDef.baseline ?? getMarkConfig('baseline', markDef, config);
+  const b = getMarkPropOrConfig('baseline', markDef, config);
   if (b === undefined) {
     return 'middle';
   }

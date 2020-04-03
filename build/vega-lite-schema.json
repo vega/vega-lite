@@ -12191,6 +12191,11 @@
           "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
         },
+        "bandSize": {
+          "description": "The width of the ticks.\n\n__Default value:__  3/4 of step (width step for horizontal ticks and height step for vertical ticks).",
+          "minimum": 0,
+          "type": "number"
+        },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
@@ -12218,6 +12223,11 @@
             }
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
+        },
+        "continuousBandSize": {
+          "description": "The default size of the bars on continuous scales.\n\n__Default value:__ `5`",
+          "minimum": 0,
+          "type": "number"
         },
         "cornerRadius": {
           "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
@@ -12250,6 +12260,11 @@
         "dir": {
           "$ref": "#/definitions/TextDirection",
           "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
+        },
+        "discreteBandSize": {
+          "description": "The default size of the bars with discrete dimensions. If unspecified, the default size is  `step-2`, which provides 2 pixel offset between bars.",
+          "minimum": 0,
+          "type": "number"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",

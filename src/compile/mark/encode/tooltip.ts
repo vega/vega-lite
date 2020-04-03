@@ -15,8 +15,7 @@ import {
 import {Config} from '../../../config';
 import {Encoding, forEach} from '../../../encoding';
 import {StackProperties} from '../../../stack';
-import {getFirstDefined} from '../../../util';
-import {getMarkConfig} from '../../common';
+import {getMarkPropOrConfig} from '../../common';
 import {binFormatExpression, formatSignalRef} from '../../format';
 import {UnitModel} from '../../unit';
 import {wrapCondition} from './conditional';
@@ -40,8 +39,7 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
         return undefined;
       }
 
-      // If tooltipDef does not exist, then use value from markDef or config
-      let markTooltip = getFirstDefined(markDef.tooltip, getMarkConfig('tooltip', markDef, config));
+      let markTooltip = getMarkPropOrConfig('tooltip', markDef, config);
 
       if (markTooltip === true) {
         markTooltip = {content: 'encoding'};

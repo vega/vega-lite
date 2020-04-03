@@ -19,7 +19,7 @@ import {Mark, MarkDef} from '../../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../../scale';
 import {getFirstDefined} from '../../../util';
 import {isSignalRef, isVgRangeStep, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {getMarkConfig, signalOrValueRef} from '../../common';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
 import {nonPosition} from './nonposition';
@@ -43,11 +43,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
 
   const orient = markDef.orient;
   const hasSizeDef =
-    encoding[sizeChannel] ??
-    encoding.size ??
-    markDef[sizeChannel] ??
-    markDef.size ??
-    getMarkConfig('size', markDef, config, {vgChannel: sizeChannel});
+    encoding[sizeChannel] ?? encoding.size ?? getMarkPropOrConfig('size', markDef, config, {vgChannel: sizeChannel});
 
   const isBarBand = channel === 'x' ? orient === 'vertical' : orient === 'horizontal';
 
@@ -67,7 +63,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
       markDef,
       scaleName,
       band,
-      spacing: getFirstDefined(markDef.binSpacing, config[mark].binSpacing),
+      spacing: getMarkPropOrConfig('binSpacing', markDef, config),
       reverse: scale.get('reverse'),
       config
     });
@@ -112,12 +108,7 @@ function defaultSizeRef(
   config: Config,
   band?: number
 ): VgValueRef {
-  const markPropOrConfig = getFirstDefined(
-    markDef[sizeChannel],
-    markDef.size,
-    // TODO: deal with sizeChannel config
-    getMarkConfig('size', markDef, config, {vgChannel: sizeChannel})
-  );
+  const markPropOrConfig = getMarkPropOrConfig('size', markDef, config, {vgChannel: sizeChannel});
 
   if (markPropOrConfig !== undefined) {
     return signalOrValueRef(markPropOrConfig);
