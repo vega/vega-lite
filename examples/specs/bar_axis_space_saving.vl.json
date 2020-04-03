@@ -22,7 +22,7 @@
         "titleX": 5,
         "titleY": -5,
         "titleAngle": 0,
-        "titleAlign": 0
+        "titleAlign": "left"
       }
     },
     "x": {
