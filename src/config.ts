@@ -289,14 +289,6 @@ export const defaultConfig: Config = {
 
   projection: {},
 
-  axis: {},
-  axisX: {},
-  axisY: {},
-  axisLeft: {},
-  axisRight: {},
-  axisTop: {},
-  axisBottom: {},
-  axisBand: {},
   legend: defaultLegendConfig,
   header: {titlePadding: 10, labelPadding: 10},
   headerColumn: {},

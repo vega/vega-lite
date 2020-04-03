@@ -20,7 +20,7 @@ export function getAxisConfig(
   // apply properties in config Types first
 
   for (const configType of axisConfigTypes) {
-    if (config[configType]?.[property] !== undefined) {
+    if (config[configType][property] !== undefined) {
       return {
         configFrom: configType,
         configValue: config[configType][property]
@@ -30,8 +30,8 @@ export function getAxisConfig(
 
   // then apply style in config types
   for (const configType of axisConfigTypes) {
-    if (config[configType]?.style) {
-      styleConfig = getStyleConfig(property, config[configType]?.style, config.style);
+    if (config[configType].style) {
+      styleConfig = getStyleConfig(property, config[configType].style, config.style);
       if (styleConfig !== undefined) {
         return {
           configFrom: 'axis-config-style',

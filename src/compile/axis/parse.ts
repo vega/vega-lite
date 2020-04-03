@@ -11,6 +11,7 @@ import {
   PositionFieldDef,
   toFieldDefBase
 } from '../../channeldef';
+import {Config} from '../../config';
 import {isQuantitative} from '../../scale';
 import {contains, getFirstDefined, keys, normalizeAngle, titlecase} from '../../util';
 import {isSignalRef} from '../../vega.schema';
@@ -243,7 +244,7 @@ const VEGA_AXIS_CONFIG = {
   axisBand: 1
 };
 
-function getAxisConfigTypes(channel: PositionScaleChannel, scaleType: ScaleType, orient: string) {
+function getAxisConfigTypes(channel: PositionScaleChannel, scaleType: ScaleType, orient: string, config: Config) {
   const typeBasedConfigs = [
     ...(scaleType === 'band' ? ['axisBand', 'axisDiscrete'] : []),
     ...(scaleType === 'point' ? ['axisPoint', 'axisDiscrete'] : []),
@@ -264,7 +265,7 @@ function getAxisConfigTypes(channel: PositionScaleChannel, scaleType: ScaleType,
     // axisTop, axisBottom, ...
     ...(orient ? ['axis' + titlecase(orient)] : []),
     'axis'
-  ];
+  ].filter(configType => configType in config);
 }
 
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {
@@ -279,7 +280,8 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   const axisConfigTypes = getAxisConfigTypes(
     channel,
     model.getScaleComponent(channel).get('type'),
-    getFirstDefined(axis?.orient, properties.orient(channel))
+    getFirstDefined(axis?.orient, properties.orient(channel)),
+    model.config
   );
 
   // 1.2. Add properties

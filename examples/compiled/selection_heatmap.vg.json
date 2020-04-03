@@ -163,7 +163,7 @@
     }
   ],
   "config": {
-    "axis": {"domain": false},
-    "range": {"ramp": {"scheme": "yellowgreenblue"}}
+    "range": {"ramp": {"scheme": "yellowgreenblue"}},
+    "axis": {"domain": false}
   }
 }
