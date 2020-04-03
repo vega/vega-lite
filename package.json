@@ -29,7 +29,7 @@
     "build": "yarn build:only && yarn build:es5",
     "build:only": "yarn tsc:src && rollup -c",
     "build:es5": "mkdir -p build-es5 && tsc -b tsconfig.build-es5.json",
-    "postbuild": "terser build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && yarn schema",
+    "postbuild": "terser build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && terser build/vega-lite.js -o build-es5/vega-lite.min.js && yarn schema",
     "prebuild:examples": "yarn build:only",
     "build:examples": "yarn data && TZ=America/Los_Angeles scripts/build-examples.sh",
     "prebuild:examples-full": "yarn build:only",
