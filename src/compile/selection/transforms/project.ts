@@ -3,7 +3,7 @@ import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
 import {SelectionInit, SelectionInitInterval} from '../../../selection';
-import {Dict, hash, keys, varName, replacePathInField, duplicate} from '../../../util';
+import {Dict, hash, keys, replacePathInField, varName} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
 import {TransformCompiler} from './transforms';
 
@@ -174,9 +174,8 @@ const project: TransformCompiler = {
           name,
           value: selCmpt.project.items.map(proj => {
             const {signals, hasLegend, ...rest} = proj;
-            const p = duplicate(rest);
-            p.field = replacePathInField(p.field);
-            return p;
+            rest.field = replacePathInField(rest.field);
+            return rest;
           })
         });
   }
