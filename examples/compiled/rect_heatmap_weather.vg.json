@@ -130,5 +130,5 @@
       "symbolType": "square"
     }
   ],
-  "config": {"axis": {"domain": false}, "style": {"cell": {"strokeWidth": 0}}}
+  "config": {"style": {"cell": {"strokeWidth": 0}}, "axis": {"domain": false}}
 }

@@ -290,5 +290,5 @@
       "paddingOuter": 0.05
     }
   ],
-  "config": {"axis": {"grid": false}, "style": {"cell": {"stroke": null}}}
+  "config": {"style": {"cell": {"stroke": null}}, "axis": {"grid": false}}
 }

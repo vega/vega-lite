@@ -281,7 +281,7 @@
     }
   ],
   "config": {
-    "axis": {"domain": false, "ticks": false, "labels": false, "grid": false},
-    "style": {"cell": {"stroke": ""}}
+    "style": {"cell": {"stroke": ""}},
+    "axis": {"domain": false, "ticks": false, "labels": false, "grid": false}
   }
 }

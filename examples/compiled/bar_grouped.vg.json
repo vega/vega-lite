@@ -166,7 +166,7 @@
   ],
   "legends": [{"fill": "color", "symbolType": "square", "title": "gender"}],
   "config": {
-    "axis": {"domainWidth": 1},
-    "style": {"cell": {"stroke": "transparent"}}
+    "style": {"cell": {"stroke": "transparent"}},
+    "axis": {"domainWidth": 1}
   }
 }
