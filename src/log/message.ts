@@ -34,7 +34,8 @@ export function containerSizeNonSingle(name: 'width' | 'height') {
 
 export function containerSizeNotCompatibleWithAutosize(name: 'width' | 'height') {
   const uName = name == 'width' ? 'Width' : 'Height';
-  return `${uName} "container" only works well with autosize "fit" or "fit-x".`;
+  const fitDirection = name == 'width' ? 'x' : 'y';
+  return `${uName} "container" only works well with autosize "fit" or "fit-${fitDirection}".`;
 }
 
 export function droppingFit(channel?: PositionScaleChannel) {
