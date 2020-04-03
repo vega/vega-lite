@@ -597,7 +597,8 @@ export function hasConditionalValueDef<F extends Field>(
 export function isFieldDef<F extends Field>(
   channelDef: ChannelDef<F> | FieldDefBase<F> | DatumDef<F, any>
 ): channelDef is FieldDefBase<F> | TypedFieldDef<F> | SecondaryFieldDef<F> {
-  return !!channelDef && ('field' in channelDef || channelDef['aggregate'] === 'count');
+  // TODO: we can't use field in channelDef here as it's somehow failing runtime test
+  return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
 export function channelDefType<F extends Field>(channelDef: ChannelDef<F>): Type | undefined {
