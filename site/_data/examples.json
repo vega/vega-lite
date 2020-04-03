@@ -77,6 +77,9 @@
       {
         "name": "bar_negative",
         "title": "Bar Chart with negative values and a zero-baseline"
+      },
+      { "name": "bar_axis_space_saving",
+        "title": "Bar Chart with a spacing-saving y-axis"
       }
     ],
     "Histograms, Density Plots, and Dot Plots": [
