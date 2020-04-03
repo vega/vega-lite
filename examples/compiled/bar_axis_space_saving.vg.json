@@ -97,7 +97,7 @@
       "labelOffset": -15,
       "labelPadding": -5,
       "ticks": false,
-      "titleAlign": 0,
+      "titleAlign": "left",
       "titleAngle": 0,
       "titleX": 5,
       "titleY": -5,
