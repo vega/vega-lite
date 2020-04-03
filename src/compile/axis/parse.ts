@@ -13,7 +13,7 @@ import {
 } from '../../channeldef';
 import {Config} from '../../config';
 import {isQuantitative} from '../../scale';
-import {contains, getFirstDefined, keys, normalizeAngle, titlecase} from '../../util';
+import {getFirstDefined, keys, normalizeAngle, titlecase} from '../../util';
 import {isSignalRef} from '../../vega.schema';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs} from '../common';
 import {numberFormat} from '../format';
@@ -268,6 +268,8 @@ function getAxisConfigTypes(channel: PositionScaleChannel, scaleType: ScaleType,
   ].filter(configType => configType in config);
 }
 
+const propToAlwaysIncludeConfig = new Set(['grid', 'orient', 'tickCount', 'labelExpr']);
+
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {
   const axis = model.axis(channel);
 
@@ -287,28 +289,36 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   // 1.2. Add properties
   for (const property of AXIS_COMPONENT_PROPERTIES) {
     const value = getProperty(fieldOrDatumDef, property, axis, channel, model, axisConfigTypes);
-    const {configValue = undefined, configFrom = undefined} = isAxisProperty(property)
-      ? getAxisConfig(property, model.config, axisConfigTypes, axis?.style)
-      : {};
+    const hasValue = value !== undefined;
 
     const explicit = isExplicit(value, property, axis, model, channel);
-    if (value !== undefined && (explicit || configValue === undefined)) {
-      // only set property if it is explicitly set or has no config value (otherwise we will accidentally override config)
+
+    if (hasValue && explicit) {
       axisComponent.set(property, value, explicit);
-    } else if (
-      // Cases that we need to implicit values
-      // 1. Axis config that aren't available in Vega
-      !(configFrom in VEGA_AXIS_CONFIG) ||
-      // 2. Grid, orient, and tickCount
-      // - Grid is an exception because we need to set grid = true to generate another grid axis
-      // - Orient, labelExpr, and tickCount are not axis configs in Vega, so we need to set too.
-      (contains(['grid', 'orient', 'tickCount', 'labelExpr'], property) && configValue) ||
-      // 3. Conditional axis values and signals
-      isConditionalAxisValue<any>(configValue) || // need to set "any" as TS isn't smart enough to figure the generic parameter type yet
-      isSignalRef(configValue)
-    ) {
-      // If a config is specified and is conditional, copy conditional value from axis config
-      axisComponent.set(property, configValue, false);
+    } else {
+      const {configValue = undefined, configFrom = undefined} = isAxisProperty(property)
+        ? getAxisConfig(property, model.config, axisConfigTypes, axis?.style)
+        : {};
+      const hasConfigValue = configValue !== undefined;
+
+      if (hasValue && !hasConfigValue) {
+        // only set property if it is explicitly set or has no config value (otherwise we will accidentally override config)
+        axisComponent.set(property, value, explicit);
+      } else if (
+        // Cases need implicit values
+        // 1. Axis config that aren't available in Vega
+        !(configFrom in VEGA_AXIS_CONFIG) ||
+        // 2. Grid, orient, and tickCount
+        // - Grid is an exception because we need to set grid = true to generate another grid axis
+        // - Orient, labelExpr, and tickCount are not axis configs in Vega, so we need to set too.
+        (propToAlwaysIncludeConfig.has(property) && hasConfigValue) ||
+        // 3. Conditional axis values and signals
+        isConditionalAxisValue<any>(configValue) || // need to set "any" as TS isn't smart enough to figure the generic parameter type yet
+        isSignalRef(configValue)
+      ) {
+        // If a config is specified and is conditional, copy conditional value from axis config
+        axisComponent.set(property, configValue, false);
+      }
     }
   }
 
