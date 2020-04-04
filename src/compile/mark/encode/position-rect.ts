@@ -56,7 +56,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
   ) {
     const band = getBand({channel, fieldDef, stack, markDef, config});
     const axis = model.component.axes[channel]?.[0];
-    const axisTranslate = axis?.get('translate') ?? 0.5;
+    const axisTranslate = axis?.get('translate') ?? 0.5; // vega default is 0.5
 
     return rectBinPosition({
       fieldDef,
