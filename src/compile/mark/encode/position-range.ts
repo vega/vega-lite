@@ -1,8 +1,7 @@
 import {isFieldOrDatumDef} from '../../../channeldef';
 import {MarkConfig} from '../../../mark';
-import {getFirstDefined} from '../../../util';
-import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {getMarkStyleConfig} from '../../common';
+import {VgValueRef} from '../../../vega.schema';
+import {getMarkStyleConfig, signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
 import {getOffset} from './offset';
 import {alignedPositionChannel} from './position-align';
@@ -107,15 +106,14 @@ function pointPosition2OrSize(model: UnitModel, defaultPos: 'zeroOrMin' | 'zeroO
 
   // no x2/y2 encoding, then try to read x2/y2 or width/height based on precedence:
   // markDef > config.style > mark-specific config (config[mark]) > general mark config (config.mark)
-  return getFirstDefined<VgEncodeEntry>(
-    position2orSize(channel, markDef),
+  return (
+    position2orSize(channel, markDef) ||
     position2orSize(channel, {
       [channel]: getMarkStyleConfig(channel, markDef, config.style),
       [sizeChannel]: getMarkStyleConfig(sizeChannel, markDef, config.style)
-    }),
-    position2orSize(channel, config[mark]),
-    position2orSize(channel, config.mark),
-    {
+    }) ||
+    position2orSize(channel, config[mark]) ||
+    position2orSize(channel, config.mark) || {
       [channel]: defaultRef
     }
   );
