@@ -103,14 +103,6 @@ function pointPosition2OrSize(
     return {[vgChannel]: valueRef};
   }
 
-  const defaultRef = pointPositionDefaultRef({
-    model,
-    defaultPos,
-    channel,
-    scaleName,
-    scale
-  })();
-
   // TODO: check width/height encoding here once we add them
 
   // no x2/y2 encoding, then try to read x2/y2 or width/height based on precedence:
@@ -124,7 +116,13 @@ function pointPosition2OrSize(
     }) ||
     position2orSize(channel, config[mark]) ||
     position2orSize(channel, config.mark) || {
-      [vgChannel]: defaultRef
+      [vgChannel]: pointPositionDefaultRef({
+        model,
+        defaultPos,
+        channel,
+        scaleName,
+        scale
+      })()
     }
   );
 }
