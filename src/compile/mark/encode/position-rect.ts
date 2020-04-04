@@ -34,8 +34,8 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
 
   const channel2 = channel === 'x' ? 'x2' : 'y2';
   const sizeChannel = channel === 'x' ? 'width' : 'height';
-  const fieldDef = encoding[channel];
-  const fieldDef2 = encoding[channel2];
+  const channelDef = encoding[channel];
+  const channelDef2 = encoding[channel2];
 
   const scale = model.getScaleComponent(channel);
   const scaleType = scale ? scale.get('type') : undefined;
@@ -49,18 +49,18 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
 
   // x, x2, and width -- we must specify two of these in all conditions
   if (
-    isFieldDef(fieldDef) &&
-    (isBinning(fieldDef.bin) || isBinned(fieldDef.bin) || (fieldDef.timeUnit && !fieldDef2)) &&
+    isFieldDef(channelDef) &&
+    (isBinning(channelDef.bin) || isBinned(channelDef.bin) || (channelDef.timeUnit && !channelDef2)) &&
     !hasSizeDef &&
     !hasDiscreteDomain(scaleType)
   ) {
-    const band = getBand({channel, fieldDef, stack, markDef, config});
+    const band = getBand({channel, fieldDef: channelDef, stack, markDef, config});
     const axis = model.component.axes[channel]?.[0];
     const axisTranslate = axis?.get('translate') ?? 0.5; // vega default is 0.5
 
     return rectBinPosition({
-      fieldDef,
-      fieldDef2,
+      fieldDef: channelDef,
+      fieldDef2: channelDef2,
       channel,
       markDef,
       scaleName,
@@ -70,12 +70,12 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
       reverse: scale.get('reverse'),
       config
     });
-  } else if (((isFieldOrDatumDef(fieldDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !fieldDef2) {
+  } else if (((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !channelDef2) {
     // vertical
-    if (isFieldOrDatumDef(fieldDef) && scaleType === ScaleType.BAND) {
-      const band = isAnyPositionFieldOrDatumDef(fieldDef) ? fieldDef.band : undefined;
+    if (isFieldOrDatumDef(channelDef) && scaleType === ScaleType.BAND) {
+      const band = isAnyPositionFieldOrDatumDef(channelDef) ? channelDef.band : undefined;
       return rectBandPosition(
-        fieldDef,
+        channelDef,
         channel,
         model,
         defaultSizeRef(mark, markDef, sizeChannel, scaleName, scale, config, band)
