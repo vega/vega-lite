@@ -337,7 +337,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks. (An alias for `radius`)",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "point": {
@@ -1881,7 +1881,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks. (An alias for `radius`)",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
@@ -11246,7 +11246,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks. (An alias for `radius`)",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "point": {
@@ -11982,7 +11982,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks. (An alias for `radius`)",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
@@ -12377,7 +12377,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks. (An alias for `radius`)",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "point": {
@@ -13335,7 +13335,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks. (An alias for `radius`)",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
@@ -14662,7 +14662,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks. (An alias for `radius`)",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
@@ -16826,7 +16826,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks. (An alias for `radius`)",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
