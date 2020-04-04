@@ -1,7 +1,7 @@
 import {SignalRef, TimeInterval} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
-import {Channel, COLOR, FILL, ScaleChannel, STROKE, X, Y} from '../../channel';
+import {Channel, COLOR, FILL, STROKE, X, Y} from '../../channel';
 import {
   getFieldDef,
   getFieldOrDatumDef,
@@ -49,7 +49,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
   const {config, encoding, markDef, specifiedScales} = model;
 
-  keys(localScaleComponents).forEach((channel: ScaleChannel) => {
+  for (const channel of keys(localScaleComponents)) {
     const specifiedScale = specifiedScales[channel];
     const localScaleCmpt = localScaleComponents[channel];
     const mergedScaleCmpt = model.getScaleComponent(channel);
@@ -92,7 +92,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
         }
       }
     }
-  });
+  }
 }
 
 // Note: This method is used in Voyager.
@@ -156,7 +156,7 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
     }
   }
 
-  keys(localScaleComponents).forEach((channel: ScaleChannel) => {
+  for (const channel of keys(localScaleComponents)) {
     let valueWithExplicit: Explicit<any>;
 
     for (const child of model.children) {
@@ -184,7 +184,7 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
       }
     }
     localScaleComponents[channel].setWithExplicit(property, valueWithExplicit);
-  });
+  }
 }
 
 export function bins(model: Model, fieldDef: TypedFieldDef<string>) {

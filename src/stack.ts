@@ -179,10 +179,10 @@ export function stack(
     // Ignore tooltip in stackBy (https://github.com/vega/vega-lite/issues/4001)
     if (channel !== 'tooltip' && channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
-      array(channelDef).forEach(cDef => {
+      for (const cDef of array(channelDef)) {
         const fieldDef = getFieldDef(cDef);
         if (fieldDef.aggregate) {
-          return;
+          continue;
         }
 
         // Check whether the channel's field is identical to x/y's field or if the channel is a repeat
@@ -195,7 +195,7 @@ export function stack(
         ) {
           sc.push({channel, fieldDef});
         }
-      });
+      }
     }
     return sc;
   }, []);

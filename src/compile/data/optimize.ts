@@ -18,11 +18,15 @@ function getLeaves(roots: DataFlowNode[]) {
     if (node.numChildren() === 0) {
       leaves.push(node);
     } else {
-      node.children.forEach(append);
+      for (const child of node.children) {
+        append(child);
+      }
     }
   }
 
-  roots.forEach(append);
+  for (const child of roots) {
+    append(child);
+  }
   return leaves;
 }
 

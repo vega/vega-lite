@@ -63,9 +63,9 @@ export class LayerModel extends Model {
     this.component.selection = {};
     for (const child of this.children) {
       child.parseSelections();
-      keys(child.component.selection).forEach(key => {
+      for (const key of keys(child.component.selection)) {
         this.component.selection[key] = child.component.selection[key];
-      });
+      }
     }
   }
 

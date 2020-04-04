@@ -179,9 +179,9 @@ export class StackNode extends DataFlowNode {
 
     out.add(this._stack.stackField);
 
-    this.getGroupbyFields().forEach(f => out.add(f));
-    this._stack.facetby.forEach(f => out.add(f));
-    this._stack.sort.field.forEach(f => out.add(f));
+    this.getGroupbyFields().forEach(out.add, out);
+    this._stack.facetby.forEach(out.add, out);
+    this._stack.sort.field.forEach(out.add, out);
 
     return out;
   }

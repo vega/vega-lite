@@ -49,10 +49,10 @@ describe('compile/data/dataflow', () => {
         expect(parent.parent.debugName).toBe('node');
 
         expect(parent.numChildren()).toBe(4);
-        parent.children.forEach(c => {
+        for (const c of parent.children) {
           expect(c.numChildren()).toBe(0);
           expect(c.parent.debugName).toBe('parent');
-        });
+        }
 
         expect(child1.debugName).toBe('child1');
         expect(child2.debugName).toBe('child2');

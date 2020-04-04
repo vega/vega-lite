@@ -240,7 +240,7 @@ function parseNonUnitLegend(model: Model) {
   for (const child of model.children) {
     parseLegend(child);
 
-    keys(child.component.legends).forEach((channel: NonPositionScaleChannel) => {
+    for (const channel of keys(child.component.legends)) {
       resolve.legend[channel] = parseGuideResolve(model.component.resolve, channel);
 
       if (resolve.legend[channel] === 'shared') {
@@ -256,10 +256,10 @@ function parseNonUnitLegend(model: Model) {
           delete legends[channel];
         }
       }
-    });
+    }
   }
 
-  keys(legends).forEach((channel: NonPositionScaleChannel) => {
+  for (const channel of keys(legends)) {
     for (const child of model.children) {
       if (!child.component.legends[channel]) {
         // skip if the child does not have a particular legend
@@ -271,7 +271,8 @@ function parseNonUnitLegend(model: Model) {
         delete child.component.legends[channel];
       }
     }
-  });
+  }
+
   return legends;
 }
 

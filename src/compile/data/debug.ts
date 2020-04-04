@@ -78,7 +78,9 @@ export function draw(roots: readonly DataFlowNode[]) {
     }
   }
 
-  roots.forEach(n => collector(n));
+  for (const n of roots) {
+    collector(n);
+  }
 
   const dot = `digraph DataFlow {
   rankdir = TB;

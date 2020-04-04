@@ -70,7 +70,7 @@ export function filterTooltipWithAggregatedField<F extends Field>(
     | StringFieldDef<F>[];
 
   if (isArray(tooltip)) {
-    tooltip.forEach((t: StringFieldDef<F>) => {
+    for (const t of tooltip) {
       if (t.aggregate) {
         if (!customTooltipWithAggregatedField) {
           customTooltipWithAggregatedField = [];
@@ -82,7 +82,7 @@ export function filterTooltipWithAggregatedField<F extends Field>(
         }
         (customTooltipWithoutAggregatedField as StringFieldDef<F>[]).push(t);
       }
-    });
+    }
 
     if (customTooltipWithAggregatedField) {
       (filteredEncoding as Encoding<F>).tooltip = customTooltipWithAggregatedField;
