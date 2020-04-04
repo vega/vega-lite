@@ -5018,7 +5018,7 @@
       "additionalProperties": false,
       "properties": {
         "arc": {
-          "$ref": "#/definitions/MarkConfig",
+          "$ref": "#/definitions/RectConfig",
           "description": "Arc-specific Config"
         },
         "area": {
@@ -16631,7 +16631,7 @@
       },
       "properties": {
         "arc": {
-          "$ref": "#/definitions/MarkConfig",
+          "$ref": "#/definitions/RectConfig",
           "description": "Arc-specific Config"
         },
         "area": {
