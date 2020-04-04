@@ -295,7 +295,8 @@ export function midPoint({
         hasDiscreteDomain(scaleType) ? {binSuffix: 'range'} : {}, // no need for bin suffix if there is no scale
         {
           offset,
-          band: scaleType === 'band' ? (band = band ?? channelDef.band ?? 0.5) : undefined
+          // For band, to get mid point, need to offset by half of the band
+          band: scaleType === 'band' ? band ?? channelDef.band ?? 0.5 : undefined
         }
       );
     } else if (isValueDef(channelDef)) {
