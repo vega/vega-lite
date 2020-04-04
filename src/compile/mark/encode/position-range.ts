@@ -2,10 +2,10 @@ import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPosi
 import {isFieldOrDatumDef} from '../../../channeldef';
 import {MarkConfig} from '../../../mark';
 import {VgValueRef} from '../../../vega.schema';
-import {getMarkStyleConfig, signalOrValueRef} from '../../common';
+import {getMarkStyleConfig} from '../../common';
 import {UnitModel} from '../../unit';
 import {getOffset} from './offset';
-import {alignedPositionChannel} from './position-align';
+import {vgAlignedPositionChannel} from './position-align';
 import {pointPosition, pointPositionDefaultRef} from './position-point';
 import * as ref from './valueref';
 
@@ -50,7 +50,7 @@ export function rangePosition(
 
   const vgChannel = pos2Mixins[sizeChannel]
     ? // If there is width/height, we need to position the marks based on the alignment.
-      alignedPositionChannel(channel, markDef, config)
+      vgAlignedPositionChannel(channel, markDef, config)
     : // Otherwise, make sure to apply to the right Vg Channel (for arc mark)
       getVgPositionChannel(channel);
 
@@ -166,11 +166,11 @@ function position2orSize(channel: 'x2' | 'y2' | 'radius2' | 'theta2', markDef: M
   const sizeChannel = getSizeChannel(channel);
   const vgChannel = getVgPositionChannel(channel);
   if (markDef[vgChannel] !== undefined) {
-    return {[vgChannel]: signalOrValueRef(markDef[vgChannel])};
+    return {[vgChannel]: ref.widthHeightValueOrSignalRef(channel, markDef[vgChannel])};
   } else if (markDef[channel] !== undefined) {
     return {[vgChannel]: ref.widthHeightValueOrSignalRef(channel, markDef[channel])};
   } else if (markDef[sizeChannel]) {
-    return {[sizeChannel]: signalOrValueRef(markDef[sizeChannel])};
+    return {[sizeChannel]: ref.widthHeightValueOrSignalRef(channel, markDef[sizeChannel])};
   }
   return undefined;
 }

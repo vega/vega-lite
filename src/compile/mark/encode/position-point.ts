@@ -26,7 +26,11 @@ export function pointPosition(
     defaultPos,
     vgChannel,
     isMidPoint
-  }: {defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax' | null; vgChannel?: 'x' | 'y' | 'xc' | 'yc'; isMidPoint?: boolean}
+  }: {
+    defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax' | null;
+    vgChannel?: 'x' | 'y' | 'xc' | 'yc';
+    isMidPoint?: boolean;
+  }
 ) {
   const {encoding, markDef, config, stack} = model;
 

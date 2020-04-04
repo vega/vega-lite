@@ -364,7 +364,7 @@ export interface MarkConfigMixins {
   // MARK-SPECIFIC CONFIGS
 
   /** Arc-specific Config */
-  arc?: MarkConfig;
+  arc?: RectConfig;
 
   /** Area-Specific Config */
   area?: AreaConfig;

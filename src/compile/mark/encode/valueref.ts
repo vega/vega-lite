@@ -222,6 +222,11 @@ export interface MidPointParams {
   stack?: StackProperties;
   offset?: number;
   defaultRef: VgValueRef | (() => VgValueRef);
+
+  /**
+   * Allow overriding band instead of reading to field def since band is applied to size (width/height) instead of the position for x/y-position with band scales.
+   */
+  band?: number;
 }
 
 /**
@@ -237,7 +242,8 @@ export function midPoint({
   scale,
   stack,
   offset,
-  defaultRef
+  defaultRef,
+  band
 }: MidPointParams): VgValueRef {
   // TODO: datum support
   if (channelDef) {
@@ -245,15 +251,17 @@ export function midPoint({
 
     if (isFieldOrDatumDef(channelDef)) {
       if (isTypedFieldDef(channelDef)) {
-        const band = getBand({
-          channel,
-          fieldDef: channelDef,
-          fieldDef2: channel2Def,
-          markDef,
-          stack,
-          config,
-          isMidPoint: true
-        });
+        band =
+          band ??
+          getBand({
+            channel,
+            fieldDef: channelDef,
+            fieldDef2: channel2Def,
+            markDef,
+            stack,
+            config,
+            isMidPoint: true
+          });
         const {bin, timeUnit, type} = channelDef;
 
         if (isBinning(channelDef.bin) || (band && timeUnit && type === TEMPORAL)) {
@@ -296,7 +304,7 @@ export function midPoint({
         if (hasDiscreteDomain(scaleType)) {
           if (scaleType === 'band') {
             // For band, to get mid point, need to offset by half of the band
-            const band = getFirstDefined(isAnyPositionFieldOrDatumDef(channelDef) ? channelDef.band : undefined, 0.5);
+            band = band ?? getFirstDefined(isAnyPositionFieldOrDatumDef(channelDef) ? channelDef.band : undefined, 0.5);
             return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'range'}, {band, offset});
           }
           return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'range'}, {offset});

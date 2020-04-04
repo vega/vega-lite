@@ -485,25 +485,30 @@ export function getBand({
 }: {
   isMidPoint?: boolean;
   channel: Channel;
-  fieldDef: FieldDef<string>;
+  fieldDef: FieldDef<string> | DatumDef;
   fieldDef2?: SecondaryChannelDef<string>;
   stack: StackProperties;
   markDef: MarkDef;
   config: Config;
 }) {
-  const {timeUnit, bin} = fieldDef;
   if (contains(['x', 'y', 'theta', 'radius'], channel)) {
     if (isAnyPositionFieldOrDatumDef(fieldDef) && fieldDef.band !== undefined) {
       return fieldDef.band;
-    } else if (timeUnit && !fieldDef2) {
-      if (isMidPoint) {
-        return getMarkConfig('timeUnitBandPosition', mark, config);
-      } else {
-        return isRectBasedMark(mark.type) ? getMarkConfig('timeUnitBand', mark, config) : 0;
+    }
+    if (isFieldDef(fieldDef)) {
+      const {timeUnit, bin} = fieldDef;
+
+      if (timeUnit && !fieldDef2) {
+        if (isMidPoint) {
+          return getMarkConfig('timeUnitBandPosition', mark, config);
+        } else {
+          return isRectBasedMark(mark.type) ? getMarkConfig('timeUnitBand', mark, config) : 0;
+        }
+      } else if (isBinning(bin)) {
+        return isRectBasedMark(mark.type) && !isMidPoint ? 1 : 0.5;
       }
-    } else if (isBinning(bin)) {
-      return isRectBasedMark(mark.type) && !isMidPoint ? 1 : 0.5;
-    } else if (stack?.fieldChannel === channel && isMidPoint) {
+    }
+    if (stack?.fieldChannel === channel && isMidPoint) {
       return 0.5;
     }
   }
