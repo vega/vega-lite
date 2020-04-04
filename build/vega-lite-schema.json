@@ -278,7 +278,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -337,7 +337,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "point": {
@@ -358,11 +358,11 @@
           "description": "A flag for overlaying points on top of line or area marks, or an object defining the properties of the overlayed points.\n\n- If this property is `\"transparent\"`, transparent points will be used (for enhancing tooltips and selections).\n\n- If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.\n\n- If this property is `false`, no points would be automatically added to line or area marks.\n\n__Default value:__ `false`."
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "shape": {
@@ -1833,7 +1833,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -1881,15 +1881,15 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "shape": {
@@ -11198,7 +11198,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -11246,7 +11246,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "point": {
@@ -11267,11 +11267,11 @@
           "description": "A flag for overlaying points on top of line or area marks, or an object defining the properties of the overlayed points.\n\n- If this property is `\"transparent\"`, transparent points will be used (for enhancing tooltips and selections).\n\n- If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.\n\n- If this property is `false`, no points would be automatically added to line or area marks.\n\n__Default value:__ `false`."
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "shape": {
@@ -11934,7 +11934,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -11982,15 +11982,15 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "shape": {
@@ -12333,7 +12333,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -12392,7 +12392,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "point": {
@@ -12413,11 +12413,11 @@
           "description": "A flag for overlaying points on top of line or area marks, or an object defining the properties of the overlayed points.\n\n- If this property is `\"transparent\"`, transparent points will be used (for enhancing tooltips and selections).\n\n- If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.\n\n- If this property is `false`, no points would be automatically added to line or area marks.\n\n__Default value:__ `false`."
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "radius2Offset": {
@@ -13302,7 +13302,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -13350,15 +13350,15 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "radius2Offset": {
@@ -14629,7 +14629,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -14677,15 +14677,15 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "shape": {
@@ -16793,7 +16793,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -16841,15 +16841,15 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "shape": {
