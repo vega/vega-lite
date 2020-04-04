@@ -87,7 +87,7 @@ export interface LegendPropsWithSignal {
 
 export type LegendConfig = LegendMixins &
   VlOnlyGuideConfig &
-  Omit<ExcludeMappedValueRefButKeepSignal<VgLegendConfig>, SignalLegendProp> &
+  Omit<VgLegendConfig, SignalLegendProp> &
   LegendPropsWithSignal & {
     /**
      * Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
