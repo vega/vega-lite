@@ -46,7 +46,7 @@ export function rangePosition(
   const channel2 = channel === 'x' ? 'x2' : 'y2';
   const sizeChannel = channel === 'x' ? 'width' : 'height';
 
-  const pos2Mixins = pointPosition2(model, defaultPos2, channel2);
+  const pos2Mixins = pointPosition2OrSize(model, defaultPos2, channel2);
 
   // If there is width/height, we need to position the marks based on the alignment.
   const vgChannel = pos2Mixins[sizeChannel] ? alignedPositionChannel(channel, markDef, config) : channel;
@@ -61,7 +61,7 @@ export function rangePosition(
  * Return encode for x2, y2.
  * If channel is not specified, return one channel based on orientation.
  */
-function pointPosition2(model: UnitModel, defaultPos: 'zeroOrMin' | 'zeroOrMax', channel: 'x2' | 'y2') {
+function pointPosition2OrSize(model: UnitModel, defaultPos: 'zeroOrMin' | 'zeroOrMax', channel: 'x2' | 'y2') {
   const {encoding, mark, markDef, stack, config} = model;
 
   const baseChannel = channel === 'x2' ? 'x' : 'y';
