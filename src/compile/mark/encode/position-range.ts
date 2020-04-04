@@ -158,10 +158,10 @@ export function position2Ref({
 
 function position2orSize(channel: 'x2' | 'y2', markDef: MarkConfig) {
   const sizeChannel = channel === 'x2' ? 'width' : 'height';
-  if (markDef[channel]) {
+  if (markDef[channel] !== undefined) {
     return {[channel]: ref.widthHeightValueRef(channel, markDef[channel])};
   } else if (markDef[sizeChannel]) {
-    return {[sizeChannel]: {value: markDef[sizeChannel]}};
+    return {[sizeChannel]: signalOrValueRef(markDef[sizeChannel])};
   }
   return undefined;
 }
