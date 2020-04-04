@@ -27,13 +27,13 @@ export class WindowTransformNode extends DataFlowNode {
   public dependentFields() {
     const out = new Set<string>();
 
-    (this.transform.groupby ?? []).forEach(f => out.add(f));
+    (this.transform.groupby ?? []).forEach(out.add, out);
     (this.transform.sort ?? []).forEach(m => out.add(m.field));
 
     this.transform.window
       .map(w => w.field)
       .filter(f => f !== undefined)
-      .forEach(f => out.add(f));
+      .forEach(out.add, out);
 
     return out;
   }

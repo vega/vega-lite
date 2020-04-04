@@ -202,7 +202,9 @@ export function prefixGenerator(a: ReadonlySet<string>): ReadonlySet<string> {
     // Wrap every element other than the first in `[]`
     const wrappedWithAccessors = splitField.map((y, i) => (i === 0 ? y : `[${y}]`));
     const computedPrefixes = wrappedWithAccessors.map((_, i) => wrappedWithAccessors.slice(0, i + 1).join(''));
-    computedPrefixes.forEach(y => prefixes.add(y));
+    for (const y of computedPrefixes) {
+      prefixes.add(y);
+    }
   }
   return prefixes;
 }

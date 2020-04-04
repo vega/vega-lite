@@ -192,7 +192,9 @@ function cloneSubtree(facet: FacetNode) {
       ) {
         copy.addDimensions(facet.fields);
       }
-      node.children.flatMap(clone).forEach((n: DataFlowNode) => (n.parent = copy));
+      for (const n of node.children.flatMap(clone)) {
+        n.parent = copy;
+      }
 
       return [copy];
     }

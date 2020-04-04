@@ -55,16 +55,16 @@ export function parseUnitScaleRange(model: UnitModel) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
 
   // use SCALE_CHANNELS instead of scales[channel] to ensure that x, y come first!
-  SCALE_CHANNELS.forEach((channel: ScaleChannel) => {
+  for (const channel of SCALE_CHANNELS) {
     const localScaleCmpt = localScaleComponents[channel];
     if (!localScaleCmpt) {
-      return;
+      continue;
     }
 
     const rangeWithExplicit = parseRangeForChannel(channel, model);
 
     localScaleCmpt.setWithExplicit('range', rangeWithExplicit);
-  });
+  }
 }
 
 function getBinStepSignal(model: UnitModel, channel: 'x' | 'y'): SignalRefWrapper {

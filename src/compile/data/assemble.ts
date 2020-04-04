@@ -81,7 +81,9 @@ function makeWalkTree(data: VgData[]) {
         node.data = dataSource.source;
       }
 
-      node.assemble().forEach(d => data.push(d));
+      for (const d of node.assemble()) {
+        data.push(d);
+      }
 
       // break here because the rest of the tree has to be taken care of by the facet.
       return;
@@ -173,14 +175,14 @@ function makeWalkTree(data: VgData[]) {
           source = dataSource.source;
         }
 
-        node.children.forEach(child => {
+        for (const child of node.children) {
           const newData: VgData = {
             name: null,
             source: source,
             transform: []
           };
           walkTree(child, newData);
-        });
+        }
         break;
       }
     }
@@ -196,13 +198,13 @@ export function assembleFacetData(root: FacetNode): VgData[] {
   const data: VgData[] = [];
   const walkTree = makeWalkTree(data);
 
-  root.children.forEach(child =>
+  for (const child of root.children) {
     walkTree(child, {
       source: root.name,
       name: null,
       transform: []
-    })
-  );
+    });
+  }
 
   return data;
 }
@@ -224,7 +226,7 @@ export function assembleRootData(dataComponent: DataComponent, datasets: Dict<In
 
   let sourceIndex = 0;
 
-  dataComponent.sources.forEach(root => {
+  for (const root of dataComponent.sources) {
     // assign a name if the source does not have a name yet
     if (!root.hasName()) {
       root.dataName = `source_${sourceIndex++}`;
@@ -233,14 +235,14 @@ export function assembleRootData(dataComponent: DataComponent, datasets: Dict<In
     const newData: VgData = root.assemble();
 
     walkTree(root, newData);
-  });
+  }
 
   // remove empty transform arrays for cleaner output
-  data.forEach(d => {
+  for (const d of data) {
     if (d.transform.length === 0) {
       delete d.transform;
     }
-  });
+  }
 
   // move sources without transforms (the ones that are potentially used in lookups) to the beginning
   let whereTo = 0;

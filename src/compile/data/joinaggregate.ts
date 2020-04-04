@@ -27,12 +27,12 @@ export class JoinAggregateTransformNode extends DataFlowNode {
     const out = new Set<string>();
 
     if (this.transform.groupby) {
-      this.transform.groupby.forEach(f => out.add(f));
+      this.transform.groupby.forEach(out.add, out);
     }
     this.transform.joinaggregate
       .map(w => w.field)
       .filter(f => f !== undefined)
-      .forEach(f => out.add(f));
+      .forEach(out.add, out);
 
     return out;
   }

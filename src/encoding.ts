@@ -636,11 +636,11 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case 'key': {
         const channelDef = encoding[channel];
         if (isArray(channelDef) || isFieldDef(channelDef)) {
-          array(channelDef).forEach(fieldDef => {
+          for (const fieldDef of array(channelDef)) {
             if (!fieldDef.aggregate) {
               details.push(vgField(fieldDef, {}));
             }
-          });
+          }
         }
         return details;
       }

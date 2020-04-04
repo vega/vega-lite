@@ -28,9 +28,9 @@ export class ConcatModel extends Model {
 
   public parseData() {
     this.component.data = parseData(this);
-    this.children.forEach(child => {
+    for (const child of this.children) {
       child.parseData();
-    });
+    }
   }
 
   public parseSelections() {

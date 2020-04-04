@@ -83,7 +83,7 @@ function parseNonUnitScaleCore(model: Model) {
     parseScaleCore(child);
 
     // Instead of always merging right away -- check if it is compatible to merge first!
-    keys(child.component.scales).forEach((channel: ScaleChannel) => {
+    for (const channel of keys(child.component.scales)) {
       // if resolve is undefined, set default first
       resolve.scale[channel] = resolve.scale[channel] ?? defaultScaleResolve(channel, model);
 
@@ -111,7 +111,7 @@ function parseNonUnitScaleCore(model: Model) {
           scaleTypeWithExplicitIndex[channel] = childScaleType;
         }
       }
-    });
+    }
   }
 
   // Merge each channel listed in the index
