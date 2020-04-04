@@ -279,7 +279,7 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
   innerRadius?: number | SignalRef;
 
   /**
-   * The outer radius in pixels of arc marks. (An alias for `radius`)
+   * The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.
    *
    * @minimum 0
    * __Default value:__ `0`
