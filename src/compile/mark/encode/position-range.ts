@@ -1,3 +1,4 @@
+import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel';
 import {isFieldOrDatumDef} from '../../../channeldef';
 import {MarkConfig} from '../../../mark';
 import {VgValueRef} from '../../../vega.schema';
@@ -31,7 +32,7 @@ export function pointOrRangePosition(
 }
 
 export function rangePosition(
-  channel: 'x' | 'y',
+  channel: 'x' | 'y' | 'theta' | 'radius',
   model: UnitModel,
   {
     defaultPos,
@@ -42,13 +43,16 @@ export function rangePosition(
   }
 ) {
   const {markDef, config} = model;
-  const channel2 = channel === 'x' ? 'x2' : 'y2';
-  const sizeChannel = channel === 'x' ? 'width' : 'height';
+  const channel2 = getSecondaryRangeChannel(channel);
+  const sizeChannel = getSizeChannel(channel);
 
   const pos2Mixins = pointPosition2OrSize(model, defaultPos2, channel2);
 
-  // If there is width/height, we need to position the marks based on the alignment.
-  const vgChannel = pos2Mixins[sizeChannel] ? alignedPositionChannel(channel, markDef, config) : channel;
+  const vgChannel = pos2Mixins[sizeChannel]
+    ? // If there is width/height, we need to position the marks based on the alignment.
+      alignedPositionChannel(channel, markDef, config)
+    : // Otherwise, make sure to apply to the right Vg Channel (for arc mark)
+      getVgPositionChannel(channel);
 
   return {
     ...pointPosition(channel, model, {defaultPos, vgChannel}),
@@ -60,11 +64,16 @@ export function rangePosition(
  * Return encode for x2, y2.
  * If channel is not specified, return one channel based on orientation.
  */
-function pointPosition2OrSize(model: UnitModel, defaultPos: 'zeroOrMin' | 'zeroOrMax', channel: 'x2' | 'y2') {
+function pointPosition2OrSize(
+  model: UnitModel,
+  defaultPos: 'zeroOrMin' | 'zeroOrMax',
+  channel: 'x2' | 'y2' | 'radius2' | 'theta2'
+) {
   const {encoding, mark, markDef, stack, config} = model;
 
-  const baseChannel = channel === 'x2' ? 'x' : 'y';
-  const sizeChannel = channel === 'x2' ? 'width' : 'height';
+  const baseChannel = getMainRangeChannel(channel);
+  const sizeChannel = getSizeChannel(channel);
+  const vgChannel = getVgPositionChannel(channel);
 
   const channelDef = encoding[baseChannel];
   const scaleName = model.scaleName(baseChannel);
@@ -72,9 +81,9 @@ function pointPosition2OrSize(model: UnitModel, defaultPos: 'zeroOrMin' | 'zeroO
 
   const offset = getOffset(channel, model.markDef);
 
-  if (!channelDef && (encoding.latitude || encoding.longitude)) {
+  if (!channelDef && (channel === 'x2' || channel === 'y2') && (encoding.latitude || encoding.longitude)) {
     // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
-    return {[channel]: {field: model.getName(channel)}};
+    return {[vgChannel]: {field: model.getName(channel)}};
   }
 
   const valueRef = position2Ref({
@@ -91,7 +100,7 @@ function pointPosition2OrSize(model: UnitModel, defaultPos: 'zeroOrMin' | 'zeroO
   });
 
   if (valueRef !== undefined) {
-    return {[channel]: valueRef};
+    return {[vgChannel]: valueRef};
   }
 
   const defaultRef = pointPositionDefaultRef({
@@ -106,6 +115,7 @@ function pointPosition2OrSize(model: UnitModel, defaultPos: 'zeroOrMin' | 'zeroO
 
   // no x2/y2 encoding, then try to read x2/y2 or width/height based on precedence:
   // markDef > config.style > mark-specific config (config[mark]) > general mark config (config.mark)
+
   return (
     position2orSize(channel, markDef) ||
     position2orSize(channel, {
@@ -114,7 +124,7 @@ function pointPosition2OrSize(model: UnitModel, defaultPos: 'zeroOrMin' | 'zeroO
     }) ||
     position2orSize(channel, config[mark]) ||
     position2orSize(channel, config.mark) || {
-      [channel]: defaultRef
+      [vgChannel]: defaultRef
     }
   );
 }
@@ -154,10 +164,13 @@ export function position2Ref({
   });
 }
 
-function position2orSize(channel: 'x2' | 'y2', markDef: MarkConfig) {
-  const sizeChannel = channel === 'x2' ? 'width' : 'height';
-  if (markDef[channel] !== undefined) {
-    return {[channel]: ref.widthHeightValueRef(channel, markDef[channel])};
+function position2orSize(channel: 'x2' | 'y2' | 'radius2' | 'theta2', markDef: MarkConfig) {
+  const sizeChannel = getSizeChannel(channel);
+  const vgChannel = getVgPositionChannel(channel);
+  if (markDef[vgChannel] !== undefined) {
+    return {[vgChannel]: signalOrValueRef(markDef[vgChannel])};
+  } else if (markDef[channel] !== undefined) {
+    return {[vgChannel]: ref.widthHeightValueOrSignalRef(channel, markDef[channel])};
   } else if (markDef[sizeChannel]) {
     return {[sizeChannel]: signalOrValueRef(markDef[sizeChannel])};
   }

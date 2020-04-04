@@ -16,7 +16,10 @@ const BASELINED_Y_CHANNEL = {
   bottom: 'y2'
 };
 
-export function alignedPositionChannel(channel: 'x' | 'y', markDef: MarkDef, config: Config) {
+export function alignedPositionChannel(channel: 'x' | 'y' | 'radius' | 'theta', markDef: MarkDef, config: Config) {
+  if (channel === 'radius' || channel === 'theta') {
+    return channel;
+  }
   const alignChannel = channel === 'x' ? 'align' : 'baseline';
   const align = getMarkPropOrConfig(alignChannel, markDef, config);
   if (channel === 'x') {

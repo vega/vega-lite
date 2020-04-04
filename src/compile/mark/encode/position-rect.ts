@@ -1,7 +1,15 @@
 import {SignalRef} from 'vega';
 import {isNumber} from 'vega-util';
 import {isBinned, isBinning} from '../../../bin';
-import {isPolarPositionChannel, PolarPositionChannel, PositionChannel, X, X2, Y2} from '../../../channel';
+import {
+  getSecondaryRangeChannel,
+  getSizeChannel,
+  getVgPositionChannel,
+  isPolarPositionChannel,
+  isXorY,
+  PolarPositionChannel,
+  PositionChannel
+} from '../../../channel';
 import {
   getBand,
   isAnyPositionFieldOrDatumDef,
@@ -18,7 +26,7 @@ import * as log from '../../../log';
 import {Mark, MarkDef} from '../../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../../scale';
 import {getFirstDefined} from '../../../util';
-import {isSignalRef, isVgRangeStep, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
+import {isSignalRef, isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
@@ -29,11 +37,15 @@ import {pointPosition} from './position-point';
 import {rangePosition} from './position-range';
 import * as ref from './valueref';
 
-export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' | 'rect' | 'image'): VgEncodeEntry {
+export function rectPosition(
+  model: UnitModel,
+  channel: 'x' | 'y' | 'theta' | 'radius',
+  mark: 'bar' | 'rect' | 'image' | 'arc'
+): VgEncodeEntry {
   const {config, encoding, markDef, stack} = model;
 
-  const channel2 = channel === 'x' ? 'x2' : 'y2';
-  const sizeChannel = channel === 'x' ? 'width' : 'height';
+  const channel2 = getSecondaryRangeChannel(channel);
+  const sizeChannel = getSizeChannel(channel);
   const channelDef = encoding[channel];
   const channelDef2 = encoding[channel2];
 
@@ -45,7 +57,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
   const hasSizeDef =
     encoding[sizeChannel] ?? encoding.size ?? getMarkPropOrConfig('size', markDef, config, {vgChannel: sizeChannel});
 
-  const isBarBand = channel === 'x' ? orient === 'vertical' : orient === 'horizontal';
+  const isBarBand = mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal');
 
   // x, x2, and width -- we must specify two of these in all conditions
   if (
@@ -66,11 +78,16 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
       scaleName,
       band,
       axisTranslate,
-      spacing: getMarkPropOrConfig('binSpacing', markDef, config),
+      spacing: isXorY(channel) ? getMarkPropOrConfig('binSpacing', markDef, config) : undefined,
       reverse: scale.get('reverse'),
       config
     });
-  } else if (((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !channelDef2) {
+  } else if (
+    ((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBarBand) &&
+    !channelDef2 &&
+    mark !== 'arc' &&
+    isXorY(channel) // only x and y have sizeChannel (theta/radius do not)
+  ) {
     // vertical
     if (isFieldOrDatumDef(channelDef) && scaleType === ScaleType.BAND) {
       const band = isAnyPositionFieldOrDatumDef(channelDef) ? channelDef.band : undefined;
@@ -159,12 +176,12 @@ function bandRef(scaleName: string, band: number | boolean = true): VgValueRef {
 
 function rectBandPosition(
   fieldDef: PositionFieldDef<string> | PositionDatumDef<string>,
-  channel: 'x' | 'y',
+  channel: 'x' | 'y' | 'theta' | 'radius',
   model: UnitModel,
   sizeRef?: VgValueRef
 ) {
   const scaleName = model.scaleName(channel);
-  const sizeChannel = channel === 'x' ? 'width' : 'height';
+  const sizeChannel = getSizeChannel(channel);
   const {markDef, encoding, config} = model;
 
   const vgChannel = alignedPositionChannel(channel, markDef, config);
@@ -235,8 +252,6 @@ export function rectBinPosition({
   fieldDef,
   fieldDef2,
   channel,
-  vgChannel,
-  vgChannel2,
   band,
   scaleName,
   markDef,
@@ -248,8 +263,6 @@ export function rectBinPosition({
   fieldDef: TypedFieldDef<string>;
   fieldDef2?: Encoding<string>['x2' | 'y2'];
   channel: 'x' | 'y' | 'theta' | 'radius';
-  vgChannel?: VgEncodeChannel;
-  vgChannel2?: VgEncodeChannel;
   band: number;
   scaleName: string;
   markDef: MarkDef<Mark>;
@@ -258,10 +271,10 @@ export function rectBinPosition({
   reverse: boolean | SignalRef;
   config: Config;
 }) {
-  const channel2 = channel === X ? X2 : Y2;
+  const channel2 = getSecondaryRangeChannel(channel);
 
-  vgChannel = vgChannel || channel;
-  vgChannel2 = vgChannel2 || channel2;
+  const vgChannel = getVgPositionChannel(channel);
+  const vgChannel2 = getVgPositionChannel(channel2);
 
   if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {

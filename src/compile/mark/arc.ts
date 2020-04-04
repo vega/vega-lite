@@ -1,4 +1,3 @@
-import {VgValueRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
 import {MarkCompiler} from './base';
 import * as encode from './encode';
@@ -16,25 +15,10 @@ export const arc: MarkCompiler = {
       }),
       ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
       ...encode.pointPosition('y', model, {defaultPos: 'mid'}),
-      ...encode.arcRangePosition(model, {
-        channel: 'radius',
-        vgChannel: 'outerRadius',
-        vgChannel2: 'innerRadius',
-        defaultRef: defaultOuterRadius(model)
-      }),
-      ...encode.arcRangePosition(model, {
-        channel: 'theta',
-        vgChannel: 'startAngle',
-        vgChannel2: 'endAngle',
-        defaultRef: {signal: 'PI * 2'}
-      })
+
+      // arcs are rectangles in polar coordinates
+      ...encode.rectPosition(model, 'radius', 'arc'),
+      ...encode.rectPosition(model, 'theta', 'arc')
     };
   }
 };
-
-function defaultOuterRadius(model: UnitModel): VgValueRef {
-  // radius = min(width,height)/2
-  return {
-    signal: `min(${model.width.signal},${model.height.signal})/2`
-  };
-}

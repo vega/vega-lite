@@ -67,6 +67,8 @@ function defaultType(channel: Channel, fieldDef: TypedFieldDef<string> | ScaleDa
           // For rule, using band scale to make rule align with axis ticks better https://github.com/vega/vega-lite/issues/3429
           return 'band';
         }
+      } else if (mark === 'arc' && util.contains(['theta', 'radius'], channel)) {
+        return 'band';
       }
       // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
       return 'point';
