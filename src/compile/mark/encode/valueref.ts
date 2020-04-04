@@ -307,7 +307,7 @@ export function midPoint({
       const value = channelDef.value;
       const offsetMixins = offset ? {offset} : {};
 
-      return {...widthHeightValueRef(channel, value), ...offsetMixins};
+      return {...widthHeightValueOrSignalRef(channel, value), ...offsetMixins};
     } else if (isSignalRef(channelDef)) {
       return channelDef;
     }
@@ -316,23 +316,25 @@ export function midPoint({
     // In such case, we will use default ref.
   }
 
-  const ref = isFunction(defaultRef) ? {...defaultRef(), ...(offset ? {offset} : {})} : defaultRef;
+  if (isFunction(defaultRef)) {
+    defaultRef = defaultRef();
+  }
 
-  if (ref) {
+  if (defaultRef) {
     // for non-position, ref could be undefined.
     return {
-      ...ref,
+      ...defaultRef,
       // only include offset when it is non-zero (zero = no offset)
       ...(offset ? {offset} : {})
     };
   }
-  return ref;
+  return defaultRef;
 }
 
 /**
  * Convert special "width" and "height" values in Vega-Lite into Vega value ref.
  */
-export function widthHeightValueRef(channel: Channel, value: ValueOrGradientOrText | SignalRef) {
+export function widthHeightValueOrSignalRef(channel: Channel, value: ValueOrGradientOrText | SignalRef) {
   if (contains(['x', 'x2'], channel) && value === 'width') {
     return {field: {group: 'width'}};
   } else if (contains(['y', 'y2'], channel) && value === 'height') {
