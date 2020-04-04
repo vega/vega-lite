@@ -230,6 +230,10 @@ export function getMainRangeChannel<C extends Channel>(channel: C): C | 'x' | 'y
       return 'latitude';
     case 'longitude2':
       return 'longitude';
+    case 'theta2':
+      return 'theta';
+    case 'radius2':
+      return 'radius';
   }
   return channel;
 }
