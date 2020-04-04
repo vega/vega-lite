@@ -58,7 +58,7 @@
               "test": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])",
               "value": 0
             },
-            {"scale": "x", "field": "bin_maxbins_10_IMDB_Rating", "offset": 0.5}
+            {"scale": "x", "field": "bin_maxbins_10_IMDB_Rating"}
           ],
           "x": [
             {
@@ -68,7 +68,7 @@
             {
               "scale": "x",
               "field": "bin_maxbins_10_IMDB_Rating_end",
-              "offset": 0.5
+              "offset": 1
             }
           ],
           "y": {"scale": "y", "field": "__count"},
@@ -85,6 +85,7 @@
         "signal": "[bin_maxbins_10_IMDB_Rating_bins.start, bin_maxbins_10_IMDB_Rating_bins.stop]"
       },
       "range": [0, {"signal": "width"}],
+      "reverse": true,
       "bins": {"signal": "bin_maxbins_10_IMDB_Rating_bins"},
       "zero": false
     },

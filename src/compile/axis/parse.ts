@@ -268,7 +268,13 @@ function getAxisConfigTypes(channel: PositionScaleChannel, scaleType: ScaleType,
   ].filter(configType => configType in config);
 }
 
-const propToAlwaysIncludeConfig = new Set(['grid', 'orient', 'tickCount', 'labelExpr']);
+/**
+ * Properties to always include values from config:
+ * - Grid is an exception because we need to set grid = true to generate another grid axis
+ * - Orient, labelExpr, and tickCount are not axis configs in Vega, so we need to set too.
+ * - translate has dependent logic for bar's bin position and it's 0.5 by default in Vega. If a config overrides this value, we need to know.
+ */
+const propsToAlwaysIncludeConfig = new Set(['grid', 'orient', 'tickCount', 'labelExpr', 'translate']);
 
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {
   const axis = model.axis(channel);
@@ -308,10 +314,8 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
         // Cases need implicit values
         // 1. Axis config that aren't available in Vega
         !(configFrom in VEGA_AXIS_CONFIG) ||
-        // 2. Grid, orient, and tickCount
-        // - Grid is an exception because we need to set grid = true to generate another grid axis
-        // - Orient, labelExpr, and tickCount are not axis configs in Vega, so we need to set too.
-        (propToAlwaysIncludeConfig.has(property) && hasConfigValue) ||
+        // 2. Certain properties are always included (see `propsToAlwaysIncludeConfig`'s declaration for more details)
+        (propsToAlwaysIncludeConfig.has(property) && hasConfigValue) ||
         // 3. Conditional axis values and signals
         isConditionalAxisValue<any>(configValue) || // need to set "any" as TS isn't smart enough to figure the generic parameter type yet
         isSignalRef(configValue)

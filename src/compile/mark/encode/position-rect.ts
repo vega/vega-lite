@@ -55,6 +55,8 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
     !hasDiscreteDomain(scaleType)
   ) {
     const band = getBand({channel, fieldDef, stack, markDef, config});
+    const axis = model.component.axes[channel]?.[0];
+    const axisTranslate = axis?.get('translate') ?? 0.5; // vega default is 0.5
 
     return rectBinPosition({
       fieldDef,
@@ -63,6 +65,7 @@ export function rectPosition(model: UnitModel, channel: 'x' | 'y', mark: 'bar' |
       markDef,
       scaleName,
       band,
+      axisTranslate,
       spacing: getMarkPropOrConfig('binSpacing', markDef, config),
       reverse: scale.get('reverse'),
       config
@@ -209,25 +212,22 @@ function rectBandPosition(
   };
 }
 
-function getBinSpacing(channel: PositionChannel | PolarPositionChannel, spacing: number, reverse: boolean | SignalRef) {
+function getBinSpacing(
+  channel: PositionChannel | PolarPositionChannel,
+  spacing: number,
+  reverse: boolean | SignalRef,
+  translate: number
+) {
   if (isPolarPositionChannel(channel)) {
     return 0;
   }
 
+  const offset = channel === 'x' || channel === 'y2' ? -spacing / 2 : spacing / 2;
+
   if (isSignalRef(reverse)) {
-    if (channel === 'x' || channel === 'y2') {
-      return {signal: `${reverse.signal} ? ${spacing} : 0`};
-    } else {
-      return {signal: `${reverse.signal} ? 0 : ${spacing}`};
-    }
+    return {signal: `${reverse.signal} ? ${translate - offset} : ${translate + offset}`};
   } else {
-    const spacingIndex = {
-      x: reverse ? spacing : 0,
-      x2: reverse ? 0 : spacing,
-      y: reverse ? 0 : spacing,
-      y2: reverse ? spacing : 0
-    };
-    return spacingIndex[channel];
+    return reverse ? translate - offset : translate + offset;
   }
 }
 
@@ -241,6 +241,7 @@ export function rectBinPosition({
   scaleName,
   markDef,
   spacing = 0,
+  axisTranslate,
   reverse,
   config
 }: {
@@ -253,6 +254,7 @@ export function rectBinPosition({
   scaleName: string;
   markDef: MarkDef<Mark>;
   spacing?: number;
+  axisTranslate: number;
   reverse: boolean | SignalRef;
   config: Config;
 }) {
@@ -269,7 +271,7 @@ export function rectBinPosition({
         scaleName,
         markDef,
         band: (1 - band) / 2,
-        offset: getBinSpacing(channel2, spacing, reverse),
+        offset: getBinSpacing(channel2, spacing, reverse, axisTranslate),
         config
       }),
       [vgChannel]: rectBinRef({
@@ -278,7 +280,7 @@ export function rectBinPosition({
         scaleName,
         markDef,
         band: 1 - (1 - band) / 2,
-        offset: getBinSpacing(channel, spacing, reverse),
+        offset: getBinSpacing(channel, spacing, reverse, axisTranslate),
         config
       })
     };
@@ -288,13 +290,13 @@ export function rectBinPosition({
         fieldDef,
         scaleName,
         {},
-        {offset: getBinSpacing(channel2, spacing, reverse)}
+        {offset: getBinSpacing(channel2, spacing, reverse, axisTranslate)}
       ),
       [vgChannel]: ref.valueRefForFieldOrDatumDef(
         fieldDef2,
         scaleName,
         {},
-        {offset: getBinSpacing(channel, spacing, reverse)}
+        {offset: getBinSpacing(channel, spacing, reverse, axisTranslate)}
       )
     };
   } else {

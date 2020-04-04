@@ -217,7 +217,8 @@
                     },
                     {
                       "scale": "concat_1_concat_0_x",
-                      "field": "bin_maxbins_10_IMDB_Rating"
+                      "field": "bin_maxbins_10_IMDB_Rating",
+                      "offset": 0.5
                     }
                   ],
                   "x": [
@@ -227,7 +228,8 @@
                     },
                     {
                       "scale": "concat_1_concat_0_x",
-                      "field": "bin_maxbins_10_IMDB_Rating_end"
+                      "field": "bin_maxbins_10_IMDB_Rating_end",
+                      "offset": 0.5
                     }
                   ],
                   "y2": [
@@ -237,7 +239,8 @@
                     },
                     {
                       "scale": "concat_1_concat_0_y",
-                      "field": "bin_maxbins_10_Rotten_Tomatoes_Rating"
+                      "field": "bin_maxbins_10_Rotten_Tomatoes_Rating",
+                      "offset": 0.5
                     }
                   ],
                   "y": [
@@ -247,7 +250,8 @@
                     },
                     {
                       "scale": "concat_1_concat_0_y",
-                      "field": "bin_maxbins_10_Rotten_Tomatoes_Rating_end"
+                      "field": "bin_maxbins_10_Rotten_Tomatoes_Rating_end",
+                      "offset": 0.5
                     }
                   ]
                 }
