@@ -63,7 +63,7 @@
       "type": "linear",
       "domain": {"data": "data_0", "fields": ["value_start", "value_end"]},
       "range": [0, 6.283185307179586],
-      "zero": false
+      "zero": true
     },
     {
       "name": "color",

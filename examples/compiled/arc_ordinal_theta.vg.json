@@ -41,14 +41,8 @@
           "fill": {"scale": "color", "field": "dir"},
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},
-          "outerRadius": [
-            {
-              "test": "!isValid(datum[\"strength\"]) || !isFinite(+datum[\"strength\"])",
-              "value": 0
-            },
-            {"scale": "radius", "field": "strength"}
-          ],
-          "innerRadius": {"value": 0},
+          "outerRadius": {"scale": "radius", "field": "strength"},
+          "innerRadius": {"scale": "radius", "value": 0},
           "startAngle": {"scale": "theta", "field": "dir"},
           "endAngle": {
             "scale": "theta",
@@ -71,7 +65,7 @@
       "type": "linear",
       "domain": {"data": "data_0", "field": "strength"},
       "range": [0, {"signal": "min(width,height)/2"}],
-      "zero": false
+      "zero": true
     },
     {
       "name": "color",

@@ -76,7 +76,7 @@
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},
           "outerRadius": {"scale": "radius", "field": "__count"},
-          "innerRadius": {"value": 0},
+          "innerRadius": {"scale": "radius", "value": 0},
           "endAngle": [
             {
               "test": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])",
@@ -145,7 +145,7 @@
         ]
       },
       "range": [0, {"signal": "min(width,height)/2"}],
-      "zero": false
+      "zero": true
     },
     {
       "name": "angle",
