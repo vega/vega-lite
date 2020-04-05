@@ -551,7 +551,7 @@ function getSupportedMark(channel: Channel): SupportedMark {
     case TEXT:
       return {text: 'always'};
     case ANGLE:
-      return {point: 'always', text: 'always'};
+      return {point: 'always', square: 'always', text: 'always'};
     case URL:
       return {image: 'always'};
     case THETA:
