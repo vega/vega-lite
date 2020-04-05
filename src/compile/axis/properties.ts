@@ -11,7 +11,7 @@ import {NOMINAL, ORDINAL, Type} from '../../type';
 import {contains, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
 import {UnitModel} from '../unit';
-import {getAxisConfig} from './config';
+import {AxisConfigs, getAxisConfig} from './config';
 
 // TODO: we need to refactor this method after we take care of config refactoring
 /**
@@ -36,14 +36,14 @@ export function labelAngle(
   specifiedAxis: Axis,
   channel: PositionScaleChannel,
   fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
-  axisConfigTypes: string[]
+  axisConfigs?: AxisConfigs
 ) {
   // try axis value
   if (specifiedAxis?.labelAngle !== undefined) {
     return normalizeAngle(specifiedAxis?.labelAngle);
   } else {
     // try axis config value
-    const {configValue: angle} = getAxisConfig('labelAngle', model.config, axisConfigTypes, specifiedAxis?.style);
+    const {configValue: angle} = getAxisConfig('labelAngle', model.config, specifiedAxis?.style, axisConfigs);
     if (angle !== undefined) {
       return normalizeAngle(angle);
     } else {
