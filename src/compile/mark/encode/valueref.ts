@@ -288,18 +288,16 @@ export function midPoint({
         }
       }
 
-      if (scale) {
-        const scaleType = scale.get('type');
-        if (hasDiscreteDomain(scaleType)) {
-          if (scaleType === 'band') {
-            // For band, to get mid point, need to offset by half of the band
-            band = band ?? getFirstDefined(isAnyPositionFieldOrDatumDef(channelDef) ? channelDef.band : undefined, 0.5);
-            return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'range'}, {band, offset});
-          }
-          return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'range'}, {offset});
+      const scaleType = scale?.get('type');
+      return valueRefForFieldOrDatumDef(
+        channelDef,
+        scaleName,
+        hasDiscreteDomain(scaleType) ? {binSuffix: 'range'} : {}, // no need for bin suffix if there is no scale
+        {
+          offset,
+          band: scaleType === 'band' ? (band = band ?? channelDef.band ?? 0.5) : undefined
         }
-      }
-      return valueRefForFieldOrDatumDef(channelDef, scaleName, {}, {offset}); // no need for bin suffix
+      );
     } else if (isValueDef(channelDef)) {
       const value = channelDef.value;
       const offsetMixins = offset ? {offset} : {};
