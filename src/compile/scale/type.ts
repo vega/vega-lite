@@ -1,6 +1,6 @@
 import {isBinning} from '../../bin';
 import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
-import {DatumDef, isFieldDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
+import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {channelSupportScaleType, Scale, ScaleType, scaleTypeSupportDataType} from '../../scale';
@@ -68,6 +68,10 @@ function defaultType(channel: Channel, fieldDef: TypedFieldDef<string> | ScaleDa
           return 'band';
         }
       } else if (mark === 'arc' && util.contains(['theta', 'radius'], channel)) {
+        return 'band';
+      }
+
+      if (fieldDef.band !== undefined || (isPositionFieldOrDatumDef(fieldDef) && fieldDef.axis?.tickBand)) {
         return 'band';
       }
       // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
