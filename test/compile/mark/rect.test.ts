@@ -94,7 +94,7 @@ describe('Mark: Rect', () => {
 
     it('should draw bar, with y from zero to field value and x band', () => {
       expect(props.x).toEqual({scale: 'x', field: 'Origin'});
-      expect(props.width).toEqual({scale: 'x', band: 1});
+      expect(props.width).toEqual({scale: 'x', band: true});
       expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
       expect(props.y2).toEqual({scale: 'y', value: 0});
       expect(props.height).toBeUndefined();
@@ -134,7 +134,7 @@ describe('Mark: Rect', () => {
 
     it('should draw bar from zero to field value and y band', () => {
       expect(props.y).toEqual({scale: 'y', field: 'Origin'});
-      expect(props.height).toEqual({scale: 'y', band: 1});
+      expect(props.height).toEqual({scale: 'y', band: true});
       expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
       expect(props.x2).toEqual({scale: 'x', value: 0});
       expect(props.width).toBeUndefined();
@@ -156,7 +156,7 @@ describe('Mark: Rect', () => {
     log.wrap(localLogger => {
       it('should draw bar from zero to field value and with band value for x/width', () => {
         expect(props.y).toEqual({scale: 'y', field: 'Origin'});
-        expect(props.height).toEqual({scale: 'y', band: 1});
+        expect(props.height).toEqual({scale: 'y', band: true});
         expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
         expect(props.x2).toEqual({scale: 'x', value: 0});
         expect(props.width).toBeUndefined();
@@ -253,9 +253,9 @@ describe('Mark: Rect', () => {
 
     it('should draw rect with x and y bands', () => {
       expect(props.x).toEqual({scale: 'x', field: 'Cylinders'});
-      expect(props.width).toEqual({scale: 'x', band: 1});
+      expect(props.width).toEqual({scale: 'x', band: true});
       expect(props.y).toEqual({scale: 'y', field: 'Origin'});
-      expect(props.height).toEqual({scale: 'y', band: 1});
+      expect(props.height).toEqual({scale: 'y', band: true});
     });
   });
 
