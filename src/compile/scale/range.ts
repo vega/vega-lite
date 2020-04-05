@@ -7,6 +7,7 @@ import {
   COLOR,
   FILL,
   FILLOPACITY,
+  isXorY,
   OPACITY,
   RADIUS,
   ScaleChannel,
@@ -109,7 +110,7 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
       } else {
         switch (property) {
           case 'range':
-            if (isArray(specifiedScale.range) && (channel === 'x' || channel === 'y')) {
+            if (isArray(specifiedScale.range) && isXorY(channel)) {
               return makeExplicit(
                 specifiedScale.range.map(v => {
                   if (v === 'width' || v === 'height') {

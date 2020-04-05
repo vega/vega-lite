@@ -1,4 +1,4 @@
-import {Channel, ScaleChannel} from '../../channel';
+import {Channel, isXorY, ScaleChannel} from '../../channel';
 import {keys} from '../../util';
 import {isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
 import {isConcatModel, isLayerModel, Model} from '../model';
@@ -53,7 +53,7 @@ export function assembleScalesForModel(model: Model): VgScale[] {
 
 export function assembleScaleRange(scaleRange: VgRange, scaleName: string, channel: Channel): VgRange {
   // add signals to x/y range
-  if (channel === 'x' || channel === 'y') {
+  if (isXorY(channel)) {
     if (isVgRangeStep(scaleRange)) {
       // For width/height step, use a signal created in layout assemble instead of a constant step.
       return {
