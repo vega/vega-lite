@@ -11,9 +11,7 @@ import {
   PositionFieldDef,
   toFieldDefBase
 } from '../../channeldef';
-import {Config} from '../../config';
-import {isQuantitative} from '../../scale';
-import {getFirstDefined, keys, normalizeAngle, titlecase} from '../../util';
+import {getFirstDefined, keys, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
 import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs} from '../common';
 import {numberFormat} from '../format';
@@ -23,7 +21,7 @@ import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {AxisComponent, AxisComponentIndex, AxisComponentProps, AXIS_COMPONENT_PROPERTIES} from './component';
-import {getAxisConfig} from './config';
+import {AxisConfigs, getAxisConfig, getAxisConfigs} from './config';
 import * as encode from './encode';
 import * as properties from './properties';
 
@@ -233,41 +231,6 @@ function isExplicit<T extends string | number | boolean | object>(
   return value === axis[property];
 }
 
-const VEGA_AXIS_CONFIG = {
-  axis: 1,
-  axisX: 1,
-  axisY: 1,
-  axisLeft: 1,
-  axisTop: 1,
-  axisBottom: 1,
-  axisRight: 1,
-  axisBand: 1
-};
-
-function getAxisConfigTypes(channel: PositionScaleChannel, scaleType: ScaleType, orient: string, config: Config) {
-  const typeBasedConfigs = [
-    ...(scaleType === 'band' ? ['axisBand', 'axisDiscrete'] : []),
-    ...(scaleType === 'point' ? ['axisPoint', 'axisDiscrete'] : []),
-    ...(isQuantitative(scaleType) ? ['axisQuantitative'] : []),
-    ...(scaleType === 'time' || scaleType === 'utc' ? ['axisTemporal'] : [])
-  ];
-
-  const channelBasedConfig = channel === 'x' ? 'axisX' : 'axisY';
-
-  // configTypes to loop, starting from higher precedence
-  return [
-    ...typeBasedConfigs.map(c => channelBasedConfig + c.substr(4)),
-
-    ...typeBasedConfigs,
-    // X/Y
-    channelBasedConfig,
-
-    // axisTop, axisBottom, ...
-    ...(orient ? ['axis' + titlecase(orient)] : []),
-    'axis'
-  ].filter(configType => configType in config);
-}
-
 /**
  * Properties to always include values from config:
  * - Grid is an exception because we need to set grid = true to generate another grid axis
@@ -288,11 +251,11 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   const orient = getFirstDefined(axis?.orient, properties.orient(channel));
   const scaleType = model.getScaleComponent(channel).get('type');
 
-  const axisConfigTypes = getAxisConfigTypes(channel, scaleType, orient, model.config);
+  const axisConfigs = getAxisConfigs(channel, scaleType, orient, model.config);
 
   // 1.2. Add properties
   for (const property of AXIS_COMPONENT_PROPERTIES) {
-    const value = getProperty(fieldOrDatumDef, property, axis, channel, model, axisConfigTypes, scaleType, orient);
+    const value = getProperty(fieldOrDatumDef, property, axis, channel, model, axisConfigs, scaleType, orient);
     const hasValue = value !== undefined;
 
     const explicit = isExplicit(value, property, axis, model, channel);
@@ -301,7 +264,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
       axisComponent.set(property, value, explicit);
     } else {
       const {configValue = undefined, configFrom = undefined} = isAxisProperty(property)
-        ? getAxisConfig(property, model.config, axisConfigTypes, axis?.style)
+        ? getAxisConfig(property, model.config, axis?.style, axisConfigs)
         : {};
       const hasConfigValue = configValue !== undefined;
 
@@ -311,7 +274,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
       } else if (
         // Cases need implicit values
         // 1. Axis config that aren't available in Vega
-        !(configFrom in VEGA_AXIS_CONFIG) ||
+        !(configFrom === 'vgAxisConfig') ||
         // 2. Certain properties are always included (see `propsToAlwaysIncludeConfig`'s declaration for more details)
         (propsToAlwaysIncludeConfig.has(property) && hasConfigValue) ||
         // 3. Conditional axis values and signals
@@ -356,7 +319,7 @@ function getProperty<K extends keyof AxisComponentProps>(
   specifiedAxis: Axis,
   channel: PositionScaleChannel,
   model: UnitModel,
-  axisConfigTypes: string[],
+  axisConfigs: AxisConfigs,
   scaleType: ScaleType,
   orient: Orient
 ): AxisComponentProps[K] {
@@ -400,18 +363,18 @@ function getProperty<K extends keyof AxisComponentProps>(
     case 'labelAlign': {
       return (specifiedAxis.labelAlign ??
         properties.defaultLabelAlign(
-          properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes),
+          properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigs),
           orient
         )) as AxisComponentProps[K];
     }
     case 'labelAngle': {
-      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes);
+      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigs);
       return labelAngle as AxisComponentProps[K];
     }
     case 'labelBaseline': {
       return (specifiedAxis.labelBaseline ??
         properties.defaultLabelBaseline(
-          properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes),
+          properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigs),
           orient
         )) as AxisComponentProps[K];
     }
