@@ -1,4 +1,4 @@
-import {AxisEncode as VgAxisEncode, AxisOrient, ScaleType, SignalRef} from 'vega';
+import {AxisEncode as VgAxisEncode, AxisOrient, Orient, ScaleType, SignalRef} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
 import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
@@ -285,16 +285,14 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
     | PositionFieldDef<string>
     | PositionDatumDef<string>;
 
-  const axisConfigTypes = getAxisConfigTypes(
-    channel,
-    model.getScaleComponent(channel).get('type'),
-    getFirstDefined(axis?.orient, properties.orient(channel)),
-    model.config
-  );
+  const orient = getFirstDefined(axis?.orient, properties.orient(channel));
+  const scaleType = model.getScaleComponent(channel).get('type');
+
+  const axisConfigTypes = getAxisConfigTypes(channel, scaleType, orient, model.config);
 
   // 1.2. Add properties
   for (const property of AXIS_COMPONENT_PROPERTIES) {
-    const value = getProperty(fieldOrDatumDef, property, axis, channel, model, axisConfigTypes);
+    const value = getProperty(fieldOrDatumDef, property, axis, channel, model, axisConfigTypes, scaleType, orient);
     const hasValue = value !== undefined;
 
     const explicit = isExplicit(value, property, axis, model, channel);
@@ -358,13 +356,15 @@ function getProperty<K extends keyof AxisComponentProps>(
   specifiedAxis: Axis,
   channel: PositionScaleChannel,
   model: UnitModel,
-  axisConfigTypes: string[]
+  axisConfigTypes: string[],
+  scaleType: ScaleType,
+  orient: Orient
 ): AxisComponentProps[K] {
   if (property === 'disable') {
     return specifiedAxis !== undefined && (!specifiedAxis as AxisComponentProps[K]);
   }
 
-  specifiedAxis = specifiedAxis || {}; // assign object so the rest doesn't have to check if legend exists
+  specifiedAxis = specifiedAxis || {}; // assign object so the rest doesn't have to check if axis exists
 
   const {mark, config} = model;
 
@@ -391,7 +391,6 @@ function getProperty<K extends keyof AxisComponentProps>(
       if (isBinned(model.fieldDef(channel)?.bin)) {
         return false as AxisComponentProps[K];
       } else {
-        const scaleType = model.getScaleComponent(channel).get('type');
         return getFirstDefined(
           specifiedAxis.grid,
           properties.defaultGrid(scaleType, model.typedFieldDef(channel))
@@ -399,7 +398,6 @@ function getProperty<K extends keyof AxisComponentProps>(
       }
     }
     case 'labelAlign': {
-      const orient = specifiedAxis.orient ?? properties.orient(channel);
       return (specifiedAxis.labelAlign ??
         properties.defaultLabelAlign(
           properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes),
@@ -414,7 +412,7 @@ function getProperty<K extends keyof AxisComponentProps>(
       return (specifiedAxis.labelBaseline ??
         properties.defaultLabelBaseline(
           properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes),
-          specifiedAxis.orient ?? properties.orient(channel)
+          orient
         )) as AxisComponentProps[K];
     }
     case 'labelFlush':
@@ -423,18 +421,15 @@ function getProperty<K extends keyof AxisComponentProps>(
         properties.defaultLabelFlush(fieldOrDatumDef.type, channel)
       ) as AxisComponentProps[K];
     case 'labelOverlap': {
-      const scaleType = model.getScaleComponent(channel).get('type');
       return getFirstDefined(
         specifiedAxis.labelOverlap,
         properties.defaultLabelOverlap(fieldOrDatumDef.type, scaleType)
       ) as AxisComponentProps[K];
     }
-    case 'orient': {
-      const orient = getFirstDefined(specifiedAxis.orient, properties.orient(channel));
+    case 'orient':
       return orient as AxisComponentProps[K];
-    }
+
     case 'tickCount': {
-      const scaleType = model.getScaleComponent(channel).get('type');
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
       const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
       return getFirstDefined<number | SignalRef>(
