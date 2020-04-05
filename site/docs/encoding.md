@@ -120,7 +120,7 @@ To encode a particular field in the data set with an encoding channel, the chann
 
 All field definitions support the following properties:
 
-{% include table.html props="field,type,bin,timeUnit,aggregate,title" source="TypedFieldDef" %}
+{% include table.html props="field,type,bin,timeUnit,aggregate,band,title" source="TypedFieldDef" %}
 
 In addition, field definitions for different encoding channels may support the following properties:
 
@@ -184,7 +184,7 @@ To map a constant data value (`datum`) via a scale to an encoding channel, the c
 
 {% include table.html props="datum" source="DatumDef" %}
 
-Similar to a field definition, datum definition of different encoding channels may support `scale`, `axis`, `legend`, `format`, or `condition` properties. However, data transforms (`aggregate`, `bin`, `timeUnit`, `sort` cannot be applied to a datum definition).
+Similar to a field definition, datum definition of different encoding channels may support `band`, `scale`, `axis`, `legend`, `format`, or `condition` properties. However, data transforms (`aggregate`, `bin`, `timeUnit`, `sort` cannot be applied to a datum definition).
 
 {:#position}
 
@@ -204,7 +204,7 @@ By default, Vega-Lite automatically generates a [scale](scale.html) and an [axis
 
 [Field definitions](#field-def) for `x` and `y` channels may also include the properties listed below (in addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html)). Similarly, [datum definitions](#datum-def) for `x` and `y` channels also support these properties.
 
-{% include table.html props="scale,axis,sort,band,impute,stack" source="PositionFieldDef" %}
+{% include table.html props="scale,axis,sort,impute,stack" source="PositionFieldDef" %}
 
 **Note:** `x2` and `y2` do not have their own definitions for `scale`, `axis`, `sort`, and `stack` since they share the same scales and axes with `x` and `y` respectively.
 

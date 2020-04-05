@@ -3,10 +3,11 @@ import {
   getSecondaryRangeChannel,
   getSizeChannel,
   getVgPositionChannel,
+  isXorY,
   PolarPositionChannel,
   PositionChannel
 } from '../../../channel';
-import {getBand, isAnyPositionFieldOrDatumDef, isFieldDef} from '../../../channeldef';
+import {getBand, isFieldDef, isFieldOrDatumDef, TypedFieldDef} from '../../../channeldef';
 import {ScaleType} from '../../../scale';
 import {contains} from '../../../util';
 import {VgValueRef} from '../../../vega.schema';
@@ -26,7 +27,11 @@ export function pointPosition(
     defaultPos,
     vgChannel,
     isMidPoint
-  }: {defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax' | null; vgChannel?: 'x' | 'y' | 'xc' | 'yc'; isMidPoint?: boolean}
+  }: {
+    defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax' | null;
+    vgChannel?: 'x' | 'y' | 'xc' | 'yc';
+    isMidPoint?: boolean;
+  }
 ) {
   const {encoding, markDef, config, stack} = model;
 
@@ -47,7 +52,7 @@ export function pointPosition(
   });
 
   const valueRef =
-    !channelDef && (channel === 'x' || channel === 'y') && (encoding.latitude || encoding.longitude)
+    !channelDef && isXorY(channel) && (encoding.latitude || encoding.longitude)
       ? // use geopoint output if there are lat/long and there is no point position overriding lat/long.
         {field: model.getName(channel)}
       : positionRef({
@@ -82,8 +87,8 @@ export function positionRef(
   const {channel, channelDef, isMidPoint, scaleName, stack, offset, markDef, config} = params;
 
   // This isn't a part of midPoint because we use midPoint for non-position too
-  if (isFieldDef(channelDef) && stack && channel === stack.fieldChannel) {
-    if (isAnyPositionFieldOrDatumDef(channelDef)) {
+  if (isFieldOrDatumDef(channelDef) && stack && channel === stack.fieldChannel) {
+    if (isFieldDef(channelDef)) {
       const band = getBand({
         channel,
         fieldDef: channelDef,
@@ -95,7 +100,7 @@ export function positionRef(
       if (band !== undefined) {
         return ref.interpolatedSignalRef({
           scaleName,
-          fieldOrDatumDef: channelDef,
+          fieldOrDatumDef: channelDef as TypedFieldDef<string>, // positionRef always have type
           startSuffix: 'start',
           band,
           offset

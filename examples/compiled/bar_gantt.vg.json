@@ -44,7 +44,7 @@
           "x": {"scale": "x", "field": "start"},
           "x2": {"scale": "x", "field": "end"},
           "y": {"scale": "y", "field": "task"},
-          "height": {"scale": "y", "band": true}
+          "height": {"scale": "y", "band": 1}
         }
       }
     }

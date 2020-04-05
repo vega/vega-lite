@@ -76,7 +76,7 @@
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},
           "outerRadius": {"scale": "radius", "field": "__count"},
-          "innerRadius": {"value": 0},
+          "innerRadius": {"scale": "radius", "value": 0},
           "endAngle": [
             {
               "test": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])",
@@ -108,7 +108,9 @@
           "text": {
             "signal": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\")"
           },
-          "angle": {"scale": "angle", "field": "bin_maxbins_10_IMDB_Rating"},
+          "angle": {
+            "signal": "scale(\"angle\", 0.5 * datum[\"bin_maxbins_10_IMDB_Rating\"] + 0.5 * datum[\"bin_maxbins_10_IMDB_Rating_end\"])"
+          },
           "baseline": {"value": "middle"},
           "radius": {"scale": "radius", "field": "__count", "offset": 15},
           "theta": [
@@ -145,7 +147,7 @@
         ]
       },
       "range": [0, {"signal": "min(width,height)/2"}],
-      "zero": false
+      "zero": true
     },
     {
       "name": "angle",
@@ -153,7 +155,7 @@
       "domain": {
         "signal": "[layer_1_bin_maxbins_10_IMDB_Rating_bins.start, layer_1_bin_maxbins_10_IMDB_Rating_bins.stop]"
       },
-      "range": [108, 468],
+      "range": [90, 450],
       "bins": {"signal": "layer_1_bin_maxbins_10_IMDB_Rating_bins"},
       "zero": false
     }

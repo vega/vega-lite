@@ -289,7 +289,7 @@
             {"value": 0.7}
           ],
           "x": {"scale": "x", "field": "month_date"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "mean_precipitation"},
           "y2": {"scale": "y", "value": 0}
         }

@@ -49,7 +49,7 @@
           "fill": {"scale": "color", "field": "gender"},
           "opacity": {"value": 0.7},
           "x": {"scale": "x", "field": "age"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "sum_people"},
           "y2": {"scale": "y", "value": 0}
         }

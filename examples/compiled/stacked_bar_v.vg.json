@@ -49,7 +49,7 @@
         "update": {
           "fill": {"scale": "color", "field": "site"},
           "x": {"scale": "x", "field": "variety"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "sum_yield_end"},
           "y2": {"scale": "y", "field": "sum_yield_start"}
         }

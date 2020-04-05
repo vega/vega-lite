@@ -1,6 +1,6 @@
 import {array, isArray, isObject, isString, stringValue} from 'vega-util';
 import {isBinned} from '../../../bin';
-import {Channel, getMainRangeChannel} from '../../../channel';
+import {Channel, getMainRangeChannel, isXorY} from '../../../channel';
 import {
   getFieldDef,
   getFormatMixins,
@@ -87,7 +87,7 @@ export function tooltipRefForEncoding(
 
     let value = textRef(fieldDef, config, expr).signal;
 
-    if (channel === 'x' || channel === 'y') {
+    if (isXorY(channel)) {
       const channel2 = channel === 'x' ? 'x2' : 'y2';
       const fieldDef2 = getFieldDef(encoding[channel2]);
 

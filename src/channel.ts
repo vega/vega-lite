@@ -378,10 +378,6 @@ const POLAR_POSITION_SCALE_CHANNEL_INDEX = {theta: 1, radius: 1} as const;
 export const POLAR_POSITION_SCALE_CHANNELS = keys(POLAR_POSITION_SCALE_CHANNEL_INDEX);
 export type PolarPositionScaleChannel = typeof POLAR_POSITION_SCALE_CHANNELS[number];
 
-export function getSizeType(channel: PositionScaleChannel): 'width' | 'height' {
-  return channel === 'x' ? 'width' : 'height';
-}
-
 export function getPositionScaleChannel(sizeType: 'width' | 'height'): PositionScaleChannel {
   return sizeType === 'width' ? 'x' : 'y';
 }
@@ -555,7 +551,7 @@ function getSupportedMark(channel: Channel): SupportedMark {
     case TEXT:
       return {text: 'always'};
     case ANGLE:
-      return {point: 'always', text: 'always'};
+      return {point: 'always', square: 'always', text: 'always'};
     case URL:
       return {image: 'always'};
     case THETA:

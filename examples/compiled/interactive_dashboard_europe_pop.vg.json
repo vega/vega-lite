@@ -597,7 +597,7 @@
               },
               "x2": {"scale": "concat_0_x", "value": 0},
               "y": {"scale": "concat_0_y", "field": "Country"},
-              "height": {"scale": "concat_0_y", "band": true}
+              "height": {"scale": "concat_0_y", "band": 1}
             }
           }
         },
@@ -914,7 +914,7 @@
               },
               "x2": {"scale": "concat_1_x", "value": 0},
               "y": {"scale": "concat_1_y", "field": "Country"},
-              "height": {"scale": "concat_1_y", "band": true}
+              "height": {"scale": "concat_1_y", "band": 1}
             }
           }
         },

@@ -63,7 +63,7 @@
           "x": {"scale": "x", "field": "sum_signed_people_end"},
           "x2": {"scale": "x", "field": "sum_signed_people_start"},
           "y": {"scale": "y", "field": "age"},
-          "height": {"scale": "y", "band": true}
+          "height": {"scale": "y", "band": 1}
         }
       }
     }

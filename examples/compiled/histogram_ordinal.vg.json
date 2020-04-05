@@ -62,7 +62,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "x": {"scale": "x", "field": "bin_maxbins_10_IMDB_Rating_range"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }

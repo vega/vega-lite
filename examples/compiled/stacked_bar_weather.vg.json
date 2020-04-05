@@ -51,7 +51,7 @@
         "update": {
           "fill": {"scale": "color", "field": "weather"},
           "x": {"scale": "x", "field": "month_date"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "__count_end"},
           "y2": {"scale": "y", "field": "__count_start"}
         }

@@ -7,6 +7,7 @@ import {
   COLOR,
   FILL,
   FILLOPACITY,
+  isXorY,
   OPACITY,
   RADIUS,
   ScaleChannel,
@@ -47,7 +48,7 @@ import {ScaleComponentIndex} from './component';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
 
-function getSizeType(channel: ScaleChannel) {
+function getSizeChannel(channel: ScaleChannel) {
   return channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
 }
 
@@ -74,7 +75,7 @@ function getBinStepSignal(model: UnitModel, channel: 'x' | 'y'): SignalRefWrappe
     const binSignal = getBinSignalName(model, fieldDef.field, fieldDef.bin);
 
     // TODO: extract this to be range step signal
-    const sizeType = getSizeType(channel);
+    const sizeType = getSizeChannel(channel);
     const sizeSignal = model.getName(sizeType);
     return new SignalRefWrapper(() => {
       const updatedName = model.getSignalName(binSignal);
@@ -109,7 +110,7 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
       } else {
         switch (property) {
           case 'range':
-            if (isArray(specifiedScale.range) && (channel === 'x' || channel === 'y')) {
+            if (isArray(specifiedScale.range) && isXorY(channel)) {
               return makeExplicit(
                 specifiedScale.range.map(v => {
                   if (v === 'width' || v === 'height') {
@@ -191,7 +192,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       // If step is null, use zero to width or height.
       // Note that we use SignalRefWrapper to account for potential merges and renames.
 
-      const sizeType = getSizeType(channel);
+      const sizeType = getSizeChannel(channel);
       const sizeSignal = model.getName(sizeType);
 
       if (channel === Y && hasContinuousDomain(scaleType)) {

@@ -70,7 +70,7 @@
           "x": {"scale": "x", "field": "IMDB_Rating"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "Title"},
-          "height": {"scale": "y", "band": true}
+          "height": {"scale": "y", "band": 1}
         }
       }
     },

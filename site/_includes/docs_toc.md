@@ -220,6 +220,8 @@
         - [Documentation Overview]({{site.baseurl}}/docs/axis.html#documentation-overview)
         - [Axis Properties]({{site.baseurl}}/docs/axis.html#axis-properties)
         - [Axis Config]({{site.baseurl}}/docs/axis.html#config)
+    - [Band]({{site.baseurl}}/docs/band.html)
+        - [Examples]({{site.baseurl}}/docs/band.html#examples)
     - [Bin]({{site.baseurl}}/docs/bin.html)
         - [Documentation Overview]({{site.baseurl}}/docs/bin.html#documentation-overview)
         - [Binning in Encoding Field Definition]({{site.baseurl}}/docs/bin.html#encoding)
