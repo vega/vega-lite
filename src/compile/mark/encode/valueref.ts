@@ -5,18 +5,7 @@ import {SignalRef} from 'vega';
 import {isFunction, isString} from 'vega-util';
 import {isCountingAggregateOp} from '../../../aggregate';
 import {isBinned, isBinning} from '../../../bin';
-import {
-  Channel,
-  getMainRangeChannel,
-  PolarPositionChannel,
-  PositionChannel,
-  RADIUS,
-  THETA,
-  X,
-  X2,
-  Y,
-  Y2
-} from '../../../channel';
+import {Channel, getMainRangeChannel, PolarPositionChannel, PositionChannel, X, X2, Y2} from '../../../channel';
 import {
   binRequiresRange,
   ChannelDef,
@@ -26,7 +15,6 @@ import {
   FieldName,
   FieldRefOption,
   getBand,
-  isAnyPositionFieldOrDatumDef,
   isDatumDef,
   isFieldDef,
   isFieldOrDatumDef,
@@ -45,8 +33,8 @@ import {isPathMark, Mark, MarkDef} from '../../../mark';
 import {fieldValidPredicate} from '../../../predicate';
 import {hasDiscreteDomain, isContinuousToContinuous} from '../../../scale';
 import {StackProperties} from '../../../stack';
-import {QUANTITATIVE, TEMPORAL} from '../../../type';
-import {contains, getFirstDefined} from '../../../util';
+import {TEMPORAL} from '../../../type';
+import {contains} from '../../../util';
 import {isSignalRef, VgValueRef} from '../../../vega.schema';
 import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {ScaleComponent} from '../../scale/component';
@@ -264,14 +252,15 @@ export function midPoint({
           });
         const {bin, timeUnit, type} = channelDef;
 
-        if (isBinning(channelDef.bin) || (band && timeUnit && type === TEMPORAL)) {
+        if (isBinning(bin) || (band && timeUnit && type === TEMPORAL)) {
           // Use middle only for x an y to place marks in the center between start and end of the bin range.
           // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
-          if (contains([X, Y, RADIUS, THETA], channel) && contains([QUANTITATIVE, TEMPORAL], type)) {
-            if (stack && stack.impute) {
-              // For stack, we computed bin_mid so we can impute.
-              return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
-            }
+          if (stack && stack.impute) {
+            // For stack, we computed bin_mid so we can impute.
+            return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
+          }
+          if (band) {
+            // if band = 0, no need to call interpolation
             // For non-stack, we can just calculate bin mid on the fly using signal.
             return interpolatedSignalRef({scaleName, fieldOrDatumDef: channelDef, band, offset});
           }

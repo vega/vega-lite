@@ -237,7 +237,7 @@ export function isRepeatRef(field: Field | any): field is RepeatRef {
 /** @@hidden */
 export type HiddenCompositeAggregate = CompositeAggregate;
 
-export interface FieldDefBase<F, B extends Bin = Bin> {
+export interface FieldDefBase<F, B extends Bin = Bin> extends BandMixins {
   /**
    * __Required.__ A string defining the name of the field from which to pull a data value
    * or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.
@@ -377,7 +377,8 @@ export interface ScaleMixins {
 }
 
 export interface DatumDef<F extends Field = string, V extends Value | DateTime = Value | DateTime>
-  extends Partial<TypeMixins<Type>> {
+  extends Partial<TypeMixins<Type>>,
+    BandMixins {
   /**
    * A constant value in data domain.
    */
@@ -434,7 +435,9 @@ export interface PositionBaseMixins {
    * __See also:__ [`stack`](https://vega.github.io/vega-lite/docs/stack.html) documentation.
    */
   stack?: StackOffset | null | boolean;
+}
 
+export interface BandMixins {
   /**
    * For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.
    *
@@ -491,26 +494,24 @@ export function getBand({
   markDef: MarkDef;
   config: Config;
 }) {
-  if (contains(['x', 'y', 'theta', 'radius'], channel)) {
-    if (isAnyPositionFieldOrDatumDef(fieldDef) && fieldDef.band !== undefined) {
-      return fieldDef.band;
-    }
-    if (isFieldDef(fieldDef)) {
-      const {timeUnit, bin} = fieldDef;
+  if (isFieldOrDatumDef(fieldDef) && fieldDef.band !== undefined) {
+    return fieldDef.band;
+  }
+  if (isFieldDef(fieldDef)) {
+    const {timeUnit, bin} = fieldDef;
 
-      if (timeUnit && !fieldDef2) {
-        if (isMidPoint) {
-          return getMarkConfig('timeUnitBandPosition', mark, config);
-        } else {
-          return isRectBasedMark(mark.type) ? getMarkConfig('timeUnitBand', mark, config) : 0;
-        }
-      } else if (isBinning(bin)) {
-        return isRectBasedMark(mark.type) && !isMidPoint ? 1 : 0.5;
+    if (timeUnit && !fieldDef2) {
+      if (isMidPoint) {
+        return getMarkConfig('timeUnitBandPosition', mark, config);
+      } else {
+        return isRectBasedMark(mark.type) ? getMarkConfig('timeUnitBand', mark, config) : 0;
       }
+    } else if (isBinning(bin)) {
+      return isRectBasedMark(mark.type) && !isMidPoint ? 1 : 0.5;
     }
-    if (stack?.fieldChannel === channel && isMidPoint) {
-      return 0.5;
-    }
+  }
+  if (stack?.fieldChannel === channel && isMidPoint) {
+    return 0.5;
   }
   return undefined;
 }
@@ -651,15 +652,7 @@ export function isScaleFieldDef<F extends Field>(channelDef: ChannelDef<F>): cha
 export function isPositionFieldOrDatumDef<F extends Field>(
   channelDef: ChannelDef<F>
 ): channelDef is PositionFieldDef<F> | PositionDatumDef<F> {
-  return (
-    !!channelDef && ('axis' in channelDef || 'stack' in channelDef || 'impute' in channelDef || 'band' in channelDef)
-  );
-}
-
-export function isAnyPositionFieldOrDatumDef<F extends Field>(
-  channelDef: ChannelDef<F>
-): channelDef is PositionFieldDefBase<F> | PositionDatumDefBase<F> {
-  return !!channelDef && ('stack' in channelDef || 'band' in channelDef);
+  return channelDef && ('axis' in channelDef || 'stack' in channelDef || 'impute' in channelDef);
 }
 
 export function isMarkPropFieldOrDatumDef<F extends Field>(
