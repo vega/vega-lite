@@ -308,7 +308,7 @@
           "x": {"scale": "x", "field": "nx"},
           "x2": {"scale": "x", "field": "nx2"},
           "y": {"scale": "y", "field": "question"},
-          "height": {"scale": "y", "band": true}
+          "height": {"scale": "y", "band": 1}
         }
       }
     }

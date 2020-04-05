@@ -74,7 +74,7 @@
           "x": {"scale": "x", "field": "mean_aggregate_gross"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "ranked_director"},
-          "height": {"scale": "y", "band": true}
+          "height": {"scale": "y", "band": 1}
         }
       }
     }

@@ -57,7 +57,7 @@
           "x": {"scale": "x", "field": "PercentOfTotal"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "Activity"},
-          "height": {"scale": "y", "band": true}
+          "height": {"scale": "y", "band": 1}
         }
       }
     }

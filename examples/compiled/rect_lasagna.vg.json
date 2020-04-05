@@ -42,9 +42,9 @@
         "update": {
           "fill": {"scale": "color", "field": "sum_price"},
           "x": {"scale": "x", "field": "yearmonthdate_date"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "symbol"},
-          "height": {"scale": "y", "band": true}
+          "height": {"scale": "y", "band": 1}
         }
       }
     }

@@ -50,7 +50,7 @@
             "signal": "{\"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"], \"b\": format(datum[\"b\"], \"\")}"
           },
           "x": {"scale": "x", "field": "a"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "b"},
           "y2": {"scale": "y", "value": 0}
         }

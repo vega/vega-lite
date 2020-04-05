@@ -125,7 +125,7 @@
               "x": {"scale": "concat_0_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_0_x", "field": "sum_people_start"},
               "y": {"scale": "concat_0_y", "field": "age"},
-              "height": {"scale": "concat_0_y", "band": true}
+              "height": {"scale": "concat_0_y", "band": 1}
             }
           }
         }
@@ -198,7 +198,7 @@
               "x": {"scale": "concat_2_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_2_x", "field": "sum_people_start"},
               "y": {"scale": "concat_2_y", "field": "age"},
-              "height": {"scale": "concat_2_y", "band": true}
+              "height": {"scale": "concat_2_y", "band": 1}
             }
           }
         }

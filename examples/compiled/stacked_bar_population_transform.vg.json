@@ -49,7 +49,7 @@
         "update": {
           "fill": {"scale": "color", "field": "gender"},
           "x": {"scale": "x", "field": "age"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "v1"},
           "y2": {"scale": "y", "field": "v2"}
         }

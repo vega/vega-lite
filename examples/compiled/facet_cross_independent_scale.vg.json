@@ -166,9 +166,9 @@
             "update": {
               "fill": {"value": "#4c78a8"},
               "x": {"scale": "child_x", "field": "a"},
-              "width": {"scale": "child_x", "band": true},
+              "width": {"scale": "child_x", "band": 1},
               "y": {"scale": "child_y", "field": "b"},
-              "height": {"scale": "child_y", "band": true}
+              "height": {"scale": "child_y", "band": 1}
             }
           }
         }
