@@ -44,8 +44,7 @@
       "encode": {
         "update": {
           "opacity": {
-            "scale": "opacity",
-            "field": "bin_maxbins_6_Acceleration"
+            "signal": "scale(\"opacity\", 0.5 * datum[\"bin_maxbins_6_Acceleration\"] + 0.5 * datum[\"bin_maxbins_6_Acceleration_end\"])"
           },
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},

@@ -27,7 +27,8 @@
           "bin": true,
           "field": "IMDB_Rating",
           "type": "quantitative",
-          "scale": {"range": [108, 468]}
+          "scale": {"range": [90, 450]},
+          "band": 0.5
         }
       }
     }
