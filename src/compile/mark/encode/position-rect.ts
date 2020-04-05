@@ -156,7 +156,7 @@ function positionAndSize(
   }
 
   // Otherwise, apply default value
-  const band = (isFieldOrDatumDef(fieldDef) ? getBand({channel, fieldDef, markDef, stack, config}) : undefined) ?? true;
+  const band = (isFieldOrDatumDef(fieldDef) ? getBand({channel, fieldDef, markDef, stack, config}) : undefined) ?? 1;
   sizeMixins = sizeMixins || {[vgSizeChannel]: defaultSizeRef(mark, vgSizeChannel, scaleName, scale, config, band)};
 
   /*
@@ -183,7 +183,7 @@ function positionAndSize(
     stack,
     offset,
     defaultRef: pointPositionDefaultRef({model, defaultPos: 'mid', channel, scaleName, scale}),
-    band: center ? 0.5 : band === true ? 0 : (1 - band) / 2
+    band: center ? 0.5 : (1 - band) / 2
   });
 
   if (vgSizeChannel) {
