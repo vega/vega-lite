@@ -4,7 +4,7 @@
 
 import {AggregateOp} from 'vega';
 import {Aggregate} from '../aggregate';
-import {Channel, FacetChannel, GeoPositionChannel, getSizeType, PositionScaleChannel} from '../channel';
+import {Channel, FacetChannel, GeoPositionChannel, getSizeChannel, PositionScaleChannel} from '../channel';
 import {HiddenCompositeAggregate, TypedFieldDef, Value} from '../channeldef';
 import {SplitParentProperty} from '../compile/split';
 import {CompositeMark} from '../compositemark';
@@ -40,7 +40,7 @@ export function containerSizeNotCompatibleWithAutosize(name: 'width' | 'height')
 
 export function droppingFit(channel?: PositionScaleChannel) {
   return channel
-    ? `Dropping "fit-${channel}" because spec has discrete ${getSizeType(channel)}.`
+    ? `Dropping "fit-${channel}" because spec has discrete ${getSizeChannel(channel)}.`
     : `Dropping "fit" because spec has discrete size.`;
 }
 

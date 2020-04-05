@@ -1,4 +1,4 @@
-import {getPositionScaleChannel, getSizeType, POSITION_SCALE_CHANNELS} from '../../channel';
+import {getPositionScaleChannel, getSizeChannel, POSITION_SCALE_CHANNELS} from '../../channel';
 import {getViewConfigContinuousSize, getViewConfigDiscreteSize} from '../../config';
 import {hasDiscreteDomain} from '../../scale';
 import {isStep} from '../../spec/base';
@@ -96,7 +96,7 @@ function parseNonUnitLayoutSizeForChannel(model: Model, layoutSizeType: LayoutSi
 export function parseUnitLayoutSize(model: UnitModel) {
   const {size, component} = model;
   for (const channel of POSITION_SCALE_CHANNELS) {
-    const sizeType = getSizeType(channel);
+    const sizeType = getSizeChannel(channel);
 
     if (size[sizeType]) {
       const specifiedSize = size[sizeType];
