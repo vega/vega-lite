@@ -2,7 +2,15 @@ import {AggregateOp, SignalRef} from 'vega';
 import {array, isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
-import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark} from './channel';
+import {
+  Channel,
+  CHANNELS,
+  isChannel,
+  isNonPositionScaleChannel,
+  isSecondaryRangeChannel,
+  isXorY,
+  supportMark
+} from './channel';
 import {
   binRequiresRange,
   ChannelDef,
@@ -345,7 +353,6 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
           // Always overwrite field
           field: newField
         };
-        const isPositionChannel: boolean = channel === 'x' || channel === 'y';
 
         if (aggOp) {
           let op: AggregateOp;
@@ -382,7 +389,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
               groupby.push(vgField(channelDef, {binSuffix: 'range'}));
             }
             // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
-            if (isPositionChannel) {
+            if (isXorY(channel)) {
               const secondaryChannel: SecondaryFieldDef<string> = {
                 field: newField + '_end'
               };
@@ -409,7 +416,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
                   formatType,
                   ...newFieldDef['legend']
                 };
-              } else if (isPositionChannel) {
+              } else if (isXorY(channel)) {
                 newFieldDef['axis'] = {
                   formatType,
                   ...newFieldDef['axis']

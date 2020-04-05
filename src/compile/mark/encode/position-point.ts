@@ -3,6 +3,7 @@ import {
   getSecondaryRangeChannel,
   getSizeChannel,
   getVgPositionChannel,
+  isXorY,
   PolarPositionChannel,
   PositionChannel
 } from '../../../channel';
@@ -51,7 +52,7 @@ export function pointPosition(
   });
 
   const valueRef =
-    !channelDef && (channel === 'x' || channel === 'y') && (encoding.latitude || encoding.longitude)
+    !channelDef && isXorY(channel) && (encoding.latitude || encoding.longitude)
       ? // use geopoint output if there are lat/long and there is no point position overriding lat/long.
         {field: model.getName(channel)}
       : positionRef({
