@@ -119,6 +119,8 @@ export function projectionOverridden(opt: {parentProjection: Projection; project
   )}.`;
 }
 
+export const REPLACE_ANGLE_WITH_THETA = 'Arc marks uses theta channel rather than angle, replacing angle with theta.';
+
 export function primitiveChannelDef(
   channel: Channel,
   type: 'string' | 'number' | 'boolean',
