@@ -1,0 +1,190 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Drawing rect bin from the beginning of May to end of July",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_1",
+      "values": [{"date": "May 1, 2010", "date_end": "July 15, 2010"}]
+    },
+    {
+      "name": "source_0",
+      "url": "data/seattle-weather.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["month"],
+          "as": ["month_date", "month_date_end"]
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["month_date", "month_date_end"],
+          "ops": ["mean"],
+          "fields": ["precipitation"],
+          "as": ["mean_precipitation"]
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"month_date\"]) || (isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"]))) && isValid(datum[\"mean_precipitation\"]) && isFinite(+datum[\"mean_precipitation\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_1",
+      "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
+        {
+          "type": "formula",
+          "expr": "toDate(datum[\"date_end\"])",
+          "as": "date_end"
+        },
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["month"],
+          "as": ["month_date", "month_date_end"]
+        },
+        {
+          "field": "date_end",
+          "type": "timeunit",
+          "units": ["month"],
+          "as": ["month_date_end", "month_date_end_end"]
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"month_date\"]) || (isValid(datum[\"month_date\"]) && isFinite(+datum[\"month_date\"])))"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "x2": [
+            {
+              "test": "!isValid(datum[\"month_date\"]) || !isFinite(+datum[\"month_date\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "month_date", "offset": 1}
+          ],
+          "x": [
+            {
+              "test": "!isValid(datum[\"month_date\"]) || !isFinite(+datum[\"month_date\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "month_date_end"}
+          ],
+          "y": {"scale": "y", "field": "mean_precipitation"},
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rect",
+      "style": ["rect"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.5},
+          "fill": {"value": "grey"},
+          "x": {"scale": "x", "field": "month_date"},
+          "x2": {"scale": "x", "field": "month_date_end"},
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "month_date"},
+          {"data": "source_0", "field": "month_date_end"},
+          {"data": "data_0", "field": "month_date"},
+          {"data": "data_0", "field": "month_date_end"}
+        ]
+      },
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "mean_precipitation"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "month",
+      "labelAlign": "left",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "encode": {
+        "labels": {
+          "update": {
+            "text": {
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))[0]"
+            }
+          }
+        }
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Mean of precipitation",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

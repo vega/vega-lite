@@ -55,9 +55,9 @@
         "update": {
           "fill": {"scale": "color", "field": "max_temp"},
           "x": {"scale": "x", "field": "date_date"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "month_date"},
-          "height": {"scale": "y", "band": true}
+          "height": {"scale": "y", "band": 1}
         }
       }
     }

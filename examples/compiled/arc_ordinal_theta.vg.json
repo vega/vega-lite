@@ -1,0 +1,78 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"dir": "1N", "strength": 1},
+        {"dir": "2NE", "strength": 2},
+        {"dir": "3E", "strength": 3},
+        {"dir": "4SE", "strength": 4},
+        {"dir": "5S", "strength": 5},
+        {"dir": "6SW", "strength": 6},
+        {"dir": "7W", "strength": 7},
+        {"dir": "8NW", "strength": 8}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"strength\"]) && isFinite(+datum[\"strength\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "arc",
+      "style": ["arc"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "dir"},
+          "x": {"signal": "width", "mult": 0.5},
+          "y": {"signal": "height", "mult": 0.5},
+          "outerRadius": {"scale": "radius", "field": "strength"},
+          "innerRadius": {"scale": "radius", "value": 0},
+          "startAngle": {"scale": "theta", "field": "dir"},
+          "endAngle": {
+            "scale": "theta",
+            "field": "dir",
+            "offset": {"scale": "theta", "band": 1}
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "theta",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "dir", "sort": true},
+      "range": [0, 6.283185307179586]
+    },
+    {
+      "name": "radius",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "strength"},
+      "range": [0, {"signal": "min(width,height)/2"}],
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "dir", "sort": true},
+      "range": "category"
+    }
+  ],
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "dir"}]
+}

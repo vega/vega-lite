@@ -82,6 +82,7 @@ describe('extractTransforms()', () => {
     'layer_point_errorbar_stdev.vl.json',
     'layer_rect_extent.vl.json',
     'layer_scatter_errorband_1D_stdev_global_mean.vl.json',
+    'layer_timeunit_rect.vl.json',
     'line_calculate.vl.json',
     'line_color_binned.vl.json',
     'line_color_label.vl.json',

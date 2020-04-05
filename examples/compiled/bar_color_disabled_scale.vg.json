@@ -42,7 +42,7 @@
         "update": {
           "fill": {"field": "color"},
           "x": {"scale": "x", "field": "color"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "b"},
           "y2": {"scale": "y", "value": 0}
         }

@@ -304,9 +304,9 @@
             {"scale": "color", "field": "__count"}
           ],
           "x": {"scale": "x", "field": "Cylinders"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "Origin"},
-          "height": {"scale": "y", "band": true}
+          "height": {"scale": "y", "band": 1}
         }
       }
     },

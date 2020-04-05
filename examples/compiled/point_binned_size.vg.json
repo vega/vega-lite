@@ -48,7 +48,9 @@
           "stroke": {"value": "#4c78a8"},
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
-          "size": {"scale": "size", "field": "bin_maxbins_6_Acceleration"}
+          "size": {
+            "signal": "scale(\"size\", 0.5 * datum[\"bin_maxbins_6_Acceleration\"] + 0.5 * datum[\"bin_maxbins_6_Acceleration_end\"])"
+          }
         }
       }
     }

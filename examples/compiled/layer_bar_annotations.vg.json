@@ -67,7 +67,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "x": {"scale": "x", "field": "Day"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "Value"},
           "y2": {"scale": "y", "value": 0}
         }
@@ -82,7 +82,7 @@
         "update": {
           "fill": {"value": "#e45755"},
           "x": {"scale": "x", "field": "Day"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "baseline"},
           "y2": {"scale": "y", "field": "Value"}
         }

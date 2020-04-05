@@ -126,7 +126,7 @@
             "update": {
               "fill": {"scale": "color", "field": "country"},
               "x": {"scale": "x", "field": "country"},
-              "width": {"scale": "x", "band": true},
+              "width": {"scale": "x", "band": 1},
               "y": {"scale": "y", "field": "value"},
               "y2": {"scale": "y", "value": 0}
             }

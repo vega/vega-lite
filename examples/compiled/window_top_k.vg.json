@@ -78,7 +78,7 @@
           "x": {"scale": "x", "field": "score"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "student"},
-          "height": {"scale": "y", "band": true}
+          "height": {"scale": "y", "band": 1}
         }
       }
     }

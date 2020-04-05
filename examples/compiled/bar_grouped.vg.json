@@ -131,7 +131,7 @@
             "update": {
               "fill": {"scale": "color", "field": "gender"},
               "x": {"scale": "x", "field": "gender"},
-              "width": {"scale": "x", "band": true},
+              "width": {"scale": "x", "band": 1},
               "y": {"scale": "y", "field": "sum_people"},
               "y2": {"scale": "y", "value": 0}
             }

@@ -142,7 +142,7 @@
             "update": {
               "fill": {"scale": "color", "field": "gender"},
               "x": {"scale": "child_x", "field": "age"},
-              "width": {"scale": "child_x", "band": true},
+              "width": {"scale": "child_x", "band": 1},
               "y": {"scale": "y", "field": "sum_people_end"},
               "y2": {"scale": "y", "field": "sum_people_start"}
             }
