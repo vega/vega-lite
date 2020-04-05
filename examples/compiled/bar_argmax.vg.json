@@ -44,7 +44,7 @@
           "x": {"scale": "x", "field": "argmax_US_Gross.Production_Budget"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "Major_Genre"},
-          "height": {"scale": "y", "band": true}
+          "height": {"scale": "y", "band": 1}
         }
       }
     }

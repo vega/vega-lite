@@ -57,7 +57,7 @@
           "fill": {"value": "#4c78a8"},
           "opacity": {"scale": "opacity", "field": "people"},
           "x": {"scale": "x", "field": "age"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "sum_people_end"},
           "y2": {"scale": "y", "field": "sum_people_start"}
         }

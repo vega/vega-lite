@@ -39,9 +39,9 @@
         "update": {
           "fill": {"scale": "color", "field": "mean_Horsepower"},
           "x": {"scale": "x", "field": "Cylinders"},
-          "width": {"scale": "x", "band": true},
+          "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "Origin"},
-          "height": {"scale": "y", "band": true}
+          "height": {"scale": "y", "band": 1}
         }
       }
     }
