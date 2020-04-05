@@ -8,10 +8,9 @@ import {
   isChannel,
   isNonPositionScaleChannel,
   isSecondaryRangeChannel,
-  supportMark,
-  THETA,
   isXorY,
-  supportMark
+  supportMark,
+  THETA
 } from './channel';
 import {
   binRequiresRange,
