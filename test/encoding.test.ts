@@ -45,6 +45,25 @@ describe('encoding', () => {
     );
 
     it(
+      'should replace angle channel for arc marks with theta',
+      log.wrap(logger => {
+        const encoding = initEncoding(
+          {
+            color: {field: 'a', type: 'quantitative'},
+            angle: {field: 'b', type: 'quantitative'}
+          },
+          {type: 'arc'}
+        );
+
+        expect(encoding).toEqual({
+          color: {field: 'a', type: 'quantitative'},
+          theta: {field: 'b', type: 'quantitative'}
+        });
+        expect(logger.warns[0]).toEqual(log.message.REPLACE_ANGLE_WITH_THETA);
+      })
+    );
+
+    it(
       'should drop color channel if stroke is specified and filled is false',
       log.wrap(logger => {
         const encoding = initEncoding(

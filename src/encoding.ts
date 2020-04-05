@@ -2,7 +2,15 @@ import {AggregateOp, SignalRef} from 'vega';
 import {array, isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
-import {Channel, CHANNELS, isChannel, isNonPositionScaleChannel, isSecondaryRangeChannel, supportMark} from './channel';
+import {
+  Channel,
+  CHANNELS,
+  isChannel,
+  isNonPositionScaleChannel,
+  isSecondaryRangeChannel,
+  supportMark,
+  THETA
+} from './channel';
 import {
   binRequiresRange,
   ChannelDef,
@@ -460,11 +468,17 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
 export function initEncoding(encoding: Encoding<string>, markDef: MarkDef): Encoding<string> {
   const mark = markDef.type;
 
-  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel | string) => {
+  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
     if (!isChannel(channel)) {
       // Drop invalid channel
       log.warn(log.message.invalidEncodingChannel(channel));
       return normalizedEncoding;
+    }
+
+    const channelDef = encoding[channel];
+    if (channel === 'angle' && mark === 'arc' && !encoding.theta) {
+      log.warn(log.message.REPLACE_ANGLE_WITH_THETA);
+      channel = THETA;
     }
 
     if (!markChannelCompatible(encoding, channel, mark)) {
@@ -489,7 +503,6 @@ export function initEncoding(encoding: Encoding<string>, markDef: MarkDef): Enco
       return normalizedEncoding;
     }
 
-    const channelDef = encoding[channel];
     if (
       channel === 'detail' ||
       (channel === 'order' && !isArray(channelDef) && !isValueDef(channelDef)) ||
