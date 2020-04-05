@@ -1,7 +1,7 @@
 import {SignalRef, TimeInterval} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
-import {Channel, COLOR, FILL, STROKE, X, Y} from '../../channel';
+import {Channel, COLOR, FILL, RADIUS, STROKE, THETA, X, Y} from '../../channel';
 import {
   getFieldDef,
   getFieldOrDatumDef,
@@ -357,7 +357,7 @@ export function zero(
 
   // 2) non-binned, quantitative x-scale or y-scale
   // (For binning, we should not include zero by default because binning are calculated without zero.)
-  if (!(isFieldDef(fieldDef) && fieldDef.bin) && util.contains([X, Y], channel)) {
+  if (!(isFieldDef(fieldDef) && fieldDef.bin) && util.contains([X, Y, THETA, RADIUS], channel)) {
     const {orient, type} = markDef;
     if (contains(['bar', 'area', 'line', 'trail'], type)) {
       if ((orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x')) {
