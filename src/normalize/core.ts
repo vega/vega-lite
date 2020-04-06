@@ -328,15 +328,15 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 function mergeEncoding(opt: {parentEncoding: Encoding<any>; encoding: Encoding<any>}): Encoding<any> {
   const {parentEncoding, encoding} = opt;
   if (parentEncoding && encoding) {
-    const overriden = keys(parentEncoding).reduce((o, key) => {
+    const overridden = keys(parentEncoding).reduce((o, key) => {
       if (encoding[key]) {
         o.push(key);
       }
       return o;
     }, []);
 
-    if (overriden.length > 0) {
-      log.info(log.message.encodingOverridden(overriden));
+    if (overridden.length > 0) {
+      log.info(log.message.encodingOverridden(overridden));
     }
   }
 
