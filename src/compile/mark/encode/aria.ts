@@ -36,9 +36,9 @@ export function ariaLabel(model: UnitModel) {
   }
 
   // Use default from mark def or config if defined.
-  // We usually just return undefined but since we are defining a default below, we need to check the default here.
+  // Functions in encode usually just return undefined but since we are defining a default below, we need to check the default here.
   const ariaLabelValue = getMarkPropOrConfig('ariaLabel', markDef, config);
-  if (ariaLabelValue) {
+  if (ariaLabelValue != null) {
     return {
       ariaLabel: {
         value: ariaLabelValue
