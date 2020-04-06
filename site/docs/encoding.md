@@ -162,7 +162,7 @@ To map a constant visual value to an encoding channel, the channel's value defin
 
 <!--{% include table.html props="value" source="ValueDef" %}-->
 
-{:#value-def}
+{:#datum-def}
 
 ### Datum Definition
 
