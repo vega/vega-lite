@@ -1,17 +1,5 @@
 import {Legend as VgLegend, LegendEncode, SignalRef} from 'vega';
-import {
-  COLOR,
-  FILL,
-  FILLOPACITY,
-  NonPositionScaleChannel,
-  OPACITY,
-  SHAPE,
-  SIZE,
-  STROKE,
-  STROKEDASH,
-  STROKEOPACITY,
-  STROKEWIDTH
-} from '../../channel';
+import {COLOR, FILLOPACITY, NonPositionScaleChannel, SHAPE, STROKEOPACITY} from '../../channel';
 import {
   DatumDef,
   FieldDef,
@@ -22,7 +10,7 @@ import {
   MarkPropFieldDef,
   title as fieldDefTitle
 } from '../../channeldef';
-import {Legend} from '../../legend';
+import {Legend, LEGEND_SCALE_CHANNELS} from '../../legend';
 import {normalizeTimeUnit} from '../../timeunit';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, getFirstDefined, keys, varName} from '../../util';
@@ -49,16 +37,24 @@ export function parseLegend(model: Model) {
 
 function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   const {encoding} = model;
-  return [COLOR, FILL, STROKE, STROKEWIDTH, STROKEDASH, SIZE, SHAPE, OPACITY, FILLOPACITY, STROKEOPACITY].reduce(
-    (legendComponent, channel) => {
-      const def = getFieldOrDatumDef(encoding[channel]) as MarkPropFieldDef<string> | MarkPropDatumDef<string>;
-      if (def && model.getScaleComponent(channel) && !(isFieldDef(def) && channel === SHAPE && def.type === GEOJSON)) {
-        legendComponent[channel] = parseLegendForChannel(model, channel);
-      }
-      return legendComponent;
-    },
-    {}
-  );
+
+  const legendComponent: LegendComponentIndex = {};
+
+  for (const channel of [COLOR, ...LEGEND_SCALE_CHANNELS, FILLOPACITY, STROKEOPACITY]) {
+    const def = getFieldOrDatumDef(encoding[channel]) as MarkPropFieldDef<string> | MarkPropDatumDef<string>;
+
+    if (!def || !model.getScaleComponent(channel)) {
+      continue;
+    }
+
+    if (channel === SHAPE && isFieldDef(def) && def.type === GEOJSON) {
+      continue;
+    }
+
+    legendComponent[channel] = parseLegendForChannel(model, channel);
+  }
+
+  return legendComponent;
 }
 
 function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChannel): VgLegend {
@@ -119,29 +115,27 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
 
   const legendEncoding = legend?.encoding ?? {};
   const selections = legendCmpt.get('selections');
-  const legendEncode = (['labels', 'legend', 'title', 'symbols', 'gradient', 'entries'] as const).reduce(
-    (e: LegendEncode, part) => {
-      const legendEncodingPart = guideEncodeEntry(legendEncoding[part] ?? {}, model);
+  const legendEncode: LegendEncode = {};
 
-      const fieldOrDatumDef = getFieldOrDatumDef(model.encoding[channel]);
+  for (const part of ['labels', 'legend', 'title', 'symbols', 'gradient', 'entries']) {
+    const legendEncodingPart = guideEncodeEntry(legendEncoding[part] ?? {}, model);
 
-      const value = encode[part]
-        ? encode[part](fieldOrDatumDef, legendEncodingPart, model, channel, legendCmpt) // apply rule
-        : legendEncodingPart; // no rule -- just default values
+    const fieldOrDatumDef = getFieldOrDatumDef(model.encoding[channel]);
 
-      if (value !== undefined && keys(value).length > 0) {
-        e[part] = {
-          ...(selections?.length && isFieldDef(fieldOrDatumDef)
-            ? {name: `${varName(fieldOrDatumDef.field)}_legend_${part}`}
-            : {}),
-          ...(selections?.length ? {interactive: !!selections} : {}),
-          update: value
-        };
-      }
-      return e;
-    },
-    {} as LegendEncode
-  );
+    const value = encode[part]
+      ? encode[part](fieldOrDatumDef, legendEncodingPart, model, channel, legendCmpt) // apply rule
+      : legendEncodingPart; // no rule -- just default values
+
+    if (value !== undefined && keys(value).length > 0) {
+      legendEncode[part] = {
+        ...(selections?.length && isFieldDef(fieldOrDatumDef)
+          ? {name: `${varName(fieldOrDatumDef.field)}_legend_${part}`}
+          : {}),
+        ...(selections?.length ? {interactive: !!selections} : {}),
+        update: value
+      };
+    }
+  }
 
   if (keys(legendEncode).length > 0) {
     legendCmpt.set('encode', legendEncode, !!legend?.encoding);
