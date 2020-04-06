@@ -21,7 +21,7 @@ import {parseGuideResolve} from '../resolve';
 import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {AxisComponent, AxisComponentIndex, AxisComponentProps, AXIS_COMPONENT_PROPERTIES} from './component';
-import {AxisConfigs, getAxisConfig, getAxisConfigs} from './config';
+import {getAxisConfig, getAxisConfigs} from './config';
 import * as encode from './encode';
 import * as properties from './properties';
 
@@ -249,13 +249,15 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
     | PositionDatumDef<string>;
 
   const orient = getFirstDefined(axis?.orient, properties.orient(channel));
+
   const scaleType = model.getScaleComponent(channel).get('type');
 
   const axisConfigs = getAxisConfigs(channel, scaleType, orient, model.config);
+  const labelAngle = properties.labelAngle(model, axis, channel, fieldOrDatumDef, axisConfigs);
 
   // 1.2. Add properties
   for (const property of AXIS_COMPONENT_PROPERTIES) {
-    const value = getProperty(fieldOrDatumDef, property, axis, channel, model, axisConfigs, scaleType, orient);
+    const value = getProperty(fieldOrDatumDef, property, axis, channel, model, scaleType, orient, labelAngle);
     const hasValue = value !== undefined;
 
     const explicit = isExplicit(value, property, axis, model, channel);
@@ -319,9 +321,9 @@ function getProperty<K extends keyof AxisComponentProps>(
   specifiedAxis: Axis,
   channel: PositionScaleChannel,
   model: UnitModel,
-  axisConfigs: AxisConfigs,
   scaleType: ScaleType,
-  orient: Orient
+  orient: Orient,
+  labelAngle: number
 ): AxisComponentProps[K] {
   if (property === 'disable') {
     return specifiedAxis !== undefined && (!specifiedAxis as AxisComponentProps[K]);
@@ -360,24 +362,16 @@ function getProperty<K extends keyof AxisComponentProps>(
         ) as AxisComponentProps[K];
       }
     }
-    case 'labelAlign': {
-      return (specifiedAxis.labelAlign ??
-        properties.defaultLabelAlign(
-          properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigs),
-          orient
-        )) as AxisComponentProps[K];
-    }
-    case 'labelAngle': {
-      const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigs);
+    case 'labelAlign':
+      return (specifiedAxis.labelAlign ?? properties.defaultLabelAlign(labelAngle, orient)) as AxisComponentProps[K];
+
+    case 'labelAngle':
       return labelAngle as AxisComponentProps[K];
-    }
-    case 'labelBaseline': {
+
+    case 'labelBaseline':
       return (specifiedAxis.labelBaseline ??
-        properties.defaultLabelBaseline(
-          properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigs),
-          orient
-        )) as AxisComponentProps[K];
-    }
+        properties.defaultLabelBaseline(labelAngle, orient)) as AxisComponentProps[K];
+
     case 'labelFlush':
       return getFirstDefined(
         specifiedAxis.labelFlush,
