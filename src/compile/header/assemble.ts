@@ -16,7 +16,7 @@ import {
 } from '../../header';
 import {isSortField} from '../../sort';
 import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
-import {contains, keys, replaceAll} from '../../util';
+import {contains, keys, normalizeAngle, replaceAll} from '../../util';
 import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema';
 import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties';
 import {sortArrayIndexField} from '../data/calculate';
@@ -40,13 +40,15 @@ export function assembleTitleGroup(model: Model, channel: FacetChannel) {
     ? model.component.layoutHeaders[channel].facetFieldDef
     : undefined;
 
-  const {titleAnchor, titleAngle, titleOrient} = getHeaderProperties(
+  const {titleAnchor, titleAngle: ta, titleOrient} = getHeaderProperties(
     ['titleAnchor', 'titleAngle', 'titleOrient'],
     facetFieldDef,
     config,
     channel
   );
   const headerChannel = getHeaderChannel(channel, titleOrient);
+
+  const titleAngle = normalizeAngle(ta);
 
   return {
     name: `${channel}-title`,

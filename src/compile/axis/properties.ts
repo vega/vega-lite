@@ -59,7 +59,6 @@ export function labelAngle(
 
 export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient) {
   if (angle !== undefined) {
-    angle = normalizeAngle(angle);
     if (axisOrient === 'top' || axisOrient === 'bottom') {
       if (angle <= 45 || 315 <= angle) {
         return axisOrient === 'top' ? 'bottom' : 'top';
@@ -83,7 +82,6 @@ export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient) {
 
 export function defaultLabelAlign(angle: number, axisOrient: AxisOrient): Align {
   if (angle !== undefined) {
-    angle = normalizeAngle(angle);
     if (axisOrient === 'top' || axisOrient === 'bottom') {
       if (angle % 180 === 0) {
         return 'center';
