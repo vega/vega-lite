@@ -40,11 +40,12 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
     }
 
     const safeName = varName(name);
-    const selCmpt = (selCmpts[safeName] = {
-      ...selDef,
-      name: safeName,
-      events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : duplicate(selDef.on)
-    } as any);
+    const selCmpt = (selCmpts[safeName] =
+      {
+        ...selDef,
+        name: safeName,
+        events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : duplicate(selDef.on)
+      } as any);
 
     forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.has(selCmpt) && txCompiler.parse) {

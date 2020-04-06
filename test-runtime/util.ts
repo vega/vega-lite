@@ -166,21 +166,25 @@ export function spec(compose: ComposeType, iter: number, sel: any, opts: any = {
     case 'unit':
       return {data, ...specification, config} as TopLevelSpec;
     case 'facet':
-      return {
-        data,
-        facet: {row: {field: 'c', type: 'nominal'}},
-        spec: specification,
-        resolve,
-        config
-      } as TopLevelSpec;
+      return (
+        {
+          data,
+          facet: {row: {field: 'c', type: 'nominal'}},
+          spec: specification,
+          resolve,
+          config
+        } as TopLevelSpec
+      );
     case 'repeat':
-      return {
-        data,
-        repeat: {row: ['d', 'e', 'f']},
-        spec: specification,
-        resolve,
-        config
-      } as TopLevelSpec;
+      return (
+        {
+          data,
+          repeat: {row: ['d', 'e', 'f']},
+          spec: specification,
+          resolve,
+          config
+        } as TopLevelSpec
+      );
   }
 }
 

@@ -118,10 +118,12 @@ function replaceRepeaterInChannelDef(channelDef: ChannelDef<Field>, repeater: Re
     if (hasConditionalFieldOrDatumDef(channelDef)) {
       const fd = replaceRepeaterInFieldOrDatumDef(channelDef.condition, repeater);
       if (fd) {
-        return {
-          ...channelDef,
-          condition: fd
-        } as ChannelDef;
+        return (
+          {
+            ...channelDef,
+            condition: fd
+          } as ChannelDef
+        );
       } else {
         const {condition, ...channelDefWithoutCondition} = channelDef;
         return channelDefWithoutCondition as ChannelDef;

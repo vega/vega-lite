@@ -168,13 +168,15 @@ function getProperty<K extends keyof LegendComponentProps>(
     //   return getFirstDefined(specifiedLegend.clipHeight, properties.clipHeight(properties.type(...)));
 
     case 'direction':
-      return direction({
-        legend,
-        legendConfig,
-        timeUnit,
-        channel,
-        scaleType
-      }) as LegendComponentProps[K];
+      return (
+        direction({
+          legend,
+          legendConfig,
+          timeUnit,
+          channel,
+          scaleType
+        }) as LegendComponentProps[K]
+      );
 
     case 'format':
       // We don't include temporal field here as we apply format in encode block
@@ -191,28 +193,32 @@ function getProperty<K extends keyof LegendComponentProps>(
       return legend.formatType as LegendComponentProps[K];
 
     case 'gradientLength':
-      return getFirstDefined<number | SignalRef>(
-        // do specified gradientLength first
-        legend.gradientLength,
-        legendConfig.gradientLength,
-        // Otherwise, use smart default based on plot height
-        properties.defaultGradientLength({
-          model,
-          legend,
-          legendConfig,
-          channel,
-          scaleType
-        })
-      ) as LegendComponentProps[K];
+      return (
+        getFirstDefined<number | SignalRef>(
+          // do specified gradientLength first
+          legend.gradientLength,
+          legendConfig.gradientLength,
+          // Otherwise, use smart default based on plot height
+          properties.defaultGradientLength({
+            model,
+            legend,
+            legendConfig,
+            channel,
+            scaleType
+          })
+        ) as LegendComponentProps[K]
+      );
 
     case 'labelOverlap':
       return getFirstDefined(legend.labelOverlap, properties.defaultLabelOverlap(scaleType)) as LegendComponentProps[K];
 
     case 'symbolType':
-      return getFirstDefined(
-        legend.symbolType,
-        properties.defaultSymbolType(mark, channel, encoding.shape, model.markDef.shape)
-      ) as LegendComponentProps[K];
+      return (
+        getFirstDefined(
+          legend.symbolType,
+          properties.defaultSymbolType(mark, channel, encoding.shape, model.markDef.shape)
+        ) as LegendComponentProps[K]
+      );
 
     case 'title':
       return fieldDefTitle(fieldOrDatumDef, model.config, {allowDisabling: true}) as LegendComponentProps[K];

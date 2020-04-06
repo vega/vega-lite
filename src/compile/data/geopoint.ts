@@ -30,16 +30,17 @@ export class GeoPointNode extends DataFlowNode {
       [LONGITUDE, LATITUDE],
       [LONGITUDE2, LATITUDE2]
     ] as Vector2<GeoPositionChannel>[]) {
-      const pair = coordinates.map(channel => {
-        const def = getFieldOrDatumDef(model.encoding[channel]);
-        return isFieldDef(def)
-          ? def.field
-          : isDatumDef(def)
-          ? {expr: `${def.datum}`}
-          : isValueDef(def)
-          ? {expr: `${def['value']}`}
-          : undefined;
-      }) as [GeoPositionChannel, GeoPositionChannel];
+      const pair =
+        coordinates.map(channel => {
+          const def = getFieldOrDatumDef(model.encoding[channel]);
+          return isFieldDef(def)
+            ? def.field
+            : isDatumDef(def)
+            ? {expr: `${def.datum}`}
+            : isValueDef(def)
+            ? {expr: `${def['value']}`}
+            : undefined;
+        }) as [GeoPositionChannel, GeoPositionChannel];
 
       const suffix = coordinates[0] === LONGITUDE2 ? '2' : '';
 

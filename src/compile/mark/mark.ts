@@ -182,16 +182,17 @@ function getStackGroups(model: UnitModel) {
       groupby.push(vgField(groupByField, {binSuffix: 'end'}));
     }
 
-    const strokeProperties = [
-      'stroke',
-      'strokeWidth',
-      'strokeJoin',
-      'strokeCap',
-      'strokeDash',
-      'strokeDashOffset',
-      'strokeMiterLimit',
-      'strokeOpacity'
-    ] as const;
+    const strokeProperties =
+      [
+        'stroke',
+        'strokeWidth',
+        'strokeJoin',
+        'strokeCap',
+        'strokeDash',
+        'strokeDashOffset',
+        'strokeMiterLimit',
+        'strokeOpacity'
+      ] as const;
 
     // Generate stroke properties for the group
     groupUpdate = strokeProperties.reduce((encode, prop) => {

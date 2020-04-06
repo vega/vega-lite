@@ -281,9 +281,8 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
   const axisComponent = new AxisComponent();
 
-  const fieldOrDatumDef = getFieldOrDatumDef(model.encoding[channel]) as
-    | PositionFieldDef<string>
-    | PositionDatumDef<string>;
+  const fieldOrDatumDef =
+    getFieldOrDatumDef(model.encoding[channel]) as PositionFieldDef<string> | PositionDatumDef<string>;
 
   const axisConfigTypes = getAxisConfigTypes(
     channel,
@@ -392,42 +391,46 @@ function getProperty<K extends keyof AxisComponentProps>(
         return false as AxisComponentProps[K];
       } else {
         const scaleType = model.getScaleComponent(channel).get('type');
-        return getFirstDefined(
-          specifiedAxis.grid,
-          properties.defaultGrid(scaleType, model.typedFieldDef(channel))
-        ) as AxisComponentProps[K];
+        return (
+          getFirstDefined(specifiedAxis.grid, properties.defaultGrid(scaleType, model.typedFieldDef(channel))) as
+          AxisComponentProps[K]
+        );
       }
     }
     case 'labelAlign': {
       const orient = specifiedAxis.orient ?? properties.orient(channel);
-      return (specifiedAxis.labelAlign ??
-        properties.defaultLabelAlign(
-          properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes),
-          orient
-        )) as AxisComponentProps[K];
+      return (
+        (specifiedAxis.labelAlign ??
+          properties.defaultLabelAlign(
+            properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes),
+            orient
+          )) as AxisComponentProps[K]
+      );
     }
     case 'labelAngle': {
       const labelAngle = properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes);
       return labelAngle as AxisComponentProps[K];
     }
     case 'labelBaseline': {
-      return (specifiedAxis.labelBaseline ??
-        properties.defaultLabelBaseline(
-          properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes),
-          specifiedAxis.orient ?? properties.orient(channel)
-        )) as AxisComponentProps[K];
+      return (
+        (specifiedAxis.labelBaseline ??
+          properties.defaultLabelBaseline(
+            properties.labelAngle(model, specifiedAxis, channel, fieldOrDatumDef, axisConfigTypes),
+            specifiedAxis.orient ?? properties.orient(channel)
+          )) as AxisComponentProps[K]
+      );
     }
     case 'labelFlush':
-      return getFirstDefined(
-        specifiedAxis.labelFlush,
-        properties.defaultLabelFlush(fieldOrDatumDef.type, channel)
-      ) as AxisComponentProps[K];
+      return (
+        getFirstDefined(specifiedAxis.labelFlush, properties.defaultLabelFlush(fieldOrDatumDef.type, channel)) as
+        AxisComponentProps[K]
+      );
     case 'labelOverlap': {
       const scaleType = model.getScaleComponent(channel).get('type');
-      return getFirstDefined(
-        specifiedAxis.labelOverlap,
-        properties.defaultLabelOverlap(fieldOrDatumDef.type, scaleType)
-      ) as AxisComponentProps[K];
+      return (
+        getFirstDefined(specifiedAxis.labelOverlap, properties.defaultLabelOverlap(fieldOrDatumDef.type, scaleType)) as
+        AxisComponentProps[K]
+      );
     }
     case 'orient': {
       const orient = getFirstDefined(specifiedAxis.orient, properties.orient(channel));
@@ -437,10 +440,12 @@ function getProperty<K extends keyof AxisComponentProps>(
       const scaleType = model.getScaleComponent(channel).get('type');
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
       const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
-      return getFirstDefined<number | SignalRef>(
-        specifiedAxis.tickCount,
-        properties.defaultTickCount({fieldOrDatumDef, scaleType, size, values: specifiedAxis.values})
-      ) as AxisComponentProps[K];
+      return (
+        getFirstDefined<number | SignalRef>(
+          specifiedAxis.tickCount,
+          properties.defaultTickCount({fieldOrDatumDef, scaleType, size, values: specifiedAxis.values})
+        ) as AxisComponentProps[K]
+      );
     }
     case 'title': {
       if (specifiedAxis.title !== undefined) {
@@ -455,18 +460,19 @@ function getProperty<K extends keyof AxisComponentProps>(
       const fieldDef2 = model.fieldDef(channel2);
 
       // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
-      return mergeTitleFieldDefs(
-        fieldDef ? [toFieldDefBase(fieldDef)] : [],
-        isFieldDef(fieldDef2) ? [toFieldDefBase(fieldDef2)] : []
-      ) as AxisComponentProps[K];
+      return (
+        mergeTitleFieldDefs(
+          fieldDef ? [toFieldDefBase(fieldDef)] : [],
+          isFieldDef(fieldDef2) ? [toFieldDefBase(fieldDef2)] : []
+        ) as AxisComponentProps[K]
+      );
     }
     case 'values':
       return properties.values(specifiedAxis, fieldOrDatumDef) as AxisComponentProps[K];
     case 'zindex':
-      return getFirstDefined(
-        specifiedAxis.zindex,
-        properties.defaultZindex(mark, fieldOrDatumDef)
-      ) as AxisComponentProps[K];
+      return (
+        getFirstDefined(specifiedAxis.zindex, properties.defaultZindex(mark, fieldOrDatumDef)) as AxisComponentProps[K]
+      );
   }
   // Otherwise, return specified property.
   return isAxisProperty(property) ? (specifiedAxis[property] as AxisComponentProps[K]) : undefined;

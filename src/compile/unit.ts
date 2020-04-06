@@ -138,9 +138,8 @@ export class UnitModel extends ModelWithField {
 
   private initScales(mark: Mark, encoding: Encoding<string>): ScaleIndex {
     return SCALE_CHANNELS.reduce((scales, channel) => {
-      const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as
-        | PositionFieldDef<string>
-        | MarkPropFieldOrDatumDef<string>;
+      const fieldOrDatumDef =
+        getFieldOrDatumDef(encoding[channel]) as PositionFieldDef<string> | MarkPropFieldOrDatumDef<string>;
       if (fieldOrDatumDef) {
         scales[channel] = fieldOrDatumDef.scale ?? {};
       }

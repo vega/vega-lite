@@ -24,16 +24,17 @@ export class GeoJSONNode extends DataFlowNode {
       [LONGITUDE, LATITUDE],
       [LONGITUDE2, LATITUDE2]
     ] as Vector2<GeoPositionChannel>[]) {
-      const pair = coordinates.map(channel => {
-        const def = getFieldOrDatumDef(model.encoding[channel]);
-        return isFieldDef(def)
-          ? def.field
-          : isDatumDef(def)
-          ? {expr: `${def.datum}`}
-          : isValueDef(def)
-          ? {expr: `${def['value']}`}
-          : undefined;
-      }) as [GeoPositionChannel, GeoPositionChannel];
+      const pair =
+        coordinates.map(channel => {
+          const def = getFieldOrDatumDef(model.encoding[channel]);
+          return isFieldDef(def)
+            ? def.field
+            : isDatumDef(def)
+            ? {expr: `${def.datum}`}
+            : isValueDef(def)
+            ? {expr: `${def['value']}`}
+            : undefined;
+        }) as [GeoPositionChannel, GeoPositionChannel];
 
       if (pair[0] || pair[1]) {
         parent = new GeoJSONNode(parent, pair, null, model.getName(`geojson_${geoJsonCounter++}`));

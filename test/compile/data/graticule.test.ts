@@ -7,10 +7,11 @@ describe('compile/data/graticule', () => {
   describe('GraticuleNode', () => {
     describe('assemble', () => {
       it('should return a proper vg transform with object param', () => {
-        const params = {
-          stepMinor: [15, 10],
-          precision: 2
-        } as GraticuleParams;
+        const params =
+          {
+            stepMinor: [15, 10],
+            precision: 2
+          } as GraticuleParams;
         const graticule = new GraticuleNode(null, params);
         expect(graticule.assemble()).toEqual({
           type: 'graticule',

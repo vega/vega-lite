@@ -68,13 +68,15 @@ export class WindowTransformNode extends DataFlowNode {
 
     if (frame && frame[0] === null && frame[1] === null && ops.every(o => isAggregateOp(o))) {
       // when the window does not rely on any particular window ops or frame, switch to a simpler and more efficient joinaggregate
-      return {
-        type: 'joinaggregate',
-        as,
-        ops: ops as AggregateOp[],
-        fields,
-        ...(groupby !== undefined ? {groupby} : {})
-      } as VgJoinAggregateTransform;
+      return (
+        {
+          type: 'joinaggregate',
+          as,
+          ops: ops as AggregateOp[],
+          fields,
+          ...(groupby !== undefined ? {groupby} : {})
+        } as VgJoinAggregateTransform
+      );
     }
 
     const sortFields: string[] = [];
@@ -91,16 +93,18 @@ export class WindowTransformNode extends DataFlowNode {
     };
     const ignorePeers = this.transform.ignorePeers;
 
-    return {
-      type: 'window',
-      params,
-      as,
-      ops,
-      fields,
-      sort,
-      ...(ignorePeers !== undefined ? {ignorePeers} : {}),
-      ...(groupby !== undefined ? {groupby} : {}),
-      ...(frame !== undefined ? {frame} : {})
-    } as VgWindowTransform;
+    return (
+      {
+        type: 'window',
+        params,
+        as,
+        ops,
+        fields,
+        sort,
+        ...(ignorePeers !== undefined ? {ignorePeers} : {}),
+        ...(groupby !== undefined ? {groupby} : {}),
+        ...(frame !== undefined ? {frame} : {})
+      } as VgWindowTransform
+    );
   }
 }

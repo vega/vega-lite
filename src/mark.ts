@@ -311,15 +311,9 @@ export function isPrimitiveMark(mark: AnyMark): mark is Mark {
   return markType in PRIMITIVE_MARK_INDEX;
 }
 
-export const STROKE_CONFIG = [
-  'stroke',
-  'strokeWidth',
-  'strokeDash',
-  'strokeDashOffset',
-  'strokeOpacity',
-  'strokeJoin',
-  'strokeMiterLimit'
-] as const;
+export const STROKE_CONFIG =
+  ['stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'strokeJoin', 'strokeMiterLimit'] as
+  const;
 
 export const FILL_CONFIG = ['fill', 'fillOpacity'] as const;
 
