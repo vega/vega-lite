@@ -28,7 +28,7 @@
     "changelog": "conventional-changelog -p angular",
     "build": "yarn build:only",
     "build:only": "yarn tsc:src && rollup -c",
-    "postbuild": "terser build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && yarn schema && babel build/vega-lite*.js --out-dir build-es5 --config-file ./babel.config.js",
+    "postbuild": "terser build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && yarn schema && babel build/vega-lite.js --out-dir build-es5 --config-file ./babel.config.js",
     "prebuild:examples": "yarn build:only",
     "build:examples": "yarn data && TZ=America/Los_Angeles scripts/build-examples.sh",
     "prebuild:examples-full": "yarn build:only",
@@ -117,7 +117,7 @@
     "vega-datasets": "^1.30.2",
     "vega-embed": "^6.5.2",
     "vega-tooltip": "^0.22.1",
-    "vega-typings": "~0.15.2",
+    "vega-typings": "0.15.2",
     "yaml-front-matter": "^4.1.0"
   },
   "dependencies": {
