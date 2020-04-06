@@ -57,47 +57,41 @@ export function labelAngle(
   }
 }
 
-export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient) {
+export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient, channel?: 'x' | 'y') {
+  channel = channel || (axisOrient === 'top' || axisOrient === 'bottom' ? 'x' : 'y');
+
   if (angle !== undefined) {
-    if (axisOrient === 'top' || axisOrient === 'bottom') {
-      if (angle <= 45 || 315 <= angle) {
-        return axisOrient === 'top' ? 'bottom' : 'top';
-      } else if (135 <= angle && angle <= 225) {
-        return axisOrient === 'top' ? 'top' : 'bottom';
-      } else {
-        return 'middle';
-      }
+    if (channel === 'x') {
+      return (45 < angle && angle < 135) || (225 < angle && angle < 315)
+        ? 'middle'
+        : (angle <= 45 || 315 <= angle) === (axisOrient === 'top')
+        ? 'bottom'
+        : 'top';
     } else {
-      if (angle <= 45 || 315 <= angle || (135 <= angle && angle <= 225)) {
-        return 'middle';
-      } else if (45 <= angle && angle <= 135) {
-        return axisOrient === 'left' ? 'top' : 'bottom';
-      } else {
-        return axisOrient === 'left' ? 'bottom' : 'top';
-      }
+      return angle <= 45 || 315 <= angle || (135 <= angle && angle <= 225)
+        ? 'middle'
+        : (45 <= angle && angle <= 135) === (axisOrient === 'left')
+        ? 'top'
+        : 'bottom';
     }
   }
   return undefined;
 }
 
-export function defaultLabelAlign(angle: number, axisOrient: AxisOrient): Align {
+export function defaultLabelAlign(angle: number, axisOrient: AxisOrient, channel?: 'x' | 'y'): Align {
+  channel = channel || (axisOrient === 'top' || axisOrient === 'bottom' ? 'x' : 'y');
+
+  // TODO: generate signal based on a similar formula if orient is a signal
+
   if (angle !== undefined) {
-    if (axisOrient === 'top' || axisOrient === 'bottom') {
-      if (angle % 180 === 0) {
-        return 'center';
-      } else if (0 < angle && angle < 180) {
-        return axisOrient === 'top' ? 'right' : 'left';
-      } else {
-        return axisOrient === 'top' ? 'left' : 'right';
-      }
+    if (channel === 'x') {
+      return angle % 180 === 0 ? 'center' : angle < 180 === (axisOrient === 'top') ? 'right' : 'left';
     } else {
-      if ((angle + 90) % 180 === 0) {
-        return 'center';
-      } else if (90 <= angle && angle < 270) {
-        return axisOrient === 'left' ? 'left' : 'right';
-      } else {
-        return axisOrient === 'left' ? 'right' : 'left';
-      }
+      return (angle + 90) % 180 === 0
+        ? 'center'
+        : (90 < angle && angle < 270) === (axisOrient === 'left')
+        ? 'left'
+        : 'right';
     }
   }
   return undefined;
