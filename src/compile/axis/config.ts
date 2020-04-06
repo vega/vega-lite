@@ -41,7 +41,7 @@ export function getAxisConfigs(channel: PositionScaleChannel, scaleType: ScaleTy
   return {
     vlOnlyAxisConfig: getAxisConfigFromConfigTypes(vlOnlyConfigTypes, config),
     vgAxisConfig: getAxisConfigFromConfigTypes(vgConfigTypes, config),
-    axisConfigStyle: getAxisConfigStyle([...vlOnlyConfigTypes, ...vgConfigTypes], config)
+    axisConfigStyle: getAxisConfigStyle([...vgConfigTypes, ...vlOnlyConfigTypes], config)
   };
 }
 
