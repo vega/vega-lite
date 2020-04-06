@@ -184,7 +184,7 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -278,7 +278,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -337,7 +337,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "point": {
@@ -358,11 +358,11 @@
           "description": "A flag for overlaying points on top of line or area marks, or an object defining the properties of the overlayed points.\n\n- If this property is `\"transparent\"`, transparent points will be used (for enhancing tooltips and selections).\n\n- If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.\n\n- If this property is `false`, no points would be automatically added to line or area marks.\n\n__Default value:__ `false`."
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "shape": {
@@ -400,8 +400,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -415,8 +415,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -1122,7 +1122,7 @@
           "type": "number"
         },
         "translate": {
-          "description": "Translation offset in pixels applied to the axis group mark x and y. If specified, overrides the default behavior of a 0.5 offset to pixel-align stroked lines.",
+          "description": "Coordinate space translation offset for axis layout. By default, axes are translated by a 0.5 pixel offset for both the x and y coordinates in order to align stroked lines with the pixel grid. However, for vector graphics output these pixel-specific adjustments may be undesirable, in which case translate can be changed (for example, to zero).\n\n__Default value:__ `0.5`",
           "type": "number"
         },
         "values": {
@@ -1656,7 +1656,7 @@
           "type": "number"
         },
         "translate": {
-          "description": "Translation offset in pixels applied to the axis group mark x and y. If specified, overrides the default behavior of a 0.5 offset to pixel-align stroked lines.",
+          "description": "Coordinate space translation offset for axis layout. By default, axes are translated by a 0.5 pixel offset for both the x and y coordinates in order to align stroked lines with the pixel grid. However, for vector graphics output these pixel-specific adjustments may be undesirable, in which case translate can be changed (for example, to zero).\n\n__Default value:__ `0.5`",
           "type": "number"
         }
       },
@@ -1730,7 +1730,7 @@
           "type": "number"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -1833,7 +1833,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -1881,15 +1881,15 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "shape": {
@@ -1927,8 +1927,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -1942,8 +1942,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -2069,6 +2069,36 @@
             }
           ],
           "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
+        }
+      },
+      "type": "object"
+    },
+    "BaseLegendLayout": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor point for legend orient group layout."
+        },
+        "bounds": {
+          "$ref": "#/definitions/LayoutBounds",
+          "description": "The bounds calculation to use for legend orient group layout."
+        },
+        "center": {
+          "description": "A flag to center legends within a shared orient group.",
+          "type": "boolean"
+        },
+        "direction": {
+          "$ref": "#/definitions/Orientation",
+          "description": "The layout direction for legend orient group layout."
+        },
+        "margin": {
+          "description": "The pixel margin between legends within a orient group.",
+          "type": "number"
+        },
+        "offset": {
+          "description": "The pixel offset from the chart body for a legend orient group.",
+          "type": "number"
         }
       },
       "type": "object"
@@ -3817,6 +3847,12 @@
               "$ref": "#/definitions/Aggregate",
               "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
             },
+            "band": {
+              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
             "bin": {
               "anyOf": [
                 {
@@ -3901,6 +3937,12 @@
         {
           "additionalProperties": false,
           "properties": {
+            "band": {
+              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
             "datum": {
               "anyOf": [
                 {
@@ -3961,6 +4003,12 @@
             "aggregate": {
               "$ref": "#/definitions/Aggregate",
               "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+            },
+            "band": {
+              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
             },
             "bin": {
               "anyOf": [
@@ -4046,6 +4094,12 @@
         {
           "additionalProperties": false,
           "properties": {
+            "band": {
+              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
             "datum": {
               "anyOf": [
                 {
@@ -4104,6 +4158,12 @@
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+        },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
         },
         "bin": {
           "anyOf": [
@@ -4492,6 +4552,12 @@
               "$ref": "#/definitions/Aggregate",
               "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
             },
+            "band": {
+              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
             "bin": {
               "anyOf": [
                 {
@@ -4576,6 +4642,12 @@
         {
           "additionalProperties": false,
           "properties": {
+            "band": {
+              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
             "datum": {
               "anyOf": [
                 {
@@ -4636,6 +4708,12 @@
             "aggregate": {
               "$ref": "#/definitions/Aggregate",
               "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+            },
+            "band": {
+              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
             },
             "bin": {
               "anyOf": [
@@ -4721,6 +4799,12 @@
         {
           "additionalProperties": false,
           "properties": {
+            "band": {
+              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
             "datum": {
               "anyOf": [
                 {
@@ -4779,6 +4863,12 @@
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+        },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
         },
         "bin": {
           "anyOf": [
@@ -4988,7 +5078,7 @@
       "additionalProperties": false,
       "properties": {
         "arc": {
-          "$ref": "#/definitions/MarkConfig",
+          "$ref": "#/definitions/RectConfig",
           "description": "Arc-specific Config"
         },
         "area": {
@@ -5445,6 +5535,12 @@
     "DatumDef": {
       "additionalProperties": false,
       "properties": {
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "datum": {
           "anyOf": [
             {
@@ -6214,6 +6310,12 @@
           ],
           "description": "The alignment to apply to grid rows and columns.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
         },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "bin": {
           "anyOf": [
             {
@@ -6326,6 +6428,12 @@
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "bin": {
           "anyOf": [
             {
@@ -6403,6 +6511,12 @@
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+        },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
         },
         "bin": {
           "anyOf": [
@@ -7397,6 +7511,12 @@
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "condition": {
           "$ref": "#/definitions/ValueOrSignalCondition<(Gradient|string|null)>",
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
@@ -7426,6 +7546,12 @@
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "condition": {
           "$ref": "#/definitions/ValueOrSignalCondition<number>",
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
@@ -7455,6 +7581,12 @@
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "condition": {
           "$ref": "#/definitions/ValueOrSignalCondition<number[]>",
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
@@ -7484,6 +7616,12 @@
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
       "properties": {
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "condition": {
           "$ref": "#/definitions/ValueOrSignalCondition<string>",
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
@@ -7516,6 +7654,12 @@
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+        },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
         },
         "bin": {
           "anyOf": [
@@ -7605,6 +7749,12 @@
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "bin": {
           "anyOf": [
             {
@@ -7692,6 +7842,12 @@
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+        },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
         },
         "bin": {
           "anyOf": [
@@ -7781,6 +7937,12 @@
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "bin": {
           "anyOf": [
             {
@@ -7869,6 +8031,12 @@
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "bin": {
           "anyOf": [
             {
@@ -7955,6 +8123,12 @@
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+        },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
         },
         "bin": {
           "anyOf": [
@@ -9945,6 +10119,12 @@
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "bin": {
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation.",
           "type": "null"
@@ -10242,6 +10422,13 @@
         "all",
         "each",
         "none"
+      ],
+      "type": "string"
+    },
+    "LayoutBounds": {
+      "enum": [
+        "full",
+        "flush"
       ],
       "type": "string"
     },
@@ -10785,9 +10972,8 @@
           "type": "number"
         },
         "layout": {
-          "description": "Legend orient group layout parameters.",
-          "not": {
-          }
+          "$ref": "#/definitions/LegendLayout",
+          "description": "Legend orient group layout parameters."
         },
         "legendX": {
           "description": "Custom x-position for legend with orient \"none\".",
@@ -10995,6 +11181,60 @@
       },
       "type": "object"
     },
+    "LegendLayout": {
+      "additionalProperties": false,
+      "properties": {
+        "anchor": {
+          "$ref": "#/definitions/TitleAnchor",
+          "description": "The anchor point for legend orient group layout."
+        },
+        "bottom": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "bottom-left": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "bottom-right": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "bounds": {
+          "$ref": "#/definitions/LayoutBounds",
+          "description": "The bounds calculation to use for legend orient group layout."
+        },
+        "center": {
+          "description": "A flag to center legends within a shared orient group.",
+          "type": "boolean"
+        },
+        "direction": {
+          "$ref": "#/definitions/Orientation",
+          "description": "The layout direction for legend orient group layout."
+        },
+        "left": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "margin": {
+          "description": "The pixel margin between legends within a orient group.",
+          "type": "number"
+        },
+        "offset": {
+          "description": "The pixel offset from the chart body for a legend orient group.",
+          "type": "number"
+        },
+        "right": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "top": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "top-left": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        },
+        "top-right": {
+          "$ref": "#/definitions/BaseLegendLayout"
+        }
+      },
+      "type": "object"
+    },
     "LegendOrient": {
       "enum": [
         "none",
@@ -11104,7 +11344,7 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -11198,7 +11438,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -11246,7 +11486,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "point": {
@@ -11267,11 +11507,11 @@
           "description": "A flag for overlaying points on top of line or area marks, or an object defining the properties of the overlayed points.\n\n- If this property is `\"transparent\"`, transparent points will be used (for enhancing tooltips and selections).\n\n- If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.\n\n- If this property is `false`, no points would be automatically added to line or area marks.\n\n__Default value:__ `false`."
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "shape": {
@@ -11309,8 +11549,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -11324,8 +11564,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -11840,7 +12080,7 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -11934,7 +12174,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -11982,15 +12222,15 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "shape": {
@@ -12028,8 +12268,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -12043,8 +12283,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -12191,6 +12431,11 @@
           "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
         },
+        "bandSize": {
+          "description": "The width of the ticks.\n\n__Default value:__  3/4 of step (width step for horizontal ticks and height step for vertical ticks).",
+          "minimum": 0,
+          "type": "number"
+        },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "The vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone."
@@ -12219,8 +12464,13 @@
           ],
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
+        "continuousBandSize": {
+          "description": "The default size of the bars on continuous scales.\n\n__Default value:__ `5`",
+          "minimum": 0,
+          "type": "number"
+        },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -12250,6 +12500,11 @@
         "dir": {
           "$ref": "#/definitions/TextDirection",
           "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
+        },
+        "discreteBandSize": {
+          "description": "The default size of the bars with discrete dimensions. If unspecified, the default size is  `step-2`, which provides 2 pixel offset between bars.",
+          "minimum": 0,
+          "type": "number"
         },
         "dx": {
           "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
@@ -12318,7 +12573,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -12377,7 +12632,7 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "point": {
@@ -12398,11 +12653,11 @@
           "description": "A flag for overlaying points on top of line or area marks, or an object defining the properties of the overlayed points.\n\n- If this property is `\"transparent\"`, transparent points will be used (for enhancing tooltips and selections).\n\n- If this property is an empty object (`{}`) or `true`, filled points with default properties will be used.\n\n- If this property is `false`, no points would be automatically added to line or area marks.\n\n__Default value:__ `false`."
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "radius2Offset": {
@@ -12448,8 +12703,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -12463,8 +12718,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -13076,6 +13331,12 @@
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "bin": {
           "anyOf": [
             {
@@ -13193,7 +13454,7 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -13287,7 +13548,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -13335,15 +13596,15 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "radius2Offset": {
@@ -13389,8 +13650,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -13404,8 +13665,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -13693,7 +13954,7 @@
           "description": "An object defining properties of axis's gridlines, ticks and labels.\nIf `null`, the axis for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [axis properties](https://vega.github.io/vega-lite/docs/axis.html) are applied.\n\n__See also:__ [`axis`](https://vega.github.io/vega-lite/docs/axis.html) documentation."
         },
         "band": {
-          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
@@ -13759,7 +14020,7 @@
       "additionalProperties": false,
       "properties": {
         "band": {
-          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
@@ -13829,7 +14090,7 @@
           "description": "An object defining properties of axis's gridlines, ticks and labels.\nIf `null`, the axis for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [axis properties](https://vega.github.io/vega-lite/docs/axis.html) are applied.\n\n__See also:__ [`axis`](https://vega.github.io/vega-lite/docs/axis.html) documentation."
         },
         "band": {
-          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
@@ -13938,7 +14199,7 @@
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
         "band": {
-          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band) or time units. If set to `1`, the mark size is set to the bandwidth or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
           "maximum": 1,
           "minimum": 0,
           "type": "number"
@@ -14515,7 +14776,7 @@
           "type": "number"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -14614,7 +14875,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -14662,15 +14923,15 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "shape": {
@@ -14708,8 +14969,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -14723,8 +14984,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -15045,6 +15306,12 @@
         "align": {
           "$ref": "#/definitions/LayoutAlign",
           "description": "The alignment to apply to row/column facet's subplot.\nThe supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other.\n- For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size.\n- For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\n__Default value:__ `\"all\"`."
+        },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
         },
         "bin": {
           "anyOf": [
@@ -15599,6 +15866,12 @@
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+        },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
         },
         "bin": {
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation.",
@@ -16413,6 +16686,12 @@
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "bin": {
           "anyOf": [
             {
@@ -16497,6 +16776,22 @@
     "StringValueDefWithConditionAlias": {
       "$ref": "#/definitions/ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,(string|null)>"
     },
+    "StrokeCap": {
+      "enum": [
+        "butt",
+        "round",
+        "square"
+      ],
+      "type": "string"
+    },
+    "StrokeJoin": {
+      "enum": [
+        "miter",
+        "round",
+        "bevel"
+      ],
+      "type": "string"
+    },
     "StyleConfigIndex": {
       "additionalProperties": {
         "anyOf": [
@@ -16510,7 +16805,7 @@
       },
       "properties": {
         "arc": {
-          "$ref": "#/definitions/MarkConfig",
+          "$ref": "#/definitions/RectConfig",
           "description": "Arc-specific Config"
         },
         "area": {
@@ -16684,7 +16979,7 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
@@ -16778,7 +17073,7 @@
           "type": "string"
         },
         "innerRadius": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
           "type": "number"
         },
         "interpolate": {
@@ -16826,15 +17121,15 @@
           "description": "The orientation of a non-stacked bar, tick, area, and line charts.\nThe value is either horizontal (default) or vertical.\n- For bar, rule and tick, this determines whether the size of the bar and tick\nshould be applied to x or y dimension.\n- For area, this property determines the orient property of the Vega output.\n- For line and trail marks, this property determines the sort order of the points in the line\nif `config.sortLineBy` is not specified.\nFor stacked charts, this is always determined by the orientation of the stack;\ntherefore explicitly specified value will be ignored."
         },
         "outerRadius": {
-          "description": "The outer radius in pixels of arc marks.",
+          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
         "radius": {
-          "description": "For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.\n\nFor arc mark, the outer radius in pixels.",
+          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
         },
         "radius2": {
-          "description": "The inner radius in pixels of arc marks.",
+          "description": "The secondary (inner) radius in pixels of arc marks.",
           "type": "number"
         },
         "shape": {
@@ -16872,8 +17167,8 @@
           "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -16887,8 +17182,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -18612,6 +18907,12 @@
           "$ref": "#/definitions/Aggregate",
           "description": "Aggregation function for the field\n(e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
         },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
         "bin": {
           "anyOf": [
             {
@@ -19345,7 +19646,7 @@
       "additionalProperties": false,
       "properties": {
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -19387,8 +19688,8 @@
           "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -19402,8 +19703,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",
@@ -19453,7 +19754,7 @@
           "type": "number"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -19543,8 +19844,8 @@
           "description": "The stroke color.\n\n__Default value:__ `\"#ddd\"`"
         },
         "strokeCap": {
-          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "strokeDash": {
           "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
@@ -19558,8 +19859,8 @@
           "type": "number"
         },
         "strokeJoin": {
-          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`",
-          "type": "string"
+          "$ref": "#/definitions/StrokeJoin",
+          "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
         },
         "strokeMiterLimit": {
           "description": "The miter limit at which to bevel a line join.",

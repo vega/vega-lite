@@ -7,7 +7,6 @@
     "y": {
       "field": "Cylinders",
       "type": "ordinal",
-      "scale": {"type": "band"},
       "axis": {"grid": true, "tickBand": "extent"}
     }
   }
