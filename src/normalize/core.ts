@@ -336,7 +336,7 @@ function mergeEncoding(opt: {parentEncoding: Encoding<any>; encoding: Encoding<a
     }, []);
 
     if (overriden.length > 0) {
-      log.warn(log.message.encodingOverridden(overriden));
+      log.info(log.message.encodingOverridden(overriden));
     }
   }
 
