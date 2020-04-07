@@ -2,7 +2,7 @@ import {X, Y} from '../../../../src/channel';
 import {pointPosition} from '../../../../src/compile/mark/encode';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
 
-describe('pointPosition()', () => {
+describe('compile/mark/encode/position-point', () => {
   it('should return correctly for lat/lng', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {

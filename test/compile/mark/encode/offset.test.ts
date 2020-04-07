@@ -1,7 +1,7 @@
 import {getOffset} from '../../../../src/compile/mark/encode/offset';
 import {MarkDef} from '../../../../src/mark';
 
-describe('compile/mark/offset', () => {
+describe('compile/mark/encode/offset', () => {
   describe('getOffset', () => {
     const markDef: MarkDef = {
       type: 'point',

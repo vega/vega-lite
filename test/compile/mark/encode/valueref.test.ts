@@ -2,7 +2,7 @@ import {SecondaryFieldDef, TypedFieldDef} from '../../../../src/channeldef';
 import {midPoint, wrapPositionInvalidTest} from '../../../../src/compile/mark/encode/valueref';
 import {defaultConfig} from '../../../../src/config';
 
-describe('compile/mark/valueref', () => {
+describe('compile/mark/encode/valueref', () => {
   describe('midPoint()', () => {
     const defaultRef = () => ({value: 0});
     it('should return correct value for width', () => {
