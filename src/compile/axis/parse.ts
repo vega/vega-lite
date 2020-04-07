@@ -363,7 +363,8 @@ function getProperty<K extends keyof AxisComponentProps>(
       }
     }
     case 'labelAlign':
-      return (specifiedAxis.labelAlign ?? properties.defaultLabelAlign(labelAngle, orient)) as AxisComponentProps[K];
+      return (specifiedAxis.labelAlign ??
+        properties.defaultLabelAlign(labelAngle, orient, channel)) as AxisComponentProps[K];
 
     case 'labelAngle':
       return labelAngle as AxisComponentProps[K];

@@ -80,7 +80,7 @@
         "orient": "left",
         "style": "guide-label",
         "frame": "group",
-        "baseline": "bottom",
+        "baseline": "middle",
         "align": "center",
         "angle": -90,
         "offset": 10
