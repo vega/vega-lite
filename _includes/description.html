@@ -1,0 +1,21 @@
+{% if include.source.description != nil %}
+  {% if include.required contains include.param %}
+    {{ "***Required.*** " | append: include.source.description | markdownify }}
+  {% else %}
+    {{ include.source.description | markdownify }}
+  {% endif %}
+{% else %}
+  {% comment %}
+    HACK: for nullable description
+    when we have @nullable, the format of a property schema will become:
+    {rangeStep: {anyof:{type: null}, {type: string, description: ...}}}
+    which is not correct since description only applies to one data type.
+    So we need to add this hack to read the description from different data
+    type and concatenate them
+  {% endcomment %}
+  {% for type in include.source["anyOf"] %}
+    {% if type.description != nil %}
+      {{type.description | markdownify}}
+    {% endif %}
+  {% endfor %}
+{% endif %}

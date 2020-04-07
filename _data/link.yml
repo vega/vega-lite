@@ -1,0 +1,434 @@
+# Use "" if there is a # in the url
+
+# Spec
+Spec:
+  link: spec.html
+CompositeUnitSpec:
+  name: SingleViewSpec
+  link: 'spec.html#single'
+FacetedUnitSpec:
+  name: 'UnitSpec'
+  link: 'unit.html'
+UnitSpec:
+  link: 'unit.html'
+LayerSpec:
+  link: 'layer.html'
+
+AutoSizeParams:
+  link: 'size.html#autosize'
+ViewBackground:
+  link: 'spec.html#view-background'
+RowCol:
+  name: Object
+AutosizeType:
+  name: String
+Projection:
+  link: projection.html
+Step:
+  name: Object
+
+FontStyle:
+  name: String
+
+## Facet Spec
+FacetMapping:
+  link: 'facet.html#mapping'
+Header:
+  link: 'facet.html#header'
+
+# Data
+Data:
+  link: 'data.html'
+DataFormat:
+  link: 'data.html#format'
+InlineDataSet:
+  name: 'Object[]'
+Parse:
+  name: 'Object'
+FieldName:
+  name: String
+
+# Title
+TitleAnchor:
+  name: Null | String
+TitleParams:
+  link: 'title.html#params'
+
+# Transform
+Transform:
+  link: 'transform.html'
+
+AggregateOp:
+  link: 'aggregate.html#ops'
+AggregatedFieldDef:
+  link: 'aggregate.html#aggregate-op-def'
+NonArgAggregateOp:
+  name: AggregateOp
+  link: 'aggregate.html#ops'
+AggregateOpDef:
+  link: 'transform.html#aggregate-op-def'
+
+Bin:
+  link: 'bin.html'
+BinParams:
+  link: 'bin.html#bin-parameters'
+BinExtent:
+  name: Array
+
+TimeUnit:
+  link: 'timeunit.html'
+TimeUnitParams:
+  link: 'timeunit.html#params'
+
+LookupData:
+  link: 'lookup.html#lookup-data'
+LookupSelection:
+  link: 'lookup.html#lookup-selection'
+
+Window:
+  link: 'window.html'
+
+# Transform - Impute
+ImputeSequence:
+  link: impute.html#sequence-def
+
+# Transform - Time Unit
+Month:
+  name: Number
+Day:
+  name: Number
+
+# Transform - Window
+WindowFieldDef:
+  link: 'window.html#field-def'
+SortField:
+  link: 'window.html#sort-field-def'
+WindowOnlyOp:
+  link: 'window.html#ops'
+
+# Mark
+AnyMark:
+  name: Mark
+  link: mark.html
+OverlayMarkDef:
+  name: Object
+
+# Axes and Legends
+SymbolShape:
+  name: String
+LabelOverlap:
+  name: String
+ConditionalAxisColor:
+  link: 'axis.html#conditional'
+ConditionalAxisNumber:
+  link: 'axis.html#conditional'
+ConditionalAxisString:
+  link: 'axis.html#conditional'
+ConditionalAxisNumberArray:
+  link: 'axis.html#conditional'
+ConditionalAxisLabelAlign:
+  name: ConditionalAxisString
+  link: 'axis.html#conditional'
+ConditionalAxisLabelBaseline:
+  name: ConditionalAxisString
+  link: 'axis.html#conditional'
+ConditionalAxisLabelFontStyle:
+  name: ConditionalAxisString
+  link: 'axis.html#conditional'
+ConditionalAxisLabelFontWeight:
+  name: ConditionalAxisString
+  link: 'axis.html#conditional'
+
+# Config
+Config:
+  link: 'config.html'
+AxisConfig:
+  link: 'axis.html#config'
+LegendConfig:
+  link: 'legend.html#config'
+MarkConfig:
+  link: 'mark.html#config'
+AreaConfig:
+  link: 'area.html#config'
+BarConfig:
+  link: 'bar.html#config'
+HeaderConfig:
+  link: 'header.html#config'
+LineConfig:
+  link: 'line.html#config'
+ProjectionConfig:
+  link: 'projection.html#config'
+RangeConfig:
+  link: 'scale.html#range-config'
+RectConfig:
+  link: 'rect.html#config'
+ScaleConfig:
+  link: 'scale.html#config'
+SelectionConfig:
+  link: 'selection.html#config'
+StyleConfigIndex:
+  name: Object
+TextConfig:
+  link: 'text.html#config'
+TickConfig:
+  link: 'tick.html#config'
+TitleConfig:
+  link: 'title.html#config'
+ViewConfig:
+  link: 'spec.html#config'
+CompositionConfig:
+  link: 'config.html#composition-config'
+
+# Encoding
+FacetedEncoding:
+  name: Encoding
+  link: 'encoding.html'
+Encoding:
+  link: 'encoding.html'
+
+Type:
+  link: type.html
+SingleDefChannel:
+  name: 'Channel'
+  link: 'encoding.html#channels'
+SingleDefUnitChannel:
+  name: 'Channel'
+  link: 'encoding.html#channels'
+AllSortString:
+  name: 'String'
+
+# Channel Definitions
+NumericFieldDefWithCondition:
+  name: MarkPropFieldDef
+  link: 'encoding.html#mark-prop-field-def'
+NumericValueDefWithConditionAlias:
+  name: MarkPropValueDef
+  link: 'encoding.html#mark-prop-value-def'
+NumericDatumDefWithCondition:
+  name: MarkPropDatumDef
+  link: 'encoding.html#mark-prop-datum-def'
+
+NumericArrayFieldDefWithCondition:
+  name: MarkPropFieldDef
+  link: 'encoding.html#mark-prop-field-def'
+NumericArrayValueDefWithConditionAlias:
+  name: MarkPropValueDef
+  link: 'encoding.html#mark-prop-value-def'
+NumericArrayDatumDefWithCondition:
+  name: MarkPropDatumDef
+  link: 'encoding.html#mark-prop-datum-def'
+
+StringFieldDefWithCondition:
+  name: MarkPropFieldDef
+  link: 'encoding.html#mark-prop-field-def'
+StringValueDefWithConditionAlias:
+  name: ValueDef
+  link: 'encoding.html#mark-prop-value-def'
+StringDatumDefWithCondition:
+  name: MarkPropDatumDef
+  link: 'encoding.html#mark-prop-datum-def'
+
+ShapeFieldDefWithCondition:
+  name: MarkPropFieldDef
+  link: 'encoding.html#mark-prop-field-def'
+ShapeValueDefWithConditionAlias:
+  name: MarkPropValueDef
+  link: 'encoding.html#mark-prop-value-def'
+ShapeDatumDefWithCondition:
+  name: MarkPropDatumDef
+  link: 'encoding.html#mark-prop-datum-def'
+
+ColorGradientFieldDefWithCondition:
+  name: MarkPropFieldDef
+  link: 'encoding.html#mark-prop-field-def'
+ColorGradientValueDefWithConditionAlias:
+  name: MarkPropValueDef
+  link: 'encoding.html#mark-prop-value-def'
+ColorGradientDatumDefWithCondition:
+  name: MarkPropDatumDef
+  link: 'encoding.html#mark-prop-datum-def'
+
+TextFieldDefWithCondition:
+  name: TextFieldDef
+  link: 'encoding.html#text-field-def'
+TextValueDefWithConditionAlias:
+  name: TextValueDef
+  link: 'encoding.html#text-value-def'
+
+FieldDefWithCondition:
+  link: 'encoding.html#href-field-def'
+ValueDefWithCondition:
+  link: 'encoding.html#href-value-def'
+
+ConditionalMarkPropFieldOrDatumDef:
+  name: ConditionalFieldDef
+  link: 'condition.html#field'
+ConditionalTextFieldDef:
+  name: ConditionFieldDef
+  link: 'condition.html#field'
+ConditionalFieldDef:
+  link: 'condition.html#field'
+ConditionalValueDef:
+  link: 'condition.html#value'
+ConditionalColorValueDef:
+  name: ConditionalValueDef
+  link: 'condition.html#value'
+ConditionalTextValueDef:
+  name: ConditionalValueDef
+  link: 'condition.html#value'
+ConditionalStringValueDef:
+  name: ConditionalValueDef
+  link: 'condition.html#value'
+
+FieldDef:
+  link: 'encoding.html#field'
+FieldDefWithoutScale:
+  name: FieldDef
+  link: 'encoding.html#field'
+LatLongFieldDef:
+  name: FieldDef
+  link: 'encoding.html#field'
+SecondaryFieldDef:
+  name: FieldDef
+  link: 'encoding.html#field'
+FacetEncodingFieldDef:
+  name: FacetFieldDef
+  link: 'facet.html#facet-field-definition'
+RowColumnEncodingFieldDef:
+  name: FacetFieldDef
+  link: 'facet.html#facet-field-definition'
+OrderFieldDef:
+  link: 'encoding.html#order'
+PositionFieldDef:
+  link: 'encoding.html#position-field-def'
+PolarFieldDef:
+  link: 'encoding.html#polar-field-def'
+PolarDatumDef:
+  link: 'encoding.html#polar-datum-def'
+
+ValueDef:
+  link: 'encoding.html#value-def'
+
+NumberValueDef:
+  name: MarkPropValueDef
+  link: 'encoding.html#value-def'
+XValueDef:
+  name: ValueDef
+  link: 'encoding.html#value-def'
+YValueDef:
+  name: ValueDef
+  link: 'encoding.html#value-def'
+StringValueDef:
+  name: ValueDef
+  link: 'encoding.html#value-def'
+
+PositionDatumDef:
+  link: 'encoding.html#position-datum-def'
+DatumDef:
+  link: 'encoding.html#datum-def'
+
+# Field Definition
+Aggregate:
+  link: 'aggregate.html'
+Axis:
+  link: 'axis.html'
+Field:
+  link: 'field.html'
+RepeatRef:
+  link: 'field.html#repeat-ref'
+Legend:
+  link: legend.html
+Scale:
+  link: 'scale.html'
+ScaleBinParams:
+  link: 'scale.html#bins'
+SelectionExtent:
+  name: Object
+Sort:
+  link: 'sort.html'
+EncodingSortField:
+  link: 'sort.html#sort-field'
+StackOffset:
+  link: 'stack.html'
+
+# Scale / Axis / Legend / Projection
+ProjectionType:
+  link: 'projection.html#projection-types'
+SchemeParams:
+  link: 'scale.html#scheme-params'
+SelectionDomain:
+  link: 'selection.html#scale-domains'
+InterpolateParams:
+  name: Object
+Scheme:
+  link: 'https://vega.github.io/vega/docs/schemes/#scheme-properties'
+
+Resolve:
+  name: Resolve
+  link: 'resolve.html'
+
+# Selections
+SelectionDef:
+  name: Selection
+  link: 'selection.html'
+SelectionComposition:
+  name: 'String | Object'
+SingleSelectionConfig:
+  name: Selection
+  link: 'selection.html#definition'
+MultiSelectionConfig:
+  name: Selection
+  link: 'selection.html#definition'
+IntervalSelectionConfig:
+  name: Selection
+  link: 'selection.html#definition'
+Binding:
+  link: 'bind.html'
+LegendBinding:
+  link: 'https://vega.github.io/vega-lite/docs/bind.html#legend-binding'
+BrushConfig:
+  name: Mark
+  link: 'selection.html#interval-mark'
+Stream:
+  name: 'VegaEventStream'
+  link: 'https://vega.github.io/vega/docs/event-streams/'
+SelectionResolution:
+  link: 'selection.html#resolve'
+SelectionInitMapping:
+  name: 'Object'
+  link: 'init.html'
+SelectionInitIntervalMapping:
+  name: 'Object'
+  link: 'init.html'
+
+# Types
+Any:
+  link: 'types.html#any'
+DateTime:
+  link: 'datetime.html'
+Color:
+  link: 'types.html#color'
+Gradient:
+  link: 'gradient.html'
+GradientStop:
+  link: 'gradient.html#gradient-stop'
+Text:
+  link: 'types.html#text'
+Vector2:
+  name: Array
+Vector3:
+  name: Array
+
+# Others
+PredicateComposition:
+  name: 'Predicate'
+  link: 'predicate.html'
+
+FontWeight:
+  name: 'String | Number'
+RepeatMapping:
+  link: 'repeat.html#repeat-mapping'
+Padding:
+  name: 'Number | Object'
+TextBaseline:
+  name: String # we need to cast his as TextBaseline unions "alphabetic" with Baseline
