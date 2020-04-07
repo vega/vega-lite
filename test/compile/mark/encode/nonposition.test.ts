@@ -1,7 +1,7 @@
 import {nonPosition} from '../../../../src/compile/mark/encode';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
 
-describe('compile/mark/encoding/nonPosition', () => {
+describe('compile/mark/encode/nonPosition', () => {
   it('respects default value for a particular channel', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},

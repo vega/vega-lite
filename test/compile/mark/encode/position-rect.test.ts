@@ -3,7 +3,7 @@ import {rectBinPosition} from '../../../../src/compile/mark/encode';
 import {defaultConfig} from '../../../../src/config';
 import * as log from '../../../../src/log';
 
-describe('compile/mark/encoding/position-rect', () => {
+describe('compile/mark/encode/position-rect', () => {
   const config = defaultConfig;
   describe('rectBinPosition', () => {
     it('produces correct x-mixins for signal reverse', () => {

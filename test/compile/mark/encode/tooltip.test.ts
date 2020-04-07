@@ -3,7 +3,7 @@ import {tooltip, tooltipRefForEncoding} from '../../../../src/compile/mark/encod
 import {defaultConfig} from '../../../../src/config';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
 
-describe('compile/mark/encoding/tooltip', () => {
+describe('compile/mark/encode/tooltip', () => {
   describe('tooltip', () => {
     it('generates tooltip object signal for all encoding fields', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({

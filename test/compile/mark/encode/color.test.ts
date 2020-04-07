@@ -2,7 +2,7 @@ import {color} from '../../../../src/compile/mark/encode';
 import * as log from '../../../../src/log';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
 
-describe('compile/mark/encoding/color', () => {
+describe('compile/mark/encode/color', () => {
   it('color should be mapped to fill for bar', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'bar',
