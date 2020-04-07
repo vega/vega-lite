@@ -558,12 +558,27 @@ export interface MarkDefMixins {
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 export interface MarkDef<M extends string | Mark = Mark>
   extends GenericMarkDef<M>,
-    MarkConfig,
-    AreaConfig,
-    BarConfig, // always extends RectConfig
-    LineConfig,
-    TickConfig,
-    MarkDefMixins {}
+    Omit<
+      MarkConfig &
+        AreaConfig &
+        BarConfig & // always extends RectConfig
+        LineConfig &
+        TickConfig,
+      'startAngle' | 'endAngle'
+    >,
+    MarkDefMixins {
+  // Omit startAngle/endAngle since we use theta/theta2 from Vega-Lite schema to avoid confusion
+  // We still support start/endAngle  only in config, just in case people use Vega config with Vega-Lite.
+
+  /**
+   * @hidden
+   */
+  startAngle?: number | SignalRef;
+  /**
+   * @hidden
+   */
+  endAngle?: number | SignalRef;
+}
 
 const DEFAULT_RECT_BAND_SIZE = 5;
 
