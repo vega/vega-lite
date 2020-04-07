@@ -18,7 +18,8 @@ export const text: MarkCompiler = {
         baseline: 'include',
         color: 'include',
         size: 'ignore',
-        orient: 'ignore'
+        orient: 'ignore',
+        theta: 'include'
       }),
       ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
       ...encode.pointPosition('y', model, {defaultPos: 'mid'}),

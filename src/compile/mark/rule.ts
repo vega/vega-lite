@@ -19,7 +19,8 @@ export const rule: MarkCompiler = {
         baseline: 'ignore',
         color: 'include',
         orient: 'ignore',
-        size: 'ignore'
+        size: 'ignore',
+        theta: 'ignore'
       }),
       ...encode.pointOrRangePosition('x', model, {
         defaultPos: orient === 'horizontal' ? 'zeroOrMax' : 'mid',

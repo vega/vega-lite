@@ -2,6 +2,26 @@ import {arc} from '../../../src/compile/mark/arc';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Arc', () => {
+  describe('with theta in mark def', () => {
+    // This is a simplified example for stacked text.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: {
+        type: 'arc',
+        theta: 1.57,
+        theta2: 3.14
+      }
+    });
+
+    const props = arc.encodeEntry(model);
+
+    it('applies theta to startAngle and endAngle and not theta', () => {
+      expect(props.startAngle).toEqual({value: 1.57});
+      expect(props.endAngle).toEqual({value: 3.14});
+      expect(props.theta).toBeUndefined();
+    });
+  });
+
   describe('for pie', () => {
     // This is a simplified example for stacked text.
     // In reality this will be used as stacked's overlayed marker

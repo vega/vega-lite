@@ -21,7 +21,7 @@ export {rectPosition} from './position-rect';
 export {text} from './text';
 export {tooltip} from './tooltip';
 
-export type Ignore = Record<'color' | 'size' | 'orient' | 'align' | 'baseline', 'ignore' | 'include'>;
+export type Ignore = Record<'color' | 'size' | 'orient' | 'align' | 'baseline' | 'theta', 'ignore' | 'include'>;
 
 export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
   const {fill = undefined, stroke = undefined} = ignore.color === 'include' ? color(model) : {};
