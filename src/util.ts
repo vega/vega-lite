@@ -398,7 +398,7 @@ export function isInternalField(name: string) {
  */
 export function normalizeAngle(angle: number) {
   if (angle === undefined) {
-  	return undefined;
+    return undefined;
   }
   return ((angle % 360) + 360) % 360;
 }
