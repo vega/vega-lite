@@ -11,7 +11,8 @@ export const arc: MarkCompiler = {
         baseline: 'ignore',
         color: 'include',
         size: 'ignore',
-        orient: 'ignore'
+        orient: 'ignore',
+        theta: 'ignore'
       }),
       ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
       ...encode.pointPosition('y', model, {defaultPos: 'mid'}),

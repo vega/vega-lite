@@ -11,7 +11,8 @@ export const rect: MarkCompiler = {
         baseline: 'ignore',
         color: 'include',
         orient: 'ignore',
-        size: 'ignore'
+        size: 'ignore',
+        theta: 'ignore'
       }),
       ...encode.rectPosition(model, 'x', 'rect'),
       ...encode.rectPosition(model, 'y', 'rect')

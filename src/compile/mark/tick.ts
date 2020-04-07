@@ -23,7 +23,8 @@ export const tick: MarkCompiler = {
         baseline: 'ignore',
         color: 'include',
         orient: 'ignore',
-        size: 'ignore'
+        size: 'ignore',
+        theta: 'ignore'
       }),
 
       ...encode.pointPosition('x', model, {defaultPos: 'mid', vgChannel: 'xc'}),

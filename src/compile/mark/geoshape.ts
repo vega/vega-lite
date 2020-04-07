@@ -15,7 +15,8 @@ export const geoshape: MarkCompiler = {
         baseline: 'ignore',
         color: 'include',
         size: 'ignore',
-        orient: 'ignore'
+        orient: 'ignore',
+        theta: 'ignore'
       })
     };
   },

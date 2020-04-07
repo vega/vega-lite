@@ -13,7 +13,8 @@ function encodeEntry(model: UnitModel, fixedShape?: 'circle' | 'square') {
       baseline: 'ignore',
       color: 'include',
       size: 'include',
-      orient: 'ignore'
+      orient: 'ignore',
+      theta: 'ignore'
     }),
     ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
     ...encode.pointPosition('y', model, {defaultPos: 'mid'}),

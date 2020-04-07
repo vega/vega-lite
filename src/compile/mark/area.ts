@@ -11,7 +11,8 @@ export const area: MarkCompiler = {
         baseline: 'ignore',
         color: 'include',
         orient: 'include',
-        size: 'ignore'
+        size: 'ignore',
+        theta: 'ignore'
       }),
       ...encode.pointOrRangePosition('x', model, {
         defaultPos: 'zeroOrMin',

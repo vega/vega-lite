@@ -11,7 +11,8 @@ export const line: MarkCompiler = {
         baseline: 'ignore',
         color: 'include',
         size: 'ignore',
-        orient: 'ignore'
+        orient: 'ignore',
+        theta: 'ignore'
       }),
       ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
       ...encode.pointPosition('y', model, {defaultPos: 'mid'}),
@@ -32,7 +33,8 @@ export const trail: MarkCompiler = {
         baseline: 'ignore',
         color: 'include',
         size: 'include',
-        orient: 'ignore'
+        orient: 'ignore',
+        theta: 'ignore'
       }),
       ...encode.pointPosition('x', model, {defaultPos: 'mid'}),
       ...encode.pointPosition('y', model, {defaultPos: 'mid'}),

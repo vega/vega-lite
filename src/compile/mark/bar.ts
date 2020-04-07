@@ -11,7 +11,8 @@ export const bar: MarkCompiler = {
         baseline: 'ignore',
         color: 'include',
         orient: 'ignore',
-        size: 'ignore'
+        size: 'ignore',
+        theta: 'ignore'
       }),
       ...encode.rectPosition(model, 'x', 'bar'),
       ...encode.rectPosition(model, 'y', 'bar')
