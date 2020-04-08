@@ -68,7 +68,7 @@ export interface DateTime {
   /**
    * Integer value representing the hour of a day from 0-23.
    * @minimum 0
-   * @maximum 23
+   * @maximum 24
    * @TJS-type integer
    */
   hours?: number;
@@ -76,7 +76,7 @@ export interface DateTime {
   /**
    * Integer value representing the minute segment of time from 0-59.
    * @minimum 0
-   * @maximum 59
+   * @maximum 60
    * @TJS-type integer
    */
   minutes?: number;
@@ -84,7 +84,7 @@ export interface DateTime {
   /**
    * Integer value representing the second segment (0-59) of a time value
    * @minimum 0
-   * @maximum 59
+   * @maximum 60
    * @TJS-type integer
    */
   seconds?: number;
@@ -92,7 +92,7 @@ export interface DateTime {
   /**
    * Integer value representing the millisecond segment of time.
    * @minimum 0
-   * @maximum 999
+   * @maximum 1000
    * @TJS-type integer
    */
   milliseconds?: number;
