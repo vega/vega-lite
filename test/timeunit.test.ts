@@ -47,25 +47,29 @@ describe('timeUnit', () => {
     });
 
     it('should return correct field expression for QUARTER', () => {
-      expect(fieldExpr(TimeUnit.QUARTER, 'x')).toBe('datetime(0, (quarter(datum["x"])-1)*3, 1, 0, 0, 0, 0)');
+      expect(fieldExpr(TimeUnit.QUARTER, 'x')).toBe('datetime(2012, (quarter(datum["x"])-1)*3, 1, 0, 0, 0, 0)');
     });
 
     it('should return correct field expression for DAY', () => {
-      expect(fieldExpr(TimeUnit.DAY, 'x')).toBe('datetime(2006, 0, day(datum["x"])+1, 0, 0, 0, 0)');
+      expect(fieldExpr(TimeUnit.DAY, 'x')).toBe('datetime(2012, 0, day(datum["x"])+1, 0, 0, 0, 0)');
     });
 
     it('should return correct field expression for MILLISECONDS', () => {
-      expect(fieldExpr(TimeUnit.MILLISECONDS, 'x')).toBe('datetime(0, 0, 1, 0, 0, 0, milliseconds(datum["x"]))');
+      expect(fieldExpr(TimeUnit.MILLISECONDS, 'x')).toBe('datetime(2012, 0, 1, 0, 0, 0, milliseconds(datum["x"]))');
     });
 
     it('should return correct field expression for MONTHDATE', () => {
-      expect(fieldExpr(TimeUnit.MONTHDATE, 'x')).toBe('datetime(0, month(datum["x"]), date(datum["x"]), 0, 0, 0, 0)');
+      expect(fieldExpr(TimeUnit.MONTHDATE, 'x')).toBe(
+        'datetime(2012, month(datum["x"]), date(datum["x"]), 0, 0, 0, 0)'
+      );
     });
 
     it('should return correct field expression with utc for MILLISECONDS', () => {
-      expect(fieldExpr(TimeUnit.UTCQUARTER, 'x')).toBe('datetime(0, (utcquarter(datum["x"])-1)*3, 1, 0, 0, 0, 0)');
+      expect(fieldExpr(TimeUnit.UTCQUARTER, 'x')).toBe('datetime(2012, (utcquarter(datum["x"])-1)*3, 1, 0, 0, 0, 0)');
 
-      expect(fieldExpr(TimeUnit.UTCMILLISECONDS, 'x')).toBe('datetime(0, 0, 1, 0, 0, 0, utcmilliseconds(datum["x"]))');
+      expect(fieldExpr(TimeUnit.UTCMILLISECONDS, 'x')).toBe(
+        'datetime(2012, 0, 1, 0, 0, 0, utcmilliseconds(datum["x"]))'
+      );
     });
   });
 

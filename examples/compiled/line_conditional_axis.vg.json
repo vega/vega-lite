@@ -67,7 +67,7 @@
           "update": {
             "strokeDash": [
               {
-                "test": "time(datetime(0, month(datum[\"value\"]), 1, 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))",
+                "test": "time(datetime(2012, month(datum[\"value\"]), 1, 0, 0, 0, 0))===time(datetime(2012, 0, 1, 0, 0, 0, 0))",
                 "value": []
               },
               {"value": [2, 2]}
@@ -112,7 +112,7 @@
           "update": {
             "strokeDash": [
               {
-                "test": "time(datetime(0, month(datum[\"value\"]), 1, 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))",
+                "test": "time(datetime(2012, month(datum[\"value\"]), 1, 0, 0, 0, 0))===time(datetime(2012, 0, 1, 0, 0, 0, 0))",
                 "value": []
               },
               {"value": [2, 2]}

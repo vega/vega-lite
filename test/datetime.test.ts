@@ -1,7 +1,13 @@
-import {DateTime, dateTimeToExpr, dateTimeToTimestamp} from '../src/datetime';
+import {DateTime, dateTimeToExpr, dateTimeToTimestamp, isDateTime} from '../src/datetime';
 import * as log from '../src/log';
 
 describe('datetime', () => {
+  describe('isDateTime', () => {
+    it('correctly classifies unit with zero', () => {
+      expect(isDateTime({hours: 0})).toEqual(true);
+    });
+  });
+
   describe('dateTimeToExpr', () => {
     it(
       'should drop day if day is combined with year/month/date',
@@ -20,7 +26,7 @@ describe('datetime', () => {
       const expr = dateTimeToExpr({
         quarter: 2
       });
-      expect(expr).toBe('datetime(0, 3, 1, 0, 0, 0, 0)');
+      expect(expr).toBe('datetime(2012, 3, 1, 0, 0, 0, 0)');
     });
 
     it(
@@ -30,7 +36,7 @@ describe('datetime', () => {
           dateTimeToExpr({
             quarter: 5
           })
-        ).toBe('datetime(0, 12, 1, 0, 0, 0, 0)');
+        ).toBe('datetime(2012, 12, 1, 0, 0, 0, 0)');
         expect(localLogger.warns[0]).toEqual(log.message.invalidTimeUnit('quarter', 5));
       })
     );
@@ -45,7 +51,7 @@ describe('datetime', () => {
       const expr = dateTimeToExpr({
         month: 1
       });
-      expect(expr).toBe('datetime(0, 0, 1, 0, 0, 0, 0)');
+      expect(expr).toBe('datetime(2012, 0, 1, 0, 0, 0, 0)');
     });
 
     it('should normalize month name correctly', () => {
@@ -53,22 +59,22 @@ describe('datetime', () => {
         dateTimeToExpr({
           month: 'January'
         })
-      ).toBe('datetime(0, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(2012, 0, 1, 0, 0, 0, 0)');
       expect(
         dateTimeToExpr({
           month: 'january'
         })
-      ).toBe('datetime(0, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(2012, 0, 1, 0, 0, 0, 0)');
       expect(
         dateTimeToExpr({
           month: 'Jan'
         })
-      ).toBe('datetime(0, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(2012, 0, 1, 0, 0, 0, 0)');
       expect(
         dateTimeToExpr({
           month: 'jan'
         })
-      ).toBe('datetime(0, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(2012, 0, 1, 0, 0, 0, 0)');
     });
 
     it('should throw error for invalid month', () => {
@@ -82,12 +88,12 @@ describe('datetime', () => {
         dateTimeToExpr({
           day: 0
         })
-      ).toBe('datetime(2006, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(2012, 0, 1, 0, 0, 0, 0)');
       expect(
         dateTimeToExpr({
           day: 7
         })
-      ).toBe('datetime(2006, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(2012, 0, 1, 0, 0, 0, 0)');
     });
 
     it('should normalize day name correctly and use year 2006 to ensure correct', () => {
@@ -95,22 +101,22 @@ describe('datetime', () => {
         dateTimeToExpr({
           day: 'Sunday'
         })
-      ).toBe('datetime(2006, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(2012, 0, 1, 0, 0, 0, 0)');
       expect(
         dateTimeToExpr({
           day: 'sunday'
         })
-      ).toBe('datetime(2006, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(2012, 0, 1, 0, 0, 0, 0)');
       expect(
         dateTimeToExpr({
           day: 'Sun'
         })
-      ).toBe('datetime(2006, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(2012, 0, 1, 0, 0, 0, 0)');
       expect(
         dateTimeToExpr({
           day: 'sun'
         })
-      ).toBe('datetime(2006, 0, 1, 0, 0, 0, 0)');
+      ).toBe('datetime(2012, 0, 1, 0, 0, 0, 0)');
     });
 
     it('should throw error for invalid day', () => {

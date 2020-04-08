@@ -1,0 +1,140 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Customizing time scale domain.",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"a": "December 17, 1995 03:00:00", "b": 28},
+        {"a": "December 17, 1995 09:00:00", "b": 30},
+        {"a": "December 17, 1995 15:00:00", "b": 30}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toDate(datum[\"a\"])", "as": "a"},
+        {
+          "field": "a",
+          "type": "timeunit",
+          "units": ["hours"],
+          "as": ["hours_a", "hours_a_end"]
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"hours_a\"]) || (isValid(datum[\"hours_a\"]) && isFinite(+datum[\"hours_a\"]))) && isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "x2": [
+            {
+              "test": "!isValid(datum[\"hours_a\"]) || !isFinite(+datum[\"hours_a\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "hours_a", "offset": 1}
+          ],
+          "x": [
+            {
+              "test": "!isValid(datum[\"hours_a\"]) || !isFinite(+datum[\"hours_a\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "hours_a_end"}
+          ],
+          "y": {"scale": "y", "field": "b"},
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {
+        "fields": [
+          {"signal": "{data: datetime(2012, 0, 1, 0, 0, 0, 0)}"},
+          {"signal": "{data: datetime(2012, 0, 1, 24, 0, 0, 0)}"}
+        ]
+      },
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "b"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "a (hours)",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "encode": {
+        "labels": {
+          "update": {
+            "text": {
+              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            }
+          }
+        }
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "b",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

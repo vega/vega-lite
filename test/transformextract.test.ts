@@ -19,6 +19,7 @@ describe('extractTransforms()', () => {
     'bar_argmax.vl.json',
     'bar_binned_data.vl.json',
     'bar_count_minimap.vl.json',
+    'bar_custom_time_domain.vl.json',
     'bar_diverging_stack_population_pyramid.vl.json',
     'bar_month_temporal.vl.json',
     'bar_sort_by_count.vl.json',

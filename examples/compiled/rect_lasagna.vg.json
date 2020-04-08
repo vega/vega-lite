@@ -93,7 +93,7 @@
             "text": {"signal": "timeFormat(datum.value, '%Y')"},
             "fill": [
               {
-                "test": "time(datetime(0, month(datum[\"value\"]), date(datum[\"value\"]), 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))",
+                "test": "time(datetime(2012, month(datum[\"value\"]), date(datum[\"value\"]), 0, 0, 0, 0))===time(datetime(2012, 0, 1, 0, 0, 0, 0))",
                 "value": "black"
               },
               {"value": null}
@@ -104,7 +104,7 @@
           "update": {
             "stroke": [
               {
-                "test": "time(datetime(0, month(datum[\"value\"]), date(datum[\"value\"]), 0, 0, 0, 0))===time(datetime(0, 0, 1, 0, 0, 0, 0))",
+                "test": "time(datetime(2012, month(datum[\"value\"]), date(datum[\"value\"]), 0, 0, 0, 0))===time(datetime(2012, 0, 1, 0, 0, 0, 0))",
                 "value": "black"
               },
               {"value": null}
