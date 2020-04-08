@@ -172,17 +172,21 @@ export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient, chan
 
   if (angle !== undefined) {
     if (channel === 'x') {
-      return (45 < angle && angle < 135) || (225 < angle && angle < 315)
-        ? 'middle'
-        : (angle <= 45 || 315 <= angle) === (axisOrient === 'top')
-        ? 'bottom'
-        : 'top';
+      if ((45 < angle && angle < 135) || (225 < angle && angle < 315)) {
+        return 'middle';
+      } else if (angle <= 45 || 315 <= angle) {
+        return axisOrient === 'top' ? 'bottom' : 'top';
+      } else {
+        return axisOrient === 'top' ? 'top' : 'bottom';
+      }
     } else {
-      return angle <= 45 || 315 <= angle || (135 <= angle && angle <= 225)
-        ? 'middle'
-        : (45 <= angle && angle <= 135) === (axisOrient === 'left')
-        ? 'top'
-        : 'bottom';
+      if (angle <= 45 || 315 <= angle || (135 <= angle && angle <= 225)) {
+        return 'middle';
+      } else if (45 <= angle && angle <= 135) {
+        return axisOrient === 'left' ? 'top' : 'bottom';
+      } else {
+        return axisOrient === 'left' ? 'bottom' : 'top';
+      }
     }
   }
   return undefined;
@@ -195,13 +199,21 @@ export function defaultLabelAlign(angle: number, axisOrient: AxisOrient, channel
 
   if (angle !== undefined) {
     if (channel === 'x') {
-      return angle % 180 === 0 ? 'center' : angle < 180 === (axisOrient === 'top') ? 'right' : 'left';
+      if (angle % 180 === 0) {
+        return 'center';
+      } else if (angle < 180) {
+        return axisOrient === 'top' ? 'right' : 'left';
+      } else {
+        return axisOrient === 'top' ? 'left' : 'right';
+      }
     } else {
-      return (angle + 90) % 180 === 0
-        ? 'center'
-        : (90 < angle && angle < 270) === (axisOrient === 'left')
-        ? 'left'
-        : 'right';
+      if ((angle + 90) % 180 === 0) {
+        return 'center';
+      } else if (90 < angle && angle < 270) {
+        return axisOrient === 'left' ? 'left' : 'right';
+      } else {
+        return axisOrient === 'left' ? 'right' : 'left';
+      }
     }
   }
   return undefined;
