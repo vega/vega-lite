@@ -24,8 +24,7 @@ const LEGEND_COMPONENT_PROPERTY_INDEX: Flag<keyof LegendComponentProps> = {
   strokeWidth: 1,
   strokeDash: 1,
   // encode
-  encode: 1,
-  tabindex: 1
+  encode: 1
 };
 
 export const LEGEND_COMPONENT_PROPERTIES = keys(LEGEND_COMPONENT_PROPERTY_INDEX);

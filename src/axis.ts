@@ -335,7 +335,6 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   ariaLabel: 'main',
   ariaRole: 'main',
   ariaRoleDescription: 'main',
-  tabindex: 'main',
   domain: 'main',
   domainColor: 'main',
   domainDash: 'main',
