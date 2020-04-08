@@ -1,4 +1,4 @@
-import {AxisEncode as VgAxisEncode, AxisOrient, Orient, ScaleType, SignalRef} from 'vega';
+import {AxisEncode as VgAxisEncode, AxisOrient, Orient, ScaleType, TickCount} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
 import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
@@ -390,7 +390,7 @@ function getProperty<K extends keyof AxisComponentProps>(
     case 'tickCount': {
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
       const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
-      return getFirstDefined<number | SignalRef>(
+      return getFirstDefined<TickCount>(
         specifiedAxis.tickCount,
         properties.defaultTickCount({fieldOrDatumDef, scaleType, size, values: specifiedAxis.values})
       ) as AxisComponentProps[K];

@@ -9,7 +9,9 @@ import {
   FontWeight,
   LabelOverlap,
   SignalRef,
-  TextBaseline
+  TextBaseline,
+  TimeInterval,
+  TimeIntervalStep
 } from 'vega';
 import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
@@ -273,11 +275,13 @@ export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
   /**
    * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
    *
+   * For scales of type `"time"` or `"utc"`, the tick count can instead be a time interval specifier. Legal string values are `"millisecond"`, `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, and "year". Alternatively, an object-valued interval specifier of the form `{"interval": "month", "step": 3}` includes a desired number of interval steps. Here, ticks are generated for each quarter (Jan, Apr, Jul, Oct) boundary.
+   *
    * __Default value__: Determine using a formula `ceil(width/40)` for x and `ceil(height/40)` for y.
    *
    * @minimum 0
    */
-  tickCount?: number;
+  tickCount?: number | TimeInterval | TimeIntervalStep | SignalRef;
 
   /**
    * The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.

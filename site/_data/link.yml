@@ -363,6 +363,8 @@ InterpolateParams:
 Scheme:
   link: 'https://vega.github.io/vega/docs/schemes/#scheme-properties'
 
+TimeIntervalStep:
+  name: Object
 Resolve:
   name: Resolve
   link: 'resolve.html'
