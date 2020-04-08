@@ -77,7 +77,17 @@ By default, a scale in Vega-Lite draws domain values directly from a channel's e
 
 {% include table.html props="domain,domainMid" source="Scale" %}
 
-A common use case for the `domain` property is to limit, for example, the `x` range of values to include in a plot. However, setting the domain property alone is insufficient to achieve the desired effect. For example, consider the line plot specification below in which the `x` domain is restricted to the range `[300, 450]`.
+A common use case for the `domain` property is to limit, for example, the `x` range of values to include in a plot. However, setting the domain property alone is insufficient to achieve the desired effect.
+
+### Example: Customizing Domain for a Time Scale
+
+For a time scale, we can set scale domain to an array [datetime objects](types.html#datetime), as shown below.
+
+<div class="vl-example" data-name="bar_custom_time_domain"></div>
+
+### Example: Clipping or Removing Unwanted Data Points
+
+For example, consider the line plot specification below in which the `x` domain is restricted to the range `[300, 450]`.
 
 <div class="vl-example" data-name="line_outside_domain"></div>
 
