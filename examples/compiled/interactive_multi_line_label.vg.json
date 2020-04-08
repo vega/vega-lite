@@ -34,8 +34,15 @@
       "source": "data_1",
       "transform": [
         {
+          "type": "aggregate",
+          "groupby": [],
+          "ops": ["min"],
+          "fields": ["date"],
+          "as": ["min_date"]
+        },
+        {
           "type": "filter",
-          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"])))"
+          "expr": "(isDate(datum[\"min_date\"]) || (isValid(datum[\"min_date\"]) && isFinite(+datum[\"min_date\"])))"
         }
       ]
     },
@@ -181,7 +188,7 @@
       "encode": {
         "update": {
           "stroke": {"value": "gray"},
-          "x": {"scale": "x", "field": "date"},
+          "x": {"scale": "x", "field": "min_date"},
           "y": {"value": 0},
           "y2": {"field": {"group": "height"}}
         }
@@ -236,7 +243,7 @@
         "fields": [
           {"data": "source_0", "field": "date"},
           {"data": "data_0", "field": "date"},
-          {"data": "data_2", "field": "date"},
+          {"data": "data_2", "field": "min_date"},
           {"data": "data_3", "field": "date"}
         ]
       },
@@ -301,7 +308,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "date",
+      "title": "date, Min of date",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
