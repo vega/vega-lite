@@ -1,5 +1,5 @@
 import {Legend as VgLegend, LegendEncode, SignalRef} from 'vega';
-import {COLOR, FILLOPACITY, NonPositionScaleChannel, SHAPE, STROKEOPACITY} from '../../channel';
+import {COLOR, NonPositionScaleChannel, SHAPE} from '../../channel';
 import {
   DatumDef,
   FieldDef,
@@ -40,7 +40,7 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
 
   const legendComponent: LegendComponentIndex = {};
 
-  for (const channel of [COLOR, ...LEGEND_SCALE_CHANNELS, FILLOPACITY, STROKEOPACITY]) {
+  for (const channel of [COLOR, ...LEGEND_SCALE_CHANNELS]) {
     const def = getFieldOrDatumDef(encoding[channel]) as MarkPropFieldDef<string> | MarkPropDatumDef<string>;
 
     if (!def || !model.getScaleComponent(channel)) {
