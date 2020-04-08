@@ -55,6 +55,7 @@ describe('extractTransforms()', () => {
     'interactive_layered_crossfilter_discrete.vl.json',
     'interactive_layered_crossfilter.vl.json',
     'interactive_line_hover.vl.json',
+    'interactive_multi_line_label.vl.json',
     'interactive_seattle_weather.vl.json',
     'joinaggregate_mean_difference.vl.json',
     'layer_bar_dual_axis_minmax.vl.json',
