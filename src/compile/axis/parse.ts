@@ -1,20 +1,10 @@
-import {AxisEncode as VgAxisEncode, AxisOrient, Orient, ScaleType, TickCount} from 'vega';
+import {AxisEncode as VgAxisEncode, AxisOrient} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
-import {isBinned} from '../../bin';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
-import {
-  getFieldOrDatumDef,
-  isFieldDef,
-  isFieldDefWithCustomTimeFormat as isFieldOrDatumDefWithCustomTimeFormat,
-  isFieldOrDatumDefForTimeFormat,
-  PositionDatumDef,
-  PositionFieldDef,
-  toFieldDefBase
-} from '../../channeldef';
+import {getFieldOrDatumDef, PositionDatumDef, PositionFieldDef} from '../../channeldef';
 import {getFirstDefined, keys, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
-import {mergeTitle, mergeTitleComponent, mergeTitleFieldDefs} from '../common';
-import {numberFormat} from '../format';
+import {mergeTitleComponent} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {LayerModel} from '../layer';
 import {parseGuideResolve} from '../resolve';
@@ -23,7 +13,7 @@ import {UnitModel} from '../unit';
 import {AxisComponent, AxisComponentIndex, AxisComponentProps, AXIS_COMPONENT_PROPERTIES} from './component';
 import {getAxisConfig, getAxisConfigs} from './config';
 import * as encode from './encode';
-import * as properties from './properties';
+import {AxisRuleParams, axisRules, defaultOrient, getFieldDefTitle, getLabelAngle} from './properties';
 
 export function parseUnitAxes(model: UnitModel): AxisComponentIndex {
   return POSITION_SCALE_CHANNELS.reduce((axis, channel) => {
@@ -173,31 +163,6 @@ function mergeAxisComponent(merged: AxisComponent, child: AxisComponent): AxisCo
   return merged;
 }
 
-function getFieldDefTitle(model: UnitModel, channel: 'x' | 'y') {
-  const channel2 = channel === 'x' ? 'x2' : 'y2';
-  const fieldDef = model.fieldDef(channel);
-  const fieldDef2 = model.fieldDef(channel2);
-
-  const title1 = fieldDef ? fieldDef.title : undefined;
-  const title2 = fieldDef2 ? fieldDef2.title : undefined;
-
-  if (title1 && title2) {
-    return mergeTitle(title1, title2);
-  } else if (title1) {
-    return title1;
-  } else if (title2) {
-    return title2;
-  } else if (title1 !== undefined) {
-    // falsy value to disable config
-    return title1;
-  } else if (title2 !== undefined) {
-    // falsy value to disable config
-    return title2;
-  }
-
-  return undefined;
-}
-
 function isExplicit<T extends string | number | boolean | object>(
   value: T,
   property: keyof AxisComponentProps,
@@ -248,16 +213,42 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
     | PositionFieldDef<string>
     | PositionDatumDef<string>;
 
-  const orient = getFirstDefined(axis?.orient, properties.orient(channel));
+  const {mark, config} = model;
+
+  const orient =
+    axis?.orient ||
+    config[channel === 'x' ? 'axisX' : 'axisY']?.orient ||
+    config.axis?.orient ||
+    defaultOrient(channel);
 
   const scaleType = model.getScaleComponent(channel).get('type');
 
   const axisConfigs = getAxisConfigs(channel, scaleType, orient, model.config);
-  const labelAngle = properties.labelAngle(model, axis, channel, fieldOrDatumDef, axisConfigs);
+  const labelAngle = getLabelAngle(model, axis, channel, fieldOrDatumDef, axisConfigs);
+
+  const ruleParams: AxisRuleParams = {
+    fieldOrDatumDef,
+    axis: axis || {},
+    channel,
+    model,
+    scaleType,
+    orient,
+    labelAngle,
+    mark,
+    config
+  };
+
+  if (axis !== undefined && !axis) {
+    // if axis is explicitly falsy, disable it and include no other properties.
+    axisComponent.set('disable', true, true);
+    return axisComponent;
+  }
 
   // 1.2. Add properties
   for (const property of AXIS_COMPONENT_PROPERTIES) {
-    const value = getProperty(fieldOrDatumDef, property, axis, channel, model, scaleType, orient, labelAngle);
+    const value =
+      property in axisRules ? axisRules[property](ruleParams) : isAxisProperty(property) ? axis?.[property] : undefined;
+
     const hasValue = value !== undefined;
 
     const explicit = isExplicit(value, property, axis, model, channel);
@@ -313,114 +304,4 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   }
 
   return axisComponent;
-}
-
-function getProperty<K extends keyof AxisComponentProps>(
-  fieldOrDatumDef: PositionFieldDef<string> | PositionDatumDef<string>,
-  property: K,
-  specifiedAxis: Axis,
-  channel: PositionScaleChannel,
-  model: UnitModel,
-  scaleType: ScaleType,
-  orient: Orient,
-  labelAngle: number
-): AxisComponentProps[K] {
-  if (property === 'disable') {
-    return specifiedAxis !== undefined && (!specifiedAxis as AxisComponentProps[K]);
-  }
-
-  specifiedAxis = specifiedAxis || {}; // assign object so the rest doesn't have to check if axis exists
-
-  const {mark, config} = model;
-
-  switch (property) {
-    case 'scale':
-      return model.scaleName(channel) as AxisComponentProps[K];
-    case 'gridScale':
-      return properties.gridScale(model, channel) as AxisComponentProps[K];
-    case 'format': {
-      // We don't include temporal field and custom format as we apply format in encode block
-      if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) || isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef)) {
-        return undefined;
-      }
-      return numberFormat(fieldOrDatumDef.type, specifiedAxis.format, config) as AxisComponentProps[K];
-    }
-    case 'formatType':
-      // As with format, we don't include temporal field and custom format here as we apply format in encode block
-      if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) || isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef)) {
-        return undefined;
-      }
-      return specifiedAxis.formatType as AxisComponentProps[K];
-
-    case 'grid': {
-      if (isBinned(model.fieldDef(channel)?.bin)) {
-        return false as AxisComponentProps[K];
-      } else {
-        return getFirstDefined(
-          specifiedAxis.grid,
-          properties.defaultGrid(scaleType, model.typedFieldDef(channel))
-        ) as AxisComponentProps[K];
-      }
-    }
-    case 'labelAlign':
-      return (specifiedAxis.labelAlign ??
-        properties.defaultLabelAlign(labelAngle, orient, channel)) as AxisComponentProps[K];
-
-    case 'labelAngle':
-      return labelAngle as AxisComponentProps[K];
-
-    case 'labelBaseline':
-      return (specifiedAxis.labelBaseline ??
-        properties.defaultLabelBaseline(labelAngle, orient)) as AxisComponentProps[K];
-
-    case 'labelFlush':
-      return getFirstDefined(
-        specifiedAxis.labelFlush,
-        properties.defaultLabelFlush(fieldOrDatumDef.type, channel)
-      ) as AxisComponentProps[K];
-    case 'labelOverlap': {
-      return getFirstDefined(
-        specifiedAxis.labelOverlap,
-        properties.defaultLabelOverlap(fieldOrDatumDef.type, scaleType)
-      ) as AxisComponentProps[K];
-    }
-    case 'orient':
-      return orient as AxisComponentProps[K];
-
-    case 'tickCount': {
-      const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
-      const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
-      return getFirstDefined<TickCount>(
-        specifiedAxis.tickCount,
-        properties.defaultTickCount({fieldOrDatumDef, scaleType, size, values: specifiedAxis.values})
-      ) as AxisComponentProps[K];
-    }
-    case 'title': {
-      if (specifiedAxis.title !== undefined) {
-        return specifiedAxis.title as AxisComponentProps[K];
-      }
-      const fieldDefTitle = getFieldDefTitle(model, channel);
-      if (fieldDefTitle !== undefined) {
-        return fieldDefTitle as AxisComponentProps[K];
-      }
-      const fieldDef = model.typedFieldDef(channel);
-      const channel2 = channel === 'x' ? 'x2' : 'y2';
-      const fieldDef2 = model.fieldDef(channel2);
-
-      // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
-      return mergeTitleFieldDefs(
-        fieldDef ? [toFieldDefBase(fieldDef)] : [],
-        isFieldDef(fieldDef2) ? [toFieldDefBase(fieldDef2)] : []
-      ) as AxisComponentProps[K];
-    }
-    case 'values':
-      return properties.values(specifiedAxis, fieldOrDatumDef) as AxisComponentProps[K];
-    case 'zindex':
-      return getFirstDefined(
-        specifiedAxis.zindex,
-        properties.defaultZindex(mark, fieldOrDatumDef)
-      ) as AxisComponentProps[K];
-  }
-  // Otherwise, return specified property.
-  return isAxisProperty(property) ? (specifiedAxis[property] as AxisComponentProps[K]) : undefined;
 }

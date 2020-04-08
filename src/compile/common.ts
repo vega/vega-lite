@@ -161,12 +161,22 @@ export function mergeTitleComponent(v1: Explicit<AxisTitleComponent>, v2: Explic
       explicit: v1.explicit,
       value: null
     };
-  } else if (isText(v1Val) && isText(v2Val)) {
+  } else if ((isText(v1Val) || isSignalRef(v1Val)) && (isText(v2Val) || isSignalRef(v2Val))) {
     return {
       explicit: v1.explicit,
       value: mergeTitle(v1Val, v2Val)
     };
-  } else if (!isText(v1Val) && !isText(v2Val)) {
+  } else if (isText(v1Val) || isSignalRef(v1Val)) {
+    return {
+      explicit: v1.explicit,
+      value: v1Val
+    };
+  } else if (isText(v2Val) || isSignalRef(v2Val)) {
+    return {
+      explicit: v1.explicit,
+      value: v2Val
+    };
+  } else if (!isText(v1Val) && !isSignalRef(v1Val) && !isText(v2Val) && !isSignalRef(v2Val)) {
     return {
       explicit: v1.explicit,
       value: mergeTitleFieldDefs(v1Val, v2Val)

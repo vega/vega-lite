@@ -1,4 +1,4 @@
-import {Axis as VgAxis, Text} from 'vega';
+import {Axis as VgAxis, SignalRef, Text} from 'vega';
 import {
   Axis,
   AxisPart,
@@ -17,7 +17,7 @@ function isFalseOrNull(v: any) {
 
 export type AxisComponentProps = Omit<VgAxis, 'title' | ConditionalAxisProp | SignalAxisProp> &
   Omit<AxisPropsWithConditionAndSignal, 'title'> & {
-    title: Text | FieldDefBase<string>[];
+    title: Text | FieldDefBase<string>[] | SignalRef;
     labelExpr: string;
     disable: boolean;
   };

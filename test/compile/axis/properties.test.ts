@@ -1,5 +1,5 @@
 import * as properties from '../../../src/compile/axis/properties';
-import {defaultLabelAlign, defaultLabelBaseline, labelAngle} from '../../../src/compile/axis/properties';
+import {defaultLabelAlign, defaultLabelBaseline, getLabelAngle} from '../../../src/compile/axis/properties';
 import {TimeUnit} from '../../../src/timeunit';
 import {parseUnitModelWithScale} from '../../util';
 
@@ -23,12 +23,12 @@ describe('compile/axis', () => {
 
   describe('orient()', () => {
     it('should return bottom for x by default', () => {
-      const orient = properties.orient('x');
+      const orient = properties.defaultOrient('x');
       expect(orient).toBe('bottom');
     });
 
     it('should return left for y by default', () => {
-      const orient = properties.orient('y');
+      const orient = properties.defaultOrient('y');
       expect(orient).toBe('left');
     });
   });
@@ -203,12 +203,12 @@ describe('compile/axis', () => {
     });
 
     it('should return the correct labelAngle from the axis definition', () => {
-      expect(240).toEqual(labelAngle(axisModel, axisModel.axis('y'), 'y', axisModel.typedFieldDef('y')));
+      expect(240).toEqual(getLabelAngle(axisModel, axisModel.axis('y'), 'y', axisModel.typedFieldDef('y')));
     });
 
     it('should return the correct labelAngle from the axis config definition', () => {
       expect(140).toEqual(
-        labelAngle(configModel, configModel.axis('y'), 'y', configModel.typedFieldDef('y'), {
+        getLabelAngle(configModel, configModel.axis('y'), 'y', configModel.typedFieldDef('y'), {
           vlOnlyAxisConfig: {},
           vgAxisConfig: {labelAngle: 500},
           axisConfigStyle: {}
@@ -217,15 +217,17 @@ describe('compile/axis', () => {
     });
 
     it('should return the correct default labelAngle when not specified', () => {
-      expect(270).toEqual(labelAngle(defaultModel, defaultModel.axis('x'), 'x', defaultModel.typedFieldDef('x')));
+      expect(270).toEqual(getLabelAngle(defaultModel, defaultModel.axis('x'), 'x', defaultModel.typedFieldDef('x')));
     });
 
     it('should return the labelAngle declared in the axis when both the axis and axis config have labelAngle', () => {
-      expect(240).toEqual(labelAngle(bothModel, bothModel.axis('y'), 'y', bothModel.typedFieldDef('y')));
+      expect(240).toEqual(getLabelAngle(bothModel, bothModel.axis('y'), 'y', bothModel.typedFieldDef('y')));
     });
 
     it('should return undefined when there is no default and no specified labelAngle', () => {
-      expect(undefined).toEqual(labelAngle(neitherModel, neitherModel.axis('y'), 'y', neitherModel.typedFieldDef('y')));
+      expect(undefined).toEqual(
+        getLabelAngle(neitherModel, neitherModel.axis('y'), 'y', neitherModel.typedFieldDef('y'))
+      );
     });
   });
 

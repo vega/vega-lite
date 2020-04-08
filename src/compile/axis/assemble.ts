@@ -1,5 +1,5 @@
 import {Axis as VgAxis, AxisEncode, NewSignal, SignalRef, Text} from 'vega';
-import {array, stringValue} from 'vega-util';
+import {array, isArray, stringValue} from 'vega-util';
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isConditionalAxisValue} from '../../axis';
 import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';
@@ -11,11 +11,11 @@ import {Model} from '../model';
 import {expression} from '../predicate';
 import {AxisComponent, AxisComponentIndex} from './component';
 
-function assembleTitle(title: Text | FieldDefBase<string>[], config: Config): Text {
+function assembleTitle(title: Text | FieldDefBase<string>[] | SignalRef, config: Config): Text | SignalRef {
   if (!title) {
     return undefined;
   }
-  if (!isText(title)) {
+  if (isArray(title) && !isText(title)) {
     return title.map(fieldDef => defaultTitle(fieldDef, config)).join(', ');
   }
   return title;
@@ -194,7 +194,7 @@ export function assembleAxisSignals(model: Model): NewSignal[] {
   for (const channel of POSITION_SCALE_CHANNELS) {
     if (axes[channel]) {
       for (const axis of axes[channel]) {
-        if (!axis.get('gridScale')) {
+        if (!axis.get('disable') && !axis.get('gridScale')) {
           // If there is x-axis but no y-scale for gridScale, need to set height/width so x-axis can draw the grid with the right height. Same for y-axis and width.
 
           const sizeType = channel === 'x' ? 'height' : 'width';
