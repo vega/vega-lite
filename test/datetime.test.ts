@@ -1,7 +1,13 @@
-import {DateTime, dateTimeToExpr, dateTimeToTimestamp} from '../src/datetime';
+import {DateTime, dateTimeToExpr, dateTimeToTimestamp, isDateTime} from '../src/datetime';
 import * as log from '../src/log';
 
 describe('datetime', () => {
+  describe('isDateTime', () => {
+    it('correctly classifies unit with zero', () => {
+      expect(isDateTime({hours: 0})).toEqual(true);
+    });
+  });
+
   describe('dateTimeToExpr', () => {
     it(
       'should drop day if day is combined with year/month/date',

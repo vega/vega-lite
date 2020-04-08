@@ -1,8 +1,9 @@
 // DateTime definition object
 
-import {isNumber} from 'vega-util';
+import {isNumber, isObject} from 'vega-util';
 import * as log from './log';
-import {duplicate, keys, isNumeric} from './util';
+import {TIMEUNIT_PARTS} from './timeunit';
+import {duplicate, isNumeric, keys} from './util';
 
 /*
  * A designated year that starts on Sunday.
@@ -127,18 +128,14 @@ export interface DateTimeExpr {
 }
 
 export function isDateTime(o: any): o is DateTime {
-  return (
-    !!o &&
-    (!!o.year ||
-      !!o.quarter ||
-      !!o.month ||
-      !!o.date ||
-      !!o.day ||
-      !!o.hours ||
-      !!o.minutes ||
-      !!o.seconds ||
-      !!o.milliseconds)
-  );
+  if (o && isObject(o)) {
+    for (const part of TIMEUNIT_PARTS) {
+      if (part in o) {
+        return true;
+      }
+    }
+  }
+  return false;
 }
 
 export const MONTHS = [
