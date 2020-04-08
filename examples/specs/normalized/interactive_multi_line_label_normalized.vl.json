@@ -42,7 +42,9 @@
       "layer": [
         {
           "mark": {"type": "rule", "color": "gray"},
-          "encoding": {"x": {"type": "temporal", "field": "date"}}
+          "encoding": {
+            "x": {"type": "temporal", "field": "date", "aggregate": "min"}
+          }
         },
         {
           "layer": [
