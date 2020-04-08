@@ -224,7 +224,7 @@
           "type": "string"
         },
         "endAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The end angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "fill": {
@@ -340,6 +340,10 @@
           "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
+        "padAngle": {
+          "description": "The angular padding applied to sides of the arc, in radians.",
+          "type": "number"
+        },
         "point": {
           "anyOf": [
             {
@@ -382,7 +386,7 @@
           "type": "number"
         },
         "startAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The start angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "stroke": {
@@ -957,9 +961,19 @@
           ]
         },
         "tickCount": {
-          "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.\n\n__Default value__: Determine using a formula `ceil(width/40)` for x and `ceil(height/40)` for y.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/TimeInterval"
+            },
+            {
+              "$ref": "#/definitions/TimeIntervalStep"
+            }
+          ],
+          "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.\n\nFor scales of type `\"time\"` or `\"utc\"`, the tick count can instead be a time interval specifier. Legal string values are `\"millisecond\"`, `\"second\"`, `\"minute\"`, `\"hour\"`, `\"day\"`, `\"week\"`, `\"month\"`, and \"year\". Alternatively, an object-valued interval specifier of the form `{\"interval\": \"month\", \"step\": 3}` includes a desired number of interval steps. Here, ticks are generated for each quarter (Jan, Apr, Jul, Oct) boundary.\n\n__Default value__: Determine using a formula `ceil(width/40)` for x and `ceil(height/40)` for y.",
+          "minimum": 0
         },
         "tickDash": {
           "anyOf": [
@@ -1502,9 +1516,19 @@
           ]
         },
         "tickCount": {
-          "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.\n\n__Default value__: Determine using a formula `ceil(width/40)` for x and `ceil(height/40)` for y.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/TimeInterval"
+            },
+            {
+              "$ref": "#/definitions/TimeIntervalStep"
+            }
+          ],
+          "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.\n\nFor scales of type `\"time\"` or `\"utc\"`, the tick count can instead be a time interval specifier. Legal string values are `\"millisecond\"`, `\"second\"`, `\"minute\"`, `\"hour\"`, `\"day\"`, `\"week\"`, `\"month\"`, and \"year\". Alternatively, an object-valued interval specifier of the form `{\"interval\": \"month\", \"step\": 3}` includes a desired number of interval steps. Here, ticks are generated for each quarter (Jan, Apr, Jul, Oct) boundary.\n\n__Default value__: Determine using a formula `ceil(width/40)` for x and `ceil(height/40)` for y.",
+          "minimum": 0
         },
         "tickDash": {
           "anyOf": [
@@ -1779,7 +1803,7 @@
           "type": "string"
         },
         "endAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The end angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "fill": {
@@ -1884,6 +1908,10 @@
           "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
+        "padAngle": {
+          "description": "The angular padding applied to sides of the arc, in radians.",
+          "type": "number"
+        },
         "radius": {
           "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
@@ -1909,7 +1937,7 @@
           "type": "number"
         },
         "startAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The start angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "stroke": {
@@ -11384,7 +11412,7 @@
           "type": "string"
         },
         "endAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The end angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "fill": {
@@ -11489,6 +11517,10 @@
           "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
+        "padAngle": {
+          "description": "The angular padding applied to sides of the arc, in radians.",
+          "type": "number"
+        },
         "point": {
           "anyOf": [
             {
@@ -11531,7 +11563,7 @@
           "type": "number"
         },
         "startAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The start angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "stroke": {
@@ -12120,7 +12152,7 @@
           "type": "string"
         },
         "endAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The end angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "fill": {
@@ -12225,6 +12257,10 @@
           "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
+        "padAngle": {
+          "description": "The angular padding applied to sides of the arc, in radians.",
+          "type": "number"
+        },
         "radius": {
           "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
@@ -12250,7 +12286,7 @@
           "type": "number"
         },
         "startAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The start angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "stroke": {
@@ -12629,6 +12665,10 @@
         },
         "outerRadius": {
           "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
+          "type": "number"
+        },
+        "padAngle": {
+          "description": "The angular padding applied to sides of the arc, in radians.",
           "type": "number"
         },
         "point": {
@@ -13486,7 +13526,7 @@
           "type": "string"
         },
         "endAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The end angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "fill": {
@@ -13591,6 +13631,10 @@
           "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
+        "padAngle": {
+          "description": "The angular padding applied to sides of the arc, in radians.",
+          "type": "number"
+        },
         "radius": {
           "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
@@ -13624,7 +13668,7 @@
           "type": "number"
         },
         "startAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The start angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "stroke": {
@@ -14813,7 +14857,7 @@
           "type": "string"
         },
         "endAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The end angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "fill": {
@@ -14918,6 +14962,10 @@
           "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
+        "padAngle": {
+          "description": "The angular padding applied to sides of the arc, in radians.",
+          "type": "number"
+        },
         "radius": {
           "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
@@ -14943,7 +14991,7 @@
           "type": "number"
         },
         "startAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The start angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "stroke": {
@@ -17011,7 +17059,7 @@
           "type": "string"
         },
         "endAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The end angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "fill": {
@@ -17116,6 +17164,10 @@
           "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.",
           "type": "number"
         },
+        "padAngle": {
+          "description": "The angular padding applied to sides of the arc, in radians.",
+          "type": "number"
+        },
         "radius": {
           "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.",
           "type": "number"
@@ -17141,7 +17193,7 @@
           "type": "number"
         },
         "startAngle": {
-          "description": "The start angle in radians for arc marks.",
+          "description": "The start angle in radians for arc marks.\nA value of `0` indicates up (north), increasing values proceed clockwise.",
           "type": "number"
         },
         "stroke": {
@@ -17317,6 +17369,9 @@
         },
         {
           "$ref": "#/definitions/TimeInterval"
+        },
+        {
+          "$ref": "#/definitions/TimeIntervalStep"
         }
       ]
     },

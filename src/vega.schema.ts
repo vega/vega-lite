@@ -300,6 +300,7 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof MarkConfig> = {
   strokeMiterLimit: 1,
   startAngle: 1,
   endAngle: 1,
+  padAngle: 1,
   innerRadius: 1,
   outerRadius: 1,
   size: 1,
