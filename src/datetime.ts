@@ -5,11 +5,6 @@ import * as log from './log';
 import {TIMEUNIT_PARTS} from './timeunit';
 import {duplicate, isNumeric, keys} from './util';
 
-/*
- * A designated year that starts on Sunday.
- */
-const SUNDAY_YEAR = 2006;
-
 /**
  * @minimum 1
  * @maximum 12
@@ -242,11 +237,10 @@ function dateTimeParts(d: DateTime | DateTimeExpr, normalize: boolean) {
 
   if (d.year !== undefined) {
     parts.push(d.year);
-  } else if (d.day !== undefined) {
-    // Set year to 2006 for working with day since January 1 2006 is a Sunday
-    parts.push(SUNDAY_YEAR);
   } else {
-    parts.push(0);
+    // Just like Vega's timeunit transform, set default year to 2012, so domain converstion will be compatible with Vega
+    // Note: 2012 is a leap year (and so the date February 29 is respected) that begins on a Sunday (and so days of the week will order properly at the beginning of the year).
+    parts.push(2012);
   }
 
   if (d.month !== undefined) {
