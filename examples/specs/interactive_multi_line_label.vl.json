@@ -40,7 +40,7 @@
         {
           "mark": {"type": "rule", "color": "gray"},
           "encoding": {
-            "x": {"type": "temporal", "field": "date"}
+            "x": {"type": "temporal", "field": "date", "aggregate": "min"}
           }
         },
         {
