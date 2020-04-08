@@ -24,7 +24,7 @@
         },
         {
           "type": "formula",
-          "expr": "time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 2, 0, 0, 0, 0)) ? 0 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 3, 0, 0, 0, 0)) ? 1 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 4, 0, 0, 0, 0)) ? 2 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 5, 0, 0, 0, 0)) ? 3 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 6, 0, 0, 0, 0)) ? 4 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 7, 0, 0, 0, 0)) ? 5 : time(datetime(2006, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2006, 0, 1, 0, 0, 0, 0)) ? 6 : 7",
+          "expr": "time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 2, 0, 0, 0, 0)) ? 0 : time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 3, 0, 0, 0, 0)) ? 1 : time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 4, 0, 0, 0, 0)) ? 2 : time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 5, 0, 0, 0, 0)) ? 3 : time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 6, 0, 0, 0, 0)) ? 4 : time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 7, 0, 0, 0, 0)) ? 5 : time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 1, 0, 0, 0, 0)) ? 6 : 7",
           "as": "y_day_time_sort_index"
         }
       ]
