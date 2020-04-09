@@ -98,9 +98,9 @@
       "labelPadding": -5,
       "ticks": false,
       "titleAlign": "left",
-      "titleAngle": 0,
       "titleX": 5,
       "titleY": -5,
+      "titleAngle": 0,
       "zindex": 0
     }
   ]

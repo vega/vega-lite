@@ -36,8 +36,8 @@ export interface AxisRuleParams {
 
   mark: Mark;
   scaleType: ScaleType;
-  orient: Orient;
-  labelAngle: number;
+  orient: Orient | SignalRef;
+  labelAngle: number | SignalRef;
   config: Config;
 }
 
@@ -143,17 +143,18 @@ export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
 
 export function getLabelAngle(
   model: UnitModel,
-  specifiedAxis: Axis,
+  axis: Axis,
   channel: PositionScaleChannel,
   fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
   axisConfigs?: AxisConfigs
 ) {
+  const labelAngle = axis?.labelAngle;
   // try axis value
-  if (specifiedAxis?.labelAngle !== undefined) {
-    return normalizeAngle(specifiedAxis?.labelAngle);
+  if (labelAngle !== undefined) {
+    return isSignalRef(labelAngle) ? labelAngle : normalizeAngle(labelAngle);
   } else {
     // try axis config value
-    const {configValue: angle} = getAxisConfig('labelAngle', model.config, specifiedAxis?.style, axisConfigs);
+    const {configValue: angle} = getAxisConfig('labelAngle', model.config, axis?.style, axisConfigs);
     if (angle !== undefined) {
       return normalizeAngle(angle);
     } else {
@@ -167,58 +168,111 @@ export function getLabelAngle(
   }
 }
 
+export function normalizeAngleExpr(angle: SignalRef) {
+  return `(((${angle.signal} % 360) + 360) % 360)`;
+}
+
 export function defaultLabelBaseline(
-  angle: number,
-  axisOrient: AxisOrient,
+  angle: number | SignalRef,
+  orient: AxisOrient | SignalRef,
   channel?: 'x' | 'y',
   alwaysIncludeMiddle?: boolean
 ) {
-  channel = channel || (axisOrient === 'top' || axisOrient === 'bottom' ? 'x' : 'y');
+  channel = channel || (orient === 'top' || orient === 'bottom' ? 'x' : 'y');
 
   if (angle !== undefined) {
     if (channel === 'x') {
-      return (45 < angle && angle < 135) || (225 < angle && angle < 315)
-        ? 'middle'
-        : (angle <= 45 || 315 <= angle) === (axisOrient === 'top')
-        ? 'bottom'
-        : 'top';
+      if (isSignalRef(angle)) {
+        const a = normalizeAngleExpr(angle);
+        const orientIsTop = isSignalRef(orient) ? `(${orient.signal} === "top")` : orient === 'top';
+        return {
+          signal:
+            `(45 < ${a} && ${a} < 135) || (225 < ${a} && ${a} < 315) ? "middle" :` +
+            `(${a} <= 45 || 315 <= ${a}) === ${orientIsTop} ? "bottom" : "top"`
+        };
+      }
+
+      if ((45 < angle && angle < 135) || (225 < angle && angle < 315)) {
+        return 'middle';
+      }
+
+      if (isSignalRef(orient)) {
+        const op = angle <= 45 || 315 <= angle ? '===' : '!==';
+        return {signal: `${orient.signal} ${op} "top" ? "bottom" : "top"`};
+      }
+
+      return (angle <= 45 || 315 <= angle) === (orient === 'top') ? 'bottom' : 'top';
     } else {
-      return angle <= 45 || 315 <= angle || (135 <= angle && angle <= 225)
-        ? alwaysIncludeMiddle
-          ? 'middle'
-          : null
-        : (45 <= angle && angle <= 135) === (axisOrient === 'left')
-        ? 'top'
-        : 'bottom';
+      if (isSignalRef(angle)) {
+        const a = normalizeAngleExpr(angle);
+        const orientIsLeft = isSignalRef(orient) ? `(${orient.signal} === "left")` : orient === 'left';
+        const middle = alwaysIncludeMiddle ? '"middle"' : 'null';
+        return {
+          signal: `${a} <= 45 || 315 <= ${a} || (135 <= ${a} && ${a} <= 225) ? ${middle} : (45 <= ${a} && ${a} <= 135) === ${orientIsLeft} ? "top" : "bottom"`
+        };
+      }
+
+      if (angle <= 45 || 315 <= angle || (135 <= angle && angle <= 225)) {
+        return alwaysIncludeMiddle ? 'middle' : null;
+      }
+
+      if (isSignalRef(orient)) {
+        const op = 45 <= angle && angle <= 135 ? '===' : '!==';
+        return {signal: `${orient.signal} ${op} "left" ? "top" : "bottom"`};
+      }
+
+      return (45 <= angle && angle <= 135) === (orient === 'left') ? 'top' : 'bottom';
     }
   }
   return undefined;
 }
 
-function _defaultLabelAlign(angle: number, axisOrient: AxisOrient, startAngle: 0 | 90, mainOrient: 'bottom' | 'left') {
-  // TODO: generate signal based on a similar formula if orient is a signal
+function _defaultLabelAlign(angle: number | SignalRef, orient: AxisOrient | SignalRef, mainOrient: 'bottom' | 'left') {
+  const isX = mainOrient === 'bottom';
+  const startAngle = isX ? 0 : 90;
 
-  if (angle % 360 === 0 && mainOrient === 'bottom') {
-    // use default label align so label flush still works
-    return null;
+  if (isSignalRef(angle)) {
+    const a = normalizeAngleExpr(angle);
+    const orientIsMain = isSignalRef(orient) ? `(${orient.signal} === "${mainOrient}")` : orient === mainOrient;
+    return {
+      signal:
+        `(${startAngle ? '(' + a + ' + 90)' : a} % 180 === 0) ? ${isX ? null : '"center"'} :` +
+        `(${startAngle} < ${a} && ${a} < ${180 + startAngle}) === ${orientIsMain} ? "left" : "right"`
+    };
   }
 
   if ((angle + startAngle) % 180 === 0) {
-    return 'center';
-  } else if ((startAngle < angle && angle < 180 + startAngle) === (axisOrient === mainOrient)) {
+    // For bottom, use default label align so label flush still works
+    return isX ? null : 'center';
+  }
+
+  if (isSignalRef(orient)) {
+    const op = startAngle < angle && angle < 180 + startAngle ? '===' : '!==';
+    const orientIsMain = `${orient.signal} ${op} "${mainOrient}"`;
+    return {
+      signal: `${orientIsMain} ? "left" : "right"`
+    };
+  }
+
+  if ((startAngle < angle && angle < 180 + startAngle) === (orient === mainOrient)) {
     return 'left';
   }
+
   return 'right';
 }
 
-export function defaultLabelAlign(angle: number, axisOrient: AxisOrient, channel?: 'x' | 'y'): Align {
+export function defaultLabelAlign(
+  angle: number | SignalRef,
+  axisOrient: AxisOrient | SignalRef,
+  channel?: 'x' | 'y'
+): Align | SignalRef {
   channel = channel || (axisOrient === 'top' || axisOrient === 'bottom' ? 'x' : 'y');
 
   if (angle !== undefined) {
     if (channel === 'x') {
-      return _defaultLabelAlign(angle, axisOrient, 0, 'bottom');
+      return _defaultLabelAlign(angle, axisOrient, 'bottom');
     } else {
-      return _defaultLabelAlign(angle, axisOrient, 90, 'left');
+      return _defaultLabelAlign(angle, axisOrient, 'left');
     }
   }
   return undefined;

@@ -17,12 +17,9 @@ import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, TitleMixins, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {ExcludeMappedValueRef, ExcludeMappedValueRefButKeepSignal, VgEncodeChannel} from './vega.schema';
+import {ExcludeMappedValueRefButKeepSignal, VgEncodeChannel} from './vega.schema';
 
-export type BaseAxisNoValueRefs = AxisOverrideMixins &
-  VLOnlyAxisMixins &
-  Omit<ExcludeMappedValueRefButKeepSignal<BaseAxis>, 'labelAngle' | 'titleAngle'> &
-  ExcludeMappedValueRef<Pick<BaseAxis, 'labelAngle' | 'titleAngle'>>; // label/titleAngle don't support signal as we don't want to implement labelAlign logic in signal world yet (part of https://github.com/vega/vega-lite/issues/5824)
+export type BaseAxisNoValueRefs = AxisOverrideMixins & VLOnlyAxisMixins & ExcludeMappedValueRefButKeepSignal<BaseAxis>;
 
 interface AxisOverrideMixins {
   // Position and tickMinStep are not config in Vega, but are in Vega-Lite. So we just copy them here.
