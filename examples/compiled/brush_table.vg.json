@@ -513,7 +513,6 @@
               "height": {"signal": "concat_1_concat_0_height"}
             }
           },
-          "signals": [{"name": "width", "update": "concat_1_childWidth"}],
           "marks": [
             {
               "name": "concat_1_concat_0_marks",
@@ -547,7 +546,6 @@
               "height": {"signal": "concat_1_concat_1_height"}
             }
           },
-          "signals": [{"name": "width", "update": "concat_1_childWidth"}],
           "marks": [
             {
               "name": "concat_1_concat_1_marks",
@@ -581,7 +579,6 @@
               "height": {"signal": "concat_1_concat_2_height"}
             }
           },
-          "signals": [{"name": "width", "update": "concat_1_childWidth"}],
           "marks": [
             {
               "name": "concat_1_concat_2_marks",

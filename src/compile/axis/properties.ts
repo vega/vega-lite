@@ -1,17 +1,127 @@
-import {Align, AxisOrient, SignalRef} from 'vega';
+import {Align, AxisOrient, Orient, ScaleType, SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {Axis} from '../../axis';
-import {isBinning} from '../../bin';
-import {PositionScaleChannel, X, Y} from '../../channel';
-import {DatumDef, isDiscrete, isFieldDef, TypedFieldDef, valueArray} from '../../channeldef';
+import {isBinned, isBinning} from '../../bin';
+import {PositionScaleChannel, X} from '../../channel';
+import {
+  DatumDef,
+  isDiscrete,
+  isFieldDef,
+  isFieldDefWithCustomTimeFormat as isFieldOrDatumDefWithCustomTimeFormat,
+  isFieldOrDatumDefForTimeFormat,
+  PositionDatumDef,
+  PositionFieldDef,
+  toFieldDefBase,
+  TypedFieldDef,
+  valueArray
+} from '../../channeldef';
+import {Config} from '../../config';
 import {Mark} from '../../mark';
-import {hasDiscreteDomain, ScaleType} from '../../scale';
+import {hasDiscreteDomain} from '../../scale';
 import {normalizeTimeUnit} from '../../timeunit';
 import {NOMINAL, ORDINAL, Type} from '../../type';
 import {contains, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
+import {mergeTitle, mergeTitleFieldDefs} from '../common';
+import {numberFormat} from '../format';
 import {UnitModel} from '../unit';
+import {AxisComponentProps} from './component';
 import {AxisConfigs, getAxisConfig} from './config';
+
+export interface AxisRuleParams {
+  fieldOrDatumDef: PositionFieldDef<string> | PositionDatumDef<string>;
+  axis: Axis;
+  channel: PositionScaleChannel;
+  model: UnitModel;
+
+  mark: Mark;
+  scaleType: ScaleType;
+  orient: Orient;
+  labelAngle: number;
+  config: Config;
+}
+
+export const axisRules: {
+  [k in keyof AxisComponentProps]?: (params: AxisRuleParams) => AxisComponentProps[k];
+} = {
+  scale: ({model, channel}) => model.scaleName(channel),
+
+  format: ({fieldOrDatumDef, axis, config}) => {
+    // We don't include temporal field and custom format as we apply format in encode block
+    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) || isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef)) {
+      return undefined;
+    }
+    return numberFormat(fieldOrDatumDef.type, axis.format, config);
+  },
+
+  formatType: ({fieldOrDatumDef, axis}) => {
+    // As with format, we don't include temporal field and custom format here as we apply format in encode block
+    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) || isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef)) {
+      return undefined;
+    }
+    const formatType = axis.formatType;
+    if (formatType) {
+      if (isSignalRef(formatType) || formatType === 'number' || formatType === 'time' || formatType === 'utc') {
+        return formatType;
+      }
+    }
+    return undefined;
+  },
+
+  grid: ({fieldOrDatumDef, axis, scaleType}) => {
+    if (isFieldDef(fieldOrDatumDef) && isBinned(fieldOrDatumDef.bin)) {
+      return false;
+    } else {
+      return axis.grid ?? defaultGrid(scaleType, fieldOrDatumDef);
+    }
+  },
+
+  gridScale: ({model, channel}) => gridScale(model, channel),
+
+  labelAlign: ({axis, labelAngle, orient, channel}) =>
+    axis.labelAlign || defaultLabelAlign(labelAngle, orient, channel),
+
+  labelAngle: ({labelAngle}) => labelAngle, // we already calculate this in parse
+
+  labelBaseline: ({axis, labelAngle, orient, channel}) =>
+    axis.labelBaseline || defaultLabelBaseline(labelAngle, orient, channel),
+
+  labelFlush: ({axis, fieldOrDatumDef, channel}) => axis.labelFlush ?? defaultLabelFlush(fieldOrDatumDef.type, channel),
+
+  labelOverlap: ({axis, fieldOrDatumDef, scaleType}) =>
+    axis.labelOverlap ?? defaultLabelOverlap(fieldOrDatumDef.type, scaleType),
+
+  orient: ({orient}) => orient, // we already calculate this in parse
+
+  tickCount: ({channel, model, axis, fieldOrDatumDef, scaleType}) => {
+    const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
+    const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
+    return axis.tickCount ?? defaultTickCount({fieldOrDatumDef, scaleType, size, values: axis.values});
+  },
+
+  title: ({axis, model, channel}) => {
+    if (axis.title !== undefined) {
+      return axis.title;
+    }
+    const fieldDefTitle = getFieldDefTitle(model, channel);
+    if (fieldDefTitle !== undefined) {
+      return fieldDefTitle;
+    }
+    const fieldDef = model.typedFieldDef(channel);
+    const channel2 = channel === 'x' ? 'x2' : 'y2';
+    const fieldDef2 = model.fieldDef(channel2);
+
+    // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
+    return mergeTitleFieldDefs(
+      fieldDef ? [toFieldDefBase(fieldDef)] : [],
+      isFieldDef(fieldDef2) ? [toFieldDefBase(fieldDef2)] : []
+    );
+  },
+
+  values: ({axis, fieldOrDatumDef}) => values(axis, fieldOrDatumDef),
+
+  zindex: ({axis, fieldOrDatumDef, mark}) => axis.zindex ?? defaultZindex(mark, fieldOrDatumDef)
+};
 
 // TODO: we need to refactor this method after we take care of config refactoring
 /**
@@ -19,8 +129,8 @@ import {AxisConfigs, getAxisConfig} from './config';
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
 
-export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string>) {
-  return !hasDiscreteDomain(scaleType) && !isBinning(fieldDef?.bin);
+export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string> | DatumDef) {
+  return !hasDiscreteDomain(scaleType) && isFieldDef(fieldDef) && !isBinning(fieldDef?.bin);
 }
 
 export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
@@ -31,7 +141,7 @@ export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
   return undefined;
 }
 
-export function labelAngle(
+export function getLabelAngle(
   model: UnitModel,
   specifiedAxis: Axis,
   channel: PositionScaleChannel,
@@ -115,13 +225,8 @@ export function defaultLabelOverlap(type: Type, scaleType: ScaleType) {
   return undefined;
 }
 
-export function orient(channel: PositionScaleChannel) {
-  switch (channel) {
-    case X:
-      return 'bottom';
-    case Y:
-      return 'left';
-  }
+export function defaultOrient(channel: PositionScaleChannel) {
+  return channel === 'x' ? 'bottom' : 'left';
 }
 
 export function defaultTickCount({
@@ -156,8 +261,33 @@ export function defaultTickCount({
   return undefined;
 }
 
-export function values(specifiedAxis: Axis, fieldOrDatumDef: TypedFieldDef<string> | DatumDef) {
-  const vals = specifiedAxis.values;
+export function getFieldDefTitle(model: UnitModel, channel: 'x' | 'y') {
+  const channel2 = channel === 'x' ? 'x2' : 'y2';
+  const fieldDef = model.fieldDef(channel);
+  const fieldDef2 = model.fieldDef(channel2);
+
+  const title1 = fieldDef ? fieldDef.title : undefined;
+  const title2 = fieldDef2 ? fieldDef2.title : undefined;
+
+  if (title1 && title2) {
+    return mergeTitle(title1, title2);
+  } else if (title1) {
+    return title1;
+  } else if (title2) {
+    return title2;
+  } else if (title1 !== undefined) {
+    // falsy value to disable config
+    return title1;
+  } else if (title2 !== undefined) {
+    // falsy value to disable config
+    return title2;
+  }
+
+  return undefined;
+}
+
+export function values(axis: Axis, fieldOrDatumDef: TypedFieldDef<string> | DatumDef) {
+  const vals = axis.values;
 
   if (isArray(vals)) {
     return valueArray(fieldOrDatumDef, vals);
