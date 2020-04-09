@@ -19,11 +19,26 @@ import {Guide, GuideEncodingEntry, TitleMixins, VlOnlyGuideConfig} from './guide
 import {Flag, keys} from './util';
 import {ExcludeMappedValueRef, ExcludeMappedValueRefButKeepSignal, VgEncodeChannel} from './vega.schema';
 
-export type BaseAxisNoValueRefs = AxisMixins &
+export type BaseAxisNoValueRefs = AxisOverrideMixins &
+  VLOnlyAxisMixins &
   Omit<ExcludeMappedValueRefButKeepSignal<BaseAxis>, 'labelAngle' | 'titleAngle'> &
   ExcludeMappedValueRef<Pick<BaseAxis, 'labelAngle' | 'titleAngle'>>; // label/titleAngle don't support signal as we don't want to implement labelAlign logic in signal world yet (part of https://github.com/vega/vega-lite/issues/5824)
 
-interface AxisMixins {
+interface AxisOverrideMixins {
+  // Position and tickMinStep are not config in Vega, but are in Vega-Lite. So we just copy them here.
+
+  /**
+   * The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.
+   *
+   * __Default value__: `0`
+   */
+  position?: number | SignalRef;
+
+  /**
+   * The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.
+   */
+  tickMinStep?: number | SignalRef;
+
   // Override comments to be Vega-Lite specific
   /**
    * A boolean flag indicating if grid lines should be included as part of the axis
@@ -59,7 +74,53 @@ interface AxisMixins {
    * __Default value:__ `"bottom"` for x-axes and `"left"` for y-axes.
    */
   orient?: AxisOrient;
+
+  /**
+   * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
+   *
+   * For scales of type `"time"` or `"utc"`, the tick count can instead be a time interval specifier. Legal string values are `"millisecond"`, `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, and "year". Alternatively, an object-valued interval specifier of the form `{"interval": "month", "step": 3}` includes a desired number of interval steps. Here, ticks are generated for each quarter (Jan, Apr, Jul, Oct) boundary.
+   *
+   * __Default value__: Determine using a formula `ceil(width/40)` for x and `ceil(height/40)` for y.
+   *
+   * @minimum 0
+   */
+  tickCount?: number | TimeInterval | TimeIntervalStep | SignalRef;
+
+  /**
+   * Explicitly set the visible axis tick values.
+   */
+  values?: number[] | string[] | boolean[] | DateTime[] | SignalRef; // Vega already supports Signal -- we have to re-declare here since VL supports special Date Time object that's not valid in Vega.
+
+  /**
+   * A non-negative integer indicating the z-index of the axis.
+   * If zindex is 0, axes should be drawn behind all chart elements.
+   * To put them in front, set `zindex` to `1` or more.
+   *
+   * __Default value:__ `0` (behind the marks).
+   *
+   * @TJS-type integer
+   * @minimum 0
+   */
+  zindex?: number;
 }
+
+interface VLOnlyAxisMixins {
+  /**
+   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.
+   *
+   * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
+   */
+  labelExpr?: string;
+
+  /**
+   * A string or array of strings indicating the name of custom styles to apply to the axis. A style is a named collection of axis property defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles.
+   *
+   * __Default value:__ (none)
+   * __Note:__ Any specified style will augment the default style. For example, an x-axis mark with `"style": "foo"` will use `config.axisX` and `config.style.foo` (the specified style `"foo"` has higher precedence).
+   */
+  style?: string | string[];
+}
+
 export type SignalAxisProp =
   | 'domainColor'
   | 'labelAlign'
@@ -240,9 +301,9 @@ export interface AxisPropsWithConditionAndSignal {
   title?: TitleMixins['title'];
 }
 
-export type AxisConfig = VlOnlyGuideConfig &
-  AxisConfigBaseWithConditionalAndSignal &
-  Pick<Axis, 'labelExpr' | 'tickCount' | 'style'> & {
+export type AxisConfig = Guide &
+  VlOnlyGuideConfig &
+  AxisConfigBaseWithConditionalAndSignal & {
     /**
      * Disable axis by default.
      */
@@ -250,63 +311,6 @@ export type AxisConfig = VlOnlyGuideConfig &
   };
 
 export interface Axis extends AxisConfigBaseWithConditionalAndSignal, Guide {
-  /**
-   * A string or array of strings indicating the name of custom styles to apply to the axis. A style is a named collection of axis property defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles.
-   *
-   * __Default value:__ (none)
-   * __Note:__ Any specified style will augment the default style. For example, an x-axis mark with `"style": "foo"` will use `config.axisX` and `config.style.foo` (the specified style `"foo"` has higher precedence).
-   */
-  style?: string | string[];
-
-  /**
-   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.
-   *
-   * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
-   */
-  labelExpr?: string;
-
-  /**
-   * The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.
-   *
-   * __Default value__: `0`
-   */
-  position?: number;
-
-  /**
-   * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
-   *
-   * For scales of type `"time"` or `"utc"`, the tick count can instead be a time interval specifier. Legal string values are `"millisecond"`, `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, and "year". Alternatively, an object-valued interval specifier of the form `{"interval": "month", "step": 3}` includes a desired number of interval steps. Here, ticks are generated for each quarter (Jan, Apr, Jul, Oct) boundary.
-   *
-   * __Default value__: Determine using a formula `ceil(width/40)` for x and `ceil(height/40)` for y.
-   *
-   * @minimum 0
-   */
-  tickCount?: number | TimeInterval | TimeIntervalStep | SignalRef;
-
-  /**
-   * The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.
-   *
-   * __Default value__: `undefined`
-   */
-  tickMinStep?: number | SignalRef; // Vega already supports Signal
-
-  /**
-   * Explicitly set the visible axis tick values.
-   */
-  values?: number[] | string[] | boolean[] | DateTime[] | SignalRef; // Vega already supports Signal -- we have to re-declare here since VL supports special Date Time object that's not valid in Vega.
-
-  /**
-   * A non-negative integer indicating the z-index of the axis.
-   * If zindex is 0, axes should be drawn behind all chart elements.
-   * To put them in front, set `zindex` to `1` or more.
-   *
-   * __Default value:__ `0` (behind the marks).
-   *
-   * @TJS-type integer
-   * @minimum 0
-   */
-  zindex?: number;
-
   /**
    * Mark definitions for custom axis encoding.
    *

@@ -197,12 +197,20 @@ function isExplicit<T extends string | number | boolean | object>(
 }
 
 /**
- * Properties to always include values from config:
- * - Grid is an exception because we need to set grid = true to generate another grid axis
- * - Orient, labelExpr, and tickCount are not axis configs in Vega, so we need to set too.
- * - translate has dependent logic for bar's bin position and it's 0.5 by default in Vega. If a config overrides this value, we need to know.
+ * Properties to always include values from config
  */
-const propsToAlwaysIncludeConfig = new Set(['grid', 'orient', 'tickCount', 'labelExpr', 'translate']);
+const propsToAlwaysIncludeConfig = new Set([
+  'grid', // Grid is an exception because we need to set grid = true to generate another grid axis
+  'translate', // translate has dependent logic for bar's bin position and it's 0.5 by default in Vega. If a config overrides this value, we need to know.
+  // the rest are not axis configs in Vega, but are in VL, so we need to set too.
+  'format',
+  'formatType',
+  'orient',
+  'labelExpr',
+  'tickCount',
+  'position',
+  'tickMinStep'
+]);
 
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {
   const axis = model.axis(channel);
@@ -224,6 +232,12 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   const scaleType = model.getScaleComponent(channel).get('type');
 
   const axisConfigs = getAxisConfigs(channel, scaleType, orient, model.config);
+
+  if ((axis !== undefined && !axis) || getAxisConfig('disable', config, axis?.style, axisConfigs).configValue) {
+    // if axis is explicitly falsy, disable it and include no other properties.
+    axisComponent.set('disable', true, axis !== undefined && !axis);
+    return axisComponent;
+  }
   const labelAngle = getLabelAngle(model, axis, channel, fieldOrDatumDef, axisConfigs);
 
   const ruleParams: AxisRuleParams = {
@@ -237,12 +251,6 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
     mark,
     config
   };
-
-  if (axis !== undefined && !axis) {
-    // if axis is explicitly falsy, disable it and include no other properties.
-    axisComponent.set('disable', true, true);
-    return axisComponent;
-  }
 
   // 1.2. Add properties
   for (const property of AXIS_COMPONENT_PROPERTIES) {

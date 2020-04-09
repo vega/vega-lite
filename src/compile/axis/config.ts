@@ -1,6 +1,6 @@
 import {ScaleType} from 'vega-typings/types';
 import {array} from 'vega-util';
-import {Axis} from '../../axis';
+import {AxisConfig} from '../../axis';
 import {PositionScaleChannel} from '../../channel';
 import {Config} from '../../config';
 import {isQuantitative} from '../../scale';
@@ -60,7 +60,7 @@ export function getAxisConfigStyle(axisConfigTypes: string[], config: Config) {
   return Object.assign.apply(null, toMerge);
 }
 export function getAxisConfig(
-  property: keyof Axis,
+  property: keyof AxisConfig,
   config: Config,
   style: string | string[],
   axisConfigs: Partial<AxisConfigs> = {}

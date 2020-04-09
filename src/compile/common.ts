@@ -1,6 +1,6 @@
 import {SignalRef, Text} from 'vega';
 import {array} from 'vega-util';
-import {Axis} from '../axis';
+import {AxisConfig} from '../axis';
 import {FieldDefBase, FieldRefOption, OrderFieldDef, vgField} from '../channeldef';
 import {Config, StyleConfigIndex} from '../config';
 import {MarkConfig, MarkDef} from '../mark';
@@ -89,7 +89,7 @@ export function getMarkStyleConfig<P extends keyof MarkDef>(
   return getStyleConfig(prop, getStyles(mark), styleConfigIndex);
 }
 
-export function getStyleConfig<P extends keyof MarkDef | keyof Axis>(
+export function getStyleConfig<P extends keyof MarkDef | keyof AxisConfig>(
   p: P,
   styles: string | string[],
   styleConfigIndex: StyleConfigIndex

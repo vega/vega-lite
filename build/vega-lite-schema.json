@@ -1005,7 +1005,7 @@
           "type": "boolean"
         },
         "tickMinStep": {
-          "description": "The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.\n\n__Default value__: `undefined`",
+          "description": "The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.",
           "type": "number"
         },
         "tickOffset": {
@@ -1221,6 +1221,21 @@
           "description": "Stroke width of axis domain line\n\n__Default value:__ `1`",
           "type": "number"
         },
+        "format": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).\n- If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `\"formatType\"`](https://vega.github.io/vega-lite/usage/compile.html#format-type) that takes `datum.value` and format parameter as input), this property represents the format parameter.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
+        },
+        "formatType": {
+          "description": "The format type for labels (`\"number\"` or `\"time\"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/compile.html#format-type)).\n\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "type": "string"
+        },
         "grid": {
           "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.",
           "type": "boolean"
@@ -1347,7 +1362,7 @@
           ]
         },
         "labelExpr": {
-          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
           "type": "string"
         },
         "labelFlush": {
@@ -1475,6 +1490,10 @@
           "$ref": "#/definitions/AxisOrient",
           "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y-axis oriented towards the right edge of the chart).\n\n__Default value:__ `\"bottom\"` for x-axes and `\"left\"` for y-axes."
         },
+        "position": {
+          "description": "The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
+          "type": "number"
+        },
         "style": {
           "anyOf": [
             {
@@ -1559,6 +1578,10 @@
           "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
           "type": "boolean"
         },
+        "tickMinStep": {
+          "description": "The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.",
+          "type": "number"
+        },
         "tickOffset": {
           "description": "Position offset in pixels to apply to ticks, labels, and gridlines.",
           "type": "number"
@@ -1607,8 +1630,15 @@
           "type": "boolean"
         },
         "title": {
-          "description": "Set to null to disable title for the axis, legend, or header.",
-          "type": "null"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "titleAlign": {
           "$ref": "#/definitions/Align",
@@ -1681,6 +1711,40 @@
         },
         "translate": {
           "description": "Coordinate space translation offset for axis layout. By default, axes are translated by a 0.5 pixel offset for both the x and y coordinates in order to align stroked lines with the pixel grid. However, for vector graphics output these pixel-specific adjustments may be undesirable, in which case translate can be changed (for example, to zero).\n\n__Default value:__ `0.5`",
+          "type": "number"
+        },
+        "values": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "type": "boolean"
+              },
+              "type": "array"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/DateTime"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "Explicitly set the visible axis tick values."
+        },
+        "zindex": {
+          "description": "A non-negative integer indicating the z-index of the axis.\nIf zindex is 0, axes should be drawn behind all chart elements.\nTo put them in front, set `zindex` to `1` or more.\n\n__Default value:__ `0` (behind the marks).",
+          "minimum": 0,
           "type": "number"
         }
       },
