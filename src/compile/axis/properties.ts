@@ -188,25 +188,28 @@ export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient, chan
   return undefined;
 }
 
+function _defaultLabelAlign(angle: number, axisOrient: AxisOrient, startAngle: 0 | 90, mainOrient: 'bottom' | 'left') {
+  // TODO: generate signal based on a similar formula if orient is a signal
+  if ((angle + startAngle) % 180 === 0) {
+    return 'center';
+  } else if ((startAngle < angle && angle < 180 + startAngle) === (axisOrient === mainOrient)) {
+    return 'left';
+  }
+  return 'right';
+}
+
 export function defaultLabelAlign(angle: number, axisOrient: AxisOrient, channel?: 'x' | 'y'): Align {
   channel = channel || (axisOrient === 'top' || axisOrient === 'bottom' ? 'x' : 'y');
 
-  // TODO: generate signal based on a similar formula if orient is a signal
-
   if (angle !== undefined) {
     if (channel === 'x') {
-      return angle % 180 === 0 ? 'center' : angle < 180 === (axisOrient === 'top') ? 'right' : 'left';
+      return _defaultLabelAlign(angle, axisOrient, 0, 'bottom');
     } else {
-      return (angle + 90) % 180 === 0
-        ? 'center'
-        : (90 < angle && angle < 270) === (axisOrient === 'left')
-        ? 'left'
-        : 'right';
+      return _defaultLabelAlign(angle, axisOrient, 90, 'left');
     }
   }
   return undefined;
 }
-
 export function defaultLabelFlush(type: Type, channel: PositionScaleChannel) {
   if (channel === 'x' && contains(['quantitative', 'temporal'], type)) {
     return true;
