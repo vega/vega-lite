@@ -232,62 +232,60 @@ describe('compile/axis', () => {
   });
 
   describe('defaultLabelAlign', () => {
-    describe('horizontal orients', () => {
-      it('360 degree check for horizonatal orients return to see if they orient properly', () => {
-        expect(defaultLabelAlign(0, 'top')).toBe('center');
-        expect(defaultLabelAlign(15, 'top')).toBe('right');
-        expect(defaultLabelAlign(30, 'top')).toBe('right');
-        expect(defaultLabelAlign(45, 'top')).toBe('right');
-        expect(defaultLabelAlign(60, 'top')).toBe('right');
-        expect(defaultLabelAlign(75, 'top')).toBe('right');
-        expect(defaultLabelAlign(90, 'top')).toBe('right');
-        expect(defaultLabelAlign(105, 'top')).toBe('right');
-        expect(defaultLabelAlign(120, 'top')).toBe('right');
-        expect(defaultLabelAlign(135, 'top')).toBe('right');
-        expect(defaultLabelAlign(150, 'top')).toBe('right');
-        expect(defaultLabelAlign(165, 'top')).toBe('right');
-        expect(defaultLabelAlign(180, 'top')).toBe('center');
-        expect(defaultLabelAlign(195, 'bottom')).toBe('right');
-        expect(defaultLabelAlign(210, 'bottom')).toBe('right');
-        expect(defaultLabelAlign(225, 'bottom')).toBe('right');
-        expect(defaultLabelAlign(240, 'bottom')).toBe('right');
-        expect(defaultLabelAlign(255, 'bottom')).toBe('right');
-        expect(defaultLabelAlign(270, 'bottom')).toBe('right');
-        expect(defaultLabelAlign(285, 'bottom')).toBe('right');
-        expect(defaultLabelAlign(300, 'bottom')).toBe('right');
-        expect(defaultLabelAlign(315, 'bottom')).toBe('right');
-        expect(defaultLabelAlign(330, 'bottom')).toBe('right');
-        expect(defaultLabelAlign(345, 'bottom')).toBe('right');
-      });
-      it('360 degree check for vertical orients return to see if they orient properly', () => {
-        expect(defaultLabelAlign(0, 'left')).toBe('right');
-        expect(defaultLabelAlign(15, 'left')).toBe('right');
-        expect(defaultLabelAlign(30, 'left')).toBe('right');
-        expect(defaultLabelAlign(45, 'left')).toBe('right');
-        expect(defaultLabelAlign(60, 'left')).toBe('right');
-        expect(defaultLabelAlign(75, 'left')).toBe('right');
-        expect(defaultLabelAlign(90, 'left')).toBe('center');
-        expect(defaultLabelAlign(105, 'left')).toBe('left');
-        expect(defaultLabelAlign(120, 'left')).toBe('left');
-        expect(defaultLabelAlign(135, 'left')).toBe('left');
-        expect(defaultLabelAlign(150, 'left')).toBe('left');
-        expect(defaultLabelAlign(165, 'left')).toBe('left');
-        expect(defaultLabelAlign(180, 'left')).toBe('left');
-        expect(defaultLabelAlign(195, 'right')).toBe('right');
-        expect(defaultLabelAlign(210, 'right')).toBe('right');
-        expect(defaultLabelAlign(225, 'right')).toBe('right');
-        expect(defaultLabelAlign(240, 'right')).toBe('right');
-        expect(defaultLabelAlign(255, 'right')).toBe('right');
-        expect(defaultLabelAlign(270, 'right')).toBe('center');
-        expect(defaultLabelAlign(285, 'right')).toBe('left');
-        expect(defaultLabelAlign(300, 'right')).toBe('left');
-        expect(defaultLabelAlign(315, 'right')).toBe('left');
-        expect(defaultLabelAlign(330, 'right')).toBe('left');
-        expect(defaultLabelAlign(345, 'right')).toBe('left');
-      });
-      it('should return undefined if angle is undefined', () => {
-        expect(defaultLabelAlign(undefined, 'left')).toEqual(undefined);
-      });
+    it('correctly aligns the x-labels for all degrees', () => {
+      expect(defaultLabelAlign(0, 'top')).toBe('center');
+      expect(defaultLabelAlign(15, 'top')).toBe('right');
+      expect(defaultLabelAlign(30, 'top')).toBe('right');
+      expect(defaultLabelAlign(45, 'top')).toBe('right');
+      expect(defaultLabelAlign(60, 'top')).toBe('right');
+      expect(defaultLabelAlign(75, 'top')).toBe('right');
+      expect(defaultLabelAlign(90, 'top')).toBe('right');
+      expect(defaultLabelAlign(105, 'top')).toBe('right');
+      expect(defaultLabelAlign(120, 'top')).toBe('right');
+      expect(defaultLabelAlign(135, 'top')).toBe('right');
+      expect(defaultLabelAlign(150, 'top')).toBe('right');
+      expect(defaultLabelAlign(165, 'top')).toBe('right');
+      expect(defaultLabelAlign(180, 'top')).toBe('center');
+      expect(defaultLabelAlign(195, 'bottom')).toBe('right');
+      expect(defaultLabelAlign(210, 'bottom')).toBe('right');
+      expect(defaultLabelAlign(225, 'bottom')).toBe('right');
+      expect(defaultLabelAlign(240, 'bottom')).toBe('right');
+      expect(defaultLabelAlign(255, 'bottom')).toBe('right');
+      expect(defaultLabelAlign(270, 'bottom')).toBe('right');
+      expect(defaultLabelAlign(285, 'bottom')).toBe('right');
+      expect(defaultLabelAlign(300, 'bottom')).toBe('right');
+      expect(defaultLabelAlign(315, 'bottom')).toBe('right');
+      expect(defaultLabelAlign(330, 'bottom')).toBe('right');
+      expect(defaultLabelAlign(345, 'bottom')).toBe('right');
+    });
+    it('correctly aligns the y-labels for all degrees', () => {
+      expect(defaultLabelAlign(0, 'left')).toBe('right');
+      expect(defaultLabelAlign(15, 'left')).toBe('right');
+      expect(defaultLabelAlign(30, 'left')).toBe('right');
+      expect(defaultLabelAlign(45, 'left')).toBe('right');
+      expect(defaultLabelAlign(60, 'left')).toBe('right');
+      expect(defaultLabelAlign(75, 'left')).toBe('right');
+      expect(defaultLabelAlign(90, 'left')).toBe('center');
+      expect(defaultLabelAlign(105, 'left')).toBe('left');
+      expect(defaultLabelAlign(120, 'left')).toBe('left');
+      expect(defaultLabelAlign(135, 'left')).toBe('left');
+      expect(defaultLabelAlign(150, 'left')).toBe('left');
+      expect(defaultLabelAlign(165, 'left')).toBe('left');
+      expect(defaultLabelAlign(180, 'left')).toBe('left');
+      expect(defaultLabelAlign(195, 'right')).toBe('right');
+      expect(defaultLabelAlign(210, 'right')).toBe('right');
+      expect(defaultLabelAlign(225, 'right')).toBe('right');
+      expect(defaultLabelAlign(240, 'right')).toBe('right');
+      expect(defaultLabelAlign(255, 'right')).toBe('right');
+      expect(defaultLabelAlign(270, 'right')).toBe('center');
+      expect(defaultLabelAlign(285, 'right')).toBe('left');
+      expect(defaultLabelAlign(300, 'right')).toBe('left');
+      expect(defaultLabelAlign(315, 'right')).toBe('left');
+      expect(defaultLabelAlign(330, 'right')).toBe('left');
+      expect(defaultLabelAlign(345, 'right')).toBe('left');
+    });
+    it('should return undefined if angle is undefined', () => {
+      expect(defaultLabelAlign(undefined, 'left')).toEqual(undefined);
     });
   });
 
