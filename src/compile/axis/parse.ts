@@ -213,7 +213,7 @@ const propsToAlwaysIncludeConfig = new Set([
 ]);
 
 function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisComponent {
-  const axis = model.axis(channel);
+  let axis = model.axis(channel);
 
   const axisComponent = new AxisComponent();
 
@@ -238,11 +238,14 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
     axisComponent.set('disable', true, axis !== undefined && !axis);
     return axisComponent;
   }
+
+  axis = axis || {};
+
   const labelAngle = getLabelAngle(model, axis, channel, fieldOrDatumDef, axisConfigs);
 
   const ruleParams: AxisRuleParams = {
     fieldOrDatumDef,
-    axis: axis || {},
+    axis,
     channel,
     model,
     scaleType,
@@ -251,11 +254,10 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
     mark,
     config
   };
-
   // 1.2. Add properties
   for (const property of AXIS_COMPONENT_PROPERTIES) {
     const value =
-      property in axisRules ? axisRules[property](ruleParams) : isAxisProperty(property) ? axis?.[property] : undefined;
+      property in axisRules ? axisRules[property](ruleParams) : isAxisProperty(property) ? axis[property] : undefined;
 
     const hasValue = value !== undefined;
 
@@ -264,9 +266,10 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
     if (hasValue && explicit) {
       axisComponent.set(property, value, explicit);
     } else {
-      const {configValue = undefined, configFrom = undefined} = isAxisProperty(property)
-        ? getAxisConfig(property, model.config, axis?.style, axisConfigs)
-        : {};
+      const {configValue = undefined, configFrom = undefined} =
+        isAxisProperty(property) && property !== 'values'
+          ? getAxisConfig(property, model.config, axis.style, axisConfigs)
+          : {};
       const hasConfigValue = configValue !== undefined;
 
       if (hasValue && !hasConfigValue) {
@@ -289,7 +292,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   }
 
   // 2) Add guide encode definition groups
-  const axisEncoding = axis?.encoding ?? {};
+  const axisEncoding = axis.encoding ?? {};
   const axisEncode = AXIS_PARTS.reduce((e: VgAxisEncode, part) => {
     if (!axisComponent.hasAxisPart(part)) {
       // No need to create encode for a disabled part.
@@ -308,7 +311,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
   // FIXME: By having encode as one property, we won't have fine grained encode merging.
   if (keys(axisEncode).length > 0) {
-    axisComponent.set('encode', axisEncode, !!axis?.encoding || axis?.labelAngle !== undefined);
+    axisComponent.set('encode', axisEncode, !!axis.encoding || axis.labelAngle !== undefined);
   }
 
   return axisComponent;
