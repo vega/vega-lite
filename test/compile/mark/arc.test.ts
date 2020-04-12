@@ -43,7 +43,7 @@ describe('Mark: Arc', () => {
 
   describe('for pie with thetaOffset', () => {
     // This is a simplified example for stacked text.
-    // In reality this will be used as stacked's overlayed marker
+    // In reality this will be used as stacked's overlayed marks.
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: {type: 'arc', thetaOffset: 5},
       encoding: {
