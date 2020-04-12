@@ -515,42 +515,42 @@ export interface MarkDefMixins {
   /**
    * Offset for x-position.
    */
-  xOffset?: number;
+  xOffset?: number | SignalRef;
 
   /**
    * Offset for y-position.
    */
-  yOffset?: number;
+  yOffset?: number | SignalRef;
 
   /**
    * Offset for x2-position.
    */
-  x2Offset?: number;
+  x2Offset?: number | SignalRef;
 
   /**
    * Offset for y2-position.
    */
-  y2Offset?: number;
+  y2Offset?: number | SignalRef;
 
   /**
    * Offset for theta.
    */
-  thetaOffset?: number;
+  thetaOffset?: number | SignalRef;
 
   /**
    * Offset for theta2.
    */
-  theta2Offset?: number;
+  theta2Offset?: number | SignalRef;
 
   /**
    * Offset for radius.
    */
-  radiusOffset?: number;
+  radiusOffset?: number | SignalRef;
 
   /**
    * Offset for radius2.
    */
-  radius2Offset?: number;
+  radius2Offset?: number | SignalRef;
 }
 
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef

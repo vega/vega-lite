@@ -208,7 +208,7 @@ export interface MidPointParams {
   scaleName: string;
   scale: ScaleComponent;
   stack?: StackProperties;
-  offset?: number;
+  offset?: number | SignalRef;
   defaultRef: VgValueRef | (() => VgValueRef);
 
   /**
