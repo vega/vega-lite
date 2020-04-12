@@ -41,6 +41,25 @@ describe('Mark: Arc', () => {
     });
   });
 
+  describe('for pie with thetaOffset', () => {
+    // This is a simplified example for stacked text.
+    // In reality this will be used as stacked's overlayed marks.
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: {type: 'arc', thetaOffset: 5},
+      encoding: {
+        theta: {field: 'field', type: 'quantitative'},
+        color: {field: 'id', type: 'nominal'}
+      }
+    });
+
+    const props = arc.encodeEntry(model);
+
+    it('applies thetaOffset to both startAngle and endAngle', () => {
+      expect(props.startAngle).toEqual({scale: 'theta', field: 'field_end', offset: 5});
+      expect(props.endAngle).toEqual({scale: 'theta', field: 'field_start', offset: 5});
+    });
+  });
+
   describe('for radial histogram', () => {
     // This is a simplified example for stacked text.
     // In reality this will be used as stacked's overlayed marker
