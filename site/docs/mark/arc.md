@@ -45,7 +45,7 @@ Arc marks are circular arcs defined by a center point plus angular and radial ex
 
 An `arc` mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
-{% include table.html props="radius,radius2,innerRadius,outerRadius,theta,theta2,cornerRadius,padAngle" source="MarkConfig" %}
+{% include table.html props="radius,radius2,innerRadius,outerRadius,theta,theta2,cornerRadius,padAngle,radiusOffset,radius2Offset,thetaOffset,theta2Offset" source="MarkDef" %}
 
 ## Examples
 
