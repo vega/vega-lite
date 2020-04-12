@@ -1239,10 +1239,13 @@ export function valueExpr(
     expr = dateTimeToExpr(v);
   } else if (isString(v) || isNumber(v)) {
     if (unit || type === 'temporal') {
+      expr = `datetime(${JSON.stringify(v)})`;
+
       if (isLocalSingleTimeUnit(unit)) {
-        expr = dateTimeToExpr({[unit]: v});
-      } else {
-        expr = `datetime(${JSON.stringify(v)})`;
+        // for single timeUnit, we will use dateTimeToExpr to convert number/string to match the timeUnit
+        if ((isNumber(v) && v < 10000) || (isString(v) && isNaN(Date.parse(v)))) {
+          expr = dateTimeToExpr({[unit]: v});
+        }
       }
     }
   }

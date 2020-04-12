@@ -558,6 +558,46 @@ describe('compile/scale', () => {
         ]);
       });
 
+      it('should return the right custom domain with single time unit', () => {
+        const model = parseUnitModel({
+          mark: 'point',
+          encoding: {
+            y: {
+              timeUnit: 'year',
+              field: 'date',
+              type: 'temporal',
+              scale: {domain: [1970, {year: 1980}]}
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'y');
+
+        expect(_domain).toEqual([
+          {signal: '{data: datetime(1970, 0, 1, 0, 0, 0, 0)}'},
+          {signal: '{data: datetime(1980, 0, 1, 0, 0, 0, 0)}'}
+        ]);
+      });
+
+      it('should return the right custom domain with month', () => {
+        const model = parseUnitModel({
+          mark: 'point',
+          encoding: {
+            y: {
+              timeUnit: 'month',
+              field: 'date',
+              type: 'temporal',
+              scale: {domain: [2134512352, 'February']}
+            }
+          }
+        });
+        const _domain = testParseDomainForChannel(model, 'y');
+
+        expect(_domain).toEqual([
+          {signal: '{data: datetime(2134512352)}'},
+          {signal: '{data: datetime(2012, 1, 1, 0, 0, 0, 0)}'}
+        ]);
+      });
+
       it('should return the right custom domain with DateTime object and signal', () => {
         const model = parseUnitModel({
           mark: 'point',
