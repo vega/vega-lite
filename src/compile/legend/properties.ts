@@ -1,16 +1,103 @@
-import {LabelOverlap, LegendOrient, LegendType, SignalRef, SymbolShape} from 'vega';
+import {LabelOverlap, LegendOrient, LegendType, Orientation, SignalRef, SymbolShape} from 'vega';
 import {isArray} from 'vega-util';
-import {Channel, isColorChannel} from '../../channel';
-import {DatumDef, TypedFieldDef, valueArray} from '../../channeldef';
+import {Channel, isColorChannel, NonPositionChannel} from '../../channel';
+import {
+  DatumDef,
+  isFieldOrDatumDefForTimeFormat,
+  MarkPropFieldOrDatumDef,
+  title as fieldDefTitle,
+  TypedFieldDef,
+  valueArray
+} from '../../channeldef';
+import {Config} from '../../config';
 import {Encoding} from '../../encoding';
 import {Legend, LegendConfig} from '../../legend';
-import {Mark} from '../../mark';
+import {Mark, MarkDef} from '../../mark';
 import {isContinuousToContinuous, ScaleType} from '../../scale';
 import {TimeUnit} from '../../timeunit';
 import {contains, getFirstDefined} from '../../util';
 import {isSignalRef} from '../../vega.schema';
+import {numberFormat} from '../format';
 import {Model} from '../model';
+import {UnitModel} from '../unit';
+import {LegendComponentProps} from './component';
 import {getFirstConditionValue} from './encode';
+
+export interface LegendRuleParams {
+  legend: Legend;
+  channel: NonPositionChannel;
+  model: UnitModel;
+  markDef: MarkDef;
+  encoding: Encoding<string>;
+
+  fieldOrDatumDef: MarkPropFieldOrDatumDef<string>;
+
+  legendConfig: LegendConfig;
+
+  config: Config;
+
+  scaleType: ScaleType;
+
+  orient: LegendOrient;
+
+  legendType: LegendType;
+
+  direction: Orientation;
+}
+
+export const legendRules: {
+  [k in keyof LegendComponentProps]?: (params: LegendRuleParams) => LegendComponentProps[k];
+} = {
+  direction: ({direction}) => direction,
+
+  format: ({fieldOrDatumDef, legend, config}) => {
+    // We don't include temporal field here as we apply format in encode block
+    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
+      return undefined;
+    }
+    return numberFormat(fieldOrDatumDef.type, legend.format, config);
+  },
+
+  formatType: ({fieldOrDatumDef, legend}) => {
+    // As with format, we don't include temporal field here as we apply format in encode block
+    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
+      return undefined;
+    }
+    const formatType = legend.formatType;
+    if (formatType) {
+      if (isSignalRef(formatType) || formatType === 'number' || formatType === 'time' || formatType === 'utc') {
+        return formatType;
+      }
+    }
+    return undefined;
+  },
+
+  gradientLength: params => {
+    const {legend, legendConfig} = params;
+    return legend.gradientLength ?? legendConfig.gradientLength ?? defaultGradientLength(params);
+  },
+
+  labelOverlap: ({legend, legendConfig, scaleType}) =>
+    legend.labelOverlap ?? legendConfig.labelOverlap ?? defaultLabelOverlap(scaleType),
+
+  symbolType: ({legend, markDef, channel, encoding}) =>
+    legend.symbolType ?? defaultSymbolType(markDef.type, channel, encoding.shape, markDef.shape),
+
+  title: ({fieldOrDatumDef, config}) => fieldDefTitle(fieldOrDatumDef, config, {allowDisabling: true}),
+
+  type: ({legendType, scaleType, channel}) => {
+    if (isColorChannel(channel) && isContinuousToContinuous(scaleType)) {
+      if (legendType === 'gradient') {
+        return undefined;
+      }
+    } else if (legendType === 'symbol') {
+      return undefined;
+    }
+    return legendType;
+  }, // depended by other property, let's define upfront
+
+  values: ({fieldOrDatumDef, legend}) => values(legend, fieldOrDatumDef)
+};
 
 export function values(legend: Legend, fieldOrDatumDef: TypedFieldDef<string> | DatumDef) {
   const vals = legend.values;
@@ -65,12 +152,11 @@ export function clipHeight(legendType: LegendType) {
   return undefined;
 }
 
-export function type(params: {
+export function getLegendType(params: {
   legend: Legend;
   channel: Channel;
   timeUnit?: TimeUnit;
   scaleType: ScaleType;
-  alwaysReturn: boolean;
 }): LegendType {
   const {legend} = params;
 
@@ -80,13 +166,11 @@ export function type(params: {
 export function defaultType({
   channel,
   timeUnit,
-  scaleType,
-  alwaysReturn
+  scaleType
 }: {
   channel: Channel;
   timeUnit?: TimeUnit;
   scaleType: ScaleType;
-  alwaysReturn: boolean;
 }): LegendType {
   // Following the logic in https://github.com/vega/vega-parser/blob/master/src/parsers/legend.js
 
@@ -96,36 +180,31 @@ export function defaultType({
     }
 
     if (isContinuousToContinuous(scaleType)) {
-      return alwaysReturn ? 'gradient' : undefined;
+      return 'gradient';
     }
   }
-  return alwaysReturn ? 'symbol' : undefined;
+  return 'symbol';
 }
 
-export function direction({
-  legend,
+export function getDirection({
   legendConfig,
-  timeUnit,
-  channel,
-  scaleType
+  legendType,
+  orient,
+  legend
 }: {
-  legend: Legend;
+  orient: LegendOrient;
   legendConfig: LegendConfig;
-  timeUnit?: TimeUnit;
-  channel: Channel;
-  scaleType: ScaleType;
-}) {
-  const orient = getFirstDefined(legend.orient, legendConfig.orient, 'right');
-
-  const legendType = type({legend, channel, timeUnit, scaleType, alwaysReturn: true});
-  return getFirstDefined(
-    legend.direction,
-    legendConfig[legendType ? 'gradientDirection' : 'symbolDirection'],
+  legendType: LegendType;
+  legend: Legend;
+}): Orientation {
+  return (
+    legend.direction ??
+    legendConfig[legendType ? 'gradientDirection' : 'symbolDirection'] ??
     defaultDirection(orient, legendType)
   );
 }
 
-function defaultDirection(orient: LegendOrient, legendType: LegendType) {
+export function defaultDirection(orient: LegendOrient, legendType: LegendType): 'horizontal' | undefined {
   switch (orient) {
     case 'top':
     case 'bottom':
@@ -144,17 +223,17 @@ function defaultDirection(orient: LegendOrient, legendType: LegendType) {
 }
 
 export function defaultGradientLength({
-  legend,
   legendConfig,
   model,
-  channel,
+  direction,
+  orient,
   scaleType
 }: {
-  legend: Legend;
-  legendConfig: LegendConfig;
-  model: Model;
-  channel: Channel;
   scaleType: ScaleType;
+  direction: Orientation;
+  orient: LegendOrient;
+  model: Model;
+  legendConfig: LegendConfig;
 }) {
   const {
     gradientHorizontalMaxLength,
@@ -162,11 +241,8 @@ export function defaultGradientLength({
     gradientVerticalMaxLength,
     gradientVerticalMinLength
   } = legendConfig;
-
   if (isContinuousToContinuous(scaleType)) {
-    const dir = direction({legend, legendConfig, channel, scaleType});
-    if (dir === 'horizontal') {
-      const orient = getFirstDefined(legend.orient, legendConfig.orient);
+    if (direction === 'horizontal') {
       if (orient === 'top' || orient === 'bottom') {
         return gradientLengthSignal(model, 'width', gradientHorizontalMinLength, gradientHorizontalMaxLength);
       } else {

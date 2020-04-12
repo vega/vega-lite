@@ -1,6 +1,6 @@
-import {ColorValueRef, SignalRef, SymbolEncodeEntry} from 'vega';
+import {ColorValueRef, EncodeEntry, LegendEncode, LegendType, SignalRef, SymbolEncodeEntry} from 'vega';
 import {array, isArray, stringValue} from 'vega-util';
-import {COLOR, NonPositionScaleChannel, OPACITY, ScaleChannel} from '../../channel';
+import {COLOR, OPACITY, ScaleChannel} from '../../channel';
 import {
   Conditional,
   DatumDef,
@@ -22,21 +22,37 @@ import * as mixins from '../mark/encode';
 import {STORE} from '../selection';
 import {UnitModel} from '../unit';
 import {LegendComponent} from './component';
-import {defaultType} from './properties';
 
-function type(legendCmp: LegendComponent, model: UnitModel, channel: ScaleChannel) {
-  const scaleType = model.getScaleComponent(channel).get('type');
-  return getFirstDefined(legendCmp.get('type'), defaultType({channel, scaleType, alwaysReturn: true}));
+export interface LegendEncodeParams {
+  fieldOrDatumDef: TypedFieldDef<string> | DatumDef;
+  model: UnitModel;
+  channel: ScaleChannel;
+  legendCmpt: LegendComponent;
+
+  legendType: LegendType;
 }
 
+export const legendEncodeRules: {
+  [part in keyof LegendEncode]?: (spec: any, params: LegendEncodeParams) => EncodeEntry;
+} = {
+  symbols,
+  gradient,
+  labels,
+  entries
+};
+
 export function symbols(
-  fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
   symbolsSpec: any,
-  model: UnitModel,
-  channel: ScaleChannel,
-  legendCmp: LegendComponent
+  {
+    fieldOrDatumDef,
+
+    model,
+    channel,
+    legendCmpt,
+    legendType
+  }: LegendEncodeParams
 ): SymbolEncodeEntry {
-  if (type(legendCmp, model, channel) !== 'symbol') {
+  if (legendType !== 'symbol') {
     return undefined;
   }
 
@@ -57,7 +73,7 @@ export function symbols(
     } else {
       if (out.fill['field']) {
         // For others, set fill to some opaque value (or nothing if a color is already set)
-        if (legendCmp.get('symbolFillColor')) {
+        if (legendCmpt.get('symbolFillColor')) {
           delete out.fill;
         } else {
           out.fill = signalOrValueRef(config.legend.symbolBaseFillColor ?? 'black');
@@ -94,7 +110,7 @@ export function symbols(
   }
 
   if (channel !== OPACITY) {
-    const condition = isFieldDef(fieldOrDatumDef) && selectedCondition(model, legendCmp, fieldOrDatumDef);
+    const condition = isFieldDef(fieldOrDatumDef) && selectedCondition(model, legendCmpt, fieldOrDatumDef);
 
     if (condition) {
       out.opacity = [
@@ -111,14 +127,8 @@ export function symbols(
   return keys(out).length > 0 ? out : undefined;
 }
 
-export function gradient(
-  fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
-  gradientSpec: any,
-  model: UnitModel,
-  channel: ScaleChannel,
-  legendCmp: LegendComponent
-) {
-  if (type(legendCmp, model, channel) !== 'gradient') {
+export function gradient(gradientSpec: any, {model, legendType}: LegendEncodeParams) {
+  if (legendType !== 'gradient') {
     return undefined;
   }
 
@@ -134,17 +144,11 @@ export function gradient(
   return keys(out).length > 0 ? out : undefined;
 }
 
-export function labels(
-  fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
-  specifiedlabelsSpec: any,
-  model: UnitModel,
-  channel: NonPositionScaleChannel,
-  legendCmp: LegendComponent
-) {
+export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channel, legendCmpt}: LegendEncodeParams) {
   const legend = model.legend(channel) || {};
   const config = model.config;
 
-  const condition = isFieldDef(fieldOrDatumDef) ? selectedCondition(model, legendCmp, fieldOrDatumDef) : undefined;
+  const condition = isFieldDef(fieldOrDatumDef) ? selectedCondition(model, legendCmpt, fieldOrDatumDef) : undefined;
   const opacity = condition ? [{test: condition, value: 1}, {value: config.legend.unselectedOpacity}] : undefined;
 
   const {format, formatType} = legend;
@@ -168,15 +172,9 @@ export function labels(
   return keys(labelsSpec).length > 0 ? labelsSpec : undefined;
 }
 
-export function entries(
-  fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
-  entriesSpec: any,
-  model: UnitModel,
-  channel: NonPositionScaleChannel,
-  legendCmp: LegendComponent
-) {
-  const selections = legendCmp.get('selections');
-  return selections?.length ? {fill: {value: 'transparent'}} : undefined;
+export function entries(entriesSpec: any, {legendCmpt}: LegendEncodeParams) {
+  const selections = legendCmpt.get('selections');
+  return selections?.length ? {...entriesSpec, fill: {value: 'transparent'}} : entriesSpec;
 }
 
 function getMaxValue(channelDef: Encoding<string>['opacity']) {
@@ -203,8 +201,8 @@ function getConditionValue<V extends Value | Gradient>(
   return undefined;
 }
 
-function selectedCondition(model: UnitModel, legendCmp: LegendComponent, fieldDef: TypedFieldDef<string>) {
-  const selections = legendCmp.get('selections');
+function selectedCondition(model: UnitModel, legendCmpt: LegendComponent, fieldDef: TypedFieldDef<string>) {
+  const selections = legendCmpt.get('selections');
   if (!selections?.length) return undefined;
 
   const field = stringValue(fieldDef.field);
