@@ -330,6 +330,37 @@ describe('Mark: Bar', () => {
     });
   });
 
+  describe('horizontal binned with offset signal', () => {
+    const y: PositionFieldDef<string> = {bin: true, field: 'Horsepower', type: 'quantitative'};
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'bar', yOffset: {signal: 'a'}},
+      encoding: {
+        y,
+        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
+      }
+    });
+    const props = bar.encodeEntry(model);
+
+    it('should draw bar with y and y2', () => {
+      expect(props.y2).toEqual([
+        fieldInvalidTestValueRef(y, 'y'),
+        {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: {signal: 'a'}}
+      ]);
+      expect(props.y).toEqual([
+        fieldInvalidTestValueRef(y, 'y'),
+        {
+          scale: 'y',
+          field: 'bin_maxbins_10_Horsepower_end',
+          offset: {
+            signal: '1 + a'
+          }
+        }
+      ]);
+      expect(props.height).toBeUndefined();
+    });
+  });
+
   describe('horizontal binned, sort descending', () => {
     const y: PositionFieldDef<string> = {bin: true, field: 'Horsepower', type: 'quantitative', sort: 'descending'};
     const model = parseUnitModelWithScaleAndLayoutSize({
