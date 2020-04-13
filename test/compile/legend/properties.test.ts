@@ -2,16 +2,11 @@ import {LegendOrient} from 'vega-typings';
 import * as properties from '../../../src/compile/legend/properties';
 
 describe('compile/legend', () => {
-  describe('direction()', () => {
+  describe('defaultDirection()', () => {
     it('should return horizontal for top/bottom if legend.orient and its config are not defined', () => {
       const orients: LegendOrient[] = ['top', 'bottom'];
       for (const orient of orients) {
-        const dir = properties.direction({
-          legend: {orient},
-          legendConfig: {},
-          channel: 'color',
-          scaleType: 'linear'
-        });
+        const dir = properties.defaultDirection(orient, 'gradient');
 
         expect(dir).toBe('horizontal');
       }
@@ -20,12 +15,7 @@ describe('compile/legend', () => {
     it('should return undefined for left/right if legend.orient and its config are not defined', () => {
       const orients: LegendOrient[] = ['left', 'right', undefined, 'none'];
       for (const orient of orients) {
-        const dir = properties.direction({
-          legend: {orient},
-          legendConfig: {},
-          channel: 'color',
-          scaleType: 'linear'
-        });
+        const dir = properties.defaultDirection(orient, 'gradient');
 
         expect(dir).toEqual(undefined);
       }
@@ -34,12 +24,7 @@ describe('compile/legend', () => {
     it('should return horizontal for quantitative inner legend if legend.orient and its config are not defined', () => {
       const orients: LegendOrient[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
       for (const orient of orients) {
-        const dir = properties.direction({
-          legend: {orient},
-          legendConfig: {},
-          channel: 'color',
-          scaleType: 'linear'
-        });
+        const dir = properties.defaultDirection(orient, 'gradient');
 
         expect(dir).toBe('horizontal');
       }
@@ -48,13 +33,7 @@ describe('compile/legend', () => {
     it('should return undefined for discrete inner legend if legend.orient and its config are not defined', () => {
       const orients: LegendOrient[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
       for (const orient of orients) {
-        const dir = properties.direction({
-          legend: {orient},
-          legendConfig: {},
-          channel: 'color',
-          scaleType: 'ordinal'
-        });
-
+        const dir = properties.defaultDirection(orient, 'symbol');
         expect(dir).toEqual(undefined);
       }
     });

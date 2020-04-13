@@ -277,7 +277,7 @@ export function deleteNestedProperty(obj: any, orderedProps: string[]) {
     return true;
   }
   const prop = orderedProps.shift()!; // eslint-disable-line @typescript-eslint/no-non-null-assertion
-  if (deleteNestedProperty(obj[prop], orderedProps)) {
+  if (prop in obj && deleteNestedProperty(obj[prop], orderedProps)) {
     delete obj[prop];
   }
   return keys(obj).length === 0;
