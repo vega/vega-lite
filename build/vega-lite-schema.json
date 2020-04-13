@@ -239,7 +239,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Fill Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -401,7 +401,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default stroke color. This property has higher precedence than `config.color`. Set to `null` to remove stroke.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -1882,7 +1882,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Fill Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -2016,7 +2016,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default stroke color. This property has higher precedence than `config.color`. Set to `null` to remove stroke.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -3078,7 +3078,7 @@
               "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
             }
           ],
-          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
+          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
         },
         "detail": {
           "anyOf": [
@@ -3106,7 +3106,7 @@
               "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
             }
           ],
-          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
+          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
         },
         "fillOpacity": {
           "anyOf": [
@@ -3120,7 +3120,7 @@
               "$ref": "#/definitions/NumericValueDefWithConditionAlias"
             }
           ],
-          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
+          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `fillOpacity` property."
         },
         "href": {
           "anyOf": [
@@ -3205,7 +3205,7 @@
               "$ref": "#/definitions/NumericValueDefWithConditionAlias"
             }
           ],
-          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
+          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `opacity` property."
         },
         "order": {
           "anyOf": [
@@ -3292,7 +3292,7 @@
               "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
             }
           ],
-          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
+          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
         },
         "strokeDash": {
           "anyOf": [
@@ -3320,7 +3320,7 @@
               "$ref": "#/definitions/NumericValueDefWithConditionAlias"
             }
           ],
-          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
+          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeOpacity` property."
         },
         "strokeWidth": {
           "anyOf": [
@@ -3334,7 +3334,7 @@
               "$ref": "#/definitions/NumericValueDefWithConditionAlias"
             }
           ],
-          "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
+          "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeWidth` property."
         },
         "text": {
           "anyOf": [
@@ -6738,7 +6738,7 @@
               "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
             }
           ],
-          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
+          "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
         },
         "column": {
           "$ref": "#/definitions/RowColumnEncodingFieldDef",
@@ -6774,7 +6774,7 @@
               "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
             }
           ],
-          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
+          "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
         },
         "fillOpacity": {
           "anyOf": [
@@ -6788,7 +6788,7 @@
               "$ref": "#/definitions/NumericValueDefWithConditionAlias"
             }
           ],
-          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property."
+          "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `fillOpacity` property."
         },
         "href": {
           "anyOf": [
@@ -6873,7 +6873,7 @@
               "$ref": "#/definitions/NumericValueDefWithConditionAlias"
             }
           ],
-          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property."
+          "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `opacity` property."
         },
         "order": {
           "anyOf": [
@@ -6964,7 +6964,7 @@
               "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
             }
           ],
-          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
+          "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
         },
         "strokeDash": {
           "anyOf": [
@@ -6992,7 +6992,7 @@
               "$ref": "#/definitions/NumericValueDefWithConditionAlias"
             }
           ],
-          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property."
+          "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeOpacity` property."
         },
         "strokeWidth": {
           "anyOf": [
@@ -7006,7 +7006,7 @@
               "$ref": "#/definitions/NumericValueDefWithConditionAlias"
             }
           ],
-          "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property."
+          "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeWidth` property."
         },
         "text": {
           "anyOf": [
@@ -11491,7 +11491,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Fill Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -11642,7 +11642,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default stroke color. This property has higher precedence than `config.color`. Set to `null` to remove stroke.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -12231,7 +12231,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Fill Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -12365,7 +12365,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default stroke color. This property has higher precedence than `config.color`. Set to `null` to remove stroke.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -12630,7 +12630,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Fill Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -12796,7 +12796,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default stroke color. This property has higher precedence than `config.color`. Set to `null` to remove stroke.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -13605,7 +13605,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Fill Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -13747,7 +13747,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default stroke color. This property has higher precedence than `config.color`. Set to `null` to remove stroke.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -14936,7 +14936,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Fill Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -15070,7 +15070,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default stroke color. This property has higher precedence than `config.color`. Set to `null` to remove stroke.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
@@ -17138,7 +17138,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Fill Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.\n\n__Default value:__ (None)"
         },
         "fillOpacity": {
           "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
@@ -17272,7 +17272,7 @@
               "type": "null"
             }
           ],
-          "description": "Default Stroke Color. This property has higher precedence than `config.color`.\n\n__Default value:__ (None)"
+          "description": "Default stroke color. This property has higher precedence than `config.color`. Set to `null` to remove stroke.\n\n__Default value:__ (None)"
         },
         "strokeCap": {
           "$ref": "#/definitions/StrokeCap",
