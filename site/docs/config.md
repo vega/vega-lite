@@ -76,7 +76,7 @@ See more details in the [axis documentation](axis.html#config).
 
 {% include table.html props="legend" source="Config" %}
 
-{:#mark-config}
+{:#guide-config}
 
 ### Built-in Guide Styles
 
@@ -87,6 +87,8 @@ In addition to axis, header, and legend styles, Vega-Lite also includes the foll
 - `"group-title"`: styles for chart titles
 
 See [the documentation about the style configuration](mark.html#style-config) for more information.
+
+{:#mark-config}
 
 ## Mark Configurations
 

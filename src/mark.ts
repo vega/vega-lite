@@ -200,7 +200,7 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
   y2?: number | 'height' | SignalRef; // Vega doesn't have 'height'
 
   /**
-   * Default Fill Color. This property has higher precedence than `config.color`.
+   * Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.
    *
    * __Default value:__ (None)
    *
@@ -208,7 +208,7 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
   fill?: Color | Gradient | null | SignalRef; // docs: Vega doesn't have config.color
 
   /**
-   * Default Stroke Color. This property has higher precedence than `config.color`.
+   * Default stroke color. This property has higher precedence than `config.color`. Set to `null` to remove stroke.
    *
    * __Default value:__ (None)
    *

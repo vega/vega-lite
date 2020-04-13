@@ -150,7 +150,7 @@ export interface Encoding<F extends Field> {
    * By default, `color` represents fill color for `"area"`, `"bar"`, `"tick"`,
    * `"text"`, `"trail"`, `"circle"`, and `"square"` / stroke color for `"line"` and `"point"`.
    *
-   * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
+   * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.
    *
    * _Note:_
    * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
@@ -163,7 +163,7 @@ export interface Encoding<F extends Field> {
 
   /**
    * Fill color of the marks.
-   * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
+   * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.
    *
    * _Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    */
@@ -174,7 +174,7 @@ export interface Encoding<F extends Field> {
 
   /**
    * Stroke color of the marks.
-   * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `color` property.
+   * __Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.
    *
    * _Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    */
@@ -187,14 +187,14 @@ export interface Encoding<F extends Field> {
   /**
    * Opacity of the marks.
    *
-   * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `opacity` property.
+   * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `opacity` property.
    */
   opacity?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalDefWithCondition<F>;
 
   /**
    * Fill opacity of the marks.
    *
-   * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `fillOpacity` property.
+   * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `fillOpacity` property.
    */
   fillOpacity?:
     | NumericFieldDefWithCondition<F>
@@ -204,7 +204,7 @@ export interface Encoding<F extends Field> {
   /**
    * Stroke opacity of the marks.
    *
-   * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeOpacity` property.
+   * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeOpacity` property.
    */
   strokeOpacity?:
     | NumericFieldDefWithCondition<F>
@@ -214,7 +214,7 @@ export interface Encoding<F extends Field> {
   /**
    * Stroke width of the marks.
    *
-   * __Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark)'s `strokeWidth` property.
+   * __Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeWidth` property.
    */
   strokeWidth?:
     | NumericFieldDefWithCondition<F>
