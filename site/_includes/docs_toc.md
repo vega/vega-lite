@@ -351,7 +351,7 @@
     - [Top-level Configuration]({{site.baseurl}}/docs/config.html#top-level-config)
     - [Format Configuration]({{site.baseurl}}/docs/config.html#format)
     - [Guide Configurations]({{site.baseurl}}/docs/config.html#axis-config)
-    - [Mark Configurations]({{site.baseurl}}/docs/config.html#mark-configurations)
+    - [Mark Configurations]({{site.baseurl}}/docs/config.html#mark-config)
     - [Style Configuration]({{site.baseurl}}/docs/config.html#style-configuration)
     - [Scale and Scale Range Configuration]({{site.baseurl}}/docs/config.html#scale-config)
     - [Projection Configuration]({{site.baseurl}}/docs/config.html#projection-config)
