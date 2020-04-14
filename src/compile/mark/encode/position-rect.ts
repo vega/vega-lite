@@ -213,18 +213,32 @@ function getBinSpacing(
   spacing: number,
   reverse: boolean | SignalRef,
   translate: number,
-  offset: number
+  offset: number | SignalRef
 ) {
   if (isPolarPositionChannel(channel)) {
     return 0;
   }
 
-  offset = (offset || 0) + (channel === 'x' || channel === 'y2' ? -spacing / 2 : spacing / 2);
+  const spacingOffset = channel === 'x' || channel === 'y2' ? -spacing / 2 : spacing / 2;
 
   if (isSignalRef(reverse)) {
-    return {signal: `${reverse.signal} ? ${translate - offset} : ${translate + offset}`};
+    const offsetExpr = isSignalRef(offset) ? offset.signal : offset ? `${offset}` : '';
+    return {
+      signal: `${reverse.signal} ? ${translate - spacingOffset}${offsetExpr ? '-' + offsetExpr : ''} : ${
+        translate + spacingOffset
+      }${offsetExpr ? '+' + offsetExpr : ''}`
+    };
   } else {
-    return reverse ? translate - offset : translate + offset;
+    if (isSignalRef(offset)) {
+      const translateAndSpacingOffset = translate + (reverse ? -spacingOffset : spacingOffset);
+      return {
+        signal: `${translateAndSpacingOffset || ''}${reverse ? ' - ' : translateAndSpacingOffset ? ' + ' : ''}${
+          offset.signal
+        }`
+      };
+    }
+    offset = offset || 0;
+    return translate + (reverse ? -offset - spacingOffset : +offset + spacingOffset);
   }
 }
 
