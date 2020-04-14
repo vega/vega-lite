@@ -60,6 +60,18 @@ describe('compile/mark/encode/tooltip', () => {
       expect(props.tooltip).toEqual({signal: 'datum'});
     });
 
+    it('generates tooltip object signal for all data if specified', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {type: 'line', tooltip: {content: 'data'}},
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          y: {field: 'Acceleration', type: 'quantitative'}
+        }
+      });
+      const props = tooltip(model, {reactiveGeom: true});
+      expect(props.tooltip).toEqual({signal: 'datum.datum'});
+    });
+
     it('priorizes tooltip field def', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point', tooltip: {content: 'data'}},
