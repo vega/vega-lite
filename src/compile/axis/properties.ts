@@ -190,6 +190,12 @@ export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient, chan
 
 function _defaultLabelAlign(angle: number, axisOrient: AxisOrient, startAngle: 0 | 90, mainOrient: 'bottom' | 'left') {
   // TODO: generate signal based on a similar formula if orient is a signal
+
+  if (angle % 360 === 0 && mainOrient === 'bottom') {
+    // use default label align so label flush still works
+    return null;
+  }
+
   if ((angle + startAngle) % 180 === 0) {
     return 'center';
   } else if ((startAngle < angle && angle < 180 + startAngle) === (axisOrient === mainOrient)) {

@@ -93,7 +93,6 @@
       "grid": false,
       "title": "a",
       "labelAngle": 0,
-      "labelAlign": "center",
       "labelBaseline": "top",
       "labelOverlap": true,
       "zindex": 0

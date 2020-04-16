@@ -235,7 +235,6 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "labelAlign": "center",
       "labelBaseline": "top",
       "zindex": 0
     }

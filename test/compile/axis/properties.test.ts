@@ -233,7 +233,7 @@ describe('compile/axis', () => {
 
   describe('defaultLabelAlign', () => {
     it('correctly aligns the x-labels for all degrees', () => {
-      expect(defaultLabelAlign(0, 'top')).toBe('center');
+      expect(defaultLabelAlign(0, 'top')).toBe(null);
       expect(defaultLabelAlign(15, 'top')).toBe('right');
       expect(defaultLabelAlign(30, 'top')).toBe('right');
       expect(defaultLabelAlign(45, 'top')).toBe('right');
@@ -258,6 +258,7 @@ describe('compile/axis', () => {
       expect(defaultLabelAlign(330, 'bottom')).toBe('right');
       expect(defaultLabelAlign(345, 'bottom')).toBe('right');
     });
+
     it('correctly aligns the y-labels for all degrees', () => {
       expect(defaultLabelAlign(0, 'left')).toBe('right');
       expect(defaultLabelAlign(15, 'left')).toBe('right');

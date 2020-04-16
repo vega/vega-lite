@@ -39,7 +39,7 @@ describe('compile/header/index', () => {
     });
 
     it('label aligns correctly according to angle for column', () => {
-      expect(defaultHeaderGuideAlign('column', 0)).toEqual({align: 'center'});
+      expect(defaultHeaderGuideAlign('column', 0)).toEqual({});
       expect(defaultHeaderGuideAlign('column', 10)).toEqual({align: 'right'});
       expect(defaultHeaderGuideAlign('column', 350)).toEqual({align: 'left'});
     });

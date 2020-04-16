@@ -75,7 +75,6 @@
       "grid": false,
       "title": "Year",
       "labelAngle": 0,
-      "labelAlign": "center",
       "labelBaseline": "top",
       "labelOverlap": true,
       "zindex": 0

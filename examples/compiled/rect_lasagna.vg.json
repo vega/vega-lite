@@ -112,7 +112,6 @@
           }
         }
       },
-      "labelAlign": "center",
       "labelBaseline": "top",
       "zindex": 1
     },

@@ -158,6 +158,10 @@ export function assembleAxis(
       setAxisEncode(axis, 'labels', 'text', {signal: expr});
     }
 
+    if (axis.labelAlign === null) {
+      delete axis.labelAlign;
+    }
+
     // Remove unnecessary encode block
     if (axis.encode) {
       for (const part of AXIS_PARTS) {
