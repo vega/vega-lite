@@ -244,7 +244,9 @@ Here are the list of mark property channels:
 
 {% include table.html props="angle,color,fill,stroke,opacity,fillOpacity,strokeOpacity,shape,size,strokeDash,strokeWidth" source="Encoding" %}
 
-{:#mark-prop-field-def} {:#mark-prop-datum-def}
+<a id="mark-prop-datum-def"></a>
+
+{:#mark-prop-field-def}
 
 ### Mark Property Field Definition and Datum Definition
 
