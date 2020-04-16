@@ -325,7 +325,7 @@ export interface Encoding<F extends Field> {
   /**
    * A string that labels the axis group for accessibility.
    */
-  ariaLabel?: StringFieldDefWithCondition<F> | StringValueOrSignalWithCondition<F>;
+  ariaLabel?: StringFieldDefWithCondition<F> | StringValueOrSignalDefWithCondition<F>;
 
   /**
    * Order of the marks.
