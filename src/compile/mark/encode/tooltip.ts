@@ -15,7 +15,7 @@ import {
 import {Config} from '../../../config';
 import {Encoding, forEach} from '../../../encoding';
 import {StackProperties} from '../../../stack';
-import {Dict, entries} from '../../../util';
+import {entries} from '../../../util';
 import {getMarkPropOrConfig} from '../../common';
 import {binFormatExpression, formatSignalRef} from '../../format';
 import {UnitModel} from '../../unit';
@@ -67,7 +67,7 @@ export function tooltipData(
   encoding: Encoding<string>,
   stack: StackProperties,
   config: Config,
-  reactiveGeom?: boolean
+  {reactiveGeom}: {reactiveGeom?: boolean} = {}
 ) {
   const toSkip = {};
   const expr = reactiveGeom ? 'datum.datum' : 'datum';
@@ -131,10 +131,8 @@ export function tooltipRefForEncoding(
   config: Config,
   {reactiveGeom}: {reactiveGeom?: boolean} = {}
 ) {
-  return tooltipRefData(tooltipData(encoding, stack, config, reactiveGeom));
-}
+  const data = tooltipData(encoding, stack, config, {reactiveGeom});
 
-export function tooltipRefData(data: Dict<string>) {
   const keyValues = entries(data).map(({key, value}) => `${key}: ${value}`);
   return keyValues.length > 0 ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
