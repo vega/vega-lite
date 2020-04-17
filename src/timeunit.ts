@@ -41,10 +41,6 @@ export const UTC_SINGLE_TIMEUNIT_INDEX = {
 
 export type UtcSingleTimeUnit = keyof typeof UTC_SINGLE_TIMEUNIT_INDEX;
 
-export function isUtcSingleTimeUnit(timeUnit: string): timeUnit is UtcSingleTimeUnit {
-  return !!UTC_SINGLE_TIMEUNIT_INDEX[timeUnit];
-}
-
 export type SingleTimeUnit = LocalSingleTimeUnit | UtcSingleTimeUnit;
 
 export const LOCAL_MULTI_TIMEUNIT_INDEX = {
