@@ -1,16 +1,15 @@
 import {vgField} from '../../src/channeldef';
 import {formatSignalRef, numberFormat, timeFormatExpression} from '../../src/compile/format';
 import {defaultConfig} from '../../src/config';
-import {TimeUnit} from '../../src/timeunit';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
 
 describe('Format', () => {
   describe('timeFormatExpression()', () => {
     it('should get the right time expression for month', () => {
-      const fieldDef = {timeUnit: TimeUnit.MONTH, field: 'a', type: TEMPORAL};
+      const fieldDef = {timeUnit: 'month', field: 'a', type: TEMPORAL} as const;
       const expression = timeFormatExpression(
         vgField(fieldDef, {expr: 'datum'}),
-        TimeUnit.MONTH,
+        'month',
         undefined,
         defaultConfig.timeFormat,
         false
@@ -21,10 +20,10 @@ describe('Format', () => {
     });
 
     it('should get the right time expression for yearmonth with custom format', () => {
-      const fieldDef = {timeUnit: TimeUnit.YEARMONTH, field: 'a', type: TEMPORAL};
+      const fieldDef = {timeUnit: 'yearmonth', field: 'a', type: TEMPORAL} as const;
       const expression = timeFormatExpression(
         vgField(fieldDef, {expr: 'datum'}),
-        TimeUnit.MONTH,
+        'month',
         '%Y',
         defaultConfig.timeFormat,
         false
@@ -33,10 +32,10 @@ describe('Format', () => {
     });
 
     it('should get the right time expression for quarter', () => {
-      const fieldDef = {timeUnit: TimeUnit.QUARTER, field: 'a', type: TEMPORAL};
+      const fieldDef = {timeUnit: 'quarter', field: 'a', type: TEMPORAL} as const;
       const expression = timeFormatExpression(
         vgField(fieldDef, {expr: 'datum'}),
-        TimeUnit.QUARTER,
+        'quarter',
         undefined,
         defaultConfig.timeFormat,
         false
@@ -49,7 +48,7 @@ describe('Format', () => {
     it('should get the right time expression for yearquarter', () => {
       const expression = timeFormatExpression(
         'datum["data"]',
-        TimeUnit.YEARQUARTER,
+        'yearquarter',
         undefined,
         defaultConfig.timeFormat,
         false
@@ -60,10 +59,10 @@ describe('Format', () => {
     });
 
     it('should get the right time expression for yearmonth with custom format and utc scale type', () => {
-      const fieldDef = {timeUnit: TimeUnit.YEARMONTH, field: 'a', type: TEMPORAL};
+      const fieldDef = {timeUnit: 'yearmonth', field: 'a', type: TEMPORAL} as const;
       const expression = timeFormatExpression(
         vgField(fieldDef, {expr: 'datum'}),
-        TimeUnit.MONTH,
+        'month',
         '%Y',
         defaultConfig.timeFormat,
         true

@@ -9,7 +9,6 @@ import {
   isFieldValidPredicate,
   Predicate
 } from '../src/predicate';
-import {TimeUnit} from '../src/timeunit';
 import {without} from '../src/util';
 
 describe('filter', () => {
@@ -137,7 +136,7 @@ describe('filter', () => {
 
     it('should return a correct expression for an EqualFilter with time unit and datetime object', () => {
       const expr = expression(null, {
-        timeUnit: TimeUnit.MONTH,
+        timeUnit: 'month',
         field: 'date',
         equal: {
           month: 'January'
@@ -150,7 +149,7 @@ describe('filter', () => {
 
     it('should return a correct expression for an EqualFilter with datetime object', () => {
       const expr = expression(null, {
-        timeUnit: TimeUnit.MONTH,
+        timeUnit: 'month',
         field: 'date',
         equal: 'January'
       });
@@ -171,7 +170,7 @@ describe('filter', () => {
 
     it('should return a correct expression for an greaterThanFilter with time unit and datetime object', () => {
       const expr = expression(null, {
-        timeUnit: TimeUnit.MONTH,
+        timeUnit: 'month',
         field: 'date',
         gt: {
           month: 'January'
@@ -184,7 +183,7 @@ describe('filter', () => {
 
     it('should return a correct expression for an greaterThanEqualsFilter with datetime object', () => {
       const expr = expression(null, {
-        timeUnit: TimeUnit.MONTH,
+        timeUnit: 'month',
         field: 'date',
         gte: 'January'
       });
