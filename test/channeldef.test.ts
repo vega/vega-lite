@@ -248,22 +248,22 @@ describe('fieldDef', () => {
     });
 
     it('should return correct title for timeUnit', () => {
-      const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
+      const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: 'month'} as const;
       expect(defaultTitle(fieldDef, {})).toBe('f (month)');
     });
 
     it('should return correct title for timeUnit', () => {
-      const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARMONTHDATE};
+      const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: 'yearmonthdate'} as const;
       expect(defaultTitle(fieldDef, {})).toBe('f (year-month-date)');
     });
 
     it('should return correct title for timeUnit', () => {
-      const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.DAY};
+      const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: 'day'} as const;
       expect(defaultTitle(fieldDef, {})).toBe('f (day)');
     });
 
     it('should return correct title for timeUnit', () => {
-      const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: TimeUnit.YEARQUARTER};
+      const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: 'yearquarter'} as const;
       expect(defaultTitle(fieldDef, {})).toBe('f (year-quarter)');
     });
 

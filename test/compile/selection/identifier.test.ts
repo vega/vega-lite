@@ -1,4 +1,4 @@
-import {Transforms as VgTransform} from 'vega-typings';
+import {Transforms as VgTransform} from 'vega';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {IdentifierNode} from '../../../src/compile/data/identifier';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';

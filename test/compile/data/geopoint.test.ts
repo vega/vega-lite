@@ -1,4 +1,4 @@
-import {FieldRef, GeoPointTransform as VgGeoPointTransform, Vector2} from 'vega-typings';
+import {FieldRef, GeoPointTransform as VgGeoPointTransform, Vector2} from 'vega';
 import {GeoPointNode} from '../../../src/compile/data/geopoint';
 import {contains, every} from '../../../src/util';
 import {parseUnitModel} from '../../util';
