@@ -25,7 +25,7 @@ export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (
   for (const property of propsList) {
     const value = getMarkConfig(property, model.markDef, model.config);
     if (value !== undefined) {
-      e[property] = {value: value};
+      e[property] = signalOrValueRef(value);
     }
   }
   return e;
