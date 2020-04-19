@@ -243,6 +243,29 @@ describe('Mark', () => {
       });
     });
 
+    it('have no sort if the dimension field has sort:null', () => {
+      const model = parseUnitModelWithScale({
+        data: {url: 'data/movies.json'},
+        mark: 'line',
+        encoding: {
+          x: {
+            field: 'a',
+            type: 'nominal',
+            sort: null
+          },
+          color: {
+            field: 'Source',
+            type: 'nominal'
+          },
+          y: {
+            aggregate: 'count',
+            type: 'quantitative'
+          }
+        }
+      });
+      expect(getSort(model)).toBeUndefined();
+    });
+
     it("should order by x's custom sort order by default if x is the dimension", () => {
       const model = parseUnitModelWithScale({
         data: {url: 'data/movies.json'},

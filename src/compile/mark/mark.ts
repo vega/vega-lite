@@ -289,6 +289,8 @@ export function getSort(model: UnitModel): VgCompare {
           field: vgField(fieldDefToSort, {expr: 'datum'}),
           order: s.order
         };
+      } else if (s === null) {
+        return undefined;
       } else {
         return {
           field: vgField(dimensionChannelDef, {
