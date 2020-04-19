@@ -8,7 +8,6 @@ import {isMarkDef, MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
-import {Flag, keys} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -25,17 +24,9 @@ import {
 export const BOXPLOT: 'boxplot' = 'boxplot';
 export type BoxPlot = typeof BOXPLOT;
 
-export type BoxPlotPart = 'box' | 'median' | 'outliers' | 'rule' | 'ticks';
+export const BOXPLOT_PARTS = ['box', 'median', 'outliers', 'rule', 'ticks'] as const;
 
-const BOXPLOT_PART_INDEX: Flag<BoxPlotPart> = {
-  box: 1,
-  median: 1,
-  outliers: 1,
-  rule: 1,
-  ticks: 1
-};
-
-export const BOXPLOT_PARTS = keys(BOXPLOT_PART_INDEX);
+type BoxPlotPart = typeof BOXPLOT_PARTS[number];
 
 export type BoxPlotPartsMixins = PartsMixins<BoxPlotPart>;
 

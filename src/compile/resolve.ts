@@ -1,14 +1,13 @@
-import {POSITION_SCALE_CHANNELS, ScaleChannel} from '../channel';
+import {isXorY, ScaleChannel} from '../channel';
 import * as log from '../log';
 import {Resolve, ResolveMode} from '../resolve';
-import {contains} from '../util';
 import {isConcatModel, isFacetModel, isLayerModel, Model} from './model';
 
 export function defaultScaleResolve(channel: ScaleChannel, model: Model): ResolveMode {
   if (isLayerModel(model) || isFacetModel(model)) {
     return 'shared';
   } else if (isConcatModel(model)) {
-    return contains(POSITION_SCALE_CHANNELS, channel) ? 'independent' : 'shared';
+    return isXorY(channel) ? 'independent' : 'shared';
   }
   /* istanbul ignore next: should never reach here. */
   throw new Error('invalid model type for resolve');
@@ -16,7 +15,7 @@ export function defaultScaleResolve(channel: ScaleChannel, model: Model): Resolv
 
 export function parseGuideResolve(resolve: Resolve, channel: ScaleChannel): ResolveMode {
   const channelScaleResolve = resolve.scale[channel];
-  const guide = contains(POSITION_SCALE_CHANNELS, channel) ? 'axis' : 'legend';
+  const guide = isXorY(channel) ? 'axis' : 'legend';
 
   if (channelScaleResolve === 'independent') {
     if (resolve[guide][channel] === 'shared') {

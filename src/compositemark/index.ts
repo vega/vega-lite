@@ -40,11 +40,11 @@ export type CompositeMarkNormalizerRun = (
 const compositeMarkRegistry: {
   [mark: string]: {
     normalizer: CompositeMarkNormalizer<any>;
-    parts: string[];
+    parts: readonly string[];
   };
 } = {};
 
-export function add(mark: string, run: CompositeMarkNormalizerRun, parts: string[]) {
+export function add(mark: string, run: CompositeMarkNormalizerRun, parts: readonly string[]) {
   const normalizer = new CompositeMarkNormalizer(mark, run);
   compositeMarkRegistry[mark] = {normalizer, parts};
 }

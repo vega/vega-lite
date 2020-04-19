@@ -13,19 +13,15 @@ import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
 import {ExcludeMappedValueRefButKeepSignal, VgEncodeChannel} from './vega.schema';
 
-export type LegendScaleChannels = 'size' | 'shape' | 'fill' | 'stroke' | 'strokeDash' | 'strokeWidth' | 'opacity';
-
-const LEGEND_SCALE_CHANNELS_INDEX: Flag<LegendScaleChannels> = {
-  size: 1,
-  shape: 1,
-  fill: 1,
-  stroke: 1,
-  strokeDash: 1,
-  strokeWidth: 1,
-  opacity: 1
-};
-
-export const LEGEND_SCALE_CHANNELS = keys(LEGEND_SCALE_CHANNELS_INDEX);
+export const LEGEND_SCALE_CHANNELS = [
+  'size',
+  'shape',
+  'fill',
+  'stroke',
+  'strokeDash',
+  'strokeWidth',
+  'opacity'
+] as const;
 
 export type SignalLegendProp =
   | 'fillColor'

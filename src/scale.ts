@@ -13,8 +13,7 @@ import {Channel, CHANNELS, isColorChannel} from './channel';
 import {DateTime} from './datetime';
 import * as log from './log';
 import {SelectionExtent} from './selection';
-import * as TYPE from './type';
-import {Type, TYPE_INDEX} from './type';
+import {Type, TYPES, ORDINAL, NOMINAL, TEMPORAL, QUANTITATIVE} from './type';
 import {contains, Flag, keys} from './util';
 
 export const ScaleType = {
@@ -757,11 +756,11 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
 }
 
 export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType: Type): boolean {
-  if (contains([TYPE.ORDINAL, TYPE.NOMINAL], fieldDefType)) {
+  if (contains([ORDINAL, NOMINAL], fieldDefType)) {
     return specifiedType === undefined || hasDiscreteDomain(specifiedType);
-  } else if (fieldDefType === TYPE.TEMPORAL) {
+  } else if (fieldDefType === TEMPORAL) {
     return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
-  } else if (fieldDefType === TYPE.QUANTITATIVE) {
+  } else if (fieldDefType === QUANTITATIVE) {
     return contains(
       [
         ScaleType.LOG,
@@ -827,7 +826,7 @@ export interface ScaleTypeIndex {
 function generateScaleTypeIndex() {
   const index: ScaleTypeIndex = {};
   for (const channel of CHANNELS) {
-    for (const fieldDefType of keys(TYPE_INDEX)) {
+    for (const fieldDefType of TYPES) {
       for (const scaleType of SCALE_TYPES) {
         const key = generateScaleTypeIndexKey(channel, fieldDefType);
         if (channelSupportScaleType(channel, scaleType) && scaleTypeSupportDataType(scaleType, fieldDefType)) {
