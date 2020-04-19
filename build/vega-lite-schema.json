@@ -184,23 +184,23 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles or arcs' corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
-          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomRight": {
-          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopLeft": {
-          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopRight": {
-          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -1818,15 +1818,15 @@
           "type": "number"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles or arcs' corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
-          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomRight": {
-          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusEnd": {
@@ -1834,11 +1834,11 @@
           "type": "number"
         },
         "cornerRadiusTopLeft": {
-          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopRight": {
-          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -11436,23 +11436,23 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles or arcs' corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
-          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomRight": {
-          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopLeft": {
-          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopRight": {
-          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -12176,23 +12176,23 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles or arcs' corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
-          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomRight": {
-          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopLeft": {
-          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopRight": {
-          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -12570,15 +12570,15 @@
           "type": "number"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles or arcs' corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
-          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomRight": {
-          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusEnd": {
@@ -12586,11 +12586,11 @@
           "type": "number"
         },
         "cornerRadiusTopLeft": {
-          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopRight": {
-          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -13550,23 +13550,23 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles or arcs' corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
-          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomRight": {
-          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopLeft": {
-          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopRight": {
-          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -14876,23 +14876,23 @@
           "type": "number"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles or arcs' corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
-          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomRight": {
-          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopLeft": {
-          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopRight": {
-          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -17083,23 +17083,23 @@
           "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__\n- This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).\n- The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles or arcs' corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomLeft": {
-          "description": "The radius in pixels of rounded rectangle bottom left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusBottomRight": {
-          "description": "The radius in pixels of rounded rectangle bottom right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' bottom right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopLeft": {
-          "description": "The radius in pixels of rounded rectangle top right corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top right corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cornerRadiusTopRight": {
-          "description": "The radius in pixels of rounded rectangle top left corner.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles' top left corner.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -19757,7 +19757,7 @@
       "additionalProperties": false,
       "properties": {
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles or arcs' corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {
@@ -19865,7 +19865,7 @@
           "type": "number"
         },
         "cornerRadius": {
-          "description": "The radius in pixels of rounded rectangle or arc corners.\n\n__Default value:__ `0`",
+          "description": "The radius in pixels of rounded rectangles or arcs' corners.\n\n__Default value:__ `0`",
           "type": "number"
         },
         "cursor": {

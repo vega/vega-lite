@@ -4,7 +4,7 @@ import {isPathMark, MarkDef} from '../../../mark';
 import {hasContinuousDomain} from '../../../scale';
 import {Dict, keys} from '../../../util';
 import {VgEncodeEntry, VgValueRef, VG_MARK_CONFIGS} from '../../../vega.schema';
-import {getMarkPropOrConfig} from '../../common';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
 import {color} from './color';
 import {nonPosition} from './nonposition';
@@ -66,7 +66,7 @@ function wrapAllFieldsInvalid(model: UnitModel, channel: Channel, valueRef: VgVa
 function markDefProperties(mark: MarkDef, ignore: Ignore) {
   return VG_MARK_CONFIGS.reduce((m, prop) => {
     if (mark[prop] !== undefined && ignore[prop] !== 'ignore') {
-      m[prop] = {value: mark[prop]};
+      m[prop] = signalOrValueRef(mark[prop]);
     }
     return m;
   }, {});

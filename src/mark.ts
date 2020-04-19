@@ -436,7 +436,7 @@ export interface BarCornerRadiusMixins {
    * - For vertical bars, top-left and top-right corner radius.
    * - For horizontal bars, top-right and bottom-right corner radius.
    */
-  cornerRadiusEnd?: number;
+  cornerRadiusEnd?: number | SignalRef;
 }
 
 export type BarConfig = RectConfig & BarCornerRadiusMixins;

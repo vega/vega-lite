@@ -6,7 +6,7 @@ import {AREA, BAR, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortByEncoding, isSortField} from '../../sort';
 import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../util';
 import {VgCompare, VgEncodeEntry, VG_CORNERRADIUS_CHANNELS} from '../../vega.schema';
-import {getMarkConfig, getMarkPropOrConfig, getStyles, sortParams} from '../common';
+import {getMarkConfig, getMarkPropOrConfig, getStyles, signalOrValueRef, sortParams} from '../common';
 import {UnitModel} from '../unit';
 import {arc} from './arc';
 import {area} from './area';
@@ -166,7 +166,7 @@ function getStackGroups(model: UnitModel) {
         groupUpdate[key] = mark.encode.update[key];
         delete mark.encode.update[key];
       } else if (configValue) {
-        groupUpdate[key] = {value: configValue};
+        groupUpdate[key] = signalOrValueRef(configValue);
       }
       // Overwrite any cornerRadius on mark set by config --- they are already moved to the group
       if (configValue) {
@@ -200,7 +200,7 @@ function getStackGroups(model: UnitModel) {
       } else {
         const configValue = getMarkConfig(prop, model.markDef, model.config);
         if (configValue !== undefined) {
-          return {...encode, [prop]: {value: configValue}};
+          return {...encode, [prop]: signalOrValueRef(configValue)};
         } else {
           return encode;
         }
