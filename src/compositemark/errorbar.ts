@@ -20,7 +20,7 @@ import {Step} from '../spec/base';
 import {NormalizedUnitSpec} from '../spec/unit';
 import {TitleParams} from '../title';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
-import {Flag, keys, replaceAll, titlecase} from '../util';
+import {replaceAll, titlecase} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -39,14 +39,11 @@ export type ErrorBar = typeof ERRORBAR;
 export type ErrorBarExtent = 'ci' | 'iqr' | 'stderr' | 'stdev';
 export type ErrorBarCenter = 'mean' | 'median';
 
-export type ErrorBarPart = 'ticks' | 'rule';
-
 export type ErrorInputType = 'raw' | 'aggregated-upper-lower' | 'aggregated-error';
 
-const ERRORBAR_PART_INDEX: Flag<ErrorBarPart> = {
-  ticks: 1,
-  rule: 1
-};
+export const ERRORBAR_PARTS = ['ticks', 'rule'] as const;
+
+export type ErrorBarPart = typeof ERRORBAR_PARTS[number];
 
 export interface ErrorExtraEncoding<F extends Field> {
   /**
@@ -74,8 +71,6 @@ export interface ErrorExtraEncoding<F extends Field> {
 
 export type ErrorEncoding<F extends Field> = Pick<Encoding<F>, PositionChannel | 'color' | 'detail' | 'opacity'> &
   ErrorExtraEncoding<F>;
-
-export const ERRORBAR_PARTS = keys(ERRORBAR_PART_INDEX);
 
 export type ErrorBarPartsMixins = PartsMixins<ErrorBarPart>;
 

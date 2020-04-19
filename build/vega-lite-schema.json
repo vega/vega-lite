@@ -12140,14 +12140,14 @@
         "arc",
         "area",
         "bar",
-        "line",
         "image",
-        "trail",
+        "line",
         "point",
-        "text",
-        "tick",
         "rect",
         "rule",
+        "text",
+        "tick",
+        "trail",
         "circle",
         "square",
         "geoshape"
@@ -19005,17 +19005,15 @@
       ]
     },
     "Type": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/StandardType"
-        },
-        {
-          "enum": [
-            "geojson"
-          ],
-          "type": "string"
-        }
-      ]
+      "description": "Data type based on level of measurement",
+      "enum": [
+        "quantitative",
+        "ordinal",
+        "temporal",
+        "nominal",
+        "geojson"
+      ],
+      "type": "string"
     },
     "TypeForShape": {
       "enum": [

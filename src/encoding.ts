@@ -3,14 +3,43 @@ import {array, isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
 import {
+  ANGLE,
   Channel,
   CHANNELS,
+  COLOR,
+  DETAIL,
+  FILL,
+  FILLOPACITY,
+  HREF,
   isChannel,
   isNonPositionScaleChannel,
   isSecondaryRangeChannel,
   isXorY,
+  KEY,
+  LATITUDE,
+  LATITUDE2,
+  LONGITUDE,
+  LONGITUDE2,
+  OPACITY,
+  ORDER,
+  RADIUS,
+  RADIUS2,
+  SHAPE,
+  SIZE,
+  STROKE,
+  STROKEDASH,
+  STROKEOPACITY,
+  STROKEWIDTH,
   supportMark,
-  THETA
+  TEXT,
+  THETA,
+  THETA2,
+  TOOLTIP,
+  URL,
+  X,
+  X2,
+  Y,
+  Y2
 } from './channel';
 import {
   binRequiresRange,
@@ -63,7 +92,7 @@ import * as log from './log';
 import {Mark, MarkDef} from './mark';
 import {EncodingFacetMapping} from './spec/facet';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
-import {TEMPORAL} from './type';
+import {QUANTITATIVE, TEMPORAL} from './type';
 import {keys, some} from './util';
 import {isSignalRef} from './vega.schema';
 
@@ -398,7 +427,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
             }
             newFieldDef.bin = 'binned';
             if (!isSecondaryRangeChannel(channel)) {
-              newFieldDef['type'] = 'quantitative';
+              newFieldDef['type'] = QUANTITATIVE;
             }
           } else if (timeUnit) {
             timeUnits.push({
@@ -410,7 +439,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
             // define the format type for later compilation
             const formatType = isTypedFieldDef(channelDef) && channelDef.type !== TEMPORAL && 'time';
             if (formatType) {
-              if (channel === 'text' || channel === 'tooltip') {
+              if (channel === TEXT || channel === TOOLTIP) {
                 newFieldDef['formatType'] = formatType;
               } else if (isNonPositionScaleChannel(channel)) {
                 newFieldDef['legend'] = {
@@ -452,7 +481,7 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
   if (!markSupported) {
     return false;
   } else if (markSupported === 'binned') {
-    const primaryFieldDef = encoding[channel === 'x2' ? 'x' : 'y'];
+    const primaryFieldDef = encoding[channel === X2 ? X : Y];
 
     // circle, point, square and tick only support x2/y2 when their corresponding x/y fieldDef
     // has "binned" data and thus need x2/y2 to specify the bin-end field.
@@ -488,7 +517,7 @@ export function initEncoding(encoding: Encoding<string>, markDef: MarkDef): Enco
     }
 
     // Drop line's size if the field is aggregated.
-    if (channel === 'size' && mark === 'line') {
+    if (channel === SIZE && mark === 'line') {
       const fieldDef = getFieldDef(encoding[channel]);
       if (fieldDef?.aggregate) {
         log.warn(log.message.LINE_WITH_VARYING_SIZE);
@@ -498,15 +527,15 @@ export function initEncoding(encoding: Encoding<string>, markDef: MarkDef): Enco
 
     // Drop color if either fill or stroke is specified
 
-    if (channel === 'color' && (markDef.filled ? 'fill' in encoding : 'stroke' in encoding)) {
+    if (channel === COLOR && (markDef.filled ? 'fill' in encoding : 'stroke' in encoding)) {
       log.warn(log.message.droppingColor('encoding', {fill: 'fill' in encoding, stroke: 'stroke' in encoding}));
       return normalizedEncoding;
     }
 
     if (
-      channel === 'detail' ||
-      (channel === 'order' && !isArray(channelDef) && !isValueDef(channelDef)) ||
-      (channel === 'tooltip' && isArray(channelDef))
+      channel === DETAIL ||
+      (channel === ORDER && !isArray(channelDef) && !isValueDef(channelDef)) ||
+      (channel === TOOLTIP && isArray(channelDef))
     ) {
       if (channelDef) {
         // Array of fieldDefs for detail channel (or production rule)
@@ -523,7 +552,7 @@ export function initEncoding(encoding: Encoding<string>, markDef: MarkDef): Enco
         );
       }
     } else {
-      if (channel === 'tooltip' && channelDef === null) {
+      if (channel === TOOLTIP && channelDef === null) {
         // Preserve null so we can use it to disable tooltip
         normalizedEncoding[channel] = null;
       } else if (
@@ -610,43 +639,43 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
   return keys(encoding).reduce((details, channel) => {
     switch (channel) {
       // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, cursor should not cause lines to group
-      case 'x':
-      case 'y':
-      case 'href':
-      case 'url':
-      case 'x2':
-      case 'y2':
-      case 'theta':
-      case 'theta2':
-      case 'radius':
-      case 'radius2':
+      case X:
+      case Y:
+      case HREF:
+      case URL:
+      case X2:
+      case Y2:
+      case THETA:
+      case THETA2:
+      case RADIUS:
+      case RADIUS2:
       // falls through
 
-      case 'latitude':
-      case 'longitude':
-      case 'latitude2':
-      case 'longitude2':
+      case LATITUDE:
+      case LONGITUDE:
+      case LATITUDE2:
+      case LONGITUDE2:
       // TODO: case 'cursor':
 
       // text, shape, shouldn't be a part of line/trail/area [falls through]
-      case 'text':
-      case 'shape':
-      case 'angle':
+      case TEXT:
+      case SHAPE:
+      case ANGLE:
       // falls through
 
       // tooltip fields should not be added to group by [falls through]
-      case 'tooltip':
+      case TOOLTIP:
         return details;
 
-      case 'order':
+      case ORDER:
         // order should not group line / trail
         if (mark === 'line' || mark === 'trail') {
           return details;
         }
       // but order should group area for stacking (falls through)
 
-      case 'detail':
-      case 'key': {
+      case DETAIL:
+      case KEY: {
         const channelDef = encoding[channel];
         if (isArray(channelDef) || isFieldDef(channelDef)) {
           for (const fieldDef of array(channelDef)) {
@@ -658,7 +687,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
         return details;
       }
 
-      case 'size':
+      case SIZE:
         if (mark === 'trail') {
           // For trail, size should not group trail lines.
           return details;
@@ -666,14 +695,14 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       // For line, size should group lines.
 
       // falls through
-      case 'color':
-      case 'fill':
-      case 'stroke':
-      case 'opacity':
-      case 'fillOpacity':
-      case 'strokeOpacity':
-      case 'strokeDash':
-      case 'strokeWidth': {
+      case COLOR:
+      case FILL:
+      case STROKE:
+      case OPACITY:
+      case FILLOPACITY:
+      case STROKEOPACITY:
+      case STROKEDASH:
+      case STROKEWIDTH: {
         // TODO strokeDashOffset:
         // falls through
 

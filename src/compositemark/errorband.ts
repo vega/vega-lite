@@ -5,7 +5,6 @@ import * as log from '../log';
 import {MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
-import {Flag, keys} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins} from './common';
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './errorbar';
@@ -17,14 +16,9 @@ export type ErrorBandUnitSpec<
 export const ERRORBAND: 'errorband' = 'errorband';
 export type ErrorBand = typeof ERRORBAND;
 
-export type ErrorBandPart = 'band' | 'borders';
+export const ERRORBAND_PARTS = ['band', 'borders'] as const;
 
-const ERRORBAND_PART_INDEX: Flag<ErrorBandPart> = {
-  band: 1,
-  borders: 1
-};
-
-export const ERRORBAND_PARTS = keys(ERRORBAND_PART_INDEX);
+type ErrorBandPart = typeof ERRORBAND_PARTS[number];
 
 export type ErrorBandPartsMixins = PartsMixins<ErrorBandPart>;
 

@@ -3,7 +3,46 @@ import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin';
-import {Channel, isScaleChannel, isSecondaryRangeChannel, POSITION_SCALE_CHANNELS, rangeType} from './channel';
+import {
+  ANGLE,
+  Channel,
+  COLOR,
+  COLUMN,
+  DETAIL,
+  FACET,
+  FILL,
+  FILLOPACITY,
+  HREF,
+  isScaleChannel,
+  isSecondaryRangeChannel,
+  isXorY,
+  KEY,
+  LATITUDE,
+  LATITUDE2,
+  LONGITUDE,
+  LONGITUDE2,
+  OPACITY,
+  ORDER,
+  RADIUS,
+  RADIUS2,
+  rangeType,
+  ROW,
+  SHAPE,
+  SIZE,
+  STROKE,
+  STROKEDASH,
+  STROKEOPACITY,
+  STROKEWIDTH,
+  TEXT,
+  THETA,
+  THETA2,
+  TOOLTIP,
+  URL,
+  X,
+  X2,
+  Y,
+  Y2
+} from './channel';
 import {getMarkConfig} from './compile/common';
 import {isCustomFormatType} from './compile/format';
 import {CompositeAggregate} from './compositemark';
@@ -999,7 +1038,7 @@ export function initFieldDef(fd: FieldDef<string, any>, channel: Channel) {
     fieldDef.bin = normalizeBin(bin, channel);
   }
 
-  if (isBinned(bin) && !contains(POSITION_SCALE_CHANNELS, channel)) {
+  if (isBinned(bin) && !isXorY(channel)) {
     log.warn(`Channel ${channel} should not be used with "binned" bin.`);
   }
 
@@ -1096,9 +1135,9 @@ export function channelCompatibility(
   }
 
   switch (channel) {
-    case 'row':
-    case 'column':
-    case 'facet':
+    case ROW:
+    case COLUMN:
+    case FACET:
       if (isContinuous(fieldDef)) {
         return {
           compatible: false,
@@ -1107,26 +1146,26 @@ export function channelCompatibility(
       }
       return COMPATIBLE;
 
-    case 'x':
-    case 'y':
-    case 'color':
-    case 'fill':
-    case 'stroke':
-    case 'text':
-    case 'detail':
-    case 'key':
-    case 'tooltip':
-    case 'href':
-    case 'url':
-    case 'angle':
-    case 'theta':
-    case 'radius':
+    case X:
+    case Y:
+    case COLOR:
+    case FILL:
+    case STROKE:
+    case TEXT:
+    case DETAIL:
+    case KEY:
+    case TOOLTIP:
+    case HREF:
+    case URL:
+    case ANGLE:
+    case THETA:
+    case RADIUS:
       return COMPATIBLE;
 
-    case 'longitude':
-    case 'longitude2':
-    case 'latitude':
-    case 'latitude2':
+    case LONGITUDE:
+    case LONGITUDE2:
+    case LATITUDE:
+    case LATITUDE2:
       if (type !== QUANTITATIVE) {
         return {
           compatible: false,
@@ -1135,15 +1174,15 @@ export function channelCompatibility(
       }
       return COMPATIBLE;
 
-    case 'opacity':
-    case 'fillOpacity':
-    case 'strokeOpacity':
-    case 'strokeWidth':
-    case 'size':
-    case 'theta2':
-    case 'radius2':
-    case 'x2':
-    case 'y2':
+    case OPACITY:
+    case FILLOPACITY:
+    case STROKEOPACITY:
+    case STROKEWIDTH:
+    case SIZE:
+    case THETA2:
+    case RADIUS2:
+    case X2:
+    case Y2:
       if (type === 'nominal' && !fieldDef['sort']) {
         return {
           compatible: false,
@@ -1152,7 +1191,7 @@ export function channelCompatibility(
       }
       return COMPATIBLE;
 
-    case 'strokeDash':
+    case STROKEDASH:
       if (!contains(['ordinal', 'nominal'], fieldDef.type)) {
         return {
           compatible: false,
@@ -1161,7 +1200,7 @@ export function channelCompatibility(
       }
       return COMPATIBLE;
 
-    case 'shape':
+    case SHAPE:
       if (!contains(['ordinal', 'nominal', 'geojson'], fieldDef.type)) {
         return {
           compatible: false,
@@ -1170,7 +1209,7 @@ export function channelCompatibility(
       }
       return COMPATIBLE;
 
-    case 'order':
+    case ORDER:
       if (fieldDef.type === 'nominal' && !('sort' in fieldDef)) {
         return {
           compatible: false,
