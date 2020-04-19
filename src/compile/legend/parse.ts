@@ -94,8 +94,10 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   const legendCmpt = new LegendComponent({}, getLegendDefWithScale(model, channel));
   parseInteractiveLegend(model, channel, legendCmpt);
 
-  if ((legend !== undefined && !legend) || legendConfig.disable) {
-    legendCmpt.set('disable', true, legend !== undefined && !legend);
+  const disable = legend !== undefined ? !legend : legendConfig.disable;
+  legendCmpt.set('disable', disable, legend !== undefined);
+  if (disable) {
+    return legendCmpt;
   }
 
   legend = legend || {};
