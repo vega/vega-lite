@@ -233,9 +233,9 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
   const axisConfigs = getAxisConfigs(channel, scaleType, orient, model.config);
 
-  if ((axis !== undefined && !axis) || getAxisConfig('disable', config, axis?.style, axisConfigs).configValue) {
-    // if axis is explicitly falsy, disable it and include no other properties.
-    axisComponent.set('disable', true, axis !== undefined && !axis);
+  const disable = axis !== undefined ? !axis : getAxisConfig('disable', config, axis?.style, axisConfigs).configValue;
+  axisComponent.set('disable', disable, axis !== undefined);
+  if (disable) {
     return axisComponent;
   }
 
