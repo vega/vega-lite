@@ -228,9 +228,20 @@ export function defaultLabelBaseline(
   return undefined;
 }
 
-function _defaultLabelAlign(angle: number | SignalRef, orient: AxisOrient | SignalRef, mainOrient: 'bottom' | 'left') {
-  const isX = mainOrient === 'bottom';
+export function defaultLabelAlign(
+  angle: number | SignalRef,
+  orient: AxisOrient | SignalRef,
+  channel?: 'x' | 'y'
+): Align | SignalRef {
+  if (angle === undefined) {
+    return undefined;
+  }
+
+  channel = channel || (orient === 'top' || orient === 'bottom' ? 'x' : 'y');
+
+  const isX = channel === 'x';
   const startAngle = isX ? 0 : 90;
+  const mainOrient = isX ? 'bottom' : 'left';
 
   if (isSignalRef(angle)) {
     const a = normalizeAngleExpr(angle);
@@ -262,22 +273,6 @@ function _defaultLabelAlign(angle: number | SignalRef, orient: AxisOrient | Sign
   return 'right';
 }
 
-export function defaultLabelAlign(
-  angle: number | SignalRef,
-  axisOrient: AxisOrient | SignalRef,
-  channel?: 'x' | 'y'
-): Align | SignalRef {
-  channel = channel || (axisOrient === 'top' || axisOrient === 'bottom' ? 'x' : 'y');
-
-  if (angle !== undefined) {
-    if (channel === 'x') {
-      return _defaultLabelAlign(angle, axisOrient, 'bottom');
-    } else {
-      return _defaultLabelAlign(angle, axisOrient, 'left');
-    }
-  }
-  return undefined;
-}
 export function defaultLabelFlush(type: Type, channel: PositionScaleChannel) {
   if (channel === 'x' && contains(['quantitative', 'temporal'], type)) {
     return true;
