@@ -12,6 +12,7 @@ import {HeaderChannel, HeaderComponent} from './component';
 
 export function getHeaderType(orient: AxisOrient | SignalRef) {
   if (orient === 'top' || orient === 'left' || isSignalRef(orient)) {
+    // we always use header for orient signal since we can't dynamically make header becomes footer
     return 'header';
   }
   return 'footer';
