@@ -2,7 +2,7 @@ import {Align, AxisOrient, Orient, ScaleType, SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {Axis} from '../../axis';
 import {isBinned, isBinning} from '../../bin';
-import {PositionScaleChannel, X, X2, Y, Y2} from '../../channel';
+import {PositionScaleChannel, X} from '../../channel';
 import {
   DatumDef,
   isDiscrete,
@@ -94,7 +94,7 @@ export const axisRules: {
   orient: ({orient}) => orient, // we already calculate this in parse
 
   tickCount: ({channel, model, axis, fieldOrDatumDef, scaleType}) => {
-    const sizeType = channel === X ? 'width' : channel === Y ? 'height' : undefined;
+    const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
     const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
     return axis.tickCount ?? defaultTickCount({fieldOrDatumDef, scaleType, size, values: axis.values});
   },
@@ -108,7 +108,7 @@ export const axisRules: {
       return fieldDefTitle;
     }
     const fieldDef = model.typedFieldDef(channel);
-    const channel2 = channel === X ? X2 : Y2;
+    const channel2 = channel === 'x' ? 'x2' : 'y2';
     const fieldDef2 = model.fieldDef(channel2);
 
     // If title not specified, store base parts of fieldDef (and fieldDef2 if exists)
@@ -134,7 +134,7 @@ export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string
 }
 
 export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
-  const gridChannel: PositionScaleChannel = channel === X ? Y : X;
+  const gridChannel: PositionScaleChannel = channel === 'x' ? 'y' : 'x';
   if (model.getScaleComponent(gridChannel)) {
     return model.scaleName(gridChannel);
   }
@@ -173,10 +173,10 @@ export function defaultLabelBaseline(
   channel?: 'x' | 'y',
   alwaysIncludeMiddle?: boolean
 ) {
-  channel = channel || (axisOrient === 'top' || axisOrient === 'bottom' ? X : Y);
+  channel = channel || (axisOrient === 'top' || axisOrient === 'bottom' ? 'x' : 'y');
 
   if (angle !== undefined) {
-    if (channel === X) {
+    if (channel === 'x') {
       return (45 < angle && angle < 135) || (225 < angle && angle < 315)
         ? 'middle'
         : (angle <= 45 || 315 <= angle) === (axisOrient === 'top')
@@ -212,10 +212,10 @@ function _defaultLabelAlign(angle: number, axisOrient: AxisOrient, startAngle: 0
 }
 
 export function defaultLabelAlign(angle: number, axisOrient: AxisOrient, channel?: 'x' | 'y'): Align {
-  channel = channel || (axisOrient === 'top' || axisOrient === 'bottom' ? X : Y);
+  channel = channel || (axisOrient === 'top' || axisOrient === 'bottom' ? 'x' : 'y');
 
   if (angle !== undefined) {
-    if (channel === X) {
+    if (channel === 'x') {
       return _defaultLabelAlign(angle, axisOrient, 0, 'bottom');
     } else {
       return _defaultLabelAlign(angle, axisOrient, 90, 'left');
@@ -224,7 +224,7 @@ export function defaultLabelAlign(angle: number, axisOrient: AxisOrient, channel
   return undefined;
 }
 export function defaultLabelFlush(type: Type, channel: PositionScaleChannel) {
-  if (channel === X && contains(['quantitative', 'temporal'], type)) {
+  if (channel === 'x' && contains(['quantitative', 'temporal'], type)) {
     return true;
   }
   return undefined;
@@ -242,7 +242,7 @@ export function defaultLabelOverlap(type: Type, scaleType: ScaleType) {
 }
 
 export function defaultOrient(channel: PositionScaleChannel) {
-  return channel === X ? 'bottom' : 'left';
+  return channel === 'x' ? 'bottom' : 'left';
 }
 
 export function defaultTickCount({
@@ -278,7 +278,7 @@ export function defaultTickCount({
 }
 
 export function getFieldDefTitle(model: UnitModel, channel: 'x' | 'y') {
-  const channel2 = channel === X ? X2 : Y2;
+  const channel2 = channel === 'x' ? 'x2' : 'y2';
   const fieldDef = model.fieldDef(channel);
   const fieldDef2 = model.fieldDef(channel2);
 
