@@ -92,7 +92,7 @@ export const axisRules: {
     axis.labelOverlap ?? defaultLabelOverlap(fieldOrDatumDef.type, scaleType),
 
   // we already calculate orient in parse
-  orient: ({orient}) => orient as AxisOrient, // Need to cast until Vega support signal
+  orient: ({orient}) => orient as AxisOrient, // Need to cast until Vega supports signal
 
   tickCount: ({channel, model, axis, fieldOrDatumDef, scaleType}) => {
     const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
