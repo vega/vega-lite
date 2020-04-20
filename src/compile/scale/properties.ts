@@ -1,7 +1,7 @@
 import {SignalRef, TimeInterval} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
-import {Channel, COLOR, FILL, RADIUS, STROKE, THETA, X, Y} from '../../channel';
+import {Channel, COLOR, FILL, POLAR_POSITION_SCALE_CHANNELS, POSITION_SCALE_CHANNELS, STROKE} from '../../channel';
 import {
   getFieldDef,
   getFieldOrDatumDef,
@@ -218,7 +218,7 @@ export function nice(
   if (getFieldDef(fieldOrDatumDef)?.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return undefined;
   }
-  return util.contains([X, Y], channel) ? true : undefined;
+  return util.contains(POSITION_SCALE_CHANNELS, channel) ? true : undefined;
 }
 
 export function padding(
@@ -229,7 +229,7 @@ export function padding(
   markDef: MarkDef,
   barConfig: RectConfig
 ) {
-  if (util.contains([X, Y], channel)) {
+  if (util.contains(POSITION_SCALE_CHANNELS, channel)) {
     if (isContinuousToContinuous(scaleType)) {
       if (scaleConfig.continuousPadding !== undefined) {
         return scaleConfig.continuousPadding;
@@ -256,7 +256,7 @@ export function paddingInner(paddingValue: number | SignalRef, channel: Channel,
     return undefined;
   }
 
-  if (util.contains([X, Y], channel)) {
+  if (util.contains(POSITION_SCALE_CHANNELS, channel)) {
     // Padding is only set for X and Y by default.
     // Basically it doesn't make sense to add padding for color and size.
 
@@ -282,7 +282,7 @@ export function paddingOuter(
     return undefined;
   }
 
-  if (util.contains([X, Y], channel)) {
+  if (util.contains(POSITION_SCALE_CHANNELS, channel)) {
     // Padding is only set for X and Y by default.
     // Basically it doesn't make sense to add padding for color and size.
     if (scaleType === ScaleType.BAND) {
@@ -357,7 +357,10 @@ export function zero(
 
   // 2) non-binned, quantitative x-scale or y-scale
   // (For binning, we should not include zero by default because binning are calculated without zero.)
-  if (!(isFieldDef(fieldDef) && fieldDef.bin) && util.contains([X, Y, THETA, RADIUS], channel)) {
+  if (
+    !(isFieldDef(fieldDef) && fieldDef.bin) &&
+    util.contains([...POSITION_SCALE_CHANNELS, ...POLAR_POSITION_SCALE_CHANNELS], channel)
+  ) {
     const {orient, type} = markDef;
     if (contains(['bar', 'area', 'line', 'trail'], type)) {
       if ((orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x')) {

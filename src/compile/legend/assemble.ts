@@ -3,7 +3,7 @@ import {SIGNAL_LEGEND_PROP_INDEX} from '../../legend';
 import {keys, replaceAll, stringify, vals} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {Model} from '../model';
-import {LEGEND_SCALE_CHANNELS} from './../../legend';
+import {LEGEND_SCALE_CHANNELS} from '../../legend';
 import {LegendComponent} from './component';
 import {mergeLegendComponent} from './parse';
 

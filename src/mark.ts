@@ -4,60 +4,45 @@ import {Gradient} from './channeldef';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {contains, Flag, keys} from './util';
 
-export const ARC: 'arc' = 'arc';
-export const AREA: 'area' = 'area';
-export const BAR: 'bar' = 'bar';
-export const IMAGE: 'image' = 'image';
-export const LINE: 'line' = 'line';
-export const POINT: 'point' = 'point';
-export const RECT: 'rect' = 'rect';
-export const RULE: 'rule' = 'rule';
-export const TEXT: 'text' = 'text';
-export const TICK: 'tick' = 'tick';
-export const TRAIL: 'trail' = 'trail';
-export const CIRCLE: 'circle' = 'circle';
-export const SQUARE: 'square' = 'square';
-export const GEOSHAPE: 'geoshape' = 'geoshape';
-
 /**
  * All types of primitive marks.
  */
-export type Mark =
-  | typeof ARC
-  | typeof AREA
-  | typeof BAR
-  | typeof LINE
-  | typeof IMAGE
-  | typeof TRAIL
-  | typeof POINT
-  | typeof TEXT
-  | typeof TICK
-  | typeof RECT
-  | typeof RULE
-  | typeof CIRCLE
-  | typeof SQUARE
-  | typeof GEOSHAPE;
+export const Mark = {
+  arc: 'arc',
+  area: 'area',
+  bar: 'bar',
+  image: 'image',
+  line: 'line',
+  point: 'point',
+  rect: 'rect',
+  rule: 'rule',
+  text: 'text',
+  tick: 'tick',
+  trail: 'trail',
+  circle: 'circle',
+  square: 'square',
+  geoshape: 'geoshape'
+} as const;
 
-// Using mapped type to declare index, ensuring we always have all marks when we add more.
-const MARK_INDEX: Flag<Mark> = {
-  arc: 1,
-  area: 1,
-  bar: 1,
-  image: 1,
-  line: 1,
-  point: 1,
-  text: 1,
-  tick: 1,
-  trail: 1,
-  rect: 1,
-  geoshape: 1,
-  rule: 1,
-  circle: 1,
-  square: 1
-};
+export const ARC = Mark.arc;
+export const AREA = Mark.area;
+export const BAR = Mark.bar;
+export const IMAGE = Mark.image;
+export const LINE = Mark.line;
+export const POINT = Mark.point;
+export const RECT = Mark.rect;
+export const RULE = Mark.rule;
+export const TEXT = Mark.text;
+export const TICK = Mark.tick;
+export const TRAIL = Mark.trail;
+export const CIRCLE = Mark.circle;
+export const SQUARE = Mark.square;
+export const GEOSHAPE = Mark.geoshape;
+
+export type Mark = keyof typeof Mark;
 
 export function isMark(m: string): m is Mark {
-  return !!MARK_INDEX[m];
+  return m in Mark;
 }
 
 export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'trail' {
@@ -68,7 +53,7 @@ export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 
   return contains(['rect', 'bar', 'image', 'arc' /* arc is rect/interval in polar coordinate */], m);
 }
 
-export const PRIMITIVE_MARKS = keys(MARK_INDEX);
+export const PRIMITIVE_MARKS = keys(Mark);
 
 export interface ColorMixins {
   /**
@@ -336,7 +321,7 @@ const VL_ONLY_MARK_CONFIG_INDEX: Flag<keyof VLOnlyMarkConfig> = {
   timeUnitBandPosition: 1
 };
 
-export const VL_ONLY_MARK_CONFIG_PROPERTIES: (keyof VLOnlyMarkConfig)[] = keys(VL_ONLY_MARK_CONFIG_INDEX);
+export const VL_ONLY_MARK_CONFIG_PROPERTIES = keys(VL_ONLY_MARK_CONFIG_INDEX);
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   [k in Mark]?: (keyof Required<MarkConfigMixins>[k])[];

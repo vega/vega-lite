@@ -1,7 +1,7 @@
 import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
-import {Channel, COLUMN, FacetChannel, FACET_CHANNELS, ROW, ScaleChannel} from '../channel';
+import {Channel, COLUMN, FacetChannel, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../channel';
 import {FieldName, FieldRefOption, initChannelDef, TypedFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
 import {reduce} from '../encoding';
@@ -245,7 +245,7 @@ export class FacetModel extends ModelWithField {
         as.push(`distinct_${field}`);
       }
     } else {
-      for (const channel of ['x', 'y'] as ScaleChannel[]) {
+      for (const channel of POSITION_SCALE_CHANNELS) {
         const childScaleComponent = this.child.component.scales[channel];
         if (childScaleComponent && !childScaleComponent.merged) {
           const type = childScaleComponent.get('type');

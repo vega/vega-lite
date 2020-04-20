@@ -1,29 +1,32 @@
-import {Flag} from './util';
-/** Constants and utilities for data type */
-/** Data type based on level of measurement */
+import {keys} from './util';
 
-export const TYPE_INDEX: Flag<Type> = {
-  quantitative: 1,
-  ordinal: 1,
-  temporal: 1,
-  nominal: 1,
-  geojson: 1
-};
+/**
+ * Data type based on level of measurement
+ */
+export const Type = {
+  quantitative: 'quantitative',
+  ordinal: 'ordinal',
+  temporal: 'temporal',
+  nominal: 'nominal',
+  geojson: 'geojson'
+} as const;
+
+export type Type = keyof typeof Type;
 
 export function isType(t: any): t is Type {
-  return !!TYPE_INDEX[t];
+  return t in Type;
 }
 
-export const QUANTITATIVE: 'quantitative' = 'quantitative';
-export const ORDINAL: 'ordinal' = 'ordinal';
-export const TEMPORAL: 'temporal' = 'temporal';
-export const NOMINAL: 'nominal' = 'nominal';
+export const QUANTITATIVE = Type.quantitative;
+export const ORDINAL = Type.ordinal;
+export const TEMPORAL = Type.temporal;
+export const NOMINAL = Type.nominal;
 
-export const GEOJSON: 'geojson' = 'geojson';
+export const GEOJSON = Type.geojson;
 
-export type StandardType = typeof QUANTITATIVE | typeof ORDINAL | typeof TEMPORAL | typeof NOMINAL;
+export type StandardType = 'quantitative' | 'ordinal' | 'temporal' | 'nominal';
 
-export type Type = StandardType | typeof GEOJSON;
+export const TYPES = keys(Type);
 
 /**
  * Get full, lowercase type name for a given type.

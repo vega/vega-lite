@@ -31,18 +31,18 @@ import {
   TICK
 } from './mark';
 import {ScaleType} from './scale';
-import {contains, Flag} from './util';
+import {contains} from './util';
 
-export type StackOffset = 'zero' | 'center' | 'normalize';
-
-const STACK_OFFSET_INDEX: Flag<StackOffset> = {
+const STACK_OFFSET_INDEX = {
   zero: 1,
   center: 1,
   normalize: 1
-};
+} as const;
+
+export type StackOffset = keyof typeof STACK_OFFSET_INDEX;
 
 export function isStackOffset(s: string): s is StackOffset {
-  return !!STACK_OFFSET_INDEX[s];
+  return s in STACK_OFFSET_INDEX;
 }
 
 export interface StackProperties {

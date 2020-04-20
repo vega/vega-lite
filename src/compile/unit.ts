@@ -1,3 +1,4 @@
+import {POSITION_SCALE_CHANNELS} from '../channel';
 import {NewSignal} from 'vega';
 import {Axis} from '../axis';
 import {
@@ -24,7 +25,7 @@ import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
 import {Encoding, initEncoding} from '../encoding';
 import {Legend} from '../legend';
-import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
+import {isMarkDef, Mark, MarkDef, GEOSHAPE} from '../mark';
 import {Projection} from '../projection';
 import {Domain} from '../scale';
 import {SelectionDef} from '../selection';
@@ -149,7 +150,7 @@ export class UnitModel extends ModelWithField {
   }
 
   private initAxes(encoding: Encoding<string>): AxisIndex {
-    return [X, Y].reduce((_axis, channel) => {
+    return POSITION_SCALE_CHANNELS.reduce((_axis, channel) => {
       // Position Axis
 
       // TODO: handle ConditionFieldDef

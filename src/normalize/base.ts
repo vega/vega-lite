@@ -4,7 +4,7 @@ import {Projection} from '../projection';
 import {GenericSpec, NormalizedSpec} from '../spec';
 import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec/unit';
-import {FieldName} from './../channeldef';
+import {FieldName} from '../channeldef';
 import {RepeaterValue} from './repeater';
 
 export type Normalize<S extends GenericSpec<any, any, any, any>, NS extends NormalizedSpec> = (

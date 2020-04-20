@@ -1,6 +1,6 @@
 import {AxisEncode as VgAxisEncode, AxisOrient} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
-import {PositionScaleChannel, POSITION_SCALE_CHANNELS, X, Y} from '../../channel';
+import {PositionScaleChannel, POSITION_SCALE_CHANNELS} from '../../channel';
 import {getFieldOrDatumDef, PositionDatumDef, PositionFieldDef} from '../../channeldef';
 import {getFirstDefined, keys, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
@@ -57,7 +57,7 @@ export function parseLayerAxes(model: LayerModel) {
   }
 
   // Move axes to layer's axis component and merge shared axes
-  for (const channel of [X, Y]) {
+  for (const channel of POSITION_SCALE_CHANNELS) {
     for (const child of model.children) {
       if (!child.component.axes[channel]) {
         // skip if the child does not have a particular axis

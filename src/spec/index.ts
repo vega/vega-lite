@@ -5,7 +5,7 @@
  * - The internal specs (with `Normalized` prefix) would only support primitive marks and support no macros/shortcuts.
  */
 import {Field} from '../channeldef';
-import {FieldName} from './../channeldef';
+import {FieldName} from '../channeldef';
 import {DataMixins} from './base';
 import {GenericConcatSpec, GenericHConcatSpec, GenericVConcatSpec} from './concat';
 import {GenericFacetSpec} from './facet';

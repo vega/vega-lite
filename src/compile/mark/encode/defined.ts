@@ -1,3 +1,4 @@
+import {POSITION_SCALE_CHANNELS} from '../../../channel';
 import {ScaleChannel} from '../../../channel';
 import {Value} from '../../../channeldef';
 import {hasContinuousDomain} from '../../../scale';
@@ -12,7 +13,7 @@ export function defined(model: UnitModel): VgEncodeEntry {
 
   const invalid = getMarkPropOrConfig('invalid', markDef, config);
   if (invalid) {
-    const signal = allFieldsInvalidPredicate(model, {channels: ['x', 'y']});
+    const signal = allFieldsInvalidPredicate(model, {channels: POSITION_SCALE_CHANNELS});
 
     if (signal) {
       return {defined: {signal}};

@@ -1,6 +1,6 @@
 import {GenericSpec} from '.';
 import * as log from '../log';
-import {Field, FieldName} from './../channeldef';
+import {Field, FieldName} from '../channeldef';
 import {
   GenericConcatSpec,
   GenericHConcatSpec,
