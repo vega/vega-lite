@@ -273,7 +273,7 @@ By default, Vega-Lite automatically creates ordinal scales for `color` and `shap
 
 The [`range`](#range) of an ordinal scale can be an array of desired output values, which are directly mapped to elements in the [`domain`](#domain). Both `domain` and `range` array can be re-ordered to specify the order and mapping between the domain and the output range. For ordinal color scales, a custom [`scheme`](#scheme) can be set as well.
 
-<a name="point"></a><!-- point and band are in the same section -->
+<a id="point"></a><!-- point and band are in the same section -->
 
 {:#band}
 
@@ -301,7 +301,6 @@ For example, the following bar chart has uses a band scale for its x-position.
 
 <div class="vl-example" data-name="bar"></div>
 
-<a name="padding"/>
 {:#range-step}
 
 To customize the step size of band scales for x/y-fields, we can set the step property of the view's `width`/`height`.

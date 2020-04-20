@@ -8,17 +8,20 @@ Time unit is used to discretize times in Vega-Lite. It can be used (1) with the 
 
 Vega-Lite supports the following time units:
 
-- `"year"`, `"yearquarter"`, `"yearquartermonth"`, `"yearmonth"`, `"yearmonthdate"`, `"yearmonthdatehours"`, `"yearmonthdatehoursminutes"`, `"yearmonthdatehoursminutesseconds"`.
-- `"quarter"`, `"quartermonth"`
-- `"month"`, `"monthdate"`
-- `"date"` (Day of month, i.e., 1 - 31)
-- `"day"` (Day of week, i.e., Monday - Friday)
-- `"hours"`, `"hoursminutes"`, `"hoursminutesseconds"`
-- `"minutes"`, `"minutesseconds"`
-- `"seconds"`, `"secondsmilliseconds"`
-- `"milliseconds"`
+- `"year"` - [Gregorian](https://en.wikipedia.org/wiki/Gregorian_calendar) calendar years.
+- `"quarter"` - Three-month intervals, starting in one of January, April, July, and October.
+- `"month"` - Calendar months (January, February, _etc._).
+- `"date"` - Calendar day of the month (January 1, January 2, _etc._).
+<!-- - `"week"` - Sunday-based weeks. Days before the first Sunday of the year are considered to be in week 0, the first Sunday of the year is the start of week 1, the second Sunday week 2, _etc._. -->
+- `"day"` - Day of the week (Sunday, Monday, _etc._).
+- `"hours"` - Hours of the day (12:00am, 1:00am, _etc._).
+- `"minutes"` - Minutes in an hour (12:00, 12:01, _etc._).
+- `"seconds"` - Seconds in a minute (12:00:00, 12:00:01, _etc._).
+- `"milliseconds"` - Milliseconds in a second.
 
-By default, all time units represent date time using local time. To use UTC time, you can add the `utc` prefix (e.g., `utcyearmonth`).
+Vega-Lite time units can also be a string of consecutive time units to indicate desired intervals of time. For example, `yearmonthdate` indicates chronological time sensitive to year, month, and date (but not to hours, minutes, or seconds). The specifier `monthdate` is sensitive to month and date, but not year, which can be useful for binning time values to look at seasonal patterns only.
+
+By default, all time units represent date time using local time. To use UTC time, you can add the `utc` prefix (e.g., `"utcyear"`, `"utcyearmonth"`).
 
 <!--prettier-ignore-start-->
 ## Documentation Overview
