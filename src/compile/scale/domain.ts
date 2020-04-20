@@ -49,8 +49,8 @@ import {isFacetModel, isUnitModel, Model} from '../model';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
-import {SelectionExtent} from './../../selection';
-import {TimeUnitParams} from './../../timeunit';
+import {SelectionExtent} from '../../selection';
+import {TimeUnitParams} from '../../timeunit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
 
 export function parseScaleDomain(model: Model) {

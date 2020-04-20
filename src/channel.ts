@@ -355,24 +355,24 @@ const {
 export const NONPOSITION_CHANNELS = keys(NONPOSITION_CHANNEL_INDEX);
 export type NonPositionChannel = typeof NONPOSITION_CHANNELS[number];
 
-const PositionScaleChannel = {
+const POSITION_SCALE_CHANNEL_INDEX = {
   x: 1,
   y: 1
 } as const;
-export const POSITION_SCALE_CHANNELS = keys(PositionScaleChannel);
-export type PositionScaleChannel = keyof typeof PositionScaleChannel;
+export const POSITION_SCALE_CHANNELS = keys(POSITION_SCALE_CHANNEL_INDEX);
+export type PositionScaleChannel = keyof typeof POSITION_SCALE_CHANNEL_INDEX;
 
 export function isXorY(channel: Channel): channel is PositionScaleChannel {
-  return channel in PositionScaleChannel;
+  return channel in POSITION_SCALE_CHANNEL_INDEX;
 }
 
-const PolarPositionScaleChannel = {
+const POLAR_POSITION_SCALE_CHANNEL_INDEX = {
   theta: 1,
   radius: 1
 } as const;
 
-export const POLAR_POSITION_SCALE_CHANNELS = keys(PolarPositionScaleChannel);
-export type PolarPositionScaleChannel = keyof typeof PolarPositionScaleChannel;
+export const POLAR_POSITION_SCALE_CHANNELS = keys(POLAR_POSITION_SCALE_CHANNEL_INDEX);
+export type PolarPositionScaleChannel = keyof typeof POLAR_POSITION_SCALE_CHANNEL_INDEX;
 
 export function getPositionScaleChannel(sizeType: 'width' | 'height'): PositionScaleChannel {
   return sizeType === 'width' ? X : Y;
@@ -423,8 +423,8 @@ export function supportLegend(channel: NonPositionScaleChannel) {
 
 // Declare SCALE_CHANNEL_INDEX
 const SCALE_CHANNEL_INDEX = {
-  ...PositionScaleChannel,
-  ...PolarPositionScaleChannel,
+  ...POSITION_SCALE_CHANNEL_INDEX,
+  ...POLAR_POSITION_SCALE_CHANNEL_INDEX,
   ...NONPOSITION_SCALE_CHANNEL_INDEX
 };
 

@@ -1,3 +1,4 @@
+import {POSITION_SCALE_CHANNELS} from '../channel';
 import {NewSignal} from 'vega';
 import {Axis} from '../axis';
 import {
@@ -149,7 +150,7 @@ export class UnitModel extends ModelWithField {
   }
 
   private initAxes(encoding: Encoding<string>): AxisIndex {
-    return [X, Y].reduce((_axis, channel) => {
+    return POSITION_SCALE_CHANNELS.reduce((_axis, channel) => {
       // Position Axis
 
       // TODO: handle ConditionFieldDef
