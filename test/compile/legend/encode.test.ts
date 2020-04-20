@@ -1,11 +1,10 @@
-import {SignalRef} from 'vega-typings';
+import {SignalRef} from 'vega';
 import {COLOR, SIZE} from '../../../src/channel';
 import {setCustomFormatTypes} from '../../../src/compile/format';
 import {LegendComponent} from '../../../src/compile/legend/component';
 import * as encode from '../../../src/compile/legend/encode';
 import {getLegendType} from '../../../src/compile/legend/properties';
 import {Encoding} from '../../../src/encoding';
-import {TimeUnit} from '../../../src/timeunit';
 import {TEMPORAL} from '../../../src/type';
 import {parseUnitModelWithScale} from '../../util';
 
@@ -159,7 +158,7 @@ describe('compile/legend', () => {
         }
       });
 
-      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.MONTH};
+      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: 'month'};
       const label = encode.labels(
         {},
         {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'}
@@ -178,7 +177,7 @@ describe('compile/legend', () => {
         }
       });
 
-      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: TimeUnit.QUARTER};
+      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: 'quarter'};
       const label = encode.labels(
         {},
         {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'}

@@ -1,11 +1,28 @@
+import {
+  TimeUnit,
+  LOCAL_SINGLE_TIMEUNIT_INDEX,
+  UTC_SINGLE_TIMEUNIT_INDEX,
+  LOCAL_MULTI_TIMEUNIT_INDEX,
+  UTC_MULTI_TIMEUNIT_INDEX
+} from '../../../src/timeunit';
+import {keys, Flag} from '../../../src/util';
 import {rangeType, SCALE_CHANNELS, X, Y} from '../../../src/channel';
 import {scaleType} from '../../../src/compile/scale/type';
 import * as log from '../../../src/log';
 import {BAR, PRIMITIVE_MARKS, RECT, RULE} from '../../../src/mark';
 import {ScaleType} from '../../../src/scale';
-import {isUTCTimeUnit, TIMEUNITS} from '../../../src/timeunit';
+import {isUTCTimeUnit} from '../../../src/timeunit';
 import {NOMINAL, ORDINAL} from '../../../src/type';
 import * as util from '../../../src/util';
+
+const TIMEUNIT_INDEX: Flag<TimeUnit> = {
+  ...LOCAL_SINGLE_TIMEUNIT_INDEX,
+  ...UTC_SINGLE_TIMEUNIT_INDEX,
+  ...LOCAL_MULTI_TIMEUNIT_INDEX,
+  ...UTC_MULTI_TIMEUNIT_INDEX
+};
+
+export const TIMEUNITS = keys(TIMEUNIT_INDEX);
 
 describe('compile/scale', () => {
   describe('type()', () => {

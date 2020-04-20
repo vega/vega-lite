@@ -1,4 +1,4 @@
-import {ScaleType} from 'vega-typings/types';
+import {ScaleType} from 'vega';
 import {array} from 'vega-util';
 import {AxisConfig} from '../../axis';
 import {PositionScaleChannel} from '../../channel';

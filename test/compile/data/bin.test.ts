@@ -1,4 +1,4 @@
-import {BinTransform as VgBinTransform} from 'vega-typings';
+import {BinTransform as VgBinTransform} from 'vega';
 import {BinNode, getBinSignalName} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';

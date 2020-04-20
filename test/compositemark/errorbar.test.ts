@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega-typings';
+import {AggregateOp} from 'vega';
 import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar';
 import {defaultConfig} from '../../src/config';
 import * as log from '../../src/log';
