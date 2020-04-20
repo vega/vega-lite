@@ -176,11 +176,9 @@ export function normalizeAngleExpr(angle: SignalRef) {
 export function defaultLabelBaseline(
   angle: number | SignalRef,
   orient: AxisOrient | SignalRef,
-  channel?: 'x' | 'y',
+  channel: 'x' | 'y',
   alwaysIncludeMiddle?: boolean
 ) {
-  channel = channel || (orient === 'top' || orient === 'bottom' ? 'x' : 'y');
-
   if (angle !== undefined) {
     if (channel === 'x') {
       if (isSignalRef(angle)) {
@@ -231,13 +229,11 @@ export function defaultLabelBaseline(
 export function defaultLabelAlign(
   angle: number | SignalRef,
   orient: AxisOrient | SignalRef,
-  channel?: 'x' | 'y'
+  channel: 'x' | 'y'
 ): Align | SignalRef {
   if (angle === undefined) {
     return undefined;
   }
-
-  channel = channel || (orient === 'top' || orient === 'bottom' ? 'x' : 'y');
 
   const isX = channel === 'x';
   const startAngle = isX ? 0 : 90;
