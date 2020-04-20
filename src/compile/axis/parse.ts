@@ -71,6 +71,10 @@ export function parseLayerAxes(model: LayerModel) {
         // Automatically adjust orient
         for (const axisComponent of child.component.axes[channel]) {
           const {value: orient, explicit} = axisComponent.getWithExplicit('orient');
+          if (isSignalRef(orient)) {
+            continue;
+          }
+
           if (axisCount[orient] > 0 && !explicit) {
             // Change axis orient if the number do not match
             const oppositeOrient = OPPOSITE_ORIENT[orient];
@@ -179,7 +183,7 @@ function isExplicit<T extends string | number | boolean | object>(
   switch (property) {
     case 'titleAngle':
     case 'labelAngle':
-      return value === normalizeAngle(axis[property]);
+      return value === (isSignalRef(axis.labelAngle) ? axis.labelAngle : normalizeAngle(axis.labelAngle));
     case 'values':
       return !!axis.values;
     // specified axis.values is already respected, but may get transformed.

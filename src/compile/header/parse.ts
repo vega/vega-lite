@@ -1,16 +1,18 @@
-import {AxisOrient} from 'vega';
+import {AxisOrient, SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {FacetChannel, FACET_CHANNELS} from '../../channel';
 import {title as fieldDefTitle} from '../../channeldef';
 import {contains, getFirstDefined} from '../../util';
+import {isSignalRef} from '../../vega.schema';
 import {assembleAxis} from '../axis/assemble';
 import {FacetModel} from '../facet';
 import {parseGuideResolve} from '../resolve';
 import {getHeaderProperty} from './common';
 import {HeaderChannel, HeaderComponent} from './component';
 
-export function getHeaderType(orient: AxisOrient) {
-  if (orient === 'top' || orient === 'left') {
+export function getHeaderType(orient: AxisOrient | SignalRef) {
+  if (orient === 'top' || orient === 'left' || isSignalRef(orient)) {
+    // we always use header for orient signal since we can't dynamically make header becomes footer
     return 'header';
   }
   return 'footer';

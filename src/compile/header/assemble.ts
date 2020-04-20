@@ -73,7 +73,7 @@ export function defaultHeaderGuideAlign(headerChannel: HeaderChannel, angle: num
       return {align: 'right'};
   }
 
-  const align = defaultLabelAlign(angle, headerChannel === 'row' ? 'left' : 'top');
+  const align = defaultLabelAlign(angle, headerChannel === 'row' ? 'left' : 'top', headerChannel === 'row' ? 'y' : 'x');
   return align ? {align} : {};
 }
 

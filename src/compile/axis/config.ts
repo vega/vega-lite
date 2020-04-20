@@ -1,20 +1,63 @@
-import {ScaleType} from 'vega';
-import {array} from 'vega-util';
+import {ScaleType, SignalRef} from 'vega';
+import {array, stringValue} from 'vega-util';
 import {AxisConfig} from '../../axis';
 import {PositionScaleChannel} from '../../channel';
 import {Config} from '../../config';
 import {isQuantitative} from '../../scale';
-import {titlecase} from '../../util';
+import {keys, titlecase} from '../../util';
+import {isSignalRef} from '../../vega.schema';
 import {getStyleConfig} from '../common';
 
-function getAxisConfigFromConfigTypes(configTypes: string[], config: Config) {
+function signalOrStringValue(v: SignalRef | any) {
+  if (isSignalRef(v)) {
+    return v.signal;
+  }
+  return stringValue(v);
+}
+
+function getAxisConfigFromConfigTypes(
+  configTypes: string[],
+  config: Config,
+  channel: 'x' | 'y',
+  orient: string | SignalRef
+) {
   // TODO: add special casing to add conditional value based on orient signal
-  return Object.assign.apply(null, [{}, ...configTypes.map(configType => config[configType])]);
+  return Object.assign.apply(null, [
+    {},
+    ...configTypes.map(configType => {
+      if (configType === 'axisOrient') {
+        const orient1 = channel === 'x' ? 'bottom' : 'left';
+        const orientConfig1 = config[channel === 'x' ? 'axisBottom' : 'axisLeft'] || {};
+        const orientConfig2 = config[channel === 'x' ? 'axisTop' : 'axisRight'] || {};
+
+        const props = new Set([...keys(orientConfig1), ...keys(orientConfig2)]);
+
+        const conditionalOrientAxisConfig = {};
+        for (const prop of props.values()) {
+          conditionalOrientAxisConfig[prop] = {
+            // orient is surely signal in this case
+            signal: `${orient['signal']} === "${orient1}" ? ${signalOrStringValue(
+              orientConfig1[prop]
+            )} : ${signalOrStringValue(orientConfig2[prop])}`
+          };
+        }
+
+        return conditionalOrientAxisConfig;
+      }
+
+      return config[configType];
+    })
+  ]);
 }
 
 export type AxisConfigs = ReturnType<typeof getAxisConfigs>;
 
-export function getAxisConfigs(channel: PositionScaleChannel, scaleType: ScaleType, orient: string, config: Config) {
+export function getAxisConfigs(
+  channel: PositionScaleChannel,
+  scaleType: ScaleType,
+  orient: string | SignalRef,
+  config: Config
+) {
   const typeBasedConfigTypes =
     scaleType === 'band'
       ? ['axisDiscrete', 'axisBand']
@@ -27,7 +70,7 @@ export function getAxisConfigs(channel: PositionScaleChannel, scaleType: ScaleTy
       : [];
 
   const axisChannel = channel === 'x' ? 'axisX' : 'axisY';
-  const axisOrient = 'axis' + titlecase(orient); // axisTop, axisBottom, ...
+  const axisOrient = isSignalRef(orient) ? 'axisOrient' : 'axis' + titlecase(orient); // axisTop, axisBottom, ...
 
   const vlOnlyConfigTypes = [
     // technically Vega does have axisBand, but if we make another separation here,
@@ -39,8 +82,8 @@ export function getAxisConfigs(channel: PositionScaleChannel, scaleType: ScaleTy
   const vgConfigTypes = ['axis', axisOrient, axisChannel];
 
   return {
-    vlOnlyAxisConfig: getAxisConfigFromConfigTypes(vlOnlyConfigTypes, config),
-    vgAxisConfig: getAxisConfigFromConfigTypes(vgConfigTypes, config),
+    vlOnlyAxisConfig: getAxisConfigFromConfigTypes(vlOnlyConfigTypes, config, channel, orient),
+    vgAxisConfig: getAxisConfigFromConfigTypes(vgConfigTypes, config, channel, orient),
     axisConfigStyle: getAxisConfigStyle([...vgConfigTypes, ...vlOnlyConfigTypes], config)
   };
 }
