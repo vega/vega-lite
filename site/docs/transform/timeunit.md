@@ -21,8 +21,6 @@ Vega-Lite supports the following time units:
 
 Vega-Lite time units can also be a string of consecutive time units to indicate desired intervals of time. For example, `yearmonthdate` indicates chronological time sensitive to year, month, and date (but not to hours, minutes, or seconds). The specifier `monthdate` is sensitive to month and date, but not year, which can be useful for binning time values to look at seasonal patterns only.
 
-Vega-Lite currently supports the following intervals: `"yearquarter"`, `"yearquartermonth"`, `"yearmonth"`, `"yearmonthdate"`, `"yearmonthdatehours"`, `"yearmonthdatehoursminutes"`, `"yearmonthdatehoursminutesseconds"`, `"yearweek"`, `"yearweekday"`, `"yearweekdayhours"`, `"yearweekdayhoursminutes"`, `"yearweekdayhoursminutesseconds"`, `"quartermonth"`, `"monthdate"`, `"monthdatehours"`, `"monthdatehoursminutes"`, `"monthdatehoursminutesseconds"`, `"weekday"`, `"weeksdayhours"`, `"weekdayhoursminutes"`, `"weekdayhoursminutesseconds"`, `"dayhours"`, `"dayhoursminutes"`, `"dayhoursminutesseconds"`, `"hoursminutes"`, `"hoursminutesseconds"`, `"minutesseconds"`, `"secondsmilliseconds"`.
-
 By default, all time units represent date time using local time. To use UTC time, you can add the `utc` prefix (e.g., `"utcyear"`, `"utcyearmonth"`).
 
 <!--prettier-ignore-start-->
