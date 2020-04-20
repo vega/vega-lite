@@ -78,7 +78,7 @@ export function defaultHeaderGuideAlign(headerChannel: HeaderChannel, angle: num
 }
 
 export function defaultHeaderGuideBaseline(angle: number, channel: FacetChannel) {
-  const baseline = defaultLabelBaseline(angle, channel === 'row' ? 'left' : 'top');
+  const baseline = defaultLabelBaseline(angle, channel === 'row' ? 'left' : 'top', channel === 'row' ? 'y' : 'x', true);
   return baseline ? {baseline} : {};
 }
 

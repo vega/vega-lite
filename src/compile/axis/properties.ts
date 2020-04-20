@@ -167,7 +167,12 @@ export function getLabelAngle(
   }
 }
 
-export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient, channel?: 'x' | 'y') {
+export function defaultLabelBaseline(
+  angle: number,
+  axisOrient: AxisOrient,
+  channel?: 'x' | 'y',
+  alwaysIncludeMiddle?: boolean
+) {
   channel = channel || (axisOrient === 'top' || axisOrient === 'bottom' ? 'x' : 'y');
 
   if (angle !== undefined) {
@@ -179,7 +184,9 @@ export function defaultLabelBaseline(angle: number, axisOrient: AxisOrient, chan
         : 'top';
     } else {
       return angle <= 45 || 315 <= angle || (135 <= angle && angle <= 225)
-        ? 'middle'
+        ? alwaysIncludeMiddle
+          ? 'middle'
+          : null
         : (45 <= angle && angle <= 135) === (axisOrient === 'left')
         ? 'top'
         : 'bottom';
