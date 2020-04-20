@@ -8,6 +8,13 @@ import {keys, titlecase} from '../../util';
 import {isSignalRef} from '../../vega.schema';
 import {getStyleConfig} from '../common';
 
+function signalOrStringValue(v: SignalRef | any) {
+  if (isSignalRef(v)) {
+    return v.signal;
+  }
+  return stringValue(v);
+}
+
 function getAxisConfigFromConfigTypes(
   configTypes: string[],
   config: Config,
@@ -29,9 +36,9 @@ function getAxisConfigFromConfigTypes(
         for (const prop of props.values()) {
           conditionalOrientAxisConfig[prop] = {
             // orient is surely signal in this case
-            signal: `${orient['signal']} === "${orient1}" ? ${stringValue(orientConfig1[prop])} : ${stringValue(
-              orientConfig2[prop]
-            )}`
+            signal: `${orient['signal']} === "${orient1}" ? ${signalOrStringValue(
+              orientConfig1[prop]
+            )} : ${signalOrStringValue(orientConfig2[prop])}`
           };
         }
 

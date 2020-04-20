@@ -8,12 +8,12 @@ describe('getAxisConfigs', () => {
       {signal: 'a'},
       {
         axisTop: {labelBaseline: 'line-bottom', labelPadding: 2},
-        axisBottom: {labelBaseline: 'line-top'}
+        axisBottom: {labelBaseline: {signal: 'a'}}
       }
     );
 
     expect(vgAxisConfig).toEqual({
-      labelBaseline: {signal: 'a === "bottom" ? "line-top" : "line-bottom"'},
+      labelBaseline: {signal: 'a === "bottom" ? a : "line-bottom"'},
       labelPadding: {signal: 'a === "bottom" ? undefined : 2'}
     });
   });
