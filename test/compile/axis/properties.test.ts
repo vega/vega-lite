@@ -307,8 +307,8 @@ describe('compile/axis', () => {
     });
 
     it('is middle for 0 and 180 horizontal orients', () => {
-      expect(defaultLabelBaseline(0, 'left')).toBe('middle');
-      expect(defaultLabelBaseline(180, 'right')).toBe('middle');
+      expect(defaultLabelBaseline(0, 'left')).toBe(null);
+      expect(defaultLabelBaseline(180, 'right')).toBe(null);
     });
 
     it('is top for bottom orients for 1st and 2nd quadrants', () => {
