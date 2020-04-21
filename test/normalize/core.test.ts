@@ -65,7 +65,7 @@ describe('normalize()', () => {
         }
       };
       const normalized = normalize(spec);
-      expect(normalized['layer'].length).toBe(2);
+      expect(normalized['layer']).toHaveLength(2);
     });
   });
 
