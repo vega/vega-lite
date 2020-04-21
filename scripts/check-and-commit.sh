@@ -63,7 +63,7 @@ if [[ $GIT_BRANCH != 'master' ]]; then
   ## For non-master branch, commit eslint fix and prettier changes if outdated
   if ! git diff --word-diff=color --exit-code  src test test-runtime
   then
-    git add src test test-runtime
+    git add site src test test-runtime
     git commit -m "chore: auto-formatting [CI]"
   fi
 
