@@ -64,7 +64,7 @@ if [[ $GIT_BRANCH != 'master' ]]; then
   if ! git diff --word-diff=color --exit-code  src test test-runtime
   then
     git add site src test test-runtime
-    git commit -m "chore: auto-formatting [CI]"
+    git commit -m "style: auto-formatting [CI]"
   fi
 
   # Then push all the changes (schema, examples, prettier)
