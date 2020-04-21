@@ -1,6 +1,5 @@
 import {SignalRef} from 'vega';
 import {COLOR, SIZE} from '../../../src/channel';
-import {setCustomFormatTypes} from '../../../src/compile/format';
 import {LegendComponent} from '../../../src/compile/legend/component';
 import * as encode from '../../../src/compile/legend/encode';
 import {getLegendType} from '../../../src/compile/legend/properties';
@@ -138,15 +137,14 @@ describe('compile/legend', () => {
       };
       const model = parseUnitModelWithScale({
         mark: 'point',
-        encoding: {color: fieldDef}
+        encoding: {color: fieldDef},
+        config: {customFormatTypes: true}
       });
-      setCustomFormatTypes(['customDateFormat']);
       const label = encode.labels(
         {},
         {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'}
       );
       expect(label.text).toEqual({signal: 'customDateFormat(datum.value, "abc")'});
-      setCustomFormatTypes([]);
     });
 
     it('should return correct expression for the timeUnit: TimeUnit.MONTH', () => {

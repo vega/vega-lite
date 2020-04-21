@@ -1230,10 +1230,13 @@ export function isFieldOrDatumDefForTimeFormat(fieldOrDatumDef: FieldDef<string>
   return formatType === 'time' || (!formatType && isTimeFieldDef(fieldOrDatumDef));
 }
 
-export function isFieldDefWithCustomTimeFormat(fieldOrDatumDef: TypedFieldDef<string> | DatumDef): boolean {
+export function isFieldOrDatumDefWithCustomTimeFormat(
+  fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
+  config: Config
+): boolean {
   const guide = getGuide(fieldOrDatumDef);
   const formatType = (guide && guide.formatType) || (isTextFieldDef(fieldOrDatumDef) && fieldOrDatumDef.formatType);
-  return formatType && isCustomFormatType(formatType);
+  return isCustomFormatType(formatType, config);
 }
 
 /**
