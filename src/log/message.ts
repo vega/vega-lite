@@ -15,7 +15,7 @@ import {Projection} from '../projection';
 import {ScaleType} from '../scale';
 import {GenericSpec} from '../spec';
 import {Type} from '../type';
-import {replaceAll, stringify} from '../util';
+import {stringify} from '../util';
 import {VgSortField} from '../vega.schema';
 
 export function invalidSpec(spec: GenericSpec<any, any, any, any>) {
@@ -292,14 +292,6 @@ export function stackNonSummativeAggregate(aggregate: Aggregate | string) {
 // TIMEUNIT
 export function invalidTimeUnit(unitName: string, value: string | number) {
   return `Invalid ${unitName}: ${stringify(value)}.`;
-}
-
-export function dayReplacedWithDate(fullTimeUnit: string) {
-  return `Time unit "${fullTimeUnit}" is not supported. We are replacing it with ${replaceAll(
-    fullTimeUnit,
-    'day',
-    'date'
-  )}.`;
 }
 
 export function droppedDay(d: DateTime | DateTimeExpr) {
