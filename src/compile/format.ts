@@ -18,14 +18,14 @@ import {datumDefToExpr} from './mark/encode/valueref';
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
-let customFormatTypeIndex = new Set();
+export let customFormatTypes = false;
 
-export function setCustomFormatTypes(formatTypes: string[]) {
-  customFormatTypeIndex = new Set(formatTypes);
+export function setCustomFormatTypes(value: boolean) {
+  customFormatTypes = value;
 }
 
 export function isCustomFormatType(formatType: string) {
-  return formatType && formatType !== 'number' && formatType !== 'time' && customFormatTypeIndex.has(formatType);
+  return customFormatTypes && formatType && formatType !== 'number' && formatType !== 'time';
 }
 
 function customFormatExpr(formatType: string, field: string, format: string | object) {

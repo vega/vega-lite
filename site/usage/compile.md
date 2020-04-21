@@ -24,7 +24,7 @@ If provided, the `options` argument should be an object with one or more of the 
 - [`config`](#config) sets a default config
 - [`logger`](#logging) sets a logger
 - [`fieldTitle`](#field-title) sets a field title formatter
-- [`formatTypes`](#format-type) registers a custom formatter that are expression functions registered via Vega View.
+- [`customFormatTypes`](#custom-format-types) allow custom formatters besides the standard formatters.
 
 {:#config}
 
@@ -72,21 +72,13 @@ var vgSpec = vegaLite.compile(vlSpec, {
 }).spec;
 ```
 
-{:#format-type}
+{:#custom-format-types}
 
 ### Providing Custom Formatters
 
 To customize how Vega-Lite formats numbers or text, you can register a new formatter by
 
-(1) passing `formatTypes` in the options to `compile`:
-
-```js
-var vgSpec = vegaLite.compile(vlSpec, {
-  formatTypes: ['customFormatA']
-}).spec;
-```
-
-and then (2) registering [an expression function](https://vega.github.io/vega/docs/api/extensibility/#expressions) that takes a data point and a format parameter as input:
+(1) registering [an expression function](https://vega.github.io/vega/docs/api/extensibility/#expressions) that takes a data point and a format parameter as input:
 
 ```js
 view = new vega.View(...);
@@ -94,6 +86,14 @@ view.expressionFunction('customFormatA', function(datum, params) {
   ...
   return "<formatted string>";
 });
+```
+
+and then (2) passing `customFormatTypes: true` in the options to `compile`:
+
+```js
+var vgSpec = vegaLite.compile(vlSpec, {
+  customFormatTypes: true
+}).spec;
 ```
 
 You can then use this custom format function with `format` and `formatType` properties in text encodings and guides (axis/legend/header).

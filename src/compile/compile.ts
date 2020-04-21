@@ -41,9 +41,11 @@ export interface CompileOptions {
   fieldTitle?: vlFieldDef.FieldTitleFormatter;
 
   /**
-   * Allowed custom format types.
+   * When set to `false` (default), custom format types (i.e. not the standard formatters for `number`, `time`, and `utc`) will be dropped and formatting will fall back to the standard formatters. Set to `true` to allow custom formatters.
+   *
+   * __Default value:__ false
    */
-  formatTypes?: string[];
+  customFormatTypes?: boolean;
 }
 
 /**
@@ -89,8 +91,8 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     vlFieldDef.setTitleFormatter(opt.fieldTitle);
   }
 
-  if (opt.formatTypes) {
-    setCustomFormatTypes(opt.formatTypes);
+  if (opt.customFormatTypes != null) {
+    setCustomFormatTypes(opt.customFormatTypes);
   }
 
   try {

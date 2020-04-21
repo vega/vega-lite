@@ -27,14 +27,14 @@ export interface FormatMixins {
    *
    * See the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.
    *
-   * When used with a [custom `"formatType"`](https://vega.github.io/vega-lite/usage/compile.html#format-type), this value will be passed as `format` alongside `datum.value` to the registered function.
+   * When used with a [custom `"formatType"`](https://vega.github.io/vega-lite/usage/compile.html#custom-format-types), this value will be passed as `format` alongside `datum.value` to the registered function.
    *
    * __Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format.
    */
   format?: string | object;
 
   /**
-   * The format type for labels (`"number"` or `"time"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/compile.html#format-type)).
+   * The format type for labels (`"number"` or `"time"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/compile.html#custom-format-types)).
    *
    *
    * __Default value:__
