@@ -74,9 +74,9 @@ var vgSpec = vegaLite.compile(vlSpec, {
 
 {:#format-type}
 
-### Customizing Formatting Function
+### Providing Custom Formatters
 
-To customize how Vega-Lite format number or text, you can register a new formatter by
+To customize how Vega-Lite formats numbers or text, you can register a new formatter by
 
 (1) passing `formatTypes` in the options to `compile`:
 
@@ -86,7 +86,7 @@ var vgSpec = vegaLite.compile(vlSpec, {
 }).spec;
 ```
 
-and then (2) register [an expression function](https://vega.github.io/vega/docs/api/extensibility/#expressions) that takes a data point and a format parameter as input:
+and then (2) registering [an expression function](https://vega.github.io/vega/docs/api/extensibility/#expressions) that takes a data point and a format parameter as input:
 
 ```js
 view = new vega.View(...);
