@@ -4,6 +4,7 @@ import {Channel, isColorChannel, NonPositionChannel} from '../../channel';
 import {
   DatumDef,
   isFieldOrDatumDefForTimeFormat,
+  isFieldOrDatumDefWithCustomTimeFormat,
   MarkPropFieldOrDatumDef,
   title as fieldDefTitle,
   TypedFieldDef,
@@ -52,15 +53,21 @@ export const legendRules: {
 
   format: ({fieldOrDatumDef, legend, config}) => {
     // We don't include temporal field here as we apply format in encode block
-    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
+    if (
+      isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) ||
+      isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef, config)
+    ) {
       return undefined;
     }
     return numberFormat(fieldOrDatumDef.type, legend.format, config);
   },
 
-  formatType: ({fieldOrDatumDef, legend}) => {
+  formatType: ({fieldOrDatumDef, legend, config}) => {
     // As with format, we don't include temporal field here as we apply format in encode block
-    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
+    if (
+      isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) ||
+      isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef, config)
+    ) {
       return undefined;
     }
     const formatType = legend.formatType;

@@ -7,8 +7,8 @@ import {
   DatumDef,
   isDiscrete,
   isFieldDef,
-  isFieldDefWithCustomTimeFormat as isFieldOrDatumDefWithCustomTimeFormat,
   isFieldOrDatumDefForTimeFormat,
+  isFieldOrDatumDefWithCustomTimeFormat,
   PositionDatumDef,
   PositionFieldDef,
   toFieldDefBase,
@@ -48,15 +48,21 @@ export const axisRules: {
 
   format: ({fieldOrDatumDef, axis, config}) => {
     // We don't include temporal field and custom format as we apply format in encode block
-    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) || isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef)) {
+    if (
+      isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) ||
+      isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef, config)
+    ) {
       return undefined;
     }
     return numberFormat(fieldOrDatumDef.type, axis.format, config);
   },
 
-  formatType: ({fieldOrDatumDef, axis}) => {
+  formatType: ({fieldOrDatumDef, axis, config}) => {
     // As with format, we don't include temporal field and custom format here as we apply format in encode block
-    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) || isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef)) {
+    if (
+      isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) ||
+      isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef, config)
+    ) {
       return undefined;
     }
     const formatType = axis.formatType;

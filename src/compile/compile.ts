@@ -2,7 +2,7 @@ import {AutoSizeType, LoggerInterface, Spec as VgSpec} from 'vega';
 import {isString, mergeConfig} from 'vega-util';
 import {getPositionScaleChannel} from '../channel';
 import * as vlFieldDef from '../channeldef';
-import {initConfig, stripAndRedirectConfig} from '../config';
+import {Config, initConfig, stripAndRedirectConfig} from '../config';
 import * as log from '../log';
 import {normalize} from '../normalize';
 import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec';
@@ -15,11 +15,9 @@ import {
   TopLevelProperties
 } from '../spec/toplevel';
 import {keys} from '../util';
-import {Config} from '../config';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
 import {optimizeDataflow} from './data/optimize';
-import {setCustomFormatTypes} from './format';
 import {Model} from './model';
 
 // import {draw} from './data/debug';
@@ -39,11 +37,6 @@ export interface CompileOptions {
    * Sets a field title formatter.
    */
   fieldTitle?: vlFieldDef.FieldTitleFormatter;
-
-  /**
-   * Allowed custom format types.
-   */
-  formatTypes?: string[];
 }
 
 /**
@@ -87,10 +80,6 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
   if (opt.fieldTitle) {
     // set the singleton field title formatter
     vlFieldDef.setTitleFormatter(opt.fieldTitle);
-  }
-
-  if (opt.formatTypes) {
-    setCustomFormatTypes(opt.formatTypes);
   }
 
   try {

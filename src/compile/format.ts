@@ -18,14 +18,8 @@ import {datumDefToExpr} from './mark/encode/valueref';
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
-let customFormatTypeIndex = new Set();
-
-export function setCustomFormatTypes(formatTypes: string[]) {
-  customFormatTypeIndex = new Set(formatTypes);
-}
-
-export function isCustomFormatType(formatType: string) {
-  return formatType && formatType !== 'number' && formatType !== 'time' && customFormatTypeIndex.has(formatType);
+export function isCustomFormatType(formatType: string, config: Config) {
+  return config.customFormatTypes && formatType && formatType !== 'number' && formatType !== 'time';
 }
 
 function customFormatExpr(formatType: string, field: string, format: string | object) {
@@ -73,7 +67,7 @@ export function formatSignalRef({
 
   const defaultTimeFormat = omitTimeFormatConfig ? null : config.timeFormat;
 
-  if (isCustomFormatType(formatType)) {
+  if (isCustomFormatType(formatType, config)) {
     if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
       const endField = vgField(fieldOrDatumDef, {expr, binSuffix: 'end'});
       return {
@@ -134,7 +128,7 @@ function formatExpr(field: string, format: string) {
 }
 
 function binNumberFormatExpr(field: string, format: string | object, formatType: string, config: Config) {
-  if (isCustomFormatType(formatType)) {
+  if (isCustomFormatType(formatType, config)) {
     return customFormatExpr(formatType, field, format);
   }
 
