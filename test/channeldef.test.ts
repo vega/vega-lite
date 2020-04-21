@@ -11,7 +11,6 @@ import {
 } from '../src/channeldef';
 import * as log from '../src/log';
 import {FacetFieldDef} from '../src/spec/facet';
-import {TimeUnit} from '../src/timeunit';
 import {QUANTITATIVE, TEMPORAL} from '../src/type';
 
 describe('fieldDef', () => {
@@ -82,25 +81,6 @@ describe('fieldDef', () => {
         header: {labelOrient: 'bottom', titleOrient: 'bottom'}
       });
     });
-
-    it(
-      'normalizes yearmonthday to become yearmonthdate.',
-      log.wrap(localLogger => {
-        const fieldDef: TypedFieldDef<string> = {
-          timeUnit: 'yearmonthday' as TimeUnit, // Need to cast here as this is intentionally wrong
-          field: 'a',
-          type: 'temporal'
-        };
-        expect(initChannelDef(fieldDef, 'x')).toEqual({
-          timeUnit: {
-            unit: 'yearmonthdate'
-          },
-          field: 'a',
-          type: 'temporal'
-        });
-        expect(localLogger.warns[0]).toEqual(log.message.dayReplacedWithDate('yearmonthday'));
-      })
-    );
 
     it(
       'should replace other type with quantitative for a field with counting aggregate.',

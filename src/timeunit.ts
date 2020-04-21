@@ -1,8 +1,7 @@
 import stringify from 'fast-json-stable-stringify';
 import {isObject, isString} from 'vega-util';
 import {DateTimeExpr, dateTimeExprToExpr} from './datetime';
-import * as log from './log';
-import {accessPathWithDatum, keys, replaceAll, varName} from './util';
+import {accessPathWithDatum, keys, varName} from './util';
 
 /** Time Unit that only corresponds to only one part of Date objects. */
 export const LOCAL_SINGLE_TIMEUNIT_INDEX = {
@@ -281,12 +280,12 @@ export function normalizeTimeUnit(timeUnit: TimeUnit | TimeUnitParams): TimeUnit
   let params: TimeUnitParams;
   if (isString(timeUnit)) {
     params = {
-      unit: correctTimeUnit(timeUnit)
+      unit: timeUnit
     };
   } else if (isObject(timeUnit)) {
     params = {
       ...timeUnit,
-      ...(timeUnit.unit ? {unit: correctTimeUnit(timeUnit.unit)} : {})
+      ...(timeUnit.unit ? {unit: timeUnit.unit} : {})
     };
   }
 
@@ -296,15 +295,6 @@ export function normalizeTimeUnit(timeUnit: TimeUnit | TimeUnitParams): TimeUnit
   }
 
   return params;
-}
-
-export function correctTimeUnit(timeUnit: TimeUnit) {
-  if (timeUnit !== 'day' && timeUnit.indexOf('day') >= 0) {
-    log.warn(log.message.dayReplacedWithDate(timeUnit));
-    return replaceAll(timeUnit, 'day', 'date') as TimeUnit;
-  }
-
-  return timeUnit;
 }
 
 export function timeUnitToString(tu: TimeUnit | TimeUnitParams) {
