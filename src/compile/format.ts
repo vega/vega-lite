@@ -28,7 +28,7 @@ export function isCustomFormatType(formatType: string) {
   return formatType && formatType !== 'number' && formatType !== 'time' && customFormatTypeIndex.has(formatType);
 }
 
-function customFormatExpr({formatType, field, format}: {formatType: string; field: string; format: string | object}) {
+function customFormatExpr(formatType: string, field: string, format: string | object) {
   return `${formatType}(${field}, ${JSON.stringify(format)})`;
 }
 
@@ -80,7 +80,7 @@ export function formatSignalRef({
         signal: binFormatExpression(field, endField, format, formatType, config)
       };
     }
-    return {signal: customFormatExpr({formatType, format, field})};
+    return {signal: customFormatExpr(formatType, field, format)};
   } else if (formatType) {
     formatType = undefined; // drop unregistered custom formatType
   }
@@ -135,7 +135,7 @@ function formatExpr(field: string, format: string) {
 
 function binNumberFormatExpr(field: string, format: string | object, formatType: string, config: Config) {
   if (isCustomFormatType(formatType)) {
-    return customFormatExpr({formatType, field, format});
+    return customFormatExpr(formatType, field, format);
   }
 
   return formatExpr(field, (isString(format) ? format : undefined) ?? config.numberFormat);
