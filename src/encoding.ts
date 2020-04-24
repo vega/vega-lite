@@ -40,7 +40,7 @@ import {
   X2,
   Y,
   Y2,
-  ARIA_LABEL
+  DESCRIPTION
 } from './channel';
 import {
   binRequiresRange,
@@ -325,7 +325,7 @@ export interface Encoding<F extends Field> {
   /**
    * A string that labels the axis group for accessibility.
    */
-  ariaLabel?: StringFieldDefWithCondition<F> | StringValueOrSignalDefWithCondition<F>;
+  description?: StringFieldDefWithCondition<F> | StringValueOrSignalDefWithCondition<F>;
 
   /**
    * Order of the marks.
@@ -648,7 +648,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case X:
       case Y:
       case HREF:
-      case ARIA_LABEL:
+      case DESCRIPTION:
       case URL:
       case X2:
       case Y2:

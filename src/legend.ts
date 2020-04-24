@@ -255,10 +255,8 @@ export const defaultLegendConfig: LegendConfig = {
 };
 
 export const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
-  ariaHidden: 1,
-  ariaLabel: 1,
-  ariaRole: 1,
-  ariaRoleDescription: 1,
+  aria: 1,
+  description: 1,
   clipHeight: 1,
   columnPadding: 1,
   columns: 1,

@@ -160,20 +160,16 @@
           "minimum": 0,
           "type": "number"
         },
-        "ariaHidden": {
-          "description": "If set to `true`, removes marks from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
           "type": "boolean"
         },
-        "ariaLabel": {
-          "description": "A string that labels the mark for accessibility.",
-          "type": "string"
-        },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
           "type": "string"
         },
         "aspect": {
@@ -222,6 +218,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -625,29 +625,25 @@
     "Axis": {
       "additionalProperties": false,
       "properties": {
-        "ariaHidden": {
-          "description": "If set to `true`, removes the axis from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the axis from the ARIA accessibility tree.\n\n__Default value:__ `true`",
           "type": "boolean"
-        },
-        "ariaLabel": {
-          "description": "A string that labels the axis group for accessibility.",
-          "type": "string"
-        },
-        "ariaRole": {
-          "description": "Sets the type of user interface element of the axis group for accessibility.\n\n__Default value__: `\"graphics-object\"`",
-          "type": "string"
-        },
-        "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the axis group.\n\n__Default value__: `\"axis\"`",
-          "type": "string"
         },
         "bandPosition": {
           "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
           "type": "number"
         },
+        "description": {
+          "description": "A text description of this axis for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
+          "type": "string"
+        },
         "domain": {
           "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
           "type": "boolean"
+        },
+        "domainCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for the domain line's ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "domainColor": {
           "anyOf": [
@@ -697,6 +693,10 @@
         "grid": {
           "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.",
           "type": "boolean"
+        },
+        "gridCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for grid lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "gridColor": {
           "anyOf": [
@@ -974,6 +974,10 @@
           ],
           "type": "string"
         },
+        "tickCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for the tick lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+        },
         "tickColor": {
           "anyOf": [
             {
@@ -1211,25 +1215,17 @@
     "AxisConfig": {
       "additionalProperties": false,
       "properties": {
-        "ariaHidden": {
-          "description": "If set to `true`, removes the axis from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the axis from the ARIA accessibility tree.\n\n__Default value:__ `true`",
           "type": "boolean"
-        },
-        "ariaLabel": {
-          "description": "A string that labels the axis group for accessibility.",
-          "type": "string"
-        },
-        "ariaRole": {
-          "description": "Sets the type of user interface element of the axis group for accessibility.\n\n__Default value__: `\"graphics-object\"`",
-          "type": "string"
-        },
-        "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the axis group.\n\n__Default value__: `\"axis\"`",
-          "type": "string"
         },
         "bandPosition": {
           "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
           "type": "number"
+        },
+        "description": {
+          "description": "A text description of this axis for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
+          "type": "string"
         },
         "disable": {
           "description": "Disable axis by default.",
@@ -1238,6 +1234,10 @@
         "domain": {
           "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
           "type": "boolean"
+        },
+        "domainCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for the domain line's ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "domainColor": {
           "anyOf": [
@@ -1287,6 +1287,10 @@
         "grid": {
           "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.",
           "type": "boolean"
+        },
+        "gridCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for grid lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "gridColor": {
           "anyOf": [
@@ -1564,6 +1568,10 @@
           ],
           "type": "string"
         },
+        "tickCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for the tick lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+        },
         "tickColor": {
           "anyOf": [
             {
@@ -1832,20 +1840,16 @@
           "minimum": 0,
           "type": "number"
         },
-        "ariaHidden": {
-          "description": "If set to `true`, removes marks from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
           "type": "boolean"
         },
-        "ariaLabel": {
-          "description": "A string that labels the mark for accessibility.",
-          "type": "string"
-        },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
           "type": "string"
         },
         "aspect": {
@@ -1908,6 +1912,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -2274,21 +2282,9 @@
           "description": "Angle in degrees of title and subtitle text.",
           "type": "number"
         },
-        "ariaHidden": {
-          "description": "If set to `true`, removes the subtitle from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the title from the ARIA accessibility tree.\n\n__Default value:__ `true`",
           "type": "boolean"
-        },
-        "ariaLabel": {
-          "description": "A string that labels the subtitle for accessibility.",
-          "type": "string"
-        },
-        "ariaRole": {
-          "description": "Sets the type of user interface element of the subtitle for accessibility.",
-          "type": "string"
-        },
-        "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the subtitle.\n\n__Default value__: `\"subtitle\"`",
-          "type": "string"
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
@@ -2304,6 +2300,10 @@
             }
           ],
           "description": "Text color for title text."
+        },
+        "description": {
+          "description": "A text description of this title for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified no description will be provided.",
+          "type": "string"
         },
         "dx": {
           "description": "Delta offset for title and subtitle text x-coordinate.",
@@ -2394,8 +2394,9 @@
           "description": "The padding in pixels between title and subtitle text.",
           "type": "number"
         },
-        "tabindex": {
-          "description": "Indicates that the subtitle can be focused, and where it participates in sequential keyboard navigation.",
+        "zindex": {
+          "description": "The integer z-index indicating the layering of the title group relative to other axis, mark, and legend groups.\n\n__Default value:__ `0`.",
+          "minimum": 0,
           "type": "number"
         }
       },
@@ -3150,23 +3151,6 @@
           ],
           "description": "Rotation angle of point and text marks."
         },
-        "ariaLabel": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/StringValueWithCondition"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/StringFieldDef"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "A string that labels the axis group for accessibility."
-        },
         "color": {
           "anyOf": [
             {
@@ -3180,6 +3164,17 @@
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
+        },
+        "description": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StringFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+            }
+          ],
+          "description": "A string that labels the axis group for accessibility."
         },
         "detail": {
           "anyOf": [
@@ -6827,23 +6822,6 @@
           ],
           "description": "Rotation angle of point and text marks."
         },
-        "ariaLabel": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/StringFieldDefWithCondition"
-            },
-            {
-              "$ref": "#/definitions/StringValueWithCondition"
-            },
-            {
-              "items": {
-                "$ref": "#/definitions/StringFieldDef"
-              },
-              "type": "array"
-            }
-          ],
-          "description": "A string that labels the axis group for accessibility."
-        },
         "color": {
           "anyOf": [
             {
@@ -6861,6 +6839,17 @@
         "column": {
           "$ref": "#/definitions/RowColumnEncodingFieldDef",
           "description": "A field definition for the horizontal facet of trellis plots."
+        },
+        "description": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StringFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+            }
+          ],
+          "description": "A string that labels the axis group for accessibility."
         },
         "detail": {
           "anyOf": [
@@ -10646,21 +10635,9 @@
       "additionalProperties": false,
       "description": "Properties of a legend or boolean flag for determining whether to show it.",
       "properties": {
-        "ariaHidden": {
-          "description": "If set to `true`, removes the legend from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the legend from the ARIA accessibility tree.\n\n__Default value:__ `true`",
           "type": "boolean"
-        },
-        "ariaLabel": {
-          "description": "A string that labels the legend group for accessibility.",
-          "type": "string"
-        },
-        "ariaRole": {
-          "description": "Sets the type of user interface element of the legend group for accessibility.\n\n__Default value__: `\"graphics-object\"`",
-          "type": "string"
-        },
-        "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the legend group.\n\n__Default value__: `\"legend\"`",
-          "type": "string"
         },
         "clipHeight": {
           "description": "The height in pixels to clip symbol legend entries and limit their size.",
@@ -10677,6 +10654,10 @@
         "cornerRadius": {
           "description": "Corner radius for the full legend.",
           "type": "number"
+        },
+        "description": {
+          "description": "A text description of this legend for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
+          "type": "string"
         },
         "direction": {
           "$ref": "#/definitions/Orientation",
@@ -11040,21 +11021,9 @@
     "LegendConfig": {
       "additionalProperties": false,
       "properties": {
-        "ariaHidden": {
-          "description": "If set to `true`, removes the legend from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the legend from the ARIA accessibility tree.\n\n__Default value:__ `true`",
           "type": "boolean"
-        },
-        "ariaLabel": {
-          "description": "A string that labels the legend group for accessibility.",
-          "type": "string"
-        },
-        "ariaRole": {
-          "description": "Sets the type of user interface element of the legend group for accessibility.\n\n__Default value__: `\"graphics-object\"`",
-          "type": "string"
-        },
-        "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the legend group.\n\n__Default value__: `\"legend\"`",
-          "type": "string"
         },
         "clipHeight": {
           "description": "The height in pixels to clip symbol legend entries and limit their size.",
@@ -11071,6 +11040,10 @@
         "cornerRadius": {
           "description": "Corner radius for the full legend.",
           "type": "number"
+        },
+        "description": {
+          "description": "A text description of this legend for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
+          "type": "string"
         },
         "direction": {
           "$ref": "#/definitions/Orientation",
@@ -11419,6 +11392,11 @@
         "unselectedOpacity": {
           "description": "The opacity of unselected legend entries.\n\n__Default value:__ 0.35.",
           "type": "number"
+        },
+        "zindex": {
+          "description": "The integer z-index indicating the layering of the legend group relative to other axis, mark, and legend groups.",
+          "minimum": 0,
+          "type": "number"
         }
       },
       "type": "object"
@@ -11562,20 +11540,16 @@
           "minimum": 0,
           "type": "number"
         },
-        "ariaHidden": {
-          "description": "If set to `true`, removes marks from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
           "type": "boolean"
         },
-        "ariaLabel": {
-          "description": "A string that labels the mark for accessibility.",
-          "type": "string"
-        },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
           "type": "string"
         },
         "aspect": {
@@ -11624,6 +11598,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -12323,20 +12301,16 @@
           "minimum": 0,
           "type": "number"
         },
-        "ariaHidden": {
-          "description": "If set to `true`, removes marks from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
           "type": "boolean"
         },
-        "ariaLabel": {
-          "description": "A string that labels the mark for accessibility.",
-          "type": "string"
-        },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
           "type": "string"
         },
         "aspect": {
@@ -12385,6 +12359,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -12714,20 +12692,16 @@
           "minimum": 0,
           "type": "number"
         },
-        "ariaHidden": {
-          "description": "If set to `true`, removes marks from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
           "type": "boolean"
         },
-        "ariaLabel": {
-          "description": "A string that labels the mark for accessibility.",
-          "type": "string"
-        },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
           "type": "string"
         },
         "aspect": {
@@ -12799,6 +12773,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -13725,20 +13703,16 @@
           "minimum": 0,
           "type": "number"
         },
-        "ariaHidden": {
-          "description": "If set to `true`, removes marks from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
           "type": "boolean"
         },
-        "ariaLabel": {
-          "description": "A string that labels the mark for accessibility.",
-          "type": "string"
-        },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
           "type": "string"
         },
         "aspect": {
@@ -13791,6 +13765,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -15061,20 +15039,16 @@
           "minimum": 0,
           "type": "number"
         },
-        "ariaHidden": {
-          "description": "If set to `true`, removes marks from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
           "type": "boolean"
         },
-        "ariaLabel": {
-          "description": "A string that labels the mark for accessibility.",
-          "type": "string"
-        },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
           "type": "string"
         },
         "aspect": {
@@ -15133,6 +15107,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -16561,7 +16539,7 @@
         "text",
         "href",
         "url",
-        "ariaLabel"
+        "description"
       ],
       "type": "string"
     },
@@ -17290,20 +17268,16 @@
           "minimum": 0,
           "type": "number"
         },
-        "ariaHidden": {
-          "description": "If set to `true`, removes marks from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
           "type": "boolean"
         },
-        "ariaLabel": {
-          "description": "A string that labels the mark for accessibility.",
-          "type": "string"
-        },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark for accessibility.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
           "type": "string"
         },
         "aspect": {
@@ -17357,6 +17331,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -17829,21 +17807,9 @@
           "description": "Angle in degrees of title and subtitle text.",
           "type": "number"
         },
-        "ariaHidden": {
-          "description": "If set to `true`, removes the subtitle from the accessibility tree.",
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the title from the ARIA accessibility tree.\n\n__Default value:__ `true`",
           "type": "boolean"
-        },
-        "ariaLabel": {
-          "description": "A string that labels the subtitle for accessibility.",
-          "type": "string"
-        },
-        "ariaRole": {
-          "description": "Sets the type of user interface element of the subtitle for accessibility.",
-          "type": "string"
-        },
-        "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the subtitle.\n\n__Default value__: `\"subtitle\"`",
-          "type": "string"
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
@@ -17859,6 +17825,10 @@
             }
           ],
           "description": "Text color for title text."
+        },
+        "description": {
+          "description": "A text description of this title for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified no description will be provided.",
+          "type": "string"
         },
         "dx": {
           "description": "Delta offset for title and subtitle text x-coordinate.",
@@ -17965,10 +17935,6 @@
         },
         "subtitlePadding": {
           "description": "The padding in pixels between title and subtitle text.",
-          "type": "number"
-        },
-        "tabindex": {
-          "description": "Indicates that the subtitle can be focused, and where it participates in sequential keyboard navigation.",
           "type": "number"
         },
         "text": {

@@ -320,6 +320,7 @@ export const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'tit
  */
 export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> = {
   grid: 'grid',
+  gridCap: 'grid',
   gridColor: 'grid',
   gridDash: 'grid',
   gridDashOffset: 'grid',
@@ -331,11 +332,10 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
 
   bandPosition: 'both', // Need to be applied to grid axis too, so the grid will align with ticks.
 
-  ariaHidden: 'main',
-  ariaLabel: 'main',
-  ariaRole: 'main',
-  ariaRoleDescription: 'main',
+  aria: 'main',
+  description: 'main',
   domain: 'main',
+  domainCap: 'main',
   domainColor: 'main',
   domainDash: 'main',
   domainDashOffset: 'main',
@@ -356,8 +356,8 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   labelFontWeight: 'main',
   labelLimit: 'main',
   labelLineHeight: 'main',
-  labelOpacity: 'main',
   labelOffset: 'main',
+  labelOpacity: 'main',
   labelOverlap: 'main',
   labelPadding: 'main',
   labels: 'main',
@@ -366,6 +366,7 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   minExtent: 'main',
   offset: 'both',
   position: 'main',
+  tickCap: 'main',
   tickColor: 'main',
   tickDash: 'main',
   tickDashOffset: 'main',
@@ -438,12 +439,11 @@ export interface AxisEncoding {
 export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   orient: 1, // other things can depend on orient
 
-  ariaHidden: 1,
-  ariaLabel: 1,
-  ariaRole: 1,
-  ariaRoleDescription: 1,
+  aria: 1,
   bandPosition: 1,
+  description: 1,
   domain: 1,
+  domainCap: 1,
   domainColor: 1,
   domainDash: 1,
   domainDashOffset: 1,
@@ -452,6 +452,7 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   format: 1,
   formatType: 1,
   grid: 1,
+  gridCap: 1,
   gridColor: 1,
   gridDash: 1,
   gridDashOffset: 1,
@@ -481,6 +482,7 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   offset: 1,
   position: 1,
   tickBand: 1,
+  tickCap: 1,
   tickColor: 1,
   tickCount: 1,
   tickDash: 1,
@@ -509,8 +511,8 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   titlePadding: 1,
   titleX: 1,
   titleY: 1,
-  values: 1,
   translate: 1,
+  values: 1,
   zindex: 1
 };
 

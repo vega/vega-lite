@@ -8,40 +8,39 @@ import {tooltipData} from './tooltip';
 export function aria(model: UnitModel) {
   const {mark, markDef, config} = model;
 
-  const ariaHidden = getMarkPropOrConfig('ariaHidden', markDef, config);
+  const enableAria = getMarkPropOrConfig('aria', markDef, config);
 
   // we can ignore other aria properties if ariaHidden is true
-  if (ariaHidden === true) {
+  if (enableAria === false) {
     return {
-      ariaHidden: {
-        value: true
+      aria: {
+        value: false
       }
     };
   }
 
   return {
-    ...(ariaHidden ? {ariaHidden} : {}),
+    ...(enableAria ? {aria: enableAria} : {}),
     ariaRoleDescription: {value: mark},
-    ariaRole: {value: 'graphics-symbol'},
-    ...ariaLabel(model)
+    ...description(model)
   };
 }
 
-export function ariaLabel(model: UnitModel) {
+export function description(model: UnitModel) {
   const {encoding, markDef, config, stack} = model;
-  const channelDef = encoding.ariaLabel;
+  const channelDef = encoding.description;
 
   if (channelDef) {
-    return wrapCondition(model, channelDef, 'ariaLabel', cDef => textRef(cDef, model.config));
+    return wrapCondition(model, channelDef, 'description', cDef => textRef(cDef, model.config));
   }
 
   // Use default from mark def or config if defined.
   // Functions in encode usually just return undefined but since we are defining a default below, we need to check the default here.
-  const ariaLabelValue = getMarkPropOrConfig('ariaLabel', markDef, config);
-  if (ariaLabelValue != null) {
+  const descriptionValue = getMarkPropOrConfig('description', markDef, config);
+  if (descriptionValue != null) {
     return {
-      ariaLabel: {
-        value: ariaLabelValue
+      description: {
+        value: descriptionValue
       }
     };
   }
@@ -49,10 +48,10 @@ export function ariaLabel(model: UnitModel) {
   const data = tooltipData(encoding, stack, config);
 
   return {
-    ariaLabel: {
+    description: {
       signal: entries(data)
-        .map(({key, value}) => `${key} + " is " + (${value})`)
-        .join(' + ", " + ')
+        .map(({key, value}) => `${key} + ": " + (${value})`)
+        .join(' + "; " + ')
     }
   };
 }

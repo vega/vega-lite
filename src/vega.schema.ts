@@ -285,8 +285,8 @@ export type VgEncodeEntry = Partial<Record<VgEncodeChannel, VgValueRef | (VgValu
 export type VgPostEncodingTransform = VgGeoShapeTransform;
 
 const VG_MARK_CONFIG_INDEX: Flag<keyof MarkConfig> = {
-  ariaHidden: 1,
-  ariaLabel: 1,
+  aria: 1,
+  description: 1,
   ariaRole: 1,
   ariaRoleDescription: 1,
   blend: 1,

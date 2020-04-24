@@ -21,12 +21,9 @@ describe('compile/mark/encoding/aria', () => {
     const ariaMixins = aria(model);
 
     expect(ariaMixins).toEqual({
-      ariaLabel: {
+      description: {
         signal:
-          '"category" + " is " + (isValid(datum["category"]) ? datum["category"] : ""+datum["category"]) + ", " + "value" + " is " + (format(datum["value"], ""))'
-      },
-      ariaRole: {
-        value: 'graphics-symbol'
+          '"category" + ": " + (isValid(datum["category"]) ? datum["category"] : ""+datum["category"]) + ", " + "value" + ": " + (format(datum["value"], ""))'
       },
       ariaRoleDescription: {
         value: 'bar'
@@ -34,11 +31,11 @@ describe('compile/mark/encoding/aria', () => {
     });
   });
 
-  it('ariaHidden should hide everything', () => {
+  it('aria set to false should hide everything', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: {
         type: 'bar',
-        ariaHidden: true
+        aria: false
       },
       encoding: {
         x: {
@@ -56,8 +53,8 @@ describe('compile/mark/encoding/aria', () => {
     const ariaMixins = aria(model);
 
     expect(ariaMixins).toEqual({
-      ariaHidden: {
-        value: true
+      aria: {
+        value: false
       }
     });
   });
