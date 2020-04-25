@@ -45,7 +45,8 @@ describe('channel', () => {
           'label',
           'tooltip',
           'href',
-          'url'
+          'url',
+          'description'
         ])
       );
     });

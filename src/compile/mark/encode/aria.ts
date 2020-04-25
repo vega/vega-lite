@@ -1,5 +1,6 @@
-import {entries} from '../../../util';
+import {entries, keys} from '../../../util';
 import {getMarkPropOrConfig} from '../../common';
+import {VG_MARK_INDEX} from './../../../vega.schema';
 import {UnitModel} from './../../unit';
 import {wrapCondition} from './conditional';
 import {textRef} from './text';
@@ -21,7 +22,7 @@ export function aria(model: UnitModel) {
 
   return {
     ...(enableAria ? {aria: enableAria} : {}),
-    ariaRoleDescription: {value: mark},
+    ...(mark in VG_MARK_INDEX ? {} : {ariaRoleDescription: {value: mark}}),
     ...description(model)
   };
 }
@@ -46,6 +47,10 @@ export function description(model: UnitModel) {
   }
 
   const data = tooltipData(encoding, stack, config);
+
+  if (keys(data).length === 0) {
+    return undefined;
+  }
 
   return {
     description: {
