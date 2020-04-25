@@ -15,7 +15,7 @@ import {Projection} from '../projection';
 import {ScaleType} from '../scale';
 import {GenericSpec} from '../spec';
 import {Type} from '../type';
-import {replaceAll, stringify} from '../util';
+import {stringify} from '../util';
 import {VgSortField} from '../vega.schema';
 
 export function invalidSpec(spec: GenericSpec<any, any, any, any>) {
@@ -268,10 +268,17 @@ export function domainSortDropped(sort: VgSortField) {
   )} as unioned domains only support boolean or op "count", "min", and "max".`;
 }
 
-export const UNABLE_TO_MERGE_DOMAINS = 'Unable to merge domains.';
-
 export const MORE_THAN_ONE_SORT =
   'Domains that should be unioned has conflicting sort properties. Sort will be set to true.';
+
+export const FACETED_INDEPENDENT_DIFFERENT_SOURCES =
+  'Detected faceted independent scales that union domain of multiple fields from different data sources. We will use the first field. The result view size may be incorrect.';
+
+export const FACETED_INDEPENDENT_SAME_FIELDS_DIFFERENT_SOURCES =
+  'Detected faceted independent scales that union domain of the same fields from different source. We will assume that this is the same field from a different fork of the same data source. However, if this is not the case, the result view size may be incorrect.';
+
+export const FACETED_INDEPENDENT_SAME_SOURCE =
+  'Detected faceted independent scales that union domain of multiple fields from the same data source. We will use the first field. The result view size may be incorrect.';
 
 // AXIS
 export const INVALID_CHANNEL_FOR_AXIS = 'Invalid channel for axis.';
@@ -292,14 +299,6 @@ export function stackNonSummativeAggregate(aggregate: Aggregate | string) {
 // TIMEUNIT
 export function invalidTimeUnit(unitName: string, value: string | number) {
   return `Invalid ${unitName}: ${stringify(value)}.`;
-}
-
-export function dayReplacedWithDate(fullTimeUnit: string) {
-  return `Time unit "${fullTimeUnit}" is not supported. We are replacing it with ${replaceAll(
-    fullTimeUnit,
-    'day',
-    'date'
-  )}.`;
 }
 
 export function droppedDay(d: DateTime | DateTimeExpr) {

@@ -18,17 +18,11 @@ import {datumDefToExpr} from './mark/encode/valueref';
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
-let customFormatTypeIndex = new Set();
-
-export function setCustomFormatTypes(formatTypes: string[]) {
-  customFormatTypeIndex = new Set(formatTypes);
+export function isCustomFormatType(formatType: string, config: Config) {
+  return config.customFormatTypes && formatType && formatType !== 'number' && formatType !== 'time';
 }
 
-export function isCustomFormatType(formatType: string) {
-  return formatType && formatType !== 'number' && formatType !== 'time' && customFormatTypeIndex.has(formatType);
-}
-
-function customFormatExpr({formatType, field, format}: {formatType: string; field: string; format: string | object}) {
+function customFormatExpr(formatType: string, field: string, format: string | object) {
   return `${formatType}(${field}, ${JSON.stringify(format)})`;
 }
 
@@ -73,14 +67,14 @@ export function formatSignalRef({
 
   const defaultTimeFormat = omitTimeFormatConfig ? null : config.timeFormat;
 
-  if (isCustomFormatType(formatType)) {
+  if (isCustomFormatType(formatType, config)) {
     if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
       const endField = vgField(fieldOrDatumDef, {expr, binSuffix: 'end'});
       return {
         signal: binFormatExpression(field, endField, format, formatType, config)
       };
     }
-    return {signal: customFormatExpr({formatType, format, field})};
+    return {signal: customFormatExpr(formatType, field, format)};
   } else if (formatType) {
     formatType = undefined; // drop unregistered custom formatType
   }
@@ -134,8 +128,8 @@ function formatExpr(field: string, format: string) {
 }
 
 function binNumberFormatExpr(field: string, format: string | object, formatType: string, config: Config) {
-  if (isCustomFormatType(formatType)) {
-    return customFormatExpr({formatType, field, format});
+  if (isCustomFormatType(formatType, config)) {
+    return customFormatExpr(formatType, field, format);
   }
 
   return formatExpr(field, (isString(format) ? format : undefined) ?? config.numberFormat);

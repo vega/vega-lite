@@ -312,12 +312,12 @@ describe('Selection + Scales', () => {
       const hp = signals.filter(s => s.name === 'grid_Horsepower') as PushSignal[];
       const mpg = signals.filter(s => s.name === 'grid_Miles_per_Gallon') as PushSignal[];
 
-      expect(hp.length).toBe(1);
+      expect(hp).toHaveLength(1);
       expect(hp[0].push).toBe('outer');
       expect(hp[0]).not.toHaveProperty('value');
       expect(hp[0]).not.toHaveProperty('update');
 
-      expect(mpg.length).toBe(1);
+      expect(mpg).toHaveLength(1);
       expect(mpg[0].push).toBe('outer');
       expect(mpg[0]).not.toHaveProperty('value');
       expect(mpg[0]).not.toHaveProperty('update');
@@ -329,17 +329,17 @@ describe('Selection + Scales', () => {
       const mpg = signals.filter(s => s.name === 'grid_Miles_per_Gallon');
       let named = signals.filter(s => s.name === 'grid') as NewSignal[];
 
-      expect(hp.length).toBe(1);
-      expect(mpg.length).toBe(1);
-      expect(named.length).toBe(1);
+      expect(hp).toHaveLength(1);
+      expect(mpg).toHaveLength(1);
+      expect(named).toHaveLength(1);
       expect(named[0].update).toBe('{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower}');
 
       const signals2 = assembleTopLevelSignals(repeatModel.children[1] as UnitModel, signals);
       const acc = signals2.filter(s => s.name === 'grid_Acceleration');
       named = signals2.filter(s => s.name === 'grid');
 
-      expect(acc.length).toBe(1);
-      expect(named.length).toBe(1);
+      expect(acc).toHaveLength(1);
+      expect(named).toHaveLength(1);
       expect(named[0].update).toEqual(
         '{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower, "Acceleration": grid_Acceleration}'
       );

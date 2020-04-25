@@ -1,10 +1,9 @@
 import {X, Y} from '../../../src/channel';
-import {setCustomFormatTypes} from '../../../src/compile/format';
+import {BIN_RANGE_DELIMITER} from '../../../src/compile/common';
 import {text} from '../../../src/compile/mark/text';
 import {UnitModel} from '../../../src/compile/unit';
 import {NormalizedUnitSpec, TopLevel, TopLevelSpec} from '../../../src/spec';
 import {parseModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
-import {BIN_RANGE_DELIMITER} from '../../../src/compile/common';
 
 describe('Mark: Text', () => {
   describe('with stacked x', () => {
@@ -61,16 +60,16 @@ describe('Mark: Text', () => {
   });
 
   describe('with custom formatType', () => {
-    const spec: NormalizedUnitSpec = {
+    const spec: TopLevel<NormalizedUnitSpec> = {
       mark: 'text',
       encoding: {
         text: {field: 'foo', type: 'quantitative', format: 'd', formatType: 'numberFormat'}
-      }
+      },
+      config: {customFormatTypes: true}
     };
-    setCustomFormatTypes(['numberFormat']);
+
     const model = parseUnitModelWithScaleAndLayoutSize(spec);
     const props = text.encodeEntry(model);
-    setCustomFormatTypes([]);
 
     it('should use custom formatter', () => {
       expect(props.text).toEqual({signal: `numberFormat(datum["foo"], "d")`});

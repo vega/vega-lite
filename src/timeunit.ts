@@ -1,8 +1,7 @@
 import stringify from 'fast-json-stable-stringify';
 import {isObject, isString} from 'vega-util';
 import {DateTimeExpr, dateTimeExprToExpr} from './datetime';
-import * as log from './log';
-import {accessPathWithDatum, keys, replaceAll, varName} from './util';
+import {accessPathWithDatum, keys, varName} from './util';
 
 /** Time Unit that only corresponds to only one part of Date objects. */
 export const LOCAL_SINGLE_TIMEUNIT_INDEX = {
@@ -190,12 +189,15 @@ export const VEGALITE_TIMEFORMAT: TimeFormatConfig = {
 };
 
 export function getTimeUnitParts(timeUnit: TimeUnit) {
-  return TIMEUNIT_PARTS.reduce((parts, part) => {
+  const parts: LocalSingleTimeUnit[] = [];
+
+  for (const part of TIMEUNIT_PARTS) {
     if (containsTimeUnit(timeUnit, part)) {
-      return [...parts, part];
+      parts.push(part);
     }
-    return parts;
-  }, []);
+  }
+
+  return parts;
 }
 
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
@@ -207,7 +209,7 @@ export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
 }
 
 /**
- * Returns Vega expresssion for a given timeUnit and fieldRef
+ * Returns Vega expression for a given timeUnit and fieldRef
  */
 export function fieldExpr(fullTimeUnit: TimeUnit, field: string, {end}: {end: boolean} = {end: false}): string {
   const fieldRef = accessPathWithDatum(field);
@@ -225,19 +227,20 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string, {end}: {end: bo
 
   let lastTimeUnit: TimeUnit;
 
-  const d = TIMEUNIT_PARTS.reduce((dateExpr: DateTimeExpr, tu: TimeUnit) => {
-    if (containsTimeUnit(fullTimeUnit, tu)) {
-      dateExpr[tu] = func(tu);
-      lastTimeUnit = tu;
-    }
-    return dateExpr;
-  }, {} as Record<SingleTimeUnit, string>);
+  const dateExpr: DateTimeExpr = {};
 
-  if (end) {
-    d[lastTimeUnit] += '+1';
+  for (const part of TIMEUNIT_PARTS) {
+    if (containsTimeUnit(fullTimeUnit, part)) {
+      dateExpr[part] = func(part);
+      lastTimeUnit = part;
+    }
   }
 
-  return dateTimeExprToExpr(d);
+  if (end) {
+    dateExpr[lastTimeUnit] += '+1';
+  }
+
+  return dateTimeExprToExpr(dateExpr);
 }
 
 export function getTimeUnitSpecifierExpression(timeUnit: TimeUnit) {
@@ -277,12 +280,12 @@ export function normalizeTimeUnit(timeUnit: TimeUnit | TimeUnitParams): TimeUnit
   let params: TimeUnitParams;
   if (isString(timeUnit)) {
     params = {
-      unit: correctTimeUnit(timeUnit)
+      unit: timeUnit
     };
   } else if (isObject(timeUnit)) {
     params = {
       ...timeUnit,
-      ...(timeUnit.unit ? {unit: correctTimeUnit(timeUnit.unit)} : {})
+      ...(timeUnit.unit ? {unit: timeUnit.unit} : {})
     };
   }
 
@@ -292,15 +295,6 @@ export function normalizeTimeUnit(timeUnit: TimeUnit | TimeUnitParams): TimeUnit
   }
 
   return params;
-}
-
-export function correctTimeUnit(timeUnit: TimeUnit) {
-  if (timeUnit !== 'day' && timeUnit.indexOf('day') >= 0) {
-    log.warn(log.message.dayReplacedWithDate(timeUnit));
-    return replaceAll(timeUnit, 'day', 'date') as TimeUnit;
-  }
-
-  return timeUnit;
 }
 
 export function timeUnitToString(tu: TimeUnit | TimeUnitParams) {

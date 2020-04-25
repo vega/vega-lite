@@ -158,6 +158,11 @@ export interface VLOnlyConfig {
    */
   timeFormat?: string;
 
+  /**
+   * Allow the `formatType` property for text marks and guides to accept a custom formatter function [registered as a Vega expression](https://vega.github.io/vega-lite/usage/compile.html#format-type).
+   */
+  customFormatTypes?: boolean;
+
   /** Default properties for [single view plots](https://vega.github.io/vega-lite/docs/spec.html#single). */
   view?: ViewConfig;
 

@@ -75,7 +75,7 @@ describe('compile/data/geojson', () => {
     const retval = GeoJSONNode.parseAll(root, model);
 
     expect(retval).toBe(root);
-    expect(root.children.length).toBe(0);
+    expect(root.children).toHaveLength(0);
   });
 
   describe('GeoJSONNode', () => {

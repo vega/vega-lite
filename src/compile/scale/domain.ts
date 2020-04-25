@@ -26,8 +26,9 @@ import {MAIN, RAW} from '../../data';
 import {DateTime} from '../../datetime';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isDomainUnionWith, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
+import {SelectionExtent} from '../../selection';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
-import {normalizeTimeUnit, TimeUnit} from '../../timeunit';
+import {normalizeTimeUnit, TimeUnit, TimeUnitParams} from '../../timeunit';
 import {Type} from '../../type';
 import * as util from '../../util';
 import {
@@ -49,8 +50,6 @@ import {isFacetModel, isUnitModel, Model} from '../model';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
-import {SelectionExtent} from '../../selection';
-import {TimeUnitParams} from '../../timeunit';
 import {ScaleComponent, ScaleComponentIndex} from './component';
 
 export function parseScaleDomain(model: Model) {
@@ -662,21 +661,15 @@ export function getFieldFromDomain(domain: VgDomain): string {
         if (!field) {
           field = nonUnionDomain.field;
         } else if (field !== nonUnionDomain.field) {
-          log.warn(
-            'Detected faceted independent scales that union domain of multiple fields from different data sources. We will use the first field. The result view size may be incorrect.'
-          );
+          log.warn(log.message.FACETED_INDEPENDENT_DIFFERENT_SOURCES);
           return field;
         }
       }
     }
-    log.warn(
-      'Detected faceted independent scales that union domain of identical fields from different source detected. We will assume that this is the same field from a different fork of the same data source. However, if this is not case, the result view size maybe incorrect.'
-    );
+    log.warn(log.message.FACETED_INDEPENDENT_SAME_FIELDS_DIFFERENT_SOURCES);
     return field;
   } else if (isFieldRefUnionDomain(domain)) {
-    log.warn(
-      'Detected faceted independent scales that union domain of multiple fields from the same data source. We will use the first field. The result view size may be incorrect.'
-    );
+    log.warn(log.message.FACETED_INDEPENDENT_SAME_SOURCE);
     const field = domain.fields[0];
     return isString(field) ? field : undefined;
   }

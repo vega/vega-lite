@@ -50,7 +50,30 @@ A Vega-Lite `config` object can have the following top-level properties:
 
 These two config properties define the default number and time formats for text marks as well as axes, headers, and legends:
 
-{% include table.html props="numberFormat,timeFormat" source="Config" %}
+{% include table.html props="numberFormat,timeFormat,customFormatTypes" source="Config" %}
+
+{:#custom-format-type}
+
+### Providing Custom Formatters
+
+To customize how Vega-Lite formats numbers or text, you can register a new formatter by (1) setting the `customFormatTypes` config to `true` and then (2) registering [an expression function](https://vega.github.io/vega/docs/api/extensibility/#expressions) that takes a data point and an optional format parameter as input to the Vega View:
+
+```js
+view = new vega.View(...);
+view.expressionFunction('customFormatA', function(datum, params) {
+  ...
+  return "<formatted string>";
+});
+```
+
+You can then use this custom format function with `format` and `formatType` properties in text encodings and guides (axis/legend/header).
+
+```json
+{
+  "format": <params>,
+  "formatType": "customFormatA"
+}
+```
 
 {:#axis-config}
 
