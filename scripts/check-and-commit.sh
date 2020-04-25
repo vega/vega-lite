@@ -38,7 +38,6 @@ fi
 # Commit examples if outdated
 
 # Note: we need to add all files first so that new files are included in `git diff --cached` too.
-# Note: git commands need single quotes for all the files and directories with wildcards
 git add ./examples/compiled/vega_version './examples/compiled/*.vg.json' './examples/compiled/*.svg' './examples/specs/normalized/*.vl.json'
 
 if [[ $GIT_BRANCH == 'master' ]]; then
@@ -63,7 +62,7 @@ if [[ $GIT_BRANCH != 'master' ]]; then
   ## For non-master branch, commit eslint fix and prettier changes if outdated
   if ! git diff --word-diff=color --exit-code  src test test-runtime
   then
-    git add site src test test-runtime
+    git add --all
     git commit -m "style: auto-formatting [CI]"
   fi
 
