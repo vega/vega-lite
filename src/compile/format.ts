@@ -165,7 +165,7 @@ export function timeFormatExpression(
   alwaysReturn = false
 ): string {
   if (!timeUnit || format) {
-    // If there is not time unit, or if user explicitly specify format for axis/legend/text.
+    // If there is no time unit, or if user explicitly specifies format for axis/legend/text.
     format = isString(format) ? format : rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
     if (format || alwaysReturn) {
       return `${isUTCScale ? 'utc' : 'time'}Format(${field}, '${format}')`;
