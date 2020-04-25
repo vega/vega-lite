@@ -19,7 +19,7 @@ import {datumDefToExpr} from './mark/encode/valueref';
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
 export function isCustomFormatType(formatType: string, config: Config) {
-  return config.customFormatTypes && formatType && formatType !== 'number' && formatType !== 'time';
+  return config.customFormatTypes && formatType && formatType !== 'number' && formatType !== 'time' && formatType !== 'utc';
 }
 
 function customFormatExpr(formatType: string, field: string, format: string | object) {
