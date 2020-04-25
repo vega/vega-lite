@@ -238,7 +238,7 @@ function dateTimeParts(d: DateTime | DateTimeExpr, normalize: boolean) {
   if (d.year !== undefined) {
     parts.push(d.year);
   } else {
-    // Just like Vega's timeunit transform, set default year to 2012, so domain converstion will be compatible with Vega
+    // Just like Vega's timeunit transform, set default year to 2012, so domain conversion will be compatible with Vega
     // Note: 2012 is a leap year (and so the date February 29 is respected) that begins on a Sunday (and so days of the week will order properly at the beginning of the year).
     parts.push(2012);
   }
