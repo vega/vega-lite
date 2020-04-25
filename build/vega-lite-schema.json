@@ -165,11 +165,11 @@
           "type": "boolean"
         },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "aspect": {
@@ -1845,11 +1845,11 @@
           "type": "boolean"
         },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "aspect": {
@@ -2300,10 +2300,6 @@
             }
           ],
           "description": "Text color for title text."
-        },
-        "description": {
-          "description": "A text description of this title for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified no description will be provided.",
-          "type": "string"
         },
         "dx": {
           "description": "Delta offset for title and subtitle text x-coordinate.",
@@ -11549,11 +11545,11 @@
           "type": "boolean"
         },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "aspect": {
@@ -12310,11 +12306,11 @@
           "type": "boolean"
         },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "aspect": {
@@ -12701,11 +12697,11 @@
           "type": "boolean"
         },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "aspect": {
@@ -13712,11 +13708,11 @@
           "type": "boolean"
         },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "aspect": {
@@ -15048,11 +15044,11 @@
           "type": "boolean"
         },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "aspect": {
@@ -17277,11 +17273,11 @@
           "type": "boolean"
         },
         "ariaRole": {
-          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.",
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "ariaRoleDescription": {
-          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.",
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
           "type": "string"
         },
         "aspect": {
@@ -17829,10 +17825,6 @@
             }
           ],
           "description": "Text color for title text."
-        },
-        "description": {
-          "description": "A text description of this title for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified no description will be provided.",
-          "type": "string"
         },
         "dx": {
           "description": "Delta offset for title and subtitle text x-coordinate.",
