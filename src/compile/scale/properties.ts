@@ -45,7 +45,7 @@ import {UnitModel} from '../unit';
 import {ScaleComponentIndex, ScaleComponentProps} from './component';
 import {parseUnitScaleRange} from './range';
 
-export function parseScaleProperty(model: Model, property: keyof (Scale | ScaleComponentProps)) {
+export function parseScaleProperty(model: Model, property: Exclude<keyof (Scale | ScaleComponentProps), 'range'>) {
   if (isUnitModel(model)) {
     parseUnitScaleProperty(model, property);
   } else {
@@ -53,7 +53,7 @@ export function parseScaleProperty(model: Model, property: keyof (Scale | ScaleC
   }
 }
 
-function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | ScaleComponentProps)) {
+function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale | ScaleComponentProps), 'range'>) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
   const {config, encoding, markDef, specifiedScales} = model;
 
@@ -83,7 +83,7 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
     if (supportedByScaleType && channelIncompatability === undefined) {
       if (specifiedValue !== undefined) {
         // copyKeyFromObject ensures type safety
-        localScaleCmpt.copyKeyFromObject(property, specifiedScale);
+        localScaleCmpt.copyKeyFromObject<Omit<ScaleComponentProps, 'range'>>(property, specifiedScale);
       } else {
         const value =
           property in scaleRules

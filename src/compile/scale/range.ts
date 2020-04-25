@@ -1,5 +1,5 @@
 import {RangeScheme, SignalRef} from 'vega';
-import {isArray, isNumber} from 'vega-util';
+import {isArray, isNumber, isObject} from 'vega-util';
 import {isBinning} from '../../bin';
 import {
   ANGLE,
@@ -24,6 +24,7 @@ import {
 } from '../../channel';
 import {getFieldOrDatumDef, ScaleDatumDef, ScaleFieldDef} from '../../channeldef';
 import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config';
+import {MAIN} from '../../data';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {
@@ -110,24 +111,35 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
         log.warn(channelIncompatability);
       } else {
         switch (property) {
-          case 'range':
-            if (isArray(specifiedScale.range) && isXorY(channel)) {
-              return makeExplicit(
-                specifiedScale.range.map(v => {
-                  if (v === 'width' || v === 'height') {
-                    // get signal for width/height
+          case 'range': {
+            const range = specifiedScale.range;
+            if (isArray(range)) {
+              if (isXorY(channel)) {
+                return makeExplicit(
+                  range.map(v => {
+                    if (v === 'width' || v === 'height') {
+                      // get signal for width/height
 
-                    // Just like default range logic below, we use SignalRefWrapper to account for potential merges and renames.
+                      // Just like default range logic below, we use SignalRefWrapper to account for potential merges and renames.
 
-                    const sizeSignal = model.getName(v);
-                    const getSignalName = model.getSignalName.bind(model);
-                    return SignalRefWrapper.fromName(getSignalName, sizeSignal);
-                  }
-                  return v;
-                })
-              );
+                      const sizeSignal = model.getName(v);
+                      const getSignalName = model.getSignalName.bind(model);
+                      return SignalRefWrapper.fromName(getSignalName, sizeSignal);
+                    }
+                    return v;
+                  })
+                );
+              }
+            } else if (isObject(range)) {
+              return makeExplicit({
+                data: model.requestDataName(MAIN),
+                field: range.field,
+                sort: {op: 'min', field: model.vgField(channel)}
+              });
             }
-            return makeExplicit(specifiedScale.range);
+
+            return makeExplicit(range);
+          }
           case 'scheme':
             return makeExplicit(parseScheme(specifiedScale[property]));
         }

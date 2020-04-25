@@ -125,6 +125,15 @@ To customize range values, users can directly specify `range` or specify the spe
 
 {% include table.html props="range" source="Scale" %}
 
+
+### Example: Setting Color Range based on a Field
+
+In this example, we create a scale that maps the field `"l"` to colors specified in the field `"c"`:
+
+<div class="vl-example" data-name="point_scale_range_field"></div>
+
+__Note:__ This only works if there is a 1:1 mapping between the color domain field (`l`) and  therange field (`c`).
+
 {:#scheme}
 
 ### Color Schemes
