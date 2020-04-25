@@ -67,7 +67,7 @@ export const axisRules: {
     }
     const formatType = axis.formatType;
     if (formatType) {
-      if (isSignalRef(formatType) || formatType === 'number' || formatType === 'time' || formatType === 'utc') {
+      if (isSignalRef(formatType) || formatType === 'number' || formatType === 'time') {
         return formatType;
       }
     }

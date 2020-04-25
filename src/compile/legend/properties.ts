@@ -72,7 +72,7 @@ export const legendRules: {
     }
     const formatType = legend.formatType;
     if (formatType) {
-      if (isSignalRef(formatType) || formatType === 'number' || formatType === 'time' || formatType === 'utc') {
+      if (isSignalRef(formatType) || formatType === 'number' || formatType === 'time') {
         return formatType;
       }
     }
