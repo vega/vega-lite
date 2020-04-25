@@ -3,9 +3,7 @@
  */
 
 import {logger, LoggerInterface, Warn} from 'vega-util';
-import * as message_ from './message';
-
-export const message = message_;
+export * as message from './message';
 
 /**
  * Main (default) Vega Logger instance for Vega-Lite.
