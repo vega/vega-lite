@@ -1,4 +1,4 @@
-import {Align, AxisOrient, Orient, ScaleType, SignalRef} from 'vega';
+import {Align, AxisOrient, Orient, SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {Axis} from '../../axis';
 import {isBinned, isBinning} from '../../bin';
@@ -7,8 +7,6 @@ import {
   DatumDef,
   isDiscrete,
   isFieldDef,
-  isFieldOrDatumDefForTimeFormat,
-  isFieldOrDatumDefWithCustomTimeFormat,
   PositionDatumDef,
   PositionFieldDef,
   toFieldDefBase,
@@ -23,8 +21,9 @@ import {NOMINAL, ORDINAL, Type} from '../../type';
 import {contains, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
 import {mergeTitle, mergeTitleFieldDefs} from '../common';
-import {numberFormat} from '../format';
+import {formatGuide} from '../format';
 import {UnitModel} from '../unit';
+import {ScaleType} from './../../scale';
 import {AxisComponentProps} from './component';
 import {AxisConfigs, getAxisConfig} from './config';
 
@@ -46,31 +45,17 @@ export const axisRules: {
 } = {
   scale: ({model, channel}) => model.scaleName(channel),
 
-  format: ({fieldOrDatumDef, axis, config}) => {
-    // We don't include temporal field and custom format as we apply format in encode block
-    if (
-      isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) ||
-      isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef, config)
-    ) {
-      return undefined;
-    }
-    return numberFormat(fieldOrDatumDef.type, axis.format, config);
+  format: ({fieldOrDatumDef, config, axis}) => {
+    const {format, formatType} = axis;
+    return formatGuide(fieldOrDatumDef, fieldOrDatumDef.type, format, formatType, config, true);
   },
 
-  formatType: ({fieldOrDatumDef, axis, config}) => {
-    // As with format, we don't include temporal field and custom format here as we apply format in encode block
-    if (
-      isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) ||
-      isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef, config)
-    ) {
-      return undefined;
+  formatType: ({axis}) => {
+    const {formatType} = axis;
+    if (formatType && (isSignalRef(formatType) || formatType === 'number' || formatType === 'time')) {
+      return formatType;
     }
-    const formatType = axis.formatType;
-    if (formatType) {
-      if (isSignalRef(formatType) || formatType === 'number' || formatType === 'time') {
-        return formatType;
-      }
-    }
+
     return undefined;
   },
 

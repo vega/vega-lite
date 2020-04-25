@@ -48,8 +48,7 @@ describe('legend/assemble', () => {
 
     const legends = model.assembleLegends();
     expect(legends[0].encode.labels.update.text).toEqual({
-      signal:
-        'timeFormat(datum.value, timeUnitSpecifier(["month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))[0]'
+      signal: 'datum.label[0]'
     });
   });
 
@@ -98,7 +97,7 @@ describe('legend/assemble', () => {
     expect(legends[0].title).toBe('b');
     expect(legends[0].fill).toBe('color');
     expect(legends[0].size).toBe('size');
-    expect(legends[0].encode.symbols.update.fill).toBe(undefined);
+    expect(legends[0].encode.symbols.update?.fill).toBe(undefined);
   });
 
   describe('assembleLegend', () => {

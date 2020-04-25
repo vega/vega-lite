@@ -11,7 +11,7 @@ describe('compile/axis/encode', () => {
         }
       });
       const labels = encode.labels(model, 'x', {});
-      expect(labels.angle).toBeUndefined();
+      expect(labels?.angle).toBeUndefined();
     });
 
     it('should do not rotate label for temporal field if labelAngle is specified in axis config', () => {
@@ -23,7 +23,7 @@ describe('compile/axis/encode', () => {
         config: {axisX: {labelAngle: 90}}
       });
       const labels = encode.labels(model, 'x', {});
-      expect(labels.angle).toBeUndefined();
+      expect(labels?.angle).toBeUndefined();
     });
 
     it('applies custom format type', () => {
@@ -36,32 +36,6 @@ describe('compile/axis/encode', () => {
       });
       const labels = encode.labels(model, 'x', {});
       expect(labels.text.signal).toEqual('customNumberFormat(datum.value, "abc")');
-    });
-
-    it('should have correct text.signal for quarter timeUnits', () => {
-      const model = parseUnitModelWithScale({
-        mark: 'point',
-        encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'quarter'}
-        }
-      });
-      const labels = encode.labels(model, 'x', {});
-      const expected =
-        'timeFormat(datum.value, timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))';
-      expect(labels.text.signal).toEqual(expected);
-    });
-
-    it('should have correct text.signal for yearquartermonth timeUnits', () => {
-      const model = parseUnitModelWithScale({
-        mark: 'point',
-        encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'yearquartermonth'}
-        }
-      });
-      const labels = encode.labels(model, 'x', {});
-      const expected =
-        'timeFormat(datum.value, timeUnitSpecifier(["year","quarter","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))';
-      expect(labels.text.signal).toEqual(expected);
     });
   });
 });

@@ -1,10 +1,8 @@
-import {SignalRef} from 'vega';
 import {COLOR, SIZE} from '../../../src/channel';
 import {LegendComponent} from '../../../src/compile/legend/component';
 import * as encode from '../../../src/compile/legend/encode';
 import {getLegendType} from '../../../src/compile/legend/properties';
 import {Encoding} from '../../../src/encoding';
-import {TEMPORAL} from '../../../src/type';
 import {parseUnitModelWithScale} from '../../util';
 
 describe('compile/legend', () => {
@@ -145,44 +143,6 @@ describe('compile/legend', () => {
         {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'}
       );
       expect(label.text).toEqual({signal: 'customDateFormat(datum.value, "abc")'});
-    });
-
-    it('should return correct expression for the timeUnit: TimeUnit.MONTH', () => {
-      const model = parseUnitModelWithScale({
-        mark: 'point',
-        encoding: {
-          x: {field: 'a', type: 'temporal'},
-          color: {field: 'a', type: 'temporal', timeUnit: 'month'}
-        }
-      });
-
-      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: 'month'};
-      const label = encode.labels(
-        {},
-        {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'}
-      );
-      const expected =
-        'timeFormat(datum.value, timeUnitSpecifier(["month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))';
-      expect((label.text as SignalRef).signal).toEqual(expected);
-    });
-
-    it('should return correct expression for the timeUnit: TimeUnit.QUARTER', () => {
-      const model = parseUnitModelWithScale({
-        mark: 'point',
-        encoding: {
-          x: {field: 'a', type: 'temporal'},
-          color: {field: 'a', type: 'temporal', timeUnit: 'quarter'}
-        }
-      });
-
-      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: 'quarter'};
-      const label = encode.labels(
-        {},
-        {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'}
-      );
-      const expected =
-        'timeFormat(datum.value, timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))';
-      expect((label.text as SignalRef).signal).toEqual(expected);
     });
   });
 });

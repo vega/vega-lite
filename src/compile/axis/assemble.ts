@@ -5,7 +5,7 @@ import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';
 import {Config} from '../../config';
 import {isText} from '../../title';
-import {getFirstDefined, keys, replaceAll} from '../../util';
+import {getFirstDefined, keys} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {Model} from '../model';
 import {expression} from '../predicate';
@@ -150,12 +150,7 @@ export function assembleAxis(
     }
 
     if (labelExpr !== undefined) {
-      let expr = labelExpr;
-      if (axis.encode?.labels?.update && isSignalRef(axis.encode.labels.update.text)) {
-        expr = replaceAll(labelExpr, 'datum.label', axis.encode.labels.update.text.signal);
-      }
-
-      setAxisEncode(axis, 'labels', 'text', {signal: expr});
+      setAxisEncode(axis, 'labels', 'text', {signal: labelExpr});
     }
 
     if (axis.labelAlign === null) {

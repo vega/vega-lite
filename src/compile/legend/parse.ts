@@ -17,11 +17,9 @@ import {LegendEncodeParams, legendEncodeRules} from './encode';
 import {getDirection, getLegendType, LegendRuleParams, legendRules} from './properties';
 
 export function parseLegend(model: Model) {
-  if (isUnitModel(model)) {
-    model.component.legends = parseUnitLegend(model);
-  } else {
-    model.component.legends = parseNonUnitLegend(model);
-  }
+  const legendComponent = isUnitModel(model) ? parseUnitLegend(model) : parseNonUnitLegend(model);
+  model.component.legends = legendComponent;
+  return legendComponent;
 }
 
 function parseUnitLegend(model: UnitModel): LegendComponentIndex {

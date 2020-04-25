@@ -1,9 +1,8 @@
 import {Legend as VgLegend, LegendEncode} from 'vega';
-import {SIGNAL_LEGEND_PROP_INDEX} from '../../legend';
-import {keys, replaceAll, stringify, vals} from '../../util';
+import {LEGEND_SCALE_CHANNELS, SIGNAL_LEGEND_PROP_INDEX} from '../../legend';
+import {keys, stringify, vals} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {Model} from '../model';
-import {LEGEND_SCALE_CHANNELS} from '../../legend';
 import {LegendComponent} from './component';
 import {mergeLegendComponent} from './parse';
 
@@ -74,12 +73,7 @@ export function assembleLegend(legendCmpt: LegendComponent) {
   }
 
   if (labelExpr !== undefined) {
-    let expr = labelExpr;
-    if (legend.encode?.labels?.update?.text && isSignalRef(legend.encode.labels.update.text)) {
-      expr = replaceAll(labelExpr, 'datum.label', legend.encode.labels.update.text.signal);
-    }
-
-    setLegendEncode(legend, 'labels', 'text', {signal: expr});
+    setLegendEncode(legend, 'labels', 'text', {signal: labelExpr});
   }
 
   for (const prop in legend) {

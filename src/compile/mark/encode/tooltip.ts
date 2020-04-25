@@ -86,7 +86,7 @@ export function tooltipRefForEncoding(
 
     const key = array(title(fieldDef, config, {allowDisabling: false})).join(', ');
 
-    let value = textRef(fieldDef, config, expr).signal;
+    let value: string;
 
     if (isXorY(channel)) {
       const channel2 = channel === 'x' ? 'x2' : 'y2';
@@ -104,6 +104,8 @@ export function tooltipRefForEncoding(
           .signal;
       }
     }
+
+    value = value ?? textRef(fieldDef, config, expr).signal;
 
     tooltipTuples.push({channel, key, value});
   }
