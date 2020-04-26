@@ -324,6 +324,7 @@ export const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'tit
  */
 export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> = {
   grid: 'grid',
+  gridCap: 'grid',
   gridColor: 'grid',
   gridDash: 'grid',
   gridDashOffset: 'grid',
@@ -335,6 +336,7 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
 
   bandPosition: 'both', // Need to be applied to grid axis too, so the grid will align with ticks.
   domain: 'main',
+  domainCap: 'main',
   domainColor: 'main',
   domainDash: 'main',
   domainDashOffset: 'main',
@@ -366,6 +368,7 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   minExtent: 'main',
   offset: 'both',
   position: 'main',
+  tickCap: 'main',
   tickColor: 'main',
   tickDash: 'main',
   tickDashOffset: 'main',
@@ -440,6 +443,7 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
 
   bandPosition: 1,
   domain: 1,
+  domainCap: 1,
   domainColor: 1,
   domainDash: 1,
   domainDashOffset: 1,
@@ -448,6 +452,7 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   format: 1,
   formatType: 1,
   grid: 1,
+  gridCap: 1,
   gridColor: 1,
   gridDash: 1,
   gridDashOffset: 1,
@@ -477,6 +482,7 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   offset: 1,
   position: 1,
   tickBand: 1,
+  tickCap: 1,
   tickColor: 1,
   tickCount: 1,
   tickDash: 1,
