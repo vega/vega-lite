@@ -1272,7 +1272,7 @@ export function valueExpr(
 
     if (time && !unit && type !== 'temporal') {
       // We don't know if this is a date or not, so we need to check
-      return time ? `isDate(${s}) ? time(${s}) : ${s}` : s;
+      return `isDate(${s}) ? time(${s}) : ${s}`;
     } else {
       // TODO: support isLocalSingleTimeUnit(unit) -- we can't do that until DateTime object supports signal
       expr = s;
