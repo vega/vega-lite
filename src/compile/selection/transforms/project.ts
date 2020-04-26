@@ -11,7 +11,7 @@ export const TUPLE_FIELDS = '_tuple_fields';
 
 /**
  * Do the selection tuples hold enumerated or ranged values for a field?
- * Ranged values can be left-right inclusive (R) or left-inclusive, right-exclusive (R-LE).
+ * Ranged values can be exclusive (E),  left-right inclusive (R) or left-inclusive, right-exclusive (R-RE).
  */
 export type TupleStoreType = 'E' | 'R' | 'R-RE';
 
