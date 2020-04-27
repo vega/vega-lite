@@ -7837,9 +7837,9 @@ vega-encode@~4.5.3:
     vega-util "^1.13.1"
 
 vega-event-selector@^2.0.2, vega-event-selector@~2.0.2:
-  version "2.0.2"
-  resolved "https://registry.yarnpkg.com/vega-event-selector/-/vega-event-selector-2.0.2.tgz#bb64e1cfe047c6808878038319e18af6991759d9"
-  integrity sha512-Uv72vBfM0lrlI2belKHFMZuVnW2uJl2ShqWPwGSXPVe6p+PzgqoPJYC8A/i5N8B54UA4UMDzlbBeo3x7q2W9Yg==
+  version "2.0.3"
+  resolved "https://registry.yarnpkg.com/vega-event-selector/-/vega-event-selector-2.0.3.tgz#760c61af7ab5c325d3274fd3ab284d067ff16f8c"
+  integrity sha512-rUnAvBSy5tkk+0MELY7qICTgjMNjH/DDNIH603q3GRi+bBRCd4MlJxWrPYBhwZIYpmr6XCe130lZ90/F5SgVfA==
 
 vega-expression@^2.6.1, vega-expression@^2.6.3, vega-expression@~2.6.3:
   version "2.6.4"
