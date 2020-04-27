@@ -1,10 +1,11 @@
 /**
  * Utility files for producing Vega ValueRef for marks
  */
+import {SignalRef} from 'vega-typings/types';
 import {getOffsetChannel, PolarPositionChannel, PositionChannel} from '../../../channel';
 import {MarkDef} from '../../../mark';
 
-export function getOffset(channel: PositionChannel | PolarPositionChannel, markDef: MarkDef) {
+export function getOffset(channel: PositionChannel | PolarPositionChannel, markDef: MarkDef): number | SignalRef {
   const offsetChannel = getOffsetChannel(channel);
 
   // TODO: in the future read from encoding channel too

@@ -108,7 +108,7 @@
     "ts-jest": "^25.4.0",
     "ts-json-schema-generator": "^0.67.1",
     "typescript": "~3.8.3",
-    "vega-cli": "^5.10.1",
+    "vega-cli": "^5.11.0",
     "vega-datasets": "^1.30.2",
     "vega-embed": "^6.7.0",
     "vega-tooltip": "^0.22.1",

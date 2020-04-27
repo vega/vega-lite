@@ -335,6 +335,9 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   orient: 'main',
 
   bandPosition: 'both', // Need to be applied to grid axis too, so the grid will align with ticks.
+
+  aria: 'main',
+  description: 'main',
   domain: 'main',
   domainCap: 'main',
   domainColor: 'main',
@@ -441,7 +444,9 @@ export interface AxisEncoding {
 export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   orient: 1, // other things can depend on orient
 
+  aria: 1,
   bandPosition: 1,
+  description: 1,
   domain: 1,
   domainCap: 1,
   domainColor: 1,
