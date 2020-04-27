@@ -8022,7 +8022,14 @@ vega-transforms@~4.7.1:
     vega-time "^1.0.0"
     vega-util "^1.13.1"
 
-vega-typings@0.15.4, vega-typings@~0.15.0:
+vega-typings@0.16.0:
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.16.0.tgz#f1b618d04d721069462dacd90193501aad45f1ed"
+  integrity sha512-cRvEt2JicJs17eDlL8Dr+Wh55gvtTuyyWiBjp37/ewR8i3tZ9ZZEg7bTS600Z27jX9Ylkc4zINz5FibbrhWvng==
+  dependencies:
+    vega-util "^1.13.1"
+
+vega-typings@~0.15.0:
   version "0.15.4"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.15.4.tgz#e478079800dc605ac3558f044dd1f5e8f93c8d86"
   integrity sha512-tgqvElTz+X+LJbTXnRzwHiJ6jd+Ck0QAaviNcZEnWi9U087IhIBCUzXF7u5wSko8btsCobRA9d8oVWRrZ4v/vQ==
