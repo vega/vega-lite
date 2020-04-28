@@ -542,4 +542,19 @@ describe('compile/compile', () => {
     });
     expect(spec.projections).toBeDefined();
   });
+
+  it('should set `resize: true` for spec with axis orient signal', () => {
+    const {spec} = compile({
+      data: {
+        values: [{a: 'A', b: 28}]
+      },
+      mark: 'point',
+      encoding: {
+        x: {field: 'a', type: 'nominal', axis: {orient: {signal: '"top"'}}},
+        y: {field: 'b', type: 'quantitative', axis: {orient: {signal: '"right"'}}}
+      }
+    });
+
+    expect(spec.autosize['resize']).toBeTruthy();
+  });
 });
