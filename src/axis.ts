@@ -70,7 +70,7 @@ interface AxisOverrideMixins {
    *
    * __Default value:__ `"bottom"` for x-axes and `"left"` for y-axes.
    */
-  orient?: AxisOrient;
+  orient?: AxisOrient | SignalRef;
 
   /**
    * A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are "nice" (multiples of 2, 5, 10) and lie within the underlying scale's range.
