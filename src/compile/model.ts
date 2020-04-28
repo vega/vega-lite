@@ -636,6 +636,16 @@ export abstract class Model {
     }
     return sel;
   }
+
+  /**
+   * Returns true if the model has a signalRef for an axis orient.
+   */
+  public hasAxisOrientSignalRef() {
+    return (
+      this.component.axes.x?.some(a => a.hasOrientSignalRef()) ||
+      this.component.axes.y?.some(a => a.hasOrientSignalRef())
+    );
+  }
 }
 
 /** Abstract class for UnitModel and FacetModel. Both of which can contain fieldDefs as a part of its own specification. */

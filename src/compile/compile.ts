@@ -151,6 +151,9 @@ function getTopLevelProperties(
   const height = model.component.layoutSize.get('height');
   if (autosize === undefined) {
     autosize = {type: 'pad'};
+    if (model.hasAxisOrientSignalRef()) {
+      autosize.resize = true;
+    }
   } else if (isString(autosize)) {
     autosize = {type: autosize};
   }

@@ -32,7 +32,7 @@ export function signalOrStringValue(v: SignalRef | any) {
   if (isSignalRef(v)) {
     return v.signal;
   }
-  return stringValue(v);
+  return v == null ? null : stringValue(v);
 }
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {

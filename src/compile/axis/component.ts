@@ -10,6 +10,7 @@ import {
 import {FieldDefBase} from '../../channeldef';
 import {duplicate, Flag, keys} from '../../util';
 import {Split} from '../split';
+import {isSignalRef} from '../../vega.schema';
 
 function isFalseOrNull(v: any) {
   return v === false || v === null;
@@ -59,6 +60,10 @@ export class AxisComponent extends Split<AxisComponentProps> {
     }
     // Other parts are enabled by default, so they should not be false or null.
     return !isFalseOrNull(this.get(part));
+  }
+
+  public hasOrientSignalRef() {
+    return isSignalRef(this.explicit.orient);
   }
 }
 
