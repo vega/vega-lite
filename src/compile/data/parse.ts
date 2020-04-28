@@ -402,8 +402,8 @@ export function parseData(model: Model): DataComponent {
 
     facetRoot = new FacetNode(head, model, facetName, main.getSource());
     outputNodes[facetName] = facetRoot;
-    head = facetRoot;
   }
+
   return {
     ...model.component.data,
     outputNodes,

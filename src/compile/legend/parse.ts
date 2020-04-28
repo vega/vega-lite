@@ -250,10 +250,10 @@ export function mergeLegendComponent(mergedLegend: LegendComponent, childLegend:
     mergedLegend.setWithExplicit(prop, mergedValueWithExplicit);
   }
   if (typeMerged) {
-    if (mergedLegend.implicit?.encode?.gradient ?? {}) {
+    if (mergedLegend.implicit?.encode?.gradient) {
       deleteNestedProperty(mergedLegend.implicit, ['encode', 'gradient']);
     }
-    if (mergedLegend.explicit?.encode?.gradient ?? {}) {
+    if (mergedLegend.explicit?.encode?.gradient) {
       deleteNestedProperty(mergedLegend.explicit, ['encode', 'gradient']);
     }
   }
