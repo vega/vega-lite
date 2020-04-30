@@ -130,6 +130,7 @@ pushd site && bundle install && popd
   - `_layouts/` – Jekyll layout files.
   - `data/` – Example data.
   - `examples/` – Example images, specifications, and pages for the website.
+    - `snapshots` - Snapshot images generated with jest-image-snapshot
   - `static/` – Static files for the website.
 
 - `examples/` – Example Vega-Lite specifications.
@@ -162,7 +163,9 @@ You can run `yarn build` to compile Vega-Lite and regenerate `vega-lite-schema.j
 
 ### Basic Lint & Test & Test Coverage
 
-`yarn test` run linting and all unit-tests respectively. `yarn format` automatically fixes linting issues if possible. `yarn test:inspect` to inspect tests
+`yarn test` run linting and all unit and integration tests respectively. `yarn format` automatically fixes linting issues if possible. `yarn test:inspect` to inspect tests.
+
+We also generate example snapshots as a part of `yarn test`. If there are diff, the diff will be in `examples/snapshots/diff`. To update snapshots (for expected diff), run `yarn test:update-examples`.
 
 `yarn test` includes test coverage and generates a report inside `coverage/index.html`. You can see if specific lines are covered in the unit test by running `open coverage/index.html` and browsing through the report.
 

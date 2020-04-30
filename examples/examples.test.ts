@@ -1,7 +1,10 @@
 import Ajv from 'ajv';
 import draft6Schema from 'ajv/lib/refs/json-schema-draft-06.json';
+import {Canvas} from 'canvas';
 import fs from 'fs';
+import {toMatchImageSnapshot} from 'jest-image-snapshot';
 import path from 'path';
+import * as vega from 'vega';
 import {Spec as VgSpec} from 'vega';
 import vgSchema from 'vega/build/vega-schema.json';
 import vlSchema from '../build/vega-lite-schema.json';
@@ -10,7 +13,10 @@ import * as log from '../src/log';
 import {TopLevelSpec} from '../src/spec';
 import {duplicate} from '../src/util';
 
-// import {inspect} from 'util';
+expect.extend({toMatchImageSnapshot});
+
+(vega as any).setRandom((vega as any).randomLCG(123)); // fix seed
+const loader = vega.loader({baseURL: process.cwd()});
 
 const ajv = new Ajv({
   validateSchema: true,
@@ -65,7 +71,8 @@ const normalizedExamples = fs.readdirSync('examples/specs/normalized').map(file 
 expect(examples).toContain('examples/specs/scatter_image.vl.json');
 
 for (const example of [...examples, ...normalizedExamples]) {
-  if (path.extname(example) !== '.json') {
+  const {name, ext} = path.parse(example);
+  if (ext !== '.json') {
     continue;
   }
   const jsonSpec = JSON.parse(fs.readFileSync(example).toString());
@@ -101,6 +108,21 @@ for (const example of [...examples, ...normalizedExamples]) {
         }
 
         validateVega(vegaSpec);
+      });
+
+      it('should not change unless intended', async () => {
+        const view = new vega.View(vega.parse(vegaSpec), {
+          loader,
+          renderer: 'canvas'
+        }).finalize();
+
+        const canvas = await ((view.toCanvas() as unknown) as Promise<Canvas>);
+        const image = canvas.toBuffer();
+        expect(image).toMatchImageSnapshot({
+          customSnapshotsDir: 'examples/snapshots',
+          customDiffDir: 'examples/snapshots/diff',
+          customSnapshotIdentifier: name.substr(0, name.length - 3) // drop '.vl'
+        });
       });
     })
   );
