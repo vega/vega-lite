@@ -410,6 +410,32 @@ describe('Axis', () => {
       });
     });
 
+    it('should have output time formatType for ordinal months', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal', timeUnit: 'month'}
+        }
+      });
+      const axisComponent = parseUnitAxes(model);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].get('formatType')).toEqual('time');
+    });
+
+    it('should have output axis custom format in label encode block', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal', timeUnit: 'month', axis: {format: 'x', formatType: 'foo'}}
+        },
+        config: {customFormatTypes: true}
+      });
+      const axisComponent = parseUnitAxes(model);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].get('format')).toBeUndefined();
+      expect(axisComponent['x'][0].get('encode').labels.update.text).toEqual({signal: 'foo(datum.value, "x")'});
+    });
+
     it('should have correct text.signal for yearquartermonth timeUnits', () => {
       const model = parseUnitModelWithScale({
         mark: 'point',
