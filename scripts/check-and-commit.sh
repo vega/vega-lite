@@ -38,7 +38,7 @@ fi
 # Commit examples if outdated
 
 # Note: we need to add all files first so that new files are included in `git diff --cached` too.
-git add ./examples/compiled/vega_version './examples/compiled/*.vg.json' './examples/compiled/*.svg' './examples/specs/normalized/*.vl.json'
+git add ./examples/compiled/vega_version './examples/compiled/*.vg.json' './examples/compiled/*.svg' './examples/compiled/*.png' './examples/specs/normalized/*.vl.json'
 
 if [[ $GIT_BRANCH == 'master' ]]; then
   # Don't diff SVG as floating point calculation is not always consistent
@@ -48,7 +48,7 @@ if [[ $GIT_BRANCH == 'master' ]]; then
     exit 1
   fi
 else
-  if ! git diff --cached --word-diff=color --exit-code ./examples/compiled/vega_version './examples/compiled/*.vg.json' './examples/compiled/*.svg' './examples/specs/normalized/*.vl.json'
+  if ! git diff --cached --word-diff=color --exit-code ./examples/compiled/vega_version './examples/compiled/*.vg.json' './examples/compiled/*.svg' './examples/compiled/*.png' './examples/specs/normalized/*.vl.json'
   then
     git commit -m "chore: update examples [CI]"
   fi

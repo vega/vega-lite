@@ -35,9 +35,11 @@ do
   # 2) The SVG file does not exist (new example would not have vg file diff)
   # or 3) the forcesvg environment variable is true
 
-  if (! git diff $nopatch --exit-code $dir/$name.vg.json || [ ! -f $dir/$name.svg ] || $forcesvg)
+  if (! git diff $nopatch --exit-code $dir/$name.vg.json || [ ! -f $dir/$name.svg ] ||  [ ! -f $dir/$name.png ] || $forcesvg)
   then
     rm -f examples/compiled/$name.svg
+    rm -f examples/compiled/$name.png
     node_modules/vega-cli/bin/vg2svg --seed 123456789 examples/compiled/$name.vg.json > examples/compiled/$name.svg -b .
+    node_modules/vega-cli/bin/vg2png --seed 123456789 examples/compiled/$name.vg.json > examples/compiled/$name.png -b .
   fi
 done
