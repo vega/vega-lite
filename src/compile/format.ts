@@ -181,7 +181,7 @@ export function timeFormat(specifiedFormat: string, timeUnit: TimeUnit, config: 
     };
   }
 
-  return omitTimeFormatConfig ? null : config.timeFormat;
+  return omitTimeFormatConfig ? undefined : config.timeFormat;
 }
 
 function formatExpr(field: string, format: string) {
