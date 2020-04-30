@@ -12,6 +12,7 @@ import {defaultTieBreaker, Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {AxisComponent, AxisComponentIndex, AxisComponentProps, AXIS_COMPONENT_PROPERTIES} from './component';
 import {getAxisConfig, getAxisConfigs} from './config';
+import * as encode from './encode';
 import {AxisRuleParams, axisRules, defaultOrient, getFieldDefTitle, getLabelAngle} from './properties';
 
 export function parseUnitAxes(model: UnitModel): AxisComponentIndex {
@@ -304,8 +305,10 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
     const axisEncodingPart = guideEncodeEntry(axisEncoding[part] ?? {}, model);
 
-    if (axisEncodingPart !== undefined && keys(axisEncodingPart).length > 0) {
-      e[part] = {update: axisEncodingPart};
+    const value = part === 'labels' ? encode.labels(model, channel, axisEncodingPart) : axisEncodingPart;
+
+    if (value !== undefined && keys(value).length > 0) {
+      e[part] = {update: value};
     }
     return e;
   }, {} as VgAxisEncode);

@@ -1,14 +1,14 @@
 import {isString} from 'vega-util';
 import {isBinning} from '../bin';
 import {
+  channelDefType,
   DatumDef,
   FieldDef,
   isFieldDef,
   isFieldOrDatumDefForTimeFormat,
-  isScaleFieldDef,
-  vgField,
   isFieldOrDatumDefWithCustomTimeFormat,
-  channelDefType
+  isScaleFieldDef,
+  vgField
 } from '../channeldef';
 import {Config} from '../config';
 import {fieldValidPredicate} from '../predicate';
@@ -17,6 +17,14 @@ import {formatExpression, normalizeTimeUnit, timeUnitSpecifierExpression} from '
 import {QUANTITATIVE, Type} from '../type';
 import {TimeUnit} from './../timeunit';
 import {datumDefToExpr} from './mark/encode/valueref';
+
+export function isCustomFormatType(formatType: string, config: Config) {
+  return config.customFormatTypes && formatType && formatType !== 'number' && formatType !== 'time';
+}
+
+function customFormatExpr(formatType: string, field: string, format: string | object) {
+  return `${formatType}(${field}, ${JSON.stringify(format)})`;
+}
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
@@ -35,8 +43,6 @@ export function formatSignalRef({
   normalizeStack?: boolean;
   config: Config;
 }) {
-  const field = fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
-
   if (isCustomFormatType(formatType, config)) {
     return formatCustomType({
       fieldOrDatumDef,
@@ -48,6 +54,8 @@ export function formatSignalRef({
   } else if (formatType) {
     formatType = undefined;
   }
+
+  const field = fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
 
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
     const signal = timeFormatExpression(
@@ -174,14 +182,6 @@ export function timeFormat(specifiedFormat: string, timeUnit: TimeUnit, config: 
   }
 
   return omitTimeFormatConfig ? null : config.timeFormat;
-}
-
-export function isCustomFormatType(formatType: string, config: Config) {
-  return config.customFormatTypes && formatType && formatType !== 'number' && formatType !== 'time';
-}
-
-function customFormatExpr(formatType: string, field: string, format: string | object) {
-  return `${formatType}(${field}, ${JSON.stringify(format)})`;
 }
 
 function formatExpr(field: string, format: string) {
