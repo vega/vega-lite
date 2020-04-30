@@ -96,14 +96,10 @@
       "orient": "bottom",
       "grid": false,
       "title": "date (year-month)",
+      "format": "%Y",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
-        }
-      },
       "zindex": 0
     },
     {

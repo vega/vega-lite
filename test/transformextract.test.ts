@@ -138,7 +138,7 @@ describe('extractTransforms()', () => {
 
     // Time Format
     // TODO: fix these (extractTransform results in asymmetry b/c we cannot put a
-    // proper vega time format specifier into the spec before compile—we dont support
+    // proper vega time format specifier into the spec before compile—we don't support
     // vega time format specifier in VL yet)
     'area_vertical.vl.json',
     'bar_month.vl.json',
@@ -164,7 +164,8 @@ describe('extractTransforms()', () => {
     'stacked_bar_count_corner_radius_stroke.vl.json',
     'stacked_bar_count_corner_radius_mark_x.vl.json',
     'stacked_bar_count_corner_radius_mark.vl.json',
-    'stacked_bar_count_corner_radius_config.vl.json'
+    'stacked_bar_count_corner_radius_config.vl.json',
+    'rect_lasagna.vl.json'
   ]);
 
   for (const file of fs.readdirSync(specsDir)) {

@@ -114,13 +114,9 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
+      "format": "%b",
       "labelFlush": true,
       "labelOverlap": true,
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
-        }
-      },
       "zindex": 0
     },
     {

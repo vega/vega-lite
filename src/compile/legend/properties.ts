@@ -1,15 +1,7 @@
 import {LabelOverlap, LegendOrient, LegendType, Orientation, SignalRef, SymbolShape} from 'vega';
 import {isArray} from 'vega-util';
 import {Channel, isColorChannel, NonPositionChannel} from '../../channel';
-import {
-  DatumDef,
-  isFieldOrDatumDefForTimeFormat,
-  isFieldOrDatumDefWithCustomTimeFormat,
-  MarkPropFieldOrDatumDef,
-  title as fieldDefTitle,
-  TypedFieldDef,
-  valueArray
-} from '../../channeldef';
+import {DatumDef, MarkPropFieldOrDatumDef, title as fieldDefTitle, TypedFieldDef, valueArray} from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding} from '../../encoding';
 import {Legend, LegendConfig} from '../../legend';
@@ -18,7 +10,7 @@ import {isContinuousToContinuous, ScaleType} from '../../scale';
 import {TimeUnit} from '../../timeunit';
 import {contains, getFirstDefined} from '../../util';
 import {isSignalRef} from '../../vega.schema';
-import {numberFormat} from '../format';
+import {guideFormat, guideFormatType} from '../format';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {LegendComponentProps} from './component';
@@ -52,31 +44,13 @@ export const legendRules: {
   direction: ({direction}) => direction,
 
   format: ({fieldOrDatumDef, legend, config}) => {
-    // We don't include temporal field here as we apply format in encode block
-    if (
-      isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) ||
-      isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef, config)
-    ) {
-      return undefined;
-    }
-    return numberFormat(fieldOrDatumDef.type, legend.format, config);
+    const {format} = legend;
+    return guideFormat(fieldOrDatumDef, fieldOrDatumDef.type, format, config, false);
   },
 
-  formatType: ({fieldOrDatumDef, legend, config}) => {
-    // As with format, we don't include temporal field here as we apply format in encode block
-    if (
-      isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) ||
-      isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef, config)
-    ) {
-      return undefined;
-    }
-    const formatType = legend.formatType;
-    if (formatType) {
-      if (isSignalRef(formatType) || formatType === 'number' || formatType === 'time') {
-        return formatType;
-      }
-    }
-    return undefined;
+  formatType: ({legend, fieldOrDatumDef, scaleType}) => {
+    const {formatType} = legend;
+    return guideFormatType(formatType, fieldOrDatumDef, scaleType);
   },
 
   gradientLength: params => {

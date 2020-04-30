@@ -110,12 +110,14 @@
       "grid": false,
       "title": "time (hours)",
       "labelAngle": {"signal": "xLabelAngle"},
+      "format": {
+        "signal": "timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "formatType": "time",
+      "labelOverlap": true,
       "encode": {
         "labels": {
           "update": {
-            "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-            },
             "align": {
               "signal": "((((xLabelAngle % 360) + 360) % 360) % 180 === 0) ? null :(0 < (((xLabelAngle % 360) + 360) % 360) && (((xLabelAngle % 360) + 360) % 360) < 180) === false ? \"left\" : \"right\""
             },
@@ -125,7 +127,6 @@
           }
         }
       },
-      "labelOverlap": true,
       "zindex": 0
     },
     {
@@ -134,12 +135,14 @@
       "grid": false,
       "title": "time (day)",
       "labelAngle": {"signal": "yLabelAngle"},
+      "format": {
+        "signal": "timeUnitSpecifier([\"day\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "formatType": "time",
+      "labelOverlap": true,
       "encode": {
         "labels": {
           "update": {
-            "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"day\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-            },
             "align": {
               "signal": "(((((yLabelAngle % 360) + 360) % 360) + 90) % 180 === 0) ? \"center\" :(90 < (((yLabelAngle % 360) + 360) % 360) && (((yLabelAngle % 360) + 360) % 360) < 270) === false ? \"left\" : \"right\""
             },
@@ -149,7 +152,6 @@
           }
         }
       },
-      "labelOverlap": true,
       "zindex": 0
     }
   ],

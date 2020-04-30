@@ -155,12 +155,8 @@
       "orient": "bottom",
       "grid": false,
       "title": "Date in 2009",
+      "format": "%m/%d",
       "labelAngle": 315,
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%m/%d')"}}
-        }
-      },
       "labelAlign": "right",
       "labelBaseline": "top",
       "labelFlush": true,
