@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega-typings/types';
 import {isString} from 'vega-util';
 import {isBinning} from '../bin';
 import {
@@ -15,6 +16,7 @@ import {fieldValidPredicate} from '../predicate';
 import {ScaleType} from '../scale';
 import {formatExpression, normalizeTimeUnit, timeUnitSpecifierExpression} from '../timeunit';
 import {QUANTITATIVE, Type} from '../type';
+import {isSignalRef} from '../vega.schema';
 import {TimeUnit} from './../timeunit';
 import {datumDefToExpr} from './mark/encode/valueref';
 
@@ -130,11 +132,10 @@ export function formatCustomType({
   return {signal: customFormatExpr(formatType, field, format)};
 }
 
-export function formatGuide(
+export function guideFormat(
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>,
   type: Type,
   format: string | object,
-  formatType: string,
   config: Config,
   omitTimeFormatConfig: boolean // axis doesn't use config.timeFormat
 ) {
@@ -149,6 +150,20 @@ export function formatGuide(
   }
 
   return numberFormat(type, format, config);
+}
+
+export function guideFormatType(
+  formatType: string | SignalRef,
+  fieldOrDatumDef: FieldDef<string> | DatumDef<string>,
+  scaleType: ScaleType
+) {
+  if (formatType && (isSignalRef(formatType) || formatType === 'number' || formatType === 'time')) {
+    return formatType;
+  }
+  if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) && scaleType !== 'time' && scaleType !== 'utc') {
+    return 'time';
+  }
+  return undefined;
 }
 
 /**

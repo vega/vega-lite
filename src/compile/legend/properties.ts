@@ -10,7 +10,7 @@ import {isContinuousToContinuous, ScaleType} from '../../scale';
 import {TimeUnit} from '../../timeunit';
 import {contains, getFirstDefined} from '../../util';
 import {isSignalRef} from '../../vega.schema';
-import {formatGuide} from '../format';
+import {guideFormat, guideFormatType} from '../format';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {LegendComponentProps} from './component';
@@ -44,16 +44,13 @@ export const legendRules: {
   direction: ({direction}) => direction,
 
   format: ({fieldOrDatumDef, legend, config}) => {
-    const {format, formatType} = legend;
-    return formatGuide(fieldOrDatumDef, fieldOrDatumDef.type, format, formatType, config, false);
+    const {format} = legend;
+    return guideFormat(fieldOrDatumDef, fieldOrDatumDef.type, format, config, false);
   },
 
-  formatType: ({legend}) => {
+  formatType: ({legend, fieldOrDatumDef, scaleType}) => {
     const {formatType} = legend;
-    if (formatType && (isSignalRef(formatType) || formatType === 'number' || formatType === 'time')) {
-      return formatType;
-    }
-    return undefined;
+    return guideFormatType(formatType, fieldOrDatumDef, scaleType);
   },
 
   gradientLength: params => {

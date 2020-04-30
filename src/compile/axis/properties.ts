@@ -21,7 +21,7 @@ import {NOMINAL, ORDINAL, Type} from '../../type';
 import {contains, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
 import {mergeTitle, mergeTitleFieldDefs} from '../common';
-import {formatGuide} from '../format';
+import {guideFormat, guideFormatType} from '../format';
 import {UnitModel} from '../unit';
 import {ScaleType} from './../../scale';
 import {AxisComponentProps} from './component';
@@ -46,17 +46,13 @@ export const axisRules: {
   scale: ({model, channel}) => model.scaleName(channel),
 
   format: ({fieldOrDatumDef, config, axis}) => {
-    const {format, formatType} = axis;
-    return formatGuide(fieldOrDatumDef, fieldOrDatumDef.type, format, formatType, config, true);
+    const {format} = axis;
+    return guideFormat(fieldOrDatumDef, fieldOrDatumDef.type, format, config, true);
   },
 
-  formatType: ({axis}) => {
+  formatType: ({axis, fieldOrDatumDef, scaleType}) => {
     const {formatType} = axis;
-    if (formatType && (isSignalRef(formatType) || formatType === 'number' || formatType === 'time')) {
-      return formatType;
-    }
-
-    return undefined;
+    return guideFormatType(formatType, fieldOrDatumDef, scaleType);
   },
 
   grid: ({fieldOrDatumDef, axis, scaleType}) => {
