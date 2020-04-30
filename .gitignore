@@ -8,7 +8,6 @@ build/*
 build-es5/*
 coverage
 examples/all-examples.json
-examples/compiled/*.png
 node_modules
 npm-debug.log*
 site/_data/vega-lite-schema.json

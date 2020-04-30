@@ -40,7 +40,9 @@ ls examples/specs/*.vl.json | parallel --env skipnormalize --env forcesvg --env 
 
 scripts/build-normalized-examples
 
-# Clean up outdated svg files (This has to be done by checking files as we do not always regenerate svgs)
+# Clean up outdated svg and png files (This has to be done by checking files as we do not always regenerate svgs)
 ls examples/compiled/*.svg | parallel --no-notice --plus --halt 1 "[ -f examples/specs/{/..}.vl.json ] || rm -f examples/compiled/{/..}.svg"
+
+ls examples/compiled/*.png | parallel --no-notice --plus --halt 1 "[ -f examples/specs/{/..}.vl.json ] || rm -f examples/compiled/{/..}.png"
 
 
