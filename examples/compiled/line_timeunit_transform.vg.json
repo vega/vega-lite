@@ -98,14 +98,10 @@
       "orient": "bottom",
       "grid": false,
       "title": "month",
+      "format": "%b",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%b')"}}
-        }
-      },
       "zindex": 0
     },
     {

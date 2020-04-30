@@ -98,17 +98,11 @@
       "orient": "bottom",
       "grid": false,
       "title": "date (month)",
+      "format": {
+        "signal": "timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
       "labelFlush": true,
       "labelOverlap": true,
-      "encode": {
-        "labels": {
-          "update": {
-            "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-            }
-          }
-        }
-      },
       "zindex": 0
     },
     {

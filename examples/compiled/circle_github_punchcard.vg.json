@@ -109,19 +109,14 @@
       "orient": "bottom",
       "grid": false,
       "title": "time (hours)",
+      "format": {
+        "signal": "timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "formatType": "time",
       "labelAlign": "right",
       "labelAngle": 270,
       "labelBaseline": "middle",
       "labelOverlap": true,
-      "encode": {
-        "labels": {
-          "update": {
-            "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-            }
-          }
-        }
-      },
       "zindex": 0
     },
     {
@@ -129,16 +124,11 @@
       "orient": "left",
       "grid": false,
       "title": "time (day)",
-      "labelOverlap": true,
-      "encode": {
-        "labels": {
-          "update": {
-            "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"day\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-            }
-          }
-        }
+      "format": {
+        "signal": "timeUnitSpecifier([\"day\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
       },
+      "formatType": "time",
+      "labelOverlap": true,
       "zindex": 0
     }
   ],

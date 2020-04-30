@@ -164,17 +164,12 @@
       "grid": false,
       "title": "month",
       "labelAlign": "left",
+      "format": {
+        "signal": "timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
       "labelFlush": true,
       "labelOverlap": true,
-      "encode": {
-        "labels": {
-          "update": {
-            "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))[0]"
-            }
-          }
-        }
-      },
+      "encode": {"labels": {"update": {"text": {"signal": "datum.label[0]"}}}},
       "zindex": 0
     },
     {
