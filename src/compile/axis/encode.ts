@@ -1,8 +1,7 @@
 import {getSecondaryRangeChannel, PositionScaleChannel} from '../../channel';
-import {getFieldOrDatumDef} from '../../channeldef';
-import {ScaleType} from '../../scale';
+import {getFieldOrDatumDef, isFieldOrDatumDefWithCustomTimeFormat} from '../../channeldef';
 import {keys} from '../../util';
-import {formatSignalRef} from '../format';
+import {formatCustomType} from '../format';
 import {UnitModel} from '../unit';
 
 export function labels(model: UnitModel, channel: PositionScaleChannel, specifiedLabelsSpec: any) {
@@ -13,24 +12,18 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   const axis = model.axis(channel) || {};
   const {format, formatType} = axis;
 
-  const text = formatSignalRef({
-    fieldOrDatumDef,
-    field: 'datum.value',
-    format,
-    formatType,
-    config,
-    isUTCScale: model.getScaleComponent(channel).get('type') === ScaleType.UTC,
-    omitTimeFormatConfig: true, // Vega axes automatically determine the format for each label so we don't apply config.timeFormat
-    omitNumberFormatAndEmptyTimeFormat: true // no need to generate number format for encoding block as we can use Vega's axis format
-  });
+  const text = isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef, config)
+    ? formatCustomType({
+        fieldOrDatumDef,
+        field: 'datum.value',
+        format,
+        formatType,
+        config
+      })
+    : undefined;
 
-  let labelsSpec: any = {
+  const labelsSpec: any = {
     ...(text ? {text} : {}),
-    ...specifiedLabelsSpec
-  };
-
-  labelsSpec = {
-    ...labelsSpec,
     ...specifiedLabelsSpec
   };
 

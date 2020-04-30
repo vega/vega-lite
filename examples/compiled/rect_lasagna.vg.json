@@ -85,12 +85,14 @@
       "orient": "bottom",
       "grid": false,
       "title": "Time",
+      "format": "%Y",
       "labelAngle": 0,
       "labelOverlap": false,
+      "formatType": "time",
+      "labelBaseline": "top",
       "encode": {
         "labels": {
           "update": {
-            "text": {"signal": "timeFormat(datum.value, '%Y')"},
             "fill": [
               {
                 "test": "time(datetime(2012, month(datum[\"value\"]), date(datum[\"value\"]), 0, 0, 0, 0))===time(datetime(2012, 0, 1, 0, 0, 0, 0))",
@@ -112,7 +114,6 @@
           }
         }
       },
-      "labelBaseline": "top",
       "zindex": 1
     },
     {"scale": "y", "orient": "left", "grid": false, "zindex": 1}

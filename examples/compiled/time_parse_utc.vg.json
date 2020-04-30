@@ -64,16 +64,11 @@
       "orient": "left",
       "grid": false,
       "title": "time",
-      "labelOverlap": true,
-      "encode": {
-        "labels": {
-          "update": {
-            "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-            }
-          }
-        }
+      "format": {
+        "signal": "timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
       },
+      "formatType": "time",
+      "labelOverlap": true,
       "zindex": 0
     }
   ]

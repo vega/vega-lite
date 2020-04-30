@@ -114,17 +114,11 @@
       "orient": "bottom",
       "grid": false,
       "title": "a (hours)",
+      "format": {
+        "signal": "timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
       "labelFlush": true,
       "labelOverlap": true,
-      "encode": {
-        "labels": {
-          "update": {
-            "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-            }
-          }
-        }
-      },
       "zindex": 0
     },
     {

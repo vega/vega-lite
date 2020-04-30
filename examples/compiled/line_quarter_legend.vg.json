@@ -127,18 +127,12 @@
       "orient": "bottom",
       "grid": false,
       "title": "date (year)",
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
-      "encode": {
-        "labels": {
-          "update": {
-            "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-            }
-          }
-        }
-      },
       "zindex": 0
     },
     {
@@ -154,19 +148,13 @@
   "legends": [
     {
       "stroke": "color",
+      "format": {
+        "signal": "timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "stroke",
       "title": "date (quarter)",
-      "type": "symbol",
-      "encode": {
-        "labels": {
-          "update": {
-            "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-            }
-          }
-        }
-      }
+      "type": "symbol"
     }
   ]
 }

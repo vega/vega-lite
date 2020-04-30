@@ -91,18 +91,12 @@
   "legends": [
     {
       "stroke": "color",
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
-      "title": "date (year-month)",
-      "encode": {
-        "labels": {
-          "update": {
-            "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-            }
-          }
-        }
-      }
+      "title": "date (year-month)"
     }
   ]
 }

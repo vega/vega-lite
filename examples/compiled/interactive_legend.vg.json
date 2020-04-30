@@ -209,15 +209,11 @@
       "grid": false,
       "title": "date (year-month)",
       "domain": false,
+      "format": "%Y",
       "tickSize": 0,
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "timeFormat(datum.value, '%Y')"}}
-        }
-      },
       "zindex": 0
     }
   ],

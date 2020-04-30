@@ -1,13 +1,42 @@
 import {COLOR, FILLOPACITY, OPACITY, SHAPE, SIZE, STROKEOPACITY, STROKEWIDTH} from '../../../src/channel';
 import {isFieldDef} from '../../../src/channeldef';
-import * as legendParse from '../../../src/compile/legend/parse';
-import {parseLegend} from '../../../src/compile/legend/parse';
+import {parseLegend, parseLegendForChannel} from '../../../src/compile/legend/parse';
 import {NormalizedUnitSpec} from '../../../src/spec';
 import {GEOJSON} from '../../../src/type';
 import {parseLayerModel, parseUnitModelWithScale} from '../../util';
 
 describe('compile/legend', () => {
   describe('parseUnitLegend()', () => {
+    it('should return correct expression for the timeUnit: TimeUnit.MONTH', () => {
+      const unitModel = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'temporal'},
+          color: {field: 'a', type: 'temporal', timeUnit: 'month'}
+        }
+      });
+
+      const legendComponent = parseLegend(unitModel);
+      expect(legendComponent['color'].get('format')).toEqual({
+        signal: 'timeUnitSpecifier(["month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+      });
+    });
+
+    it('should return correct expression for the timeUnit: TimeUnit.QUARTER', () => {
+      const unitModel = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'temporal'},
+          color: {field: 'a', type: 'temporal', timeUnit: 'quarter'}
+        }
+      });
+
+      const legendComponent = parseLegend(unitModel);
+      expect(legendComponent['color'].get('format')).toEqual({
+        signal: 'timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+      });
+    });
+
     it(`should not produce a Vega legend object on channel 'shape' with type 'geojson'`, () => {
       const spec: NormalizedUnitSpec = {
         mark: 'geoshape',
@@ -36,8 +65,8 @@ describe('compile/legend', () => {
       if (isFieldDef(channelDef)) {
         expect(channelDef.type).toEqual(GEOJSON);
       }
-      parseLegend(unitModel);
-      const legendComp = unitModel.component.legends;
+
+      const legendComp = parseLegend(unitModel);
       expect(legendComp[SHAPE]).not.toBeDefined();
     });
   });
@@ -52,7 +81,7 @@ describe('compile/legend', () => {
         }
       });
 
-      const def = legendParse.parseLegendForChannel(model, COLOR).combine();
+      const def = parseLegendForChannel(model, COLOR).combine();
       expect(typeof def).toBe('object');
       expect(def.title).toBe('a');
       expect(def.stroke).toBe('color');
@@ -67,7 +96,7 @@ describe('compile/legend', () => {
         }
       });
 
-      const def = legendParse.parseLegendForChannel(model, COLOR).combine();
+      const def = parseLegendForChannel(model, COLOR).combine();
       expect(typeof def).toBe('object');
       expect(def.title).toBe('a');
       expect(def.stroke).toBe('color');
@@ -82,7 +111,7 @@ describe('compile/legend', () => {
         }
       });
 
-      const def = legendParse.parseLegendForChannel(model, SIZE).combine();
+      const def = parseLegendForChannel(model, SIZE).combine();
       expect(typeof def).toBe('object');
       expect(def.title).toBe('a');
       expect(def.strokeWidth).toBe('size');
@@ -102,7 +131,7 @@ describe('compile/legend', () => {
           }
         });
 
-        const def = legendParse.parseLegendForChannel(model, COLOR).combine();
+        const def = parseLegendForChannel(model, COLOR).combine();
         expect(def.title).toEqual(val);
       }
     });
@@ -120,7 +149,7 @@ describe('compile/legend', () => {
         }
       });
 
-      const def = legendParse.parseLegendForChannel(model, COLOR).combine();
+      const def = parseLegendForChannel(model, COLOR).combine();
       expect(def.title).toBe('foo');
     });
 
@@ -136,7 +165,7 @@ describe('compile/legend', () => {
 
         const model = parseUnitModelWithScale(spec);
 
-        const def = legendParse.parseLegendForChannel(model, channel).combine();
+        const def = parseLegendForChannel(model, channel).combine();
 
         const channelDef = model.encoding[channel];
         if (isFieldDef(channelDef)) {

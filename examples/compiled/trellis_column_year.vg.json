@@ -104,19 +104,14 @@
           "orient": "bottom",
           "grid": false,
           "title": "date (quarter)",
+          "format": {
+            "signal": "timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+          },
+          "formatType": "time",
           "labelAlign": "right",
           "labelAngle": 270,
           "labelBaseline": "middle",
           "labelOverlap": true,
-          "encode": {
-            "labels": {
-              "update": {
-                "text": {
-                  "signal": "timeFormat(datum.value, timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-                }
-              }
-            }
-          },
           "zindex": 0
         }
       ]

@@ -102,14 +102,8 @@
       "grid": false,
       "title": "date (year-month-date-hours-minutes)",
       "labelAngle": 15,
-      "encode": {
-        "labels": {
-          "update": {
-            "text": {
-              "signal": "utcFormat(datum.value, timeUnitSpecifier([\"year\",\"month\",\"date\",\"hours\",\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-            }
-          }
-        }
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\",\"month\",\"date\",\"hours\",\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
       },
       "labelAlign": "left",
       "labelBaseline": "top",

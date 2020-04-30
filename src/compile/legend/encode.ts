@@ -10,18 +10,18 @@ import {
   isValueDef,
   TypedFieldDef,
   Value,
-  ValueDef
+  ValueDef,
+  isFieldOrDatumDefWithCustomTimeFormat
 } from '../../channeldef';
 import {Encoding} from '../../encoding';
 import {FILL_STROKE_CONFIG} from '../../mark';
-import {ScaleType} from '../../scale';
 import {getFirstDefined, keys, varName} from '../../util';
 import {applyMarkConfig, signalOrValueRef} from '../common';
-import {formatSignalRef} from '../format';
 import * as mixins from '../mark/encode';
 import {STORE} from '../selection';
 import {UnitModel} from '../unit';
 import {LegendComponent} from './component';
+import {formatCustomType} from '../format';
 
 export interface LegendEncodeParams {
   fieldOrDatumDef: TypedFieldDef<string> | DatumDef;
@@ -153,15 +153,15 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
 
   const {format, formatType} = legend;
 
-  const text = formatSignalRef({
-    fieldOrDatumDef,
-    format,
-    formatType,
-    field: 'datum.value',
-    config,
-    isUTCScale: model.getScaleComponent(channel).get('type') === ScaleType.UTC,
-    omitNumberFormatAndEmptyTimeFormat: true // no need to generate number format for encoding block as we can use Vega's legend format
-  });
+  const text = isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef, config)
+    ? formatCustomType({
+        fieldOrDatumDef,
+        field: 'datum.value',
+        format,
+        formatType,
+        config
+      })
+    : undefined;
 
   const labelsSpec = {
     ...(opacity ? {opacity} : {}),

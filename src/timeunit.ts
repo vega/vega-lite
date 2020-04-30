@@ -243,7 +243,7 @@ export function fieldExpr(fullTimeUnit: TimeUnit, field: string, {end}: {end: bo
   return dateTimeExprToExpr(dateExpr);
 }
 
-export function getTimeUnitSpecifierExpression(timeUnit: TimeUnit) {
+export function timeUnitSpecifierExpression(timeUnit: TimeUnit) {
   if (!timeUnit) {
     return undefined;
   }
@@ -253,23 +253,21 @@ export function getTimeUnitSpecifierExpression(timeUnit: TimeUnit) {
 }
 
 /**
- * returns the signal expression used for axis labels for a time unit
+ * Returns the signal expression used for axis labels for a time unit.
  */
 export function formatExpression(timeUnit: TimeUnit, field: string, isUTCScale: boolean): string {
   if (!timeUnit) {
     return undefined;
   }
 
-  const timeUnitSpecifierExpr = getTimeUnitSpecifierExpression(timeUnit);
+  const expr = timeUnitSpecifierExpression(timeUnit);
 
   // We only use utcFormat for utc scale
   // For utc time units, the data is already converted as a part of timeUnit transform.
   // Thus, utc time units should use timeFormat to avoid shifting the time twice.
-  if (isUTCScale || isUTCTimeUnit(timeUnit)) {
-    return `utcFormat(${field}, ${timeUnitSpecifierExpr})`;
-  } else {
-    return `timeFormat(${field}, ${timeUnitSpecifierExpr})`;
-  }
+  const utc = isUTCScale || isUTCTimeUnit(timeUnit);
+
+  return `${utc ? 'utc' : 'time'}Format(${field}, ${expr})`;
 }
 
 export function normalizeTimeUnit(timeUnit: TimeUnit | TimeUnitParams): TimeUnitParams {

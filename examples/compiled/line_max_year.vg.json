@@ -97,18 +97,12 @@
       "orient": "bottom",
       "grid": false,
       "title": "date (year-month)",
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
-      "encode": {
-        "labels": {
-          "update": {
-            "text": {
-              "signal": "timeFormat(datum.value, timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-            }
-          }
-        }
-      },
       "zindex": 0
     },
     {

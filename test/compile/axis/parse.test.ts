@@ -395,6 +395,60 @@ describe('Axis', () => {
       expect(axisComponent['x'].length).toEqual(1);
       expect(axisComponent['x'][0].get('title')).toEqual([{field: 'a'}, {field: 'a2'}]);
     });
+
+    it('should have correct text.signal for quarter timeUnits', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'temporal', timeUnit: 'quarter'}
+        }
+      });
+      const axisComponent = parseUnitAxes(model);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].get('format')).toEqual({
+        signal: 'timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+      });
+    });
+
+    it('should have output time formatType for ordinal months', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal', timeUnit: 'month'}
+        }
+      });
+      const axisComponent = parseUnitAxes(model);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].get('formatType')).toEqual('time');
+    });
+
+    it('should have output axis custom format in label encode block', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal', timeUnit: 'month', axis: {format: 'x', formatType: 'foo'}}
+        },
+        config: {customFormatTypes: true}
+      });
+      const axisComponent = parseUnitAxes(model);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].get('format')).toBeUndefined();
+      expect(axisComponent['x'][0].get('encode').labels.update.text).toEqual({signal: 'foo(datum.value, "x")'});
+    });
+
+    it('should have correct text.signal for yearquartermonth timeUnits', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'temporal', timeUnit: 'yearquartermonth'}
+        }
+      });
+      const axisComponent = parseUnitAxes(model);
+      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x'][0].get('format')).toEqual({
+        signal: 'timeUnitSpecifier(["year","quarter","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+      });
+    });
   });
 
   describe('parseLayerAxis', () => {

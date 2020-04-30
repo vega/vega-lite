@@ -390,18 +390,12 @@
           "orient": "bottom",
           "grid": false,
           "title": "date (seconds)",
+          "format": {
+            "signal": "timeUnitSpecifier([\"seconds\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+          },
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
-          "encode": {
-            "labels": {
-              "update": {
-                "text": {
-                  "signal": "timeFormat(datum.value, timeUnitSpecifier([\"seconds\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-                }
-              }
-            }
-          },
           "zindex": 0
         },
         {
@@ -475,18 +469,12 @@
           "orient": "bottom",
           "grid": false,
           "title": "date (minutes)",
+          "format": {
+            "signal": "timeUnitSpecifier([\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+          },
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(childWidth/40)"},
-          "encode": {
-            "labels": {
-              "update": {
-                "text": {
-                  "signal": "timeFormat(datum.value, timeUnitSpecifier([\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
-                }
-              }
-            }
-          },
           "zindex": 0
         },
         {
