@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [10, 12, 13]
+        node: [10, 12, 14]
 
     name: Node ${{ matrix.node }}
 
@@ -21,6 +21,11 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
+
+      # remove once https://github.com/Automattic/node-canvas/pull/1568 is in
+      - name: Install extra dependencies for Node 14
+        run: sudo apt-get install libcairo2-dev libpango1.0-dev libgif-dev
+        if: matrix.node == 14
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
