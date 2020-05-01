@@ -136,6 +136,8 @@ export function valueRefForFieldOrDatumDef(
     const {datum} = fieldDef;
     if (isDateTime(datum)) {
       ref.signal = dateTimeToExpr(datum);
+    } else if (isSignalRef(datum)) {
+      ref.signal = datum.signal;
     } else {
       ref.value = datum;
     }
