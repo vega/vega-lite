@@ -91,16 +91,6 @@ export interface ValueDef<V extends ValueOrGradient | Value[] = Value> {
 }
 
 /**
- * Generic type for conditional channelDef.
- * F defines the underlying FieldDef type.
- */
-
-export type ChannelDefWithCondition<F extends FieldDef<any> | DatumDef, V extends ValueOrGradientOrText = Value> =
-  | FieldOrDatumDefWithCondition<F, V>
-  | ValueDefWithCondition<F, V>
-  | SignalRefWithCondition<F, V>;
-
-/**
  * A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.
  * {
  *   condition: {field: ...} | {value: ...},
