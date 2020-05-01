@@ -44,6 +44,19 @@ describe('compile/mark/encode/valueref', () => {
       expect(ref).toEqual({scale: 'x', value: 5});
     });
 
+    it('returns correct value for datum with signal', () => {
+      const ref = midPoint({
+        channel: 'y',
+        channelDef: {datum: {signal: 'foo'}},
+        markDef: {type: 'point'},
+        config: defaultConfig,
+        scaleName: 'x',
+        scale: undefined,
+        defaultRef
+      });
+      expect(ref).toEqual({scale: 'x', signal: 'foo'});
+    });
+
     it('should return correct value for binned data', () => {
       const fieldDef: TypedFieldDef<string> = {field: 'bin_start', bin: 'binned', type: 'quantitative'};
       const fieldDef2: SecondaryFieldDef<string> = {field: 'bin_end'};
