@@ -306,8 +306,6 @@ export function midPoint({
       const offsetMixins = offset ? {offset} : {};
 
       return {...widthHeightValueOrSignalRef(channel, value), ...offsetMixins};
-    } else if (isSignalRef(channelDef)) {
-      return channelDef;
     }
 
     // If channelDef is neither field def or value def, it's a condition-only def.

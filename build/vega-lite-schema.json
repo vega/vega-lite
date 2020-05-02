@@ -2955,8 +2955,8 @@
     "ColorGradientFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>"
     },
-    "ColorGradientValueDefWithConditionAlias": {
-      "$ref": "#/definitions/ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,(Gradient|string|null)>"
+    "ColorGradientValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,(Gradient|string|null)>"
     },
     "ColorName": {
       "enum": [
@@ -3142,7 +3142,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Rotation angle of point and text marks."
@@ -3156,7 +3156,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -3195,7 +3195,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -3209,7 +3209,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `fillOpacity` property."
@@ -3220,7 +3220,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "A URL to load upon mouse click."
@@ -3238,7 +3238,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Latitude position of geographically projected marks."
@@ -3252,7 +3252,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
@@ -3266,7 +3266,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Longitude position of geographically projected marks."
@@ -3280,7 +3280,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
@@ -3294,7 +3294,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `opacity` property."
@@ -3311,7 +3311,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html). Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
@@ -3325,7 +3325,7 @@
               "$ref": "#/definitions/PolarDatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "The outer radius in pixels of arc marks."
@@ -3339,7 +3339,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "The inner radius in pixels of arc marks."
@@ -3353,7 +3353,7 @@
               "$ref": "#/definitions/StringDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ShapeValueDefWithConditionAlias"
+              "$ref": "#/definitions/ShapeValueDefWithCondition"
             }
           ],
           "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:\n   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   - the line symbol `\"stroke\"`\n   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
@@ -3367,7 +3367,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
@@ -3381,7 +3381,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -3395,7 +3395,7 @@
               "$ref": "#/definitions/NumericArrayDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericArrayValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericArrayValueDefWithCondition"
             }
           ],
           "description": "Stroke dash of the marks.\n\n__Default value:__ `[1,0]` (No dash)."
@@ -3409,7 +3409,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeOpacity` property."
@@ -3423,7 +3423,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeWidth` property."
@@ -3434,7 +3434,7 @@
               "$ref": "#/definitions/TextFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/TextValueDefWithConditionAlias"
+              "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
           "description": "Text of the `text` mark."
@@ -3448,7 +3448,7 @@
               "$ref": "#/definitions/PolarDatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "- For arc marks, the arc length in radians if theta2 is not specified, otherwise the start arc angle. (A value of 0 indicates up or “north”, increasing values proceed clockwise.)\n\n- For text marks, polar coordinate angle in radians."
@@ -3462,7 +3462,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise."
@@ -3473,7 +3473,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             },
             {
               "items": {
@@ -3493,7 +3493,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "The URL of an image mark."
@@ -3532,7 +3532,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -3543,7 +3543,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -3582,7 +3582,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -3593,7 +3593,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -3681,13 +3681,13 @@
         }
       ]
     },
-    "ConditionalStringValueDef": {
+    "ConditionalValueDef<(string|null)>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|null)>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<StringValueDef>"
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<(string|null)>>"
         }
       ]
     },
@@ -3701,13 +3701,13 @@
         }
       ]
     },
-    "ConditionalNumberValueDef": {
+    "ConditionalValueDef<number>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<NumberValueDef>"
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<number>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<NumberValueDef>"
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<number>>"
         }
       ]
     },
@@ -3995,11 +3995,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|null)>>"
               },
               "type": "array"
             }
@@ -4631,7 +4631,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<StringValueDef>": {
+    "ConditionalPredicate<ValueDef<(string|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4670,7 +4670,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<NumberValueDef>": {
+    "ConditionalPredicate<ValueDef<number>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -5162,7 +5162,7 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<StringValueDef>": {
+    "ConditionalSelection<ValueDef<(string|null)>>": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -5201,7 +5201,7 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<NumberValueDef>": {
+    "ConditionalSelection<ValueDef<number>>": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -6821,7 +6821,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Rotation angle of point and text marks."
@@ -6835,7 +6835,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -6882,7 +6882,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -6896,7 +6896,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `fillOpacity` property."
@@ -6907,7 +6907,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "A URL to load upon mouse click."
@@ -6925,7 +6925,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Latitude position of geographically projected marks."
@@ -6939,7 +6939,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
@@ -6953,7 +6953,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Longitude position of geographically projected marks."
@@ -6967,7 +6967,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
@@ -6981,7 +6981,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `opacity` property."
@@ -6998,7 +6998,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html). Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
@@ -7012,7 +7012,7 @@
               "$ref": "#/definitions/PolarDatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "The outer radius in pixels of arc marks."
@@ -7026,7 +7026,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "The inner radius in pixels of arc marks."
@@ -7044,7 +7044,7 @@
               "$ref": "#/definitions/StringDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ShapeValueDefWithConditionAlias"
+              "$ref": "#/definitions/ShapeValueDefWithCondition"
             }
           ],
           "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:\n   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   - the line symbol `\"stroke\"`\n   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
@@ -7058,7 +7058,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
@@ -7072,7 +7072,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -7086,7 +7086,7 @@
               "$ref": "#/definitions/NumericArrayDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericArrayValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericArrayValueDefWithCondition"
             }
           ],
           "description": "Stroke dash of the marks.\n\n__Default value:__ `[1,0]` (No dash)."
@@ -7100,7 +7100,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeOpacity` property."
@@ -7114,7 +7114,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeWidth` property."
@@ -7125,7 +7125,7 @@
               "$ref": "#/definitions/TextFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/TextValueDefWithConditionAlias"
+              "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
           "description": "Text of the `text` mark."
@@ -7139,7 +7139,7 @@
               "$ref": "#/definitions/PolarDatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "- For arc marks, the arc length in radians if theta2 is not specified, otherwise the start arc angle. (A value of 0 indicates up or “north”, increasing values proceed clockwise.)\n\n- For text marks, polar coordinate angle in radians."
@@ -7153,7 +7153,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise."
@@ -7164,7 +7164,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             },
             {
               "items": {
@@ -7184,7 +7184,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "The URL of an image mark."
@@ -7223,7 +7223,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -7234,7 +7234,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -7273,7 +7273,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -7284,7 +7284,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -7721,7 +7721,17 @@
           "type": "number"
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<(Gradient|string|null)>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "datum": {
@@ -7756,7 +7766,17 @@
           "type": "number"
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<number>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<number>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<number>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "datum": {
@@ -7791,7 +7811,17 @@
           "type": "number"
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<number[]>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<number[]>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<number[]>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "datum": {
@@ -7826,7 +7856,17 @@
           "type": "number"
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<string>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<string>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<string>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "datum": {
@@ -7879,7 +7919,17 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<(Gradient|string|null)>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
@@ -7973,7 +8023,17 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<number>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<number>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<number>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
@@ -8067,7 +8127,17 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<number[]>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<number[]>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<number[]>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
@@ -8161,7 +8231,17 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<(string|null)>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
@@ -8261,7 +8341,17 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<Text>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<Text>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<Text>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
@@ -8354,7 +8444,17 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<string>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<string>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<string>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
@@ -13593,8 +13693,8 @@
     "NumericArrayFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<MarkPropFieldDef,number[]>"
     },
-    "NumericArrayValueDefWithConditionAlias": {
-      "$ref": "#/definitions/ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,number[]>"
+    "NumericArrayValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,number[]>"
     },
     "NumericDatumDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<DatumDef,number>"
@@ -13602,8 +13702,11 @@
     "NumericFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<MarkPropFieldDef,number>"
     },
-    "NumericValueDefWithConditionAlias": {
-      "$ref": "#/definitions/ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,number>"
+    "NumericValueDef": {
+      "$ref": "#/definitions/ValueDef<number>"
+    },
+    "NumericValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,number>"
     },
     "OrderFieldDef": {
       "additionalProperties": false,
@@ -16519,8 +16622,8 @@
     "ShapeFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
     },
-    "ShapeValueDefWithConditionAlias": {
-      "$ref": "#/definitions/StringValueDefWithConditionAlias<TypeForShape>"
+    "ShapeValueDefWithCondition": {
+      "$ref": "#/definitions/StringValueDefWithCondition<TypeForShape>"
     },
     "SingleDefUnitChannel": {
       "enum": [
@@ -17100,11 +17203,11 @@
     "StringFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<StringFieldDef,string>"
     },
-    "StringValueDefWithConditionAlias<TypeForShape>": {
-      "$ref": "#/definitions/ValueDefWithConditionAlias<MarkPropFieldOrDatumDef<TypeForShape>,(string|null)>"
+    "StringValueDefWithCondition<TypeForShape>": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef<TypeForShape>,(string|null)>"
     },
-    "StringValueDefWithConditionAlias": {
-      "$ref": "#/definitions/ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,(string|null)>"
+    "StringValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,(string|null)>"
     },
     "StrokeCap": {
       "enum": [
@@ -17264,8 +17367,8 @@
     "TextFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<StringFieldDef,Text>"
     },
-    "TextValueDefWithConditionAlias": {
-      "$ref": "#/definitions/ValueDefWithConditionAlias<StringFieldDef,Text>"
+    "TextValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<StringFieldDef,Text>"
     },
     "TickConfig": {
       "additionalProperties": false,
@@ -19590,7 +19693,7 @@
       ],
       "type": "string"
     },
-    "YValueDef": {
+    "ValueDef<(number|\"height\")>": {
       "additionalProperties": false,
       "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
@@ -19614,7 +19717,7 @@
       ],
       "type": "object"
     },
-    "XValueDef": {
+    "ValueDef<(number|\"width\")>": {
       "additionalProperties": false,
       "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
@@ -19638,7 +19741,7 @@
       ],
       "type": "object"
     },
-    "NumberValueDef": {
+    "ValueDef<number>": {
       "additionalProperties": false,
       "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
@@ -19662,7 +19765,13 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
             },
             {
-              "$ref": "#/definitions/ValueOrSignalCondition<(Gradient|string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+              },
+              "type": "array"
             }
           ],
           "description": "A field definition or one or more value definition(s) with a selection predicate."
@@ -19694,7 +19803,13 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
             },
             {
-              "$ref": "#/definitions/ValueOrSignalCondition<(string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+              },
+              "type": "array"
             }
           ],
           "description": "A field definition or one or more value definition(s) with a selection predicate."
@@ -19719,7 +19834,13 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
             },
             {
-              "$ref": "#/definitions/ValueOrSignalCondition<number>"
+              "$ref": "#/definitions/ConditionalValueDef<number>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<number>"
+              },
+              "type": "array"
             }
           ],
           "description": "A field definition or one or more value definition(s) with a selection predicate."
@@ -19741,7 +19862,13 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
             },
             {
-              "$ref": "#/definitions/ValueOrSignalCondition<number[]>"
+              "$ref": "#/definitions/ConditionalValueDef<number[]>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<number[]>"
+              },
+              "type": "array"
             }
           ],
           "description": "A field definition or one or more value definition(s) with a selection predicate."
@@ -19766,7 +19893,13 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef<TypeForShape>"
             },
             {
-              "$ref": "#/definitions/ValueOrSignalCondition<(string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+              },
+              "type": "array"
             }
           ],
           "description": "A field definition or one or more value definition(s) with a selection predicate."
@@ -19791,7 +19924,13 @@
               "$ref": "#/definitions/ConditionalStringFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueOrSignalCondition<Text>"
+              "$ref": "#/definitions/ConditionalValueDef<Text>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<Text>"
+              },
+              "type": "array"
             }
           ],
           "description": "A field definition or one or more value definition(s) with a selection predicate."
@@ -19802,102 +19941,6 @@
         }
       },
       "type": "object"
-    },
-    "ValueOrSignalCondition<(Gradient|string|null)>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
-          },
-          "type": "array"
-        }
-      ]
-    },
-    "ValueOrSignalCondition<(string|null)>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalStringValueDef"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/ConditionalStringValueDef"
-          },
-          "type": "array"
-        }
-      ]
-    },
-    "ValueOrSignalCondition<Text>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalValueDef<Text>"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/ConditionalValueDef<Text>"
-          },
-          "type": "array"
-        }
-      ]
-    },
-    "ValueOrSignalCondition<number>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalNumberValueDef"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/ConditionalNumberValueDef"
-          },
-          "type": "array"
-        }
-      ]
-    },
-    "ValueOrSignalCondition<number[]>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalValueDef<number[]>"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/ConditionalValueDef<number[]>"
-          },
-          "type": "array"
-        }
-      ]
-    },
-    "ValueOrSignalCondition<string>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalValueDef<string>"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/ConditionalValueDef<string>"
-          },
-          "type": "array"
-        }
-      ]
-    },
-    "ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,(Gradient|string|null)>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,(Gradient|string|null)>"
-    },
-    "ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,(string|null)>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,(string|null)>"
-    },
-    "ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,number>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,number>"
-    },
-    "ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,number[]>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,number[]>"
-    },
-    "ValueDefWithConditionAlias<MarkPropFieldOrDatumDef<TypeForShape>,(string|null)>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef<TypeForShape>,(string|null)>"
-    },
-    "ValueDefWithConditionAlias<StringFieldDef,Text>": {
-      "$ref": "#/definitions/ValueDefWithCondition<StringFieldDef,Text>"
     },
     "Vector2<DateTime>": {
       "items": [
@@ -20324,6 +20367,12 @@
         "window"
       ],
       "type": "object"
+    },
+    "XValueDef": {
+      "$ref": "#/definitions/ValueDef<(number|\"width\")>"
+    },
+    "YValueDef": {
+      "$ref": "#/definitions/ValueDef<(number|\"height\")>"
     }
   }
 }

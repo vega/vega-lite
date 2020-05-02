@@ -98,7 +98,8 @@ describe('config', () => {
       ...defaultConfig,
       mark: {
         ...defaultConfig.mark,
-        opacity: 0.3
+        opacity: 0.3,
+        tooltip: {content: 'encoding'}
       },
       bar: {
         opacity: 0.5,
@@ -136,6 +137,10 @@ describe('config', () => {
     it('should remove VL only mark config but keep Vega mark config', () => {
       expect(output.mark.color).not.toBeDefined();
       expect(output.mark.opacity).toEqual(0.3);
+    });
+
+    it('should remove VL tooltip object', () => {
+      expect(output.mark.tooltip).toBeUndefined();
     });
 
     it('should remove conditional axis config', () => {

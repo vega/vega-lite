@@ -76,7 +76,7 @@ import {isSignalRef} from './vega.schema';
 
 export type PrimitiveValue = number | string | boolean | null;
 
-export type Value = PrimitiveValue | number[] | Gradient | Text;
+export type Value = PrimitiveValue | number[] | Gradient | Text | SignalRef;
 
 /**
  * Definition object for a constant value (primitive value or gradient definition) of an encoding channel.
@@ -87,6 +87,12 @@ export interface ValueDef<V extends Value = Value> {
    */
   value: V;
 }
+
+export type XValueDef = ValueDef<number | 'width' | SignalRef>;
+
+export type YValueDef = ValueDef<number | 'height' | SignalRef>;
+
+export type NumericValueDef = ValueDef<number | SignalRef>;
 
 /**
  * A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.
@@ -100,52 +106,38 @@ export interface ValueDef<V extends Value = Value> {
  * @minProperties 1
  */
 export type ValueDefWithCondition<F extends FieldDef<any> | DatumDef<any>, V extends Value = Value> = Partial<
-  ValueDef<V>
+  ValueDef<V | SignalRef>
 > & {
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
-  condition?: Conditional<F> | ValueOrSignalCondition<V>;
+  condition?: Conditional<F> | Conditional<ValueDef<V | SignalRef>> | Conditional<ValueDef<V | SignalRef>>[];
 };
 
-/**
- * @hidden
- */
-export type SignalRefWithCondition<F extends FieldDef<any> | DatumDef, V extends Value = Value> = SignalRef & {
-  /**
-   * A field definition or one or more value definition(s) with a selection predicate.
-   */
-  condition?: Conditional<F> | ValueOrSignalCondition<V>;
-};
+export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
+  MarkPropFieldOrDatumDef<F, T>,
+  string | null
+>;
 
-export type ValueOrSignalDefWithCondition<F extends FieldDef<any> | DatumDef<any>, V extends Value = Value> =
-  | ValueDefWithCondition<F, V>
-  | SignalRefWithCondition<F, V>;
+export type ColorGradientValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
+  MarkPropFieldOrDatumDef<F, T>,
+  Gradient | string | null
+>;
 
-export type StringValueOrSignalDefWithCondition<
-  F extends Field,
-  T extends Type = StandardType
-> = ValueOrSignalDefWithCondition<MarkPropFieldOrDatumDef<F, T>, string | null>;
-
-export type ColorGradientValueOrSignalDefWithCondition<
-  F extends Field,
-  T extends Type = StandardType
-> = ValueOrSignalDefWithCondition<MarkPropFieldOrDatumDef<F, T>, Gradient | string | null>;
-
-export type NumericValueOrSignalDefWithCondition<F extends Field> = ValueOrSignalDefWithCondition<
+export type NumericValueDefWithCondition<F extends Field> = ValueDefWithCondition<
   MarkPropFieldOrDatumDef<F, StandardType>,
   number
 >;
-export type NumericArrayValueOrSignalDefWithCondition<F extends Field> = ValueOrSignalDefWithCondition<
+export type NumericArrayValueDefWithCondition<F extends Field> = ValueDefWithCondition<
   MarkPropFieldOrDatumDef<F, StandardType>,
   number[]
 >;
 
 export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
-export type ShapeValueOrSignalDefWithCondition<F extends Field> = StringValueOrSignalDefWithCondition<F, TypeForShape>;
+export type ShapeValueDefWithCondition<F extends Field> = StringValueDefWithCondition<F, TypeForShape>;
 
-export type TextValueOrSignalDefWithCondition<F extends Field> = ValueOrSignalDefWithCondition<StringFieldDef<F>, Text>;
+export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<StringFieldDef<F>, Text>;
 
 export type Conditional<CD extends FieldDef<any> | DatumDef | ValueDef<any> | SignalRef> =
   | ConditionalPredicate<CD>
@@ -169,12 +161,6 @@ export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSe
   return c['selection'];
 }
 
-export type ValueOrSignalCondition<V extends Value = Value> =
-  | Conditional<ValueDef<V>>
-  | Conditional<ValueDef<V>>[]
-  | Conditional<SignalRef>
-  | Conditional<SignalRef>[];
-
 export interface ConditionValueDefMixins<V extends Value = Value> {
   /**
    * One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).
@@ -182,7 +168,7 @@ export interface ConditionValueDefMixins<V extends Value = Value> {
    * __Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)
    * since Vega-Lite only allows at most one encoded field per encoding channel.
    */
-  condition?: ValueOrSignalCondition<V>;
+  condition?: Conditional<ValueDef<V>> | Conditional<ValueDef<V>>[];
 }
 
 /**
@@ -195,7 +181,7 @@ export interface ConditionValueDefMixins<V extends Value = Value> {
  */
 
 export type FieldOrDatumDefWithCondition<F extends FieldDef<any, any> | DatumDef<any>, V extends Value = Value> = F &
-  ConditionValueDefMixins<V>;
+  ConditionValueDefMixins<V | SignalRef>;
 
 export type ColorGradientFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<
   MarkPropFieldDef<F, StandardType>,
@@ -591,7 +577,7 @@ export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F,
 export type FieldDef<F extends Field, T extends Type = any> = SecondaryFieldDef<F> | TypedFieldDef<F, T>;
 export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>];
 
-export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingConditionalValueDef>(
+export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingConditionalValueDef | SignalRef>(
   channelDef: CD
 ): channelDef is CD & {condition: Conditional<any>} {
   return !!channelDef && 'condition' in channelDef;
@@ -1238,32 +1224,26 @@ export function valueExpr(
   {
     timeUnit,
     type,
-    time,
+    wrapTime,
     undefinedIfExprNotRequired
   }: {
     timeUnit: TimeUnit | TimeUnitParams;
     type?: Type;
-    time?: boolean;
+    wrapTime?: boolean;
     undefinedIfExprNotRequired?: boolean;
   }
 ): string {
   const unit = timeUnit && normalizeTimeUnit(timeUnit)?.unit;
+  let isTime = unit || type === 'temporal';
 
   let expr;
   if (isSignalRef(v)) {
-    const s = v.signal;
-
-    if (time && !unit && type !== 'temporal') {
-      // We don't know if this is a date or not, so we need to check
-      return `isDate(${s}) ? time(${s}) : ${s}`;
-    } else {
-      // TODO: support isLocalSingleTimeUnit(unit) -- we can't do that until DateTime object supports signal
-      expr = s;
-    }
+    expr = v.signal;
   } else if (isDateTime(v)) {
+    isTime = true;
     expr = dateTimeToExpr(v);
   } else if (isString(v) || isNumber(v)) {
-    if (unit || type === 'temporal') {
+    if (isTime) {
       expr = `datetime(${JSON.stringify(v)})`;
 
       if (isLocalSingleTimeUnit(unit)) {
@@ -1275,7 +1255,7 @@ export function valueExpr(
     }
   }
   if (expr) {
-    return time ? `time(${expr})` : expr;
+    return wrapTime && isTime ? `time(${expr})` : expr;
   }
   // number or boolean or normal string
   return undefinedIfExprNotRequired ? undefined : JSON.stringify(v);

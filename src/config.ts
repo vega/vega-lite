@@ -539,6 +539,10 @@ export function stripAndRedirectConfig(config: Config) {
     for (const prop of VL_ONLY_MARK_CONFIG_PROPERTIES) {
       delete config.mark[prop];
     }
+
+    if (config.mark.tooltip && isObject(config.mark.tooltip)) {
+      delete config.mark.tooltip;
+    }
   }
 
   for (const markType of MARK_STYLES) {
