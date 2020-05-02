@@ -34,7 +34,7 @@ export interface FormatMixins {
   format?: string | object;
 
   /**
-   * The format type for labels (`"number"` or `"time"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type)).
+   * The format type for labels. One of `"number"`, `"time"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).
    *
    * __Default value:__
    * - `"time"` for temporal fields and ordinal and nominal fields with `timeUnit`.

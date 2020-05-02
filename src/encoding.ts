@@ -316,7 +316,7 @@ export interface Encoding<F extends Field> {
   url?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
 
   /**
-   * A string that labels the axis group for accessibility.
+   * A text description of this mark for ARIA accessibility (SVG output only). For SVG output the `"aria-label"` attribute will be set to this description.
    */
   description?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
 
