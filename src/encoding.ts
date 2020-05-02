@@ -81,6 +81,7 @@ import {
   StringFieldDef,
   StringFieldDefWithCondition,
   StringValueDefWithCondition,
+  TextDatumDefWithCondition,
   TextFieldDefWithCondition,
   TextValueDefWithCondition,
   title,
@@ -295,7 +296,7 @@ export interface Encoding<F extends Field> {
   /**
    * Text of the `text` mark.
    */
-  text?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
+  text?: TextFieldDefWithCondition<F> | TextDatumDefWithCondition<F> | TextValueDefWithCondition<F>;
 
   /**
    * The tooltip text to show upon mouse hover. Specifying `tooltip` encoding overrides [the `tooltip` property in the mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
