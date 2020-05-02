@@ -1236,32 +1236,26 @@ export function valueExpr(
   {
     timeUnit,
     type,
-    time,
+    wrapTime,
     undefinedIfExprNotRequired
   }: {
     timeUnit: TimeUnit | TimeUnitParams;
     type?: Type;
-    time?: boolean;
+    wrapTime?: boolean;
     undefinedIfExprNotRequired?: boolean;
   }
 ): string {
   const unit = timeUnit && normalizeTimeUnit(timeUnit)?.unit;
+  let isTime = unit || type === 'temporal';
 
   let expr;
   if (isSignalRef(v)) {
-    const s = v.signal;
-
-    if (time && !unit && type !== 'temporal') {
-      // We don't know if this is a date or not, so we need to check
-      return `isDate(${s}) ? time(${s}) : ${s}`;
-    } else {
-      // TODO: support isLocalSingleTimeUnit(unit) -- we can't do that until DateTime object supports signal
-      expr = s;
-    }
+    expr = v.signal;
   } else if (isDateTime(v)) {
+    isTime = true;
     expr = dateTimeToExpr(v);
   } else if (isString(v) || isNumber(v)) {
-    if (unit || type === 'temporal') {
+    if (isTime) {
       expr = `datetime(${JSON.stringify(v)})`;
 
       if (isLocalSingleTimeUnit(unit)) {
@@ -1273,7 +1267,7 @@ export function valueExpr(
     }
   }
   if (expr) {
-    return time ? `time(${expr})` : expr;
+    return wrapTime && isTime ? `time(${expr})` : expr;
   }
   // number or boolean or normal string
   return undefinedIfExprNotRequired ? undefined : JSON.stringify(v);

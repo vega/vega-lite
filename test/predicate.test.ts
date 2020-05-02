@@ -204,7 +204,7 @@ describe('filter', () => {
 
     it('should return a correct expression for a RangeFilter with signal range', () => {
       const expr = expression(null, {field: 'x', range: {signal: 'r'}});
-      expect(expr).toBe('inrange(datum["x"], [isDate(r[0]) ? time(r[0]) : r[0], isDate(r[1]) ? time(r[1]) : r[1]])');
+      expect(expr).toBe('inrange(datum["x"], [r[0], r[1]])');
     });
 
     it('should return a correct expression for a RangeFilter with no lower bound', () => {

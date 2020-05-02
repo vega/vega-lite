@@ -180,7 +180,7 @@ export function isFieldPredicate(
 }
 
 function predicateValueExpr(v: number | string | boolean | DateTime | SignalRef, timeUnit: TimeUnit) {
-  return valueExpr(v, {timeUnit, time: true});
+  return valueExpr(v, {timeUnit, wrapTime: true});
 }
 
 function predicateValuesExpr(vals: (number | string | boolean | DateTime)[], timeUnit: TimeUnit) {
