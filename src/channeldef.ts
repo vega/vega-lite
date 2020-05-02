@@ -73,17 +73,14 @@ import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
 import {contains, flatAccessWithDatum, getFirstDefined, internalField, replacePathInField, titlecase} from './util';
 import {isSignalRef} from './vega.schema';
 
-export type Value = number | string | boolean | number[] | null;
-export {Gradient};
+export type PrimitiveValue = number | string | boolean | null;
 
-export type ValueOrGradient = Value | Gradient;
-
-export type ValueOrGradientOrText = Value | Gradient | Text;
+export type Value = PrimitiveValue | number[] | Gradient | Text;
 
 /**
  * Definition object for a constant value (primitive value or gradient definition) of an encoding channel.
  */
-export interface ValueDef<V extends ValueOrGradient | Value[] = Value> {
+export interface ValueDef<V extends Value = Value> {
   /**
    * A constant value in visual domain (e.g., `"red"` / `"#0099ff"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).
    */
@@ -101,10 +98,9 @@ export interface ValueDef<V extends ValueOrGradient | Value[] = Value> {
 /**
  * @minProperties 1
  */
-export type ValueDefWithCondition<
-  F extends FieldDef<any> | DatumDef<any>,
-  V extends ValueOrGradientOrText = Value
-> = Partial<ValueDef<V>> & {
+export type ValueDefWithCondition<F extends FieldDef<any> | DatumDef<any>, V extends Value = Value> = Partial<
+  ValueDef<V>
+> & {
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
@@ -114,20 +110,16 @@ export type ValueDefWithCondition<
 /**
  * @hidden
  */
-export type SignalRefWithCondition<
-  F extends FieldDef<any> | DatumDef,
-  V extends ValueOrGradientOrText = Value
-> = SignalRef & {
+export type SignalRefWithCondition<F extends FieldDef<any> | DatumDef, V extends Value = Value> = SignalRef & {
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
   condition?: Conditional<F> | ValueOrSignalCondition<V>;
 };
 
-export type ValueOrSignalDefWithCondition<
-  F extends FieldDef<any> | DatumDef<any>,
-  V extends ValueOrGradientOrText = Value
-> = ValueDefWithCondition<F, V> | SignalRefWithCondition<F, V>;
+export type ValueOrSignalDefWithCondition<F extends FieldDef<any> | DatumDef<any>, V extends Value = Value> =
+  | ValueDefWithCondition<F, V>
+  | SignalRefWithCondition<F, V>;
 
 export type StringValueOrSignalDefWithCondition<
   F extends Field,
@@ -176,13 +168,13 @@ export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSe
   return c['selection'];
 }
 
-export type ValueOrSignalCondition<V extends ValueOrGradientOrText = Value> =
+export type ValueOrSignalCondition<V extends Value = Value> =
   | Conditional<ValueDef<V>>
   | Conditional<ValueDef<V>>[]
   | Conditional<SignalRef>
   | Conditional<SignalRef>[];
 
-export interface ConditionValueDefMixins<V extends ValueOrGradientOrText = Value> {
+export interface ConditionValueDefMixins<V extends Value = Value> {
   /**
    * One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).
    *
@@ -201,10 +193,8 @@ export interface ConditionValueDefMixins<V extends ValueOrGradientOrText = Value
  * }
  */
 
-export type FieldOrDatumDefWithCondition<
-  F extends FieldDef<any, any> | DatumDef<any>,
-  V extends ValueOrGradientOrText = Value
-> = F & ConditionValueDefMixins<V>;
+export type FieldOrDatumDefWithCondition<F extends FieldDef<any, any> | DatumDef<any>, V extends Value = Value> = F &
+  ConditionValueDefMixins<V>;
 
 export type ColorGradientFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<
   MarkPropFieldDef<F, StandardType>,
@@ -407,7 +397,7 @@ export interface ScaleMixins {
 
 export interface DatumDef<
   F extends Field = string,
-  V extends Value | DateTime | SignalRef = Value | DateTime | SignalRef
+  V extends PrimitiveValue | DateTime | SignalRef = PrimitiveValue | DateTime | SignalRef
 > extends Partial<TypeMixins<Type>>, BandMixins {
   /**
    * A constant value in data domain.
