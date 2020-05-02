@@ -24,6 +24,8 @@ export {tooltip} from './tooltip';
 
 export type Ignore = Record<'color' | 'size' | 'orient' | 'align' | 'baseline' | 'theta', 'ignore' | 'include'>;
 
+const ALWAYS_IGNORE = new Set(['aria']);
+
 export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
   const {fill = undefined, stroke = undefined} = ignore.color === 'include' ? color(model) : {};
   return {
@@ -67,7 +69,7 @@ function wrapAllFieldsInvalid(model: UnitModel, channel: Channel, valueRef: VgVa
 
 function markDefProperties(mark: MarkDef, ignore: Ignore) {
   return VG_MARK_CONFIGS.reduce((m, prop) => {
-    if (mark[prop] !== undefined && ignore[prop] !== 'ignore') {
+    if (!ALWAYS_IGNORE.has(prop) && mark[prop] !== undefined && ignore[prop] !== 'ignore') {
       m[prop] = signalOrValueRef(mark[prop]);
     }
     return m;

@@ -39,10 +39,20 @@ export function assembleLegends(model: Model): VgLegend[] {
     }
   }
 
-  return vals(legendByDomain)
+  const legends = vals(legendByDomain)
     .flat()
     .map(assembleLegend)
     .filter(l => l !== undefined);
+
+  if (model.config.aria === false) {
+    for (const legend of legends) {
+      if (legend.aria == undefined) {
+        legend.aria = false;
+      }
+    }
+  }
+
+  return legends;
 }
 
 export function assembleLegend(legendCmpt: LegendComponent) {

@@ -100,6 +100,24 @@ describe('legend/assemble', () => {
     expect(legends[0].encode.symbols.update?.fill).toBe(undefined);
   });
 
+  it('sets aria to false if set in config', () => {
+    const model = parseUnitModelWithScale({
+      mark: 'point',
+      encoding: {
+        color: {field: 'b', type: 'quantitative'}
+      },
+      config: {
+        aria: false
+      }
+    });
+
+    model.parseLegends();
+
+    const legends = model.assembleLegends();
+    expect(legends).toHaveLength(1);
+    expect(legends[0].aria).toBe(false);
+  });
+
   describe('assembleLegend', () => {
     it('correctly redirect color signal', () => {
       const legendCmpt = new LegendComponent({

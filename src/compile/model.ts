@@ -414,6 +414,10 @@ export abstract class Model {
         title.anchor = title.anchor ?? 'start';
       }
 
+      if (this.config.aria === false) {
+        title.aria = false;
+      }
+
       return keys(title).length > 0 ? title : undefined;
     }
     return undefined;

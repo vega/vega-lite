@@ -81,4 +81,21 @@ describe('compile/axis/assemble', () => {
       expect(axis.tickSize).toEqual({signal: 'datum.index === 0 || datum.index === 1 ? a : b'});
     });
   });
+
+  it('outputs grid axis with aria false', () => {
+    const axisCmpt = new AxisComponent({
+      orient: 'left',
+      grid: true
+    });
+    const axis = assembleAxis(axisCmpt, 'grid', defaultConfig);
+    expect(axis.aria).toBe(false);
+  });
+
+  it('outputs aria false if set in config', () => {
+    const axisCmpt = new AxisComponent({
+      orient: 'left'
+    });
+    const axis = assembleAxis(axisCmpt, 'main', {...defaultConfig, aria: false});
+    expect(axis.aria).toBe(false);
+  });
 });

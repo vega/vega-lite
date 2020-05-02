@@ -857,7 +857,8 @@ describe('normalizeBoxIQR', () => {
         style: 'boxplot-box',
         size: 14,
         orient: 'vertical',
-        invalid: null
+        invalid: null,
+        aria: false
       },
       encoding: {
         x: {field: 'age', type: 'quantitative'},

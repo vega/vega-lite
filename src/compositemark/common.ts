@@ -150,17 +150,19 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
     mark,
     positionPrefix,
     endPositionPrefix = undefined,
+    aria,
     extraEncoding = {}
   }: {
     partName: keyof P;
     mark: Mark | MarkDef;
     positionPrefix: string;
     endPositionPrefix?: string;
+    aria?: boolean;
     extraEncoding?: Encoding<string>;
   }) => {
     const title = getTitle(continuousAxisChannelDef);
 
-    return partLayerMixins<P>(compositeMarkDef, partName, compositeMarkConfig, {
+    return partLayerMixins<P>(compositeMarkDef, partName, compositeMarkConfig, aria, {
       mark, // TODO better remove this method and just have mark as a parameter of the method
       encoding: {
         [continuousAxis]: {
@@ -188,6 +190,7 @@ export function partLayerMixins<P extends PartsMixins<any>>(
   markDef: GenericCompositeMarkDef<any> & P,
   part: keyof P,
   compositeMarkConfig: P,
+  aria: boolean,
   partBaseSpec: NormalizedUnitSpec
 ): NormalizedUnitSpec[] {
   const {clip, color, opacity} = markDef;
@@ -205,7 +208,8 @@ export function partLayerMixins<P extends PartsMixins<any>>(
           ...(opacity ? {opacity} : {}),
           ...(isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : {type: partBaseSpec.mark}),
           style: `${mark}-${part}`,
-          ...(isBoolean(markDef[part]) ? {} : (markDef[part] as MarkConfig))
+          ...(isBoolean(markDef[part]) ? {} : (markDef[part] as MarkConfig)),
+          ...(aria === false ? {aria} : {})
         }
       }
     ];

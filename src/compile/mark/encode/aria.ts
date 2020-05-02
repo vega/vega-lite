@@ -7,24 +7,37 @@ import {textRef} from './text';
 import {tooltipData} from './tooltip';
 
 export function aria(model: UnitModel) {
-  const {mark, markDef, config} = model;
+  const {markDef, config} = model;
 
   const enableAria = getMarkPropOrConfig('aria', markDef, config);
 
-  // we can ignore other aria properties if ariaHidden is true
+  // We can ignore other aria properties if ariaHidden is true.
   if (enableAria === false) {
-    return {
-      aria: {
-        value: false
-      }
-    };
+    // getMarkGroups sets aria to false already so we don't have to set it in the encode block
+    return {};
   }
 
   return {
     ...(enableAria ? {aria: enableAria} : {}),
-    ...(mark in VG_MARK_INDEX ? {} : {ariaRoleDescription: {value: mark}}),
+    ...ariaRoleDescription(model),
     ...description(model)
   };
+}
+
+function ariaRoleDescription(model: UnitModel) {
+  const {mark, markDef, config} = model;
+
+  if (config.aria === false) {
+    return {};
+  }
+
+  const ariaRoleDesc = getMarkPropOrConfig('ariaRoleDescription', markDef, config);
+
+  if (ariaRoleDesc != null) {
+    return {ariaRoleDescription: {value: ariaRoleDesc}};
+  }
+
+  return mark in VG_MARK_INDEX ? {} : {ariaRoleDescription: {value: mark}};
 }
 
 export function description(model: UnitModel) {
@@ -44,6 +57,10 @@ export function description(model: UnitModel) {
         value: descriptionValue
       }
     };
+  }
+
+  if (config.aria === false) {
+    return {};
   }
 
   const data = tooltipData(encoding, stack, config);

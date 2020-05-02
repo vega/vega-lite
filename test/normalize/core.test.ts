@@ -242,7 +242,7 @@ describe('normalize()', () => {
                   as: 'lower_people'
                 }
               ],
-              mark: {type: 'rule', style: 'errorbar-rule'},
+              mark: {type: 'rule', ariaRoleDescription: 'errorbar', style: 'errorbar-rule'},
               encoding: {
                 y: {
                   field: 'lower_people',

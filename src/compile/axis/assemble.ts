@@ -87,7 +87,7 @@ export function assembleAxis(
         setAxisEncode(axis, part, vgProp, vgRef);
         delete axis[prop];
       } else if (propIndex === null) {
-        // If propIndex is null, this means we support conditional axis property by converting the condition to signal insteed.
+        // If propIndex is null, this means we support conditional axis property by converting the condition to signal instead.
         const signalRef: SignalRef = {
           signal:
             conditions
@@ -178,6 +178,7 @@ export function assembleAxis(
       grid: false,
       ...(titleString ? {title: titleString} : {}),
       ...axis,
+      ...(config.aria === false ? {aria: false} : {}),
       zindex: getFirstDefined(zindex, 0) // put axis line above marks by default
     };
   }

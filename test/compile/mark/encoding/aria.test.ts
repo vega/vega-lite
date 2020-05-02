@@ -35,7 +35,8 @@ describe('compile/mark/encoding/aria', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: {
         type: 'bar',
-        aria: false
+        aria: false,
+        description: 'this will not show'
       },
       encoding: {
         x: {
@@ -52,9 +53,79 @@ describe('compile/mark/encoding/aria', () => {
 
     const ariaMixins = aria(model);
 
+    expect(ariaMixins).toEqual({}); // we set aria: false in getMarkGroups
+  });
+
+  it('should not generate default description when aria is to false in config', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        x: {
+          field: 'category',
+          type: 'ordinal'
+        }
+      },
+      data: {values: []},
+      config: {
+        aria: false
+      }
+    });
+
+    const ariaMixins = aria(model);
+
+    expect(ariaMixins).toEqual({});
+  });
+
+  it('should support setting a description even if aria is set to false in config', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: {
+        type: 'bar',
+        description: 'An awesome mark'
+      },
+      encoding: {
+        x: {
+          field: 'category',
+          type: 'ordinal'
+        }
+      },
+      data: {values: []},
+      config: {
+        aria: false
+      }
+    });
+
+    const ariaMixins = aria(model);
+
     expect(ariaMixins).toEqual({
-      aria: {
-        value: false
+      description: {
+        value: 'An awesome mark'
+      }
+    });
+  });
+
+  it('should support custom ariaRoleDescription', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: {
+        type: 'bar',
+        ariaRoleDescription: 'mark'
+      },
+      encoding: {
+        x: {
+          field: 'category',
+          type: 'ordinal'
+        }
+      },
+      data: {values: []}
+    });
+
+    const ariaMixins = aria(model);
+
+    expect(ariaMixins).toEqual({
+      ariaRoleDescription: {
+        value: 'mark'
+      },
+      description: {
+        signal: '"category" + ": " + (isValid(datum["category"]) ? datum["category"] : ""+datum["category"])'
       }
     });
   });
