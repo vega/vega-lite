@@ -42,7 +42,7 @@ import {
   Mark
 } from 'vega';
 import {isArray} from 'vega-util';
-import {ValueOrGradientOrText} from './channeldef';
+import {Value} from './channeldef';
 import {SortOrder} from './sort';
 import {Flag, keys} from './util';
 
@@ -90,7 +90,7 @@ export function isSignalRef(o: any): o is SignalRef {
 
 // TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
 export interface VgValueRef {
-  value?: ValueOrGradientOrText | number[];
+  value?: Value | number[];
   field?:
     | string
     | {

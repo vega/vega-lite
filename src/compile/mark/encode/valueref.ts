@@ -23,7 +23,7 @@ import {
   SecondaryChannelDef,
   SecondaryFieldDef,
   TypedFieldDef,
-  ValueOrGradientOrText,
+  Value,
   vgField
 } from '../../../channeldef';
 import {Config} from '../../../config';
@@ -136,6 +136,8 @@ export function valueRefForFieldOrDatumDef(
     const {datum} = fieldDef;
     if (isDateTime(datum)) {
       ref.signal = dateTimeToExpr(datum);
+    } else if (isSignalRef(datum)) {
+      ref.signal = datum.signal;
     } else {
       ref.value = datum;
     }
@@ -330,7 +332,7 @@ export function midPoint({
 /**
  * Convert special "width" and "height" values in Vega-Lite into Vega value ref.
  */
-export function widthHeightValueOrSignalRef(channel: Channel, value: ValueOrGradientOrText | SignalRef) {
+export function widthHeightValueOrSignalRef(channel: Channel, value: Value | SignalRef) {
   if (contains(['x', 'x2'], channel) && value === 'width') {
     return {field: {group: 'width'}};
   } else if (contains(['y', 'y2'], channel) && value === 'height') {

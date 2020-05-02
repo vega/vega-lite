@@ -1,27 +1,26 @@
-import {ColorValueRef, EncodeEntry, LegendEncode, LegendType, SignalRef, SymbolEncodeEntry} from 'vega';
+import {ColorValueRef, EncodeEntry, Gradient, LegendEncode, LegendType, SignalRef, SymbolEncodeEntry} from 'vega';
 import {array, isArray, stringValue} from 'vega-util';
 import {COLOR, OPACITY, ScaleChannel} from '../../channel';
 import {
   Conditional,
   DatumDef,
-  Gradient,
   hasConditionalValueDef,
   isFieldDef,
+  isFieldOrDatumDefWithCustomTimeFormat,
   isValueDef,
   TypedFieldDef,
   Value,
-  ValueDef,
-  isFieldOrDatumDefWithCustomTimeFormat
+  ValueDef
 } from '../../channeldef';
 import {Encoding} from '../../encoding';
 import {FILL_STROKE_CONFIG} from '../../mark';
 import {getFirstDefined, keys, varName} from '../../util';
 import {applyMarkConfig, signalOrValueRef} from '../common';
+import {formatCustomType} from '../format';
 import * as mixins from '../mark/encode';
 import {STORE} from '../selection';
 import {UnitModel} from '../unit';
 import {LegendComponent} from './component';
-import {formatCustomType} from '../format';
 
 export interface LegendEncodeParams {
   fieldOrDatumDef: TypedFieldDef<string> | DatumDef;

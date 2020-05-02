@@ -1,6 +1,6 @@
 import {SignalRef} from 'vega';
 import {NonPositionScaleChannel} from '../../../channel';
-import {ValueOrGradient} from '../../../channeldef';
+import {Value} from '../../../channeldef';
 import {VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
@@ -14,7 +14,7 @@ export function nonPosition(
   channel: NonPositionScaleChannel,
   model: UnitModel,
   opt: {
-    defaultValue?: ValueOrGradient | SignalRef;
+    defaultValue?: Value | SignalRef;
     vgChannel?: VgEncodeChannel;
     defaultRef?: VgValueRef;
   } = {}

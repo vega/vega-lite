@@ -4130,7 +4130,7 @@
             "datum": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Value"
+                  "$ref": "#/definitions/PrimitiveValue"
                 },
                 {
                   "$ref": "#/definitions/DateTime"
@@ -4287,7 +4287,7 @@
             "datum": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Value"
+                  "$ref": "#/definitions/PrimitiveValue"
                 },
                 {
                   "$ref": "#/definitions/DateTime"
@@ -4835,7 +4835,7 @@
             "datum": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Value"
+                  "$ref": "#/definitions/PrimitiveValue"
                 },
                 {
                   "$ref": "#/definitions/DateTime"
@@ -4992,7 +4992,7 @@
             "datum": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Value"
+                  "$ref": "#/definitions/PrimitiveValue"
                 },
                 {
                   "$ref": "#/definitions/DateTime"
@@ -5732,7 +5732,7 @@
         "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/PrimitiveValue"
             },
             {
               "$ref": "#/definitions/DateTime"
@@ -7723,7 +7723,7 @@
         "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/PrimitiveValue"
             },
             {
               "$ref": "#/definitions/DateTime"
@@ -7758,7 +7758,7 @@
         "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/PrimitiveValue"
             },
             {
               "$ref": "#/definitions/DateTime"
@@ -7793,7 +7793,7 @@
         "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/PrimitiveValue"
             },
             {
               "$ref": "#/definitions/DateTime"
@@ -7828,7 +7828,7 @@
         "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/PrimitiveValue"
             },
             {
               "$ref": "#/definitions/DateTime"
@@ -14259,7 +14259,7 @@
         "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/PrimitiveValue"
             },
             {
               "$ref": "#/definitions/DateTime"
@@ -14325,7 +14325,7 @@
         "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/PrimitiveValue"
             },
             {
               "$ref": "#/definitions/DateTime"
@@ -14618,6 +14618,14 @@
         {
           "type": "string"
         }
+      ]
+    },
+    "PrimitiveValue": {
+      "type": [
+        "number",
+        "string",
+        "boolean",
+        "null"
       ]
     },
     "Projection": {
@@ -16295,7 +16303,7 @@
     "SelectionInit": {
       "anyOf": [
         {
-          "$ref": "#/definitions/Value"
+          "$ref": "#/definitions/PrimitiveValue"
         },
         {
           "$ref": "#/definitions/DateTime"
@@ -19577,28 +19585,6 @@
         "utcmilliseconds"
       ],
       "type": "string"
-    },
-    "Value": {
-      "anyOf": [
-        {
-          "type": "number"
-        },
-        {
-          "type": "string"
-        },
-        {
-          "type": "boolean"
-        },
-        {
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        {
-          "type": "null"
-        }
-      ]
     },
     "YValueDef": {
       "additionalProperties": false,

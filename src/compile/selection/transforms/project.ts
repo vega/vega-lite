@@ -10,10 +10,15 @@ import {TransformCompiler} from './transforms';
 export const TUPLE_FIELDS = '_tuple_fields';
 
 /**
- * Do the selection tuples hold enumerated or ranged values for a field?
- * Ranged values can be left-right inclusive (R) or left-inclusive, right-exclusive (R-LE).
+ * Whether the selection tuples hold enumerated or ranged values for a field.
  */
-export type TupleStoreType = 'E' | 'R' | 'R-RE';
+export type TupleStoreType =
+  // enumerated
+  | 'E'
+  // ranged, exclusive, left-right inclusive
+  | 'R'
+  // ranged, left-inclusive, right-exclusive
+  | 'R-RE';
 
 export interface SelectionProjection {
   type: TupleStoreType;
