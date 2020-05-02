@@ -125,7 +125,8 @@ export function normalizeErrorBand(
   if (is2D) {
     bandMark = {
       ...bandMark,
-      ...interpolate
+      ...interpolate,
+      ariaRoleDescription: 'errorband'
     };
     bordersMark = {
       ...bordersMark,
@@ -152,12 +153,14 @@ export function normalizeErrorBand(
         partName: 'borders',
         mark: bordersMark,
         positionPrefix: 'lower',
+        aria: false,
         extraEncoding: tooltipEncoding
       }),
       ...makeErrorBandPart({
         partName: 'borders',
         mark: bordersMark,
         positionPrefix: 'upper',
+        aria: false,
         extraEncoding: tooltipEncoding
       })
     ]
