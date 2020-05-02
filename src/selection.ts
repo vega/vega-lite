@@ -1,7 +1,7 @@
 import {Binding, Color, Cursor, Stream, Vector2} from 'vega';
 import {isObject} from 'vega-util';
 import {SingleDefUnitChannel} from './channel';
-import {FieldName, Value} from './channeldef';
+import {FieldName, PrimitiveValue} from './channeldef';
 import {DateTime} from './datetime';
 import {Dict} from './util';
 
@@ -9,7 +9,7 @@ export const SELECTION_ID = '_vgsid_';
 export type SelectionType = 'single' | 'multi' | 'interval';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
 
-export type SelectionInit = Value | DateTime;
+export type SelectionInit = PrimitiveValue | DateTime;
 export type SelectionInitInterval = Vector2<boolean> | Vector2<number> | Vector2<string> | Vector2<DateTime>;
 
 export type SelectionInitMapping = Dict<SelectionInit>;
