@@ -7,13 +7,13 @@ describe('compile/mark/encode/text', () => {
       mark: 'text',
       encoding: {
         text: {
-          signal: '"Hello Vega"'
+          value: {signal: 'Hello'}
         }
       },
       data: {url: 'data/population.json'}
     });
 
     const textMixins = text(model);
-    expect(textMixins.text).toEqual({signal: '"Hello Vega"'});
+    expect(textMixins.text).toEqual({signal: 'Hello'});
   });
 });

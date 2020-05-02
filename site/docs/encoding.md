@@ -329,8 +329,6 @@ The example below show how the href channel can be used to provide links to exte
 
 In addition to the constant `value`, [value definitions](#value-def) of the `href` channel can include the `condition` property to specify conditional logic.
 
-<!-- {% include table.html props="condition" source="StringValueDefWithCondition" %} -->
-
 {% include table.html props="condition" source="ValueDefWithCondition<MarkPropFieldDef,(string|null)>" %}
 
 {:#detail}

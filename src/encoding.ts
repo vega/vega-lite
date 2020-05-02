@@ -1,4 +1,4 @@
-import {AggregateOp, SignalRef} from 'vega';
+import {AggregateOp} from 'vega';
 import {array, isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
@@ -46,7 +46,7 @@ import {
   ChannelDef,
   ColorGradientDatumDefWithCondition,
   ColorGradientFieldDefWithCondition,
-  ColorGradientValueOrSignalDefWithCondition,
+  ColorGradientValueDefWithCondition,
   DatumDef,
   Field,
   FieldDef,
@@ -64,10 +64,11 @@ import {
   LatLongFieldDef,
   NumericArrayDatumDefWithCondition,
   NumericArrayFieldDefWithCondition,
-  NumericArrayValueOrSignalDefWithCondition,
+  NumericArrayValueDefWithCondition,
   NumericDatumDefWithCondition,
   NumericFieldDefWithCondition,
-  NumericValueOrSignalDefWithCondition,
+  NumericValueDef,
+  NumericValueDefWithCondition,
   OrderFieldDef,
   PolarDatumDef,
   PolarFieldDef,
@@ -75,17 +76,18 @@ import {
   PositionFieldDef,
   SecondaryFieldDef,
   ShapeFieldDefWithCondition,
-  ShapeValueOrSignalDefWithCondition,
+  ShapeValueDefWithCondition,
   StringDatumDefWithCondition,
   StringFieldDef,
   StringFieldDefWithCondition,
-  StringValueOrSignalDefWithCondition,
+  StringValueDefWithCondition,
   TextFieldDefWithCondition,
-  TextValueOrSignalDefWithCondition,
+  TextValueDefWithCondition,
   title,
   TypedFieldDef,
-  ValueDef,
-  vgField
+  vgField,
+  XValueDef,
+  YValueDef
 } from './channeldef';
 import {Config} from './config';
 import * as log from './log';
@@ -102,14 +104,14 @@ export interface Encoding<F extends Field> {
    *
    * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
    */
-  x?: PositionFieldDef<F> | PositionDatumDef<F> | ValueDef<number | 'width'> | SignalRef;
+  x?: PositionFieldDef<F> | PositionDatumDef<F> | XValueDef;
 
   /**
    * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without specified `y2` or `height`.
    *
    * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y?: PositionFieldDef<F> | PositionDatumDef<F> | ValueDef<number | 'height'> | SignalRef;
+  y?: PositionFieldDef<F> | PositionDatumDef<F> | YValueDef;
 
   /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
@@ -118,7 +120,7 @@ export interface Encoding<F extends Field> {
    */
   // TODO: Ham need to add default behavior
   // `x2` cannot have type as it should have the same type as `x`
-  x2?: SecondaryFieldDef<F> | DatumDef<F> | ValueDef<number | 'width'> | SignalRef;
+  x2?: SecondaryFieldDef<F> | DatumDef<F> | XValueDef;
 
   /**
    * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
@@ -127,52 +129,52 @@ export interface Encoding<F extends Field> {
    */
   // TODO: Ham need to add default behavior
   // `y2` cannot have type as it should have the same type as `y`
-  y2?: SecondaryFieldDef<F> | DatumDef<F> | ValueDef<number | 'height'> | SignalRef;
+  y2?: SecondaryFieldDef<F> | DatumDef<F> | YValueDef;
 
   /**
    * Longitude position of geographically projected marks.
    */
-  longitude?: LatLongFieldDef<F> | DatumDef<F> | ValueDef<number>;
+  longitude?: LatLongFieldDef<F> | DatumDef<F> | NumericValueDef;
 
   /**
    * Latitude position of geographically projected marks.
    */
-  latitude?: LatLongFieldDef<F> | DatumDef<F> | ValueDef<number>;
+  latitude?: LatLongFieldDef<F> | DatumDef<F> | NumericValueDef;
 
   /**
    * - For arc marks, the arc length in radians if theta2 is not specified, otherwise the start arc angle. (A value of 0 indicates up or “north”, increasing values proceed clockwise.)
    *
    * - For text marks, polar coordinate angle in radians.
    */
-  theta?: PolarFieldDef<F> | PolarDatumDef<F> | ValueDef<number> | SignalRef;
+  theta?: PolarFieldDef<F> | PolarDatumDef<F> | NumericValueDef;
 
   /**
    * The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise.
    */
-  theta2?: SecondaryFieldDef<F> | DatumDef<F> | ValueDef<number> | SignalRef;
+  theta2?: SecondaryFieldDef<F> | DatumDef<F> | NumericValueDef;
 
   /**
    * The outer radius in pixels of arc marks.
    */
 
-  radius?: PolarFieldDef<F> | PolarDatumDef<F> | ValueDef<number> | SignalRef;
+  radius?: PolarFieldDef<F> | PolarDatumDef<F> | NumericValueDef;
 
   /**
    * The inner radius in pixels of arc marks.
    */
-  radius2?: SecondaryFieldDef<F> | DatumDef<F> | ValueDef<number> | SignalRef;
+  radius2?: SecondaryFieldDef<F> | DatumDef<F> | NumericValueDef;
 
   /**
    * Longitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // `longitude2` cannot have type as it should have the same type as `longitude`
-  longitude2?: SecondaryFieldDef<F> | DatumDef<F> | ValueDef<number>;
+  longitude2?: SecondaryFieldDef<F> | DatumDef<F> | NumericValueDef;
 
   /**
    * Latitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // `latitude2` cannot have type as it should have the same type as `latitude`
-  latitude2?: SecondaryFieldDef<F> | DatumDef<F> | ValueDef<number>;
+  latitude2?: SecondaryFieldDef<F> | DatumDef<F> | NumericValueDef;
 
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
@@ -188,7 +190,7 @@ export interface Encoding<F extends Field> {
   color?:
     | ColorGradientFieldDefWithCondition<F>
     | ColorGradientDatumDefWithCondition<F>
-    | ColorGradientValueOrSignalDefWithCondition<F>;
+    | ColorGradientValueDefWithCondition<F>;
 
   /**
    * Fill color of the marks.
@@ -199,7 +201,7 @@ export interface Encoding<F extends Field> {
   fill?:
     | ColorGradientFieldDefWithCondition<F>
     | ColorGradientDatumDefWithCondition<F>
-    | ColorGradientValueOrSignalDefWithCondition<F>;
+    | ColorGradientValueDefWithCondition<F>;
 
   /**
    * Stroke color of the marks.
@@ -211,44 +213,35 @@ export interface Encoding<F extends Field> {
   stroke?:
     | ColorGradientFieldDefWithCondition<F>
     | ColorGradientDatumDefWithCondition<F>
-    | ColorGradientValueOrSignalDefWithCondition<F>;
+    | ColorGradientValueDefWithCondition<F>;
 
   /**
    * Opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `opacity` property.
    */
-  opacity?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalDefWithCondition<F>;
+  opacity?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueDefWithCondition<F>;
 
   /**
    * Fill opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `fillOpacity` property.
    */
-  fillOpacity?:
-    | NumericFieldDefWithCondition<F>
-    | NumericDatumDefWithCondition<F>
-    | NumericValueOrSignalDefWithCondition<F>;
+  fillOpacity?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueDefWithCondition<F>;
 
   /**
    * Stroke opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeOpacity` property.
    */
-  strokeOpacity?:
-    | NumericFieldDefWithCondition<F>
-    | NumericDatumDefWithCondition<F>
-    | NumericValueOrSignalDefWithCondition<F>;
+  strokeOpacity?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueDefWithCondition<F>;
 
   /**
    * Stroke width of the marks.
    *
    * __Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeWidth` property.
    */
-  strokeWidth?:
-    | NumericFieldDefWithCondition<F>
-    | NumericDatumDefWithCondition<F>
-    | NumericValueOrSignalDefWithCondition<F>;
+  strokeWidth?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueDefWithCondition<F>;
 
   /**
    * Stroke dash of the marks.
@@ -258,7 +251,7 @@ export interface Encoding<F extends Field> {
   strokeDash?:
     | NumericArrayFieldDefWithCondition<F>
     | NumericArrayDatumDefWithCondition<F>
-    | NumericArrayValueOrSignalDefWithCondition<F>;
+    | NumericArrayValueDefWithCondition<F>;
 
   /**
    * Size of the mark.
@@ -267,12 +260,12 @@ export interface Encoding<F extends Field> {
    * - For `"text"` – the text's font size.
    * - Size is unsupported for `"line"`, `"area"`, and `"rect"`. (Use `"trail"` instead of line with varying size)
    */
-  size?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalDefWithCondition<F>;
+  size?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueDefWithCondition<F>;
 
   /**
    * Rotation angle of point and text marks.
    */
-  angle?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueOrSignalDefWithCondition<F>;
+  angle?: NumericFieldDefWithCondition<F> | NumericDatumDefWithCondition<F> | NumericValueDefWithCondition<F>;
 
   /**
    * Shape of the mark.
@@ -287,7 +280,7 @@ export interface Encoding<F extends Field> {
    *
    * __Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`"circle"` if unset.)
    */
-  shape?: ShapeFieldDefWithCondition<F> | StringDatumDefWithCondition<F> | ShapeValueOrSignalDefWithCondition<F>;
+  shape?: ShapeFieldDefWithCondition<F> | StringDatumDefWithCondition<F> | ShapeValueDefWithCondition<F>;
   /**
    * Additional levels of detail for grouping data in aggregate views and
    * in line, trail, and area marks without mapping data to a specific visual channel.
@@ -302,24 +295,24 @@ export interface Encoding<F extends Field> {
   /**
    * Text of the `text` mark.
    */
-  text?: TextFieldDefWithCondition<F> | TextValueOrSignalDefWithCondition<F>;
+  text?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
 
   /**
    * The tooltip text to show upon mouse hover. Specifying `tooltip` encoding overrides [the `tooltip` property in the mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
    *
    * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite.
    */
-  tooltip?: StringFieldDefWithCondition<F> | StringValueOrSignalDefWithCondition<F> | StringFieldDef<F>[] | null;
+  tooltip?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | StringFieldDef<F>[] | null;
 
   /**
    * A URL to load upon mouse click.
    */
-  href?: StringFieldDefWithCondition<F> | StringValueOrSignalDefWithCondition<F>;
+  href?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
 
   /**
    * The URL of an image mark.
    */
-  url?: StringFieldDefWithCondition<F> | StringValueOrSignalDefWithCondition<F>;
+  url?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
 
   /**
    * Order of the marks.
@@ -329,7 +322,7 @@ export interface Encoding<F extends Field> {
    *
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
    */
-  order?: OrderFieldDef<F> | OrderFieldDef<F>[] | ValueDef<number>;
+  order?: OrderFieldDef<F> | OrderFieldDef<F>[] | NumericValueDef;
 }
 
 export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
