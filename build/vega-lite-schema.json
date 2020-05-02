@@ -3167,7 +3167,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "A string that labels the axis group for accessibility."
@@ -6850,7 +6850,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "A string that labels the axis group for accessibility."
