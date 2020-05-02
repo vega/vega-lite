@@ -95,7 +95,7 @@
     "gh-pages": "^2.2.0",
     "highlight.js": "^10.0.1",
     "http-server": "^0.12.3",
-    "jest": "^25.5.3",
+    "jest": "^25.5.4",
     "jest-puppeteer": "^4.4.0",
     "mkdirp": "^1.0.4",
     "prettier": "^2.0.5",
@@ -124,9 +124,9 @@
     "fast-json-stable-stringify": "~2.1.0",
     "json-stringify-pretty-compact": "~2.0.0",
     "tslib": "~1.11.1",
-    "vega-event-selector": "~2.0.2",
-    "vega-expression": "~2.6.3",
-    "vega-util": "~1.13.1",
+    "vega-event-selector": "~2.0.3",
+    "vega-expression": "~2.6.4",
+    "vega-util": "~1.13.2",
     "yargs": "~15.3.1"
   },
   "peerDependencies": {
