@@ -7,6 +7,7 @@ import {
   Channel,
   CHANNELS,
   COLOR,
+  DESCRIPTION,
   DETAIL,
   FILL,
   FILLOPACITY,
@@ -39,8 +40,7 @@ import {
   X,
   X2,
   Y,
-  Y2,
-  DESCRIPTION
+  Y2
 } from './channel';
 import {
   binRequiresRange,
@@ -318,7 +318,7 @@ export interface Encoding<F extends Field> {
   /**
    * A string that labels the axis group for accessibility.
    */
-  description?: StringFieldDefWithCondition<F> | StringValueOrSignalDefWithCondition<F>;
+  description?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
 
   /**
    * Order of the marks.
