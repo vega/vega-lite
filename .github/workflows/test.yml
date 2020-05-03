@@ -49,7 +49,7 @@ jobs:
         run: yarn jest test/
 
       - name: Example tests
-        run: yarn jest examples/
+        run: yarn data && yarn jest examples/
 
       - name: Build
         run: yarn build
