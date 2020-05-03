@@ -1,4 +1,4 @@
-import {getFormatMixins, isTypedFieldDef, isValueDef} from '../../../channeldef';
+import {getFormatMixins, isFieldOrDatumDef, isValueDef} from '../../../channeldef';
 import {Config} from '../../../config';
 import {Encoding} from '../../../encoding';
 import {VgValueRef} from '../../../vega.schema';
@@ -22,7 +22,7 @@ export function textRef(
     if (isValueDef(channelDef)) {
       return signalOrValueRef(channelDef.value);
     }
-    if (isTypedFieldDef(channelDef)) {
+    if (isFieldOrDatumDef(channelDef)) {
       const {format, formatType} = getFormatMixins(channelDef);
       return formatSignalRef({fieldOrDatumDef: channelDef, format, formatType, expr, config});
     }

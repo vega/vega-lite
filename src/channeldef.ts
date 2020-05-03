@@ -213,9 +213,11 @@ export type ShapeFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCon
 
 export type TextFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<StringFieldDef<F>, Text>;
 
+export type TextDatumDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<StringDatumDef<F>, Text>;
+
 export type StringFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<StringFieldDef<F>, string>;
 
-export type StringDatumDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<DatumDef<F>, string>;
+export type StringDatumDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<StringDatumDef<F>, string>;
 
 /**
  * A ValueDef with optional Condition<ValueDef | FieldDef>
@@ -393,6 +395,8 @@ export interface DatumDef<
   // FIXME(https://github.com/microsoft/TypeScript/issues/37586):
   // `F extends RepeatRef` probably should be `RepeatRef extends F` but there is likely a bug in TS.
 }
+
+export type StringDatumDef<F extends Field = string> = DatumDef<F> & FormatMixins;
 
 export type ScaleDatumDef<F extends Field = string> = ScaleMixins & DatumDef<F>;
 
@@ -667,7 +671,9 @@ export function isMarkPropFieldOrDatumDef<F extends Field>(
   return !!channelDef && 'legend' in channelDef;
 }
 
-export function isTextFieldDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is StringFieldDef<F> {
+export function isTextFieldOrDatumDef<F extends Field>(
+  channelDef: ChannelDef<F>
+): channelDef is StringFieldDef<F> | StringDatumDef<F> {
   return !!channelDef && 'format' in channelDef;
 }
 
@@ -885,8 +891,8 @@ export function defaultTitle(fieldDef: FieldDefBase<string>, config: Config) {
   return titleFormatter(fieldDef, config);
 }
 
-export function getFormatMixins(fieldDef: TypedFieldDef<string>) {
-  if (isTextFieldDef(fieldDef)) {
+export function getFormatMixins(fieldDef: TypedFieldDef<string> | DatumDef) {
+  if (isTextFieldOrDatumDef(fieldDef)) {
     const {format, formatType} = fieldDef;
     return {format, formatType};
   } else {
@@ -1193,7 +1199,8 @@ export function channelCompatibility(
  */
 export function isFieldOrDatumDefForTimeFormat(fieldOrDatumDef: FieldDef<string> | DatumDef): boolean {
   const guide = getGuide(fieldOrDatumDef);
-  const formatType = (guide && guide.formatType) || (isTextFieldDef(fieldOrDatumDef) && fieldOrDatumDef.formatType);
+  const formatType =
+    (guide && guide.formatType) || (isTextFieldOrDatumDef(fieldOrDatumDef) && fieldOrDatumDef.formatType);
   return formatType === 'time' || (!formatType && isTimeFieldDef(fieldOrDatumDef));
 }
 
@@ -1202,7 +1209,8 @@ export function isFieldOrDatumDefWithCustomTimeFormat(
   config: Config
 ): boolean {
   const guide = getGuide(fieldOrDatumDef);
-  const formatType = (guide && guide.formatType) || (isTextFieldDef(fieldOrDatumDef) && fieldOrDatumDef.formatType);
+  const formatType =
+    (guide && guide.formatType) || (isTextFieldOrDatumDef(fieldOrDatumDef) && fieldOrDatumDef.formatType);
   return isCustomFormatType(formatType, config);
 }
 
