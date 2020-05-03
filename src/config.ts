@@ -587,7 +587,6 @@ function redirectTitleConfig(config: Config) {
 
   // set config.style if title/subtitleMarkConfig is not an empty object
   if (keys(titleMarkConfig).length > 0) {
-    // TODO figure precedence
     config.style['group-title'] = {
       ...config.style['group-title'],
       ...titleMarkConfig // config.title has higher precedence than config.style.group-title in Vega
