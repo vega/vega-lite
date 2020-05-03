@@ -17,7 +17,7 @@ describe('compile/mark/encode/text', () => {
     expect(textMixins.text).toEqual({signal: 'Hello'});
   });
 
-  it('text support datum with format', () => {
+  it('text supports datum with format', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'text',
       encoding: {
