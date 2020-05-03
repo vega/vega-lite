@@ -287,10 +287,6 @@ export function titlecase(s: string) {
   return s.charAt(0).toUpperCase() + s.substr(1);
 }
 
-function escapePathAccess(string: string) {
-  return string.replace(/(\[|\]|\.|'|")/g, '\\$1');
-}
-
 /**
  * Converts a path to an access path with datum.
  * @param path The field name.
@@ -316,6 +312,10 @@ export function flatAccessWithDatum(path: string, datum: 'datum' | 'parent' | 'd
   return `${datum}[${stringValue(splitAccessPath(path).join('.'))}]`;
 }
 
+function escapePathAccess(string: string) {
+  return string.replace(/(\[|\]|\.|'|")/g, '\\$1');
+}
+
 /**
  * Replaces path accesses with access to non-nested field.
  * For example, `foo["bar"].baz` becomes `foo\\.bar\\.baz`.
@@ -325,7 +325,7 @@ export function replacePathInField(path: string) {
 }
 
 /**
- * Replace all ocurrences of a string with another string.
+ * Replace all occurrences of a string with another string.
  *
  * @param string the string to replace in
  * @param find the string to replace
