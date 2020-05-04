@@ -1198,9 +1198,7 @@ export function channelCompatibility(
  * (this does not cover field defs that are temporal but use a number format).
  */
 export function isFieldOrDatumDefForTimeFormat(fieldOrDatumDef: FieldDef<string> | DatumDef): boolean {
-  const guide = getGuide(fieldOrDatumDef);
-  const formatType =
-    (guide && guide.formatType) || (isTextFieldOrDatumDef(fieldOrDatumDef) && fieldOrDatumDef.formatType);
+  const {formatType} = getFormatMixins(fieldOrDatumDef);
   return formatType === 'time' || (!formatType && isTimeFieldDef(fieldOrDatumDef));
 }
 
@@ -1208,9 +1206,7 @@ export function isFieldOrDatumDefWithCustomTimeFormat(
   fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
   config: Config
 ): boolean {
-  const guide = getGuide(fieldOrDatumDef);
-  const formatType =
-    (guide && guide.formatType) || (isTextFieldOrDatumDef(fieldOrDatumDef) && fieldOrDatumDef.formatType);
+  const {formatType} = getFormatMixins(fieldOrDatumDef);
   return isCustomFormatType(formatType, config);
 }
 
