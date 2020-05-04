@@ -46,13 +46,16 @@ export class FacetModel extends ModelWithField {
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, config);
     this.children = [this.child];
 
-    this.facet = this.initFacet(spec.facet);
+    this.facet = this.initFacet(spec.facet, config);
   }
 
-  private initFacet(facet: FacetFieldDef<FieldName> | FacetMapping<FieldName>): EncodingFacetMapping<FieldName> {
+  private initFacet(
+    facet: FacetFieldDef<FieldName> | FacetMapping<FieldName>,
+    config: Config
+  ): EncodingFacetMapping<FieldName> {
     // clone to prevent side effect to the original spec
     if (!isFacetMapping(facet)) {
-      return {facet: initChannelDef(facet, 'facet') as FacetFieldDef<FieldName>};
+      return {facet: initChannelDef(facet, 'facet', config) as FacetFieldDef<FieldName>};
     }
 
     return reduce(
@@ -70,7 +73,7 @@ export class FacetModel extends ModelWithField {
         }
 
         // Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
-        normalizedFacet[channel] = initChannelDef(fieldDef, channel);
+        normalizedFacet[channel] = initChannelDef(fieldDef, channel, config);
         return normalizedFacet;
       },
       {}

@@ -674,7 +674,7 @@ export function isMarkPropFieldOrDatumDef<F extends Field>(
 export function isTextFieldOrDatumDef<F extends Field>(
   channelDef: ChannelDef<F>
 ): channelDef is StringFieldDef<F> | StringDatumDef<F> {
-  return !!channelDef && 'format' in channelDef;
+  return !!channelDef && ('format' in channelDef || 'formatType' in channelDef);
 }
 
 export interface FieldRefOption {
@@ -949,7 +949,7 @@ export function getFieldOrDatumDef<F extends Field = string, CD extends ChannelD
 /**
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
-export function initChannelDef(channelDef: ChannelDef<string>, channel: Channel): ChannelDef<string> {
+export function initChannelDef(channelDef: ChannelDef<string>, channel: Channel, config: Config): ChannelDef<string> {
   if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
     const primitiveType = isString(channelDef) ? 'string' : isNumber(channelDef) ? 'number' : 'boolean';
     log.warn(log.message.primitiveChannelDef(channel, primitiveType, channelDef));
@@ -958,25 +958,52 @@ export function initChannelDef(channelDef: ChannelDef<string>, channel: Channel)
 
   // If a fieldDef contains a field, we need type.
   if (isFieldOrDatumDef(channelDef)) {
-    return initFieldOrDatumDef(channelDef, channel);
+    return initFieldOrDatumDef(channelDef, channel, config);
   } else if (hasConditionalFieldOrDatumDef(channelDef)) {
     return {
       ...channelDef,
       // Need to cast as normalizeFieldDef normally return FieldDef, but here we know that it is definitely Condition<FieldDef>
-      condition: initFieldOrDatumDef(channelDef.condition, channel) as Conditional<TypedFieldDef<string>>
+      condition: initFieldOrDatumDef(channelDef.condition, channel, config) as Conditional<TypedFieldDef<string>>
     };
   }
   return channelDef;
 }
 
-export function initFieldOrDatumDef(fd: FieldDef<string, any> | DatumDef, channel: Channel) {
+export function initFieldOrDatumDef(
+  fd: FieldDef<string, any> | DatumDef,
+  channel: Channel,
+  config: Config
+): FieldDef<string, any> | DatumDef {
+  if (isTextFieldOrDatumDef(fd)) {
+    const {format, formatType, ...rest} = fd;
+    if (isCustomFormatType(formatType) && !config.customFormatTypes) {
+      log.warn(log.message.customFormatTypeNotAllowed(channel));
+      return initFieldOrDatumDef(rest, channel, config);
+    }
+  } else {
+    const guideType = isPositionFieldOrDatumDef(fd)
+      ? 'axis'
+      : isMarkPropFieldOrDatumDef(fd)
+      ? 'legend'
+      : isFacetFieldDef(fd)
+      ? 'header'
+      : null;
+    if (guideType && fd[guideType]) {
+      const {format, formatType, ...newGuide} = fd[guideType];
+      if (isCustomFormatType(formatType) && !config.customFormatTypes) {
+        log.warn(log.message.customFormatTypeNotAllowed(channel));
+        return initFieldOrDatumDef({...fd, [guideType]: newGuide}, channel, config);
+      }
+    }
+  }
+
   if (isFieldDef(fd)) {
     return initFieldDef(fd, channel);
   }
   return initDatumDef(fd);
 }
 
-function initDatumDef(datumDef: DatumDef) {
+function initDatumDef(datumDef: DatumDef): DatumDef {
   let type = datumDef['type'];
   if (type) {
     return datumDef;
