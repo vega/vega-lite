@@ -459,7 +459,7 @@ export class MergeBins extends BottomUpOptimizer {
 /**
  * This optimizer takes output nodes that are at a fork and moves them before the fork.
  *
- * The algorithm iterates over the children and tries to find the last output node in a cahin of output nodes.
+ * The algorithm iterates over the children and tries to find the last output node in a chain of output nodes.
  * It then moves all output nodes before that main output node. All other children (and the children of the output nodes)
  * are inserted after the main output node.
  */
