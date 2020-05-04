@@ -116,7 +116,12 @@ describe('config', () => {
       },
       title: {
         color: 'red',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        align: 'center',
+        baseline: 'middle',
+        dx: 5,
+        dy: 5,
+        limit: 5
       },
       boxplot: {
         rule: {
@@ -163,6 +168,10 @@ describe('config', () => {
       expect(output).not.toHaveProperty('title');
       expect(output.style['group-title'].fontWeight).toBe('bold');
       expect(output.style['group-title'].fill).toBe('red');
+    });
+
+    it('redirects align, baseline, dx, dy, and limit of config.title to config.style.group-subtitle', () => {
+      expect(output.style['group-subtitle']).toEqual({align: 'center', baseline: 'middle', dx: 5, dy: 5, limit: 5});
     });
 
     it('should remove empty config object', () => {

@@ -1,10 +1,10 @@
-import {POSITION_SCALE_CHANNELS} from '../channel';
 import {NewSignal} from 'vega';
 import {Axis} from '../axis';
 import {
   Channel,
   GEOPOSITION_CHANNELS,
   NONPOSITION_SCALE_CHANNELS,
+  POSITION_SCALE_CHANNELS,
   ScaleChannel,
   SCALE_CHANNELS,
   SingleDefChannel,
@@ -25,7 +25,7 @@ import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
 import {Encoding, initEncoding} from '../encoding';
 import {Legend} from '../legend';
-import {isMarkDef, Mark, MarkDef, GEOSHAPE} from '../mark';
+import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {Domain} from '../scale';
 import {SelectionDef} from '../selection';
@@ -88,7 +88,7 @@ export class UnitModel extends ModelWithField {
     this.markDef = initMarkdef(spec.mark, spec.encoding ?? {}, config, {
       graticule: spec.data && isGraticuleGenerator(spec.data)
     });
-    const encoding = (this.encoding = initEncoding(spec.encoding ?? {}, this.markDef));
+    const encoding = (this.encoding = initEncoding(spec.encoding ?? {}, this.markDef, config));
 
     this.size = initLayoutSize({
       encoding: encoding,

@@ -1,6 +1,7 @@
 import {BaseTitle, Text, TextEncodeEntry, TitleAnchor} from 'vega';
 import {isArray, isString} from 'vega-util';
 import {MarkConfig} from './mark';
+import {pick} from './util';
 import {ExcludeMappedValueRef, ExcludeMappedValueRefButKeepSignal} from './vega.schema';
 
 export type BaseTitleNoValueRefs = ExcludeMappedValueRefButKeepSignal<Omit<BaseTitle, 'align' | 'baseline'>> &
@@ -60,7 +61,8 @@ export interface TitleParams extends TitleBase {
 export function extractTitleConfig(
   titleConfig: TitleConfig
 ): {
-  mark: MarkConfig;
+  titleMarkConfig: MarkConfig;
+  subtitleMarkConfig: MarkConfig;
   nonMark: BaseTitleNoValueRefs;
   subtitle: BaseTitleNoValueRefs;
 } {
@@ -70,6 +72,7 @@ export function extractTitleConfig(
     frame,
     offset,
     orient,
+
     // color needs to be redirect to fill
     color,
 
@@ -83,14 +86,15 @@ export function extractTitleConfig(
     subtitlePadding,
 
     // The rest are mark config.
-    ...titleMarkConfig
+    ...rest
   } = titleConfig;
 
-  const mark: MarkConfig = {
-    ...titleMarkConfig,
+  const titleMarkConfig: MarkConfig = {
+    ...rest,
     ...(color ? {fill: color} : {})
   };
 
+  // These are non-mark title config that need to be hardcoded
   const nonMark: BaseTitleNoValueRefs = {
     ...(anchor ? {anchor} : {}),
     ...(frame ? {frame} : {}),
@@ -98,6 +102,7 @@ export function extractTitleConfig(
     ...(orient ? {orient} : {})
   };
 
+  // subtitle part can stay in config.title since header titles do not use subtitle
   const subtitle: BaseTitleNoValueRefs = {
     ...(subtitleColor ? {subtitleColor} : {}),
     ...(subtitleFont ? {subtitleFont} : {}),
@@ -108,7 +113,9 @@ export function extractTitleConfig(
     ...(subtitlePadding ? {subtitlePadding} : {})
   };
 
-  return {mark, nonMark, subtitle};
+  const subtitleMarkConfig = pick(titleMarkConfig, ['align', 'baseline', 'dx', 'dy', 'limit']);
+
+  return {titleMarkConfig, subtitleMarkConfig, nonMark, subtitle};
 }
 
 export function isText(v: any): v is Text {

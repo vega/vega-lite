@@ -1,7 +1,7 @@
 import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel';
 import {isFieldOrDatumDef} from '../../../channeldef';
 import {MarkConfig} from '../../../mark';
-import {VgValueRef} from '../../../vega.schema';
+import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {getMarkStyleConfig} from '../../common';
 import {UnitModel} from '../../unit';
 import {getOffset} from './offset';
@@ -41,7 +41,7 @@ export function rangePosition(
     defaultPos: 'zeroOrMin' | 'zeroOrMax' | 'mid';
     defaultPos2: 'zeroOrMin' | 'zeroOrMax';
   }
-) {
+): VgEncodeEntry {
   const {markDef, config} = model;
   const channel2 = getSecondaryRangeChannel(channel);
   const sizeChannel = getSizeChannel(channel);

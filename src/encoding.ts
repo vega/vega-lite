@@ -82,6 +82,7 @@ import {
   StringFieldDef,
   StringFieldDefWithCondition,
   StringValueDefWithCondition,
+  TextDatumDefWithCondition,
   TextFieldDefWithCondition,
   TextValueDefWithCondition,
   title,
@@ -296,7 +297,7 @@ export interface Encoding<F extends Field> {
   /**
    * Text of the `text` mark.
    */
-  text?: TextFieldDefWithCondition<F> | TextValueDefWithCondition<F>;
+  text?: TextFieldDefWithCondition<F> | TextDatumDefWithCondition<F> | TextValueDefWithCondition<F>;
 
   /**
    * The tooltip text to show upon mouse hover. Specifying `tooltip` encoding overrides [the `tooltip` property in the mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
@@ -493,7 +494,7 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
   return true;
 }
 
-export function initEncoding(encoding: Encoding<string>, markDef: MarkDef): Encoding<string> {
+export function initEncoding(encoding: Encoding<string>, markDef: MarkDef, config: Config): Encoding<string> {
   const mark = markDef.type;
 
   return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
@@ -564,7 +565,7 @@ export function initEncoding(encoding: Encoding<string>, markDef: MarkDef): Enco
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         return normalizedEncoding;
       }
-      normalizedEncoding[channel] = initChannelDef(channelDef as ChannelDef, channel);
+      normalizedEncoding[channel] = initChannelDef(channelDef as ChannelDef, channel, config);
     }
     return normalizedEncoding;
   }, {});

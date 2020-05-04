@@ -214,9 +214,11 @@ export type ShapeFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCon
 
 export type TextFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<StringFieldDef<F>, Text>;
 
+export type TextDatumDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<StringDatumDef<F>, Text>;
+
 export type StringFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<StringFieldDef<F>, string>;
 
-export type StringDatumDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<DatumDef<F>, string>;
+export type StringDatumDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<StringDatumDef<F>, string>;
 
 /**
  * A ValueDef with optional Condition<ValueDef | FieldDef>
@@ -394,6 +396,8 @@ export interface DatumDef<
   // FIXME(https://github.com/microsoft/TypeScript/issues/37586):
   // `F extends RepeatRef` probably should be `RepeatRef extends F` but there is likely a bug in TS.
 }
+
+export type StringDatumDef<F extends Field = string> = DatumDef<F> & FormatMixins;
 
 export type ScaleDatumDef<F extends Field = string> = ScaleMixins & DatumDef<F>;
 
@@ -668,8 +672,10 @@ export function isMarkPropFieldOrDatumDef<F extends Field>(
   return !!channelDef && 'legend' in channelDef;
 }
 
-export function isTextFieldDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is StringFieldDef<F> {
-  return !!channelDef && 'format' in channelDef;
+export function isTextFieldOrDatumDef<F extends Field>(
+  channelDef: ChannelDef<F>
+): channelDef is StringFieldDef<F> | StringDatumDef<F> {
+  return !!channelDef && ('format' in channelDef || 'formatType' in channelDef);
 }
 
 export interface FieldRefOption {
@@ -886,8 +892,8 @@ export function defaultTitle(fieldDef: FieldDefBase<string>, config: Config) {
   return titleFormatter(fieldDef, config);
 }
 
-export function getFormatMixins(fieldDef: TypedFieldDef<string>) {
-  if (isTextFieldDef(fieldDef)) {
+export function getFormatMixins(fieldDef: TypedFieldDef<string> | DatumDef) {
+  if (isTextFieldOrDatumDef(fieldDef)) {
     const {format, formatType} = fieldDef;
     return {format, formatType};
   } else {
@@ -944,7 +950,7 @@ export function getFieldOrDatumDef<F extends Field = string, CD extends ChannelD
 /**
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
-export function initChannelDef(channelDef: ChannelDef<string>, channel: Channel): ChannelDef<string> {
+export function initChannelDef(channelDef: ChannelDef<string>, channel: Channel, config: Config): ChannelDef<string> {
   if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
     const primitiveType = isString(channelDef) ? 'string' : isNumber(channelDef) ? 'number' : 'boolean';
     log.warn(log.message.primitiveChannelDef(channel, primitiveType, channelDef));
@@ -953,25 +959,52 @@ export function initChannelDef(channelDef: ChannelDef<string>, channel: Channel)
 
   // If a fieldDef contains a field, we need type.
   if (isFieldOrDatumDef(channelDef)) {
-    return initFieldOrDatumDef(channelDef, channel);
+    return initFieldOrDatumDef(channelDef, channel, config);
   } else if (hasConditionalFieldOrDatumDef(channelDef)) {
     return {
       ...channelDef,
       // Need to cast as normalizeFieldDef normally return FieldDef, but here we know that it is definitely Condition<FieldDef>
-      condition: initFieldOrDatumDef(channelDef.condition, channel) as Conditional<TypedFieldDef<string>>
+      condition: initFieldOrDatumDef(channelDef.condition, channel, config) as Conditional<TypedFieldDef<string>>
     };
   }
   return channelDef;
 }
 
-export function initFieldOrDatumDef(fd: FieldDef<string, any> | DatumDef, channel: Channel) {
+export function initFieldOrDatumDef(
+  fd: FieldDef<string, any> | DatumDef,
+  channel: Channel,
+  config: Config
+): FieldDef<string, any> | DatumDef {
+  if (isTextFieldOrDatumDef(fd)) {
+    const {format, formatType, ...rest} = fd;
+    if (isCustomFormatType(formatType) && !config.customFormatTypes) {
+      log.warn(log.message.customFormatTypeNotAllowed(channel));
+      return initFieldOrDatumDef(rest, channel, config);
+    }
+  } else {
+    const guideType = isPositionFieldOrDatumDef(fd)
+      ? 'axis'
+      : isMarkPropFieldOrDatumDef(fd)
+      ? 'legend'
+      : isFacetFieldDef(fd)
+      ? 'header'
+      : null;
+    if (guideType && fd[guideType]) {
+      const {format, formatType, ...newGuide} = fd[guideType];
+      if (isCustomFormatType(formatType) && !config.customFormatTypes) {
+        log.warn(log.message.customFormatTypeNotAllowed(channel));
+        return initFieldOrDatumDef({...fd, [guideType]: newGuide}, channel, config);
+      }
+    }
+  }
+
   if (isFieldDef(fd)) {
     return initFieldDef(fd, channel);
   }
   return initDatumDef(fd);
 }
 
-function initDatumDef(datumDef: DatumDef) {
+function initDatumDef(datumDef: DatumDef): DatumDef {
   let type = datumDef['type'];
   if (type) {
     return datumDef;
@@ -1194,18 +1227,8 @@ export function channelCompatibility(
  * (this does not cover field defs that are temporal but use a number format).
  */
 export function isFieldOrDatumDefForTimeFormat(fieldOrDatumDef: FieldDef<string> | DatumDef): boolean {
-  const guide = getGuide(fieldOrDatumDef);
-  const formatType = (guide && guide.formatType) || (isTextFieldDef(fieldOrDatumDef) && fieldOrDatumDef.formatType);
+  const {formatType} = getFormatMixins(fieldOrDatumDef);
   return formatType === 'time' || (!formatType && isTimeFieldDef(fieldOrDatumDef));
-}
-
-export function isFieldOrDatumDefWithCustomTimeFormat(
-  fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
-  config: Config
-): boolean {
-  const guide = getGuide(fieldOrDatumDef);
-  const formatType = (guide && guide.formatType) || (isTextFieldDef(fieldOrDatumDef) && fieldOrDatumDef.formatType);
-  return isCustomFormatType(formatType, config);
 }
 
 /**

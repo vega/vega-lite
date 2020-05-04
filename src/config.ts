@@ -590,19 +590,23 @@ export function stripAndRedirectConfig(config: Config) {
  * For subtitle configs in config.title, keep them in config.title as header titles never have subtitles.
  */
 function redirectTitleConfig(config: Config) {
-  const {mark: m, subtitle} = extractTitleConfig(config.title);
+  const {titleMarkConfig, subtitleMarkConfig, subtitle} = extractTitleConfig(config.title);
 
-  const style: MarkConfig = {
-    ...config.style['group-title'],
-    ...m
-  };
-
-  // set config.style if it is not an empty object
-  if (keys(style).length > 0) {
-    config.style['group-title'] = style;
+  // set config.style if title/subtitleMarkConfig is not an empty object
+  if (keys(titleMarkConfig).length > 0) {
+    config.style['group-title'] = {
+      ...config.style['group-title'],
+      ...titleMarkConfig // config.title has higher precedence than config.style.group-title in Vega
+    };
+  }
+  if (keys(subtitleMarkConfig).length > 0) {
+    config.style['group-subtitle'] = {
+      ...config.style['group-subtitle'],
+      ...subtitleMarkConfig
+    };
   }
 
-  //
+  // subtitle part can stay in config.title since header titles do not use subtitle
   if (keys(subtitle).length > 0) {
     config.title = subtitle;
   } else {

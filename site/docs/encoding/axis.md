@@ -64,7 +64,7 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 ### Domain
 
-{% include table.html props="domain,domainColor,domainOpacity,domainWidth" source="Axis" %}
+{% include table.html props="domain,domainCap,domainColor,domainOpacity,domainWidth" source="Axis" %}
 
 {:#labels}
 
@@ -82,7 +82,7 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 ### Ticks
 
-{% include table.html props="ticks,tickBand,tickColor,tickCount,tickDash,tickExtra,tickMinStep,tickOffset,tickOpacity,tickRound,tickSize,tickWidth,values" source="Axis" %}
+{% include table.html props="ticks,tickBand,tickCap,tickColor,tickCount,tickDash,tickExtra,tickMinStep,tickOffset,tickOpacity,tickRound,tickSize,tickWidth,values" source="Axis" %}
 
 #### Example: Using Axis `tickBand` to Show Grid Between Marks
 
@@ -106,7 +106,7 @@ For example, the following plot has a customized x-axis title.
 
 ### Grid
 
-{% include table.html props="grid,gridColor,gridDash,gridOpacity,gridWidth" source="Axis" %}
+{% include table.html props="grid,gridCap,gridColor,gridDash,gridOpacity,gridWidth" source="Axis" %}
 
 <!--
 ### Custom Axis Encodings

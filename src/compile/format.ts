@@ -7,7 +7,6 @@ import {
   FieldDef,
   isFieldDef,
   isFieldOrDatumDefForTimeFormat,
-  isFieldOrDatumDefWithCustomTimeFormat,
   isScaleFieldDef,
   vgField
 } from '../channeldef';
@@ -20,8 +19,8 @@ import {isSignalRef} from '../vega.schema';
 import {TimeUnit} from './../timeunit';
 import {datumDefToExpr} from './mark/encode/valueref';
 
-export function isCustomFormatType(formatType: string, config: Config) {
-  return config.customFormatTypes && formatType && formatType !== 'number' && formatType !== 'time';
+export function isCustomFormatType(formatType: string) {
+  return formatType && formatType !== 'number' && formatType !== 'time';
 }
 
 function customFormatExpr(formatType: string, field: string, format: string | object) {
@@ -45,7 +44,7 @@ export function formatSignalRef({
   normalizeStack?: boolean;
   config: Config;
 }) {
-  if (isCustomFormatType(formatType, config)) {
+  if (isCustomFormatType(formatType)) {
     return formatCustomType({
       fieldOrDatumDef,
       format,
@@ -53,8 +52,6 @@ export function formatSignalRef({
       expr,
       config
     });
-  } else if (formatType) {
-    formatType = undefined;
   }
 
   const field = fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
@@ -136,10 +133,11 @@ export function guideFormat(
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>,
   type: Type,
   format: string | object,
+  formatType: string,
   config: Config,
   omitTimeFormatConfig: boolean // axis doesn't use config.timeFormat
 ) {
-  if (isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef, config)) {
+  if (isCustomFormatType(formatType)) {
     return undefined; // handled in encode block
   }
 
@@ -204,7 +202,7 @@ function formatExpr(field: string, format: string) {
 }
 
 function binNumberFormatExpr(field: string, format: string | object, formatType: string, config: Config) {
-  if (isCustomFormatType(formatType, config)) {
+  if (isCustomFormatType(formatType)) {
     return customFormatExpr(formatType, field, format);
   }
 
