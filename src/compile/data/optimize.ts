@@ -7,7 +7,7 @@ import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
 import * as optimizers from './optimizers';
 
 export const FACET_SCALE_PREFIX = 'scale_';
-export const MAX_OPTIMIZATION_RUNS = 5;
+export const MAX_OPTIMIZATION_RUNS = 1;
 
 /**
  * Return all leaf nodes.

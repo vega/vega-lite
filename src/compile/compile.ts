@@ -19,6 +19,7 @@ import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
 import {optimizeDataflow} from './data/optimize';
 import {Model} from './model';
+import {draw} from './data/debug';
 
 // import {draw} from './data/debug';
 
@@ -112,10 +113,12 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
     // Please see inside model.parse() for order of different components parsed.
     model.parse();
 
-    // draw(model.component.data.sources);
+    draw(model.component.data.sources);
 
     // 5. Optimize the dataflow. This will modify the data component of the model.
     optimizeDataflow(model.component.data, model);
+
+    draw(model.component.data.sources);
 
     // 6. Assemble: convert model components --> Vega Spec.
     const vgSpec = assembleTopLevelModel(
