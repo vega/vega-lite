@@ -44,8 +44,8 @@ export const legendRules: {
   direction: ({direction}) => direction,
 
   format: ({fieldOrDatumDef, legend, config}) => {
-    const {format} = legend;
-    return guideFormat(fieldOrDatumDef, fieldOrDatumDef.type, format, config, false);
+    const {format, formatType} = legend;
+    return guideFormat(fieldOrDatumDef, fieldOrDatumDef.type, format, formatType, config, false);
   },
 
   formatType: ({legend, fieldOrDatumDef, scaleType}) => {

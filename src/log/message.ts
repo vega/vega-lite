@@ -109,6 +109,10 @@ export const NO_FIELDS_NEEDS_AS =
 
 // ENCODING & FACET
 
+export function customFormatTypeNotAllowed(channel: Channel) {
+  return `Config.customFormatTypes is not true, thus custom format type and format for channel ${channel} are dropped.`;
+}
+
 export function encodingOverridden(channels: Channel[]) {
   return `Layer's shared ${channels.join(',')} channel ${channels.length === 1 ? 'is' : 'are'} overriden.`;
 }

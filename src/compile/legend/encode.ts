@@ -6,7 +6,6 @@ import {
   DatumDef,
   hasConditionalValueDef,
   isFieldDef,
-  isFieldOrDatumDefWithCustomTimeFormat,
   isValueDef,
   TypedFieldDef,
   Value,
@@ -16,7 +15,7 @@ import {Encoding} from '../../encoding';
 import {FILL_STROKE_CONFIG} from '../../mark';
 import {getFirstDefined, keys, varName} from '../../util';
 import {applyMarkConfig, signalOrValueRef} from '../common';
-import {formatCustomType} from '../format';
+import {formatCustomType, isCustomFormatType} from '../format';
 import * as mixins from '../mark/encode';
 import {STORE} from '../selection';
 import {UnitModel} from '../unit';
@@ -152,7 +151,7 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
 
   const {format, formatType} = legend;
 
-  const text = isFieldOrDatumDefWithCustomTimeFormat(fieldOrDatumDef, config)
+  const text = isCustomFormatType(formatType)
     ? formatCustomType({
         fieldOrDatumDef,
         field: 'datum.value',

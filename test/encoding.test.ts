@@ -34,7 +34,8 @@ describe('encoding', () => {
             color: {field: 'a', type: 'quantitative'},
             fill: {field: 'b', type: 'quantitative'}
           },
-          {type: 'bar', filled: true}
+          {type: 'bar', filled: true},
+          defaultConfig
         );
 
         expect(encoding).toEqual({
@@ -52,7 +53,8 @@ describe('encoding', () => {
             color: {field: 'a', type: 'quantitative'},
             angle: {field: 'b', type: 'quantitative'}
           },
-          {type: 'arc'}
+          {type: 'arc'},
+          defaultConfig
         );
 
         expect(encoding).toEqual({
@@ -71,7 +73,8 @@ describe('encoding', () => {
             color: {field: 'a', type: 'quantitative'},
             stroke: {field: 'b', type: 'quantitative'}
           },
-          {type: 'point', filled: false}
+          {type: 'point', filled: false},
+          defaultConfig
         );
 
         expect(encoding).toEqual({
@@ -84,7 +87,7 @@ describe('encoding', () => {
 
   describe('extractTransformsFromEncoding', () => {
     function normalizeEncodingWithMark(encoding: Encoding<string>, mark: Mark) {
-      return initEncoding(encoding, {type: mark});
+      return initEncoding(encoding, {type: mark}, defaultConfig);
     }
 
     it('should indlude axis in extracted encoding', () => {
