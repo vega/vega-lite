@@ -24,7 +24,12 @@
       "clip": true,
       "style": ["geoshape"],
       "from": {"data": "source_0"},
-      "encode": {"update": {"fill": {"value": "aliceblue"}}},
+      "encode": {
+        "update": {
+          "fill": {"value": "aliceblue"},
+          "ariaRoleDescription": {"value": "geoshape"}
+        }
+      },
       "transform": [{"type": "geoshape", "projection": "projection"}]
     },
     {
@@ -37,7 +42,8 @@
         "update": {
           "stroke": {"value": "black"},
           "strokeWidth": {"value": 0.5},
-          "fill": {"value": "transparent"}
+          "fill": {"value": "transparent"},
+          "ariaRoleDescription": {"value": "geoshape"}
         }
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]

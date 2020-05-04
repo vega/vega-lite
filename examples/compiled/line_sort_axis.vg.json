@@ -42,6 +42,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"Name\" + \": \" + (isValid(datum[\"Name\"]) ? datum[\"Name\"] : \"\"+datum[\"Name\"]) + \"; \" + \"Score\" + \": \" + (format(datum[\"Score\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "Name"},
           "y": {"scale": "y", "field": "Score"},
           "defined": {
@@ -81,6 +84,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

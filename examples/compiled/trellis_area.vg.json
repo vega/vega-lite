@@ -145,6 +145,9 @@
                 "update": {
                   "orient": {"value": "vertical"},
                   "fill": {"scale": "color", "field": "symbol"},
+                  "description": {
+                    "signal": "\"Time\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"Price\" + \": \" + (format(datum[\"price\"], \"\")) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                  },
                   "x": {"scale": "x", "field": "date"},
                   "y": {"scale": "y", "field": "price_end"},
                   "y2": {"scale": "y", "field": "price_start"},

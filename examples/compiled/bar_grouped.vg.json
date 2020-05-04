@@ -130,6 +130,10 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"population\" + \": \" + (format(datum[\"sum_people\"], \"\")) + \"; \" + \"\" + \": \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"]) + \"; \" + \"gender\" + \": \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+              },
               "x": {"scale": "x", "field": "gender"},
               "width": {"scale": "x", "band": 1},
               "y": {"scale": "y", "field": "sum_people"},

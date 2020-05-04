@@ -266,6 +266,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#6EB4FD"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"name\" + \": \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; \" + \"value\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"Number of Ratings\" + \": \" + (format(datum[\"__count\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "value"},
           "y": {"scale": "y", "field": "name"},
           "size": {"scale": "size", "field": "__count"},
@@ -282,6 +286,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "black"},
+          "ariaRoleDescription": {"value": "tick"},
+          "description": {
+            "signal": "\"name\" + \": \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; \" + \"median\" + \": \" + (format(datum[\"median\"], \"\"))"
+          },
           "xc": {"scale": "x", "field": "median"},
           "yc": {"scale": "y", "field": "name"},
           "height": {"value": 15},
@@ -298,6 +306,9 @@
         "update": {
           "align": {"value": "right"},
           "fill": {"value": "black"},
+          "description": {
+            "signal": "\"name\" + \": \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; \" + \"lo\" + \": \" + (isValid(datum[\"lo\"]) ? datum[\"lo\"] : \"\"+datum[\"lo\"])"
+          },
           "x": {"value": -5},
           "y": {"scale": "y", "field": "name"},
           "text": {
@@ -316,6 +327,9 @@
         "update": {
           "align": {"value": "left"},
           "fill": {"value": "black"},
+          "description": {
+            "signal": "\"name\" + \": \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; \" + \"hi\" + \": \" + (isValid(datum[\"hi\"]) ? datum[\"hi\"] : \"\"+datum[\"hi\"])"
+          },
           "x": {"value": 255},
           "y": {"scale": "y", "field": "name"},
           "text": {
@@ -365,6 +379,7 @@
       "gridScale": "x",
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

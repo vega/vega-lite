@@ -45,6 +45,9 @@
             {"test": "datum.open < datum.close", "value": "#06982d"},
             {"value": "#ae1325"}
           ],
+          "description": {
+            "signal": "\"Date in 2009\" + \": \" + (timeFormat(datum[\"date\"], '%m/%d')) + \"; \" + \"Price\" + \": \" + (format(datum[\"low\"], \"\")) + \"; \" + \"high\" + \": \" + (format(datum[\"high\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": [
             {
@@ -74,6 +77,10 @@
             {"test": "datum.open < datum.close", "value": "#06982d"},
             {"value": "#ae1325"}
           ],
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"Date in 2009\" + \": \" + (timeFormat(datum[\"date\"], '%m/%d')) + \"; \" + \"open\" + \": \" + (format(datum[\"open\"], \"\")) + \"; \" + \"close\" + \": \" + (format(datum[\"close\"], \"\"))"
+          },
           "xc": {"scale": "x", "field": "date"},
           "width": {"value": 5},
           "y": [
@@ -132,6 +139,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -145,6 +153,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

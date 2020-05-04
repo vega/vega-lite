@@ -29,6 +29,10 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "Origin"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Horsepower\" + \": \" + (format(datum[\"Horsepower\"], \"\")) + \"; \" + \"Miles_per_Gallon\" + \": \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+          },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"}
         }
@@ -68,6 +72,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -81,6 +86,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

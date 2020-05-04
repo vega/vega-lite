@@ -38,6 +38,10 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"a\" + \": \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"])"
+          },
           "x": {"scale": "x", "field": "a"},
           "y": {"signal": "height", "mult": 0.5}
         }

@@ -41,6 +41,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "sum_price"},
+          "description": {
+            "signal": "\"Time\" + \": \" + (timeFormat(datum[\"yearmonthdate_date\"], '%Y')) + \"; \" + \"Price\" + \": \" + (format(datum[\"sum_price\"], \"\")) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+          },
           "x": {"scale": "x", "field": "yearmonthdate_date"},
           "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "symbol"},

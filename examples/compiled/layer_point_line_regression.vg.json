@@ -58,6 +58,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Rotten_Tomatoes_Rating\" + \": \" + (format(datum[\"Rotten_Tomatoes_Rating\"], \"\")) + \"; \" + \"IMDB_Rating\" + \": \" + (format(datum[\"IMDB_Rating\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "Rotten_Tomatoes_Rating"},
           "y": {"scale": "y", "field": "IMDB_Rating"}
         }
@@ -72,6 +76,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "firebrick"},
+          "description": {
+            "signal": "\"Rotten_Tomatoes_Rating\" + \": \" + (format(datum[\"Rotten_Tomatoes_Rating\"], \"\")) + \"; \" + \"IMDB_Rating\" + \": \" + (format(datum[\"IMDB_Rating\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "Rotten_Tomatoes_Rating"},
           "y": {"scale": "y", "field": "IMDB_Rating"},
           "defined": {
@@ -89,6 +96,9 @@
         "update": {
           "align": {"value": "right"},
           "fill": {"value": "firebrick"},
+          "description": {
+            "signal": "\"R2\" + \": \" + (isValid(datum[\"R2\"]) ? datum[\"R2\"] : \"\"+datum[\"R2\"])"
+          },
           "x": {"field": {"group": "width"}},
           "y": {"value": -5},
           "text": {
@@ -136,6 +146,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -149,6 +160,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

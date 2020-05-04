@@ -72,6 +72,9 @@
               "interpolate": {"value": "monotone"},
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "Cylinders"},
+              "description": {
+                "signal": "\"Year (year)\" + \": \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Sum of Weight_in_lbs\" + \": \" + (format(datum[\"sum_Weight_in_lbs\"], \"\")) + \"; \" + \"Cylinders\" + \": \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
+              },
               "x": {"scale": "x", "field": "year_Year"},
               "y": {"scale": "y", "field": "sum_Weight_in_lbs_end"},
               "y2": {"scale": "y", "field": "sum_Weight_in_lbs_start"},
@@ -119,6 +122,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -132,6 +136,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

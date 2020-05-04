@@ -48,6 +48,10 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "site"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"variety\" + \": \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; \" + \"Sum of yield\" + \": \" + (format(datum[\"sum_yield\"], \"\")) + \"; \" + \"site\" + \": \" + (isValid(datum[\"site\"]) ? datum[\"site\"] : \"\"+datum[\"site\"])"
+          },
           "x": {"scale": "x", "field": "variety"},
           "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "sum_yield_end"},
@@ -92,6 +96,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

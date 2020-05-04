@@ -101,7 +101,15 @@
           "type": "shape",
           "style": ["geoshape"],
           "from": {"data": "facet"},
-          "encode": {"update": {"fill": {"scale": "color", "field": "pct"}}},
+          "encode": {
+            "update": {
+              "fill": {"scale": "color", "field": "pct"},
+              "ariaRoleDescription": {"value": "geoshape"},
+              "description": {
+                "signal": "\"geo\" + \": \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; \" + \"pct\" + \": \" + (format(datum[\"pct\"], \"\"))"
+              }
+            }
+          },
           "transform": [
             {
               "type": "geoshape",

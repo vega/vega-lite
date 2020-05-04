@@ -73,6 +73,9 @@
             "update": {
               "orient": {"value": "vertical"},
               "fill": {"scale": "color", "field": "organ"},
+              "description": {
+                "signal": "\"value\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"density\" + \": \" + (format(datum[\"density\"], \"\")) + \"; \" + \"organ\" + \": \" + (isValid(datum[\"organ\"]) ? datum[\"organ\"] : \"\"+datum[\"organ\"])"
+              },
               "x": {"scale": "x", "field": "value"},
               "y": {"scale": "y", "field": "density_end"},
               "y2": {"scale": "y", "field": "density_start"},
@@ -121,6 +124,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -134,6 +138,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

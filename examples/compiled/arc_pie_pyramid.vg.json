@@ -45,6 +45,9 @@
         "update": {
           "outerRadius": {"value": 80},
           "fill": {"scale": "color", "field": "category"},
+          "description": {
+            "signal": "\"value\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"category\" + \": \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; \" + \"order\" + \": \" + (format(datum[\"order\"], \"\"))"
+          },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},
           "innerRadius": {"value": 0},

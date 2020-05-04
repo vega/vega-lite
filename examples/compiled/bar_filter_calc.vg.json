@@ -49,6 +49,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"b2\" + \": \" + (format(datum[\"b2\"], \"\")) + \"; \" + \"a\" + \": \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"])"
+          },
           "x": {"scale": "x", "field": "a"},
           "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "b2"},
@@ -84,6 +88,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

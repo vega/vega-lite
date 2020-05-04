@@ -330,6 +330,10 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"time (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_30_time\"]) || !isFinite(+datum[\"bin_maxbins_30_time\"]) ? \"null\" : format(datum[\"bin_maxbins_30_time\"], \"\") + \" – \" + format(datum[\"bin_maxbins_30_time_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+              },
               "x2": [
                 {
                   "test": "!isValid(datum[\"bin_maxbins_30_time\"]) || !isFinite(+datum[\"bin_maxbins_30_time\"])",
@@ -405,6 +409,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -452,6 +457,10 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"time (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_30_extent_selection_brush_time\"]) || !isFinite(+datum[\"bin_maxbins_30_extent_selection_brush_time\"]) ? \"null\" : format(datum[\"bin_maxbins_30_extent_selection_brush_time\"], \"\") + \" – \" + format(datum[\"bin_maxbins_30_extent_selection_brush_time_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+              },
               "x2": [
                 {
                   "test": "!isValid(datum[\"bin_maxbins_30_extent_selection_brush_time\"]) || !isFinite(+datum[\"bin_maxbins_30_extent_selection_brush_time\"])",
@@ -488,6 +497,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

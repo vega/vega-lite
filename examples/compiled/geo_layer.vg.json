@@ -45,7 +45,11 @@
       "style": ["geoshape"],
       "from": {"data": "source_0"},
       "encode": {
-        "update": {"fill": {"value": "lightgray"}, "stroke": {"value": "white"}}
+        "update": {
+          "fill": {"value": "lightgray"},
+          "stroke": {"value": "white"},
+          "ariaRoleDescription": {"value": "geoshape"}
+        }
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]
     },
@@ -58,6 +62,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "steelblue"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"longitude\" + \": \" + (format(datum[\"longitude\"], \"\")) + \"; \" + \"latitude\" + \": \" + (format(datum[\"latitude\"], \"\"))"
+          },
           "x": {"field": "layer_1_x"},
           "y": {"field": "layer_1_y"},
           "size": {"value": 10},

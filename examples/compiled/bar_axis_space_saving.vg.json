@@ -36,6 +36,10 @@
           "cornerRadiusTopRight": {"value": 2},
           "cornerRadiusBottomRight": {"value": 2},
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "__count"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "Origin", "offset": 5, "band": 0.25},
@@ -70,6 +74,7 @@
       "gridScale": "x",
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

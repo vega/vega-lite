@@ -35,6 +35,9 @@
       "encode": {
         "update": {
           "stroke": {"scale": "color", "field": "symbol"},
+          "description": {
+            "signal": "\"Mean of price\" + \": \" + (format(datum[\"mean_price\"], \"\")) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+          },
           "x": {"field": {"group": "width"}},
           "x2": {"value": 0},
           "y": {"scale": "y", "field": "mean_price"},
@@ -67,6 +70,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

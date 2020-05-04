@@ -28,7 +28,12 @@
       ],
       "layer": [
         {
-          "mark": {"opacity": 0.3, "type": "area", "style": "errorband-band"},
+          "mark": {
+            "opacity": 0.3,
+            "type": "area",
+            "ariaRoleDescription": "errorband",
+            "style": "errorband-band"
+          },
           "encoding": {
             "y": {
               "field": "lower_Miles_per_Gallon",
@@ -67,7 +72,8 @@
             "type": "line",
             "style": "errorband-borders",
             "opacity": 0.5,
-            "strokeDash": [6, 4]
+            "strokeDash": [6, 4],
+            "aria": false
           },
           "encoding": {
             "y": {
@@ -106,7 +112,8 @@
             "type": "line",
             "style": "errorband-borders",
             "opacity": 0.5,
-            "strokeDash": [6, 4]
+            "strokeDash": [6, 4],
+            "aria": false
           },
           "encoding": {
             "y": {

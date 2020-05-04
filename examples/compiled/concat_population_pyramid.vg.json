@@ -122,6 +122,10 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"age\" + \": \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; \" + \"population\" + \": \" + (format(datum[\"sum_people\"], \"s\")) + \"; \" + \"gender\" + \": \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+              },
               "x": {"scale": "concat_0_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_0_x", "field": "sum_people_start"},
               "y": {"scale": "concat_0_y", "field": "age"},
@@ -165,6 +169,9 @@
             "update": {
               "align": {"value": "center"},
               "fill": {"value": "black"},
+              "description": {
+                "signal": "\"age\" + \": \" + (format(datum[\"age\"], \"\"))"
+              },
               "x": {"signal": "concat_1_width", "mult": 0.5},
               "y": {"scale": "concat_1_y", "field": "age"},
               "text": {"signal": "format(datum[\"age\"], \"\")"},
@@ -194,6 +201,10 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"age\" + \": \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; \" + \"population\" + \": \" + (format(datum[\"sum_people\"], \"s\")) + \"; \" + \"gender\" + \": \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+              },
               "x": {"scale": "concat_2_x", "field": "sum_people_end"},
               "x2": {"scale": "concat_2_x", "field": "sum_people_start"},
               "y": {"scale": "concat_2_y", "field": "age"},

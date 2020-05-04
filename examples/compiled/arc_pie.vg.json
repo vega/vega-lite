@@ -47,6 +47,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "category"},
+          "description": {
+            "signal": "\"value\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"category\" + \": \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"])"
+          },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},
           "outerRadius": {"signal": "min(width,height)/2"},

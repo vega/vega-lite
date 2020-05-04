@@ -386,6 +386,10 @@
                 },
                 {"value": "grey"}
               ],
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"Miles_per_Gallon\" + \": \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; \" + \"Horsepower\" + \": \" + (format(datum[\"Horsepower\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x": {
                 "scale": "child__row_Horsepowercolumn_Miles_per_Gallon_x",
                 "field": "Miles_per_Gallon"
@@ -452,6 +456,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -465,6 +470,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -792,6 +798,10 @@
                 },
                 {"value": "grey"}
               ],
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"Acceleration\" + \": \" + (format(datum[\"Acceleration\"], \"\")) + \"; \" + \"Horsepower\" + \": \" + (format(datum[\"Horsepower\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x": {
                 "scale": "child__row_Horsepowercolumn_Acceleration_x",
                 "field": "Acceleration"
@@ -858,6 +868,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -871,6 +882,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1133,6 +1145,10 @@
                 },
                 {"value": "grey"}
               ],
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"Horsepower\" + \": \" + (format(datum[\"Horsepower\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x": {
                 "scale": "child__row_Horsepowercolumn_Horsepower_x",
                 "field": "Horsepower"
@@ -1196,6 +1212,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1209,6 +1226,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1538,6 +1556,10 @@
                 },
                 {"value": "grey"}
               ],
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"Miles_per_Gallon\" + \": \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; \" + \"Acceleration\" + \": \" + (format(datum[\"Acceleration\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x": {
                 "scale": "child__row_Accelerationcolumn_Miles_per_Gallon_x",
                 "field": "Miles_per_Gallon"
@@ -1604,6 +1626,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1617,6 +1640,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1881,6 +1905,10 @@
                 },
                 {"value": "grey"}
               ],
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"Acceleration\" + \": \" + (format(datum[\"Acceleration\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x": {
                 "scale": "child__row_Accelerationcolumn_Acceleration_x",
                 "field": "Acceleration"
@@ -1944,6 +1972,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1957,6 +1986,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -2284,6 +2314,10 @@
                 },
                 {"value": "grey"}
               ],
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"Horsepower\" + \": \" + (format(datum[\"Horsepower\"], \"\")) + \"; \" + \"Acceleration\" + \": \" + (format(datum[\"Acceleration\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x": {
                 "scale": "child__row_Accelerationcolumn_Horsepower_x",
                 "field": "Horsepower"
@@ -2350,6 +2384,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -2363,6 +2398,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -2629,6 +2665,10 @@
                 },
                 {"value": "grey"}
               ],
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"Miles_per_Gallon\" + \": \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x": {
                 "scale": "child__row_Miles_per_Galloncolumn_Miles_per_Gallon_x",
                 "field": "Miles_per_Gallon"
@@ -2692,6 +2732,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -2705,6 +2746,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -3034,6 +3076,10 @@
                 },
                 {"value": "grey"}
               ],
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"Acceleration\" + \": \" + (format(datum[\"Acceleration\"], \"\")) + \"; \" + \"Miles_per_Gallon\" + \": \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x": {
                 "scale": "child__row_Miles_per_Galloncolumn_Acceleration_x",
                 "field": "Acceleration"
@@ -3100,6 +3146,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -3113,6 +3160,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -3442,6 +3490,10 @@
                 },
                 {"value": "grey"}
               ],
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"Horsepower\" + \": \" + (format(datum[\"Horsepower\"], \"\")) + \"; \" + \"Miles_per_Gallon\" + \": \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x": {
                 "scale": "child__row_Miles_per_Galloncolumn_Horsepower_x",
                 "field": "Horsepower"
@@ -3508,6 +3560,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -3521,6 +3574,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

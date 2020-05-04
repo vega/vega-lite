@@ -65,6 +65,9 @@
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
+                  "description": {
+                    "signal": "\"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Mean of temp_max\" + \": \" + (format(datum[\"mean_temp_max\"], \"\")) + \"; \" + \"location\" + \": \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
+                  },
                   "x": {"scale": "child__temp_max_x", "field": "month_date"},
                   "y": {"scale": "child__temp_max_y", "field": "mean_temp_max"},
                   "defined": {
@@ -84,6 +87,7 @@
           "grid": true,
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -97,6 +101,7 @@
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -162,6 +167,9 @@
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
+                  "description": {
+                    "signal": "\"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Mean of precipitation\" + \": \" + (format(datum[\"mean_precipitation\"], \"\")) + \"; \" + \"location\" + \": \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
+                  },
                   "x": {
                     "scale": "child__precipitation_x",
                     "field": "month_date"
@@ -187,6 +195,7 @@
           "grid": true,
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -200,6 +209,7 @@
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -265,6 +275,9 @@
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
+                  "description": {
+                    "signal": "\"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Mean of wind\" + \": \" + (format(datum[\"mean_wind\"], \"\")) + \"; \" + \"location\" + \": \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
+                  },
                   "x": {"scale": "child__wind_x", "field": "month_date"},
                   "y": {"scale": "child__wind_y", "field": "mean_wind"},
                   "defined": {
@@ -284,6 +297,7 @@
           "grid": true,
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -297,6 +311,7 @@
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

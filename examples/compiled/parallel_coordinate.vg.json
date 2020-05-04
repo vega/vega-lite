@@ -63,6 +63,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#ccc"},
+          "description": {
+            "signal": "\"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\")) + \"; \" + \"key\" + \": \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
+          },
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"value": 0},
           "y2": {"field": {"group": "height"}}
@@ -99,6 +102,9 @@
               "tooltip": {
                 "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"sepalWidth\": format(datum[\"sepalWidth\"], \"\")}"
               },
+              "description": {
+                "signal": "\"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"]) + \"; \" + \"index\" + \": \" + (isValid(datum[\"index\"]) ? datum[\"index\"] : \"\"+datum[\"index\"]) + \"; \" + \"key\" + \": \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; \" + \"norm_val\" + \": \" + (format(datum[\"norm_val\"], \"\")) + \"; \" + \"petalLength\" + \": \" + (format(datum[\"petalLength\"], \"\")) + \"; \" + \"petalWidth\" + \": \" + (format(datum[\"petalWidth\"], \"\")) + \"; \" + \"sepalLength\" + \": \" + (format(datum[\"sepalLength\"], \"\")) + \"; \" + \"sepalWidth\" + \": \" + (format(datum[\"sepalWidth\"], \"\"))"
+              },
               "x": {"scale": "x", "field": "key", "band": 0.5},
               "y": {"scale": "y", "field": "norm_val"},
               "defined": {
@@ -117,6 +123,9 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
+          "description": {
+            "signal": "\"key\" + \": \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; \" + \"Max of max\" + \": \" + (format(datum[\"max_max\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"value": 0},
           "text": {"signal": "format(datum[\"max_max\"], \"\")"}
@@ -132,6 +141,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#ccc"},
+          "ariaRoleDescription": {"value": "tick"},
+          "description": {
+            "signal": "\"key\" + \": \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
+          },
           "xc": {"scale": "x", "field": "key", "band": 0.5},
           "yc": {"value": 0},
           "width": {"value": 8},
@@ -147,6 +160,9 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
+          "description": {
+            "signal": "\"key\" + \": \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; \" + \"Min of mid\" + \": \" + (format(datum[\"min_mid\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"value": 150},
           "text": {"signal": "format(datum[\"min_mid\"], \"\")"}
@@ -162,6 +178,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#ccc"},
+          "ariaRoleDescription": {"value": "tick"},
+          "description": {
+            "signal": "\"key\" + \": \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
+          },
           "xc": {"scale": "x", "field": "key", "band": 0.5},
           "yc": {"value": 150},
           "width": {"value": 8},
@@ -177,6 +197,9 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
+          "description": {
+            "signal": "\"key\" + \": \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; \" + \"Min of min\" + \": \" + (format(datum[\"min_min\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"value": 300},
           "text": {"signal": "format(datum[\"min_min\"], \"\")"}
@@ -192,6 +215,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#ccc"},
+          "ariaRoleDescription": {"value": "tick"},
+          "description": {
+            "signal": "\"key\" + \": \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
+          },
           "xc": {"scale": "x", "field": "key", "band": 0.5},
           "yc": {"value": 300},
           "width": {"value": 8},

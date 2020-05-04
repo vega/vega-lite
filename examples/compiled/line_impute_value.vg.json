@@ -61,6 +61,9 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "c"},
+              "description": {
+                "signal": "\"a\" + \": \" + (format(datum[\"a\"], \"\")) + \"; \" + \"b\" + \": \" + (format(datum[\"b\"], \"\")) + \"; \" + \"c\" + \": \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"])"
+              },
               "x": {"scale": "x", "field": "a"},
               "y": {"scale": "y", "field": "b"},
               "defined": {
@@ -105,6 +108,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -118,6 +122,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

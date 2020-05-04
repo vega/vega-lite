@@ -55,6 +55,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "layer_0_color", "field": "num_cars"},
+          "description": {
+            "signal": "\"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; \" + \"Cylinders\" + \": \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"num_cars\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "Origin"},
@@ -70,6 +73,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "layer_1_color", "field": "more_than_half"},
+          "description": {
+            "signal": "\"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; \" + \"Cylinders\" + \": \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; \" + \"num_cars\" + \": \" + (format(datum[\"num_cars\"], \"\")) + \"; \" + \"more_than_half\" + \": \" + (isValid(datum[\"more_than_half\"]) ? datum[\"more_than_half\"] : \"\"+datum[\"more_than_half\"])"
+          },
           "x": {"scale": "x", "field": "Cylinders", "band": 0.5},
           "y": {"scale": "y", "field": "Origin", "band": 0.5},
           "text": {"signal": "format(datum[\"num_cars\"], \"\")"},
@@ -131,6 +137,7 @@
       "grid": true,
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -143,6 +150,7 @@
       "grid": true,
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

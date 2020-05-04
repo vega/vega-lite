@@ -39,6 +39,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "dir"},
+          "description": {
+            "signal": "\"dir\" + \": \" + (isValid(datum[\"dir\"]) ? datum[\"dir\"] : \"\"+datum[\"dir\"]) + \"; \" + \"strength\" + \": \" + (format(datum[\"strength\"], \"\"))"
+          },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},
           "outerRadius": {"scale": "radius", "field": "strength"},

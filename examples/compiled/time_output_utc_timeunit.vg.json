@@ -45,6 +45,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"date (year-month-date-hours-minutes)\" + \": \" + (timeFormat(datum[\"utcyearmonthdatehoursminutes_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\",\"hours\",\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "utcyearmonthdatehoursminutes_date"},
           "y": {"scale": "y", "field": "price"},
           "defined": {
@@ -82,6 +85,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -95,6 +99,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

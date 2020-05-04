@@ -151,6 +151,10 @@
           "opacity": {"value": 0},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"signal": "height", "mult": 0.5}
         }
@@ -205,6 +209,9 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
+              "description": {
+                "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"indexed_price\" + \": \" + (format(datum[\"indexed_price\"], \"%\")) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+              },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "indexed_price"},
               "defined": {
@@ -225,6 +232,9 @@
         "update": {
           "strokeWidth": {"value": 0.5},
           "stroke": {"value": "firebrick"},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 0},
           "y2": {"field": {"group": "height"}}
@@ -242,6 +252,9 @@
           "align": {"value": "center"},
           "fontWeight": {"value": 100},
           "fill": {"value": "firebrick"},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"date (year-month)\" + \": \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 310},
           "text": {
@@ -290,6 +303,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

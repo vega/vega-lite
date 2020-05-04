@@ -90,6 +90,10 @@
             "update": {
               "opacity": {"value": 0.7},
               "fill": {"scale": "concat_0_color", "field": "b"},
+              "ariaRoleDescription": {"value": "circle"},
+              "description": {
+                "signal": "\"b\" + \": \" + (format(datum[\"b\"], \"\")) + \"; \" + \"Quantize\" + \": \" + (format(datum[\"b\"], \"\"))"
+              },
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"scale": "concat_0_y", "field": "b"},
               "size": {"scale": "concat_0_size", "field": "b"},
@@ -139,6 +143,10 @@
             "update": {
               "opacity": {"value": 0.7},
               "fill": {"scale": "concat_1_color", "field": "b"},
+              "ariaRoleDescription": {"value": "circle"},
+              "description": {
+                "signal": "\"b\" + \": \" + (format(datum[\"b\"], \"\")) + \"; \" + \"Quantile\" + \": \" + (format(datum[\"b\"], \"d\"))"
+              },
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"scale": "concat_1_y", "field": "b"},
               "size": {"scale": "concat_1_size", "field": "b"},
@@ -190,6 +198,10 @@
             "update": {
               "opacity": {"value": 0.7},
               "fill": {"scale": "concat_2_color", "field": "b"},
+              "ariaRoleDescription": {"value": "circle"},
+              "description": {
+                "signal": "\"b\" + \": \" + (format(datum[\"b\"], \"\")) + \"; \" + \"Threshold\" + \": \" + (format(datum[\"b\"], \"\"))"
+              },
               "x": {"signal": "childWidth", "mult": 0.5},
               "y": {"scale": "concat_2_y", "field": "b"},
               "size": {"scale": "concat_2_size", "field": "b"},

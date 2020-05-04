@@ -85,6 +85,10 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"Name\" + \": \" + (isValid(datum[\"Name\"]) ? datum[\"Name\"] : \"\"+datum[\"Name\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+              },
               "x": {"scale": "concat_0_x", "field": "__count"},
               "x2": {"scale": "concat_0_x", "value": 0},
               "y": {"scale": "concat_0_y", "field": "Name"},
@@ -102,6 +106,7 @@
           "tickCount": {"signal": "ceil(concat_0_width/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -350,6 +355,10 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"Name\" + \": \" + (isValid(datum[\"Name\"]) ? datum[\"Name\"] : \"\"+datum[\"Name\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+              },
               "x": {"scale": "concat_1_x", "field": "__count"},
               "x2": {"scale": "concat_1_x", "value": 0},
               "y": {"scale": "concat_1_y", "field": "Name"},

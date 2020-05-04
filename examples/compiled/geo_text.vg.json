@@ -68,7 +68,11 @@
       "style": ["geoshape"],
       "from": {"data": "source_0"},
       "encode": {
-        "update": {"fill": {"value": "lightgray"}, "stroke": {"value": "white"}}
+        "update": {
+          "fill": {"value": "lightgray"},
+          "stroke": {"value": "white"},
+          "ariaRoleDescription": {"value": "geoshape"}
+        }
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]
     },
@@ -81,6 +85,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "orange"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"lon\" + \": \" + (format(datum[\"lon\"], \"\")) + \"; \" + \"lat\" + \": \" + (format(datum[\"lat\"], \"\"))"
+          },
           "x": {"field": "layer_1_layer_0_x"},
           "y": {"field": "layer_1_layer_0_y"},
           "shape": {"value": "circle"}
@@ -96,6 +104,9 @@
         "update": {
           "dy": {"value": -10},
           "fill": {"value": "black"},
+          "description": {
+            "signal": "\"lon\" + \": \" + (format(datum[\"lon\"], \"\")) + \"; \" + \"lat\" + \": \" + (format(datum[\"lat\"], \"\")) + \"; \" + \"city\" + \": \" + (isValid(datum[\"city\"]) ? datum[\"city\"] : \"\"+datum[\"city\"])"
+          },
           "x": {"field": "layer_1_layer_1_x"},
           "y": {"field": "layer_1_layer_1_y"},
           "text": {

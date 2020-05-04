@@ -41,6 +41,10 @@
         "update": {
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "yearmonth_date"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"date (year-month)\" + \": \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Mean of temp\" + \": \" + (format(datum[\"mean_temp\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "mean_temp"},
           "y": {"signal": "height", "mult": 0.5}
         }
@@ -72,6 +76,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

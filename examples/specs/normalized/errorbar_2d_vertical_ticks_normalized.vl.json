@@ -29,7 +29,8 @@
       "mark": {
         "type": "tick",
         "orient": "horizontal",
-        "style": "errorbar-ticks"
+        "style": "errorbar-ticks",
+        "aria": false
       },
       "encoding": {
         "y": {
@@ -63,7 +64,8 @@
       "mark": {
         "type": "tick",
         "orient": "horizontal",
-        "style": "errorbar-ticks"
+        "style": "errorbar-ticks",
+        "aria": false
       },
       "encoding": {
         "y": {
@@ -94,7 +96,11 @@
       }
     },
     {
-      "mark": {"type": "rule", "style": "errorbar-rule"},
+      "mark": {
+        "type": "rule",
+        "ariaRoleDescription": "errorbar",
+        "style": "errorbar-rule"
+      },
       "encoding": {
         "y": {
           "field": "lower_Miles_per_Gallon",

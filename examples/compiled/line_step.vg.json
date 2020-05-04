@@ -25,6 +25,9 @@
         "update": {
           "interpolate": {"value": "step-after"},
           "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "defined": {
@@ -59,6 +62,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -72,6 +76,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

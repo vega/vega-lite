@@ -59,6 +59,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"value": "#4c78a8"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"unif\" + \": \" + (format(datum[\"unif\"], \"\")) + \"; \" + \"v\" + \": \" + (format(datum[\"v\"], \"\"))"
+              },
               "x": {"scale": "concat_0_x", "field": "unif"},
               "y": {"scale": "concat_0_y", "field": "v"}
             }
@@ -74,6 +78,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -87,6 +92,7 @@
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -134,6 +140,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"value": "#4c78a8"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"norm\" + \": \" + (format(datum[\"norm\"], \"\")) + \"; \" + \"v\" + \": \" + (format(datum[\"v\"], \"\"))"
+              },
               "x": {"scale": "concat_1_x", "field": "norm"},
               "y": {"scale": "concat_1_y", "field": "v"}
             }
@@ -149,6 +159,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -162,6 +173,7 @@
           "tickCount": {"signal": "ceil(height/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

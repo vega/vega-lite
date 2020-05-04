@@ -33,6 +33,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"ts\" + \": \" + (timeFormat(datum[\"ts\"], '%b %d, %Y')) + \"; \" + \"v\" + \": \" + (format(datum[\"v\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "ts"},
           "y": {"scale": "y", "field": "v"},
           "defined": {
@@ -72,6 +75,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -85,6 +89,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

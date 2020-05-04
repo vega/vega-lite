@@ -125,6 +125,10 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "country"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"country\" + \": \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]) + \"; \" + \"value\" + \": \" + (format(datum[\"value\"], \"\"))"
+              },
               "x": {"scale": "x", "field": "country"},
               "width": {"scale": "x", "band": 1},
               "y": {"scale": "y", "field": "value"},
@@ -142,6 +146,7 @@
           "tickCount": {"signal": "ceil(child_height/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

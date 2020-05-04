@@ -496,6 +496,9 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "system"},
+              "description": {
+                "signal": "\"Trial\" + \": \" + (format(datum[\"row\"], \"\")) + \"; \" + \"Frames Per Second (fps)\" + \": \" + (format(datum[\"fps\"], \"\")) + \"; \" + \"System\" + \": \" + (isValid(datum[\"system\"]) ? datum[\"system\"] : \"\"+datum[\"system\"])"
+              },
               "x": {"scale": "x", "field": "row"},
               "y": {"scale": "y", "field": "fps"},
               "strokeWidth": {"value": 1},
@@ -533,6 +536,9 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "system"},
+              "description": {
+                "signal": "\"Trial\" + \": \" + (format(datum[\"row\"], \"\")) + \"; \" + \"Frames Per Second (fps)\" + \": \" + (format(datum[\"fps\"], \"\")) + \"; \" + \"System\" + \": \" + (isValid(datum[\"system\"]) ? datum[\"system\"] : \"\"+datum[\"system\"])"
+              },
               "x": {"scale": "x", "field": "row"},
               "y": {"scale": "y", "field": "fps"},
               "strokeWidth": {"value": 1},

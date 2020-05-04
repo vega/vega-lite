@@ -122,6 +122,9 @@
             "update": {
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
+              "description": {
+                "signal": "\"value\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"density\" + \": \" + (format(datum[\"density\"], \"\"))"
+              },
               "x": {"scale": "x", "field": "value"},
               "y": {"scale": "y", "field": "density"},
               "y2": {"scale": "y", "value": 0},
@@ -141,6 +144,7 @@
           "tickCount": {"signal": "ceil(child_width/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -154,6 +158,7 @@
           "tickCount": {"signal": "ceil(child_height/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

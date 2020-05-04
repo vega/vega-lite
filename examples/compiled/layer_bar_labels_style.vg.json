@@ -36,6 +36,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"a\" + \": \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; \" + \"b\" + \": \" + (format(datum[\"b\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "b"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "a"},
@@ -51,6 +55,9 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
+          "description": {
+            "signal": "\"a\" + \": \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; \" + \"b\" + \": \" + (format(datum[\"b\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "b"},
           "y": {"scale": "y", "field": "a", "band": 0.5},
           "text": {"signal": "format(datum[\"b\"], \"\")"}
@@ -85,6 +92,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

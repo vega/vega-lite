@@ -43,6 +43,10 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"data\" + \": \" + (isValid(datum[\"data\"]) ? datum[\"data\"] : \"\"+datum[\"data\"]) + \"; \" + \"id\" + \": \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"])"
+          },
           "x": {"scale": "x", "field": "data"},
           "y": {"scale": "y", "field": "id"},
           "shape": {"value": "circle"}

@@ -48,6 +48,10 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "gender"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"population\" + \": \" + (format(datum[\"v1\"], \"\")) + \"; \" + \"v2\" + \": \" + (format(datum[\"v2\"], \"\")) + \"; \" + \"age\" + \": \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; \" + \"gender\" + \": \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+          },
           "x": {"scale": "x", "field": "age"},
           "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "v1"},
@@ -89,6 +93,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

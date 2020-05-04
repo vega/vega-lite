@@ -36,6 +36,9 @@
         "update": {
           "width": {"value": 50},
           "height": {"value": 50},
+          "description": {
+            "signal": "\"x\" + \": \" + (format(datum[\"x\"], \"\")) + \"; \" + \"y\" + \": \" + (format(datum[\"y\"], \"\")) + \"; \" + \"img\" + \": \" + (isValid(datum[\"img\"]) ? datum[\"img\"] : \"\"+datum[\"img\"])"
+          },
           "xc": {"scale": "x", "field": "x"},
           "yc": {"scale": "y", "field": "y"},
           "url": {
@@ -72,6 +75,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -85,6 +89,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

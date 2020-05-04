@@ -59,9 +59,13 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
+          "ariaRoleDescription": {"value": "errorbar"},
           "stroke": {"value": "black"},
           "tooltip": {
             "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stderr of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stderr of yield\": format(datum[\"lower_yield\"], \"\")}"
+          },
+          "description": {
+            "signal": "\"yield\" + \": \" + (format(datum[\"lower_yield\"], \"\")) + \"; \" + \"upper_yield\" + \": \" + (format(datum[\"upper_yield\"], \"\")) + \"; \" + \"Mean of yield\" + \": \" + (format(datum[\"center_yield\"], \"\")) + \"; \" + \"Mean + stderr of yield\" + \": \" + (format(datum[\"upper_yield\"], \"\")) + \"; \" + \"Mean - stderr of yield\" + \": \" + (format(datum[\"lower_yield\"], \"\"))"
           },
           "x": [
             {
@@ -89,6 +93,10 @@
       "encode": {
         "update": {
           "fill": {"value": "black"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Mean of yield\" + \": \" + (format(datum[\"mean_yield\"], \"\"))"
+          },
           "x": [
             {
               "test": "!isValid(datum[\"mean_yield\"]) || !isFinite(+datum[\"mean_yield\"])",
@@ -125,6 +133,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

@@ -100,6 +100,9 @@
             },
             {"value": 0.5}
           ],
+          "description": {
+            "signal": "\"actual\" + \": \" + (isValid(datum[\"actual\"]) ? datum[\"actual\"] : \"\"+datum[\"actual\"]) + \"; \" + \"predicted\" + \": \" + (isValid(datum[\"predicted\"]) ? datum[\"predicted\"] : \"\"+datum[\"predicted\"]) + \"; \" + \"count\" + \": \" + (format(datum[\"count\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "predicted"},
           "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "actual"},

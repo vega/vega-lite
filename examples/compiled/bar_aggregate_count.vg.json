@@ -53,6 +53,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"precipitation (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_precipitation\"]) || !isFinite(+datum[\"bin_maxbins_10_precipitation\"]) ? \"null\" : format(datum[\"bin_maxbins_10_precipitation\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_precipitation_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+          },
           "x2": [
             {
               "test": "!isValid(datum[\"bin_maxbins_10_precipitation\"]) || !isFinite(+datum[\"bin_maxbins_10_precipitation\"])",
@@ -102,6 +106,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

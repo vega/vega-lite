@@ -144,6 +144,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#000"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"health\" + \": \" + (format(datum[\"health\"], \"\")) + \"; \" + \"income\" + \": \" + (format(datum[\"income\"], \"\")) + \"; \" + \"population\" + \": \" + (format(datum[\"population\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "income"},
           "y": [
             {
@@ -192,6 +196,7 @@
       "grid": true,
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -205,6 +210,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

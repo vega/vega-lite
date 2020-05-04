@@ -43,6 +43,10 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"time\" + \": \" + (timeFormat(datum[\"utchours_date\"], timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+          },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "utchours_date"}
         }

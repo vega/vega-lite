@@ -70,6 +70,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"IMDB_Rating (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+          },
           "x2": [
             {
               "test": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])",
@@ -97,6 +101,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "red"},
+          "description": {
+            "signal": "\"Mean of IMDB_Rating\" + \": \" + (format(datum[\"mean_IMDB_Rating\"], \"\"))"
+          },
           "x": [
             {
               "test": "!isValid(datum[\"mean_IMDB_Rating\"]) || !isFinite(+datum[\"mean_IMDB_Rating\"])",
@@ -146,6 +153,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

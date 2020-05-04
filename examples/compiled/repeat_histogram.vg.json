@@ -233,6 +233,10 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "Origin"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"Horsepower (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x2": [
                 {
                   "test": "!isValid(datum[\"bin_maxbins_10_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_10_Horsepower\"])",
@@ -269,6 +273,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -314,6 +319,10 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "Origin"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"Miles_per_Gallon (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) || !isFinite(+datum[\"bin_maxbins_10_Miles_per_Gallon\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Miles_per_Gallon\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Miles_per_Gallon_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x2": [
                 {
                   "test": "!isValid(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) || !isFinite(+datum[\"bin_maxbins_10_Miles_per_Gallon\"])",
@@ -356,6 +365,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -401,6 +411,10 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "Origin"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"Acceleration (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x2": [
                 {
                   "test": "!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"])",
@@ -437,6 +451,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -482,6 +497,10 @@
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "Origin"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"Displacement (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_10_Displacement\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Displacement\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Displacement_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x2": [
                 {
                   "test": "!isValid(datum[\"bin_maxbins_10_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_10_Displacement\"])",
@@ -518,6 +537,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

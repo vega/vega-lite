@@ -46,6 +46,10 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "RatingDelta"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Release_Date\" + \": \" + (timeFormat(datum[\"Release_Date\"], '%b %d, %Y')) + \"; \" + \"Rating Delta\" + \": \" + (format(datum[\"RatingDelta\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "Release_Date"},
           "y": {"scale": "y", "field": "RatingDelta"}
         }
@@ -86,6 +90,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -99,6 +104,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

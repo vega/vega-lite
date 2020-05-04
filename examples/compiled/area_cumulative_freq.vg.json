@@ -34,6 +34,9 @@
         "update": {
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"IMDB_Rating\" + \": \" + (format(datum[\"IMDB_Rating\"], \"\")) + \"; \" + \"cumulative_count\" + \": \" + (format(datum[\"cumulative_count\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "IMDB_Rating"},
           "y": {"scale": "y", "field": "cumulative_count"},
           "y2": {"scale": "y", "value": 0},
@@ -71,6 +74,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -84,6 +88,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

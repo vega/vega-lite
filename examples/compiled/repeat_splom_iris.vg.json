@@ -132,6 +132,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"sepalLength\" + \": \" + (format(datum[\"sepalLength\"], \"\")) + \"; \" + \"petalWidth\" + \": \" + (format(datum[\"petalWidth\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"sepalLength\"]) || !isFinite(+datum[\"sepalLength\"])",
@@ -165,6 +169,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -178,6 +183,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -225,6 +231,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"sepalWidth\" + \": \" + (format(datum[\"sepalWidth\"], \"\")) + \"; \" + \"petalWidth\" + \": \" + (format(datum[\"petalWidth\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"sepalWidth\"]) || !isFinite(+datum[\"sepalWidth\"])",
@@ -258,6 +268,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -271,6 +282,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -318,6 +330,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"petalLength\" + \": \" + (format(datum[\"petalLength\"], \"\")) + \"; \" + \"petalWidth\" + \": \" + (format(datum[\"petalWidth\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"petalLength\"]) || !isFinite(+datum[\"petalLength\"])",
@@ -351,6 +367,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -364,6 +381,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -411,6 +429,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"petalWidth\" + \": \" + (format(datum[\"petalWidth\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"petalWidth\"]) || !isFinite(+datum[\"petalWidth\"])",
@@ -444,6 +466,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -457,6 +480,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -504,6 +528,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"sepalLength\" + \": \" + (format(datum[\"sepalLength\"], \"\")) + \"; \" + \"petalLength\" + \": \" + (format(datum[\"petalLength\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"sepalLength\"]) || !isFinite(+datum[\"sepalLength\"])",
@@ -537,6 +565,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -550,6 +579,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -597,6 +627,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"sepalWidth\" + \": \" + (format(datum[\"sepalWidth\"], \"\")) + \"; \" + \"petalLength\" + \": \" + (format(datum[\"petalLength\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"sepalWidth\"]) || !isFinite(+datum[\"sepalWidth\"])",
@@ -630,6 +664,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -643,6 +678,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -690,6 +726,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"petalLength\" + \": \" + (format(datum[\"petalLength\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"petalLength\"]) || !isFinite(+datum[\"petalLength\"])",
@@ -723,6 +763,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -736,6 +777,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -783,6 +825,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"petalWidth\" + \": \" + (format(datum[\"petalWidth\"], \"\")) + \"; \" + \"petalLength\" + \": \" + (format(datum[\"petalLength\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"petalWidth\"]) || !isFinite(+datum[\"petalWidth\"])",
@@ -816,6 +862,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -829,6 +876,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -876,6 +924,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"sepalLength\" + \": \" + (format(datum[\"sepalLength\"], \"\")) + \"; \" + \"sepalWidth\" + \": \" + (format(datum[\"sepalWidth\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"sepalLength\"]) || !isFinite(+datum[\"sepalLength\"])",
@@ -909,6 +961,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -922,6 +975,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -969,6 +1023,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"sepalWidth\" + \": \" + (format(datum[\"sepalWidth\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"sepalWidth\"]) || !isFinite(+datum[\"sepalWidth\"])",
@@ -1002,6 +1060,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1015,6 +1074,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1062,6 +1122,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"petalLength\" + \": \" + (format(datum[\"petalLength\"], \"\")) + \"; \" + \"sepalWidth\" + \": \" + (format(datum[\"sepalWidth\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"petalLength\"]) || !isFinite(+datum[\"petalLength\"])",
@@ -1095,6 +1159,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1108,6 +1173,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1155,6 +1221,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"petalWidth\" + \": \" + (format(datum[\"petalWidth\"], \"\")) + \"; \" + \"sepalWidth\" + \": \" + (format(datum[\"sepalWidth\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"petalWidth\"]) || !isFinite(+datum[\"petalWidth\"])",
@@ -1188,6 +1258,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1201,6 +1272,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1248,6 +1320,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"sepalLength\" + \": \" + (format(datum[\"sepalLength\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"sepalLength\"]) || !isFinite(+datum[\"sepalLength\"])",
@@ -1281,6 +1357,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1294,6 +1371,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1341,6 +1419,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"sepalWidth\" + \": \" + (format(datum[\"sepalWidth\"], \"\")) + \"; \" + \"sepalLength\" + \": \" + (format(datum[\"sepalLength\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"sepalWidth\"]) || !isFinite(+datum[\"sepalWidth\"])",
@@ -1374,6 +1456,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1387,6 +1470,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1434,6 +1518,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"petalLength\" + \": \" + (format(datum[\"petalLength\"], \"\")) + \"; \" + \"sepalLength\" + \": \" + (format(datum[\"sepalLength\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"petalLength\"]) || !isFinite(+datum[\"petalLength\"])",
@@ -1467,6 +1555,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1480,6 +1569,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1527,6 +1617,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "species"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"petalWidth\" + \": \" + (format(datum[\"petalWidth\"], \"\")) + \"; \" + \"sepalLength\" + \": \" + (format(datum[\"sepalLength\"], \"\")) + \"; \" + \"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"petalWidth\"]) || !isFinite(+datum[\"petalWidth\"])",
@@ -1560,6 +1654,7 @@
           "tickCount": {"signal": "ceil(childWidth/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1573,6 +1668,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

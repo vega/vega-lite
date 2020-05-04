@@ -93,7 +93,11 @@
       "style": ["geoshape"],
       "from": {"data": "source_0"},
       "encode": {
-        "update": {"fill": {"value": "lightgray"}, "stroke": {"value": "white"}}
+        "update": {
+          "fill": {"value": "lightgray"},
+          "stroke": {"value": "white"},
+          "ariaRoleDescription": {"value": "geoshape"}
+        }
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]
     },
@@ -106,6 +110,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "gray"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"longitude\" + \": \" + (format(datum[\"longitude\"], \"\")) + \"; \" + \"latitude\" + \": \" + (format(datum[\"latitude\"], \"\"))"
+          },
           "x": {"field": "layer_1_x"},
           "y": {"field": "layer_1_y"},
           "size": {"value": 5},
@@ -121,6 +129,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
+          "description": {
+            "signal": "\"origin_longitude\" + \": \" + (format(datum[\"origin_longitude\"], \"\")) + \"; \" + \"origin_latitude\" + \": \" + (format(datum[\"origin_latitude\"], \"\")) + \"; \" + \"dest_longitude\" + \": \" + (format(datum[\"dest_longitude\"], \"\")) + \"; \" + \"dest_latitude\" + \": \" + (format(datum[\"dest_latitude\"], \"\"))"
+          },
           "x": {"field": "layer_2_x"},
           "x2": {"field": "layer_2_x2"},
           "y": {"field": "layer_2_y"},

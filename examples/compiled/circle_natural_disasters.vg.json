@@ -31,6 +31,10 @@
           "stroke": {"value": "black"},
           "strokeWidth": {"value": 1},
           "fill": {"scale": "color", "field": "Entity"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"Year\" + \": \" + (isValid(datum[\"Year\"]) ? datum[\"Year\"] : \"\"+datum[\"Year\"]) + \"; \" + \"\" + \": \" + (isValid(datum[\"Entity\"]) ? datum[\"Entity\"] : \"\"+datum[\"Entity\"]) + \"; \" + \"Annual Global Deaths\" + \": \" + (format(datum[\"Deaths\"], \"\")) + \"; \" + \"Entity\" + \": \" + (isValid(datum[\"Entity\"]) ? datum[\"Entity\"] : \"\"+datum[\"Entity\"])"
+          },
           "x": {"scale": "x", "field": "Year"},
           "y": {"scale": "y", "field": "Entity"},
           "size": {"scale": "size", "field": "Deaths"},

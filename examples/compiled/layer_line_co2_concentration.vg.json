@@ -96,6 +96,9 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "decade"},
+              "description": {
+                "signal": "\"decade\" + \": \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"]) + \"; \" + \"Year into Decade\" + \": \" + (format(datum[\"scaled_date\"], \"\")) + \"; \" + \"CO2 concentration in ppm\" + \": \" + (format(datum[\"CO2\"], \"\"))"
+              },
               "x": {"scale": "x", "field": "scaled_date"},
               "y": {"scale": "y", "field": "CO2"},
               "defined": {
@@ -115,6 +118,9 @@
         "update": {
           "baseline": {"value": "top"},
           "fill": {"scale": "color", "field": "decade"},
+          "description": {
+            "signal": "\"decade\" + \": \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"]) + \"; \" + \"Min of scaled_date\" + \": \" + (format(datum[\"min_scaled_date\"], \"\")) + \"; \" + \"CO2 for min scaled_date\" + \": \" + (format(datum[\"argmin_scaled_date\"].CO2, \"\")) + \"; \" + \"year for min scaled_date\" + \": \" + (isValid(datum[\"argmin_scaled_date\"].year) ? datum[\"argmin_scaled_date\"].year : \"\"+datum[\"argmin_scaled_date\"].year)"
+          },
           "x": [
             {
               "test": "!isValid(datum[\"min_scaled_date\"]) || !isFinite(+datum[\"min_scaled_date\"])",
@@ -143,6 +149,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "decade"},
+          "description": {
+            "signal": "\"decade\" + \": \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"]) + \"; \" + \"Max of scaled_date\" + \": \" + (format(datum[\"max_scaled_date\"], \"\")) + \"; \" + \"CO2 for max scaled_date\" + \": \" + (format(datum[\"argmax_scaled_date\"].CO2, \"\")) + \"; \" + \"year for max scaled_date\" + \": \" + (isValid(datum[\"argmax_scaled_date\"].year) ? datum[\"argmax_scaled_date\"].year : \"\"+datum[\"argmax_scaled_date\"].year)"
+          },
           "x": [
             {
               "test": "!isValid(datum[\"max_scaled_date\"]) || !isFinite(+datum[\"max_scaled_date\"])",
@@ -218,6 +227,7 @@
       "grid": true,
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -231,6 +241,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

@@ -80,6 +80,9 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "team"},
+              "description": {
+                "signal": "\"matchday\" + \": \" + (isValid(datum[\"matchday\"]) ? datum[\"matchday\"] : \"\"+datum[\"matchday\"]) + \"; \" + \"rank\" + \": \" + (isValid(datum[\"rank\"]) ? datum[\"rank\"] : \"\"+datum[\"rank\"]) + \"; \" + \"team\" + \": \" + (isValid(datum[\"team\"]) ? datum[\"team\"] : \"\"+datum[\"team\"])"
+              },
               "x": {"scale": "x", "field": "matchday"},
               "y": {"scale": "y", "field": "rank"}
             }

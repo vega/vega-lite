@@ -177,6 +177,10 @@
             "update": {
               "fill": {"value": "transparent"},
               "stroke": {"scale": "trellis_barley_color", "field": "year"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"Median of yield\" + \": \" + (format(datum[\"median_yield\"], \"\")) + \"; \" + \"variety\" + \": \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; \" + \"year\" + \": \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"median_yield\"]) || !isFinite(+datum[\"median_yield\"])",
@@ -198,6 +202,7 @@
           "tickCount": {"signal": "ceil(trellis_barley_child_width/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

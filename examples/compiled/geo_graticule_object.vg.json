@@ -26,7 +26,8 @@
       "encode": {
         "update": {
           "fill": {"value": "transparent"},
-          "stroke": {"value": "#4c78a8"}
+          "stroke": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "geoshape"}
         }
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]

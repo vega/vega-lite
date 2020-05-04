@@ -296,6 +296,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "transparent"},
               "stroke": {"value": "#4c78a8"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"x\" + \": \" + (format(datum[\"x\"], \"\")) + \"; \" + \"y\" + \": \" + (format(datum[\"y\"], \"\"))"
+              },
               "x": {"scale": "x", "field": "x"},
               "y": {"scale": "y", "field": "y"}
             }
@@ -309,6 +313,9 @@
           "encode": {
             "update": {
               "stroke": {"value": "black"},
+              "description": {
+                "signal": "\"Median of median_x_by_a\" + \": \" + (format(datum[\"median_median_x_by_a\"], \"\"))"
+              },
               "x": {"scale": "x", "field": "median_median_x_by_a"},
               "y": {"value": 0},
               "y2": {"field": {"group": "height"}}
@@ -323,6 +330,9 @@
           "encode": {
             "update": {
               "stroke": {"value": "black"},
+              "description": {
+                "signal": "\"Median of median_y_by_b\" + \": \" + (format(datum[\"median_median_y_by_b\"], \"\"))"
+              },
               "x": {"field": {"group": "width"}},
               "x2": {"value": 0},
               "y": {"scale": "y", "field": "median_median_y_by_b"}
@@ -339,6 +349,7 @@
           "tickCount": {"signal": "ceil(child_width/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -352,6 +363,7 @@
           "tickCount": {"signal": "ceil(child_height/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

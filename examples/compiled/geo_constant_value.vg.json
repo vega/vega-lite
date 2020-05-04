@@ -79,6 +79,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "gray"},
+          "ariaRoleDescription": {"value": "square"},
+          "description": {
+            "signal": "\"longitude\" + \": \" + (format(datum[\"longitude\"], \"\")) + \"; \" + \"latitude\" + \": \" + (format(datum[\"latitude\"], \"\"))"
+          },
           "x": {"field": "layer_0_x"},
           "y": {"field": "layer_0_y"},
           "size": {"value": 1},
@@ -95,6 +99,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "steelblue"},
+          "ariaRoleDescription": {"value": "square"},
+          "description": {
+            "signal": "\"latitude\" + \": \" + (format(datum[\"latitude\"], \"\"))"
+          },
           "x": {"field": "layer_1_x"},
           "y": {"field": "layer_1_y"},
           "size": {"value": 1},
@@ -111,6 +119,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "firebrick"},
+          "ariaRoleDescription": {"value": "square"},
+          "description": {
+            "signal": "\"longitude\" + \": \" + (format(datum[\"longitude\"], \"\"))"
+          },
           "x": {"field": "layer_2_x"},
           "y": {"field": "layer_2_y"},
           "size": {"value": 1},

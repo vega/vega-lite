@@ -35,6 +35,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "tick"},
+          "description": {
+            "signal": "\"Horsepower\" + \": \" + (format(datum[\"Horsepower\"], \"\")) + \"; \" + \"Cylinders\" + \": \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
+          },
           "xc": {"scale": "x", "field": "Horsepower"},
           "yc": {"scale": "y", "field": "Cylinders"},
           "height": {"value": 15},
@@ -69,6 +73,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

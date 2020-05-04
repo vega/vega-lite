@@ -85,6 +85,10 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "properties\\.site"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"properties.variety\" + \": \" + (isValid(datum[\"properties.variety\"]) ? datum[\"properties.variety\"] : \"\"+datum[\"properties.variety\"]) + \"; \" + \"Sum of properties.yield\" + \": \" + (format(datum[\"sum_properties.yield\"], \"\")) + \"; \" + \"site\" + \": \" + (isValid(datum[\"properties.site\"]) ? datum[\"properties.site\"] : \"\"+datum[\"properties.site\"])"
+          },
           "x": {"scale": "x", "field": "sum_properties\\.yield_end"},
           "x2": {"scale": "x", "field": "sum_properties\\.yield_start"},
           "y": {"scale": "y", "field": "properties\\.variety"},
@@ -133,6 +137,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

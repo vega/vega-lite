@@ -42,6 +42,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Mean of temp_range\" + \": \" + (format(datum[\"mean_temp_range\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "month_date"},
           "y": {"scale": "y", "field": "mean_temp_range"},
           "defined": {
@@ -75,6 +78,7 @@
       "grid": true,
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -88,6 +92,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

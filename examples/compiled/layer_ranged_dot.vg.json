@@ -69,6 +69,9 @@
           "encode": {
             "update": {
               "stroke": {"value": "#db646f"},
+              "description": {
+                "signal": "\"Life Expectancy (years)\" + \": \" + (format(datum[\"life_expect\"], \"\")) + \"; \" + \"Country\" + \": \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]) + \"; \" + \"country\" + \": \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"])"
+              },
               "x": {"scale": "x", "field": "life_expect"},
               "y": {"scale": "y", "field": "country"},
               "defined": {
@@ -88,6 +91,10 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"scale": "color", "field": "year"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Life Expectancy (years)\" + \": \" + (format(datum[\"life_expect\"], \"\")) + \"; \" + \"Country\" + \": \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]) + \"; \" + \"Year\" + \": \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
+          },
           "x": {"scale": "x", "field": "life_expect"},
           "y": {"scale": "y", "field": "country"},
           "size": {"value": 100}
@@ -139,6 +146,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

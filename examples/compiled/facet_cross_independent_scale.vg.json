@@ -165,6 +165,9 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
+              "description": {
+                "signal": "\"b\" + \": \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"]) + \"; \" + \"a\" + \": \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"])"
+              },
               "x": {"scale": "child_x", "field": "a"},
               "width": {"scale": "child_x", "band": 1},
               "y": {"scale": "child_y", "field": "b"},

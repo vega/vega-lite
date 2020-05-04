@@ -46,9 +46,13 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
+          "ariaRoleDescription": {"value": "errorbar"},
           "stroke": {"value": "black"},
           "tooltip": {
             "signal": "isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]"
+          },
+          "description": {
+            "signal": "\"yield\" + \": \" + (format(datum[\"lower_yield\"], \"\")) + \"; \" + \"upper_yield\" + \": \" + (format(datum[\"upper_yield\"], \"\")) + \"; \" + \"variety\" + \": \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"])"
           },
           "x": [
             {
@@ -96,6 +100,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

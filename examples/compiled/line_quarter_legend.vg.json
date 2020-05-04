@@ -61,6 +61,9 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "quarter_date"},
+              "description": {
+                "signal": "\"date (year)\" + \": \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Mean of price\" + \": \" + (format(datum[\"mean_price\"], \"\")) + \"; \" + \"date (quarter)\" + \": \" + (timeFormat(datum[\"quarter_date\"], timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+              },
               "x": {"scale": "x", "field": "year_date"},
               "y": {"scale": "y", "field": "mean_price"},
               "defined": {
@@ -104,6 +107,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -117,6 +121,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

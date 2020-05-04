@@ -73,6 +73,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"IMDB Rating\" + \": \" + (format(datum[\"bin_IMDB_Rating\"], \"\")) + \"; \" + \"bin_IMDB_Rating_end\" + \": \" + (format(datum[\"bin_IMDB_Rating_end\"], \"\")) + \"; \" + \"cumulative_count\" + \": \" + (format(datum[\"cumulative_count\"], \"\"))"
+          },
           "x": [
             {
               "test": "!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"])",
@@ -101,6 +105,10 @@
         "update": {
           "opacity": {"value": 0.5},
           "fill": {"value": "yellow"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"IMDB Rating\" + \": \" + (format(datum[\"bin_IMDB_Rating\"], \"\")) + \"; \" + \"bin_IMDB_Rating_end\" + \": \" + (format(datum[\"bin_IMDB_Rating_end\"], \"\")) + \"; \" + \"count\" + \": \" + (format(datum[\"count\"], \"\"))"
+          },
           "x": [
             {
               "test": "!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"])",
@@ -161,6 +169,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -174,6 +183,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

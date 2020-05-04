@@ -149,6 +149,10 @@
             {"test": "datum.sum < datum.previous_sum", "value": "#f78a64"},
             {"value": "#93c4aa"}
           ],
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"Months\" + \": \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; \" + \"Amount\" + \": \" + (format(datum[\"previous_sum\"], \"\")) + \"; \" + \"sum\" + \": \" + (format(datum[\"sum\"], \"\"))"
+          },
           "xc": {"scale": "x", "field": "label", "band": 0.5},
           "width": {"value": 45},
           "y": {"scale": "y", "field": "previous_sum"},
@@ -166,6 +170,9 @@
           "opacity": {"value": 1},
           "strokeWidth": {"value": 2},
           "stroke": {"value": "#404040"},
+          "description": {
+            "signal": "\"Months\" + \": \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; \" + \"lead\" + \": \" + (isValid(datum[\"lead\"]) ? datum[\"lead\"] : \"\"+datum[\"lead\"]) + \"; \" + \"sum\" + \": \" + (format(datum[\"sum\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "label", "offset": -22.5, "band": 0.5},
           "x2": {"scale": "x", "field": "lead", "offset": 22.5, "band": 0.5},
           "y": {"scale": "y", "field": "sum"}
@@ -182,6 +189,9 @@
           "baseline": {"value": "bottom"},
           "dy": {"value": -4},
           "fill": {"value": "#404040"},
+          "description": {
+            "signal": "\"Months\" + \": \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; \" + \"sum_inc\" + \": \" + (isValid(datum[\"sum_inc\"]) ? datum[\"sum_inc\"] : \"\"+datum[\"sum_inc\"])"
+          },
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "sum_inc"},
           "text": {
@@ -201,6 +211,9 @@
           "baseline": {"value": "top"},
           "dy": {"value": 4},
           "fill": {"value": "#404040"},
+          "description": {
+            "signal": "\"Months\" + \": \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; \" + \"sum_dec\" + \": \" + (isValid(datum[\"sum_dec\"]) ? datum[\"sum_dec\"] : \"\"+datum[\"sum_dec\"])"
+          },
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "sum_dec"},
           "text": {
@@ -226,6 +239,9 @@
             },
             {"value": "white"}
           ],
+          "description": {
+            "signal": "\"Months\" + \": \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; \" + \"center\" + \": \" + (format(datum[\"center\"], \"\")) + \"; \" + \"text_amount\" + \": \" + (isValid(datum[\"text_amount\"]) ? datum[\"text_amount\"] : \"\"+datum[\"text_amount\"])"
+          },
           "x": {"scale": "x", "field": "label", "band": 0.5},
           "y": {"scale": "y", "field": "center"},
           "text": {
@@ -281,6 +297,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
