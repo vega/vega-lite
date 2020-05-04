@@ -46,8 +46,8 @@ export const axisRules: {
   scale: ({model, channel}) => model.scaleName(channel),
 
   format: ({fieldOrDatumDef, config, axis}) => {
-    const {format} = axis;
-    return guideFormat(fieldOrDatumDef, fieldOrDatumDef.type, format, config, true);
+    const {format, formatType} = axis;
+    return guideFormat(fieldOrDatumDef, fieldOrDatumDef.type, format, formatType, config, true);
   },
 
   formatType: ({axis, fieldOrDatumDef, scaleType}) => {

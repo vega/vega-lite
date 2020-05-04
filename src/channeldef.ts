@@ -1229,14 +1229,6 @@ export function isFieldOrDatumDefForTimeFormat(fieldOrDatumDef: FieldDef<string>
   return formatType === 'time' || (!formatType && isTimeFieldDef(fieldOrDatumDef));
 }
 
-export function isFieldOrDatumDefWithCustomTimeFormat(
-  fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
-  config: Config
-): boolean {
-  const {formatType} = getFormatMixins(fieldOrDatumDef);
-  return isCustomFormatType(formatType, config);
-}
-
 /**
  * Check if field def has type `temporal`. If you want to also cover field defs that use a time format, use `isTimeFormatFieldDef`.
  */
