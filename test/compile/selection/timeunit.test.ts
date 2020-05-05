@@ -89,8 +89,8 @@ describe('Selection time unit', () => {
     });
     const data1 = getData(model).filter(d => d.name === 'data_0')[0].transform;
     expect(
-      data1.filter(tx => tx.type === 'timeunit' && deepEqual(tx.as, ['seconds_date', 'seconds_date_end'])).length
-    ).toEqual(1);
+      data1.filter(tx => tx.type === 'timeunit' && deepEqual(tx.as, ['seconds_date', 'seconds_date_end']))
+    ).toHaveLength(1);
   });
 
   it('is added before selection filters', () => {
@@ -144,7 +144,7 @@ describe('Selection time unit', () => {
     });
     const data1 = getData(model).filter(d => d.name === 'data_0')[0].transform;
     expect(
-      data1.filter(tx => tx.type === 'timeunit' && deepEqual(tx.as, ['seconds_date', 'seconds_date_end'])).length
-    ).toEqual(1);
+      data1.filter(tx => tx.type === 'timeunit' && deepEqual(tx.as, ['seconds_date', 'seconds_date_end']))
+    ).toHaveLength(1);
   });
 });

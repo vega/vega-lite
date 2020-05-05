@@ -13,13 +13,13 @@ describe('compile/scale', () => {
 
     it('should not return nice for binned x and y.', () => {
       for (const c of ['x', 'y'] as Channel[]) {
-        expect(rules.nice('linear', c, {type: 'quantitative', field: 'a', bin: true})).toEqual(undefined);
+        expect(rules.nice('linear', c, {type: 'quantitative', field: 'a', bin: true})).toBeUndefined();
       }
     });
 
     it('should not return nice for temporal x and y.', () => {
       for (const c of ['x', 'y'] as Channel[]) {
-        expect(rules.nice('time', c, {type: 'temporal'})).toEqual(undefined);
+        expect(rules.nice('time', c, {type: 'temporal'})).toBeUndefined();
       }
     });
   });
@@ -54,7 +54,7 @@ describe('compile/scale', () => {
           {type: 'bar', orient: 'vertical'},
           {continuousBandSize: 13}
         )
-      ).toEqual(undefined);
+      ).toBeUndefined();
     });
 
     it('should be continuousBandSize for linear y-scale of horizontal bar.', () => {
@@ -73,7 +73,7 @@ describe('compile/scale', () => {
 
   describe('paddingInner', () => {
     it('should be undefined if padding is specified.', () => {
-      expect(rules.paddingInner(10, 'x', 'bar', {})).toEqual(undefined);
+      expect(rules.paddingInner(10, 'x', 'bar', {})).toBeUndefined();
     });
 
     it('should be bandPaddingInner if channel is x or y and padding is not specified.', () => {
@@ -83,7 +83,7 @@ describe('compile/scale', () => {
 
     it('should be undefined for non-xy channels.', () => {
       for (const c of NONPOSITION_SCALE_CHANNELS) {
-        expect(rules.paddingInner(undefined, c, 'bar', {bandPaddingInner: 15})).toEqual(undefined);
+        expect(rules.paddingInner(undefined, c, 'bar', {bandPaddingInner: 15})).toBeUndefined();
       }
     });
   });
@@ -91,7 +91,7 @@ describe('compile/scale', () => {
   describe('paddingOuter', () => {
     it('should be undefined if padding is specified.', () => {
       for (const scaleType of ['point', 'band'] as ScaleType[]) {
-        expect(rules.paddingOuter(10, 'x', scaleType, 'bar', 0, {})).toEqual(undefined);
+        expect(rules.paddingOuter(10, 'x', scaleType, 'bar', 0, {})).toBeUndefined();
       }
     });
 
@@ -109,7 +109,7 @@ describe('compile/scale', () => {
     it('should be undefined for non-xy channels.', () => {
       for (const c of NONPOSITION_SCALE_CHANNELS) {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
-          expect(rules.paddingOuter(undefined, c, scaleType, 'bar', 0, {})).toEqual(undefined);
+          expect(rules.paddingOuter(undefined, c, scaleType, 'bar', 0, {})).toBeUndefined();
         }
       }
     });

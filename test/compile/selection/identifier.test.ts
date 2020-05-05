@@ -27,16 +27,16 @@ function getVgData(selection: any, x?: any, y?: any, mark?: Mark, enc?: any, tra
 describe('compile/data/identifier', () => {
   describe('Identifier transform', () => {
     it('is not unnecessarily added', () => {
-      function test(selDef?: any) {
+      function run(selDef?: any) {
         const data = getVgData(selDef);
         for (const d of data) {
           expect(d.transform && d.transform.some(t => t.type === 'identifier')).not.toBe(true);
         }
       }
 
-      test();
+      run();
       for (const type of ['single', 'multi']) {
-        test({pt: {type, encodings: ['x']}});
+        run({pt: {type, encodings: ['x']}});
       }
     });
 
@@ -48,7 +48,7 @@ describe('compile/data/identifier', () => {
     });
 
     it('is added immediately after aggregate transforms', () => {
-      function test(transform: VgTransform[]) {
+      function run(transform: VgTransform[]) {
         let aggr = -1;
         transform.some((t, i) => ((aggr = i), t.type === 'aggregate'));
         expect(aggr).toBeGreaterThanOrEqual(0);
@@ -58,10 +58,10 @@ describe('compile/data/identifier', () => {
       for (const type of ['single', 'multi']) {
         const sel = {pt: {type}};
         let data = getVgData(sel, {bin: true}, {aggregate: 'count'});
-        test(data[0].transform);
+        run(data[0].transform);
 
         data = getVgData(sel, {aggregate: 'sum'}, null, 'bar', {column: {field: 'Cylinders', type: 'ordinal'}});
-        test(data[0].transform);
+        run(data[0].transform);
       }
     });
 

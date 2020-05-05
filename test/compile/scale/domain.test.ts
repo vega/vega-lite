@@ -422,7 +422,7 @@ describe('compile/scale', () => {
         ]);
       });
 
-      it('should return the correct domain for month O when the field is sorted by another encoding', () => {
+      it('should return the correct domain for month O when the field is sorted by another encoding (long form)', () => {
         const model = parseUnitModel({
           mark: 'bar',
           encoding: {
@@ -450,7 +450,7 @@ describe('compile/scale', () => {
         ]);
       });
 
-      it('should return the correct domain for month O when the field is sorted by another encoding', () => {
+      it('should return the correct domain for month O when the field is sorted by another encoding (short form)', () => {
         const model = parseUnitModel({
           mark: 'bar',
           encoding: {
@@ -1270,7 +1270,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      expect(sort).toEqual(undefined);
+      expect(sort).toBeUndefined();
     });
 
     it('should return normal sort spec if specified and aggregration is not count', () => {

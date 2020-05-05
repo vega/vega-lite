@@ -38,7 +38,7 @@ describe('compile/data/graticule', () => {
     describe('producedFields', () => {
       it('should return undefined', () => {
         const sequence = new GraticuleNode(null, true);
-        expect(sequence.producedFields()).toEqual(undefined);
+        expect(sequence.producedFields()).toBeUndefined();
       });
     });
   });

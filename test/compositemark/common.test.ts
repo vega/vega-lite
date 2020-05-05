@@ -104,6 +104,6 @@ describe('common feature of composite marks', () => {
     const outputSpec = normalize(spec, defaultConfig);
 
     const barLayer = outputSpec as NormalizedUnitSpec;
-    expect(barLayer.encoding.tooltip).toEqual(null);
+    expect(barLayer.encoding.tooltip).toBeNull();
   });
 });

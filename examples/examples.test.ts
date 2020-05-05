@@ -34,7 +34,7 @@ function validateVL(spec: TopLevelSpec) {
   const valid = validateVl(spec);
   const errors = validateVl.errors;
   if (!valid) {
-    // uncoment to show schema validation error details
+    // uncomment to show schema validation error details
     // console.log(inspect(errors, {depth: 10, colors: true}));
   }
 
@@ -48,7 +48,7 @@ function validateVega(vegaSpec: VgSpec) {
   const valid = validateVg(vegaSpec);
   const errors = validateVg.errors;
   if (!valid) {
-    // uncoment to show schema validation  error details
+    // uncomment to show schema validation  error details
     // console.log(inspect(errors, {depth: 10, colors: true}));
   }
 
@@ -62,8 +62,6 @@ const FUTURE_SUFFIX = '_future.vl.json';
 const examples = fs.readdirSync('examples/specs').map(file => 'examples/specs/' + file);
 const normalizedExamples = fs.readdirSync('examples/specs/normalized').map(file => 'examples/specs/normalized/' + file);
 
-expect(examples).toContain('examples/specs/scatter_image.vl.json');
-
 for (const example of [...examples, ...normalizedExamples]) {
   if (path.extname(example) !== '.json') {
     continue;
@@ -72,6 +70,7 @@ for (const example of [...examples, ...normalizedExamples]) {
   const originalSpec = duplicate(jsonSpec);
 
   describe(
+    // eslint-disable-next-line jest/valid-describe
     example,
     log.wrap(localLogger => {
       const vegaSpec: VgSpec = compile(jsonSpec).spec;

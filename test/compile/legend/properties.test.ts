@@ -17,7 +17,7 @@ describe('compile/legend', () => {
       for (const orient of orients) {
         const dir = properties.defaultDirection(orient, 'gradient');
 
-        expect(dir).toEqual(undefined);
+        expect(dir).toBeUndefined();
       }
     });
 
@@ -34,7 +34,7 @@ describe('compile/legend', () => {
       const orients: LegendOrient[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
       for (const orient of orients) {
         const dir = properties.defaultDirection(orient, 'symbol');
-        expect(dir).toEqual(undefined);
+        expect(dir).toBeUndefined();
       }
     });
   });

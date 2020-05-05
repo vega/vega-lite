@@ -82,12 +82,14 @@ describe('Layer', () => {
       }
     });
 
-    expect(model.children).toHaveLength(2);
+    it('should have two children', () => {
+      expect(model.children).toHaveLength(2);
+    });
 
     it('should leave scales in children when set to be independent', () => {
       model.parseScale();
 
-      expect(model.component.scales['x']).toEqual(undefined);
+      expect(model.component.scales['x']).toBeUndefined();
       expect(model.children[0].component.scales['x'].get('domains')).toEqual([
         {
           data: 'layer_0_main',

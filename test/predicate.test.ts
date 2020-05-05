@@ -147,7 +147,7 @@ describe('filter', () => {
       );
     });
 
-    it('should return a correct expression for an EqualFilter with datetime object', () => {
+    it('should return a correct expression for an EqualFilter with datetime object with flat value', () => {
       const expr = expression(null, {
         timeUnit: 'month',
         field: 'date',

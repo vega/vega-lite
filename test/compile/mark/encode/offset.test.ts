@@ -11,7 +11,7 @@ describe('compile/mark/encode/offset', () => {
       expect(getOffset('x2', markDef)).toEqual(100);
     });
     it('should return undefined when the offset value for the given channel is not defined', () => {
-      expect(getOffset('x', markDef)).toEqual(undefined);
+      expect(getOffset('x', markDef)).toBeUndefined();
     });
   });
 });

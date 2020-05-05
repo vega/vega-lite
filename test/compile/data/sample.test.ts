@@ -16,6 +16,12 @@ describe('compile/data/sample', () => {
       });
     });
 
+    it('should never clone parent', () => {
+      const parent = new PlaceholderDataFlowNode(null);
+      const sample = new SampleTransformNode(parent, transform);
+      expect(sample.clone().parent).toBeNull();
+    });
+
     describe('producedFields', () => {
       it('should generate the correct hash', () => {
         const sample = new SampleTransformNode(null, transform);
@@ -27,27 +33,17 @@ describe('compile/data/sample', () => {
         const sample2 = new SampleTransformNode(null, {sample: 123});
         expect(sample1.hash()).not.toBe(sample2.hash());
       });
-    });
 
-    describe('producedFields', () => {
-      it('should never clone parent', () => {
-        const parent = new PlaceholderDataFlowNode(null);
-        const sample = new SampleTransformNode(parent, transform);
-        expect(sample.clone().parent).toBeNull();
-      });
-    });
-
-    describe('producedFields', () => {
-      it('should return empty set', () => {
-        const sample = new SampleTransformNode(null, transform);
-        expect(sample.dependentFields()).toEqual(new Set());
-      });
-    });
-
-    describe('producedFields', () => {
       it('should return empty set', () => {
         const sample = new SampleTransformNode(null, transform);
         expect(sample.producedFields()).toEqual(new Set());
+      });
+    });
+
+    describe('dependentFields', () => {
+      it('should return empty set', () => {
+        const sample = new SampleTransformNode(null, transform);
+        expect(sample.dependentFields()).toEqual(new Set());
       });
     });
   });

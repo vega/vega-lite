@@ -77,7 +77,7 @@ describe('compile/layout', () => {
       expect(model.component.layoutSize.get('height')).toBe('step');
     });
 
-    it('should have step-based width/height for ordinal x,y', () => {
+    it('should have step-based width/height for ordinal x,y with explicit sizes', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         width: {step: 15},
         height: {step: 20},
@@ -90,18 +90,6 @@ describe('compile/layout', () => {
 
       expect(model.component.layoutSize.get('width')).toBe('step');
       expect(model.component.layoutSize.get('height')).toBe('step');
-    });
-
-    it('should have step-based width/height for ordinal x,y', () => {
-      const model = parseUnitModelWithScaleAndLayoutSize({
-        mark: 'point',
-        encoding: {
-          x: {field: 'a', type: 'ordinal'},
-          y: {field: 'b', type: 'ordinal'}
-        }
-      });
-
-      expect(model.component.layoutSize.get('width')).toBe('step');
     });
   });
 });

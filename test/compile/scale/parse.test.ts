@@ -13,7 +13,7 @@ describe('src/compile', () => {
   });
 
   describe('parseScaleCore', () => {
-    it('respects explicit scale type', () => {
+    it('respects explicit scale type from second layer', () => {
       const model = parseModel({
         data: {url: 'data/seattle-weather.csv'},
         layer: [
@@ -44,7 +44,7 @@ describe('src/compile', () => {
       expect(model.getScaleComponent('y').explicit.type).toBe('log');
     });
 
-    it('respects explicit scale type', () => {
+    it('respects explicit scale type from first layer', () => {
       const model = parseModel({
         data: {url: 'data/seattle-weather.csv'},
         layer: [

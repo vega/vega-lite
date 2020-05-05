@@ -251,7 +251,7 @@ describe('compile/axis', () => {
 
   describe('defaultLabelAlign', () => {
     it('correctly aligns the x-labels for all degrees', () => {
-      expect(defaultLabelAlign(0, 'top', 'x')).toBe(null);
+      expect(defaultLabelAlign(0, 'top', 'x')).toBeNull();
       expect(defaultLabelAlign(15, 'top', 'x')).toBe('right');
       expect(defaultLabelAlign(30, 'top', 'x')).toBe('right');
       expect(defaultLabelAlign(45, 'top', 'x')).toBe('right');
@@ -263,7 +263,7 @@ describe('compile/axis', () => {
       expect(defaultLabelAlign(135, 'top', 'x')).toBe('right');
       expect(defaultLabelAlign(150, 'top', 'x')).toBe('right');
       expect(defaultLabelAlign(165, 'top', 'x')).toBe('right');
-      expect(defaultLabelAlign(180, 'top', 'x')).toBe(null);
+      expect(defaultLabelAlign(180, 'top', 'x')).toBeNull();
       expect(defaultLabelAlign(195, 'bottom', 'x')).toBe('right');
       expect(defaultLabelAlign(210, 'bottom', 'x')).toBe('right');
       expect(defaultLabelAlign(225, 'bottom', 'x')).toBe('right');
@@ -305,76 +305,84 @@ describe('compile/axis', () => {
     });
 
     it('should return undefined if angle is undefined', () => {
-      expect(defaultLabelAlign(undefined, 'left', 'y')).toEqual(undefined);
+      expect(defaultLabelAlign(undefined, 'left', 'y')).toBeUndefined();
     });
 
-    it('correctly align y-axis labels for labelAngle and orient signals', done => {
-      const ast = parse(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
-      let a: number, o: AxisOrient;
-      // test all angles
-      for (a of range(-360, 375, 15)) {
-        for (o of ['left', 'right'] as AxisOrient[]) {
-          const {code} = codegen({
-            globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
-          })(ast);
+    it('correctly align y-axis labels for labelAngle and orient signals', () => {
+      return new Promise(done => {
+        const ast = parse(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
+        let a: number, o: AxisOrient;
+        // test all angles
+        for (a of range(-360, 375, 15)) {
+          for (o of ['left', 'right'] as AxisOrient[]) {
+            const {code} = codegen({
+              globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
+            })(ast);
 
-          const result = eval(code);
-          const expected = defaultLabelAlign(normalizeAngle(a), o, 'y');
-          // expect(result).toEqual(expected);
-          if (result !== expected) {
-            done(new Error(`${o}, ${a}  ${result} !== ${expected} \n ${code}`));
+            const result = eval(code);
+            const expected = defaultLabelAlign(normalizeAngle(a), o, 'y');
+            // expect(result).toEqual(expected);
+            if (result !== expected) {
+              done(new Error(`${o}, ${a}  ${result} !== ${expected} \n ${code}`));
+            }
           }
         }
-      }
-      done();
+        done();
+      });
     });
 
-    it('correctly align x-axis labels for labelAngle and orient signals', done => {
-      const ast = parse(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
-      let a: number, o: AxisOrient;
-      // test all angles
-      for (a of range(-360, 375, 15)) {
-        for (o of ['top', 'bottom'] as AxisOrient[]) {
-          const {code} = codegen({
-            globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
-          })(ast);
+    it('correctly align x-axis labels for labelAngle and orient signals', () => {
+      return new Promise(done => {
+        const ast = parse(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
+        let a: number, o: AxisOrient;
+        // test all angles
+        for (a of range(-360, 375, 15)) {
+          for (o of ['top', 'bottom'] as AxisOrient[]) {
+            const {code} = codegen({
+              globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
+            })(ast);
 
-          const result = eval(code);
-          const expected = defaultLabelAlign(normalizeAngle(a), o, 'x');
-          expect(result).toEqual(expected);
+            const result = eval(code);
+            const expected = defaultLabelAlign(normalizeAngle(a), o, 'x');
+            expect(result).toEqual(expected);
+          }
         }
-      }
-      done();
+        done();
+      });
     });
 
-    it('correctly align y-axis labels for orient signal', done => {
-      let a: number, o: AxisOrient;
-      // test all angles
-      for (a of range(-360, 375, 15)) {
-        a = normalizeAngle(a);
-        const align = defaultLabelAlign(a, {signal: 'o'}, 'y');
-        for (o of ['left', 'right'] as AxisOrient[]) {
-          const result = evalValueOrSignal(align, o);
-          const expected = defaultLabelAlign(a, o, 'y');
-          expect(result).toEqual(expected);
+    it('correctly align y-axis labels for orient signal', () => {
+      return new Promise(done => {
+        let a: number, o: AxisOrient;
+        // test all angles
+        for (a of range(-360, 375, 15)) {
+          a = normalizeAngle(a);
+          const align = defaultLabelAlign(a, {signal: 'o'}, 'y');
+          for (o of ['left', 'right'] as AxisOrient[]) {
+            const result = evalValueOrSignal(align, o);
+            const expected = defaultLabelAlign(a, o, 'y');
+            expect(result).toEqual(expected);
+          }
         }
-      }
-      done();
+        done();
+      });
     });
 
-    it('correctly align x-axis labels for orient signal', done => {
-      let a: number, o: AxisOrient;
-      // test all angles
-      for (a of range(-360, 375, 15)) {
-        a = normalizeAngle(a);
-        const align = defaultLabelAlign(a, {signal: 'o'}, 'x');
-        for (o of ['top', 'bottom'] as AxisOrient[]) {
-          const result = evalValueOrSignal(align, o);
-          const expected = defaultLabelAlign(a, o, 'x');
-          expect(result).toEqual(expected);
+    it('correctly align x-axis labels for orient signal', () => {
+      return new Promise(done => {
+        let a: number, o: AxisOrient;
+        // test all angles
+        for (a of range(-360, 375, 15)) {
+          a = normalizeAngle(a);
+          const align = defaultLabelAlign(a, {signal: 'o'}, 'x');
+          for (o of ['top', 'bottom'] as AxisOrient[]) {
+            const result = evalValueOrSignal(align, o);
+            const expected = defaultLabelAlign(a, o, 'x');
+            expect(result).toEqual(expected);
+          }
         }
-      }
-      done();
+        done();
+      });
     });
   });
 
@@ -395,8 +403,8 @@ describe('compile/axis', () => {
     });
 
     it('is middle for 0 and 180 horizontal orients', () => {
-      expect(defaultLabelBaseline(0, 'left', 'y')).toBe(null);
-      expect(defaultLabelBaseline(180, 'right', 'y')).toBe(null);
+      expect(defaultLabelBaseline(0, 'left', 'y')).toBeNull();
+      expect(defaultLabelBaseline(180, 'right', 'y')).toBeNull();
     });
 
     it('is top for bottom orients for 1st and 2nd quadrants', () => {
@@ -409,82 +417,85 @@ describe('compile/axis', () => {
       expect(defaultLabelBaseline(260, 'left', 'y')).toBe('bottom');
     });
 
-    it('is bottom for bottom orients for 3rd and 4th quadrants', () => {
-      expect(defaultLabelBaseline(280, 'left', 'y')).toBe('bottom');
-      expect(defaultLabelBaseline(260, 'left', 'y')).toBe('bottom');
-    });
-
     it('should return undefined if angle is undefined', () => {
-      expect(defaultLabelBaseline(undefined, 'left', 'y')).toEqual(undefined);
+      expect(defaultLabelBaseline(undefined, 'left', 'y')).toBeUndefined();
     });
 
-    it('correctly align y-axis labels for labelAngle and orient signals', done => {
-      const ast = parse(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
-      let a: number, o: AxisOrient;
-      // test all angles
-      for (a of range(-360, 375, 15)) {
-        for (o of ['left', 'right'] as AxisOrient[]) {
-          const {code} = codegen({
-            globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
-          })(ast);
+    it('correctly align y-axis labels for labelAngle and orient signals', () => {
+      return new Promise(done => {
+        const ast = parse(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
+        let a: number, o: AxisOrient;
+        // test all angles
+        for (a of range(-360, 375, 15)) {
+          for (o of ['left', 'right'] as AxisOrient[]) {
+            const {code} = codegen({
+              globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
+            })(ast);
 
-          const result = eval(code);
-          const expected = defaultLabelBaseline(normalizeAngle(a), o, 'y');
-          expect(result).toEqual(expected);
+            const result = eval(code);
+            const expected = defaultLabelBaseline(normalizeAngle(a), o, 'y');
+            expect(result).toEqual(expected);
+          }
         }
-      }
-      done();
+        done();
+      });
     });
 
-    it('correctly align x-axis labels for labelAngle and orient signals', done => {
-      const ast = parse(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
-      let a: number, o: AxisOrient;
-      // test all angles
-      for (a of range(-360, 375, 15)) {
-        for (o of ['top', 'bottom'] as AxisOrient[]) {
-          const {code} = codegen({
-            globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
-          })(ast);
+    it('correctly align x-axis labels for labelAngle and orient signals', () => {
+      return new Promise(done => {
+        const ast = parse(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
+        let a: number, o: AxisOrient;
+        // test all angles
+        for (a of range(-360, 375, 15)) {
+          for (o of ['top', 'bottom'] as AxisOrient[]) {
+            const {code} = codegen({
+              globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
+            })(ast);
 
-          const result = eval(code);
-          const expected = defaultLabelBaseline(normalizeAngle(a), o, 'x');
-          expect(result).toEqual(expected);
+            const result = eval(code);
+            const expected = defaultLabelBaseline(normalizeAngle(a), o, 'x');
+            expect(result).toEqual(expected);
+          }
         }
-      }
-      done();
+        done();
+      });
     });
 
-    it('correctly align y-axis labels for orient signal', done => {
-      let a: number, o: AxisOrient;
-      // test all angles
-      for (a of range(-360, 375, 15)) {
-        a = normalizeAngle(a);
-        const baseline = defaultLabelBaseline(a, {signal: 'o'}, 'y');
+    it('correctly align y-axis labels for orient signal', () => {
+      return new Promise(done => {
+        let a: number, o: AxisOrient;
+        // test all angles
+        for (a of range(-360, 375, 15)) {
+          a = normalizeAngle(a);
+          const baseline = defaultLabelBaseline(a, {signal: 'o'}, 'y');
 
-        for (o of ['left', 'right'] as AxisOrient[]) {
-          const result = evalValueOrSignal(baseline, o);
+          for (o of ['left', 'right'] as AxisOrient[]) {
+            const result = evalValueOrSignal(baseline, o);
 
-          const expected = defaultLabelBaseline(a, o, 'y');
-          expect(result).toEqual(expected);
+            const expected = defaultLabelBaseline(a, o, 'y');
+            expect(result).toEqual(expected);
+          }
         }
-      }
-      done();
+        done();
+      });
     });
 
-    it('correctly align x-axis labels for orient signal', done => {
-      let a: number, o: AxisOrient;
-      // test all angles
-      for (a of range(-360, 375, 15)) {
-        a = normalizeAngle(a);
-        const baseline = defaultLabelBaseline(a, {signal: 'o'}, 'x');
-        for (o of ['top', 'bottom'] as AxisOrient[]) {
-          const result = evalValueOrSignal(baseline, o);
+    it('correctly align x-axis labels for orient signal', () => {
+      return new Promise(done => {
+        let a: number, o: AxisOrient;
+        // test all angles
+        for (a of range(-360, 375, 15)) {
+          a = normalizeAngle(a);
+          const baseline = defaultLabelBaseline(a, {signal: 'o'}, 'x');
+          for (o of ['top', 'bottom'] as AxisOrient[]) {
+            const result = evalValueOrSignal(baseline, o);
 
-          const expected = defaultLabelBaseline(a, o, 'x');
-          expect(result).toEqual(expected);
+            const expected = defaultLabelBaseline(a, o, 'x');
+            expect(result).toEqual(expected);
+          }
         }
-      }
-      done();
+        done();
+      });
     });
   });
 

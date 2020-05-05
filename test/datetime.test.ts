@@ -139,7 +139,7 @@ describe('datetime', () => {
   });
 
   describe('dateTimeToTimestamp', () => {
-    it('should return date as timestamp if specified', () => {
+    it('should return date as timestamp if specified with month number', () => {
       const d: DateTime = {
         year: 1970,
         month: 1, // January
@@ -149,7 +149,7 @@ describe('datetime', () => {
       expect(expr).toBe(+new Date(1970, 0, 1, 0, 0, 0, 0));
     });
 
-    it('should return date as timestamp if specified', () => {
+    it('should return date as timestamp if specified with month name', () => {
       const d: DateTime = {
         year: 1970,
         month: 'January',

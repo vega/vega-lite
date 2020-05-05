@@ -14,7 +14,7 @@ describe('interval selections at runtime in unit views', () => {
   const embed = embedFn(page);
   const testRender = testRenderFn(page, `${type}/unit`);
 
-  it('should add extents to the store', async done => {
+  it('should add extents to the store', async () => {
     for (let i = 0; i < hits.drag.length; i++) {
       await embed(spec('unit', i, {type}));
       const store = await page.evaluate(brush('drag', i));
@@ -31,7 +31,6 @@ describe('interval selections at runtime in unit views', () => {
       expect(store[0].values[1]).toHaveLength(2);
       await testRender(`drag_${i}`);
     }
-    done();
   });
 
   it('should respect projections', async () => {
