@@ -136,7 +136,7 @@ describe('compile/data/bin', () => {
       });
     });
 
-    it('should add bin transform and correctly apply bin for binned field with selection extent', () => {
+    it('should add bin transform and correctly apply bin for binned field with selection with field extent', () => {
       const model = parseUnitModelWithScaleAndSelection({
         selection: {foo: {type: 'interval'}},
         mark: 'point',
@@ -228,7 +228,7 @@ describe('compile/data/bin', () => {
       });
     });
 
-    it('should add bin transform from transform array and correctly apply bin with custom extent', () => {
+    it('should add bin transform from transform array and correctly apply maxbins with custom extent', () => {
       const t: BinTransform = {
         bin: {extent: [0, 100], maxbins: 20},
         field: 'Acceleration',
@@ -271,7 +271,7 @@ describe('compile/data/bin', () => {
       });
     });
 
-    it('should add bin transform from transform array and correctly apply bin with selection extent', () => {
+    it('should add bin transform from transform array and correctly apply bin with selection with field extent', () => {
       const t: BinTransform = {
         bin: {extent: {selection: 'foo', field: 'bar'}},
         field: 'Acceleration',
@@ -461,8 +461,8 @@ describe('compile/data/bin', () => {
         /* do nothing */
       });
 
-      expect(binNodeB.children.length).toEqual(0);
-      expect(binNodeA.children.length).toEqual(2);
+      expect(binNodeB.children).toHaveLength(0);
+      expect(binNodeA.children).toHaveLength(2);
       expect(binNodeA.children).toContain(childA);
       expect(binNodeA.children).toContain(childB);
     });

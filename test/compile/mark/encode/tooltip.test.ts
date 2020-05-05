@@ -21,7 +21,7 @@ describe('compile/mark/encode/tooltip', () => {
       });
     });
 
-    it('generates tooltip object signal for all encoding fields', () => {
+    it('generates tooltip object signal for all encoding fields when explicitly enabled', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'point', tooltip: true},
         encoding: {
@@ -45,7 +45,7 @@ describe('compile/mark/encode/tooltip', () => {
         }
       });
       const props = tooltip(model);
-      expect(props.tooltip).toEqual(undefined);
+      expect(props.tooltip).toBeUndefined();
     });
 
     it('generates tooltip object signal for all data if specified', () => {
@@ -60,7 +60,7 @@ describe('compile/mark/encode/tooltip', () => {
       expect(props.tooltip).toEqual({signal: 'datum'});
     });
 
-    it('generates tooltip object signal for all data if specified', () => {
+    it('generates tooltip object signal for all data if specified and reactiveGeom is true', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'line', tooltip: {content: 'data'}},
         encoding: {

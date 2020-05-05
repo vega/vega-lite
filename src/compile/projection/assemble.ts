@@ -43,7 +43,7 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
       signal: `[${component.size.map(ref => ref.signal).join(', ')}]`
     };
 
-    const fit: string[] = component.data.reduce((sources, data) => {
+    const fits: string[] = component.data.reduce((sources, data) => {
       const source: string = isSignalRef(data) ? data.signal : `data('${model.lookupDataSource(data)}')`;
       if (!contains(sources, source)) {
         // build a unique list of sources
@@ -52,7 +52,7 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
       return sources;
     }, []);
 
-    if (fit.length <= 0) {
+    if (fits.length <= 0) {
       throw new Error("Projection's fit didn't find any data sources");
     }
 
@@ -61,7 +61,7 @@ export function assembleProjectionForModel(model: Model): VgProjection[] {
         name,
         size,
         fit: {
-          signal: fit.length > 1 ? `[${fit.join(', ')}]` : fit[0]
+          signal: fits.length > 1 ? `[${fits.join(', ')}]` : fits[0]
         },
         ...projection
       }

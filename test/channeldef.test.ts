@@ -60,7 +60,7 @@ describe('fieldDef', () => {
       'should convert primitive type to value def',
       log.wrap(localLogger => {
         expect(initChannelDef(5 as any, 'x', defaultConfig)).toEqual({value: 5});
-        expect(localLogger.warns.length).toEqual(1);
+        expect(localLogger.warns).toHaveLength(1);
       })
     );
 
@@ -90,7 +90,7 @@ describe('fieldDef', () => {
           const fieldDef: TypedFieldDef<string> = {aggregate, field: 'a', type: 'nominal'};
           expect(initChannelDef(fieldDef, 'x', defaultConfig)).toEqual({aggregate, field: 'a', type: 'quantitative'});
         }
-        expect(localLogger.warns.length).toEqual(4);
+        expect(localLogger.warns).toHaveLength(4);
       })
     );
 
@@ -122,7 +122,7 @@ describe('fieldDef', () => {
     );
 
     it(
-      'should drop invalid custom format type and throw warning.',
+      'should drop invalid custom format type for x encoding and throw warning.',
       log.wrap(localLogger => {
         const fieldDef = {field: 'a', type: 'quantitative', axis: {formatType: 'foo', format: '.2f'}};
         expect(initChannelDef(fieldDef, 'x', defaultConfig)).toEqual({field: 'a', type: 'quantitative', axis: {}});
@@ -131,7 +131,7 @@ describe('fieldDef', () => {
     );
 
     it(
-      'should drop invalid custom format type and throw warning.',
+      'should drop invalid custom format type for row encoding and throw warning.',
       log.wrap(localLogger => {
         const fieldDef = {field: 'a', type: 'quantitative', header: {formatType: 'foo', format: '.2f'}};
         expect(initChannelDef(fieldDef, 'row', defaultConfig)).toEqual({field: 'a', type: 'quantitative', header: {}});
@@ -140,7 +140,7 @@ describe('fieldDef', () => {
     );
 
     it(
-      'should drop invalid custom format type and throw warning.',
+      'should drop invalid custom format type for color encoding and throw warning.',
       log.wrap(localLogger => {
         const fieldDef = {field: 'a', type: 'quantitative', legend: {formatType: 'foo', format: '.2f'}};
         expect(initChannelDef(fieldDef, 'color', defaultConfig)).toEqual({
@@ -250,7 +250,7 @@ describe('fieldDef', () => {
     it('should return correct title for argmin', () => {
       expect(defaultTitle({field: 'f', aggregate: {argmin: 'a'}}, {})).toBe('f for min a');
     });
-    it('should return correct title for aggregate', () => {
+    it('should return correct title for argmax', () => {
       expect(defaultTitle({field: 'f', aggregate: {argmax: 'a'}}, {})).toBe('f for max a');
     });
 
@@ -263,27 +263,27 @@ describe('fieldDef', () => {
       expect(defaultTitle(fieldDef, {})).toBe('f (binned)');
     });
 
-    it('should return correct title for bin', () => {
+    it('should return correct functional title for bin', () => {
       const fieldDef = {field: 'f', type: QUANTITATIVE, bin: true};
       expect(defaultTitle(fieldDef, {fieldTitle: 'functional'})).toBe('BIN(f)');
     });
 
-    it('should return correct title for timeUnit', () => {
+    it('should return correct title for timeUnit month', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: 'month'} as const;
       expect(defaultTitle(fieldDef, {})).toBe('f (month)');
     });
 
-    it('should return correct title for timeUnit', () => {
+    it('should return correct title for timeUnit yearmonthdate', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: 'yearmonthdate'} as const;
       expect(defaultTitle(fieldDef, {})).toBe('f (year-month-date)');
     });
 
-    it('should return correct title for timeUnit', () => {
+    it('should return correct title for timeUnit day', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: 'day'} as const;
       expect(defaultTitle(fieldDef, {})).toBe('f (day)');
     });
 
-    it('should return correct title for timeUnit', () => {
+    it('should return correct title for timeUnit yearquarter', () => {
       const fieldDef = {field: 'f', type: TEMPORAL, timeUnit: 'yearquarter'} as const;
       expect(defaultTitle(fieldDef, {})).toBe('f (year-quarter)');
     });

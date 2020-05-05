@@ -21,7 +21,7 @@ describe('type', () => {
     });
 
     it('should return undefined for invalid type', () => {
-      expect(type.getFullName('haha')).toEqual(undefined);
+      expect(type.getFullName('haha')).toBeUndefined();
     });
   });
 });

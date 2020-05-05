@@ -27,7 +27,7 @@ describe('FacetModel', () => {
     );
 
     it(
-      'should drop channel without field and value and throws warning',
+      'should throw warning about quantitative field used for faceting',
       log.wrap(localLogger => {
         const model = parseFacetModel({
           facet: {

@@ -1143,7 +1143,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
     ]);
   });
 
-  it('should produce a correct tooltip title for errorbar with pre-aggregated error value', () => {
+  it('should produce a correct tooltip title for errorbar with pre-aggregated error values', () => {
     const outputSpec = normalize(
       {
         data,

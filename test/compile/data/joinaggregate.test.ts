@@ -24,7 +24,7 @@ describe('compile/data/joinaggregate', () => {
       makeJoinAggregateFromFacet(null, {
         row: {field: 'a', type: 'nominal'}
       })
-    ).toEqual(null);
+    ).toBeNull();
   });
 
   it('should return a proper vg transform', () => {

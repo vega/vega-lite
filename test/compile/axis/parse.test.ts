@@ -37,7 +37,7 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].explicit.grid).toEqual(true);
     });
 
@@ -53,7 +53,7 @@ describe('Axis', () => {
         config: {axisQuantitative: {labelAlign: 'right'}}
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].implicit.labelAlign).toEqual('right');
     });
 
@@ -69,7 +69,7 @@ describe('Axis', () => {
         config: {axisX: {grid: true, orient: 'right', tickCount: 20, labelExpr: 'abc'}}
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].implicit.grid).toEqual(true);
       expect(axisComponent['x'][0].implicit.orient).toEqual('right');
       expect(axisComponent['x'][0].implicit.tickCount).toEqual(20);
@@ -98,7 +98,7 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].implicit.gridDash).toEqual({
         condition: {
           test: {field: 'value', timeUnit: 'monthdate', equal: {month: 1, date: 1}},
@@ -126,7 +126,7 @@ describe('Axis', () => {
       });
 
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].implicit.labelColor).toEqual('red');
     });
 
@@ -148,7 +148,7 @@ describe('Axis', () => {
       });
 
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].implicit.labelColor).toEqual('red');
     });
 
@@ -167,7 +167,7 @@ describe('Axis', () => {
       });
 
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].implicit.labelColor).toEqual('red');
     });
 
@@ -190,8 +190,8 @@ describe('Axis', () => {
       });
 
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
-      expect(axisComponent['x'][0].implicit.labelColor).toEqual(undefined);
+      expect(axisComponent['x']).toHaveLength(1);
+      expect(axisComponent['x'][0].implicit.labelColor).toBeUndefined();
       // Vega-Lite doesn't have to output "blue" here since Vega will apply config.axisX.labelColor and renders blue label color anyway.
     });
 
@@ -207,7 +207,7 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].explicit.grid).toEqual(false);
     });
 
@@ -242,8 +242,8 @@ describe('Axis', () => {
         config: {axisX: {grid: false}}
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
-      expect(axisComponent['x'][0].explicit.grid).toEqual(undefined);
+      expect(axisComponent['x']).toHaveLength(1);
+      expect(axisComponent['x'][0].explicit.grid).toBeUndefined();
     });
 
     it('should produce Vega grid axis = undefined axis if grid is disabled via config.axis', () => {
@@ -258,8 +258,8 @@ describe('Axis', () => {
         config: {axis: {grid: false}}
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
-      expect(axisComponent['x'][0].explicit.grid).toEqual(undefined);
+      expect(axisComponent['x']).toHaveLength(1);
+      expect(axisComponent['x'][0].explicit.grid).toBeUndefined();
     });
 
     it('should store the title value if title = null, "", or false', () => {
@@ -275,7 +275,7 @@ describe('Axis', () => {
           }
         });
         const axisComponent = parseUnitAxes(model);
-        expect(axisComponent['x'].length).toEqual(1);
+        expect(axisComponent['x']).toHaveLength(1);
         expect(axisComponent['x'][0].explicit.title).toEqual(val as any);
       }
     });
@@ -293,7 +293,7 @@ describe('Axis', () => {
           }
         });
         const axisComponent = parseUnitAxes(model);
-        expect(axisComponent['x'].length).toEqual(1);
+        expect(axisComponent['x']).toHaveLength(1);
         expect(axisComponent['x'][0].explicit.title).toEqual(val as any);
       }
     });
@@ -310,7 +310,7 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].explicit.title).toBe('foo');
     });
 
@@ -333,7 +333,7 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].explicit.encode).toEqual({
         labels: {
           update: {
@@ -360,7 +360,7 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].explicit.title).toBe('foo, bar');
     });
 
@@ -379,7 +379,7 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].explicit.title).toBe('bar');
     });
 
@@ -392,7 +392,7 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].get('title')).toEqual([{field: 'a'}, {field: 'a2'}]);
     });
 
@@ -404,7 +404,7 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].get('format')).toEqual({
         signal: 'timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
       });
@@ -418,7 +418,7 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].get('formatType')).toEqual('time');
     });
 
@@ -431,7 +431,7 @@ describe('Axis', () => {
         config: {customFormatTypes: true}
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].get('format')).toBeUndefined();
       expect(axisComponent['x'][0].get('encode').labels.update.text).toEqual({signal: 'foo(datum.value, "x")'});
     });
@@ -444,7 +444,7 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x'].length).toEqual(1);
+      expect(axisComponent['x']).toHaveLength(1);
       expect(axisComponent['x'][0].get('format')).toEqual({
         signal: 'timeUnitSpecifier(["year","quarter","month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
       });
@@ -487,7 +487,7 @@ describe('Axis', () => {
 
     it('correctly merges gridScale if one layer does not have one of the axis', () => {
       const axisComponents = globalRuleOverlay.component.axes;
-      expect(axisComponents.y.length).toEqual(1);
+      expect(axisComponents.y).toHaveLength(1);
       expect(axisComponents.y[0].get('gridScale')).toBe('x');
     });
 
@@ -573,7 +573,7 @@ describe('Axis', () => {
       const axisComponents = model.component.axes;
 
       expect(axisComponents.x[0].get('title')).toEqual('Hello, World');
-      expect(axisComponents.y[0].get('title')).toEqual(null);
+      expect(axisComponents.y[0].get('title')).toBeNull();
     });
   });
 });

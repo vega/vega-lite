@@ -240,9 +240,6 @@ describe('util', () => {
     });
     it('should return the correct value for 2 nested but different string sets', () => {
       expect(fieldIntersection(new Set(['a.b.c']), new Set(['a.b.d']))).toBe(true);
-    });
-
-    it('should return the correct value for 2 nested but different string sets', () => {
       expect(fieldIntersection(new Set(['a.b.c']), new Set(['z.b.c']))).toBe(false);
     });
 

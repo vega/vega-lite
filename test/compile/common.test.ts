@@ -5,7 +5,7 @@ describe('Common', () => {
     it('should drop falsy title(s) when merged', () => {
       expect(mergeTitle('title', null)).toBe('title');
       expect(mergeTitle(null, 'title')).toBe('title');
-      expect(mergeTitle(null, null)).toBe(null);
+      expect(mergeTitle(null, null)).toBeNull();
     });
 
     it('should drop one title when both are the same', () => {

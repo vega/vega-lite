@@ -15,7 +15,7 @@ describe('UnitModel', () => {
             shape: {field: 'a', type: 'nominal'}
           }
         });
-        expect(model.encoding.shape).toEqual(undefined);
+        expect(model.encoding.shape).toBeUndefined();
         expect(localLogger.warns[0]).toEqual(log.message.incompatibleChannel(SHAPE, BAR));
       })
     );
@@ -42,7 +42,7 @@ describe('UnitModel', () => {
             x: {type: 'quantitative'}
           }
         });
-        expect(model.encoding.x).toEqual(undefined);
+        expect(model.encoding.x).toBeUndefined();
         expect(localLogger.warns[0]).toEqual(log.message.emptyFieldDef({type: QUANTITATIVE}, X));
       })
     );

@@ -170,7 +170,7 @@ describe('Mark: Text', () => {
     });
   });
 
-  describe('with config.text.size', () => {
+  describe('with config.text.fontSize', () => {
     const spec: TopLevel<NormalizedUnitSpec> = {
       mark: {type: 'text'},
       encoding: {
@@ -182,7 +182,7 @@ describe('Mark: Text', () => {
     const model = parseUnitModelWithScaleAndLayoutSize(spec);
     const props = text.encodeEntry(model);
 
-    it('should map size to fontSize', () => {
+    it('should map fontSize to fontSize', () => {
       expect(props.fontSize).toEqual({value: 25});
     });
   });

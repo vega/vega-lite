@@ -48,7 +48,7 @@ describe('compile/mark/encode/position-rect', () => {
       });
     });
 
-    it('produces correct x-mixins for signal reverse', () => {
+    it('produces correct x-mixins for signal reverse (different values)', () => {
       const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
       const props = rectBinPosition({
         fieldDef,
@@ -69,7 +69,7 @@ describe('compile/mark/encode/position-rect', () => {
       });
     });
 
-    it('produces correct y-mixins for signal reverse', () => {
+    it('produces correct y-mixins for signal reverse with different spacing', () => {
       const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
       const props = rectBinPosition({
         fieldDef,

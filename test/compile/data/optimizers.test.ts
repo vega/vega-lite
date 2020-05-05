@@ -131,7 +131,7 @@ describe('compile/data/optimizer', () => {
       const optimizer = new MergeParse();
       optimizer.run(parse1);
 
-      expect(root.children.length).toEqual(1);
+      expect(root.children).toHaveLength(1);
       const mergedParseNode = root.children[0] as ParseNode;
       expect(mergedParseNode.parse).toEqual({a: 'number', b: 'string', c: 'boolean'});
     });
@@ -145,7 +145,7 @@ describe('compile/data/optimizer', () => {
       const optimizer = new MergeParse();
       optimizer.run(parse1);
 
-      expect(root.children.length).toEqual(1);
+      expect(root.children).toHaveLength(1);
       const mergedParseNode = root.children[0] as ParseNode;
       expect(mergedParseNode.parse).toEqual({b: 'string', d: 'date'});
       const children = mergedParseNode.children as [ParseNode, ParseNode];
@@ -162,7 +162,7 @@ describe('compile/data/optimizer', () => {
       const optimizer = new MergeParse();
       optimizer.run(parse);
 
-      expect(root.children.length).toEqual(1);
+      expect(root.children).toHaveLength(1);
       const mergedParseNode = root.children[0] as ParseNode;
       expect(mergedParseNode.parse).toEqual({a: 'number', b: 'string'});
       const children = mergedParseNode.children;

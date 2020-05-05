@@ -18,14 +18,14 @@ describe('compile/compile', () => {
       encoding: {}
     });
 
-    expect(spec.padding).toEqual(5);
+    expect(spec.padding).toBe(5);
     expect(spec.autosize).toBeUndefined();
-    expect(spec.width).toEqual(20);
-    expect(spec.height).toEqual(20);
+    expect(spec.width).toBe(20);
+    expect(spec.height).toBe(20);
     expect(spec.title).toEqual({text: 'test', frame: 'group'});
 
-    expect(spec.data.length).toEqual(1); // just source
-    expect(spec.marks.length).toEqual(1); // just the root group
+    expect(spec.data).toHaveLength(1); // just source
+    expect(spec.marks).toHaveLength(1); // just the root group
   });
 
   it('should return a spec with specified top-level properties, size signals, data and marks', () => {
@@ -38,13 +38,13 @@ describe('compile/compile', () => {
       encoding: {}
     });
 
-    expect(spec.padding).toEqual(123);
+    expect(spec.padding).toBe(123);
     expect(spec.autosize).toBeUndefined();
-    expect(spec.width).toEqual(20);
-    expect(spec.height).toEqual(20);
+    expect(spec.width).toBe(20);
+    expect(spec.height).toBe(20);
 
-    expect(spec.data.length).toEqual(1); // just source.
-    expect(spec.marks.length).toEqual(1); // just the root group
+    expect(spec.data).toHaveLength(1); // just source.
+    expect(spec.marks).toHaveLength(1); // just the root group
   });
 
   it(
@@ -62,7 +62,7 @@ describe('compile/compile', () => {
         }
       });
 
-      expect(localLogger.warns[0]).toEqual(log.message.droppingFit());
+      expect(localLogger.warns[0]).toBe(log.message.droppingFit());
       expect(spec.autosize).toBeUndefined();
     })
   );
@@ -82,7 +82,7 @@ describe('compile/compile', () => {
         }
       });
 
-      expect(localLogger.warns[0]).toEqual(log.message.droppingFit('y'));
+      expect(localLogger.warns[0]).toBe(log.message.droppingFit('y'));
       expect(spec.autosize).toBe('fit-x');
     })
   );
@@ -102,7 +102,7 @@ describe('compile/compile', () => {
         }
       });
 
-      expect(localLogger.warns[0]).toEqual(log.message.droppingFit('x'));
+      expect(localLogger.warns[0]).toBe(log.message.droppingFit('x'));
       expect(spec.autosize).toBe('fit-y');
     })
   );
@@ -124,7 +124,7 @@ describe('compile/compile', () => {
         }
       });
 
-      expect(localLogger.warns.length).toEqual(0);
+      expect(localLogger.warns).toHaveLength(0);
       expect(spec.autosize).toBe('fit');
     })
   );
@@ -145,7 +145,7 @@ describe('compile/compile', () => {
         }
       });
 
-      expect(localLogger.warns.length).toEqual(0);
+      expect(localLogger.warns).toHaveLength(0);
       expect(spec.autosize).toBe('fit');
     })
   );
@@ -166,7 +166,7 @@ describe('compile/compile', () => {
         }
       });
 
-      expect(localLogger.warns.length).toEqual(0);
+      expect(localLogger.warns).toHaveLength(0);
       expect(spec.autosize).toBe('fit');
     })
   );
@@ -191,7 +191,7 @@ describe('compile/compile', () => {
         update: `bandspace(domain('x').length, 0.1, 0.05) * x_step`
       }
     ]);
-    expect(spec.height).toEqual(200);
+    expect(spec.height).toBe(200);
   });
 
   it('should set resize to true if requested', () => {
@@ -313,8 +313,8 @@ describe('compile/compile', () => {
         mark: 'point',
         encoding: {}
       });
-      expect(localLogger.warns[0]).toEqual(log.message.containerSizeNotCompatibleWithAutosize('width'));
-      expect(localLogger.warns[1]).toEqual(log.message.containerSizeNotCompatibleWithAutosize('height'));
+      expect(localLogger.warns[0]).toBe(log.message.containerSizeNotCompatibleWithAutosize('width'));
+      expect(localLogger.warns[1]).toBe(log.message.containerSizeNotCompatibleWithAutosize('height'));
     })
   );
 
@@ -330,7 +330,7 @@ describe('compile/compile', () => {
           }
         ]
       });
-      expect(localLogger.warns[0]).toEqual(log.message.containerSizeNonSingle('width'));
+      expect(localLogger.warns[0]).toBe(log.message.containerSizeNonSingle('width'));
       expect(spec.autosize).toBeUndefined();
     })
   );
@@ -347,7 +347,7 @@ describe('compile/compile', () => {
           }
         ]
       });
-      expect(localLogger.warns[0]).toEqual(log.message.containerSizeNonSingle('height'));
+      expect(localLogger.warns[0]).toBe(log.message.containerSizeNonSingle('height'));
       expect(spec.autosize).toBeUndefined();
     })
   );
@@ -365,8 +365,8 @@ describe('compile/compile', () => {
           }
         ]
       });
-      expect(localLogger.warns[0]).toEqual(log.message.FIT_NON_SINGLE);
-      expect(spec.autosize).toEqual('fit');
+      expect(localLogger.warns[0]).toBe(log.message.FIT_NON_SINGLE);
+      expect(spec.autosize).toBe('fit');
     })
   );
 

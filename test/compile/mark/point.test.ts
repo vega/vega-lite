@@ -246,7 +246,7 @@ describe('Mark: Point', () => {
     });
   });
 
-  describe('with x, y, and condition-only color', () => {
+  describe('with x, y, and condition-only color and explicit test value', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       ...pointXY({
         color: {condition: {test: 'true', field: 'yield', type: 'quantitative'}}

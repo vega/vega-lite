@@ -148,7 +148,7 @@ describe('compile/data/dataflow', () => {
       it('should not work', () => {
         const a = new PlaceholderDataFlowNode(null, 'a');
 
-        expect(a.clone).toThrowError();
+        expect(a.clone).toThrow();
       });
     });
   });

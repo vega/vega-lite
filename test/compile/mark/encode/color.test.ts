@@ -188,7 +188,7 @@ describe('compile/mark/encode/color', () => {
     expect(props.stroke).toEqual({value: 'blue'});
   });
 
-  it('should apply stroke mark config over color mark config', () => {
+  it('should apply stroke mark config over color point config', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'point',
       encoding: {

@@ -261,7 +261,7 @@ describe('Mark', () => {
           order: {value: null}
         }
       });
-      expect(getSort(model)).toEqual(undefined);
+      expect(getSort(model)).toBeUndefined();
     });
 
     it('should order by x by default if x is the dimension', () => {

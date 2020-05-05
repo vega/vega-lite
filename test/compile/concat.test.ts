@@ -74,7 +74,7 @@ describe('ConcatModel', () => {
       });
 
       expect(model.children).toHaveLength(2);
-      expect(model.layout.columns).toBe(undefined);
+      expect(model.layout.columns).toBeUndefined();
     });
 
     it('should create correct layout for vconcat', () => {
@@ -113,7 +113,7 @@ describe('ConcatModel', () => {
         ]
       });
 
-      expect(model.layout.columns).toBe(undefined);
+      expect(model.layout.columns).toBeUndefined();
 
       expect(model.assembleLayout()).toEqual({
         padding: DEFAULT_SPACING,

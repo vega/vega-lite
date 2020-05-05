@@ -34,7 +34,7 @@ describe('compile/mark/init', () => {
       ).toMatchObject({cornerRadiusTopLeft: 5, cornerRadiusTopRight: 5});
     });
 
-    it('applies cornerRadiusEnd to top cornerRadius for vertical bars', () => {
+    it('applies cornerRadiusEnd to top cornerRadius for horizontal bars', () => {
       expect(
         initMarkdef({type: 'bar', cornerRadiusEnd: 5}, {x: {field: 'x', type: 'quantitative'}}, defaultConfig, {
           graticule: false
@@ -66,7 +66,7 @@ describe('compile/mark/init', () => {
             x: {type: 'nominal', field: 'bar'}
           }
         });
-        expect(model.markDef.opacity).toEqual(undefined);
+        expect(model.markDef.opacity).toBeUndefined();
       }
     });
 
@@ -93,7 +93,7 @@ describe('compile/mark/init', () => {
             x: {type: 'nominal', field: 'bar'}
           }
         });
-        expect(model.markDef.opacity).toEqual(undefined);
+        expect(model.markDef.opacity).toBeUndefined();
       }
     });
   });
@@ -115,7 +115,7 @@ describe('compile/mark/init', () => {
         mark: 'bar',
         encoding: {}
       });
-      expect(model.markDef.orient).toEqual(undefined);
+      expect(model.markDef.orient).toBeUndefined();
     });
 
     it('should return correct orient for bar with both axes discrete', () => {
@@ -126,7 +126,7 @@ describe('compile/mark/init', () => {
           y: {type: 'ordinal', field: 'bar'}
         }
       });
-      expect(model.markDef.orient).toEqual(undefined);
+      expect(model.markDef.orient).toBeUndefined();
     });
 
     it('should return correct orient for vertical bar', () => {
@@ -258,7 +258,7 @@ describe('compile/mark/init', () => {
           x2: {value: 100}
         }
       });
-      expect(model.markDef.orient).toEqual(undefined);
+      expect(model.markDef.orient).toBeUndefined();
     });
 
     it('should return undefined for line segment rule with only x and y without x2, y2', () => {
@@ -269,7 +269,7 @@ describe('compile/mark/init', () => {
           x: {value: 0}
         }
       });
-      expect(model.markDef.orient).toEqual(undefined);
+      expect(model.markDef.orient).toBeUndefined();
     });
 
     it('should return correct orient for horizontal rules without x2 ', () => {
@@ -448,7 +448,7 @@ describe('compile/mark/init', () => {
           x: {type: 'temporal', field: 'bar'}
         }
       });
-      expect(model.markDef.cursor).toEqual(undefined);
+      expect(model.markDef.cursor).toBeUndefined();
     });
 
     it('should return pointer cursor when href channel present', () => {
@@ -553,7 +553,7 @@ describe('compile/mark/init', () => {
           x: {type: 'temporal', field: 'bar'}
         }
       });
-      expect(model.markDef.cursor).toEqual(undefined);
+      expect(model.markDef.cursor).toBeUndefined();
     });
   });
 });

@@ -22,12 +22,12 @@ const TIMEUNIT_INDEX: Flag<TimeUnit> = {
   ...UTC_MULTI_TIMEUNIT_INDEX
 };
 
-export const TIMEUNITS = keys(TIMEUNIT_INDEX);
+const TIMEUNITS = keys(TIMEUNIT_INDEX);
 
 describe('compile/scale', () => {
   describe('type()', () => {
     it('should return null for channel without scale', () => {
-      expect(scaleType({}, 'detail', {type: 'temporal', timeUnit: 'yearmonth'}, 'point')).toEqual(null);
+      expect(scaleType({}, 'detail', {type: 'temporal', timeUnit: 'yearmonth'}, 'point')).toBeNull();
     });
 
     it(
@@ -255,7 +255,7 @@ describe('compile/scale', () => {
         );
       });
 
-      it('should return default scale type if data type is quantative and scale type supports quantative', () => {
+      it('should return default scale type if data type is temporal and scale type supports quantative', () => {
         expect(scaleType({type: ScaleType.TIME}, 'x', {field: 'x', type: 'temporal'}, 'point')).toEqual(ScaleType.TIME);
       });
     });

@@ -31,8 +31,8 @@ describe('compile/data/parse', () => {
 
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      expect(root.children[0] instanceof CalculateNode).toBe(true);
-      expect(result instanceof FilterNode).toBe(true);
+      expect(root.children[0]).toBeInstanceOf(CalculateNode);
+      expect(result).toBeInstanceOf(FilterNode);
     });
 
     it('should add a parse node for filter transforms with time unit', () => {
@@ -71,8 +71,8 @@ describe('compile/data/parse', () => {
       const parse = new AncestorParse();
       const result = parseTransformArray(root, model, parse);
 
-      expect(root.children[0] instanceof ParseNode).toBe(true);
-      expect(result instanceof FilterNode).toBe(true);
+      expect(root.children[0]).toBeInstanceOf(ParseNode);
+      expect(result).toBeInstanceOf(FilterNode);
       expect((root.children[0] as ParseNode).parse).toEqual({
         date: 'date'
       });
@@ -95,8 +95,8 @@ describe('compile/data/parse', () => {
       const root = new PlaceholderDataFlowNode(null);
       const parse = new AncestorParse();
       const result = parseTransformArray(root, model, parse);
-      expect(root.children[0] instanceof BinNode);
-      expect(result instanceof TimeUnitNode);
+      expect(root.children[0]).toBeInstanceOf(BinNode);
+      expect(result).toBeInstanceOf(TimeUnitNode);
       expect(parse.combine()).toEqual({
         a: 'number',
         // eslint-disable-next-line @typescript-eslint/camelcase
@@ -127,8 +127,8 @@ describe('compile/data/parse', () => {
 
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      expect(root.children[0] instanceof BinNode).toBe(true);
-      expect(result instanceof AggregateNode).toBe(true);
+      expect(root.children[0]).toBeInstanceOf(BinNode);
+      expect(result).toBeInstanceOf(AggregateNode);
     });
 
     it('should return a ImputeTransform Node', () => {
@@ -143,8 +143,8 @@ describe('compile/data/parse', () => {
       });
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      expect(root.children[0] instanceof ImputeNode).toBe(true);
-      expect(result instanceof ImputeNode).toBe(true);
+      expect(root.children[0]).toBeInstanceOf(ImputeNode);
+      expect(result).toBeInstanceOf(ImputeNode);
     });
     it('should return a WindowTransform Node', () => {
       const transform: Transform = {
@@ -166,7 +166,7 @@ describe('compile/data/parse', () => {
       });
       const root = new PlaceholderDataFlowNode(null);
       parseTransformArray(root, model, new AncestorParse());
-      expect(root.children[0] instanceof WindowTransformNode).toBe(true);
+      expect(root.children[0]).toBeInstanceOf(WindowTransformNode);
     });
     it('should return a WindowTransform Node with optional properties', () => {
       const transform: Transform = {
@@ -194,58 +194,7 @@ describe('compile/data/parse', () => {
       });
       const root = new PlaceholderDataFlowNode(null);
       parseTransformArray(root, model, new AncestorParse());
-      expect(root.children[0] instanceof WindowTransformNode).toBe(true);
-    });
-
-    it('should return a WindowTransform Node', () => {
-      const transform: Transform = {
-        window: [
-          {
-            op: 'count',
-            field: 'f',
-            as: 'b'
-          }
-        ]
-      };
-      const model = parseUnitModel({
-        data: {values: []},
-        mark: 'point',
-        transform: [transform],
-        encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
-        }
-      });
-      const root = new PlaceholderDataFlowNode(null);
-      parseTransformArray(root, model, new AncestorParse());
-      expect(root.children[0] instanceof WindowTransformNode).toBe(true);
-    });
-    it('should return a WindowTransform Node with optional properties', () => {
-      const transform: Transform = {
-        window: [
-          {
-            op: 'row_number',
-            as: 'ordered_row_number'
-          }
-        ],
-        ignorePeers: false,
-        sort: [
-          {
-            field: 'f',
-            order: 'ascending'
-          }
-        ]
-      };
-      const model = parseUnitModel({
-        data: {values: []},
-        mark: 'point',
-        transform: [transform],
-        encoding: {
-          x: {field: 'a', type: 'temporal', timeUnit: 'month'}
-        }
-      });
-      const root = new PlaceholderDataFlowNode(null);
-      parseTransformArray(root, model, new AncestorParse());
-      expect(root.children[0] instanceof WindowTransformNode).toBe(true);
+      expect(root.children[0]).toBeInstanceOf(WindowTransformNode);
     });
 
     it('should return a FoldTransformNode', () => {
@@ -264,8 +213,8 @@ describe('compile/data/parse', () => {
       });
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      expect(root.children[0] instanceof FoldTransformNode).toBe(true);
-      expect(result instanceof FoldTransformNode).toBe(true);
+      expect(root.children[0]).toBeInstanceOf(FoldTransformNode);
+      expect(result).toBeInstanceOf(FoldTransformNode);
     });
 
     it('should return a PivotTransformNode', () => {
@@ -284,8 +233,8 @@ describe('compile/data/parse', () => {
       });
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      expect(root.children[0] instanceof PivotTransformNode).toBe(true);
-      expect(result instanceof PivotTransformNode).toBe(true);
+      expect(root.children[0]).toBeInstanceOf(PivotTransformNode);
+      expect(result).toBeInstanceOf(PivotTransformNode);
     });
 
     it('should return a FlattenTransformNode', () => {
@@ -303,8 +252,8 @@ describe('compile/data/parse', () => {
       });
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      expect(root.children[0] instanceof FlattenTransformNode).toBe(true);
-      expect(result instanceof FlattenTransformNode).toBe(true);
+      expect(root.children[0]).toBeInstanceOf(FlattenTransformNode);
+      expect(result).toBeInstanceOf(FlattenTransformNode);
     });
 
     it('should return a SampleTransformNode', () => {
@@ -322,8 +271,8 @@ describe('compile/data/parse', () => {
       });
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      expect(root.children[0] instanceof SampleTransformNode).toBe(true);
-      expect(result instanceof SampleTransformNode).toBe(true);
+      expect(root.children[0]).toBeInstanceOf(SampleTransformNode);
+      expect(result).toBeInstanceOf(SampleTransformNode);
     });
 
     it('should return a 3 Transforms from an Impute', () => {
@@ -347,8 +296,8 @@ describe('compile/data/parse', () => {
       });
       const root = new PlaceholderDataFlowNode(null);
       const result = parseTransformArray(root, model, new AncestorParse());
-      expect(root.children[0] instanceof ImputeNode).toBe(true);
-      expect(result instanceof ImputeNode).toBe(true);
+      expect(root.children[0]).toBeInstanceOf(ImputeNode);
+      expect(result).toBeInstanceOf(ImputeNode);
     });
   });
 

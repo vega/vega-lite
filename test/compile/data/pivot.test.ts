@@ -52,7 +52,7 @@ describe('compile/data/pivot', () => {
       value: 'b'
     };
     const pivot = new PivotTransformNode(null, transform);
-    expect(pivot.producedFields()).toEqual(undefined);
+    expect(pivot.producedFields()).toBeUndefined();
   });
 
   it('should return relevant dependent fields', () => {

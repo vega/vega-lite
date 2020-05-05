@@ -9,7 +9,7 @@ import {TopLevelSpec} from '../../src/spec';
 
 describe('normalize()', () => {
   it('throws errors for invalid spec', () => {
-    expect(() => normalize({} as any)).toThrowError(log.message.invalidSpec({}));
+    expect(() => normalize({} as any)).toThrow(log.message.invalidSpec({}));
   });
 
   describe('normalizeRepeat', () => {
@@ -358,7 +358,7 @@ describe('normalize()', () => {
           defaultConfig
         );
 
-        expect(localLogger.warns.length).toEqual(2);
+        expect(localLogger.warns).toHaveLength(2);
 
         expect(localLogger.warns[0]).toEqual(
           log.message.projectionOverridden({

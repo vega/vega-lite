@@ -97,28 +97,6 @@ describe('stack', () => {
   it('can be enabled if one of the stackby channels is not aggregated', () => {
     for (const s of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
       const marks = s === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
-      marks.forEach(mark => {
-        const spec: TopLevel<NormalizedUnitSpec> = {
-          data: {url: 'data/barley.json'},
-          mark: mark,
-          encoding: {
-            x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: s},
-            y: {field: 'variety', type: 'nominal'},
-            color: {aggregate: 'count', type: 'quantitative'},
-            detail: {field: 'site', type: 'nominal'}
-          }
-        };
-        const _stack = stack(spec.mark, spec.encoding);
-        expect(_stack).toBeTruthy();
-
-        expect(_stack.stackBy[0].channel).toEqual(DETAIL);
-      });
-    }
-  });
-
-  it('can be enabled if one of the stackby channels is not aggregated', () => {
-    for (const s of [undefined, 'center', 'zero', 'normalize'] as StackOffset[]) {
-      const marks = s === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
       for (const mark of marks) {
         const spec: TopLevel<NormalizedUnitSpec> = {
           data: {url: 'data/barley.json'},

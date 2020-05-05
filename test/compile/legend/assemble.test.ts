@@ -98,7 +98,7 @@ describe('legend/assemble', () => {
     expect(legends[0].title).toBe('b');
     expect(legends[0].fill).toBe('color');
     expect(legends[0].size).toBe('size');
-    expect(legends[0].encode.symbols.update?.fill).toBe(undefined);
+    expect(legends[0].encode.symbols.update?.fill).toBeUndefined();
   });
 
   it('sets aria to false if set in config', () => {
