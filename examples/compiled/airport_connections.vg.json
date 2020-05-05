@@ -170,7 +170,8 @@
         "update": {
           "fill": {"value": "#ddd"},
           "stroke": {"value": "#fff"},
-          "strokeWidth": {"value": 1}
+          "strokeWidth": {"value": 1},
+          "ariaRoleDescription": {"value": "geoshape"}
         }
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]
@@ -185,6 +186,9 @@
         "update": {
           "opacity": {"value": 0.35},
           "stroke": {"value": "#000"},
+          "description": {
+            "signal": "\"latitude\" + \": \" + (format(datum[\"latitude\"], \"\")) + \"; \" + \"longitude\" + \": \" + (format(datum[\"longitude\"], \"\")) + \"; \" + \"lat2\" + \": \" + (format(datum[\"lat2\"], \"\")) + \"; \" + \"lon2\" + \": \" + (format(datum[\"lon2\"], \"\"))"
+          },
           "x": {"field": "layer_1_x"},
           "x2": {"field": "layer_1_x2"},
           "y": {"field": "layer_1_y"},
@@ -203,6 +207,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"latitude\" + \": \" + (format(datum[\"latitude\"], \"\")) + \"; \" + \"longitude\" + \": \" + (format(datum[\"longitude\"], \"\")) + \"; \" + \"routes\" + \": \" + (format(datum[\"routes\"], \"\"))"
+          },
           "x": {"field": "layer_2_x"},
           "y": {"field": "layer_2_y"},
           "size": {"scale": "size", "field": "routes"},

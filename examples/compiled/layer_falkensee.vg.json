@@ -126,6 +126,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "event"},
+          "description": {
+            "signal": "\"start (year)\" + \": \" + (timeFormat(datum[\"year_start\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"end (year)\" + \": \" + (timeFormat(datum[\"year_end\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"event\" + \": \" + (isValid(datum[\"event\"]) ? datum[\"event\"] : \"\"+datum[\"event\"])"
+          },
           "x": {"scale": "x", "field": "year_start"},
           "x2": {"scale": "x", "field": "year_end"},
           "y": {"value": 0},
@@ -142,6 +145,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#333"},
+          "description": {
+            "signal": "\"year (year)\" + \": \" + (timeFormat(datum[\"year_year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"population\" + \": \" + (format(datum[\"population\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "year_year"},
           "y": {"scale": "y", "field": "population"},
           "defined": {
@@ -160,6 +166,10 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#333"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"year (year)\" + \": \" + (timeFormat(datum[\"year_year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"population\" + \": \" + (format(datum[\"population\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "year_year"},
           "y": {"scale": "y", "field": "population"}
         }
@@ -209,6 +219,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -222,6 +233,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

@@ -191,6 +191,10 @@
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
+                  "ariaRoleDescription": {"value": "bar"},
+                  "description": {
+                    "signal": "\"Rotten_Tomatoes_Rating (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating_end\"], \"\")) + \"; \" + \"Count\" + \": \" + (format(datum[\"__count\"], \"\"))"
+                  },
                   "x2": [
                     {
                       "test": "!isValid(datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_Rotten_Tomatoes_Rating\"])",
@@ -233,6 +237,7 @@
               "tickCount": {"signal": "ceil(concat_0_childHeight/40)"},
               "domain": false,
               "labels": false,
+              "aria": false,
               "maxExtent": 0,
               "minExtent": 0,
               "ticks": false,
@@ -278,6 +283,10 @@
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
+                  "ariaRoleDescription": {"value": "bar"},
+                  "description": {
+                    "signal": "\"IMDB_Rating (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_20_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_20_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_IMDB_Rating_end\"], \"\")) + \"; \" + \"Count\" + \": \" + (format(datum[\"__count\"], \"\"))"
+                  },
                   "x2": [
                     {
                       "test": "!isValid(datum[\"bin_maxbins_20_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_IMDB_Rating\"])",
@@ -317,6 +326,7 @@
               "tickCount": {"signal": "ceil(concat_0_childHeight/40)"},
               "domain": false,
               "labels": false,
+              "aria": false,
               "maxExtent": 0,
               "minExtent": 0,
               "ticks": false,
@@ -370,6 +380,10 @@
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
+                  "ariaRoleDescription": {"value": "bar"},
+                  "description": {
+                    "signal": "\"US_Gross (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_20_US_Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_US_Gross\"]) ? \"null\" : format(datum[\"bin_maxbins_20_US_Gross\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_US_Gross_end\"], \"\")) + \"; \" + \"Count\" + \": \" + (format(datum[\"__count\"], \"\"))"
+                  },
                   "x2": [
                     {
                       "test": "!isValid(datum[\"bin_maxbins_20_US_Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_US_Gross\"])",
@@ -409,6 +423,7 @@
               "tickCount": {"signal": "ceil(concat_1_childHeight/40)"},
               "domain": false,
               "labels": false,
+              "aria": false,
               "maxExtent": 0,
               "minExtent": 0,
               "ticks": false,
@@ -454,6 +469,10 @@
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
+                  "ariaRoleDescription": {"value": "bar"},
+                  "description": {
+                    "signal": "\"Worldwide_Gross (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_20_Worldwide_Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_Worldwide_Gross\"]) ? \"null\" : format(datum[\"bin_maxbins_20_Worldwide_Gross\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_Worldwide_Gross_end\"], \"\")) + \"; \" + \"Count\" + \": \" + (format(datum[\"__count\"], \"\"))"
+                  },
                   "x2": [
                     {
                       "test": "!isValid(datum[\"bin_maxbins_20_Worldwide_Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_Worldwide_Gross\"])",
@@ -493,6 +512,7 @@
               "tickCount": {"signal": "ceil(concat_1_childHeight/40)"},
               "domain": false,
               "labels": false,
+              "aria": false,
               "maxExtent": 0,
               "minExtent": 0,
               "ticks": false,

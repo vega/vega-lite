@@ -160,6 +160,7 @@ export function normalizeBoxPlot(
       mark: {type: 'rule', invalid: null},
       positionPrefix: 'lower_whisker',
       endPositionPrefix: 'lower_box',
+      aria: false,
       extraEncoding: whiskerTooltipEncoding
     }),
     ...makeBoxPlotExtent({
@@ -167,18 +168,21 @@ export function normalizeBoxPlot(
       mark: {type: 'rule', invalid: null},
       positionPrefix: 'upper_box',
       endPositionPrefix: 'upper_whisker',
+      aria: false,
       extraEncoding: whiskerTooltipEncoding
     }),
     ...makeBoxPlotExtent({
       partName: 'ticks',
       mark: endTick,
       positionPrefix: 'lower_whisker',
+      aria: false,
       extraEncoding: whiskerTooltipEncoding
     }),
     ...makeBoxPlotExtent({
       partName: 'ticks',
       mark: endTick,
       positionPrefix: 'upper_whisker',
+      aria: false,
       extraEncoding: whiskerTooltipEncoding
     })
   ];
@@ -193,6 +197,7 @@ export function normalizeBoxPlot(
       mark: {type: 'bar', ...(sizeValue ? {size: sizeValue} : {}), orient: boxOrient, invalid: null},
       positionPrefix: 'lower_box',
       endPositionPrefix: 'upper_box',
+      aria: false,
       extraEncoding: fiveSummaryTooltipEncoding
     }),
     ...makeBoxPlotMidTick({
@@ -202,7 +207,8 @@ export function normalizeBoxPlot(
         invalid: null,
         ...(isObject(config.boxplot.median) && config.boxplot.median.color ? {color: config.boxplot.median.color} : {}),
         ...(sizeValue ? {size: sizeValue} : {}),
-        orient: ticksOrient
+        orient: ticksOrient,
+        ariaRoleDescription: 'box'
       },
       positionPrefix: 'mid_box',
       extraEncoding: fiveSummaryTooltipEncoding
@@ -270,7 +276,7 @@ export function normalizeBoxPlot(
     const {scale, axis} = continuousAxisChannelDef;
     const title = getTitle(continuousAxisChannelDef);
 
-    const outlierLayersMixins = partLayerMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot, {
+    const outlierLayersMixins = partLayerMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot, true, {
       transform: [{filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`}],
       mark: 'point',
       encoding: {

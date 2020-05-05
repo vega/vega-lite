@@ -28,6 +28,9 @@ describe('Mark: Geoshape', () => {
       });
       const props = geoshape.encodeEntry(model);
       expect({
+        ariaRoleDescription: {
+          value: 'geoshape'
+        },
         fill: {
           value: 'black'
         },

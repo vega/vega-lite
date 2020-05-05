@@ -51,7 +51,7 @@ describe('normalizeErrorBar with raw data input', () => {
           as: 'lower_people'
         }
       ],
-      mark: {type: 'rule', style: 'errorbar-rule'},
+      mark: {type: 'rule', ariaRoleDescription: 'errorbar', style: 'errorbar-rule'},
       encoding: {
         y: {
           field: 'lower_people',
@@ -735,7 +735,7 @@ describe('normalizeErrorBar with aggregated upper and lower bound input', () => 
         {calculate: 'datum["people2"]', as: 'upper_people'},
         {calculate: 'datum["people"]', as: 'lower_people'}
       ],
-      mark: {type: 'rule', style: 'errorbar-rule'},
+      mark: {type: 'rule', ariaRoleDescription: 'errorbar', style: 'errorbar-rule'},
       encoding: {
         x: {field: 'age', type: 'ordinal'},
         y: {
@@ -904,7 +904,7 @@ describe('normalizeErrorBar with aggregated error input', () => {
         {calculate: 'datum["people"] + datum["people_error"]', as: 'upper_people'},
         {calculate: 'datum["people"] - datum["people_error"]', as: 'lower_people'}
       ],
-      mark: {type: 'rule', style: 'errorbar-rule'},
+      mark: {type: 'rule', ariaRoleDescription: 'errorbar', style: 'errorbar-rule'},
       encoding: {
         y: {
           field: 'lower_people',

@@ -33,6 +33,9 @@
         "update": {
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"AAPL\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "AAPL"},
           "defined": {
@@ -50,6 +53,9 @@
       "encode": {
         "update": {
           "stroke": {"scale": "stroke", "value": "AAPL"},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"AAPL\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "AAPL"},
           "defined": {
@@ -68,6 +74,9 @@
         "update": {
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"AMZN\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "AMZN"},
           "defined": {
@@ -85,6 +94,9 @@
       "encode": {
         "update": {
           "stroke": {"scale": "stroke", "value": "AMZN"},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"AMZN\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "AMZN"},
           "defined": {
@@ -103,6 +115,9 @@
         "update": {
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"GOOG\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "GOOG"},
           "defined": {
@@ -120,6 +135,9 @@
       "encode": {
         "update": {
           "stroke": {"scale": "stroke", "value": "GOOG"},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"GOOG\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "GOOG"},
           "defined": {
@@ -138,6 +156,9 @@
         "update": {
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"IBM\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "IBM"},
           "defined": {
@@ -155,6 +176,9 @@
       "encode": {
         "update": {
           "stroke": {"scale": "stroke", "value": "IBM"},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"IBM\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "IBM"},
           "defined": {
@@ -173,6 +197,9 @@
         "update": {
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 4},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"MSFT\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "MSFT"},
           "defined": {
@@ -190,6 +217,9 @@
       "encode": {
         "update": {
           "stroke": {"scale": "stroke", "value": "MSFT"},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"MSFT\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "MSFT"},
           "defined": {
@@ -233,6 +263,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -246,6 +277,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

@@ -45,6 +45,10 @@
           "opacity": {"value": 0.3},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"Max Temperature\" + \": \" + (format(datum[\"temp_max\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "temp_max"}
         }
@@ -59,6 +63,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "red"},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"rolling_mean\" + \": \" + (format(datum[\"rolling_mean\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "rolling_mean"},
           "strokeWidth": {"value": 3},
@@ -104,6 +111,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -117,6 +125,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

@@ -71,6 +71,13 @@ describe('Layered Selections', () => {
               scale: 'y',
               field: 'Miles_per_Gallon'
             },
+            ariaRoleDescription: {
+              value: 'circle'
+            },
+            description: {
+              signal:
+                '"Horsepower" + ": " + (format(datum["Horsepower"], "")) + "; " + "Miles_per_Gallon" + ": " + (format(datum["Miles_per_Gallon"], "")) + "; " + "Origin" + ": " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
+            },
             fill: [
               {
                 test:
@@ -113,6 +120,13 @@ describe('Layered Selections', () => {
               scale: 'y',
               field: 'Miles_per_Gallon'
             },
+            ariaRoleDescription: {
+              value: 'square'
+            },
+            description: {
+              signal:
+                '"Horsepower" + ": " + (format(datum["Horsepower"], "")) + "; " + "Miles_per_Gallon" + ": " + (format(datum["Miles_per_Gallon"], "")) + "; " + "Origin" + ": " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
+            },
             fill: [
               {
                 test:
@@ -149,6 +163,13 @@ describe('Layered Selections', () => {
           update: {
             opacity: {
               value: 0.7
+            },
+            ariaRoleDescription: {
+              value: 'point'
+            },
+            description: {
+              signal:
+                '"Horsepower" + ": " + (format(datum["Horsepower"], "")) + "; " + "Miles_per_Gallon" + ": " + (format(datum["Miles_per_Gallon"], "")) + "; " + "Origin" + ": " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
             },
             fill: [
               {

@@ -137,6 +137,9 @@
           "encode": {
             "update": {
               "stroke": {"value": "black"},
+              "description": {
+                "signal": "\"study\" + \": \" + (isValid(datum[\"study\"]) ? datum[\"study\"] : \"\"+datum[\"study\"]) + \"; \" + \"\" + \": \" + (format(datum[\"lo\"], \"\")) + \"; \" + \"hi\" + \": \" + (format(datum[\"hi\"], \"\"))"
+              },
               "x": {"scale": "concat_0_x", "field": "lo"},
               "x2": {"scale": "concat_0_x", "field": "hi"},
               "y": {"scale": "concat_0_y", "field": "study", "band": 0.5}
@@ -153,6 +156,10 @@
               "opacity": {"value": 1},
               "stroke": {"value": "black"},
               "fill": {"scale": "color", "field": "measure"},
+              "ariaRoleDescription": {"value": "circle"},
+              "description": {
+                "signal": "\"study\" + \": \" + (isValid(datum[\"study\"]) ? datum[\"study\"] : \"\"+datum[\"study\"]) + \"; \" + \"mean\" + \": \" + (format(datum[\"mean\"], \"\")) + \"; \" + \"measure\" + \": \" + (isValid(datum[\"measure\"]) ? datum[\"measure\"] : \"\"+datum[\"measure\"])"
+              },
               "x": {"scale": "concat_0_x", "field": "mean"},
               "y": {"scale": "concat_0_y", "field": "study", "band": 0.5},
               "shape": {"value": "circle"}
@@ -180,6 +187,7 @@
           },
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -224,6 +232,9 @@
           "encode": {
             "update": {
               "stroke": {"value": "black"},
+              "description": {
+                "signal": "\"from\" + \": \" + (format(datum[\"from\"], \"\")) + \"; \" + \"to\" + \": \" + (format(datum[\"to\"], \"\"))"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"from\"]) || !isFinite(+datum[\"from\"])",
@@ -252,6 +263,10 @@
               "opacity": {"value": 0.7},
               "fill": {"value": "black"},
               "size": {"value": 60},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"to\" + \": \" + (format(datum[\"to\"], \"\"))"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"to\"]) || !isFinite(+datum[\"to\"])",
@@ -277,6 +292,9 @@
               "align": {"value": "right"},
               "text": {"value": ["Polestar", "More Valuable"]},
               "fill": {"value": "black"},
+              "description": {
+                "signal": "\"from\" + \": \" + (format(datum[\"from\"], \"\"))"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"from\"]) || !isFinite(+datum[\"from\"])",
@@ -299,6 +317,9 @@
               "align": {"value": "left"},
               "text": {"value": ["Voyager / Voyager 2", "More Valuable"]},
               "fill": {"value": "black"},
+              "description": {
+                "signal": "\"from\" + \": \" + (format(datum[\"from\"], \"\"))"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"from\"]) || !isFinite(+datum[\"from\"])",

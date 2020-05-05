@@ -149,6 +149,9 @@
             "update": {
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
+              "description": {
+                "signal": "\"Month\" + \": \" + (timeFormat(datum[\"date\"], '%b')) + \"; \" + \"temp\" + \": \" + (format(datum[\"temp\"], \"\"))"
+              },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "temp"},
               "y2": {"field": {"group": "height"}},

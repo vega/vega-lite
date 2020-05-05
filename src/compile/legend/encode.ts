@@ -31,7 +31,7 @@ export interface LegendEncodeParams {
 }
 
 export const legendEncodeRules: {
-  [part in keyof LegendEncode]?: (spec: any, params: LegendEncodeParams) => EncodeEntry;
+  [part in keyof LegendEncode]?: (spec: EncodeEntry, params: LegendEncodeParams) => EncodeEntry;
 } = {
   symbols,
   gradient,

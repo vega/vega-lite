@@ -98,6 +98,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"Acceleration (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\")) + \"; \" + \"Horsepower (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\")) + \"; \" + \"All Cars\" + \": \" + (format(datum[\"__count\"], \"\"))"
+          },
           "x": [
             {
               "test": "!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"])",
@@ -129,6 +133,10 @@
       "encode": {
         "update": {
           "fill": {"value": "firebrick"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"Acceleration (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\")) + \"; \" + \"Horsepower (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\")) + \"; \" + \"Cars from Japan\" + \": \" + (format(datum[\"__count\"], \"\"))"
+          },
           "x": [
             {
               "test": "!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"])",

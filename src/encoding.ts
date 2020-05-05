@@ -7,6 +7,7 @@ import {
   Channel,
   CHANNELS,
   COLOR,
+  DESCRIPTION,
   DETAIL,
   FILL,
   FILLOPACITY,
@@ -314,6 +315,11 @@ export interface Encoding<F extends Field> {
    * The URL of an image mark.
    */
   url?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+
+  /**
+   * A text description of this mark for ARIA accessibility (SVG output only). For SVG output the `"aria-label"` attribute will be set to this description.
+   */
+  description?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
 
   /**
    * Order of the marks.
@@ -632,10 +638,11 @@ export function reduce<T, U extends Partial<Record<Channel, any>>>(
 export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): string[] {
   return keys(encoding).reduce((details, channel) => {
     switch (channel) {
-      // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, cursor should not cause lines to group
+      // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, aria label, cursor should not cause lines to group
       case X:
       case Y:
       case HREF:
+      case DESCRIPTION:
       case URL:
       case X2:
       case Y2:

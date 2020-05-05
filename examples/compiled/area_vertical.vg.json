@@ -40,6 +40,9 @@
           "interpolate": {"value": "monotone"},
           "orient": {"value": "horizontal"},
           "fill": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"Sum of Weight_in_lbs\" + \": \" + (format(datum[\"sum_Weight_in_lbs\"], \"\")) + \"; \" + \"Year (year)\" + \": \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+          },
           "x": {"scale": "x", "field": "sum_Weight_in_lbs"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "year_Year"},
@@ -75,6 +78,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -88,6 +92,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

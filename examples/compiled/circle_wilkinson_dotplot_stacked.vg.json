@@ -56,6 +56,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"data\" + \": \" + (isValid(datum[\"data\"]) ? datum[\"data\"] : \"\"+datum[\"data\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\")) + \"; \" + \"id\" + \": \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"])"
+          },
           "x": {"scale": "x", "field": "data"},
           "y": {
             "signal": "scale(\"y\", 0.5 * datum[\"__count_start\"] + 0.5 * datum[\"__count_end\"])"
@@ -91,6 +95,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

@@ -112,6 +112,10 @@
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Mean of precipitation\" + \": \" + (format(datum[\"mean_precipitation\"], \"\"))"
+              },
               "x": {"scale": "concat_0_x", "field": "month_date"},
               "width": {"scale": "concat_0_x", "band": 1},
               "y": {"scale": "concat_0_y", "field": "mean_precipitation"},
@@ -129,6 +133,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -180,6 +185,10 @@
             "update": {
               "fill": {"value": "transparent"},
               "stroke": {"value": "#4c78a8"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"temp_min (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_temp_min\"]) || !isFinite(+datum[\"bin_maxbins_10_temp_min\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_min\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_temp_min_end\"], \"\")) + \"; \" + \"temp_max (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_temp_max\"]) || !isFinite(+datum[\"bin_maxbins_10_temp_max\"]) ? \"null\" : format(datum[\"bin_maxbins_10_temp_max\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_temp_max_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"bin_maxbins_10_temp_min\"]) || !isFinite(+datum[\"bin_maxbins_10_temp_min\"])",

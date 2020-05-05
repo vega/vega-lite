@@ -312,13 +312,14 @@ function getMarkGroups(
     fromPrefix: string;
   } = {fromPrefix: ''}
 ) {
-  const mark = model.mark;
+  const {mark, markDef, config} = model;
 
-  const clip = getFirstDefined(model.markDef.clip, scaleClip(model), projectionClip(model));
-  const style = getStyles(model.markDef);
+  const clip = getFirstDefined(markDef.clip, scaleClip(model), projectionClip(model));
+  const style = getStyles(markDef);
   const key = model.encoding.key;
   const sort = getSort(model);
   const interactive = interactiveFlag(model);
+  const aria = getMarkPropOrConfig('aria', markDef, config);
 
   const postEncodingTransform = markCompiler[mark].postEncodingTransform
     ? markCompiler[mark].postEncodingTransform(model)
@@ -333,6 +334,7 @@ function getMarkGroups(
       ...(key ? {key: key.field} : {}),
       ...(sort ? {sort} : {}),
       ...(interactive ? interactive : {}),
+      ...(aria === false ? {aria} : {}),
       from: {data: opt.fromPrefix + model.requestDataName(MAIN)},
       encode: {
         update: markCompiler[mark].encodeEntry(model)

@@ -274,6 +274,9 @@
         "update": {
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"date (year-month)\" + \": \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Sum of count\" + \": \" + (format(datum[\"sum_count\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "yearmonth_date"},
           "y": {"scale": "y", "field": "sum_count"},
           "y2": {"scale": "y", "value": 0},
@@ -294,6 +297,9 @@
         "update": {
           "orient": {"value": "vertical"},
           "fill": {"value": "goldenrod"},
+          "description": {
+            "signal": "\"date (year-month)\" + \": \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Sum of count\" + \": \" + (format(datum[\"sum_count\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "yearmonth_date"},
           "y": {"scale": "y", "field": "sum_count"},
           "y2": {"scale": "y", "value": 0},
@@ -381,6 +387,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -394,6 +401,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

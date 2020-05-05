@@ -116,6 +116,10 @@
               "fill": {
                 "scale": "child__row_population_color",
                 "field": "population"
+              },
+              "ariaRoleDescription": {"value": "geoshape"},
+              "description": {
+                "signal": "\"geo\" + \": \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; \" + \"population\" + \": \" + (format(datum[\"population\"], \"\"))"
               }
             }
           },
@@ -158,6 +162,10 @@
               "fill": {
                 "scale": "child__row_engineers_color",
                 "field": "engineers"
+              },
+              "ariaRoleDescription": {"value": "geoshape"},
+              "description": {
+                "signal": "\"geo\" + \": \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; \" + \"engineers\" + \": \" + (format(datum[\"engineers\"], \"\"))"
               }
             }
           },
@@ -200,6 +208,10 @@
               "fill": {
                 "scale": "child__row_hurricanes_color",
                 "field": "hurricanes"
+              },
+              "ariaRoleDescription": {"value": "geoshape"},
+              "description": {
+                "signal": "\"geo\" + \": \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; \" + \"hurricanes\" + \": \" + (format(datum[\"hurricanes\"], \"\"))"
               }
             }
           },

@@ -181,7 +181,7 @@ export function pointPositionDefaultRef({
         return {...sizeRef, mult: 0.5};
       }
     }
-    // defautlPos === null
+    // defaultPos === null
     return undefined;
   };
 }

@@ -60,6 +60,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["tick", "errorbar-ticks"],
+      "aria": false,
       "from": {"data": "data_0"},
       "encode": {
         "update": {
@@ -85,6 +86,7 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["tick", "errorbar-ticks"],
+      "aria": false,
       "from": {"data": "data_1"},
       "encode": {
         "update": {
@@ -113,9 +115,13 @@
       "from": {"data": "data_0"},
       "encode": {
         "update": {
+          "ariaRoleDescription": {"value": "errorbar"},
           "stroke": {"value": "black"},
           "tooltip": {
             "signal": "{\"Ci1 of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Ci0 of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"Mean of Miles_per_Gallon\": format(datum[\"center_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%b %d, %Y')}"
+          },
+          "description": {
+            "signal": "\"Miles per Gallon (95% CIs)\" + \": \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; \" + \"upper_Miles_per_Gallon\" + \": \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; \" + \"Year (year)\" + \": \" + (timeFormat(datum[\"year_Year\"], '%b %d, %Y')) + \"; \" + \"Ci1 of Miles_per_Gallon\" + \": \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; \" + \"Ci0 of Miles_per_Gallon\" + \": \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; \" + \"Mean of Miles_per_Gallon\" + \": \" + (format(datum[\"center_Miles_per_Gallon\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": [
@@ -172,6 +178,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -185,6 +192,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

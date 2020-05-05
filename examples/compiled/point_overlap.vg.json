@@ -32,6 +32,7 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5}
         }

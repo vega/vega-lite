@@ -128,6 +128,9 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
+              "description": {
+                "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\")) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+              },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
               "defined": {
@@ -152,6 +155,10 @@
           ],
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "symbol"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\")) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
         }
@@ -188,6 +195,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "gray"},
+          "description": {
+            "signal": "\"Min of date\" + \": \" + (timeFormat(datum[\"min_date\"], '%b %d, %Y'))"
+          },
           "x": {"scale": "x", "field": "min_date"},
           "y": {"value": 0},
           "y2": {"field": {"group": "height"}}
@@ -208,6 +218,9 @@
           "dx": {"value": 5},
           "dy": {"value": -5},
           "fill": {"value": "black"},
+          "description": {
+            "signal": "\"price\" + \": \" + (format(datum[\"price\"], \"\")) + \"; \" + \"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "text": {"signal": "format(datum[\"price\"], \"\")"},
@@ -227,6 +240,9 @@
           "dx": {"value": 5},
           "dy": {"value": -5},
           "fill": {"scale": "color", "field": "symbol"},
+          "description": {
+            "signal": "\"price\" + \": \" + (format(datum[\"price\"], \"\")) + \"; \" + \"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+          },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
           "text": {"signal": "format(datum[\"price\"], \"\")"},
@@ -286,6 +302,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -299,6 +316,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

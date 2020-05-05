@@ -38,7 +38,8 @@ import {
   TimeScale,
   Title as VgTitle,
   Transforms as VgTransform,
-  UnionSortField as VgUnionSortField
+  UnionSortField as VgUnionSortField,
+  Mark
 } from 'vega';
 import {isArray} from 'vega-util';
 import {Value} from './channeldef';
@@ -354,6 +355,21 @@ const VG_MARK_CONFIG_INDEX: Flag<keyof MarkConfig> = {
 };
 
 export const VG_MARK_CONFIGS = keys(VG_MARK_CONFIG_INDEX);
+
+export const VG_MARK_INDEX: Flag<Mark['type']> = {
+  arc: 1,
+  area: 1,
+  group: 1,
+  image: 1,
+  line: 1,
+  path: 1,
+  rect: 1,
+  rule: 1,
+  shape: 1,
+  symbol: 1,
+  text: 1,
+  trail: 1
+};
 
 // Vega's cornerRadius channels.
 export const VG_CORNERRADIUS_CHANNELS = [

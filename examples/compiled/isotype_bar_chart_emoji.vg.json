@@ -118,6 +118,9 @@
             "update": {
               "baseline": {"value": "middle"},
               "fill": {"value": "black"},
+              "description": {
+                "signal": "\"rank\" + \": \" + (isValid(datum[\"rank\"]) ? datum[\"rank\"] : \"\"+datum[\"rank\"]) + \"; \" + \"animal\" + \": \" + (isValid(datum[\"animal\"]) ? datum[\"animal\"] : \"\"+datum[\"animal\"]) + \"; \" + \"emoji\" + \": \" + (isValid(datum[\"emoji\"]) ? datum[\"emoji\"] : \"\"+datum[\"emoji\"])"
+              },
               "x": {"scale": "x", "field": "rank"},
               "y": {"scale": "y", "field": "animal"},
               "text": {

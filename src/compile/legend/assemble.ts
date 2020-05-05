@@ -1,4 +1,5 @@
 import {Legend as VgLegend, LegendEncode} from 'vega';
+import {Config} from '../../config';
 import {LEGEND_SCALE_CHANNELS, SIGNAL_LEGEND_PROP_INDEX} from '../../legend';
 import {keys, stringify, vals} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
@@ -39,17 +40,23 @@ export function assembleLegends(model: Model): VgLegend[] {
     }
   }
 
-  return vals(legendByDomain)
+  const legends = vals(legendByDomain)
     .flat()
-    .map(assembleLegend)
+    .map(l => assembleLegend(l, model.config))
     .filter(l => l !== undefined);
+
+  return legends;
 }
 
-export function assembleLegend(legendCmpt: LegendComponent) {
+export function assembleLegend(legendCmpt: LegendComponent, config: Config) {
   const {disable, labelExpr, selections, ...legend} = legendCmpt.combine();
 
   if (disable) {
     return undefined;
+  }
+
+  if (config.aria === false && legend.aria == undefined) {
+    legend.aria = false;
   }
 
   if (legend.encode?.symbols) {

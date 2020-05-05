@@ -146,17 +146,22 @@ export function normalizeErrorBar(
       partName: 'ticks',
       mark: tick,
       positionPrefix: 'lower',
+      aria: false,
       extraEncoding: tooltipEncoding
     }),
     ...makeErrorBarPart({
       partName: 'ticks',
       mark: tick,
       positionPrefix: 'upper',
+      aria: false,
       extraEncoding: tooltipEncoding
     }),
     ...makeErrorBarPart({
       partName: 'rule',
-      mark: 'rule',
+      mark: {
+        type: 'rule',
+        ariaRoleDescription: 'errorbar'
+      },
       positionPrefix: 'lower',
       endPositionPrefix: 'upper',
       extraEncoding: tooltipEncoding

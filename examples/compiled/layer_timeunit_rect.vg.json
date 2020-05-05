@@ -73,6 +73,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"month\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Mean of precipitation\" + \": \" + (format(datum[\"mean_precipitation\"], \"\"))"
+          },
           "x2": [
             {
               "test": "!isValid(datum[\"month_date\"]) || !isFinite(+datum[\"month_date\"])",
@@ -101,6 +105,9 @@
         "update": {
           "opacity": {"value": 0.5},
           "fill": {"value": "grey"},
+          "description": {
+            "signal": "\"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"date_end (month)\" + \": \" + (timeFormat(datum[\"month_date_end\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+          },
           "x": {"scale": "x", "field": "month_date"},
           "x2": {"scale": "x", "field": "month_date_end"},
           "y": {"value": 0},
@@ -140,6 +147,7 @@
       "grid": true,
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -153,6 +161,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

@@ -40,6 +40,10 @@
           "shape": {"value": "wedge"},
           "fill": {"value": "transparent"},
           "stroke": {"scale": "color", "field": "dir"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"longitude\" + \": \" + (isValid(datum[\"longitude\"]) ? datum[\"longitude\"] : \"\"+datum[\"longitude\"]) + \"; \" + \"latitude\" + \": \" + (isValid(datum[\"latitude\"]) ? datum[\"latitude\"] : \"\"+datum[\"latitude\"]) + \"; \" + \"dir\" + \": \" + (format(datum[\"dir\"], \"\")) + \"; \" + \"speed\" + \": \" + (format(datum[\"speed\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "longitude"},
           "y": {"scale": "y", "field": "latitude"},
           "size": {"scale": "size", "field": "speed"},

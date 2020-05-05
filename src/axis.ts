@@ -275,13 +275,9 @@ export interface AxisPropsWithConditionAndSignal {
   labelFontSize?: BaseAxisNoValueRefs['labelFontSize'] | ConditionalAxisNumber;
   labelFontStyle?: BaseAxisNoValueRefs['labelFontStyle'] | ConditionalAxisLabelFontStyle;
   labelFontWeight?: BaseAxisNoValueRefs['labelFontWeight'] | ConditionalAxisLabelFontWeight;
-
   labelLineHeight?: BaseAxisNoValueRefs['labelLineHeight'] | ConditionalAxisNumber | SignalRef;
-
   labelOpacity?: BaseAxisNoValueRefs['labelOpacity'] | ConditionalAxisNumber;
-
   labelOffset?: BaseAxisNoValueRefs['labelOffset'] | ConditionalAxisNumber | SignalRef;
-
   labelPadding?: BaseAxisNoValueRefs['labelPadding'] | ConditionalAxisNumber;
   gridColor?: BaseAxisNoValueRefs['gridColor'] | ConditionalAxisColor | SignalRef;
   gridDash?: BaseAxisNoValueRefs['gridDash'] | ConditionalAxisNumberArray;
@@ -358,11 +354,10 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   labelFontSize: 'main',
   labelFontStyle: 'main',
   labelFontWeight: 'main',
-
   labelLimit: 'main',
   labelLineHeight: 'main',
-  labelOpacity: 'main',
   labelOffset: 'main',
+  labelOpacity: 'main',
   labelOverlap: 'main',
   labelPadding: 'main',
   labels: 'main',
@@ -516,8 +511,8 @@ export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis)> = {
   titlePadding: 1,
   titleX: 1,
   titleY: 1,
-  values: 1,
   translate: 1,
+  values: 1,
   zindex: 1
 };
 

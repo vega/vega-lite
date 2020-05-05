@@ -16,7 +16,12 @@
   ],
   "layer": [
     {
-      "mark": {"type": "rule", "invalid": null, "style": "boxplot-rule"},
+      "mark": {
+        "type": "rule",
+        "invalid": null,
+        "style": "boxplot-rule",
+        "aria": false
+      },
       "encoding": {
         "x": {
           "field": "lower_whisker_people",
@@ -56,7 +61,12 @@
       }
     },
     {
-      "mark": {"type": "rule", "invalid": null, "style": "boxplot-rule"},
+      "mark": {
+        "type": "rule",
+        "invalid": null,
+        "style": "boxplot-rule",
+        "aria": false
+      },
       "encoding": {
         "x": {
           "field": "upper_box_people",
@@ -101,7 +111,8 @@
         "size": 14,
         "orient": "horizontal",
         "invalid": null,
-        "style": "boxplot-box"
+        "style": "boxplot-box",
+        "aria": false
       },
       "encoding": {
         "x": {
@@ -148,6 +159,7 @@
         "invalid": null,
         "size": 14,
         "orient": "vertical",
+        "ariaRoleDescription": "box",
         "style": "boxplot-median"
       },
       "encoding": {

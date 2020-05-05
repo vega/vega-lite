@@ -8,3 +8,4 @@ export {pointOrRangePosition, rangePosition} from './position-range';
 export {rectBinPosition, rectPosition} from './position-rect';
 export {text} from './text';
 export {tooltip, tooltipRefForEncoding} from './tooltip';
+export {aria} from './aria';

@@ -42,6 +42,10 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "Origin"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"Sum of Acceleration\" + \": \" + (format(datum[\"sum_Acceleration\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+          },
           "x": {"scale": "x", "field": "sum_Acceleration_end"},
           "x2": {"scale": "x", "field": "sum_Acceleration_start"},
           "yc": {"signal": "height", "mult": 0.5},
@@ -77,6 +81,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

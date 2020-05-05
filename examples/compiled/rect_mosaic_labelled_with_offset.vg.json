@@ -146,6 +146,9 @@
               "align": {"value": "center"},
               "baseline": {"value": "middle"},
               "fill": {"scale": "color", "field": "Origin"},
+              "description": {
+                "signal": "\"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+              },
               "x": {"scale": "x", "field": "min_xc"},
               "y": {"signal": "concat_0_height", "mult": 0.5},
               "text": {
@@ -191,6 +194,9 @@
               "tooltip": {
                 "signal": "{\"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
               },
+              "description": {
+                "signal": "\"nx\" + \": \" + (format(datum[\"nx\"], \"\")) + \"; \" + \"nx2\" + \": \" + (format(datum[\"nx2\"], \"\")) + \"; \" + \"ny\" + \": \" + (format(datum[\"ny\"], \"\")) + \"; \" + \"ny2\" + \": \" + (format(datum[\"ny2\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; \" + \"Cylinders\" + \": \" + (format(datum[\"Cylinders\"], \"\"))"
+              },
               "x": {"scale": "x", "field": "nx"},
               "x2": {"scale": "x", "field": "nx2"},
               "y": {"scale": "concat_1_y", "field": "ny"},
@@ -207,6 +213,9 @@
             "update": {
               "baseline": {"value": "middle"},
               "fill": {"value": "black"},
+              "description": {
+                "signal": "\"xc\" + \": \" + (format(datum[\"xc\"], \"\")) + \"; \" + \"Cylinders\" + \": \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
+              },
               "x": {"scale": "x", "field": "xc"},
               "y": {"scale": "concat_1_y", "field": "yc"},
               "text": {

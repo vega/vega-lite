@@ -48,6 +48,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"scale": "color", "field": "digit"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"longitude\" + \": \" + (format(datum[\"longitude\"], \"\")) + \"; \" + \"latitude\" + \": \" + (format(datum[\"latitude\"], \"\")) + \"; \" + \"digit\" + \": \" + (isValid(datum[\"digit\"]) ? datum[\"digit\"] : \"\"+datum[\"digit\"])"
+          },
           "x": {"field": "x"},
           "y": {"field": "y"},
           "size": {"value": 1},

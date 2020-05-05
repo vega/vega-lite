@@ -96,6 +96,10 @@
         "update": {
           "fill": {"value": "#aaa"},
           "stroke": {"value": "#999"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"year\" + \": \" + (format(datum[\"year\"], \"d\")) + \"; \" + \"year_end\" + \": \" + (format(datum[\"year_end\"], \"\")) + \"; \" + \"wheat\" + \": \" + (format(datum[\"wheat\"], \"\"))"
+          },
           "x": [
             {
               "test": "!isValid(datum[\"year\"]) || !isFinite(+datum[\"year\"])",
@@ -125,6 +129,9 @@
           "opacity": {"value": 0.5},
           "stroke": {"value": "#000"},
           "strokeWidth": {"value": 0.6},
+          "description": {
+            "signal": "\"year\" + \": \" + (format(datum[\"year\"], \"\"))"
+          },
           "x": [
             {
               "test": "!isValid(datum[\"year\"]) || !isFinite(+datum[\"year\"])",
@@ -148,6 +155,9 @@
           "opacity": {"value": 0.7},
           "orient": {"value": "vertical"},
           "fill": {"value": "#a4cedb"},
+          "description": {
+            "signal": "\"year\" + \": \" + (format(datum[\"year\"], \"\")) + \"; \" + \"wages\" + \": \" + (format(datum[\"wages\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages"},
           "y2": {"scale": "y", "value": 0},
@@ -167,6 +177,9 @@
         "update": {
           "opacity": {"value": 0.7},
           "stroke": {"value": "#000"},
+          "description": {
+            "signal": "\"year\" + \": \" + (format(datum[\"year\"], \"\")) + \"; \" + \"wages\" + \": \" + (format(datum[\"wages\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages"},
           "defined": {
@@ -184,6 +197,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#EE8182"},
+          "description": {
+            "signal": "\"year\" + \": \" + (format(datum[\"year\"], \"\")) + \"; \" + \"wages\" + \": \" + (format(datum[\"wages\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages", "offset": -2},
           "defined": {
@@ -201,6 +217,10 @@
         "update": {
           "stroke": {"value": "#000"},
           "fill": {"scale": "fill", "field": "commonwealth"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"start\" + \": \" + (format(datum[\"start\"], \"\")) + \"; \" + \"end\" + \": \" + (format(datum[\"end\"], \"\")) + \"; \" + \"y\" + \": \" + (format(datum[\"y\"], \"\")) + \"; \" + \"offset\" + \": \" + (format(datum[\"offset\"], \"\")) + \"; \" + \"commonwealth\" + \": \" + (isValid(datum[\"commonwealth\"]) ? datum[\"commonwealth\"] : \"\"+datum[\"commonwealth\"])"
+          },
           "x": [
             {
               "test": "!isValid(datum[\"start\"]) || !isFinite(+datum[\"start\"])",
@@ -231,6 +251,9 @@
           "fontSize": {"value": 9},
           "fontStyle": {"value": "italic"},
           "fill": {"value": "black"},
+          "description": {
+            "signal": "\"x\" + \": \" + (format(datum[\"x\"], \"\")) + \"; \" + \"off2\" + \": \" + (format(datum[\"off2\"], \"\")) + \"; \" + \"name\" + \": \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"])"
+          },
           "x": [
             {
               "test": "!isValid(datum[\"x\"]) || !isFinite(+datum[\"x\"])",
@@ -299,6 +322,7 @@
       "grid": true,
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -312,6 +336,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

@@ -236,6 +236,13 @@ export interface Config
   lineBreak?: string | SignalRef;
 
   /**
+   * A boolean flag indicating if ARIA default attributes should be included for marks and guides (SVG output only). If false, the `"aria-hidden"` attribute will be set for all guides, removing them from the ARIA accessibility tree and Vega-Lite will not generate default descriptions for marks.
+   *
+   * __Default value:__ `true`.
+   */
+  aria?: boolean;
+
+  /**
    * @hidden
    */
   signals?: (InitSignal | NewSignal)[];

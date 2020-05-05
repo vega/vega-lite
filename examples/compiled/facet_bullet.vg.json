@@ -257,6 +257,10 @@
           "encode": {
             "update": {
               "fill": {"value": "#eee"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"ranges[2]\" + \": \" + (format(datum[\"ranges.2\"], \"\"))"
+              },
               "x": {"scale": "child_x", "field": "ranges\\.2"},
               "x2": {"scale": "child_x", "value": 0},
               "yc": {"signal": "child_height", "mult": 0.5},
@@ -272,6 +276,10 @@
           "encode": {
             "update": {
               "fill": {"value": "#ddd"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"ranges[1]\" + \": \" + (format(datum[\"ranges.1\"], \"\"))"
+              },
               "x": {"scale": "child_x", "field": "ranges\\.1"},
               "x2": {"scale": "child_x", "value": 0},
               "yc": {"signal": "child_height", "mult": 0.5},
@@ -287,6 +295,10 @@
           "encode": {
             "update": {
               "fill": {"value": "#ccc"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"ranges[0]\" + \": \" + (format(datum[\"ranges.0\"], \"\"))"
+              },
               "x": {"scale": "child_x", "field": "ranges\\.0"},
               "x2": {"scale": "child_x", "value": 0},
               "yc": {"signal": "child_height", "mult": 0.5},
@@ -302,6 +314,10 @@
           "encode": {
             "update": {
               "fill": {"value": "lightsteelblue"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"measures[1]\" + \": \" + (format(datum[\"measures.1\"], \"\"))"
+              },
               "x": {"scale": "child_x", "field": "measures\\.1"},
               "x2": {"scale": "child_x", "value": 0},
               "yc": {"signal": "child_height", "mult": 0.5},
@@ -317,6 +333,10 @@
           "encode": {
             "update": {
               "fill": {"value": "steelblue"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"measures[0]\" + \": \" + (format(datum[\"measures.0\"], \"\"))"
+              },
               "x": {"scale": "child_x", "field": "measures\\.0"},
               "x2": {"scale": "child_x", "value": 0},
               "yc": {"signal": "child_height", "mult": 0.5},
@@ -333,6 +353,10 @@
             "update": {
               "opacity": {"value": 0.7},
               "fill": {"value": "black"},
+              "ariaRoleDescription": {"value": "tick"},
+              "description": {
+                "signal": "\"markers[0]\" + \": \" + (format(datum[\"markers.0\"], \"\"))"
+              },
               "xc": {"scale": "child_x", "field": "markers\\.0"},
               "yc": {"signal": "child_height", "mult": 0.5},
               "height": {"value": 15},
@@ -368,6 +392,7 @@
           "tickCount": {"signal": "ceil(child_width/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

@@ -46,6 +46,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#ddd"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"Major_Genre\" + \": \" + (isValid(datum[\"Major_Genre\"]) ? datum[\"Major_Genre\"] : \"\"+datum[\"Major_Genre\"]) + \"; \" + \"Mean IMDB Ratings\" + \": \" + (format(datum[\"mean_IMDB_Rating\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "mean_IMDB_Rating"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "Major_Genre"},
@@ -62,6 +66,9 @@
         "update": {
           "align": {"value": "left"},
           "fill": {"value": "black"},
+          "description": {
+            "signal": "\"Major_Genre\" + \": \" + (isValid(datum[\"Major_Genre\"]) ? datum[\"Major_Genre\"] : \"\"+datum[\"Major_Genre\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+          },
           "x": {"value": 5},
           "y": {"scale": "y", "field": "Major_Genre", "band": 0.5},
           "text": {
@@ -105,6 +112,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

@@ -71,6 +71,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"Mean of aggregate_gross\" + \": \" + (format(datum[\"mean_aggregate_gross\"], \"\")) + \"; \" + \"ranked_director\" + \": \" + (isValid(datum[\"ranked_director\"]) ? datum[\"ranked_director\"] : \"\"+datum[\"ranked_director\"])"
+          },
           "x": {"scale": "x", "field": "mean_aggregate_gross"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "ranked_director"},
@@ -114,6 +118,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

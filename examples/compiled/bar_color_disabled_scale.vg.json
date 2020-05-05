@@ -41,6 +41,10 @@
       "encode": {
         "update": {
           "fill": {"field": "color"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"color\" + \": \" + (isValid(datum[\"color\"]) ? datum[\"color\"] : \"\"+datum[\"color\"]) + \"; \" + \"b\" + \": \" + (format(datum[\"b\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "color"},
           "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "b"},
@@ -76,6 +80,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

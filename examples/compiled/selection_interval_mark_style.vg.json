@@ -574,6 +574,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "__count"},
+          "description": {
+            "signal": "\"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; \" + \"Cylinders\" + \": \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "Origin"},

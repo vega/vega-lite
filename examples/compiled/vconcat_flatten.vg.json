@@ -158,6 +158,10 @@
                 },
                 {"value": "grey"}
               ],
+              "ariaRoleDescription": {"value": "circle"},
+              "description": {
+                "signal": "\"ra\" + \": \" + (format(datum[\"ra\"], \"\")) + \"; \" + \"dec\" + \": \" + (format(datum[\"dec\"], \"\"))"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"ra\"]) || !isFinite(+datum[\"ra\"])",
@@ -181,6 +185,7 @@
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -194,6 +199,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -259,6 +265,9 @@
               "encode": {
                 "update": {
                   "stroke": {"value": "steelblue"},
+                  "description": {
+                    "signal": "\"lc.time\" + \": \" + (format(datum[\"lc.time\"], \"\")) + \"; \" + \"lc.mag\" + \": \" + (format(datum[\"lc.mag\"], \"\")) + \"; \" + \"id\" + \": \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"])"
+                  },
                   "x": {"scale": "concat_1_x", "field": "lc\\.time"},
                   "y": {"scale": "concat_1_y", "field": "lc\\.mag"},
                   "defined": {
@@ -279,6 +288,7 @@
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -292,6 +302,7 @@
           "tickCount": {"signal": "ceil(childHeight/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

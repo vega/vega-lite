@@ -83,6 +83,9 @@
           "tooltip": {
             "signal": "{\"date (year-month-date)\": timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"temp_max\": format(datum[\"temp_max\"], \"\"), \"temp_min\": format(datum[\"temp_min\"], \"\")}"
           },
+          "description": {
+            "signal": "\"date (year-month-date)\" + \": \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"temp_max\" + \": \" + (format(datum[\"temp_max\"], \"\")) + \"; \" + \"temp_min\" + \": \" + (format(datum[\"temp_min\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "yearmonthdate_date"},
           "y": {"scale": "y", "field": "temp_max"},
           "defined": {
@@ -103,6 +106,9 @@
           "stroke": {"value": "red"},
           "tooltip": {
             "signal": "{\"date (year-month-date)\": timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"temp_max\": format(datum[\"temp_max\"], \"\"), \"temp_min\": format(datum[\"temp_min\"], \"\")}"
+          },
+          "description": {
+            "signal": "\"date (year-month-date)\" + \": \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"temp_max\" + \": \" + (format(datum[\"temp_max\"], \"\")) + \"; \" + \"temp_min\" + \": \" + (format(datum[\"temp_min\"], \"\"))"
           },
           "x": {"scale": "x", "field": "yearmonthdate_date"},
           "y": {"scale": "y", "field": "temp_min"},
@@ -129,6 +135,9 @@
           ],
           "tooltip": {
             "signal": "{\"date (year-month-date)\": timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"temp_max\": format(datum[\"temp_max\"], \"\"), \"temp_min\": format(datum[\"temp_min\"], \"\")}"
+          },
+          "description": {
+            "signal": "\"date (year-month-date)\" + \": \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"temp_max\" + \": \" + (format(datum[\"temp_max\"], \"\")) + \"; \" + \"temp_min\" + \": \" + (format(datum[\"temp_min\"], \"\"))"
           },
           "x": {"scale": "x", "field": "yearmonthdate_date"},
           "y": {"value": 0},
@@ -167,6 +176,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -180,6 +190,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

@@ -44,7 +44,15 @@
       "type": "shape",
       "style": ["geoshape"],
       "from": {"data": "source_0"},
-      "encode": {"update": {"fill": {"scale": "color", "field": "rate"}}},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "rate"},
+          "ariaRoleDescription": {"value": "geoshape"},
+          "description": {
+            "signal": "\"rate\" + \": \" + (format(datum[\"rate\"], \"\"))"
+          }
+        }
+      },
       "transform": [{"type": "geoshape", "projection": "projection"}]
     }
   ],

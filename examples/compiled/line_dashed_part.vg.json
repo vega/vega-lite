@@ -54,6 +54,9 @@
             "update": {
               "stroke": {"value": "#4c78a8"},
               "strokeDash": {"scale": "strokeDash", "field": "predicted"},
+              "description": {
+                "signal": "\"a\" + \": \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; \" + \"b\" + \": \" + (format(datum[\"b\"], \"\")) + \"; \" + \"predicted\" + \": \" + (isValid(datum[\"predicted\"]) ? datum[\"predicted\"] : \"\"+datum[\"predicted\"])"
+              },
               "x": {"scale": "x", "field": "a"},
               "y": {"scale": "y", "field": "b"},
               "defined": {
@@ -97,6 +100,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

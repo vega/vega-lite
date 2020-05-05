@@ -43,6 +43,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"rank\" + \": \" + (isValid(datum[\"rank\"]) ? datum[\"rank\"] : \"\"+datum[\"rank\"]) + \"; \" + \"options.price\" + \": \" + (format(datum[\"options.price\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "rank"},
           "y": {"scale": "y", "field": "options\\.price"},
           "defined": {
@@ -78,6 +81,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

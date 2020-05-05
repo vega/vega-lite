@@ -144,6 +144,10 @@
             "update": {
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "symbol"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"date (quarter)\" + \": \" + (timeFormat(datum[\"quarter_date\"], timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Mean of price\" + \": \" + (format(datum[\"mean_price\"], \"\")) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+              },
               "x": {"scale": "x", "field": "quarter_date"},
               "y": {"scale": "y", "field": "mean_price"}
             }
@@ -159,6 +163,7 @@
           "tickCount": {"signal": "ceil(child_height/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

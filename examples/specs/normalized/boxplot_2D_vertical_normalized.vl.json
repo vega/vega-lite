@@ -58,7 +58,8 @@
               "mark": {
                 "type": "rule",
                 "invalid": null,
-                "style": "boxplot-rule"
+                "style": "boxplot-rule",
+                "aria": false
               },
               "encoding": {
                 "y": {
@@ -87,7 +88,8 @@
               "mark": {
                 "type": "rule",
                 "invalid": null,
-                "style": "boxplot-rule"
+                "style": "boxplot-rule",
+                "aria": false
               },
               "encoding": {
                 "y": {
@@ -136,7 +138,8 @@
             "size": 14,
             "orient": "vertical",
             "invalid": null,
-            "style": "boxplot-box"
+            "style": "boxplot-box",
+            "aria": false
           },
           "encoding": {
             "y": {
@@ -184,6 +187,7 @@
             "invalid": null,
             "size": 14,
             "orient": "horizontal",
+            "ariaRoleDescription": "box",
             "style": "boxplot-median"
           },
           "encoding": {

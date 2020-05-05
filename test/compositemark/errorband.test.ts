@@ -50,7 +50,8 @@ describe('normalizeErrorBand', () => {
           mark: {
             opacity: 0.3,
             type: 'area',
-            style: 'errorband-band'
+            style: 'errorband-band',
+            ariaRoleDescription: 'errorband'
           },
           encoding: {
             y: {

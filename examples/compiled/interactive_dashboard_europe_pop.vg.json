@@ -591,6 +591,10 @@
                 },
                 {"value": "goldenrod"}
               ],
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"Country\" + \": \" + (isValid(datum[\"Country\"]) ? datum[\"Country\"] : \"\"+datum[\"Country\"]) + \"; \" + \"Population_ages_15_64_of_total\" + \": \" + (format(datum[\"Population_ages_15_64_of_total\"], \"\"))"
+              },
               "x": {
                 "scale": "concat_0_x",
                 "field": "Population_ages_15_64_of_total"
@@ -653,6 +657,7 @@
           "tickCount": {"signal": "ceil(concat_0_width/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -908,6 +913,10 @@
                 },
                 {"value": "goldenrod"}
               ],
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"Country\" + \": \" + (isValid(datum[\"Country\"]) ? datum[\"Country\"] : \"\"+datum[\"Country\"]) + \"; \" + \"Population_ages_65_and_above_of_total\" + \": \" + (format(datum[\"Population_ages_65_and_above_of_total\"], \"\"))"
+              },
               "x": {
                 "scale": "concat_1_x",
                 "field": "Population_ages_65_and_above_of_total"
@@ -970,6 +979,7 @@
           "tickCount": {"signal": "ceil(concat_1_width/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1304,6 +1314,10 @@
                 },
                 {"value": "goldenrod"}
               ],
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"Population_ages_15_64_of_total\" + \": \" + (format(datum[\"Population_ages_15_64_of_total\"], \"\")) + \"; \" + \"Population_ages_65_and_above_of_total\" + \": \" + (format(datum[\"Population_ages_65_and_above_of_total\"], \"\"))"
+              },
               "x": [
                 {
                   "test": "!isValid(datum[\"Population_ages_65_and_above_of_total\"]) || !isFinite(+datum[\"Population_ages_65_and_above_of_total\"])",
@@ -1382,6 +1396,7 @@
           "tickCount": {"signal": "ceil(concat_2_width/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -1395,6 +1410,7 @@
           "tickCount": {"signal": "ceil(concat_2_height/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

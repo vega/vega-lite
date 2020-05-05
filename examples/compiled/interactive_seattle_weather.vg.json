@@ -317,6 +317,10 @@
                 },
                 {"value": "lightgray"}
               ],
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"Weather\" + \": \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"]) + \"; \" + \"Precipitation\" + \": \" + (format(datum[\"precipitation\"], \"\")) + \"; \" + \"Date\" + \": \" + (timeFormat(datum[\"monthdate_date\"], '%b')) + \"; \" + \"Maximum Daily Temperature (C)\" + \": \" + (format(datum[\"temp_max\"], \"\"))"
+              },
               "x": {"scale": "concat_0_x", "field": "monthdate_date"},
               "y": {"scale": "concat_0_y", "field": "temp_max"},
               "size": {"scale": "size", "field": "precipitation"}
@@ -375,6 +379,7 @@
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -388,6 +393,7 @@
           "tickCount": {"signal": "ceil(concat_0_height/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,
@@ -485,6 +491,10 @@
                 },
                 {"value": "lightgray"}
               ],
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"weather\" + \": \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\")) + \"; \" + \"Weather\" + \": \" + (isValid(datum[\"weather\"]) ? datum[\"weather\"] : \"\"+datum[\"weather\"])"
+              },
               "x": {"scale": "concat_1_x", "field": "__count"},
               "x2": {"scale": "concat_1_x", "value": 0},
               "y": {"scale": "concat_1_y", "field": "weather"},
@@ -502,6 +512,7 @@
           "tickCount": {"signal": "ceil(width/40)"},
           "domain": false,
           "labels": false,
+          "aria": false,
           "maxExtent": 0,
           "minExtent": 0,
           "ticks": false,

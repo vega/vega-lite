@@ -57,6 +57,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "darkred"},
+          "description": {
+            "signal": "\"Cylinders\" + \": \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; \" + \"Max of Horsepower\" + \": \" + (format(datum[\"max_Horsepower\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "y": {"scale": "y", "field": "max_Horsepower"},
           "defined": {
@@ -74,6 +77,10 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"value": "darkred"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Cylinders\" + \": \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; \" + \"Max of Horsepower\" + \": \" + (format(datum[\"max_Horsepower\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "y": {"scale": "y", "field": "max_Horsepower"}
         }
@@ -88,6 +95,9 @@
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"Cylinders\" + \": \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; \" + \"Min of Horsepower\" + \": \" + (format(datum[\"min_Horsepower\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "y": {"scale": "y", "field": "min_Horsepower"},
           "defined": {
@@ -105,6 +115,10 @@
         "update": {
           "opacity": {"value": 1},
           "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Cylinders\" + \": \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; \" + \"Min of Horsepower\" + \": \" + (format(datum[\"min_Horsepower\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "y": {"scale": "y", "field": "min_Horsepower"}
         }
@@ -151,6 +165,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

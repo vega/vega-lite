@@ -61,6 +61,9 @@
           "tooltip": {
             "signal": "{\"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"], \"Cylinders\": format(datum[\"Cylinders\"], \"\")}"
           },
+          "description": {
+            "signal": "\"x\" + \": \" + (format(datum[\"x\"], \"\")) + \"; \" + \"x2\" + \": \" + (format(datum[\"x2\"], \"\")) + \"; \" + \"y\" + \": \" + (format(datum[\"y\"], \"\")) + \"; \" + \"y2\" + \": \" + (format(datum[\"y2\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; \" + \"Cylinders\" + \": \" + (format(datum[\"Cylinders\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "x"},
           "x2": {"scale": "x", "field": "x2"},
           "y": {"scale": "y", "field": "y"},

@@ -111,6 +111,9 @@
                 },
                 {"value": 0.2}
               ],
+              "description": {
+                "signal": "\"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; \" + \"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\"))"
+              },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
               "defined": {
@@ -162,6 +165,9 @@
                 },
                 {"value": 0.2}
               ],
+              "description": {
+                "signal": "\"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; \" + \"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\"))"
+              },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
               "defined": {
@@ -195,6 +201,10 @@
             },
             {"value": 0.2}
           ],
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; \" + \"Max of date\" + \": \" + (timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; \" + \"price for max date\" + \": \" + (format(datum[\"argmax_date\"].price, \"\"))"
+          },
           "x": {"scale": "x", "field": "max_date"},
           "y": {"scale": "y", "field": "argmax_date.price"},
           "shape": {"value": "circle"}
@@ -226,6 +236,9 @@
             },
             {"value": 0.2}
           ],
+          "description": {
+            "signal": "\"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; \" + \"Max of date\" + \": \" + (timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; \" + \"price for max date\" + \": \" + (format(datum[\"argmax_date\"].price, \"\"))"
+          },
           "x": {"scale": "x", "field": "max_date"},
           "y": {"scale": "y", "field": "argmax_date.price"},
           "text": {
@@ -283,6 +296,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -296,6 +310,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

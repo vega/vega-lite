@@ -54,6 +54,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "max_temp"},
+          "description": {
+            "signal": "\"Day\" + \": \" + (timeFormat(datum[\"date_date\"], '%e')) + \"; \" + \"Month\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Max of temp\" + \": \" + (format(datum[\"max_temp\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "date_date"},
           "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "month_date"},

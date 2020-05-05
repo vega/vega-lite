@@ -47,6 +47,10 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"scale": "color", "field": "b"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"b\" + \": \" + (format(datum[\"b\"], \"\")) + \"; \" + \"Quantile\" + \": \" + (format(datum[\"b\"], \"\"))"
+          },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"scale": "y", "field": "b"},
           "size": {"scale": "size", "field": "b"},

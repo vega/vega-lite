@@ -58,6 +58,9 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "opacity": {"value": 0.6},
+          "description": {
+            "signal": "\"x\" + \": \" + (format(datum[\"x\"], \"\")) + \"; \" + \"y\" + \": \" + (format(datum[\"y\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "y"},
           "y2": {"scale": "y", "value": 0},
@@ -79,6 +82,9 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "opacity": {"value": 0.3},
+          "description": {
+            "signal": "\"x\" + \": \" + (format(datum[\"x\"], \"\")) + \"; \" + \"y\" + \": \" + (format(datum[\"ny\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "ny"},
           "y2": {"scale": "y", "value": 0},
@@ -121,6 +127,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -134,6 +141,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

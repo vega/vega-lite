@@ -55,6 +55,9 @@
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "site"},
+              "description": {
+                "signal": "\"year\" + \": \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]) + \"; \" + \"Median of yield\" + \": \" + (format(datum[\"median_yield\"], \"\")) + \"; \" + \"site\" + \": \" + (isValid(datum[\"site\"]) ? datum[\"site\"] : \"\"+datum[\"site\"])"
+              },
               "x": {"scale": "x", "field": "year"},
               "y": {"scale": "y", "field": "median_yield"},
               "defined": {
@@ -98,6 +101,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

@@ -36,6 +36,10 @@
         "update": {
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Mean of Horsepower\" + \": \" + (format(datum[\"mean_Horsepower\"], \"\")) + \"; \" + \"Mean of Displacement\" + \": \" + (format(datum[\"mean_Displacement\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+          },
           "x": {"scale": "x", "field": "mean_Horsepower"},
           "y": {"scale": "y", "field": "mean_Displacement"}
         }
@@ -69,6 +73,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -82,6 +87,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

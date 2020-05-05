@@ -28,7 +28,7 @@
       }
     },
     {
-      "mark": {"type": "text", "align": "right", "xOffset": -4},
+      "mark": {"type": "text", "align": "right", "xOffset": -4, "aria": false},
       "encoding": {
         "y": {"field": "name", "type": "ordinal", "sort": "-x", "title": null},
         "x": {"field": "count", "type": "quantitative", "title": null},

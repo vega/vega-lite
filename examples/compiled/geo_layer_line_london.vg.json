@@ -59,7 +59,8 @@
         "update": {
           "stroke": {"value": "white"},
           "strokeWidth": {"value": 2},
-          "fill": {"value": "#eee"}
+          "fill": {"value": "#eee"},
+          "ariaRoleDescription": {"value": "geoshape"}
         }
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]
@@ -73,6 +74,9 @@
         "update": {
           "fill": {"value": "black"},
           "opacity": {"value": 0.6},
+          "description": {
+            "signal": "\"cx\" + \": \" + (format(datum[\"cx\"], \"\")) + \"; \" + \"cy\" + \": \" + (format(datum[\"cy\"], \"\")) + \"; \" + \"bLabel\" + \": \" + (isValid(datum[\"bLabel\"]) ? datum[\"bLabel\"] : \"\"+datum[\"bLabel\"])"
+          },
           "x": {"field": "layer_1_x"},
           "y": {"field": "layer_1_y"},
           "text": {
@@ -93,7 +97,11 @@
         "update": {
           "strokeWidth": {"value": 2},
           "fill": {"value": "transparent"},
-          "stroke": {"scale": "color", "field": "id"}
+          "stroke": {"scale": "color", "field": "id"},
+          "ariaRoleDescription": {"value": "geoshape"},
+          "description": {
+            "signal": "\"id\" + \": \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"])"
+          }
         }
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]

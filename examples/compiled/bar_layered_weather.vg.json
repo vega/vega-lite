@@ -138,6 +138,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#ccc"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"id\" + \": \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; \" + \"Temperature (F)\" + \": \" + (format(datum[\"record.low\"], \"\")) + \"; \" + \"record.high\" + \": \" + (format(datum[\"record.high\"], \"\"))"
+          },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
           "y": [
@@ -165,6 +169,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#999"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"id\" + \": \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; \" + \"normal.low\" + \": \" + (format(datum[\"normal.low\"], \"\")) + \"; \" + \"normal.high\" + \": \" + (format(datum[\"normal.high\"], \"\"))"
+          },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
           "y": [
@@ -192,6 +200,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#000"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"id\" + \": \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; \" + \"actual.low\" + \": \" + (format(datum[\"actual.low\"], \"\")) + \"; \" + \"actual.high\" + \": \" + (format(datum[\"actual.high\"], \"\"))"
+          },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
           "y": [
@@ -219,6 +231,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#000"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"id\" + \": \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; \" + \"forecast.low.low\" + \": \" + (format(datum[\"forecast.low.low\"], \"\")) + \"; \" + \"forecast.low.high\" + \": \" + (format(datum[\"forecast.low.high\"], \"\"))"
+          },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
           "y": [
@@ -246,6 +262,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#000"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"id\" + \": \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; \" + \"forecast.low.high\" + \": \" + (format(datum[\"forecast.low.high\"], \"\")) + \"; \" + \"forecast.high.low\" + \": \" + (format(datum[\"forecast.high.low\"], \"\"))"
+          },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 3},
           "y": [
@@ -273,6 +293,10 @@
       "encode": {
         "update": {
           "fill": {"value": "#000"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"id\" + \": \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; \" + \"forecast.high.low\" + \": \" + (format(datum[\"forecast.high.low\"], \"\")) + \"; \" + \"forecast.high.high\" + \": \" + (format(datum[\"forecast.high.high\"], \"\"))"
+          },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
           "y": [
@@ -302,6 +326,9 @@
           "align": {"value": "center"},
           "baseline": {"value": "bottom"},
           "fill": {"value": "black"},
+          "description": {
+            "signal": "\"id\" + \": \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; \" + \"day\" + \": \" + (isValid(datum[\"day\"]) ? datum[\"day\"] : \"\"+datum[\"day\"])"
+          },
           "x": {"scale": "x", "field": "id", "band": 0.5},
           "y": {"value": -5},
           "text": {
@@ -349,6 +376,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

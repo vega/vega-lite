@@ -43,6 +43,10 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"a b\" + \": \" + (format(datum[\"a b\"], \"\")) + \"; \" + \"c d\" + \": \" + (format(datum[\"c d\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "a b"},
           "y": {"scale": "y", "field": "c d"}
         }
@@ -76,6 +80,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -89,6 +94,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

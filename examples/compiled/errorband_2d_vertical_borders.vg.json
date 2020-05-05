@@ -44,11 +44,15 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
+          "ariaRoleDescription": {"value": "errorband"},
           "opacity": {"value": 0.3},
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "tooltip": {
             "signal": "{\"Ci1 of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Ci0 of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"Mean of Miles_per_Gallon\": format(datum[\"center_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%b %d, %Y')}"
+          },
+          "description": {
+            "signal": "\"Miles per Gallon (95% CIs)\" + \": \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; \" + \"upper_Miles_per_Gallon\" + \": \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; \" + \"Year (year)\" + \": \" + (timeFormat(datum[\"year_Year\"], '%b %d, %Y')) + \"; \" + \"Ci1 of Miles_per_Gallon\" + \": \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; \" + \"Ci0 of Miles_per_Gallon\" + \": \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; \" + \"Mean of Miles_per_Gallon\" + \": \" + (format(datum[\"center_Miles_per_Gallon\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "lower_Miles_per_Gallon"},
@@ -64,6 +68,7 @@
       "type": "line",
       "style": ["line", "errorband-borders"],
       "sort": {"field": "datum[\"year_Year\"]"},
+      "aria": false,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -84,6 +89,7 @@
       "type": "line",
       "style": ["line", "errorband-borders"],
       "sort": {"field": "datum[\"year_Year\"]"},
+      "aria": false,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -128,6 +134,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -141,6 +148,7 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

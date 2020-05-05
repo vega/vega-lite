@@ -6,6 +6,7 @@ import {Dict, keys} from '../../../util';
 import {VgEncodeEntry, VgValueRef, VG_MARK_CONFIGS} from '../../../vega.schema';
 import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {UnitModel} from '../../unit';
+import {aria} from './aria';
 import {color} from './color';
 import {nonPosition} from './nonposition';
 import {text} from './text';
@@ -23,6 +24,8 @@ export {tooltip} from './tooltip';
 
 export type Ignore = Record<'color' | 'size' | 'orient' | 'align' | 'baseline' | 'theta', 'ignore' | 'include'>;
 
+const ALWAYS_IGNORE = new Set(['aria']);
+
 export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
   const {fill = undefined, stroke = undefined} = ignore.color === 'include' ? color(model) : {};
   return {
@@ -35,7 +38,8 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
     ...nonPosition('strokeWidth', model),
     ...nonPosition('strokeDash', model),
     ...tooltip(model),
-    ...text(model, 'href')
+    ...text(model, 'href'),
+    ...aria(model)
   };
 }
 
@@ -65,7 +69,7 @@ function wrapAllFieldsInvalid(model: UnitModel, channel: Channel, valueRef: VgVa
 
 function markDefProperties(mark: MarkDef, ignore: Ignore) {
   return VG_MARK_CONFIGS.reduce((m, prop) => {
-    if (mark[prop] !== undefined && ignore[prop] !== 'ignore') {
+    if (!ALWAYS_IGNORE.has(prop) && mark[prop] !== undefined && ignore[prop] !== 'ignore') {
       m[prop] = signalOrValueRef(mark[prop]);
     }
     return m;

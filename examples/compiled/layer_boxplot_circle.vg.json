@@ -84,6 +84,7 @@
       "name": "layer_0_layer_0_layer_0_marks",
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
+      "aria": false,
       "from": {"data": "data_0"},
       "encode": {
         "update": {
@@ -101,6 +102,7 @@
       "name": "layer_0_layer_0_layer_1_marks",
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
+      "aria": false,
       "from": {"data": "data_0"},
       "encode": {
         "update": {
@@ -118,6 +120,7 @@
       "name": "layer_0_layer_1_layer_0_marks",
       "type": "rect",
       "style": ["bar", "boxplot-box"],
+      "aria": false,
       "from": {"data": "data_1"},
       "encode": {
         "update": {
@@ -139,10 +142,14 @@
       "from": {"data": "data_1"},
       "encode": {
         "update": {
+          "ariaRoleDescription": {"value": "box"},
           "opacity": {"value": 0.7},
           "fill": {"value": "white"},
           "tooltip": {
             "signal": "{\"Max of people\": format(datum[\"max_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"min_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
+          },
+          "description": {
+            "signal": "\"population\" + \": \" + (format(datum[\"mid_box_people\"], \"\")) + \"; \" + \"age\" + \": \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; \" + \"Max of people\" + \": \" + (format(datum[\"max_people\"], \"\")) + \"; \" + \"Q3 of people\" + \": \" + (format(datum[\"upper_box_people\"], \"\")) + \"; \" + \"Median of people\" + \": \" + (format(datum[\"mid_box_people\"], \"\")) + \"; \" + \"Q1 of people\" + \": \" + (format(datum[\"lower_box_people\"], \"\")) + \"; \" + \"Min of people\" + \": \" + (format(datum[\"min_people\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "mid_box_people"},
           "yc": {"scale": "y", "field": "age", "band": 0.5},
@@ -160,6 +167,10 @@
         "update": {
           "opacity": {"value": 0.2},
           "fill": {"value": "black"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"age\" + \": \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; \" + \"population\" + \": \" + (format(datum[\"people\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "people"},
           "y": {"scale": "y", "field": "age", "band": 0.5},
           "shape": {"value": "circle"}
@@ -212,6 +223,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,

@@ -186,6 +186,52 @@ describe('Mark', () => {
         expect(markGroup[0].transform).not.toBeDefined();
       });
     });
+
+    it('should set aria to false for bar mark', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          aria: false
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'}
+        }
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].aria).toBe(false);
+    });
+
+    it('should set aria to false for rounded bar mark', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          aria: false,
+          cornerRadius: 2
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'}
+        }
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].aria).toBe(false);
+    });
+
+    it('should set aria to false for line mark', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'line',
+          aria: false
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'}
+        }
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].aria).toBe(false);
+    });
   });
 
   describe('getSort', () => {

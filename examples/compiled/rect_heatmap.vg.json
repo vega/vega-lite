@@ -38,6 +38,9 @@
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "mean_Horsepower"},
+          "description": {
+            "signal": "\"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; \" + \"Cylinders\" + \": \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; \" + \"Mean of Horsepower\" + \": \" + (format(datum[\"mean_Horsepower\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": 1},
           "y": {"scale": "y", "field": "Origin"},
@@ -80,6 +83,7 @@
       "grid": true,
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
@@ -92,6 +96,7 @@
       "grid": true,
       "domain": false,
       "labels": false,
+      "aria": false,
       "maxExtent": 0,
       "minExtent": 0,
       "ticks": false,
