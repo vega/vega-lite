@@ -9,7 +9,7 @@ import {
   isFieldValidPredicate,
   Predicate
 } from '../src/predicate';
-import {without} from '../src/util';
+import {without} from './util';
 
 describe('filter', () => {
   const equalFilter = {field: 'color', equal: 'red'};

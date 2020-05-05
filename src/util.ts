@@ -82,15 +82,6 @@ export function contains<T>(array: readonly T[], item: T) {
   return array.indexOf(item) > -1;
 }
 
-/** Returns the array without the elements in item */
-export function without<T>(array: readonly T[], excludedItems: readonly T[]) {
-  return array.filter(item => !contains(excludedItems, item));
-}
-
-export function union<T>(array: readonly T[], other: readonly T[]) {
-  return array.concat(without(other, array));
-}
-
 /**
  * Returns true if any item returns true.
  */

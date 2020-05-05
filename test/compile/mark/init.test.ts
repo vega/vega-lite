@@ -1,8 +1,7 @@
 import {initMarkdef} from '../../../src/compile/mark/init';
 import {defaultConfig} from '../../../src/config';
 import {CIRCLE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
-import {without} from '../../../src/util';
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {parseUnitModelWithScaleAndLayoutSize, without} from '../../util';
 
 describe('compile/mark/init', () => {
   describe('initMarkDef', () => {

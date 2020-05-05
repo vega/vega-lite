@@ -7,7 +7,7 @@ import {
   SINGLE_DEF_CHANNELS,
   UNIT_CHANNELS
 } from '../src/channel';
-import {without} from '../src/util';
+import {without} from './util';
 
 describe('channel', () => {
   describe('UNIT_CHANNELS', () => {

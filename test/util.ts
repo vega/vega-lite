@@ -19,6 +19,7 @@ import {
   isUnitSpec
 } from '../src/spec';
 import {FrameMixins} from '../src/spec/base';
+import {contains} from '../src/util';
 
 export type TopLevelNormalizedUnitSpecForTest = TopLevel<NormalizedUnitSpec> & FrameMixins;
 
@@ -85,4 +86,9 @@ export function assertIsUnitSpec(spec: BaseSpec): asserts spec is FacetedUnitSpe
   if (!isUnitSpec(spec)) {
     throw new Error('Spec is not a unit spec!');
   }
+}
+
+/** Returns the array without the elements in item */
+export function without<T>(array: readonly T[], excludedItems: readonly T[]) {
+  return array.filter(item => !contains(excludedItems, item));
 }
