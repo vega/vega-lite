@@ -26,7 +26,8 @@
             "type": "tick",
             "orient": "vertical",
             "style": "errorbar-ticks",
-            "color": "teal"
+            "color": "teal",
+            "aria": false
           },
           "encoding": {
             "x": {
@@ -61,7 +62,8 @@
             "type": "tick",
             "orient": "vertical",
             "style": "errorbar-ticks",
-            "color": "teal"
+            "color": "teal",
+            "aria": false
           },
           "encoding": {
             "x": {
@@ -92,7 +94,11 @@
           }
         },
         {
-          "mark": {"type": "rule", "style": "errorbar-rule"},
+          "mark": {
+            "type": "rule",
+            "ariaRoleDescription": "errorbar",
+            "style": "errorbar-rule"
+          },
           "encoding": {
             "x": {
               "field": "lower_yield",

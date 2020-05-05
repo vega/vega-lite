@@ -34,7 +34,11 @@
         {"calculate": "datum[\"lower_yield\"]", "as": "upper_upper_yield"},
         {"calculate": "datum[\"upper_yield\"]", "as": "lower_upper_yield"}
       ],
-      "mark": {"type": "rule", "style": "errorbar-rule"},
+      "mark": {
+        "type": "rule",
+        "ariaRoleDescription": "errorbar",
+        "style": "errorbar-rule"
+      },
       "encoding": {
         "x": {
           "field": "lower_upper_yield",

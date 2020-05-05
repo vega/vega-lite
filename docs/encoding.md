@@ -53,14 +53,17 @@ An integral part of the data visualization process is encoding data with visual 
     // Hyperlink Channel
     "href": ...,
 
+    // Description Channel
+    "description": ...,
+
+    // Level of Detail Channel
+    "detail": ...,
+
     // Key Channel
     "key": ...,
 
     // Order Channel
     "order": ...,
-
-    // Level of Detail Channel
-    "detail": ...,
 
     // Facet Channels
     "facet": ...,
@@ -83,6 +86,7 @@ The keys in the `encoding` object are encoding channels. Vega-Lite supports the 
 - [Mark Property Channels](#mark-prop): `angle`, `color` (and `fill` / `stroke`), `opacity`, `fillOpacity`, `strokeOpacity`, `shape`, `size`, `strokeDash`, `strokeWidth`
 - [Text and Tooltip Channels](#text): `text`, `tooltip`
 - [Hyperlink Channel](#href): `href`
+- [Description Channel](#description): `description`
 - [Level of Detail Channel](#detail): `detail`
 - [Key Channel](#key): `key`
 - [Order Channel](#order): `order`
@@ -92,9 +96,9 @@ The keys in the `encoding` object are encoding channels. Vega-Lite supports the 
 
 Each channel definition object must be one of the following:
 
-- [field definition](#field-def), which describes the data field encoded by the channel.
-- [value definition](#value-def), which describes an encoded constant visual value.
-- [datum definition](#datum-def), which describes a constant data value encoded via a scale.
+- [Field definition](#field-def), which describes the data field encoded by the channel.
+- [Value definition](#value-def), which describes an encoded constant visual value.
+- [Datum definition](#datum-def), which describes a constant data value encoded via a scale.
 
 {:#field-def}
 
@@ -202,7 +206,7 @@ By default, Vega-Lite automatically generates a [scale](scale.html) and an [axis
 
 ### Position Field Definition and Datum Definition
 
-[Field definitions](#field-def) for `x` and `y` channels may also include the properties listed below (in addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html)). Similarly, [datum definitions](#datum-def) for `x` and `y` channels also support these properties.
+In addition to the general [field definition properties](#field-def), field definitions for `x` and `y` channels may include the properties listed below. Similarly, [datum definitions](#datum-def) for `x` and `y` channels also support these properties.
 
 {% include table.html props="scale,axis,sort,impute,stack" source="PositionFieldDef" %}
 
@@ -212,7 +216,7 @@ By default, Vega-Lite automatically generates a [scale](scale.html) and an [axis
 
 ## Polar Position Channels
 
-`theta` and `radius` position channels determine the position or interval on polar coordindates for `arc` and `text` marks.
+`theta` and `radius` position channels determine the position or interval on polar coordinates for `arc` and `text` marks.
 
 {% include table.html props="theta,radius,theta2,radius2" source="Encoding" %}
 
@@ -232,7 +236,7 @@ Polar field and datum definitions may include `scale`, `stack`, and `sort` prope
 
 {% include table.html props="longitude,latitude,longitude2,latitude2" source="Encoding" %}
 
-See [an example that uses `longitude` and `latitude` channels in a map](https://vega.github.io/vega-lite/examples/geo_circle.html) or [another example that draws line segments (`rule`s) between points in a map](https://vega.github.io/vega-lite/examples/geo_rule.html).
+See [an example that uses `longitude` and `latitude` channels in a map]({{ site.baseurl }}/examples/geo_circle.html) or [another example that draws line segments (`rule`s) between points in a map]({{ site.baseurl }}/examples/geo_rule.html).
 
 {:#mark-prop}
 
@@ -262,9 +266,6 @@ Similarly, [datum definitions](#datum-def) for mark property channels also suppo
 
 In addition to the constant `value`, [value definitions](#value-def) of mark properties channels can include the `condition` property to specify conditional logic.
 
-<!-- {% include table.html props="condition"
-source="ColorValueDefWithCondition" %} -->
-
 {% include table.html props="condition" source="ValueDefWithCondition<MarkPropFieldOrDatumDef,number>" %}
 
 See [the `condition`](condition.html) page for examples how to specify condition logic.
@@ -281,9 +282,7 @@ Text and tooltip channels directly encode text values of the data fields. By def
 
 ### Text and Tooltip Field Definition
 
-In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html), [field definitions](#field-def) for `text` and `tooltip` channels may also include these properties:
-
-<!-- {% include table.html props="format,formatType,condition" source="TextFieldDefWithCondition" %} -->
+In addition to the general [field definition properties](#field-def), field definitions for `text` and `tooltip` channels may also include these properties:
 
 {% include table.html props="format,formatType,condition" source="FieldOrDatumDefWithCondition<StringFieldDef,Text>" %}
 
@@ -292,8 +291,6 @@ In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`
 ### Text and Tooltip Value Definition
 
 In addition to the constant `value`, [value definitions](#value-def) of `text` and `tooltip` channels can include the `condition` property to specify conditional logic.
-
-<!-- {% include table.html props="condition" source="TextValueDefWithCondition" %} -->
 
 {% include table.html props="condition" source="ValueDefWithCondition<StringFieldDef,Text>" %}
 
@@ -313,13 +310,11 @@ By setting the `href` channel, a mark becomes a hyperlink. The specified URL is 
 
 ### Hyperlink Field Definition
 
-In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html), [field definitions](#field-def) for the `href` channel can include the `condition` property to specify conditional logic.
-
-<!-- {% include table.html props="condition" source="StringFieldDefWithCondition" %} -->
+In addition to the general [field definition properties](#field-def), field definitions for the `href` channel can include the `condition` property to specify conditional logic.
 
 {% include table.html props="condition" source="FieldDefWithCondition<StringFieldDef,string>" %}
 
-The example below show how the href channel can be used to provide links to external resources with more details.
+The example below shows how the href channel can be used to provide links to external resources with more details.
 
 <span class="vl-example" data-name="point_href"></span>
 
@@ -329,15 +324,39 @@ The example below show how the href channel can be used to provide links to exte
 
 In addition to the constant `value`, [value definitions](#value-def) of the `href` channel can include the `condition` property to specify conditional logic.
 
-<!-- {% include table.html props="condition" source="StringValueDefWithCondition" %} -->
+{% include table.html props="condition" source="ValueDefWithCondition<StringFieldDef,Text>" %}
 
-{% include table.html props="condition" source="ValueDefWithCondition<MarkPropFieldDef,(string|null)>" %}
+{:#description}
+
+## Description Channel
+
+By setting the `description` channel, you can add a text description to the mark for ARIA accessibility (SVG output only). The `"aria-label"` attribute in the generated SVG will be set to this description.
+
+By default, Vega-Lite generates a description based on the encoding similar to [default tooltips]({{ site.baseurl }}/docs/tooltip.html#encoding). To disable automatic descriptions, set [`config.aria`](config.html#aria-config) to false. No description will be generated if [`mark.aria`]({{ site.baseurl }}/docs/mark.html#general) is set to false.
+
+{% include table.html props="description" source="Encoding" %}
+
+{:#description-field-def}
+
+### Description Field Definition
+
+In addition to the general [field definition properties](#field-def), field definitions for the `description` channel can include these properties:
+
+{% include table.html props="format,formatType,condition" source="FieldOrDatumDefWithCondition<StringFieldDef,Text>" %}
+
+{:#description-value-def}
+
+### Description Value Definition
+
+In addition to the constant `value`, [value definitions](#value-def) of the `description` channel can include the `condition` property to specify conditional logic.
+
+{% include table.html props="condition" source="ValueDefWithCondition<StringFieldDef,Text>" %}
 
 {:#detail}
 
 ## Level of Detail Channel
 
-Grouping data is another important operation in data visualization. For line and area marks, mapping a unaggregate data field (field without `aggregate` function) to any non-[position](#position) channel will group the lines and stacked areas by the field. For [aggregated plots](aggregate.html), all unaggregated fields encoded are used as grouping fields in the aggregation (similar to fields in `GROUP BY` in SQL).
+Grouping data is another important operation in data visualization. For line and area marks, mapping a unaggregated data field (field without `aggregate` function) to any non-[position](#position) channel will group the lines and stacked areas by the field. For [aggregated plots](aggregate.html), all unaggregated fields encoded are used as grouping fields in the aggregation (similar to fields in `GROUP BY` in SQL).
 
 `detail` channel specify an additional grouping field (or fields) for grouping data without mapping the field(s) to any visual properties.
 
@@ -377,7 +396,7 @@ The key channel can enable object constancy for transitions over dynamic data. W
 
 ### Order Field Definition
 
-In addition to [`field`](field.html), [`type`](type.html), [`bin`](bin.html), [`timeUnit`](timeunit.html) and [`aggregate`](aggregate.html), [field definitions](#field-def) for the `order` channel can include `sort`.
+In addition to the general [field definition properties](#field-def), field definitions for the `order` channel can include `sort`.
 
 {% include table.html props="sort" source="OrderFieldDef" %}
 

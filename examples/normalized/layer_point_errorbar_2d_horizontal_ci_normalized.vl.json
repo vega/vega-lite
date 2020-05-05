@@ -13,7 +13,11 @@
           "groupby": ["variety"]
         }
       ],
-      "mark": {"type": "rule", "style": "errorbar-rule"},
+      "mark": {
+        "type": "rule",
+        "ariaRoleDescription": "errorbar",
+        "style": "errorbar-rule"
+      },
       "encoding": {
         "x": {
           "field": "lower_yield",

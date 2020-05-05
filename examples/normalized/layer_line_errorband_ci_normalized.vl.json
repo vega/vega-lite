@@ -28,7 +28,12 @@
       ],
       "layer": [
         {
-          "mark": {"opacity": 0.3, "type": "area", "style": "errorband-band"},
+          "mark": {
+            "opacity": 0.3,
+            "type": "area",
+            "ariaRoleDescription": "errorband",
+            "style": "errorband-band"
+          },
           "encoding": {
             "y": {
               "field": "lower_Miles_per_Gallon",

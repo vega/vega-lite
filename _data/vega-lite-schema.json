@@ -160,6 +160,18 @@
           "minimum": 0,
           "type": "number"
         },
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
@@ -206,6 +218,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -609,13 +625,25 @@
     "Axis": {
       "additionalProperties": false,
       "properties": {
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the axis from the ARIA accessibility tree.\n\n__Default value:__ `true`",
+          "type": "boolean"
+        },
         "bandPosition": {
           "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
           "type": "number"
         },
+        "description": {
+          "description": "A text description of this axis for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
+          "type": "string"
+        },
         "domain": {
           "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
           "type": "boolean"
+        },
+        "domainCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for the domain line's ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "domainColor": {
           "anyOf": [
@@ -659,12 +687,16 @@
           "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).\n- If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/usage/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function. See the [custom format type docs](https://vega.github.io/vega-lite/usage/config.html#custom-format-type) for more details.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
         },
         "formatType": {
-          "description": "The format type for labels (`\"number\"` or `\"time\"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type)).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
           "type": "string"
         },
         "grid": {
           "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.",
           "type": "boolean"
+        },
+        "gridCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for grid lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "gridColor": {
           "anyOf": [
@@ -942,6 +974,10 @@
           ],
           "type": "string"
         },
+        "tickCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for the tick lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+        },
         "tickColor": {
           "anyOf": [
             {
@@ -1179,9 +1215,17 @@
     "AxisConfig": {
       "additionalProperties": false,
       "properties": {
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the axis from the ARIA accessibility tree.\n\n__Default value:__ `true`",
+          "type": "boolean"
+        },
         "bandPosition": {
           "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
           "type": "number"
+        },
+        "description": {
+          "description": "A text description of this axis for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
+          "type": "string"
         },
         "disable": {
           "description": "Disable axis by default.",
@@ -1190,6 +1234,10 @@
         "domain": {
           "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
           "type": "boolean"
+        },
+        "domainCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for the domain line's ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "domainColor": {
           "anyOf": [
@@ -1233,12 +1281,16 @@
           "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).\n- If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/usage/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function. See the [custom format type docs](https://vega.github.io/vega-lite/usage/config.html#custom-format-type) for more details.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
         },
         "formatType": {
-          "description": "The format type for labels (`\"number\"` or `\"time\"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type)).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
           "type": "string"
         },
         "grid": {
           "description": "A boolean flag indicating if grid lines should be included as part of the axis\n\n__Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.",
           "type": "boolean"
+        },
+        "gridCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for grid lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
         },
         "gridColor": {
           "anyOf": [
@@ -1516,6 +1568,10 @@
           ],
           "type": "string"
         },
+        "tickCap": {
+          "$ref": "#/definitions/StrokeCap",
+          "description": "The stroke cap for the tick lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+        },
         "tickColor": {
           "anyOf": [
             {
@@ -1784,6 +1840,18 @@
           "minimum": 0,
           "type": "number"
         },
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
@@ -1844,6 +1912,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -2210,6 +2282,10 @@
           "description": "Angle in degrees of title and subtitle text.",
           "type": "number"
         },
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the title from the ARIA accessibility tree.\n\n__Default value:__ `true`",
+          "type": "boolean"
+        },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
           "description": "Vertical text baseline for title and subtitle text. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
@@ -2312,6 +2388,11 @@
         },
         "subtitlePadding": {
           "description": "The padding in pixels between title and subtitle text.",
+          "type": "number"
+        },
+        "zindex": {
+          "description": "The integer z-index indicating the layering of the title group relative to other axis, mark, and legend groups.\n\n__Default value:__ `0`.",
+          "minimum": 0,
           "type": "number"
         }
       },
@@ -2874,8 +2955,8 @@
     "ColorGradientFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>"
     },
-    "ColorGradientValueDefWithConditionAlias": {
-      "$ref": "#/definitions/ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,(Gradient|string|null)>"
+    "ColorGradientValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,(Gradient|string|null)>"
     },
     "ColorName": {
       "enum": [
@@ -3061,7 +3142,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Rotation angle of point and text marks."
@@ -3075,10 +3156,21 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
+        },
+        "description": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StringFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/StringValueDefWithCondition"
+            }
+          ],
+          "description": "A text description of this mark for ARIA accessibility (SVG output only). For SVG output the `\"aria-label\"` attribute will be set to this description."
         },
         "detail": {
           "anyOf": [
@@ -3103,7 +3195,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -3117,7 +3209,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `fillOpacity` property."
@@ -3128,7 +3220,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "A URL to load upon mouse click."
@@ -3146,7 +3238,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Latitude position of geographically projected marks."
@@ -3160,7 +3252,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
@@ -3174,7 +3266,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Longitude position of geographically projected marks."
@@ -3188,7 +3280,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
@@ -3202,7 +3294,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `opacity` property."
@@ -3219,7 +3311,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html). Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
@@ -3233,7 +3325,7 @@
               "$ref": "#/definitions/PolarDatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "The outer radius in pixels of arc marks."
@@ -3247,7 +3339,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "The inner radius in pixels of arc marks."
@@ -3261,7 +3353,7 @@
               "$ref": "#/definitions/StringDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ShapeValueDefWithConditionAlias"
+              "$ref": "#/definitions/ShapeValueDefWithCondition"
             }
           ],
           "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:\n   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   - the line symbol `\"stroke\"`\n   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
@@ -3275,7 +3367,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
@@ -3289,7 +3381,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -3303,7 +3395,7 @@
               "$ref": "#/definitions/NumericArrayDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericArrayValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericArrayValueDefWithCondition"
             }
           ],
           "description": "Stroke dash of the marks.\n\n__Default value:__ `[1,0]` (No dash)."
@@ -3317,7 +3409,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeOpacity` property."
@@ -3331,7 +3423,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeWidth` property."
@@ -3342,7 +3434,10 @@
               "$ref": "#/definitions/TextFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/TextValueDefWithConditionAlias"
+              "$ref": "#/definitions/TextDatumDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
           "description": "Text of the `text` mark."
@@ -3356,7 +3451,7 @@
               "$ref": "#/definitions/PolarDatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "- For arc marks, the arc length in radians if theta2 is not specified, otherwise the start arc angle. (A value of 0 indicates up or “north”, increasing values proceed clockwise.)\n\n- For text marks, polar coordinate angle in radians."
@@ -3370,7 +3465,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise."
@@ -3381,7 +3476,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             },
             {
               "items": {
@@ -3401,7 +3496,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "The URL of an image mark."
@@ -3440,7 +3535,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -3451,7 +3546,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -3490,7 +3585,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -3501,7 +3596,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -3589,13 +3684,13 @@
         }
       ]
     },
-    "ConditionalStringValueDef": {
+    "ConditionalValueDef<(string|null)>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|null)>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<StringValueDef>"
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<(string|null)>>"
         }
       ]
     },
@@ -3609,13 +3704,13 @@
         }
       ]
     },
-    "ConditionalNumberValueDef": {
+    "ConditionalValueDef<number>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<NumberValueDef>"
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<number>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<NumberValueDef>"
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<number>>"
         }
       ]
     },
@@ -3903,11 +3998,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
+              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|null)>>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalPredicate<StringValueDef>"
+                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|null)>>"
               },
               "type": "array"
             }
@@ -4038,7 +4133,7 @@
             "datum": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Value"
+                  "$ref": "#/definitions/PrimitiveValue"
                 },
                 {
                   "$ref": "#/definitions/DateTime"
@@ -4195,7 +4290,7 @@
             "datum": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Value"
+                  "$ref": "#/definitions/PrimitiveValue"
                 },
                 {
                   "$ref": "#/definitions/DateTime"
@@ -4293,7 +4388,7 @@
           "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).\n- If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/usage/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function. See the [custom format type docs](https://vega.github.io/vega-lite/usage/config.html#custom-format-type) for more details.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
         },
         "formatType": {
-          "description": "The format type for labels (`\"number\"` or `\"time\"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type)).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
           "type": "string"
         },
         "labelExpr": {
@@ -4539,7 +4634,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<StringValueDef>": {
+    "ConditionalPredicate<ValueDef<(string|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4578,7 +4673,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<NumberValueDef>": {
+    "ConditionalPredicate<ValueDef<number>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4743,7 +4838,7 @@
             "datum": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Value"
+                  "$ref": "#/definitions/PrimitiveValue"
                 },
                 {
                   "$ref": "#/definitions/DateTime"
@@ -4900,7 +4995,7 @@
             "datum": {
               "anyOf": [
                 {
-                  "$ref": "#/definitions/Value"
+                  "$ref": "#/definitions/PrimitiveValue"
                 },
                 {
                   "$ref": "#/definitions/DateTime"
@@ -4998,7 +5093,7 @@
           "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).\n- If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/usage/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function. See the [custom format type docs](https://vega.github.io/vega-lite/usage/config.html#custom-format-type) for more details.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
         },
         "formatType": {
-          "description": "The format type for labels (`\"number\"` or `\"time\"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type)).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
           "type": "string"
         },
         "labelExpr": {
@@ -5070,7 +5165,7 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<StringValueDef>": {
+    "ConditionalSelection<ValueDef<(string|null)>>": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -5109,7 +5204,7 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<NumberValueDef>": {
+    "ConditionalSelection<ValueDef<number>>": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -5176,6 +5271,10 @@
         "area": {
           "$ref": "#/definitions/AreaConfig",
           "description": "Area-Specific Config"
+        },
+        "aria": {
+          "description": "A boolean flag indicating if ARIA default attributes should be included for marks and guides (SVG output only). If false, the `\"aria-hidden\"` attribute will be set for all guides, removing them from the ARIA accessibility tree and Vega-Lite will not generate default descriptions for marks.\n\n__Default value:__ `true`.",
+          "type": "boolean"
         },
         "autosize": {
           "anyOf": [
@@ -5640,7 +5739,7 @@
         "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/PrimitiveValue"
             },
             {
               "$ref": "#/definitions/DateTime"
@@ -6725,7 +6824,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Rotation angle of point and text marks."
@@ -6739,7 +6838,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.\nBy default, `color` represents fill color for `\"area\"`, `\"bar\"`, `\"tick\"`,\n`\"text\"`, `\"trail\"`, `\"circle\"`, and `\"square\"` / stroke color for `\"line\"` and `\"point\"`.\n\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_\n1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.\n2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme)."
@@ -6747,6 +6846,17 @@
         "column": {
           "$ref": "#/definitions/RowColumnEncodingFieldDef",
           "description": "A field definition for the horizontal facet of trellis plots."
+        },
+        "description": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StringFieldDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/StringValueDefWithCondition"
+            }
+          ],
+          "description": "A text description of this mark for ARIA accessibility (SVG output only). For SVG output the `\"aria-label\"` attribute will be set to this description."
         },
         "detail": {
           "anyOf": [
@@ -6775,7 +6885,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Fill color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -6789,7 +6899,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Fill opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `fillOpacity` property."
@@ -6800,7 +6910,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "A URL to load upon mouse click."
@@ -6818,7 +6928,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Latitude position of geographically projected marks."
@@ -6832,7 +6942,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Latitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
@@ -6846,7 +6956,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Longitude position of geographically projected marks."
@@ -6860,7 +6970,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Longitude-2 position for geographically projected ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`."
@@ -6874,7 +6984,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `opacity` property."
@@ -6891,7 +7001,7 @@
               "type": "array"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "Order of the marks.\n- For stacked marks, this `order` channel encodes [stack order](https://vega.github.io/vega-lite/docs/stack.html#order).\n- For line and trail marks, this `order` channel encodes order of data points in the lines. This can be useful for creating [a connected scatterplot](https://vega.github.io/vega-lite/examples/connected_scatterplot.html). Setting `order` to `{\"value\": null}` makes the line marks use the original order in the data sources.\n- Otherwise, this `order` channel encodes layer order of the marks.\n\n__Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping."
@@ -6905,7 +7015,7 @@
               "$ref": "#/definitions/PolarDatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "The outer radius in pixels of arc marks."
@@ -6919,7 +7029,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "The inner radius in pixels of arc marks."
@@ -6937,7 +7047,7 @@
               "$ref": "#/definitions/StringDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ShapeValueDefWithConditionAlias"
+              "$ref": "#/definitions/ShapeValueDefWithCondition"
             }
           ],
           "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:\n   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.\n   - the line symbol `\"stroke\"`\n   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`\n   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
@@ -6951,7 +7061,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Size of the mark.\n- For `\"point\"`, `\"square\"` and `\"circle\"`, – the symbol size, or pixel area of the mark.\n- For `\"bar\"` and `\"tick\"` – the bar and tick's size.\n- For `\"text\"` – the text's font size.\n- Size is unsupported for `\"line\"`, `\"area\"`, and `\"rect\"`. (Use `\"trail\"` instead of line with varying size)"
@@ -6965,7 +7075,7 @@
               "$ref": "#/definitions/ColorGradientDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/ColorGradientValueDefWithConditionAlias"
+              "$ref": "#/definitions/ColorGradientValueDefWithCondition"
             }
           ],
           "description": "Stroke color of the marks.\n__Default value:__ If undefined, the default color depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `color` property.\n\n_Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified."
@@ -6979,7 +7089,7 @@
               "$ref": "#/definitions/NumericArrayDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericArrayValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericArrayValueDefWithCondition"
             }
           ],
           "description": "Stroke dash of the marks.\n\n__Default value:__ `[1,0]` (No dash)."
@@ -6993,7 +7103,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke opacity of the marks.\n\n__Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeOpacity` property."
@@ -7007,7 +7117,7 @@
               "$ref": "#/definitions/NumericDatumDefWithCondition"
             },
             {
-              "$ref": "#/definitions/NumericValueDefWithConditionAlias"
+              "$ref": "#/definitions/NumericValueDefWithCondition"
             }
           ],
           "description": "Stroke width of the marks.\n\n__Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeWidth` property."
@@ -7018,7 +7128,10 @@
               "$ref": "#/definitions/TextFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/TextValueDefWithConditionAlias"
+              "$ref": "#/definitions/TextDatumDefWithCondition"
+            },
+            {
+              "$ref": "#/definitions/TextValueDefWithCondition"
             }
           ],
           "description": "Text of the `text` mark."
@@ -7032,7 +7145,7 @@
               "$ref": "#/definitions/PolarDatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "- For arc marks, the arc length in radians if theta2 is not specified, otherwise the start arc angle. (A value of 0 indicates up or “north”, increasing values proceed clockwise.)\n\n- For text marks, polar coordinate angle in radians."
@@ -7046,7 +7159,7 @@
               "$ref": "#/definitions/DatumDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/NumericValueDef"
             }
           ],
           "description": "The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise."
@@ -7057,7 +7170,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             },
             {
               "items": {
@@ -7077,7 +7190,7 @@
               "$ref": "#/definitions/StringFieldDefWithCondition"
             },
             {
-              "$ref": "#/definitions/StringValueDefWithConditionAlias"
+              "$ref": "#/definitions/StringValueDefWithCondition"
             }
           ],
           "description": "The URL of an image mark."
@@ -7116,7 +7229,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -7127,7 +7240,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Secondary error value of x coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -7166,7 +7279,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -7177,7 +7290,7 @@
               "$ref": "#/definitions/SecondaryFieldDef"
             },
             {
-              "$ref": "#/definitions/NumberValueDef"
+              "$ref": "#/definitions/ValueDef<number>"
             }
           ],
           "description": "Secondary error value of y coordinates for error specified `\"errorbar\"` and `\"errorband\"`."
@@ -7614,13 +7727,23 @@
           "type": "number"
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<(Gradient|string|null)>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/PrimitiveValue"
             },
             {
               "$ref": "#/definitions/DateTime"
@@ -7649,13 +7772,23 @@
           "type": "number"
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<number>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<number>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<number>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/PrimitiveValue"
             },
             {
               "$ref": "#/definitions/DateTime"
@@ -7684,48 +7817,23 @@
           "type": "number"
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<number[]>",
-          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
-        },
-        "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/ConditionalValueDef<number[]>"
             },
             {
-              "$ref": "#/definitions/DateTime"
-            },
-            {
-              "$ref": "#/definitions/RepeatRef"
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<number[]>"
+              },
+              "type": "array"
             }
           ],
-          "description": "A constant value in data domain."
-        },
-        "type": {
-          "$ref": "#/definitions/Type",
-          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
-        }
-      },
-      "type": "object"
-    },
-    "FieldOrDatumDefWithCondition<DatumDef,string>": {
-      "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
-      "properties": {
-        "band": {
-          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<string>",
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/PrimitiveValue"
             },
             {
               "$ref": "#/definitions/DateTime"
@@ -7772,7 +7880,17 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<(Gradient|string|null)>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
@@ -7866,7 +7984,17 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<number>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<number>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<number>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
@@ -7960,7 +8088,17 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<number[]>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<number[]>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<number[]>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
@@ -8054,7 +8192,17 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<(string|null)>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
@@ -8119,6 +8267,134 @@
       ],
       "type": "object"
     },
+    "FieldOrDatumDefWithCondition<StringDatumDef,Text>": {
+      "additionalProperties": false,
+      "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
+      "properties": {
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<Text>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<Text>"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
+        },
+        "datum": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PrimitiveValue"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "A constant value in data domain."
+        },
+        "format": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).\n- If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/usage/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function. See the [custom format type docs](https://vega.github.io/vega-lite/usage/config.html#custom-format-type) for more details.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
+        },
+        "formatType": {
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
+          "type": "string"
+        },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+        }
+      },
+      "type": "object"
+    },
+    "FieldOrDatumDefWithCondition<StringDatumDef,string>": {
+      "additionalProperties": false,
+      "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
+      "properties": {
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "condition": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<string>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<string>"
+              },
+              "type": "array"
+            }
+          ],
+          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
+        },
+        "datum": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/PrimitiveValue"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/RepeatRef"
+            }
+          ],
+          "description": "A constant value in data domain."
+        },
+        "format": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "object"
+            }
+          ],
+          "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).\n- If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/usage/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function. See the [custom format type docs](https://vega.github.io/vega-lite/usage/config.html#custom-format-type) for more details.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
+        },
+        "formatType": {
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
+          "type": "string"
+        },
+        "labelExpr": {
+          "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.",
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/definitions/Type",
+          "description": "The encoded field's type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\n\n__Note:__\n\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\", \"type\": \"quantitative\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+        }
+      },
+      "type": "object"
+    },
     "FieldOrDatumDefWithCondition<StringFieldDef,Text>": {
       "additionalProperties": false,
       "description": "A FieldDef with Condition<ValueDef>\n{\n   condition: {value: ...},\n   field: ...,\n   ...\n}",
@@ -8154,7 +8430,17 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<Text>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<Text>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<Text>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
@@ -8173,7 +8459,7 @@
           "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).\n- If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/usage/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function. See the [custom format type docs](https://vega.github.io/vega-lite/usage/config.html#custom-format-type) for more details.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
         },
         "formatType": {
-          "description": "The format type for labels (`\"number\"` or `\"time\"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type)).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
           "type": "string"
         },
         "labelExpr": {
@@ -8247,7 +8533,17 @@
           "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
         },
         "condition": {
-          "$ref": "#/definitions/ValueOrSignalCondition<string>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ConditionalValueDef<string>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<string>"
+              },
+              "type": "array"
+            }
+          ],
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
@@ -8266,7 +8562,7 @@
           "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).\n- If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/usage/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function. See the [custom format type docs](https://vega.github.io/vega-lite/usage/config.html#custom-format-type) for more details.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
         },
         "formatType": {
-          "description": "The format type for labels (`\"number\"` or `\"time\"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type)).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
           "type": "string"
         },
         "labelExpr": {
@@ -9398,7 +9694,7 @@
           "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).\n- If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/usage/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function. See the [custom format type docs](https://vega.github.io/vega-lite/usage/config.html#custom-format-type) for more details.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
         },
         "formatType": {
-          "description": "The format type for labels (`\"number\"` or `\"time\"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type)).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
           "type": "string"
         },
         "labelAlign": {
@@ -9552,7 +9848,7 @@
           "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).\n- If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/usage/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function. See the [custom format type docs](https://vega.github.io/vega-lite/usage/config.html#custom-format-type) for more details.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
         },
         "formatType": {
-          "description": "The format type for labels (`\"number\"` or `\"time\"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type)).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
           "type": "string"
         },
         "labelAlign": {
@@ -10532,6 +10828,10 @@
       "additionalProperties": false,
       "description": "Properties of a legend or boolean flag for determining whether to show it.",
       "properties": {
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the legend from the ARIA accessibility tree.\n\n__Default value:__ `true`",
+          "type": "boolean"
+        },
         "clipHeight": {
           "description": "The height in pixels to clip symbol legend entries and limit their size.",
           "type": "number"
@@ -10547,6 +10847,10 @@
         "cornerRadius": {
           "description": "Corner radius for the full legend.",
           "type": "number"
+        },
+        "description": {
+          "description": "A text description of this legend for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
+          "type": "string"
         },
         "direction": {
           "$ref": "#/definitions/Orientation",
@@ -10575,7 +10879,7 @@
           "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).\n- If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/usage/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function. See the [custom format type docs](https://vega.github.io/vega-lite/usage/config.html#custom-format-type) for more details.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
         },
         "formatType": {
-          "description": "The format type for labels (`\"number\"` or `\"time\"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type)).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
           "type": "string"
         },
         "gradientLength": {
@@ -10910,6 +11214,10 @@
     "LegendConfig": {
       "additionalProperties": false,
       "properties": {
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the legend from the ARIA accessibility tree.\n\n__Default value:__ `true`",
+          "type": "boolean"
+        },
         "clipHeight": {
           "description": "The height in pixels to clip symbol legend entries and limit their size.",
           "type": "number"
@@ -10925,6 +11233,10 @@
         "cornerRadius": {
           "description": "Corner radius for the full legend.",
           "type": "number"
+        },
+        "description": {
+          "description": "A text description of this legend for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
+          "type": "string"
         },
         "direction": {
           "$ref": "#/definitions/Orientation",
@@ -11273,6 +11585,11 @@
         "unselectedOpacity": {
           "description": "The opacity of unselected legend entries.\n\n__Default value:__ 0.35.",
           "type": "number"
+        },
+        "zindex": {
+          "description": "The integer z-index indicating the layering of the legend group relative to other axis, mark, and legend groups.",
+          "minimum": 0,
+          "type": "number"
         }
       },
       "type": "object"
@@ -11416,6 +11733,18 @@
           "minimum": 0,
           "type": "number"
         },
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
@@ -11462,6 +11791,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -12161,6 +12494,18 @@
           "minimum": 0,
           "type": "number"
         },
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
@@ -12207,6 +12552,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -12536,6 +12885,18 @@
           "minimum": 0,
           "type": "number"
         },
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
@@ -12605,6 +12966,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -13417,8 +13782,8 @@
     "NumericArrayFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<MarkPropFieldDef,number[]>"
     },
-    "NumericArrayValueDefWithConditionAlias": {
-      "$ref": "#/definitions/ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,number[]>"
+    "NumericArrayValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,number[]>"
     },
     "NumericDatumDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<DatumDef,number>"
@@ -13426,8 +13791,11 @@
     "NumericFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<MarkPropFieldDef,number>"
     },
-    "NumericValueDefWithConditionAlias": {
-      "$ref": "#/definitions/ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,number>"
+    "NumericValueDef": {
+      "$ref": "#/definitions/ValueDef<number>"
+    },
+    "NumericValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,number>"
     },
     "OrderFieldDef": {
       "additionalProperties": false,
@@ -13531,6 +13899,18 @@
           "minimum": 0,
           "type": "number"
         },
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
@@ -13581,6 +13961,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -14071,7 +14455,7 @@
         "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/PrimitiveValue"
             },
             {
               "$ref": "#/definitions/DateTime"
@@ -14137,7 +14521,7 @@
         "datum": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Value"
+              "$ref": "#/definitions/PrimitiveValue"
             },
             {
               "$ref": "#/definitions/DateTime"
@@ -14430,6 +14814,14 @@
         {
           "type": "string"
         }
+      ]
+    },
+    "PrimitiveValue": {
+      "type": [
+        "number",
+        "string",
+        "boolean",
+        "null"
       ]
     },
     "Projection": {
@@ -14851,6 +15243,18 @@
           "minimum": 0,
           "type": "number"
         },
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
           "type": "boolean"
@@ -14907,6 +15311,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -16091,7 +16499,7 @@
     "SelectionInit": {
       "anyOf": [
         {
-          "$ref": "#/definitions/Value"
+          "$ref": "#/definitions/PrimitiveValue"
         },
         {
           "$ref": "#/definitions/DateTime"
@@ -16303,8 +16711,8 @@
     "ShapeFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>"
     },
-    "ShapeValueDefWithConditionAlias": {
-      "$ref": "#/definitions/StringValueDefWithConditionAlias<TypeForShape>"
+    "ShapeValueDefWithCondition": {
+      "$ref": "#/definitions/StringValueDefWithCondition<TypeForShape>"
     },
     "SingleDefUnitChannel": {
       "enum": [
@@ -16334,7 +16742,8 @@
         "key",
         "text",
         "href",
-        "url"
+        "url",
+        "description"
       ],
       "type": "string"
     },
@@ -16790,7 +17199,7 @@
       ]
     },
     "StringDatumDefWithCondition": {
-      "$ref": "#/definitions/FieldOrDatumDefWithCondition<DatumDef,string>"
+      "$ref": "#/definitions/FieldOrDatumDefWithCondition<StringDatumDef,string>"
     },
     "StringFieldDef": {
       "additionalProperties": false,
@@ -16841,7 +17250,7 @@
           "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format).\n- If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/usage/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function. See the [custom format type docs](https://vega.github.io/vega-lite/usage/config.html#custom-format-type) for more details.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
         },
         "formatType": {
-          "description": "The format type for labels (`\"number\"` or `\"time\"` or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type)).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nomimal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nomimal fields without `timeUnit`.",
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
           "type": "string"
         },
         "labelExpr": {
@@ -16883,11 +17292,11 @@
     "StringFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<StringFieldDef,string>"
     },
-    "StringValueDefWithConditionAlias<TypeForShape>": {
-      "$ref": "#/definitions/ValueDefWithConditionAlias<MarkPropFieldOrDatumDef<TypeForShape>,(string|null)>"
+    "StringValueDefWithCondition<TypeForShape>": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef<TypeForShape>,(string|null)>"
     },
-    "StringValueDefWithConditionAlias": {
-      "$ref": "#/definitions/ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,(string|null)>"
+    "StringValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,(string|null)>"
     },
     "StrokeCap": {
       "enum": [
@@ -17037,6 +17446,9 @@
         }
       ]
     },
+    "TextDatumDefWithCondition": {
+      "$ref": "#/definitions/FieldOrDatumDefWithCondition<StringDatumDef,Text>"
+    },
     "TextDirection": {
       "enum": [
         "ltr",
@@ -17047,8 +17459,8 @@
     "TextFieldDefWithCondition": {
       "$ref": "#/definitions/FieldOrDatumDefWithCondition<StringFieldDef,Text>"
     },
-    "TextValueDefWithConditionAlias": {
-      "$ref": "#/definitions/ValueDefWithConditionAlias<StringFieldDef,Text>"
+    "TextValueDefWithCondition": {
+      "$ref": "#/definitions/ValueDefWithCondition<StringFieldDef,Text>"
     },
     "TickConfig": {
       "additionalProperties": false,
@@ -17062,6 +17474,18 @@
           "maximum": 360,
           "minimum": 0,
           "type": "number"
+        },
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
+          "type": "boolean"
+        },
+        "ariaRole": {
+          "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"role\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
+        },
+        "ariaRoleDescription": {
+          "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the \"aria-roledescription\" attribute.\nWarning: this property is experimental and may be changed in the future.",
+          "type": "string"
         },
         "aspect": {
           "description": "Whether to keep aspect ratio of image marks.",
@@ -17114,6 +17538,10 @@
         "cursor": {
           "$ref": "#/definitions/Cursor",
           "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+        },
+        "description": {
+          "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
+          "type": "string"
         },
         "dir": {
           "$ref": "#/definitions/TextDirection",
@@ -17585,6 +18013,10 @@
         "angle": {
           "description": "Angle in degrees of title and subtitle text.",
           "type": "number"
+        },
+        "aria": {
+          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the title from the ARIA accessibility tree.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "baseline": {
           "$ref": "#/definitions/TextBaseline",
@@ -19353,29 +19785,7 @@
       ],
       "type": "string"
     },
-    "Value": {
-      "anyOf": [
-        {
-          "type": "number"
-        },
-        {
-          "type": "string"
-        },
-        {
-          "type": "boolean"
-        },
-        {
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        },
-        {
-          "type": "null"
-        }
-      ]
-    },
-    "YValueDef": {
+    "ValueDef<(number|\"height\")>": {
       "additionalProperties": false,
       "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
@@ -19399,7 +19809,7 @@
       ],
       "type": "object"
     },
-    "XValueDef": {
+    "ValueDef<(number|\"width\")>": {
       "additionalProperties": false,
       "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
@@ -19423,7 +19833,7 @@
       ],
       "type": "object"
     },
-    "NumberValueDef": {
+    "ValueDef<number>": {
       "additionalProperties": false,
       "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
@@ -19447,7 +19857,13 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
             },
             {
-              "$ref": "#/definitions/ValueOrSignalCondition<(Gradient|string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+              },
+              "type": "array"
             }
           ],
           "description": "A field definition or one or more value definition(s) with a selection predicate."
@@ -19479,7 +19895,13 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
             },
             {
-              "$ref": "#/definitions/ValueOrSignalCondition<(string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+              },
+              "type": "array"
             }
           ],
           "description": "A field definition or one or more value definition(s) with a selection predicate."
@@ -19504,7 +19926,13 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
             },
             {
-              "$ref": "#/definitions/ValueOrSignalCondition<number>"
+              "$ref": "#/definitions/ConditionalValueDef<number>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<number>"
+              },
+              "type": "array"
             }
           ],
           "description": "A field definition or one or more value definition(s) with a selection predicate."
@@ -19526,7 +19954,13 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
             },
             {
-              "$ref": "#/definitions/ValueOrSignalCondition<number[]>"
+              "$ref": "#/definitions/ConditionalValueDef<number[]>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<number[]>"
+              },
+              "type": "array"
             }
           ],
           "description": "A field definition or one or more value definition(s) with a selection predicate."
@@ -19551,7 +19985,13 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef<TypeForShape>"
             },
             {
-              "$ref": "#/definitions/ValueOrSignalCondition<(string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+              },
+              "type": "array"
             }
           ],
           "description": "A field definition or one or more value definition(s) with a selection predicate."
@@ -19576,7 +20016,13 @@
               "$ref": "#/definitions/ConditionalStringFieldDef"
             },
             {
-              "$ref": "#/definitions/ValueOrSignalCondition<Text>"
+              "$ref": "#/definitions/ConditionalValueDef<Text>"
+            },
+            {
+              "items": {
+                "$ref": "#/definitions/ConditionalValueDef<Text>"
+              },
+              "type": "array"
             }
           ],
           "description": "A field definition or one or more value definition(s) with a selection predicate."
@@ -19587,102 +20033,6 @@
         }
       },
       "type": "object"
-    },
-    "ValueOrSignalCondition<(Gradient|string|null)>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
-          },
-          "type": "array"
-        }
-      ]
-    },
-    "ValueOrSignalCondition<(string|null)>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalStringValueDef"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/ConditionalStringValueDef"
-          },
-          "type": "array"
-        }
-      ]
-    },
-    "ValueOrSignalCondition<Text>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalValueDef<Text>"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/ConditionalValueDef<Text>"
-          },
-          "type": "array"
-        }
-      ]
-    },
-    "ValueOrSignalCondition<number>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalNumberValueDef"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/ConditionalNumberValueDef"
-          },
-          "type": "array"
-        }
-      ]
-    },
-    "ValueOrSignalCondition<number[]>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalValueDef<number[]>"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/ConditionalValueDef<number[]>"
-          },
-          "type": "array"
-        }
-      ]
-    },
-    "ValueOrSignalCondition<string>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalValueDef<string>"
-        },
-        {
-          "items": {
-            "$ref": "#/definitions/ConditionalValueDef<string>"
-          },
-          "type": "array"
-        }
-      ]
-    },
-    "ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,(Gradient|string|null)>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,(Gradient|string|null)>"
-    },
-    "ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,(string|null)>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,(string|null)>"
-    },
-    "ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,number>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,number>"
-    },
-    "ValueDefWithConditionAlias<MarkPropFieldOrDatumDef,number[]>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef,number[]>"
-    },
-    "ValueDefWithConditionAlias<MarkPropFieldOrDatumDef<TypeForShape>,(string|null)>": {
-      "$ref": "#/definitions/ValueDefWithCondition<MarkPropFieldOrDatumDef<TypeForShape>,(string|null)>"
-    },
-    "ValueDefWithConditionAlias<StringFieldDef,Text>": {
-      "$ref": "#/definitions/ValueDefWithCondition<StringFieldDef,Text>"
     },
     "Vector2<DateTime>": {
       "items": [
@@ -20109,6 +20459,12 @@
         "window"
       ],
       "type": "object"
+    },
+    "XValueDef": {
+      "$ref": "#/definitions/ValueDef<(number|\"width\")>"
+    },
+    "YValueDef": {
+      "$ref": "#/definitions/ValueDef<(number|\"height\")>"
     }
   }
 }

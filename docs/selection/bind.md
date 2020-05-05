@@ -51,4 +51,4 @@ To customize the events that trigger legend interaction, expand the `bind` prope
 
 **Note:** When a selection is bound to legends, direct manipulation interaction (e.g., clicking or double clicking the visualization) is disabled by default. Such interaction can be re-enabled by explicitly specifying the [`on`](selection.html#selection-props) and [`clear`](clear.html) properties.
 
-**Limitations:** Currently, only binding to [symbol legends](https://vega.github.io/vega-lite/docs/legend.html#legend-types) are supported.
+**Limitations:** Currently, only binding to [symbol legends]({{ site.baseurl }}/docs/legend.html#legend-types) are supported.

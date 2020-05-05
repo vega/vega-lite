@@ -31,7 +31,8 @@
     "mark": {
       "type": "text",
       "align": "right",
-      "xOffset": -4
+      "xOffset": -4,
+      "aria": false
     },
     "encoding": {
       "text": {"field": "count", "type": "quantitative"},

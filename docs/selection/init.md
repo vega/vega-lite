@@ -9,7 +9,7 @@ To initialize a selection, set the `init` property to a mapping or array of mapp
 
 ## Examples
 
-In the example below, we inialize the `"brush"` selection to the extent of the brush for the `x` and `y` encoding channels. The values specify the start and end of the interval selection.
+In the example below, we initialize the `"brush"` selection to the extent of the brush for the `x` and `y` encoding channels. The values specify the start and end of the interval selection.
 
 <div class="vl-example" data-name="interactive_brush"></div>
 

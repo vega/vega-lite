@@ -21,9 +21,10 @@ permalink: /docs/config.html
     "selection" : { ... },   // - Selection Configuration
     "title"     : { ... },   // - title Configuration
     "view"      : { ... }    // - View Configuration
-    "concat"      : { ... }  // - Concat Configuration
-    "facet"      : { ... }   // - Facet Configuration
-    "repeat"      : { ... }  // - Repeat Configuration
+    "concat"    : { ... }    // - Concat Configuration
+    "facet"     : { ... }    // - Facet Configuration
+    "repeat"    : { ... }    // - Repeat Configuration
+    "aria"      : ...        // - Aria Configuration
   }
 }
 ```
@@ -151,7 +152,7 @@ See [the documentation about the mark style configuration](mark.html#style-confi
 
 {% include table.html props="title" source="Config" %}
 
-{#view-config}
+{:#view-config}
 
 ## View & View Composition Configuration
 
@@ -162,3 +163,9 @@ Each of the view composition configurations (`concat` and `facet`) supports the 
 {% include table.html props="columns,spacing" source="CompositionConfig" %}
 
 Repeat uses the same configuration as concatenation.
+
+{:#aria-config}
+
+## ARIA Configuration
+
+{% include table.html props="aria" source="Config" %}

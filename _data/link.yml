@@ -201,9 +201,6 @@ AllSortString:
 NumericFieldDefWithCondition:
   name: MarkPropFieldDef
   link: 'encoding.html#mark-prop-field-def'
-NumericValueDefWithConditionAlias:
-  name: MarkPropValueDef
-  link: 'encoding.html#mark-prop-value-def'
 NumericDatumDefWithCondition:
   name: MarkPropDatumDef
   link: 'encoding.html#mark-prop-datum-def'
@@ -211,9 +208,6 @@ NumericDatumDefWithCondition:
 NumericArrayFieldDefWithCondition:
   name: MarkPropFieldDef
   link: 'encoding.html#mark-prop-field-def'
-NumericArrayValueDefWithConditionAlias:
-  name: MarkPropValueDef
-  link: 'encoding.html#mark-prop-value-def'
 NumericArrayDatumDefWithCondition:
   name: MarkPropDatumDef
   link: 'encoding.html#mark-prop-datum-def'
@@ -221,9 +215,6 @@ NumericArrayDatumDefWithCondition:
 StringFieldDefWithCondition:
   name: MarkPropFieldDef
   link: 'encoding.html#mark-prop-field-def'
-StringValueDefWithConditionAlias:
-  name: ValueDef
-  link: 'encoding.html#mark-prop-value-def'
 StringDatumDefWithCondition:
   name: MarkPropDatumDef
   link: 'encoding.html#mark-prop-datum-def'
@@ -231,9 +222,6 @@ StringDatumDefWithCondition:
 ShapeFieldDefWithCondition:
   name: MarkPropFieldDef
   link: 'encoding.html#mark-prop-field-def'
-ShapeValueDefWithConditionAlias:
-  name: MarkPropValueDef
-  link: 'encoding.html#mark-prop-value-def'
 ShapeDatumDefWithCondition:
   name: MarkPropDatumDef
   link: 'encoding.html#mark-prop-datum-def'
@@ -241,9 +229,6 @@ ShapeDatumDefWithCondition:
 ColorGradientFieldDefWithCondition:
   name: MarkPropFieldDef
   link: 'encoding.html#mark-prop-field-def'
-ColorGradientValueDefWithConditionAlias:
-  name: MarkPropValueDef
-  link: 'encoding.html#mark-prop-value-def'
 ColorGradientDatumDefWithCondition:
   name: MarkPropDatumDef
   link: 'encoding.html#mark-prop-datum-def'
@@ -251,9 +236,6 @@ ColorGradientDatumDefWithCondition:
 TextFieldDefWithCondition:
   name: TextFieldDef
   link: 'encoding.html#text-field-def'
-TextValueDefWithConditionAlias:
-  name: TextValueDef
-  link: 'encoding.html#text-value-def'
 
 FieldDefWithCondition:
   link: 'encoding.html#href-field-def'
@@ -309,16 +291,13 @@ PolarDatumDef:
 ValueDef:
   link: 'encoding.html#value-def'
 
-NumberValueDef:
-  name: MarkPropValueDef
+NumericValueDef:
+  name: ValueDef
   link: 'encoding.html#value-def'
 XValueDef:
   name: ValueDef
   link: 'encoding.html#value-def'
 YValueDef:
-  name: ValueDef
-  link: 'encoding.html#value-def'
-StringValueDef:
   name: ValueDef
   link: 'encoding.html#value-def'
 

@@ -88,7 +88,7 @@ vegaEmbed('#vis', spec).then(res =>
 );
 ```
 
-You can also use a [changeset](https://github.com/vega/vega-view#view_change) to modify the data on the chart as done on this [data streaming demo](https://vega.github.io/vega-lite/tutorials/streaming.html)
+You can also use a [changeset](https://github.com/vega/vega-view#view_change) to modify the data on the chart as done on this [data streaming demo]({{ site.baseurl }}/tutorials/streaming.html)
 
 ## Format
 
