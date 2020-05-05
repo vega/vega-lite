@@ -330,9 +330,9 @@ In addition to the constant `value`, [value definitions](#value-def) of the `hre
 
 ## Description Channel
 
-By setting the `description` channel, you can add a text description to the mark for ARIA accessibility (SVG output only). The `"aria-label"` attribute will be set to this description.
+By setting the `description` channel, you can add a text description to the mark for ARIA accessibility (SVG output only). The `"aria-label"` attribute in the generated SVG will be set to this description.
 
-By default, Vega-Lite generatea a description based on the encoding similar to [default tooltips]({{ site.baseurl }}/docs/tooltip.html#encoding). To disable automatic descriptions, set [`config.aria`](config.html#aria-config) to false.
+By default, Vega-Lite generates a description based on the encoding similar to [default tooltips]({{ site.baseurl }}/docs/tooltip.html#encoding). To disable automatic descriptions, set [`config.aria`](config.html#aria-config) to false. No description will be generated if [`mark.aria`]({{ site.baseurl }}/docs/mark.html#general) is set to false.
 
 {% include table.html props="description" source="Encoding" %}
 

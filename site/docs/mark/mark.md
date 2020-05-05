@@ -62,6 +62,8 @@ To customize properties of a mark, users can set `mark` to be a mark definition 
 
 Note: If [mark property encoding channels](encoding.html#mark-prop) are specified, these mark properties will be overridden.
 
+{:#general}
+
 ### General Mark Properties
 
 {% include table.html props="type,aria,description,style,tooltip,clip,invalid,order" source="MarkDef" %}
