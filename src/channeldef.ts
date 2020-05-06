@@ -71,7 +71,15 @@ import {
 } from './timeunit';
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
-import {contains, flatAccessWithDatum, getFirstDefined, internalField, replacePathInField, titlecase} from './util';
+import {
+  contains,
+  flatAccessWithDatum,
+  getFirstDefined,
+  internalField,
+  replacePathInField,
+  titlecase,
+  removePathFromField
+} from './util';
 import {isSignalRef} from './vega.schema';
 
 export type PrimitiveValue = number | string | boolean | null;
@@ -759,7 +767,7 @@ export function vgField(
   }
 
   if (opt.forAs) {
-    return field;
+    return removePathFromField(field);
   } else if (opt.expr) {
     // Expression to access flattened field. No need to escape dots.
     return flatAccessWithDatum(field, opt.expr) + argAccessor;

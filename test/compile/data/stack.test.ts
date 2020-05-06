@@ -11,6 +11,7 @@ function parse(model: UnitModel) {
 function assemble(model: UnitModel) {
   return StackNode.makeFromEncoding(null, model).assemble();
 }
+
 describe('compile/data/stack', () => {
   describe('StackNode.makeFromEncoding', () => {
     it('should produce correct stack component for bar with color', () => {
@@ -35,6 +36,31 @@ describe('compile/data/stack', () => {
         offset: 'zero',
         impute: false,
         as: ['sum_a_start', 'sum_a_end']
+      });
+    });
+
+    it('should remove escaping from fields for as', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'bar',
+        encoding: {
+          x: {aggregate: 'sum', field: 'a\\[foo\\]', type: 'quantitative'},
+          y: {field: 'b', type: 'nominal'},
+          color: {field: 'c', type: 'ordinal'}
+        }
+      });
+
+      expect(parse(model)).toEqual({
+        dimensionFieldDef: {field: 'b', type: 'nominal'},
+        facetby: [],
+        stackField: 'sum_a\\[foo\\]',
+        stackby: ['c'],
+        sort: {
+          field: ['c'],
+          order: ['ascending']
+        },
+        offset: 'zero',
+        impute: false,
+        as: ['sum_a[foo]_start', 'sum_a[foo]_end']
       });
     });
 
@@ -216,7 +242,7 @@ describe('compile/data/stack', () => {
           groupby: ['age'],
           field: 'people',
           offset: 'zero',
-          sort: {field: [] as string[], order: []},
+          sort: {field: [], order: []},
           as: ['v1', 'v2']
         }
       ]);
@@ -236,7 +262,7 @@ describe('compile/data/stack', () => {
           groupby: ['age', 'gender'],
           field: 'people',
           offset: 'normalize',
-          sort: {field: [] as string[], order: []},
+          sort: {field: [], order: []},
           as: ['val', 'val_end']
         }
       ]);
@@ -290,7 +316,7 @@ describe('compile/data/stack', () => {
   });
 
   describe('StackNode.producedFields', () => {
-    it('should give producedfields correctly', () => {
+    it('should give producedFields correctly', () => {
       const transform: Transform = {
         stack: 'people',
         groupby: ['age'],
