@@ -1,0 +1,312 @@
+{
+  "data": {"url": "data/iris.json"},
+  "align": "all",
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "columns": 4,
+  "concat": [
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "sepalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "petalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_petalWidthcolumn_sepalLength"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "sepalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "petalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_petalWidthcolumn_sepalWidth"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "petalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "petalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_petalWidthcolumn_petalLength"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "petalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "petalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_petalWidthcolumn_petalWidth"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "sepalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "petalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_petalLengthcolumn_sepalLength"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "sepalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "petalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_petalLengthcolumn_sepalWidth"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "petalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "petalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_petalLengthcolumn_petalLength"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "petalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "petalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_petalLengthcolumn_petalWidth"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "sepalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "sepalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_sepalWidthcolumn_sepalLength"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "sepalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "sepalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_sepalWidthcolumn_sepalWidth"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "petalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "sepalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_sepalWidthcolumn_petalLength"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "petalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "sepalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_sepalWidthcolumn_petalWidth"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "sepalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "sepalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_sepalLengthcolumn_sepalLength"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "sepalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "sepalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_sepalLengthcolumn_sepalWidth"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "petalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "sepalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_sepalLengthcolumn_petalLength"
+    },
+    {
+      "width": 150,
+      "height": 150,
+      "mark": "point",
+      "encoding": {
+        "x": {
+          "field": "petalWidth",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "y": {
+          "field": "sepalLength",
+          "type": "quantitative",
+          "scale": {"zero": false}
+        },
+        "color": {"field": "species", "type": "nominal"}
+      },
+      "name": "child__row_sepalLengthcolumn_petalWidth"
+    }
+  ]
+}
