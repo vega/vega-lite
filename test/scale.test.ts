@@ -9,7 +9,8 @@ import {
   SCALE_TYPES
 } from '../src/scale';
 import * as TYPE from '../src/type';
-import {some, without} from '../src/util';
+import {some} from '../src/util';
+import {without} from './util';
 
 describe('scale', () => {
   describe('scaleTypeSupportProperty', () => {

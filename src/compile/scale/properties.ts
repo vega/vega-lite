@@ -1,7 +1,15 @@
 import {SignalRef, TimeInterval} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
-import {Channel, COLOR, FILL, POLAR_POSITION_SCALE_CHANNELS, POSITION_SCALE_CHANNELS, STROKE} from '../../channel';
+import {
+  Channel,
+  COLOR,
+  FILL,
+  POLAR_POSITION_SCALE_CHANNELS,
+  POSITION_SCALE_CHANNELS,
+  STROKE,
+  POSITION_SCALE_CHANNEL_INDEX
+} from '../../channel';
 import {
   getFieldDef,
   getFieldOrDatumDef,
@@ -218,7 +226,7 @@ export function nice(
   if (getFieldDef(fieldOrDatumDef)?.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
     return undefined;
   }
-  return util.contains(POSITION_SCALE_CHANNELS, channel) ? true : undefined;
+  return channel in POSITION_SCALE_CHANNEL_INDEX ? true : undefined;
 }
 
 export function padding(
@@ -229,7 +237,7 @@ export function padding(
   markDef: MarkDef,
   barConfig: RectConfig
 ) {
-  if (util.contains(POSITION_SCALE_CHANNELS, channel)) {
+  if (channel in POSITION_SCALE_CHANNEL_INDEX) {
     if (isContinuousToContinuous(scaleType)) {
       if (scaleConfig.continuousPadding !== undefined) {
         return scaleConfig.continuousPadding;
@@ -256,7 +264,7 @@ export function paddingInner(paddingValue: number | SignalRef, channel: Channel,
     return undefined;
   }
 
-  if (util.contains(POSITION_SCALE_CHANNELS, channel)) {
+  if (channel in POSITION_SCALE_CHANNEL_INDEX) {
     // Padding is only set for X and Y by default.
     // Basically it doesn't make sense to add padding for color and size.
 
@@ -282,7 +290,7 @@ export function paddingOuter(
     return undefined;
   }
 
-  if (util.contains(POSITION_SCALE_CHANNELS, channel)) {
+  if (channel in POSITION_SCALE_CHANNEL_INDEX) {
     // Padding is only set for X and Y by default.
     // Basically it doesn't make sense to add padding for color and size.
     if (scaleType === ScaleType.BAND) {

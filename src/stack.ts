@@ -72,12 +72,11 @@ export interface StackProperties {
   impute: boolean;
 }
 
-export const STACKABLE_MARKS = [ARC, BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK];
-export const STACK_BY_DEFAULT_MARKS = [BAR, AREA, ARC];
+export const STACKABLE_MARKS = new Set<Mark>([ARC, BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK]);
+export const STACK_BY_DEFAULT_MARKS = new Set<Mark>([BAR, AREA, ARC]);
 
 function potentialStackedChannel(
   encoding: Encoding<string>,
-  mark: Mark,
   x: 'x' | 'theta'
 ): 'x' | 'y' | 'theta' | 'radius' | undefined {
   const y = x === 'x' ? 'y' : 'radius';
@@ -144,7 +143,7 @@ export function stack(
 ): StackProperties {
   const mark = isMarkDef(m) ? m.type : m;
   // Should have stackable mark
-  if (!contains(STACKABLE_MARKS, mark)) {
+  if (!STACKABLE_MARKS.has(mark)) {
     return null;
   }
 
@@ -153,7 +152,7 @@ export function stack(
 
   // Note: The logic here is not perfectly correct.  If we want to support stacked dot plots where each dot is a pie chart with label, we have to change the stack logic here to separate Cartesian stacking for polar stacking.
   // However, since we probably never want to do that, let's just note the limitation here.
-  const fieldChannel = potentialStackedChannel(encoding, mark, 'x') || potentialStackedChannel(encoding, mark, 'theta');
+  const fieldChannel = potentialStackedChannel(encoding, 'x') || potentialStackedChannel(encoding, 'theta');
 
   if (!fieldChannel) {
     return null;
@@ -208,7 +207,7 @@ export function stack(
     } else {
       offset = stackedFieldDef.stack;
     }
-  } else if (stackBy.length > 0 && contains(STACK_BY_DEFAULT_MARKS, mark)) {
+  } else if (stackBy.length > 0 && STACK_BY_DEFAULT_MARKS.has(mark)) {
     // Bar and Area with sum ops are automatically stacked by default
     offset = 'zero';
   }

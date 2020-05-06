@@ -1,18 +1,12 @@
 import {isBinning} from '../../bin';
-import {
-  Channel,
-  isColorChannel,
-  isScaleChannel,
-  POLAR_POSITION_SCALE_CHANNELS,
-  POSITION_SCALE_CHANNELS,
-  rangeType
-} from '../../channel';
+import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
 import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {channelSupportScaleType, Scale, ScaleType, scaleTypeSupportDataType} from '../../scale';
 import {normalizeTimeUnit} from '../../timeunit';
 import * as util from '../../util';
+import {POLAR_POSITION_SCALE_CHANNEL_INDEX, POSITION_SCALE_CHANNEL_INDEX} from './../../channel';
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 
@@ -68,13 +62,13 @@ function defaultType(channel: Channel, fieldDef: TypedFieldDef<string> | ScaleDa
         return 'ordinal';
       }
 
-      if (util.contains(POSITION_SCALE_CHANNELS, channel)) {
+      if (channel in POSITION_SCALE_CHANNEL_INDEX) {
         if (util.contains(['rect', 'bar', 'image', 'rule'], mark)) {
           // The rect/bar mark should fit into a band.
           // For rule, using band scale to make rule align with axis ticks better https://github.com/vega/vega-lite/issues/3429
           return 'band';
         }
-      } else if (mark === 'arc' && util.contains(POLAR_POSITION_SCALE_CHANNELS, channel)) {
+      } else if (mark === 'arc' && channel in POLAR_POSITION_SCALE_CHANNEL_INDEX) {
         return 'band';
       }
 

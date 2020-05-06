@@ -357,7 +357,7 @@ const {
 export const NONPOSITION_CHANNELS = keys(NONPOSITION_CHANNEL_INDEX);
 export type NonPositionChannel = typeof NONPOSITION_CHANNELS[number];
 
-const POSITION_SCALE_CHANNEL_INDEX = {
+export const POSITION_SCALE_CHANNEL_INDEX = {
   x: 1,
   y: 1
 } as const;
@@ -368,7 +368,7 @@ export function isXorY(channel: Channel): channel is PositionScaleChannel {
   return channel in POSITION_SCALE_CHANNEL_INDEX;
 }
 
-const POLAR_POSITION_SCALE_CHANNEL_INDEX = {
+export const POLAR_POSITION_SCALE_CHANNEL_INDEX = {
   theta: 1,
   radius: 1
 } as const;
