@@ -62,11 +62,11 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### General
 
-{% include table.html props="aria,cornerRadius,description,direction,fillColor,legendX,legendY,offset,orient,padding,strokeColor,strokeWidth,type,tickCount,unselectedOpacity,values,zindex" source="Legend" %}
+{% include table.html props="aria,cornerRadius,description,direction,fillColor,legendX,legendY,offset,orient,padding,strokeColor,type,tickCount,values,zindex" source="Legend" %}
 
 ### Gradient
 
-{% include table.html props="gradientLength,gradientThickness,gradientStrokeColor,gradientStrokeWidth" source="Legend" %}
+{% include table.html props="gradientLength,gradientOpacity,gradientStrokeColor,gradientStrokeWidth,gradientThickness" source="Legend" %}
 
 ### Labels
 
@@ -74,11 +74,11 @@ _See also:_ This [interactive article](https://beta.observablehq.com/@jheer/a-gu
 
 ### Symbols
 
-{% include table.html props="symbolFillColor,symbolSize,symbolStrokeColor,symbolStrokeWidth,symbolType" source="Legend" %}
+{% include table.html props="symbolDash,symbolDashOffset,symbolFillColor,symbolOffset,symbolOpacity,symbolSize,symbolStrokeColor,symbolStrokeWidth,symbolType" source="Legend" %}
 
 ### Symbol Layout
 
-{% include table.html props="clipHeight,columnPadding,columns,gridAlign,rowPadding" source="Legend" %}
+{% include table.html props="clipHeight,columnPadding,columns,gridAlign,rowPadding,symbolLimit" source="Legend" %}
 
 ### Title
 
@@ -110,4 +110,4 @@ To provide themes for all legends, the legend config (`config: {legend: {...}}`)
 
 The legend configuration also supports the following properties:
 
-{% include table.html props="gradientDirection,gradientHorizontalMaxLength,gradientHorizontalMinLength,gradientLabelLimit,gradientLabelOffset,gradientVerticalMaxLength,gradientVerticalMinLength,symbolBaseFillColor,symbolBaseStrokeColor,symbolDirection,symbolOffset,strokeDash" source="LegendConfig" %}
+{% include table.html props="gradientDirection,gradientHorizontalMaxLength,gradientHorizontalMinLength,gradientLabelLimit,gradientLabelOffset,gradientVerticalMaxLength,gradientVerticalMinLength,symbolBaseFillColor,symbolBaseStrokeColor,symbolDirection,unselectedOpacity" source="LegendConfig" %}
