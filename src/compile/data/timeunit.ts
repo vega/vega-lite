@@ -3,7 +3,7 @@ import {getSecondaryRangeChannel} from '../../channel';
 import {hasBand, vgField} from '../../channeldef';
 import {getTimeUnitParts, normalizeTimeUnit} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
-import {Dict, duplicate, hash, keys, vals} from '../../util';
+import {Dict, duplicate, hash, keys, replacePathInField, vals} from '../../util';
 import {isUnitModel, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
@@ -113,7 +113,7 @@ export class TimeUnitNode extends DataFlowNode {
       const {unit, utc, ...params} = normalizeTimeUnit(timeUnit);
 
       transforms.push({
-        field,
+        field: replacePathInField(field),
         type: 'timeunit',
         ...(unit ? {units: getTimeUnitParts(unit)} : {}),
         ...(utc ? {timezone: 'utc'} : {}),
