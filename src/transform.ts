@@ -16,7 +16,8 @@ export interface FilterTransform {
    * where `datum` can be used to refer to the current data object.
    * For example, `{filter: "datum.b2 > 60"}` would make the output data includes only items that have values in the field `b2` over 60.
    *
-   * 2) one of the [field predicates](https://vega.github.io/vega-lite/docs/predicate.html#field-predicate): [`equal`](https://vega.github.io/* vega-lite/docs/predicate.html#field-equal-predicate),
+   * 2) one of the [field predicates](https://vega.github.io/vega-lite/docs/predicate.html#field-predicate): 
+   * [`equal`](https://vega.github.io/vega-lite/docs/predicate.html#field-equal-predicate),
    * [`lt`](https://vega.github.io/vega-lite/docs/predicate.html#lt-predicate),
    * [`lte`](https://vega.github.io/vega-lite/docs/predicate.html#lte-predicate),
    * [`gt`](https://vega.github.io/vega-lite/docs/predicate.html#gt-predicate),
