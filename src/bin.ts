@@ -115,7 +115,7 @@ export function isBinning(bin: BinParams | boolean | 'binned'): bin is BinParams
 /**
  * The data is already binned and so Vega-Lite should not bin it again.
  */
-export function isBinned(bin: BinParams | boolean | 'binned'): bin is 'binned' {
+export function isBinned(bin: BinParams | boolean | 'binned'): bin is 'binned' | BinParams {
   return bin === 'binned' || (isBinParams(bin) && bin.binned === true);
 }
 
