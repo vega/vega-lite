@@ -19,6 +19,11 @@ module.exports = {
     ecmaVersion: 2018,
     sourceType: 'module'
   },
+  overrides: [
+    {
+      files: ['*.ts']
+    }
+  ],
   rules: {
     'prettier/prettier': 'warn',
     // https://github.com/typescript-eslint/typescript-eslint/tree/master/packages/eslint-plugin#supported-rules
