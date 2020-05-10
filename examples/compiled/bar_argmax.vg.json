@@ -20,7 +20,7 @@
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"argmax_US_Gross\"].Production_Budget) && isFinite(+datum[\"argmax_US_Gross\"].Production_Budget)"
+          "expr": "isValid(datum[\"argmax_US_Gross\"][\"Production_Budget\"]) && isFinite(+datum[\"argmax_US_Gross\"][\"Production_Budget\"])"
         }
       ]
     }
@@ -43,9 +43,12 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Production_Budget for max US_Gross\" + \": \" + (format(datum[\"argmax_US_Gross\"].Production_Budget, \"\")) + \"; \" + \"Major_Genre\" + \": \" + (isValid(datum[\"Major_Genre\"]) ? datum[\"Major_Genre\"] : \"\"+datum[\"Major_Genre\"])"
+            "signal": "\"Production_Budget for max US_Gross\" + \": \" + (format(datum[\"argmax_US_Gross\"][\"Production_Budget\"], \"\")) + \"; \" + \"Major_Genre\" + \": \" + (isValid(datum[\"Major_Genre\"]) ? datum[\"Major_Genre\"] : \"\"+datum[\"Major_Genre\"])"
           },
-          "x": {"scale": "x", "field": "argmax_US_Gross.Production_Budget"},
+          "x": {
+            "scale": "x",
+            "field": "argmax_US_Gross[\"Production_Budget\"]"
+          },
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "Major_Genre"},
           "height": {"scale": "y", "band": 1}
@@ -59,7 +62,7 @@
       "type": "linear",
       "domain": {
         "data": "source_0",
-        "field": "argmax_US_Gross.Production_Budget"
+        "field": "argmax_US_Gross[\"Production_Budget\"]"
       },
       "range": [0, {"signal": "width"}],
       "nice": true,

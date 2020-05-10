@@ -54,7 +54,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"max_scaled_date\"]) && isFinite(+datum[\"max_scaled_date\"]) && isValid(datum[\"argmax_scaled_date\"].CO2) && isFinite(+datum[\"argmax_scaled_date\"].CO2)"
+          "expr": "isValid(datum[\"max_scaled_date\"]) && isFinite(+datum[\"max_scaled_date\"]) && isValid(datum[\"argmax_scaled_date\"][\"CO2\"]) && isFinite(+datum[\"argmax_scaled_date\"][\"CO2\"])"
         }
       ]
     },
@@ -64,7 +64,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"min_scaled_date\"]) && isFinite(+datum[\"min_scaled_date\"]) && isValid(datum[\"argmin_scaled_date\"].CO2) && isFinite(+datum[\"argmin_scaled_date\"].CO2)"
+          "expr": "isValid(datum[\"min_scaled_date\"]) && isFinite(+datum[\"min_scaled_date\"]) && isValid(datum[\"argmin_scaled_date\"][\"CO2\"]) && isFinite(+datum[\"argmin_scaled_date\"][\"CO2\"])"
         }
       ]
     }
@@ -119,7 +119,7 @@
           "baseline": {"value": "top"},
           "fill": {"scale": "color", "field": "decade"},
           "description": {
-            "signal": "\"decade\" + \": \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"]) + \"; \" + \"Min of scaled_date\" + \": \" + (format(datum[\"min_scaled_date\"], \"\")) + \"; \" + \"CO2 for min scaled_date\" + \": \" + (format(datum[\"argmin_scaled_date\"].CO2, \"\")) + \"; \" + \"year for min scaled_date\" + \": \" + (isValid(datum[\"argmin_scaled_date\"].year) ? datum[\"argmin_scaled_date\"].year : \"\"+datum[\"argmin_scaled_date\"].year)"
+            "signal": "\"decade\" + \": \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"]) + \"; \" + \"Min of scaled_date\" + \": \" + (format(datum[\"min_scaled_date\"], \"\")) + \"; \" + \"CO2 for min scaled_date\" + \": \" + (format(datum[\"argmin_scaled_date\"][\"CO2\"], \"\")) + \"; \" + \"year for min scaled_date\" + \": \" + (isValid(datum[\"argmin_scaled_date\"][\"year\"]) ? datum[\"argmin_scaled_date\"][\"year\"] : \"\"+datum[\"argmin_scaled_date\"][\"year\"])"
           },
           "x": [
             {
@@ -130,13 +130,13 @@
           ],
           "y": [
             {
-              "test": "!isValid(datum[\"argmin_scaled_date\"].CO2) || !isFinite(+datum[\"argmin_scaled_date\"].CO2)",
+              "test": "!isValid(datum[\"argmin_scaled_date\"][\"CO2\"]) || !isFinite(+datum[\"argmin_scaled_date\"][\"CO2\"])",
               "field": {"group": "height"}
             },
-            {"scale": "y", "field": "argmin_scaled_date.CO2"}
+            {"scale": "y", "field": "argmin_scaled_date[\"CO2\"]"}
           ],
           "text": {
-            "signal": "isValid(datum[\"argmin_scaled_date\"].year) ? datum[\"argmin_scaled_date\"].year : \"\"+datum[\"argmin_scaled_date\"].year"
+            "signal": "isValid(datum[\"argmin_scaled_date\"][\"year\"]) ? datum[\"argmin_scaled_date\"][\"year\"] : \"\"+datum[\"argmin_scaled_date\"][\"year\"]"
           }
         }
       }
@@ -150,7 +150,7 @@
         "update": {
           "fill": {"scale": "color", "field": "decade"},
           "description": {
-            "signal": "\"decade\" + \": \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"]) + \"; \" + \"Max of scaled_date\" + \": \" + (format(datum[\"max_scaled_date\"], \"\")) + \"; \" + \"CO2 for max scaled_date\" + \": \" + (format(datum[\"argmax_scaled_date\"].CO2, \"\")) + \"; \" + \"year for max scaled_date\" + \": \" + (isValid(datum[\"argmax_scaled_date\"].year) ? datum[\"argmax_scaled_date\"].year : \"\"+datum[\"argmax_scaled_date\"].year)"
+            "signal": "\"decade\" + \": \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"]) + \"; \" + \"Max of scaled_date\" + \": \" + (format(datum[\"max_scaled_date\"], \"\")) + \"; \" + \"CO2 for max scaled_date\" + \": \" + (format(datum[\"argmax_scaled_date\"][\"CO2\"], \"\")) + \"; \" + \"year for max scaled_date\" + \": \" + (isValid(datum[\"argmax_scaled_date\"][\"year\"]) ? datum[\"argmax_scaled_date\"][\"year\"] : \"\"+datum[\"argmax_scaled_date\"][\"year\"])"
           },
           "x": [
             {
@@ -161,13 +161,13 @@
           ],
           "y": [
             {
-              "test": "!isValid(datum[\"argmax_scaled_date\"].CO2) || !isFinite(+datum[\"argmax_scaled_date\"].CO2)",
+              "test": "!isValid(datum[\"argmax_scaled_date\"][\"CO2\"]) || !isFinite(+datum[\"argmax_scaled_date\"][\"CO2\"])",
               "field": {"group": "height"}
             },
-            {"scale": "y", "field": "argmax_scaled_date.CO2"}
+            {"scale": "y", "field": "argmax_scaled_date[\"CO2\"]"}
           ],
           "text": {
-            "signal": "isValid(datum[\"argmax_scaled_date\"].year) ? datum[\"argmax_scaled_date\"].year : \"\"+datum[\"argmax_scaled_date\"].year"
+            "signal": "isValid(datum[\"argmax_scaled_date\"][\"year\"]) ? datum[\"argmax_scaled_date\"][\"year\"] : \"\"+datum[\"argmax_scaled_date\"][\"year\"]"
           },
           "baseline": {"value": "middle"}
         }
@@ -195,8 +195,8 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "CO2"},
-          {"data": "data_2", "field": "argmin_scaled_date.CO2"},
-          {"data": "data_1", "field": "argmax_scaled_date.CO2"}
+          {"data": "data_2", "field": "argmin_scaled_date[\"CO2\"]"},
+          {"data": "data_1", "field": "argmax_scaled_date[\"CO2\"]"}
         ]
       },
       "range": [{"signal": "height"}, 0],
