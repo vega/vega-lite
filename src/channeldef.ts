@@ -738,10 +738,10 @@ export function vgField(
           suffix = (opt.binSuffix ?? '') + (opt.suffix ?? '');
         } else if (aggregate) {
           if (isArgmaxDef(aggregate)) {
-            argAccessor = `.${field}`;
+            argAccessor = `["${field}"]`;
             field = `argmax_${aggregate.argmax}`;
           } else if (isArgminDef(aggregate)) {
-            argAccessor = `.${field}`;
+            argAccessor = `["${field}"]`;
             field = `argmin_${aggregate.argmin}`;
           } else {
             fn = String(aggregate);
