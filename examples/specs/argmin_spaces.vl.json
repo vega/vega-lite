@@ -1,0 +1,43 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "description": "An example showing how to use argmin in tooltips with fields with spaces",
+  "data": {
+    "values": [
+      {"Fighter Name": "liukang", "Place Rank": 1, "Fighting Style": "tiger"},
+      {"Fighter Name": "liukang", "Place Rank": 10, "Fighting Style": "crane"},
+      {"Fighter Name": "liukang", "Place Rank": 3, "Fighting Style": "shaolin"},
+      {
+        "Fighter Name": "johnnycage",
+        "Place Rank": 6,
+        "Fighting Style": "tiger"
+      },
+      {
+        "Fighter Name": "johnnycage",
+        "Place Rank": 5,
+        "Fighting Style": "crane"
+      },
+      {
+        "Fighter Name": "johnnycage",
+        "Place Rank": 4,
+        "Fighting Style": "shaolin"
+      },
+      {"Fighter Name": "raiden", "Place Rank": 8, "Fighting Style": "tiger"},
+      {"Fighter Name": "raiden", "Place Rank": 12, "Fighting Style": "crane"},
+      {"Fighter Name": "raiden", "Place Rank": 2, "Fighting Style": "shaolin"}
+    ]
+  },
+  "mark": "point",
+  "encoding": {
+    "tooltip": [
+      {"type": "nominal", "field": "Fighter Name"},
+      {"type": "quantitative", "aggregate": "min", "field": "Place Rank"},
+      {
+        "type": "nominal",
+        "field": "Fighting Style",
+        "aggregate": {"argmin": "Place Rank"}
+      }
+    ],
+    "x": {"type": "quantitative", "aggregate": "min", "field": "Place Rank"},
+    "y": {"type": "nominal", "field": "Fighter Name"}
+  }
+}
