@@ -7995,16 +7995,16 @@ vega-datasets@^1.30.2:
   integrity sha512-CRF9WCqEcw9h1+gm7+6p6db0544fAWYlxmfkB+V6SsiaBG/3kP+0Xo+z9xG9Ch15PBhqfkhj1SivwcPQnqm0Qw==
 
 vega-embed@^6.7.1:
-  version "6.7.1"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.7.1.tgz#54132998233c430cb4287ee8dff7cd2ab67a4cdb"
-  integrity sha512-KENi1YTWyDrTAV32FvI5DMP6w7535svLf0TUPpF1XPeYOtNUZ1kgO0etjZnt9K6T/LqSQWCITY/WVRbkfxSmLw==
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.8.0.tgz#600ff2d302e4170c1261fcd3fe787c2af7c33c5e"
+  integrity sha512-MRT6uy9ghUqS8xtIOnhcYCEXG6eabNI0GIgKsFHAAzKF0rY1IuUkwrMO3XucOYzcedVXyBWPJOxlPC3iSgXjAA==
   dependencies:
     fast-json-patch "^3.0.0-1"
     json-stringify-pretty-compact "^2.0.0"
     semver "^7.3.2"
     vega-schema-url-parser "^1.1.0"
     vega-themes "^2.8.3"
-    vega-tooltip "^0.22.1"
+    vega-tooltip "^0.23.0"
 
 vega-encode@~4.6.0:
   version "4.6.0"
@@ -8187,13 +8187,6 @@ vega-time@^1.1.0, vega-time@~1.1.0:
     d3-time "^1.1.0"
     d3-time-format "^2.2.3"
     vega-util "^1.13.2"
-
-vega-tooltip@^0.22.1:
-  version "0.22.1"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.22.1.tgz#231d6c8a105b6ac531bf8275cd0950c30373e558"
-  integrity sha512-mPmzxwvi6+2ZgbZ/+mNC7XbSu5I6Ckon8zdgUfH9neb+vV7CKlV/FYypMdVN/9iDMFUqGzybYdqNOiSPPIxFEQ==
-  dependencies:
-    vega-util "^1.13.1"
 
 vega-tooltip@^0.23.0:
   version "0.23.0"
