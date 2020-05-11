@@ -8195,6 +8195,13 @@ vega-tooltip@^0.22.1:
   dependencies:
     vega-util "^1.13.1"
 
+vega-tooltip@^0.23.0:
+  version "0.23.0"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.23.0.tgz#16f7cd4ff25190ffcab611d95a6b4402f6cc8e80"
+  integrity sha512-DuwwV1qgvvSbM/Zj+SQ627PW7paOdrfEFHlZ8ntH8xjcbnclDol1Lnviu/U7ImaGrLMEx78MeY1XLnuKTjVbdQ==
+  dependencies:
+    vega-util "^1.13.2"
+
 vega-transforms@~4.7.2:
   version "4.7.2"
   resolved "https://registry.yarnpkg.com/vega-transforms/-/vega-transforms-4.7.2.tgz#29e3e0a7f662b756c563abc4eb06465aecdda940"
