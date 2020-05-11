@@ -43,7 +43,7 @@ A dot plot uses `circle`, but for dense distribution is better to use  `tick` ma
 
 ### Strip Plot
 
-The following set of strip-plots show the distribution of each car's Horsepower.
+The following set of strip-plots shows the distribution of each car's horsepower.
 
 <span class="vl-example" data-name="tick_strip"></span>
 
