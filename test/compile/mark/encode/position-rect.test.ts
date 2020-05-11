@@ -27,6 +27,25 @@ describe('compile/mark/encode/position-rect', () => {
       });
     });
 
+    it('produces correct x-mixins for binned data with step and start field, without end field', () => {
+      const fieldDef: TypedFieldDef<string> = {field: 'x', bin: {binned: true, step: 2}, type: 'quantitative'};
+      const props = rectBinPosition({
+        fieldDef,
+        channel: 'x',
+        band: 1,
+        scaleName: 'x',
+        reverse: false,
+        axisTranslate: 0.5, // Vega default
+        spacing: 1,
+        markDef: {type: 'bar'},
+        config
+      });
+      expect(props.x).toEqual({
+        signal: 'scale("x", datum["x"] + 2)',
+        offset: 0
+      });
+    });
+
     it('produces correct y-mixins for signal reverse', () => {
       const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
       const props = rectBinPosition({

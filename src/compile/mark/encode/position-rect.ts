@@ -1,6 +1,6 @@
 import {SignalRef} from 'vega';
 import {isArray, isNumber} from 'vega-util';
-import {isBinned, isBinning} from '../../../bin';
+import {isBinned, isBinning, isBinParams} from '../../../bin';
 import {
   getSecondaryRangeChannel,
   getSizeChannel,
@@ -10,7 +10,7 @@ import {
   PolarPositionChannel,
   PositionChannel
 } from '../../../channel';
-import {getBand, isFieldDef, isFieldOrDatumDef, TypedFieldDef} from '../../../channeldef';
+import {getBand, isFieldDef, isFieldOrDatumDef, TypedFieldDef, vgField} from '../../../channeldef';
 import {Config, DEFAULT_STEP, getViewConfigDiscreteStep} from '../../../config';
 import {Encoding} from '../../../encoding';
 import * as log from '../../../log';
@@ -293,25 +293,36 @@ export function rectBinPosition({
         config
       })
     };
-  } else if (isBinned(fieldDef.bin) && isFieldDef(fieldDef2)) {
-    return {
-      [vgChannel2]: ref.valueRefForFieldOrDatumDef(
-        fieldDef,
-        scaleName,
-        {},
-        {offset: getBinSpacing(channel2, spacing, reverse, axisTranslate, offset)}
-      ),
-      [vgChannel]: ref.valueRefForFieldOrDatumDef(
-        fieldDef2,
-        scaleName,
-        {},
-        {offset: getBinSpacing(channel, spacing, reverse, axisTranslate, offset)}
-      )
-    };
-  } else {
-    log.warn(log.message.channelRequiredForBinned(channel2));
-    return undefined;
+  } else if (isBinned(fieldDef.bin)) {
+    const startRef = ref.valueRefForFieldOrDatumDef(
+      fieldDef,
+      scaleName,
+      {},
+      {offset: getBinSpacing(channel2, spacing, reverse, axisTranslate, offset)}
+    );
+
+    if (isFieldDef(fieldDef2)) {
+      return {
+        [vgChannel2]: startRef,
+        [vgChannel]: ref.valueRefForFieldOrDatumDef(
+          fieldDef2,
+          scaleName,
+          {},
+          {offset: getBinSpacing(channel, spacing, reverse, axisTranslate, offset)}
+        )
+      };
+    } else if (isBinParams(fieldDef.bin) && fieldDef.bin.step) {
+      return {
+        [vgChannel2]: startRef,
+        [vgChannel]: {
+          signal: `scale("${scaleName}", ${vgField(fieldDef, {expr: 'datum'})} + ${fieldDef.bin.step})`,
+          offset: getBinSpacing(channel, spacing, reverse, axisTranslate, offset)
+        }
+      };
+    }
   }
+  log.warn(log.message.channelRequiredForBinned(channel2));
+  return undefined;
 }
 
 /**
