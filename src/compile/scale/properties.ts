@@ -7,8 +7,8 @@ import {
   FILL,
   POLAR_POSITION_SCALE_CHANNELS,
   POSITION_SCALE_CHANNELS,
-  STROKE,
-  POSITION_SCALE_CHANNEL_INDEX
+  POSITION_SCALE_CHANNEL_INDEX,
+  STROKE
 } from '../../channel';
 import {
   getFieldDef,
@@ -64,15 +64,17 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
     const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as ScaleFieldDef<string, Type> | ScaleDatumDef;
 
     const specifiedValue = specifiedScale[property];
-    const sType = mergedScaleCmpt.get('type');
+    const scaleType = mergedScaleCmpt.get('type');
+    const scalePadding = mergedScaleCmpt.get('padding');
+    const scalePaddingInner = mergedScaleCmpt.get('paddingInner');
 
-    const supportedByScaleType = scaleTypeSupportProperty(sType, property);
+    const supportedByScaleType = scaleTypeSupportProperty(scaleType, property);
     const channelIncompatability = channelScalePropertyIncompatability(channel, property);
 
     if (specifiedValue !== undefined) {
       // If there is a specified value, check if it is compatible with scale type and channel
       if (!supportedByScaleType) {
-        log.warn(log.message.scalePropertyNotWorkWithScaleType(sType, property, channel));
+        log.warn(log.message.scalePropertyNotWorkWithScaleType(scaleType, property, channel));
       } else if (channelIncompatability) {
         // channel
         log.warn(channelIncompatability);
@@ -83,18 +85,20 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
         // copyKeyFromObject ensures type safety
         localScaleCmpt.copyKeyFromObject(property, specifiedScale);
       } else {
-        const value = getDefaultValue(
-          property,
-          model,
-          channel,
-          fieldOrDatumDef,
-          mergedScaleCmpt.get('type'),
-          mergedScaleCmpt.get('padding'),
-          mergedScaleCmpt.get('paddingInner'),
-          specifiedScale.domain,
-          markDef,
-          config
-        );
+        const value =
+          property in scaleRules
+            ? scaleRules[property]({
+                model,
+                channel,
+                fieldOrDatumDef,
+                scaleType,
+                scalePadding,
+                scalePaddingInner,
+                domain: specifiedScale.domain,
+                markDef,
+                config
+              })
+            : config.scale[property];
         if (value !== undefined) {
           localScaleCmpt.set(property, value, false);
         }
@@ -103,46 +107,43 @@ function parseUnitScaleProperty(model: UnitModel, property: keyof (Scale | Scale
   }
 }
 
-// Note: This method is used in Voyager.
-export function getDefaultValue(
-  property: keyof Scale,
-  model: Model,
-  channel: Channel,
-  fieldOrDatumDef: ScaleFieldDef<string, Type> | ScaleDatumDef,
-  scaleType: ScaleType,
-  scalePadding: number | SignalRef,
-  scalePaddingInner: number | SignalRef,
-  specifiedDomain: Scale['domain'],
-  markDef: MarkDef,
-  config: Config
-) {
-  const scaleConfig = config.scale;
-  const {type} = fieldOrDatumDef;
-
-  // If we have default rule-base, determine default value first
-  switch (property) {
-    case 'bins':
-      return isFieldDef(fieldOrDatumDef) ? bins(model, fieldOrDatumDef) : undefined;
-    case 'interpolate':
-      return interpolate(channel, type);
-    case 'nice':
-      return nice(scaleType, channel, fieldOrDatumDef);
-    case 'padding':
-      return padding(channel, scaleType, scaleConfig, fieldOrDatumDef, markDef, config.bar);
-    case 'paddingInner':
-      return paddingInner(scalePadding, channel, markDef.type, scaleConfig);
-    case 'paddingOuter':
-      return paddingOuter(scalePadding, channel, scaleType, markDef.type, scalePaddingInner, scaleConfig);
-    case 'reverse': {
-      const sort = isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined;
-      return reverse(scaleType, sort, channel, scaleConfig);
-    }
-    case 'zero':
-      return zero(channel, fieldOrDatumDef, specifiedDomain, markDef, scaleType);
-  }
-  // Otherwise, use scale config
-  return scaleConfig[property];
+export interface ScaleRuleParams {
+  model: Model;
+  channel: Channel;
+  fieldOrDatumDef: ScaleFieldDef<string, Type> | ScaleDatumDef;
+  scaleType: ScaleType;
+  scalePadding: number | SignalRef;
+  scalePaddingInner: number | SignalRef;
+  domain: Scale['domain'];
+  markDef: MarkDef;
+  config: Config;
 }
+
+export const scaleRules: {
+  [k in keyof Scale]?: (params: ScaleRuleParams) => Scale[k];
+} = {
+  bins: ({model, fieldOrDatumDef}) => (isFieldDef(fieldOrDatumDef) ? bins(model, fieldOrDatumDef) : undefined),
+
+  interpolate: ({channel, fieldOrDatumDef}) => interpolate(channel, fieldOrDatumDef.type),
+
+  nice: ({scaleType, channel, fieldOrDatumDef}) => nice(scaleType, channel, fieldOrDatumDef),
+
+  padding: ({channel, scaleType, fieldOrDatumDef, markDef, config}) =>
+    padding(channel, scaleType, config.scale, fieldOrDatumDef, markDef, config.bar),
+
+  paddingInner: ({scalePadding, channel, markDef, config}) =>
+    paddingInner(scalePadding, channel, markDef.type, config.scale),
+
+  paddingOuter: ({scalePadding, channel, scaleType, markDef, scalePaddingInner, config}) =>
+    paddingOuter(scalePadding, channel, scaleType, markDef.type, scalePaddingInner, config.scale),
+
+  reverse: ({fieldOrDatumDef, scaleType, channel, config}) => {
+    const sort = isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined;
+    return reverse(scaleType, sort, channel, config.scale);
+  },
+  zero: ({channel, fieldOrDatumDef, domain, markDef, scaleType}) =>
+    zero(channel, fieldOrDatumDef, domain, markDef, scaleType)
+};
 
 // This method is here rather than in range.ts to avoid circular dependency.
 export function parseScaleRange(model: Model) {
@@ -211,7 +212,7 @@ export function bins(model: Model, fieldDef: TypedFieldDef<string>) {
   return undefined;
 }
 
-export function interpolate(channel: Channel, type: Type) {
+export function interpolate(channel: Channel, type: Type): Scale['interpolate'] {
   if (contains([COLOR, FILL, STROKE], channel) && type !== 'nominal') {
     return 'hcl';
   }
