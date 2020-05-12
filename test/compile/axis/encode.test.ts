@@ -37,5 +37,17 @@ describe('compile/axis/encode', () => {
       const labels = encode.labels(model, 'x', {});
       expect(labels.text.signal).toEqual('customNumberFormat(datum.value, "abc")');
     });
+
+    it('applies custom format type without format', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'quantitative', axis: {formatType: 'customNumberFormat'}}
+        },
+        config: {customFormatTypes: true}
+      });
+      const labels = encode.labels(model, 'x', {});
+      expect(labels.text.signal).toEqual('customNumberFormat(datum.value)');
+    });
   });
 });

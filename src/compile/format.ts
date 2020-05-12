@@ -24,7 +24,7 @@ export function isCustomFormatType(formatType: string) {
 }
 
 function customFormatExpr(formatType: string, field: string, format: string | object) {
-  return `${formatType}(${field}, ${JSON.stringify(format)})`;
+  return `${formatType}(${field}${format ? `, ${JSON.stringify(format)}` : ''})`;
 }
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
