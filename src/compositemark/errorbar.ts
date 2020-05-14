@@ -20,7 +20,7 @@ import {Step} from '../spec/base';
 import {NormalizedUnitSpec} from '../spec/unit';
 import {TitleParams} from '../title';
 import {AggregatedFieldDef, CalculateTransform, Transform} from '../transform';
-import {replaceAll, titlecase} from '../util';
+import {replaceAll, titleCase} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -457,7 +457,7 @@ function errorBarAggregationAndCalculation<
       ];
 
       tooltipSummary = [
-        {fieldPrefix: 'center_', titlePrefix: titlecase(center)},
+        {fieldPrefix: 'center_', titlePrefix: titleCase(center)},
         {fieldPrefix: 'upper_', titlePrefix: getTitlePrefix(center, extent, '+')},
         {fieldPrefix: 'lower_', titlePrefix: getTitlePrefix(center, extent, '-')}
       ];
@@ -551,5 +551,5 @@ function errorBarAggregationAndCalculation<
 }
 
 function getTitlePrefix(center: ErrorBarCenter, extent: ErrorBarExtent, operation: '+' | '-'): string {
-  return titlecase(center) + ' ' + operation + ' ' + extent;
+  return titleCase(center) + ' ' + operation + ' ' + extent;
 }

@@ -18,7 +18,7 @@ import {Mark, MarkDef} from '../../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../../scale';
 import {getFirstDefined} from '../../../util';
 import {isSignalRef, isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
-import {getMarkPropOrConfig} from '../../common';
+import {getMarkPropOrConfig, signalOrStringValue} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
 import {nonPosition} from './nonposition';
@@ -222,7 +222,7 @@ function getBinSpacing(
   const spacingOffset = channel === 'x' || channel === 'y2' ? -spacing / 2 : spacing / 2;
 
   if (isSignalRef(reverse)) {
-    const offsetExpr = isSignalRef(offset) ? offset.signal : offset ? `${offset}` : '';
+    const offsetExpr = signalOrStringValue(offset);
     return {
       signal: `${reverse.signal} ? ${translate - spacingOffset}${offsetExpr ? '-' + offsetExpr : ''} : ${
         translate + spacingOffset

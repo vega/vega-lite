@@ -1,5 +1,5 @@
 import {SignalRef, Text} from 'vega';
-import {array} from 'vega-util';
+import {array, stringValue} from 'vega-util';
 import {AxisConfig} from '../axis';
 import {FieldDefBase, FieldRefOption, OrderFieldDef, vgField} from '../channeldef';
 import {Config, StyleConfigIndex} from '../config';
@@ -7,7 +7,7 @@ import {MarkConfig, MarkDef} from '../mark';
 import {SortFields} from '../sort';
 import {isText} from '../title';
 import {deepEqual, getFirstDefined} from '../util';
-import {isSignalRef, VgEncodeChannel, VgEncodeEntry} from '../vega.schema';
+import {isSignalRef, VgEncodeChannel, VgEncodeEntry, VgValueRef} from '../vega.schema';
 import {AxisComponentProps} from './axis/component';
 import {Explicit} from './split';
 import {UnitModel} from './unit';
@@ -19,6 +19,20 @@ export function signalOrValueRef<T>(value: T | SignalRef): {value: T} | SignalRe
     return value;
   }
   return value !== undefined ? {value} : undefined;
+}
+
+export function exprFromValueOrSignalRef(ref: VgValueRef | SignalRef): string {
+  if (isSignalRef(ref)) {
+    return ref.signal;
+  }
+  return stringValue(ref.value);
+}
+
+export function signalOrStringValue(v: SignalRef | any) {
+  if (isSignalRef(v)) {
+    return v.signal;
+  }
+  return stringValue(v);
 }
 
 export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {

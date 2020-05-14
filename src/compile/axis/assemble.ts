@@ -1,5 +1,5 @@
 import {Axis as VgAxis, AxisEncode, NewSignal, SignalRef, Text} from 'vega';
-import {array, isArray, stringValue} from 'vega-util';
+import {array, isArray} from 'vega-util';
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isConditionalAxisValue} from '../../axis';
 import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';
@@ -7,6 +7,7 @@ import {Config} from '../../config';
 import {isText} from '../../title';
 import {getFirstDefined, keys} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
+import {exprFromValueOrSignalRef} from '../common';
 import {Model} from '../model';
 import {expression} from '../predicate';
 import {AxisComponent, AxisComponentIndex} from './component';
@@ -32,13 +33,6 @@ function setAxisEncode(
   axis.encode[part].update = axis.encode[part].update ?? {};
   // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
   (axis.encode[part].update[vgProp] as any) = vgRef;
-}
-
-function exprFromValueOrSignalRef(ref: VgValueRef | SignalRef): string {
-  if (isSignalRef(ref)) {
-    return ref.signal;
-  }
-  return stringValue(ref.value);
 }
 
 export function assembleAxis(

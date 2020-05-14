@@ -45,6 +45,7 @@ import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
+import {signalOrStringValue} from '../common';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
 
@@ -312,8 +313,8 @@ export function interpolateRange(
 ): SignalRef {
   // always return a signal since it's better to compute the sequence in Vega later
   const f = () => {
-    const rMax = isSignalRef(rangeMax) ? rangeMax.signal : rangeMax;
-    const rMin = isSignalRef(rangeMin) ? rangeMin.signal : rangeMin;
+    const rMax = signalOrStringValue(rangeMax);
+    const rMin = signalOrStringValue(rangeMin);
     const step = `(${rMax} - ${rMin}) / (${cardinality} - 1)`;
     return `sequence(${rMin}, ${rMax} + ${step}, ${step})`;
   };

@@ -1,19 +1,12 @@
 import {ScaleType, SignalRef} from 'vega';
-import {array, stringValue} from 'vega-util';
+import {array} from 'vega-util';
 import {AxisConfig} from '../../axis';
 import {PositionScaleChannel} from '../../channel';
 import {Config} from '../../config';
 import {isQuantitative} from '../../scale';
-import {keys, titlecase} from '../../util';
+import {keys, titleCase} from '../../util';
 import {isSignalRef} from '../../vega.schema';
-import {getStyleConfig} from '../common';
-
-function signalOrStringValue(v: SignalRef | any) {
-  if (isSignalRef(v)) {
-    return v.signal;
-  }
-  return stringValue(v);
-}
+import {getStyleConfig, signalOrStringValue} from '../common';
 
 function getAxisConfigFromConfigTypes(
   configTypes: string[],
@@ -70,7 +63,7 @@ export function getAxisConfigs(
       : [];
 
   const axisChannel = channel === 'x' ? 'axisX' : 'axisY';
-  const axisOrient = isSignalRef(orient) ? 'axisOrient' : 'axis' + titlecase(orient); // axisTop, axisBottom, ...
+  const axisOrient = isSignalRef(orient) ? 'axisOrient' : 'axis' + titleCase(orient); // axisTop, axisBottom, ...
 
   const vlOnlyConfigTypes = [
     // technically Vega does have axisBand, but if we make another separation here,
