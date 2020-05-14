@@ -77,7 +77,7 @@ import {
   getFirstDefined,
   internalField,
   replacePathInField,
-  titlecase,
+  titleCase,
   removePathFromField
 } from './util';
 import {isSignalRef} from './vega.schema';
@@ -818,7 +818,7 @@ export function verbalTitleFormatter(fieldDef: FieldDefBase<string>, config: Con
     } else if (isArgminDef(aggregate)) {
       return `${field} for min ${aggregate.argmin}`;
     } else {
-      return `${titlecase(aggregate)} of ${field}`;
+      return `${titleCase(aggregate)} of ${field}`;
     }
   }
   return field;

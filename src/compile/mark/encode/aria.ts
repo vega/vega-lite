@@ -1,5 +1,5 @@
 import {entries, keys} from '../../../util';
-import {getMarkPropOrConfig} from '../../common';
+import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {VG_MARK_INDEX} from './../../../vega.schema';
 import {UnitModel} from './../../unit';
 import {wrapCondition} from './conditional';
@@ -53,9 +53,7 @@ export function description(model: UnitModel) {
   const descriptionValue = getMarkPropOrConfig('description', markDef, config);
   if (descriptionValue != null) {
     return {
-      description: {
-        value: descriptionValue
-      }
+      description: signalOrValueRef(descriptionValue)
     };
   }
 
