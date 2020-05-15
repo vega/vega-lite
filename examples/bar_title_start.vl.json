@@ -4,7 +4,6 @@
     "text": "A Simple Bar Chart",
     "anchor": "start"
   },
-  "description": "A simple bar chart with embedded data.",
   "data": {
     "values": [
       {"a": "A", "b": 28}, {"a": "B", "b": 55}, {"a": "C", "b": 43},

@@ -125,6 +125,8 @@ The supported **aggregation operations** are:
 
 ## Argmin / Argmax
 
+Sometimes, you may not want to find the minimum or maximum of a field, but instead the value from a field that corresponds to the minimum or maximum value in another field. In these cases you can use the argmin and argmax aggregates.
+
 The argmax and argmin operation can be specified in an encoding field definition by setting `aggregate` to an object with `argmax/min` describing the field to maximize/minimize. For example, the following plot shows the production budget of the movie that has the highest US Gross in each major genre.
 
 <div class="vl-example" data-name="bar_argmax"></div>

@@ -4,7 +4,11 @@
   "data": {"url": "data/movies.json"},
   "mark": "bar",
   "encoding": {
-    "x": {"aggregate": {"argmax": "US_Gross"}, "field": "Production_Budget", "type": "quantitative"},
+    "x": {
+      "aggregate": {"argmax": "US_Gross"},
+      "field": "Production_Budget",
+      "type": "quantitative"
+    },
     "y": {"field": "Major_Genre", "type": "nominal"}
   }
 }
