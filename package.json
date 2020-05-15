@@ -25,7 +25,7 @@
     "test": "test"
   },
   "scripts": {
-    "changelog": "conventional-changelog -p angular",
+    "changelog": "conventional-changelog -p angular -r 2",
     "build": "yarn build:only",
     "build:only": "yarn tsc:src && rollup -c",
     "postbuild": "terser build/vega-lite.js -cm --source-map content=build/vega-lite.js.map,filename=build/vega-lite.min.js.map -o build/vega-lite.min.js && yarn schema && babel build/vega-lite.js --out-dir build-es5 --config-file ./babel.config.js",
