@@ -69,7 +69,10 @@ export interface ErrorExtraEncoding<F extends Field> {
   yError2?: SecondaryFieldDef<F> | ValueDef<number>;
 }
 
-export type ErrorEncoding<F extends Field> = Pick<Encoding<F>, PositionChannel | 'color' | 'detail' | 'opacity'> &
+export type ErrorEncoding<F extends Field> = Pick<
+  Encoding<F>,
+  PositionChannel | 'color' | 'detail' | 'opacity' | 'size'
+> &
   ErrorExtraEncoding<F>;
 
 export type ErrorBarPartsMixins = PartsMixins<ErrorBarPart>;
@@ -131,15 +134,20 @@ export function normalizeErrorBar(
     tooltipEncoding
   } = errorBarParams(spec, ERRORBAR, config);
 
+  const {size, ...encodingWithoutContinuousAxisAndSize} = encodingWithoutContinuousAxis;
   const makeErrorBarPart = makeCompositeAggregatePartFactory<ErrorBarPartsMixins>(
     markDef,
     continuousAxis,
     continuousAxisChannelDef,
-    encodingWithoutContinuousAxis,
+    encodingWithoutContinuousAxisAndSize,
     config.errorbar
   );
 
-  const tick: MarkDef = {type: 'tick', orient: ticksOrient};
+  const tick: MarkDef = {
+    type: 'tick',
+    orient: ticksOrient,
+    ...(size && 'value' in size ? {thickness: size.value} : {})
+  };
 
   const layer = [
     ...makeErrorBarPart({
@@ -164,7 +172,10 @@ export function normalizeErrorBar(
       },
       positionPrefix: 'lower',
       endPositionPrefix: 'upper',
-      extraEncoding: tooltipEncoding
+      extraEncoding: {
+        ...tooltipEncoding,
+        ...(size ? size : {})
+      }
     })
   ];
 

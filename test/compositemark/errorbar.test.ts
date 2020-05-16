@@ -2,7 +2,7 @@ import {AggregateOp} from 'vega';
 import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar';
 import {defaultConfig} from '../../src/config';
 import * as log from '../../src/log';
-import {isMarkDef} from '../../src/mark';
+import {isMarkDef, MarkDef} from '../../src/mark';
 import {normalize} from '../../src/normalize';
 import {isLayerSpec, isUnitSpec} from '../../src/spec';
 import {TopLevelUnitSpec} from '../../src/spec/unit';
@@ -539,6 +539,36 @@ describe('normalizeErrorBar with raw data input', () => {
       {field: 'center_people', title: 'Median of people', type: 'quantitative'},
       {field: 'age', type: 'ordinal'}
     ]);
+  });
+
+  it("should move size (value def) in tick's encoing channel to its mark definition as thickness", () => {
+    const thickness = 5;
+    const outputSpec = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: {type: 'errorbar', ticks: true},
+        encoding: {
+          x: {field: 'age', type: 'ordinal'},
+          y: {field: 'people', type: 'quantitative'},
+          size: {value: thickness}
+        }
+      },
+      defaultConfig
+    );
+
+    expect(isLayerSpec(outputSpec)).toBeTruthy();
+    if (isLayerSpec(outputSpec)) {
+      outputSpec.layer.forEach(l => {
+        if (isUnitSpec(l) && (l.mark as MarkDef).type === 'tick') {
+          const {mark} = l;
+          if (isMarkDef(mark) && mark.type === 'tick') {
+            expect(mark.thickness).toBe(thickness);
+          }
+        }
+      });
+    } else {
+      expect(false).toBe(true);
+    }
   });
 });
 
