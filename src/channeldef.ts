@@ -636,7 +636,9 @@ export function isDatumDef<F extends Field>(
   return !!channelDef && 'datum' in channelDef;
 }
 
-export function isContinuousFieldOrDatumDef<F extends Field>(cd: ChannelDef<F>) {
+export function isContinuousFieldOrDatumDef<F extends Field>(
+  cd: ChannelDef<F>
+): cd is TypedFieldDef<F> | DatumDef<F, number> {
   // TODO: make datum support DateTime object
   return (isTypedFieldDef(cd) && isContinuous(cd)) || isNumericDataDef(cd);
 }

@@ -6,6 +6,7 @@ import {
   FieldDefBase,
   isContinuousFieldOrDatumDef,
   isFieldDef,
+  isFieldOrDatumDefForTimeFormat,
   PositionFieldDef,
   SecondaryFieldDef,
   StringFieldDef,
@@ -281,12 +282,26 @@ export function compositeMarkOrient<M extends CompositeMark>(
       } else if (xAggregate === compositeMark && yAggregate === compositeMark) {
         throw new Error('Both x and y cannot have aggregate');
       } else {
-        if (isMarkDef(mark) && mark.orient) {
-          return mark.orient;
-        }
+        if (isFieldOrDatumDefForTimeFormat(x)) {
+          // x is temporal
+          if (isFieldOrDatumDefForTimeFormat(y) && isMarkDef(mark) && mark.orient) {
+            // both x and y are temporal and orient is specified
+            return mark.orient;
+          }
 
-        // default orientation = vertical
-        return 'vertical';
+          // x is temporal but y is not
+          return 'vertical';
+        } else if (isFieldOrDatumDefForTimeFormat(y)) {
+          // y is temporal but x is not
+          return 'horizontal';
+        } else {
+          if (isMarkDef(mark) && mark.orient) {
+            return mark.orient;
+          }
+
+          // default orientation = vertical
+          return 'vertical';
+        }
       }
     }
 
