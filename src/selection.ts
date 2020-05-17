@@ -110,6 +110,9 @@ export interface MultiSelectionConfig extends BaseSelectionConfig {
    * __Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,
    * data values are toggled when a user interacts with the shift-key pressed).
    *
+   * Setting the value to the Vega expression `"true"` will toggle data values
+   * without the user pressing the shift-key.
+   *
    * __See also:__ [`toggle`](https://vega.github.io/vega-lite/docs/toggle.html) documentation.
    */
   toggle?: string | boolean;
