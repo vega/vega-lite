@@ -8051,11 +8051,11 @@ vega-event-selector@^2.0.3, vega-event-selector@~2.0.3:
   integrity sha512-rUnAvBSy5tkk+0MELY7qICTgjMNjH/DDNIH603q3GRi+bBRCd4MlJxWrPYBhwZIYpmr6XCe130lZ90/F5SgVfA==
 
 vega-expression@^2.6.4, vega-expression@~2.6.4:
-  version "2.6.4"
-  resolved "https://registry.yarnpkg.com/vega-expression/-/vega-expression-2.6.4.tgz#f8098e974dedb1614474b260193332d51961fae3"
-  integrity sha512-wVpXbvRUUHKAsJIXQmiu4EAA3DvN0uXbGpGR+lg0y9kaFQIiiLzpouioGNgP6slyKmrjrLRty571etvlhsOm7A==
+  version "2.6.5"
+  resolved "https://registry.yarnpkg.com/vega-expression/-/vega-expression-2.6.5.tgz#7bda7524b9223cbbf9034071695c7c2a9bd81971"
+  integrity sha512-3hJts0gKomu3ePXYeIb+VAw7yNKoHJ6VqSKsHHFPyoEGNdwmlgI5d9IBblelPCiMCHK4sMt7h1OTWB33cfxZGA==
   dependencies:
-    vega-util "^1.13.2"
+    vega-util "^1.14.0"
 
 vega-force@~4.0.4:
   version "4.0.4"
@@ -8241,7 +8241,12 @@ vega-typings@^0.16.0, vega-typings@~0.16.0:
   dependencies:
     vega-util "^1.13.1"
 
-vega-util@^1.13.1, vega-util@^1.13.2, vega-util@~1.13.2:
+vega-util@^1.13.1, vega-util@^1.13.2, vega-util@^1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.14.0.tgz#56180bf09c28acc2b4c17c38e16d6673f45d9331"
+  integrity sha512-j7Gdeasf9C4yUgjlTFJ8P5RpV6n5UxFRzxWkNx4tbMir6f7YM6vGd7vzGWgFdJ3oJy/cmXHzNZw5lw4gnjQAog==
+
+vega-util@~1.13.2:
   version "1.13.2"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.13.2.tgz#d9fe2378f0e780290e231d128d8c125407fb3559"
   integrity sha512-cN/VaO8CjPb3ELfQb+IVi5NGoQpYhWSUFfH7K2ibwagO8obZlUFa9ze8fYiexi2Txf78HFgWm9MXNdV6PROrkw==
