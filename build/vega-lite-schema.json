@@ -13510,7 +13510,7 @@
           "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
         },
         "toggle": {
-          "description": "Controls whether data values should be toggled or only ever inserted into\nmulti selections. Can be `true`, `false` (for insertion only), or a\n[Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,\ndata values are toggled when a user interacts with the shift-key pressed).\n\n__See also:__ [`toggle`](https://vega.github.io/vega-lite/docs/toggle.html) documentation.",
+          "description": "Controls whether data values should be toggled or only ever inserted into\nmulti selections. Can be `true`, `false` (for insertion only), or a\n[Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,\ndata values are toggled when a user interacts with the shift-key pressed).\n\nSetting the value to the Vega expression `\"true\"` will toggle data values\nwithout the user pressing the shift-key.\n\n__See also:__ [`toggle`](https://vega.github.io/vega-lite/docs/toggle.html) documentation.",
           "type": [
             "string",
             "boolean"
@@ -13599,7 +13599,7 @@
           "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
         },
         "toggle": {
-          "description": "Controls whether data values should be toggled or only ever inserted into\nmulti selections. Can be `true`, `false` (for insertion only), or a\n[Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,\ndata values are toggled when a user interacts with the shift-key pressed).\n\n__See also:__ [`toggle`](https://vega.github.io/vega-lite/docs/toggle.html) documentation.",
+          "description": "Controls whether data values should be toggled or only ever inserted into\nmulti selections. Can be `true`, `false` (for insertion only), or a\n[Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,\ndata values are toggled when a user interacts with the shift-key pressed).\n\nSetting the value to the Vega expression `\"true\"` will toggle data values\nwithout the user pressing the shift-key.\n\n__See also:__ [`toggle`](https://vega.github.io/vega-lite/docs/toggle.html) documentation.",
           "type": [
             "string",
             "boolean"
