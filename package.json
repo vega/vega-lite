@@ -109,11 +109,11 @@
     "ts-jest": "^26.0.0",
     "ts-json-schema-generator": "^0.68.0",
     "typescript": "~3.8.3",
-    "vega-cli": "^5.11.1",
+    "vega-cli": "^5.12.1",
     "vega-datasets": "^1.30.2",
     "vega-embed": "^6.8.0",
     "vega-tooltip": "^0.23.0",
-    "vega-typings": "^0.16.0",
+    "vega-typings": "^0.17.0",
     "yaml-front-matter": "^4.1.0"
   },
   "dependencies": {
@@ -126,12 +126,12 @@
     "json-stringify-pretty-compact": "~2.0.0",
     "tslib": "~1.11.2",
     "vega-event-selector": "~2.0.3",
-    "vega-expression": "~2.6.4",
-    "vega-util": "~1.13.2",
+    "vega-expression": "~2.6.5",
+    "vega-util": "~1.14.0",
     "yargs": "~15.3.1"
   },
   "peerDependencies": {
-    "vega": "^5.11.1"
+    "vega": "^5.12.1"
   },
   "jest": {
     "preset": "jest-puppeteer",
