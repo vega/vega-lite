@@ -14,7 +14,7 @@ describe('getAxisConfigs', () => {
 
     expect(vgAxisConfig).toEqual({
       labelBaseline: {signal: 'a === "bottom" ? a : "line-bottom"'},
-      labelPadding: {signal: 'a === "bottom" ? undefined : 2'}
+      labelPadding: {signal: 'a === "bottom" ? null : 2'}
     });
   });
 });
