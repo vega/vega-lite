@@ -99,5 +99,17 @@ describe('Model', () => {
         fill: {signal: '"red"'}
       });
     });
+
+    it('should support descriptions for non-top level models', () => {
+      const model = parseModel({
+        data: {values: []},
+        mark: 'point',
+        description: 'My awesome view'
+      });
+
+      expect(model.assembleGroupEncodeEntry(true)).toEqual({});
+
+      expect(model.assembleGroupEncodeEntry(false)['description']).toEqual({value: 'My awesome view'});
+    });
   });
 });
