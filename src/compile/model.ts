@@ -34,7 +34,7 @@ import {
 import {NormalizedSpec} from '../spec/index';
 import {extractTitleConfig, isText, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
-import {contains, Dict, duplicate, keys, varName} from '../util';
+import {contains, Dict, duplicate, keys, varName, isEmpty} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
@@ -341,7 +341,7 @@ export abstract class Model {
       }
     }
 
-    return encodeEntry;
+    return isEmpty(encodeEntry) ? undefined : encodeEntry;
   }
 
   public assembleLayout(): VgLayout {
@@ -421,7 +421,7 @@ export abstract class Model {
         title.anchor = title.anchor ?? 'start';
       }
 
-      return keys(title).length > 0 ? title : undefined;
+      return isEmpty(title) ? undefined : title;
     }
     return undefined;
   }

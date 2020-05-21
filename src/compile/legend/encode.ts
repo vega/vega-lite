@@ -13,7 +13,7 @@ import {
 } from '../../channeldef';
 import {Encoding} from '../../encoding';
 import {FILL_STROKE_CONFIG} from '../../mark';
-import {getFirstDefined, keys, varName} from '../../util';
+import {getFirstDefined, isEmpty, varName} from '../../util';
 import {applyMarkConfig, signalOrValueRef} from '../common';
 import {formatCustomType, isCustomFormatType} from '../format';
 import * as mixins from '../mark/encode';
@@ -122,7 +122,7 @@ export function symbols(
 
   out = {...out, ...symbolsSpec};
 
-  return keys(out).length > 0 ? out : undefined;
+  return isEmpty(out) ? undefined : out;
 }
 
 export function gradient(gradientSpec: any, {model, legendType}: LegendEncodeParams) {
@@ -139,7 +139,7 @@ export function gradient(gradientSpec: any, {model, legendType}: LegendEncodePar
   }
 
   out = {...out, ...gradientSpec};
-  return keys(out).length > 0 ? out : undefined;
+  return isEmpty(out) ? undefined : out;
 }
 
 export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channel, legendCmpt}: LegendEncodeParams) {
@@ -167,7 +167,7 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
     ...specifiedlabelsSpec
   };
 
-  return keys(labelsSpec).length > 0 ? labelsSpec : undefined;
+  return isEmpty(labelsSpec) ? undefined : labelsSpec;
 }
 
 export function entries(entriesSpec: any, {legendCmpt}: LegendEncodeParams) {

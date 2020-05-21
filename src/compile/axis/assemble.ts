@@ -5,7 +5,7 @@ import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';
 import {Config} from '../../config';
 import {isText} from '../../title';
-import {getFirstDefined, keys} from '../../util';
+import {getFirstDefined, isEmpty} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {exprFromValueOrSignalRef} from '../common';
 import {Model} from '../model';
@@ -116,7 +116,7 @@ export function assembleAxis(
         ...(grid ? {grid} : {})
       };
 
-      if (keys(axis.encode).length === 0) {
+      if (isEmpty(axis.encode)) {
         delete axis.encode;
       }
     }
@@ -159,7 +159,7 @@ export function assembleAxis(
           delete axis.encode[part];
         }
       }
-      if (keys(axis.encode).length === 0) {
+      if (isEmpty(axis.encode)) {
         delete axis.encode;
       }
     }

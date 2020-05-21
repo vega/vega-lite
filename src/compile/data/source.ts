@@ -1,7 +1,15 @@
-import {Data, DataFormatType, isGenerator, isInlineData, isNamedData, isSphereGenerator, isUrlData} from '../../data';
-import {contains, keys, omit} from '../../util';
+import {
+  Data,
+  DataFormat,
+  DataFormatType,
+  isGenerator,
+  isInlineData,
+  isNamedData,
+  isSphereGenerator,
+  isUrlData
+} from '../../data';
+import {contains, isEmpty, omit} from '../../util';
 import {VgData} from '../../vega.schema';
-import {DataFormat} from '../../data';
 import {DataFlowNode} from './dataflow';
 
 export class SourceNode extends DataFlowNode {
@@ -52,7 +60,7 @@ export class SourceNode extends DataFlowNode {
       this._name = data.name;
     }
 
-    if (format && keys(format).length > 0) {
+    if (format && !isEmpty(format)) {
       this._data.format = format;
     }
   }

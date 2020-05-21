@@ -16,7 +16,7 @@ import {
 } from '../../header';
 import {isSortField} from '../../sort';
 import {FacetFieldDef, isFacetMapping} from '../../spec/facet';
-import {contains, keys, normalizeAngle, replaceAll} from '../../util';
+import {contains, isEmpty, normalizeAngle, replaceAll} from '../../util';
 import {RowCol, VgComparator, VgMarkGroup, VgTitle} from '../../vega.schema';
 import {defaultLabelAlign, defaultLabelBaseline} from '../axis/properties';
 import {sortArrayIndexField} from '../data/calculate';
@@ -253,7 +253,7 @@ export function assembleLayoutTitleBand(
     }
   }
 
-  return keys(titleBand).length > 0 ? titleBand : undefined;
+  return isEmpty(titleBand) ? undefined : titleBand;
 }
 
 export function assembleHeaderProperties(

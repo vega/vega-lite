@@ -1,12 +1,14 @@
 import {MAIN, Parse} from '../../data';
-import {Dict, fieldIntersection, hash, hasIntersection, keys, some} from '../../util';
+import {Dict, fieldIntersection, hash, hasIntersection, isEmpty, keys, some} from '../../util';
 import {Model} from '../model';
+import {requiresSelectionId} from '../selection';
 import {AggregateNode} from './aggregate';
 import {BinNode} from './bin';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {ParseNode} from './formatparse';
+import {IdentifierNode} from './identifier';
 import {JoinAggregateTransformNode} from './joinaggregate';
 import {FACET_SCALE_PREFIX} from './optimize';
 import {BottomUpOptimizer, isDataSourceNode, TopDownOptimizer} from './optimizer';
@@ -14,8 +16,6 @@ import * as optimizers from './optimizers';
 import {StackNode} from './stack';
 import {TimeUnitNode} from './timeunit';
 import {WindowTransformNode} from './window';
-import {IdentifierNode} from './identifier';
-import {requiresSelectionId} from '../selection';
 
 export interface OptimizerFlags {
   /**
@@ -336,7 +336,7 @@ export class MergeParse extends BottomUpOptimizer {
         delete commonParse[field];
       }
 
-      if (keys(commonParse).length !== 0) {
+      if (!isEmpty(commonParse)) {
         this.setMutated();
         const mergedParseNode = new ParseNode(parent, commonParse);
         for (const childNode of originalChildren) {

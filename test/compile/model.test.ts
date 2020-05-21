@@ -107,7 +107,7 @@ describe('Model', () => {
         description: 'My awesome view'
       });
 
-      expect(model.assembleGroupEncodeEntry(true)).toEqual({});
+      expect(model.assembleGroupEncodeEntry(true)).toBeUndefined();
 
       expect(model.assembleGroupEncodeEntry(false)['description']).toEqual({value: 'My awesome view'});
     });
