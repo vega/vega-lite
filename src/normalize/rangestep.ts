@@ -5,7 +5,7 @@ import * as log from '../log';
 import {Scale} from '../scale';
 import {GenericSpec} from '../spec';
 import {GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from '../spec/unit';
-import {keys} from '../util';
+import {isEmpty} from '../util';
 import {NonFacetUnitNormalizer} from './base';
 
 type UnitSpecWithRangeStep = GenericUnitSpec<Encoding<string>, any>; // this is not accurate, but it's not worth making it accurate
@@ -47,7 +47,7 @@ export class RangeStepNormalizer implements NonFacetUnitNormalizer<UnitSpecWithR
             ...encoding,
             [channel]: {
               ...defWithoutScale,
-              ...(keys(scaleWithoutRangeStep).length > 0 ? {scale: scaleWithoutRangeStep} : {})
+              ...(isEmpty(scaleWithoutRangeStep) ? {} : {scale: scaleWithoutRangeStep})
             }
           };
         }

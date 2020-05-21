@@ -21,7 +21,7 @@ import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './select
 import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} from './spec/base';
 import {TopLevelProperties} from './spec/toplevel';
 import {extractTitleConfig, TitleConfig} from './title';
-import {duplicate, getFirstDefined, keys} from './util';
+import {duplicate, getFirstDefined, isEmpty} from './util';
 
 export interface ViewConfig extends BaseViewBackground {
   /**
@@ -574,12 +574,12 @@ export function stripAndRedirectConfig(config: Config) {
 
   // Remove empty config objects.
   for (const prop in config) {
-    if (isObject(config[prop]) && keys(config[prop]).length === 0) {
+    if (isObject(config[prop]) && isEmpty(config[prop])) {
       delete config[prop];
     }
   }
 
-  return keys(config).length > 0 ? config : undefined;
+  return isEmpty(config) ? undefined : config;
 }
 
 /**
@@ -593,13 +593,13 @@ function redirectTitleConfig(config: Config) {
   const {titleMarkConfig, subtitleMarkConfig, subtitle} = extractTitleConfig(config.title);
 
   // set config.style if title/subtitleMarkConfig is not an empty object
-  if (keys(titleMarkConfig).length > 0) {
+  if (!isEmpty(titleMarkConfig)) {
     config.style['group-title'] = {
       ...config.style['group-title'],
       ...titleMarkConfig // config.title has higher precedence than config.style.group-title in Vega
     };
   }
-  if (keys(subtitleMarkConfig).length > 0) {
+  if (!isEmpty(subtitleMarkConfig)) {
     config.style['group-subtitle'] = {
       ...config.style['group-subtitle'],
       ...subtitleMarkConfig
@@ -607,7 +607,7 @@ function redirectTitleConfig(config: Config) {
   }
 
   // subtitle part can stay in config.title since header titles do not use subtitle
-  if (keys(subtitle).length > 0) {
+  if (!isEmpty(subtitle)) {
     config.title = subtitle;
   } else {
     delete config.title;
@@ -632,7 +632,7 @@ function redirectConfigToStyleConfig(
   };
 
   // set config.style if it is not an empty object
-  if (keys(style).length > 0) {
+  if (!isEmpty(style)) {
     config.style[toProp ?? prop] = style;
   }
 

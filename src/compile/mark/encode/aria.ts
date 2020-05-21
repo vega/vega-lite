@@ -1,4 +1,4 @@
-import {entries, keys} from '../../../util';
+import {entries, isEmpty} from '../../../util';
 import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {VG_MARK_INDEX} from './../../../vega.schema';
 import {UnitModel} from './../../unit';
@@ -63,7 +63,7 @@ export function description(model: UnitModel) {
 
   const data = tooltipData(encoding, stack, config);
 
-  if (keys(data).length === 0) {
+  if (isEmpty(data)) {
     return undefined;
   }
 

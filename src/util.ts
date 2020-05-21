@@ -124,7 +124,7 @@ export function mergeDeep<T>(dest: T, ...src: readonly DeepPartial<T>[]): T {
 }
 
 function deepMerge_(dest: any, src: any) {
-  for (const property of Object.keys(src)) {
+  for (const property of keys(src)) {
     writeConfig(dest, property, src[property], true);
   }
 }
@@ -211,6 +211,10 @@ export function fieldIntersection(a: ReadonlySet<string>, b: ReadonlySet<string>
   return hasIntersection(prefixGenerator(a), prefixGenerator(b));
 }
 
+export function isEmpty(obj: object) {
+  return keys(obj).length === 0;
+}
+
 // This is a stricter version of Object.keys but with better types. See https://github.com/Microsoft/TypeScript/pull/12253#issuecomment-263132208
 export const keys = Object.keys as <T>(o: T) => Extract<keyof T, string>[];
 
@@ -271,7 +275,7 @@ export function deleteNestedProperty(obj: any, orderedProps: string[]) {
   if (prop in obj && deleteNestedProperty(obj[prop], orderedProps)) {
     delete obj[prop];
   }
-  return keys(obj).length === 0;
+  return isEmpty(obj);
 }
 
 export function titleCase(s: string) {

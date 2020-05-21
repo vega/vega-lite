@@ -5,7 +5,7 @@ import {Channel} from '../../channel';
 import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
-import {Dict, duplicate, hash, keys, replacePathInField, unique, vals, varName} from '../../util';
+import {Dict, duplicate, hash, isEmpty, keys, replacePathInField, unique, vals, varName} from '../../util';
 import {binFormatExpression} from '../format';
 import {isUnitModel, Model, ModelWithField} from '../model';
 import {parseSelectionBinExtent} from '../selection/parse';
@@ -120,7 +120,7 @@ export class BinNode extends DataFlowNode {
       return binComponentIndex;
     }, {} as Dict<BinComponent>);
 
-    if (keys(bins).length === 0) {
+    if (isEmpty(bins)) {
       return null;
     }
 

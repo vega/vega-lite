@@ -2,7 +2,7 @@ import {AxisEncode as VgAxisEncode, AxisOrient} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS} from '../../channel';
 import {getFieldOrDatumDef, PositionDatumDef, PositionFieldDef} from '../../channeldef';
-import {getFirstDefined, keys, normalizeAngle} from '../../util';
+import {getFirstDefined, isEmpty, keys, normalizeAngle} from '../../util';
 import {isSignalRef} from '../../vega.schema';
 import {mergeTitleComponent} from '../common';
 import {guideEncodeEntry} from '../guide';
@@ -307,14 +307,14 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
     const value = part === 'labels' ? encode.labels(model, channel, axisEncodingPart) : axisEncodingPart;
 
-    if (value !== undefined && keys(value).length > 0) {
+    if (value !== undefined && !isEmpty(value)) {
       e[part] = {update: value};
     }
     return e;
   }, {} as VgAxisEncode);
 
   // FIXME: By having encode as one property, we won't have fine grained encode merging.
-  if (keys(axisEncode).length > 0) {
+  if (!isEmpty(axisEncode)) {
     axisComponent.set('encode', axisEncode, !!axis.encoding || axis.labelAngle !== undefined);
   }
 

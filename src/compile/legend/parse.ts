@@ -4,7 +4,7 @@ import {DatumDef, FieldDef, getFieldOrDatumDef, isFieldDef, MarkPropDatumDef, Ma
 import {Legend, LEGEND_SCALE_CHANNELS} from '../../legend';
 import {normalizeTimeUnit} from '../../timeunit';
 import {GEOJSON} from '../../type';
-import {deleteNestedProperty, keys, varName} from '../../util';
+import {deleteNestedProperty, isEmpty, keys, varName} from '../../util';
 import {mergeTitleComponent} from '../common';
 import {guideEncodeEntry} from '../guide';
 import {isUnitModel, Model} from '../model';
@@ -148,7 +148,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
         ? legendEncodeRules[part](legendEncodingPart, legendEncodeParams) // apply rule
         : legendEncodingPart; // no rule -- just default values
 
-    if (value !== undefined && keys(value).length > 0) {
+    if (value !== undefined && !isEmpty(value)) {
       legendEncode[part] = {
         ...(selections?.length && isFieldDef(fieldOrDatumDef)
           ? {name: `${varName(fieldOrDatumDef.field)}_legend_${part}`}
@@ -159,7 +159,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
     }
   }
 
-  if (keys(legendEncode).length > 0) {
+  if (!isEmpty(legendEncode)) {
     legendCmpt.set('encode', legendEncode, !!legend?.encoding);
   }
 

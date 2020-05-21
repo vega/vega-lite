@@ -23,7 +23,7 @@ import {NormalizedLayerSpec} from '../spec/layer';
 import {SpecMapper} from '../spec/map';
 import {isLayerRepeatSpec, LayerRepeatSpec, NonLayerRepeatSpec, RepeatSpec} from '../spec/repeat';
 import {isUnitSpec, NormalizedUnitSpec} from '../spec/unit';
-import {keys, omit, varName} from '../util';
+import {keys, omit, varName, isEmpty} from '../util';
 import {NonFacetUnitNormalizer, NormalizerParams} from './base';
 import {PathOverlayNormalizer} from './pathoverlay';
 import {RangeStepNormalizer} from './rangestep';
@@ -344,7 +344,7 @@ function mergeEncoding(opt: {parentEncoding: Encoding<any>; encoding: Encoding<a
     ...(parentEncoding ?? {}),
     ...(encoding ?? {})
   };
-  return keys(merged).length > 0 ? merged : undefined;
+  return isEmpty(merged) ? undefined : merged;
 }
 
 function mergeProjection(opt: {parentProjection: Projection; projection: Projection}) {

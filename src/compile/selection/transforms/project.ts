@@ -3,7 +3,7 @@ import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
 import {SelectionInit, SelectionInitInterval} from '../../../selection';
-import {Dict, hash, keys, replacePathInField, varName} from '../../../util';
+import {Dict, hash, keys, replacePathInField, varName, isEmpty} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
 import {TransformCompiler} from './transforms';
 
@@ -165,7 +165,7 @@ const project: TransformCompiler = {
       }
     }
 
-    if (keys(timeUnits).length > 0) {
+    if (!isEmpty(timeUnits)) {
       proj.timeUnit = new TimeUnitNode(null, timeUnits);
     }
   },

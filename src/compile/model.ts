@@ -34,7 +34,7 @@ import {
 import {NormalizedSpec} from '../spec/index';
 import {extractTitleConfig, isText, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
-import {contains, Dict, duplicate, keys, varName} from '../util';
+import {contains, Dict, duplicate, keys, varName, isEmpty} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
@@ -307,22 +307,29 @@ export abstract class Model {
     // Exclude "style"
     const {style: _, ...baseView} = view;
 
-    const e = {};
+    const e: VgEncodeEntry = {};
     for (const property of keys(baseView)) {
       const value = baseView[property];
       if (value !== undefined) {
         e[property] = signalOrValueRef(value);
       }
     }
+
     return e;
   }
 
   public assembleGroupEncodeEntry(isTopLevel: boolean): VgEncodeEntry {
-    let encodeEntry: VgEncodeEntry = undefined;
+    let encodeEntry: VgEncodeEntry = {};
     if (this.view) {
       encodeEntry = this.assembleEncodeFromView(this.view);
     }
+
     if (!isTopLevel) {
+      // Descriptions are already added to the top-level description so we only need to add them to the inner views.
+      if (this.description) {
+        encodeEntry['description'] = signalOrValueRef(this.description);
+      }
+
       // For top-level spec, we can set the global width and height signal to adjust the group size.
       // For other child specs, we have to manually set width and height in the encode entry.
       if (this.type === 'unit' || this.type === 'layer') {
@@ -334,7 +341,7 @@ export abstract class Model {
       }
     }
 
-    return encodeEntry;
+    return isEmpty(encodeEntry) ? undefined : encodeEntry;
   }
 
   public assembleLayout(): VgLayout {
@@ -414,7 +421,7 @@ export abstract class Model {
         title.anchor = title.anchor ?? 'start';
       }
 
-      return keys(title).length > 0 ? title : undefined;
+      return isEmpty(title) ? undefined : title;
     }
     return undefined;
   }
