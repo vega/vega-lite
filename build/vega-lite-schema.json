@@ -3398,33 +3398,63 @@
         }
       ]
     },
-    "ConditionalValueDef<(Gradient|string|null)>": {
+    "ConditionalValueDef<(Gradient|string|null|ExprRef)>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Gradient|string|null)>>"
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Gradient|string|null|ExprRef)>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<(Gradient|string|null)>>"
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<(Gradient|string|null|ExprRef)>>"
         }
       ]
     },
-    "ConditionalValueDef<(string|null)>": {
+    "ConditionalValueDef<(Text|ExprRef)>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|null)>>"
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Text|ExprRef)>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<(string|null)>>"
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<(Text|ExprRef)>>"
         }
       ]
     },
-    "ConditionalValueDef<Text>": {
+    "ConditionalValueDef<(number[]|ExprRef)>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<ValueDef<Text>>"
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|ExprRef)>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<Text>>"
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<(number[]|ExprRef)>>"
+        }
+      ]
+    },
+    "ConditionalValueDef<(number|ExprRef)>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|ExprRef)>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<(number|ExprRef)>>"
+        }
+      ]
+    },
+    "ConditionalValueDef<(string|ExprRef)>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|ExprRef)>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<(string|ExprRef)>>"
+        }
+      ]
+    },
+    "ConditionalValueDef<(string|null|ExprRef)>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|null|ExprRef)>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalSelection<ValueDef<(string|null|ExprRef)>>"
         }
       ]
     },
@@ -3435,26 +3465,6 @@
         },
         {
           "$ref": "#/definitions/ConditionalSelection<ValueDef<number>>"
-        }
-      ]
-    },
-    "ConditionalValueDef<number[]>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalPredicate<ValueDef<number[]>>"
-        },
-        {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<number[]>>"
-        }
-      ]
-    },
-    "ConditionalValueDef<string>": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/ConditionalPredicate<ValueDef<string>>"
-        },
-        {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<string>>"
         }
       ]
     },
@@ -3862,6 +3872,9 @@
                   "$ref": "#/definitions/DateTime"
                 },
                 {
+                  "$ref": "#/definitions/ExprRef"
+                },
+                {
                   "$ref": "#/definitions/RepeatRef"
                 }
               ],
@@ -4016,6 +4029,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -4251,7 +4267,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(Gradient|string|null)>>": {
+    "ConditionalPredicate<ValueDef<(Gradient|string|null|ExprRef)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4268,6 +4284,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -4293,6 +4312,59 @@
             },
             {
               "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(Text|ExprRef)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/PredicateComposition",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(number[]|ExprRef)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/PredicateComposition",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -4332,6 +4404,31 @@
       ],
       "type": "object"
     },
+    "ConditionalPredicate<ValueDef<(number|ExprRef)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/PredicateComposition",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
     "ConditionalPredicate<ValueDef<(number|null)>>": {
       "additionalProperties": false,
       "properties": {
@@ -4345,6 +4442,31 @@
             "number",
             "null"
           ]
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(string|ExprRef)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/PredicateComposition",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -4374,7 +4496,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<Text>>": {
+    "ConditionalPredicate<ValueDef<(string|null|ExprRef)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -4382,7 +4504,17 @@
           "description": "Predicate for triggering the condition"
         },
         "value": {
-          "$ref": "#/definitions/Text",
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
@@ -4402,45 +4534,6 @@
         "value": {
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": "number"
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<number[]>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/PredicateComposition",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<string>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/PredicateComposition",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": "string"
         }
       },
       "required": [
@@ -4560,6 +4653,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -4718,6 +4814,9 @@
                   "$ref": "#/definitions/DateTime"
                 },
                 {
+                  "$ref": "#/definitions/ExprRef"
+                },
+                {
                   "$ref": "#/definitions/RepeatRef"
                 }
               ],
@@ -4851,7 +4950,7 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<ValueDef<(Gradient|string|null)>>": {
+    "ConditionalSelection<ValueDef<(Gradient|string|null|ExprRef)>>": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -4868,6 +4967,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -4879,7 +4981,7 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<ValueDef<(string|null)>>": {
+    "ConditionalSelection<ValueDef<(Text|ExprRef)>>": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -4887,11 +4989,15 @@
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "null"
-          ]
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -4900,7 +5006,7 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<ValueDef<Text>>": {
+    "ConditionalSelection<ValueDef<(number[]|ExprRef)>>": {
       "additionalProperties": false,
       "properties": {
         "selection": {
@@ -4908,7 +5014,95 @@
           "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
         },
         "value": {
-          "$ref": "#/definitions/Text",
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "selection",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalSelection<ValueDef<(number|ExprRef)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "selection": {
+          "$ref": "#/definitions/SelectionComposition",
+          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "selection",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalSelection<ValueDef<(string|ExprRef)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "selection": {
+          "$ref": "#/definitions/SelectionComposition",
+          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "selection",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalSelection<ValueDef<(string|null|ExprRef)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "selection": {
+          "$ref": "#/definitions/SelectionComposition",
+          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
@@ -4928,45 +5122,6 @@
         "value": {
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": "number"
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalSelection<ValueDef<number[]>>": {
-      "additionalProperties": false,
-      "properties": {
-        "selection": {
-          "$ref": "#/definitions/SelectionComposition",
-          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalSelection<ValueDef<string>>": {
-      "additionalProperties": false,
-      "properties": {
-        "selection": {
-          "$ref": "#/definitions/SelectionComposition",
-          "description": "A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose)."
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": "string"
         }
       },
       "required": [
@@ -5457,6 +5612,9 @@
             },
             {
               "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/RepeatRef"
@@ -6213,6 +6371,19 @@
     },
     "Expr": {
       "type": "string"
+    },
+    "ExprRef": {
+      "additionalProperties": false,
+      "properties": {
+        "expr": {
+          "description": "Vega expression (which can refer to Vega-Lite parameters).",
+          "type": "string"
+        }
+      },
+      "required": [
+        "expr"
+      ],
+      "type": "object"
     },
     "FacetEncodingFieldDef": {
       "additionalProperties": false,
@@ -7203,11 +7374,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
               },
               "type": "array"
             }
@@ -7221,6 +7392,9 @@
             },
             {
               "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/RepeatRef"
@@ -7248,11 +7422,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
               },
               "type": "array"
             }
@@ -7266,6 +7440,9 @@
             },
             {
               "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/RepeatRef"
@@ -7293,11 +7470,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<number>"
+              "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<number>"
+                "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
               },
               "type": "array"
             }
@@ -7311,6 +7488,9 @@
             },
             {
               "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/RepeatRef"
@@ -7338,11 +7518,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<number[]>"
+              "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<number[]>"
+                "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
               },
               "type": "array"
             }
@@ -7356,6 +7536,9 @@
             },
             {
               "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/RepeatRef"
@@ -7401,11 +7584,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
               },
               "type": "array"
             }
@@ -7502,11 +7685,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<number>"
+              "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<number>"
+                "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
               },
               "type": "array"
             }
@@ -7603,11 +7786,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<number[]>"
+              "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<number[]>"
+                "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
               },
               "type": "array"
             }
@@ -7704,11 +7887,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
               },
               "type": "array"
             }
@@ -7787,11 +7970,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<Text>"
+              "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<Text>"
+                "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
               },
               "type": "array"
             }
@@ -7805,6 +7988,9 @@
             },
             {
               "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/RepeatRef"
@@ -7873,11 +8059,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<Text>"
+              "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<Text>"
+                "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
               },
               "type": "array"
             }
@@ -7971,11 +8157,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<string>"
+              "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<string>"
+                "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
               },
               "type": "array"
             }
@@ -13239,7 +13425,7 @@
       "$ref": "#/definitions/MarkPropDef<number>"
     },
     "NumericValueDef": {
-      "$ref": "#/definitions/ValueDef<number>"
+      "$ref": "#/definitions/ValueDef<(number|ExprRef)>"
     },
     "OrderFieldDef": {
       "additionalProperties": false,
@@ -13327,8 +13513,15 @@
           "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)\nsince Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "required": [
@@ -13931,6 +14124,9 @@
               "$ref": "#/definitions/DateTime"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/RepeatRef"
             }
           ],
@@ -13995,6 +14191,9 @@
             },
             {
               "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/RepeatRef"
@@ -14256,7 +14455,7 @@
       "type": "object"
     },
     "PositionValueDef": {
-      "$ref": "#/definitions/ValueDef<(number|\"width\"|\"height\")>"
+      "$ref": "#/definitions/ValueDef<(number|\"width\"|\"height\"|ExprRef)>"
     },
     "Predicate": {
       "anyOf": [
@@ -16365,11 +16564,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -16382,11 +16581,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -16403,6 +16602,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -16476,8 +16678,15 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-              "type": "number"
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
           "type": "object"
@@ -16514,11 +16723,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -16531,11 +16740,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -16552,6 +16761,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -16634,6 +16846,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -16677,11 +16892,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<string>"
+                      "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<string>"
+                        "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -16694,11 +16909,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -16758,11 +16973,18 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-              "type": [
-                "string",
-                "null"
-              ]
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
           "type": "object"
@@ -16813,11 +17035,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -16830,11 +17052,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -16851,6 +17073,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -16933,6 +17158,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -16972,11 +17200,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -16989,11 +17217,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -17010,6 +17238,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -17083,8 +17314,15 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-              "type": "number"
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
           "type": "object"
@@ -17125,11 +17363,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<string>"
+                      "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<string>"
+                        "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -17142,11 +17380,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -17206,11 +17444,18 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-              "type": [
-                "string",
-                "null"
-              ]
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
           "type": "object"
@@ -17305,6 +17550,9 @@
                   "$ref": "#/definitions/DateTime"
                 },
                 {
+                  "$ref": "#/definitions/ExprRef"
+                },
+                {
                   "$ref": "#/definitions/RepeatRef"
                 }
               ],
@@ -17351,8 +17599,15 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-              "type": "number"
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
           "type": "object"
@@ -17381,6 +17636,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -17430,6 +17688,9 @@
                 {
                   "const": "height",
                   "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -17463,6 +17724,9 @@
                   "$ref": "#/definitions/DateTime"
                 },
                 {
+                  "$ref": "#/definitions/ExprRef"
+                },
+                {
                   "$ref": "#/definitions/RepeatRef"
                 }
               ],
@@ -17509,8 +17773,15 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-              "type": "number"
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
           "type": "object"
@@ -17539,6 +17810,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -17588,6 +17862,9 @@
                 {
                   "const": "height",
                   "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -17627,11 +17904,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -17644,11 +17921,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -17665,6 +17942,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -17738,8 +18018,15 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-              "type": "number"
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
           "type": "object"
@@ -17799,6 +18086,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -17886,6 +18176,9 @@
                 {
                   "const": "height",
                   "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -17917,6 +18210,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -17966,6 +18262,9 @@
                 {
                   "const": "height",
                   "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -18005,11 +18304,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18022,11 +18321,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef<TypeForShape>"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18043,6 +18342,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -18116,11 +18418,18 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-              "type": [
-                "string",
-                "null"
-              ]
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
           "type": "object"
@@ -18157,11 +18466,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18174,11 +18483,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18195,6 +18504,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -18268,8 +18580,15 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-              "type": "number"
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
           "type": "object"
@@ -18306,11 +18625,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18323,11 +18642,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18344,6 +18663,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -18426,6 +18748,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -18465,11 +18790,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number[]>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number[]>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18482,11 +18807,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number[]>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number[]>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18503,6 +18828,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -18576,11 +18904,18 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
           "type": "object"
@@ -18617,11 +18952,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18634,11 +18969,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18655,6 +18990,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -18728,8 +19066,15 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-              "type": "number"
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
           "type": "object"
@@ -18766,11 +19111,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18783,11 +19128,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<number>"
+                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<number>"
+                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18804,6 +19149,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -18877,8 +19225,15 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-              "type": "number"
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
           "type": "object"
@@ -18919,11 +19274,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<Text>"
+                      "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<Text>"
+                        "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18936,11 +19291,11 @@
                       "$ref": "#/definitions/ConditionalStringFieldDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<Text>"
+                      "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<Text>"
+                        "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -18957,6 +19312,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -19023,7 +19381,14 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "$ref": "#/definitions/Text",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Text"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
@@ -19067,6 +19432,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -19154,6 +19522,9 @@
                 {
                   "const": "height",
                   "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -19185,6 +19556,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -19234,6 +19608,9 @@
                 {
                   "const": "height",
                   "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -19297,11 +19674,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<string>"
+                      "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<string>"
+                        "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -19314,11 +19691,11 @@
                       "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
                     },
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
                       },
                       "type": "array"
                     }
@@ -19378,11 +19755,18 @@
               "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
             },
             "value": {
-              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-              "type": [
-                "string",
-                "null"
-              ]
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
           },
           "type": "object"
@@ -19436,6 +19820,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -19534,6 +19921,9 @@
                 {
                   "const": "height",
                   "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -19565,6 +19955,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -19614,6 +20007,9 @@
                 {
                   "const": "height",
                   "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -19772,6 +20168,9 @@
                   "$ref": "#/definitions/DateTime"
                 },
                 {
+                  "$ref": "#/definitions/ExprRef"
+                },
+                {
                   "$ref": "#/definitions/RepeatRef"
                 }
               ],
@@ -19868,6 +20267,9 @@
                 {
                   "const": "height",
                   "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -19899,6 +20301,9 @@
                 },
                 {
                   "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 },
                 {
                   "$ref": "#/definitions/RepeatRef"
@@ -19948,6 +20353,9 @@
                 {
                   "const": "height",
                   "type": "string"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -23093,7 +23501,7 @@
       ],
       "type": "string"
     },
-    "ValueDef<(number|\"width\"|\"height\")>": {
+    "ValueDef<(number|\"width\"|\"height\"|ExprRef)>": {
       "additionalProperties": false,
       "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
       "properties": {
@@ -23109,6 +23517,30 @@
             {
               "const": "height",
               "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "value"
+      ],
+      "type": "object"
+    },
+    "ValueDef<(number|ExprRef)>": {
+      "additionalProperties": false,
+      "description": "Definition object for a constant value (primitive value or gradient definition) of an encoding channel.",
+      "properties": {
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -23143,11 +23575,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
               },
               "type": "array"
             }
@@ -23164,6 +23596,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -23181,11 +23616,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
               },
               "type": "array"
             }
@@ -23193,11 +23628,18 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "null"
-          ]
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "type": "object"
@@ -23212,11 +23654,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef<number>"
+              "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<number>"
+                "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
               },
               "type": "array"
             }
@@ -23224,8 +23666,15 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "type": "object"
@@ -23240,11 +23689,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef<number[]>"
+              "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<number[]>"
+                "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
               },
               "type": "array"
             }
@@ -23252,11 +23701,18 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "type": "object"
@@ -23271,11 +23727,11 @@
               "$ref": "#/definitions/ConditionalMarkPropFieldOrDatumDef<TypeForShape>"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+              "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
+                "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
               },
               "type": "array"
             }
@@ -23283,11 +23739,18 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "null"
-          ]
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
       "type": "object"
@@ -23302,11 +23765,11 @@
               "$ref": "#/definitions/ConditionalStringFieldDef"
             },
             {
-              "$ref": "#/definitions/ConditionalValueDef<Text>"
+              "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<Text>"
+                "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
               },
               "type": "array"
             }
@@ -23314,7 +23777,14 @@
           "description": "A field definition or one or more value definition(s) with a selection predicate."
         },
         "value": {
-          "$ref": "#/definitions/Text",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },

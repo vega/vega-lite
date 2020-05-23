@@ -10,6 +10,7 @@ import {
   COLUMN,
   DESCRIPTION,
   DETAIL,
+  ExtendedChannel,
   FACET,
   FILL,
   FILLOPACITY,
@@ -41,8 +42,7 @@ import {
   X,
   X2,
   Y,
-  Y2,
-  ExtendedChannel
+  Y2
 } from './channel';
 import {getMarkConfig} from './compile/common';
 import {isCustomFormatType} from './compile/format';
@@ -50,6 +50,7 @@ import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeToExpr, isDateTime} from './datetime';
 import {Encoding} from './encoding';
+import {ExprRef, isExprRef} from './expr';
 import {FormatMixins, Guide, GuideEncodingConditionalValueDef, TitleMixins} from './guide';
 import {ImputeParams} from './impute';
 import {Legend} from './legend';
@@ -85,7 +86,7 @@ import {isSignalRef} from './vega.schema';
 
 export type PrimitiveValue = number | string | boolean | null;
 
-export type Value = PrimitiveValue | number[] | Gradient | Text | SignalRef;
+export type Value = PrimitiveValue | number[] | Gradient | Text | ExprRef | SignalRef;
 
 /**
  * Definition object for a constant value (primitive value or gradient definition) of an encoding channel.
@@ -97,9 +98,8 @@ export interface ValueDef<V extends Value = Value> {
   value: V;
 }
 
-export type PositionValueDef = ValueDef<number | 'width' | 'height' | SignalRef>;
-
-export type NumericValueDef = ValueDef<number | SignalRef>;
+export type PositionValueDef = ValueDef<number | 'width' | 'height' | ExprRef | SignalRef>;
+export type NumericValueDef = ValueDef<number | ExprRef | SignalRef>;
 
 /**
  * A ValueDef with Condition<ValueDef | FieldDef> where either the condition or the value are optional.
@@ -113,12 +113,15 @@ export type NumericValueDef = ValueDef<number | SignalRef>;
  * @minProperties 1
  */
 export type ValueDefWithCondition<F extends FieldDef<any> | DatumDef<any>, V extends Value = Value> = Partial<
-  ValueDef<V | SignalRef>
+  ValueDef<V | ExprRef | SignalRef>
 > & {
   /**
    * A field definition or one or more value definition(s) with a selection predicate.
    */
-  condition?: Conditional<F> | Conditional<ValueDef<V | SignalRef>> | Conditional<ValueDef<V | SignalRef>>[];
+  condition?:
+    | Conditional<F>
+    | Conditional<ValueDef<V | ExprRef | SignalRef>>
+    | Conditional<ValueDef<V | ExprRef | SignalRef>>[];
 };
 
 export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
@@ -127,18 +130,18 @@ export type StringValueDefWithCondition<F extends Field, T extends Type = Standa
 >;
 export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
-export type Conditional<CD extends FieldDef<any> | DatumDef | ValueDef<any> | SignalRef> =
+export type Conditional<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> =
   | ConditionalPredicate<CD>
   | ConditionalSelection<CD>;
 
-export type ConditionalPredicate<CD extends FieldDef<any> | DatumDef | ValueDef<any> | SignalRef> = {
+export type ConditionalPredicate<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> = {
   /**
    * Predicate for triggering the condition
    */
   test: LogicalComposition<Predicate>;
 } & CD;
 
-export type ConditionalSelection<CD extends FieldDef<any> | DatumDef | ValueDef<any> | SignalRef> = {
+export type ConditionalSelection<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> = {
   /**
    * A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose).
    */
@@ -169,7 +172,7 @@ export interface ConditionValueDefMixins<V extends Value = Value> {
  */
 
 export type FieldOrDatumDefWithCondition<F extends FieldDef<any, any> | DatumDef<any>, V extends Value = Value> = F &
-  ConditionValueDefMixins<V | SignalRef>;
+  ConditionValueDefMixins<V | ExprRef | SignalRef>;
 
 export type MarkPropDef<F extends Field, V extends Value, T extends Type = StandardType> =
   | FieldOrDatumDefWithCondition<MarkPropFieldDef<F, T>, V>
@@ -369,9 +372,8 @@ export interface ScaleMixins {
 
 export interface DatumDef<
   F extends Field = string,
-  V extends PrimitiveValue | DateTime | SignalRef = PrimitiveValue | DateTime | SignalRef
-> extends Partial<TypeMixins<Type>>,
-    BandMixins {
+  V extends PrimitiveValue | DateTime | ExprRef | SignalRef = PrimitiveValue | DateTime | ExprRef | SignalRef
+> extends Partial<TypeMixins<Type>>, BandMixins {
   /**
    * A constant value in data domain.
    */
@@ -572,7 +574,7 @@ export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F,
 export type FieldDef<F extends Field, T extends Type = any> = SecondaryFieldDef<F> | TypedFieldDef<F, T>;
 export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>];
 
-export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingConditionalValueDef | SignalRef>(
+export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingConditionalValueDef | ExprRef | SignalRef>(
   channelDef: CD
 ): channelDef is CD & {condition: Conditional<any>} {
   return !!channelDef && 'condition' in channelDef;
@@ -1272,7 +1274,7 @@ export function isTimeFieldDef(def: FieldDef<any> | DatumDef): boolean {
  * Convert the value to Vega expression if applicable (for datetime object, or string if the field def is temporal or has timeUnit)
  */
 export function valueExpr(
-  v: number | string | boolean | DateTime | SignalRef | number[],
+  v: number | string | boolean | DateTime | ExprRef | SignalRef | number[],
   {
     timeUnit,
     type,
@@ -1289,7 +1291,9 @@ export function valueExpr(
   let isTime = unit || type === 'temporal';
 
   let expr;
-  if (isSignalRef(v)) {
+  if (isExprRef(v)) {
+    expr = v.expr;
+  } else if (isSignalRef(v)) {
     expr = v.signal;
   } else if (isDateTime(v)) {
     isTime = true;

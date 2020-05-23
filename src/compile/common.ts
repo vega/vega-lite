@@ -1,8 +1,9 @@
-import {SignalRef, Text} from 'vega';
+import {ExprRef, SignalRef, Text} from 'vega';
 import {array, stringValue} from 'vega-util';
 import {AxisConfig} from '../axis';
 import {FieldDefBase, FieldRefOption, OrderFieldDef, vgField} from '../channeldef';
 import {Config, StyleConfigIndex} from '../config';
+import {isExprRef} from '../expr';
 import {MarkConfig, MarkDef} from '../mark';
 import {SortFields} from '../sort';
 import {isText} from '../title';
@@ -14,7 +15,10 @@ import {UnitModel} from './unit';
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
-export function signalOrValueRef<T>(value: T | SignalRef): {value: T} | SignalRef {
+export function signalOrValueRef<T>(value: T | SignalRef | ExprRef): {value: T} | SignalRef {
+  if (isExprRef(value)) {
+    return {signal: value.expr};
+  }
   if (isSignalRef(value)) {
     return value;
   }

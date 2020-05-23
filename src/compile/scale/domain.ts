@@ -24,6 +24,7 @@ import {
 } from '../../channeldef';
 import {DataSourceType} from '../../data';
 import {DateTime} from '../../datetime';
+import {ExprOrSignalRef} from '../../expr';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isDomainUnionWith, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
 import {SelectionExtent} from '../../selection';
@@ -207,7 +208,7 @@ export function parseDomainForChannel(model: UnitModel, channel: ScaleChannel): 
 }
 
 function mapDomainToDataSignal(
-  domain: (number | string | boolean | DateTime | SignalRef | number[])[],
+  domain: (number | string | boolean | DateTime | ExprOrSignalRef | number[])[],
   type: Type,
   timeUnit: TimeUnit
 ) {
@@ -218,7 +219,7 @@ function mapDomainToDataSignal(
 }
 
 function convertDomainIfItIsDateTime(
-  domain: (number | string | boolean | DateTime | SignalRef | number[])[],
+  domain: (number | string | boolean | DateTime | ExprOrSignalRef | number[])[],
   type: Type,
   timeUnit: TimeUnit | TimeUnitParams
 ): [number[]] | [string[]] | [boolean[]] | SignalRef[] {
