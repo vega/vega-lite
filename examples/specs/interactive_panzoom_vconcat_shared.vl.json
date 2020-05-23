@@ -21,7 +21,5 @@
       }
     }
   ],
-  "resolve": {
-    "scale": {"x": "shared"}
-  }
+  "resolve": {"scale": {"x": "shared"}}
 }
