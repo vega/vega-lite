@@ -114,8 +114,8 @@ The range of the scale represents the set of output visual values. Vega-Lite aut
 
 | Channels | Default Range |
 | :-- | :-- |
-| `x` | The range is _always_ `[0, width]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`width`](size.html) property. |
-| `y` | The range is _always_ `[0, height]`. Any directly specified `range` will be ignored. Range can be customized via the view's [`height`](size.html) property. |
+| `x` | The range is _by default_ `[0, width]`. |
+| `y` | The range is _by default_ `[0, height]`. |
 | `opacity` | Derived from the [scale config](#config)'s `min/maxOpacity`. |
 | `color` | Derived from the following [named ranges](scale.html#range-config) based on the field's [`type`](type.html): <br/> • `"category"` for _nominal_ fields. <br/> • `"ordinal"` for _ordinal_ fields. <br/> • `"heatmap"` for _quantitative_ and _temporal_ fields with `"rect"` marks and `"ramp'` for other marks. <br/><br/> See the [color scheme](#scheme) section for examples. |
 | `size` | Derived from the following [named ranges](#config) based on the `mark` type: <br/> • `min/maxBandSize` for bar and tick. <br/> • `min/maxStrokeWidth` for line and rule. <br/> • `min/maxSize` for point, square, and circle <br/> • `min/maxFontSize` for text |
