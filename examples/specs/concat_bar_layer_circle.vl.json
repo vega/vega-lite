@@ -71,11 +71,5 @@
         }
       }
     }
-  ],
-  "resolve": {
-    "legend": {
-      "color": "independent",
-      "size": "independent"
-    }
-  }
+  ]
 }
