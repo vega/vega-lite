@@ -129,6 +129,22 @@ describe('Mark: Point', () => {
     expect(props.x).toEqual({scale: 'x', field: 'a', band: 0.6});
   });
 
+  it('supports encoding with expression', () => {
+    // This is a simplified example for stacked point.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'point',
+      encoding: {
+        x: {value: {expr: 'a'}}
+      },
+      data: {url: 'data/barley.json'}
+    });
+
+    const props = point.encodeEntry(model);
+
+    expect(props.x).toEqual({signal: 'a'});
+  });
+
   describe('with y', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'point',
