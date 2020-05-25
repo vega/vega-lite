@@ -6,4 +6,4 @@
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
 # only passes the first argument to vl2vg
-$DIR/vl2vg $1 | npx vg2png '/dev/stdin' ${@:2}
+$DIR/vl2vg $1 | npx vg2png '' ${@:2}
