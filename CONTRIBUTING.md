@@ -1,4 +1,4 @@
-Welcome to the Vega community. Everyone is welcome to contribute. We value all forms of contributions including code reviews, patches, examples, community participation, tutorial, and blog posts. Int this document, we outline the guidelines for contributing to the various aspects of the project.
+Welcome to the Vega community. Everyone is welcome to contribute. We value all forms of contributions including code reviews, patches, examples, community participation, tutorial, and blog posts. In this document, we outline the guidelines for contributing to the various aspects of the project.
 
 # Contributing
 
