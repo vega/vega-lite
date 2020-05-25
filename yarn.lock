@@ -8210,13 +8210,13 @@ vega-transforms@~4.8.1:
     vega-util "^1.14.0"
 
 vega-typings@^0.17.0, vega-typings@~0.17.1:
-  version "0.17.1"
-  resolved "https://registry.npmjs.org/vega-typings/-/vega-typings-0.17.1.tgz#b37068e6916a2ea9951ea1eb24d8369c54be3bce"
-  integrity sha512-URn78hh1CCJ3A+AN90S5sM2IwZt/DKXDVh/IFj5ciAp3v6dFsFcclEqFQ2Ul/EIBlOuOO5z12BAVHuZA7nsMOA==
+  version "0.17.2"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.17.2.tgz#55b1f6f9778ec9a5f642748579a402a67f3985ae"
+  integrity sha512-p/JcMIxcs5BtV2BaWJOCqVm4YEcxPZzlvXbhtoLFprdeIyKpRPvdoq3EJdDH/HtEn9jxs3GVR5Myfw5epqCp0w==
   dependencies:
-    vega-util "^1.13.1"
+    vega-util "^1.14.0"
 
-vega-util@^1.13.1, vega-util@^1.13.2, vega-util@^1.14.0, vega-util@~1.14.0:
+vega-util@^1.13.2, vega-util@^1.14.0, vega-util@~1.14.0:
   version "1.14.0"
   resolved "https://registry.npmjs.org/vega-util/-/vega-util-1.14.0.tgz#56180bf09c28acc2b4c17c38e16d6673f45d9331"
   integrity sha512-j7Gdeasf9C4yUgjlTFJ8P5RpV6n5UxFRzxWkNx4tbMir6f7YM6vGd7vzGWgFdJ3oJy/cmXHzNZw5lw4gnjQAog==
