@@ -8,8 +8,9 @@ export const LOCAL_SINGLE_TIMEUNIT_INDEX = {
   year: 1,
   quarter: 1,
   month: 1,
-  // week: 1,
+  week: 1,
   day: 1,
+  dayofyear: 1,
   date: 1,
   hours: 1,
   minutes: 1,
@@ -29,8 +30,9 @@ export const UTC_SINGLE_TIMEUNIT_INDEX = {
   utcyear: 1,
   utcquarter: 1,
   utcmonth: 1,
-  // utcweek: 1,
+  utcweek: 1,
   utcday: 1,
+  utcdayofyear: 1,
   utcdate: 1,
   utchours: 1,
   utcminutes: 1,
@@ -52,11 +54,13 @@ export const LOCAL_MULTI_TIMEUNIT_INDEX = {
   yearmonthdatehoursminutes: 1,
   yearmonthdatehoursminutesseconds: 1,
 
-  // yearweek: 1,
-  // yearweekday: 1,
-  // yearweekdayhours: 1,
-  // yearweekdayhoursminutes: 1,
-  // yearweekdayhoursminutesseconds: 1,
+  yearweek: 1,
+  yearweekday: 1,
+  yearweekdayhours: 1,
+  yearweekdayhoursminutes: 1,
+  yearweekdayhoursminutesseconds: 1,
+
+  yeardayofyear: 1,
 
   quartermonth: 1,
 
@@ -65,10 +69,10 @@ export const LOCAL_MULTI_TIMEUNIT_INDEX = {
   monthdatehoursminutes: 1,
   monthdatehoursminutesseconds: 1,
 
-  // weekday: 1,
-  // weeksdayhours: 1,
-  // weekdayhoursminutes: 1,
-  // weekdayhoursminutesseconds: 1,
+  weekday: 1,
+  weeksdayhours: 1,
+  weekdayhoursminutes: 1,
+  weekdayhoursminutesseconds: 1,
 
   dayhours: 1,
   dayhoursminutes: 1,
@@ -94,11 +98,13 @@ export const UTC_MULTI_TIMEUNIT_INDEX = {
   utcyearmonthdatehoursminutes: 1,
   utcyearmonthdatehoursminutesseconds: 1,
 
-  // utcyearweek: 1,
-  // utcyearweekday: 1,
-  // utcyearweekdayhours: 1,
-  // utcyearweekdayhoursminutes: 1,
-  // utcyearweekdayhoursminutesseconds: 1,
+  utcyearweek: 1,
+  utcyearweekday: 1,
+  utcyearweekdayhours: 1,
+  utcyearweekdayhoursminutes: 1,
+  utcyearweekdayhoursminutesseconds: 1,
+
+  utcyeardayofyear: 1,
 
   utcquartermonth: 1,
 
@@ -107,10 +113,10 @@ export const UTC_MULTI_TIMEUNIT_INDEX = {
   utcmonthdatehoursminutes: 1,
   utcmonthdatehoursminutesseconds: 1,
 
-  // utcweekday: 1,
-  // utcweeksdayhours: 1,
-  // utcweekdayhoursminutes: 1,
-  // utcweekdayhoursminutesseconds: 1,
+  utcweekday: 1,
+  utcweeksdayhours: 1,
+  utcweekdayhoursminutes: 1,
+  utcweekdayhoursminutesseconds: 1,
 
   utcdayhours: 1,
   utcdayhoursminutes: 1,
@@ -148,7 +154,7 @@ export type TimeUnitFormat =
   | 'quarter'
   | 'month'
   | 'date'
-  // | 'week'
+  | 'week'
   | 'day'
   | 'hours'
   | 'hours-minutes'
@@ -203,9 +209,25 @@ export function getTimeUnitParts(timeUnit: TimeUnit) {
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
 export function containsTimeUnit(fullTimeUnit: TimeUnit, timeUnit: TimeUnit) {
   const index = fullTimeUnit.indexOf(timeUnit);
-  return (
-    index > -1 && (timeUnit !== 'seconds' || index === 0 || fullTimeUnit.charAt(index - 1) !== 'i') // exclude milliseconds
-  );
+
+  if (index < 0) {
+    return false;
+  }
+
+  // exclude milliseconds
+  if (index > 0 && timeUnit === 'seconds' && fullTimeUnit.charAt(index - 1) === 'i') {
+    return false;
+  }
+
+  // exclude dayofyear
+  if (fullTimeUnit.length > index + 3 && timeUnit === 'day' && fullTimeUnit.charAt(index + 3) === 'o') {
+    return false;
+  }
+  if (index > 0 && timeUnit === 'year' && fullTimeUnit.charAt(index - 1) === 'f') {
+    return false;
+  }
+
+  return true;
 }
 
 /**
