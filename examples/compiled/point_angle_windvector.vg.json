@@ -1,14 +1,31 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Vector array map showing wind speed and direction.",
   "background": "white",
   "padding": 5,
+  "width": 615,
+  "height": 560,
   "style": "cell",
   "data": [
     {
       "name": "source_0",
       "url": "data/windvectors.csv",
-      "format": {"type": "csv"},
+      "format": {
+        "type": "csv",
+        "parse": {"longitude": "number", "latitude": "number"}
+      },
       "transform": [
+        {
+          "type": "geojson",
+          "fields": ["longitude", "latitude"],
+          "signal": "geojson_0"
+        },
+        {
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["longitude", "latitude"],
+          "as": ["x", "y"]
+        },
         {
           "type": "filter",
           "expr": "isValid(datum[\"dir\"]) && isFinite(+datum[\"dir\"]) && isValid(datum[\"speed\"]) && isFinite(+datum[\"speed\"])"
@@ -16,16 +33,12 @@
       ]
     }
   ],
-  "signals": [
-    {"name": "x_step", "value": 10},
+  "projections": [
     {
-      "name": "width",
-      "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
-    },
-    {"name": "y_step", "value": 10},
-    {
-      "name": "height",
-      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+      "name": "projection",
+      "size": {"signal": "[width, height]"},
+      "fit": {"signal": "geojson_0"},
+      "type": "equalEarth"
     }
   ],
   "marks": [
@@ -38,14 +51,9 @@
         "update": {
           "opacity": {"value": 0.7},
           "shape": {"value": "wedge"},
-          "fill": {"value": "transparent"},
-          "stroke": {"scale": "color", "field": "dir"},
-          "ariaRoleDescription": {"value": "point"},
-          "description": {
-            "signal": "\"longitude\" + \": \" + (isValid(datum[\"longitude\"]) ? datum[\"longitude\"] : \"\"+datum[\"longitude\"]) + \"; \" + \"latitude\" + \": \" + (isValid(datum[\"latitude\"]) ? datum[\"latitude\"] : \"\"+datum[\"latitude\"]) + \"; \" + \"dir\" + \": \" + (format(datum[\"dir\"], \"\")) + \"; \" + \"speed\" + \": \" + (format(datum[\"speed\"], \"\"))"
-          },
-          "x": {"scale": "x", "field": "longitude"},
-          "y": {"scale": "y", "field": "latitude"},
+          "fill": {"scale": "color", "field": "dir"},
+          "x": {"field": "x"},
+          "y": {"field": "y"},
           "size": {"scale": "size", "field": "speed"},
           "angle": {"scale": "angle", "field": "dir"}
         }
@@ -53,20 +61,6 @@
     }
   ],
   "scales": [
-    {
-      "name": "x",
-      "type": "point",
-      "domain": {"data": "source_0", "field": "longitude", "sort": true},
-      "range": {"step": {"signal": "x_step"}},
-      "padding": 0.5
-    },
-    {
-      "name": "y",
-      "type": "point",
-      "domain": {"data": "source_0", "field": "latitude", "sort": true},
-      "range": {"step": {"signal": "y_step"}},
-      "padding": 0.5
-    },
     {
       "name": "color",
       "type": "linear",
@@ -79,7 +73,7 @@
       "name": "size",
       "type": "linear",
       "domain": {"data": "source_0", "field": "speed"},
-      "range": [0, 90.25],
+      "range": [0, 500],
       "zero": true
     },
     {
@@ -99,12 +93,15 @@
       "encode": {
         "symbols": {
           "update": {
-            "fill": {"value": "transparent"},
-            "opacity": {"value": 0.7}
+            "fill": {"value": "black"},
+            "fillOpacity": {"value": 0.7},
+            "opacity": {"value": 0.7},
+            "stroke": {"value": "transparent"}
           }
         }
-      }
+      },
+      "aria": false
     }
   ],
-  "config": {"style": {"cell": {"fill": "black"}}}
+  "config": {"style": {"cell": {"fill": "black"}}, "aria": false}
 }
