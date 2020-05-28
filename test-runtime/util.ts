@@ -221,9 +221,9 @@ const readFileAsync = promisify(fs.readFile);
 const writeFileAsync = promisify(fs.writeFile);
 
 export async function svg(page: Page, path: string, filename: string) {
-  const svgString = await page.evaluate(
+  const svgString = (await page.evaluate(
     `(async () => { vega.resetSVGClipId(); await view.runAsync(); return await view.toSVG() })()`
-  );
+  )) as string;
 
   if (generate) {
     mkdirp((path = `${output}/${path}`));
