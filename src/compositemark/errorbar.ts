@@ -33,7 +33,7 @@ import {
 } from './common';
 import {ErrorBand, ErrorBandDef} from './errorband';
 
-export const ERRORBAR: 'errorbar' = 'errorbar';
+export const ERRORBAR = 'errorbar' as const;
 export type ErrorBar = typeof ERRORBAR;
 
 export type ErrorBarExtent = 'ci' | 'iqr' | 'stderr' | 'stdev';

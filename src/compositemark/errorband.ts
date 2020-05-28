@@ -13,7 +13,7 @@ export type ErrorBandUnitSpec<
   EE = {} // extra encoding parameter (for faceted composite unit spec)
 > = GenericUnitSpec<ErrorEncoding<Field> & EE, ErrorBand | ErrorBandDef>;
 
-export const ERRORBAND: 'errorband' = 'errorband';
+export const ERRORBAND = 'errorband' as const;
 export type ErrorBand = typeof ERRORBAND;
 
 export const ERRORBAND_PARTS = ['band', 'borders'] as const;

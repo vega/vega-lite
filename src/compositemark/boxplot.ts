@@ -21,7 +21,7 @@ import {
   PartsMixins
 } from './common';
 
-export const BOXPLOT: 'boxplot' = 'boxplot';
+export const BOXPLOT = 'boxplot' as const;
 export type BoxPlot = typeof BOXPLOT;
 
 export const BOXPLOT_PARTS = ['box', 'median', 'outliers', 'rule', 'ticks'] as const;

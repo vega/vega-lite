@@ -1,6 +1,7 @@
 import {SignalRef, Text} from 'vega';
 import {ConditionValueDefMixins, ValueDef} from './channeldef';
 import {LegendConfig} from './legend';
+import {Dict} from './util';
 import {VgEncodeChannel} from './vega.schema';
 
 export interface TitleMixins {
@@ -31,7 +32,7 @@ export interface FormatMixins {
    *
    * __Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format.
    */
-  format?: string | object;
+  format?: string | Dict<unknown>;
 
   /**
    * The format type for labels. One of `"number"`, `"time"`, or a [registered custom format type](https://vega.github.io/vega-lite/usage/config.html#custom-format-type).

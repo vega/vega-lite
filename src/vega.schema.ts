@@ -44,7 +44,7 @@ import {
 import {isArray} from 'vega-util';
 import {Value} from './channeldef';
 import {SortOrder} from './sort';
-import {Flag, keys} from './util';
+import {Flag, keys, Dict} from './util';
 
 export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
@@ -71,7 +71,7 @@ export interface VgData {
   values?: any;
   format?: {
     type?: string;
-    parse?: string | object;
+    parse?: string | Dict<unknown>;
     property?: string;
     feature?: string;
     mesh?: string;
@@ -141,25 +141,24 @@ export type VgScale = Pick<BaseScale, 'type'> & {
   zero?: boolean | SignalRef; // LogScale only allow false, making the intersection type overly strict
 } & Omit<
     // Continuous
-
-    LinearScale &
-      LogScale &
-      SymLogScale &
-      Partial<PowScale> & // use partial so exponent is not required
-      SqrtScale &
-      IdentityScale &
-      TimeScale &
-      // discretizing
-      QuantileScale &
-      QuantizeScale &
-      ThresholdScale &
-      BinOrdinalScale &
-      // sequential
-      SequentialScale &
-      // discrete
-      BandScale &
-      PointScale &
-      OrdinalScale,
+    Omit<LinearScale, 'type'> &
+      Omit<LogScale, 'type'> &
+      Omit<SymLogScale, 'type'> &
+      Omit<Partial<PowScale>, 'type'> & // use partial so exponent is not required
+      Omit<SqrtScale, 'type'> &
+      Omit<IdentityScale, 'type'> &
+      Omit<TimeScale, 'type'> &
+      // Discretizing
+      Omit<QuantileScale, 'type'> &
+      Omit<QuantizeScale, 'type'> &
+      Omit<ThresholdScale, 'type'> &
+      Omit<BinOrdinalScale, 'type'> &
+      // Sequential
+      Omit<SequentialScale, 'type'> &
+      // Discrete
+      Omit<BandScale, 'type'> &
+      Omit<PointScale, 'type'> &
+      Omit<OrdinalScale, 'type'>,
     'type' | 'range' | 'nice' | 'zero'
   >;
 

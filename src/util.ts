@@ -144,9 +144,7 @@ export function unique<T>(values: readonly T[], f: (item: T) => string | number)
   return results;
 }
 
-export interface Dict<T> {
-  [key: string]: T;
-}
+export type Dict<T> = Record<string, T>;
 
 /**
  * Returns true if the two dictionaries disagree. Applies only to defined values.

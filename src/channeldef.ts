@@ -512,7 +512,7 @@ export function getBand({
   stack: StackProperties;
   markDef: MarkDef;
   config: Config;
-}) {
+}): number {
   if (isFieldOrDatumDef(fieldDef) && fieldDef.band !== undefined) {
     return fieldDef.band;
   }
@@ -542,7 +542,7 @@ export function hasBand(
   stack: StackProperties,
   markDef: MarkDef,
   config: Config
-) {
+): boolean {
   if (isBinning(fieldDef.bin) || (fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal')) {
     return !!getBand({channel, fieldDef, fieldDef2, stack, markDef, config});
   }
@@ -947,7 +947,7 @@ export function getFieldDef<F extends Field>(channelDef: ChannelDef<F>): FieldDe
 export function getFieldOrDatumDef<F extends Field = string, CD extends ChannelDef<F> = ChannelDef<F>>(
   channelDef: CD
 ): FieldDef<F> | DatumDef<F> {
-  if (isFieldOrDatumDef(channelDef)) {
+  if (isFieldOrDatumDef<F>(channelDef)) {
     return channelDef;
   } else if (hasConditionalFieldOrDatumDef(channelDef)) {
     return channelDef.condition;
@@ -1318,7 +1318,7 @@ export function valueArray(
 /**
  * Checks whether a fieldDef for a particular channel requires a computed bin range.
  */
-export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel) {
+export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel): boolean {
   if (!isBinning(fieldDef.bin)) {
     console.warn('Only call this method for binned field defs.');
     return false;

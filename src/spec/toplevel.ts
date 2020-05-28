@@ -35,7 +35,7 @@ export type TopLevel<S extends BaseSpec> = S &
      * Optional metadata that will be passed to Vega.
      * This object is completely ignored by Vega and Vega-Lite and can be used for custom metadata.
      */
-    usermeta?: object;
+    usermeta?: Dict<unknown>;
   };
 
 export interface TopLevelProperties {

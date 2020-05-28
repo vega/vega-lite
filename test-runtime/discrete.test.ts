@@ -30,7 +30,7 @@ for (const type of ['single', 'multi']) {
       let values: number[][] = [];
       let encodings: string[] = [];
       let fields: string[] = [];
-      const test = async (emb: (i: number) => void) => {
+      const t = async (emb: (i: number) => void) => {
         for (let i = 0; i < hits.qq.length; i++) {
           emb(i);
           const store = await page.evaluate(pt('qq', i));
@@ -50,7 +50,7 @@ for (const type of ['single', 'multi']) {
         [2, 1],
         [6, 0]
       ];
-      await test(async (i: number) => await embed(spec('unit', i, {type, encodings})));
+      await t(async (i: number) => await embed(spec('unit', i, {type, encodings})));
 
       encodings = [];
       fields = ['c', 'a', 'b'];
@@ -58,7 +58,7 @@ for (const type of ['single', 'multi']) {
         [1, 2, 53],
         [0, 6, 87]
       ];
-      await test(async (i: number) => await embed(spec('unit', i, {type, fields})));
+      await t(async (i: number) => await embed(spec('unit', i, {type, fields})));
     });
 
     it('should clear out the store', async () => {

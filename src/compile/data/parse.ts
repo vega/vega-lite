@@ -1,3 +1,4 @@
+import {AncestorParse, DataComponent} from '.';
 import {
   Data,
   isGenerator,
@@ -56,7 +57,6 @@ import {GeoPointNode} from './geopoint';
 import {GraticuleNode} from './graticule';
 import {IdentifierNode} from './identifier';
 import {ImputeNode} from './impute';
-import {AncestorParse, DataComponent} from '.';
 import {JoinAggregateTransformNode} from './joinaggregate';
 import {makeJoinAggregateFromFacet} from './joinaggregatefacet';
 import {LoessTransformNode} from './loess';
@@ -119,7 +119,7 @@ function parseRoot(model: Model, sources: SourceNode[]): DataFlowNode {
 
     if (model.data === null) {
       // data: null means we should ignore the parent's data so we just create a new data source
-      const source = new SourceNode([]);
+      const source = new SourceNode({values: []});
       sources.push(source);
       return source;
     }

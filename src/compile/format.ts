@@ -15,6 +15,7 @@ import {fieldValidPredicate} from '../predicate';
 import {ScaleType} from '../scale';
 import {formatExpression, normalizeTimeUnit, timeUnitSpecifierExpression} from '../timeunit';
 import {QUANTITATIVE, Type} from '../type';
+import {Dict} from '../util';
 import {isSignalRef} from '../vega.schema';
 import {TimeUnit} from './../timeunit';
 import {datumDefToExpr} from './mark/encode/valueref';
@@ -23,7 +24,7 @@ export function isCustomFormatType(formatType: string) {
   return formatType && formatType !== 'number' && formatType !== 'time';
 }
 
-function customFormatExpr(formatType: string, field: string, format: string | object) {
+function customFormatExpr(formatType: string, field: string, format: string | Dict<unknown>) {
   return `${formatType}(${field}${format ? `, ${JSON.stringify(format)}` : ''})`;
 }
 
@@ -38,7 +39,7 @@ export function formatSignalRef({
   config
 }: {
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>;
-  format: string | object;
+  format: string | Dict<unknown>;
   formatType: string;
   expr?: 'datum' | 'parent' | 'datum.datum';
   normalizeStack?: boolean;
@@ -111,7 +112,7 @@ export function formatCustomType({
   field
 }: {
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>;
-  format: string | object;
+  format: string | Dict<unknown>;
   formatType: string;
   expr?: 'datum' | 'parent' | 'datum.datum';
   normalizeStack?: boolean;
@@ -132,7 +133,7 @@ export function formatCustomType({
 export function guideFormat(
   fieldOrDatumDef: FieldDef<string> | DatumDef<string>,
   type: Type,
-  format: string | object,
+  format: string | Dict<unknown>,
   formatType: string,
   config: Config,
   omitTimeFormatConfig: boolean // axis doesn't use config.timeFormat
@@ -167,7 +168,7 @@ export function guideFormatType(
 /**
  * Returns number format for a fieldDef.
  */
-export function numberFormat(type: Type, specifiedFormat: string | object, config: Config) {
+export function numberFormat(type: Type, specifiedFormat: string | Dict<unknown>, config: Config) {
   // Specified format in axis/legend has higher precedence than fieldDef.format
   if (isString(specifiedFormat)) {
     return specifiedFormat;
@@ -201,7 +202,7 @@ function formatExpr(field: string, format: string) {
   return `format(${field}, "${format || ''}")`;
 }
 
-function binNumberFormatExpr(field: string, format: string | object, formatType: string, config: Config) {
+function binNumberFormatExpr(field: string, format: string | Dict<unknown>, formatType: string, config: Config) {
   if (isCustomFormatType(formatType)) {
     return customFormatExpr(formatType, field, format);
   }
@@ -212,7 +213,7 @@ function binNumberFormatExpr(field: string, format: string | object, formatType:
 export function binFormatExpression(
   startField: string,
   endField: string,
-  format: string | object,
+  format: string | Dict<unknown>,
   formatType: string,
   config: Config
 ) {
@@ -227,7 +228,7 @@ export function binFormatExpression(
 export function timeFormatExpression(
   field: string,
   timeUnit: TimeUnit,
-  format: string | object,
+  format: string | Dict<unknown>,
   rawTimeFormat: string, // should be provided only for actual text and headers, not axis/legend labels
   isUTCScale: boolean
 ): string {
