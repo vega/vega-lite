@@ -159,7 +159,7 @@ export type VgScale = Pick<BaseScale, 'type'> & {
       Omit<BandScale, 'type'> &
       Omit<PointScale, 'type'> &
       Omit<OrdinalScale, 'type'>,
-    'type' | 'range' | 'nice' | 'zero'
+    'range' | 'nice' | 'zero'
   >;
 
 export interface RowCol<T> {
