@@ -110,7 +110,7 @@
     "ts-json-schema-generator": "^0.68.1",
     "typescript": "~3.9.3",
     "vega-cli": "^5.12.3",
-    "vega-datasets": "^1.30.3",
+    "vega-datasets": "^1.30.4",
     "vega-embed": "^6.8.0",
     "vega-tooltip": "^0.23.0",
     "vega-typings": "^0.17.2",
