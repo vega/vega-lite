@@ -30,6 +30,7 @@ module.exports = {
     '@typescript-eslint/explicit-function-return-type': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-use-before-define': 'off',
+    '@typescript-eslint/ban-types': 'warn',
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/no-for-in-array': 'error',
     '@typescript-eslint/no-require-imports': 'error',
@@ -45,8 +46,9 @@ module.exports = {
       }
     ],
     '@typescript-eslint/no-object-literal-type-assertion': 'off',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-namespace': 'off', // we can do this later
-    '@typescript-eslint/ban-ts-ignore': 'off', // we need it in a few places
+    '@typescript-eslint/ban-ts-comment': 'off', // we need it in a few places
     // https://eslint.org/docs/rules/
     'linebreak-style': ['error', 'unix'],
     'no-irregular-whitespace': ['error', {skipComments: true}],

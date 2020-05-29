@@ -55,7 +55,6 @@ const UNIT_NAMES = {
   facet: ['child__facet_row_0', 'child__facet_row_1', 'child__facet_row_2']
 };
 
-/* eslint-disable @typescript-eslint/camelcase */
 export const hits = {
   discrete: {
     qq: [8, 19],
@@ -106,7 +105,6 @@ export const hits = {
     ],
     facet_clear: [[3], [5], [7]]
   }
-  /* eslint-enable @typescript-eslint/camelcase */
 };
 
 function base(iter: number, sel: any, opts: any = {}): NormalizedUnitSpec | NormalizedLayerSpec {
@@ -223,9 +221,9 @@ const readFileAsync = promisify(fs.readFile);
 const writeFileAsync = promisify(fs.writeFile);
 
 export async function svg(page: Page, path: string, filename: string) {
-  const svgString = await page.evaluate(
+  const svgString = (await page.evaluate(
     `(async () => { vega.resetSVGClipId(); await view.runAsync(); return await view.toSVG() })()`
-  );
+  )) as string;
 
   if (generate) {
     mkdirp((path = `${output}/${path}`));

@@ -671,7 +671,7 @@ describe('compile/scale', () => {
 
       describe('for nominal', () => {
         it('should return correct domain with the provided sort property', () => {
-          const sortDef: EncodingSortField<string> = {op: 'min' as 'min', field: 'Acceleration'};
+          const sortDef: EncodingSortField<string> = {op: 'min', field: 'Acceleration'};
           const model = parseUnitModel({
             mark: 'point',
             encoding: {

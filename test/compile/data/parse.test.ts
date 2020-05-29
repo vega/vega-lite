@@ -99,7 +99,6 @@ describe('compile/data/parse', () => {
       expect(result).toBeInstanceOf(TimeUnitNode);
       expect(parse.combine()).toEqual({
         a: 'number',
-        // eslint-disable-next-line @typescript-eslint/camelcase
         a_end: 'number',
         b: 'date',
         field: 'date'

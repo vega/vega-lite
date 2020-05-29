@@ -1,3 +1,4 @@
+import {Dict} from './util';
 /*
  * Constants and utilities for data.
  */
@@ -83,7 +84,7 @@ export type DataSource = UrlData | InlineData | NamedData;
 
 export type Data = DataSource | Generator;
 
-export type InlineDataset = number[] | string[] | boolean[] | object[] | string | object;
+export type InlineDataset = number[] | string[] | boolean[] | Dict<unknown>[] | string | Dict<unknown>;
 
 export interface DataBase {
   /**
@@ -149,8 +150,8 @@ export function isGraticuleGenerator(data: Partial<Data> | Partial<VgData>): dat
 
 export type DataSourceType = 'raw' | 'main' | 'row' | 'column' | 'lookup';
 
-export const MAIN: 'main' = 'main';
-export const RAW: 'raw' = 'raw';
+export const MAIN = 'main' as const;
+export const RAW = 'raw' as const;
 
 export type Generator = SequenceGenerator | SphereGenerator | GraticuleGenerator;
 

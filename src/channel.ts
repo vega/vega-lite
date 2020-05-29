@@ -12,60 +12,60 @@ import {Flag, keys} from './util';
 export type Channel = keyof Encoding<any> | keyof ExtendedFacetMapping<any>;
 
 // Facet
-export const ROW: 'row' = 'row';
-export const COLUMN: 'column' = 'column';
+export const ROW = 'row' as const;
+export const COLUMN = 'column' as const;
 
-export const FACET: 'facet' = 'facet';
+export const FACET = 'facet' as const;
 
 // Position
-export const X: 'x' = 'x';
-export const Y: 'y' = 'y';
-export const X2: 'x2' = 'x2';
-export const Y2: 'y2' = 'y2';
+export const X = 'x' as const;
+export const Y = 'y' as const;
+export const X2 = 'x2' as const;
+export const Y2 = 'y2' as const;
 
 // Arc-Position
-export const RADIUS: 'radius' = 'radius';
-export const RADIUS2: 'radius2' = 'radius2';
-export const THETA: 'theta' = 'theta';
-export const THETA2: 'theta2' = 'theta2';
+export const RADIUS = 'radius' as const;
+export const RADIUS2 = 'radius2' as const;
+export const THETA = 'theta' as const;
+export const THETA2 = 'theta2' as const;
 
 // Geo Position
-export const LATITUDE: 'latitude' = 'latitude';
-export const LONGITUDE: 'longitude' = 'longitude';
-export const LATITUDE2: 'latitude2' = 'latitude2';
-export const LONGITUDE2: 'longitude2' = 'longitude2';
+export const LATITUDE = 'latitude' as const;
+export const LONGITUDE = 'longitude' as const;
+export const LATITUDE2 = 'latitude2' as const;
+export const LONGITUDE2 = 'longitude2' as const;
 
 // Mark property with scale
-export const COLOR: 'color' = 'color';
+export const COLOR = 'color' as const;
 
-export const FILL: 'fill' = 'fill';
+export const FILL = 'fill' as const;
 
-export const STROKE: 'stroke' = 'stroke';
+export const STROKE = 'stroke' as const;
 
-export const SHAPE: 'shape' = 'shape';
-export const SIZE: 'size' = 'size';
+export const SHAPE = 'shape' as const;
+export const SIZE = 'size' as const;
 
-export const ANGLE: 'angle' = 'angle';
+export const ANGLE = 'angle' as const;
 
-export const OPACITY: 'opacity' = 'opacity';
-export const FILLOPACITY: 'fillOpacity' = 'fillOpacity';
+export const OPACITY = 'opacity' as const;
+export const FILLOPACITY = 'fillOpacity' as const;
 
-export const STROKEOPACITY: 'strokeOpacity' = 'strokeOpacity';
+export const STROKEOPACITY = 'strokeOpacity' as const;
 
-export const STROKEWIDTH: 'strokeWidth' = 'strokeWidth';
-export const STROKEDASH: 'strokeDash' = 'strokeDash';
+export const STROKEWIDTH = 'strokeWidth' as const;
+export const STROKEDASH = 'strokeDash' as const;
 
 // Non-scale channel
-export const TEXT: 'text' = 'text';
-export const ORDER: 'order' = 'order';
-export const DETAIL: 'detail' = 'detail';
-export const KEY: 'key' = 'key';
+export const TEXT = 'text' as const;
+export const ORDER = 'order' as const;
+export const DETAIL = 'detail' as const;
+export const KEY = 'key' as const;
 
-export const TOOLTIP: 'tooltip' = 'tooltip';
-export const HREF: 'href' = 'href';
+export const TOOLTIP = 'tooltip' as const;
+export const HREF = 'href' as const;
 
-export const URL: 'url' = 'url';
-export const DESCRIPTION: 'description' = 'description';
+export const URL = 'url' as const;
+export const DESCRIPTION = 'description' as const;
 
 const POSITION_CHANNEL_INDEX = {
   x: 1,
