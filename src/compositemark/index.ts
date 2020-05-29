@@ -54,7 +54,9 @@ export function remove(mark: string) {
 }
 
 export type CompositeEncoding<F extends Field = Field> = Encoding<F> & ErrorExtraEncoding<F>;
-export type FacetedCompositeEncoding<F extends Field = Field> = Encoding<F> & ErrorExtraEncoding<F> & EncodingFacetMapping<F>;
+export type FacetedCompositeEncoding<F extends Field = Field> = Encoding<F> &
+  ErrorExtraEncoding<F> &
+  EncodingFacetMapping<F>;
 
 export type CompositeMark = BoxPlot | ErrorBar | ErrorBand;
 
