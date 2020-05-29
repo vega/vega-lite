@@ -5,7 +5,7 @@ title: Clearing a selection
 permalink: /docs/clear.html
 ---
 
-The `clear` property identifies which events must fire to empty a selection of all selected values (the [`empty`](selection.html#selection-properties) can be used to further determine the behavior of empty selections).
+The `clear` property identifies which events must fire to empty a selection of all selected values (the [`empty`](selection.html#selection-properties) property can be used to further determine the behavior of empty selections).
 
 It can take one of the following values:
 
