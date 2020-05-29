@@ -53,8 +53,8 @@ export function remove(mark: string) {
   delete compositeMarkRegistry[mark];
 }
 
-export type CompositeEncoding = Encoding<Field> & ErrorExtraEncoding<Field>;
-export type FacetedCompositeEncoding = Encoding<Field> & ErrorExtraEncoding<Field> & EncodingFacetMapping<Field>;
+export type CompositeEncoding<F extends Field = Field> = Encoding<F> & ErrorExtraEncoding<F>;
+export type FacetedCompositeEncoding<F extends Field = Field> = Encoding<F> & ErrorExtraEncoding<F> & EncodingFacetMapping<F>;
 
 export type CompositeMark = BoxPlot | ErrorBar | ErrorBand;
 
