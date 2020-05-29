@@ -8,6 +8,8 @@ import diff from 'highlight.js/lib/languages/diff';
 // @ts-ignore
 import javascript from 'highlight.js/lib/languages/javascript';
 // @ts-ignore
+import typescript from 'highlight.js/lib/languages/typescript';
+// @ts-ignore
 import json from 'highlight.js/lib/languages/json';
 // @ts-ignore
 import xml from 'highlight.js/lib/languages/xml';
@@ -22,6 +24,7 @@ window['runStreamingExample'] = runStreamingExample;
 window['embedExample'] = embedExample;
 
 hljs.registerLanguage('javascript', javascript);
+hljs.registerLanguage('typescript', typescript);
 hljs.registerLanguage('json', json);
 hljs.registerLanguage('html', xml);
 hljs.registerLanguage('css', css);

@@ -51,11 +51,7 @@
           }
         }
       }],
-      "resolve": {
-        "legend": {
-          "size": "independent"
-        }
-      }
+      "resolve": {"legend": {"size": "independent"}}
     }, {
       "width": 330,
       "height": 120,
@@ -75,11 +71,5 @@
         }
       }
     }
-  ],
-  "resolve": {
-    "legend": {
-      "color": "independent",
-      "size": "independent"
-    }
-  }
+  ]
 }

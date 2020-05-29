@@ -52,11 +52,7 @@
       }
     }]
   },
-  "resolve": {
-    "scale": {
-      "x": "independent"
-    }
-  },
+  "resolve": {"scale": {"x": "independent"}},
   "config": {
     "tick": {"thickness": 2}
   }

@@ -12,8 +12,9 @@ Vega-Lite supports the following time units:
 - `"quarter"` - Three-month intervals, starting in one of January, April, July, and October.
 - `"month"` - Calendar months (January, February, _etc._).
 - `"date"` - Calendar day of the month (January 1, January 2, _etc._).
-<!-- - `"week"` - Sunday-based weeks. Days before the first Sunday of the year are considered to be in week 0, the first Sunday of the year is the start of week 1, the second Sunday week 2, _etc._. -->
+- `"week"` - Sunday-based weeks. Days before the first Sunday of the year are considered to be in week 0, the first Sunday of the year is the start of week 1, the second Sunday week 2, _etc._.
 - `"day"` - Day of the week (Sunday, Monday, _etc._).
+- `"dayofyear"` - Day of the year (1, 2, ..., 365, _etc._).
 - `"hours"` - Hours of the day (12:00am, 1:00am, _etc._).
 - `"minutes"` - Minutes in an hour (12:00, 12:01, _etc._).
 - `"seconds"` - Seconds in a minute (12:00:00, 12:00:01, _etc._).
