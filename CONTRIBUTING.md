@@ -2,13 +2,13 @@ Welcome to the Vega community. Everyone is welcome to contribute. We value all f
 
 # Contributing
 
-If you find a bug in the code or a mistake in the [documentation](https://vega.github.io/vega-lite/docs/) or want a new feature, you can help us by creating an issue to [our repository](https://github.com/vega/vega-lite), or even submit a pull request.
+If you find a bug in the code or a mistake in the [documentation](https://vega.github.io/vega-lite/docs/) or want a new feature, you can help us by creating an issue to [our repository](https://github.com/vega/vega-lite), or even submit a pull request (PR).
 
 - For small fixes, please feel free to submit a pull request. Don't worry about creating an issue first.
 
 - For major changes, please discuss it with the community via a GitHub issue first. This will help us coordinate our efforts, prevent duplication of work, and help you to craft the change so that it is successfully accepted into the project.
 
-  - One way to use GitHub for this purpose is to submit a pull request (PR) with a ":construction: WIP" (work in progress) label.
+  - One way to use GitHub for this purpose is to submit a [draft pull request](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests).
 
 - Generally, we name a branch using this pattern `<your 2-3 letters initial>/<topic>`. For example, @kanitw's branch regarding scale type might be called `kw/scale-type`.
 
@@ -199,7 +199,7 @@ To update the Vega-Lite code in the editor, you need to compile TypeScript to Ja
 
 ## Pull Requests and Continuous Integration (CI)
 
-All pull requests will be tested on [GitHub Actions](https://github.com/features/actions). If your PR does not pass the checks, your PR will not be approved. The CI will run `yarn test`, generate Vega specs and SVG files from your updated code, compare them with the existing compiled outputs in `examples/compiled/`, and check code coverage of your code. If you don't want your PR reviewed until checks pass, just add the ":construction: WIP" label. Once you're ready for review, remove the label and comment that the PR is ready for review.
+All pull requests will be tested on [GitHub Actions](https://github.com/features/actions). If your PR does not pass the checks, your PR will not be approved. The CI will run `yarn test`, generate Vega specs and SVG files from your updated code, compare them with the existing compiled outputs in `examples/compiled/`, and check code coverage of your code. If you don't want your PR reviewed until checks pass, mark the [pull request as draft](https://help.github.com/en/github/collaborating-with-issues-and-pull-requests/about-pull-requests#draft-pull-requests). Once you're ready for review, convert the pull request to mark it as ready for review.
 
 ### Code Coverage
 
