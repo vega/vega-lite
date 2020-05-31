@@ -98,8 +98,9 @@ The supported **aggregation operations** are:
 
 | Operation | Description |
 | :-- | :-- |
-| count | The total count of data objects in the group. <span class="note-line">**Note:** _'count'_ operates directly on the input objects and return the same value regardless of the provided field. Similar to SQL's `count(*)`, count can be specified with a `field` `"*"`. |
+| count | The total count of data objects in the group. <span class="note-line">**Note:** _'count'_ operates directly on the input objects and return the same value regardless of the provided field. |
 | valid | The count of field values that are not `null`, `undefined` or `NaN`. |
+| values | A list of data objects in the group. |
 | missing | The count of `null` or `undefined` field values. |
 | distinct | The count of distinct field values. |
 | sum | The sum of field values. |
