@@ -1,16 +1,16 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/movies.json"},
+  "data": {"url": "data/movies.csv"},
   "mark": "circle",
   "encoding": {
     "x": {
       "bin": {"maxbins": 10},
-      "field": "IMDB_Rating",
+      "field": "IMDB Rating",
       "type": "quantitative"
     },
     "y": {
       "bin": {"maxbins": 10},
-      "field": "Rotten_Tomatoes_Rating",
+      "field": "Rotten Tomatoes Rating",
       "type": "quantitative"
     },
     "size": {

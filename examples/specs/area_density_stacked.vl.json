@@ -1,13 +1,13 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/movies.json"},
+  "data": {"url": "data/movies.csv"},
   "width": 400,
   "height": 100,
   "transform":[
     {
-      "density": "IMDB_Rating",
+      "density": "IMDB Rating",
       "bandwidth": 0.3,
-      "groupby": ["Major_Genre"],
+      "groupby": ["Major Genre"],
       "extent": [0, 10],
       "counts": true,
       "steps": 50
@@ -25,7 +25,7 @@
       "stack": true
     },
     "color": {
-      "field": "Major_Genre",
+      "field": "Major Genre",
       "type": "nominal",
       "scale": {"scheme": "category20"}
     }

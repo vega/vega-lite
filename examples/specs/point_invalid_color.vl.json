@@ -1,21 +1,21 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {
-    "url": "data/movies.json"
+    "url": "data/movies.csv"
   },
   "mark": "point",
   "encoding": {
     "x": {
-      "field": "IMDB_Rating",
+      "field": "IMDB Rating",
       "type": "quantitative"
     },
     "y": {
-      "field": "Rotten_Tomatoes_Rating",
+      "field": "Rotten Tomatoes Rating",
       "type": "quantitative"
     },
     "color": {
       "condition": {
-        "test": "datum.IMDB_Rating === null || datum.Rotten_Tomatoes_Rating === null",
+        "test": "datum['IMDB Rating'] === null || datum['Rotten Tomatoes Rating'] === null",
         "value": "#aaa"
       }
     }

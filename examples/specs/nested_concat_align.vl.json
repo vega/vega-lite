@@ -2,11 +2,11 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "Nested concatenation aligned by setting axis minExtent",
   "data": {
-    "url": "data/movies.json"
+    "url": "data/movies.csv"
   },
   "vconcat": [{
     "title": "Ratings",
-    "repeat": {"column": ["Rotten_Tomatoes_Rating", "IMDB_Rating"]},
+    "repeat": {"column": ["Rotten Tomatoes Rating", "IMDB Rating"]},
     "spec": {
       "width": 150,
       "height": 50,
@@ -22,7 +22,7 @@
     }
   },{
     "title": "Gross",
-    "repeat": {"column": ["US_Gross", "Worldwide_Gross"]},
+    "repeat": {"column": ["US_Gross", "Worldwide Gross"]},
     "spec": {
       "width": 150,
       "height": 50,

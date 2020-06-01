@@ -1,17 +1,17 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {
-    "url": "data/movies.json"
+    "url": "data/movies.csv"
   },
   "repeat": {
-    "layer": ["US_Gross", "Worldwide_Gross"]
+    "layer": ["US_Gross", "Worldwide Gross"]
   },
   "spec": {
     "mark": "line",
     "encoding": {
       "x": {
         "bin": true,
-        "field": "IMDB_Rating",
+        "field": "IMDB Rating",
         "type": "quantitative"
       },
       "y": {

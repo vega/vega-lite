@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "Average temperatures in Seattle, broken down by hour. Derived from [Seattle Annual Temperate](https://vega.github.io/vega/examples/annual-temperature/) example from the Vega example gallery.",
   "title": "Seattle Annual Temperatures",
-  "data": {"url": "data/seattle-temps.csv"},
+  "data": {"url": "data/seattle-weather-hourly.csv"},
   "transform": [
     {"calculate": "(hours(datum.date) + 18) % 24", "as": "order"}
   ],
@@ -35,7 +35,7 @@
         "axis": {"format": "%b"}
       },
       "y": {
-        "field": "temp",
+        "field": "temp_max",
         "type": "quantitative",
         "scale": {"zero": false},
         "axis": {"title": null, "labels": false, "ticks": false}

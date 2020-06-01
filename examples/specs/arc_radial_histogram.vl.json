@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/movies.json"},
+  "data": {"url": "data/movies.csv"},
   "layer": [
     {
       "mark": {"type": "arc", "stroke": "white", "tooltip": true}
@@ -10,12 +10,12 @@
       "encoding": {
         "text": {
           "bin": true,
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "type": "quantitative"
         },
         "angle": {
           "bin": true,
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "type": "quantitative",
           "scale": {"range": [90, 450]}
         }
@@ -25,7 +25,7 @@
   "encoding": {
     "theta": {
       "bin": true,
-      "field": "IMDB_Rating",
+      "field": "IMDB Rating",
       "type": "quantitative"
     },
     "radius": {

@@ -1,32 +1,32 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/movies.json"},
+  "data": {"url": "data/movies.csv"},
   "transform": [{
     "bin": true,
-    "field": "IMDB_Rating",
-    "as": "bin_IMDB_Rating"
+    "field": "IMDB Rating",
+    "as": "bin_IMDB Rating"
   }, {
     "aggregate": [{"op": "count", "as": "count"}],
-    "groupby": ["bin_IMDB_Rating", "bin_IMDB_Rating_end"]
+    "groupby": ["bin_IMDB Rating", "bin_IMDB Rating_end"]
   }, {
-    "filter": "datum.bin_IMDB_Rating !== null"
+    "filter": "datum.bin_IMDB Rating !== null"
   }, {
-    "sort": [{"field": "bin_IMDB_Rating"}],
-    "window": [{"op": "sum", "field": "count", "as": "cumulative_count"}],
+    "sort": [{"field": "bin_IMDB Rating"}],
+    "window": [{"op": "sum", "field": "count", "as": "Cumulative Count"}],
     "frame": [null, 0]
   }],
   "encoding": {
     "x": {
-      "field": "bin_IMDB_Rating", "type": "quantitative",
+      "field": "bin_IMDB Rating", "type": "quantitative",
       "scale": {"zero": false},
       "title": "IMDB Rating"
     },
-    "x2": {"field": "bin_IMDB_Rating_end"}
+    "x2": {"field": "bin_IMDB Rating_end"}
   },
   "layer": [{
     "mark": "bar",
     "encoding": {
-      "y": {"field": "cumulative_count", "type": "quantitative"}
+      "y": {"field": "Cumulative Count", "type": "quantitative"}
     }
   }, {
     "mark": {"type": "bar", "color": "yellow", "opacity": 0.5},

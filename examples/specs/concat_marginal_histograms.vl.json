@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/movies.json"},
+  "data": {"url": "data/movies.csv"},
   "spacing": 15,
   "bounds": "flush",
   "vconcat": [{
@@ -9,7 +9,7 @@
     "encoding": {
       "x": {
         "bin": true,
-        "field": "IMDB_Rating",
+        "field": "IMDB Rating",
         "type": "quantitative",
         "axis": null
       },
@@ -30,12 +30,12 @@
       "encoding": {
         "x": {
           "bin": true,
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "type": "quantitative"
         },
         "y": {
           "bin": true,
-          "field": "Rotten_Tomatoes_Rating",
+          "field": "Rotten Tomatoes Rating",
           "type": "quantitative"
         },
         "color": {
@@ -49,7 +49,7 @@
       "encoding": {
         "y": {
           "bin": true,
-          "field": "Rotten_Tomatoes_Rating",
+          "field": "Rotten Tomatoes Rating",
           "type": "quantitative",
           "axis": null
         },

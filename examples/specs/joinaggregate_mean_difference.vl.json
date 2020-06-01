@@ -1,23 +1,23 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/movies.json"},
+  "data": {"url": "data/movies.csv"},
   "transform": [
-    {"filter": "datum.IMDB_Rating != null"},
+    {"filter": "datum.IMDB Rating != null"},
     {
       "joinaggregate": [{
         "op": "mean",
-        "field": "IMDB_Rating",
+        "field": "IMDB Rating",
         "as": "AverageRating"
       }]
     },
-    {"filter": "(datum.IMDB_Rating - datum.AverageRating) > 2.5"}
+    {"filter": "(datum.IMDB Rating - datum.AverageRating) > 2.5"}
   ],
   "layer": [
     {
       "mark": "bar",
       "encoding": {
         "x": {
-          "field": "IMDB_Rating", "type": "quantitative",
+          "field": "IMDB Rating", "type": "quantitative",
           "axis": {"title": "IMDB Rating"}
         },
         "y": {"field": "Title", "type": "ordinal"}

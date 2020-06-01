@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {
-    "url": "data/movies.json"
+    "url": "data/movies.csv"
   },
   "layer": [
     {
@@ -11,11 +11,11 @@
       },
       "encoding": {
         "x": {
-          "field": "Rotten_Tomatoes_Rating",
+          "field": "Rotten Tomatoes Rating",
           "type": "quantitative"
         },
         "y": {
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "type": "quantitative"
         }
       }
@@ -27,17 +27,17 @@
       },
       "transform": [
         {
-          "loess": "IMDB_Rating",
-          "on": "Rotten_Tomatoes_Rating"
+          "loess": "IMDB Rating",
+          "on": "Rotten Tomatoes Rating"
         }
       ],
       "encoding": {
         "x": {
-          "field": "Rotten_Tomatoes_Rating",
+          "field": "Rotten Tomatoes Rating",
           "type": "quantitative"
         },
         "y": {
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "type": "quantitative"
         }
       }

@@ -2,11 +2,11 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "width": 75,
   "height": 75,
-  "data": {"url": "data/movies.json"},
+  "data": {"url": "data/movies.csv"},
   "mark": "point",
   "encoding": {
-    "column": {"field": "MPAA_Rating", "type": "ordinal"},
-    "x": {"field": "Worldwide_Gross", "type": "quantitative"},
-    "y": {"field": "US_DVD_Sales", "type": "quantitative"}
+    "column": {"field": "MPAA Rating", "type": "ordinal"},
+    "x": {"field": "Worldwide Gross", "type": "quantitative"},
+    "y": {"field": "US DVD Sales", "type": "quantitative"}
   }
 }

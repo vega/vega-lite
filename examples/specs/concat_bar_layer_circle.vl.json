@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "A dashboard with cross-highlighting.",
-  "data": {"url": "data/movies.json"},
+  "data": {"url": "data/movies.csv"},
   "vconcat": [
     {
       "layer": [{
@@ -9,12 +9,12 @@
         "encoding": {
           "x": {
             "bin": {"maxbins": 10},
-            "field": "IMDB_Rating",
+            "field": "IMDB Rating",
             "type": "quantitative"
           },
           "y": {
             "bin": {"maxbins": 10},
-            "field": "Rotten_Tomatoes_Rating",
+            "field": "Rotten Tomatoes Rating",
             "type": "quantitative"
           },
           "size": {
@@ -34,12 +34,12 @@
         "encoding": {
           "x": {
             "bin": {"maxbins": 10},
-            "field": "IMDB_Rating",
+            "field": "IMDB Rating",
             "type": "quantitative"
           },
           "y": {
             "bin": {"maxbins": 10},
-            "field": "Rotten_Tomatoes_Rating",
+            "field": "Rotten Tomatoes Rating",
             "type": "quantitative"
           },
           "size": {
@@ -60,7 +60,7 @@
         "pts": {"type": "single", "encodings": ["x"]}
       },
       "encoding": {
-        "x": {"field": "Major_Genre", "type": "nominal", "axis": {"labelAngle": -40}},
+        "x": {"field": "Major Genre", "type": "nominal", "axis": {"labelAngle": -40}},
         "y": {"aggregate": "count", "type": "quantitative"},
         "color": {
           "condition": {

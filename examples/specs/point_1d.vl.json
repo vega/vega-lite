@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/movies.json"},
+  "data": {"url": "data/movies.csv"},
   "mark": "point",
   "encoding": {
-    "x": {"field": "IMDB_Rating", "type": "quantitative"}
+    "x": {"field": "IMDB Rating", "type": "quantitative"}
   }
 }
