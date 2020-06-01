@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {
-      "url": "data/seattle-temps.csv"
+      "url": "data/seattle-weather.csv"
   },
-  "title": "2010 Daily Max Temperature (F) in Seattle, WA",
+  "title": "Daily Max Temperatures (C) in Seattle, WA",
   "config": {
       "view": {
           "strokeWidth": 0,
@@ -32,7 +32,7 @@
           "title": "Month"
       },
       "color": {
-          "field": "temp",
+          "field": "temp_max",
           "aggregate": "max",
           "type": "quantitative",
           "legend": {
