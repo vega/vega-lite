@@ -9,7 +9,7 @@
   "data": [
     {
       "name": "source_0",
-      "url": "data/seattle-temps.csv",
+      "url": "data/seattle-weather.csv",
       "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [
         {
@@ -22,12 +22,12 @@
           "type": "aggregate",
           "groupby": ["yearmonth_date", "yearmonth_date_end"],
           "ops": ["mean"],
-          "fields": ["temp"],
-          "as": ["mean_temp"]
+          "fields": ["temp_max"],
+          "as": ["mean_temp_max"]
         },
         {
           "type": "filter",
-          "expr": "(isDate(datum[\"yearmonth_date\"]) || (isValid(datum[\"yearmonth_date\"]) && isFinite(+datum[\"yearmonth_date\"]))) && isValid(datum[\"mean_temp\"]) && isFinite(+datum[\"mean_temp\"])"
+          "expr": "(isDate(datum[\"yearmonth_date\"]) || (isValid(datum[\"yearmonth_date\"]) && isFinite(+datum[\"yearmonth_date\"]))) && isValid(datum[\"mean_temp_max\"]) && isFinite(+datum[\"mean_temp_max\"])"
         }
       ]
     }
@@ -43,7 +43,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"date (year-month)\" + \": \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Mean of temp\" + \": \" + (format(datum[\"mean_temp\"], \"\"))"
+            "signal": "\"date (year-month)\" + \": \" + (timeFormat(datum[\"yearmonth_date\"], timeUnitSpecifier([\"year\",\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Mean of temp_max\" + \": \" + (format(datum[\"mean_temp_max\"], \"\"))"
           },
           "x2": [
             {
@@ -59,7 +59,7 @@
             },
             {"scale": "x", "field": "yearmonth_date_end"}
           ],
-          "y": {"scale": "y", "field": "mean_temp"},
+          "y": {"scale": "y", "field": "mean_temp_max"},
           "y2": {"scale": "y", "value": 0}
         }
       }
@@ -78,7 +78,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "mean_temp"},
+      "domain": {"data": "source_0", "field": "mean_temp_max"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -130,7 +130,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Mean of temp",
+      "title": "Mean of temp_max",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
