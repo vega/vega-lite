@@ -2,7 +2,7 @@
  * Vega-Lite's singleton logger utility.
  */
 
-import {logger, LoggerInterface, Warn} from 'vega-util';
+import {Debug, Error as ErrorLevel, Info, logger, LoggerInterface, Warn} from 'vega-util';
 export * as message from './message';
 
 /**
@@ -19,27 +19,36 @@ export class LocalLogger implements LoggerInterface {
   public infos: any[] = [];
   public debugs: any[] = [];
 
-  public level() {
-    return this;
+  #level: number = Warn;
+
+  public level(): number;
+  public level(_: number): this;
+  public level(_?: number) {
+    if (_) {
+      this.#level = _;
+      return this;
+    }
+    return this.#level;
   }
 
   public warn(...args: readonly any[]) {
-    this.warns.push(...args);
+    if (this.#level >= Warn) this.warns.push(...args);
     return this;
   }
 
   public info(...args: readonly any[]) {
-    this.infos.push(...args);
+    if (this.#level >= Info) this.infos.push(...args);
     return this;
   }
 
   public debug(...args: readonly any[]) {
-    this.debugs.push(...args);
+    if (this.#level >= Debug) this.debugs.push(...args);
     return this;
   }
 
   public error(...args: readonly any[]): this {
-    throw Error(...args);
+    if (this.#level >= ErrorLevel) throw Error(...args);
+    return this;
   }
 }
 
