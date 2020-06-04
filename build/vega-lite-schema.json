@@ -3130,6 +3130,33 @@
         }
       ]
     },
+    "ColorsSchemeParams": {
+      "additionalProperties": false,
+      "properties": {
+        "colors": {
+          "description": "The colors will be interpolated to form a new scheme; use the `interpolate` property to set the interpolation type.",
+          "items": {
+            "$ref": "#/definitions/Color"
+          },
+          "type": "array"
+        },
+        "count": {
+          "description": "The number of colors to use in the scheme. This can be useful for scale types such as `\"quantize\"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.",
+          "type": "number"
+        },
+        "extent": {
+          "description": "The extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "colors"
+      ],
+      "type": "object"
+    },
     "Encoding": {
       "additionalProperties": false,
       "properties": {
@@ -13652,6 +13679,30 @@
       ],
       "type": "object"
     },
+    "NamedSchemeParams": {
+      "additionalProperties": false,
+      "properties": {
+        "count": {
+          "description": "The number of colors to use in the scheme. This can be useful for scale types such as `\"quantize\"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.",
+          "type": "number"
+        },
+        "extent": {
+          "description": "The extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "name": {
+          "description": "A color scheme name for ordinal scales (e.g., `\"category10\"` or `\"blues\"`). For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
     "NonArgAggregateOp": {
       "enum": [
         "average",
@@ -16094,15 +16145,8 @@
           "type": "boolean"
         },
         "scheme": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/SchemeParams"
-            }
-          ],
-          "description": "A string indicating a color [scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme) name (e.g., `\"category10\"` or `\"blues\"`) or a [scheme parameter object](https://vega.github.io/vega-lite/docs/scale.html#scheme-params).\n\nDiscrete color schemes may be used with [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) or [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales. Continuous color schemes are intended for use with color scales.\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference."
+          "$ref": "#/definitions/Scheme",
+          "description": "A string indicating a color [scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme) name (e.g., `\"category10\"` or `\"blues\"`), an array of colors that will be interpolated to create a new scheme, or a [scheme parameter object](https://vega.github.io/vega-lite/docs/scale.html#scheme-params).\n\nDiscrete color schemes may be used with [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) or [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales. Continuous color schemes are intended for use with color scales.\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference."
         },
         "type": {
           "$ref": "#/definitions/ScaleType",
@@ -16373,29 +16417,31 @@
       ],
       "type": "string"
     },
-    "SchemeParams": {
-      "additionalProperties": false,
-      "properties": {
-        "count": {
-          "description": "The number of colors to use in the scheme. This can be useful for scale types such as `\"quantize\"`, which use the length of the scale range to determine the number of discrete bins for the scale domain.",
-          "type": "number"
+    "Scheme": {
+      "anyOf": [
+        {
+          "type": "string"
         },
-        "extent": {
-          "description": "The extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.",
+        {
+          "$ref": "#/definitions/SchemeParams"
+        },
+        {
           "items": {
-            "type": "number"
+            "$ref": "#/definitions/Color"
           },
           "type": "array"
-        },
-        "name": {
-          "description": "A color scheme name for ordinal scales (e.g., `\"category10\"` or `\"blues\"`).\n\nFor the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.",
-          "type": "string"
         }
-      },
-      "required": [
-        "name"
-      ],
-      "type": "object"
+      ]
+    },
+    "SchemeParams": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/NamedSchemeParams"
+        },
+        {
+          "$ref": "#/definitions/ColorsSchemeParams"
+        }
+      ]
     },
     "SecondaryFieldDef": {
       "additionalProperties": false,

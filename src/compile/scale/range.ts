@@ -31,8 +31,9 @@ import {
   Domain,
   hasContinuousDomain,
   hasDiscreteDomain,
+  isColorsScheme,
   isContinuousToDiscrete,
-  isExtendedScheme,
+  isNamedScheme,
   Scale,
   scaleTypeSupportProperty,
   Scheme
@@ -40,12 +41,12 @@ import {
 import {isStep, LayoutSizeMixins} from '../../spec/base';
 import * as util from '../../util';
 import {isSignalRef, VgRange} from '../../vega.schema';
+import {signalOrStringValue} from '../common';
 import {getBinSignalName} from '../data/bin';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
-import {signalOrStringValue} from '../common';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
 
@@ -151,10 +152,16 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
 }
 
 function parseScheme(scheme: Scheme | SignalRef): RangeScheme {
-  if (isExtendedScheme(scheme)) {
+  if (isNamedScheme(scheme)) {
     return {
       scheme: scheme.name,
       ...util.omit(scheme, ['name'])
+    };
+  }
+  if (isColorsScheme(scheme)) {
+    return {
+      scheme: scheme.colors,
+      ...util.omit(scheme, ['colors'])
     };
   }
   return {scheme: scheme};

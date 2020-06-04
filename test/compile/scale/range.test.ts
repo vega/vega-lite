@@ -145,6 +145,17 @@ describe('compile/scale', () => {
         expect(parseRangeForChannel('color', model)).toEqual(makeExplicit({scheme: 'viridis'}));
       });
 
+      it('should support custom colors.', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            color: {field: 'x', type: 'quantitative', scale: {scheme: ['red', 'blue']}}
+          }
+        });
+
+        expect(parseRangeForChannel('color', model)).toEqual(makeExplicit({scheme: ['red', 'blue']}));
+      });
+
       it('should use the specified scheme with extent for a nominal color field.', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
@@ -219,6 +230,17 @@ describe('compile/scale', () => {
         });
 
         expect(parseRangeForChannel('color', model)).toEqual(makeExplicit({scheme: 'viridis', count: 3}));
+      });
+
+      it('should use the specified scheme with colors and count.', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            color: {field: 'x', type: 'quantitative', scale: {scheme: {colors: ['red', 'blue'], count: 3}}}
+          }
+        });
+
+        expect(parseRangeForChannel('color', model)).toEqual(makeExplicit({scheme: ['red', 'blue'], count: 3}));
       });
 
       it('should use default ramp range for quantile/quantize/threshold scales', () => {

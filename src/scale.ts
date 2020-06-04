@@ -5,7 +5,8 @@ import {
   ScaleInterpolateParams,
   SignalRef,
   TimeInterval,
-  TimeIntervalStep
+  TimeIntervalStep,
+  Color
 } from 'vega';
 import {isString, toSet} from 'vega-util';
 import * as CHANNEL from './channel';
@@ -390,14 +391,7 @@ export const defaultScaleConfig: ScaleConfig = {
   quantizeCount: 4
 };
 
-export interface SchemeParams {
-  /**
-   * A color scheme name for ordinal scales (e.g., `"category10"` or `"blues"`).
-   *
-   * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
-   */
-  name: string | SignalRef;
-
+interface SchemeParamsBase {
   /**
    * The extent of the color range to use. For example `[0.2, 1]` will rescale the color scheme such that color values in the range _[0, 0.2)_ are excluded from the scheme.
    */
@@ -409,16 +403,36 @@ export interface SchemeParams {
   count?: number | SignalRef;
 }
 
+export interface NamedSchemeParams extends SchemeParamsBase {
+  /**
+   * A color scheme name for ordinal scales (e.g., `"category10"` or `"blues"`). For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
+   */
+  name: string | SignalRef;
+}
+
+export interface ColorsSchemeParams extends SchemeParamsBase {
+  /**
+   * The colors will be interpolated to form a new scheme; use the `interpolate` property to set the interpolation type.
+   */
+  colors: Color[] | SignalRef;
+}
+
+export type SchemeParams = NamedSchemeParams | ColorsSchemeParams;
+
 export type Domain =
   | (null | string | number | boolean | DateTime | SignalRef)[]
   | 'unaggregated'
   | SelectionExtent
   | SignalRef
   | DomainUnionWith;
-export type Scheme = string | SchemeParams;
+export type Scheme = string | SchemeParams | Color[];
 
-export function isExtendedScheme(scheme: string | SignalRef | SchemeParams): scheme is SchemeParams {
+export function isNamedScheme(scheme: Scheme | SignalRef): scheme is NamedSchemeParams {
   return !isString(scheme) && !!scheme['name'];
+}
+
+export function isColorsScheme(scheme: Scheme | SignalRef): scheme is ColorsSchemeParams {
+  return !isString(scheme) && !!scheme['colors'];
 }
 
 export function isSelectionDomain(domain: Domain): domain is SelectionExtent {
@@ -515,13 +529,13 @@ export interface Scale {
   // ordinal
 
   /**
-   * A string indicating a color [scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme) name (e.g., `"category10"` or `"blues"`) or a [scheme parameter object](https://vega.github.io/vega-lite/docs/scale.html#scheme-params).
+   * A string indicating a color [scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme) name (e.g., `"category10"` or `"blues"`), an array of colors that will be interpolated to create a new scheme, or a [scheme parameter object](https://vega.github.io/vega-lite/docs/scale.html#scheme-params).
    *
    * Discrete color schemes may be used with [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) or [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales. Continuous color schemes are intended for use with color scales.
    *
    * For the full list of supported schemes, please refer to the [Vega Scheme](https://vega.github.io/vega/docs/schemes/#reference) reference.
    */
-  scheme?: string | SchemeParams | SignalRef;
+  scheme?: Scheme | SignalRef;
 
   /**
    * The alignment of the steps within the scale range.
