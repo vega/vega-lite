@@ -2,14 +2,18 @@
 
 set -euo pipefail
 
-if [ "$#" -ne 1 ]; then
+if [ "$#" -lt 1 ]; then
   echo "You must provide the new version to the script. The current version is $(./scripts/version.sh vega-lite)."
   exit 1
 fi
 
 if [ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]; then
-  echo "Not on master, please checkout master branch before running this script."
-  exit 1
+  if [ "$(git rev-parse --abbrev-ref HEAD)" != $2 ]; then
+    echo "Not on master, please checkout master branch before running this script or provide the branch name as the second parameter if you want to release from non-master branch."
+    exit 1
+  else
+    echo "Note: releasing from a non-master branch '$2'."
+  fi
 fi
 
 set -x
