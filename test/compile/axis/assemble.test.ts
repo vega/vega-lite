@@ -1,6 +1,7 @@
 import {assembleAxis} from '../../../src/compile/axis/assemble';
 import {AxisComponent} from '../../../src/compile/axis/component';
 import {defaultConfig} from '../../../src/config';
+import {parseUnitModelWithScale} from '../../util';
 
 describe('compile/axis/assemble', () => {
   describe('assembleAxis()', () => {
@@ -97,5 +98,30 @@ describe('compile/axis/assemble', () => {
     });
     const axis = assembleAxis(axisCmpt, 'main', {...defaultConfig, aria: false});
     expect(axis.aria).toBe(false);
+  });
+
+  it('correctly applies custom formatter to labelExpr.', () => {
+    const model = parseUnitModelWithScale({
+      data: {url: 'data/cars.json'},
+      mark: 'point',
+      encoding: {
+        y: {
+          field: 'Miles_per_Gallon',
+          type: 'quantitative',
+          axis: {
+            format: {a: 'b'},
+            formatType: 'myFormat',
+            labelExpr: 'datum.label[0]'
+          }
+        }
+      },
+      config: {customFormatTypes: true}
+    });
+    model.parseAxesAndHeaders();
+
+    const axes = model.assembleAxes();
+    expect(axes[1].encode.labels.update.text).toEqual({
+      signal: 'myFormat(datum.value, {"a":"b"})[0]'
+    });
   });
 });
