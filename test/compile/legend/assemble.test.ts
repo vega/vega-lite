@@ -28,6 +28,33 @@ describe('legend/assemble', () => {
     });
   });
 
+  it('correctly applies custom formatter to labelExpr.', () => {
+    const model = parseUnitModelWithScale({
+      data: {url: 'data/cars.json'},
+      mark: 'point',
+      encoding: {
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        color: {
+          field: 'Origin',
+          type: 'nominal',
+          legend: {
+            format: {a: 'b'},
+            formatType: 'myFormat',
+            labelExpr: 'datum.label[0]'
+          }
+        }
+      },
+      config: {customFormatTypes: true}
+    });
+    model.parseLegends();
+
+    const legends = model.assembleLegends();
+    expect(legends[0].encode.labels.update.text).toEqual({
+      signal: 'myFormat(datum.value, {"a":"b"})[0]'
+    });
+  });
+
   it('correctly applies labelExpr for timeUnit.', () => {
     const model = parseUnitModelWithScale({
       data: {url: 'data/cars.json'},
