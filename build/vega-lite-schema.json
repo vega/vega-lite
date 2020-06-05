@@ -10174,7 +10174,7 @@
         },
         {
           "items": {
-            "$ref": "#/definitions/Dict<unknown>"
+            "type": "object"
           },
           "type": "array"
         },
@@ -10182,7 +10182,7 @@
           "type": "string"
         },
         {
-          "$ref": "#/definitions/Dict<unknown>"
+          "type": "object"
         }
       ]
     },

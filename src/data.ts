@@ -1,4 +1,3 @@
-import {Dict} from './util';
 /*
  * Constants and utilities for data.
  */
@@ -84,7 +83,7 @@ export type DataSource = UrlData | InlineData | NamedData;
 
 export type Data = DataSource | Generator;
 
-export type InlineDataset = number[] | string[] | boolean[] | Dict<unknown>[] | string | Dict<unknown>;
+export type InlineDataset = number[] | string[] | boolean[] | object[] | string | object;
 
 export interface DataBase {
   /**
