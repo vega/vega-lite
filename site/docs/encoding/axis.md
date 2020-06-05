@@ -64,7 +64,7 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 ### Domain
 
-{% include table.html props="domain,domainCap,domainColor,domainOpacity,domainWidth" source="Axis" %}
+{% include table.html props="domain,domainCap,domainColor,domainOpacity,domainWidth,domainDash,domainDashOffset" source="Axis" %}
 
 {:#labels}
 
