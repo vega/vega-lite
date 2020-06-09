@@ -286,7 +286,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
         // 2. Certain properties are always included (see `propsToAlwaysIncludeConfig`'s declaration for more details)
         (propsToAlwaysIncludeConfig.has(property) && hasConfigValue) ||
         // 3. Conditional axis values and signals
-        isConditionalAxisValue<any>(configValue) || // need to set "any" as TS isn't smart enough to figure the generic parameter type yet
+        isConditionalAxisValue(configValue) ||
         isSignalRef(configValue)
       ) {
         // If a config is specified and is conditional, copy conditional value from axis config
