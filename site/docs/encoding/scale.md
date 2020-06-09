@@ -167,7 +167,9 @@ The `scheme` property can also be a **scheme parameter object**, which contain t
 
 <div class="vl-example" data-name="point_color_custom"></div>
 
-#### 3. Change the default color schemes using the [range config](#range-config).
+#### 3. Change the default color schemes using the range config.
+
+See the [range config](#range-config) documentation for details.
 
 {:#continuous}
 
