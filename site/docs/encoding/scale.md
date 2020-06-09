@@ -149,11 +149,11 @@ By default, Vega-Lite assigns different [default color schemes](#range-config) b
 
 There are multiple ways to customize the scale range for the color encoding channel:
 
-1. Set a custom `scheme`.
+#### 1. Set a custom `scheme`.
 
 {% include table.html props="scheme" source="Scale" %}
 
-For example, the following plot use the `"category20b"` scheme.
+You can customize the scheme by referencing an [existing color scheme](https://vega.github.io/vega/docs/schemes/). For example, the following plot uses the `"category20b"` scheme.
 
 <div class="vl-example" data-name="stacked_area"></div>
 
@@ -163,11 +163,11 @@ The `scheme` property can also be a **scheme parameter object**, which contain t
 
 {% include table.html props="name,extent,count" source="SchemeParams" %}
 
-2. Setting the `range` property to an array of valid CSS color strings.
+#### 2. Setting the `range` property to an array of valid CSS color strings.
 
 <div class="vl-example" data-name="point_color_custom"></div>
 
-3. Change the default color schemes using the [range config](#range-config).
+#### 3. Change the default color schemes using the [range config](#range-config).
 
 {:#continuous}
 
