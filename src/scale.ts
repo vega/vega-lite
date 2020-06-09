@@ -415,9 +415,10 @@ export type Domain =
   | SelectionExtent
   | SignalRef
   | DomainUnionWith;
+
 export type Scheme = string | SchemeParams;
 
-export function isExtendedScheme(scheme: string | SignalRef | SchemeParams): scheme is SchemeParams {
+export function isExtendedScheme(scheme: Scheme | SignalRef): scheme is SchemeParams {
   return !isString(scheme) && !!scheme['name'];
 }
 
