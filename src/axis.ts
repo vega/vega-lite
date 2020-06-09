@@ -205,7 +205,7 @@ export const CONDITIONAL_AXIS_PROP_INDEX: Record<
   },
   gridDashOffset: {
     part: 'grid',
-    vgProp: 'strokeDash'
+    vgProp: 'strokeDashOffset'
   },
   gridOpacity: {
     part: 'grid',
@@ -225,7 +225,7 @@ export const CONDITIONAL_AXIS_PROP_INDEX: Record<
   },
   tickDashOffset: {
     part: 'ticks',
-    vgProp: 'strokeDash'
+    vgProp: 'strokeDashOffset'
   },
   tickOpacity: {
     part: 'ticks',
