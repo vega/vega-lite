@@ -3,15 +3,18 @@
   "background": "white",
   "padding": 5,
   "title": {
-    "text": "2010 Daily Max Temperature (F) in Seattle, WA",
+    "text": "Daily Max Temperatures (C) in Seattle, WA",
     "frame": "group"
   },
   "style": "cell",
   "data": [
     {
       "name": "source_0",
-      "url": "data/seattle-temps.csv",
-      "format": {"type": "csv", "parse": {"date": "date", "temp": "number"}},
+      "url": "data/seattle-weather.csv",
+      "format": {
+        "type": "csv",
+        "parse": {"date": "date", "temp_max": "number"}
+      },
       "transform": [
         {
           "field": "date",
@@ -29,12 +32,12 @@
           "type": "aggregate",
           "groupby": ["date_date", "month_date"],
           "ops": ["max"],
-          "fields": ["temp"],
-          "as": ["max_temp"]
+          "fields": ["temp_max"],
+          "as": ["max_temp_max"]
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"max_temp\"]) && isFinite(+datum[\"max_temp\"])"
+          "expr": "isValid(datum[\"max_temp_max\"]) && isFinite(+datum[\"max_temp_max\"])"
         }
       ]
     }
@@ -53,9 +56,9 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "max_temp"},
+          "fill": {"scale": "color", "field": "max_temp_max"},
           "description": {
-            "signal": "\"Day\" + \": \" + (timeFormat(datum[\"date_date\"], '%e')) + \"; \" + \"Month\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Max of temp\" + \": \" + (format(datum[\"max_temp\"], \"\"))"
+            "signal": "\"Day\" + \": \" + (timeFormat(datum[\"date_date\"], '%e')) + \"; \" + \"Month\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Max of temp_max\" + \": \" + (format(datum[\"max_temp_max\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date_date"},
           "width": {"scale": "x", "band": 1},
@@ -85,7 +88,7 @@
     {
       "name": "color",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "max_temp"},
+      "domain": {"data": "source_0", "field": "max_temp_max"},
       "range": "heatmap",
       "interpolate": "hcl",
       "zero": false
