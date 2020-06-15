@@ -1,13 +1,13 @@
+import {DataComponent} from '.';
 import * as log from '../../log';
 import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
 import {checkLinks} from './debug';
-import {DataComponent} from '.';
 import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
 import * as optimizers from './optimizers';
 
 export const FACET_SCALE_PREFIX = 'scale_';
-export const MAX_OPTIMIZATION_RUNS = 1;
+export const MAX_OPTIMIZATION_RUNS = 5;
 
 /**
  * Return all leaf nodes.
@@ -89,15 +89,7 @@ export function optimizeDataflow(data: DataComponent, model: Model) {
   // check before optimizations
   checkLinks(data.sources);
 
-  let firstPassCounter = 0;
-  let secondPassCounter = 0;
-
-  for (let i = 0; i < MAX_OPTIMIZATION_RUNS; i++) {
-    if (!optimizationDataflowHelper(data, model)) {
-      break;
-    }
-    firstPassCounter++;
-  }
+  let passCounter = 0;
 
   // move facets down and make a copy of the subtree so that we can have scales at the top level
   data.sources.map(optimizers.moveFacetDown);
@@ -106,13 +98,13 @@ export function optimizeDataflow(data: DataComponent, model: Model) {
     if (!optimizationDataflowHelper(data, model)) {
       break;
     }
-    secondPassCounter++;
+    passCounter++;
   }
 
   // check after optimizations
   checkLinks(data.sources);
 
-  if (Math.max(firstPassCounter, secondPassCounter) === MAX_OPTIMIZATION_RUNS) {
+  if (passCounter === MAX_OPTIMIZATION_RUNS) {
     log.warn(`Maximum optimization runs(${MAX_OPTIMIZATION_RUNS}) reached.`);
   }
 }

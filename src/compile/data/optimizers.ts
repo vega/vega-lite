@@ -476,8 +476,8 @@ export class MergeOutputs extends BottomUpOptimizer {
 
     const otherChildren: DataFlowNode[] = [];
 
-    // The output node we will connect all other nodes to
-    // output nodes will be added before, other nodes after
+    // The output node we will connect all other nodes to.
+    // Output nodes will be added before the new node, other nodes after.
     let mainOutput: OutputNode;
 
     for (const child of children) {
@@ -485,7 +485,7 @@ export class MergeOutputs extends BottomUpOptimizer {
         let lastOutput = child;
 
         while (lastOutput.numChildren() === 1) {
-          const theChild = lastOutput.children[0];
+          const [theChild] = lastOutput.children;
           if (theChild instanceof OutputNode) {
             lastOutput = theChild;
           } else {
