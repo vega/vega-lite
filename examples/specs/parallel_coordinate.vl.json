@@ -2,13 +2,21 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "Though Vega-Lite supports only one scale per axes, one can create a parallel coordinate plot by folding variables, using `joinaggregate` to normalize their values and using ticks and rules to manually create axes.",
   "data": {
-    "url": "data/iris.json"
+    "url": "data/penguins_size.csv",
+    "format": {
+      "parse": {
+        "body_mass_g": "number",
+        "flipper_length_mm": "number",
+        "culmen_length_mm": "number",
+        "culmen_depth_mm": "number"
+      }
+    }
   },
   "width": 600,
   "height": 300,
   "transform": [
     {"window": [{"op": "count", "as": "index"}]},
-    {"fold": ["petalLength", "petalWidth", "sepalLength", "sepalWidth"]},
+    {"fold": ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm", "body_mass_g"]},
     {
       "joinaggregate": [
         {"op": "min", "field": "value", "as": "min"},
@@ -41,16 +49,16 @@
       "y": {"type": "quantitative", "field": "norm_val", "axis": null},
       "tooltip": [{
         "type": "quantitative",
-        "field": "petalLength"
+        "field": "culmen_length_mm"
       }, {
         "type": "quantitative",
-        "field": "petalWidth"
+        "field": "culmen_depth_mm"
       }, {
         "type": "quantitative",
-        "field": "sepalLength"
+        "field": "flipper_length_mm"
       }, {
         "type": "quantitative",
-        "field": "sepalWidth"
+        "field": "body_mass_g"
       }]
     }
   }, {

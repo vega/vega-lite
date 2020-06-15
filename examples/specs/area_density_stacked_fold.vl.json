@@ -1,41 +1,21 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "width": 400,
-  "height": 100,
-  "data": {"url": "data/iris.json"},
+  "height": 80,
+  "data": {
+    "url": "data/penguins_size.csv"
+  },
   "mark": "area",
   "transform": [
     {
-      "fold": [
-        "petalWidth",
-        "petalLength",
-        "sepalWidth",
-        "sepalLength"
-      ],
-      "as": ["organ", "value"]
-    },
-    {
-      "density": "value",
-      "bandwidth": 0.3,
-      "groupby": ["organ"],
-      "extent": [0, 8],
-      "counts": true,
-      "steps": 200
+      "density": "body_mass_g",
+      "groupby": ["species"],
+      "extent": [2500, 6500]
     }
   ],
   "encoding": {
-    "x": {
-      "field": "value",
-      "type": "quantitative"
-    },
-    "y": {
-      "field": "density",
-      "type": "quantitative",
-      "stack": "zero"
-    },
-    "color": {
-      "field": "organ",
-      "type": "nominal"
-    }
+    "x": {"field": "value", "type": "quantitative"},
+    "y": {"field": "density", "type": "quantitative", "stack": "zero"},
+    "color": {"field": "species", "type": "nominal"}
   }
 }

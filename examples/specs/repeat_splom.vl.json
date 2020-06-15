@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/iris.json"},
+  "data": {"url": "data/penguins_size.csv"},
   "repeat": {
-    "row": ["petalWidth", "petalLength", "sepalWidth", "sepalLength"],
-    "column": ["sepalLength", "sepalWidth", "petalLength", "petalWidth"]
+    "row": ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm", "body_mass_g"],
+    "column": ["body_mass_g", "flipper_length_mm", "culmen_depth_mm", "culmen_length_mm"]
   },
   "spec": {
 
