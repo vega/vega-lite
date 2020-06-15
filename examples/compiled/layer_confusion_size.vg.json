@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Confusion matrix from raw data, encoding count with size. (Figure 5 from @jhoffswell and @zcliu's ['Interactive Repair of Tables Extracted from PDF Documents on Mobile Devices'](https://idl.cs.washington.edu/files/2019-InteractiveTableRepair-CHI.pdf).)",
-  "autosize": "pad",
+  "background": "white",
   "padding": 5,
   "style": "cell",
   "data": [
@@ -4707,9 +4707,9 @@
     }
   ],
   "signals": [
-    {"name": "x_step", "value": 18},
+    {"name": "x_step", "value": 20},
     {"name": "width", "update": "bandspace(domain('x').length, 0, 0) * x_step"},
-    {"name": "y_step", "value": 18},
+    {"name": "y_step", "value": 20},
     {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
   ],
   "marks": [
@@ -4722,8 +4722,9 @@
         "update": {
           "fill": {"value": "#6EB4FD"},
           "opacity": {"value": 0.9},
-          "tooltip": {
-            "signal": "{\"Predicted Type\": ''+datum[\"type_PREDICT\"], \"Labeled Type\": ''+datum[\"type_ORIG\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"Predicted Type\" + \": \" + (isValid(datum[\"type_PREDICT\"]) ? datum[\"type_PREDICT\"] : \"\"+datum[\"type_PREDICT\"]) + \"; \" + \"Labeled Type\" + \": \" + (isValid(datum[\"type_ORIG\"]) ? datum[\"type_ORIG\"] : \"\"+datum[\"type_ORIG\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "type_PREDICT", "band": 0.5},
           "y": {"scale": "y", "field": "type_ORIG", "band": 0.5},
@@ -4740,8 +4741,8 @@
       "encode": {
         "update": {
           "fill": {"value": "white"},
-          "tooltip": {
-            "signal": "{\"Predicted Type\": ''+datum[\"type_PREDICT\"], \"Labeled Type\": ''+datum[\"type_ORIG\"], \"Count of Records\": format(datum[\"__count\"], \"\")}"
+          "description": {
+            "signal": "\"Predicted Type\" + \": \" + (isValid(datum[\"type_PREDICT\"]) ? datum[\"type_PREDICT\"] : \"\"+datum[\"type_PREDICT\"]) + \"; \" + \"Labeled Type\" + \": \" + (isValid(datum[\"type_ORIG\"]) ? datum[\"type_ORIG\"] : \"\"+datum[\"type_ORIG\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "type_PREDICT", "band": 0.5},
           "y": {"scale": "y", "field": "type_ORIG", "band": 0.5},
@@ -4759,12 +4760,12 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
-          "tooltip": {
-            "signal": "{\"type_PREDICT\": ''+datum[\"type_PREDICT\"]}"
+          "description": {
+            "signal": "\"type_PREDICT\" + \": \" + (isValid(datum[\"type_PREDICT\"]) ? datum[\"type_PREDICT\"] : \"\"+datum[\"type_PREDICT\"])"
           },
           "x": {"scale": "x", "field": "type_PREDICT", "band": 0.5},
-          "y": {"field": {"group": "height"}},
-          "y2": {"value": 0},
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}},
           "strokeWidth": {"value": 2}
         }
       }
@@ -4777,10 +4778,12 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
-          "tooltip": {"signal": "{\"type_ORIG\": ''+datum[\"type_ORIG\"]}"},
-          "x": {"value": 0},
+          "description": {
+            "signal": "\"type_ORIG\" + \": \" + (isValid(datum[\"type_ORIG\"]) ? datum[\"type_ORIG\"] : \"\"+datum[\"type_ORIG\"])"
+          },
+          "x": {"field": {"group": "width"}},
+          "x2": {"value": 0},
           "y": {"scale": "y", "field": "type_ORIG", "band": 0.5},
-          "x2": {"field": {"group": "width"}},
           "strokeWidth": {"value": 2}
         }
       }
@@ -4793,8 +4796,8 @@
       "encode": {
         "update": {
           "fill": {"value": "white"},
-          "tooltip": {
-            "signal": "{\"fn_xstart\": ''+datum[\"fn_xstart\"], \"fn_ystart\": ''+datum[\"fn_ystart\"], \"fn_yend\": ''+datum[\"fn_yend\"]}"
+          "description": {
+            "signal": "\"fn_xstart\" + \": \" + (isValid(datum[\"fn_xstart\"]) ? datum[\"fn_xstart\"] : \"\"+datum[\"fn_xstart\"]) + \"; \" + \"fn_ystart\" + \": \" + (isValid(datum[\"fn_ystart\"]) ? datum[\"fn_ystart\"] : \"\"+datum[\"fn_ystart\"]) + \"; \" + \"fn_yend\" + \": \" + (isValid(datum[\"fn_yend\"]) ? datum[\"fn_yend\"] : \"\"+datum[\"fn_yend\"])"
           },
           "x": {"scale": "x", "field": "fn_xstart", "offset": 1, "band": 0.5},
           "x2": {"field": {"group": "width"}},
@@ -4811,8 +4814,8 @@
       "encode": {
         "update": {
           "fill": {"value": "white"},
-          "tooltip": {
-            "signal": "{\"fp_xstart\": ''+datum[\"fp_xstart\"], \"fp_xend\": ''+datum[\"fp_xend\"], \"fp_ystart\": ''+datum[\"fp_ystart\"], \"fp_yend\": ''+datum[\"fp_yend\"]}"
+          "description": {
+            "signal": "\"fp_xstart\" + \": \" + (isValid(datum[\"fp_xstart\"]) ? datum[\"fp_xstart\"] : \"\"+datum[\"fp_xstart\"]) + \"; \" + \"fp_xend\" + \": \" + (isValid(datum[\"fp_xend\"]) ? datum[\"fp_xend\"] : \"\"+datum[\"fp_xend\"]) + \"; \" + \"fp_ystart\" + \": \" + (isValid(datum[\"fp_ystart\"]) ? datum[\"fp_ystart\"] : \"\"+datum[\"fp_ystart\"]) + \"; \" + \"fp_yend\" + \": \" + (isValid(datum[\"fp_yend\"]) ? datum[\"fp_yend\"] : \"\"+datum[\"fp_yend\"])"
           },
           "x": {"scale": "x", "field": "fp_xstart", "offset": 1, "band": 0.5},
           "x2": {"scale": "x", "field": "fp_xend", "band": 0.5},
@@ -4830,8 +4833,8 @@
         "update": {
           "align": {"value": "left"},
           "text": {"value": "false negatives"},
-          "x": {"value": 140},
           "fill": {"value": "black"},
+          "x": {"value": 140},
           "y": {"signal": "height", "mult": 0.5},
           "baseline": {"value": "middle"}
         }
@@ -4846,9 +4849,9 @@
         "update": {
           "align": {"value": "left"},
           "text": {"value": "false positive"},
+          "fill": {"value": "black"},
           "x": {"value": 40},
           "y": {"value": 162},
-          "fill": {"value": "black"},
           "baseline": {"value": "middle"}
         }
       }
@@ -4909,24 +4912,39 @@
     {
       "scale": "x",
       "orient": "bottom",
+      "grid": true,
+      "gridScale": "y",
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": true,
+      "offset": 10,
+      "gridScale": "x",
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
       "grid": false,
       "title": "Predicted Type",
       "labelAngle": 300,
       "labelOverlap": false,
       "labelAlign": "right",
       "labelBaseline": "middle",
-      "zindex": 1
-    },
-    {
-      "scale": "x",
-      "orient": "bottom",
-      "grid": true,
-      "gridScale": "y",
-      "domain": false,
-      "labels": false,
-      "maxExtent": 0,
-      "minExtent": 0,
-      "ticks": false,
       "zindex": 0
     },
     {
@@ -4936,27 +4954,15 @@
       "title": "Labeled Type",
       "offset": 10,
       "titleAlign": "right",
-      "titleAngle": 0,
       "titleX": 0,
       "titleY": -5,
       "labelOverlap": true,
-      "zindex": 1
-    },
-    {
-      "scale": "y",
-      "orient": "left",
-      "grid": true,
-      "gridScale": "x",
-      "domain": false,
-      "labels": false,
-      "maxExtent": 0,
-      "minExtent": 0,
-      "ticks": false,
+      "titleAngle": 0,
       "zindex": 0
     }
   ],
   "config": {
-    "axis": {"domain": false, "ticks": false},
-    "style": {"cell": {"stroke": null}, "rule": {"size": 2}}
+    "style": {"cell": {"stroke": null}, "rule": {"size": 2}},
+    "axis": {"domain": false, "ticks": false}
   }
 }
