@@ -5,7 +5,7 @@
     "url": "data/movies.csv"
   },
   "transform": [
-    {"filter": "datum.IMDB Rating != null"},
+    {"filter": "datum['IMDB Rating'] != null"},
     {"filter": {"timeUnit": "year", "field": "Release_Date", "range": [null, 2019]}},
     {
       "joinaggregate": [{
@@ -15,7 +15,7 @@
       }]
     },
     {
-      "calculate": "datum.IMDB Rating - datum.AverageRating",
+      "calculate": "datum['IMDB Rating'] - datum.AverageRating",
       "as": "RatingDelta"
     }
   ],

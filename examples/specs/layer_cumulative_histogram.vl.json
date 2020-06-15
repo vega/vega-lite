@@ -4,24 +4,24 @@
   "transform": [{
     "bin": true,
     "field": "IMDB Rating",
-    "as": "bin_IMDB Rating"
+    "as": "bin_IMDB_Rating"
   }, {
     "aggregate": [{"op": "count", "as": "count"}],
-    "groupby": ["bin_IMDB Rating", "bin_IMDB Rating_end"]
+    "groupby": ["bin_IMDB_Rating", "bin_IMDB_Rating_end"]
   }, {
-    "filter": "datum.bin_IMDB Rating !== null"
+    "filter": "datum.bin_IMDB_Rating !== null"
   }, {
-    "sort": [{"field": "bin_IMDB Rating"}],
+    "sort": [{"field": "bin_IMDB_Rating"}],
     "window": [{"op": "sum", "field": "count", "as": "Cumulative Count"}],
     "frame": [null, 0]
   }],
   "encoding": {
     "x": {
-      "field": "bin_IMDB Rating", "type": "quantitative",
+      "field": "bin_IMDB_Rating", "type": "quantitative",
       "scale": {"zero": false},
       "title": "IMDB Rating"
     },
-    "x2": {"field": "bin_IMDB Rating_end"}
+    "x2": {"field": "bin_IMDB_Rating_end"}
   },
   "layer": [{
     "mark": "bar",

@@ -5,7 +5,7 @@
     "url": "data/movies.csv"
   },
   "transform": [
-      {"filter": "datum.IMDB Rating != null"},
+      {"filter": "datum['IMDB Rating'] != null"},
       {"timeUnit": "year", "field": "Release_Date", "as": "year"},
       {
         "joinaggregate": [{
@@ -18,7 +18,7 @@
         ]
       },
       {
-        "filter": "(datum.IMDB Rating - datum.AverageYearRating) > 2.5"
+        "filter": "(datum['IMDB Rating'] - datum.AverageYearRating) > 2.5"
       }
   ],
   "layer": [{
