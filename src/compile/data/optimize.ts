@@ -73,7 +73,7 @@ function runOptimizer(optimizer: BottomUpOptimizer | TopDownOptimizer, nodes: Da
   return flags.some(isTrue);
 }
 
-function optimizationDataflowHelper(dataComponent: DataComponent, model: Model) {
+function optimizationDataflowHelper(dataComponent: DataComponent, model: Model, firstPass: boolean) {
   let roots = dataComponent.sources;
   const mutatedFlags: Set<boolean> = new Set();
 
@@ -87,14 +87,18 @@ function optimizationDataflowHelper(dataComponent: DataComponent, model: Model) 
 
   roots = roots.filter(r => r.numChildren() > 0);
 
-  mutatedFlags.add(runOptimizer(new optimizers.MoveParseUp(), getLeaves(roots)));
-  mutatedFlags.add(runOptimizer(new optimizers.MergeBins(model), getLeaves(roots)));
-  mutatedFlags.add(runOptimizer(new optimizers.RemoveDuplicateTimeUnits(), getLeaves(roots)));
-  mutatedFlags.add(runOptimizer(new optimizers.MergeParse(), getLeaves(roots)));
-  mutatedFlags.add(runOptimizer(new optimizers.MergeAggregates(), getLeaves(roots)));
-  mutatedFlags.add(runOptimizer(new optimizers.MergeTimeUnits(), getLeaves(roots)));
-  mutatedFlags.add(runOptimizer(new optimizers.MergeIdenticalNodes(), roots));
-  mutatedFlags.add(runOptimizer(new optimizers.MergeOutputs(), getLeaves(roots)));
+  if (!firstPass) {
+    // Only run these optimizations after the optimizer has moved down the facet node.
+    // With this change, we can be more aggressive in the optimizations.
+    mutatedFlags.add(runOptimizer(new optimizers.MoveParseUp(), getLeaves(roots)));
+    mutatedFlags.add(runOptimizer(new optimizers.MergeBins(model), getLeaves(roots)));
+    mutatedFlags.add(runOptimizer(new optimizers.RemoveDuplicateTimeUnits(), getLeaves(roots)));
+    mutatedFlags.add(runOptimizer(new optimizers.MergeParse(), getLeaves(roots)));
+    mutatedFlags.add(runOptimizer(new optimizers.MergeAggregates(), getLeaves(roots)));
+    mutatedFlags.add(runOptimizer(new optimizers.MergeTimeUnits(), getLeaves(roots)));
+    mutatedFlags.add(runOptimizer(new optimizers.MergeIdenticalNodes(), roots));
+    mutatedFlags.add(runOptimizer(new optimizers.MergeOutputs(), getLeaves(roots)));
+  }
 
   dataComponent.sources = roots;
 
@@ -112,7 +116,7 @@ export function optimizeDataflow(data: DataComponent, model: Model) {
   let secondPassCounter = 0;
 
   for (let i = 0; i < MAX_OPTIMIZATION_RUNS; i++) {
-    if (!optimizationDataflowHelper(data, model)) {
+    if (!optimizationDataflowHelper(data, model, true)) {
       break;
     }
     firstPassCounter++;
@@ -122,7 +126,7 @@ export function optimizeDataflow(data: DataComponent, model: Model) {
   data.sources.map(optimizers.moveFacetDown);
 
   for (let i = 0; i < MAX_OPTIMIZATION_RUNS; i++) {
-    if (!optimizationDataflowHelper(data, model)) {
+    if (!optimizationDataflowHelper(data, model, false)) {
       break;
     }
     secondPassCounter++;
