@@ -2,12 +2,31 @@ import {DataComponent} from '.';
 import * as log from '../../log';
 import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
-import {checkLinks} from './debug';
 import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
 import * as optimizers from './optimizers';
 
 export const FACET_SCALE_PREFIX = 'scale_';
 export const MAX_OPTIMIZATION_RUNS = 5;
+
+/**
+ * Iterates over a dataflow graph and checks whether all links are consistent.
+ */
+export function checkLinks(nodes: readonly DataFlowNode[]): boolean {
+  for (const node of nodes) {
+    for (const child of node.children) {
+      if (child.parent !== node) {
+        console.error('Dataflow graph is inconsistent.', node, child);
+        return false;
+      }
+    }
+
+    if (!checkLinks(node.children)) {
+      return false;
+    }
+  }
+
+  return true;
+}
 
 /**
  * Return all leaf nodes.

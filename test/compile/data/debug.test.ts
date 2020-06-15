@@ -1,5 +1,6 @@
 import {BinNode} from '../../../src/compile/data/bin';
-import {checkLinks, printDebugDataflow, dotString} from '../../../src/compile/data/debug';
+import {dotString, printDebugDataflow} from '../../../src/compile/data/debug';
+import {checkLinks} from '../../../src/compile/data/optimize';
 import {SourceNode} from '../../../src/compile/data/source';
 import {resetIdCounter} from '../../../src/util';
 import {PlaceholderDataFlowNode} from './util';

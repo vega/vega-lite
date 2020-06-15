@@ -2,6 +2,7 @@ import {entries, uniqueId} from '../../util';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {SourceNode} from './source';
 import pako from 'pako';
+import {checkLinks} from './optimize';
 
 /**
  * Print debug information for dataflow tree.
@@ -111,24 +112,4 @@ export function dotString(roots: readonly DataFlowNode[]) {
 }`;
 
   return dot;
-}
-
-/**
- * Iterates over a dataflow graph and checks whether all links are consistent.
- */
-export function checkLinks(nodes: readonly DataFlowNode[]): boolean {
-  for (const node of nodes) {
-    for (const child of node.children) {
-      if (child.parent !== node) {
-        console.error('Dataflow graph is inconsistent.', node, child);
-        return false;
-      }
-    }
-
-    if (!checkLinks(node.children)) {
-      return false;
-    }
-  }
-
-  return true;
 }
