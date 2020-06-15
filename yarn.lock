@@ -4257,9 +4257,9 @@ he@^1.1.1:
   integrity sha512-F/1DnUGPopORZi0ni+CvrCgHQ5FyEAHRLSApuYWMmrbSwoN2Mn/7k+Gl38gJnR7yyDZk6WLXwiGod1JOWNDKGw==
 
 highlight.js@^10.0.3:
-  version "10.0.3"
-  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-10.0.3.tgz#5effcc58420f113f279a0badb8ac50c4be06e63b"
-  integrity sha512-9FG7SSzv9yOY5CGGxfI6NDm7xLYtMOjKtPBxw7Zff3t5UcRcUNTGEeS8lNjhceL34KeetLMoGMFTGoaa83HwyQ==
+  version "10.1.0"
+  resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-10.1.0.tgz#b194ec07ed2ad50a695d0605d5cbe726c9c39d2a"
+  integrity sha512-e8aO/LUHDoxW4ntyKQf0/T3OtIZPhsfTr8XRuOq+FW5VdWEg/UDAeArzKF/22BaNZp6hPi/Zu/XQlTLOGLix3Q==
 
 homedir-polyfill@^1.0.0:
   version "1.0.3"
