@@ -1048,7 +1048,7 @@ export function initFieldDef(fd: FieldDef<string, any>, channel: Channel) {
   }
 
   if (isBinned(bin) && !isXorY(channel)) {
-    log.warn(`Channel ${channel} should not be used with "binned" bin.`);
+    log.warn(log.message.channelShouldNotBeUsedForBinned(channel));
   }
 
   // Normalize Type
