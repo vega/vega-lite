@@ -77,7 +77,7 @@
     "@rollup/plugin-node-resolve": "^8.0.1",
     "@types/chai": "^4.2.11",
     "@types/d3": "^5.7.2",
-    "@types/jest": "^25.2.3",
+    "@types/jest": "^26.0.0",
     "@types/mkdirp": "^1.0.0",
     "@types/pako": "^1.0.1",
     "@types/puppeteer": "^3.0.0",
