@@ -358,7 +358,7 @@ describe('normalize()', () => {
           defaultConfig
         );
 
-        expect(localLogger.warns).toHaveLength(2);
+        expect(localLogger.warns).toHaveLength(1);
 
         expect(localLogger.warns[0]).toEqual(
           log.message.projectionOverridden({
@@ -366,8 +366,6 @@ describe('normalize()', () => {
             projection: {type: 'albersUsa'}
           })
         );
-
-        expect(localLogger.warns[1]).toEqual(log.message.encodingOverridden(['x']));
 
         expect(output).toEqual({
           data: {url: 'data/population.json'},

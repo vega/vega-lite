@@ -113,9 +113,6 @@ export function customFormatTypeNotAllowed(channel: Channel) {
   return `Config.customFormatTypes is not true, thus custom format type and format for channel ${channel} are dropped.`;
 }
 
-export function encodingOverridden(channels: Channel[]) {
-  return `Layer's shared ${channels.join(',')} channel ${channels.length === 1 ? 'is' : 'are'} overriden.`;
-}
 export function projectionOverridden(opt: {parentProjection: Projection; projection: Projection}) {
   const {parentProjection, projection} = opt;
   return `Layer's shared projection ${stringify(parentProjection)} is overridden by a child projection ${stringify(
