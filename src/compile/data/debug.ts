@@ -28,10 +28,6 @@ export function drawDataflow(roots: readonly DataFlowNode[], size = 500) {
   console.log('%c ', `font-size:${size}px; background:url(${imageURL}) no-repeat; background-size:contain`);
 }
 
-export function print(roots: readonly DataFlowNode[]) {
-  console.log(dotString(roots));
-}
-
 /**
  * Print the dataflow tree as graphviz.
  *
