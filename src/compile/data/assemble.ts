@@ -210,7 +210,7 @@ export function assembleFacetData(root: FacetNode): VgData[] {
 }
 
 /**
- * Create Vega Data array from a given compiled model and append all of them to the given array
+ * Create Vega data array from a given compiled model and append all of them to the given array
  *
  * @param  model
  * @param  data array

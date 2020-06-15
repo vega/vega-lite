@@ -1,26 +1,40 @@
 import {entries, uniqueId} from '../../util';
 import {DataFlowNode, OutputNode} from './dataflow';
 import {SourceNode} from './source';
+import pako from 'pako';
+import {checkLinks} from './optimize';
 
 /**
  * Print debug information for dataflow tree.
  */
-export function debug(node: DataFlowNode) {
+export function printDebugDataflow(node: DataFlowNode) {
   console.log(
     `${(node.constructor as any).name}${node.debugName ? `(${node.debugName})` : ''} -> ${node.children.map(c => {
       return `${(c.constructor as any).name}${c.debugName ? ` (${c.debugName})` : ''}`;
     })}`
   );
   console.log(node);
-  node.children.forEach(debug);
+  node.children.forEach(printDebugDataflow);
+}
+
+/**
+ * Show the dataflow graph as an image (rendered by https://kroki.io/) on the command line.
+ */
+export function drawDataflow(roots: readonly DataFlowNode[], size = 500) {
+  const dot = dotString(roots);
+  const text = new TextEncoder().encode(dot);
+  const compressed = pako.deflate(text, {level: 9, to: 'string'});
+  const result = btoa(compressed).replace(/\+/g, '-').replace(/\//g, '_');
+  const imageURL = `https://kroki.io/plantuml/png/${result}`;
+  console.log('%c ', `font-size:${size}px; background:url(${imageURL}) no-repeat; background-size:contain`);
 }
 
 /**
  * Print the dataflow tree as graphviz.
  *
- * Render the output in http://viz-js.com/.
+ * Render the output in e.g. http://viz-js.com/.
  */
-export function draw(roots: readonly DataFlowNode[]) {
+export function dotString(roots: readonly DataFlowNode[]) {
   // check the graph before printing it since the logic below assumes a consistent graph
   checkLinks(roots);
 
@@ -97,27 +111,5 @@ export function draw(roots: readonly DataFlowNode[]) {
   ${edges.map(([source, target]) => `"${source}" -> "${target}"`).join(' ')}
 }`;
 
-  console.log(dot);
-
   return dot;
-}
-
-/**
- * Iterates over a dataflow graph and checks whether all links are consistent.
- */
-export function checkLinks(nodes: readonly DataFlowNode[]): boolean {
-  for (const node of nodes) {
-    for (const child of node.children) {
-      if (child.parent !== node) {
-        console.error('Dataflow graph is inconsistent.', node, child);
-        return false;
-      }
-    }
-
-    if (!checkLinks(node.children)) {
-      return false;
-    }
-  }
-
-  return true;
 }

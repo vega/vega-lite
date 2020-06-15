@@ -684,10 +684,10 @@ export function assembleDomain(model: Model, channel: ScaleChannel) {
     // Correct references to data as the original domain's data was determined
     // in parseScale, which happens before parseData. Thus the original data
     // reference can be incorrect.
-
     if (isDataRefDomain(domain)) {
       domain.data = model.lookupDataSource(domain.data);
     }
+
     return domain;
   });
 

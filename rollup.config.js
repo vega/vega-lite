@@ -14,6 +14,17 @@ export function disallowedImports() {
   };
 }
 
+export function debugImports() {
+  return {
+    resolveId: module => {
+      if (module === 'pako') {
+        throw new Error('Do not import pako in builds. Did you forget to remove drawDataflow?');
+      }
+      return null;
+    }
+  };
+}
+
 export default {
   input: 'build/src/index.js',
   output: {
@@ -22,5 +33,5 @@ export default {
     sourcemap: true,
     name: 'vegaLite'
   },
-  plugins: [disallowedImports(), nodeResolve({browser: true}), commonjs(), json(), sourcemaps()]
+  plugins: [disallowedImports(), debugImports(), nodeResolve({browser: true}), commonjs(), json(), sourcemaps()]
 };

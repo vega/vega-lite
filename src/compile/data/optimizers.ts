@@ -459,7 +459,7 @@ export class MergeBins extends BottomUpOptimizer {
 /**
  * This optimizer takes output nodes that are at a fork and moves them before the fork.
  *
- * The algorithm iterates over the children and tries to find the last output node in a cahin of output nodes.
+ * The algorithm iterates over the children and tries to find the last output node in a chain of output nodes.
  * It then moves all output nodes before that main output node. All other children (and the children of the output nodes)
  * are inserted after the main output node.
  */
@@ -476,8 +476,8 @@ export class MergeOutputs extends BottomUpOptimizer {
 
     const otherChildren: DataFlowNode[] = [];
 
-    // The output node we will connect all other nodes to
-    // output nodes will be added before, other nodes after
+    // The output node we will connect all other nodes to.
+    // Output nodes will be added before the new node, other nodes after.
     let mainOutput: OutputNode;
 
     for (const child of children) {
@@ -485,7 +485,7 @@ export class MergeOutputs extends BottomUpOptimizer {
         let lastOutput = child;
 
         while (lastOutput.numChildren() === 1) {
-          const theChild = lastOutput.children[0];
+          const [theChild] = lastOutput.children;
           if (theChild instanceof OutputNode) {
             lastOutput = theChild;
           } else {

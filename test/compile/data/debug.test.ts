@@ -1,5 +1,6 @@
 import {BinNode} from '../../../src/compile/data/bin';
-import {checkLinks, debug, draw} from '../../../src/compile/data/debug';
+import {dotString, printDebugDataflow} from '../../../src/compile/data/debug';
+import {checkLinks} from '../../../src/compile/data/optimize';
 import {SourceNode} from '../../../src/compile/data/source';
 import {resetIdCounter} from '../../../src/util';
 import {PlaceholderDataFlowNode} from './util';
@@ -63,27 +64,27 @@ describe('compile/data/debug', () => {
 
       const root = new PlaceholderDataFlowNode(null);
       new PlaceholderDataFlowNode(root);
-      expect(draw([root])).toBe(dot);
+      expect(dotString([root])).toBe(dot);
     });
     it('should print node debugName when defined', () => {
       resetIdCounter();
 
       const root = new PlaceholderDataFlowNode(null, 'foo');
       new PlaceholderDataFlowNode(root, 'bar');
-      expect(draw([root])).toBe(dot2);
+      expect(dotString([root])).toBe(dot2);
     });
     it('should print node.data.url when defined', () => {
       resetIdCounter();
 
       const root = new SourceNode({url: 'foo.bar'});
-      expect(draw([root])).toBe(dot3);
+      expect(dotString([root])).toBe(dot3);
     });
     it('should print dependent and produced field', () => {
       resetIdCounter();
 
       const root = new PlaceholderDataFlowNode(null);
       new BinNode(root, {foo: {field: 'foo', as: [['bar', 'bar_end']], bin: {}}});
-      expect(draw([root])).toBe(dot4);
+      expect(dotString([root])).toBe(dot4);
     });
   });
   describe('checkLinks', () => {
@@ -109,7 +110,7 @@ describe('compile/data/debug', () => {
       const root = new PlaceholderDataFlowNode(null, 'foo');
       const node = new PlaceholderDataFlowNode(root, 'bar');
       console.log = jest.fn();
-      debug(root);
+      printDebugDataflow(root);
       expect(console.log).toHaveBeenCalledWith('PlaceholderDataFlowNode(foo) -> PlaceholderDataFlowNode (bar)');
       expect(console.log).toHaveBeenCalledWith(root);
       expect(console.log).toHaveBeenCalledWith('PlaceholderDataFlowNode(bar) -> ');
