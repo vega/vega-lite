@@ -108,7 +108,15 @@ export function optimizeDataflow(data: DataComponent, model: Model) {
   // check before optimizations
   checkLinks(data.sources);
 
-  let passCounter = 0;
+  let firstPassCounter = 0;
+  let secondPassCounter = 0;
+
+  for (let i = 0; i < MAX_OPTIMIZATION_RUNS; i++) {
+    if (!optimizationDataflowHelper(data, model)) {
+      break;
+    }
+    firstPassCounter++;
+  }
 
   // move facets down and make a copy of the subtree so that we can have scales at the top level
   data.sources.map(optimizers.moveFacetDown);
@@ -117,13 +125,13 @@ export function optimizeDataflow(data: DataComponent, model: Model) {
     if (!optimizationDataflowHelper(data, model)) {
       break;
     }
-    passCounter++;
+    secondPassCounter++;
   }
 
   // check after optimizations
   checkLinks(data.sources);
 
-  if (passCounter === MAX_OPTIMIZATION_RUNS) {
+  if (Math.max(firstPassCounter, secondPassCounter) === MAX_OPTIMIZATION_RUNS) {
     log.warn(`Maximum optimization runs(${MAX_OPTIMIZATION_RUNS}) reached.`);
   }
 }
