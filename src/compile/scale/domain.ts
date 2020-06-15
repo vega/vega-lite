@@ -681,8 +681,6 @@ export function assembleDomain(model: Model, channel: ScaleChannel) {
   const scaleComponent: ScaleComponent = model.component.scales[channel];
 
   const domains = scaleComponent.get('domains').map((domain: VgNonUnionDomain) => {
-    console.log(domain);
-
     // Correct references to data as the original domain's data was determined
     // in parseScale, which happens before parseData. Thus the original data
     // reference can be incorrect.
