@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/movies.csv"},
   "transform": [
-    {"filter": "datum.IMDB Rating != null"},
+    {"filter": "datum['IMDB Rating'] != null"},
     {
       "joinaggregate": [{
         "op": "mean",
@@ -10,7 +10,7 @@
         "as": "AverageRating"
       }]
     },
-    {"filter": "(datum.IMDB Rating - datum.AverageRating) > 2.5"}
+    {"filter": "(datum['IMDB Rating'] - datum.AverageRating) > 2.5"}
   ],
   "layer": [
     {
