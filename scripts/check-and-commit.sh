@@ -60,7 +60,7 @@ echo ""
 
 if [[ $GIT_BRANCH != 'master' ]]; then
   ## For non-master branch, commit eslint fix and prettier changes if outdated
-  if ! git diff --exit-code src test test-runtime
+  if ! git diff --exit-code site src test test-runtime
   then
     git add --all
     git commit -m "style: auto-formatting [CI]"
