@@ -13,19 +13,19 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["Major_Genre"],
+          "groupby": ["Major Genre"],
           "ops": ["argmax"],
-          "fields": ["US_Gross"],
+          "fields": ["US Gross"],
           "as": ["argmax_US_Gross"]
         },
         {
           "type": "formula",
-          "expr": "datum[\"argmax_US_Gross\"] && datum[\"argmax_US_Gross\"][\"Production_Budget\"]",
-          "as": "argmax_US_Gross.Production_Budget"
+          "expr": "datum[\"argmax_US_Gross\"] && datum[\"argmax_US_Gross\"][\"Production Budget\"]",
+          "as": "argmax_US_Gross.Production Budget"
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"argmax_US_Gross.Production_Budget\"]) && isFinite(+datum[\"argmax_US_Gross.Production_Budget\"])"
+          "expr": "isValid(datum[\"argmax_US_Gross.Production Budget\"]) && isFinite(+datum[\"argmax_US_Gross.Production Budget\"])"
         }
       ]
     }
@@ -48,11 +48,11 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"argmax_US_Gross.Production_Budget\" + \": \" + (format(datum[\"argmax_US_Gross.Production_Budget\"], \"\")) + \"; \" + \"Major_Genre\" + \": \" + (isValid(datum[\"Major_Genre\"]) ? datum[\"Major_Genre\"] : \"\"+datum[\"Major_Genre\"])"
+            "signal": "\"argmax_US_Gross['Production Budget']\" + \": \" + (format(datum[\"argmax_US_Gross.Production Budget\"], \"\")) + \"; \" + \"Major Genre\" + \": \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"])"
           },
-          "x": {"scale": "x", "field": "argmax_US_Gross\\.Production_Budget"},
+          "x": {"scale": "x", "field": "argmax_US_Gross\\.Production Budget"},
           "x2": {"scale": "x", "value": 0},
-          "y": {"scale": "y", "field": "Major_Genre"},
+          "y": {"scale": "y", "field": "Major Genre"},
           "height": {"scale": "y", "band": 1}
         }
       }
@@ -64,7 +64,7 @@
       "type": "linear",
       "domain": {
         "data": "source_0",
-        "field": "argmax_US_Gross\\.Production_Budget"
+        "field": "argmax_US_Gross\\.Production Budget"
       },
       "range": [0, {"signal": "width"}],
       "nice": true,
@@ -73,7 +73,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "source_0", "field": "Major_Genre", "sort": true},
+      "domain": {"data": "source_0", "field": "Major Genre", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -98,7 +98,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "argmax_US_Gross.Production_Budget",
+      "title": "argmax_US_Gross['Production Budget']",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -108,7 +108,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Major_Genre",
+      "title": "Major Genre",
       "zindex": 0
     }
   ]

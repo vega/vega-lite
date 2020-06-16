@@ -9,15 +9,15 @@
     {
       "name": "source_0",
       "url": "data/movies.json",
-      "format": {"type": "json", "parse": {"IMDB_Rating": "number"}},
+      "format": {"type": "json", "parse": {"IMDB Rating": "number"}},
       "transform": [
         {
           "type": "window",
           "params": [null],
-          "as": ["cumulative_count"],
+          "as": ["Cumulative Count"],
           "ops": ["count"],
           "fields": ["count"],
-          "sort": {"field": ["IMDB_Rating"], "order": ["ascending"]},
+          "sort": {"field": ["IMDB Rating"], "order": ["ascending"]},
           "frame": [null, 0]
         }
       ]
@@ -28,20 +28,20 @@
       "name": "marks",
       "type": "area",
       "style": ["area"],
-      "sort": {"field": "datum[\"IMDB_Rating\"]"},
+      "sort": {"field": "datum[\"IMDB Rating\"]"},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"IMDB_Rating\" + \": \" + (format(datum[\"IMDB_Rating\"], \"\")) + \"; \" + \"cumulative_count\" + \": \" + (format(datum[\"cumulative_count\"], \"\"))"
+            "signal": "\"IMDB Rating\" + \": \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; \" + \"Cumulative Count\" + \": \" + (format(datum[\"Cumulative Count\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "IMDB_Rating"},
-          "y": {"scale": "y", "field": "cumulative_count"},
+          "x": {"scale": "x", "field": "IMDB Rating"},
+          "y": {"scale": "y", "field": "Cumulative Count"},
           "y2": {"scale": "y", "value": 0},
           "defined": {
-            "signal": "isValid(datum[\"IMDB_Rating\"]) && isFinite(+datum[\"IMDB_Rating\"]) && isValid(datum[\"cumulative_count\"]) && isFinite(+datum[\"cumulative_count\"])"
+            "signal": "isValid(datum[\"IMDB Rating\"]) && isFinite(+datum[\"IMDB Rating\"]) && isValid(datum[\"Cumulative Count\"]) && isFinite(+datum[\"Cumulative Count\"])"
           }
         }
       }
@@ -51,7 +51,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "IMDB_Rating"},
+      "domain": {"data": "source_0", "field": "IMDB Rating"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": false
@@ -59,7 +59,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "cumulative_count"},
+      "domain": {"data": "source_0", "field": "Cumulative Count"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -98,7 +98,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "IMDB_Rating",
+      "title": "IMDB Rating",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -108,7 +108,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "cumulative_count",
+      "title": "Cumulative Count",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0

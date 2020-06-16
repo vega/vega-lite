@@ -5,7 +5,7 @@
   "encoding": {
     "x": {
       "bin": {"maxbins": 10},
-      "field": "IMDB_Rating",
+      "field": "IMDB Rating",
       "type": "quantitative"
     },
     "y": {

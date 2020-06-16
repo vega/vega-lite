@@ -9,12 +9,12 @@
         "encoding": {
           "x": {
             "bin": {"maxbins": 10},
-            "field": "IMDB_Rating",
+            "field": "IMDB Rating",
             "type": "quantitative"
           },
           "y": {
             "bin": {"maxbins": 10},
-            "field": "Rotten_Tomatoes_Rating",
+            "field": "Rotten Tomatoes Rating",
             "type": "quantitative"
           },
           "color": {
@@ -35,12 +35,12 @@
         "encoding": {
           "x": {
             "bin": {"maxbins": 10},
-            "field": "IMDB_Rating",
+            "field": "IMDB Rating",
             "type": "quantitative"
           },
           "y": {
             "bin": {"maxbins": 10},
-            "field": "Rotten_Tomatoes_Rating",
+            "field": "Rotten Tomatoes Rating",
             "type": "quantitative"
           },
           "size": {
@@ -63,7 +63,7 @@
         "pts": {"type": "single", "encodings": ["x"]}
       },
       "encoding": {
-        "x": {"field": "Major_Genre", "type": "nominal", "axis": {"labelAngle": -40}},
+        "x": {"field": "Major Genre", "type": "nominal", "axis": {"labelAngle": -40}},
         "y": {"aggregate": "count", "type": "quantitative"},
         "color": {
           "condition": {

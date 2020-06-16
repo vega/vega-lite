@@ -2,13 +2,14 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "Though Vega-Lite supports only one scale per axes, one can create a parallel coordinate plot by folding variables, using `joinaggregate` to normalize their values and using ticks and rules to manually create axes.",
   "data": {
-    "url": "data/iris.json"
+    "url": "data/penguins.json"
   },
   "width": 600,
   "height": 300,
   "transform": [
+    {"filter": "datum['Beak Length (mm)']"},
     {"window": [{"op": "count", "as": "index"}]},
-    {"fold": ["petalLength", "petalWidth", "sepalLength", "sepalWidth"]},
+    {"fold": ["Beak Length (mm)", "Beak Depth (mm)", "Flipper Length (mm)", "Body Mass (g)"]},
     {
       "joinaggregate": [
         {"op": "min", "field": "value", "as": "min"},
@@ -34,23 +35,23 @@
   }, {
     "mark": "line",
     "encoding": {
-      "color": {"type": "nominal", "field": "species"},
+      "color": {"type": "nominal", "field": "Species"},
       "detail": {"type": "nominal", "field": "index"},
       "opacity": {"value": 0.3},
       "x": {"type": "nominal", "field": "key"},
       "y": {"type": "quantitative", "field": "norm_val", "axis": null},
       "tooltip": [{
         "type": "quantitative",
-        "field": "petalLength"
+        "field": "Beak Length (mm)"
       }, {
         "type": "quantitative",
-        "field": "petalWidth"
+        "field": "Beak Depth (mm)"
       }, {
         "type": "quantitative",
-        "field": "sepalLength"
+        "field": "Flipper Length (mm)"
       }, {
         "type": "quantitative",
-        "field": "sepalWidth"
+        "field": "Body Mass (g)"
       }]
     }
   }, {

@@ -19,7 +19,7 @@
           "type": "aggregate",
           "groupby": ["Director"],
           "ops": ["mean"],
-          "fields": ["Worldwide_Gross"],
+          "fields": ["Worldwide Gross"],
           "as": ["aggregate_gross"]
         },
         {

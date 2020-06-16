@@ -5,7 +5,7 @@
   "encoding": {
     "x": {
       "bin": true,
-      "field": "IMDB_Rating",
+      "field": "IMDB Rating",
       "type": "ordinal"
     },
     "y": {

@@ -50,6 +50,6 @@ To plot a stacked graph of estimates, use a shared `extent` and a fixed number o
 
 ### Example: Faceted Density Estimates
 
-Density estimates of measurements for each iris flower feature:
+Density estimates of body mass in grams for different penguin species:
 
 <div class="vl-example" data-name="area_density_facet"></div>

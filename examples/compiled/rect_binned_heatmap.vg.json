@@ -13,19 +13,19 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(isValid(datum[\"IMDB_Rating\"]) && isFinite(+datum[\"IMDB_Rating\"])) && (isValid(datum[\"Rotten_Tomatoes_Rating\"]) && isFinite(+datum[\"Rotten_Tomatoes_Rating\"]))"
+          "expr": "(isValid(datum[\"IMDB Rating\"]) && isFinite(+datum[\"IMDB Rating\"])) && (isValid(datum[\"Rotten Tomatoes Rating\"]) && isFinite(+datum[\"Rotten Tomatoes Rating\"]))"
         },
         {
           "type": "extent",
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "signal": "bin_maxbins_60_IMDB_Rating_extent"
         },
         {
           "type": "bin",
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "as": [
-            "bin_maxbins_60_IMDB_Rating",
-            "bin_maxbins_60_IMDB_Rating_end"
+            "bin_maxbins_60_IMDB Rating",
+            "bin_maxbins_60_IMDB Rating_end"
           ],
           "signal": "bin_maxbins_60_IMDB_Rating_bins",
           "extent": {"signal": "bin_maxbins_60_IMDB_Rating_extent"},
@@ -33,15 +33,15 @@
         },
         {
           "type": "extent",
-          "field": "Rotten_Tomatoes_Rating",
+          "field": "Rotten Tomatoes Rating",
           "signal": "bin_maxbins_40_Rotten_Tomatoes_Rating_extent"
         },
         {
           "type": "bin",
-          "field": "Rotten_Tomatoes_Rating",
+          "field": "Rotten Tomatoes Rating",
           "as": [
-            "bin_maxbins_40_Rotten_Tomatoes_Rating",
-            "bin_maxbins_40_Rotten_Tomatoes_Rating_end"
+            "bin_maxbins_40_Rotten Tomatoes Rating",
+            "bin_maxbins_40_Rotten Tomatoes Rating_end"
           ],
           "signal": "bin_maxbins_40_Rotten_Tomatoes_Rating_bins",
           "extent": {"signal": "bin_maxbins_40_Rotten_Tomatoes_Rating_extent"},
@@ -50,10 +50,10 @@
         {
           "type": "aggregate",
           "groupby": [
-            "bin_maxbins_60_IMDB_Rating",
-            "bin_maxbins_60_IMDB_Rating_end",
-            "bin_maxbins_40_Rotten_Tomatoes_Rating",
-            "bin_maxbins_40_Rotten_Tomatoes_Rating_end"
+            "bin_maxbins_60_IMDB Rating",
+            "bin_maxbins_60_IMDB Rating_end",
+            "bin_maxbins_40_Rotten Tomatoes Rating",
+            "bin_maxbins_40_Rotten Tomatoes Rating_end"
           ],
           "ops": ["count"],
           "fields": [null],
@@ -61,7 +61,7 @@
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"bin_maxbins_60_IMDB_Rating\"]) && isFinite(+datum[\"bin_maxbins_60_IMDB_Rating\"]) && isValid(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"]) && isFinite(+datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"])"
+          "expr": "isValid(datum[\"bin_maxbins_60_IMDB Rating\"]) && isFinite(+datum[\"bin_maxbins_60_IMDB Rating\"]) && isValid(datum[\"bin_maxbins_40_Rotten Tomatoes Rating\"]) && isFinite(+datum[\"bin_maxbins_40_Rotten Tomatoes Rating\"])"
         }
       ]
     }
@@ -76,45 +76,45 @@
         "update": {
           "fill": {"scale": "color", "field": "__count"},
           "description": {
-            "signal": "\"IMDB_Rating (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_60_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_60_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_60_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_60_IMDB_Rating_end\"], \"\")) + \"; \" + \"Rotten_Tomatoes_Rating (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"]) || !isFinite(+datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"IMDB Rating (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_60_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_60_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_60_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_60_IMDB Rating_end\"], \"\")) + \"; \" + \"Rotten Tomatoes Rating (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_40_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_40_Rotten Tomatoes Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_40_Rotten Tomatoes Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_40_Rotten Tomatoes Rating_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
           },
           "x2": [
             {
-              "test": "!isValid(datum[\"bin_maxbins_60_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_60_IMDB_Rating\"])",
+              "test": "!isValid(datum[\"bin_maxbins_60_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_60_IMDB Rating\"])",
               "value": 0
             },
-            {"scale": "x", "field": "bin_maxbins_60_IMDB_Rating", "offset": 0.5}
+            {"scale": "x", "field": "bin_maxbins_60_IMDB Rating", "offset": 0.5}
           ],
           "x": [
             {
-              "test": "!isValid(datum[\"bin_maxbins_60_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_60_IMDB_Rating\"])",
+              "test": "!isValid(datum[\"bin_maxbins_60_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_60_IMDB Rating\"])",
               "value": 0
             },
             {
               "scale": "x",
-              "field": "bin_maxbins_60_IMDB_Rating_end",
+              "field": "bin_maxbins_60_IMDB Rating_end",
               "offset": 0.5
             }
           ],
           "y2": [
             {
-              "test": "!isValid(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"]) || !isFinite(+datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"])",
+              "test": "!isValid(datum[\"bin_maxbins_40_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_40_Rotten Tomatoes Rating\"])",
               "field": {"group": "height"}
             },
             {
               "scale": "y",
-              "field": "bin_maxbins_40_Rotten_Tomatoes_Rating",
+              "field": "bin_maxbins_40_Rotten Tomatoes Rating",
               "offset": 0.5
             }
           ],
           "y": [
             {
-              "test": "!isValid(datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"]) || !isFinite(+datum[\"bin_maxbins_40_Rotten_Tomatoes_Rating\"])",
+              "test": "!isValid(datum[\"bin_maxbins_40_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_40_Rotten Tomatoes Rating\"])",
               "field": {"group": "height"}
             },
             {
               "scale": "y",
-              "field": "bin_maxbins_40_Rotten_Tomatoes_Rating_end",
+              "field": "bin_maxbins_40_Rotten Tomatoes Rating_end",
               "offset": 0.5
             }
           ]
@@ -157,7 +157,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "IMDB_Rating (binned)",
+      "title": "IMDB Rating (binned)",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/10)"},
@@ -167,7 +167,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Rotten_Tomatoes_Rating (binned)",
+      "title": "Rotten Tomatoes Rating (binned)",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/10)"},
       "zindex": 1

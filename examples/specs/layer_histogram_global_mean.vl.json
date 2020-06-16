@@ -6,7 +6,7 @@
     "encoding": {
       "x": {
         "bin": true,
-        "field": "IMDB_Rating",
+        "field": "IMDB Rating",
         "type": "quantitative"
       },
       "y": {
@@ -19,7 +19,7 @@
     "encoding": {
       "x": {
         "aggregate": "mean",
-        "field": "IMDB_Rating",
+        "field": "IMDB Rating",
         "type": "quantitative"
       },
       "color": {"value": "red"},

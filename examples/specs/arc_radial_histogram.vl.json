@@ -10,12 +10,12 @@
       "encoding": {
         "text": {
           "bin": true,
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "type": "quantitative"
         },
         "angle": {
           "bin": true,
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "type": "quantitative",
           "scale": {"range": [90, 450]}
         }
@@ -25,7 +25,7 @@
   "encoding": {
     "theta": {
       "bin": true,
-      "field": "IMDB_Rating",
+      "field": "IMDB Rating",
       "type": "quantitative"
     },
     "radius": {

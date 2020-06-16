@@ -9,9 +9,10 @@
   "data": [
     {
       "name": "source_0",
-      "url": "data/iris.json",
+      "url": "data/penguins.json",
       "format": {"type": "json"},
       "transform": [
+        {"type": "filter", "expr": "datum['Beak Length (mm)']"},
         {
           "type": "window",
           "params": [null],
@@ -22,7 +23,12 @@
         },
         {
           "type": "fold",
-          "fields": ["petalLength", "petalWidth", "sepalLength", "sepalWidth"],
+          "fields": [
+            "Beak Length (mm)",
+            "Beak Depth (mm)",
+            "Flipper Length (mm)",
+            "Body Mass (g)"
+          ],
           "as": ["key", "value"]
         },
         {
@@ -79,7 +85,7 @@
         "facet": {
           "name": "faceted_path_layer_1_main",
           "data": "source_0",
-          "groupby": ["species", "index"]
+          "groupby": ["Species", "index"]
         }
       },
       "encode": {
@@ -97,13 +103,13 @@
           "from": {"data": "faceted_path_layer_1_main"},
           "encode": {
             "update": {
-              "stroke": {"scale": "color", "field": "species"},
+              "stroke": {"scale": "color", "field": "Species"},
               "opacity": {"value": 0.3},
               "tooltip": {
-                "signal": "{\"petalLength\": format(datum[\"petalLength\"], \"\"), \"petalWidth\": format(datum[\"petalWidth\"], \"\"), \"sepalLength\": format(datum[\"sepalLength\"], \"\"), \"sepalWidth\": format(datum[\"sepalWidth\"], \"\")}"
+                "signal": "{\"Beak Length (mm)\": format(datum[\"Beak Length (mm)\"], \"\"), \"Beak Depth (mm)\": format(datum[\"Beak Depth (mm)\"], \"\"), \"Flipper Length (mm)\": format(datum[\"Flipper Length (mm)\"], \"\"), \"Body Mass (g)\": format(datum[\"Body Mass (g)\"], \"\")}"
               },
               "description": {
-                "signal": "\"species\" + \": \" + (isValid(datum[\"species\"]) ? datum[\"species\"] : \"\"+datum[\"species\"]) + \"; \" + \"index\" + \": \" + (isValid(datum[\"index\"]) ? datum[\"index\"] : \"\"+datum[\"index\"]) + \"; \" + \"key\" + \": \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; \" + \"norm_val\" + \": \" + (format(datum[\"norm_val\"], \"\")) + \"; \" + \"petalLength\" + \": \" + (format(datum[\"petalLength\"], \"\")) + \"; \" + \"petalWidth\" + \": \" + (format(datum[\"petalWidth\"], \"\")) + \"; \" + \"sepalLength\" + \": \" + (format(datum[\"sepalLength\"], \"\")) + \"; \" + \"sepalWidth\" + \": \" + (format(datum[\"sepalWidth\"], \"\"))"
+                "signal": "\"Species\" + \": \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; \" + \"index\" + \": \" + (isValid(datum[\"index\"]) ? datum[\"index\"] : \"\"+datum[\"index\"]) + \"; \" + \"key\" + \": \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; \" + \"norm_val\" + \": \" + (format(datum[\"norm_val\"], \"\")) + \"; \" + \"Beak Length (mm)\" + \": \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; \" + \"Beak Depth (mm)\" + \": \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; \" + \"Flipper Length (mm)\" + \": \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; \" + \"Body Mass (g)\" + \": \" + (format(datum[\"Body Mass (g)\"], \"\"))"
               },
               "x": {"scale": "x", "field": "key", "band": 0.5},
               "y": {"scale": "y", "field": "norm_val"},
@@ -253,7 +259,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "species", "sort": true},
+      "domain": {"data": "source_0", "field": "Species", "sort": true},
       "range": "category"
     }
   ],
@@ -270,7 +276,7 @@
     {
       "stroke": "color",
       "symbolType": "stroke",
-      "title": "species",
+      "title": "Species",
       "encode": {"symbols": {"update": {"opacity": {"value": 0.3}}}}
     }
   ],

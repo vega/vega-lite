@@ -72,7 +72,7 @@ You can also use `repeat` with `layer` to create a multi-series line chart. Here
 
 Repeat can be used to create a scatterplot matrix (SPLOM), where each cell shows a different 2D projection of the same data table. Here, we define **both** `row` and `column`.
 
-<span class="vl-example" data-name="repeat_splom_iris"></span>
+<span class="vl-example" data-name="repeat_splom"></span>
 
 You can also check the [interactive SPLOM example]({{ site.baseurl }}/examples/interactive_splom.html).
 

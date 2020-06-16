@@ -5,10 +5,10 @@
   "mark": "bar",
   "encoding": {
     "x": {
-      "aggregate": {"argmax": "US_Gross"},
-      "field": "Production_Budget",
+      "aggregate": {"argmax": "US Gross"},
+      "field": "Production Budget",
       "type": "quantitative"
     },
-    "y": {"field": "Major_Genre", "type": "nominal"}
+    "y": {"field": "Major Genre", "type": "nominal"}
   }
 }

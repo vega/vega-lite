@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A scatterplot showing horsepower and miles per gallons.",
+  "description": "A scatterplot showing body mass and flipper lengths of penguins.",
   "background": "white",
   "padding": 5,
   "width": 200,
@@ -9,12 +9,12 @@
   "data": [
     {
       "name": "source_0",
-      "url": "data/cars.json",
+      "url": "data/penguins.json",
       "format": {"type": "json"},
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
+          "expr": "isValid(datum[\"Flipper Length (mm)\"]) && isFinite(+datum[\"Flipper Length (mm)\"]) && isValid(datum[\"Body Mass (g)\"]) && isFinite(+datum[\"Body Mass (g)\"])"
         }
       ]
     }
@@ -29,14 +29,26 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
-          "stroke": {"scale": "color", "field": "Origin"},
+          "stroke": {"scale": "color", "field": "Species"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Horsepower\" + \": \" + (format(datum[\"Horsepower\"], \"\")) + \"; \" + \"Miles_per_Gallon\" + \": \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; \" + \"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+            "signal": "\"Flipper Length (mm)\" + \": \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; \" + \"Body Mass (g)\" + \": \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; \" + \"Species\" + \": \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
           },
-          "x": {"scale": "x", "field": "Horsepower"},
-          "y": {"scale": "y", "field": "Miles_per_Gallon"},
-          "shape": {"scale": "shape", "field": "Origin"}
+          "x": [
+            {
+              "test": "!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "Flipper Length (mm)"}
+          ],
+          "y": [
+            {
+              "test": "!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "Body Mass (g)"}
+          ],
+          "shape": {"scale": "shape", "field": "Species"}
         }
       }
     }
@@ -45,29 +57,29 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {"data": "source_0", "field": "Flipper Length (mm)"},
       "range": [0, {"signal": "width"}],
-      "nice": true,
-      "zero": true
+      "zero": false,
+      "nice": true
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "source_0", "field": "Body Mass (g)"},
       "range": [{"signal": "height"}, 0],
-      "nice": true,
-      "zero": true
+      "zero": false,
+      "nice": true
     },
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "domain": {"data": "source_0", "field": "Species", "sort": true},
       "range": "category"
     },
     {
       "name": "shape",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "domain": {"data": "source_0", "field": "Species", "sort": true},
       "range": "symbol"
     }
   ],
@@ -104,7 +116,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "Horsepower",
+      "title": "Flipper Length (mm)",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -114,7 +126,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Miles_per_Gallon",
+      "title": "Body Mass (g)",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
@@ -124,7 +136,7 @@
     {
       "stroke": "color",
       "symbolType": "circle",
-      "title": "Origin",
+      "title": "Species",
       "encode": {
         "symbols": {
           "update": {

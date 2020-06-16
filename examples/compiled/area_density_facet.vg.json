@@ -2,35 +2,47 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "title": {"text": "Distribution of Body Mass of Penguins", "anchor": "start"},
   "data": [
     {
       "name": "source_0",
-      "url": "data/iris.json",
+      "url": "data/penguins.json",
       "format": {"type": "json"},
       "transform": [
         {
-          "type": "fold",
-          "fields": ["petalWidth", "petalLength", "sepalWidth", "sepalLength"],
-          "as": ["organ", "value"]
+          "type": "kde",
+          "field": "Body Mass (g)",
+          "groupby": ["Species"],
+          "extent": [2500, 6500],
+          "as": ["value", "density"]
         },
         {
-          "type": "kde",
-          "field": "value",
-          "bandwidth": 0.3,
-          "groupby": ["organ"],
-          "as": ["value", "density"]
+          "type": "impute",
+          "field": "density",
+          "groupby": ["Species"],
+          "key": "value",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["value", "Species"],
+          "field": "density",
+          "sort": {"field": [], "order": []},
+          "as": ["density_start", "density_end"],
+          "offset": "zero"
         }
       ]
     },
     {
       "name": "row_domain",
       "source": "source_0",
-      "transform": [{"type": "aggregate", "groupby": ["organ"]}]
+      "transform": [{"type": "aggregate", "groupby": ["Species"]}]
     }
   ],
   "signals": [
-    {"name": "child_width", "value": 300},
-    {"name": "child_height", "value": 50}
+    {"name": "child_width", "value": 400},
+    {"name": "child_height", "value": 80}
   ],
   "layout": {
     "padding": 20,
@@ -45,7 +57,7 @@
       "type": "group",
       "role": "row-title",
       "title": {
-        "text": "organ",
+        "text": "Species",
         "orient": "left",
         "style": "guide-title",
         "offset": 10
@@ -56,10 +68,10 @@
       "type": "group",
       "role": "row-header",
       "from": {"data": "row_domain"},
-      "sort": {"field": "datum[\"organ\"]", "order": "ascending"},
+      "sort": {"field": "datum[\"Species\"]", "order": "ascending"},
       "title": {
         "text": {
-          "signal": "isValid(parent[\"organ\"]) ? parent[\"organ\"] : \"\"+parent[\"organ\"]"
+          "signal": "isValid(parent[\"Species\"]) ? parent[\"Species\"] : \"\"+parent[\"Species\"]"
         },
         "orient": "left",
         "style": "guide-label",
@@ -89,7 +101,7 @@
           "scale": "x",
           "orient": "bottom",
           "grid": false,
-          "title": "value",
+          "title": "Body Mass (g)",
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_width/40)"},
@@ -102,9 +114,9 @@
       "type": "group",
       "style": "cell",
       "from": {
-        "facet": {"name": "facet", "data": "source_0", "groupby": ["organ"]}
+        "facet": {"name": "facet", "data": "source_0", "groupby": ["Species"]}
       },
-      "sort": {"field": ["datum[\"organ\"]"], "order": ["ascending"]},
+      "sort": {"field": ["datum[\"Species\"]"], "order": ["ascending"]},
       "encode": {
         "update": {
           "width": {"signal": "child_width"},
@@ -123,11 +135,11 @@
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"value\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"density\" + \": \" + (format(datum[\"density\"], \"\"))"
+                "signal": "\"Body Mass (g)\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"density\" + \": \" + (format(datum[\"density\"], \"\"))"
               },
               "x": {"scale": "x", "field": "value"},
-              "y": {"scale": "y", "field": "density"},
-              "y2": {"scale": "y", "value": 0},
+              "y": {"scale": "y", "field": "density_end"},
+              "y2": {"scale": "y", "field": "density_start"},
               "defined": {
                 "signal": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"]) && isValid(datum[\"density\"]) && isFinite(+datum[\"density\"])"
               }
@@ -179,7 +191,10 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "density"},
+      "domain": {
+        "data": "source_0",
+        "fields": ["density_start", "density_end"]
+      },
       "range": [{"signal": "child_height"}, 0],
       "nice": true,
       "zero": true

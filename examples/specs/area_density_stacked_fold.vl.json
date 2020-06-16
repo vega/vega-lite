@@ -2,23 +2,21 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "width": 400,
   "height": 100,
-  "data": {"url": "data/iris.json"},
+  "data": {"url": "data/cars.json"},
   "mark": "area",
   "transform": [
     {
       "fold": [
-        "petalWidth",
-        "petalLength",
-        "sepalWidth",
-        "sepalLength"
+        "Displacement",
+        "Horsepower"
       ],
-      "as": ["organ", "value"]
+      "as": ["Measurement", "value"]
     },
     {
       "density": "value",
-      "bandwidth": 0.3,
-      "groupby": ["organ"],
-      "extent": [0, 8],
+      "bandwidth": 10,
+      "groupby": ["Measurement"],
+      "extent": [10, 500],
       "counts": true,
       "steps": 200
     }
@@ -34,7 +32,7 @@
       "stack": "zero"
     },
     "color": {
-      "field": "organ",
+      "field": "Measurement",
       "type": "nominal"
     }
   }
