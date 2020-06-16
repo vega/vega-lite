@@ -4,7 +4,7 @@
     "url": "data/movies.csv"
   },
   "repeat": {
-    "layer": ["US_Gross", "Worldwide Gross"]
+    "layer": ["US Gross", "Worldwide Gross"]
   },
   "spec": {
     "mark": "line",

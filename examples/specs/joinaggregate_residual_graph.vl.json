@@ -6,7 +6,7 @@
   },
   "transform": [
     {"filter": "datum['IMDB Rating'] != null"},
-    {"filter": {"timeUnit": "year", "field": "Release_Date", "range": [null, 2019]}},
+    {"filter": {"timeUnit": "year", "field": "Release Date", "range": [null, 2019]}},
     {
       "joinaggregate": [{
         "op": "mean",
@@ -22,7 +22,7 @@
   "mark": "point",
   "encoding": {
     "x": {
-      "field": "Release_Date",
+      "field": "Release Date",
       "type": "temporal"
     },
     "y": {

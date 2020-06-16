@@ -22,7 +22,7 @@
     }
   },{
     "title": "Gross",
-    "repeat": {"column": ["US_Gross", "Worldwide Gross"]},
+    "repeat": {"column": ["US Gross", "Worldwide Gross"]},
     "spec": {
       "width": 150,
       "height": 50,
