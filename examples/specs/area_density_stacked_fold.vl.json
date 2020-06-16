@@ -1,21 +1,39 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "width": 400,
-  "height": 80,
-  "data": {
-    "url": "data/penguins_size.csv"
-  },
+  "height": 100,
+  "data": {"url": "data/cars.json"},
   "mark": "area",
   "transform": [
     {
-      "density": "body_mass_g",
-      "groupby": ["species"],
-      "extent": [2500, 6500]
+      "fold": [
+        "Displacement",
+        "Horsepower"
+      ],
+      "as": ["Measurement", "value"]
+    },
+    {
+      "density": "value",
+      "bandwidth": 10,
+      "groupby": ["Measurement"],
+      "extent": [10, 500],
+      "counts": true,
+      "steps": 200
     }
   ],
   "encoding": {
-    "x": {"field": "value", "type": "quantitative"},
-    "y": {"field": "density", "type": "quantitative", "stack": "zero"},
-    "color": {"field": "species", "type": "nominal"}
+    "x": {
+      "field": "value",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "density",
+      "type": "quantitative",
+      "stack": "zero"
+    },
+    "color": {
+      "field": "Measurement",
+      "type": "nominal"
+    }
   }
 }

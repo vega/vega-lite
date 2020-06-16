@@ -1,12 +1,21 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/penguins_size.csv"},
+  "data": {"url": "data/palmerpenguins.json"},
   "repeat": {
-    "row": ["culmen_length_mm", "culmen_depth_mm", "flipper_length_mm", "body_mass_g"],
-    "column": ["body_mass_g", "flipper_length_mm", "culmen_depth_mm", "culmen_length_mm"]
+    "row": [
+      "Beak Length (mm)",
+      "Beak Depth (mm)",
+      "Flipper Length (mm)",
+      "Body Mass (g)"
+    ],
+    "column": [
+      "Body Mass (g)",
+      "Flipper Length (mm)",
+      "Beak Depth (mm)",
+      "Beak Length (mm)"
+    ]
   },
   "spec": {
-
     "width": 150,
     "height": 150,
     "mark": "point",
@@ -21,7 +30,7 @@
         "type": "quantitative",
         "scale": {"zero": false}
       },
-      "color": {"field": "species", "type": "nominal"}
+      "color": {"field": "Species", "type": "nominal"}
     }
   }
 }
