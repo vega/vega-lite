@@ -6,6 +6,7 @@ import {
   FieldDefBase,
   isContinuousFieldOrDatumDef,
   isFieldDef,
+  isFieldOrDatumDefForTimeFormat,
   PositionFieldDef,
   SecondaryFieldDef,
   StringFieldDef,
@@ -267,6 +268,10 @@ export function compositeMarkOrient<M extends CompositeMark>(
   const {mark, encoding} = spec;
   const {x, y} = encoding;
 
+  if (isMarkDef(mark) && mark.orient) {
+    return mark.orient;
+  }
+
   if (isContinuousFieldOrDatumDef(x)) {
     // x is continuous
     if (isContinuousFieldOrDatumDef(y)) {
@@ -281,22 +286,22 @@ export function compositeMarkOrient<M extends CompositeMark>(
       } else if (xAggregate === compositeMark && yAggregate === compositeMark) {
         throw new Error('Both x and y cannot have aggregate');
       } else {
-        if (isMarkDef(mark) && mark.orient) {
-          return mark.orient;
+        if (isFieldOrDatumDefForTimeFormat(y) && !isFieldOrDatumDefForTimeFormat(x)) {
+          // y is temporal but x is not
+          return 'horizontal';
         }
 
-        // default orientation = vertical
+        // default orientation for two continuous
         return 'vertical';
       }
     }
 
-    // x is continuous but y is not
     return 'horizontal';
   } else if (isContinuousFieldOrDatumDef(y)) {
     // y is continuous but x is not
     return 'vertical';
   } else {
     // Neither x nor y is continuous.
-    throw new Error('Need a valid continuous axis for ' + compositeMark + 's');
+    throw new Error(`Need a valid continuous axis for ${compositeMark}s`);
   }
 }
