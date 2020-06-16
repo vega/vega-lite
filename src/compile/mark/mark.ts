@@ -54,7 +54,7 @@ export function parseMarkGroups(model: UnitModel): any[] {
     }
   }
 
-  return getMarkGroups(model);
+  return getMarkGroup(model);
 }
 
 const FACETED_PATH_PREFIX = 'faceted_path_';
@@ -80,7 +80,7 @@ function getPathGroups(model: UnitModel, details: string[]) {
         }
       },
       // With subfacet for line/area group, need to use faceted data from above.
-      marks: getMarkGroups(model, {fromPrefix: FACETED_PATH_PREFIX})
+      marks: getMarkGroup(model, {fromPrefix: FACETED_PATH_PREFIX})
     }
   ];
 }
@@ -94,7 +94,7 @@ const STACK_GROUP_PREFIX = 'stack_group_';
  */
 function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
   // Generate the mark
-  const [mark] = getMarkGroups(model, {fromPrefix: STACK_GROUP_PREFIX});
+  const [mark] = getMarkGroup(model, {fromPrefix: STACK_GROUP_PREFIX});
 
   // Get the scale for the stacked field
   const fieldScale = model.scaleName(model.stack.fieldChannel);
@@ -296,17 +296,12 @@ export function getSort(model: UnitModel): VgCompare {
   return undefined;
 }
 
-function getMarkGroups(
-  model: UnitModel,
-  opt: {
-    fromPrefix: string;
-  } = {fromPrefix: ''}
-) {
-  const {mark, markDef, config} = model;
+function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix: ''}) {
+  const {mark, markDef, encoding, config} = model;
 
   const clip = getFirstDefined(markDef.clip, scaleClip(model), projectionClip(model));
   const style = getStyles(markDef);
-  const key = model.encoding.key;
+  const key = encoding.key;
   const sort = getSort(model);
   const interactive = interactiveFlag(model);
   const aria = getMarkPropOrConfig('aria', markDef, config);
