@@ -66,6 +66,9 @@ if [[ $GIT_BRANCH != 'master' ]]; then
     git commit -m "style: auto-formatting [CI]"
   fi
 
+  # should be empty
+  git status
+
   # Then push all the changes (schema, examples, prettier)
   git pull --rebase origin ${GITHUB_REF}
   git push origin ${GITHUB_REF}
