@@ -1,0 +1,76 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Using the field \"c\" as the color scale's range. Note that this only works if there is a 1:1 mapping between the color domain field (`l`) and the range field (`c`).",
+  "background": "white",
+  "padding": 5,
+  "width": 20,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"y": "X", "l": "A", "c": "red"},
+        {"y": "Y", "l": "B", "c": "blue"},
+        {"y": "Z", "l": "C", "c": "green"}
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 20},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"scale": "color", "field": "l"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"y\" + \": \" + (isValid(datum[\"y\"]) ? datum[\"y\"] : \"\"+datum[\"y\"]) + \"; \" + \"l\" + \": \" + (isValid(datum[\"l\"]) ? datum[\"l\"] : \"\"+datum[\"l\"])"
+          },
+          "x": {"signal": "width", "mult": 0.5},
+          "y": {"scale": "y", "field": "y"},
+          "shape": {"value": "circle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "y",
+      "type": "point",
+      "domain": {"data": "source_0", "field": "y", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "l", "sort": true},
+      "range": {
+        "data": "source_0",
+        "field": "c",
+        "sort": {"op": "min", "field": "l"}
+      }
+    }
+  ],
+  "axes": [
+    {"scale": "y", "orient": "left", "grid": false, "title": "y", "zindex": 0}
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "symbolType": "circle",
+      "title": "l",
+      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
+    }
+  ]
+}
