@@ -4,7 +4,7 @@
   "width": 400,
   "height": 80,
   "data": {
-    "url": "data/palmerpenguins.json"
+    "url": "data/penguins.json"
   },
   "mark": "area",
   "transform": [
