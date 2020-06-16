@@ -40,51 +40,49 @@ const markCompiler: Record<Mark, MarkCompiler> = {
 
 export function parseMarkGroups(model: UnitModel): any[] {
   if (contains([LINE, AREA, TRAIL], model.mark)) {
-    return parsePathMark(model);
+    const details = pathGroupingFields(model.mark, model.encoding);
+    if (details.length > 0) {
+      return getPathGroups(model, details);
+    }
+    // otherwise use standard mark groups
   } else if (contains([BAR], model.mark)) {
-    return getStackGroups(model);
-  } else {
-    return getMarkGroups(model);
+    const hasCornerRadius = VG_CORNERRADIUS_CHANNELS.some(prop =>
+      getMarkPropOrConfig(prop, model.markDef, model.config)
+    );
+    if (model.stack && !model.fieldDef('size') && hasCornerRadius) {
+      return getGroupsForStackedBarWithCornerRadius(model);
+    }
   }
+
+  return getMarkGroups(model);
 }
 
 const FACETED_PATH_PREFIX = 'faceted_path_';
 
-function parsePathMark(model: UnitModel) {
-  const details = pathGroupingFields(model.mark, model.encoding);
+function getPathGroups(model: UnitModel, details: string[]) {
+  // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
 
-  const pathMarks = getMarkGroups(model, {
-    // If has subfacet for line/area group, need to use faceted data from below.
-    fromPrefix: details.length > 0 ? FACETED_PATH_PREFIX : ''
-  });
-
-  if (details.length > 0) {
-    // have level of details - need to facet line into subgroups
-    // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
-
-    return [
-      {
-        name: model.getName('pathgroup'),
-        type: 'group',
-        from: {
-          facet: {
-            name: FACETED_PATH_PREFIX + model.requestDataName(MAIN),
-            data: model.requestDataName(MAIN),
-            groupby: details
-          }
-        },
-        encode: {
-          update: {
-            width: {field: {group: 'width'}},
-            height: {field: {group: 'height'}}
-          }
-        },
-        marks: pathMarks
-      }
-    ];
-  } else {
-    return pathMarks;
-  }
+  return [
+    {
+      name: model.getName('pathgroup'),
+      type: 'group',
+      from: {
+        facet: {
+          name: FACETED_PATH_PREFIX + model.requestDataName(MAIN),
+          data: model.requestDataName(MAIN),
+          groupby: details
+        }
+      },
+      encode: {
+        update: {
+          width: {field: {group: 'width'}},
+          height: {field: {group: 'height'}}
+        }
+      },
+      // With subfacet for line/area group, need to use faceted data from above.
+      marks: getMarkGroups(model, {fromPrefix: FACETED_PATH_PREFIX})
+    }
+  ];
 }
 
 const STACK_GROUP_PREFIX = 'stack_group_';
@@ -94,159 +92,151 @@ const STACK_GROUP_PREFIX = 'stack_group_';
  * If stack is used and the model doesn't have size encoding, we put the mark into groups,
  * and apply cornerRadius properties at the group.
  */
-function getStackGroups(model: UnitModel) {
-  // Don't use nested groups when cornerRadius is not specified, or specified as 0
-  const hasCornerRadius = VG_CORNERRADIUS_CHANNELS.some(prop => getMarkPropOrConfig(prop, model.markDef, model.config));
+function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
+  // Generate the mark
+  const [mark] = getMarkGroups(model, {fromPrefix: STACK_GROUP_PREFIX});
 
-  // Activate groups if stack is used and the model doesn't have size encoding
-  if (model.stack && !model.fieldDef('size') && hasCornerRadius) {
-    // Generate the mark
-    const [mark] = getMarkGroups(model, {fromPrefix: STACK_GROUP_PREFIX});
-
-    // Get the scale for the stacked field
-    const fieldScale = model.scaleName(model.stack.fieldChannel);
-    const stackField = (opt: FieldRefOption = {}) => model.vgField(model.stack.fieldChannel, opt);
-    // Find the min/max of the pixel value on the stacked direction
-    const stackFieldGroup = (func: 'min' | 'max', expr: 'datum' | 'parent') => {
-      const vgFieldMinMax = [
-        stackField({prefix: 'min', suffix: 'start', expr}),
-        stackField({prefix: 'max', suffix: 'start', expr}),
-        stackField({prefix: 'min', suffix: 'end', expr}),
-        stackField({prefix: 'max', suffix: 'end', expr})
-      ];
-      return `${func}(${vgFieldMinMax.map(field => `scale('${fieldScale}',${field})`).join(',')})`;
-    };
-
-    let groupUpdate: VgEncodeEntry;
-    let innerGroupUpdate: VgEncodeEntry;
-
-    // Build the encoding for group and an inner group
-    if (model.stack.fieldChannel === 'x') {
-      // Move cornerRadius, y/yc/y2/height properties to group
-      // Group x/x2 should be the min/max of the marks within
-      groupUpdate = {
-        ...pick(mark.encode.update, ['y', 'yc', 'y2', 'height', ...VG_CORNERRADIUS_CHANNELS]),
-        x: {signal: stackFieldGroup('min', 'datum')},
-        x2: {signal: stackFieldGroup('max', 'datum')},
-        clip: {value: true}
-      };
-      // Inner group should revert the x translation, and pass height through
-      innerGroupUpdate = {
-        x: {field: {group: 'x'}, mult: -1},
-        height: {field: {group: 'height'}}
-      };
-      // The marks should use the same height as group, without y/yc/y2 properties (because it's already done by group)
-      // This is why size encoding is not supported yet
-      mark.encode.update = {
-        ...omit(mark.encode.update, ['y', 'yc', 'y2']),
-        height: {field: {group: 'height'}}
-      };
-    } else {
-      groupUpdate = {
-        ...pick(mark.encode.update, ['x', 'xc', 'x2', 'width']),
-        y: {signal: stackFieldGroup('min', 'datum')},
-        y2: {signal: stackFieldGroup('max', 'datum')},
-        clip: {value: true}
-      };
-      innerGroupUpdate = {
-        y: {field: {group: 'y'}, mult: -1},
-        width: {field: {group: 'width'}}
-      };
-      mark.encode.update = {
-        ...omit(mark.encode.update, ['x', 'xc', 'x2']),
-        width: {field: {group: 'width'}}
-      };
-    }
-
-    // Deal with cornerRadius properties
-    for (const key of VG_CORNERRADIUS_CHANNELS) {
-      const configValue = getMarkConfig(key, model.markDef, model.config);
-      // Move from mark to group
-      if (mark.encode.update[key]) {
-        groupUpdate[key] = mark.encode.update[key];
-        delete mark.encode.update[key];
-      } else if (configValue) {
-        groupUpdate[key] = signalOrValueRef(configValue);
-      }
-      // Overwrite any cornerRadius on mark set by config --- they are already moved to the group
-      if (configValue) {
-        mark.encode.update[key] = {value: 0};
-      }
-    }
-
-    // For bin and time unit, we have to add bin/timeunit -end channels.
-    const groupByField = model.fieldDef(model.stack.groupbyChannel);
-    const groupby: string[] = vgField(groupByField) ? [vgField(groupByField)] : [];
-
-    if (groupByField?.bin || groupByField?.timeUnit) {
-      groupby.push(vgField(groupByField, {binSuffix: 'end'}));
-    }
-
-    const strokeProperties = [
-      'stroke',
-      'strokeWidth',
-      'strokeJoin',
-      'strokeCap',
-      'strokeDash',
-      'strokeDashOffset',
-      'strokeMiterLimit',
-      'strokeOpacity'
-    ] as const;
-
-    // Generate stroke properties for the group
-    groupUpdate = strokeProperties.reduce((encode, prop) => {
-      if (mark.encode.update[prop]) {
-        return {...encode, [prop]: mark.encode.update[prop]};
-      } else {
-        const configValue = getMarkConfig(prop, model.markDef, model.config);
-        if (configValue !== undefined) {
-          return {...encode, [prop]: signalOrValueRef(configValue)};
-        } else {
-          return encode;
-        }
-      }
-    }, groupUpdate);
-
-    // Apply strokeForeground and strokeOffset if stroke is used
-    if (groupUpdate.stroke) {
-      groupUpdate.strokeForeground = {value: true};
-      groupUpdate.strokeOffset = {value: 0};
-    }
-
-    return [
-      {
-        type: 'group',
-        from: {
-          facet: {
-            data: model.requestDataName(MAIN),
-            name: STACK_GROUP_PREFIX + model.requestDataName(MAIN),
-            groupby,
-            aggregate: {
-              fields: [
-                stackField({suffix: 'start'}),
-                stackField({suffix: 'start'}),
-                stackField({suffix: 'end'}),
-                stackField({suffix: 'end'})
-              ],
-              ops: ['min', 'max', 'min', 'max']
-            }
-          }
-        },
-        encode: {
-          update: groupUpdate
-        },
-        marks: [
-          {
-            type: 'group',
-            encode: {update: innerGroupUpdate},
-            marks: [mark]
-          }
-        ]
-      }
+  // Get the scale for the stacked field
+  const fieldScale = model.scaleName(model.stack.fieldChannel);
+  const stackField = (opt: FieldRefOption = {}) => model.vgField(model.stack.fieldChannel, opt);
+  // Find the min/max of the pixel value on the stacked direction
+  const stackFieldGroup = (func: 'min' | 'max', expr: 'datum' | 'parent') => {
+    const vgFieldMinMax = [
+      stackField({prefix: 'min', suffix: 'start', expr}),
+      stackField({prefix: 'max', suffix: 'start', expr}),
+      stackField({prefix: 'min', suffix: 'end', expr}),
+      stackField({prefix: 'max', suffix: 'end', expr})
     ];
+    return `${func}(${vgFieldMinMax.map(field => `scale('${fieldScale}',${field})`).join(',')})`;
+  };
+
+  let groupUpdate: VgEncodeEntry;
+  let innerGroupUpdate: VgEncodeEntry;
+
+  // Build the encoding for group and an inner group
+  if (model.stack.fieldChannel === 'x') {
+    // Move cornerRadius, y/yc/y2/height properties to group
+    // Group x/x2 should be the min/max of the marks within
+    groupUpdate = {
+      ...pick(mark.encode.update, ['y', 'yc', 'y2', 'height', ...VG_CORNERRADIUS_CHANNELS]),
+      x: {signal: stackFieldGroup('min', 'datum')},
+      x2: {signal: stackFieldGroup('max', 'datum')},
+      clip: {value: true}
+    };
+    // Inner group should revert the x translation, and pass height through
+    innerGroupUpdate = {
+      x: {field: {group: 'x'}, mult: -1},
+      height: {field: {group: 'height'}}
+    };
+    // The marks should use the same height as group, without y/yc/y2 properties (because it's already done by group)
+    // This is why size encoding is not supported yet
+    mark.encode.update = {
+      ...omit(mark.encode.update, ['y', 'yc', 'y2']),
+      height: {field: {group: 'height'}}
+    };
   } else {
-    return getMarkGroups(model);
+    groupUpdate = {
+      ...pick(mark.encode.update, ['x', 'xc', 'x2', 'width']),
+      y: {signal: stackFieldGroup('min', 'datum')},
+      y2: {signal: stackFieldGroup('max', 'datum')},
+      clip: {value: true}
+    };
+    innerGroupUpdate = {
+      y: {field: {group: 'y'}, mult: -1},
+      width: {field: {group: 'width'}}
+    };
+    mark.encode.update = {
+      ...omit(mark.encode.update, ['x', 'xc', 'x2']),
+      width: {field: {group: 'width'}}
+    };
   }
+
+  // Deal with cornerRadius properties
+  for (const key of VG_CORNERRADIUS_CHANNELS) {
+    const configValue = getMarkConfig(key, model.markDef, model.config);
+    // Move from mark to group
+    if (mark.encode.update[key]) {
+      groupUpdate[key] = mark.encode.update[key];
+      delete mark.encode.update[key];
+    } else if (configValue) {
+      groupUpdate[key] = signalOrValueRef(configValue);
+    }
+    // Overwrite any cornerRadius on mark set by config --- they are already moved to the group
+    if (configValue) {
+      mark.encode.update[key] = {value: 0};
+    }
+  }
+
+  // For bin and time unit, we have to add bin/timeunit -end channels.
+  const groupByField = model.fieldDef(model.stack.groupbyChannel);
+  const groupby: string[] = vgField(groupByField) ? [vgField(groupByField)] : [];
+
+  if (groupByField?.bin || groupByField?.timeUnit) {
+    groupby.push(vgField(groupByField, {binSuffix: 'end'}));
+  }
+
+  const strokeProperties = [
+    'stroke',
+    'strokeWidth',
+    'strokeJoin',
+    'strokeCap',
+    'strokeDash',
+    'strokeDashOffset',
+    'strokeMiterLimit',
+    'strokeOpacity'
+  ] as const;
+
+  // Generate stroke properties for the group
+  groupUpdate = strokeProperties.reduce((encode, prop) => {
+    if (mark.encode.update[prop]) {
+      return {...encode, [prop]: mark.encode.update[prop]};
+    } else {
+      const configValue = getMarkConfig(prop, model.markDef, model.config);
+      if (configValue !== undefined) {
+        return {...encode, [prop]: signalOrValueRef(configValue)};
+      } else {
+        return encode;
+      }
+    }
+  }, groupUpdate);
+
+  // Apply strokeForeground and strokeOffset if stroke is used
+  if (groupUpdate.stroke) {
+    groupUpdate.strokeForeground = {value: true};
+    groupUpdate.strokeOffset = {value: 0};
+  }
+
+  return [
+    {
+      type: 'group',
+      from: {
+        facet: {
+          data: model.requestDataName(MAIN),
+          name: STACK_GROUP_PREFIX + model.requestDataName(MAIN),
+          groupby,
+          aggregate: {
+            fields: [
+              stackField({suffix: 'start'}),
+              stackField({suffix: 'start'}),
+              stackField({suffix: 'end'}),
+              stackField({suffix: 'end'})
+            ],
+            ops: ['min', 'max', 'min', 'max']
+          }
+        }
+      },
+      encode: {
+        update: groupUpdate
+      },
+      marks: [
+        {
+          type: 'group',
+          encode: {update: innerGroupUpdate},
+          marks: [mark]
+        }
+      ]
+    }
+  ];
 }
 
 export function getSort(model: UnitModel): VgCompare {
