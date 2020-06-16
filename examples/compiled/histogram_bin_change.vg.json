@@ -13,15 +13,15 @@
       "transform": [
         {
           "type": "extent",
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "signal": "bin_maxbins_30_IMDB_Rating_extent"
         },
         {
           "type": "bin",
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "as": [
-            "bin_maxbins_30_IMDB_Rating",
-            "bin_maxbins_30_IMDB_Rating_end"
+            "bin_maxbins_30_IMDB Rating",
+            "bin_maxbins_30_IMDB Rating_end"
           ],
           "signal": "bin_maxbins_30_IMDB_Rating_bins",
           "extent": {"signal": "bin_maxbins_30_IMDB_Rating_extent"},
@@ -30,8 +30,8 @@
         {
           "type": "aggregate",
           "groupby": [
-            "bin_maxbins_30_IMDB_Rating",
-            "bin_maxbins_30_IMDB_Rating_end"
+            "bin_maxbins_30_IMDB Rating",
+            "bin_maxbins_30_IMDB Rating_end"
           ],
           "ops": ["count"],
           "fields": [null],
@@ -39,7 +39,7 @@
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"bin_maxbins_30_IMDB_Rating\"]) && isFinite(+datum[\"bin_maxbins_30_IMDB_Rating\"])"
+          "expr": "isValid(datum[\"bin_maxbins_30_IMDB Rating\"]) && isFinite(+datum[\"bin_maxbins_30_IMDB Rating\"])"
         }
       ]
     }
@@ -55,21 +55,21 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"IMDB_Rating (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_30_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_30_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_30_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_30_IMDB_Rating_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"IMDB Rating (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_30_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_30_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_30_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_30_IMDB Rating_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
           },
           "x2": [
             {
-              "test": "!isValid(datum[\"bin_maxbins_30_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_30_IMDB_Rating\"])",
+              "test": "!isValid(datum[\"bin_maxbins_30_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_30_IMDB Rating\"])",
               "value": 0
             },
-            {"scale": "x", "field": "bin_maxbins_30_IMDB_Rating", "offset": 1}
+            {"scale": "x", "field": "bin_maxbins_30_IMDB Rating", "offset": 1}
           ],
           "x": [
             {
-              "test": "!isValid(datum[\"bin_maxbins_30_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_30_IMDB_Rating\"])",
+              "test": "!isValid(datum[\"bin_maxbins_30_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_30_IMDB Rating\"])",
               "value": 0
             },
-            {"scale": "x", "field": "bin_maxbins_30_IMDB_Rating_end"}
+            {"scale": "x", "field": "bin_maxbins_30_IMDB Rating_end"}
           ],
           "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
@@ -116,7 +116,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "IMDB_Rating (binned)",
+      "title": "IMDB Rating (binned)",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/10)"},

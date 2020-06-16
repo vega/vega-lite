@@ -10,14 +10,14 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"Worldwide_Gross\"]) && isFinite(+datum[\"Worldwide_Gross\"]) && isValid(datum[\"US_DVD_Sales\"]) && isFinite(+datum[\"US_DVD_Sales\"])"
+          "expr": "isValid(datum[\"Worldwide Gross\"]) && isFinite(+datum[\"Worldwide Gross\"]) && isValid(datum[\"US DVD Sales\"]) && isFinite(+datum[\"US DVD Sales\"])"
         }
       ]
     },
     {
       "name": "facet_domain",
       "source": "source_0",
-      "transform": [{"type": "aggregate", "groupby": ["MPAA_Rating"]}]
+      "transform": [{"type": "aggregate", "groupby": ["MPAA Rating"]}]
     },
     {
       "name": "facet_domain_row",
@@ -50,7 +50,7 @@
       "name": "facet-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "MPAA_Rating", "style": "guide-title", "offset": 10}
+      "title": {"text": "MPAA Rating", "style": "guide-title", "offset": 10}
     },
     {
       "name": "row_header",
@@ -63,7 +63,7 @@
           "scale": "y",
           "orient": "left",
           "grid": false,
-          "title": "US_DVD_Sales",
+          "title": "US DVD Sales",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
           "zindex": 0
@@ -81,7 +81,7 @@
           "scale": "x",
           "orient": "bottom",
           "grid": false,
-          "title": "Worldwide_Gross",
+          "title": "Worldwide Gross",
           "labelFlush": true,
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_width/40)"},
@@ -94,7 +94,7 @@
       "type": "group",
       "title": {
         "text": {
-          "signal": "isValid(parent[\"MPAA_Rating\"]) ? parent[\"MPAA_Rating\"] : \"\"+parent[\"MPAA_Rating\"]"
+          "signal": "isValid(parent[\"MPAA Rating\"]) ? parent[\"MPAA Rating\"] : \"\"+parent[\"MPAA Rating\"]"
         },
         "style": "guide-label",
         "frame": "group",
@@ -105,10 +105,10 @@
         "facet": {
           "name": "facet",
           "data": "source_0",
-          "groupby": ["MPAA_Rating"]
+          "groupby": ["MPAA Rating"]
         }
       },
-      "sort": {"field": ["datum[\"MPAA_Rating\"]"], "order": ["ascending"]},
+      "sort": {"field": ["datum[\"MPAA Rating\"]"], "order": ["ascending"]},
       "encode": {
         "update": {
           "width": {"signal": "child_width"},
@@ -128,10 +128,10 @@
               "stroke": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Worldwide_Gross\" + \": \" + (format(datum[\"Worldwide_Gross\"], \"\")) + \"; \" + \"US_DVD_Sales\" + \": \" + (format(datum[\"US_DVD_Sales\"], \"\"))"
+                "signal": "\"Worldwide Gross\" + \": \" + (format(datum[\"Worldwide Gross\"], \"\")) + \"; \" + \"US DVD Sales\" + \": \" + (format(datum[\"US DVD Sales\"], \"\"))"
               },
-              "x": {"scale": "x", "field": "Worldwide_Gross"},
-              "y": {"scale": "y", "field": "US_DVD_Sales"}
+              "x": {"scale": "x", "field": "Worldwide Gross"},
+              "y": {"scale": "y", "field": "US DVD Sales"}
             }
           }
         }
@@ -172,7 +172,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Worldwide_Gross"},
+      "domain": {"data": "source_0", "field": "Worldwide Gross"},
       "range": [0, {"signal": "child_width"}],
       "nice": true,
       "zero": true
@@ -180,7 +180,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "US_DVD_Sales"},
+      "domain": {"data": "source_0", "field": "US DVD Sales"},
       "range": [{"signal": "child_height"}, 0],
       "nice": true,
       "zero": true

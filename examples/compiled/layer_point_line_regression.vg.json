@@ -13,7 +13,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"Rotten_Tomatoes_Rating\"]) && isFinite(+datum[\"Rotten_Tomatoes_Rating\"]) && isValid(datum[\"IMDB_Rating\"]) && isFinite(+datum[\"IMDB_Rating\"])"
+          "expr": "isValid(datum[\"Rotten Tomatoes Rating\"]) && isFinite(+datum[\"Rotten Tomatoes Rating\"]) && isValid(datum[\"IMDB Rating\"]) && isFinite(+datum[\"IMDB Rating\"])"
         }
       ]
     },
@@ -23,9 +23,9 @@
       "transform": [
         {
           "type": "regression",
-          "x": "Rotten_Tomatoes_Rating",
-          "y": "IMDB_Rating",
-          "as": ["Rotten_Tomatoes_Rating", "IMDB_Rating"]
+          "x": "Rotten Tomatoes Rating",
+          "y": "IMDB Rating",
+          "as": ["Rotten Tomatoes Rating", "IMDB Rating"]
         }
       ]
     },
@@ -35,10 +35,10 @@
       "transform": [
         {
           "type": "regression",
-          "x": "Rotten_Tomatoes_Rating",
-          "y": "IMDB_Rating",
+          "x": "Rotten Tomatoes Rating",
+          "y": "IMDB Rating",
           "params": true,
-          "as": ["Rotten_Tomatoes_Rating", "IMDB_Rating"]
+          "as": ["Rotten Tomatoes Rating", "IMDB Rating"]
         },
         {
           "type": "formula",
@@ -60,10 +60,10 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Rotten_Tomatoes_Rating\" + \": \" + (format(datum[\"Rotten_Tomatoes_Rating\"], \"\")) + \"; \" + \"IMDB_Rating\" + \": \" + (format(datum[\"IMDB_Rating\"], \"\"))"
+            "signal": "\"Rotten Tomatoes Rating\" + \": \" + (format(datum[\"Rotten Tomatoes Rating\"], \"\")) + \"; \" + \"IMDB Rating\" + \": \" + (format(datum[\"IMDB Rating\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "Rotten_Tomatoes_Rating"},
-          "y": {"scale": "y", "field": "IMDB_Rating"}
+          "x": {"scale": "x", "field": "Rotten Tomatoes Rating"},
+          "y": {"scale": "y", "field": "IMDB Rating"}
         }
       }
     },
@@ -71,18 +71,18 @@
       "name": "layer_1_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"Rotten_Tomatoes_Rating\"]"},
+      "sort": {"field": "datum[\"Rotten Tomatoes Rating\"]"},
       "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "firebrick"},
           "description": {
-            "signal": "\"Rotten_Tomatoes_Rating\" + \": \" + (format(datum[\"Rotten_Tomatoes_Rating\"], \"\")) + \"; \" + \"IMDB_Rating\" + \": \" + (format(datum[\"IMDB_Rating\"], \"\"))"
+            "signal": "\"Rotten Tomatoes Rating\" + \": \" + (format(datum[\"Rotten Tomatoes Rating\"], \"\")) + \"; \" + \"IMDB Rating\" + \": \" + (format(datum[\"IMDB Rating\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "Rotten_Tomatoes_Rating"},
-          "y": {"scale": "y", "field": "IMDB_Rating"},
+          "x": {"scale": "x", "field": "Rotten Tomatoes Rating"},
+          "y": {"scale": "y", "field": "IMDB Rating"},
           "defined": {
-            "signal": "isValid(datum[\"Rotten_Tomatoes_Rating\"]) && isFinite(+datum[\"Rotten_Tomatoes_Rating\"]) && isValid(datum[\"IMDB_Rating\"]) && isFinite(+datum[\"IMDB_Rating\"])"
+            "signal": "isValid(datum[\"Rotten Tomatoes Rating\"]) && isFinite(+datum[\"Rotten Tomatoes Rating\"]) && isValid(datum[\"IMDB Rating\"]) && isFinite(+datum[\"IMDB Rating\"])"
           }
         }
       }
@@ -115,8 +115,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Rotten_Tomatoes_Rating"},
-          {"data": "data_1", "field": "Rotten_Tomatoes_Rating"}
+          {"data": "data_0", "field": "Rotten Tomatoes Rating"},
+          {"data": "data_1", "field": "Rotten Tomatoes Rating"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -128,8 +128,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "IMDB_Rating"},
-          {"data": "data_1", "field": "IMDB_Rating"}
+          {"data": "data_0", "field": "IMDB Rating"},
+          {"data": "data_1", "field": "IMDB Rating"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -170,7 +170,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "Rotten_Tomatoes_Rating",
+      "title": "Rotten Tomatoes Rating",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -180,7 +180,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "IMDB_Rating",
+      "title": "IMDB Rating",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0

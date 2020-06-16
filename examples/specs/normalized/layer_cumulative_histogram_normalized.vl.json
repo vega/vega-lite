@@ -10,7 +10,7 @@
     {"filter": "datum.bin_IMDB_Rating !== null"},
     {
       "sort": [{"field": "bin_IMDB_Rating"}],
-      "window": [{"op": "sum", "field": "count", "as": "cumulative_count"}],
+      "window": [{"op": "sum", "field": "count", "as": "Cumulative Count"}],
       "frame": [null, 0]
     }
   ],
@@ -25,7 +25,7 @@
           "title": "IMDB Rating"
         },
         "x2": {"field": "bin_IMDB_Rating_end"},
-        "y": {"field": "cumulative_count", "type": "quantitative"}
+        "y": {"field": "Cumulative Count", "type": "quantitative"}
       }
     },
     {

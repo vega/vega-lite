@@ -1,13 +1,13 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Average temperatures in Seattle, broken down by hour. Derived from [Seattle Annual Temperate](https://vega.github.io/vega/examples/annual-temperature/) example from the Vega example gallery.",
+  "description": "Temperature normals in Seattle. Derived from [Seattle Annual Temperate](https://vega.github.io/vega/examples/annual-temperature/) example from the Vega example gallery.",
   "background": "white",
   "padding": 5,
-  "title": {"text": "Seattle Annual Temperatures", "anchor": "start"},
+  "title": {"text": "Seattle Temperature Normals", "anchor": "start"},
   "data": [
     {
       "name": "source_0",
-      "url": "data/seattle-temps.csv",
+      "url": "data/seattle-weather-hourly-normals.csv",
       "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [
         {
@@ -150,13 +150,13 @@
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"Month\" + \": \" + (timeFormat(datum[\"date\"], '%b')) + \"; \" + \"temp\" + \": \" + (format(datum[\"temp\"], \"\"))"
+                "signal": "\"Month\" + \": \" + (timeFormat(datum[\"date\"], '%b')) + \"; \" + \"temperature\" + \": \" + (format(datum[\"temperature\"], \"\"))"
               },
               "x": {"scale": "x", "field": "date"},
-              "y": {"scale": "y", "field": "temp"},
+              "y": {"scale": "y", "field": "temperature"},
               "y2": {"field": {"group": "height"}},
               "defined": {
-                "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"temp\"]) && isFinite(+datum[\"temp\"])"
+                "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"temperature\"]) && isFinite(+datum[\"temperature\"])"
               }
             }
           }
@@ -174,7 +174,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "temp"},
+      "domain": {"data": "source_0", "field": "temperature"},
       "range": [{"signal": "child_height"}, 0],
       "zero": false,
       "nice": true

@@ -8,20 +8,20 @@
   "data": [
     {
       "name": "source_0",
-      "url": "data/iris.json",
+      "url": "data/cars.json",
       "format": {"type": "json"},
       "transform": [
         {
           "type": "fold",
-          "fields": ["petalWidth", "petalLength", "sepalWidth", "sepalLength"],
-          "as": ["organ", "value"]
+          "fields": ["Displacement", "Horsepower"],
+          "as": ["Measurement", "value"]
         },
         {
           "type": "kde",
           "field": "value",
-          "bandwidth": 0.3,
-          "groupby": ["organ"],
-          "extent": [0, 8],
+          "bandwidth": 10,
+          "groupby": ["Measurement"],
+          "extent": [10, 500],
           "counts": true,
           "steps": 200,
           "as": ["value", "density"]
@@ -29,7 +29,7 @@
         {
           "type": "impute",
           "field": "density",
-          "groupby": ["organ"],
+          "groupby": ["Measurement"],
           "key": "value",
           "method": "value",
           "value": 0
@@ -38,7 +38,7 @@
           "type": "stack",
           "groupby": ["value"],
           "field": "density",
-          "sort": {"field": ["organ"], "order": ["descending"]},
+          "sort": {"field": ["Measurement"], "order": ["descending"]},
           "as": ["density_start", "density_end"],
           "offset": "zero"
         }
@@ -53,7 +53,7 @@
         "facet": {
           "name": "faceted_path_main",
           "data": "source_0",
-          "groupby": ["organ"]
+          "groupby": ["Measurement"]
         }
       },
       "encode": {
@@ -72,9 +72,9 @@
           "encode": {
             "update": {
               "orient": {"value": "vertical"},
-              "fill": {"scale": "color", "field": "organ"},
+              "fill": {"scale": "color", "field": "Measurement"},
               "description": {
-                "signal": "\"value\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"density\" + \": \" + (format(datum[\"density\"], \"\")) + \"; \" + \"organ\" + \": \" + (isValid(datum[\"organ\"]) ? datum[\"organ\"] : \"\"+datum[\"organ\"])"
+                "signal": "\"value\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"density\" + \": \" + (format(datum[\"density\"], \"\")) + \"; \" + \"Measurement\" + \": \" + (isValid(datum[\"Measurement\"]) ? datum[\"Measurement\"] : \"\"+datum[\"Measurement\"])"
               },
               "x": {"scale": "x", "field": "value"},
               "y": {"scale": "y", "field": "density_end"},
@@ -111,7 +111,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "organ", "sort": true},
+      "domain": {"data": "source_0", "field": "Measurement", "sort": true},
       "range": "category"
     }
   ],
@@ -164,5 +164,5 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "circle", "title": "organ"}]
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "Measurement"}]
 }

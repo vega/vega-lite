@@ -12,10 +12,10 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["Major_Genre"],
+          "groupby": ["Major Genre"],
           "ops": ["count", "mean"],
-          "fields": [null, "IMDB_Rating"],
-          "as": ["__count", "mean_IMDB_Rating"]
+          "fields": [null, "IMDB Rating"],
+          "as": ["__count", "mean_IMDB Rating"]
         }
       ]
     },
@@ -25,7 +25,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"mean_IMDB_Rating\"]) && isFinite(+datum[\"mean_IMDB_Rating\"])"
+          "expr": "isValid(datum[\"mean_IMDB Rating\"]) && isFinite(+datum[\"mean_IMDB Rating\"])"
         }
       ]
     }
@@ -48,11 +48,11 @@
           "fill": {"value": "#ddd"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Major_Genre\" + \": \" + (isValid(datum[\"Major_Genre\"]) ? datum[\"Major_Genre\"] : \"\"+datum[\"Major_Genre\"]) + \"; \" + \"Mean IMDB Ratings\" + \": \" + (format(datum[\"mean_IMDB_Rating\"], \"\"))"
+            "signal": "\"Major Genre\" + \": \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; \" + \"Mean IMDB Ratings\" + \": \" + (format(datum[\"mean_IMDB Rating\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "mean_IMDB_Rating"},
+          "x": {"scale": "x", "field": "mean_IMDB Rating"},
           "x2": {"scale": "x", "value": 0},
-          "y": {"scale": "y", "field": "Major_Genre"},
+          "y": {"scale": "y", "field": "Major Genre"},
           "height": {"scale": "y", "band": 1}
         }
       }
@@ -67,12 +67,12 @@
           "align": {"value": "left"},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"Major_Genre\" + \": \" + (isValid(datum[\"Major_Genre\"]) ? datum[\"Major_Genre\"] : \"\"+datum[\"Major_Genre\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"Major Genre\" + \": \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
           },
           "x": {"value": 5},
-          "y": {"scale": "y", "field": "Major_Genre", "band": 0.5},
+          "y": {"scale": "y", "field": "Major Genre", "band": 0.5},
           "text": {
-            "signal": "isValid(datum[\"Major_Genre\"]) ? datum[\"Major_Genre\"] : \"\"+datum[\"Major_Genre\"]"
+            "signal": "isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]"
           },
           "baseline": {"value": "middle"}
         }
@@ -93,8 +93,8 @@
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "Major_Genre"},
-          {"data": "source_0", "field": "Major_Genre"}
+          {"data": "data_0", "field": "Major Genre"},
+          {"data": "source_0", "field": "Major Genre"}
         ],
         "sort": true
       },

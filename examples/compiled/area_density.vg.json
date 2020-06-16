@@ -13,7 +13,7 @@
       "transform": [
         {
           "type": "kde",
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "bandwidth": 0.3,
           "as": ["value", "density"]
         }

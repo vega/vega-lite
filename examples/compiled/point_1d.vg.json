@@ -13,7 +13,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"IMDB_Rating\"]) && isFinite(+datum[\"IMDB_Rating\"])"
+          "expr": "isValid(datum[\"IMDB Rating\"]) && isFinite(+datum[\"IMDB Rating\"])"
         }
       ]
     }
@@ -31,9 +31,9 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"IMDB_Rating\" + \": \" + (format(datum[\"IMDB_Rating\"], \"\"))"
+            "signal": "\"IMDB Rating\" + \": \" + (format(datum[\"IMDB Rating\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "IMDB_Rating"},
+          "x": {"scale": "x", "field": "IMDB Rating"},
           "y": {"signal": "height", "mult": 0.5}
         }
       }
@@ -43,7 +43,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "IMDB_Rating"},
+      "domain": {"data": "source_0", "field": "IMDB Rating"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -67,7 +67,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "IMDB_Rating",
+      "title": "IMDB Rating",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},

@@ -3,28 +3,26 @@
   "background": "white",
   "padding": 5,
   "width": 400,
-  "height": 100,
+  "height": 80,
+  "title": {"text": "Distribution of Body Mass of Penguins", "frame": "group"},
   "style": "cell",
   "data": [
     {
       "name": "source_0",
-      "url": "data/movies.json",
+      "url": "data/penguins.json",
       "format": {"type": "json"},
       "transform": [
         {
           "type": "kde",
-          "field": "IMDB_Rating",
-          "bandwidth": 0.3,
-          "groupby": ["Major_Genre"],
-          "extent": [0, 10],
-          "counts": true,
-          "steps": 50,
+          "field": "Body Mass (g)",
+          "groupby": ["Species"],
+          "extent": [2500, 6500],
           "as": ["value", "density"]
         },
         {
           "type": "impute",
           "field": "density",
-          "groupby": ["Major_Genre"],
+          "groupby": ["Species"],
           "key": "value",
           "method": "value",
           "value": 0
@@ -33,7 +31,7 @@
           "type": "stack",
           "groupby": ["value"],
           "field": "density",
-          "sort": {"field": ["Major_Genre"], "order": ["descending"]},
+          "sort": {"field": ["Species"], "order": ["descending"]},
           "as": ["density_start", "density_end"],
           "offset": "zero"
         }
@@ -48,7 +46,7 @@
         "facet": {
           "name": "faceted_path_main",
           "data": "source_0",
-          "groupby": ["Major_Genre"]
+          "groupby": ["Species"]
         }
       },
       "encode": {
@@ -67,9 +65,9 @@
           "encode": {
             "update": {
               "orient": {"value": "vertical"},
-              "fill": {"scale": "color", "field": "Major_Genre"},
+              "fill": {"scale": "color", "field": "Species"},
               "description": {
-                "signal": "\"value\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"density\" + \": \" + (format(datum[\"density\"], \"\")) + \"; \" + \"Major_Genre\" + \": \" + (isValid(datum[\"Major_Genre\"]) ? datum[\"Major_Genre\"] : \"\"+datum[\"Major_Genre\"])"
+                "signal": "\"Body Mass (g)\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"density\" + \": \" + (format(datum[\"density\"], \"\")) + \"; \" + \"Species\" + \": \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
               "x": {"scale": "x", "field": "value"},
               "y": {"scale": "y", "field": "density_end"},
@@ -106,8 +104,8 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "Major_Genre", "sort": true},
-      "range": {"scheme": "category20"}
+      "domain": {"data": "source_0", "field": "Species", "sort": true},
+      "range": "category"
     }
   ],
   "axes": [
@@ -143,7 +141,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "value",
+      "title": "Body Mass (g)",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -159,5 +157,5 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "circle", "title": "Major_Genre"}]
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "Species"}]
 }

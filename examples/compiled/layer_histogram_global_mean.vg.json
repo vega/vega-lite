@@ -13,15 +13,15 @@
       "transform": [
         {
           "type": "extent",
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "signal": "layer_0_bin_maxbins_10_IMDB_Rating_extent"
         },
         {
           "type": "bin",
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "as": [
-            "bin_maxbins_10_IMDB_Rating",
-            "bin_maxbins_10_IMDB_Rating_end"
+            "bin_maxbins_10_IMDB Rating",
+            "bin_maxbins_10_IMDB Rating_end"
           ],
           "signal": "layer_0_bin_maxbins_10_IMDB_Rating_bins",
           "extent": {"signal": "layer_0_bin_maxbins_10_IMDB_Rating_extent"},
@@ -30,8 +30,8 @@
         {
           "type": "aggregate",
           "groupby": [
-            "bin_maxbins_10_IMDB_Rating",
-            "bin_maxbins_10_IMDB_Rating_end"
+            "bin_maxbins_10_IMDB Rating",
+            "bin_maxbins_10_IMDB Rating_end"
           ],
           "ops": ["count"],
           "fields": [null],
@@ -39,7 +39,7 @@
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])"
+          "expr": "isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"])"
         }
       ]
     },
@@ -51,12 +51,12 @@
           "type": "aggregate",
           "groupby": [],
           "ops": ["mean"],
-          "fields": ["IMDB_Rating"],
-          "as": ["mean_IMDB_Rating"]
+          "fields": ["IMDB Rating"],
+          "as": ["mean_IMDB Rating"]
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"mean_IMDB_Rating\"]) && isFinite(+datum[\"mean_IMDB_Rating\"])"
+          "expr": "isValid(datum[\"mean_IMDB Rating\"]) && isFinite(+datum[\"mean_IMDB Rating\"])"
         }
       ]
     }
@@ -72,21 +72,21 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"IMDB_Rating (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB_Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB_Rating_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"IMDB Rating (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
           },
           "x2": [
             {
-              "test": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])",
+              "test": "!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"])",
               "value": 0
             },
-            {"scale": "x", "field": "bin_maxbins_10_IMDB_Rating", "offset": 1}
+            {"scale": "x", "field": "bin_maxbins_10_IMDB Rating", "offset": 1}
           ],
           "x": [
             {
-              "test": "!isValid(datum[\"bin_maxbins_10_IMDB_Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB_Rating\"])",
+              "test": "!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"])",
               "value": 0
             },
-            {"scale": "x", "field": "bin_maxbins_10_IMDB_Rating_end"}
+            {"scale": "x", "field": "bin_maxbins_10_IMDB Rating_end"}
           ],
           "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
@@ -102,14 +102,14 @@
         "update": {
           "stroke": {"value": "red"},
           "description": {
-            "signal": "\"Mean of IMDB_Rating\" + \": \" + (format(datum[\"mean_IMDB_Rating\"], \"\"))"
+            "signal": "\"Mean of IMDB Rating\" + \": \" + (format(datum[\"mean_IMDB Rating\"], \"\"))"
           },
           "x": [
             {
-              "test": "!isValid(datum[\"mean_IMDB_Rating\"]) || !isFinite(+datum[\"mean_IMDB_Rating\"])",
+              "test": "!isValid(datum[\"mean_IMDB Rating\"]) || !isFinite(+datum[\"mean_IMDB Rating\"])",
               "value": 0
             },
-            {"scale": "x", "field": "mean_IMDB_Rating"}
+            {"scale": "x", "field": "mean_IMDB Rating"}
           ],
           "y": {"value": 0},
           "y2": {"field": {"group": "height"}},
@@ -127,7 +127,7 @@
           {
             "signal": "[layer_0_bin_maxbins_10_IMDB_Rating_bins.start, layer_0_bin_maxbins_10_IMDB_Rating_bins.stop]"
           },
-          {"data": "data_1", "field": "mean_IMDB_Rating"}
+          {"data": "data_1", "field": "mean_IMDB Rating"}
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -163,7 +163,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "IMDB_Rating (binned), Mean of IMDB_Rating",
+      "title": "IMDB Rating (binned), Mean of IMDB Rating",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/10)"},

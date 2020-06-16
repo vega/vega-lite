@@ -11,7 +11,7 @@
       "url": "data/movies.json",
       "format": {"type": "json", "parse": {"Release_Date": "date"}},
       "transform": [
-        {"type": "filter", "expr": "datum.IMDB_Rating != null"},
+        {"type": "filter", "expr": "datum['IMDB Rating'] != null"},
         {
           "field": "Release_Date",
           "type": "timeunit",
@@ -22,12 +22,12 @@
           "type": "joinaggregate",
           "as": ["AverageYearRating"],
           "ops": ["mean"],
-          "fields": ["IMDB_Rating"],
+          "fields": ["IMDB Rating"],
           "groupby": ["year"]
         },
         {
           "type": "filter",
-          "expr": "(datum.IMDB_Rating - datum.AverageYearRating) > 2.5"
+          "expr": "(datum['IMDB Rating'] - datum.AverageYearRating) > 2.5"
         }
       ]
     },
@@ -37,7 +37,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"IMDB_Rating\"]) && isFinite(+datum[\"IMDB_Rating\"])"
+          "expr": "isValid(datum[\"IMDB Rating\"]) && isFinite(+datum[\"IMDB Rating\"])"
         }
       ]
     },
@@ -71,9 +71,9 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"IMDB Rating\" + \": \" + (format(datum[\"IMDB_Rating\"], \"\")) + \"; \" + \"Title\" + \": \" + (isValid(datum[\"Title\"]) ? datum[\"Title\"] : \"\"+datum[\"Title\"])"
+            "signal": "\"IMDB Rating\" + \": \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; \" + \"Title\" + \": \" + (isValid(datum[\"Title\"]) ? datum[\"Title\"] : \"\"+datum[\"Title\"])"
           },
-          "x": {"scale": "x", "field": "IMDB_Rating"},
+          "x": {"scale": "x", "field": "IMDB Rating"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "Title"},
           "height": {"scale": "y", "band": 1}
@@ -107,7 +107,7 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "IMDB_Rating"},
+          {"data": "data_0", "field": "IMDB Rating"},
           {"data": "data_1", "field": "AverageYearRating"}
         ]
       },
