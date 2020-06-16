@@ -7,11 +7,63 @@
   "height": 200,
   "style": "cell",
   "data": [
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
     {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {"type": "json"},
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
+        {
+          "type": "extent",
+          "field": "Acceleration",
+          "signal": "layer_0_bin_maxbins_10_Acceleration_extent"
+        },
+        {
+          "type": "bin",
+          "field": "Acceleration",
+          "as": [
+            "bin_maxbins_10_Acceleration",
+            "bin_maxbins_10_Acceleration_end"
+          ],
+          "signal": "layer_0_bin_maxbins_10_Acceleration_bins",
+          "extent": {"signal": "layer_0_bin_maxbins_10_Acceleration_extent"},
+          "maxbins": 10
+        },
+        {
+          "type": "extent",
+          "field": "Horsepower",
+          "signal": "layer_0_bin_maxbins_10_Horsepower_extent"
+        },
+        {
+          "type": "bin",
+          "field": "Horsepower",
+          "as": ["bin_maxbins_10_Horsepower", "bin_maxbins_10_Horsepower_end"],
+          "signal": "layer_0_bin_maxbins_10_Horsepower_bins",
+          "extent": {"signal": "layer_0_bin_maxbins_10_Horsepower_extent"},
+          "maxbins": 10
+        },
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_10_Acceleration",
+            "bin_maxbins_10_Acceleration_end",
+            "bin_maxbins_10_Horsepower",
+            "bin_maxbins_10_Horsepower_end"
+          ],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"bin_maxbins_10_Acceleration\"]) && isFinite(+datum[\"bin_maxbins_10_Acceleration\"]) && isValid(datum[\"bin_maxbins_10_Horsepower\"]) && isFinite(+datum[\"bin_maxbins_10_Horsepower\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {"type": "filter", "expr": "datum.Origin === 'Japan'"},
         {
           "type": "extent",
           "field": "Acceleration",
@@ -40,36 +92,7 @@
           "signal": "layer_1_bin_maxbins_10_Horsepower_bins",
           "extent": {"signal": "layer_1_bin_maxbins_10_Horsepower_extent"},
           "maxbins": 10
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {"type": "filter", "expr": "datum.Origin === 'Japan'"},
-        {
-          "type": "aggregate",
-          "groupby": [
-            "bin_maxbins_10_Acceleration",
-            "bin_maxbins_10_Acceleration_end",
-            "bin_maxbins_10_Horsepower",
-            "bin_maxbins_10_Horsepower_end"
-          ],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
         },
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"bin_maxbins_10_Acceleration\"]) && isFinite(+datum[\"bin_maxbins_10_Acceleration\"]) && isValid(datum[\"bin_maxbins_10_Horsepower\"]) && isFinite(+datum[\"bin_maxbins_10_Horsepower\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
         {
           "type": "aggregate",
           "groupby": [
@@ -94,7 +117,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -129,7 +152,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "firebrick"},
@@ -166,20 +189,34 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "signal": "[layer_1_bin_maxbins_10_Acceleration_bins.start, layer_1_bin_maxbins_10_Acceleration_bins.stop]"
+        "fields": [
+          {
+            "signal": "[layer_0_bin_maxbins_10_Acceleration_bins.start, layer_0_bin_maxbins_10_Acceleration_bins.stop]"
+          },
+          {
+            "signal": "[layer_1_bin_maxbins_10_Acceleration_bins.start, layer_1_bin_maxbins_10_Acceleration_bins.stop]"
+          }
+        ]
       },
       "range": [0, {"signal": "width"}],
-      "bins": {"signal": "layer_1_bin_maxbins_10_Acceleration_bins"},
+      "bins": {"signal": "layer_0_bin_maxbins_10_Acceleration_bins"},
       "zero": false
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
-        "signal": "[layer_1_bin_maxbins_10_Horsepower_bins.start, layer_1_bin_maxbins_10_Horsepower_bins.stop]"
+        "fields": [
+          {
+            "signal": "[layer_0_bin_maxbins_10_Horsepower_bins.start, layer_0_bin_maxbins_10_Horsepower_bins.stop]"
+          },
+          {
+            "signal": "[layer_1_bin_maxbins_10_Horsepower_bins.start, layer_1_bin_maxbins_10_Horsepower_bins.stop]"
+          }
+        ]
       },
       "range": [{"signal": "height"}, 0],
-      "bins": {"signal": "layer_1_bin_maxbins_10_Horsepower_bins"},
+      "bins": {"signal": "layer_0_bin_maxbins_10_Horsepower_bins"},
       "zero": false
     },
     {
@@ -187,14 +224,14 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "__count"},
-          {"data": "data_0", "field": "__count"}
+          {"data": "data_0", "field": "__count"},
+          {"data": "data_1", "field": "__count"}
         ]
       },
       "range": [
         0,
         {
-          "signal": "pow(0.95 * min(width / ((layer_1_bin_maxbins_10_Acceleration_bins.stop - layer_1_bin_maxbins_10_Acceleration_bins.start) / layer_1_bin_maxbins_10_Acceleration_bins.step), height / ((layer_1_bin_maxbins_10_Horsepower_bins.stop - layer_1_bin_maxbins_10_Horsepower_bins.start) / layer_1_bin_maxbins_10_Horsepower_bins.step)), 2)"
+          "signal": "pow(0.95 * min(width / ((layer_0_bin_maxbins_10_Acceleration_bins.stop - layer_0_bin_maxbins_10_Acceleration_bins.start) / layer_0_bin_maxbins_10_Acceleration_bins.step), height / ((layer_0_bin_maxbins_10_Horsepower_bins.stop - layer_0_bin_maxbins_10_Horsepower_bins.start) / layer_0_bin_maxbins_10_Horsepower_bins.step)), 2)"
         }
       ],
       "zero": true
