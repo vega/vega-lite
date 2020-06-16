@@ -1,7 +1,7 @@
 ---
-name: 'Feature request'
-about: 'Suggest a new idea for Vega-Lite'
-labels: 'Feature Request :raising_hand_woman:'
+name: 'Enhancement'
+about: 'Suggest a new idea or improvement for Vega-Lite'
+labels: 'Enhancement :tada:'
 ---
 
 Please:
