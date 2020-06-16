@@ -33,7 +33,7 @@ import {
   isWindow
 } from '../../transform';
 import {deepEqual, mergeDeep} from '../../util';
-import {isFacetModel, isLayerModel, isUnitModel, Model} from '../model';
+import {isFacetModel, isUnitModel, Model} from '../model';
 import {requiresSelectionId} from '../selection';
 import {materializeSelections} from '../selection/parse';
 import {AggregateNode} from './aggregate';
@@ -264,7 +264,7 @@ Description of the dataflow (http://asciiflow.com/):
  Timeunit (in `encoding`)
          |
          v
-Formula From Sort Array
+Formula from Sort Array
          |
          v
       +--+--+
@@ -326,15 +326,6 @@ export function parseData(model: Model): DataComponent {
   // (e.g., post-aggregation).
   head = new IdentifierNode(head);
 
-  // HACK: This is equivalent for merging bin extent for union scale.
-  // FIXME(https://github.com/vega/vega-lite/issues/2270): Correctly merge extent / bin node for shared bin scale
-  const parentIsLayer = model.parent && isLayerModel(model.parent);
-  if (isUnitModel(model) || isFacetModel(model)) {
-    if (parentIsLayer) {
-      head = BinNode.makeFromEncoding(head, model) ?? head;
-    }
-  }
-
   if (model.transforms.length > 0) {
     head = parseTransformArray(head, model, ancestorParse);
   }
@@ -350,9 +341,7 @@ export function parseData(model: Model): DataComponent {
   }
 
   if (isUnitModel(model) || isFacetModel(model)) {
-    if (!parentIsLayer) {
-      head = BinNode.makeFromEncoding(head, model) ?? head;
-    }
+    head = BinNode.makeFromEncoding(head, model) ?? head;
 
     head = TimeUnitNode.makeFromEncoding(head, model) ?? head;
     head = CalculateNode.parseAllForSortIndex(head, model);
