@@ -1,7 +1,5 @@
-import pkg from '../package.json';
+import {version} from '../package.json';
 import {normalize} from './normalize';
-
-const version = pkg.version;
 
 export {compile} from './compile/compile';
 export {Config} from './config';
