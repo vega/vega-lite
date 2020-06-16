@@ -1,33 +1,21 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/movies.csv"},
   "width": 400,
-  "height": 100,
-  "transform":[
+  "height": 80,
+  "data": {
+    "url": "data/penguins_size.csv"
+  },
+  "mark": "area",
+  "transform": [
     {
-      "density": "IMDB Rating",
-      "bandwidth": 0.3,
-      "groupby": ["Major Genre"],
-      "extent": [0, 10],
-      "counts": true,
-      "steps": 50
+      "density": "body_mass_g",
+      "groupby": ["species"],
+      "extent": [2500, 6500]
     }
   ],
-  "mark": "area",
   "encoding": {
-    "x": {
-      "field": "value",
-      "type": "quantitative"
-    },
-    "y": {
-      "field": "density",
-      "type": "quantitative",
-      "stack": true
-    },
-    "color": {
-      "field": "Major Genre",
-      "type": "nominal",
-      "scale": {"scheme": "category20"}
-    }
+    "x": {"field": "value", "type": "quantitative"},
+    "y": {"field": "density", "type": "quantitative", "stack": "zero"},
+    "color": {"field": "species", "type": "nominal"}
   }
 }

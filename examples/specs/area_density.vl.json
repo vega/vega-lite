@@ -1,14 +1,17 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/movies.csv"},
+  "data": {
+    "url": "data/movies.csv",
+    "format": {
+      "parse": {"IMDB Rating": "number"}
+    }
+  },
   "width": 400,
   "height": 100,
-  "transform":[
-    {
-      "density": "IMDB Rating",
-      "bandwidth": 0.3
-    }
-  ],
+  "transform":[{
+    "density": "IMDB Rating",
+    "bandwidth": 0.3
+  }],
   "mark": "area",
   "encoding": {
     "x": {
