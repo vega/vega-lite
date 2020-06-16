@@ -1,3 +1,4 @@
+import {AggregateTransform} from './../../src/transform';
 import {isMarkDef, MarkDef} from '../../src/mark';
 import {normalize} from '../../src/normalize';
 import {isLayerSpec, isUnitSpec, TopLevelSpec} from '../../src/spec';
@@ -7,6 +8,7 @@ import {NormalizedUnitSpec} from '../../src/spec/unit';
 import {Orientation} from 'vega';
 import {some} from '../../src/util';
 import {assertIsUnitSpec} from '../util';
+import {compositeMarkOrient} from '../../src/compositemark/common';
 
 describe('common feature of composite marks', () => {
   it('should clip all the part when clip property in composite mark def is true', () => {
@@ -122,88 +124,66 @@ describe('common feature of composite marks', () => {
     it(`should aggregate ${aggField} in errorbar with orient=${orient[0]}, x is ${xType}${
       xAgg ? '+aggregate' : ''
     }, and y is ${yType}${yAgg ? '+aggregate' : ''}`, () => {
-      const outputSpec = normalize(
-        {
-          data: {url: 'data/population.json'},
-          mark: {type: 'errorbar', orient},
-          encoding: {
-            x: {field: 'x-field', type: xType, aggregate: xAgg},
-            y: {field: 'y-field', type: yType, aggregate: yAgg}
-          }
-        },
-        defaultConfig
-      );
+      const spec = {
+        data: {url: 'data/population.json'},
+        mark: {type: 'errorbar'},
+        encoding: {
+          x: {field: 'x-field', type: xType, aggregate: xAgg},
+          y: {field: 'y-field', type: yType, aggregate: yAgg}
+        }
+      } as const;
+      const outputSpec = normalize(spec, defaultConfig);
 
-      const aggregateTransform = outputSpec.transform[0];
-      if (isAggregate(aggregateTransform)) {
-        expect(
-          some(aggregateTransform.aggregate, aggregateFieldDef => {
-            return (
-              aggregateFieldDef.field === aggField &&
-              (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median')
-            );
-          })
-        ).toBe(true);
-      } else {
-        expect(false).toBe(true);
-      }
+      expect(compositeMarkOrient(spec, 'errorbar')).toBe(orient);
+
+      const aggregateTransform = outputSpec.transform[0] as AggregateTransform;
+
+      expect(isAggregate(aggregateTransform)).toBeTruthy();
+      expect(
+        some(aggregateTransform.aggregate, aggregateFieldDef => {
+          return (
+            aggregateFieldDef.field === aggField &&
+            (aggregateFieldDef.op === 'mean' || aggregateFieldDef.op === 'median')
+          );
+        })
+      ).toBe(true);
     });
   }
 
   const vertical: TestErrorbarOrientParam[] = [
     {xType: 'ordinal', xAgg: undefined, yType: 'temporal', yAgg: undefined, orient: 'vertical'},
-    {xType: 'ordinal', xAgg: undefined, yType: 'temporal', yAgg: undefined, orient: 'horizontal'},
     {xType: 'ordinal', xAgg: undefined, yType: 'quantitative', yAgg: undefined, orient: 'vertical'},
-    {xType: 'ordinal', xAgg: undefined, yType: 'quantitative', yAgg: undefined, orient: 'horizontal'},
     {xType: 'temporal', xAgg: undefined, yType: 'temporal', yAgg: undefined, orient: 'vertical'},
     {xType: 'temporal', xAgg: undefined, yType: 'quantitative', yAgg: undefined, orient: 'vertical'},
-    {xType: 'temporal', xAgg: undefined, yType: 'quantitative', yAgg: undefined, orient: 'horizontal'},
     {xType: 'quantitative', xAgg: undefined, yType: 'quantitative', yAgg: undefined, orient: 'vertical'},
     {xType: 'ordinal', xAgg: undefined, yType: 'temporal', yAgg: 'errorbar', orient: 'vertical'},
-    {xType: 'ordinal', xAgg: undefined, yType: 'temporal', yAgg: 'errorbar', orient: 'horizontal'},
     {xType: 'ordinal', xAgg: undefined, yType: 'quantitative', yAgg: 'errorbar', orient: 'vertical'},
-    {xType: 'ordinal', xAgg: undefined, yType: 'quantitative', yAgg: 'errorbar', orient: 'horizontal'},
     {xType: 'temporal', xAgg: undefined, yType: 'temporal', yAgg: 'errorbar', orient: 'vertical'},
-    {xType: 'temporal', xAgg: undefined, yType: 'temporal', yAgg: 'errorbar', orient: 'horizontal'},
     {xType: 'temporal', xAgg: undefined, yType: 'quantitative', yAgg: 'errorbar', orient: 'vertical'},
-    {xType: 'temporal', xAgg: undefined, yType: 'quantitative', yAgg: 'errorbar', orient: 'horizontal'},
     {xType: 'quantitative', xAgg: undefined, yType: 'quantitative', yAgg: 'errorbar', orient: 'vertical'},
-    {xType: 'quantitative', xAgg: undefined, yType: 'quantitative', yAgg: 'errorbar', orient: 'horizontal'},
     {xType: 'ordinal', xAgg: 'errorbar', yType: 'temporal', yAgg: undefined, orient: 'vertical'},
-    {xType: 'ordinal', xAgg: 'errorbar', yType: 'temporal', yAgg: undefined, orient: 'horizontal'},
     {xType: 'ordinal', xAgg: 'errorbar', yType: 'quantitative', yAgg: undefined, orient: 'vertical'},
-    {xType: 'ordinal', xAgg: 'errorbar', yType: 'quantitative', yAgg: undefined, orient: 'horizontal'},
-    {xType: 'quantitative', xAgg: undefined, yType: 'temporal', yAgg: 'errorbar', orient: 'vertical'},
-    {xType: 'quantitative', xAgg: undefined, yType: 'temporal', yAgg: 'errorbar', orient: 'horizontal'}
+    {xType: 'quantitative', xAgg: undefined, yType: 'temporal', yAgg: 'errorbar', orient: 'vertical'}
   ];
 
   const horizontal: TestErrorbarOrientParam[] = [
-    {xType: 'quantitative', xAgg: undefined, yType: 'ordinal', yAgg: undefined, orient: 'vertical'},
     {xType: 'quantitative', xAgg: undefined, yType: 'ordinal', yAgg: undefined, orient: 'horizontal'},
-    {xType: 'quantitative', xAgg: undefined, yType: 'temporal', yAgg: undefined, orient: 'vertical'},
     {xType: 'quantitative', xAgg: undefined, yType: 'temporal', yAgg: undefined, orient: 'horizontal'},
-    {xType: 'quantitative', xAgg: undefined, yType: 'ordinal', yAgg: 'errorbar', orient: 'vertical'},
     {xType: 'quantitative', xAgg: undefined, yType: 'ordinal', yAgg: 'errorbar', orient: 'horizontal'},
-    {xType: 'quantitative', xAgg: 'errorbar', yType: 'ordinal', yAgg: undefined, orient: 'vertical'},
     {xType: 'quantitative', xAgg: 'errorbar', yType: 'ordinal', yAgg: undefined, orient: 'horizontal'},
-    {xType: 'quantitative', xAgg: 'errorbar', yType: 'temporal', yAgg: undefined, orient: 'vertical'},
     {xType: 'quantitative', xAgg: 'errorbar', yType: 'temporal', yAgg: undefined, orient: 'horizontal'},
-    {xType: 'temporal', xAgg: undefined, yType: 'ordinal', yAgg: undefined, orient: 'vertical'},
     {xType: 'temporal', xAgg: undefined, yType: 'ordinal', yAgg: undefined, orient: 'horizontal'},
-    {xType: 'temporal', xAgg: undefined, yType: 'ordinal', yAgg: 'errorbar', orient: 'vertical'},
     {xType: 'temporal', xAgg: undefined, yType: 'ordinal', yAgg: 'errorbar', orient: 'horizontal'},
-    {xType: 'temporal', xAgg: 'errorbar', yType: 'ordinal', yAgg: undefined, orient: 'vertical'},
     {xType: 'temporal', xAgg: 'errorbar', yType: 'ordinal', yAgg: undefined, orient: 'horizontal'},
-    {xType: 'temporal', xAgg: undefined, yType: 'temporal', yAgg: undefined, orient: 'horizontal'},
-    {xType: 'quantitative', xAgg: undefined, yType: 'quantitative', yAgg: undefined, orient: 'horizontal'},
-    {xType: 'temporal', xAgg: 'errorbar', yType: 'temporal', yAgg: undefined, orient: 'vertical'},
     {xType: 'temporal', xAgg: 'errorbar', yType: 'temporal', yAgg: undefined, orient: 'horizontal'},
-    {xType: 'quantitative', xAgg: 'errorbar', yType: 'quantitative', yAgg: undefined, orient: 'vertical'},
     {xType: 'quantitative', xAgg: 'errorbar', yType: 'quantitative', yAgg: undefined, orient: 'horizontal'},
-    {xType: 'temporal', xAgg: 'errorbar', yType: 'quantitative', yAgg: undefined, orient: 'vertical'},
     {xType: 'temporal', xAgg: 'errorbar', yType: 'quantitative', yAgg: undefined, orient: 'horizontal'}
   ];
 
-  vertical.forEach(p => testErrorbarOrient('y-field', p));
-  horizontal.forEach(p => testErrorbarOrient('x-field', p));
+  for (const p of vertical) {
+    testErrorbarOrient('y-field', p);
+  }
+  for (const p of horizontal) {
+    testErrorbarOrient('x-field', p);
+  }
 });
