@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "width": 200,
   "height": {"step": 16},
-  "data": {"url": "data/movies.csv"},
+  "data": {"url": "data/movies.json"},
   "layer": [
     {
       "mark": {"type": "bar", "color": "#ddd"},

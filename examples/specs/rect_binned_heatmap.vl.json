@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/movies.csv"},
+  "data": {"url": "data/movies.json"},
   "transform": [{
     "filter": {"and": [
       {"field": "IMDB Rating", "valid": true},
