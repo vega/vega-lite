@@ -8081,10 +8081,10 @@ vega-dataflow@^5.5.1, vega-dataflow@^5.6.0, vega-dataflow@^5.7.0, vega-dataflow@
     vega-loader "^4.3.0"
     vega-util "^1.14.0"
 
-vega-datasets@2.0.0-beta.6:
-  version "2.0.0-beta.6"
-  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-2.0.0-beta.6.tgz#e9c40e19a9d305059483f8880212d8b92333ba19"
-  integrity sha512-+5YpyeGNwXIMT+fCpceZvhRg8vOe5r45XV89Bo6nVNd8tYivzBEI5Hk2a2yW+dwB/zVpKcsSoZTJ2JM/uIQEYg==
+vega-datasets@2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/vega-datasets/-/vega-datasets-2.0.0.tgz#169e0a5f6db2ea556e561f45d854a1709b71cba6"
+  integrity sha512-nI/9kPODquzRyE7oRIZz2CLoM+N5q06Xwrzqh65+W/lAXObD2GldWZhCW1hwguusiENvdR4L+KmOPFwOc6bn0g==
 
 vega-embed@^6.8.0:
   version "6.9.0"
