@@ -1,0 +1,38 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "data": {"url": "data/seattle-weather.csv"},
+  "vconcat": [
+    {
+      "facet": {
+        "row": {"field": "date", "timeUnit": "year", "type": "ordinal"}
+      },
+      "spec": {
+        "height": 30,
+        "mark": "line",
+        "encoding": {
+          "y": {
+            "field": "precipitation",
+            "type": "quantitative",
+            "aggregate": "mean",
+            "title": null
+          },
+          "x": {"field": "date", "timeUnit": "month", "type": "ordinal"}
+        }
+      }
+    },
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date", "timeUnit": "month", "type": "ordinal"},
+        "y": {
+          "field": "precipitation",
+          "type": "quantitative",
+          "aggregate": "mean",
+          "title": "All years"
+        }
+      },
+      "height": 50
+    }
+  ],
+  "config": {"facet": {"spacing": 0}}
+}

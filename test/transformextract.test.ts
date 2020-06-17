@@ -127,6 +127,7 @@ describe('extractTransforms()', () => {
     'trellis_line_quarter.vl.json',
     'vconcat_weather.vl.json',
     'window_top_k_others.vl.json',
+    'line_concat_facet.vl.json',
 
     // Time Unit prebinned
     // TODO: fix these

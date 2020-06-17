@@ -1,0 +1,310 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/seattle-weather.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["month"],
+          "as": ["month_date", "month_date_end"]
+        },
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["year"],
+          "as": ["year_date", "year_date_end"]
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["month_date"],
+          "ops": ["mean"],
+          "fields": ["precipitation"],
+          "as": ["mean_precipitation"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["month_date", "year_date"],
+          "ops": ["mean"],
+          "fields": ["precipitation"],
+          "as": ["mean_precipitation"]
+        }
+      ]
+    },
+    {
+      "name": "concat_0_row_domain",
+      "source": "data_1",
+      "transform": [{"type": "aggregate", "groupby": ["year_date"]}]
+    }
+  ],
+  "signals": [
+    {"name": "concat_0_x_step", "value": 20},
+    {
+      "name": "concat_0_child_width",
+      "update": "bandspace(domain('concat_0_x').length, 1, 0.5) * concat_0_x_step"
+    },
+    {"name": "concat_0_child_height", "value": 30},
+    {"name": "concat_1_x_step", "value": 20},
+    {
+      "name": "concat_1_width",
+      "update": "bandspace(domain('concat_1_x').length, 1, 0.5) * concat_1_x_step"
+    },
+    {"name": "concat_1_height", "value": 50}
+  ],
+  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
+  "marks": [
+    {
+      "type": "group",
+      "name": "concat_0_group",
+      "layout": {
+        "padding": 0,
+        "offset": {"rowTitle": 10},
+        "columns": 1,
+        "bounds": "full",
+        "align": "all"
+      },
+      "marks": [
+        {
+          "name": "row-title",
+          "type": "group",
+          "role": "row-title",
+          "title": {
+            "text": "date (year)",
+            "orient": "left",
+            "style": "guide-title",
+            "offset": 10
+          }
+        },
+        {
+          "name": "concat_0_row_header",
+          "type": "group",
+          "role": "row-header",
+          "from": {"data": "concat_0_row_domain"},
+          "sort": {"field": "datum[\"year_date\"]", "order": "ascending"},
+          "title": {
+            "text": {
+              "signal": "timeFormat(parent[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))"
+            },
+            "orient": "left",
+            "style": "guide-label",
+            "frame": "group",
+            "offset": 10
+          },
+          "encode": {"update": {"height": {"signal": "concat_0_child_height"}}},
+          "axes": [
+            {
+              "scale": "concat_0_y",
+              "orient": "left",
+              "grid": false,
+              "labelOverlap": true,
+              "tickCount": {"signal": "ceil(concat_0_child_height/40)"},
+              "zindex": 0
+            }
+          ]
+        },
+        {
+          "name": "concat_0_column_footer",
+          "type": "group",
+          "role": "column-footer",
+          "encode": {"update": {"width": {"signal": "concat_0_child_width"}}},
+          "axes": [
+            {
+              "scale": "concat_0_x",
+              "orient": "bottom",
+              "grid": false,
+              "title": "date (month)",
+              "format": {
+                "signal": "timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+              },
+              "formatType": "time",
+              "labelAlign": "right",
+              "labelAngle": 270,
+              "labelBaseline": "middle",
+              "labelOverlap": true,
+              "zindex": 0
+            }
+          ]
+        },
+        {
+          "name": "concat_0_cell",
+          "type": "group",
+          "style": "cell",
+          "from": {
+            "facet": {
+              "name": "concat_0_facet",
+              "data": "data_1",
+              "groupby": ["year_date"]
+            }
+          },
+          "sort": {"field": ["datum[\"year_date\"]"], "order": ["ascending"]},
+          "encode": {
+            "update": {
+              "width": {"signal": "concat_0_child_width"},
+              "height": {"signal": "concat_0_child_height"}
+            }
+          },
+          "marks": [
+            {
+              "name": "concat_0_child_marks",
+              "type": "line",
+              "style": ["line"],
+              "sort": {"field": "datum[\"month_date\"]"},
+              "from": {"data": "concat_0_facet"},
+              "encode": {
+                "update": {
+                  "stroke": {"value": "#4c78a8"},
+                  "description": {
+                    "signal": "\"Mean of precipitation\" + \": \" + (format(datum[\"mean_precipitation\"], \"\")) + \"; \" + \"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+                  },
+                  "x": {"scale": "concat_0_x", "field": "month_date"},
+                  "y": {"scale": "concat_0_y", "field": "mean_precipitation"},
+                  "defined": {
+                    "signal": "isValid(datum[\"mean_precipitation\"]) && isFinite(+datum[\"mean_precipitation\"])"
+                  }
+                }
+              }
+            }
+          ],
+          "axes": [
+            {
+              "scale": "concat_0_y",
+              "orient": "left",
+              "gridScale": "concat_0_x",
+              "grid": true,
+              "tickCount": {"signal": "ceil(concat_0_child_height/40)"},
+              "domain": false,
+              "labels": false,
+              "aria": false,
+              "maxExtent": 0,
+              "minExtent": 0,
+              "ticks": false,
+              "zindex": 0
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "name": "concat_1_group",
+      "style": "cell",
+      "encode": {
+        "update": {
+          "width": {"signal": "concat_1_width"},
+          "height": {"signal": "concat_1_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "concat_1_marks",
+          "type": "line",
+          "style": ["line"],
+          "sort": {"field": "datum[\"month_date\"]"},
+          "from": {"data": "data_0"},
+          "encode": {
+            "update": {
+              "stroke": {"value": "#4c78a8"},
+              "description": {
+                "signal": "\"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"All years\" + \": \" + (format(datum[\"mean_precipitation\"], \"\"))"
+              },
+              "x": {"scale": "concat_1_x", "field": "month_date"},
+              "y": {"scale": "concat_1_y", "field": "mean_precipitation"},
+              "defined": {
+                "signal": "isValid(datum[\"mean_precipitation\"]) && isFinite(+datum[\"mean_precipitation\"])"
+              }
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "gridScale": "concat_1_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "domain": false,
+          "labels": false,
+          "aria": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_1_x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "date (month)",
+          "format": {
+            "signal": "timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+          },
+          "formatType": "time",
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "labelOverlap": true,
+          "zindex": 0
+        },
+        {
+          "scale": "concat_1_y",
+          "orient": "left",
+          "grid": false,
+          "title": "All years",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(concat_1_height/40)"},
+          "zindex": 0
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "concat_0_x",
+      "type": "point",
+      "domain": {"data": "data_1", "field": "month_date", "sort": true},
+      "range": {"step": {"signal": "concat_0_x_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "concat_0_y",
+      "type": "linear",
+      "domain": {"data": "data_1", "field": "mean_precipitation"},
+      "range": [{"signal": "concat_0_child_height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "concat_1_x",
+      "type": "point",
+      "domain": {"data": "data_0", "field": "month_date", "sort": true},
+      "range": {"step": {"signal": "concat_1_x_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "concat_1_y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "mean_precipitation"},
+      "range": [{"signal": "concat_1_height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ]
+}
