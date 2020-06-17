@@ -12,6 +12,7 @@ import {nonPosition} from './nonposition';
 import {text} from './text';
 import {tooltip} from './tooltip';
 import {fieldInvalidPredicate} from './valueref';
+import {zindex} from './zindex';
 
 export {color} from './color';
 export {wrapCondition} from './conditional';
@@ -37,6 +38,7 @@ export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
     ...nonPosition('strokeOpacity', model),
     ...nonPosition('strokeWidth', model),
     ...nonPosition('strokeDash', model),
+    ...zindex(model),
     ...tooltip(model),
     ...text(model, 'href'),
     ...aria(model)

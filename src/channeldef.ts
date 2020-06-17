@@ -5,10 +5,10 @@ import {Axis} from './axis';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin';
 import {
   ANGLE,
-  DESCRIPTION,
   Channel,
   COLOR,
   COLUMN,
+  DESCRIPTION,
   DETAIL,
   FACET,
   FILL,
@@ -76,9 +76,9 @@ import {
   flatAccessWithDatum,
   getFirstDefined,
   internalField,
+  removePathFromField,
   replacePathInField,
-  titleCase,
-  removePathFromField
+  titleCase
 } from './util';
 import {isSignalRef} from './vega.schema';
 
@@ -583,6 +583,8 @@ export interface OrderFieldDef<F extends Field> extends FieldDefWithoutScale<F> 
    */
   sort?: SortOrder;
 }
+
+export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;
 
 export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
 
