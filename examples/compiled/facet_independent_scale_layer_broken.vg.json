@@ -14,13 +14,6 @@
           "type": "formula",
           "expr": "datum.sex == 2 ? 'Female' : 'Male'",
           "as": "gender"
-        },
-        {
-          "type": "aggregate",
-          "groupby": ["age", "gender"],
-          "ops": ["sum"],
-          "fields": ["people"],
-          "as": ["sum_people"]
         }
       ]
     },
@@ -38,8 +31,21 @@
       ]
     },
     {
-      "name": "data_2",
+      "name": "data_1",
       "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["age", "gender"],
+          "ops": ["sum"],
+          "fields": ["people"],
+          "as": ["sum_people"]
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_1",
       "transform": [
         {
           "type": "filter",
@@ -128,6 +134,19 @@
           "name": "data_0",
           "transform": [
             {
+              "type": "aggregate",
+              "groupby": ["age", "gender"],
+              "ops": ["sum"],
+              "fields": ["people"],
+              "as": ["sum_people"]
+            }
+          ]
+        },
+        {
+          "name": "data_1",
+          "source": "data_0",
+          "transform": [
+            {
               "type": "filter",
               "expr": "isValid(datum[\"sum_people\"]) && isFinite(+datum[\"sum_people\"])"
             }
@@ -149,7 +168,7 @@
           "from": {
             "facet": {
               "name": "faceted_path_child_layer_0_main",
-              "data": "facet",
+              "data": "data_0",
               "groupby": ["gender"]
             }
           },
@@ -186,7 +205,7 @@
           "name": "child_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": {"value": "transparent"},
@@ -207,8 +226,8 @@
           "type": "point",
           "domain": {
             "fields": [
-              {"data": "facet", "field": "age"},
-              {"data": "data_0", "field": "age"}
+              {"data": "data_0", "field": "age"},
+              {"data": "data_1", "field": "age"}
             ],
             "sort": true
           },
@@ -251,7 +270,7 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "sum_people"},
+          {"data": "data_1", "field": "sum_people"},
           {"data": "data_2", "field": "sum_people"}
         ]
       },
@@ -264,7 +283,7 @@
       "type": "ordinal",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "gender"},
+          {"data": "data_1", "field": "gender"},
           {"data": "data_2", "field": "gender"}
         ],
         "sort": true
