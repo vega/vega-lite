@@ -37,7 +37,8 @@
     "opacity": {
       "condition": {"selection": "highlight", "value": 1},
       "value": 0.5
-    }
+    },
+    "order": {"condition": {"selection": "highlight", "value": 1}, "value": 0}
   },
   "config": {
     "scale": {

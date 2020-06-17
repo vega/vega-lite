@@ -71,6 +71,7 @@ import {
   NumericValueDef,
   NumericValueDefWithCondition,
   OrderFieldDef,
+  OrderValueDef,
   PolarDatumDef,
   PolarFieldDef,
   PositionDatumDef,
@@ -329,7 +330,7 @@ export interface Encoding<F extends Field> {
    *
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
    */
-  order?: OrderFieldDef<F> | OrderFieldDef<F>[] | NumericValueDef;
+  order?: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef;
 }
 
 export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}

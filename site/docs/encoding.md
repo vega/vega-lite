@@ -400,6 +400,12 @@ In addition to the general [field definition properties](#field-def), field defi
 
 {% include table.html props="sort" source="OrderFieldDef" %}
 
+### Order Value Definition
+
+In addition to the constant `value`, [value definitions](#value-def) of the `order` channel can include the `condition` property to specify conditional logic.
+
+{% include table.html props="condition" source="OrderValueDef" %}
+
 {:#facet}
 
 ## Facet Channels
