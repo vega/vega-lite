@@ -30,7 +30,7 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "filter", "expr": "datum.delay < 500"},
+        {"type": "filter", "expr": "datum.delay < 5"},
         {
           "type": "aggregate",
           "groupby": ["bin_maxbins_10_distance", "bin_maxbins_10_distance_end"],
