@@ -50,7 +50,7 @@ export type ScaleType = ValueOf<typeof ScaleType>;
  * Index for scale categories -- only scale of the same categories can be merged together.
  * Current implementation is trying to be conservative and avoid merging scale type that might not work together
  */
-const SCALE_CATEGORY_INDEX: Record<ScaleType, ScaleType | 'numeric' | 'ordinal-position' | 'discretizing'> = {
+export const SCALE_CATEGORY_INDEX: Record<ScaleType, ScaleType | 'numeric' | 'ordinal-position' | 'discretizing'> = {
   linear: 'numeric',
   log: 'numeric',
   pow: 'numeric',

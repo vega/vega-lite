@@ -53,23 +53,56 @@ describe('fieldDef', () => {
 
   describe('defaultType()', () => {
     it('should return temporal if there is timeUnit', () => {
-      expect(defaultType({timeUnit: 'month', field: 'a'} as TypedFieldDef<string>, 'x')).toBe('temporal');
+      expect(defaultType({timeUnit: 'month', field: 'a'}, 'x')).toBe('temporal');
+    });
+    it('should return ordinal if there is a custom sort order ', () => {
+      expect(defaultType({field: 'a', sort: [1, 2, 3]}, 'x')).toBe('ordinal');
+      expect(defaultType({timeUnit: 'month', field: 'a', sort: [1, 2, 3]}, 'x')).toBe('ordinal');
+    });
+
+    it('should return nominal if the field is sorted by another field ', () => {
+      expect(defaultType({field: 'a', sort: '-x'}, 'x')).toBe('nominal');
+      expect(defaultType({field: 'a', sort: {encoding: 'x'}}, 'x')).toBe('nominal');
+      expect(defaultType({field: 'a', sort: {field: 'x'}}, 'x')).toBe('nominal');
     });
 
     it('should return quantitative if there is bin', () => {
-      expect(defaultType({bin: true, field: 'a'} as TypedFieldDef<string>, 'x')).toBe('quantitative');
+      expect(defaultType({bin: true, field: 'a'}, 'x')).toBe('quantitative');
     });
 
-    it('should return quantitative for a channel that supports measure', () => {
-      for (const c of ['x', 'y', 'size', 'opacity', 'order'] as Channel[]) {
-        expect(defaultType({field: 'a'} as TypedFieldDef<string>, c)).toBe('quantitative');
+    it('should return quantitative for latitude/longitude', () => {
+      expect(defaultType({field: 'a'}, 'latitude')).toBe('quantitative');
+      expect(defaultType({field: 'a'}, 'longitude')).toBe('quantitative');
+    });
+
+    it('should return nominal for row/column/facet even with bin or time unit', () => {
+      for (const c of ['row', 'column', 'facet'] as const) {
+        expect(defaultType({field: 'a'}, c)).toBe('nominal');
+        expect(defaultType({bin: true, field: 'a'}, c)).toBe('nominal');
+        expect(defaultType({timeUnit: 'month', field: 'a'}, c)).toBe('nominal');
       }
     });
 
-    it('should return nominal for a channel that does not support measure', () => {
-      for (const c of ['color', 'shape', 'row', 'column'] as Channel[]) {
-        expect(defaultType({field: 'a'} as TypedFieldDef<string>, c)).toBe('nominal');
-      }
+    it('should return quantitative for quantitative or discretizing scale type', () => {
+      expect(defaultType({field: 'a', scale: {type: 'log'}}, 'x')).toBe('quantitative');
+      expect(defaultType({field: 'a', scale: {type: 'pow'}}, 'x')).toBe('quantitative');
+      expect(defaultType({field: 'a', scale: {type: 'quantile'}}, 'x')).toBe('quantitative');
+    });
+
+    it('should return temporal for time scale type', () => {
+      expect(defaultType({field: 'a', scale: {type: 'utc'}}, 'x')).toBe('temporal');
+      expect(defaultType({field: 'a', scale: {type: 'time'}}, 'x')).toBe('temporal');
+    });
+
+    it('should return quantitative if there is aggregate', () => {
+      expect(defaultType({aggregate: 'mean', field: 'a'}, 'x')).toBe('quantitative');
+    });
+    it('should return nominal if there is argmin', () => {
+      expect(defaultType({aggregate: {argmax: 'b'}, field: 'a'}, 'x')).toBe('nominal');
+    });
+
+    it('should return nominal by default', () => {
+      expect(defaultType({field: 'a'}, 'x')).toBe('nominal');
     });
   });
 
@@ -112,14 +145,10 @@ describe('fieldDef', () => {
       })
     );
 
-    it(
-      'should return fieldDef with default type and throw warning if type is missing.',
-      log.wrap(localLogger => {
-        const fieldDef = {field: 'a'};
-        expect(initChannelDef(fieldDef, 'x', defaultConfig)).toEqual({field: 'a', type: 'quantitative'});
-        expect(localLogger.warns[0]).toEqual(log.message.missingFieldType('x', 'quantitative'));
-      })
-    );
+    it('should return fieldDef with default type', () => {
+      const fieldDef = {field: 'a'};
+      expect(initChannelDef(fieldDef, 'x', defaultConfig)).toEqual({field: 'a', type: 'nominal'});
+    });
 
     it(
       'should drop invalid aggregate ops and throw warning.',
