@@ -112,7 +112,6 @@
       "labelPadding": 4,
       "ticks": false,
       "labelBaseline": "top",
-      "labelOverlap": true,
       "zindex": 0
     },
     {

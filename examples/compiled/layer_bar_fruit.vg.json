@@ -156,13 +156,7 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 0
     },
-    {
-      "scale": "y",
-      "orient": "left",
-      "grid": false,
-      "labelOverlap": true,
-      "zindex": 0
-    }
+    {"scale": "y", "orient": "left", "grid": false, "zindex": 0}
   ],
   "legends": [
     {
