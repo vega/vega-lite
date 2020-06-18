@@ -38,7 +38,7 @@
             },
             "y2": {"field": "upper_Miles_per_Gallon", "type": "quantitative"},
             "x": {
-              "title": "Year (year)",
+              "title": [{"timeUnit": "year", "field": "Year"}],
               "type": "temporal",
               "field": "year_Year",
               "axis": {"format": "%Y"}
@@ -61,7 +61,7 @@
                 "title": "Mean of Miles_per_Gallon"
               },
               {
-                "title": "Year (year)",
+                "title": [{"timeUnit": "year", "field": "Year"}],
                 "type": "temporal",
                 "field": "year_Year",
                 "axis": {"format": "%Y"}
@@ -79,7 +79,7 @@
               "scale": {"zero": false}
             },
             "x": {
-              "title": "Year (year)",
+              "title": [{"timeUnit": "year", "field": "Year"}],
               "type": "temporal",
               "field": "year_Year",
               "axis": {"format": "%Y"}
@@ -102,7 +102,7 @@
                 "title": "Mean of Miles_per_Gallon"
               },
               {
-                "title": "Year (year)",
+                "title": [{"timeUnit": "year", "field": "Year"}],
                 "type": "temporal",
                 "field": "year_Year",
                 "axis": {"format": "%Y"}
@@ -120,7 +120,7 @@
               "scale": {"zero": false}
             },
             "x": {
-              "title": "Year (year)",
+              "title": [{"timeUnit": "year", "field": "Year"}],
               "type": "temporal",
               "field": "year_Year",
               "axis": {"format": "%Y"}
@@ -143,7 +143,7 @@
                 "title": "Mean of Miles_per_Gallon"
               },
               {
-                "title": "Year (year)",
+                "title": [{"timeUnit": "year", "field": "Year"}],
                 "type": "temporal",
                 "field": "year_Year",
                 "axis": {"format": "%Y"}

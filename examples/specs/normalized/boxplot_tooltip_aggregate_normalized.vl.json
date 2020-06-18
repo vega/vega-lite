@@ -73,7 +73,7 @@
                   },
                   {"field": "age", "type": "ordinal"},
                   {
-                    "title": "Mean of people",
+                    "title": [{"aggregate": "mean", "field": "people"}],
                     "type": "quantitative",
                     "field": "mean_people"
                   }
@@ -103,7 +103,7 @@
                   },
                   {"field": "age", "type": "ordinal"},
                   {
-                    "title": "Mean of people",
+                    "title": [{"aggregate": "mean", "field": "people"}],
                     "type": "quantitative",
                     "field": "mean_people"
                   }
@@ -167,7 +167,7 @@
               },
               {"field": "age", "type": "ordinal"},
               {
-                "title": "Mean of people",
+                "title": [{"aggregate": "mean", "field": "people"}],
                 "type": "quantitative",
                 "field": "mean_people"
               }
@@ -217,7 +217,7 @@
               },
               {"field": "age", "type": "ordinal"},
               {
-                "title": "Mean of people",
+                "title": [{"aggregate": "mean", "field": "people"}],
                 "type": "quantitative",
                 "field": "mean_people"
               }
