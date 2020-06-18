@@ -56,7 +56,7 @@ By default, all time units represent date time using local time. To use UTC time
 }
 ```
 
-A field definition can include a `timeUnit` property. For example, the chart below shows shows temperature in Seattle aggregated by month.
+A field definition can include a `timeUnit` property. For example, the chart below shows temperature in Seattle aggregated by month.
 
 <span class="vl-example" data-name="line_month"></span>
 
