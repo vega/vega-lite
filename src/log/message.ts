@@ -44,6 +44,12 @@ export function droppingFit(channel?: PositionScaleChannel) {
     : `Dropping "fit" because spec has discrete size.`;
 }
 
+// VIEW SIZE
+
+export function unknownField(channel: Channel) {
+  return `Unknown field for ${channel}. Cannot calculate view size.`;
+}
+
 // SELECTION
 export function cannotProjectOnChannelWithoutField(channel: Channel) {
   return `Cannot project a selection on encoding channel "${channel}", which has no field.`;
@@ -76,6 +82,10 @@ export function noSameUnitLookup(name: string) {
     `Try moving the lookup into a second, layered view?`
   );
 }
+
+export const NEEDS_SAME_SELECTION = 'The same selection must be used to override scale domains in a layered view.';
+
+export const INTERVAL_INITIALIZED_WITH_X_Y = 'Interval selections should be initialized using "x" and/or "y" keys.';
 
 // REPEAT
 export function noSuchRepeatedValue(field: string) {
@@ -186,7 +196,7 @@ export function discreteChannelCannotEncode(channel: Channel, type: Type) {
   }.`;
 }
 
-// Mark
+// MARK
 export function lineWithRange(hasX2: boolean, hasY2: boolean) {
   const channels = hasX2 && hasY2 ? 'x2 and y2' : hasX2 ? 'x2' : 'y2';
   return `Line mark is for continuous lines and thus cannot be used with ${channels}. We will use the rule mark (line segments) instead.`;
@@ -338,6 +348,10 @@ export function errorBand1DNotSupport(property: 'interpolate' | 'tension') {
 // CHANNEL
 export function channelRequiredForBinned(channel: Channel) {
   return `Channel ${channel} is required for "binned" bin.`;
+}
+
+export function channelShouldNotBeUsedForBinned(channel: Channel) {
+  return `Channel ${channel} should not be used with "binned" bin.`;
 }
 
 export function domainRequiredForThresholdScale(channel: Channel) {
