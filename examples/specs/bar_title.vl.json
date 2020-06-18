@@ -10,7 +10,7 @@
   },
   "mark": "bar",
   "encoding": {
-    "x": {"field": "a", "type": "ordinal"},
+    "x": {"field": "a", "type": "nominal"},
     "y": {"field": "b", "type": "quantitative"}
   }
 }

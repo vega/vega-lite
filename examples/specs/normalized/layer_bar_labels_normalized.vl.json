@@ -8,14 +8,14 @@
     {
       "mark": "bar",
       "encoding": {
-        "y": {"field": "a", "type": "ordinal"},
+        "y": {"field": "a", "type": "nominal"},
         "x": {"field": "b", "type": "quantitative", "scale": {"padding": 10}}
       }
     },
     {
       "mark": {"type": "text", "align": "left", "baseline": "middle", "dx": 3},
       "encoding": {
-        "y": {"field": "a", "type": "ordinal"},
+        "y": {"field": "a", "type": "nominal"},
         "x": {"field": "b", "type": "quantitative", "scale": {"padding": 10}},
         "text": {"field": "b", "type": "quantitative"}
       }
