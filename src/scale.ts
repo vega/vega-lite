@@ -13,7 +13,7 @@ import {Channel, CHANNELS, isColorChannel} from './channel';
 import {DateTime} from './datetime';
 import * as log from './log';
 import {SelectionExtent} from './selection';
-import {Type, TYPES, ORDINAL, NOMINAL, TEMPORAL, QUANTITATIVE} from './type';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type, TYPES} from './type';
 import {contains, Flag, keys} from './util';
 
 export const ScaleType = {
@@ -503,7 +503,7 @@ export interface Scale {
    *
    * - For [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous), two-element array indicating  minimum and maximum values, or an array with more than two entries for specifying a [piecewise scale](https://vega.github.io/vega-lite/docs/scale.html#piecewise).
    *
-   * - For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values.
+   * - For [discrete](https://vega.github.io/vega-lite/docs/scale.html#discrete) and [discretizing](https://vega.github.io/vega-lite/docs/scale.html#discretizing) scales, an array of desired output values or an object with a `field` property representing the range values.  For example, if a field `color` contains CSS color names, we can set `range` to `{field: "color"}`.
    *
    * __Notes:__
    *
@@ -511,7 +511,7 @@ export interface Scale {
    *
    * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`).
    */
-  range?: RangeEnum | (number | string | number[] | SignalRef)[];
+  range?: RangeEnum | (number | string | number[] | SignalRef)[] | {field: string};
 
   // ordinal
 

@@ -38,7 +38,7 @@ fi
 # Commit examples if outdated
 
 # Note: we need to add all files first so that new files are included in `git diff --cached` too.
-git add ./examples/compiled/vega_version './examples/compiled/*.vg.json' './examples/compiled/*.svg' './examples/compiled/*.png' './examples/specs/normalized/*.vl.json'
+git add examples
 
 if [[ $GIT_BRANCH == 'master' ]]; then
   # Don't diff SVG as floating point calculation is not always consistent
@@ -48,7 +48,7 @@ if [[ $GIT_BRANCH == 'master' ]]; then
     exit 1
   fi
 else
-  if ! git diff --cached --word-diff=color --exit-code ./examples/compiled/vega_version './examples/compiled/*.vg.json' './examples/compiled/*.svg' './examples/compiled/*.png' './examples/specs/normalized/*.vl.json'
+  if ! git diff --cached --word-diff=color --exit-code examples
   then
     git commit -m "chore: update examples [CI]"
   fi
@@ -60,11 +60,14 @@ echo ""
 
 if [[ $GIT_BRANCH != 'master' ]]; then
   ## For non-master branch, commit eslint fix and prettier changes if outdated
-  if ! git diff --word-diff=color --exit-code  src test test-runtime
+  if ! git diff --exit-code site src test test-runtime
   then
     git add --all
     git commit -m "style: auto-formatting [CI]"
   fi
+
+  # should be empty
+  git status
 
   # Then push all the changes (schema, examples, prettier)
   git pull --rebase origin ${GITHUB_REF}

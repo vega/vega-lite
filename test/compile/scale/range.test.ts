@@ -166,6 +166,22 @@ describe('compile/scale', () => {
         expect(parseRangeForChannel('color', model)).toEqual(makeExplicit(['red', 'blue']));
       });
 
+      it('should support custom field range.', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            color: {field: 'x', type: 'nominal', scale: {range: {field: 'c'}}}
+          }
+        });
+        expect(parseRangeForChannel('color', model)).toEqual(
+          makeExplicit({
+            data: 'main',
+            field: 'c',
+            sort: {op: 'min', field: 'x'}
+          })
+        );
+      });
+
       it('should use default category range in Vega for a nominal color field.', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',

@@ -203,7 +203,7 @@ export function isFieldRefUnionDomain(domain: VgDomain): domain is VgMultiFields
   return false;
 }
 
-export function isDataRefDomain(domain: VgDomain): domain is VgScaleDataRefWithSort {
+export function isDataRefDomain(domain: VgDomain | any): domain is VgScaleDataRefWithSort {
   if (!isArray(domain)) {
     return 'field' in domain && 'data' in domain;
   }
