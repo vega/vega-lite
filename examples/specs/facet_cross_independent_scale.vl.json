@@ -7,8 +7,8 @@
     {"r": "r3", "c": "c2", "a": "a3", "b": "b2"}
   ]},
   "facet": {
-    "row": {"field": "r", "type": "nominal"},
-    "column": {"field": "c", "type": "nominal"}
+    "row": {"field": "r"},
+    "column": {"field": "c"}
   },
   "spec": {
     "mark": "rect",

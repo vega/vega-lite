@@ -6,12 +6,8 @@
     "x": {
       "bin": true,
       "field": "IMDB Rating",
-      "type": "quantitative",
       "scale": {"reverse": true}
     },
-    "y": {
-      "aggregate": "count",
-      "type": "quantitative"
-    }
+    "y": {"aggregate": "count"}
   }
 }

@@ -12,15 +12,15 @@
   "mark": "bar",
   "encoding": {
     "y": {
-      "field": "age", "type": "ordinal",
+      "field": "age",
       "axis": null, "sort": "descending"
     },
     "x": {
-      "aggregate": "sum", "field": "signed_people", "type": "quantitative",
+      "aggregate": "sum", "field": "signed_people",
       "axis": {"title": "population", "format": "s"}
     },
     "color": {
-      "field": "gender", "type": "nominal",
+      "field": "gender",
       "scale": {"range": ["#675193", "#ca8861"]},
       "legend": {"orient": "top", "title": null}
     }

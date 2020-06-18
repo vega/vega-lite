@@ -7,12 +7,11 @@
       "encoding": {
         "y": {
           "field": "precipitation",
-          "type": "quantitative",
           "aggregate": "mean",
           "title": null
         },
         "x": {"field": "date", "timeUnit": "month", "type": "ordinal"},
-        "row": {"field": "date", "timeUnit": "year", "type": "ordinal"}
+        "row": {"field": "date", "timeUnit": "year"}
       },
       "height": 30
     },
@@ -22,7 +21,6 @@
         "x": {"field": "date", "timeUnit": "month", "type": "ordinal"},
         "y": {
           "field": "precipitation",
-          "type": "quantitative",
           "aggregate": "mean",
           "title": "All years"
         }

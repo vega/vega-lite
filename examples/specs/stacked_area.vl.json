@@ -5,15 +5,14 @@
   "mark": "area",
   "encoding": {
     "x": {
-      "timeUnit": "yearmonth", "field": "date", "type": "temporal",
+      "timeUnit": "yearmonth", "field": "date",
       "axis": {"format": "%Y"}
     },
     "y": {
-      "aggregate": "sum", "field": "count", "type": "quantitative"
+      "aggregate": "sum", "field": "count"
     },
     "color": {
       "field": "series",
-      "type": "nominal",
       "scale": {"scheme": "category20b"}
     }
   }

@@ -18,7 +18,6 @@
     "x": {
       "title": "Horsepower",
       "field": "bin_Horsepwoer",
-      "type": "quantitative",
       "bin": {"binned": true}
     },
     "x2": {"field": "bin_Horsepwoer_end"},

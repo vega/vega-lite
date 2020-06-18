@@ -12,9 +12,6 @@
         "order": "descending"
       }
     },
-    "y": {
-      "aggregate": "count",
-      "type": "quantitative"
-    }
+    "y": {"aggregate": "count"}
   }
 }

@@ -7,9 +7,7 @@
     "interpolate": "monotone"
   },
   "encoding": {
-    "x": {
-      "timeUnit": "month", "field": "date", "type": "temporal", "band": 0.5
-    },
-    "y": {"aggregate": "mean", "field": "temp_max", "type": "quantitative"}
+    "x": {"timeUnit": "month", "field": "date", "band": 0.5},
+    "y": {"aggregate": "mean", "field": "temp_max"}
   }
 }

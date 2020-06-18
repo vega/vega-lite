@@ -7,7 +7,7 @@
     "interpolate": "monotone"
   },
   "encoding": {
-    "x": {"aggregate": "sum", "field": "Weight_in_lbs", "type": "quantitative"},
-    "y": {"timeUnit": "year", "field": "Year", "type": "temporal"}
+    "x": {"aggregate": "sum", "field": "Weight_in_lbs"},
+    "y": {"timeUnit": "year", "field": "Year"}
   }
 }

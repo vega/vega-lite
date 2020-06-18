@@ -12,7 +12,7 @@
   "encoding": {
     "x": {
       "timeUnit": "hours",
-      "field": "a", "type": "temporal",
+      "field": "a",
       "scale": {
         "domain": [{"hours": 0}, {"hours": 24}]
       }

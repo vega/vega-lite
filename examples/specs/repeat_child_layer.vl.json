@@ -10,8 +10,7 @@
         "encoding": {
           "y": {
             "aggregate": "mean",
-            "field": {"repeat": "column"},
-            "type": "quantitative"
+            "field": {"repeat": "column"}
           },
           "x": {
             "timeUnit": "month",
@@ -20,10 +19,9 @@
           },
           "detail": {
             "timeUnit": "year",
-            "type": "temporal",
             "field": "date"
           },
-          "color": {"type": "nominal", "field": "location"},
+          "color": {"field": "location"},
           "opacity": {"value": 0.2}
         }
       },
@@ -32,15 +30,14 @@
         "encoding": {
           "y": {
             "aggregate": "mean",
-            "field": {"repeat": "column"},
-            "type": "quantitative"
+            "field": {"repeat": "column"}
           },
           "x": {
             "timeUnit": "month",
             "field": "date",
             "type": "ordinal"
           },
-          "color": {"type": "nominal", "field": "location"}
+          "color": {"field": "location"}
         }
       }
     ]

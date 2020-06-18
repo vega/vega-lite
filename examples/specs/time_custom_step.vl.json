@@ -25,12 +25,11 @@
   "encoding": {
     "x": {
       "field": "date",
-      "type": "temporal",
       "timeUnit": {
         "unit": "minutes",
         "step": 5
       }
     },
-    "y": {"field": "distance", "type": "quantitative", "aggregate": "sum"}
+    "y": {"field": "distance", "aggregate": "sum"}
   }
 }

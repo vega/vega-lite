@@ -48,6 +48,8 @@ For example, the following bar chart aggregates mean of `Acceleration`, grouped 
 
 <div class="vl-example" data-name="bar_aggregate_vertical"></div>
 
+**Note:** aggregated fields are quantitative by default while unaggregated (group by) fields in aggregated encodings are nominal by default.
+
 The `detail` channel can be used to specify additional summary and group-by fields without mapping the field(s) to any visual properties. For example, the following plots add `Origin` as a group by field.
 
 <div class="vl-example" data-name="point_aggregate_detail"></div>

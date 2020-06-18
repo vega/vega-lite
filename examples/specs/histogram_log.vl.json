@@ -31,16 +31,10 @@
   "encoding": {
     "x": {
       "field": "x1",
-      "type": "quantitative",
       "scale": {"type": "log", "base": 10},
       "axis": {"tickCount": 5}
     },
-    "x2": {
-      "field": "x2"
-    },
-    "y": {
-      "aggregate": "count",
-      "type": "quantitative"
-    }
+    "x2": {"field": "x2"},
+    "y": {"aggregate": "count"}
   }
 }

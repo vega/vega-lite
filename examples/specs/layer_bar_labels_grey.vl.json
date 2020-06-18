@@ -16,7 +16,6 @@
       "x": {
         "aggregate": "mean",
         "field": "IMDB Rating",
-        "type": "quantitative",
         "scale": {"domain": [0, 10]},
         "title": "Mean IMDB Ratings"
       }
@@ -24,11 +23,8 @@
   }, {
     "mark": {"type": "text", "align": "left", "x": 5},
     "encoding": {
-      "text": {
-        "field": "Major Genre",
-        "type": "nominal"
-      },
-      "detail": {"aggregate": "count", "type": "quantitative"}
+      "text": {"field": "Major Genre"},
+      "detail": {"aggregate": "count"}
     }
   }]
 }

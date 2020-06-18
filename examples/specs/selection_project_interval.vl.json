@@ -11,7 +11,7 @@
     "color": {
       "condition": {
         "selection": "pts",
-        "aggregate": "count", "type": "quantitative"
+        "aggregate": "count"
       },
       "value": "grey"
     }

@@ -75,17 +75,13 @@
       "type": "quantitative",
       "axis": null
     },
-    "x2": {
-      "field": "x2"
-    },
+    "x2": {"field": "x2"},
     "y": {
       "field": "y",
       "type": "quantitative",
       "axis": null
     },
-    "y2": {
-      "field": "y2"
-    },
+    "y2": {"field": "y2"},
     "color": {
       "field": "Origin",
       "type": "nominal"

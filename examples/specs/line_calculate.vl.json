@@ -8,13 +8,11 @@
   "encoding": {
     "x": {
       "timeUnit": "month",
-      "field": "date",
-      "type": "temporal"
+      "field": "date"
     },
     "y": {
       "aggregate": "mean",
-      "field": "temp_range",
-      "type": "quantitative"
+      "field": "temp_range"
     }
   }
 }

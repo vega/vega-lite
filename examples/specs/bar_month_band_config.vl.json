@@ -5,13 +5,11 @@
   "encoding": {
     "x": {
       "timeUnit": "month",
-      "field": "date",
-      "type": "temporal"
+      "field": "date"
     },
     "y": {
       "aggregate": "mean",
-      "field": "precipitation",
-      "type": "quantitative"
+      "field": "precipitation"
     }
   },
   "config": {

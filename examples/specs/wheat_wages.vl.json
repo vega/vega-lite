@@ -20,9 +20,7 @@
             "format": "d"
           }
         },
-        "x2": {
-          "field": "year_end"
-        },
+        "x2": {"field": "year_end"},
         "y": {
           "field": "wheat",
           "type": "quantitative",
@@ -119,9 +117,7 @@
           "field": "start",
           "type": "quantitative"
         },
-        "x2": {
-          "field": "end"
-        },
+        "x2": {"field": "end"},
         "y": {
           "field": "y",
           "type": "quantitative"

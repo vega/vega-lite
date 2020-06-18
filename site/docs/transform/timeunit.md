@@ -74,7 +74,7 @@ By default, Vega-Lite encodes fields with timeUnit using the initial position of
 
 {:#ordinal}
 
-Time units can be also used with a discrete scale instead. For example, you can cast the field to have an `"ordinal"` type.
+By default, fields with time units have "temporal" type and thus use time scales. However, time units can be also used with a discrete scale. For example, you can cast the field to have an `"ordinal"` type.
 
 <span class="vl-example" data-name="bar_month"></span>
 

@@ -38,8 +38,8 @@
         }
       ],
       "encoding": {
-        "latitude": {"field": "latitude", "type": "quantitative"},
-        "longitude": {"field": "longitude", "type": "quantitative"},
+        "latitude": {"field": "latitude"},
+        "longitude": {"field": "longitude"},
         "latitude2": {"field": "lat2"},
         "longitude2": {"field": "lon2"}
       }
@@ -69,8 +69,8 @@
         }
       },
       "encoding": {
-        "latitude": {"field": "latitude", "type": "quantitative"},
-        "longitude": {"field": "longitude", "type": "quantitative"},
+        "latitude": {"field": "latitude"},
+        "longitude": {"field": "longitude"},
         "size": {
           "field": "routes",
           "type": "quantitative",
@@ -79,7 +79,6 @@
         },
         "order": {
           "field": "routes",
-          "type": "quantitative",
           "sort": "descending"
         }
       }

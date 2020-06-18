@@ -4,9 +4,7 @@
   "data": {"url": "data/seattle-weather.csv"},
   "mark": "bar",
   "encoding": {
-    "x": {
-      "timeUnit": "yearmonth", "field": "date", "type": "temporal"
-    },
-    "y": {"aggregate": "mean", "field": "temp_max", "type": "quantitative"}
+    "x": {"timeUnit": "yearmonth", "field": "date"},
+    "y": {"aggregate": "mean", "field": "temp_max"}
   }
 }

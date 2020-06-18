@@ -21,8 +21,8 @@
     "groupby": ["b"]
   }],
   "facet": {
-    "column": {"field": "a", "type": "nominal", "sort": ["B", "C", "A"]},
-    "row": {"field": "b", "type": "nominal", "sort": ["Y", "X", "Z"]}
+    "column": {"field": "a", "sort": ["B", "C", "A"]},
+    "row": {"field": "b", "sort": ["Y", "X", "Z"]}
   },
   "spec": {
     "width": 50,
@@ -37,12 +37,12 @@
     }, {
       "mark": "rule",
       "encoding": {
-        "x": {"aggregate": "median", "field": "median_x_by_a", "type": "quantitative"}
+        "x": {"aggregate": "median", "field": "median_x_by_a"}
       }
     }, {
       "mark": "rule",
       "encoding": {
-        "y": {"aggregate": "median", "field": "median_y_by_b", "type": "quantitative"}
+        "y": {"aggregate": "median", "field": "median_y_by_b"}
       }
     }]
   }

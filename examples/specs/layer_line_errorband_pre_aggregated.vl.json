@@ -41,7 +41,6 @@
         "y2": {"field": "ci0"},
         "x": {
           "field": "Year",
-          "type": "temporal",
           "timeUnit": "year"
         }
       }
@@ -55,7 +54,6 @@
         },
         "x": {
           "field": "Year",
-          "type": "temporal",
           "timeUnit": "year"
         }
       }
