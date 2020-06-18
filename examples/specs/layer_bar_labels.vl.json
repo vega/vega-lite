@@ -9,7 +9,7 @@
     ]
   },
   "encoding": {
-    "y": {"field": "a", "type": "ordinal"},
+    "y": {"field": "a", "type": "nominal"},
     "x": {"field": "b", "type": "quantitative", "scale": {"padding": 10}}
   },
   "layer": [{

@@ -10,13 +10,13 @@
   "layer": [{
     "mark": "bar",
     "encoding": {
-      "y": {"field": "a", "type": "ordinal"},
+      "y": {"field": "a", "type": "nominal"},
       "x": {"field": "b", "type": "quantitative"}
     }
   }, {
     "mark": {"type": "text", "style": "label"},
     "encoding": {
-      "y": {"field": "a", "type": "ordinal"},
+      "y": {"field": "a", "type": "nominal"},
       "x": {"field": "b", "type": "quantitative"},
       "text": {"field": "b", "type": "quantitative"}
     }

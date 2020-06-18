@@ -17,14 +17,14 @@
     {
       "mark": "bar",
       "encoding": {
-        "x": {"field": "a", "type": "ordinal"},
+        "x": {"field": "a", "type": "nominal"},
         "y": {"field": "c", "type": "quantitative"}
       }
     },
     {
       "mark": "line",
       "encoding": {
-        "x": {"field": "b", "type": "ordinal"},
+        "x": {"field": "b", "type": "nominal"},
         "y": {"field": "c", "type": "quantitative"},
         "color": {"value": "red"}
       }

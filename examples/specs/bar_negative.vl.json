@@ -11,7 +11,7 @@
   "mark": "bar",
   "encoding": {
     "x": {
-      "field": "a", "type": "ordinal",
+      "field": "a", "type": "nominal",
       "axis": {
         "domain": false,
         "ticks": false,
