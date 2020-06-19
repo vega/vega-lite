@@ -996,7 +996,12 @@ export function getFieldOrDatumDef<F extends Field = string, CD extends ChannelD
 /**
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
-export function initChannelDef(channelDef: ChannelDef<string>, channel: Channel, config: Config): ChannelDef<string> {
+export function initChannelDef(
+  channelDef: ChannelDef<string>,
+  channel: Channel,
+  config: Config,
+  opt: {compositeMark?: boolean} = {}
+): ChannelDef<string> {
   if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
     const primitiveType = isString(channelDef) ? 'string' : isNumber(channelDef) ? 'number' : 'boolean';
     log.warn(log.message.primitiveChannelDef(channel, primitiveType, channelDef));
@@ -1005,12 +1010,12 @@ export function initChannelDef(channelDef: ChannelDef<string>, channel: Channel,
 
   // If a fieldDef contains a field, we need type.
   if (isFieldOrDatumDef(channelDef)) {
-    return initFieldOrDatumDef(channelDef, channel, config);
+    return initFieldOrDatumDef(channelDef, channel, config, opt);
   } else if (hasConditionalFieldOrDatumDef(channelDef)) {
     return {
       ...channelDef,
       // Need to cast as normalizeFieldDef normally return FieldDef, but here we know that it is definitely Condition<FieldDef>
-      condition: initFieldOrDatumDef(channelDef.condition, channel, config) as Conditional<TypedFieldDef<string>>
+      condition: initFieldOrDatumDef(channelDef.condition, channel, config, opt) as Conditional<TypedFieldDef<string>>
     };
   }
   return channelDef;
@@ -1019,13 +1024,14 @@ export function initChannelDef(channelDef: ChannelDef<string>, channel: Channel,
 export function initFieldOrDatumDef(
   fd: FieldDef<string, any> | DatumDef,
   channel: Channel,
-  config: Config
+  config: Config,
+  opt: {compositeMark?: boolean}
 ): FieldDef<string, any> | DatumDef {
   if (isTextFieldOrDatumDef(fd)) {
     const {format, formatType, ...rest} = fd;
     if (isCustomFormatType(formatType) && !config.customFormatTypes) {
       log.warn(log.message.customFormatTypeNotAllowed(channel));
-      return initFieldOrDatumDef(rest, channel, config);
+      return initFieldOrDatumDef(rest, channel, config, opt);
     }
   } else {
     const guideType = isPositionFieldOrDatumDef(fd)
@@ -1039,13 +1045,13 @@ export function initFieldOrDatumDef(
       const {format, formatType, ...newGuide} = fd[guideType];
       if (isCustomFormatType(formatType) && !config.customFormatTypes) {
         log.warn(log.message.customFormatTypeNotAllowed(channel));
-        return initFieldOrDatumDef({...fd, [guideType]: newGuide}, channel, config);
+        return initFieldOrDatumDef({...fd, [guideType]: newGuide}, channel, config, opt);
       }
     }
   }
 
   if (isFieldDef(fd)) {
-    return initFieldDef(fd, channel);
+    return initFieldDef(fd, channel, opt);
   }
   return initDatumDef(fd);
 }
@@ -1061,12 +1067,16 @@ function initDatumDef(datumDef: DatumDef): DatumDef {
   return {...datumDef, type};
 }
 
-export function initFieldDef(fd: FieldDef<string, any>, channel: Channel) {
+export function initFieldDef(
+  fd: FieldDef<string, any>,
+  channel: Channel,
+  {compositeMark = false}: {compositeMark?: boolean} = {}
+) {
   const {aggregate, timeUnit, bin, field} = fd;
   const fieldDef = {...fd};
 
   // Drop invalid aggregate
-  if (aggregate && !isAggregateOp(aggregate) && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
+  if (!compositeMark && aggregate && !isAggregateOp(aggregate) && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
     log.warn(log.message.invalidAggregate(aggregate));
     delete fieldDef.aggregate;
   }
@@ -1110,8 +1120,8 @@ export function initFieldDef(fd: FieldDef<string, any>, channel: Channel) {
   }
 
   if (isTypedFieldDef(fieldDef)) {
-    const {compatible, warning} = channelCompatibility(fieldDef, channel);
-    if (!compatible) {
+    const {compatible, warning} = channelCompatibility(fieldDef, channel) || {};
+    if (compatible === false) {
       log.warn(warning);
     }
   }
