@@ -10,7 +10,6 @@ import {
   BAR_CORNER_RADIUS_INDEX as BAR_CORNER_RADIUS_END_INDEX,
   CIRCLE,
   IMAGE,
-  isMarkDef,
   LINE,
   Mark,
   MarkDef,
@@ -25,14 +24,7 @@ import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, getFirstDefined} from '../../util';
 import {getMarkConfig, getMarkPropOrConfig} from '../common';
 
-export function initMarkdef(
-  mark: Mark | MarkDef,
-  encoding: Encoding<string>,
-  config: Config,
-  {graticule}: {graticule: boolean}
-) {
-  const markDef: MarkDef = isMarkDef(mark) ? {...mark} : {type: mark};
-
+export function initMarkdef(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
   // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
   const specifiedOrient = getMarkPropOrConfig('orient', markDef, config);
   markDef.orient = orient(markDef.type, encoding, specifiedOrient);
@@ -64,11 +56,6 @@ export function initMarkdef(
     markDef.opacity = opacity(markDef.type, encoding);
   }
 
-  const specifiedFilled = markDef.filled;
-  if (specifiedFilled === undefined) {
-    markDef.filled = graticule ? false : filled(markDef, config);
-  }
-
   // set cursor, which should be pointer if href channel is present unless otherwise specified
   const specifiedCursor = getMarkPropOrConfig('cursor', markDef, config);
   if (specifiedCursor === undefined) {
@@ -95,7 +82,10 @@ function opacity(mark: Mark, encoding: Encoding<string>) {
   return undefined;
 }
 
-function filled(markDef: MarkDef, config: Config) {
+export function defaultFilled(markDef: MarkDef, config: Config, {graticule}: {graticule: boolean}) {
+  if (graticule) {
+    return false;
+  }
   const filledConfig = getMarkConfig('filled', markDef, config);
   const mark = markDef.type;
   return getFirstDefined(filledConfig, mark !== POINT && mark !== LINE && mark !== RULE);

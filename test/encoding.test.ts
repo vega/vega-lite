@@ -21,7 +21,7 @@ import {
   pathGroupingFields
 } from '../src/encoding';
 import * as log from '../src/log';
-import {CIRCLE, Mark, POINT, SQUARE, TICK} from '../src/mark';
+import {CIRCLE, POINT, SQUARE, TICK} from '../src/mark';
 import {internalField} from '../src/util';
 
 describe('encoding', () => {
@@ -34,7 +34,8 @@ describe('encoding', () => {
             color: {field: 'a', type: 'quantitative'},
             fill: {field: 'b', type: 'quantitative'}
           },
-          {type: 'bar', filled: true},
+          'bar',
+          true,
           defaultConfig
         );
 
@@ -53,7 +54,8 @@ describe('encoding', () => {
             color: {field: 'a', type: 'quantitative'},
             angle: {field: 'b', type: 'quantitative'}
           },
-          {type: 'arc'},
+          'arc',
+          undefined,
           defaultConfig
         );
 
@@ -73,7 +75,8 @@ describe('encoding', () => {
             color: {field: 'a', type: 'quantitative'},
             stroke: {field: 'b', type: 'quantitative'}
           },
-          {type: 'point', filled: false},
+          'point',
+          false,
           defaultConfig
         );
 
@@ -86,10 +89,6 @@ describe('encoding', () => {
   });
 
   describe('extractTransformsFromEncoding', () => {
-    function normalizeEncodingWithMark(encoding: Encoding<string>, mark: Mark) {
-      return initEncoding(encoding, {type: mark}, defaultConfig);
-    }
-
     it('should indlude axis in extracted encoding', () => {
       const encoding = extractTransformsFromEncoding(
         {
@@ -110,12 +109,14 @@ describe('encoding', () => {
     });
     it('should extract time unit from encoding field definition and add axis format', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncodingWithMark(
+        initEncoding(
           {
             x: {timeUnit: 'yearmonthdatehoursminutes', field: 'a', type: 'temporal'},
             y: {field: 'b', type: 'quantitative'}
           },
-          'line'
+          'line',
+          false,
+          defaultConfig
         ),
         defaultConfig
       );
@@ -136,12 +137,14 @@ describe('encoding', () => {
     });
     it('should produce format and formatType in axis when there is timeUnit', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncodingWithMark(
+        initEncoding(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {timeUnit: 'year', field: 'b', type: 'ordinal'}
           },
-          'line'
+          'line',
+          false,
+          defaultConfig
         ),
         defaultConfig
       );
@@ -157,12 +160,14 @@ describe('encoding', () => {
     });
     it('should not produce formatType in axis when there is timeUnit with type temporal', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncodingWithMark(
+        initEncoding(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {timeUnit: 'year', field: 'b', type: 'temporal'}
           },
-          'line'
+          'line',
+          false,
+          defaultConfig
         ),
         defaultConfig
       );
@@ -175,13 +180,15 @@ describe('encoding', () => {
     });
     it('should produce format and formatType in legend when there is timeUnit', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncodingWithMark(
+        initEncoding(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {field: 'b', type: 'ordinal'},
             detail: {field: 'c', timeUnit: 'month', type: 'nominal'}
           },
-          'line'
+          'line',
+          false,
+          defaultConfig
         ),
         defaultConfig
       );
@@ -197,13 +204,15 @@ describe('encoding', () => {
     });
     it('should not produce formatType in legend when there is timeUnit with type temporal', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncodingWithMark(
+        initEncoding(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {field: 'b', type: 'ordinal'},
             detail: {field: 'c', timeUnit: 'month', type: 'temporal'}
           },
-          'line'
+          'line',
+          false,
+          defaultConfig
         ),
         defaultConfig
       );
@@ -216,14 +225,16 @@ describe('encoding', () => {
     });
     it('should produce format and formatType when there is timeUnit in tooltip channel or tooltip channel', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncodingWithMark(
+        initEncoding(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {field: 'b', type: 'ordinal'},
             tooltip: {field: 'c', timeUnit: 'month', type: 'nominal'},
             text: {field: 'c', timeUnit: 'month', type: 'nominal'}
           },
-          'text'
+          'text',
+          false,
+          defaultConfig
         ),
         defaultConfig
       );
@@ -242,7 +253,7 @@ describe('encoding', () => {
     });
     it('should extract aggregates from encoding', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncodingWithMark(
+        initEncoding(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {
@@ -251,7 +262,9 @@ describe('encoding', () => {
               type: 'quantitative'
             }
           },
-          'line'
+          'line',
+          false,
+          defaultConfig
         ),
         defaultConfig
       );
@@ -272,12 +285,14 @@ describe('encoding', () => {
     });
     it('should extract binning from encoding', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncodingWithMark(
+        initEncoding(
           {
             x: {field: 'a', type: 'ordinal', bin: true},
             y: {type: 'quantitative', aggregate: 'count'}
           },
-          'bar'
+          'bar',
+          true,
+          defaultConfig
         ),
         defaultConfig
       );
@@ -295,7 +310,7 @@ describe('encoding', () => {
     });
     it('should preserve auxiliary properties (i.e. axis) in encoding', () => {
       const output = extractTransformsFromEncoding(
-        normalizeEncodingWithMark(
+        initEncoding(
           {
             x: {field: 'a', type: 'quantitative'},
             y: {
@@ -306,7 +321,9 @@ describe('encoding', () => {
               axis: {title: 'foo', format: '.2e'}
             }
           },
-          'line'
+          'line',
+          false,
+          defaultConfig
         ),
         defaultConfig
       );
