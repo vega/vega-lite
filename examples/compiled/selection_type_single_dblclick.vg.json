@@ -123,7 +123,6 @@
       "labelAlign": "right",
       "labelAngle": 270,
       "labelBaseline": "middle",
-      "labelOverlap": true,
       "zindex": 1
     },
     {
@@ -131,7 +130,6 @@
       "orient": "left",
       "grid": false,
       "title": "Origin",
-      "labelOverlap": true,
       "zindex": 1
     }
   ],

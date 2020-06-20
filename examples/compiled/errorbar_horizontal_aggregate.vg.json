@@ -189,13 +189,6 @@
       "tickCount": {"signal": "ceil(width/40)"},
       "zindex": 0
     },
-    {
-      "scale": "y",
-      "orient": "left",
-      "grid": false,
-      "title": "age",
-      "labelOverlap": true,
-      "zindex": 0
-    }
+    {"scale": "y", "orient": "left", "grid": false, "title": "age", "zindex": 0}
   ]
 }

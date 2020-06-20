@@ -678,7 +678,6 @@
           "orient": "left",
           "grid": false,
           "title": "Country",
-          "labelOverlap": true,
           "zindex": 0
         }
       ]
@@ -1000,7 +999,6 @@
           "orient": "left",
           "grid": false,
           "title": "Country",
-          "labelOverlap": true,
           "zindex": 0
         }
       ]

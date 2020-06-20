@@ -106,7 +106,6 @@
       "grid": false,
       "title": "Cylinders",
       "tickBand": "extent",
-      "labelOverlap": true,
       "zindex": 0
     }
   ]
