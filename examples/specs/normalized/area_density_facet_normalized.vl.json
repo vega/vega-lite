@@ -5,7 +5,7 @@
   "transform": [
     {"density": "Body Mass (g)", "groupby": ["Species"], "extent": [2500, 6500]}
   ],
-  "facet": {"row": {"field": "Species", "type": "nominal"}},
+  "facet": {"row": {"field": "Species"}},
   "spec": {
     "width": 400,
     "height": 80,

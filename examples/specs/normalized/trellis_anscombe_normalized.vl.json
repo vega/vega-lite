@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "Anscombe's Quartet",
   "data": {"url": "data/anscombe.json"},
-  "facet": {"column": {"field": "Series", "type": "nominal"}},
+  "facet": {"column": {"field": "Series"}},
   "spec": {
     "mark": "circle",
     "encoding": {

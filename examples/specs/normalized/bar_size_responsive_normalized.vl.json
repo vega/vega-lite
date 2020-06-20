@@ -4,9 +4,6 @@
   "height": 250,
   "data": {"url": "data/cars.json"},
   "mark": "bar",
-  "encoding": {
-    "x": {"field": "Origin", "type": "nominal"},
-    "y": {"aggregate": "count", "type": "quantitative"}
-  },
+  "encoding": {"x": {"field": "Origin"}, "y": {"aggregate": "count"}},
   "autosize": {"type": "fit-x", "contains": "padding"}
 }

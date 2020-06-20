@@ -5,28 +5,19 @@
     {
       "mark": {"type": "arc", "stroke": "white", "tooltip": true},
       "encoding": {
-        "theta": {"bin": true, "field": "IMDB Rating", "type": "quantitative"},
-        "radius": {
-          "aggregate": "count",
-          "type": "quantitative",
-          "scale": {"type": "sqrt"}
-        }
+        "theta": {"bin": true, "field": "IMDB Rating"},
+        "radius": {"aggregate": "count", "scale": {"type": "sqrt"}}
       }
     },
     {
       "mark": {"type": "text", "radiusOffset": 15, "align": "right"},
       "encoding": {
-        "theta": {"bin": true, "field": "IMDB Rating", "type": "quantitative"},
-        "radius": {
-          "aggregate": "count",
-          "type": "quantitative",
-          "scale": {"type": "sqrt"}
-        },
-        "text": {"bin": true, "field": "IMDB Rating", "type": "quantitative"},
+        "theta": {"bin": true, "field": "IMDB Rating"},
+        "radius": {"aggregate": "count", "scale": {"type": "sqrt"}},
+        "text": {"bin": true, "field": "IMDB Rating"},
         "angle": {
           "bin": true,
           "field": "IMDB Rating",
-          "type": "quantitative",
           "scale": {"range": [90, 450]}
         }
       }

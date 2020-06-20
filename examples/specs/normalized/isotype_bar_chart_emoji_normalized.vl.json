@@ -49,9 +49,7 @@
     },
     {"window": [{"op": "rank", "as": "rank"}], "groupby": ["country", "animal"]}
   ],
-  "facet": {
-    "row": {"field": "country", "type": "nominal", "header": {"title": ""}}
-  },
+  "facet": {"row": {"field": "country", "header": {"title": ""}}},
   "spec": {
     "width": 800,
     "height": 200,

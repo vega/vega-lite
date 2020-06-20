@@ -5,9 +5,9 @@
     {
       "mark": {"type": "line", "color": "orange"},
       "encoding": {
-        "x": {"timeUnit": "yearmonthdate", "field": "date", "type": "temporal"},
+        "x": {"timeUnit": "yearmonthdate", "field": "date"},
         "tooltip": [
-          {"timeUnit": "yearmonthdate", "field": "date", "type": "temporal"},
+          {"timeUnit": "yearmonthdate", "field": "date"},
           {"field": "temp_max", "type": "quantitative"},
           {"field": "temp_min", "type": "quantitative"}
         ],
@@ -17,9 +17,9 @@
     {
       "mark": {"type": "line", "color": "red"},
       "encoding": {
-        "x": {"timeUnit": "yearmonthdate", "field": "date", "type": "temporal"},
+        "x": {"timeUnit": "yearmonthdate", "field": "date"},
         "tooltip": [
-          {"timeUnit": "yearmonthdate", "field": "date", "type": "temporal"},
+          {"timeUnit": "yearmonthdate", "field": "date"},
           {"field": "temp_max", "type": "quantitative"},
           {"field": "temp_min", "type": "quantitative"}
         ],
@@ -32,9 +32,9 @@
         "hover": {"type": "single", "on": "mouseover", "empty": "none"}
       },
       "encoding": {
-        "x": {"timeUnit": "yearmonthdate", "field": "date", "type": "temporal"},
+        "x": {"timeUnit": "yearmonthdate", "field": "date"},
         "tooltip": [
-          {"timeUnit": "yearmonthdate", "field": "date", "type": "temporal"},
+          {"timeUnit": "yearmonthdate", "field": "date"},
           {"field": "temp_max", "type": "quantitative"},
           {"field": "temp_min", "type": "quantitative"}
         ],
