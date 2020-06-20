@@ -1,6 +1,6 @@
 import {isObject} from 'vega-util';
 import {Config} from '../config';
-import {Encoding} from '../encoding';
+import {Encoding, normalizeEncoding} from '../encoding';
 import {AreaConfig, isMarkDef, LineConfig, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {isUnitSpec} from '../spec/unit';
@@ -92,7 +92,11 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
 
   public run(spec: UnitSpecWithPathOverlay, params: NormalizerParams, normalize: NormalizeLayerOrUnit) {
     const {config} = params;
-    const {selection, projection, encoding, mark, ...outerSpec} = spec;
+    const {selection, projection, mark, encoding: e, ...outerSpec} = spec;
+
+    // Need to call normalizeEncoding because we need the inferred types to correctly determine stack
+    const encoding = normalizeEncoding(e, config);
+
     const markDef: MarkDef = isMarkDef(mark) ? mark : {type: mark};
 
     const pointOverlay = getPointOverlay(markDef, config[markDef.type], encoding);
