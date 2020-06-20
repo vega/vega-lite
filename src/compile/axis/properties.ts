@@ -7,6 +7,7 @@ import {
   DatumDef,
   isDiscrete,
   isFieldDef,
+  isSortableFieldDef,
   PositionDatumDef,
   PositionFieldDef,
   toFieldDefBase,
@@ -154,7 +155,15 @@ export function getLabelAngle(
       return normalizeAngle(angle);
     } else {
       // get default value
-      if (channel === X && contains([NOMINAL, ORDINAL], fieldOrDatumDef.type)) {
+      if (
+        channel === X &&
+        contains([NOMINAL, ORDINAL], fieldOrDatumDef.type) &&
+        !(
+          isFieldDef(fieldOrDatumDef) &&
+          fieldOrDatumDef.timeUnit &&
+          !(isSortableFieldDef(fieldOrDatumDef) && isObject(fieldOrDatumDef.sort))
+        )
+      ) {
         return 270;
       }
       // no default
