@@ -76,7 +76,8 @@ export const axisRules: {
   labelFlush: ({axis, fieldOrDatumDef, channel}) => axis.labelFlush ?? defaultLabelFlush(fieldOrDatumDef.type, channel),
 
   labelOverlap: ({axis, fieldOrDatumDef, scaleType}) =>
-    axis.labelOverlap ?? defaultLabelOverlap(fieldOrDatumDef.type, scaleType),
+    axis.labelOverlap ??
+    defaultLabelOverlap(fieldOrDatumDef.type, scaleType, isFieldDef(fieldOrDatumDef) && !!fieldOrDatumDef.timeUnit),
 
   // we already calculate orient in parse
   orient: ({orient}) => orient as AxisOrient, // Need to cast until Vega supports signal
@@ -263,9 +264,9 @@ export function defaultLabelFlush(type: Type, channel: PositionScaleChannel) {
   return undefined;
 }
 
-export function defaultLabelOverlap(type: Type, scaleType: ScaleType) {
+export function defaultLabelOverlap(type: Type, scaleType: ScaleType, hasTimeUnit: boolean) {
   // do not prevent overlap for nominal data because there is no way to infer what the missing labels are
-  if (type !== 'nominal') {
+  if (hasTimeUnit || (type !== 'nominal' && type !== 'ordinal')) {
     if (scaleType === 'log') {
       return 'greedy';
     }

@@ -498,6 +498,20 @@ describe('compile/axis', () => {
       });
     });
   });
+  describe('defaultLabelOverlap', () => {
+    it('returns true for time unit ordinal', () => {
+      expect(properties.defaultLabelOverlap('ordinal', 'band', true)).toBe(true);
+    });
+
+    it('returns undefined for ordinal and nominal', () => {
+      expect(properties.defaultLabelOverlap('ordinal', 'band', false)).toBeUndefined();
+      expect(properties.defaultLabelOverlap('nominal', 'band', false)).toBeUndefined();
+    });
+
+    it('returns greedy for log scale', () => {
+      expect(properties.defaultLabelOverlap('quantitative', 'log', false)).toBe('greedy');
+    });
+  });
 
   describe('defaultZindex', () => {
     it('returns 1 for discrete axes of rect marks', () => {
