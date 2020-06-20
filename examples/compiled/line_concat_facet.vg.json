@@ -134,9 +134,6 @@
                 "signal": "timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
               },
               "formatType": "time",
-              "labelAlign": "right",
-              "labelAngle": 270,
-              "labelBaseline": "middle",
               "labelOverlap": true,
               "zindex": 0
             }
@@ -257,9 +254,6 @@
             "signal": "timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
           },
           "formatType": "time",
-          "labelAlign": "right",
-          "labelAngle": 270,
-          "labelBaseline": "middle",
           "labelOverlap": true,
           "zindex": 0
         },
