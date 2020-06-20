@@ -2,7 +2,7 @@ import {ScaleType, SignalRef} from 'vega';
 import {array} from 'vega-util';
 import {AxisConfig} from '../../axis';
 import {PositionScaleChannel} from '../../channel';
-import {Config} from '../../config';
+import {Config, StyleConfigIndex} from '../../config';
 import {isQuantitative} from '../../scale';
 import {keys, titleCase} from '../../util';
 import {isSignalRef} from '../../vega.schema';
@@ -97,11 +97,11 @@ export function getAxisConfigStyle(axisConfigTypes: string[], config: Config) {
 }
 export function getAxisConfig(
   property: keyof AxisConfig,
-  config: Config,
+  styleConfigIndex: StyleConfigIndex,
   style: string | string[],
   axisConfigs: Partial<AxisConfigs> = {}
 ): {configFrom?: string; configValue?: any} {
-  const styleConfig = getStyleConfig(property, style, config.style);
+  const styleConfig = getStyleConfig(property, style, styleConfigIndex);
 
   if (styleConfig !== undefined) {
     return {

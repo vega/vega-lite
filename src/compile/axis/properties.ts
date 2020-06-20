@@ -13,7 +13,7 @@ import {
   TypedFieldDef,
   valueArray
 } from '../../channeldef';
-import {Config} from '../../config';
+import {Config, StyleConfigIndex} from '../../config';
 import {Mark} from '../../mark';
 import {hasDiscreteDomain} from '../../scale';
 import {Sort} from '../../sort';
@@ -137,10 +137,10 @@ export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
 }
 
 export function getLabelAngle(
-  model: UnitModel,
+  fieldOrDatumDef: PositionFieldDef<string> | PositionDatumDef<string>,
   axis: Axis,
   channel: PositionScaleChannel,
-  fieldOrDatumDef: TypedFieldDef<string> | DatumDef,
+  styleConfig: StyleConfigIndex,
   axisConfigs?: AxisConfigs
 ) {
   const labelAngle = axis?.labelAngle;
@@ -149,7 +149,7 @@ export function getLabelAngle(
     return isSignalRef(labelAngle) ? labelAngle : normalizeAngle(labelAngle);
   } else {
     // try axis config value
-    const {configValue: angle} = getAxisConfig('labelAngle', model.config, axis?.style, axisConfigs);
+    const {configValue: angle} = getAxisConfig('labelAngle', styleConfig, axis?.style, axisConfigs);
     if (angle !== undefined) {
       return normalizeAngle(angle);
     } else {
