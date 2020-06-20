@@ -1,0 +1,15 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "title": "A box plot showing the distribution of body mass of penguin species.",
+  "data": {"url": "data/penguins.json"},
+  "mark": {"type": "boxplot"},
+  "encoding": {
+    "y": {"field": "Species", "type": "nominal"},
+    "color": {"field": "Species", "type": "nominal", "legend": null},
+    "x": {
+      "field": "Body Mass (g)",
+      "type": "quantitative",
+      "scale": {"zero": false}
+    }
+  }
+}
