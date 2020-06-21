@@ -5,8 +5,6 @@ import {LocalLogger} from '../../src/log';
 import {normalize} from '../../src/normalize';
 import {TopLevelSpec} from '../../src/spec';
 
-// describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
-
 describe('normalize()', () => {
   it('throws errors for invalid spec', () => {
     expect(() => normalize({} as any)).toThrow(log.message.invalidSpec({}));

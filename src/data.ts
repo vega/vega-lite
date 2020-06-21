@@ -83,6 +83,7 @@ export type DataSource = UrlData | InlineData | NamedData;
 
 export type Data = DataSource | Generator;
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 export type InlineDataset = number[] | string[] | boolean[] | object[] | string | object;
 
 export interface DataBase {
@@ -196,6 +197,7 @@ export interface SphereGenerator extends GeneratorBase {
   /**
    * Generate sphere GeoJSON data for the full globe.
    */
+  // eslint-disable-next-line @typescript-eslint/ban-types
   sphere: true | {};
 }
 

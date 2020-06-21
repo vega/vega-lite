@@ -10,7 +10,7 @@ import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins}
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './errorbar';
 
 export type ErrorBandUnitSpec<
-  EE = {} // extra encoding parameter (for faceted composite unit spec)
+  EE = undefined // extra encoding parameter (for faceted composite unit spec)
 > = GenericUnitSpec<ErrorEncoding<Field> & EE, ErrorBand | ErrorBandDef>;
 
 export const ERRORBAND = 'errorband' as const;
