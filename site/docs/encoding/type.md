@@ -36,7 +36,7 @@ To use an ordinal field with a sort order other than the natural order, you may 
 
 <div class="vl-example" data-name="bar_custom_sort_full"></div>
 
-**Note:** If a custom sort order is specified, Vega-Lite uses ordinal type by default, so you actually can omit `"type": "ordinal"` from the specification above.
+**Note:** If an encoding includes a custom sort order, Vega-Lite uses the ordinal type by default, so you actually can omit `"type": "ordinal"` from the specification above.
 
 {:#cast-timeunit}
 
