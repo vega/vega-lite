@@ -104,7 +104,6 @@
           "orient": "left",
           "grid": false,
           "title": "variety",
-          "labelOverlap": true,
           "zindex": 0
         }
       ]

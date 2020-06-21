@@ -100,7 +100,6 @@
       "title": "a",
       "labelAngle": 270,
       "labelBaseline": "middle",
-      "labelOverlap": true,
       "encode": {
         "labels": {
           "update": {

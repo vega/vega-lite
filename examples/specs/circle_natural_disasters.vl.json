@@ -17,8 +17,8 @@
   "encoding": {
     "x": {
       "field": "Year",
-      "type": "ordinal",
-      "axis": {"labelAngle": 0}
+      "type": "temporal",
+      "axis": {"labelAngle": 0, "grid": false}
     },
     "y": {"field": "Entity", "type": "nominal", "axis": {"title": ""}},
     "size": {
