@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "title": "A box plot showing the distribution of body mass of penguin species.",
+  "title": "Distribution of body mass of penguin species.",
   "data": {"url": "data/penguins.json"},
   "mark": {"type": "boxplot"},
   "encoding": {
