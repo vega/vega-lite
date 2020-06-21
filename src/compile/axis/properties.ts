@@ -7,7 +7,6 @@ import {
   DatumDef,
   isDiscrete,
   isFieldDef,
-  isSortableFieldDef,
   PositionDatumDef,
   PositionFieldDef,
   toFieldDefBase,
@@ -160,8 +159,7 @@ export function getLabelAngle(
         contains([NOMINAL, ORDINAL], fieldOrDatumDef.type) &&
         !(
           isFieldDef(fieldOrDatumDef) &&
-          fieldOrDatumDef.timeUnit &&
-          !(isSortableFieldDef(fieldOrDatumDef) && isObject(fieldOrDatumDef.sort))
+          fieldOrDatumDef.timeUnit 
         )
       ) {
         return 270;
