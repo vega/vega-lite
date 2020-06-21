@@ -157,10 +157,7 @@ export function getLabelAngle(
       if (
         channel === X &&
         contains([NOMINAL, ORDINAL], fieldOrDatumDef.type) &&
-        !(
-          isFieldDef(fieldOrDatumDef) &&
-          fieldOrDatumDef.timeUnit 
-        )
+        !(isFieldDef(fieldOrDatumDef) && fieldOrDatumDef.timeUnit)
       ) {
         return 270;
       }
