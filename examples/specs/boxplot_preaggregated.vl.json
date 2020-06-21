@@ -1,0 +1,62 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+   "title": "Body Mass of Penguin Species (g)",
+  "data": {
+    "values": [{
+      "Species": "Adelie",
+      "lower": 2800,
+      "q1": 3350,
+      "median": 3750,
+      "q3": 4000,
+      "upper": 4800,
+      "outliers": []
+    },{
+      "Species": "Chinstrap",
+      "lower": 2900,
+      "q1": 3500,
+      "median": 3750,
+      "q3": 3950,
+      "upper": 4550,
+      "outliers": [2750,4800]
+    },{
+      "Species": "Gentoo",
+      "lower": 3950,
+      "q1": 4800,
+      "median": 5000,
+      "q3": 5400,
+      "upper": 6200,
+      "outliers": []
+    }]
+  },
+  "encoding": {"y": {"field": "Species", "type": "nominal", "title": null}},
+  "layer": [
+    {
+      "mark": {"type": "rule"},
+      "encoding": {
+        "x": {"field": "lower", "type": "quantitative","scale": {"zero": false}, "title": null},
+        "x2": {"field": "upper"}
+      }
+    },
+    {
+      "mark": {"type": "bar", "size": 14},
+      "encoding": {
+        "x": {"field": "q1", "type": "quantitative"},
+        "x2": {"field": "q3"},
+        "color": {"field": "Species", "type": "nominal", "legend": null}
+      }
+    },
+    {
+      "mark": {"type": "tick", "color": "white", "size": 14},
+      "encoding": {
+        "x": {"field": "median", "type": "quantitative"}
+      }
+    },
+    {
+      "transform": [{"flatten": ["outliers"]}],
+      "mark": {"type": "point", "style": "boxplot-outliers"},
+      "encoding": {
+        "x": {"field": "outliers", "type": "quantitative"}
+      }
+    }
+  ]
+}

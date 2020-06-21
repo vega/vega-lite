@@ -470,7 +470,7 @@
       }
     ]
   },
-  "Composite Mark": {
+  "Composite Marks": {
     "Error Bars & Error Bands": [
       {
         "name": "layer_point_errorbar_ci",
@@ -497,6 +497,10 @@
       {
         "name": "boxplot_2D_vertical",
         "title": "Tukey Box Plot (1.5 IQR)"
+      },
+      {
+        "name": "boxplot_preaggregated",
+        "title": "Box Plot with Pre-Calculated Summaries"
       }
     ]
   },
