@@ -32,6 +32,12 @@ Note that when a `"temporal"` type is used for a field, Vega-Lite will treat it 
 
 Ordinal data represents ranked order (1st, 2nd, ...) by which the data can be sorted. However, as opposed to quantitative data, there is no notion of _relative degree of difference_ between them. For illustration, a "size" variable might have the following values `small`, `medium`, `large`, `extra-large`. We know that medium is larger than small and same for extra-large larger than large. However, we cannot compare the magnitude of relative difference, for example, between (1) `small` and `medium` and (2) `medium` and `large`. Similarly, we cannot say that `large` is two times as large as `small`.
 
+To use an ordinal field with a sort order other than the natural order, you may want to use the [`sort`](sort.html#sort-array) property to specify a customized order:
+
+<div class="vl-example" data-name="bar_custom_sort_full"></div>
+
+**Note:** If an encoding includes a custom sort order, Vega-Lite uses the ordinal type by default, so you actually can omit `"type": "ordinal"` from the specification above.
+
 {:#cast-timeunit}
 
 ### Casting a Temporal Field as an Ordinal Field
