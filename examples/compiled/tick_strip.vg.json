@@ -94,7 +94,6 @@
       "orient": "left",
       "grid": false,
       "title": "Cylinders",
-      "labelOverlap": true,
       "zindex": 0
     }
   ]

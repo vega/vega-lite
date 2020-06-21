@@ -9,7 +9,7 @@ import {normalizeAngle} from '../../../src/util';
 import {isSignalRef} from '../../../src/vega.schema';
 import {parseUnitModelWithScale} from '../../util';
 
-describe('compile/axis', () => {
+describe('compile/axis/properties', () => {
   function evalValueOrSignal(valueOrSignalRef: string | SignalRef, o: Orient) {
     if (isSignalRef(valueOrSignalRef)) {
       const ast = parse(valueOrSignalRef.signal);
@@ -496,6 +496,24 @@ describe('compile/axis', () => {
         }
         done();
       });
+    });
+  });
+  describe('defaultLabelOverlap', () => {
+    it('returns true for time unit ordinal without sort', () => {
+      expect(properties.defaultLabelOverlap('ordinal', 'band', true)).toBe(true);
+    });
+
+    it('returns true for time unit ordinal with sort', () => {
+      expect(properties.defaultLabelOverlap('ordinal', 'band', true, {field: 'x', op: 'min'})).toBeUndefined();
+    });
+
+    it('returns undefined for ordinal and nominal', () => {
+      expect(properties.defaultLabelOverlap('ordinal', 'band', false)).toBeUndefined();
+      expect(properties.defaultLabelOverlap('nominal', 'band', false)).toBeUndefined();
+    });
+
+    it('returns greedy for log scale', () => {
+      expect(properties.defaultLabelOverlap('quantitative', 'log', false)).toBe('greedy');
     });
   });
 

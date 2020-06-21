@@ -122,7 +122,6 @@
       "labelAlign": "right",
       "labelAngle": 270,
       "labelBaseline": "middle",
-      "labelOverlap": true,
       "zindex": 0
     },
     {
@@ -130,7 +129,6 @@
       "orient": "left",
       "grid": false,
       "title": "rank",
-      "labelOverlap": true,
       "zindex": 0
     }
   ],

@@ -101,7 +101,6 @@
       "orient": "left",
       "grid": false,
       "title": "task",
-      "labelOverlap": true,
       "zindex": 0
     }
   ]

@@ -132,7 +132,6 @@
         "signal": "timeUnitSpecifier([\"day\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
       },
       "formatType": "time",
-      "labelOverlap": true,
       "zindex": 0
     }
   ],
