@@ -138,3 +138,9 @@ On the other hand, if the field in the tooltip encoding is aggregated, it would 
 The `boxplot` config object sets the default properties for `boxplot` marks.
 
 The boxplot config can contain all [boxplot mark properties](#properties) but currently not supporting `color`, `opacity`, and `orient`. Please see issue [#3934](https://github.com/vega/vega-lite/issues/3934).
+
+## Box Plot with Pre-Calculated Summaries
+
+If you have data summaries pre-calculated for a box plot, you can use `layer` to build a box plot like this:
+
+<div class="vl-example" data-name="boxplot_preaggregated"></div>

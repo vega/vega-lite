@@ -126,6 +126,7 @@
         - [Color, Size, and Opacity Encoding Channels]({{site.baseurl}}/docs/boxplot.html#color-size-and-opacity-encoding-channels)
         - [Tooltip Encoding Channels]({{site.baseurl}}/docs/boxplot.html#tooltip-encoding-channels)
         - [Mark Config]({{site.baseurl}}/docs/boxplot.html#config)
+        - [Box Plot with Pre-Calculated Summaries]({{site.baseurl}}/docs/boxplot.html#box-plot-with-pre-calculated-summaries)
     - [Circle]({{site.baseurl}}/docs/circle.html)
         - [Circle Mark Properties]({{site.baseurl}}/docs/circle.html#properties)
         - [Examples]({{site.baseurl}}/docs/circle.html#examples)
