@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/cars.json"},
-  "facet": {"row": {"field": "Origin", "type": "nominal"}},
+  "facet": {"row": {"field": "Origin"}},
   "spec": {
     "mark": "bar",
     "encoding": {

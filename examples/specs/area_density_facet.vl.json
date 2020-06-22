@@ -17,6 +17,6 @@
   "encoding": {
     "x": {"field": "value", "type": "quantitative", "title": "Body Mass (g)"},
     "y": {"field": "density", "type": "quantitative", "stack": "zero"},
-    "row": {"field": "Species", "type": "nominal"}
+    "row": {"field": "Species"}
   }
 }

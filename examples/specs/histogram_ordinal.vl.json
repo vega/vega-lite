@@ -8,9 +8,6 @@
       "field": "IMDB Rating",
       "type": "ordinal"
     },
-    "y": {
-      "aggregate": "count",
-      "type": "quantitative"
-    }
+    "y": {"aggregate": "count"}
   }
 }

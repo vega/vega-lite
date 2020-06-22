@@ -42,7 +42,7 @@ import {assembleLayoutSignals} from './layoutsize/assemble';
 import {initLayoutSize} from './layoutsize/init';
 import {parseUnitLayoutSize} from './layoutsize/parse';
 import {LegendIndex} from './legend/component';
-import {initMarkdef} from './mark/init';
+import {defaultFilled, initMarkdef} from './mark/init';
 import {parseMarkGroups} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
 import {ScaleIndex} from './scale/component';
@@ -83,12 +83,18 @@ export class UnitModel extends ModelWithField {
   ) {
     super(spec, 'unit', parent, parentGivenName, config, undefined, isFrameMixins(spec) ? spec.view : undefined);
 
-    const mark = isMarkDef(spec.mark) ? spec.mark.type : spec.mark;
+    const markDef = isMarkDef(spec.mark) ? {...spec.mark} : {type: spec.mark};
+    const mark = markDef.type;
 
-    this.markDef = initMarkdef(spec.mark, spec.encoding ?? {}, config, {
-      graticule: spec.data && isGraticuleGenerator(spec.data)
-    });
-    const encoding = (this.encoding = initEncoding(spec.encoding ?? {}, this.markDef, config));
+    // Need to init filled before other mark properties because encoding depends on filled but other mark properties depend on types inside encoding
+    if (markDef.filled === undefined) {
+      markDef.filled = defaultFilled(markDef, config, {
+        graticule: spec.data && isGraticuleGenerator(spec.data)
+      });
+    }
+
+    const encoding = (this.encoding = initEncoding(spec.encoding || {}, mark, markDef.filled, config));
+    this.markDef = initMarkdef(markDef, encoding, config);
 
     this.size = initLayoutSize({
       encoding: encoding,

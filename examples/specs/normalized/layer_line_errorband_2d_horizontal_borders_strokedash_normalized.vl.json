@@ -4,7 +4,7 @@
   "layer": [
     {
       "transform": [
-        {"timeUnit": "year", "field": "Year", "as": "year_Year"},
+        {"timeUnit": {"unit": "year"}, "field": "Year", "as": "year_Year"},
         {
           "aggregate": [
             {
@@ -157,7 +157,7 @@
           "type": "quantitative",
           "aggregate": "mean"
         },
-        "x": {"field": "Year", "type": "temporal", "timeUnit": "year"}
+        "x": {"field": "Year", "timeUnit": "year"}
       }
     }
   ]

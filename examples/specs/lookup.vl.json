@@ -11,7 +11,7 @@
   }],
   "mark": "bar",
   "encoding": {
-    "x": {"field": "group", "type": "ordinal"},
-    "y": {"field": "age", "aggregate": "mean", "type": "quantitative"}
+    "x": {"field": "group"},
+    "y": {"field": "age", "aggregate": "mean"}
   }
 }

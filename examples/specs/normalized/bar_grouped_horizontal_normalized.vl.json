@@ -7,7 +7,7 @@
   ],
   "config": {"view": {"stroke": "transparent"}, "axis": {"domainWidth": 1}},
   "spacing": {"row": 10},
-  "facet": {"row": {"field": "age", "type": "ordinal"}},
+  "facet": {"row": {"field": "age"}},
   "spec": {
     "height": {"step": 6},
     "mark": "bar",
@@ -15,15 +15,10 @@
       "x": {
         "aggregate": "sum",
         "field": "people",
-        "type": "quantitative",
         "axis": {"title": "population", "grid": false}
       },
-      "y": {"field": "gender", "type": "nominal", "axis": null},
-      "color": {
-        "field": "gender",
-        "type": "nominal",
-        "scale": {"range": ["#675193", "#ca8861"]}
-      }
+      "y": {"field": "gender", "axis": null},
+      "color": {"field": "gender", "scale": {"range": ["#675193", "#ca8861"]}}
     }
   }
 }

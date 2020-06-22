@@ -10,8 +10,7 @@ describe('compile/mark/init', () => {
         initMarkdef(
           {type: 'bar', cornerRadiusEnd: 5},
           {x: {field: 'x', type: 'quantitative'}, x2: {field: 'x2'}},
-          defaultConfig,
-          {graticule: false}
+          defaultConfig
         )
       ).toMatchObject({cornerRadius: 5});
 
@@ -19,25 +18,20 @@ describe('compile/mark/init', () => {
         initMarkdef(
           {type: 'bar', cornerRadiusEnd: 5},
           {y: {field: 'x', type: 'quantitative'}, y2: {field: 'x2'}},
-          defaultConfig,
-          {graticule: false}
+          defaultConfig
         )
       ).toMatchObject({cornerRadius: 5});
     });
 
     it('applies cornerRadiusEnd to top cornerRadius for vertical bars', () => {
       expect(
-        initMarkdef({type: 'bar', cornerRadiusEnd: 5}, {y: {field: 'x', type: 'quantitative'}}, defaultConfig, {
-          graticule: false
-        })
+        initMarkdef({type: 'bar', cornerRadiusEnd: 5}, {y: {field: 'x', type: 'quantitative'}}, defaultConfig)
       ).toMatchObject({cornerRadiusTopLeft: 5, cornerRadiusTopRight: 5});
     });
 
     it('applies cornerRadiusEnd to top cornerRadius for horizontal bars', () => {
       expect(
-        initMarkdef({type: 'bar', cornerRadiusEnd: 5}, {x: {field: 'x', type: 'quantitative'}}, defaultConfig, {
-          graticule: false
-        })
+        initMarkdef({type: 'bar', cornerRadiusEnd: 5}, {x: {field: 'x', type: 'quantitative'}}, defaultConfig)
       ).toMatchObject({cornerRadiusBottomRight: 5, cornerRadiusTopRight: 5});
     });
   });

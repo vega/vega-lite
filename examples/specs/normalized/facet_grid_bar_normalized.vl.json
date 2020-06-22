@@ -34,13 +34,8 @@
   },
   "spacing": 5,
   "facet": {
-    "row": {
-      "field": "a",
-      "type": "nominal",
-      "title": "Factor A",
-      "header": {"labelAngle": 0}
-    },
-    "column": {"field": "b", "type": "nominal", "title": "Factor B"}
+    "row": {"field": "a", "title": "Factor A", "header": {"labelAngle": 0}},
+    "column": {"field": "b", "title": "Factor B"}
   },
   "spec": {
     "width": 60,

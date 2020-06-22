@@ -29,15 +29,14 @@
   "mark": "point",
   "encoding": {
     "tooltip": [
-      {"type": "nominal", "field": "Fighter Name"},
-      {"type": "quantitative", "aggregate": "min", "field": "Place Rank"},
+      {"field": "Fighter Name"},
+      {"aggregate": "min", "field": "Place Rank"},
       {
-        "type": "nominal",
-        "field": "Fighting Style",
-        "aggregate": {"argmin": "Place Rank"}
+        "aggregate": {"argmin": "Place Rank"},
+        "field": "Fighting Style"
       }
     ],
-    "x": {"type": "quantitative", "aggregate": "min", "field": "Place Rank"},
-    "y": {"type": "nominal", "field": "Fighter Name"}
+    "x": {"aggregate": "min", "field": "Place Rank"},
+    "y": {"field": "Fighter Name"}
   }
 }

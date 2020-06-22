@@ -1,9 +1,9 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/cars.json"},
-  "facet": {"row": {"field": "Origin", "type": "ordinal"}},
+  "facet": {"row": {"field": "Origin"}},
   "spec": {
-    "facet": {"row": {"field": "Cylinders", "type": "ordinal"}},
+    "facet": {"row": {"field": "Cylinders"}},
     "spec": {
       "mark": "point",
       "encoding": {

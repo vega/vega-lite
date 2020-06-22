@@ -2,9 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "A trellis scatterplot showing Horsepower and Miles per gallons, faceted by binned values of Acceleration.",
   "data": {"url": "data/cars.json"},
-  "facet": {
-    "row": {"field": "Acceleration", "type": "quantitative", "bin": true}
-  },
+  "facet": {"row": {"field": "Acceleration", "bin": true}},
   "spec": {
     "mark": "point",
     "encoding": {

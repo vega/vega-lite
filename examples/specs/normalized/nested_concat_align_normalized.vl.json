@@ -13,12 +13,8 @@
           "height": 50,
           "mark": "bar",
           "encoding": {
-            "x": {
-              "field": "Rotten Tomatoes Rating",
-              "bin": {"maxbins": 20},
-              "type": "quantitative"
-            },
-            "y": {"aggregate": "count", "type": "quantitative"}
+            "x": {"field": "Rotten Tomatoes Rating", "bin": {"maxbins": 20}},
+            "y": {"aggregate": "count"}
           },
           "name": "child__column_Rotten_Tomatoes_Rating"
         },
@@ -27,12 +23,8 @@
           "height": 50,
           "mark": "bar",
           "encoding": {
-            "x": {
-              "field": "IMDB Rating",
-              "bin": {"maxbins": 20},
-              "type": "quantitative"
-            },
-            "y": {"aggregate": "count", "type": "quantitative"}
+            "x": {"field": "IMDB Rating", "bin": {"maxbins": 20}},
+            "y": {"aggregate": "count"}
           },
           "name": "child__column_IMDB_Rating"
         }
@@ -47,12 +39,8 @@
           "width": 150,
           "height": 50,
           "encoding": {
-            "x": {
-              "field": "US Gross",
-              "bin": {"maxbins": 20},
-              "type": "quantitative"
-            },
-            "y": {"aggregate": "count", "type": "quantitative"}
+            "x": {"field": "US Gross", "bin": {"maxbins": 20}},
+            "y": {"aggregate": "count"}
           },
           "mark": "bar",
           "name": "child__column_US_Gross"
@@ -61,12 +49,8 @@
           "width": 150,
           "height": 50,
           "encoding": {
-            "x": {
-              "field": "Worldwide Gross",
-              "bin": {"maxbins": 20},
-              "type": "quantitative"
-            },
-            "y": {"aggregate": "count", "type": "quantitative"}
+            "x": {"field": "Worldwide Gross", "bin": {"maxbins": 20}},
+            "y": {"aggregate": "count"}
           },
           "mark": "bar",
           "name": "child__column_Worldwide_Gross"

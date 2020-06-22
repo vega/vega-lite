@@ -209,7 +209,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"latitude\" + \": \" + (format(datum[\"latitude\"], \"\")) + \"; \" + \"longitude\" + \": \" + (format(datum[\"longitude\"], \"\")) + \"; \" + \"routes\" + \": \" + (format(datum[\"routes\"], \"\"))"
+            "signal": "\"latitude\" + \": \" + (format(datum[\"latitude\"], \"\")) + \"; \" + \"longitude\" + \": \" + (format(datum[\"longitude\"], \"\")) + \"; \" + \"routes\" + \": \" + (isValid(datum[\"routes\"]) ? datum[\"routes\"] : \"\"+datum[\"routes\"])"
           },
           "x": {"field": "layer_2_x"},
           "y": {"field": "layer_2_y"},

@@ -15,7 +15,6 @@
       },
       "x": {
         "aggregate": "count",
-        "type": "quantitative",
         "scale":{"domain":  [0, 6]},
         "axis": {"orient": "top"}
       }
@@ -39,7 +38,6 @@
       },
       "x": {
         "aggregate": "count",
-        "type": "quantitative",
         "axis": null
       }
     }

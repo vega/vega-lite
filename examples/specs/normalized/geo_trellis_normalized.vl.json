@@ -14,7 +14,7 @@
       "as": "geo"
     }
   ],
-  "facet": {"row": {"field": "group", "type": "nominal"}},
+  "facet": {"row": {"field": "group"}},
   "spec": {
     "width": 500,
     "height": 300,

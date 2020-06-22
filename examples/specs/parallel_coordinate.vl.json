@@ -29,8 +29,8 @@
   "layer": [{
     "mark": {"type": "rule", "color": "#ccc"},
     "encoding": {
-      "detail": {"aggregate": "count", "type": "quantitative"},
-      "x": {"type": "nominal", "field": "key"}
+      "detail": {"aggregate": "count"},
+      "x": {"field": "key"}
     }
   }, {
     "mark": "line",
@@ -62,7 +62,7 @@
     "layer": [{
       "mark": {"type": "text", "style": "label"},
       "encoding": {
-        "text": {"aggregate": "max", "field": "max", "type": "quantitative"}
+        "text": {"aggregate": "max", "field": "max"}
       }
     }, {
       "mark": {"type": "tick", "style": "tick", "size": 8, "color": "#ccc"}
@@ -75,7 +75,7 @@
     "layer": [{
       "mark": {"type": "text", "style": "label"},
       "encoding": {
-        "text": {"aggregate": "min", "field": "mid", "type": "quantitative"}
+        "text": {"aggregate": "min", "field": "mid"}
       }
     }, {
       "mark": {"type": "tick", "style": "tick", "size": 8, "color": "#ccc"}
@@ -88,7 +88,7 @@
     "layer": [{
       "mark": {"type": "text", "style": "label"},
       "encoding": {
-        "text": {"aggregate": "min", "field": "min", "type": "quantitative"}
+        "text": {"aggregate": "min", "field": "min"}
       }
     }, {
       "mark": {"type": "tick", "style": "tick", "size": 8, "color": "#ccc"}

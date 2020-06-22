@@ -13,12 +13,8 @@
     },
     "mark": "bar",
     "encoding": {
-      "x": {
-        "field": "time",
-        "bin": {"maxbins": 30},
-        "type": "quantitative"
-      },
-      "y": {"aggregate": "count", "type": "quantitative"}
+      "x": {"field": "time", "bin": {"maxbins": 30}},
+      "y": {"aggregate": "count"}
     }
   }, {
     "width": 963,
@@ -27,10 +23,9 @@
     "encoding": {
       "x": {
         "field": "time",
-        "bin": {"maxbins": 30, "extent": {"selection": "brush"}},
-        "type": "quantitative"
+        "bin": {"maxbins": 30, "extent": {"selection": "brush"}}
       },
-      "y": {"aggregate": "count", "type": "quantitative"}
+      "y": {"aggregate": "count"}
     }
   }]
 }

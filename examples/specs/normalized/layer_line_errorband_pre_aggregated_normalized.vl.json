@@ -11,7 +11,7 @@
   "layer": [
     {
       "transform": [
-        {"timeUnit": "year", "field": "Year", "as": "year_Year"},
+        {"timeUnit": {"unit": "year"}, "field": "Year", "as": "year_Year"},
         {"calculate": "datum[\"ci0\"]", "as": "upper_ci1"},
         {"calculate": "datum[\"ci1\"]", "as": "lower_ci1"}
       ],
@@ -49,7 +49,7 @@
       "mark": "line",
       "encoding": {
         "y": {"field": "center", "type": "quantitative"},
-        "x": {"field": "Year", "type": "temporal", "timeUnit": "year"}
+        "x": {"field": "Year", "timeUnit": "year"}
       }
     }
   ]

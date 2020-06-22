@@ -11,10 +11,9 @@
     "encoding": {
       "x": {
         "field": {"repeat": "column"},
-        "bin": {"maxbins": 20},
-        "type": "quantitative"
+        "bin": {"maxbins": 20}
       },
-      "y": {"aggregate": "count", "type": "quantitative"}
+      "y": {"aggregate": "count"}
     }
   }
 }

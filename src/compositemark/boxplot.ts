@@ -2,7 +2,7 @@ import {Orientation} from 'vega';
 import {isNumber, isObject} from 'vega-util';
 import {getMarkPropOrConfig} from '../compile/common';
 import {Config} from '../config';
-import {Encoding, extractTransformsFromEncoding} from '../encoding';
+import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';
@@ -81,6 +81,12 @@ export function normalizeBoxPlot(
   spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
   {config}: NormalizerParams
 ): NormalizedLayerSpec {
+  // Need to initEncoding first so we can infer type
+  spec = {
+    ...spec,
+    encoding: normalizeEncoding(spec.encoding, config)
+  };
+
   // TODO: use selection
   const {mark, encoding: _encoding, selection, projection: _p, ...outerSpec} = spec;
   const markDef: BoxPlotDef = isMarkDef(mark) ? mark : {type: mark};

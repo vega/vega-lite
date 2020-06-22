@@ -7,16 +7,11 @@
     "x": {
       "timeUnit": "month",
       "field": "date",
-      "type": "temporal",
       "axis": {
         "labelAlign": "left",
         "labelExpr": "datum.label[0]"
       }
     },
-    "y": {
-      "aggregate": "mean",
-      "field": "precipitation",
-      "type": "quantitative"
-    }
+    "y": {"aggregate": "mean", "field": "precipitation"}
   }
 }

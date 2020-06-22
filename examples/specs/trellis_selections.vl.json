@@ -22,7 +22,7 @@
     }
   },
   "encoding": {
-    "column": {"field": "Series", "type": "nominal"},
+    "column": {"field": "Series"},
     "x": {
       "field": "X",
       "type": "quantitative",

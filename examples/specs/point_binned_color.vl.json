@@ -6,6 +6,6 @@
   "encoding": {
     "x": {"field": "Horsepower", "type": "quantitative"},
     "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
-    "color": {"bin": true, "field": "Acceleration", "type": "quantitative"}
+    "color": {"bin": true, "field": "Acceleration"}
   }
 }

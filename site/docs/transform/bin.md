@@ -56,7 +56,7 @@ Mapping binned values and its count to a `bar` mark produces a histogram.
 
 ### Example: Histogram with Ordinal Scale
 
-Setting the binned field's `type` to `"ordinal"` produces a histogram with an ordinal scale.
+While binned field has `"quantitative"` type by default, setting the binned field's `type` to `"ordinal"` produces a histogram with an ordinal scale.
 
 <div class="vl-example" data-name="histogram_ordinal"></div>
 

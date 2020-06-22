@@ -94,7 +94,7 @@ import {
 } from './channeldef';
 import {Config} from './config';
 import * as log from './log';
-import {Mark, MarkDef} from './mark';
+import {Mark} from './mark';
 import {EncodingFacetMapping} from './spec/facet';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
 import {QUANTITATIVE, TEMPORAL} from './type';
@@ -495,9 +495,12 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
   return true;
 }
 
-export function initEncoding(encoding: Encoding<string>, markDef: MarkDef, config: Config): Encoding<string> {
-  const mark = markDef.type;
-
+export function initEncoding(
+  encoding: Encoding<string>,
+  mark: Mark,
+  filled: boolean,
+  config: Config
+): Encoding<string> {
   return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
     if (!isChannel(channel)) {
       // Drop invalid channel
@@ -525,10 +528,9 @@ export function initEncoding(encoding: Encoding<string>, markDef: MarkDef, confi
         return normalizedEncoding;
       }
     }
-
     // Drop color if either fill or stroke is specified
 
-    if (channel === COLOR && (markDef.filled ? 'fill' in encoding : 'stroke' in encoding)) {
+    if (channel === COLOR && (filled ? 'fill' in encoding : 'stroke' in encoding)) {
       log.warn(log.message.droppingColor('encoding', {fill: 'fill' in encoding, stroke: 'stroke' in encoding}));
       return normalizedEncoding;
     }
@@ -568,6 +570,17 @@ export function initEncoding(encoding: Encoding<string>, markDef: MarkDef, confi
       }
       normalizedEncoding[channel] = initChannelDef(channelDef as ChannelDef, channel, config);
     }
+    return normalizedEncoding;
+  }, {});
+}
+
+/**
+ * For composite marks, we have to call initChannelDef during init so we can infer types earlier.
+ */
+export function normalizeEncoding(encoding: Encoding<string>, config: Config): Encoding<string> {
+  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
+    const channelDef = encoding[channel];
+    normalizedEncoding[channel] = initChannelDef(channelDef as ChannelDef, channel, config, {compositeMark: true});
     return normalizedEncoding;
   }, {});
 }

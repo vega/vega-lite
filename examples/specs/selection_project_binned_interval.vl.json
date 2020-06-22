@@ -8,16 +8,16 @@
       },
       "mark": "bar",
       "encoding": {
-        "x": {"field": "Acceleration", "bin": true, "type": "quantitative"},
-        "y": {"aggregate": "count", "type": "quantitative"}
+        "x": {"field": "Acceleration", "bin": true},
+        "y": {"aggregate": "count"}
       }
     },
     {
       "transform": [{"filter": {"selection": "brush"}}],
       "mark": "bar",
       "encoding": {
-        "x": {"field": "Acceleration", "bin": true, "type": "quantitative"},
-        "y": {"aggregate": "count", "type": "quantitative"},
+        "x": {"field": "Acceleration", "bin": true},
+        "y": {"aggregate": "count"},
         "color": {"value": "goldenrod"}
       }
     }

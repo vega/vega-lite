@@ -8,10 +8,9 @@
   "transform": [{"filter": "datum.location == \"Seattle\""}],
   "encoding": {
     "x": {
-        "field": "date",
-        "axis": {"format": "%b", "title": null},
-        "type": "temporal",
-        "timeUnit": "month"
+      "timeUnit": "month",
+      "field": "date",
+      "axis": {"format": "%b", "title": null}
     }
   },
   "layer": [
@@ -22,7 +21,6 @@
           "aggregate": "average",
           "field": "temp_max",
           "scale": {"domain": [0, 30]},
-          "type": "quantitative",
           "axis": {"title": "Avg. Temperature (°C)", "titleColor": "#85C5A6"}
         },
 
@@ -38,7 +36,6 @@
         "y": {
           "aggregate": "average",
           "field": "precipitation",
-          "type": "quantitative",
           "axis": {"title": "Precipitation (inches)", "titleColor":"#85A9C5"}
         }
       }

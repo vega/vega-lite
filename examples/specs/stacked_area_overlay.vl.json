@@ -7,12 +7,10 @@
   ],
   "mark": {"type": "area", "line": true},
   "encoding": {
-    "y": {
-      "aggregate": "sum", "field": "people", "type": "quantitative"
-    },
-    "x": {"field": "age", "type": "ordinal"},
+    "y": {"aggregate": "sum", "field": "people"},
+    "x": {"field": "age"},
     "color": {
-      "field": "gender", "type": "nominal",
+      "field": "gender",
       "scale": {"range": ["#675193", "#ca8861"]}
     },
     "opacity": {"value": 0.7}

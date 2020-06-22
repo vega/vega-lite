@@ -5,7 +5,7 @@
   "data": {"url": "data/movies.json"},
   "mark": "point",
   "encoding": {
-    "column": {"field": "MPAA Rating", "type": "ordinal"},
+    "column": {"field": "MPAA Rating"},
     "x": {"field": "Worldwide Gross", "type": "quantitative"},
     "y": {"field": "US DVD Sales", "type": "quantitative"}
   }

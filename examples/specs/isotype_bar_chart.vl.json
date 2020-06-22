@@ -48,7 +48,7 @@
   "encoding": {
     "x": {"field": "col", "type": "ordinal", "axis": null},
     "y": {"field": "animal", "type": "ordinal", "axis": null},
-    "row": {"field": "country", "type": "nominal", "header": {"title": ""}},
+    "row": {"field": "country", "header": {"title": ""}},
     "shape": {
       "field": "animal",
       "type": "nominal",

@@ -85,7 +85,6 @@
         "x": {
           "aggregate": "min",
           "field": "xc",
-          "type": "quantitative",
           "title": "Origin",
           "axis": {
             "orient": "top"
@@ -93,13 +92,9 @@
         },
         "color": {
           "field": "Origin",
-          "type": "nominal",
           "legend": null
         },
-        "text": {
-          "field": "Origin",
-          "type": "nominal"
-        }
+        "text": {"field": "Origin"}
       }
     },
     {
@@ -114,16 +109,12 @@
               "type": "quantitative",
               "axis": null
             },
-            "x2": {
-              "field": "x2"
-            },
+            "x2": {"field": "x2"},
             "y": {
               "field": "y",
               "type": "quantitative"
             },
-            "y2": {
-              "field": "y2"
-            },
+            "y2": {"field": "y2"},
             "color": {
               "field": "Origin",
               "type": "nominal",

@@ -10,16 +10,9 @@
   }],
   "encoding": {
     "x": {
-      "field": "month",
-      "type": "temporal",
-      "axis": {
-        "format": "%b"
-      }
+      "field": "month", "type": "temporal",
+      "axis": {"format": "%b"}
     },
-    "y": {
-      "aggregate": "max",
-      "field": "temp_max",
-      "type": "quantitative"
-    }
+    "y": {"aggregate": "max", "field": "temp_max"}
   }
 }

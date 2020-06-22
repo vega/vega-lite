@@ -8,10 +8,9 @@
     "encoding": {
       "x": {
         "field": {"repeat": "repeat"},
-        "bin": true,
-        "type": "quantitative"
+        "bin": true
       },
-      "y": {"aggregate": "count", "type": "quantitative"}
+      "y": {"aggregate": "count"}
     }
   },
   "autosize": {"type": "fit-x", "contains": "padding"}

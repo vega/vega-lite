@@ -31,10 +31,7 @@
   "layer": [
     {
       "mark": {"type": "rule", "color": "#ccc"},
-      "encoding": {
-        "detail": {"aggregate": "count", "type": "quantitative"},
-        "x": {"type": "nominal", "field": "key"}
-      }
+      "encoding": {"detail": {"aggregate": "count"}, "x": {"field": "key"}}
     },
     {
       "mark": "line",
@@ -59,7 +56,7 @@
           "encoding": {
             "x": {"type": "nominal", "field": "key"},
             "y": {"value": 0},
-            "text": {"aggregate": "max", "field": "max", "type": "quantitative"}
+            "text": {"aggregate": "max", "field": "max"}
           }
         },
         {
@@ -78,7 +75,7 @@
           "encoding": {
             "x": {"type": "nominal", "field": "key"},
             "y": {"value": 150},
-            "text": {"aggregate": "min", "field": "mid", "type": "quantitative"}
+            "text": {"aggregate": "min", "field": "mid"}
           }
         },
         {
@@ -97,7 +94,7 @@
           "encoding": {
             "x": {"type": "nominal", "field": "key"},
             "y": {"value": 300},
-            "text": {"aggregate": "min", "field": "min", "type": "quantitative"}
+            "text": {"aggregate": "min", "field": "min"}
           }
         },
         {

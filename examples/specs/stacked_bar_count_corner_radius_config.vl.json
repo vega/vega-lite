@@ -4,8 +4,8 @@
   "mark": "bar",
   "encoding": {
     "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-    "y": {"aggregate": "count", "type": "quantitative"},
-    "color": {"field": "weather", "type": "nominal"}
+    "y": {"aggregate": "count"},
+    "color": {"field": "weather"}
   },
   "config": {"bar": {"cornerRadiusTopLeft": 8, "cornerRadiusTopRight": 8}}
 }

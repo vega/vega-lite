@@ -12,7 +12,6 @@
       },
     "y": {
       "field": "fps",
-      "type": "quantitative",
       "title": "Frames Per Second (fps)",
       "axis": {"grid": false},
       "scale": {"type": "log"}

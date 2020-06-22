@@ -6,13 +6,11 @@
     "x": {
       "timeUnit": "month",
       "field": "date",
-      "type": "temporal",
       "band": 0.7
     },
     "y": {
       "aggregate": "mean",
-      "field": "precipitation",
-      "type": "quantitative"
+      "field": "precipitation"
     }
   }
 }

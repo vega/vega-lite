@@ -6,7 +6,7 @@
     {"filter": "datum.year == 2000"},
     {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
   ],
-  "facet": {"row": {"field": "gender", "type": "nominal"}},
+  "facet": {"row": {"field": "gender"}},
   "spec": {
     "width": {"step": 17},
     "mark": "bar",
@@ -14,15 +14,10 @@
       "y": {
         "aggregate": "sum",
         "field": "people",
-        "type": "quantitative",
         "axis": {"title": "population"}
       },
-      "x": {"field": "age", "type": "ordinal"},
-      "color": {
-        "field": "gender",
-        "type": "nominal",
-        "scale": {"range": ["#675193", "#ca8861"]}
-      }
+      "x": {"field": "age"},
+      "color": {"field": "gender", "scale": {"range": ["#675193", "#ca8861"]}}
     }
   }
 }

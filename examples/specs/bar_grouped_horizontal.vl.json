@@ -8,17 +8,17 @@
   "height": {"step": 6},
   "mark": "bar",
   "encoding": {
-    "row": {"field": "age", "type": "ordinal", "spacing": 10},
+    "row": {"field": "age", "spacing": 10},
     "x": {
-      "aggregate": "sum", "field": "people", "type": "quantitative",
+      "aggregate": "sum", "field": "people",
       "axis": {"title": "population", "grid": false}
     },
     "y": {
-      "field": "gender", "type": "nominal",
+      "field": "gender",
       "axis": null
     },
     "color": {
-      "field": "gender", "type": "nominal",
+      "field": "gender",
       "scale": {"range": ["#675193", "#ca8861"]}
     }
   },

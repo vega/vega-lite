@@ -1,6 +1,6 @@
 import {Interpolate, Orientation} from 'vega';
 import {Field} from '../channeldef';
-import {Encoding} from '../encoding';
+import {Encoding, normalizeEncoding} from '../encoding';
 import * as log from '../log';
 import {MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';
@@ -94,6 +94,12 @@ export function normalizeErrorBand(
   spec: GenericUnitSpec<Encoding<string>, ErrorBand | ErrorBandDef>,
   {config}: NormalizerParams
 ): NormalizedLayerSpec {
+  // Need to initEncoding first so we can infer type
+  spec = {
+    ...spec,
+    encoding: normalizeEncoding(spec.encoding, config)
+  };
+
   const {
     transform,
     continuousAxisChannelDef,

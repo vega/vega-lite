@@ -11,7 +11,7 @@ import {
 } from '../channeldef';
 import {Config} from '../config';
 import {Data} from '../data';
-import {Encoding, extractTransformsFromEncoding} from '../encoding';
+import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';
@@ -120,6 +120,12 @@ export function normalizeErrorBar(
   spec: GenericUnitSpec<ErrorEncoding<string>, ErrorBar | ErrorBarDef>,
   {config}: NormalizerParams
 ): NormalizedLayerSpec | NormalizedUnitSpec {
+  // Need to initEncoding first so we can infer type
+  spec = {
+    ...spec,
+    encoding: normalizeEncoding(spec.encoding, config)
+  };
+
   const {
     transform,
     continuousAxisChannelDef,
