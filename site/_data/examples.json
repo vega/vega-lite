@@ -492,10 +492,6 @@
     ],
     "Box Plots": [
       {
-        "name": "boxplot",
-        "title": "Box Plot of Penguin Sizes"
-      },
-      {
         "name": "boxplot_minmax_2D_vertical",
         "title": "Box Plot with Min/Max Whiskers"
       },

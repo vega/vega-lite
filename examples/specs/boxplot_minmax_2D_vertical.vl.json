@@ -8,6 +8,7 @@
   },
   "encoding": {
     "x": {"field": "Species", "type": "nominal"},
+    "color": {"field": "Species", "type": "nominal", "legend": null},
     "y": {
       "field": "Body Mass (g)",
       "type": "quantitative",
