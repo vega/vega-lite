@@ -119,7 +119,7 @@
           {"data": "data_2", "field": "data"}
         ]
       },
-      "range": [20, 100],
+      "range": [20, {"signal": "min(width,height)/2"}],
       "zero": true
     },
     {
