@@ -28,20 +28,27 @@ images:
 ---
 
 <p class="lead" markdown="1">
-  **Vega-Lite** is a high-level grammar of interactive graphics. It provides a concise JSON syntax for rapidly generating visualizations to support analysis. Vega-Lite specifications can be compiled to [Vega](https://vega.github.io/vega) specifications.
+  **Vega-Lite** is a high-level grammar of interactive graphics. It provides a concise, declarative JSON syntax to create an expressive range of visualizations for data analysis and presentation.
 </p>
 
 <span class="lead-columns">
   <span>
-    Vega-Lite specifications describe visualizations as mappings from data to **properties of graphical marks** (e.g., points or bars). The Vega-Lite compiler **automatically produces visualization components** including axes, legends, and scales. It then determines properties of these components based on a set of **carefully designed rules**. This approach allows specifications to be succinct and expressive, but also provide user control. As Vega-Lite is designed for analysis, it supports **data transformations** such as aggregation, binning, filtering, sorting, and **visual transformations** including stacking and faceting. Moreover, Vega-Lite specifications can be **composed** into layered and multi-view displays, and made **interactive with selections**.
+    Vega-Lite specifications describe visualizations as encoding mappings from data to **properties of graphical marks** (e.g., points or bars).
+    The Vega-Lite compiler **automatically produces visualization components** including axes, legends, and scales.
+    It determines default properties of these components based on a set of **carefully designed rules**.
+    This approach allows Vega-Lite specifications to be concise for quick visualization authoring, while giving user control to override defaults and customize various parts of a visualization.
+    As we also designed Vega-Lite to support data analysis, Vega-Lite supports both **data transformations** (e.g., aggregation, binning, filtering, sorting) and **visual transformations** (e.g., stacking and faceting).
+    Moreover, Vega-Lite specifications can be **composed** into layered and multi-view displays, and made **interactive with selections**.
   </span>
   <span class="lead-buttons">
-    [Get started<br><small>Latest Version: {{ site.data.versions.vega-lite }}</small>]({{ site.baseurl }}/tutorials/getting_started.html)
-    [Try online](https://vega.github.io/editor/#/custom/vega-lite)
+  [Get started<br><small>Latest Version: {{ site.data.versions.vega-lite }}</small>]({{ site.baseurl }}/tutorials/getting_started.html)
+  [Try online](https://vega.github.io/editor/#/custom/vega-lite)
   </span>
 </span>
 
-Read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uwdata/de6661c12d58), watch our [OpenVis Conf talk about the new features in Vega-Lite v2](https://www.youtube.com/watch?v=9uaHRWj04D4), check out the [documentation]({{ site.baseurl }}/docs/) and take a look at our [example gallery]({{ site.baseurl }}/examples/). Follow us on [Twitter at @vega_vis](https://twitter.com/vega_vis) to stay informed about updates.
+Compared to [Vega](https://vega.github.io/vega), Vega-Lite provides a more concise and convenient form to author common visualizations. As Vega-Lite can compile its specifications to Vega specifications, users may use Vega-Lite as the _primary_ visualization tool and, if needed, transition to use the lower-level Vega for advanced use cases.
+
+For more information, read our [introduction article to Vega-Lite v2 on Medium](https://medium.com/@uwdata/de6661c12d58), watch our [OpenVis Conf talk about the new features in Vega-Lite v2](https://www.youtube.com/watch?v=9uaHRWj04D4), see the [documentation]({{ site.baseurl }}/docs/) and take a look at our [example gallery]({{ site.baseurl }}/examples/). Follow us on [Twitter at @vega_vis](https://twitter.com/vega_vis) to stay informed about updates.
 
 ## Example
 
