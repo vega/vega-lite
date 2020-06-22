@@ -1,17 +1,12 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "A horizontal box plot showing median and lower and upper quartiles of the distribution of body mass of penguins. The tooltip shows the mean mass.",
-  "data": {"url": "data/penguins.json"},
+  "data": {"url": "data/population.json"},
   "mark": "boxplot",
   "encoding": {
-    "y": {"field": "Species", "type": "nominal"},
-    "x": {
-      "field": "Body Mass (g)",
-      "type": "quantitative",
-      "scale": {"zero": false}
-    },
+    "x": {"field": "age", "type": "ordinal"},
+    "y": {"field": "people", "type": "quantitative"},
     "tooltip": {
-      "field": "Body Mass (g)",
+      "field": "people",
       "type": "quantitative",
       "aggregate": "mean"
     }

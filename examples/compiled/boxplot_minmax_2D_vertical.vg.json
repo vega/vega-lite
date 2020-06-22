@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A vertical box plot showing median, min, and max body mass of penguins.",
+  "description": "A vertical 2D box plot showing median, min, and max in the US population distribution of age groups in 2000.",
   "background": "white",
   "padding": 5,
   "height": 200,
@@ -8,26 +8,20 @@
   "data": [
     {
       "name": "source_0",
-      "url": "data/penguins.json",
+      "url": "data/population.json",
       "format": {"type": "json"},
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["Species"],
+          "groupby": ["age"],
           "ops": ["q1", "q3", "median", "min", "max"],
-          "fields": [
-            "Body Mass (g)",
-            "Body Mass (g)",
-            "Body Mass (g)",
-            "Body Mass (g)",
-            "Body Mass (g)"
-          ],
+          "fields": ["people", "people", "people", "people", "people"],
           "as": [
-            "lower_box_Body Mass (g)",
-            "upper_box_Body Mass (g)",
-            "mid_box_Body Mass (g)",
-            "lower_whisker_Body Mass (g)",
-            "upper_whisker_Body Mass (g)"
+            "lower_box_people",
+            "upper_box_people",
+            "mid_box_people",
+            "lower_whisker_people",
+            "upper_whisker_people"
           ]
         }
       ]
@@ -48,11 +42,11 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Max of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
+            "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
-          "x": {"scale": "x", "field": "Species", "band": 0.5},
-          "y": {"scale": "y", "field": "lower_whisker_Body Mass (g)"},
-          "y2": {"scale": "y", "field": "lower_box_Body Mass (g)"}
+          "x": {"scale": "x", "field": "age", "band": 0.5},
+          "y": {"scale": "y", "field": "lower_whisker_people"},
+          "y2": {"scale": "y", "field": "lower_box_people"}
         }
       }
     },
@@ -66,11 +60,11 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Max of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
+            "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
-          "x": {"scale": "x", "field": "Species", "band": 0.5},
-          "y": {"scale": "y", "field": "upper_box_Body Mass (g)"},
-          "y2": {"scale": "y", "field": "upper_whisker_Body Mass (g)"}
+          "x": {"scale": "x", "field": "age", "band": 0.5},
+          "y": {"scale": "y", "field": "upper_box_people"},
+          "y2": {"scale": "y", "field": "upper_whisker_people"}
         }
       }
     },
@@ -82,14 +76,14 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "Species"},
+          "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Max of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
+            "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
-          "xc": {"scale": "x", "field": "Species", "band": 0.5},
+          "xc": {"scale": "x", "field": "age", "band": 0.5},
           "width": {"value": 14},
-          "y": {"scale": "y", "field": "lower_box_Body Mass (g)"},
-          "y2": {"scale": "y", "field": "upper_box_Body Mass (g)"}
+          "y": {"scale": "y", "field": "lower_box_people"},
+          "y2": {"scale": "y", "field": "upper_box_people"}
         }
       }
     },
@@ -104,13 +98,13 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "white"},
           "tooltip": {
-            "signal": "{\"Max of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
+            "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
           "description": {
-            "signal": "\"Body Mass (g)\" + \": \" + (format(datum[\"mid_box_Body Mass (g)\"], \"\")) + \"; \" + \"Species\" + \": \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; \" + \"Max of Body Mass (g)\" + \": \" + (format(datum[\"upper_whisker_Body Mass (g)\"], \"\")) + \"; \" + \"Q3 of Body Mass (g)\" + \": \" + (format(datum[\"upper_box_Body Mass (g)\"], \"\")) + \"; \" + \"Median of Body Mass (g)\" + \": \" + (format(datum[\"mid_box_Body Mass (g)\"], \"\")) + \"; \" + \"Q1 of Body Mass (g)\" + \": \" + (format(datum[\"lower_box_Body Mass (g)\"], \"\")) + \"; \" + \"Min of Body Mass (g)\" + \": \" + (format(datum[\"lower_whisker_Body Mass (g)\"], \"\"))"
+            "signal": "\"population\" + \": \" + (format(datum[\"mid_box_people\"], \"\")) + \"; \" + \"age\" + \": \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; \" + \"Max of people\" + \": \" + (format(datum[\"upper_whisker_people\"], \"\")) + \"; \" + \"Q3 of people\" + \": \" + (format(datum[\"upper_box_people\"], \"\")) + \"; \" + \"Median of people\" + \": \" + (format(datum[\"mid_box_people\"], \"\")) + \"; \" + \"Q1 of people\" + \": \" + (format(datum[\"lower_box_people\"], \"\")) + \"; \" + \"Min of people\" + \": \" + (format(datum[\"lower_whisker_people\"], \"\"))"
           },
-          "xc": {"scale": "x", "field": "Species", "band": 0.5},
-          "yc": {"scale": "y", "field": "mid_box_Body Mass (g)"},
+          "xc": {"scale": "x", "field": "age", "band": 0.5},
+          "yc": {"scale": "y", "field": "mid_box_people"},
           "width": {"value": 14},
           "height": {"value": 1}
         }
@@ -121,7 +115,7 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {"data": "source_0", "field": "Species", "sort": true},
+      "domain": {"data": "source_0", "field": "age", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0,
       "paddingOuter": 0
@@ -132,22 +126,16 @@
       "domain": {
         "data": "source_0",
         "fields": [
-          "lower_whisker_Body Mass (g)",
-          "lower_box_Body Mass (g)",
-          "upper_box_Body Mass (g)",
-          "upper_whisker_Body Mass (g)",
-          "mid_box_Body Mass (g)"
+          "lower_whisker_people",
+          "lower_box_people",
+          "upper_box_people",
+          "upper_whisker_people",
+          "mid_box_people"
         ]
       },
       "range": [{"signal": "height"}, 0],
-      "zero": false,
-      "nice": true
-    },
-    {
-      "name": "color",
-      "type": "ordinal",
-      "domain": {"data": "source_0", "field": "Species", "sort": true},
-      "range": "category"
+      "nice": true,
+      "zero": true
     }
   ],
   "axes": [
@@ -169,7 +157,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "Species",
+      "title": "age",
       "labelAlign": "right",
       "labelAngle": 270,
       "labelBaseline": "middle",
@@ -179,7 +167,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Body Mass (g)",
+      "title": "population",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0

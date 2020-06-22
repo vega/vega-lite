@@ -1,73 +1,56 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "A vertical box plot showing median and lower and upper quartiles of the distribution of body mass of penguins.",
-  "data": {"url": "data/penguins.json"},
+  "description": "A vertical 2D box plot showing median, min, and max in the US population distribution of age groups in 2000.",
+  "data": {"url": "data/population.json"},
   "layer": [
     {
       "transform": [
         {
           "joinaggregate": [
-            {
-              "op": "q1",
-              "field": "Body Mass (g)",
-              "as": "lower_box_Body Mass (g)"
-            },
-            {
-              "op": "q3",
-              "field": "Body Mass (g)",
-              "as": "upper_box_Body Mass (g)"
-            }
+            {"op": "q1", "field": "people", "as": "lower_box_people"},
+            {"op": "q3", "field": "people", "as": "upper_box_people"}
           ],
-          "groupby": ["Species", "Species"]
+          "groupby": ["age"]
         }
       ],
       "layer": [
         {
           "transform": [
             {
-              "filter": "(datum[\"Body Mass (g)\"] < datum[\"lower_box_Body Mass (g)\"] - 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"])) || (datum[\"Body Mass (g)\"] > datum[\"upper_box_Body Mass (g)\"] + 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]))"
+              "filter": "(datum[\"people\"] < datum[\"lower_box_people\"] - 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"])) || (datum[\"people\"] > datum[\"upper_box_people\"] + 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]))"
             }
           ],
           "mark": {"type": "point", "style": "boxplot-outliers"},
           "encoding": {
             "y": {
-              "field": "Body Mass (g)",
+              "field": "people",
               "type": "quantitative",
-              "title": "Body Mass (g)",
-              "scale": {"zero": false}
+              "axis": {"title": "population"}
             },
-            "x": {"field": "Species", "type": "nominal"}
+            "x": {"field": "age", "type": "ordinal"}
           }
         },
         {
           "transform": [
             {
-              "filter": "(datum[\"lower_box_Body Mass (g)\"] - 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]) <= datum[\"Body Mass (g)\"]) && (datum[\"Body Mass (g)\"] <= datum[\"upper_box_Body Mass (g)\"] + 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]))"
+              "filter": "(datum[\"lower_box_people\"] - 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]) <= datum[\"people\"]) && (datum[\"people\"] <= datum[\"upper_box_people\"] + 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]))"
             },
             {
               "aggregate": [
+                {"op": "min", "field": "people", "as": "lower_whisker_people"},
+                {"op": "max", "field": "people", "as": "upper_whisker_people"},
                 {
                   "op": "min",
-                  "field": "Body Mass (g)",
-                  "as": "lower_whisker_Body Mass (g)"
+                  "field": "lower_box_people",
+                  "as": "lower_box_people"
                 },
                 {
                   "op": "max",
-                  "field": "Body Mass (g)",
-                  "as": "upper_whisker_Body Mass (g)"
-                },
-                {
-                  "op": "min",
-                  "field": "lower_box_Body Mass (g)",
-                  "as": "lower_box_Body Mass (g)"
-                },
-                {
-                  "op": "max",
-                  "field": "upper_box_Body Mass (g)",
-                  "as": "upper_box_Body Mass (g)"
+                  "field": "upper_box_people",
+                  "as": "upper_box_people"
                 }
               ],
-              "groupby": ["Species", "Species"]
+              "groupby": ["age"]
             }
           ],
           "layer": [
@@ -80,26 +63,24 @@
               },
               "encoding": {
                 "y": {
-                  "field": "lower_whisker_Body Mass (g)",
+                  "field": "lower_whisker_people",
                   "type": "quantitative",
-                  "title": "Body Mass (g)",
-                  "scale": {"zero": false}
+                  "axis": {"title": "population"}
                 },
-                "y2": {"field": "lower_box_Body Mass (g)"},
-                "x": {"field": "Species", "type": "nominal"},
+                "y2": {"field": "lower_box_people"},
+                "x": {"field": "age", "type": "ordinal"},
                 "tooltip": [
                   {
-                    "field": "upper_whisker_Body Mass (g)",
+                    "field": "upper_whisker_people",
                     "type": "quantitative",
-                    "title": "Upper Whisker of Body Mass (g)"
+                    "title": "Upper Whisker of people"
                   },
                   {
-                    "field": "lower_whisker_Body Mass (g)",
+                    "field": "lower_whisker_people",
                     "type": "quantitative",
-                    "title": "Lower Whisker of Body Mass (g)"
+                    "title": "Lower Whisker of people"
                   },
-                  {"field": "Species", "type": "nominal"},
-                  {"field": "Species", "type": "nominal", "legend": null}
+                  {"field": "age", "type": "ordinal"}
                 ]
               }
             },
@@ -112,26 +93,24 @@
               },
               "encoding": {
                 "y": {
-                  "field": "upper_box_Body Mass (g)",
+                  "field": "upper_box_people",
                   "type": "quantitative",
-                  "title": "Body Mass (g)",
-                  "scale": {"zero": false}
+                  "axis": {"title": "population"}
                 },
-                "y2": {"field": "upper_whisker_Body Mass (g)"},
-                "x": {"field": "Species", "type": "nominal"},
+                "y2": {"field": "upper_whisker_people"},
+                "x": {"field": "age", "type": "ordinal"},
                 "tooltip": [
                   {
-                    "field": "upper_whisker_Body Mass (g)",
+                    "field": "upper_whisker_people",
                     "type": "quantitative",
-                    "title": "Upper Whisker of Body Mass (g)"
+                    "title": "Upper Whisker of people"
                   },
                   {
-                    "field": "lower_whisker_Body Mass (g)",
+                    "field": "lower_whisker_people",
                     "type": "quantitative",
-                    "title": "Lower Whisker of Body Mass (g)"
+                    "title": "Lower Whisker of people"
                   },
-                  {"field": "Species", "type": "nominal"},
-                  {"field": "Species", "type": "nominal", "legend": null}
+                  {"field": "age", "type": "ordinal"}
                 ]
               }
             }
@@ -143,25 +122,13 @@
       "transform": [
         {
           "aggregate": [
-            {
-              "op": "q1",
-              "field": "Body Mass (g)",
-              "as": "lower_box_Body Mass (g)"
-            },
-            {
-              "op": "q3",
-              "field": "Body Mass (g)",
-              "as": "upper_box_Body Mass (g)"
-            },
-            {
-              "op": "median",
-              "field": "Body Mass (g)",
-              "as": "mid_box_Body Mass (g)"
-            },
-            {"op": "min", "field": "Body Mass (g)", "as": "min_Body Mass (g)"},
-            {"op": "max", "field": "Body Mass (g)", "as": "max_Body Mass (g)"}
+            {"op": "q1", "field": "people", "as": "lower_box_people"},
+            {"op": "q3", "field": "people", "as": "upper_box_people"},
+            {"op": "median", "field": "people", "as": "mid_box_people"},
+            {"op": "min", "field": "people", "as": "min_people"},
+            {"op": "max", "field": "people", "as": "max_people"}
           ],
-          "groupby": ["Species", "Species"]
+          "groupby": ["age"]
         }
       ],
       "layer": [
@@ -176,42 +143,40 @@
           },
           "encoding": {
             "y": {
-              "field": "lower_box_Body Mass (g)",
+              "field": "lower_box_people",
               "type": "quantitative",
-              "title": "Body Mass (g)",
-              "scale": {"zero": false}
+              "axis": {"title": "population"}
             },
-            "y2": {"field": "upper_box_Body Mass (g)"},
-            "x": {"field": "Species", "type": "nominal"},
-            "color": {"field": "Species", "type": "nominal", "legend": null},
+            "y2": {"field": "upper_box_people"},
+            "x": {"field": "age", "type": "ordinal"},
+            "size": {"value": 5},
             "tooltip": [
               {
-                "field": "max_Body Mass (g)",
+                "field": "max_people",
                 "type": "quantitative",
-                "title": "Max of Body Mass (g)"
+                "title": "Max of people"
               },
               {
-                "field": "upper_box_Body Mass (g)",
+                "field": "upper_box_people",
                 "type": "quantitative",
-                "title": "Q3 of Body Mass (g)"
+                "title": "Q3 of people"
               },
               {
-                "field": "mid_box_Body Mass (g)",
+                "field": "mid_box_people",
                 "type": "quantitative",
-                "title": "Median of Body Mass (g)"
+                "title": "Median of people"
               },
               {
-                "field": "lower_box_Body Mass (g)",
+                "field": "lower_box_people",
                 "type": "quantitative",
-                "title": "Q1 of Body Mass (g)"
+                "title": "Q1 of people"
               },
               {
-                "field": "min_Body Mass (g)",
+                "field": "min_people",
                 "type": "quantitative",
-                "title": "Min of Body Mass (g)"
+                "title": "Min of people"
               },
-              {"field": "Species", "type": "nominal"},
-              {"field": "Species", "type": "nominal", "legend": null}
+              {"field": "age", "type": "ordinal"}
             ]
           }
         },
@@ -227,40 +192,39 @@
           },
           "encoding": {
             "y": {
-              "field": "mid_box_Body Mass (g)",
+              "field": "mid_box_people",
               "type": "quantitative",
-              "title": "Body Mass (g)",
-              "scale": {"zero": false}
+              "axis": {"title": "population"}
             },
-            "x": {"field": "Species", "type": "nominal"},
+            "x": {"field": "age", "type": "ordinal"},
+            "size": {"value": 5},
             "tooltip": [
               {
-                "field": "max_Body Mass (g)",
+                "field": "max_people",
                 "type": "quantitative",
-                "title": "Max of Body Mass (g)"
+                "title": "Max of people"
               },
               {
-                "field": "upper_box_Body Mass (g)",
+                "field": "upper_box_people",
                 "type": "quantitative",
-                "title": "Q3 of Body Mass (g)"
+                "title": "Q3 of people"
               },
               {
-                "field": "mid_box_Body Mass (g)",
+                "field": "mid_box_people",
                 "type": "quantitative",
-                "title": "Median of Body Mass (g)"
+                "title": "Median of people"
               },
               {
-                "field": "lower_box_Body Mass (g)",
+                "field": "lower_box_people",
                 "type": "quantitative",
-                "title": "Q1 of Body Mass (g)"
+                "title": "Q1 of people"
               },
               {
-                "field": "min_Body Mass (g)",
+                "field": "min_people",
                 "type": "quantitative",
-                "title": "Min of Body Mass (g)"
+                "title": "Min of people"
               },
-              {"field": "Species", "type": "nominal"},
-              {"field": "Species", "type": "nominal", "legend": null}
+              {"field": "age", "type": "ordinal"}
             ]
           }
         }

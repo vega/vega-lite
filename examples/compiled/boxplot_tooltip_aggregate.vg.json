@@ -1,14 +1,13 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A horizontal box plot showing median and lower and upper quartiles of the distribution of body mass of penguins. The tooltip shows the mean mass.",
   "background": "white",
   "padding": 5,
-  "width": 200,
+  "height": 200,
   "style": "cell",
   "data": [
     {
       "name": "source_0",
-      "url": "data/penguins.json",
+      "url": "data/population.json",
       "format": {"type": "json"}
     },
     {
@@ -17,10 +16,10 @@
       "transform": [
         {
           "type": "joinaggregate",
-          "as": ["lower_box_Body Mass (g)", "upper_box_Body Mass (g)"],
+          "as": ["lower_box_people", "upper_box_people"],
           "ops": ["q1", "q3"],
-          "fields": ["Body Mass (g)", "Body Mass (g)"],
-          "groupby": ["Species"]
+          "fields": ["people", "people"],
+          "groupby": ["age"]
         }
       ]
     },
@@ -30,11 +29,11 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"Body Mass (g)\"] < datum[\"lower_box_Body Mass (g)\"] - 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"])) || (datum[\"Body Mass (g)\"] > datum[\"upper_box_Body Mass (g)\"] + 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]))"
+          "expr": "(datum[\"people\"] < datum[\"lower_box_people\"] - 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"])) || (datum[\"people\"] > datum[\"upper_box_people\"] + 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]))"
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"Body Mass (g)\"]) && isFinite(+datum[\"Body Mass (g)\"])"
+          "expr": "isValid(datum[\"people\"]) && isFinite(+datum[\"people\"])"
         }
       ]
     },
@@ -44,25 +43,25 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum[\"lower_box_Body Mass (g)\"] - 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]) <= datum[\"Body Mass (g)\"]) && (datum[\"Body Mass (g)\"] <= datum[\"upper_box_Body Mass (g)\"] + 1.5 * (datum[\"upper_box_Body Mass (g)\"] - datum[\"lower_box_Body Mass (g)\"]))"
+          "expr": "(datum[\"lower_box_people\"] - 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]) <= datum[\"people\"]) && (datum[\"people\"] <= datum[\"upper_box_people\"] + 1.5 * (datum[\"upper_box_people\"] - datum[\"lower_box_people\"]))"
         },
         {
           "type": "aggregate",
-          "groupby": ["Species"],
+          "groupby": ["age"],
           "ops": ["min", "max", "mean", "min", "max"],
           "fields": [
-            "Body Mass (g)",
-            "Body Mass (g)",
-            "Body Mass (g)",
-            "lower_box_Body Mass (g)",
-            "upper_box_Body Mass (g)"
+            "people",
+            "people",
+            "people",
+            "lower_box_people",
+            "upper_box_people"
           ],
           "as": [
-            "lower_whisker_Body Mass (g)",
-            "upper_whisker_Body Mass (g)",
-            "mean_Body Mass (g)",
-            "lower_box_Body Mass (g)",
-            "upper_box_Body Mass (g)"
+            "lower_whisker_people",
+            "upper_whisker_people",
+            "mean_people",
+            "lower_box_people",
+            "upper_box_people"
           ]
         }
       ]
@@ -73,31 +72,31 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["Species"],
+          "groupby": ["age"],
           "ops": ["mean", "q1", "q3", "median", "min", "max"],
           "fields": [
-            "Body Mass (g)",
-            "Body Mass (g)",
-            "Body Mass (g)",
-            "Body Mass (g)",
-            "Body Mass (g)",
-            "Body Mass (g)"
+            "people",
+            "people",
+            "people",
+            "people",
+            "people",
+            "people"
           ],
           "as": [
-            "mean_Body Mass (g)",
-            "lower_box_Body Mass (g)",
-            "upper_box_Body Mass (g)",
-            "mid_box_Body Mass (g)",
-            "min_Body Mass (g)",
-            "max_Body Mass (g)"
+            "mean_people",
+            "lower_box_people",
+            "upper_box_people",
+            "mid_box_people",
+            "min_people",
+            "max_people"
           ]
         }
       ]
     }
   ],
   "signals": [
-    {"name": "y_step", "value": 20},
-    {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
+    {"name": "x_step", "value": 20},
+    {"name": "width", "update": "bandspace(domain('x').length, 0, 0) * x_step"}
   ],
   "marks": [
     {
@@ -112,16 +111,10 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Body Mass (g)\" + \": \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; \" + \"Species\" + \": \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
+            "signal": "\"people\" + \": \" + (format(datum[\"people\"], \"\")) + \"; \" + \"age\" + \": \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"])"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "Body Mass (g)"}
-          ],
-          "y": {"scale": "y", "field": "Species", "band": 0.5}
+          "x": {"scale": "x", "field": "age", "band": 0.5},
+          "y": {"scale": "y", "field": "people"}
         }
       }
     },
@@ -134,10 +127,10 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
-          "tooltip": {"signal": "format(datum[\"mean_Body Mass (g)\"], \"\")"},
-          "x": {"scale": "x", "field": "lower_whisker_Body Mass (g)"},
-          "x2": {"scale": "x", "field": "lower_box_Body Mass (g)"},
-          "y": {"scale": "y", "field": "Species", "band": 0.5}
+          "tooltip": {"signal": "format(datum[\"mean_people\"], \"\")"},
+          "x": {"scale": "x", "field": "age", "band": 0.5},
+          "y": {"scale": "y", "field": "lower_whisker_people"},
+          "y2": {"scale": "y", "field": "lower_box_people"}
         }
       }
     },
@@ -150,10 +143,10 @@
       "encode": {
         "update": {
           "stroke": {"value": "black"},
-          "tooltip": {"signal": "format(datum[\"mean_Body Mass (g)\"], \"\")"},
-          "x": {"scale": "x", "field": "upper_box_Body Mass (g)"},
-          "x2": {"scale": "x", "field": "upper_whisker_Body Mass (g)"},
-          "y": {"scale": "y", "field": "Species", "band": 0.5}
+          "tooltip": {"signal": "format(datum[\"mean_people\"], \"\")"},
+          "x": {"scale": "x", "field": "age", "band": 0.5},
+          "y": {"scale": "y", "field": "upper_box_people"},
+          "y2": {"scale": "y", "field": "upper_whisker_people"}
         }
       }
     },
@@ -166,11 +159,11 @@
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
-          "tooltip": {"signal": "format(datum[\"mean_Body Mass (g)\"], \"\")"},
-          "x": {"scale": "x", "field": "lower_box_Body Mass (g)"},
-          "x2": {"scale": "x", "field": "upper_box_Body Mass (g)"},
-          "yc": {"scale": "y", "field": "Species", "band": 0.5},
-          "height": {"value": 14}
+          "tooltip": {"signal": "format(datum[\"mean_people\"], \"\")"},
+          "xc": {"scale": "x", "field": "age", "band": 0.5},
+          "width": {"value": 14},
+          "y": {"scale": "y", "field": "lower_box_people"},
+          "y2": {"scale": "y", "field": "upper_box_people"}
         }
       }
     },
@@ -184,14 +177,14 @@
           "ariaRoleDescription": {"value": "box"},
           "opacity": {"value": 0.7},
           "fill": {"value": "white"},
-          "tooltip": {"signal": "format(datum[\"mean_Body Mass (g)\"], \"\")"},
+          "tooltip": {"signal": "format(datum[\"mean_people\"], \"\")"},
           "description": {
-            "signal": "\"Body Mass (g)\" + \": \" + (format(datum[\"mid_box_Body Mass (g)\"], \"\")) + \"; \" + \"Species\" + \": \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; \" + \"Mean of Body Mass (g)\" + \": \" + (format(datum[\"mean_Body Mass (g)\"], \"\"))"
+            "signal": "\"people\" + \": \" + (format(datum[\"mid_box_people\"], \"\")) + \"; \" + \"age\" + \": \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; \" + \"Mean of people\" + \": \" + (format(datum[\"mean_people\"], \"\"))"
           },
-          "xc": {"scale": "x", "field": "mid_box_Body Mass (g)"},
-          "yc": {"scale": "y", "field": "Species", "band": 0.5},
-          "height": {"value": 14},
-          "width": {"value": 1}
+          "xc": {"scale": "x", "field": "age", "band": 0.5},
+          "yc": {"scale": "y", "field": "mid_box_people"},
+          "width": {"value": 14},
+          "height": {"value": 1}
         }
       }
     }
@@ -199,46 +192,46 @@
   "scales": [
     {
       "name": "x",
-      "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "Body Mass (g)"},
-          {"data": "data_2", "field": "lower_whisker_Body Mass (g)"},
-          {"data": "data_2", "field": "lower_box_Body Mass (g)"},
-          {"data": "data_2", "field": "upper_box_Body Mass (g)"},
-          {"data": "data_2", "field": "upper_whisker_Body Mass (g)"},
-          {"data": "data_3", "field": "lower_box_Body Mass (g)"},
-          {"data": "data_3", "field": "upper_box_Body Mass (g)"},
-          {"data": "data_3", "field": "mid_box_Body Mass (g)"}
-        ]
-      },
-      "range": [0, {"signal": "width"}],
-      "zero": false,
-      "nice": true
-    },
-    {
-      "name": "y",
       "type": "band",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "Species"},
-          {"data": "data_2", "field": "Species"},
-          {"data": "data_3", "field": "Species"}
+          {"data": "data_1", "field": "age"},
+          {"data": "data_2", "field": "age"},
+          {"data": "data_3", "field": "age"}
         ],
         "sort": true
       },
-      "range": {"step": {"signal": "y_step"}},
+      "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0,
       "paddingOuter": 0
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "people"},
+          {"data": "data_2", "field": "lower_whisker_people"},
+          {"data": "data_2", "field": "lower_box_people"},
+          {"data": "data_2", "field": "upper_box_people"},
+          {"data": "data_2", "field": "upper_whisker_people"},
+          {"data": "data_3", "field": "lower_box_people"},
+          {"data": "data_3", "field": "upper_box_people"},
+          {"data": "data_3", "field": "mid_box_people"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
     }
   ],
   "axes": [
     {
-      "scale": "x",
-      "orient": "bottom",
-      "gridScale": "y",
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
       "grid": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "tickCount": {"signal": "ceil(height/40)"},
       "domain": false,
       "labels": false,
       "aria": false,
@@ -251,17 +244,19 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "Body Mass (g)",
-      "labelFlush": true,
-      "labelOverlap": true,
-      "tickCount": {"signal": "ceil(width/40)"},
+      "title": "age",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
       "zindex": 0
     },
     {
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Species",
+      "title": "people",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
   ]
