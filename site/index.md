@@ -37,7 +37,7 @@ images:
     The Vega-Lite compiler **automatically produces visualization components** including axes, legends, and scales.
     It determines default properties of these components based on a set of **carefully designed rules**.
     This approach allows Vega-Lite specifications to be concise for quick visualization authoring, while giving user control to override defaults and customize various parts of a visualization.
-    As we also design Vega-Lite to support data analysis, Vega-Lite supports both **data transformations** (e.g., aggregation, binning, filtering, sorting) and **visual transformations** (e.g., stacking and faceting).
+    As we also designed Vega-Lite to support data analysis, Vega-Lite supports both **data transformations** (e.g., aggregation, binning, filtering, sorting) and **visual transformations** (e.g., stacking and faceting).
     Moreover, Vega-Lite specifications can be **composed** into layered and multi-view displays, and made **interactive with selections**.
   </span>
   <span class="lead-buttons">
