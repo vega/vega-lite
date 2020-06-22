@@ -9,6 +9,22 @@ import {defaultScaleResolve} from '../resolve';
 import {Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {getSizeTypeFromLayoutSizeType, LayoutSize, LayoutSizeIndex, LayoutSizeType} from './component';
+import {FacetModel} from '../facet';
+
+export function parseFacetLayoutSize(model: FacetModel) {
+  const {size, component} = model;
+  // parse top level facet size
+  if (size.width) {
+    component.layoutSize.set('width', isStep(size.width) ? 'step' : size.width, true);
+  }
+
+  if (size.height) {
+    component.layoutSize.set('height', isStep(size.height) ? 'step' : size.height, true);
+  }
+
+  // parse children
+  parseChildrenLayoutSize(model);
+}
 
 export function parseLayerLayoutSize(model: Model) {
   parseChildrenLayoutSize(model);

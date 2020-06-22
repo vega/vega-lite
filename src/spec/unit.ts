@@ -7,7 +7,14 @@ import {VariableParameter} from '../parameter';
 import {Projection} from '../projection';
 import {SelectionParameter} from '../selection';
 import {Field} from './../channeldef';
-import {BaseSpec, DataMixins, FrameMixins, GenericCompositionLayout, ResolveMixins} from './base';
+import {
+  BaseSpec,
+  DataMixins,
+  FrameMixins,
+  GenericCompositionLayout,
+  LayoutSizeMixins,
+  ResolveMixins
+} from './base';
 import {TopLevel} from './toplevel';
 /**
  * Base interface for a unit (single-view) specification.
@@ -54,7 +61,8 @@ export type UnitSpecWithFrame<F extends Field> = GenericUnitSpec<CompositeEncodi
 export type FacetedUnitSpec<F extends Field> = GenericUnitSpec<FacetedCompositeEncoding<F>, AnyMark> &
   ResolveMixins &
   GenericCompositionLayout &
-  FrameMixins;
+  FrameMixins &
+  LayoutSizeMixins;
 
 export type TopLevelUnitSpec<F extends Field> = TopLevel<FacetedUnitSpec<F>> & DataMixins;
 

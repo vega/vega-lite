@@ -20,7 +20,7 @@ import {assembleLabelTitle} from './header/assemble';
 import {getHeaderChannel, getHeaderProperty} from './header/common';
 import {HEADER_CHANNELS, HEADER_TYPES} from './header/component';
 import {parseFacetHeaders} from './header/parse';
-import {parseChildrenLayoutSize} from './layoutsize/parse';
+import {parseFacetLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
 import {assembleFacetSignals} from './selection/assemble';
@@ -45,6 +45,11 @@ export class FacetModel extends ModelWithField {
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, config);
     this.children = [this.child];
+
+    this.size = {
+      ...(spec.width ? {width: spec.width} : {}),
+      ...(spec.height ? {height: spec.height} : {})
+    };
 
     this.facet = this.initFacet(spec.facet);
   }
@@ -104,7 +109,7 @@ export class FacetModel extends ModelWithField {
   }
 
   public parseLayoutSize() {
-    parseChildrenLayoutSize(this);
+    parseFacetLayoutSize(this);
   }
 
   public parseSelections() {

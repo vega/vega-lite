@@ -64,6 +64,34 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
     const defaultValue = getViewConfigContinuousSize(model.config.view, isWidth ? 'width' : 'height');
     const safeExpr = `isFinite(${expr}) ? ${expr} : ${defaultValue}`;
     return [{name, init: safeExpr, on: [{update: safeExpr, events: 'window:resize'}]}];
+  } else if (isFacetModel(model.parent) && sizeType === 'width' && model.parent.size.width) {
+    return [
+      {
+        name,
+        // if the facet operator defines a column channel, the compiled vega spec includes the 'column_domain' data
+        // if however the facet operator is itself is a facet field definition, the compiled vega spec instead includes the 'facet_domain_column' data
+        // otherwise there is no column faceting so the width should be passed through
+        update: model.parent.facet.column
+          ? "width / length(data('column_domain'))"
+          : model.parent.facet.facet
+          ? "width / length(data('facet_domain_column'))"
+          : 'width'
+      }
+    ];
+  } else if (isFacetModel(model.parent) && sizeType === 'height' && model.parent.size.height) {
+    return [
+      {
+        name,
+        // if the facet operator defines a row channel, the compiled vega spec includes the 'row_domain' data
+        // if however the facet operator is itself is a facet field definition, the compiled vega spec instead includes the 'facet_domain_row' data
+        // otherwise there is no row faceting so the height should be passed through
+        update: model.parent.facet.row
+          ? "height / length(data('row_domain'))"
+          : model.parent.facet.facet
+          ? "height / length(data('facet_domain_row'))"
+          : 'height'
+      }
+    ];
   } else {
     return [
       {
