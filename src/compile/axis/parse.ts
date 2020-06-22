@@ -237,7 +237,8 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
   const axisConfigs = getAxisConfigs(channel, scaleType, orient, model.config);
 
-  const disable = axis !== undefined ? !axis : getAxisConfig('disable', config, axis?.style, axisConfigs).configValue;
+  const disable =
+    axis !== undefined ? !axis : getAxisConfig('disable', config.style, axis?.style, axisConfigs).configValue;
   axisComponent.set('disable', disable, axis !== undefined);
   if (disable) {
     return axisComponent;
@@ -245,7 +246,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
 
   axis = axis || {};
 
-  const labelAngle = getLabelAngle(model, axis, channel, fieldOrDatumDef, axisConfigs);
+  const labelAngle = getLabelAngle(fieldOrDatumDef, axis, channel, config.style, axisConfigs);
 
   const ruleParams: AxisRuleParams = {
     fieldOrDatumDef,
@@ -272,7 +273,7 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
     } else {
       const {configValue = undefined, configFrom = undefined} =
         isAxisProperty(property) && property !== 'values'
-          ? getAxisConfig(property, model.config, axis.style, axisConfigs)
+          ? getAxisConfig(property, config.style, axis.style, axisConfigs)
           : {};
       const hasConfigValue = configValue !== undefined;
 

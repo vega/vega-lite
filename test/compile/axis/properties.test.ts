@@ -2,12 +2,12 @@ import {range} from 'd3';
 import {AxisOrient, Orient, SignalRef} from 'vega';
 import {codegen, parse} from 'vega-expression';
 import {stringValue} from 'vega-util';
+import {getAxisConfigs} from '../../../src/compile/axis/config';
 import * as properties from '../../../src/compile/axis/properties';
 import {defaultLabelAlign, defaultLabelBaseline, getLabelAngle} from '../../../src/compile/axis/properties';
 import {TimeUnit} from '../../../src/timeunit';
 import {normalizeAngle} from '../../../src/util';
 import {isSignalRef} from '../../../src/vega.schema';
-import {parseUnitModelWithScale} from '../../util';
 
 describe('compile/axis/properties', () => {
   function evalValueOrSignal(valueOrSignalRef: string | SignalRef, o: Orient) {
@@ -143,109 +143,31 @@ describe('compile/axis/properties', () => {
   });
 
   describe('labelAngle', () => {
-    const axisModel = parseUnitModelWithScale({
-      mark: 'bar',
-      encoding: {
-        y: {
-          type: 'quantitative',
-          field: 'US_Gross',
-          scale: {domain: [-1, 2]},
-          bin: {extent: [0, 1]},
-          axis: {labelAngle: 600}
-        }
-      },
-      data: {url: 'data/movies.json'}
-    });
-
-    const configModel = parseUnitModelWithScale({
-      config: {axis: {labelAngle: 500}},
-      mark: 'bar',
-      encoding: {
-        y: {
-          type: 'quantitative',
-          field: 'US_Gross',
-          scale: {domain: [-1, 2]},
-          bin: {extent: [0, 1]}
-        }
-      },
-      data: {url: 'data/movies.json'}
-    });
-
-    const defaultModel = parseUnitModelWithScale({
-      data: {
-        values: [
-          {a: 'A', b: 28},
-          {a: 'B', b: 55},
-          {a: 'C', b: 43},
-          {a: 'D', b: 91},
-          {a: 'E', b: 81},
-          {a: 'F', b: 53},
-          {a: 'G', b: 19},
-          {a: 'H', b: 87},
-          {a: 'I', b: 52}
-        ]
-      },
-      mark: 'bar',
-      encoding: {
-        x: {field: 'a', type: 'ordinal'},
-        y: {field: 'b', type: 'quantitative'}
-      }
-    });
-
-    const bothModel = parseUnitModelWithScale({
-      config: {axis: {labelAngle: 500}},
-      mark: 'bar',
-      encoding: {
-        y: {
-          type: 'quantitative',
-          field: 'US_Gross',
-          scale: {domain: [-1, 2]},
-          bin: {extent: [0, 1]},
-          axis: {labelAngle: 600}
-        }
-      },
-      data: {url: 'data/movies.json'}
-    });
-
-    const neitherModel = parseUnitModelWithScale({
-      mark: 'bar',
-      encoding: {
-        y: {
-          type: 'quantitative',
-          field: 'US_Gross',
-          scale: {domain: [-1, 2]},
-          bin: {extent: [0, 1]}
-        }
-      },
-      data: {url: 'data/movies.json'}
-    });
-
+    const axis = {labelAngle: 600};
+    const configWithLabelAngle = {axis: {labelAngle: 500}};
     it('should return the correct labelAngle from the axis definition', () => {
-      expect(240).toEqual(getLabelAngle(axisModel, axisModel.axis('y'), 'y', axisModel.typedFieldDef('y')));
+      expect(240).toEqual(getLabelAngle({type: 'quantitative', field: 'US_Gross', axis}, axis, 'y', {}));
     });
 
     it('should return the correct labelAngle from the axis config definition', () => {
+      const axisConfigs = getAxisConfigs('y', 'linear', 'left', configWithLabelAngle);
       expect(140).toEqual(
-        getLabelAngle(configModel, configModel.axis('y'), 'y', configModel.typedFieldDef('y'), {
-          vlOnlyAxisConfig: {},
-          vgAxisConfig: {labelAngle: 500},
-          axisConfigStyle: {}
-        })
+        getLabelAngle({type: 'quantitative', field: 'US_Gross'}, {}, 'y', configWithLabelAngle, axisConfigs)
       );
     });
 
     it('should return the correct default labelAngle when not specified', () => {
-      expect(270).toEqual(getLabelAngle(defaultModel, defaultModel.axis('x'), 'x', defaultModel.typedFieldDef('x')));
+      expect(270).toEqual(getLabelAngle({field: 'a', type: 'ordinal'}, {}, 'x', {}));
     });
 
     it('should return the labelAngle declared in the axis when both the axis and axis config have labelAngle', () => {
-      expect(240).toEqual(getLabelAngle(bothModel, bothModel.axis('y'), 'y', bothModel.typedFieldDef('y')));
+      expect(240).toEqual(
+        getLabelAngle({type: 'quantitative', field: 'US_Gross', axis}, axis, 'y', configWithLabelAngle)
+      );
     });
 
     it('should return undefined when there is no default and no specified labelAngle', () => {
-      expect(undefined).toEqual(
-        getLabelAngle(neitherModel, neitherModel.axis('y'), 'y', neitherModel.typedFieldDef('y'))
-      );
+      expect(undefined).toEqual(getLabelAngle({type: 'quantitative', field: 'US_Gross'}, {}, 'y', {}));
     });
   });
 
