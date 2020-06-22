@@ -513,6 +513,16 @@ export interface Scale {
    */
   range?: RangeEnum | (number | string | number[] | SignalRef)[] | {field: string};
 
+  /**
+   * Sets the maximum value in the scale range, overriding the `range` property or the default range. This property is only intended for use with scales having continuous ranges.
+   */
+  rangeMax?: number | string | number[] | SignalRef;
+
+  /**
+   * Sets the minimum value in the scale range, overriding the `range` property or the default range. This property is only intended for use with scales having continuous ranges.
+   */
+  rangeMin?: number | string | number[] | SignalRef;
+
   // ordinal
 
   /**
@@ -647,6 +657,8 @@ const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {
   domainMid: 1,
   align: 1,
   range: 1,
+  rangeMax: 1,
+  rangeMin: 1,
   scheme: 1,
   bins: 1,
   // Other properties
@@ -669,7 +681,15 @@ const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {
 
 export const SCALE_PROPERTIES = keys(SCALE_PROPERTY_INDEX);
 
-const {type, domain, range, scheme, ...NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX} = SCALE_PROPERTY_INDEX;
+const {
+  type,
+  domain,
+  range,
+  rangeMax,
+  rangeMin,
+  scheme,
+  ...NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX
+} = SCALE_PROPERTY_INDEX;
 
 export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = keys(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
 
@@ -690,6 +710,8 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
     case 'padding':
+    case 'rangeMin':
+    case 'rangeMax':
       return isContinuousToContinuous(scaleType) || contains(['point', 'band'], scaleType);
     case 'paddingOuter':
     case 'align':
@@ -748,6 +770,8 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
     case 'padding':
     case 'paddingInner':
     case 'paddingOuter':
+    case 'rangeMax':
+    case 'rangeMin':
     case 'reverse':
     case 'round':
     case 'clamp':
