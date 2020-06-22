@@ -75,7 +75,7 @@ bar, image, rect, and rule marks while `"point"` is the default scales for all o
 
 By default, a scale in Vega-Lite draws domain values directly from a channel's encoded field. Users can specify the `domain` property of a scale to customize its domain values. To sort the order of the domain of the encoded, the [`sort`](sort.html) property of a [field definition](encoding.html#field-def) can be specified.
 
-{% include table.html props="domain,domainMid" source="Scale" %}
+{% include table.html props="domain,domainMax,domainMin,domainMid" source="Scale" %}
 
 A common use case for the `domain` property is to limit, for example, the `x` range of values to include in a plot. However, setting the domain property alone is insufficient to achieve the desired effect.
 

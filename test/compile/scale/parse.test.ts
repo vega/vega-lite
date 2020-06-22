@@ -229,6 +229,25 @@ describe('src/compile', () => {
       })
     );
 
+    it('should converts date time object in domainMin/Max to signal', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {
+            field: 'date',
+            type: 'temporal',
+            scale: {
+              domainMin: {year: 2002},
+              domainMax: {year: 2012}
+            }
+          }
+        }
+      });
+      const scale = model.getScaleComponent('x');
+      expect(scale.explicit.domainMin).toEqual({signal: 'datetime(2002, 0, 1, 0, 0, 0, 0)'});
+      expect(scale.explicit.domainMax).toEqual({signal: 'datetime(2012, 0, 1, 0, 0, 0, 0)'});
+    });
+
     describe('x ordinal point', () => {
       it('should create an x point scale with a step-based range ', () => {
         const model = parseUnitModelWithScale({

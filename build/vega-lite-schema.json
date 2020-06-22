@@ -15987,9 +15987,31 @@
           ],
           "description": "Customized domain values in the form of constant values or dynamic values driven by a selection.\n\n1) Constant `domain` for _quantitative_ fields can take one of the following forms:\n\n- A two-element array with minimum and maximum values. To create a diverging scale, this two-element array can be combined with the `domainMid` property.\n- An array with more than two entries, for [Piecewise quantitative scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise).\n- A string value `\"unaggregated\"`, if the input field is aggregated, to indicate that the domain should include the raw data values prior to the aggregation.\n\n2) Constant `domain` for _temporal_ fields can be a two-element array with minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](https://vega.github.io/vega-lite/docs/types.html#datetime).\n\n3) Constant `domain` for _ordinal_ and _nominal_ fields can be an array that lists valid input values.\n\n4) To combine (union) specified constant domain with the field's values, `domain` can be an object with a `unionWith` property that specify constant domain to be combined. For example, `domain: {unionWith: [0, 100]}` for a quantitative scale means that the scale domain always includes `[0, 100]`, but will include other values in the fields beyond `[0, 100]`.\n\n5) Domain can also takes an object defining a field or encoding of a selection that [interactively determines](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain."
         },
+        "domainMax": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
+            }
+          ],
+          "description": "Sets the maximum value in the scale domain, overriding the `domain` property. This property is only intended for use with scales having continuous domains."
+        },
         "domainMid": {
           "description": "Inserts a single mid-point value into a two-element domain. The mid-point value must lie between the domain minimum and maximum values. This property can be useful for setting a midpoint for [diverging color scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). The domainMid property is only intended for use with scales supporting continuous, piecewise domains.",
           "type": "number"
+        },
+        "domainMin": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/DateTime"
+            }
+          ],
+          "description": "Sets the minimum value in the scale domain, overriding the domain property. This property is only intended for use with scales having continuous domains."
         },
         "exponent": {
           "description": "The exponent of the `pow` scale.",
