@@ -897,8 +897,8 @@ export function title(
   config: Config,
   {allowDisabling, includeDefault = true}: {allowDisabling: boolean; includeDefault?: boolean}
 ) {
-  const guide = getGuide(fieldOrDatumDef) ?? {};
-  const guideTitle = guide.title;
+  const guide = getGuide(fieldOrDatumDef);
+  const guideTitle = guide?.title;
 
   if (!isFieldDef(fieldOrDatumDef)) {
     return guideTitle;
