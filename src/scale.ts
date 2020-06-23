@@ -516,12 +516,12 @@ export interface Scale {
   /**
    * Sets the maximum value in the scale range, overriding the `range` property or the default range. This property is only intended for use with scales having continuous ranges.
    */
-  rangeMax?: number | string | number[] | SignalRef;
+  rangeMax?: number | string | SignalRef;
 
   /**
    * Sets the minimum value in the scale range, overriding the `range` property or the default range. This property is only intended for use with scales having continuous ranges.
    */
-  rangeMin?: number | string | number[] | SignalRef;
+  rangeMin?: number | string | SignalRef;
 
   // ordinal
 
