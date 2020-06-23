@@ -16,9 +16,11 @@ import {
   isFieldDef,
   ScaleDatumDef,
   ScaleFieldDef,
-  TypedFieldDef
+  TypedFieldDef,
+  valueExpr
 } from '../../channeldef';
 import {Config} from '../../config';
+import {isDateTime} from '../../datetime';
 import * as log from '../../log';
 import {Mark, MarkDef, RectConfig} from '../../mark';
 import {
@@ -82,8 +84,25 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
     }
     if (supportedByScaleType && channelIncompatability === undefined) {
       if (specifiedValue !== undefined) {
-        // copyKeyFromObject ensures type safety
-        localScaleCmpt.copyKeyFromObject<Omit<ScaleComponentProps, 'range'>>(property, specifiedScale);
+        const timeUnit = fieldOrDatumDef['timeUnit'];
+        const type = fieldOrDatumDef.type;
+
+        switch (property) {
+          // domainMax/Min to signal if the value is a datetime object
+          case 'domainMax':
+          case 'domainMin':
+            if (isDateTime(specifiedScale[property]) || type === 'temporal' || timeUnit) {
+              localScaleCmpt.set(property, {signal: valueExpr(specifiedScale[property], {type, timeUnit})}, true);
+            } else {
+              localScaleCmpt.set(property, specifiedScale[property] as any, true);
+            }
+            break;
+          default:
+            localScaleCmpt.copyKeyFromObject<Omit<ScaleComponentProps, 'range' | 'domainMin' | 'domainMax'>>(
+              property,
+              specifiedScale
+            );
+        }
       } else {
         const value =
           property in scaleRules

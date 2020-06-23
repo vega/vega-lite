@@ -491,6 +491,16 @@ export interface Scale {
   domainMid?: number | SignalRef;
 
   /**
+   * Sets the maximum value in the scale domain, overriding the `domain` property. This property is only intended for use with scales having continuous domains.
+   */
+  domainMax?: number | DateTime | SignalRef;
+
+  /**
+   * Sets the minimum value in the scale domain, overriding the domain property. This property is only intended for use with scales having continuous domains.
+   */
+  domainMin?: number | DateTime | SignalRef;
+
+  /**
    * If true, reverses the order of the scale range.
    * __Default value:__ `false`.
    */
@@ -644,6 +654,8 @@ export interface Scale {
 const SCALE_PROPERTY_INDEX: Flag<keyof Scale> = {
   type: 1,
   domain: 1,
+  domainMax: 1,
+  domainMin: 1,
   domainMid: 1,
   align: 1,
   range: 1,
@@ -696,7 +708,9 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
       return contains(['point', 'band'], scaleType);
     case 'paddingInner':
       return scaleType === 'band';
+    case 'domainMax':
     case 'domainMid':
+    case 'domainMin':
     case 'clamp':
       return isContinuousToContinuous(scaleType);
     case 'nice':
@@ -740,6 +754,8 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
     case 'type':
     case 'bins':
     case 'domain':
+    case 'domainMax':
+    case 'domainMin':
     case 'range':
     case 'base':
     case 'exponent':
