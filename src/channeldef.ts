@@ -75,6 +75,7 @@ import {
   flatAccessWithDatum,
   getFirstDefined,
   internalField,
+  omit,
   removePathFromField,
   replacePathInField,
   titleCase
@@ -697,10 +698,21 @@ export function isMarkPropFieldOrDatumDef<F extends Field>(
   return !!channelDef && 'legend' in channelDef;
 }
 
-export function isTextFieldOrDatumDef<F extends Field>(
+export function isStringFieldOrDatumDef<F extends Field>(
   channelDef: ChannelDef<F>
 ): channelDef is StringFieldDef<F> | StringDatumDef<F> {
   return !!channelDef && ('format' in channelDef || 'formatType' in channelDef);
+}
+
+export function toStringFieldDef<F extends Field>(fieldDef: FieldDef<F>): StringFieldDef<F> {
+  // add title from guide to title property
+  const guide = getGuide(fieldDef);
+  if (fieldDef.title == undefined && guide?.title) {
+    fieldDef.title = guide.title;
+  }
+
+  // omit properties that don't exist in string field defs
+  return omit(fieldDef, ['legend', 'axis', 'header', 'scale'] as any[]);
 }
 
 export interface FieldRefOption {
@@ -918,7 +930,7 @@ export function defaultTitle(fieldDef: FieldDefBase<string>, config: Config) {
 }
 
 export function getFormatMixins(fieldDef: TypedFieldDef<string> | DatumDef) {
-  if (isTextFieldOrDatumDef(fieldDef)) {
+  if (isStringFieldOrDatumDef(fieldDef)) {
     const {format, formatType} = fieldDef;
     return {format, formatType};
   } else {
@@ -1027,7 +1039,7 @@ export function initFieldOrDatumDef(
   config: Config,
   opt: {compositeMark?: boolean}
 ): FieldDef<string, any> | DatumDef {
-  if (isTextFieldOrDatumDef(fd)) {
+  if (isStringFieldOrDatumDef(fd)) {
     const {format, formatType, ...rest} = fd;
     if (isCustomFormatType(formatType) && !config.customFormatTypes) {
       log.warn(log.message.customFormatTypeNotAllowed(channel));

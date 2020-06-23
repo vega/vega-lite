@@ -17,8 +17,9 @@ import {Encoding, fieldDefs} from '../encoding';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
-import {getFirstDefined, omit, unique, hash} from '../util';
+import {getFirstDefined, hash, unique} from '../util';
 import {isSignalRef} from '../vega.schema';
+import {toStringFieldDef} from './../channeldef';
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
 
@@ -123,10 +124,7 @@ export function getCompositeMarkTooltip(
     }
   );
 
-  const tooltipFieldDefs = fieldDefs(encodingWithoutContinuousAxis).map(fd =>
-    // remove guides as they don't work for tooltips
-    omit(fd, ['legend', 'axis', 'header'] as any[])
-  ) as StringFieldDef<string>[];
+  const tooltipFieldDefs = fieldDefs(encodingWithoutContinuousAxis).map(toStringFieldDef);
 
   return {
     tooltip: [
