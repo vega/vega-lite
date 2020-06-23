@@ -17,7 +17,7 @@ import {Encoding, fieldDefs} from '../encoding';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
-import {getFirstDefined} from '../util';
+import {getFirstDefined, omit, unique, hash} from '../util';
 import {isSignalRef} from '../vega.schema';
 
 export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
@@ -58,7 +58,7 @@ export function filterTooltipWithAggregatedField<F extends Field>(
 } {
   const {tooltip, ...filteredEncoding} = oldEncoding;
   if (!tooltip) {
-    return {filteredEncoding: oldEncoding};
+    return {filteredEncoding};
   }
 
   let customTooltipWithAggregatedField:
@@ -123,11 +123,16 @@ export function getCompositeMarkTooltip(
     }
   );
 
+  const tooltipFieldDefs = fieldDefs(encodingWithoutContinuousAxis).map(fd =>
+    // remove guides as they don't work for tooltips
+    omit(fd, ['legend', 'axis', 'header'] as any[])
+  ) as StringFieldDef<string>[];
+
   return {
     tooltip: [
       ...fiveSummaryTooltip,
       // need to cast because TextFieldDef supports fewer types of bin
-      ...(fieldDefs(encodingWithoutContinuousAxis) as StringFieldDef<string>[])
+      ...unique(tooltipFieldDefs, hash)
     ]
   };
 }
