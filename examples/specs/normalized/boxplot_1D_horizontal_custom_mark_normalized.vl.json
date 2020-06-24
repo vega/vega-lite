@@ -33,12 +33,8 @@
             "x": {
               "field": "Body Mass (g)",
               "type": "quantitative",
-<<<<<<< HEAD
-              "title": "population"
-=======
               "title": "Body Mass (g)",
               "scale": {"zero": false}
->>>>>>> 82713297d... docs: use penguins data for boxplots
             }
           }
         },
@@ -85,32 +81,20 @@
                 "x": {
                   "field": "lower_whisker_Body Mass (g)",
                   "type": "quantitative",
-<<<<<<< HEAD
-                  "title": "population"
-=======
                   "title": "Body Mass (g)",
                   "scale": {"zero": false}
->>>>>>> 82713297d... docs: use penguins data for boxplots
                 },
                 "x2": {"field": "lower_box_Body Mass (g)"},
                 "tooltip": [
                   {
                     "field": "upper_whisker_Body Mass (g)",
                     "type": "quantitative",
-<<<<<<< HEAD
-                    "title": "Upper Whisker of population"
-=======
                     "title": "Upper Whisker of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
                   },
                   {
                     "field": "lower_whisker_Body Mass (g)",
                     "type": "quantitative",
-<<<<<<< HEAD
-                    "title": "Lower Whisker of population"
-=======
                     "title": "Lower Whisker of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
                   }
                 ]
               }
@@ -126,32 +110,20 @@
                 "x": {
                   "field": "upper_box_Body Mass (g)",
                   "type": "quantitative",
-<<<<<<< HEAD
-                  "title": "population"
-=======
                   "title": "Body Mass (g)",
                   "scale": {"zero": false}
->>>>>>> 82713297d... docs: use penguins data for boxplots
                 },
                 "x2": {"field": "upper_whisker_Body Mass (g)"},
                 "tooltip": [
                   {
                     "field": "upper_whisker_Body Mass (g)",
                     "type": "quantitative",
-<<<<<<< HEAD
-                    "title": "Upper Whisker of population"
-=======
                     "title": "Upper Whisker of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
                   },
                   {
                     "field": "lower_whisker_Body Mass (g)",
                     "type": "quantitative",
-<<<<<<< HEAD
-                    "title": "Lower Whisker of population"
-=======
                     "title": "Lower Whisker of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
                   }
                 ]
               }
@@ -170,31 +142,19 @@
                 "x": {
                   "field": "lower_whisker_Body Mass (g)",
                   "type": "quantitative",
-<<<<<<< HEAD
-                  "title": "population"
-=======
                   "title": "Body Mass (g)",
                   "scale": {"zero": false}
->>>>>>> 82713297d... docs: use penguins data for boxplots
                 },
                 "tooltip": [
                   {
                     "field": "upper_whisker_Body Mass (g)",
                     "type": "quantitative",
-<<<<<<< HEAD
-                    "title": "Upper Whisker of population"
-=======
                     "title": "Upper Whisker of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
                   },
                   {
                     "field": "lower_whisker_Body Mass (g)",
                     "type": "quantitative",
-<<<<<<< HEAD
-                    "title": "Lower Whisker of population"
-=======
                     "title": "Lower Whisker of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
                   }
                 ]
               }
@@ -213,31 +173,19 @@
                 "x": {
                   "field": "upper_whisker_Body Mass (g)",
                   "type": "quantitative",
-<<<<<<< HEAD
-                  "title": "population"
-=======
                   "title": "Body Mass (g)",
                   "scale": {"zero": false}
->>>>>>> 82713297d... docs: use penguins data for boxplots
                 },
                 "tooltip": [
                   {
                     "field": "upper_whisker_Body Mass (g)",
                     "type": "quantitative",
-<<<<<<< HEAD
-                    "title": "Upper Whisker of population"
-=======
                     "title": "Upper Whisker of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
                   },
                   {
                     "field": "lower_whisker_Body Mass (g)",
                     "type": "quantitative",
-<<<<<<< HEAD
-                    "title": "Lower Whisker of population"
-=======
                     "title": "Lower Whisker of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
                   }
                 ]
               }
@@ -285,59 +233,35 @@
             "x": {
               "field": "lower_box_Body Mass (g)",
               "type": "quantitative",
-<<<<<<< HEAD
-              "title": "population"
-=======
               "title": "Body Mass (g)",
               "scale": {"zero": false}
->>>>>>> 82713297d... docs: use penguins data for boxplots
             },
             "x2": {"field": "upper_box_Body Mass (g)"},
             "tooltip": [
               {
                 "field": "max_Body Mass (g)",
                 "type": "quantitative",
-<<<<<<< HEAD
-                "title": "Max of population"
-=======
                 "title": "Max of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
               },
               {
                 "field": "upper_box_Body Mass (g)",
                 "type": "quantitative",
-<<<<<<< HEAD
-                "title": "Q3 of population"
-=======
                 "title": "Q3 of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
               },
               {
                 "field": "mid_box_Body Mass (g)",
                 "type": "quantitative",
-<<<<<<< HEAD
-                "title": "Median of population"
-=======
                 "title": "Median of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
               },
               {
                 "field": "lower_box_Body Mass (g)",
                 "type": "quantitative",
-<<<<<<< HEAD
-                "title": "Q1 of population"
-=======
                 "title": "Q1 of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
               },
               {
                 "field": "min_Body Mass (g)",
                 "type": "quantitative",
-<<<<<<< HEAD
-                "title": "Min of population"
-=======
                 "title": "Min of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
               }
             ]
           }
@@ -356,58 +280,34 @@
             "x": {
               "field": "mid_box_Body Mass (g)",
               "type": "quantitative",
-<<<<<<< HEAD
-              "title": "population"
-=======
               "title": "Body Mass (g)",
               "scale": {"zero": false}
->>>>>>> 82713297d... docs: use penguins data for boxplots
             },
             "tooltip": [
               {
                 "field": "max_Body Mass (g)",
                 "type": "quantitative",
-<<<<<<< HEAD
-                "title": "Max of population"
-=======
                 "title": "Max of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
               },
               {
                 "field": "upper_box_Body Mass (g)",
                 "type": "quantitative",
-<<<<<<< HEAD
-                "title": "Q3 of population"
-=======
                 "title": "Q3 of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
               },
               {
                 "field": "mid_box_Body Mass (g)",
                 "type": "quantitative",
-<<<<<<< HEAD
-                "title": "Median of population"
-=======
                 "title": "Median of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
               },
               {
                 "field": "lower_box_Body Mass (g)",
                 "type": "quantitative",
-<<<<<<< HEAD
-                "title": "Q1 of population"
-=======
                 "title": "Q1 of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
               },
               {
                 "field": "min_Body Mass (g)",
                 "type": "quantitative",
-<<<<<<< HEAD
-                "title": "Min of population"
-=======
                 "title": "Min of Body Mass (g)"
->>>>>>> 82713297d... docs: use penguins data for boxplots
               }
             ]
           }
