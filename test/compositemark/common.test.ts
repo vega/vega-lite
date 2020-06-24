@@ -10,16 +10,13 @@ import {some} from '../../src/util';
 import {assertIsUnitSpec} from '../util';
 import {compositeMarkOrient} from '../../src/compositemark/common';
 
-describe('common feature of composite marks', () => {
-  it('should clip all the part when clip property in composite mark def is true', () => {
-    const outputSpec = normalize(
-      {
-        data: {url: 'data/barley.json'},
-        mark: {type: 'errorbar', ticks: true, clip: true},
-        encoding: {x: {field: 'yield', type: 'quantitative'}}
-      },
-      defaultConfig
-    );
+describe('common', () => {
+  it('should clip all parts when clip property in composite mark def is true', () => {
+    const outputSpec = normalize({
+      data: {url: 'data/barley.json'},
+      mark: {type: 'errorbar', ticks: true, clip: true},
+      encoding: {x: {field: 'yield', type: 'quantitative'}}
+    });
 
     const layer = isLayerSpec(outputSpec) && outputSpec.layer;
     expect(layer).toBeTruthy();
@@ -30,18 +27,52 @@ describe('common feature of composite marks', () => {
     }
   });
 
+  it('should keep color encoding', () => {
+    const outputSpec = normalize({
+      data: {url: 'data/barley.json'},
+      mark: 'errorbar',
+      encoding: {
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        x: {field: 'Origin', type: 'nominal'},
+        color: {field: 'Origin', type: 'nominal'}
+      }
+    });
+
+    assertIsUnitSpec(outputSpec);
+
+    const encoding = outputSpec.encoding;
+    expect(encoding).toBeTruthy();
+    expect(encoding.color).toBeTruthy();
+  });
+
+  it('should use axis title', () => {
+    const outputSpec = normalize({
+      data: {url: 'data/barley.json'},
+      mark: 'errorbar',
+      encoding: {
+        y: {field: 'Miles_per_Gallon', type: 'quantitative', axis: {title: 'Hello Vega', grid: false}},
+        x: {field: 'Origin', type: 'nominal'}
+      }
+    });
+
+    assertIsUnitSpec(outputSpec);
+
+    const encoding = outputSpec.encoding;
+    expect(encoding).toBeTruthy();
+    expect(encoding.y).toBeTruthy();
+    expect((encoding.y as any).title).toBe('Hello Vega');
+    expect((encoding.y as any).axis).toEqual({grid: false});
+  });
+
   it('should add timeFormat to axis when normalizing encoding with timeUnit', () => {
-    const outputSpec = normalize(
-      {
-        data: {url: 'data/cars.json'},
-        mark: 'errorbar',
-        encoding: {
-          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
-          x: {field: 'Year', type: 'ordinal', timeUnit: 'year'}
-        }
-      },
-      defaultConfig
-    );
+    const outputSpec = normalize({
+      data: {url: 'data/cars.json'},
+      mark: 'errorbar',
+      encoding: {
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        x: {field: 'Year', type: 'ordinal', timeUnit: 'year'}
+      }
+    });
 
     assertIsUnitSpec(outputSpec);
 
@@ -58,14 +89,11 @@ describe('common feature of composite marks', () => {
   });
 
   it('should produce correct calculate transform when field name contains space or punctuation', () => {
-    const outputSpec = normalize(
-      {
-        data: {url: 'data/barley.json'},
-        mark: 'errorbar',
-        encoding: {x: {field: 'yield space,punctuation', type: 'quantitative'}}
-      },
-      defaultConfig
-    );
+    const outputSpec = normalize({
+      data: {url: 'data/barley.json'},
+      mark: 'errorbar',
+      encoding: {x: {field: 'yield space,punctuation', type: 'quantitative'}}
+    });
     const transforms = outputSpec.transform;
     expect(transforms).toBeTruthy();
 

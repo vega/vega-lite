@@ -116,7 +116,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
+            "signal": "{\"Upper Whisker of population\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of population\": format(datum[\"lower_whisker_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "lower_whisker_people"},
           "x2": {"scale": "x", "field": "lower_box_people"},
@@ -134,7 +134,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Upper Whisker of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of people\": format(datum[\"lower_whisker_people\"], \"\")}"
+            "signal": "{\"Upper Whisker of population\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of population\": format(datum[\"lower_whisker_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "upper_box_people"},
           "x2": {"scale": "x", "field": "upper_whisker_people"},
@@ -152,7 +152,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Max of people\": format(datum[\"max_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"min_people\"], \"\")}"
+            "signal": "{\"Max of population\": format(datum[\"max_people\"], \"\"), \"Q3 of population\": format(datum[\"upper_box_people\"], \"\"), \"Median of population\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of population\": format(datum[\"lower_box_people\"], \"\"), \"Min of population\": format(datum[\"min_people\"], \"\")}"
           },
           "x": {"scale": "x", "field": "lower_box_people"},
           "x2": {"scale": "x", "field": "upper_box_people"},
@@ -172,10 +172,10 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "white"},
           "tooltip": {
-            "signal": "{\"Max of people\": format(datum[\"max_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"min_people\"], \"\")}"
+            "signal": "{\"Max of population\": format(datum[\"max_people\"], \"\"), \"Q3 of population\": format(datum[\"upper_box_people\"], \"\"), \"Median of population\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of population\": format(datum[\"lower_box_people\"], \"\"), \"Min of population\": format(datum[\"min_people\"], \"\")}"
           },
           "description": {
-            "signal": "\"population\" + \": \" + (format(datum[\"mid_box_people\"], \"\")) + \"; \" + \"Max of people\" + \": \" + (format(datum[\"max_people\"], \"\")) + \"; \" + \"Q3 of people\" + \": \" + (format(datum[\"upper_box_people\"], \"\")) + \"; \" + \"Median of people\" + \": \" + (format(datum[\"mid_box_people\"], \"\")) + \"; \" + \"Q1 of people\" + \": \" + (format(datum[\"lower_box_people\"], \"\")) + \"; \" + \"Min of people\" + \": \" + (format(datum[\"min_people\"], \"\"))"
+            "signal": "\"population\" + \": \" + (format(datum[\"mid_box_people\"], \"\")) + \"; \" + \"Max of population\" + \": \" + (format(datum[\"max_people\"], \"\")) + \"; \" + \"Q3 of population\" + \": \" + (format(datum[\"upper_box_people\"], \"\")) + \"; \" + \"Median of population\" + \": \" + (format(datum[\"mid_box_people\"], \"\")) + \"; \" + \"Q1 of population\" + \": \" + (format(datum[\"lower_box_people\"], \"\")) + \"; \" + \"Min of population\" + \": \" + (format(datum[\"min_people\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "mid_box_people"},
           "yc": {"signal": "height", "mult": 0.5},

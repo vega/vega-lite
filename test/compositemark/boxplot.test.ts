@@ -22,7 +22,7 @@ describe('normalizeBoxMinMax', () => {
               aggregate: 'boxplot',
               field: 'people',
               type: 'quantitative',
-              axis: {title: 'population'}
+              axis: {title: 'Population'}
             },
             color: {value: 'skyblue'}
           }
@@ -47,7 +47,7 @@ describe('normalizeBoxMinMax', () => {
           y: {
             field: 'people',
             type: 'quantitative',
-            axis: {title: 'population'}
+            axis: {title: 'Population'}
           },
           color: {value: 'skyblue'}
         }
@@ -131,7 +131,7 @@ describe('normalizeBoxMinMax', () => {
               aggregate,
               field: 'people',
               type: 'quantitative',
-              axis: {title: 'population'}
+              axis: {title: 'Population'}
             },
             color: {value: 'skyblue'}
           }
@@ -244,7 +244,7 @@ describe('normalizeBoxMinMax', () => {
           y: {
             field: 'people',
             type: 'quantitative',
-            axis: {title: 'population'}
+            axis: {title: 'Population'}
           },
           color: {value: 'skyblue'}
         }
@@ -300,7 +300,7 @@ describe('normalizeBoxMinMax', () => {
           x: {
             field: 'people',
             type: 'quantitative',
-            axis: {title: 'population'}
+            axis: {title: 'Population'}
           },
           color: {value: 'skyblue'}
         }
@@ -356,7 +356,7 @@ describe('normalizeBoxMinMax', () => {
             field: 'people',
             type: 'quantitative',
             aggregate: 'boxplot',
-            axis: {title: 'population'}
+            axis: {title: 'Population'}
           },
           color: {value: 'skyblue'}
         }
@@ -412,7 +412,7 @@ describe('normalizeBoxMinMax', () => {
             field: 'people',
             type: 'quantitative',
             aggregate: 'boxplot',
-            axis: {title: 'population'}
+            axis: {title: 'Population'}
           },
           color: {value: 'skyblue'}
         }
@@ -467,7 +467,7 @@ describe('normalizeBoxMinMax', () => {
           y: {
             field: 'people',
             type: 'quantitative',
-            axis: {title: 'population'}
+            axis: {title: 'Population'}
           },
           color: {value: 'skyblue'}
         }
@@ -518,7 +518,7 @@ describe('normalizeBoxMinMax', () => {
           extent: 'min-max'
         },
         transform: [{calculate: 'age * 2', as: 'age2'}],
-        encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative', title: 'population'}}
+        encoding: {x: {field: 'age', type: 'ordinal'}, y: {field: 'people', type: 'quantitative', title: 'Population'}}
       },
       defaultConfig
     );
@@ -542,7 +542,7 @@ describe('normalizeBoxIQR', () => {
           y: {
             field: 'people',
             type: 'quantitative',
-            axis: {title: 'population'}
+            axis: {title: 'Population'}
           },
           color: {value: 'skyblue'}
         }
@@ -613,7 +613,7 @@ describe('normalizeBoxIQR', () => {
             y: {
               field: 'lower_whisker_people',
               type: 'quantitative',
-              axis: {title: 'population'}
+              title: 'Population'
             },
             y2: {
               field: 'lower_box_people'
@@ -630,7 +630,7 @@ describe('normalizeBoxIQR', () => {
             y: {
               field: 'upper_box_people',
               type: 'quantitative',
-              axis: {title: 'population'}
+              title: 'Population'
             },
             y2: {
               field: 'upper_whisker_people'
@@ -685,7 +685,7 @@ describe('normalizeBoxIQR', () => {
             y: {
               field: 'lower_box_people',
               type: 'quantitative',
-              axis: {title: 'population'}
+              title: 'Population'
             },
             y2: {
               field: 'upper_box_people'
@@ -706,7 +706,7 @@ describe('normalizeBoxIQR', () => {
             y: {
               field: 'mid_box_people',
               type: 'quantitative',
-              axis: {title: 'population'}
+              title: 'Population'
             }
           }
         }
@@ -811,7 +811,7 @@ describe('normalizeBoxIQR', () => {
           y: {
             field: 'people',
             type: 'quantitative',
-            axis: {title: 'population'}
+            axis: {title: 'Population'}
           },
           color: {value: 'skyblue'}
         }
@@ -839,12 +839,13 @@ describe('normalizeBoxIQR', () => {
           y: {
             field: 'people',
             type: 'quantitative',
-            axis: {title: 'population'}
+            axis: {title: 'Population'}
           },
           color: {
             aggregate: 'mean',
             field: 'people',
-            type: 'quantitative'
+            type: 'quantitative',
+            legend: {title: 'Mean Population'}
           }
         }
       },
@@ -865,40 +866,40 @@ describe('normalizeBoxIQR', () => {
         y: {
           field: 'lower_box_people',
           type: 'quantitative',
-          axis: {title: 'population'}
+          title: 'Population'
         },
         y2: {
           field: 'upper_box_people'
         },
         color: {
           field: 'mean_people',
-          title: 'Mean of people',
-          type: 'quantitative'
+          type: 'quantitative',
+          legend: {title: 'Mean Population'}
         },
         tooltip: [
           {
             field: 'max_people',
-            title: 'Max of people',
+            title: 'Max of Population',
             type: 'quantitative'
           },
           {
             field: 'upper_box_people',
-            title: 'Q3 of people',
+            title: 'Q3 of Population',
             type: 'quantitative'
           },
           {
             field: 'mid_box_people',
-            title: 'Median of people',
+            title: 'Median of Population',
             type: 'quantitative'
           },
           {
             field: 'lower_box_people',
-            title: 'Q1 of people',
+            title: 'Q1 of Population',
             type: 'quantitative'
           },
           {
             field: 'min_people',
-            title: 'Min of people',
+            title: 'Min of Population',
             type: 'quantitative'
           },
           {
@@ -907,7 +908,7 @@ describe('normalizeBoxIQR', () => {
           },
           {
             field: 'mean_people',
-            title: 'Mean of people',
+            title: 'Mean Population',
             type: 'quantitative'
           }
         ]

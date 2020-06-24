@@ -20,6 +20,7 @@ import {
   partLayerMixins,
   PartsMixins
 } from './common';
+import {omit, isEmpty} from '../util';
 
 export const BOXPLOT = 'boxplot' as const;
 export type BoxPlot = typeof BOXPLOT;
@@ -86,8 +87,6 @@ export function normalizeBoxPlot(
     ...spec,
     encoding: normalizeEncoding(spec.encoding, config)
   };
-
-  // TODO: use selection
   const {mark, encoding: _encoding, selection, projection: _p, ...outerSpec} = spec;
   const markDef: BoxPlotDef = isMarkDef(mark) ? mark : {type: mark};
 
@@ -281,6 +280,7 @@ export function normalizeBoxPlot(
 
     const {scale, axis} = continuousAxisChannelDef;
     const title = getTitle(continuousAxisChannelDef);
+    const axisWithoutTitle = omit(axis, ['title']);
 
     const outlierLayersMixins = partLayerMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot, true, {
       transform: [{filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`}],
@@ -291,7 +291,8 @@ export function normalizeBoxPlot(
           type: continuousAxisChannelDef.type,
           ...(title !== undefined ? {title} : {}),
           ...(scale !== undefined ? {scale} : {}),
-          ...(axis !== undefined ? {axis} : {})
+          // add axis without title since we already added the title above
+          ...(isEmpty(axisWithoutTitle) ? {} : {axis: axisWithoutTitle})
         },
         ...encodingWithoutSizeColorContinuousAxisAndTooltip,
         ...(customTooltipWithoutAggregatedField ? {tooltip: customTooltipWithoutAggregatedField} : {})
