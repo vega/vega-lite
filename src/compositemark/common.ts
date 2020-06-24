@@ -175,6 +175,7 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
           type: continuousAxisChannelDef.type,
           ...(title !== undefined ? {title} : {}),
           ...(scale !== undefined ? {scale} : {}),
+          // add axis without title since we already added the title above
           ...(isEmpty(axisWithoutTitle) ? {} : {axis: axisWithoutTitle})
         },
         ...(isString(endPositionPrefix)

@@ -291,6 +291,7 @@ export function normalizeBoxPlot(
           type: continuousAxisChannelDef.type,
           ...(title !== undefined ? {title} : {}),
           ...(scale !== undefined ? {scale} : {}),
+          // add axis without title since we already added the title above
           ...(isEmpty(axisWithoutTitle) ? {} : {axis: axisWithoutTitle})
         },
         ...encodingWithoutSizeColorContinuousAxisAndTooltip,
