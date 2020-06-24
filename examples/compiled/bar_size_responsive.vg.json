@@ -44,7 +44,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; \" + \"Number of Cars\" + \": \" + (format(datum[\"__count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Origin"},
           "width": {"scale": "x", "band": 1},
@@ -101,7 +101,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "Count of Records",
+      "title": "Number of Cars",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0

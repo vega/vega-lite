@@ -26,7 +26,8 @@
     },
     "x": {
       "aggregate": "count",
-      "axis": {"grid": false}
+      "axis": {"grid": false},
+      "title": "Number of Cars"
     }
   }
 }

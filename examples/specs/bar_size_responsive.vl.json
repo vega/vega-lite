@@ -6,6 +6,6 @@
   "mark": "bar",
   "encoding": {
     "x": {"field": "Origin"},
-    "y": {"aggregate": "count"}
+    "y": {"aggregate": "count", "title": "Number of Cars"}
   }
 }
