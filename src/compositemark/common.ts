@@ -17,7 +17,7 @@ import {Encoding, fieldDefs} from '../encoding';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
-import {getFirstDefined, hash, unique, omit, isEmpty} from '../util';
+import {getFirstDefined, hash, isEmpty, omit, unique} from '../util';
 import {isSignalRef} from '../vega.schema';
 import {toStringFieldDef} from './../channeldef';
 
