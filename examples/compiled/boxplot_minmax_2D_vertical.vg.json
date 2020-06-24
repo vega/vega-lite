@@ -42,7 +42,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
+            "signal": "{\"Max of population\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of population\": format(datum[\"upper_box_people\"], \"\"), \"Median of population\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of population\": format(datum[\"lower_box_people\"], \"\"), \"Min of population\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "lower_whisker_people"},
@@ -60,7 +60,7 @@
         "update": {
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
+            "signal": "{\"Max of population\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of population\": format(datum[\"upper_box_people\"], \"\"), \"Median of population\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of population\": format(datum[\"lower_box_people\"], \"\"), \"Min of population\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
           "x": {"scale": "x", "field": "age", "band": 0.5},
           "y": {"scale": "y", "field": "upper_box_people"},
@@ -78,7 +78,7 @@
         "update": {
           "fill": {"value": "#4c78a8"},
           "tooltip": {
-            "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
+            "signal": "{\"Max of population\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of population\": format(datum[\"upper_box_people\"], \"\"), \"Median of population\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of population\": format(datum[\"lower_box_people\"], \"\"), \"Min of population\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "width": {"value": 14},
@@ -98,10 +98,10 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "white"},
           "tooltip": {
-            "signal": "{\"Max of people\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of people\": format(datum[\"upper_box_people\"], \"\"), \"Median of people\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of people\": format(datum[\"lower_box_people\"], \"\"), \"Min of people\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
+            "signal": "{\"Max of population\": format(datum[\"upper_whisker_people\"], \"\"), \"Q3 of population\": format(datum[\"upper_box_people\"], \"\"), \"Median of population\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of population\": format(datum[\"lower_box_people\"], \"\"), \"Min of population\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
           "description": {
-            "signal": "\"population\" + \": \" + (format(datum[\"mid_box_people\"], \"\")) + \"; \" + \"age\" + \": \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; \" + \"Max of people\" + \": \" + (format(datum[\"upper_whisker_people\"], \"\")) + \"; \" + \"Q3 of people\" + \": \" + (format(datum[\"upper_box_people\"], \"\")) + \"; \" + \"Median of people\" + \": \" + (format(datum[\"mid_box_people\"], \"\")) + \"; \" + \"Q1 of people\" + \": \" + (format(datum[\"lower_box_people\"], \"\")) + \"; \" + \"Min of people\" + \": \" + (format(datum[\"lower_whisker_people\"], \"\"))"
+            "signal": "\"population\" + \": \" + (format(datum[\"mid_box_people\"], \"\")) + \"; \" + \"age\" + \": \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; \" + \"Max of population\" + \": \" + (format(datum[\"upper_whisker_people\"], \"\")) + \"; \" + \"Q3 of population\" + \": \" + (format(datum[\"upper_box_people\"], \"\")) + \"; \" + \"Median of population\" + \": \" + (format(datum[\"mid_box_people\"], \"\")) + \"; \" + \"Q1 of population\" + \": \" + (format(datum[\"lower_box_people\"], \"\")) + \"; \" + \"Min of population\" + \": \" + (format(datum[\"lower_whisker_people\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "age", "band": 0.5},
           "yc": {"scale": "y", "field": "mid_box_people"},

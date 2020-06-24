@@ -51,17 +51,17 @@
           {
             "field": "center_yield",
             "type": "quantitative",
-            "title": "Mean of yield"
+            "title": "Mean of Barley Yield"
           },
           {
             "field": "upper_yield",
             "type": "quantitative",
-            "title": "Mean + stdev of yield"
+            "title": "Mean + stdev of Barley Yield"
           },
           {
             "field": "lower_yield",
             "type": "quantitative",
-            "title": "Mean - stdev of yield"
+            "title": "Mean - stdev of Barley Yield"
           },
           {"field": "variety", "type": "ordinal"}
         ]

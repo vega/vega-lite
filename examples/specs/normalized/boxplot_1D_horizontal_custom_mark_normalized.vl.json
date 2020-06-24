@@ -25,7 +25,7 @@
             "x": {
               "field": "people",
               "type": "quantitative",
-              "axis": {"title": "population"}
+              "title": "population"
             }
           }
         },
@@ -64,19 +64,19 @@
                 "x": {
                   "field": "lower_whisker_people",
                   "type": "quantitative",
-                  "axis": {"title": "population"}
+                  "title": "population"
                 },
                 "x2": {"field": "lower_box_people"},
                 "tooltip": [
                   {
                     "field": "upper_whisker_people",
                     "type": "quantitative",
-                    "title": "Upper Whisker of people"
+                    "title": "Upper Whisker of population"
                   },
                   {
                     "field": "lower_whisker_people",
                     "type": "quantitative",
-                    "title": "Lower Whisker of people"
+                    "title": "Lower Whisker of population"
                   }
                 ]
               }
@@ -92,19 +92,19 @@
                 "x": {
                   "field": "upper_box_people",
                   "type": "quantitative",
-                  "axis": {"title": "population"}
+                  "title": "population"
                 },
                 "x2": {"field": "upper_whisker_people"},
                 "tooltip": [
                   {
                     "field": "upper_whisker_people",
                     "type": "quantitative",
-                    "title": "Upper Whisker of people"
+                    "title": "Upper Whisker of population"
                   },
                   {
                     "field": "lower_whisker_people",
                     "type": "quantitative",
-                    "title": "Lower Whisker of people"
+                    "title": "Lower Whisker of population"
                   }
                 ]
               }
@@ -123,18 +123,18 @@
                 "x": {
                   "field": "lower_whisker_people",
                   "type": "quantitative",
-                  "axis": {"title": "population"}
+                  "title": "population"
                 },
                 "tooltip": [
                   {
                     "field": "upper_whisker_people",
                     "type": "quantitative",
-                    "title": "Upper Whisker of people"
+                    "title": "Upper Whisker of population"
                   },
                   {
                     "field": "lower_whisker_people",
                     "type": "quantitative",
-                    "title": "Lower Whisker of people"
+                    "title": "Lower Whisker of population"
                   }
                 ]
               }
@@ -153,18 +153,18 @@
                 "x": {
                   "field": "upper_whisker_people",
                   "type": "quantitative",
-                  "axis": {"title": "population"}
+                  "title": "population"
                 },
                 "tooltip": [
                   {
                     "field": "upper_whisker_people",
                     "type": "quantitative",
-                    "title": "Upper Whisker of people"
+                    "title": "Upper Whisker of population"
                   },
                   {
                     "field": "lower_whisker_people",
                     "type": "quantitative",
-                    "title": "Lower Whisker of people"
+                    "title": "Lower Whisker of population"
                   }
                 ]
               }
@@ -200,34 +200,34 @@
             "x": {
               "field": "lower_box_people",
               "type": "quantitative",
-              "axis": {"title": "population"}
+              "title": "population"
             },
             "x2": {"field": "upper_box_people"},
             "tooltip": [
               {
                 "field": "max_people",
                 "type": "quantitative",
-                "title": "Max of people"
+                "title": "Max of population"
               },
               {
                 "field": "upper_box_people",
                 "type": "quantitative",
-                "title": "Q3 of people"
+                "title": "Q3 of population"
               },
               {
                 "field": "mid_box_people",
                 "type": "quantitative",
-                "title": "Median of people"
+                "title": "Median of population"
               },
               {
                 "field": "lower_box_people",
                 "type": "quantitative",
-                "title": "Q1 of people"
+                "title": "Q1 of population"
               },
               {
                 "field": "min_people",
                 "type": "quantitative",
-                "title": "Min of people"
+                "title": "Min of population"
               }
             ]
           }
@@ -246,33 +246,33 @@
             "x": {
               "field": "mid_box_people",
               "type": "quantitative",
-              "axis": {"title": "population"}
+              "title": "population"
             },
             "tooltip": [
               {
                 "field": "max_people",
                 "type": "quantitative",
-                "title": "Max of people"
+                "title": "Max of population"
               },
               {
                 "field": "upper_box_people",
                 "type": "quantitative",
-                "title": "Q3 of people"
+                "title": "Q3 of population"
               },
               {
                 "field": "mid_box_people",
                 "type": "quantitative",
-                "title": "Median of people"
+                "title": "Median of population"
               },
               {
                 "field": "lower_box_people",
                 "type": "quantitative",
-                "title": "Q1 of people"
+                "title": "Q1 of population"
               },
               {
                 "field": "min_people",
                 "type": "quantitative",
-                "title": "Min of people"
+                "title": "Min of population"
               }
             ]
           }

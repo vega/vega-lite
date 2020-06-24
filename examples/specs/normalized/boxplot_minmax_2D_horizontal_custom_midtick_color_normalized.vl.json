@@ -27,7 +27,7 @@
         "x": {
           "field": "lower_whisker_people",
           "type": "quantitative",
-          "axis": {"title": "population"}
+          "title": "population"
         },
         "x2": {"field": "lower_box_people"},
         "y": {"field": "age", "type": "ordinal"},
@@ -35,27 +35,27 @@
           {
             "field": "upper_whisker_people",
             "type": "quantitative",
-            "title": "Max of people"
+            "title": "Max of population"
           },
           {
             "field": "upper_box_people",
             "type": "quantitative",
-            "title": "Q3 of people"
+            "title": "Q3 of population"
           },
           {
             "field": "mid_box_people",
             "type": "quantitative",
-            "title": "Median of people"
+            "title": "Median of population"
           },
           {
             "field": "lower_box_people",
             "type": "quantitative",
-            "title": "Q1 of people"
+            "title": "Q1 of population"
           },
           {
             "field": "lower_whisker_people",
             "type": "quantitative",
-            "title": "Min of people"
+            "title": "Min of population"
           },
           {"field": "age", "type": "ordinal"}
         ]
@@ -72,7 +72,7 @@
         "x": {
           "field": "upper_box_people",
           "type": "quantitative",
-          "axis": {"title": "population"}
+          "title": "population"
         },
         "x2": {"field": "upper_whisker_people"},
         "y": {"field": "age", "type": "ordinal"},
@@ -80,27 +80,27 @@
           {
             "field": "upper_whisker_people",
             "type": "quantitative",
-            "title": "Max of people"
+            "title": "Max of population"
           },
           {
             "field": "upper_box_people",
             "type": "quantitative",
-            "title": "Q3 of people"
+            "title": "Q3 of population"
           },
           {
             "field": "mid_box_people",
             "type": "quantitative",
-            "title": "Median of people"
+            "title": "Median of population"
           },
           {
             "field": "lower_box_people",
             "type": "quantitative",
-            "title": "Q1 of people"
+            "title": "Q1 of population"
           },
           {
             "field": "lower_whisker_people",
             "type": "quantitative",
-            "title": "Min of people"
+            "title": "Min of population"
           },
           {"field": "age", "type": "ordinal"}
         ]
@@ -119,7 +119,7 @@
         "x": {
           "field": "lower_box_people",
           "type": "quantitative",
-          "axis": {"title": "population"}
+          "title": "population"
         },
         "x2": {"field": "upper_box_people"},
         "y": {"field": "age", "type": "ordinal"},
@@ -127,27 +127,27 @@
           {
             "field": "upper_whisker_people",
             "type": "quantitative",
-            "title": "Max of people"
+            "title": "Max of population"
           },
           {
             "field": "upper_box_people",
             "type": "quantitative",
-            "title": "Q3 of people"
+            "title": "Q3 of population"
           },
           {
             "field": "mid_box_people",
             "type": "quantitative",
-            "title": "Median of people"
+            "title": "Median of population"
           },
           {
             "field": "lower_box_people",
             "type": "quantitative",
-            "title": "Q1 of people"
+            "title": "Q1 of population"
           },
           {
             "field": "lower_whisker_people",
             "type": "quantitative",
-            "title": "Min of people"
+            "title": "Min of population"
           },
           {"field": "age", "type": "ordinal"}
         ]
@@ -167,34 +167,34 @@
         "x": {
           "field": "mid_box_people",
           "type": "quantitative",
-          "axis": {"title": "population"}
+          "title": "population"
         },
         "y": {"field": "age", "type": "ordinal"},
         "tooltip": [
           {
             "field": "upper_whisker_people",
             "type": "quantitative",
-            "title": "Max of people"
+            "title": "Max of population"
           },
           {
             "field": "upper_box_people",
             "type": "quantitative",
-            "title": "Q3 of people"
+            "title": "Q3 of population"
           },
           {
             "field": "mid_box_people",
             "type": "quantitative",
-            "title": "Median of people"
+            "title": "Median of population"
           },
           {
             "field": "lower_box_people",
             "type": "quantitative",
-            "title": "Q1 of people"
+            "title": "Q1 of population"
           },
           {
             "field": "lower_whisker_people",
             "type": "quantitative",
-            "title": "Min of people"
+            "title": "Min of population"
           },
           {"field": "age", "type": "ordinal"}
         ]

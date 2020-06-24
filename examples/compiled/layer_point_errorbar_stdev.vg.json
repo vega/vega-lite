@@ -88,10 +88,10 @@
           "ariaRoleDescription": {"value": "errorbar"},
           "stroke": {"value": "black"},
           "tooltip": {
-            "signal": "{\"Mean of yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stdev of yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stdev of yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]}"
+            "signal": "{\"Mean of Barley Yield\": format(datum[\"center_yield\"], \"\"), \"Mean + stdev of Barley Yield\": format(datum[\"upper_yield\"], \"\"), \"Mean - stdev of Barley Yield\": format(datum[\"lower_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]}"
           },
           "description": {
-            "signal": "\"Barley Yield\" + \": \" + (format(datum[\"lower_yield\"], \"\")) + \"; \" + \"upper_yield\" + \": \" + (format(datum[\"upper_yield\"], \"\")) + \"; \" + \"variety\" + \": \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; \" + \"Mean of yield\" + \": \" + (format(datum[\"center_yield\"], \"\")) + \"; \" + \"Mean + stdev of yield\" + \": \" + (format(datum[\"upper_yield\"], \"\")) + \"; \" + \"Mean - stdev of yield\" + \": \" + (format(datum[\"lower_yield\"], \"\"))"
+            "signal": "\"Barley Yield\" + \": \" + (format(datum[\"lower_yield\"], \"\")) + \"; \" + \"upper_yield\" + \": \" + (format(datum[\"upper_yield\"], \"\")) + \"; \" + \"variety\" + \": \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; \" + \"Mean of Barley Yield\" + \": \" + (format(datum[\"center_yield\"], \"\")) + \"; \" + \"Mean + stdev of Barley Yield\" + \": \" + (format(datum[\"upper_yield\"], \"\")) + \"; \" + \"Mean - stdev of Barley Yield\" + \": \" + (format(datum[\"lower_yield\"], \"\"))"
           },
           "x": [
             {
