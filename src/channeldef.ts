@@ -708,7 +708,7 @@ export function toStringFieldDef<F extends Field>(fieldDef: FieldDef<F>): String
   // add title from guide to title property
   const guide = getGuide(fieldDef);
   if (fieldDef.title == undefined && guide?.title) {
-    fieldDef.title = guide.title;
+    fieldDef = {...fieldDef, title: guide.title};
   }
 
   // omit properties that don't exist in string field defs

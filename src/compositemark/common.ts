@@ -17,7 +17,7 @@ import {Encoding, fieldDefs} from '../encoding';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
-import {getFirstDefined, hash, unique} from '../util';
+import {getFirstDefined, hash, unique, omit, isEmpty} from '../util';
 import {isSignalRef} from '../vega.schema';
 import {toStringFieldDef} from './../channeldef';
 
@@ -115,7 +115,7 @@ export function getCompositeMarkTooltip(
 
   const fiveSummaryTooltip: StringFieldDef<string>[] = tooltipSummary.map(
     ({fieldPrefix, titlePrefix}): StringFieldDef<string> => {
-      const mainTitle = withFieldName ? ` of ${continuousAxisChannelDef.field}` : '';
+      const mainTitle = withFieldName ? ` of ${getTitle(continuousAxisChannelDef)}` : '';
       return {
         field: fieldPrefix + continuousAxisChannelDef.field,
         type: continuousAxisChannelDef.type,
@@ -137,7 +137,7 @@ export function getCompositeMarkTooltip(
 
 export function getTitle(continuousAxisChannelDef: PositionFieldDef<string>) {
   const {axis, title, field} = continuousAxisChannelDef;
-  return axis && axis.title !== undefined ? undefined : getFirstDefined(title, field);
+  return getFirstDefined(axis?.title, title, field);
 }
 
 export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
@@ -165,6 +165,7 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
     extraEncoding?: Encoding<string>;
   }) => {
     const title = getTitle(continuousAxisChannelDef);
+    const axisWithoutTitle = omit(axis, ['title']);
 
     return partLayerMixins<P>(compositeMarkDef, partName, compositeMarkConfig, aria, {
       mark, // TODO better remove this method and just have mark as a parameter of the method
@@ -174,7 +175,7 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
           type: continuousAxisChannelDef.type,
           ...(title !== undefined ? {title} : {}),
           ...(scale !== undefined ? {scale} : {}),
-          ...(axis !== undefined ? {axis} : {})
+          ...(isEmpty(axisWithoutTitle) ? {} : {axis: axisWithoutTitle})
         },
         ...(isString(endPositionPrefix)
           ? {
