@@ -326,8 +326,8 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
       },
       ...(postEncodingTransform
         ? {
-          transform: postEncodingTransform
-        }
+            transform: postEncodingTransform
+          }
         : {})
     }
   ];

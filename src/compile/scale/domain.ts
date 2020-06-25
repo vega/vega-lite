@@ -309,16 +309,18 @@ function parseSingleChannelDomain(
         {
           // If sort by aggregation of a specified sort field, we need to use RAW table,
           // so we can aggregate values for the scale independently from the main aggregation.
-          data: util.isBoolean(sort) ? model.requestDataName(DataSourceType.Main) : model.requestDataName(DataSourceType.Raw),
+          data: util.isBoolean(sort)
+            ? model.requestDataName(DataSourceType.Main)
+            : model.requestDataName(DataSourceType.Raw),
           // Use range if we added it and the scale does not support computing a range as a signal.
           field: model.vgField(channel, binRequiresRange(fieldDef, channel) ? {binSuffix: 'range'} : {}),
           // we have to use a sort object if sort = true to make the sort correct by bin start
           sort:
             sort === true || !isObject(sort)
               ? {
-                field: model.vgField(channel, {}),
-                op: 'min' // min or max doesn't matter since we sort by the start of the bin range
-              }
+                  field: model.vgField(channel, {}),
+                  op: 'min' // min or max doesn't matter since we sort by the start of the bin range
+                }
               : sort
         }
       ]);
@@ -370,7 +372,9 @@ function parseSingleChannelDomain(
       {
         // If sort by aggregation of a specified sort field, we need to use RAW table,
         // so we can aggregate values for the scale independently from the main aggregation.
-        data: util.isBoolean(sort) ? model.requestDataName(DataSourceType.Main) : model.requestDataName(DataSourceType.Raw),
+        data: util.isBoolean(sort)
+          ? model.requestDataName(DataSourceType.Main)
+          : model.requestDataName(DataSourceType.Raw),
         field: model.vgField(channel),
         sort: sort
       }
