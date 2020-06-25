@@ -103,7 +103,7 @@ export function parseSelectionBinExtent(selCmpt: SelectionComponent, extent: Sel
     if (selCmpt.project.items.length > 1) {
       warn(
         'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
-        `Using "field": ${stringValue(field)}.`
+          `Using "field": ${stringValue(field)}.`
       );
     }
   } else if (encoding && !field) {
@@ -112,8 +112,8 @@ export function parseSelectionBinExtent(selCmpt: SelectionComponent, extent: Sel
       field = selCmpt.project.items[0].field;
       warn(
         (!encodings.length ? 'No ' : 'Multiple ') +
-        `matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.selection)}. ` +
-        `Using "field": ${stringValue(field)}.`
+          `matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.selection)}. ` +
+          `Using "field": ${stringValue(field)}.`
       );
     } else {
       field = encodings[0].field;

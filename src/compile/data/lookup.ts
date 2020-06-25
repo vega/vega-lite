@@ -32,7 +32,12 @@ export class LookupNode extends DataFlowNode {
       }
 
       const fromOutputName = model.getName(`lookup_${counter}`);
-      fromOutputNode = new OutputNode(fromSource, fromOutputName, DataSourceType.Lookup, model.component.data.outputNodeRefCounts);
+      fromOutputNode = new OutputNode(
+        fromSource,
+        fromOutputName,
+        DataSourceType.Lookup,
+        model.component.data.outputNodeRefCounts
+      );
       model.component.data.outputNodes[fromOutputName] = fromOutputNode;
     } else if (isLookupSelection(from)) {
       const selName = from.selection;

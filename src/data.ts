@@ -152,8 +152,8 @@ export enum DataSourceType {
   Main = 'main',
   Row = 'row',
   Column = 'column',
-  Lookup = 'lookup',
-};
+  Lookup = 'lookup'
+}
 
 export type Generator = SequenceGenerator | SphereGenerator | GraticuleGenerator;
 
