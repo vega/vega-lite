@@ -50,28 +50,28 @@
             "ticks": false,
             "grid": false
           }
+        },
+        "x": {
+          "type": "quantitative",
+          "scale": {"domain": [-3, 3]},
+          "axis": {
+            "title": "",
+            "gridDash": [3, 3],
+            "gridColor": {
+              "condition": {
+                "test": "datum.value === 0",
+                "value": "#666"
+              },
+              "value": "#CCC"
+            }
+          }
         }
       },
       "layer": [
         {
           "mark": "rule",
           "encoding": {
-            "x": {
-              "field": "lo",
-              "type": "quantitative",
-              "scale": {"domain": [-3, 3]},
-              "axis": {
-                "title": "",
-                "gridDash": [3, 3],
-                "gridColor": {
-                  "condition": {
-                    "test": "datum.value === 0",
-                    "value": "#666"
-                  },
-                  "value": "#CCC"
-                }
-              }
-            },
+            "x": {"field": "lo"},
             "x2": {"field": "hi"}
           }
         },
@@ -82,10 +82,7 @@
             "opacity": 1
           },
           "encoding": {
-            "x": {
-              "field": "mean",
-              "type": "quantitative"
-            },
+            "x": {"field": "mean"},
             "color": {
               "field": "measure",
               "type": "nominal",
@@ -113,18 +110,18 @@
           }
         ]
       },
+      "encoding": {
+        "x": {
+          "type": "quantitative",
+          "scale": {"zero": false},
+          "axis": null
+        }
+      },
       "layer": [
         {
           "mark": "rule",
           "encoding": {
-            "x": {
-              "field": "from",
-              "type": "quantitative",
-              "scale": {
-                "zero": false
-              },
-              "axis": null
-            },
+            "x": {"field": "from"},
             "x2": {"field": "to"}
           }
         },
@@ -136,11 +133,7 @@
             "fill": "black"
           },
           "encoding": {
-            "x": {
-              "field": "to",
-              "type": "quantitative",
-              "axis": null
-            },
+            "x": {"field": "to"},
             "shape": {
               "condition": {
                 "test": "datum.to > 0",
@@ -159,11 +152,7 @@
           },
           "transform": [{"filter": "datum.label === 'PoleStar'"}],
           "encoding": {
-            "x": {
-              "field": "from",
-              "type": "quantitative",
-              "axis": null
-            }
+            "x": {"field": "from"}
           }
         },
         {
@@ -175,11 +164,7 @@
           },
           "transform": [{"filter": "datum.label !== 'PoleStar'"}],
           "encoding": {
-            "x": {
-              "field": "from",
-              "type": "quantitative",
-              "axis": null
-            }
+            "x": {"field": "from"}
           }
         }
       ]
