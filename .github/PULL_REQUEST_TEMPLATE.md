@@ -1,9 +1,8 @@
 Please:
 
 - [ ] Make the pull requests (PRs) atomic (fix one issue at a time). Multiple relevant issues that must be fixed together? Make atomic commits so we can easily review each issue.
-- [ ] Provide a concise title so we can easily copy it to the release note.
+- [ ] Provide a concise title as a [semantic commit message](https://www.conventionalcommits.org/) (e.g. "fix: correctly handle undefined properties") so we can easily copy it to the release note.
   - Use imperative mood and present tense.
-  - Write a title as a [semantic commit message](https://www.conventionalcommits.org/) (e.g. "fix: correctly handle undefined properties").
 - Mention relevant issues in the description (e.g., `Fixes #1` / `Fixes part of #1`).
 - [ ] Lint and test (Run `yarn test`).
 - [ ] Rebase onto the latest `master` branch.
