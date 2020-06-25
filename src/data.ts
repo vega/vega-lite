@@ -152,8 +152,8 @@ export enum DataSourceType {
   Main = 'main',
   Row = 'row',
   Column = 'column',
-  Lookup = 'lookup',
-};
+  Lookup = 'lookup'
+}
 
 export const MAIN = DataSourceType.Main as const;
 export const RAW = DataSourceType.Raw as const;
