@@ -8,7 +8,7 @@ import {
   isSequenceGenerator,
   isUrlData,
   DataSourceType,
-  ParseValue,
+  ParseValue
 } from '../../data';
 import * as log from '../../log';
 import {
