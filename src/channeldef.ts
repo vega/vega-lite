@@ -580,7 +580,7 @@ export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingCondi
  * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
  */
 export function hasConditionalFieldDef<F extends Field>(
-  channelDef: ChannelDef<F>
+  channelDef: Partial<ChannelDef<F>>
 ): channelDef is {condition: Conditional<TypedFieldDef<F>>} {
   const condition = channelDef && channelDef['condition'];
   return !!condition && !isArray(condition) && isFieldDef(condition);
@@ -601,7 +601,7 @@ export function hasConditionalValueDef<F extends Field>(
 }
 
 export function isFieldDef<F extends Field>(
-  channelDef: ChannelDef<F> | FieldDefBase<F> | DatumDef<F, any>
+  channelDef: Partial<ChannelDef<F>> | FieldDefBase<F> | DatumDef<F, any>
 ): channelDef is FieldDefBase<F> | TypedFieldDef<F> | SecondaryFieldDef<F> {
   // TODO: we can't use field in channelDef here as it's somehow failing runtime test
   return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
@@ -612,7 +612,7 @@ export function channelDefType<F extends Field>(channelDef: ChannelDef<F>): Type
 }
 
 export function isDatumDef<F extends Field>(
-  channelDef: ChannelDef<F> | FieldDefBase<F> | DatumDef<F, any>
+  channelDef: Partial<ChannelDef<F>> | FieldDefBase<F> | DatumDef<F, any>
 ): channelDef is DatumDef<F, any> {
   return !!channelDef && 'datum' in channelDef;
 }
@@ -634,7 +634,7 @@ export function isNumericDataDef<F extends Field>(cd: ChannelDef<F>): cd is Datu
 }
 
 export function isFieldOrDatumDef<F extends Field>(
-  channelDef: ChannelDef<F>
+  channelDef: Partial<ChannelDef<F>>
 ): channelDef is FieldDef<F, any> | DatumDef<F> {
   return isFieldDef(channelDef) || isDatumDef(channelDef);
 }
@@ -643,7 +643,7 @@ export function isTypedFieldDef<F extends Field>(channelDef: ChannelDef<F>): cha
   return !!channelDef && ('field' in channelDef || channelDef['aggregate'] === 'count') && 'type' in channelDef;
 }
 
-export function isValueDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is ValueDef<any> {
+export function isValueDef<F extends Field>(channelDef: Partial<ChannelDef<F>>): channelDef is ValueDef<any> {
   return channelDef && 'value' in channelDef && 'value' in channelDef;
 }
 
