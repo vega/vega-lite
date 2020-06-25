@@ -358,7 +358,7 @@ export function parseData(model: Model): DataComponent {
   }
 
   // add an output node pre aggregation
-  const rawName = model.getName(DataSourceType.Raw);
+  const rawName = model.getDataName(DataSourceType.Raw);
   const raw = new OutputNode(head, rawName, DataSourceType.Raw, outputNodeRefCounts);
   outputNodes[rawName] = raw;
   head = raw;
@@ -381,7 +381,7 @@ export function parseData(model: Model): DataComponent {
   }
 
   // output node for marks
-  const mainName = model.getName(DataSourceType.Main);
+  const mainName = model.getDataName(DataSourceType.Main);
   const main = new OutputNode(head, mainName, DataSourceType.Main, outputNodeRefCounts);
   outputNodes[mainName] = main;
   head = main;

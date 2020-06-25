@@ -148,11 +148,11 @@ export function isGraticuleGenerator(data: Partial<Data> | Partial<VgData>): dat
 }
 
 export enum DataSourceType {
-  Raw = 'raw',
-  Main = 'main',
-  Row = 'row',
-  Column = 'column',
-  Lookup = 'lookup'
+  Raw,
+  Main,
+  Row,
+  Column,
+  Lookup
 }
 
 export type Generator = SequenceGenerator | SphereGenerator | GraticuleGenerator;
