@@ -10,6 +10,7 @@ import {FilterNode} from '../data/filter';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {forEachTransform} from './transforms/transforms';
+import {DataSourceType} from '../../data';
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
@@ -102,7 +103,7 @@ export function parseSelectionBinExtent(selCmpt: SelectionComponent, extent: Sel
     if (selCmpt.project.items.length > 1) {
       warn(
         'A "field" or "encoding" must be specified when using a selection as a scale domain. ' +
-          `Using "field": ${stringValue(field)}.`
+        `Using "field": ${stringValue(field)}.`
       );
     }
   } else if (encoding && !field) {
@@ -111,8 +112,8 @@ export function parseSelectionBinExtent(selCmpt: SelectionComponent, extent: Sel
       field = selCmpt.project.items[0].field;
       warn(
         (!encodings.length ? 'No ' : 'Multiple ') +
-          `matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.selection)}. ` +
-          `Using "field": ${stringValue(field)}.`
+        `matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.selection)}. ` +
+        `Using "field": ${stringValue(field)}.`
       );
     } else {
       field = encodings[0].field;
@@ -129,7 +130,7 @@ export function materializeSelections(model: UnitModel, main: OutputNode) {
     model.component.data.outputNodes[lookupName] = selCmpt.materialized = new OutputNode(
       new FilterNode(main, model, {selection}),
       lookupName,
-      'lookup',
+      DataSourceType.Lookup,
       model.component.data.outputNodeRefCounts
     );
   });

@@ -147,10 +147,16 @@ export function isGraticuleGenerator(data: Partial<Data> | Partial<VgData>): dat
   return 'graticule' in data;
 }
 
-export type DataSourceType = 'raw' | 'main' | 'row' | 'column' | 'lookup';
+export enum DataSourceType {
+  Raw = 'raw',
+  Main = 'main',
+  Row = 'row',
+  Column = 'column',
+  Lookup = 'lookup',
+};
 
-export const MAIN = 'main' as const;
-export const RAW = 'raw' as const;
+export const MAIN = DataSourceType.Main as const;
+export const RAW = DataSourceType.Raw as const;
 
 export type Generator = SequenceGenerator | SphereGenerator | GraticuleGenerator;
 
