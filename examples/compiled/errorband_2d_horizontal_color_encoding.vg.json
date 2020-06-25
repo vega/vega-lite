@@ -9,7 +9,11 @@
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json", "parse": {"Year": "date"}},
+      "format": {"type": "json", "parse": {"Year": "date"}}
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
         {
           "field": "Year",
@@ -41,7 +45,7 @@
       "type": "area",
       "style": ["area", "errorband-band"],
       "sort": {"field": "datum[\"year_Year\"]"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "ariaRoleDescription": {"value": "errorband"},
@@ -69,7 +73,7 @@
       "style": ["line", "errorband-borders"],
       "sort": {"field": "datum[\"year_Year\"]"},
       "aria": false,
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -90,7 +94,7 @@
       "style": ["line", "errorband-borders"],
       "sort": {"field": "datum[\"year_Year\"]"},
       "aria": false,
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -110,14 +114,14 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "year_Year"},
+      "domain": {"data": "data_0", "field": "year_Year"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
-        "data": "source_0",
+        "data": "data_0",
         "fields": ["lower_Miles_per_Gallon", "upper_Miles_per_Gallon"]
       },
       "range": [{"signal": "height"}, 0],

@@ -145,7 +145,7 @@
       "type": "symbol",
       "style": ["point"],
       "interactive": true,
-      "from": {"data": "data_0"},
+      "from": {"data": "data_5"},
       "encode": {
         "update": {
           "opacity": {"value": 0},
@@ -187,8 +187,8 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_1_main",
-          "data": "data_2",
+          "name": "faceted_path_Main",
+          "data": "data_5",
           "groupby": ["symbol"]
         }
       },
@@ -205,7 +205,7 @@
           "style": ["line"],
           "sort": {"field": "datum[\"date\"]"},
           "interactive": false,
-          "from": {"data": "faceted_path_layer_1_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
@@ -227,7 +227,7 @@
       "type": "rule",
       "style": ["rule"],
       "interactive": false,
-      "from": {"data": "data_4"},
+      "from": {"data": "data_5"},
       "encode": {
         "update": {
           "strokeWidth": {"value": 0.5},
@@ -269,20 +269,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "date"},
-          {"data": "data_2", "field": "date"},
-          {"data": "data_4", "field": "date"},
-          {"data": "data_5", "field": "date"}
-        ]
-      },
+      "domain": {"data": "data_5", "field": "date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "indexed_price"},
+      "domain": {"data": "data_5", "field": "indexed_price"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -290,7 +283,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "data_2", "field": "symbol", "sort": true},
+      "domain": {"data": "data_5", "field": "symbol", "sort": true},
       "range": "category"
     }
   ],

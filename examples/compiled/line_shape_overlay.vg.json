@@ -30,7 +30,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"date\"]"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -69,23 +69,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "date"},
-          {"data": "data_0", "field": "date"}
-        ]
-      },
+      "domain": {"data": "data_0", "field": "date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "price"},
-          {"data": "data_0", "field": "price"}
-        ]
-      },
+      "domain": {"data": "data_0", "field": "price"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

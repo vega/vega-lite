@@ -61,7 +61,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -80,7 +80,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -134,7 +134,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "Horsepower"},
+      "domain": {"data": "data_2", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -143,11 +143,11 @@
       "name": "y",
       "type": "linear",
       "domain": {
+        "data": "data_2",
         "fields": [
-          {"data": "data_0", "field": "Miles_per_Gallon"},
-          {"data": "data_3", "field": "min_Miles_per_Gallon"},
-          {"data": "data_2", "field": "max_Miles_per_Gallon"},
-          {"data": "data_2", "field": "min_Miles_per_Gallon"}
+          "Miles_per_Gallon",
+          "min_Miles_per_Gallon",
+          "max_Miles_per_Gallon"
         ]
       },
       "range": [{"signal": "height"}, 0],

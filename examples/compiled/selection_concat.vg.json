@@ -337,7 +337,7 @@
           "type": "symbol",
           "style": ["point"],
           "interactive": true,
-          "from": {"data": "data_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -654,7 +654,7 @@
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_1", "field": "Miles_per_Gallon"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -662,7 +662,7 @@
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "Horsepower"},
+      "domain": {"data": "data_1", "field": "Horsepower"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true

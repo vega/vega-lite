@@ -15,7 +15,13 @@
           "type": "formula",
           "expr": "datum.sex == 2 ? 'Female' : 'Male'",
           "as": "gender"
-        },
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
           "type": "aggregate",
           "groupby": ["age", "gender"],
@@ -55,8 +61,8 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_0_main",
-          "data": "source_0",
+          "name": "faceted_path_Main",
+          "data": "data_0",
           "groupby": ["gender"]
         }
       },
@@ -72,7 +78,7 @@
           "type": "area",
           "style": ["area"],
           "sort": {"field": "datum[\"age\"]"},
-          "from": {"data": "faceted_path_layer_0_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -97,8 +103,8 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_1_main",
-          "data": "source_0",
+          "name": "faceted_path_Main",
+          "data": "data_0",
           "groupby": ["gender"]
         }
       },
@@ -114,7 +120,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"age\"]"},
-          "from": {"data": "faceted_path_layer_1_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "gender"},
@@ -137,7 +143,7 @@
     {
       "name": "x",
       "type": "point",
-      "domain": {"data": "source_0", "field": "age", "sort": true},
+      "domain": {"data": "data_0", "field": "age", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "padding": 0.5
     },
@@ -145,7 +151,7 @@
       "name": "y",
       "type": "linear",
       "domain": {
-        "data": "source_0",
+        "data": "data_0",
         "fields": ["sum_people_start", "sum_people_end"]
       },
       "range": [{"signal": "height"}, 0],
@@ -155,7 +161,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "gender", "sort": true},
+      "domain": {"data": "data_0", "field": "gender", "sort": true},
       "range": ["#675193", "#ca8861"]
     }
   ],

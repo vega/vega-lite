@@ -133,7 +133,7 @@
           "name": "concat_0_layer_0_marks",
           "type": "rule",
           "style": ["rule"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_7"},
           "encode": {
             "update": {
               "stroke": {"value": "black"},
@@ -150,7 +150,7 @@
           "name": "concat_0_layer_1_marks",
           "type": "symbol",
           "style": ["circle"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_7"},
           "encode": {
             "update": {
               "opacity": {"value": 1},
@@ -228,7 +228,7 @@
           "name": "concat_1_layer_0_marks",
           "type": "rule",
           "style": ["rule"],
-          "from": {"data": "data_4"},
+          "from": {"data": "data_7"},
           "encode": {
             "update": {
               "stroke": {"value": "black"},
@@ -257,7 +257,7 @@
           "name": "concat_1_layer_1_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_5"},
+          "from": {"data": "data_7"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -286,7 +286,7 @@
           "name": "concat_1_layer_2_marks",
           "type": "text",
           "style": ["text", "arrow-label"],
-          "from": {"data": "data_6"},
+          "from": {"data": "data_7"},
           "encode": {
             "update": {
               "align": {"value": "right"},
@@ -339,7 +339,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "data_2", "field": "measure", "sort": true},
+      "domain": {"data": "data_7", "field": "measure", "sort": true},
       "range": ["black", "white"]
     },
     {
@@ -353,13 +353,7 @@
     {
       "name": "concat_0_y",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "study"},
-          {"data": "data_2", "field": "study"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_7", "field": "study", "sort": true},
       "range": {"step": {"signal": "concat_0_y_step"}},
       "paddingInner": 0,
       "paddingOuter": 0
@@ -367,15 +361,7 @@
     {
       "name": "concat_1_x",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_4", "field": "from"},
-          {"data": "data_4", "field": "to"},
-          {"data": "data_5", "field": "to"},
-          {"data": "data_6", "field": "from"},
-          {"data": "data_7", "field": "from"}
-        ]
-      },
+      "domain": {"data": "data_7", "fields": ["from", "to"]},
       "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true

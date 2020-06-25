@@ -47,7 +47,7 @@
       "from": {
         "facet": {
           "data": "source_0",
-          "name": "stack_group_main",
+          "name": "stack_group_Main",
           "groupby": ["month_date", "month_date_end"],
           "aggregate": {
             "fields": [
@@ -92,7 +92,7 @@
               "name": "marks",
               "type": "rect",
               "style": ["bar"],
-              "from": {"data": "stack_group_main"},
+              "from": {"data": "stack_group_Main"},
               "encode": {
                 "update": {
                   "stroke": {"value": "black"},

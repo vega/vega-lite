@@ -581,7 +581,7 @@
           "type": "rect",
           "style": ["bar"],
           "interactive": true,
-          "from": {"data": "data_1"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "fill": [
@@ -902,7 +902,7 @@
           "type": "rect",
           "style": ["bar"],
           "interactive": true,
-          "from": {"data": "data_2"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "fill": [
@@ -1440,7 +1440,7 @@
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Population_ages_15_64_of_total"},
+      "domain": {"data": "data_3", "field": "Population_ages_15_64_of_total"},
       "range": [0, {"signal": "concat_0_width"}],
       "nice": true,
       "zero": true
@@ -1465,7 +1465,7 @@
       "name": "concat_1_x",
       "type": "linear",
       "domain": {
-        "data": "data_2",
+        "data": "data_3",
         "field": "Population_ages_65_and_above_of_total"
       },
       "range": [0, {"signal": "concat_1_width"}],

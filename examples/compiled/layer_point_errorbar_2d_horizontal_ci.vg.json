@@ -5,10 +5,10 @@
   "width": 200,
   "style": "cell",
   "data": [
+    {"name": "source_0", "url": "data/barley.json", "format": {"type": "json"}},
     {
-      "name": "source_0",
-      "url": "data/barley.json",
-      "format": {"type": "json"},
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
         {
           "type": "aggregate",
@@ -20,8 +20,8 @@
       ]
     },
     {
-      "name": "data_0",
-      "source": "source_0",
+      "name": "data_1",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -30,8 +30,8 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "source_0",
+      "name": "data_2",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -82,7 +82,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
@@ -107,11 +107,8 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_1", "field": "lower_yield"},
-          {"data": "data_1", "field": "upper_yield"},
-          {"data": "data_0", "field": "mean_yield"}
-        ]
+        "data": "data_1",
+        "fields": ["lower_yield", "upper_yield", "mean_yield"]
       },
       "range": [0, {"signal": "width"}],
       "zero": false,
@@ -120,13 +117,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "variety"},
-          {"data": "data_0", "field": "variety"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_1", "field": "variety", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0,
       "paddingOuter": 0

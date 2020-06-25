@@ -74,7 +74,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["square"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -94,7 +94,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["square"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},

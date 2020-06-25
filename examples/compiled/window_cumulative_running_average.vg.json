@@ -28,7 +28,13 @@
           "sort": {"field": ["year"], "order": ["ascending"]},
           "ignorePeers": false,
           "frame": [null, 0]
-        },
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
           "field": "Year",
           "type": "timeunit",
@@ -38,8 +44,8 @@
       ]
     },
     {
-      "name": "data_0",
-      "source": "source_0",
+      "name": "data_1",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -73,7 +79,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"year_Year\"]"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "red"},
@@ -93,22 +99,15 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "year_Year"},
-          {"data": "source_0", "field": "year_Year"}
-        ]
-      },
+      "domain": {"data": "data_0", "field": "year_Year"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_0", "field": "Miles_per_Gallon"},
-          {"data": "source_0", "field": "Average_MPG"}
-        ]
+        "data": "data_0",
+        "fields": ["Miles_per_Gallon", "Average_MPG"]
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,

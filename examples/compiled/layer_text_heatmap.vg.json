@@ -40,7 +40,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["rect"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "num_cars"},
@@ -81,13 +81,7 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "Cylinders"},
-          {"data": "source_0", "field": "Cylinders"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0,
       "paddingOuter": 0
@@ -95,13 +89,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "Origin"},
-          {"data": "source_0", "field": "Origin"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "Origin", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0,
       "paddingOuter": 0
@@ -109,7 +97,7 @@
     {
       "name": "color",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "num_cars"},
+      "domain": {"data": "source_0", "field": "num_cars"},
       "range": "heatmap",
       "interpolate": "hcl",
       "zero": false

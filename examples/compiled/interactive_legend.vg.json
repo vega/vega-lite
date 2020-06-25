@@ -122,7 +122,7 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_main",
+          "name": "faceted_path_Main",
           "data": "source_0",
           "groupby": ["series"]
         }
@@ -140,7 +140,7 @@
           "style": ["area"],
           "sort": {"field": "datum[\"yearmonth_date\"]"},
           "interactive": true,
-          "from": {"data": "faceted_path_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "orient": {"value": "vertical"},

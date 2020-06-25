@@ -64,7 +64,7 @@
       "name": "layer_0_marks",
       "type": "arc",
       "style": ["arc"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "outerRadius": {"value": 80},
@@ -110,27 +110,14 @@
     {
       "name": "theta",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "value_start"},
-          {"data": "data_1", "field": "value_end"},
-          {"data": "data_2", "field": "value_start"},
-          {"data": "data_2", "field": "value_end"}
-        ]
-      },
+      "domain": {"data": "data_2", "fields": ["value_start", "value_end"]},
       "range": [0, 6.283185307179586],
       "zero": true
     },
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "category"},
-          {"data": "data_2", "field": "category"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_2", "field": "category", "sort": true},
       "range": "category"
     }
   ]

@@ -133,7 +133,7 @@
           "type": "group",
           "from": {
             "facet": {
-              "name": "faceted_path_child_main",
+              "name": "faceted_path_Main",
               "data": "facet",
               "groupby": ["symbol"]
             }
@@ -150,7 +150,7 @@
               "type": "line",
               "style": ["line"],
               "sort": {"field": "datum[\"quarter_date\"]"},
-              "from": {"data": "faceted_path_child_main"},
+              "from": {"data": "faceted_path_Main"},
               "encode": {
                 "update": {
                   "stroke": {"scale": "color", "field": "symbol"},

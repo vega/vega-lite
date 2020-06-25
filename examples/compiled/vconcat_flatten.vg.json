@@ -147,7 +147,7 @@
           "type": "symbol",
           "style": ["circle"],
           "interactive": true,
-          "from": {"data": "data_1"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -243,7 +243,7 @@
           "type": "group",
           "from": {
             "facet": {
-              "name": "faceted_path_concat_1_main",
+              "name": "faceted_path_Main",
               "data": "data_2",
               "groupby": ["id"]
             }
@@ -261,7 +261,7 @@
               "style": ["line"],
               "sort": {"field": "datum[\"lc.time\"]"},
               "interactive": false,
-              "from": {"data": "faceted_path_concat_1_main"},
+              "from": {"data": "faceted_path_Main"},
               "encode": {
                 "update": {
                   "stroke": {"value": "steelblue"},
@@ -334,7 +334,7 @@
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "ra"},
+      "domain": {"data": "data_2", "field": "ra"},
       "range": [0, {"signal": "width"}],
       "zero": false,
       "nice": true
@@ -342,7 +342,7 @@
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "dec"},
+      "domain": {"data": "data_2", "field": "dec"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true

@@ -13,7 +13,7 @@
       "format": {"type": "csv", "parse": {"date": "date"}}
     },
     {
-      "name": "data_0",
+      "name": "data_1",
       "source": "source_0",
       "transform": [
         {
@@ -23,15 +23,15 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_2",
       "source": "source_0",
       "transform": [
         {"type": "filter", "expr": "(vlSelectionTest(\"label_store\", datum))"}
       ]
     },
     {
-      "name": "data_2",
-      "source": "data_1",
+      "name": "data_4",
+      "source": "data_2",
       "transform": [
         {
           "type": "aggregate",
@@ -47,8 +47,8 @@
       ]
     },
     {
-      "name": "data_3",
-      "source": "data_1",
+      "name": "data_5",
+      "source": "data_2",
       "transform": [
         {
           "type": "filter",
@@ -106,8 +106,8 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_0_layer_0_main",
-          "data": "source_0",
+          "name": "faceted_path_Main",
+          "data": "data_5",
           "groupby": ["symbol"]
         }
       },
@@ -124,7 +124,7 @@
           "style": ["line"],
           "sort": {"field": "datum[\"date\"]"},
           "interactive": false,
-          "from": {"data": "faceted_path_layer_0_layer_0_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
@@ -146,7 +146,7 @@
       "type": "symbol",
       "style": ["point"],
       "interactive": true,
-      "from": {"data": "data_0"},
+      "from": {"data": "data_5"},
       "encode": {
         "update": {
           "opacity": [
@@ -191,7 +191,7 @@
       "type": "rule",
       "style": ["rule"],
       "interactive": false,
-      "from": {"data": "data_2"},
+      "from": {"data": "data_5"},
       "encode": {
         "update": {
           "stroke": {"value": "gray"},
@@ -209,7 +209,7 @@
       "type": "text",
       "style": ["text"],
       "interactive": false,
-      "from": {"data": "data_3"},
+      "from": {"data": "data_5"},
       "encode": {
         "update": {
           "stroke": {"value": "white"},
@@ -233,7 +233,7 @@
       "type": "text",
       "style": ["text"],
       "interactive": false,
-      "from": {"data": "data_3"},
+      "from": {"data": "data_5"},
       "encode": {
         "update": {
           "align": {"value": "left"},
@@ -255,26 +255,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "date"},
-          {"data": "data_0", "field": "date"},
-          {"data": "data_2", "field": "min_date"},
-          {"data": "data_3", "field": "date"}
-        ]
-      },
+      "domain": {"data": "data_5", "fields": ["date", "min_date"]},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "price"},
-          {"data": "data_0", "field": "price"},
-          {"data": "data_3", "field": "price"}
-        ]
-      },
+      "domain": {"data": "data_5", "field": "price"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -282,14 +269,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "symbol"},
-          {"data": "data_0", "field": "symbol"},
-          {"data": "data_3", "field": "symbol"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_5", "field": "symbol", "sort": true},
       "range": "category"
     }
   ],

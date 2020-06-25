@@ -7,6 +7,7 @@
   "height": 200,
   "style": "cell",
   "data": [
+    {"name": "source"},
     {
       "name": "source_1",
       "values": [{"date": "May 1, 2010", "date_end": "July 15, 2010"}]
@@ -69,7 +70,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -120,20 +121,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "month_date"},
-          {"data": "source_0", "field": "month_date_end"},
-          {"data": "data_0", "field": "month_date"},
-          {"data": "data_0", "field": "month_date_end"}
-        ]
-      },
+      "domain": {"data": "data_0", "fields": ["month_date", "month_date_end"]},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "mean_precipitation"},
+      "domain": {"data": "data_0", "field": "mean_precipitation"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

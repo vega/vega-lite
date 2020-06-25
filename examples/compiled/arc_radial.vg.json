@@ -54,7 +54,7 @@
       "name": "layer_0_marks",
       "type": "arc",
       "style": ["arc"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "stroke": {"value": "#fff"},
@@ -99,39 +99,21 @@
     {
       "name": "theta",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "data_start"},
-          {"data": "data_1", "field": "data_end"},
-          {"data": "data_2", "field": "data_start"},
-          {"data": "data_2", "field": "data_end"}
-        ]
-      },
+      "domain": {"data": "data_2", "fields": ["data_start", "data_end"]},
       "range": [0, 6.283185307179586],
       "zero": true
     },
     {
       "name": "radius",
       "type": "sqrt",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "data"},
-          {"data": "data_2", "field": "data"}
-        ]
-      },
+      "domain": {"data": "data_2", "field": "data"},
       "range": [20, 100],
       "zero": true
     },
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "data"},
-          {"data": "data_2", "field": "data"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_2", "field": "data", "sort": true},
       "range": "category"
     }
   ]

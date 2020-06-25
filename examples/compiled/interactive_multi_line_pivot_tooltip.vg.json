@@ -13,7 +13,18 @@
       "format": {"type": "csv", "parse": {"date": "date"}}
     },
     {
-      "name": "data_0",
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {"type": "filter", "expr": "(vlSelectionTest(\"hover_store\", datum))"},
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
       "source": "source_0",
       "transform": [
         {
@@ -26,17 +37,6 @@
         {
           "type": "filter",
           "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"])))"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {"type": "filter", "expr": "(vlSelectionTest(\"hover_store\", datum))"},
-        {
-          "type": "filter",
-          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
         }
       ]
     }
@@ -87,8 +87,8 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_0_layer_0_main",
-          "data": "source_0",
+          "name": "faceted_path_Main",
+          "data": "data_2",
           "groupby": ["symbol"]
         }
       },
@@ -105,7 +105,7 @@
           "style": ["line"],
           "sort": {"field": "datum[\"date\"]"},
           "interactive": false,
-          "from": {"data": "faceted_path_layer_0_layer_0_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
@@ -127,7 +127,7 @@
       "type": "symbol",
       "style": ["point"],
       "interactive": false,
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -147,7 +147,7 @@
       "type": "rule",
       "style": ["rule"],
       "interactive": true,
-      "from": {"data": "data_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -197,24 +197,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "date"},
-          {"data": "data_1", "field": "date"},
-          {"data": "data_0", "field": "date"}
-        ]
-      },
+      "domain": {"data": "data_2", "field": "date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "price"},
-          {"data": "data_1", "field": "price"}
-        ]
-      },
+      "domain": {"data": "data_2", "field": "price"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -222,13 +211,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "symbol"},
-          {"data": "data_1", "field": "symbol"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_2", "field": "symbol", "sort": true},
       "range": "category"
     }
   ],

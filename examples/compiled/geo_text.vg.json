@@ -6,6 +6,7 @@
   "height": 500,
   "style": "cell",
   "data": [
+    {"name": "source"},
     {
       "name": "source_0",
       "url": "data/us-10m.json",
@@ -56,7 +57,7 @@
       "name": "projection",
       "size": {"signal": "[width, height]"},
       "fit": {
-        "signal": "[data('source_0'), layer_1_layer_0_geojson_0, layer_1_layer_1_geojson_0]"
+        "signal": "[data('data_1'), layer_1_layer_0_geojson_0, layer_1_layer_1_geojson_0]"
       },
       "type": "albersUsa"
     }
@@ -66,7 +67,7 @@
       "name": "layer_0_marks",
       "type": "shape",
       "style": ["geoshape"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "lightgray"},
@@ -80,7 +81,7 @@
       "name": "layer_1_layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},

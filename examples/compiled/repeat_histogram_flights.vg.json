@@ -8,19 +8,18 @@
       "url": "data/flights-2k.json",
       "format": {"type": "json", "parse": {"date": "date"}},
       "transform": [
+        {"type": "formula", "expr": "hours(datum.date)", "as": "time"},
         {
           "type": "extent",
-          "field": "delay",
-          "signal": "child__column_delay_bin_maxbins_20_delay_extent"
+          "field": "time",
+          "signal": "child__column_time_bin_maxbins_20_time_extent"
         },
         {
           "type": "bin",
-          "field": "delay",
-          "as": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
-          "signal": "child__column_delay_bin_maxbins_20_delay_bins",
-          "extent": {
-            "signal": "child__column_delay_bin_maxbins_20_delay_extent"
-          },
+          "field": "time",
+          "as": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
+          "signal": "child__column_time_bin_maxbins_20_time_bins",
+          "extent": {"signal": "child__column_time_bin_maxbins_20_time_extent"},
           "maxbins": 20
         },
         {
@@ -38,26 +37,27 @@
           },
           "maxbins": 20
         },
-        {"type": "formula", "expr": "hours(datum.date)", "as": "time"}
+        {
+          "type": "extent",
+          "field": "delay",
+          "signal": "child__column_delay_bin_maxbins_20_delay_extent"
+        },
+        {
+          "type": "bin",
+          "field": "delay",
+          "as": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
+          "signal": "child__column_delay_bin_maxbins_20_delay_bins",
+          "extent": {
+            "signal": "child__column_delay_bin_maxbins_20_delay_extent"
+          },
+          "maxbins": 20
+        }
       ]
     },
     {
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {
-          "type": "extent",
-          "field": "time",
-          "signal": "child__column_time_bin_maxbins_20_time_extent"
-        },
-        {
-          "type": "bin",
-          "field": "time",
-          "as": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
-          "signal": "child__column_time_bin_maxbins_20_time_bins",
-          "extent": {"signal": "child__column_time_bin_maxbins_20_time_extent"},
-          "maxbins": 20
-        },
         {
           "type": "aggregate",
           "groupby": ["bin_maxbins_20_time", "bin_maxbins_20_time_end"],
@@ -77,14 +77,14 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
+          "groupby": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"bin_maxbins_20_delay\"]) && isFinite(+datum[\"bin_maxbins_20_delay\"])"
+          "expr": "isValid(datum[\"bin_maxbins_20_distance\"]) && isFinite(+datum[\"bin_maxbins_20_distance\"])"
         }
       ]
     },
@@ -94,14 +94,14 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["bin_maxbins_20_distance", "bin_maxbins_20_distance_end"],
+          "groupby": ["bin_maxbins_20_delay", "bin_maxbins_20_delay_end"],
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
         },
         {
           "type": "filter",
-          "expr": "isValid(datum[\"bin_maxbins_20_distance\"]) && isFinite(+datum[\"bin_maxbins_20_distance\"])"
+          "expr": "isValid(datum[\"bin_maxbins_20_delay\"]) && isFinite(+datum[\"bin_maxbins_20_delay\"])"
         }
       ]
     }
@@ -127,7 +127,7 @@
           "name": "child__column_distance_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -213,7 +213,7 @@
           "name": "child__column_delay_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -385,7 +385,7 @@
     {
       "name": "child__column_distance_y",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "__count"},
+      "domain": {"data": "data_0", "field": "__count"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -403,7 +403,7 @@
     {
       "name": "child__column_delay_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "__count"},
+      "domain": {"data": "data_0", "field": "__count"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true

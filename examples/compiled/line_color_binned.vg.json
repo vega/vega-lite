@@ -48,7 +48,7 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_main",
+          "name": "faceted_path_Main",
           "data": "source_0",
           "groupby": ["bin_maxbins_6_Acceleration"]
         }
@@ -65,7 +65,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"Year\"]"},
-          "from": {"data": "faceted_path_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {

@@ -59,7 +59,7 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_main",
+          "name": "faceted_path_Main",
           "data": "data_0",
           "groupby": ["team"]
         }
@@ -76,7 +76,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"matchday\"]"},
-          "from": {"data": "faceted_path_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "team"},

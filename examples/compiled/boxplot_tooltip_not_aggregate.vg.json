@@ -100,7 +100,7 @@
       "name": "layer_0_layer_0_marks",
       "type": "symbol",
       "style": ["point", "boxplot-outliers"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -127,7 +127,7 @@
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
       "aria": false,
-      "from": {"data": "data_2"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -145,7 +145,7 @@
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
       "aria": false,
-      "from": {"data": "data_2"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -206,15 +206,14 @@
       "name": "x",
       "type": "linear",
       "domain": {
+        "data": "data_3",
         "fields": [
-          {"data": "data_1", "field": "Body Mass (g)"},
-          {"data": "data_2", "field": "lower_whisker_Body Mass (g)"},
-          {"data": "data_2", "field": "lower_box_Body Mass (g)"},
-          {"data": "data_2", "field": "upper_box_Body Mass (g)"},
-          {"data": "data_2", "field": "upper_whisker_Body Mass (g)"},
-          {"data": "data_3", "field": "lower_box_Body Mass (g)"},
-          {"data": "data_3", "field": "upper_box_Body Mass (g)"},
-          {"data": "data_3", "field": "mid_box_Body Mass (g)"}
+          "Body Mass (g)",
+          "lower_whisker_Body Mass (g)",
+          "lower_box_Body Mass (g)",
+          "upper_box_Body Mass (g)",
+          "upper_whisker_Body Mass (g)",
+          "mid_box_Body Mass (g)"
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -224,14 +223,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "Species"},
-          {"data": "data_2", "field": "Species"},
-          {"data": "data_3", "field": "Species"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_3", "field": "Species", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0,
       "paddingOuter": 0

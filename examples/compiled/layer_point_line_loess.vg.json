@@ -35,7 +35,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -74,12 +74,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "Rotten Tomatoes Rating"},
-          {"data": "data_1", "field": "Rotten Tomatoes Rating"}
-        ]
-      },
+      "domain": {"data": "data_1", "field": "Rotten Tomatoes Rating"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -87,12 +82,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "IMDB Rating"},
-          {"data": "data_1", "field": "IMDB Rating"}
-        ]
-      },
+      "domain": {"data": "data_1", "field": "IMDB Rating"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

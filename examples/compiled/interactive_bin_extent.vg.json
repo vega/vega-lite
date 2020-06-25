@@ -326,7 +326,7 @@
           "type": "rect",
           "style": ["bar"],
           "interactive": true,
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -539,7 +539,7 @@
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "__count"},
+      "domain": {"data": "data_0", "field": "__count"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true

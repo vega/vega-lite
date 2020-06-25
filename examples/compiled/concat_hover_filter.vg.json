@@ -13,7 +13,7 @@
       "transform": [{"type": "identifier", "as": "_vgsid_"}]
     },
     {
-      "name": "data_0",
+      "name": "data_1",
       "source": "source_0",
       "transform": [
         {
@@ -23,15 +23,15 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_2",
       "source": "source_0",
       "transform": [
         {"type": "filter", "expr": "(vlSelectionTest(\"hover_store\", datum))"}
       ]
     },
     {
-      "name": "data_2",
-      "source": "data_1",
+      "name": "data_3",
+      "source": "data_2",
       "transform": [
         {
           "type": "filter",
@@ -40,8 +40,8 @@
       ]
     },
     {
-      "name": "data_3",
-      "source": "data_1",
+      "name": "data_4",
+      "source": "data_2",
       "transform": [
         {
           "type": "filter",
@@ -50,7 +50,7 @@
       ]
     },
     {
-      "name": "data_4",
+      "name": "data_5",
       "source": "source_0",
       "transform": [
         {
@@ -121,7 +121,7 @@
           "type": "symbol",
           "style": ["point"],
           "interactive": true,
-          "from": {"data": "data_0"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -141,7 +141,7 @@
           "type": "symbol",
           "style": ["point"],
           "interactive": false,
-          "from": {"data": "data_2"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -272,7 +272,7 @@
           "type": "symbol",
           "style": ["point"],
           "interactive": false,
-          "from": {"data": "data_3"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -343,12 +343,7 @@
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "Horsepower"},
-          {"data": "data_2", "field": "Horsepower"}
-        ]
-      },
+      "domain": {"data": "data_4", "field": "Horsepower"},
       "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
@@ -356,12 +351,7 @@
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "Miles_per_Gallon"},
-          {"data": "data_2", "field": "Miles_per_Gallon"}
-        ]
-      },
+      "domain": {"data": "data_4", "field": "Miles_per_Gallon"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -369,12 +359,7 @@
     {
       "name": "concat_1_x",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_4", "field": "Horsepower"},
-          {"data": "data_3", "field": "Horsepower"}
-        ]
-      },
+      "domain": {"data": "data_4", "field": "Horsepower"},
       "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
@@ -382,12 +367,7 @@
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_4", "field": "Acceleration"},
-          {"data": "data_3", "field": "Acceleration"}
-        ]
-      },
+      "domain": {"data": "data_4", "field": "Acceleration"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

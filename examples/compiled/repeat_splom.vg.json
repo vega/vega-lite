@@ -229,7 +229,7 @@
           "name": "child__row_Beak_Length__mm_column_Flipper_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -328,7 +328,7 @@
           "name": "child__row_Beak_Length__mm_column_Beak_Depth__mm__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -427,7 +427,7 @@
           "name": "child__row_Beak_Length__mm_column_Beak_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_3"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -526,7 +526,7 @@
           "name": "child__row_Beak_Depth__mm_column_Body_Mass__g__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_4"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -625,7 +625,7 @@
           "name": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_5"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -724,7 +724,7 @@
           "name": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_6"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -823,7 +823,7 @@
           "name": "child__row_Beak_Depth__mm_column_Beak_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -922,7 +922,7 @@
           "name": "child__row_Flipper_Length__mm_column_Body_Mass__g__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_7"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -1021,7 +1021,7 @@
           "name": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_8"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -1120,7 +1120,7 @@
           "name": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_5"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -1219,7 +1219,7 @@
           "name": "child__row_Flipper_Length__mm_column_Beak_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -1318,7 +1318,7 @@
           "name": "child__row_Body_Mass__g_column_Body_Mass__g__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_9"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -1417,7 +1417,7 @@
           "name": "child__row_Body_Mass__g_column_Flipper_Length__mm__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_7"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -1516,7 +1516,7 @@
           "name": "child__row_Body_Mass__g_column_Beak_Depth__mm__marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "data_4"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -1704,21 +1704,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "Species"},
-          {"data": "data_1", "field": "Species"},
-          {"data": "data_2", "field": "Species"},
-          {"data": "data_3", "field": "Species"},
-          {"data": "data_4", "field": "Species"},
-          {"data": "data_5", "field": "Species"},
-          {"data": "data_6", "field": "Species"},
-          {"data": "data_7", "field": "Species"},
-          {"data": "data_8", "field": "Species"},
-          {"data": "data_9", "field": "Species"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_0", "field": "Species", "sort": true},
       "range": "category"
     },
     {
@@ -1740,7 +1726,7 @@
     {
       "name": "child__row_Beak_Length__mm_column_Flipper_Length__mm__x",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Flipper Length (mm)"},
+      "domain": {"data": "data_0", "field": "Flipper Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1748,7 +1734,7 @@
     {
       "name": "child__row_Beak_Length__mm_column_Flipper_Length__mm__y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Beak Length (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true
@@ -1756,7 +1742,7 @@
     {
       "name": "child__row_Beak_Length__mm_column_Beak_Depth__mm__x",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "Beak Depth (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Depth (mm)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1764,7 +1750,7 @@
     {
       "name": "child__row_Beak_Length__mm_column_Beak_Depth__mm__y",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "Beak Length (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true
@@ -1772,7 +1758,7 @@
     {
       "name": "child__row_Beak_Length__mm_column_Beak_Length__mm__x",
       "type": "linear",
-      "domain": {"data": "data_3", "field": "Beak Length (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1780,7 +1766,7 @@
     {
       "name": "child__row_Beak_Length__mm_column_Beak_Length__mm__y",
       "type": "linear",
-      "domain": {"data": "data_3", "field": "Beak Length (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true
@@ -1788,7 +1774,7 @@
     {
       "name": "child__row_Beak_Depth__mm_column_Body_Mass__g__x",
       "type": "linear",
-      "domain": {"data": "data_4", "field": "Body Mass (g)"},
+      "domain": {"data": "data_0", "field": "Body Mass (g)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1796,7 +1782,7 @@
     {
       "name": "child__row_Beak_Depth__mm_column_Body_Mass__g__y",
       "type": "linear",
-      "domain": {"data": "data_4", "field": "Beak Depth (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Depth (mm)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true
@@ -1804,7 +1790,7 @@
     {
       "name": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__x",
       "type": "linear",
-      "domain": {"data": "data_5", "field": "Flipper Length (mm)"},
+      "domain": {"data": "data_0", "field": "Flipper Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1812,7 +1798,7 @@
     {
       "name": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__y",
       "type": "linear",
-      "domain": {"data": "data_5", "field": "Beak Depth (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Depth (mm)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true
@@ -1820,7 +1806,7 @@
     {
       "name": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__x",
       "type": "linear",
-      "domain": {"data": "data_6", "field": "Beak Depth (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Depth (mm)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1828,7 +1814,7 @@
     {
       "name": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__y",
       "type": "linear",
-      "domain": {"data": "data_6", "field": "Beak Depth (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Depth (mm)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true
@@ -1836,7 +1822,7 @@
     {
       "name": "child__row_Beak_Depth__mm_column_Beak_Length__mm__x",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "Beak Length (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1844,7 +1830,7 @@
     {
       "name": "child__row_Beak_Depth__mm_column_Beak_Length__mm__y",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "Beak Depth (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Depth (mm)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true
@@ -1852,7 +1838,7 @@
     {
       "name": "child__row_Flipper_Length__mm_column_Body_Mass__g__x",
       "type": "linear",
-      "domain": {"data": "data_7", "field": "Body Mass (g)"},
+      "domain": {"data": "data_0", "field": "Body Mass (g)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1860,7 +1846,7 @@
     {
       "name": "child__row_Flipper_Length__mm_column_Body_Mass__g__y",
       "type": "linear",
-      "domain": {"data": "data_7", "field": "Flipper Length (mm)"},
+      "domain": {"data": "data_0", "field": "Flipper Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true
@@ -1868,7 +1854,7 @@
     {
       "name": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__x",
       "type": "linear",
-      "domain": {"data": "data_8", "field": "Flipper Length (mm)"},
+      "domain": {"data": "data_0", "field": "Flipper Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1876,7 +1862,7 @@
     {
       "name": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__y",
       "type": "linear",
-      "domain": {"data": "data_8", "field": "Flipper Length (mm)"},
+      "domain": {"data": "data_0", "field": "Flipper Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true
@@ -1884,7 +1870,7 @@
     {
       "name": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__x",
       "type": "linear",
-      "domain": {"data": "data_5", "field": "Beak Depth (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Depth (mm)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1892,7 +1878,7 @@
     {
       "name": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__y",
       "type": "linear",
-      "domain": {"data": "data_5", "field": "Flipper Length (mm)"},
+      "domain": {"data": "data_0", "field": "Flipper Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true
@@ -1900,7 +1886,7 @@
     {
       "name": "child__row_Flipper_Length__mm_column_Beak_Length__mm__x",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Beak Length (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1908,7 +1894,7 @@
     {
       "name": "child__row_Flipper_Length__mm_column_Beak_Length__mm__y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Flipper Length (mm)"},
+      "domain": {"data": "data_0", "field": "Flipper Length (mm)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true
@@ -1916,7 +1902,7 @@
     {
       "name": "child__row_Body_Mass__g_column_Body_Mass__g__x",
       "type": "linear",
-      "domain": {"data": "data_9", "field": "Body Mass (g)"},
+      "domain": {"data": "data_0", "field": "Body Mass (g)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1924,7 +1910,7 @@
     {
       "name": "child__row_Body_Mass__g_column_Body_Mass__g__y",
       "type": "linear",
-      "domain": {"data": "data_9", "field": "Body Mass (g)"},
+      "domain": {"data": "data_0", "field": "Body Mass (g)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true
@@ -1932,7 +1918,7 @@
     {
       "name": "child__row_Body_Mass__g_column_Flipper_Length__mm__x",
       "type": "linear",
-      "domain": {"data": "data_7", "field": "Flipper Length (mm)"},
+      "domain": {"data": "data_0", "field": "Flipper Length (mm)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1940,7 +1926,7 @@
     {
       "name": "child__row_Body_Mass__g_column_Flipper_Length__mm__y",
       "type": "linear",
-      "domain": {"data": "data_7", "field": "Body Mass (g)"},
+      "domain": {"data": "data_0", "field": "Body Mass (g)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true
@@ -1948,7 +1934,7 @@
     {
       "name": "child__row_Body_Mass__g_column_Beak_Depth__mm__x",
       "type": "linear",
-      "domain": {"data": "data_4", "field": "Beak Depth (mm)"},
+      "domain": {"data": "data_0", "field": "Beak Depth (mm)"},
       "range": [0, {"signal": "childWidth"}],
       "zero": false,
       "nice": true
@@ -1956,7 +1942,7 @@
     {
       "name": "child__row_Body_Mass__g_column_Beak_Depth__mm__y",
       "type": "linear",
-      "domain": {"data": "data_4", "field": "Body Mass (g)"},
+      "domain": {"data": "data_0", "field": "Body Mass (g)"},
       "range": [{"signal": "childHeight"}, 0],
       "zero": false,
       "nice": true

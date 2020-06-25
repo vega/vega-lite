@@ -370,7 +370,7 @@
           "type": "symbol",
           "style": ["point"],
           "interactive": true,
-          "from": {"data": "data_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -623,14 +623,14 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "data_0", "field": "Cylinders", "sort": true},
+      "domain": {"data": "data_1", "field": "Cylinders", "sort": true},
       "range": "ordinal",
       "interpolate": "hcl"
     },
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "Horsepower"},
+      "domain": {"data": "data_1", "field": "Horsepower"},
       "range": [0, {"signal": "concat_0_width"}],
       "nice": true,
       "zero": true
@@ -638,7 +638,7 @@
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_1", "field": "Miles_per_Gallon"},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
       "zero": true

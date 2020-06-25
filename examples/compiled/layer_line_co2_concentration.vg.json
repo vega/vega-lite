@@ -75,8 +75,8 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_0_main",
-          "data": "source_0",
+          "name": "faceted_path_Main",
+          "data": "data_1",
           "groupby": ["decade"]
         }
       },
@@ -92,7 +92,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"scaled_date\"]"},
-          "from": {"data": "faceted_path_layer_0_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "decade"},
@@ -113,7 +113,7 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "baseline": {"value": "top"},
@@ -179,11 +179,8 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "source_0", "field": "scaled_date"},
-          {"data": "data_2", "field": "min_scaled_date"},
-          {"data": "data_1", "field": "max_scaled_date"}
-        ]
+        "data": "data_1",
+        "fields": ["scaled_date", "min_scaled_date", "max_scaled_date"]
       },
       "range": [0, {"signal": "width"}],
       "nice": true,
@@ -193,10 +190,11 @@
       "name": "y",
       "type": "linear",
       "domain": {
+        "data": "data_1",
         "fields": [
-          {"data": "source_0", "field": "CO2"},
-          {"data": "data_2", "field": "argmin_scaled_date[\"CO2\"]"},
-          {"data": "data_1", "field": "argmax_scaled_date[\"CO2\"]"}
+          "CO2",
+          "argmin_scaled_date[\"CO2\"]",
+          "argmax_scaled_date[\"CO2\"]"
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -206,14 +204,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "decade"},
-          {"data": "data_2", "field": "decade"},
-          {"data": "data_1", "field": "decade"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_1", "field": "decade", "sort": true},
       "range": {"scheme": "magma"},
       "interpolate": "hcl"
     }

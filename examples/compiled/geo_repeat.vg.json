@@ -110,7 +110,7 @@
           "name": "child__row_population_marks",
           "type": "shape",
           "style": ["geoshape"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": {
@@ -156,7 +156,7 @@
           "name": "child__row_engineers_marks",
           "type": "shape",
           "style": ["geoshape"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": {
@@ -238,7 +238,7 @@
     {
       "name": "child__row_population_color",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "population"},
+      "domain": {"data": "data_2", "field": "population"},
       "range": "heatmap",
       "interpolate": "hcl",
       "zero": false
@@ -246,7 +246,7 @@
     {
       "name": "child__row_engineers_color",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "engineers"},
+      "domain": {"data": "data_2", "field": "engineers"},
       "range": "heatmap",
       "interpolate": "hcl",
       "zero": false

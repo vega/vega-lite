@@ -6,6 +6,7 @@
   "height": 200,
   "style": "cell",
   "data": [
+    {"name": "source"},
     {"name": "source_0", "values": [{"type": "Sphere"}]},
     {"name": "source_1", "transform": [{"type": "graticule"}]}
   ],
@@ -23,7 +24,7 @@
       "type": "shape",
       "clip": true,
       "style": ["geoshape"],
-      "from": {"data": "source_0"},
+      "from": {"data": "source_1"},
       "encode": {
         "update": {
           "fill": {"value": "aliceblue"},

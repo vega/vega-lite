@@ -87,7 +87,7 @@
       "type": "rect",
       "style": ["tick", "errorbar-ticks"],
       "aria": false,
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -146,23 +146,15 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "year_Year"},
-          {"data": "data_1", "field": "year_Year"}
-        ]
-      },
+      "domain": {"data": "data_0", "field": "year_Year"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_0", "field": "lower_Miles_per_Gallon"},
-          {"data": "data_1", "field": "upper_Miles_per_Gallon"},
-          {"data": "data_0", "field": "upper_Miles_per_Gallon"}
-        ]
+        "data": "data_0",
+        "fields": ["lower_Miles_per_Gallon", "upper_Miles_per_Gallon"]
       },
       "range": [{"signal": "height"}, 0],
       "zero": false,

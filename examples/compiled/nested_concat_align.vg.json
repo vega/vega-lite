@@ -11,19 +11,19 @@
       "transform": [
         {
           "type": "extent",
-          "field": "Worldwide Gross",
-          "signal": "child__column_Worldwide_Gross_bin_maxbins_20_Worldwide_Gross_extent"
+          "field": "IMDB Rating",
+          "signal": "child__column_IMDB_Rating_bin_maxbins_20_IMDB_Rating_extent"
         },
         {
           "type": "bin",
-          "field": "Worldwide Gross",
+          "field": "IMDB Rating",
           "as": [
-            "bin_maxbins_20_Worldwide Gross",
-            "bin_maxbins_20_Worldwide Gross_end"
+            "bin_maxbins_20_IMDB Rating",
+            "bin_maxbins_20_IMDB Rating_end"
           ],
-          "signal": "child__column_Worldwide_Gross_bin_maxbins_20_Worldwide_Gross_bins",
+          "signal": "child__column_IMDB_Rating_bin_maxbins_20_IMDB_Rating_bins",
           "extent": {
-            "signal": "child__column_Worldwide_Gross_bin_maxbins_20_Worldwide_Gross_extent"
+            "signal": "child__column_IMDB_Rating_bin_maxbins_20_IMDB_Rating_extent"
           },
           "maxbins": 20
         },
@@ -47,19 +47,19 @@
         },
         {
           "type": "extent",
-          "field": "IMDB Rating",
-          "signal": "child__column_IMDB_Rating_bin_maxbins_20_IMDB_Rating_extent"
+          "field": "Worldwide Gross",
+          "signal": "child__column_Worldwide_Gross_bin_maxbins_20_Worldwide_Gross_extent"
         },
         {
           "type": "bin",
-          "field": "IMDB Rating",
+          "field": "Worldwide Gross",
           "as": [
-            "bin_maxbins_20_IMDB Rating",
-            "bin_maxbins_20_IMDB Rating_end"
+            "bin_maxbins_20_Worldwide Gross",
+            "bin_maxbins_20_Worldwide Gross_end"
           ],
-          "signal": "child__column_IMDB_Rating_bin_maxbins_20_IMDB_Rating_bins",
+          "signal": "child__column_Worldwide_Gross_bin_maxbins_20_Worldwide_Gross_bins",
           "extent": {
-            "signal": "child__column_IMDB_Rating_bin_maxbins_20_IMDB_Rating_extent"
+            "signal": "child__column_Worldwide_Gross_bin_maxbins_20_Worldwide_Gross_extent"
           },
           "maxbins": 20
         },
@@ -81,47 +81,7 @@
       ]
     },
     {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": [
-            "bin_maxbins_20_Worldwide Gross",
-            "bin_maxbins_20_Worldwide Gross_end"
-          ],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        },
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"bin_maxbins_20_Worldwide Gross\"]) && isFinite(+datum[\"bin_maxbins_20_Worldwide Gross\"])"
-        }
-      ]
-    },
-    {
       "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": [
-            "bin_maxbins_20_Rotten Tomatoes Rating",
-            "bin_maxbins_20_Rotten Tomatoes Rating_end"
-          ],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        },
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"]) && isFinite(+datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_2",
       "source": "source_0",
       "transform": [
         {
@@ -141,7 +101,47 @@
       ]
     },
     {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_20_Rotten Tomatoes Rating",
+            "bin_maxbins_20_Rotten Tomatoes Rating_end"
+          ],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"]) && isFinite(+datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"])"
+        }
+      ]
+    },
+    {
       "name": "data_3",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_20_Worldwide Gross",
+            "bin_maxbins_20_Worldwide Gross_end"
+          ],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"bin_maxbins_20_Worldwide Gross\"]) && isFinite(+datum[\"bin_maxbins_20_Worldwide Gross\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_4",
       "source": "source_0",
       "transform": [
         {
@@ -187,7 +187,7 @@
               "name": "child__column_Rotten_Tomatoes_Rating_marks",
               "type": "rect",
               "style": ["bar"],
-              "from": {"data": "data_1"},
+              "from": {"data": "data_3"},
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
@@ -279,7 +279,7 @@
               "name": "child__column_IMDB_Rating_marks",
               "type": "rect",
               "style": ["bar"],
-              "from": {"data": "data_2"},
+              "from": {"data": "data_3"},
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
@@ -465,7 +465,7 @@
               "name": "child__column_Worldwide_Gross_marks",
               "type": "rect",
               "style": ["bar"],
-              "from": {"data": "data_0"},
+              "from": {"data": "data_3"},
               "encode": {
                 "update": {
                   "fill": {"value": "#4c78a8"},
@@ -558,7 +558,7 @@
     {
       "name": "child__column_Rotten_Tomatoes_Rating_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "__count"},
+      "domain": {"data": "data_3", "field": "__count"},
       "range": [{"signal": "concat_0_childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -578,7 +578,7 @@
     {
       "name": "child__column_IMDB_Rating_y",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "__count"},
+      "domain": {"data": "data_3", "field": "__count"},
       "range": [{"signal": "concat_0_childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -616,7 +616,7 @@
     {
       "name": "child__column_Worldwide_Gross_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "__count"},
+      "domain": {"data": "data_3", "field": "__count"},
       "range": [{"signal": "concat_1_childHeight"}, 0],
       "nice": true,
       "zero": true

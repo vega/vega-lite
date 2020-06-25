@@ -18,7 +18,7 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_0_main",
+          "name": "faceted_path_Main",
           "data": "source_0",
           "groupby": ["symbol"]
         }
@@ -35,7 +35,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"date\"]"},
-          "from": {"data": "faceted_path_layer_0_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},

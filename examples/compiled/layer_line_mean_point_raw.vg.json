@@ -11,8 +11,12 @@
       "name": "source_0",
       "url": "data/stocks.csv",
       "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [{"type": "filter", "expr": "datum.symbol==='GOOG'"}]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
-        {"type": "filter", "expr": "datum.symbol==='GOOG'"},
         {
           "field": "date",
           "type": "timeunit",
@@ -22,8 +26,8 @@
       ]
     },
     {
-      "name": "data_0",
-      "source": "source_0",
+      "name": "data_1",
+      "source": "data_0",
       "transform": [
         {
           "type": "aggregate",
@@ -35,8 +39,8 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "source_0",
+      "name": "data_2",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -70,7 +74,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"year_date\"]"},
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -90,23 +94,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "year_date"},
-          {"data": "data_0", "field": "year_date"}
-        ]
-      },
+      "domain": {"data": "data_1", "field": "year_date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "price"},
-          {"data": "data_0", "field": "mean_price"}
-        ]
-      },
+      "domain": {"data": "data_1", "fields": ["price", "mean_price"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

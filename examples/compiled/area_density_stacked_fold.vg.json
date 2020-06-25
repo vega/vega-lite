@@ -51,7 +51,7 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_main",
+          "name": "faceted_path_Main",
           "data": "source_0",
           "groupby": ["Measurement"]
         }
@@ -68,7 +68,7 @@
           "type": "area",
           "style": ["area"],
           "sort": {"field": "datum[\"value\"]"},
-          "from": {"data": "faceted_path_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "orient": {"value": "vertical"},

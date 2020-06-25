@@ -3,10 +3,10 @@
   "background": "white",
   "padding": 5,
   "data": [
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
     {
-      "name": "source_0",
-      "url": "data/cars.json",
-      "format": {"type": "json"},
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
         {
           "type": "filter",
@@ -36,7 +36,7 @@
           "name": "child__column_Origin_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -138,7 +138,7 @@
           "name": "child__column_Cylinders_marks",
           "type": "symbol",
           "style": ["point"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -233,7 +233,7 @@
     {
       "name": "child__column_Origin_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {"data": "data_0", "field": "Horsepower"},
       "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
@@ -241,7 +241,7 @@
     {
       "name": "child__column_Origin_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_0", "field": "Miles_per_Gallon"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -249,13 +249,13 @@
     {
       "name": "child__column_Origin_color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "domain": {"data": "data_0", "field": "Origin", "sort": true},
       "range": "category"
     },
     {
       "name": "child__column_Cylinders_x",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Horsepower"},
+      "domain": {"data": "data_0", "field": "Horsepower"},
       "range": [0, {"signal": "childWidth"}],
       "nice": true,
       "zero": true
@@ -263,7 +263,7 @@
     {
       "name": "child__column_Cylinders_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "domain": {"data": "data_0", "field": "Miles_per_Gallon"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -271,7 +271,7 @@
     {
       "name": "child__column_Cylinders_color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
+      "domain": {"data": "data_0", "field": "Cylinders", "sort": true},
       "range": "category"
     }
   ]

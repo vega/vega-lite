@@ -37,7 +37,13 @@
           "type": "formula",
           "expr": "datum[\"center_Miles_per_Gallon\"] - datum[\"extent_Miles_per_Gallon\"]",
           "as": "lower_Miles_per_Gallon"
-        },
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_1",
+      "transform": [
         {
           "type": "filter",
           "expr": "isValid(datum[\"lower_Miles_per_Gallon\"]) && isFinite(+datum[\"lower_Miles_per_Gallon\"])"
@@ -50,7 +56,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -69,7 +75,7 @@
       "name": "layer_1_layer_0_marks",
       "type": "rect",
       "style": ["rect", "errorband-band"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "opacity": {"value": 0.3},
@@ -92,7 +98,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "Horsepower"},
+      "domain": {"data": "data_2", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -101,10 +107,11 @@
       "name": "y",
       "type": "linear",
       "domain": {
+        "data": "data_2",
         "fields": [
-          {"data": "data_0", "field": "Miles_per_Gallon"},
-          {"data": "data_1", "field": "lower_Miles_per_Gallon"},
-          {"data": "data_1", "field": "upper_Miles_per_Gallon"}
+          "Miles_per_Gallon",
+          "lower_Miles_per_Gallon",
+          "upper_Miles_per_Gallon"
         ]
       },
       "range": [{"signal": "height"}, 0],

@@ -10,7 +10,11 @@
     {
       "name": "source_0",
       "url": "data/stocks.csv",
-      "format": {"type": "csv", "parse": {"date": "date"}},
+      "format": {"type": "csv", "parse": {"date": "date"}}
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
         {
           "field": "date",
@@ -28,8 +32,8 @@
       ]
     },
     {
-      "name": "data_0",
-      "source": "source_0",
+      "name": "data_1",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -44,8 +48,8 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_0_main",
-          "data": "source_0",
+          "name": "faceted_path_Main",
+          "data": "data_1",
           "groupby": ["symbol"]
         }
       },
@@ -61,7 +65,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"year_date\"]"},
-          "from": {"data": "faceted_path_layer_0_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
@@ -82,7 +86,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -101,23 +105,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "year_date"},
-          {"data": "data_0", "field": "year_date"}
-        ]
-      },
+      "domain": {"data": "data_1", "field": "year_date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "mean_price"},
-          {"data": "data_0", "field": "mean_price"}
-        ]
-      },
+      "domain": {"data": "data_1", "field": "mean_price"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -125,13 +119,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "symbol"},
-          {"data": "data_0", "field": "symbol"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_1", "field": "symbol", "sort": true},
       "range": "category"
     }
   ],

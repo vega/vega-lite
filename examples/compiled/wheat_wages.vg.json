@@ -91,7 +91,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "fill": {"value": "#aaa"},
@@ -123,7 +123,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "opacity": {"value": 0.5},
@@ -149,7 +149,7 @@
       "type": "area",
       "style": ["area"],
       "sort": {"field": "datum[\"year\"]"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -172,7 +172,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"year\"]"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -193,7 +193,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"year\"]"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "stroke": {"value": "#EE8182"},
@@ -212,7 +212,7 @@
       "name": "layer_5_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "stroke": {"value": "#000"},
@@ -275,15 +275,8 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_0", "field": "year"},
-          {"data": "data_0", "field": "year_end"},
-          {"data": "data_1", "field": "year"},
-          {"data": "source_0", "field": "year"},
-          {"data": "data_2", "field": "start"},
-          {"data": "data_2", "field": "end"},
-          {"data": "data_3", "field": "x"}
-        ]
+        "data": "data_3",
+        "fields": ["year", "year_end", "start", "end", "x"]
       },
       "range": [0, {"signal": "width"}],
       "nice": true,
@@ -294,13 +287,8 @@
       "name": "y",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_0", "field": "wheat"},
-          {"data": "source_0", "field": "wages"},
-          {"data": "data_2", "field": "y"},
-          {"data": "data_2", "field": "offset"},
-          {"data": "data_3", "field": "off2"}
-        ]
+        "data": "data_3",
+        "fields": ["wheat", "wages", "y", "offset", "off2"]
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
@@ -309,7 +297,7 @@
     {
       "name": "fill",
       "type": "ordinal",
-      "domain": {"data": "data_2", "field": "commonwealth", "sort": true},
+      "domain": {"data": "data_3", "field": "commonwealth", "sort": true},
       "range": ["black", "white"]
     }
   ],

@@ -89,7 +89,7 @@
       "name": "layer_0_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_4"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -118,7 +118,7 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_4"},
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "Species"},
@@ -149,7 +149,7 @@
       "name": "layer_2_marks",
       "type": "rect",
       "style": ["tick"],
-      "from": {"data": "data_3"},
+      "from": {"data": "data_4"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -202,14 +202,8 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_1", "field": "lower"},
-          {"data": "data_1", "field": "upper"},
-          {"data": "data_2", "field": "q1"},
-          {"data": "data_2", "field": "q3"},
-          {"data": "data_3", "field": "median"},
-          {"data": "data_4", "field": "outliers"}
-        ]
+        "data": "data_4",
+        "fields": ["lower", "upper", "q1", "q3", "median", "outliers"]
       },
       "range": [0, {"signal": "width"}],
       "zero": false,
@@ -218,15 +212,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "Species"},
-          {"data": "data_2", "field": "Species"},
-          {"data": "data_3", "field": "Species"},
-          {"data": "data_4", "field": "Species"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_4", "field": "Species", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0,
       "paddingOuter": 0
@@ -234,7 +220,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "data_2", "field": "Species", "sort": true},
+      "domain": {"data": "data_4", "field": "Species", "sort": true},
       "range": "category"
     }
   ],

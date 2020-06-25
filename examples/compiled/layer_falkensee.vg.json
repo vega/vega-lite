@@ -65,7 +65,13 @@
           "type": "formula",
           "expr": "timeParse(datum[\"year\"],'%Y')",
           "as": "year"
-        },
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
         {
           "field": "year",
           "type": "timeunit",
@@ -75,8 +81,8 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "data_0",
+      "name": "data_2",
+      "source": "data_1",
       "transform": [
         {
           "type": "filter",
@@ -85,7 +91,7 @@
       ]
     },
     {
-      "name": "data_2",
+      "name": "data_3",
       "source": "source_1",
       "transform": [
         {
@@ -141,7 +147,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"year_year\"]"},
-      "from": {"data": "data_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "stroke": {"value": "#333"},
@@ -160,7 +166,7 @@
       "name": "layer_2_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -181,12 +187,8 @@
       "name": "x",
       "type": "time",
       "domain": {
-        "fields": [
-          {"data": "data_2", "field": "year_start"},
-          {"data": "data_2", "field": "year_end"},
-          {"data": "data_0", "field": "year_year"},
-          {"data": "data_1", "field": "year_year"}
-        ]
+        "data": "data_2",
+        "fields": ["year_start", "year_end", "year_year"]
       },
       "range": [0, {"signal": "width"}]
     },
@@ -199,12 +201,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "population"},
-          {"data": "data_1", "field": "population"}
-        ]
-      },
+      "domain": {"data": "data_2", "field": "population"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

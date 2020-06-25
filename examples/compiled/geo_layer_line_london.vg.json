@@ -6,6 +6,7 @@
   "height": 500,
   "style": "cell",
   "data": [
+    {"name": "source"},
     {
       "name": "source_0",
       "url": "data/londonBoroughs.json",
@@ -44,9 +45,7 @@
     {
       "name": "projection",
       "size": {"signal": "[width, height]"},
-      "fit": {
-        "signal": "[data('source_0'), layer_1_geojson_0, data('source_2')]"
-      }
+      "fit": {"signal": "[data('source_2'), layer_1_geojson_0]"}
     }
   ],
   "marks": [
@@ -54,7 +53,7 @@
       "name": "layer_0_marks",
       "type": "shape",
       "style": ["geoshape"],
-      "from": {"data": "source_0"},
+      "from": {"data": "source_2"},
       "encode": {
         "update": {
           "stroke": {"value": "white"},
@@ -69,7 +68,7 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "source_1"},
+      "from": {"data": "source_2"},
       "encode": {
         "update": {
           "fill": {"value": "black"},

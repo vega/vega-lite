@@ -48,8 +48,8 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_0_main",
-          "data": "source_0",
+          "name": "faceted_path_Main",
+          "data": "data_0",
           "groupby": ["country"]
         }
       },
@@ -65,7 +65,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"country\"]"},
-          "from": {"data": "faceted_path_layer_0_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {"value": "#db646f"},
@@ -106,12 +106,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "life_expect"},
-          {"data": "data_0", "field": "life_expect"}
-        ]
-      },
+      "domain": {"data": "data_0", "field": "life_expect"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -119,13 +114,7 @@
     {
       "name": "y",
       "type": "point",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "country"},
-          {"data": "data_0", "field": "country"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_0", "field": "country", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "padding": 0.5
     },

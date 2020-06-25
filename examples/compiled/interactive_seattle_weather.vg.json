@@ -304,7 +304,7 @@
           "type": "symbol",
           "style": ["point"],
           "interactive": true,
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -555,7 +555,7 @@
     {
       "name": "concat_0_x",
       "type": "time",
-      "domain": {"data": "data_1", "field": "monthdate_date"},
+      "domain": {"data": "data_0", "field": "monthdate_date"},
       "range": [0, {"signal": "width"}]
     },
     {

@@ -40,7 +40,7 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_main",
+          "name": "faceted_path_Main",
           "data": "source_0",
           "groupby": ["quarter_date"]
         }
@@ -57,7 +57,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"year_date\"]"},
-          "from": {"data": "faceted_path_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "quarter_date"},

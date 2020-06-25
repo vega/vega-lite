@@ -5,10 +5,10 @@
   "width": 200,
   "style": "cell",
   "data": [
+    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}},
     {
-      "name": "source_0",
-      "url": "data/movies.json",
-      "format": {"type": "json"},
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
         {
           "type": "aggregate",
@@ -20,8 +20,8 @@
       ]
     },
     {
-      "name": "data_0",
-      "source": "source_0",
+      "name": "data_1",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -61,7 +61,7 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "align": {"value": "left"},
@@ -91,13 +91,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "Major Genre"},
-          {"data": "source_0", "field": "Major Genre"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_0", "field": "Major Genre", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

@@ -39,7 +39,13 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"},
+        {"type": "formula", "expr": "toDate(datum[\"Year\"])", "as": "Year"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
         {
           "field": "Year",
           "type": "timeunit",
@@ -49,8 +55,8 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "data_0",
+      "name": "data_2",
+      "source": "data_1",
       "transform": [
         {"type": "formula", "expr": "datum[\"ci0\"]", "as": "upper_ci1"},
         {"type": "formula", "expr": "datum[\"ci1\"]", "as": "lower_ci1"}
@@ -90,7 +96,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"year_Year\"]"},
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -110,23 +116,15 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "year_Year"},
-          {"data": "data_0", "field": "year_Year"}
-        ]
-      },
+      "domain": {"data": "data_1", "field": "year_Year"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_1", "field": "lower_ci1"},
-          {"data": "data_1", "field": "upper_ci1"},
-          {"data": "data_0", "field": "center"}
-        ]
+        "data": "data_1",
+        "fields": ["lower_ci1", "upper_ci1", "center"]
       },
       "range": [{"signal": "height"}, 0],
       "zero": false,

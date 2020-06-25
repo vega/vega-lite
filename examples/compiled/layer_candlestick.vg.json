@@ -38,7 +38,7 @@
       "name": "layer_0_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": [
@@ -105,26 +105,14 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "date"},
-          {"data": "data_1", "field": "date"}
-        ]
-      },
+      "domain": {"data": "data_1", "field": "date"},
       "range": [0, {"signal": "width"}],
       "padding": 5
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "low"},
-          {"data": "data_0", "field": "high"},
-          {"data": "data_1", "field": "open"},
-          {"data": "data_1", "field": "close"}
-        ]
-      },
+      "domain": {"data": "data_1", "fields": ["low", "high", "open", "close"]},
       "range": [{"signal": "height"}, 0],
       "zero": false,
       "nice": true

@@ -63,7 +63,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -101,7 +101,7 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {"data": "data_0", "field": "month_date", "sort": true},
+      "domain": {"data": "data_1", "field": "month_date", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -109,12 +109,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "mean_precipitation"},
-          {"data": "data_1", "field": "mean_precipitation"}
-        ]
-      },
+      "domain": {"data": "data_1", "field": "mean_precipitation"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

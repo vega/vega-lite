@@ -19,7 +19,13 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
-        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"},
+        {"type": "formula", "expr": "toDate(datum[\"date\"])", "as": "date"}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
         {
           "field": "date",
           "type": "timeunit",
@@ -29,8 +35,8 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "data_0",
+      "name": "data_2",
+      "source": "data_1",
       "transform": [
         {
           "type": "filter",
@@ -49,8 +55,8 @@
       ]
     },
     {
-      "name": "data_2",
-      "source": "data_0",
+      "name": "data_3",
+      "source": "data_1",
       "transform": [
         {
           "type": "filter",
@@ -431,7 +437,7 @@
           "type": "symbol",
           "style": ["point"],
           "interactive": false,
-          "from": {"data": "data_1"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -519,13 +525,13 @@
     {
       "name": "concat_1_x",
       "type": "time",
-      "domain": {"data": "data_1", "field": "minutes_date"},
+      "domain": {"data": "data_2", "field": "minutes_date"},
       "range": [0, {"signal": "childWidth"}]
     },
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "price"},
+      "domain": {"data": "data_2", "field": "price"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

@@ -6,6 +6,7 @@
   "height": 200,
   "style": "cell",
   "data": [
+    {"name": "source"},
     {
       "name": "source_0",
       "values": [
@@ -62,7 +63,7 @@
       "name": "layer_0_layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "source_1"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -81,7 +82,7 @@
       "name": "layer_0_layer_1_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_2"},
+      "from": {"data": "source_1"},
       "encode": {
         "update": {
           "fill": {"value": "#e45755"},
@@ -133,13 +134,7 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "Day"},
-          {"data": "data_2", "field": "Day"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_1", "field": "Day", "sort": true},
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -149,9 +144,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "Value"},
-          {"data": "data_2", "field": "baseline"},
-          {"data": "data_2", "field": "Value"},
+          {"data": "source_1", "field": "Value"},
+          {"data": "source_1", "field": "baseline"},
           [300]
         ]
       },

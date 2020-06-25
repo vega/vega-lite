@@ -41,7 +41,7 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_main",
+          "name": "faceted_path_Main",
           "data": "data_0",
           "groupby": ["c"]
         }
@@ -58,7 +58,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"a\"]"},
-          "from": {"data": "faceted_path_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "c"},

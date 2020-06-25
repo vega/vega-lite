@@ -52,7 +52,7 @@
       "clip": true,
       "style": ["area"],
       "sort": {"field": "datum[\"x\"]"},
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "orient": {"value": "vertical"},
@@ -99,12 +99,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "x"},
-          {"data": "data_1", "field": "x"}
-        ]
-      },
+      "domain": {"data": "data_1", "field": "x"},
       "range": [0, {"signal": "width"}],
       "nice": false,
       "zero": false

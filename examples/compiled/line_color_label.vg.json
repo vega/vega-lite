@@ -37,8 +37,8 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_0_main",
-          "data": "source_0",
+          "name": "faceted_path_Main",
+          "data": "data_0",
           "groupby": ["symbol"]
         }
       },
@@ -54,7 +54,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"date\"]"},
-          "from": {"data": "faceted_path_layer_0_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
@@ -116,22 +116,15 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "date"},
-          {"data": "data_0", "field": "max_date"}
-        ]
-      },
+      "domain": {"data": "data_0", "fields": ["date", "max_date"]},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "source_0", "field": "price"},
-          {"data": "data_0", "field": "argmax_date[\"price\"]"}
-        ]
+        "data": "data_0",
+        "fields": ["price", "argmax_date[\"price\"]"]
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
@@ -140,13 +133,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "symbol"},
-          {"data": "data_0", "field": "symbol"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_0", "field": "symbol", "sort": true},
       "range": "category"
     }
   ],

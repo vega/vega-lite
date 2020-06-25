@@ -229,7 +229,7 @@
           "name": "child__Horsepower_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "Origin"},
@@ -315,7 +315,7 @@
           "name": "child__Miles_per_Gallon_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "Origin"},
@@ -407,7 +407,7 @@
           "name": "child__Acceleration_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_3"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "Origin"},
@@ -569,15 +569,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "Origin"},
-          {"data": "data_2", "field": "Origin"},
-          {"data": "data_3", "field": "Origin"},
-          {"data": "data_0", "field": "Origin"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_0", "field": "Origin", "sort": true},
       "range": "category"
     },
     {
@@ -593,7 +585,7 @@
     {
       "name": "child__Horsepower_y",
       "type": "linear",
-      "domain": {"data": "data_1", "fields": ["__count_start", "__count_end"]},
+      "domain": {"data": "data_0", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -613,7 +605,7 @@
     {
       "name": "child__Miles_per_Gallon_y",
       "type": "linear",
-      "domain": {"data": "data_2", "fields": ["__count_start", "__count_end"]},
+      "domain": {"data": "data_0", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true
@@ -633,7 +625,7 @@
     {
       "name": "child__Acceleration_y",
       "type": "linear",
-      "domain": {"data": "data_3", "fields": ["__count_start", "__count_end"]},
+      "domain": {"data": "data_0", "fields": ["__count_start", "__count_end"]},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true

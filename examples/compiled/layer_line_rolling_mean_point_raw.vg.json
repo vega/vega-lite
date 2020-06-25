@@ -39,7 +39,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.3},
@@ -80,23 +80,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "date"},
-          {"data": "source_0", "field": "date"}
-        ]
-      },
+      "domain": {"data": "source_0", "field": "date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "temp_max"},
-          {"data": "source_0", "field": "rolling_mean"}
-        ]
-      },
+      "domain": {"data": "source_0", "fields": ["temp_max", "rolling_mean"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

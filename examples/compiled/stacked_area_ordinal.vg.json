@@ -49,7 +49,7 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_main",
+          "name": "faceted_path_Main",
           "data": "source_0",
           "groupby": ["Cylinders"]
         }
@@ -66,7 +66,7 @@
           "type": "area",
           "style": ["area"],
           "sort": {"field": "datum[\"year_Year\"]"},
-          "from": {"data": "faceted_path_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "interpolate": {"value": "monotone"},

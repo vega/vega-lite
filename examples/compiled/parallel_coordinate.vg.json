@@ -65,7 +65,7 @@
       "name": "layer_0_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#ccc"},
@@ -83,7 +83,7 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_1_main",
+          "name": "faceted_path_Main",
           "data": "source_0",
           "groupby": ["Species", "index"]
         }
@@ -100,7 +100,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"key\"]"},
-          "from": {"data": "faceted_path_layer_1_main"},
+          "from": {"data": "faceted_path_Main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "Species"},
@@ -125,7 +125,7 @@
       "name": "layer_2_layer_0_marks",
       "type": "text",
       "style": ["text", "label"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
@@ -162,7 +162,7 @@
       "name": "layer_3_layer_0_marks",
       "type": "text",
       "style": ["text", "label"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
@@ -199,7 +199,7 @@
       "name": "layer_4_layer_0_marks",
       "type": "text",
       "style": ["text", "label"],
-      "from": {"data": "data_0"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
@@ -237,13 +237,7 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "key"},
-          {"data": "source_0", "field": "key"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "key", "sort": true},
       "range": [0, {"signal": "width"}],
       "paddingInner": 0,
       "paddingOuter": 0

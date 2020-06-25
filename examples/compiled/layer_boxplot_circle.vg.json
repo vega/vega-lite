@@ -12,7 +12,7 @@
       "format": {"type": "json"}
     },
     {
-      "name": "data_0",
+      "name": "data_1",
       "source": "source_0",
       "transform": [
         {
@@ -46,7 +46,7 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "data_2",
       "source": "source_0",
       "transform": [
         {
@@ -65,7 +65,7 @@
       ]
     },
     {
-      "name": "data_2",
+      "name": "data_3",
       "source": "source_0",
       "transform": [
         {
@@ -85,7 +85,7 @@
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
       "aria": false,
-      "from": {"data": "data_0"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -103,7 +103,7 @@
       "type": "rule",
       "style": ["rule", "boxplot-rule"],
       "aria": false,
-      "from": {"data": "data_0"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -121,7 +121,7 @@
       "type": "rect",
       "style": ["bar", "boxplot-box"],
       "aria": false,
-      "from": {"data": "data_1"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -139,7 +139,7 @@
       "name": "layer_0_layer_1_layer_1_marks",
       "type": "rect",
       "style": ["tick", "boxplot-median"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "ariaRoleDescription": {"value": "box"},
@@ -162,7 +162,7 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_3"},
       "encode": {
         "update": {
           "opacity": {"value": 0.2},
@@ -183,15 +183,14 @@
       "name": "x",
       "type": "linear",
       "domain": {
+        "data": "data_3",
         "fields": [
-          {"data": "data_0", "field": "lower_whisker_people"},
-          {"data": "data_0", "field": "lower_box_people"},
-          {"data": "data_0", "field": "upper_box_people"},
-          {"data": "data_0", "field": "upper_whisker_people"},
-          {"data": "data_1", "field": "lower_box_people"},
-          {"data": "data_1", "field": "upper_box_people"},
-          {"data": "data_1", "field": "mid_box_people"},
-          {"data": "data_2", "field": "people"}
+          "lower_whisker_people",
+          "lower_box_people",
+          "upper_box_people",
+          "upper_whisker_people",
+          "mid_box_people",
+          "people"
         ]
       },
       "range": [0, {"signal": "width"}],
@@ -201,14 +200,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {
-        "fields": [
-          {"data": "data_0", "field": "age"},
-          {"data": "data_1", "field": "age"},
-          {"data": "data_2", "field": "age"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_3", "field": "age", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0,
       "paddingOuter": 0

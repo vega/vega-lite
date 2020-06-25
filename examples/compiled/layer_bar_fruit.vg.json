@@ -60,7 +60,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "count"},
@@ -101,11 +101,8 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "fields": [
-          {"data": "data_1", "field": "count_start"},
-          {"data": "data_1", "field": "count_end"},
-          {"data": "data_2", "field": "count"}
-        ]
+        "data": "data_2",
+        "fields": ["count_start", "count_end", "count"]
       },
       "range": [0, {"signal": "width"}],
       "nice": true,
@@ -126,7 +123,7 @@
     {
       "name": "color",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "count"},
+      "domain": {"data": "data_2", "field": "count"},
       "range": "ramp",
       "interpolate": "hcl",
       "zero": false

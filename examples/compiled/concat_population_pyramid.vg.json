@@ -118,7 +118,7 @@
           "name": "concat_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_2"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "gender"},
@@ -164,7 +164,7 @@
           "name": "concat_1_marks",
           "type": "text",
           "style": ["text"],
-          "from": {"data": "source_0"},
+          "from": {"data": "data_4"},
           "encode": {
             "update": {
               "align": {"value": "center"},
@@ -232,20 +232,14 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "data_2", "field": "gender"},
-          {"data": "data_4", "field": "gender"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "data_4", "field": "gender", "sort": true},
       "range": ["#675193", "#ca8861"]
     },
     {
       "name": "concat_0_x",
       "type": "linear",
       "domain": {
-        "data": "data_2",
+        "data": "data_4",
         "fields": ["sum_people_start", "sum_people_end"]
       },
       "range": [0, {"signal": "concat_0_width"}],
@@ -257,7 +251,7 @@
       "name": "concat_0_y",
       "type": "band",
       "domain": {
-        "data": "data_1",
+        "data": "data_3",
         "field": "age",
         "sort": {"order": "descending"}
       },
@@ -269,7 +263,7 @@
       "name": "concat_1_y",
       "type": "point",
       "domain": {
-        "data": "source_0",
+        "data": "data_3",
         "field": "age",
         "sort": {"order": "descending"}
       },

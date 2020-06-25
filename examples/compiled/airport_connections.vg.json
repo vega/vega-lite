@@ -8,6 +8,7 @@
   "style": "cell",
   "data": [
     {"name": "single_store"},
+    {"name": "source"},
     {
       "name": "source_0",
       "url": "data/us-10m.json",
@@ -111,7 +112,7 @@
       "name": "projection",
       "size": {"signal": "[width, height]"},
       "fit": {
-        "signal": "[data('source_0'), layer_1_geojson_0, layer_1_geojson_1, layer_2_geojson_0]"
+        "signal": "[data('data_1'), layer_1_geojson_0, layer_1_geojson_1, layer_2_geojson_0]"
       },
       "type": "albersUsa"
     }
@@ -165,7 +166,7 @@
       "type": "shape",
       "style": ["geoshape"],
       "interactive": false,
-      "from": {"data": "source_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "#ddd"},
@@ -181,7 +182,7 @@
       "type": "rule",
       "style": ["rule"],
       "interactive": false,
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 0.35},

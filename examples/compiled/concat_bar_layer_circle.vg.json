@@ -5,10 +5,10 @@
   "padding": 5,
   "data": [
     {"name": "pts_store"},
-    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}},
     {
-      "name": "data_0",
-      "source": "source_0",
+      "name": "source_0",
+      "url": "data/movies.json",
+      "format": {"type": "json"},
       "transform": [
         {
           "type": "extent",
@@ -50,7 +50,20 @@
     },
     {
       "name": "data_1",
-      "source": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["Major Genre"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
       "transform": [
         {
           "type": "filter",
@@ -75,8 +88,8 @@
       ]
     },
     {
-      "name": "data_2",
-      "source": "data_0",
+      "name": "data_3",
+      "source": "source_0",
       "transform": [
         {
           "type": "aggregate",
@@ -93,19 +106,6 @@
         {
           "type": "filter",
           "expr": "isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) && isValid(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) && isFinite(+datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_3",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["Major Genre"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
         }
       ]
     }
@@ -142,7 +142,7 @@
           "type": "symbol",
           "style": ["circle"],
           "interactive": false,
-          "from": {"data": "data_2"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -309,7 +309,7 @@
           "type": "rect",
           "style": ["bar"],
           "interactive": true,
-          "from": {"data": "data_3"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": [
@@ -372,12 +372,7 @@
     {
       "name": "size",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_2", "field": "__count"},
-          {"data": "data_1", "field": "__count"}
-        ]
-      },
+      "domain": {"data": "data_1", "field": "__count"},
       "range": [
         0,
         {
@@ -411,7 +406,7 @@
     {
       "name": "concat_1_x",
       "type": "band",
-      "domain": {"data": "data_3", "field": "Major Genre", "sort": true},
+      "domain": {"data": "data_1", "field": "Major Genre", "sort": true},
       "range": [0, {"signal": "concat_1_width"}],
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -419,7 +414,7 @@
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_3", "field": "__count"},
+      "domain": {"data": "data_1", "field": "__count"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

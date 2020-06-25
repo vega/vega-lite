@@ -28,7 +28,13 @@
             "signal": "child__layer_Worldwide_Gross_bin_maxbins_10_IMDB_Rating_extent"
           },
           "maxbins": 10
-        },
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
         {
           "type": "aggregate",
           "groupby": [
@@ -48,7 +54,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"bin_maxbins_10_IMDB Rating\"]"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"scale": "color", "value": "US Gross"},
@@ -70,7 +76,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"bin_maxbins_10_IMDB Rating\"]"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"scale": "color", "value": "Worldwide Gross"},
@@ -105,7 +111,7 @@
       "name": "y",
       "type": "linear",
       "domain": {
-        "data": "source_0",
+        "data": "data_0",
         "fields": ["mean_US Gross", "mean_Worldwide Gross"]
       },
       "range": [{"signal": "height"}, 0],

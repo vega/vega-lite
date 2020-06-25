@@ -8,7 +8,35 @@
       "name": "source_0",
       "url": "data/weather.csv",
       "format": {"type": "csv", "parse": {"date": "date"}},
-      "transform": [{"type": "filter", "expr": "datum.location === 'Seattle'"}]
+      "transform": [
+        {"type": "filter", "expr": "datum.location === 'Seattle'"},
+        {
+          "type": "extent",
+          "field": "temp_min",
+          "signal": "concat_1_bin_maxbins_10_temp_min_extent"
+        },
+        {
+          "type": "bin",
+          "field": "temp_min",
+          "as": ["bin_maxbins_10_temp_min", "bin_maxbins_10_temp_min_end"],
+          "signal": "concat_1_bin_maxbins_10_temp_min_bins",
+          "extent": {"signal": "concat_1_bin_maxbins_10_temp_min_extent"},
+          "maxbins": 10
+        },
+        {
+          "type": "extent",
+          "field": "temp_max",
+          "signal": "concat_1_bin_maxbins_10_temp_max_extent"
+        },
+        {
+          "type": "bin",
+          "field": "temp_max",
+          "as": ["bin_maxbins_10_temp_max", "bin_maxbins_10_temp_max_end"],
+          "signal": "concat_1_bin_maxbins_10_temp_max_bins",
+          "extent": {"signal": "concat_1_bin_maxbins_10_temp_max_extent"},
+          "maxbins": 10
+        }
+      ]
     },
     {
       "name": "data_0",
@@ -37,32 +65,6 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {
-          "type": "extent",
-          "field": "temp_min",
-          "signal": "concat_1_bin_maxbins_10_temp_min_extent"
-        },
-        {
-          "type": "bin",
-          "field": "temp_min",
-          "as": ["bin_maxbins_10_temp_min", "bin_maxbins_10_temp_min_end"],
-          "signal": "concat_1_bin_maxbins_10_temp_min_bins",
-          "extent": {"signal": "concat_1_bin_maxbins_10_temp_min_extent"},
-          "maxbins": 10
-        },
-        {
-          "type": "extent",
-          "field": "temp_max",
-          "signal": "concat_1_bin_maxbins_10_temp_max_extent"
-        },
-        {
-          "type": "bin",
-          "field": "temp_max",
-          "as": ["bin_maxbins_10_temp_max", "bin_maxbins_10_temp_max_end"],
-          "signal": "concat_1_bin_maxbins_10_temp_max_bins",
-          "extent": {"signal": "concat_1_bin_maxbins_10_temp_max_extent"},
-          "maxbins": 10
-        },
         {
           "type": "aggregate",
           "groupby": [
@@ -108,7 +110,7 @@
           "name": "concat_0_marks",
           "type": "rect",
           "style": ["bar"],
-          "from": {"data": "data_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -248,7 +250,7 @@
     {
       "name": "concat_0_x",
       "type": "band",
-      "domain": {"data": "data_0", "field": "month_date", "sort": true},
+      "domain": {"data": "data_1", "field": "month_date", "sort": true},
       "range": {"step": {"signal": "concat_0_x_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -256,7 +258,7 @@
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "mean_precipitation"},
+      "domain": {"data": "data_1", "field": "mean_precipitation"},
       "range": [{"signal": "childHeight"}, 0],
       "nice": true,
       "zero": true

@@ -6,7 +6,7 @@
     {"name": "brush_store"},
     {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
     {
-      "name": "data_0",
+      "name": "data_1",
       "source": "source_0",
       "transform": [
         {
@@ -16,8 +16,8 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "data_0",
+      "name": "data_2",
+      "source": "data_1",
       "transform": [
         {
           "type": "aggregate",
@@ -29,7 +29,7 @@
       ]
     },
     {
-      "name": "data_2",
+      "name": "data_3",
       "source": "source_0",
       "transform": [
         {
@@ -81,7 +81,7 @@
           "type": "rect",
           "style": ["bar"],
           "interactive": false,
-          "from": {"data": "data_1"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -351,7 +351,7 @@
           "type": "rect",
           "style": ["bar"],
           "interactive": true,
-          "from": {"data": "data_2"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "fill": {"value": "#4c78a8"},
@@ -424,7 +424,7 @@
       "name": "concat_0_y",
       "type": "band",
       "domain": {
-        "data": "data_0",
+        "data": "source_0",
         "field": "Name",
         "sort": {"op": "count", "order": "descending"}
       },
@@ -435,7 +435,7 @@
     {
       "name": "concat_1_x",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "__count"},
+      "domain": {"data": "data_3", "field": "__count"},
       "range": [0, {"signal": "concat_1_width"}],
       "nice": true,
       "zero": true
