@@ -1,4 +1,4 @@
-import {MAIN, Parse} from '../../data';
+import {DataSourceType, Parse} from '../../data';
 import {Dict, fieldIntersection, hash, hasIntersection, isEmpty, keys, some} from '../../util';
 import {Model} from '../model';
 import {requiresSelectionId} from '../selection';
@@ -244,7 +244,7 @@ export function moveFacetDown(node: DataFlowNode) {
 }
 
 function moveMainDownToFacet(node: DataFlowNode) {
-  if (node instanceof OutputNode && node.type === MAIN) {
+  if (node instanceof OutputNode && node.type === DataSourceType.Main) {
     if (node.numChildren() === 1) {
       const child = node.children[0];
       if (!(child instanceof FacetNode)) {

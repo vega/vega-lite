@@ -155,9 +155,6 @@ export enum DataSourceType {
   Lookup = 'lookup',
 };
 
-export const MAIN = DataSourceType.Main as const;
-export const RAW = DataSourceType.Raw as const;
-
 export type Generator = SequenceGenerator | SphereGenerator | GraticuleGenerator;
 
 export interface GeneratorBase {
