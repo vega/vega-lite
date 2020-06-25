@@ -471,11 +471,16 @@ export abstract class Model {
 
   public getDataName(type: DataSourceType) {
     switch (type) {
-      case DataSourceType.Raw: return this.getName("raw");
-      case DataSourceType.Main: return this.getName("main");
-      case DataSourceType.Row: return this.getName("row");
-      case DataSourceType.Column: return this.getName("column");
-      case DataSourceType.Lookup: return this.getName("lookup");
+      case DataSourceType.Raw:
+        return this.getName('raw');
+      case DataSourceType.Main:
+        return this.getName('main');
+      case DataSourceType.Row:
+        return this.getName('row');
+      case DataSourceType.Column:
+        return this.getName('column');
+      case DataSourceType.Lookup:
+        return this.getName('lookup');
     }
   }
 
