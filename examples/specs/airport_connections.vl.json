@@ -74,7 +74,7 @@
         "size": {
           "field": "routes",
           "type": "quantitative",
-          "scale": {"range": [0, 1000]},
+          "scale": {"rangeMax": 1000},
           "legend": null
         },
         "order": {
