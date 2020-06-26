@@ -278,6 +278,26 @@ describe('compile/scale', () => {
 
         expect(parseRangeForChannel('angle', model)).toEqual(makeImplicit([0, 360]));
       });
+      it('should use default rangeMin if specified.', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            angle: {field: 'x', type: 'quantitative', scale: {rangeMin: 20}}
+          }
+        });
+
+        expect(parseRangeForChannel('angle', model)).toEqual(makeExplicit([20, 360]));
+      });
+      it('should use default rangeMax if specified.', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            angle: {field: 'x', type: 'quantitative', scale: {rangeMax: 90}}
+          }
+        });
+
+        expect(parseRangeForChannel('angle', model)).toEqual(makeExplicit([0, 90]));
+      });
     });
 
     describe('radius', () => {
