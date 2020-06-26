@@ -16,6 +16,7 @@ import {Config} from '../../../config';
 import {Encoding, forEach} from '../../../encoding';
 import {StackProperties} from '../../../stack';
 import {entries} from '../../../util';
+import {isSignalRef} from '../../../vega.schema';
 import {getMarkPropOrConfig} from '../../common';
 import {binFormatExpression, formatSignalRef} from '../../format';
 import {UnitModel} from '../../unit';
@@ -51,7 +52,9 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
         return {value: markTooltip};
       } else if (isObject(markTooltip)) {
         // `tooltip` is `{fields: 'encodings' | 'fields'}`
-        if (markTooltip.content === 'encoding') {
+        if (isSignalRef(markTooltip)) {
+          return markTooltip;
+        } else if (markTooltip.content === 'encoding') {
           return tooltipRefForEncoding(encoding, stack, config, opt);
         } else {
           return {signal: datum};

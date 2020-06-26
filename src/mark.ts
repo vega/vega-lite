@@ -137,7 +137,7 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
    *
    * __Default value:__ `null`
    */
-  tooltip?: number | string | boolean | TooltipContent | null; // VL has a special object form for tooltip content
+  tooltip?: number | string | boolean | TooltipContent | SignalRef | null; // VL has a special object form for tooltip content
 
   /**
    * Default size for marks.
