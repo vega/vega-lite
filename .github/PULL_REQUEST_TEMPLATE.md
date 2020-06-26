@@ -1,10 +1,10 @@
 Please:
 
-- [ ] Make the pull requests (PRs) atomic. (Fix one issue at a time.) Multiple relevant issues that must be fixed together? Make atomic commits so we can easily review each issue.
-- [ ] Provide a concise title so we can easily copy it to the release note.
+- [ ] Make the pull requests (PRs) atomic (fix one issue at a time). Multiple relevant issues that must be fixed together? Make atomic commits so we can easily review each issue.
+- [ ] Provide a concise title as a [semantic commit message](https://www.conventionalcommits.org/) (e.g. "fix: correctly handle undefined properties") so we can easily copy it to the release note.
   - Use imperative mood and present tense.
-  - Mention relevant issues. (e.g., `Fixes #1` / `Fixes part of #1`)
-- [ ] Lint and test (Run `yarn test`)
+- Mention relevant issues in the description (e.g., `Fixes #1` / `Fixes part of #1`).
+- [ ] Lint and test (Run `yarn test`).
 - [ ] Rebase onto the latest `master` branch.
 - [ ] Review your changes before sending the PR (to ensure code quality).
 - For new features:
@@ -14,4 +14,4 @@ Please:
 Tips:
 
 - https://medium.com/@greenberg/writing-pull-requests-your-coworkers-might-enjoy-reading-9d0307e93da3 is a nice article about writing a nice PR.
-- Use draft PR for work in progress PRs / when you want early feedback (https://github.blog/2019-02-14-introducing-draft-pull-requests/)
+- Use draft PR for work in progress PRs / when you want early feedback (https://github.blog/2019-02-14-introducing-draft-pull-requests/).
