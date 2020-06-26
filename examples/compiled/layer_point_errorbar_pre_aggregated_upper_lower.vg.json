@@ -83,7 +83,7 @@
             "signal": "{\"lower_yield\": format(datum[\"upper_upper_yield\"], \"\"), \"upper_yield\": format(datum[\"lower_upper_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]}"
           },
           "description": {
-            "signal": "\"yield\" + \": \" + (format(datum[\"lower_upper_yield\"], \"\")) + \"; \" + \"upper_upper_yield\" + \": \" + (format(datum[\"upper_upper_yield\"], \"\")) + \"; \" + \"variety\" + \": \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; \" + \"lower_yield\" + \": \" + (format(datum[\"upper_upper_yield\"], \"\")) + \"; \" + \"upper_yield\" + \": \" + (format(datum[\"lower_upper_yield\"], \"\"))"
+            "signal": "\"yield: \" + (format(datum[\"lower_upper_yield\"], \"\")) + \"; upper_upper_yield: \" + (format(datum[\"upper_upper_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; lower_yield: \" + (format(datum[\"upper_upper_yield\"], \"\")) + \"; upper_yield: \" + (format(datum[\"lower_upper_yield\"], \"\"))"
           },
           "x": [
             {
@@ -114,7 +114,7 @@
           "fill": {"value": "black"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"center\" + \": \" + (format(datum[\"center\"], \"\")) + \"; \" + \"variety\" + \": \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"])"
+            "signal": "\"center: \" + (format(datum[\"center\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"])"
           },
           "x": [
             {

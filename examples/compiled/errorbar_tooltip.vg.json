@@ -52,7 +52,7 @@
             "signal": "isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]"
           },
           "description": {
-            "signal": "\"yield\" + \": \" + (format(datum[\"lower_yield\"], \"\")) + \"; \" + \"upper_yield\" + \": \" + (format(datum[\"upper_yield\"], \"\")) + \"; \" + \"variety\" + \": \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"])"
+            "signal": "\"yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"])"
           },
           "x": [
             {

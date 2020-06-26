@@ -69,7 +69,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"IMDB Rating\" + \": \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; \" + \"Title\" + \": \" + (isValid(datum[\"Title\"]) ? datum[\"Title\"] : \"\"+datum[\"Title\"])"
+            "signal": "\"IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? datum[\"Title\"] : \"\"+datum[\"Title\"])"
           },
           "x": {"scale": "x", "field": "IMDB Rating"},
           "x2": {"scale": "x", "value": 0},
@@ -87,7 +87,7 @@
         "update": {
           "stroke": {"value": "red"},
           "description": {
-            "signal": "\"Average of AverageRating\" + \": \" + (format(datum[\"average_AverageRating\"], \"\"))"
+            "signal": "\"Average of AverageRating: \" + (format(datum[\"average_AverageRating\"], \"\"))"
           },
           "x": {"scale": "x", "field": "average_AverageRating"},
           "y": {"value": 0},

@@ -129,7 +129,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
-                "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\")) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
@@ -157,7 +157,7 @@
           "stroke": {"scale": "color", "field": "symbol"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\")) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
@@ -196,7 +196,7 @@
         "update": {
           "stroke": {"value": "gray"},
           "description": {
-            "signal": "\"Min of date\" + \": \" + (timeFormat(datum[\"min_date\"], '%b %d, %Y'))"
+            "signal": "\"Min of date: \" + (timeFormat(datum[\"min_date\"], '%b %d, %Y'))"
           },
           "x": {"scale": "x", "field": "min_date"},
           "y": {"value": 0},
@@ -219,7 +219,7 @@
           "dy": {"value": -5},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"price\" + \": \" + (format(datum[\"price\"], \"\")) + \"; \" + \"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
+            "signal": "\"price: \" + (format(datum[\"price\"], \"\")) + \"; date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},
@@ -241,7 +241,7 @@
           "dy": {"value": -5},
           "fill": {"scale": "color", "field": "symbol"},
           "description": {
-            "signal": "\"price\" + \": \" + (format(datum[\"price\"], \"\")) + \"; \" + \"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+            "signal": "\"price: \" + (format(datum[\"price\"], \"\")) + \"; date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"},

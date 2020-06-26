@@ -58,7 +58,7 @@
             "signal": "{\"Q3 of yield\": format(datum[\"upper_yield\"], \"\"), \"Q1 of yield\": format(datum[\"lower_yield\"], \"\"), \"Median of yield\": format(datum[\"center_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]}"
           },
           "description": {
-            "signal": "\"yield\" + \": \" + (format(datum[\"lower_yield\"], \"\")) + \"; \" + \"upper_yield\" + \": \" + (format(datum[\"upper_yield\"], \"\")) + \"; \" + \"variety\" + \": \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; \" + \"Q3 of yield\" + \": \" + (format(datum[\"upper_yield\"], \"\")) + \"; \" + \"Q1 of yield\" + \": \" + (format(datum[\"lower_yield\"], \"\")) + \"; \" + \"Median of yield\" + \": \" + (format(datum[\"center_yield\"], \"\"))"
+            "signal": "\"yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; Q3 of yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Q1 of yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; Median of yield: \" + (format(datum[\"center_yield\"], \"\"))"
           },
           "x": [
             {
@@ -88,7 +88,7 @@
           "fill": {"value": "black"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Median of yield\" + \": \" + (format(datum[\"median_yield\"], \"\")) + \"; \" + \"variety\" + \": \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"])"
+            "signal": "\"Median of yield: \" + (format(datum[\"median_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"])"
           },
           "x": [
             {

@@ -94,7 +94,7 @@
         "update": {
           "stroke": {"value": "black"},
           "description": {
-            "signal": "\"Species\" + \": \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; \" + \"lower\" + \": \" + (format(datum[\"lower\"], \"\")) + \"; \" + \"upper\" + \": \" + (format(datum[\"upper\"], \"\"))"
+            "signal": "\"Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; lower: \" + (format(datum[\"lower\"], \"\")) + \"; upper: \" + (format(datum[\"upper\"], \"\"))"
           },
           "x": [
             {
@@ -124,7 +124,7 @@
           "fill": {"scale": "color", "field": "Species"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Species\" + \": \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; \" + \"q1\" + \": \" + (format(datum[\"q1\"], \"\")) + \"; \" + \"q3\" + \": \" + (format(datum[\"q3\"], \"\"))"
+            "signal": "\"Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; q1: \" + (format(datum[\"q1\"], \"\")) + \"; q3: \" + (format(datum[\"q3\"], \"\"))"
           },
           "x": [
             {
@@ -156,7 +156,7 @@
           "fill": {"value": "white"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"Species\" + \": \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; \" + \"median\" + \": \" + (format(datum[\"median\"], \"\"))"
+            "signal": "\"Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; median: \" + (format(datum[\"median\"], \"\"))"
           },
           "xc": [
             {
@@ -183,7 +183,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Species\" + \": \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; \" + \"outliers\" + \": \" + (format(datum[\"outliers\"], \"\"))"
+            "signal": "\"Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; outliers: \" + (format(datum[\"outliers\"], \"\"))"
           },
           "x": [
             {

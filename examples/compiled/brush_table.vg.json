@@ -385,7 +385,7 @@
               ],
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Horsepower\" + \": \" + (format(datum[\"Horsepower\"], \"\")) + \"; \" + \"Miles_per_Gallon\" + \": \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; \" + \"Cylinders\" + \": \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
+                "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
               },
               "x": {"scale": "concat_0_x", "field": "Horsepower"},
               "y": {"scale": "concat_0_y", "field": "Miles_per_Gallon"}
@@ -530,7 +530,7 @@
                 "update": {
                   "fill": {"value": "black"},
                   "description": {
-                    "signal": "\"Horsepower\" + \": \" + (isValid(datum[\"Horsepower\"]) ? datum[\"Horsepower\"] : \"\"+datum[\"Horsepower\"]) + \"; \" + \"row_number\" + \": \" + (isValid(datum[\"row_number\"]) ? datum[\"row_number\"] : \"\"+datum[\"row_number\"])"
+                    "signal": "\"Horsepower: \" + (isValid(datum[\"Horsepower\"]) ? datum[\"Horsepower\"] : \"\"+datum[\"Horsepower\"]) + \"; row_number: \" + (isValid(datum[\"row_number\"]) ? datum[\"row_number\"] : \"\"+datum[\"row_number\"])"
                   },
                   "x": {"signal": "concat_1_childWidth", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_0_y", "field": "row_number"},
@@ -566,7 +566,7 @@
                 "update": {
                   "fill": {"value": "black"},
                   "description": {
-                    "signal": "\"Miles_per_Gallon\" + \": \" + (isValid(datum[\"Miles_per_Gallon\"]) ? datum[\"Miles_per_Gallon\"] : \"\"+datum[\"Miles_per_Gallon\"]) + \"; \" + \"row_number\" + \": \" + (isValid(datum[\"row_number\"]) ? datum[\"row_number\"] : \"\"+datum[\"row_number\"])"
+                    "signal": "\"Miles_per_Gallon: \" + (isValid(datum[\"Miles_per_Gallon\"]) ? datum[\"Miles_per_Gallon\"] : \"\"+datum[\"Miles_per_Gallon\"]) + \"; row_number: \" + (isValid(datum[\"row_number\"]) ? datum[\"row_number\"] : \"\"+datum[\"row_number\"])"
                   },
                   "x": {"signal": "concat_1_childWidth", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_1_y", "field": "row_number"},
@@ -602,7 +602,7 @@
                 "update": {
                   "fill": {"value": "black"},
                   "description": {
-                    "signal": "\"Origin\" + \": \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; \" + \"row_number\" + \": \" + (isValid(datum[\"row_number\"]) ? datum[\"row_number\"] : \"\"+datum[\"row_number\"])"
+                    "signal": "\"Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; row_number: \" + (isValid(datum[\"row_number\"]) ? datum[\"row_number\"] : \"\"+datum[\"row_number\"])"
                   },
                   "x": {"signal": "concat_1_childWidth", "mult": 0.5},
                   "y": {"scale": "concat_1_concat_2_y", "field": "row_number"},

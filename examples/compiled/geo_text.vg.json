@@ -87,7 +87,7 @@
           "fill": {"value": "orange"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"lon\" + \": \" + (format(datum[\"lon\"], \"\")) + \"; \" + \"lat\" + \": \" + (format(datum[\"lat\"], \"\"))"
+            "signal": "\"lon: \" + (format(datum[\"lon\"], \"\")) + \"; lat: \" + (format(datum[\"lat\"], \"\"))"
           },
           "x": {"field": "layer_1_layer_0_x"},
           "y": {"field": "layer_1_layer_0_y"},
@@ -105,7 +105,7 @@
           "dy": {"value": -10},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"lon\" + \": \" + (format(datum[\"lon\"], \"\")) + \"; \" + \"lat\" + \": \" + (format(datum[\"lat\"], \"\")) + \"; \" + \"city\" + \": \" + (isValid(datum[\"city\"]) ? datum[\"city\"] : \"\"+datum[\"city\"])"
+            "signal": "\"lon: \" + (format(datum[\"lon\"], \"\")) + \"; lat: \" + (format(datum[\"lat\"], \"\")) + \"; city: \" + (isValid(datum[\"city\"]) ? datum[\"city\"] : \"\"+datum[\"city\"])"
           },
           "x": {"field": "layer_1_layer_1_x"},
           "y": {"field": "layer_1_layer_1_y"},

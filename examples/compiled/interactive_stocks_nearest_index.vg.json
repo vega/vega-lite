@@ -109,7 +109,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
-                "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\")) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
@@ -134,7 +134,7 @@
           "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
@@ -173,7 +173,7 @@
         "update": {
           "stroke": {"value": "black"},
           "description": {
-            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 0},
@@ -191,7 +191,7 @@
         "update": {
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y'))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 10},

@@ -41,7 +41,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"bin_start\" + \": \" + (!isValid(datum[\"bin_start\"]) || !isFinite(+datum[\"bin_start\"]) ? \"null\" : format(datum[\"bin_start\"], \"\") + \" – \" + format(datum[\"bin_end\"], \"\")) + \"; \" + \"count\" + \": \" + (format(datum[\"count\"], \"\"))"
+            "signal": "\"bin_start: \" + (!isValid(datum[\"bin_start\"]) || !isFinite(+datum[\"bin_start\"]) ? \"null\" : format(datum[\"bin_start\"], \"\") + \" – \" + format(datum[\"bin_end\"], \"\")) + \"; count: \" + (format(datum[\"count\"], \"\"))"
           },
           "x2": {"scale": "x", "field": "bin_start", "offset": 1},
           "x": {"scale": "x", "field": "bin_end"},

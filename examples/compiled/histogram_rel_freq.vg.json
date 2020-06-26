@@ -64,7 +64,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"Horsepower\" + \": \" + (!isValid(datum[\"bin_Horsepwoer\"]) || !isFinite(+datum[\"bin_Horsepwoer\"]) ? \"null\" : format(datum[\"bin_Horsepwoer\"], \"\") + \" – \" + format(datum[\"bin_Horsepwoer_end\"], \"\")) + \"; \" + \"Relative Frequency\" + \": \" + (format(datum[\"PercentOfTotal\"], \".1~%\"))"
+            "signal": "\"Horsepower: \" + (!isValid(datum[\"bin_Horsepwoer\"]) || !isFinite(+datum[\"bin_Horsepwoer\"]) ? \"null\" : format(datum[\"bin_Horsepwoer\"], \"\") + \" – \" + format(datum[\"bin_Horsepwoer_end\"], \"\")) + \"; Relative Frequency: \" + (format(datum[\"PercentOfTotal\"], \".1~%\"))"
           },
           "x2": {"scale": "x", "field": "bin_Horsepwoer", "offset": 1},
           "x": {"scale": "x", "field": "bin_Horsepwoer_end"},

@@ -61,7 +61,7 @@
           "innerRadius": {"value": 20},
           "fill": {"scale": "color", "field": "data"},
           "description": {
-            "signal": "\"data\" + \": \" + (isValid(datum[\"data\"]) ? datum[\"data\"] : \"\"+datum[\"data\"])"
+            "signal": "\"data: \" + (format(datum[\"data\"], \"\"))"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},
@@ -80,7 +80,7 @@
         "update": {
           "fill": {"scale": "color", "field": "data"},
           "description": {
-            "signal": "\"data\" + \": \" + (format(datum[\"data\"], \"\"))"
+            "signal": "\"data: \" + (format(datum[\"data\"], \"\"))"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},

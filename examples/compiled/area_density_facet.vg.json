@@ -135,7 +135,7 @@
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"Body Mass (g)\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"density\" + \": \" + (format(datum[\"density\"], \"\"))"
+                "signal": "\"Body Mass (g): \" + (format(datum[\"value\"], \"\")) + \"; density: \" + (format(datum[\"density\"], \"\"))"
               },
               "x": {"scale": "x", "field": "value"},
               "y": {"scale": "y", "field": "density_end"},

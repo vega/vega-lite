@@ -193,7 +193,7 @@
                   "fill": {"value": "#4c78a8"},
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
-                    "signal": "\"Rotten Tomatoes Rating (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_Rotten Tomatoes Rating_end\"], \"\")) + \"; \" + \"Count\" + \": \" + (format(datum[\"__count\"], \"\"))"
+                    "signal": "\"Rotten Tomatoes Rating (binned): \" + (!isValid(datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_Rotten Tomatoes Rating_end\"], \"\")) + \"; Count: \" + (format(datum[\"__count\"], \"\"))"
                   },
                   "x2": [
                     {
@@ -285,7 +285,7 @@
                   "fill": {"value": "#4c78a8"},
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
-                    "signal": "\"IMDB Rating (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_20_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_20_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_IMDB Rating_end\"], \"\")) + \"; \" + \"Count\" + \": \" + (format(datum[\"__count\"], \"\"))"
+                    "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_20_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_20_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_IMDB Rating_end\"], \"\")) + \"; Count: \" + (format(datum[\"__count\"], \"\"))"
                   },
                   "x2": [
                     {
@@ -382,7 +382,7 @@
                   "fill": {"value": "#4c78a8"},
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
-                    "signal": "\"US Gross (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_20_US Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_US Gross\"]) ? \"null\" : format(datum[\"bin_maxbins_20_US Gross\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_US Gross_end\"], \"\")) + \"; \" + \"Count\" + \": \" + (format(datum[\"__count\"], \"\"))"
+                    "signal": "\"US Gross (binned): \" + (!isValid(datum[\"bin_maxbins_20_US Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_US Gross\"]) ? \"null\" : format(datum[\"bin_maxbins_20_US Gross\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_US Gross_end\"], \"\")) + \"; Count: \" + (format(datum[\"__count\"], \"\"))"
                   },
                   "x2": [
                     {
@@ -471,7 +471,7 @@
                   "fill": {"value": "#4c78a8"},
                   "ariaRoleDescription": {"value": "bar"},
                   "description": {
-                    "signal": "\"Worldwide Gross (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_20_Worldwide Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_Worldwide Gross\"]) ? \"null\" : format(datum[\"bin_maxbins_20_Worldwide Gross\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_Worldwide Gross_end\"], \"\")) + \"; \" + \"Count\" + \": \" + (format(datum[\"__count\"], \"\"))"
+                    "signal": "\"Worldwide Gross (binned): \" + (!isValid(datum[\"bin_maxbins_20_Worldwide Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_Worldwide Gross\"]) ? \"null\" : format(datum[\"bin_maxbins_20_Worldwide Gross\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_Worldwide Gross_end\"], \"\")) + \"; Count: \" + (format(datum[\"__count\"], \"\"))"
                   },
                   "x2": [
                     {
