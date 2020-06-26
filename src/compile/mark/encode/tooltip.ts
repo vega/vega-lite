@@ -2,13 +2,13 @@ import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned} from '../../../bin';
 import {Channel, getMainRangeChannel, isXorY} from '../../../channel';
 import {
+  defaultTitle,
   getFieldDef,
   getFormatMixins,
   hasConditionalFieldDef,
   isFieldDef,
   isTypedFieldDef,
   SecondaryFieldDef,
-  title,
   TypedFieldDef,
   vgField
 } from '../../../channeldef';
@@ -83,7 +83,8 @@ export function tooltipData(
           type: encoding[mainChannel].type // for secondary field def, copy type from main channel
         };
 
-    const key = array(title(fieldDef, config, {allowDisabling: false})).join(', ');
+    const title = fieldDef.title || defaultTitle(fieldDef, config);
+    const key = array(title).join(', ');
 
     let value: string;
 

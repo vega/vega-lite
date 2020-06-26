@@ -670,12 +670,6 @@ export function isStringFieldOrDatumDef<F extends Field>(
 }
 
 export function toStringFieldDef<F extends Field>(fieldDef: FieldDef<F>): StringFieldDef<F> {
-  // add title from guide to title property
-  const guide = getGuide(fieldDef);
-  if (fieldDef.title == undefined && guide?.title) {
-    fieldDef = {...fieldDef, title: guide.title};
-  }
-
   // omit properties that don't exist in string field defs
   return omit(fieldDef, ['legend', 'axis', 'header', 'scale'] as any[]);
 }
