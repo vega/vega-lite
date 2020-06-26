@@ -43,7 +43,7 @@
           "fill": {"field": "color"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"color\" + \": \" + (isValid(datum[\"color\"]) ? datum[\"color\"] : \"\"+datum[\"color\"]) + \"; \" + \"b\" + \": \" + (format(datum[\"b\"], \"\"))"
+            "signal": "\"color: \" + (isValid(datum[\"color\"]) ? datum[\"color\"] : \"\"+datum[\"color\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
           "x": {"scale": "x", "field": "color"},
           "width": {"scale": "x", "band": 1},

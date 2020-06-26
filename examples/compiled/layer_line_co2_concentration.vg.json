@@ -97,7 +97,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "decade"},
               "description": {
-                "signal": "\"decade\" + \": \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"]) + \"; \" + \"Year into Decade\" + \": \" + (format(datum[\"scaled_date\"], \"\")) + \"; \" + \"CO2 concentration in ppm\" + \": \" + (format(datum[\"CO2\"], \"\"))"
+                "signal": "\"decade: \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"]) + \"; Year into Decade: \" + (format(datum[\"scaled_date\"], \"\")) + \"; CO2 concentration in ppm: \" + (format(datum[\"CO2\"], \"\"))"
               },
               "x": {"scale": "x", "field": "scaled_date"},
               "y": {"scale": "y", "field": "CO2"},
@@ -119,7 +119,7 @@
           "baseline": {"value": "top"},
           "fill": {"scale": "color", "field": "decade"},
           "description": {
-            "signal": "\"decade\" + \": \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"]) + \"; \" + \"Min of scaled_date\" + \": \" + (format(datum[\"min_scaled_date\"], \"\")) + \"; \" + \"CO2 for min scaled_date\" + \": \" + (format(datum[\"argmin_scaled_date\"][\"CO2\"], \"\")) + \"; \" + \"year for min scaled_date\" + \": \" + (isValid(datum[\"argmin_scaled_date\"][\"year\"]) ? datum[\"argmin_scaled_date\"][\"year\"] : \"\"+datum[\"argmin_scaled_date\"][\"year\"])"
+            "signal": "\"decade: \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"]) + \"; Min of scaled_date: \" + (format(datum[\"min_scaled_date\"], \"\")) + \"; CO2 for min scaled_date: \" + (format(datum[\"argmin_scaled_date\"][\"CO2\"], \"\")) + \"; year for min scaled_date: \" + (isValid(datum[\"argmin_scaled_date\"][\"year\"]) ? datum[\"argmin_scaled_date\"][\"year\"] : \"\"+datum[\"argmin_scaled_date\"][\"year\"])"
           },
           "x": [
             {
@@ -150,7 +150,7 @@
         "update": {
           "fill": {"scale": "color", "field": "decade"},
           "description": {
-            "signal": "\"decade\" + \": \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"]) + \"; \" + \"Max of scaled_date\" + \": \" + (format(datum[\"max_scaled_date\"], \"\")) + \"; \" + \"CO2 for max scaled_date\" + \": \" + (format(datum[\"argmax_scaled_date\"][\"CO2\"], \"\")) + \"; \" + \"year for max scaled_date\" + \": \" + (isValid(datum[\"argmax_scaled_date\"][\"year\"]) ? datum[\"argmax_scaled_date\"][\"year\"] : \"\"+datum[\"argmax_scaled_date\"][\"year\"])"
+            "signal": "\"decade: \" + (isValid(datum[\"decade\"]) ? datum[\"decade\"] : \"\"+datum[\"decade\"]) + \"; Max of scaled_date: \" + (format(datum[\"max_scaled_date\"], \"\")) + \"; CO2 for max scaled_date: \" + (format(datum[\"argmax_scaled_date\"][\"CO2\"], \"\")) + \"; year for max scaled_date: \" + (isValid(datum[\"argmax_scaled_date\"][\"year\"]) ? datum[\"argmax_scaled_date\"][\"year\"] : \"\"+datum[\"argmax_scaled_date\"][\"year\"])"
           },
           "x": [
             {

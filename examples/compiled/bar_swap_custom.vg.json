@@ -55,7 +55,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"a\" + \": \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; \" + \"Mean of b\" + \": \" + (format(datum[\"average_b\"], \"\"))"
+            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; Mean of b: \" + (format(datum[\"average_b\"], \"\"))"
           },
           "x": {"scale": "x", "field": "average_b"},
           "x2": {"scale": "x", "value": 0},

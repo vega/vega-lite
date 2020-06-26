@@ -75,7 +75,7 @@
           "fill": {"value": "black"},
           "opacity": {"value": 0.6},
           "description": {
-            "signal": "\"cx\" + \": \" + (format(datum[\"cx\"], \"\")) + \"; \" + \"cy\" + \": \" + (format(datum[\"cy\"], \"\")) + \"; \" + \"bLabel\" + \": \" + (isValid(datum[\"bLabel\"]) ? datum[\"bLabel\"] : \"\"+datum[\"bLabel\"])"
+            "signal": "\"cx: \" + (format(datum[\"cx\"], \"\")) + \"; cy: \" + (format(datum[\"cy\"], \"\")) + \"; bLabel: \" + (isValid(datum[\"bLabel\"]) ? datum[\"bLabel\"] : \"\"+datum[\"bLabel\"])"
           },
           "x": {"field": "layer_1_x"},
           "y": {"field": "layer_1_y"},
@@ -100,7 +100,7 @@
           "stroke": {"scale": "color", "field": "id"},
           "ariaRoleDescription": {"value": "geoshape"},
           "description": {
-            "signal": "\"id\" + \": \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"])"
+            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"])"
           }
         }
       },

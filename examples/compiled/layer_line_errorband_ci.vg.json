@@ -54,7 +54,7 @@
             "signal": "{\"Ci1 of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Ci0 of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"Mean of Miles_per_Gallon\": format(datum[\"center_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%b %d, %Y')}"
           },
           "description": {
-            "signal": "\"Mean of Miles per Gallon (95% CIs)\" + \": \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; \" + \"upper_Miles_per_Gallon\" + \": \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; \" + \"Year (year)\" + \": \" + (timeFormat(datum[\"year_Year\"], '%b %d, %Y')) + \"; \" + \"Ci1 of Miles_per_Gallon\" + \": \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; \" + \"Ci0 of Miles_per_Gallon\" + \": \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; \" + \"Mean of Miles_per_Gallon\" + \": \" + (format(datum[\"center_Miles_per_Gallon\"], \"\"))"
+            "signal": "\"Mean of Miles per Gallon (95% CIs): \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; upper_Miles_per_Gallon: \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; Year (year): \" + (timeFormat(datum[\"year_Year\"], '%b %d, %Y')) + \"; Ci1 of Miles_per_Gallon: \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; Ci0 of Miles_per_Gallon: \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; Mean of Miles_per_Gallon: \" + (format(datum[\"center_Miles_per_Gallon\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "lower_Miles_per_Gallon"},
@@ -75,7 +75,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"Year (year)\" + \": \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"Mean of Miles_per_Gallon\" + \": \" + (format(datum[\"mean_Miles_per_Gallon\"], \"\"))"
+            "signal": "\"Year (year): \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of Miles_per_Gallon: \" + (format(datum[\"mean_Miles_per_Gallon\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "mean_Miles_per_Gallon"},

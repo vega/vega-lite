@@ -118,7 +118,7 @@
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "circle"},
               "description": {
-                "signal": "\"X\" + \": \" + (format(datum[\"X\"], \"\")) + \"; \" + \"Y\" + \": \" + (format(datum[\"Y\"], \"\"))"
+                "signal": "\"X: \" + (format(datum[\"X\"], \"\")) + \"; Y: \" + (format(datum[\"Y\"], \"\"))"
               },
               "x": [
                 {

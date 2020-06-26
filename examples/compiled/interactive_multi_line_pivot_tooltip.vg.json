@@ -110,7 +110,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
-                "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\"))"
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; price: \" + (format(datum[\"price\"], \"\"))"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
@@ -135,7 +135,7 @@
           "stroke": {"scale": "color", "field": "symbol"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; price: \" + (format(datum[\"price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"scale": "y", "field": "price"}
@@ -159,7 +159,7 @@
             "signal": "{\"AAPL\": format(datum[\"AAPL\"], \"\"), \"AMZN\": format(datum[\"AMZN\"], \"\"), \"GOOG\": format(datum[\"GOOG\"], \"\"), \"IBM\": format(datum[\"IBM\"], \"\"), \"MSFT\": format(datum[\"MSFT\"], \"\")}"
           },
           "description": {
-            "signal": "\"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"AAPL\" + \": \" + (format(datum[\"AAPL\"], \"\")) + \"; \" + \"AMZN\" + \": \" + (format(datum[\"AMZN\"], \"\")) + \"; \" + \"GOOG\" + \": \" + (format(datum[\"GOOG\"], \"\")) + \"; \" + \"IBM\" + \": \" + (format(datum[\"IBM\"], \"\")) + \"; \" + \"MSFT\" + \": \" + (format(datum[\"MSFT\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; AAPL: \" + (format(datum[\"AAPL\"], \"\")) + \"; AMZN: \" + (format(datum[\"AMZN\"], \"\")) + \"; GOOG: \" + (format(datum[\"GOOG\"], \"\")) + \"; IBM: \" + (format(datum[\"IBM\"], \"\")) + \"; MSFT: \" + (format(datum[\"MSFT\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": {"value": 0},

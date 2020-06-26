@@ -143,7 +143,7 @@
               "fill": {"scale": "color", "field": "gender"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"population\" + \": \" + (format(datum[\"sum_people\"], \"\")) + \"; \" + \"age\" + \": \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; \" + \"gender\" + \": \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+                "signal": "\"population: \" + (format(datum[\"sum_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
               },
               "x": {"scale": "child_x", "field": "age"},
               "width": {"scale": "child_x", "band": 1},

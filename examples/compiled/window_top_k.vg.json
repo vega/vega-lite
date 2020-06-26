@@ -77,7 +77,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"score\" + \": \" + (format(datum[\"score\"], \"\")) + \"; \" + \"student\" + \": \" + (isValid(datum[\"student\"]) ? datum[\"student\"] : \"\"+datum[\"student\"])"
+            "signal": "\"score: \" + (format(datum[\"score\"], \"\")) + \"; student: \" + (isValid(datum[\"student\"]) ? datum[\"student\"] : \"\"+datum[\"student\"])"
           },
           "x": {"scale": "x", "field": "score"},
           "x2": {"scale": "x", "value": 0},

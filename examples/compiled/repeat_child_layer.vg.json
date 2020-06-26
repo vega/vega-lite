@@ -111,7 +111,7 @@
                   "stroke": {"scale": "color", "field": "location"},
                   "opacity": {"value": 0.2},
                   "description": {
-                    "signal": "\"Mean of temp_max\" + \": \" + (format(datum[\"mean_temp_max\"], \"\")) + \"; \" + \"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"date (year)\" + \": \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"location\" + \": \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
+                    "signal": "\"Mean of temp_max: \" + (format(datum[\"mean_temp_max\"], \"\")) + \"; date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; location: \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
                   },
                   "x": {
                     "scale": "child__column_temp_max_x",
@@ -158,7 +158,7 @@
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
                   "description": {
-                    "signal": "\"Mean of temp_max\" + \": \" + (format(datum[\"mean_temp_max\"], \"\")) + \"; \" + \"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"location\" + \": \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
+                    "signal": "\"Mean of temp_max: \" + (format(datum[\"mean_temp_max\"], \"\")) + \"; date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; location: \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
                   },
                   "x": {
                     "scale": "child__column_temp_max_x",
@@ -256,7 +256,7 @@
                   "stroke": {"scale": "color", "field": "location"},
                   "opacity": {"value": 0.2},
                   "description": {
-                    "signal": "\"Mean of precipitation\" + \": \" + (format(datum[\"mean_precipitation\"], \"\")) + \"; \" + \"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"date (year)\" + \": \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"location\" + \": \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
+                    "signal": "\"Mean of precipitation: \" + (format(datum[\"mean_precipitation\"], \"\")) + \"; date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; location: \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
                   },
                   "x": {
                     "scale": "child__column_precipitation_x",
@@ -303,7 +303,7 @@
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
                   "description": {
-                    "signal": "\"Mean of precipitation\" + \": \" + (format(datum[\"mean_precipitation\"], \"\")) + \"; \" + \"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"location\" + \": \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
+                    "signal": "\"Mean of precipitation: \" + (format(datum[\"mean_precipitation\"], \"\")) + \"; date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; location: \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
                   },
                   "x": {
                     "scale": "child__column_precipitation_x",
@@ -399,7 +399,7 @@
                   "stroke": {"scale": "color", "field": "location"},
                   "opacity": {"value": 0.2},
                   "description": {
-                    "signal": "\"Mean of wind\" + \": \" + (format(datum[\"mean_wind\"], \"\")) + \"; \" + \"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"date (year)\" + \": \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"location\" + \": \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
+                    "signal": "\"Mean of wind: \" + (format(datum[\"mean_wind\"], \"\")) + \"; date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; location: \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
                   },
                   "x": {"scale": "child__column_wind_x", "field": "month_date"},
                   "y": {"scale": "child__column_wind_y", "field": "mean_wind"},
@@ -438,7 +438,7 @@
                 "update": {
                   "stroke": {"scale": "color", "field": "location"},
                   "description": {
-                    "signal": "\"Mean of wind\" + \": \" + (format(datum[\"mean_wind\"], \"\")) + \"; \" + \"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"location\" + \": \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
+                    "signal": "\"Mean of wind: \" + (format(datum[\"mean_wind\"], \"\")) + \"; date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; location: \" + (isValid(datum[\"location\"]) ? datum[\"location\"] : \"\"+datum[\"location\"])"
                   },
                   "x": {"scale": "child__column_wind_x", "field": "month_date"},
                   "y": {"scale": "child__column_wind_y", "field": "mean_wind"},

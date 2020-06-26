@@ -141,7 +141,7 @@
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"Horsepower (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_15_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_15_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_15_Horsepower\"], \"\") + \" – \" + format(datum[\"bin_maxbins_15_Horsepower_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
+                "signal": "\"Horsepower (binned): \" + (!isValid(datum[\"bin_maxbins_15_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_15_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_15_Horsepower\"], \"\") + \" – \" + format(datum[\"bin_maxbins_15_Horsepower_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
               },
               "x2": [
                 {

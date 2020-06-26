@@ -39,7 +39,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"wavelength\" + \": \" + (format(datum[\"wavelength\"], \"\")) + \"; \" + \"power\" + \": \" + (format(datum[\"power\"], \"\"))"
+            "signal": "\"wavelength: \" + (format(datum[\"wavelength\"], \"\")) + \"; power: \" + (format(datum[\"power\"], \"\"))"
           },
           "x": {"scale": "x", "field": "wavelength"},
           "y": {"scale": "y", "field": "power"},

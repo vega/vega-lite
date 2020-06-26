@@ -150,7 +150,7 @@
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"Month\" + \": \" + (timeFormat(datum[\"date\"], '%b')) + \"; \" + \"temperature\" + \": \" + (format(datum[\"temperature\"], \"\"))"
+                "signal": "\"Month: \" + (timeFormat(datum[\"date\"], '%b')) + \"; temperature: \" + (format(datum[\"temperature\"], \"\"))"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "temperature"},
