@@ -198,42 +198,23 @@ AllSortString:
   name: 'String'
 
 # Channel Definitions
-NumericFieldDefWithCondition:
-  name: MarkPropFieldDef
-  link: 'encoding.html#mark-prop-field-def'
-NumericDatumDefWithCondition:
-  name: MarkPropDatumDef
-  link: 'encoding.html#mark-prop-datum-def'
+NumericMarkPropDef:
+  name: MarkPropDef
+  link: 'encoding.html#mark-prop'
+NumericArrayPropDef:
+  name: MarkPropDef
+  link: 'encoding.html#mark-prop'
+StringArrayPropDef:
+  name: MarkPropDef
+  link: 'encoding.html#mark-prop'
+ShapeDef:
+  name: MarkPropDef
+  link: 'encoding.html#mark-prop'
+ColorDef:
+  name: MarkPropDef
+  link: 'encoding.html#mark-prop'
 
-NumericArrayFieldDefWithCondition:
-  name: MarkPropFieldDef
-  link: 'encoding.html#mark-prop-field-def'
-NumericArrayDatumDefWithCondition:
-  name: MarkPropDatumDef
-  link: 'encoding.html#mark-prop-datum-def'
-
-StringFieldDefWithCondition:
-  name: MarkPropFieldDef
-  link: 'encoding.html#mark-prop-field-def'
-StringDatumDefWithCondition:
-  name: MarkPropDatumDef
-  link: 'encoding.html#mark-prop-datum-def'
-
-ShapeFieldDefWithCondition:
-  name: MarkPropFieldDef
-  link: 'encoding.html#mark-prop-field-def'
-ShapeDatumDefWithCondition:
-  name: MarkPropDatumDef
-  link: 'encoding.html#mark-prop-datum-def'
-
-ColorGradientFieldDefWithCondition:
-  name: MarkPropFieldDef
-  link: 'encoding.html#mark-prop-field-def'
-ColorGradientDatumDefWithCondition:
-  name: MarkPropDatumDef
-  link: 'encoding.html#mark-prop-datum-def'
-
-TextFieldDefWithCondition:
+TextDef:
   name: TextFieldDef
   link: 'encoding.html#text-field-def'
 
@@ -281,28 +262,13 @@ RowColumnEncodingFieldDef:
   link: 'facet.html#facet-field-definition'
 OrderFieldDef:
   link: 'encoding.html#order'
-PositionFieldDef:
-  link: 'encoding.html#position-field-def'
-PolarFieldDef:
-  link: 'encoding.html#polar-field-def'
-PolarDatumDef:
-  link: 'encoding.html#polar-datum-def'
-
+PositionDef:
+  link: 'encoding.html#position'
+PolarDef:
+  link: 'encoding.html#polar'
 ValueDef:
   link: 'encoding.html#value-def'
 
-NumericValueDef:
-  name: ValueDef
-  link: 'encoding.html#value-def'
-XValueDef:
-  name: ValueDef
-  link: 'encoding.html#value-def'
-YValueDef:
-  name: ValueDef
-  link: 'encoding.html#value-def'
-
-PositionDatumDef:
-  link: 'encoding.html#position-datum-def'
 DatumDef:
   link: 'encoding.html#datum-def'
 

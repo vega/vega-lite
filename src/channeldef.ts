@@ -96,9 +96,7 @@ export interface ValueDef<V extends Value = Value> {
   value: V;
 }
 
-export type XValueDef = ValueDef<number | 'width' | SignalRef>;
-
-export type YValueDef = ValueDef<number | 'height' | SignalRef>;
+export type PositionValueDef = ValueDef<number | 'width' | 'height' | SignalRef>;
 
 export type NumericValueDef = ValueDef<number | SignalRef>;
 
@@ -126,26 +124,7 @@ export type StringValueDefWithCondition<F extends Field, T extends Type = Standa
   MarkPropFieldOrDatumDef<F, T>,
   string | null
 >;
-
-export type ColorGradientValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
-  MarkPropFieldOrDatumDef<F, T>,
-  Gradient | string | null
->;
-
-export type NumericValueDefWithCondition<F extends Field> = ValueDefWithCondition<
-  MarkPropFieldOrDatumDef<F, StandardType>,
-  number
->;
-export type NumericArrayValueDefWithCondition<F extends Field> = ValueDefWithCondition<
-  MarkPropFieldOrDatumDef<F, StandardType>,
-  number[]
->;
-
 export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
-
-export type ShapeValueDefWithCondition<F extends Field> = StringValueDefWithCondition<F, TypeForShape>;
-
-export type TextValueDefWithCondition<F extends Field> = ValueDefWithCondition<StringFieldDef<F>, Text>;
 
 export type Conditional<CD extends FieldDef<any> | DatumDef | ValueDef<any> | SignalRef> =
   | ConditionalPredicate<CD>
@@ -191,42 +170,23 @@ export interface ConditionValueDefMixins<V extends Value = Value> {
 export type FieldOrDatumDefWithCondition<F extends FieldDef<any, any> | DatumDef<any>, V extends Value = Value> = F &
   ConditionValueDefMixins<V | SignalRef>;
 
-export type ColorGradientFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<
-  MarkPropFieldDef<F, StandardType>,
-  Gradient | string | null
->;
+export type MarkPropDef<F extends Field, V extends Value, T extends Type = StandardType> =
+  | FieldOrDatumDefWithCondition<MarkPropFieldDef<F, T>, V>
+  | FieldOrDatumDefWithCondition<DatumDef<F>, V>
+  | ValueDefWithCondition<MarkPropFieldOrDatumDef<F, T>, V>;
 
-export type ColorGradientDatumDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<
-  DatumDef<F>,
-  Gradient | string | null
->;
+export type ColorDef<F extends Field> = MarkPropDef<F, Gradient | string | null>;
+export type NumericMarkPropDef<F extends Field> = MarkPropDef<F, number>;
 
-export type NumericFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<
-  MarkPropFieldDef<F, StandardType>,
-  number
->;
+export type NumericArrayMarkPropDef<F extends Field> = MarkPropDef<F, number[]>;
 
-export type NumericDatumDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<DatumDef<F>, number>;
-
-export type NumericArrayFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<
-  MarkPropFieldDef<F, StandardType>,
-  number[]
->;
-
-export type NumericArrayDatumDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<DatumDef<F>, number[]>;
-
-export type ShapeFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<
-  MarkPropFieldDef<F, TypeForShape>,
-  string | null
->;
-
-export type TextFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<StringFieldDef<F>, Text>;
-
-export type TextDatumDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<StringDatumDef<F>, Text>;
+export type ShapeDef<F extends Field> = MarkPropDef<F, string | null, TypeForShape>;
 
 export type StringFieldDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<StringFieldDef<F>, string>;
-
-export type StringDatumDefWithCondition<F extends Field> = FieldOrDatumDefWithCondition<StringDatumDef<F>, string>;
+export type TextDef<F extends Field> =
+  | FieldOrDatumDefWithCondition<StringFieldDef<F>, Text>
+  | FieldOrDatumDefWithCondition<StringDatumDef<F>, Text>
+  | ValueDefWithCondition<StringFieldDef<F>, Text>;
 
 /**
  * A ValueDef with optional Condition<ValueDef | FieldDef>
@@ -428,6 +388,8 @@ export type ScaleDatumDef<F extends Field = string> = ScaleMixins & DatumDef<F>;
  */
 export type SecondaryFieldDef<F extends Field> = FieldDefBase<F, null> & TitleMixins; // x2/y2 shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
+export type Position2Def<F extends Field> = SecondaryFieldDef<F> | DatumDef<F> | PositionValueDef;
+
 export type SecondaryChannelDef<F extends Field> = Encoding<F>['x2' | 'y2'];
 
 /**
@@ -438,6 +400,8 @@ export type FieldDefWithoutScale<F extends Field, T extends Type = StandardType>
 export type LatLongFieldDef<F extends Field> = FieldDefBase<F, null> &
   TitleMixins &
   Partial<TypeMixins<'quantitative'>>; // Lat long shouldn't have bin, but we keep bin property for simplicity of the codebase.
+
+export type LatLongDef<F extends Field> = LatLongFieldDef<F> | DatumDef<F> | NumericValueDef;
 
 export type PositionFieldDefBase<F extends Field> = ScaleFieldDef<
   F,
@@ -486,6 +450,8 @@ export type PositionFieldDef<F extends Field> = PositionFieldDefBase<F> & Positi
 
 export type PositionDatumDef<F extends Field> = PositionDatumDefBase<F> & PositionMixins;
 
+export type PositionDef<F extends Field> = PositionFieldDef<F> | PositionDatumDef<F> | PositionValueDef;
+
 export interface PositionMixins {
   /**
    * An object defining properties of axis's gridlines, ticks and labels.
@@ -507,8 +473,7 @@ export interface PositionMixins {
   impute?: ImputeParams | null;
 }
 
-export type PolarFieldDef<F extends Field> = PositionFieldDefBase<F>;
-export type PolarDatumDef<F extends Field> = PositionDatumDefBase<F>;
+export type PolarDef<F extends Field> = PositionFieldDefBase<F> | PositionDatumDefBase<F> | PositionValueDef;
 
 export function getBand({
   channel,
