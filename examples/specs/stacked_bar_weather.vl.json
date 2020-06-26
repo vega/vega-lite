@@ -7,7 +7,7 @@
       "timeUnit": "month",
       "field": "date",
       "type": "ordinal",
-      "axis": {"title": "Month of the year"}
+      "title": "Month of the year"
     },
     "y": {
       "aggregate": "count",

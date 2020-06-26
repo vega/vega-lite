@@ -22,7 +22,7 @@
     "y": {
       "field": "v1",
       "type": "quantitative",
-      "axis": {"title": "population"}
+      "title": "population"
     },
     "y2": {"field": "v2"},
     "x": {

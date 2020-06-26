@@ -45,7 +45,7 @@
       "y": {
         "field": "ny", "type": "quantitative",
         "scale": {"domain": [0,50]},
-        "axis": {"title": "y"}
+        "title": "y"
       },
       "opacity": {"value": 0.3}
     }

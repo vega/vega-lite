@@ -9,7 +9,8 @@
   "mark": "area",
   "encoding": {
     "x": {
-      "axis": { "title": "Date", "format": "%b" },
+      "axis": {"format": "%b"},
+      "title": "Date",
       "field": "date",
       "timeUnit": "monthdate"
     },
