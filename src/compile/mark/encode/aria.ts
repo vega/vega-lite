@@ -70,8 +70,8 @@ export function description(model: UnitModel) {
   return {
     description: {
       signal: entries(data)
-        .map(({key, value}) => `${key} + ": " + (${value})`)
-        .join(' + "; " + ')
+        .map(({key, value}, index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`)
+        .join(' + ')
     }
   };
 }

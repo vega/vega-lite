@@ -1,4 +1,4 @@
-import {array, isArray, isObject, isString, stringValue} from 'vega-util';
+import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned} from '../../../bin';
 import {Channel, getMainRangeChannel, isXorY} from '../../../channel';
 import {
@@ -120,7 +120,7 @@ export function tooltipData(
   const out = {};
   for (const {channel, key, value} of tuples) {
     if (!toSkip[channel] && !out[key]) {
-      out[stringValue(key)] = value;
+      out[key] = value;
     }
   }
 
@@ -135,6 +135,6 @@ export function tooltipRefForEncoding(
 ) {
   const data = tooltipData(encoding, stack, config, {reactiveGeom});
 
-  const keyValues = entries(data).map(({key, value}) => `${key}: ${value}`);
+  const keyValues = entries(data).map(({key, value}) => `"${key}": ${value}`);
   return keyValues.length > 0 ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
