@@ -19,6 +19,7 @@ import interval from './interval';
 import multi from './multi';
 import single from './single';
 import {SelectionProjection, SelectionProjectionComponent} from './transforms/project';
+import {Cursor} from 'vega-typings/types';
 
 export const STORE = '_store';
 export const TUPLE = '_tuple';
@@ -52,6 +53,8 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   zoom?: any;
   nearest?: any;
   clear?: any;
+
+  viewCursor?: Cursor;
 }
 
 export interface SelectionCompiler<T extends SelectionType = SelectionType> {

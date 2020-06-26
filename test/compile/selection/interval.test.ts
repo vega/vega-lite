@@ -506,6 +506,25 @@ describe('Interval Selections', () => {
     );
   });
 
+  it('builds cursor signals', () => {
+    const signals = interval.signals(model, selCmpts['one']);
+    const topLevelSignals = interval.topLevelSignals(model, selCmpts['one'], []);
+    expect(signals).toContainEqual({
+      name: 'cursor',
+      push: 'outer',
+      on: [
+        {events: 'scope:mouseover', update: "'crosshair'"},
+        {events: 'scope:mouseout', update: '"crosshair"'},
+        {events: '@one_brush:mouseover', update: '"move"'},
+        {events: '@one_brush:mouseout', update: "'default'"}
+      ]
+    });
+    expect(topLevelSignals).toContainEqual({
+      name: 'cursor',
+      value: 'default'
+    });
+  });
+
   it('builds brush mark', () => {
     const marks: any[] = [{hello: 'world'}];
     expect(interval.marks(model, selCmpts['one'], marks)).toEqual([
@@ -567,7 +586,8 @@ describe('Interval Selections', () => {
         clip: true,
         encode: {
           enter: {
-            fill: {value: 'transparent'}
+            fill: {value: 'transparent'},
+            cursor: {value: 'move'}
           },
           update: {
             stroke: [
@@ -658,7 +678,8 @@ describe('Interval Selections', () => {
         clip: true,
         encode: {
           enter: {
-            fill: {value: 'transparent'}
+            fill: {value: 'transparent'},
+            cursor: {value: 'move'}
           },
           update: {
             stroke: [
@@ -778,7 +799,7 @@ describe('Interval Selections', () => {
         type: 'rect',
         clip: true,
         encode: {
-          enter: {fill: {value: 'transparent'}},
+          enter: {fill: {value: 'transparent'}, cursor: {value: 'move'}},
           update: {
             x: [
               {

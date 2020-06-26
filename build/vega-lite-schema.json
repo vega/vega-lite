@@ -2863,7 +2863,7 @@
       "properties": {
         "cursor": {
           "$ref": "#/definitions/Cursor",
-          "description": "The mouse cursor used over the interval mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
+          "description": "The mouse cursor used over the interval mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.\n\n__Default value:__ `\"move\"`"
         },
         "fill": {
           "$ref": "#/definitions/Color",
@@ -10285,6 +10285,10 @@
           ],
           "type": "string"
         },
+        "viewCursor": {
+          "$ref": "#/definitions/Cursor",
+          "description": "Set the cursor of the view outside of the brush rectangle.\n\n__Default value:__ `\"crosshair\"`\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
+        },
         "zoom": {
           "description": "When truthy, allows a user to interactively resize an interval selection.\nCan be `true`, `false` (to disable zooming), or a [Vega event stream\ndefinition](https://vega.github.io/vega/docs/event-streams/). Currently,\nonly `wheel` events are supported.\n\n__Default value:__ `true`, which corresponds to `wheel!`.\n\n__See also:__ [`zoom`](https://vega.github.io/vega-lite/docs/zoom.html) documentation.",
           "type": [
@@ -10373,6 +10377,10 @@
             "string",
             "boolean"
           ]
+        },
+        "viewCursor": {
+          "$ref": "#/definitions/Cursor",
+          "description": "Set the cursor of the view outside of the brush rectangle.\n\n__Default value:__ `\"crosshair\"`\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
         },
         "zoom": {
           "description": "When truthy, allows a user to interactively resize an interval selection.\nCan be `true`, `false` (to disable zooming), or a [Vega event stream\ndefinition](https://vega.github.io/vega/docs/event-streams/). Currently,\nonly `wheel` events are supported.\n\n__Default value:__ `true`, which corresponds to `wheel!`.\n\n__See also:__ [`zoom`](https://vega.github.io/vega-lite/docs/zoom.html) documentation.",

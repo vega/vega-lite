@@ -181,6 +181,8 @@ export interface BrushConfig {
   strokeDashOffset?: number;
   /**
    * The mouse cursor used over the interval mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
+   *
+   * __Default value:__ `"move"`
    */
   cursor?: Cursor;
 }
@@ -237,6 +239,15 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
    * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
   init?: SelectionInitIntervalMapping;
+
+  /**
+   * Set the cursor of the view outside of the brush rectangle.
+   *
+   * __Default value:__ `"crosshair"`
+   *
+   * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
+   */
+  viewCursor?: Cursor;
 }
 
 export interface BaseSelectionDef<T extends 'single' | 'multi' | 'interval'> {
@@ -329,9 +340,10 @@ export const defaultConfig: SelectionConfig = {
     encodings: ['x', 'y'],
     translate: '[mousedown, window:mouseup] > window:mousemove!',
     zoom: 'wheel!',
-    mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white'},
+    mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white', cursor: 'move'},
     resolve: 'global',
-    clear: 'dblclick'
+    clear: 'dblclick',
+    viewCursor: 'crosshair'
   }
 };
 

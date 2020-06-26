@@ -273,7 +273,8 @@ describe('Layered Selections', () => {
         clip: true,
         encode: {
           enter: {
-            fill: {value: 'transparent'}
+            fill: {value: 'transparent'},
+            cursor: {value: 'move'}
           },
           update: {
             stroke: [

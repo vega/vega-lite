@@ -15,6 +15,22 @@ export const BRUSH = '_brush';
 export const SCALE_TRIGGER = '_scale_trigger';
 
 const interval: SelectionCompiler<'interval'> = {
+  topLevelSignals: (model, selCmpt, signals) => {
+    if (!selCmpt.viewCursor && !selCmpt.mark.cursor) {
+      return signals;
+    }
+    for (const signal of signals) {
+      if (signal.name == 'cursor') {
+        return signals;
+      }
+    }
+    // No cursor signal, add one.
+    signals.push({
+      name: 'cursor',
+      value: 'default'
+    });
+    return signals;
+  },
   signals: (model, selCmpt) => {
     const name = selCmpt.name;
     const fieldsSg = name + TUPLE_FIELDS;
@@ -84,7 +100,7 @@ const interval: SelectionCompiler<'interval'> = {
     // ordinal/nominal domains which, when inverted, will still produce a valid datum.
     const init = selCmpt.init;
     const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
-    return signals.concat({
+    signals.push({
       name: name + TUPLE,
       ...(init ? {init: `{${update}: ${assembleInit(init)}}`} : {}),
       on: [
@@ -94,6 +110,31 @@ const interval: SelectionCompiler<'interval'> = {
         }
       ]
     });
+
+    // Cursor signal
+    const cursorEvents = [
+      ...(selCmpt.viewCursor
+        ? [
+            {events: 'scope:mouseover', update: "'crosshair'"},
+            {events: 'scope:mouseout', update: JSON.stringify(selCmpt.viewCursor)}
+          ]
+        : []),
+      ...(selCmpt.mark.cursor
+        ? [
+            {events: `@${selCmpt.name + BRUSH}:mouseover`, update: JSON.stringify(selCmpt.mark.cursor)},
+            {events: `@${selCmpt.name + BRUSH}:mouseout`, update: "'default'"}
+          ]
+        : [])
+    ];
+    if (cursorEvents.length > 0) {
+      signals.push({
+        name: 'cursor',
+        push: 'outer',
+        on: cursorEvents
+      } as NewSignal);
+    }
+
+    return signals;
   },
 
   modifyExpr: (model, selCmpt) => {
