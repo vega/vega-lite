@@ -292,7 +292,7 @@
       "type": "rect",
       "style": ["bar"],
       "interactive": true,
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -408,7 +408,12 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "__count"},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "__count"},
+          {"data": "data_0", "field": "__count"}
+        ]
+      },
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

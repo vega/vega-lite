@@ -26,13 +26,7 @@
           "signal": "layer_1_bin_maxbins_10_IMDB_Rating_bins",
           "extent": {"signal": "layer_1_bin_maxbins_10_IMDB_Rating_extent"},
           "maxbins": 10
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
+        },
         {
           "type": "aggregate",
           "groupby": [
@@ -46,8 +40,8 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "data_0",
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
         {
           "type": "filter",
@@ -56,8 +50,8 @@
       ]
     },
     {
-      "name": "data_2",
-      "source": "data_0",
+      "name": "data_1",
+      "source": "source_0",
       "transform": [
         {
           "type": "filter",
@@ -71,7 +65,7 @@
       "name": "layer_0_marks",
       "type": "arc",
       "style": ["arc"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "white"},
@@ -107,7 +101,7 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "align": {"value": "right"},
@@ -152,7 +146,12 @@
     {
       "name": "radius",
       "type": "sqrt",
-      "domain": {"data": "data_2", "field": "__count"},
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "__count"},
+          {"data": "data_1", "field": "__count"}
+        ]
+      },
       "range": [0, {"signal": "min(width,height)/2"}],
       "zero": true
     },

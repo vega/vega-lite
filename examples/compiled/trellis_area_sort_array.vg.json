@@ -152,7 +152,7 @@
           "type": "group",
           "from": {
             "facet": {
-              "name": "faceted_path_Main",
+              "name": "faceted_path_child_main",
               "data": "facet",
               "groupby": ["symbol"]
             }
@@ -169,7 +169,7 @@
               "type": "area",
               "style": ["area"],
               "sort": {"field": "datum[\"date\"]"},
-              "from": {"data": "faceted_path_Main"},
+              "from": {"data": "faceted_path_child_main"},
               "encode": {
                 "update": {
                   "orient": {"value": "vertical"},

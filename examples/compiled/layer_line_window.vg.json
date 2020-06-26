@@ -6,7 +6,6 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "source"},
     {
       "name": "falcon",
       "values": [
@@ -476,8 +475,8 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_Main",
-          "data": "data_1",
+          "name": "faceted_path_layer_0_main",
+          "data": "data_0",
           "groupby": ["system"]
         }
       },
@@ -493,7 +492,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"row\"]"},
-          "from": {"data": "faceted_path_Main"},
+          "from": {"data": "faceted_path_layer_0_main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "system"},
@@ -516,7 +515,7 @@
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_Main",
+          "name": "faceted_path_layer_1_main",
           "data": "data_1",
           "groupby": ["system"]
         }
@@ -533,7 +532,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"row\"]"},
-          "from": {"data": "faceted_path_Main"},
+          "from": {"data": "faceted_path_layer_1_main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "system"},
@@ -556,7 +555,12 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "row"},
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "row"},
+          {"data": "data_1", "field": "row"}
+        ]
+      },
       "range": [0, {"signal": "width"}],
       "nice": false,
       "zero": false
@@ -564,14 +568,25 @@
     {
       "name": "y",
       "type": "log",
-      "domain": {"data": "data_1", "field": "fps"},
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "fps"},
+          {"data": "data_1", "field": "fps"}
+        ]
+      },
       "range": [{"signal": "height"}, 0],
       "nice": true
     },
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "data_1", "field": "system", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "system"},
+          {"data": "data_1", "field": "system"}
+        ],
+        "sort": true
+      },
       "range": "category"
     }
   ],

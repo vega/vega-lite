@@ -5,10 +5,10 @@
   "padding": 5,
   "data": [
     {"name": "pts_store"},
+    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}},
     {
-      "name": "source_0",
-      "url": "data/movies.json",
-      "format": {"type": "json"},
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
         {
           "type": "extent",
@@ -50,20 +50,7 @@
     },
     {
       "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": ["Major Genre"],
-          "ops": ["count"],
-          "fields": [null],
-          "as": ["__count"]
-        }
-      ]
-    },
-    {
-      "name": "data_2",
-      "source": "source_0",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
@@ -88,8 +75,8 @@
       ]
     },
     {
-      "name": "data_3",
-      "source": "source_0",
+      "name": "data_2",
+      "source": "data_0",
       "transform": [
         {
           "type": "aggregate",
@@ -106,6 +93,19 @@
         {
           "type": "filter",
           "expr": "isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) && isValid(datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"]) && isFinite(+datum[\"bin_maxbins_10_Rotten Tomatoes Rating\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["Major Genre"],
+          "ops": ["count"],
+          "fields": [null],
+          "as": ["__count"]
         }
       ]
     }
@@ -142,7 +142,7 @@
           "type": "rect",
           "style": ["rect"],
           "interactive": false,
-          "from": {"data": "data_1"},
+          "from": {"data": "data_2"},
           "encode": {
             "update": {
               "fill": {"scale": "color", "field": "__count"},
@@ -258,11 +258,23 @@
         {
           "direction": "horizontal",
           "gradientLength": 120,
-          "title": "All Movies, In Selected Category",
+          "title": "All Movies",
           "fill": "color",
-          "symbolType": "circle",
+          "symbolType": "square"
+        },
+        {
+          "title": "In Selected Category",
           "size": "size",
-          "encode": {"symbols": {"update": {"stroke": {"value": "#666"}}}}
+          "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
+          "symbolType": "circle",
+          "encode": {
+            "symbols": {
+              "update": {
+                "fill": {"value": "transparent"},
+                "stroke": {"value": "#666"}
+              }
+            }
+          }
         }
       ]
     },
@@ -311,7 +323,7 @@
           "type": "rect",
           "style": ["bar"],
           "interactive": true,
-          "from": {"data": "data_1"},
+          "from": {"data": "data_3"},
           "encode": {
             "update": {
               "fill": [
@@ -374,7 +386,7 @@
     {
       "name": "color",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "__count"},
+      "domain": {"data": "data_2", "field": "__count"},
       "range": "heatmap",
       "interpolate": "hcl",
       "zero": false
@@ -416,7 +428,7 @@
     {
       "name": "concat_1_x",
       "type": "band",
-      "domain": {"data": "data_1", "field": "Major Genre", "sort": true},
+      "domain": {"data": "data_3", "field": "Major Genre", "sort": true},
       "range": [0, {"signal": "concat_1_width"}],
       "paddingInner": 0.1,
       "paddingOuter": 0.05
@@ -424,7 +436,7 @@
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "__count"},
+      "domain": {"data": "data_3", "field": "__count"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

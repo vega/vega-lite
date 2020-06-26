@@ -6,10 +6,10 @@
   "height": 200,
   "style": "cell",
   "data": [
+    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}},
     {
-      "name": "source_0",
-      "url": "data/movies.json",
-      "format": {"type": "json"},
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
         {
           "type": "extent",
@@ -26,30 +26,7 @@
           "signal": "layer_0_bin_maxbins_10_IMDB_Rating_bins",
           "extent": {"signal": "layer_0_bin_maxbins_10_IMDB_Rating_extent"},
           "maxbins": 10
-        }
-      ]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "aggregate",
-          "groupby": [],
-          "ops": ["mean"],
-          "fields": ["IMDB Rating"],
-          "as": ["mean_IMDB Rating"]
         },
-        {
-          "type": "filter",
-          "expr": "isValid(datum[\"mean_IMDB Rating\"]) && isFinite(+datum[\"mean_IMDB Rating\"])"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
         {
           "type": "aggregate",
           "groupby": [
@@ -63,6 +40,23 @@
         {
           "type": "filter",
           "expr": "isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) && isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [],
+          "ops": ["mean"],
+          "fields": ["IMDB Rating"],
+          "as": ["mean_IMDB Rating"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_IMDB Rating\"]) && isFinite(+datum[\"mean_IMDB Rating\"])"
         }
       ]
     }
@@ -103,7 +97,7 @@
       "name": "layer_1_marks",
       "type": "rule",
       "style": ["rule"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "red"},
@@ -133,7 +127,7 @@
           {
             "signal": "[layer_0_bin_maxbins_10_IMDB_Rating_bins.start, layer_0_bin_maxbins_10_IMDB_Rating_bins.stop]"
           },
-          {"data": "data_0", "field": "mean_IMDB Rating"}
+          {"data": "data_1", "field": "mean_IMDB Rating"}
         ]
       },
       "range": [0, {"signal": "width"}],

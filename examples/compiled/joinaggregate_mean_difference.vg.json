@@ -63,7 +63,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -101,8 +101,10 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "data": "data_1",
-        "fields": ["IMDB Rating", "average_AverageRating"]
+        "fields": [
+          {"data": "data_0", "field": "IMDB Rating"},
+          {"data": "data_1", "field": "average_AverageRating"}
+        ]
       },
       "range": [0, {"signal": "width"}],
       "nice": true,
@@ -111,7 +113,7 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "data_1", "field": "Title", "sort": true},
+      "domain": {"data": "data_0", "field": "Title", "sort": true},
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

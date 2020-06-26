@@ -6,11 +6,7 @@
     {
       "name": "source_0",
       "url": "data/seattle-weather.csv",
-      "format": {"type": "csv", "parse": {"date": "date"}}
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
+      "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [
         {
           "field": "date",
@@ -27,8 +23,8 @@
       ]
     },
     {
-      "name": "data_1",
-      "source": "data_0",
+      "name": "data_0",
+      "source": "source_0",
       "transform": [
         {
           "type": "aggregate",
@@ -40,8 +36,8 @@
       ]
     },
     {
-      "name": "data_2",
-      "source": "data_0",
+      "name": "data_1",
+      "source": "source_0",
       "transform": [
         {
           "type": "aggregate",
@@ -54,7 +50,7 @@
     },
     {
       "name": "concat_0_row_domain",
-      "source": "data_2",
+      "source": "data_1",
       "transform": [{"type": "aggregate", "groupby": ["year_date"]}]
     }
   ],
@@ -150,7 +146,7 @@
           "from": {
             "facet": {
               "name": "concat_0_facet",
-              "data": "data_2",
+              "data": "data_1",
               "groupby": ["year_date"]
             }
           },
@@ -167,7 +163,7 @@
               "type": "line",
               "style": ["line"],
               "sort": {"field": "datum[\"month_date\"]"},
-              "from": {"data": "data_1"},
+              "from": {"data": "concat_0_facet"},
               "encode": {
                 "update": {
                   "stroke": {"value": "#4c78a8"},
@@ -218,7 +214,7 @@
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"month_date\"]"},
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "stroke": {"value": "#4c78a8"},
@@ -277,14 +273,14 @@
     {
       "name": "concat_0_x",
       "type": "point",
-      "domain": {"data": "data_2", "field": "month_date", "sort": true},
+      "domain": {"data": "data_1", "field": "month_date", "sort": true},
       "range": {"step": {"signal": "concat_0_x_step"}},
       "padding": 0.5
     },
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "data_2", "field": "mean_precipitation"},
+      "domain": {"data": "data_1", "field": "mean_precipitation"},
       "range": [{"signal": "concat_0_child_height"}, 0],
       "nice": true,
       "zero": true
@@ -292,14 +288,14 @@
     {
       "name": "concat_1_x",
       "type": "point",
-      "domain": {"data": "data_1", "field": "month_date", "sort": true},
+      "domain": {"data": "data_0", "field": "month_date", "sort": true},
       "range": {"step": {"signal": "concat_1_x_step"}},
       "padding": 0.5
     },
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "mean_precipitation"},
+      "domain": {"data": "data_0", "field": "mean_precipitation"},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

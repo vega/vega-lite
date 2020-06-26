@@ -262,7 +262,7 @@
       "name": "layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
-      "from": {"data": "medians"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "#6EB4FD"},
@@ -281,7 +281,7 @@
       "name": "layer_1_marks",
       "type": "rect",
       "style": ["tick"],
-      "from": {"data": "medians"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -352,14 +352,20 @@
     {
       "name": "y",
       "type": "point",
-      "domain": {"data": "medians", "field": "name"},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "name"},
+          {"data": "data_0", "field": "name"},
+          {"data": "medians", "field": "name"}
+        ]
+      },
       "range": [0, {"signal": "height"}],
       "padding": 0.5
     },
     {
       "name": "size",
       "type": "linear",
-      "domain": {"data": "medians", "field": "__count"},
+      "domain": {"data": "data_1", "field": "__count"},
       "range": [0, 361],
       "zero": true
     }
