@@ -37,6 +37,7 @@
       ]
     },
     {"name": "alex", "update": "vlSelectionResolve(\"alex_store\", \"union\")"},
+    {"name": "cursor", "value": "default"},
     {
       "name": "morgan",
       "update": "vlSelectionResolve(\"morgan_store\", \"union\")"
@@ -172,6 +173,16 @@
           "events": [{"signal": "alex_Cylinders || alex_Origin"}],
           "update": "alex_Cylinders && alex_Origin ? {unit: \"\", fields: alex_tuple_fields, values: [alex_Cylinders,alex_Origin]} : null"
         }
+      ]
+    },
+    {
+      "name": "cursor",
+      "push": "outer",
+      "on": [
+        {"events": "scope:mouseover", "update": "'crosshair'"},
+        {"events": "scope:mouseout", "update": "\"crosshair\""},
+        {"events": "@alex_brush:mouseover", "update": "\"move\""},
+        {"events": "@alex_brush:mouseout", "update": "'default'"}
       ]
     },
     {
@@ -398,6 +409,16 @@
       ]
     },
     {
+      "name": "cursor",
+      "push": "outer",
+      "on": [
+        {"events": "scope:mouseover", "update": "'crosshair'"},
+        {"events": "scope:mouseout", "update": "\"crosshair\""},
+        {"events": "@morgan_brush:mouseover", "update": "\"move\""},
+        {"events": "@morgan_brush:mouseout", "update": "'default'"}
+      ]
+    },
+    {
       "name": "morgan_tuple_fields",
       "value": [
         {"field": "Cylinders", "channel": "x", "type": "E"},
@@ -589,7 +610,10 @@
       "type": "rect",
       "clip": true,
       "encode": {
-        "enter": {"fill": {"value": "transparent"}},
+        "enter": {
+          "cursor": {"value": "move"},
+          "fill": {"value": "transparent"}
+        },
         "update": {
           "x": [
             {
@@ -634,7 +658,10 @@
       "type": "rect",
       "clip": true,
       "encode": {
-        "enter": {"fill": {"value": "transparent"}},
+        "enter": {
+          "cursor": {"value": "move"},
+          "fill": {"value": "transparent"}
+        },
         "update": {
           "x": [
             {

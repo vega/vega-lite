@@ -133,6 +133,7 @@
       "name": "highlight",
       "update": "vlSelectionResolve(\"highlight_store\", \"union\")"
     },
+    {"name": "cursor", "value": "default"},
     {
       "name": "highlight_x",
       "value": [],
@@ -262,6 +263,16 @@
           "events": [{"signal": "highlight_col || highlight_row"}],
           "update": "highlight_col && highlight_row ? {unit: \"\", fields: highlight_tuple_fields, values: [highlight_col,highlight_row]} : null"
         }
+      ]
+    },
+    {
+      "name": "cursor",
+      "push": "outer",
+      "on": [
+        {"events": "scope:mouseover", "update": "'crosshair'"},
+        {"events": "scope:mouseout", "update": "\"crosshair\""},
+        {"events": "@highlight_brush:mouseover", "update": "\"move\""},
+        {"events": "@highlight_brush:mouseout", "update": "'default'"}
       ]
     },
     {
@@ -427,7 +438,10 @@
       "type": "rect",
       "clip": true,
       "encode": {
-        "enter": {"fill": {"value": "transparent"}},
+        "enter": {
+          "cursor": {"value": "move"},
+          "fill": {"value": "transparent"}
+        },
         "update": {
           "x": [
             {

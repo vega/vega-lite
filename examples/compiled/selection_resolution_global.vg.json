@@ -79,7 +79,8 @@
     {
       "name": "brush",
       "update": "vlSelectionResolve(\"brush_store\", \"union\")"
-    }
+    },
+    {"name": "cursor", "value": "default"}
   ],
   "layout": {"padding": 20, "columns": 3, "bounds": "full", "align": "all"},
   "marks": [
@@ -234,6 +235,16 @@
               ],
               "update": "brush_Miles_per_Gallon && brush_Horsepower ? {unit: \"child__row_Horsepowercolumn_Miles_per_Gallon\", fields: brush_tuple_fields, values: [brush_Miles_per_Gallon,brush_Horsepower]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -406,7 +417,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {
@@ -649,6 +663,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [
             {"field": "Acceleration", "channel": "x", "type": "R"},
@@ -818,7 +842,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {
@@ -999,6 +1026,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [{"field": "Horsepower", "channel": "x", "type": "R"}]
         },
@@ -1165,7 +1202,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {
@@ -1407,6 +1447,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [
             {"field": "Miles_per_Gallon", "channel": "x", "type": "R"},
@@ -1576,7 +1626,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {
@@ -1759,6 +1812,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [{"field": "Acceleration", "channel": "x", "type": "R"}]
         },
@@ -1925,7 +1988,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {
@@ -2165,6 +2231,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [
             {"field": "Horsepower", "channel": "x", "type": "R"},
@@ -2334,7 +2410,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {
@@ -2519,6 +2598,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [{"field": "Miles_per_Gallon", "channel": "x", "type": "R"}]
         },
@@ -2685,7 +2774,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {
@@ -2927,6 +3019,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [
             {"field": "Acceleration", "channel": "x", "type": "R"},
@@ -3096,7 +3198,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {
@@ -3341,6 +3446,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [
             {"field": "Horsepower", "channel": "x", "type": "R"},
@@ -3510,7 +3625,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {

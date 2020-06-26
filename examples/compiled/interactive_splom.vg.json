@@ -111,6 +111,7 @@
       "name": "brush",
       "update": "vlSelectionResolve(\"brush_store\", \"union\")"
     },
+    {"name": "cursor", "value": "default"},
     {
       "name": "grid",
       "update": "{\"Miles_per_Gallon\": grid_Miles_per_Gallon, \"Horsepower\": grid_Horsepower, \"Acceleration\": grid_Acceleration}"
@@ -279,6 +280,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [
             {"field": "Miles_per_Gallon", "channel": "x", "type": "R"},
@@ -416,6 +427,16 @@
               ],
               "update": "grid_Miles_per_Gallon && grid_Horsepower ? {unit: \"child__row_Horsepowercolumn_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon,grid_Horsepower]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -565,7 +586,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"signal": "brush_y[0]"},
@@ -789,6 +813,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [
             {"field": "Acceleration", "channel": "x", "type": "R"},
@@ -924,6 +958,16 @@
               "events": [{"signal": "grid_Acceleration || grid_Horsepower"}],
               "update": "grid_Acceleration && grid_Horsepower ? {unit: \"child__row_Horsepowercolumn_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration,grid_Horsepower]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -1073,7 +1117,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"signal": "brush_y[0]"},
@@ -1233,6 +1280,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [{"field": "Horsepower", "channel": "x", "type": "R"}]
         },
@@ -1347,6 +1404,16 @@
               "events": [{"signal": "grid_Horsepower"}],
               "update": "grid_Horsepower ? {unit: \"child__row_Horsepowercolumn_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -1493,7 +1560,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"value": 0},
@@ -1716,6 +1786,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [
             {"field": "Miles_per_Gallon", "channel": "x", "type": "R"},
@@ -1853,6 +1933,16 @@
               ],
               "update": "grid_Miles_per_Gallon && grid_Acceleration ? {unit: \"child__row_Accelerationcolumn_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon,grid_Acceleration]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -2002,7 +2092,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"signal": "brush_y[0]"},
@@ -2164,6 +2257,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [{"field": "Acceleration", "channel": "x", "type": "R"}]
         },
@@ -2278,6 +2381,16 @@
               "events": [{"signal": "grid_Acceleration"}],
               "update": "grid_Acceleration ? {unit: \"child__row_Accelerationcolumn_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -2424,7 +2537,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"value": 0},
@@ -2645,6 +2761,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [
             {"field": "Horsepower", "channel": "x", "type": "R"},
@@ -2780,6 +2906,16 @@
               "events": [{"signal": "grid_Horsepower || grid_Acceleration"}],
               "update": "grid_Horsepower && grid_Acceleration ? {unit: \"child__row_Accelerationcolumn_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Acceleration]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -2929,7 +3065,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"signal": "brush_y[0]"},
@@ -3093,6 +3232,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [{"field": "Miles_per_Gallon", "channel": "x", "type": "R"}]
         },
@@ -3207,6 +3356,16 @@
               "events": [{"signal": "grid_Miles_per_Gallon"}],
               "update": "grid_Miles_per_Gallon ? {unit: \"child__row_Miles_per_Galloncolumn_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -3353,7 +3512,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"value": 0},
@@ -3576,6 +3738,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [
             {"field": "Acceleration", "channel": "x", "type": "R"},
@@ -3713,6 +3885,16 @@
               ],
               "update": "grid_Acceleration && grid_Miles_per_Gallon ? {unit: \"child__row_Miles_per_Galloncolumn_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration,grid_Miles_per_Gallon]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -3862,7 +4044,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"signal": "brush_y[0]"},
@@ -4088,6 +4273,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [
             {"field": "Horsepower", "channel": "x", "type": "R"},
@@ -4225,6 +4420,16 @@
               ],
               "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"child__row_Miles_per_Galloncolumn_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Miles_per_Gallon]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -4374,7 +4579,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"signal": "brush_y[0]"},

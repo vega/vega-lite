@@ -99,7 +99,8 @@
     {
       "name": "brush",
       "update": "vlSelectionResolve(\"brush_store\", \"union\")"
-    }
+    },
+    {"name": "cursor", "value": "default"}
   ],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
@@ -190,6 +191,16 @@
               "events": [{"signal": "brush_time"}],
               "update": "brush_time ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_time]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -362,7 +373,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {

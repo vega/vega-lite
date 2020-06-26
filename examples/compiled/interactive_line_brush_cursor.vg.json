@@ -28,6 +28,7 @@
       "name": "brush",
       "update": "vlSelectionResolve(\"brush_store\", \"union\")"
     },
+    {"name": "cursor", "value": "default"},
     {
       "name": "brush_x",
       "value": [],
@@ -104,6 +105,16 @@
           "events": [{"signal": "brush_date"}],
           "update": "brush_date ? {unit: \"\", fields: brush_tuple_fields, values: [brush_date]} : null"
         }
+      ]
+    },
+    {
+      "name": "cursor",
+      "push": "outer",
+      "on": [
+        {"events": "scope:mouseover", "update": "'crosshair'"},
+        {"events": "scope:mouseout", "update": "\"crosshair\""},
+        {"events": "@brush_brush:mouseover", "update": "\"pointer\""},
+        {"events": "@brush_brush:mouseout", "update": "'default'"}
       ]
     },
     {

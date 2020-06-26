@@ -75,6 +75,7 @@
       "name": "brush",
       "update": "vlSelectionResolve(\"brush_store\", \"union\")"
     },
+    {"name": "cursor", "value": "default"},
     {
       "name": "brush_x",
       "value": [],
@@ -148,6 +149,16 @@
           "events": [{"signal": "brush_month_date"}],
           "update": "brush_month_date ? {unit: \"layer_0\", fields: brush_tuple_fields, values: [brush_month_date]} : null"
         }
+      ]
+    },
+    {
+      "name": "cursor",
+      "push": "outer",
+      "on": [
+        {"events": "scope:mouseover", "update": "'crosshair'"},
+        {"events": "scope:mouseout", "update": "\"crosshair\""},
+        {"events": "@brush_brush:mouseover", "update": "\"move\""},
+        {"events": "@brush_brush:mouseout", "update": "'default'"}
       ]
     },
     {
@@ -323,7 +334,10 @@
       "type": "rect",
       "clip": true,
       "encode": {
-        "enter": {"fill": {"value": "transparent"}},
+        "enter": {
+          "cursor": {"value": "move"},
+          "fill": {"value": "transparent"}
+        },
         "update": {
           "x": [
             {

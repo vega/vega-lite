@@ -29,6 +29,7 @@
       ]
     },
     {"name": "view", "update": "vlSelectionResolve(\"view_store\", \"union\")"},
+    {"name": "cursor", "value": "default"},
     {
       "name": "view_income",
       "on": [
@@ -64,6 +65,16 @@
           "events": [{"signal": "view_income || view_health"}],
           "update": "view_income && view_health ? {unit: \"\", fields: view_tuple_fields, values: [view_income,view_health]} : null"
         }
+      ]
+    },
+    {
+      "name": "cursor",
+      "push": "outer",
+      "on": [
+        {"events": "scope:mouseover", "update": "'crosshair'"},
+        {"events": "scope:mouseout", "update": "\"crosshair\""},
+        {"events": "@view_brush:mouseover", "update": "\"move\""},
+        {"events": "@view_brush:mouseout", "update": "'default'"}
       ]
     },
     {

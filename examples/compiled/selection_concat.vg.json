@@ -41,6 +41,7 @@
       "name": "brush",
       "update": "vlSelectionResolve(\"brush_store\", \"union\")"
     },
+    {"name": "cursor", "value": "default"},
     {
       "name": "grid",
       "update": "{\"Displacement\": grid_Displacement, \"Acceleration\": grid_Acceleration}"
@@ -201,6 +202,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [
             {"field": "Miles_per_Gallon", "channel": "x", "type": "R"},
@@ -357,7 +368,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {
@@ -502,6 +516,16 @@
               "events": [{"signal": "grid_Displacement || grid_Acceleration"}],
               "update": "grid_Displacement && grid_Acceleration ? {unit: \"concat_1\", fields: grid_tuple_fields, values: [grid_Displacement,grid_Acceleration]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {

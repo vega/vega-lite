@@ -110,6 +110,7 @@
       "name": "grid",
       "update": "{\"Miles_per_Gallon\": grid_Miles_per_Gallon, \"Horsepower\": grid_Horsepower, \"Acceleration\": grid_Acceleration}"
     },
+    {"name": "cursor", "value": "default"},
     {"name": "grid_Miles_per_Gallon"},
     {"name": "grid_Horsepower"},
     {"name": "grid_Acceleration"}
@@ -172,6 +173,16 @@
               ],
               "update": "grid_Miles_per_Gallon && grid_Horsepower ? {unit: \"child__row_Horsepowercolumn_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon,grid_Horsepower]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -377,6 +388,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "grid_tuple_fields",
           "value": [
             {"field": "Acceleration", "channel": "x", "type": "R"},
@@ -558,6 +579,16 @@
               "events": [{"signal": "grid_Horsepower"}],
               "update": "grid_Horsepower ? {unit: \"child__row_Horsepowercolumn_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -762,6 +793,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "grid_tuple_fields",
           "value": [
             {"field": "Miles_per_Gallon", "channel": "x", "type": "R"},
@@ -943,6 +984,16 @@
               "events": [{"signal": "grid_Acceleration"}],
               "update": "grid_Acceleration ? {unit: \"child__row_Accelerationcolumn_Acceleration\", fields: grid_tuple_fields, values: [grid_Acceleration]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -1145,6 +1196,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "grid_tuple_fields",
           "value": [
             {"field": "Horsepower", "channel": "x", "type": "R"},
@@ -1326,6 +1387,16 @@
               "events": [{"signal": "grid_Miles_per_Gallon"}],
               "update": "grid_Miles_per_Gallon ? {unit: \"child__row_Miles_per_Galloncolumn_Miles_per_Gallon\", fields: grid_tuple_fields, values: [grid_Miles_per_Gallon]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -1530,6 +1601,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "grid_tuple_fields",
           "value": [
             {"field": "Acceleration", "channel": "x", "type": "R"},
@@ -1731,6 +1812,16 @@
               ],
               "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"child__row_Miles_per_Galloncolumn_Horsepower\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Miles_per_Gallon]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {

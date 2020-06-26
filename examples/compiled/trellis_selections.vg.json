@@ -55,6 +55,7 @@
       "name": "brush",
       "update": "vlSelectionResolve(\"brush_store\", \"intersect\")"
     },
+    {"name": "cursor", "value": "default"},
     {"name": "grid", "update": "{\"X\": grid_X, \"Y\": grid_Y}"},
     {"name": "grid_X"},
     {"name": "grid_Y"},
@@ -232,6 +233,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [{"field": "X", "channel": "x", "type": "R"}]
         },
@@ -361,6 +372,16 @@
               "events": [{"signal": "grid_X || grid_Y"}],
               "update": "grid_X && grid_Y ? {unit: \"child\" + '__facet_column_' + (facet[\"Series\"]), fields: grid_tuple_fields, values: [grid_X,grid_Y]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@grid_brush:mouseover", "update": "\"move\""},
+            {"events": "@grid_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -543,7 +564,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": {"signal": "brush_x[0]"},
               "y": {"value": 0},

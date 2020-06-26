@@ -357,7 +357,8 @@
     {
       "name": "brush",
       "update": "vlSelectionResolve(\"brush_store\", \"union\")"
-    }
+    },
+    {"name": "cursor", "value": "default"}
   ],
   "layout": {"padding": 20, "bounds": "full", "align": "each"},
   "marks": [
@@ -445,6 +446,16 @@
               "events": [{"signal": "brush_Country"}],
               "update": "brush_Country ? {unit: \"concat_0\", fields: brush_tuple_fields, values: [brush_Country]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -610,7 +621,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {
@@ -766,6 +780,16 @@
               "events": [{"signal": "brush_Country"}],
               "update": "brush_Country ? {unit: \"concat_1\", fields: brush_tuple_fields, values: [brush_Country]} : null"
             }
+          ]
+        },
+        {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
           ]
         },
         {
@@ -931,7 +955,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {
@@ -1156,6 +1183,16 @@
           ]
         },
         {
+          "name": "cursor",
+          "push": "outer",
+          "on": [
+            {"events": "scope:mouseover", "update": "'crosshair'"},
+            {"events": "scope:mouseout", "update": "\"crosshair\""},
+            {"events": "@brush_brush:mouseover", "update": "\"move\""},
+            {"events": "@brush_brush:mouseout", "update": "'default'"}
+          ]
+        },
+        {
           "name": "brush_tuple_fields",
           "value": [
             {
@@ -1344,7 +1381,10 @@
           "type": "rect",
           "clip": true,
           "encode": {
-            "enter": {"fill": {"value": "transparent"}},
+            "enter": {
+              "cursor": {"value": "move"},
+              "fill": {"value": "transparent"}
+            },
             "update": {
               "x": [
                 {

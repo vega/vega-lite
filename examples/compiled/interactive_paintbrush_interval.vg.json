@@ -32,6 +32,7 @@
       "name": "paintbrush",
       "update": "vlSelectionResolve(\"paintbrush_store\", \"union\")"
     },
+    {"name": "cursor", "value": "default"},
     {
       "name": "paintbrush_x",
       "value": [],
@@ -169,6 +170,16 @@
           ],
           "update": "paintbrush_Horsepower && paintbrush_Miles_per_Gallon ? {unit: \"\", fields: paintbrush_tuple_fields, values: [paintbrush_Horsepower,paintbrush_Miles_per_Gallon]} : null"
         }
+      ]
+    },
+    {
+      "name": "cursor",
+      "push": "outer",
+      "on": [
+        {"events": "scope:mouseover", "update": "'crosshair'"},
+        {"events": "scope:mouseout", "update": "\"crosshair\""},
+        {"events": "@paintbrush_brush:mouseover", "update": "\"move\""},
+        {"events": "@paintbrush_brush:mouseout", "update": "'default'"}
       ]
     },
     {
@@ -332,7 +343,10 @@
       "type": "rect",
       "clip": true,
       "encode": {
-        "enter": {"fill": {"value": "transparent"}},
+        "enter": {
+          "cursor": {"value": "move"},
+          "fill": {"value": "transparent"}
+        },
         "update": {
           "x": [
             {

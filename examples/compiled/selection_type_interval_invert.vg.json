@@ -36,6 +36,7 @@
       ]
     },
     {"name": "pts", "update": "vlSelectionResolve(\"pts_store\", \"union\")"},
+    {"name": "cursor", "value": "default"},
     {
       "name": "pts_x",
       "value": [],
@@ -161,6 +162,16 @@
           "events": [{"signal": "pts_Cylinders || pts_Origin"}],
           "update": "pts_Cylinders && pts_Origin ? {unit: \"\", fields: pts_tuple_fields, values: [pts_Cylinders,pts_Origin]} : null"
         }
+      ]
+    },
+    {
+      "name": "cursor",
+      "push": "outer",
+      "on": [
+        {"events": "scope:mouseover", "update": "'crosshair'"},
+        {"events": "scope:mouseout", "update": "\"crosshair\""},
+        {"events": "@pts_brush:mouseover", "update": "\"move\""},
+        {"events": "@pts_brush:mouseout", "update": "'default'"}
       ]
     },
     {
@@ -318,7 +329,10 @@
       "type": "rect",
       "clip": true,
       "encode": {
-        "enter": {"fill": {"value": "transparent"}},
+        "enter": {
+          "cursor": {"value": "move"},
+          "fill": {"value": "transparent"}
+        },
         "update": {
           "x": [
             {
