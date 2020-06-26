@@ -470,7 +470,7 @@ export abstract class Model {
   }
 
   public getDataName(type: DataSourceType) {
-    return DataSourceType[type];
+    return this.getName(DataSourceType[type].toLowerCase());
   }
 
   /**

@@ -4,7 +4,6 @@ import {PositionFieldDef} from '../../../src/channeldef';
 import {domainSort, mergeDomains, parseDomainForChannel} from '../../../src/compile/scale/domain';
 import {parseScaleCore} from '../../../src/compile/scale/parse';
 import {UnitModel} from '../../../src/compile/unit';
-import {MAIN} from '../../../src/data';
 import * as log from '../../../src/log';
 import {ScaleType} from '../../../src/scale';
 import {EncodingSortField} from '../../../src/sort';
@@ -186,11 +185,11 @@ describe('compile/scale', () => {
 
         expect(testParseDomainForChannel(model, 'y')).toEqual([
           {
-            data: MAIN,
+            data: 'main',
             field: 'min_acceleration'
           },
           {
-            data: MAIN,
+            data: 'main',
             field: 'max_acceleration'
           }
         ]);
@@ -287,11 +286,11 @@ describe('compile/scale', () => {
 
         expect(testParseDomainForChannel(model, 'y')).toEqual([
           {
-            data: MAIN,
+            data: 'main',
             field: 'min_acceleration'
           },
           {
-            data: MAIN,
+            data: 'main',
             field: 'max_acceleration'
           }
         ]);
