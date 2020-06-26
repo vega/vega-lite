@@ -6,7 +6,6 @@
   "height": 560,
   "style": "cell",
   "data": [
-    {"name": "source"},
     {
       "name": "source_0",
       "url": "data/us-10m.json",
@@ -40,7 +39,7 @@
       "type": "shape",
       "clip": true,
       "style": ["geoshape"],
-      "from": {"data": "source_1"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "fill": {"value": "#ccc"},

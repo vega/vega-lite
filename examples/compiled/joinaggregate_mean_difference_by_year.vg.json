@@ -65,7 +65,7 @@
       "type": "rect",
       "clip": true,
       "style": ["bar"],
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -106,8 +106,10 @@
       "name": "x",
       "type": "linear",
       "domain": {
-        "data": "data_1",
-        "fields": ["IMDB Rating", "AverageYearRating"]
+        "fields": [
+          {"data": "data_0", "field": "IMDB Rating"},
+          {"data": "data_1", "field": "AverageYearRating"}
+        ]
       },
       "range": [0, {"signal": "width"}],
       "nice": true,
@@ -116,7 +118,13 @@
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "data_1", "field": "Title", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_0", "field": "Title"},
+          {"data": "data_1", "field": "Title"}
+        ],
+        "sort": true
+      },
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

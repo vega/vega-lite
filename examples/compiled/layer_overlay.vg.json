@@ -5,15 +5,10 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "source"},
     {
       "name": "source_0",
       "url": "data/cars.json",
-      "format": {"type": "json", "parse": {"Horsepower": "number"}}
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
+      "format": {"type": "json", "parse": {"Horsepower": "number"}},
       "transform": [
         {
           "type": "aggregate",
@@ -25,8 +20,8 @@
       ]
     },
     {
-      "name": "data_2",
-      "source": "data_0",
+      "name": "data_1",
+      "source": "source_0",
       "transform": [
         {
           "type": "filter",
@@ -35,8 +30,8 @@
       ]
     },
     {
-      "name": "data_3",
-      "source": "data_0",
+      "name": "data_2",
+      "source": "source_0",
       "transform": [
         {
           "type": "filter",
@@ -58,7 +53,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"Cylinders\"]"},
-      "from": {"data": "data_2"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "darkred"},
@@ -96,7 +91,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"Cylinders\"]"},
-      "from": {"data": "data_2"},
+      "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -115,7 +110,7 @@
       "name": "layer_1_layer_1_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_2"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -134,7 +129,14 @@
     {
       "name": "x",
       "type": "point",
-      "domain": {"data": "data_2", "field": "Cylinders", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "Cylinders"},
+          {"data": "data_2", "field": "Cylinders"},
+          {"data": "data_1", "field": "Cylinders"}
+        ],
+        "sort": true
+      },
       "range": {"step": {"signal": "x_step"}},
       "padding": 0.5
     },
@@ -142,8 +144,12 @@
       "name": "y",
       "type": "linear",
       "domain": {
-        "data": "data_2",
-        "fields": ["max_Horsepower", "min_Horsepower"]
+        "fields": [
+          {"data": "source_0", "field": "max_Horsepower"},
+          {"data": "data_2", "field": "max_Horsepower"},
+          {"data": "source_0", "field": "min_Horsepower"},
+          {"data": "data_1", "field": "min_Horsepower"}
+        ]
       },
       "range": [{"signal": "height"}, 0],
       "nice": true,
