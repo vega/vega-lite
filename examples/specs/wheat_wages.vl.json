@@ -5,13 +5,13 @@
   "data": { "url": "data/wheat.json"},
   "transform": [{"calculate": "+datum.year + 5", "as": "year_end"}],
   "encoding": {
-    "x": {
-      "type": "quantitative",
-      "axis": {"tickCount": 5, "format": "d"}
-    },
     "y": {
       "type": "quantitative",
       "axis": { "zindex": 1 }
+    },
+    "x": {
+      "type": "quantitative",
+      "axis": {"tickCount": 5, "format": "d"}
     }
   },
   "layer": [

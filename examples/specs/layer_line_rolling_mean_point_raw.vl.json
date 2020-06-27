@@ -16,19 +16,19 @@
   }],
   "encoding": {
     "x": {"field": "date", "type": "temporal", "title": "Date"},
-    "y": {"type": "quantitative", "title": "Max Temperature"}
+    "y": {"type": "quantitative", "axis": {"title": "Max Temperature and Rolling Mean"}}
   },
   "layer": [
     {
       "mark": {"type": "point", "opacity": 0.3},
       "encoding": {
-        "y": {"field": "temp_max"}
+        "y": {"field": "temp_max", "title": "Max Temperature"}
       }
     },
     {
       "mark": {"type": "line", "color": "red", "size": 3},
       "encoding": {
-        "y": {"field": "rolling_mean"}
+        "y": {"field": "rolling_mean", "title": "Rolling Mean of Max Temperature"}
       }
     }
   ]

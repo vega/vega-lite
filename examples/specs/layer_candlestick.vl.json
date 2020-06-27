@@ -17,7 +17,7 @@
     "y": {
       "type": "quantitative",
       "scale": {"zero": false},
-      "title": "Price"
+      "axis": {"title": "Price"}
     },
     "color": {
       "condition": {

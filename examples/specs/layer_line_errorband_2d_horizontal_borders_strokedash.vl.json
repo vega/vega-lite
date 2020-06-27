@@ -6,7 +6,7 @@
     "y": {
       "type": "quantitative",
       "scale": {"zero": false},
-      "title": "Miles per Gallon (95% CIs)"
+      "axis": {"title": "Miles per Gallon (95% CIs)"}
     }
   },
   "layer": [
