@@ -17,8 +17,9 @@
         "x": {"field": "date", "type": "temporal", "title": "Date"},
         "y": {
           "type": "quantitative",
-          "title": "Max Temperature",
-          "field": "temp_max"
+          "axis": {"title": "Max Temperature and Rolling Mean"},
+          "field": "temp_max",
+          "title": "Max Temperature"
         }
       }
     },
@@ -28,8 +29,9 @@
         "x": {"field": "date", "type": "temporal", "title": "Date"},
         "y": {
           "type": "quantitative",
-          "title": "Max Temperature",
-          "field": "rolling_mean"
+          "axis": {"title": "Max Temperature and Rolling Mean"},
+          "field": "rolling_mean",
+          "title": "Rolling Mean of Max Temperature"
         }
       }
     }

@@ -20,7 +20,7 @@
         "y": {
           "type": "quantitative",
           "scale": {"zero": false},
-          "title": "Price",
+          "axis": {"title": "Price"},
           "field": "low"
         },
         "color": {
@@ -46,7 +46,7 @@
         "y": {
           "type": "quantitative",
           "scale": {"zero": false},
-          "title": "Price",
+          "axis": {"title": "Price"},
           "field": "open"
         },
         "color": {

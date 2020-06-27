@@ -8,12 +8,12 @@
     {
       "mark": {"type": "bar", "fill": "#aaa", "stroke": "#999"},
       "encoding": {
+        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "wheat"},
         "x": {
           "type": "quantitative",
           "axis": {"tickCount": 5, "format": "d"},
           "field": "year"
         },
-        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "wheat"},
         "x2": {"field": "year_end"}
       }
     },
@@ -44,34 +44,34 @@
     {
       "mark": {"type": "area", "color": "#a4cedb", "opacity": 0.7},
       "encoding": {
+        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "wages"},
         "x": {
           "type": "quantitative",
           "axis": {"tickCount": 5, "format": "d"},
           "field": "year"
-        },
-        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "wages"}
+        }
       }
     },
     {
       "mark": {"type": "line", "color": "#000", "opacity": 0.7},
       "encoding": {
+        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "wages"},
         "x": {
           "type": "quantitative",
           "axis": {"tickCount": 5, "format": "d"},
           "field": "year"
-        },
-        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "wages"}
+        }
       }
     },
     {
       "mark": {"type": "line", "yOffset": -2, "color": "#EE8182"},
       "encoding": {
+        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "wages"},
         "x": {
           "type": "quantitative",
           "axis": {"tickCount": 5, "format": "d"},
           "field": "year"
-        },
-        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "wages"}
+        }
       }
     },
     {
@@ -85,12 +85,12 @@
       ],
       "mark": {"type": "bar", "stroke": "#000"},
       "encoding": {
+        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "y"},
         "x": {
           "type": "quantitative",
           "axis": {"tickCount": 5, "format": "d"},
           "field": "start"
         },
-        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "y"},
         "x2": {"field": "end"},
         "y2": {"field": "offset"},
         "fill": {
@@ -117,12 +117,12 @@
         "fontStyle": "italic"
       },
       "encoding": {
+        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "off2"},
         "x": {
           "type": "quantitative",
           "axis": {"tickCount": 5, "format": "d"},
           "field": "x"
         },
-        "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "off2"},
         "text": {"field": "name"}
       }
     }

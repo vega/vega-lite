@@ -229,12 +229,6 @@
         {"filter": "datum.name != 'Participant ID'"}
       ],
       "encoding": {
-        "x": {
-          "type": "quantitative",
-          "scale": {"domain": [0, 6]},
-          "axis": {"grid": false, "values": [1, 2, 3, 4, 5], "title": null},
-          "field": "value"
-        },
         "y": {
           "field": "name",
           "type": "nominal",
@@ -247,6 +241,12 @@
             "grid": true,
             "title": null
           }
+        },
+        "x": {
+          "type": "quantitative",
+          "scale": {"domain": [0, 6]},
+          "axis": {"grid": false, "values": [1, 2, 3, 4, 5], "title": null},
+          "field": "value"
         },
         "size": {
           "aggregate": "count",
@@ -260,12 +260,6 @@
     {
       "mark": "tick",
       "encoding": {
-        "x": {
-          "type": "quantitative",
-          "scale": {"domain": [0, 6]},
-          "axis": {"grid": false, "values": [1, 2, 3, 4, 5], "title": null},
-          "field": "median"
-        },
         "y": {
           "field": "name",
           "type": "nominal",
@@ -278,6 +272,12 @@
             "grid": true,
             "title": null
           }
+        },
+        "x": {
+          "type": "quantitative",
+          "scale": {"domain": [0, 6]},
+          "axis": {"grid": false, "values": [1, 2, 3, 4, 5], "title": null},
+          "field": "median"
         },
         "color": {"value": "black"}
       }
