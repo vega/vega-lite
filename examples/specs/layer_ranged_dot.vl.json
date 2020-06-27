@@ -20,15 +20,13 @@
     "x": {
       "field": "life_expect",
       "type": "quantitative",
-      "axis": {
-        "title": "Life Expectancy (years)"
-      }
+      "title": "Life Expectancy (years)"
     },
     "y": {
       "field": "country",
       "type": "nominal",
+      "title": "Country",
       "axis": {
-        "title": "Country",
         "offset": 5,
         "ticks": false,
         "minExtent": 70,
@@ -60,9 +58,7 @@
             "domain": [1955, 2000],
             "range": ["#e6959c", "#911a24"]
           },
-          "legend": {
-            "title": "Year"
-          }
+          "title": "Year"
         },
         "size": {"value": 100},
         "opacity": {"value": 1}
