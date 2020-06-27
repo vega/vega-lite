@@ -24,7 +24,8 @@
       "encoding": {
         "x": {
           "type": "quantitative",
-          "axis": {"title": "Year into Decade", "tickCount": 11},
+          "title": "Year into Decade",
+          "axis": {"tickCount": 11},
           "field": "scaled_date"
         },
         "y": {
@@ -42,11 +43,12 @@
       }
     },
     {
-      "mark": {"type": "text", "baseline": "top"},
+      "mark": {"type": "text", "baseline": "top", "aria": false},
       "encoding": {
         "x": {
           "type": "quantitative",
-          "axis": {"title": "Year into Decade", "tickCount": 11},
+          "title": "Year into Decade",
+          "axis": {"tickCount": 11},
           "aggregate": "min",
           "field": "scaled_date"
         },
@@ -67,11 +69,12 @@
       }
     },
     {
-      "mark": {"type": "text"},
+      "mark": {"type": "text", "aria": false},
       "encoding": {
         "x": {
           "type": "quantitative",
-          "axis": {"title": "Year into Decade", "tickCount": 11},
+          "title": "Year into Decade",
+          "axis": {"tickCount": 11},
           "aggregate": "max",
           "field": "scaled_date"
         },
