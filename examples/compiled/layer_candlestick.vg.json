@@ -46,7 +46,7 @@
             {"value": "#ae1325"}
           ],
           "description": {
-            "signal": "\"Date in 2009: \" + (timeFormat(datum[\"date\"], '%m/%d')) + \"; Price: \" + (format(datum[\"low\"], \"\")) + \"; high: \" + (format(datum[\"high\"], \"\"))"
+            "signal": "\"Date in 2009: \" + (timeFormat(datum[\"date\"], '%m/%d')) + \"; low: \" + (format(datum[\"low\"], \"\")) + \"; high: \" + (format(datum[\"high\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
           "y": [

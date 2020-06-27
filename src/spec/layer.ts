@@ -1,4 +1,4 @@
-import {CompositeEncoding} from '../compositemark';
+import {SharedCompositeEncoding} from '../compositemark';
 import {Projection} from '../projection';
 import {BaseSpec, FrameMixins, ResolveMixins} from './base';
 import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
@@ -29,7 +29,7 @@ export interface LayerSpec extends BaseSpec, FrameMixins, ResolveMixins {
   /**
    * A shared key-value mapping between encoding channels and definition of fields in the underlying layers.
    */
-  encoding?: CompositeEncoding;
+  encoding?: SharedCompositeEncoding;
 
   /**
    * An object defining properties of the geographic projection shared by underlying layers.

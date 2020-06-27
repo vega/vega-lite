@@ -140,7 +140,7 @@
           "fill": {"value": "#ccc"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; Temperature (F): \" + (format(datum[\"record.low\"], \"\")) + \"; record.high: \" + (format(datum[\"record.high\"], \"\"))"
+            "signal": "\"id: \" + (isValid(datum[\"id\"]) ? datum[\"id\"] : \"\"+datum[\"id\"]) + \"; record.low: \" + (format(datum[\"record.low\"], \"\")) + \"; record.high: \" + (format(datum[\"record.high\"], \"\"))"
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},

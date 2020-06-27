@@ -1,26 +1,26 @@
-import {NormalizedUnitSpec} from '../spec/unit';
 import {Field} from '../channeldef';
 import {Encoding} from '../encoding';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {EncodingFacetMapping} from '../spec/facet';
+import {NormalizedUnitSpec} from '../spec/unit';
 import {keys} from '../util';
 import {CompositeMarkNormalizer} from './base';
-import {BOXPLOT, BoxPlot, BOXPLOT_PARTS, BoxPlotConfigMixins, BoxPlotDef, normalizeBoxPlot} from './boxplot';
+import {BOXPLOT, BoxPlot, BoxPlotConfigMixins, BoxPlotDef, BOXPLOT_PARTS, normalizeBoxPlot} from './boxplot';
 import {
   ERRORBAND,
   ErrorBand,
-  ERRORBAND_PARTS,
   ErrorBandConfigMixins,
   ErrorBandDef,
+  ERRORBAND_PARTS,
   normalizeErrorBand
 } from './errorband';
 import {
   ERRORBAR,
   ErrorBar,
-  ERRORBAR_PARTS,
   ErrorBarConfigMixins,
   ErrorBarDef,
+  ERRORBAR_PARTS,
   ErrorExtraEncoding,
   normalizeErrorBar
 } from './errorbar';
@@ -54,6 +54,16 @@ export function remove(mark: string) {
 }
 
 export type CompositeEncoding<F extends Field = Field> = Encoding<F> & ErrorExtraEncoding<F>;
+
+export type PartialIndex<T extends Encoding<any>> = {
+  [t in keyof T]?: Partial<T[t]>;
+};
+
+export type SharedCompositeEncoding<F extends Field = Field> = PartialIndex<
+  Omit<CompositeEncoding<F>, 'detail' | 'order' | 'tooltip'> // need to omit and cherry pick detail / order / tooltip since they allow array
+> &
+  Pick<Encoding<F>, 'detail' | 'order' | 'tooltip'>;
+
 export type FacetedCompositeEncoding<F extends Field = Field> = Encoding<F> &
   ErrorExtraEncoding<F> &
   EncodingFacetMapping<F>;

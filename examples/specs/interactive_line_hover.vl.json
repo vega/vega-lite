@@ -4,6 +4,8 @@
   "data": {"url": "data/stocks.csv"},
   "transform": [{"filter": "datum.symbol!=='IBM'"}],
   "encoding": {
+    "x": {"field": "date", "type": "temporal", "title": "date"},
+    "y": {"field": "price", "type": "quantitative", "title": "price"},
     "color": {
       "condition": {
         "selection": "hover",
@@ -22,29 +24,23 @@
     }
   },
   "layer": [{
-    "encoding": {
-      "x": {"field": "date", "type": "temporal", "title": "date"},
-      "y": {"field": "price", "type": "quantitative", "title": "price"}
+    "description": "transparent layer to make it easier to trigger selection",
+    "selection": {
+      "hover": {
+        "type": "single",
+        "on": "mouseover",
+        "empty": "all",
+        "fields": ["symbol"],
+        "init": {"symbol": "AAPL"}
+      }
     },
-    "layer": [{
-      "description": "transparent layer to make it easier to trigger selection",
-      "selection": {
-        "hover": {
-          "type": "single",
-          "on": "mouseover",
-          "empty": "all",
-          "fields": ["symbol"],
-          "init": {"symbol": "AAPL"}
-        }
-      },
-      "mark": {"type": "line", "strokeWidth": 8, "stroke": "transparent"}
-    }, {
-      "mark": "line"
-    }]
-  },{
+    "mark": {"type": "line", "strokeWidth": 8, "stroke": "transparent"}
+  }, {
+    "mark": "line"
+  }, {
     "encoding": {
-      "x": {"aggregate": "max", "field": "date", "type": "temporal"},
-      "y": {"aggregate": {"argmax": "date"}, "field": "price", "type": "quantitative"}
+      "x": {"aggregate": "max", "field": "date"},
+      "y": {"aggregate": {"argmax": "date"}, "field": "price"}
     },
     "layer": [{
       "mark": {"type": "circle"}
