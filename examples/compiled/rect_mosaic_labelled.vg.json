@@ -177,7 +177,7 @@
               "baseline": {"value": "middle"},
               "fill": {"value": "black"},
               "description": {
-                "signal": "\"xc: \" + (format(datum[\"xc\"], \"\")) + \"; Cylinders: \" + (format(datum[\"yc\"], \"\"))"
+                "signal": "\"xc: \" + (format(datum[\"xc\"], \"\")) + \"; yc: \" + (format(datum[\"yc\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
               },
               "x": {"scale": "x", "field": "xc"},
               "y": {"scale": "concat_1_y", "field": "yc"},

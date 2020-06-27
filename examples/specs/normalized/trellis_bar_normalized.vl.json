@@ -11,11 +11,7 @@
     "width": {"step": 17},
     "mark": "bar",
     "encoding": {
-      "y": {
-        "aggregate": "sum",
-        "field": "people",
-        "axis": {"title": "population"}
-      },
+      "y": {"aggregate": "sum", "field": "people", "title": "population"},
       "x": {"field": "age"},
       "color": {"field": "gender", "scale": {"range": ["#675193", "#ca8861"]}}
     }

@@ -31,7 +31,8 @@
         "x": {
           "field": "scaled_date",
           "type": "quantitative",
-          "axis": {"title": "Year into Decade", "tickCount": 11}
+          "title": "Year into Decade",
+          "axis": {"tickCount": 11}
         },
         "y": {
           "field": "CO2",

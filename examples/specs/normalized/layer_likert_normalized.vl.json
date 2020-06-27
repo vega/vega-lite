@@ -251,7 +251,8 @@
         "size": {
           "aggregate": "count",
           "type": "quantitative",
-          "legend": {"title": "Number of Ratings", "offset": 75}
+          "title": "Number of Ratings",
+          "legend": {"offset": 75}
         },
         "color": {"value": "#6EB4FD"}
       }
