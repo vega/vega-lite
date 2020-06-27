@@ -15,7 +15,7 @@
       },
     "y": {
       "aggregate": "sum", "field": "people",
-      "axis": {"title": "population"}
+      "title": "population"
     },
     "x": {"field": "age", "type": "ordinal"},
     "color": {

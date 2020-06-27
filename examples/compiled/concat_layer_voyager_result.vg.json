@@ -138,7 +138,7 @@
             "update": {
               "stroke": {"value": "black"},
               "description": {
-                "signal": "\"study: \" + (isValid(datum[\"study\"]) ? datum[\"study\"] : \"\"+datum[\"study\"]) + \"; : \" + (format(datum[\"lo\"], \"\")) + \"; hi: \" + (format(datum[\"hi\"], \"\"))"
+                "signal": "\"study: \" + (isValid(datum[\"study\"]) ? datum[\"study\"] : \"\"+datum[\"study\"]) + \"; lo: \" + (format(datum[\"lo\"], \"\")) + \"; hi: \" + (format(datum[\"hi\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "lo"},
               "x2": {"scale": "concat_0_x", "field": "hi"},

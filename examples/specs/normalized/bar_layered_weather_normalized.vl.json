@@ -28,7 +28,7 @@
           "field": "record.low",
           "type": "quantitative",
           "scale": {"domain": [10, 70]},
-          "axis": {"title": "Temperature (F)"}
+          "title": "Temperature (F)"
         },
         "y2": {"field": "record.high"},
         "size": {"value": 20},

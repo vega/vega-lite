@@ -215,11 +215,7 @@
       "mark": "circle",
       "encoding": {
         "y": {"field": "age", "type": "ordinal"},
-        "x": {
-          "field": "people",
-          "type": "quantitative",
-          "axis": {"title": "population"}
-        },
+        "x": {"field": "people", "type": "quantitative", "title": "population"},
         "color": {"value": "black"},
         "opacity": {"value": 0.2}
       }

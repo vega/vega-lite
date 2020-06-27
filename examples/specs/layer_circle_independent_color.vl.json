@@ -19,7 +19,7 @@
         "size": {
           "aggregate": "count",
           "type": "quantitative",
-          "legend": {"title": "All Cars"}
+          "title": "All Cars Count"
         }
       }
     },
@@ -42,7 +42,7 @@
         "size": {
           "aggregate": "count",
           "type": "quantitative",
-          "legend": {"title": "Cars from Japan"}
+          "title": "Cars from Japan Count"
         },
         "color": {
           "value": "firebrick"

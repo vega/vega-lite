@@ -9,7 +9,7 @@
     "y": {"field": "age"},
     "x": {
       "aggregate": "sum", "field": "people",
-      "axis": {"title": "population"}
+      "title": "population"
     }
   }
 }

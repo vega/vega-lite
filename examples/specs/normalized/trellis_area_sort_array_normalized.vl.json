@@ -7,7 +7,7 @@
     "row": {
       "field": "symbol",
       "type": "nominal",
-      "header": {"title": "Symbol"},
+      "title": "Symbol",
       "sort": ["MSFT", "AAPL", "IBM", "AMZN"]
     }
   },
@@ -19,12 +19,14 @@
       "x": {
         "field": "date",
         "type": "temporal",
-        "axis": {"format": "%Y", "title": "Time", "grid": false}
+        "title": "Time",
+        "axis": {"format": "%Y", "grid": false}
       },
       "y": {
         "field": "price",
         "type": "quantitative",
-        "axis": {"title": "Price", "grid": false}
+        "title": "Price",
+        "axis": {"grid": false}
       },
       "color": {"field": "symbol", "type": "nominal"}
     }

@@ -11,7 +11,7 @@
     },
     "y": {
       "aggregate": "sum", "field": "count",
-      "axis": {"title": "count"}
+      "title": "count"
     }
   }
 }

@@ -9,7 +9,8 @@
     "y": {"field": "age", "type": "ordinal"},
     "x": {
       "aggregate": "sum", "field": "people",
-      "axis": {"title": "population", "format": ".2e"}
+      "title": "population",
+      "axis": {"format": ".2e"}
     }
   }
 }

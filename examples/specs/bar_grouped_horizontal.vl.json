@@ -11,7 +11,8 @@
     "row": {"field": "age", "spacing": 10},
     "x": {
       "aggregate": "sum", "field": "people",
-      "axis": {"title": "population", "grid": false}
+      "title": "population",
+      "axis": {"grid": false}
     },
     "y": {
       "field": "gender",

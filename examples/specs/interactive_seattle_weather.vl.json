@@ -27,12 +27,13 @@
           "type": "quantitative"
         },
         "x": {
-          "axis": {"title": "Date", "format": "%b"},
           "field": "date",
-          "timeUnit": "monthdate"
+          "timeUnit": "monthdate",
+          "title": "Date",
+          "axis": {"format": "%b"}
         },
         "y": {
-          "axis": {"title": "Maximum Daily Temperature (C)"},
+          "title": "Maximum Daily Temperature (C)",
           "field": "temp_max",
           "scale": {"domain": [-5, 40]},
           "type": "quantitative"
