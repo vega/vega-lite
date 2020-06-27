@@ -8,6 +8,7 @@ import {isMarkDef, MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec, NormalizedUnitSpec} from '../spec';
 import {AggregatedFieldDef, CalculateTransform, JoinAggregateTransform, Transform} from '../transform';
+import {isEmpty, omit} from '../util';
 import {CompositeMarkNormalizer} from './base';
 import {
   compositeMarkContinuousAxis,
@@ -20,7 +21,6 @@ import {
   partLayerMixins,
   PartsMixins
 } from './common';
-import {omit, isEmpty} from '../util';
 
 export const BOXPLOT = 'boxplot' as const;
 export type BoxPlot = typeof BOXPLOT;
@@ -199,10 +199,15 @@ export function normalizeBoxPlot(
     ...(boxPlotType !== 'tukey' ? whiskerLayers : []),
     ...makeBoxPlotBox({
       partName: 'box',
-      mark: {type: 'bar', ...(sizeValue ? {size: sizeValue} : {}), orient: boxOrient, invalid: null},
+      mark: {
+        type: 'bar',
+        ...(sizeValue ? {size: sizeValue} : {}),
+        orient: boxOrient,
+        invalid: null,
+        ariaRoleDescription: 'box'
+      },
       positionPrefix: 'lower_box',
       endPositionPrefix: 'upper_box',
-      aria: false,
       extraEncoding: fiveSummaryTooltipEncoding
     }),
     ...makeBoxPlotMidTick({
@@ -212,9 +217,9 @@ export function normalizeBoxPlot(
         invalid: null,
         ...(isObject(config.boxplot.median) && config.boxplot.median.color ? {color: config.boxplot.median.color} : {}),
         ...(sizeValue ? {size: sizeValue} : {}),
-        orient: ticksOrient,
-        ariaRoleDescription: 'box'
+        orient: ticksOrient
       },
+      aria: false,
       positionPrefix: 'mid_box',
       extraEncoding: fiveSummaryTooltipEncoding
     })

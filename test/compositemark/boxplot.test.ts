@@ -859,7 +859,7 @@ describe('normalizeBoxIQR', () => {
         size: 14,
         orient: 'vertical',
         invalid: null,
-        aria: false
+        ariaRoleDescription: 'box'
       },
       encoding: {
         x: {field: 'age', type: 'quantitative'},

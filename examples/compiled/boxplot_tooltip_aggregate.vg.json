@@ -161,12 +161,15 @@
       "name": "layer_1_layer_0_marks",
       "type": "rect",
       "style": ["bar", "boxplot-box"],
-      "aria": false,
       "from": {"data": "data_3"},
       "encode": {
         "update": {
+          "ariaRoleDescription": {"value": "box"},
           "fill": {"value": "#4c78a8"},
           "tooltip": {"signal": "format(datum[\"mean_Body Mass (g)\"], \"\")"},
+          "description": {
+            "signal": "\"Body Mass (g): \" + (format(datum[\"lower_box_Body Mass (g)\"], \"\")) + \"; upper_box_Body Mass (g): \" + (format(datum[\"upper_box_Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; Mean of Body Mass (g): \" + (format(datum[\"mean_Body Mass (g)\"], \"\"))"
+          },
           "x": {"scale": "x", "field": "lower_box_Body Mass (g)"},
           "x2": {"scale": "x", "field": "upper_box_Body Mass (g)"},
           "yc": {"scale": "y", "field": "Species", "band": 0.5},
@@ -178,16 +181,13 @@
       "name": "layer_1_layer_1_marks",
       "type": "rect",
       "style": ["tick", "boxplot-median"],
+      "aria": false,
       "from": {"data": "data_3"},
       "encode": {
         "update": {
-          "ariaRoleDescription": {"value": "box"},
           "opacity": {"value": 0.7},
           "fill": {"value": "white"},
           "tooltip": {"signal": "format(datum[\"mean_Body Mass (g)\"], \"\")"},
-          "description": {
-            "signal": "\"Body Mass (g): \" + (format(datum[\"mid_box_Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; Mean of Body Mass (g): \" + (format(datum[\"mean_Body Mass (g)\"], \"\"))"
-          },
           "xc": {"scale": "x", "field": "mid_box_Body Mass (g)"},
           "yc": {"scale": "y", "field": "Species", "band": 0.5},
           "height": {"value": 14},

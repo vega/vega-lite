@@ -125,8 +125,8 @@
         "size": 14,
         "orient": "horizontal",
         "invalid": null,
-        "style": "boxplot-box",
-        "aria": false
+        "ariaRoleDescription": "box",
+        "style": "boxplot-box"
       },
       "encoding": {
         "x": {
@@ -174,8 +174,8 @@
         "invalid": null,
         "size": 14,
         "orient": "vertical",
-        "ariaRoleDescription": "box",
-        "style": "boxplot-median"
+        "style": "boxplot-median",
+        "aria": false
       },
       "encoding": {
         "x": {
