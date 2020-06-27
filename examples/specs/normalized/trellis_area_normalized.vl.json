@@ -3,9 +3,7 @@
   "description": "Stock prices of four large companies as a small multiples of area charts.",
   "transform": [{"filter": "datum.symbol !== 'GOOG'"}],
   "data": {"url": "data/stocks.csv"},
-  "facet": {
-    "row": {"field": "symbol", "type": "nominal", "header": {"title": "Symbol"}}
-  },
+  "facet": {"row": {"field": "symbol", "type": "nominal", "title": "Symbol"}},
   "spec": {
     "width": 300,
     "height": 40,
@@ -14,12 +12,14 @@
       "x": {
         "field": "date",
         "type": "temporal",
-        "axis": {"title": "Time", "grid": false}
+        "title": "Time",
+        "axis": {"grid": false}
       },
       "y": {
         "field": "price",
         "type": "quantitative",
-        "axis": {"title": "Price", "grid": false}
+        "title": "Price",
+        "axis": {"grid": false}
       },
       "color": {"field": "symbol", "type": "nominal", "legend": null}
     }

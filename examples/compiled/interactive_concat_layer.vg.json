@@ -258,12 +258,12 @@
         {
           "direction": "horizontal",
           "gradientLength": 120,
-          "title": "All Movies",
+          "title": "All Movies Count",
           "fill": "color",
           "symbolType": "square"
         },
         {
-          "title": "In Selected Category",
+          "title": "Selected Category Count",
           "size": "size",
           "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
           "symbolType": "circle",
