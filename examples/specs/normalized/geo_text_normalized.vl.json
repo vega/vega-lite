@@ -16,11 +16,11 @@
       "layer": [
         {
           "mark": {"type": "circle", "color": "orange"},
+          "projection": {"type": "albersUsa"},
           "encoding": {
             "longitude": {"field": "lon", "type": "quantitative"},
             "latitude": {"field": "lat", "type": "quantitative"}
-          },
-          "projection": {"type": "albersUsa"}
+          }
         },
         {
           "mark": {"type": "text", "dy": -10},

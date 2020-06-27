@@ -152,12 +152,14 @@
     {
       "mark": "line",
       "encoding": {
+        "x": {"field": "Year", "timeUnit": "year"},
         "y": {
-          "field": "Miles_per_Gallon",
           "type": "quantitative",
+          "scale": {"zero": false},
+          "title": "Miles per Gallon (95% CIs)",
+          "field": "Miles_per_Gallon",
           "aggregate": "mean"
-        },
-        "x": {"field": "Year", "timeUnit": "year"}
+        }
       }
     }
   ]

@@ -121,7 +121,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"Mean of Miles_per_Gallon: \" + (format(datum[\"mean_Miles_per_Gallon\"], \"\")) + \"; Year (year): \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+            "signal": "\"Year (year): \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Miles per Gallon (95% CIs): \" + (format(datum[\"mean_Miles_per_Gallon\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "mean_Miles_per_Gallon"},
