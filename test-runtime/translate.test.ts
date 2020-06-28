@@ -1,3 +1,5 @@
+/* eslint-disable jest/expect-expect */
+
 import {assert} from 'chai';
 import {Page} from 'puppeteer';
 import {

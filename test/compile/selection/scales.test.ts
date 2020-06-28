@@ -6,7 +6,7 @@ import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../sr
 import {UnitModel} from '../../../src/compile/unit';
 import * as log from '../../../src/log';
 import {Domain} from '../../../src/scale';
-import {parseConcatModel, parseUnitModelWithScale, parseModel} from '../../util';
+import {parseConcatModel, parseModel, parseUnitModelWithScale} from '../../util';
 
 describe('Selection + Scales', () => {
   describe('selectionExtent', () => {
@@ -86,42 +86,6 @@ describe('Selection + Scales', () => {
       expect(oscale).toHaveProperty('domainRaw');
       expect(oscale.domainRaw).toEqual({signal: 'brush3["date"]'});
     });
-
-    // FIXME: https://github.com/vega/vega-lite/issues/6000
-    // it('should bind both scales in diagonal repeated views', () => {
-    //   const model = parseModel({
-    //     repeat: {
-    //       row: ['Horsepower', 'Acceleration'],
-    //       column: ['Miles_per_Gallon', 'Acceleration']
-    //     },
-    //     spec: {
-    //       data: {url: 'data/cars.json'},
-    //       mark: 'point',
-    //       selection: {
-    //         grid: {
-    //           type: 'interval',
-    //           resolve: 'global',
-    //           bind: 'scales'
-    //         }
-    //       },
-    //       encoding: {
-    //         x: {field: {repeat: 'column'}, type: 'quantitative'},
-    //         y: {field: {repeat: 'row'}, type: 'quantitative'},
-    //         color: {field: 'Origin', type: 'nominal'}
-    //       }
-    //     }
-    //   });
-
-    //   model.parseScale();
-    //   model.parseSelections();
-
-    //   const scales = assembleScalesForModel(model.children[3]);
-    //   expect(scales.length === 2).toBe(true);
-    //   expect(scales[0]).toHaveProperty('domainRaw');
-    //   expect(scales[1]).toHaveProperty('domainRaw');
-    //   expect(scales[0].domainRaw).toEqual({signal: 'grid["Acceleration"]'});
-    //   expect(scales[1].domainRaw).toEqual({signal: 'grid["Acceleration"]'});
-    // });
 
     it('should be merged for layered views', () => {
       const model = parseConcatModel({

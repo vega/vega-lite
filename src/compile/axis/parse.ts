@@ -167,6 +167,7 @@ function mergeAxisComponent(merged: AxisComponent, child: AxisComponent): AxisCo
   return merged;
 }
 
+// eslint-disable-next-line @typescript-eslint/ban-types
 function isExplicit<T extends string | number | boolean | object>(
   value: T,
   property: keyof AxisComponentProps,

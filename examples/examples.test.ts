@@ -79,6 +79,7 @@ for (const example of [...examples, ...normalizedExamples]) {
         expect(jsonSpec).toEqual(originalSpec);
       });
 
+      // eslint-disable-next-line jest/expect-expect
       it('should be valid Vega-Lite with proper $schema', () => {
         if (example.endsWith(FUTURE_SUFFIX)) {
           return;
@@ -94,6 +95,7 @@ for (const example of [...examples, ...normalizedExamples]) {
         expect(localLogger.warns).toEqual([]);
       });
 
+      // eslint-disable-next-line jest/expect-expect
       it('should produce valid Vega', () => {
         if (example.endsWith(BROKEN_SUFFIX)) {
           return;
