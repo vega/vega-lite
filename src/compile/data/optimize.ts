@@ -15,7 +15,7 @@ export function checkLinks(nodes: readonly DataFlowNode[]): boolean {
   for (const node of nodes) {
     for (const child of node.children) {
       if (child.parent !== node) {
-        log.error('Dataflow graph is inconsistent.', node, child);
+        // log.error('Dataflow graph is inconsistent.', node, child);
         return false;
       }
     }

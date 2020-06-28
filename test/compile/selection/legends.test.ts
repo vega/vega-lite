@@ -1,10 +1,41 @@
-import {parseUnitModel} from '../../util';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import legends from '../../../src/compile/selection/transforms/legends';
 import * as log from '../../../src/log';
+import {parseUnitModel} from '../../util';
 
 describe('Interactive Legends', () => {
+  it(
+    'throws drops invalid legend binding without projection',
+    log.wrap(localLogger => {
+      const m = parseUnitModel({
+        mark: 'circle',
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+          color: {field: 'Origin', type: 'nominal'},
+          size: {field: 'Cylinders', type: 'ordinal'}
+        }
+      });
+
+      m.parseScale();
+      const selCmpts = (m.component.selection = parseUnitSelection(m, {
+        three: {type: 'multi', fields: ['Origin', 'Cylinders'], bind: 'legend'},
+        five: {type: 'single', encodings: ['color', 'size'], bind: 'legend'},
+        six: {type: 'multi', bind: 'legend'}
+      }));
+      m.parseLegends();
+      expect(legends.has(selCmpts['three'])).toBeFalsy();
+      expect(localLogger.warns[0]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
+
+      expect(legends.has(selCmpts['five'])).toBeFalsy();
+      expect(localLogger.warns[1]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
+
+      expect(legends.has(selCmpts['six'])).toBeFalsy();
+      expect(localLogger.warns[2]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
+    })
+  );
+
   const model = parseUnitModel({
     mark: 'circle',
     encoding: {
@@ -19,10 +50,7 @@ describe('Interactive Legends', () => {
   const selCmpts = (model.component.selection = parseUnitSelection(model, {
     one: {type: 'single', fields: ['Origin'], bind: 'legend'},
     two: {type: 'multi', fields: ['Origin'], bind: {legend: 'dblclick, mouseover'}},
-    three: {type: 'multi', fields: ['Origin', 'Cylinders'], bind: 'legend'},
     four: {type: 'single', encodings: ['color'], bind: 'legend'},
-    five: {type: 'single', encodings: ['color', 'size'], bind: 'legend'},
-    six: {type: 'multi', bind: 'legend'},
     seven: {type: 'multi', fields: ['Origin'], bind: {legend: 'mouseover'}, on: 'click'},
     eight: {type: 'multi', encodings: ['color'], bind: {legend: 'mouseover'}, on: 'click', clear: 'dblclick'},
     nine: {
@@ -39,26 +67,15 @@ describe('Interactive Legends', () => {
   model.parseLegends();
 
   it('identifies transform invocation', () => {
-    log.wrap(localLogger => {
-      expect(legends.has(selCmpts['one'])).toBeTruthy();
-      expect(legends.has(selCmpts['two'])).toBeTruthy();
+    expect(legends.has(selCmpts['one'])).toBeTruthy();
+    expect(legends.has(selCmpts['two'])).toBeTruthy();
 
-      expect(legends.has(selCmpts['three'])).toBeFalsy();
-      expect(localLogger.warns[0]).toEqual(log.message.LEGEND_BINDINGS_PROJECT_LENGTH);
+    expect(legends.has(selCmpts['four'])).toBeTruthy();
 
-      expect(legends.has(selCmpts['four'])).toBeTruthy();
-
-      expect(legends.has(selCmpts['five'])).toBeFalsy();
-      expect(localLogger.warns[1]).toEqual(log.message.LEGEND_BINDINGS_PROJECT_LENGTH);
-
-      expect(legends.has(selCmpts['six'])).toBeFalsy();
-      expect(localLogger.warns[2]).toEqual(log.message.LEGEND_BINDINGS_PROJECT_LENGTH);
-
-      expect(legends.has(selCmpts['seven'])).toBeTruthy();
-      expect(legends.has(selCmpts['eight'])).toBeTruthy();
-      expect(legends.has(selCmpts['nine'])).toBeFalsy();
-      expect(legends.has(selCmpts['ten'])).toBeTruthy();
-    });
+    expect(legends.has(selCmpts['seven'])).toBeTruthy();
+    expect(legends.has(selCmpts['eight'])).toBeTruthy();
+    expect(legends.has(selCmpts['nine'])).toBeFalsy();
+    expect(legends.has(selCmpts['ten'])).toBeTruthy();
   });
 
   it('adds legend binding top-level signal', () => {

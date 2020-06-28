@@ -17,7 +17,7 @@ const legendBindings: TransformCompiler = {
     const spec = selCmpt.resolve === 'global' && selCmpt.bind && isLegendBinding(selCmpt.bind);
     const projLen = selCmpt.project.items.length === 1 && selCmpt.project.items[0].field !== SELECTION_ID;
     if (spec && !projLen) {
-      log.warn(log.message.LEGEND_BINDINGS_PROJECT_LENGTH);
+      log.warn(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
     }
 
     return spec && projLen;
