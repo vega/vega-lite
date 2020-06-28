@@ -3,15 +3,16 @@
   "data": {"url": "data/seattle-weather.csv"},
   "vconcat": [
     {
+      "title": "Annual and Total Mean Precipitation from 2012-2015",
       "mark": "line",
       "encoding": {
         "y": {
           "field": "precipitation",
           "aggregate": "mean",
-          "title": null
+          "axis": {"title": null}
         },
         "x": {"field": "date", "timeUnit": "month", "type": "ordinal"},
-        "row": {"field": "date", "timeUnit": "year"}
+        "row": {"field": "date", "timeUnit": "year", "header": {"title": null}}
       },
       "height": 30
     },
@@ -22,11 +23,11 @@
         "y": {
           "field": "precipitation",
           "aggregate": "mean",
-          "title": "All years"
+          "axis": {"title": null}
         }
       },
       "height": 50
     }
   ],
-  "config": {"facet": {"spacing": 0}}
+  "config": {"facet": {"spacing": 5}}
 }
