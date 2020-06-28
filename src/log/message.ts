@@ -337,10 +337,6 @@ export function errorBarContinuousAxisHasCustomizedAggregate(
   return `Continuous axis should not have customized aggregation function ${aggregate}; ${compositeMark} already agregates the axis.`;
 }
 
-export function errorBarCenterIsNotNeeded(extent: ErrorBarExtent, mark: 'errorbar' | 'errorband') {
-  return `Center is not needed to be specified in ${mark} when extent is ${extent}.`;
-}
-
 export function errorBand1DNotSupport(property: 'interpolate' | 'tension') {
   return `1D error band does not support ${property}.`;
 }
