@@ -845,7 +845,7 @@ describe('normalizeBoxIQR', () => {
             aggregate: 'mean',
             field: 'people',
             type: 'quantitative',
-            title: 'Mean Population'
+            title: 'Population'
           }
         }
       },
@@ -874,7 +874,7 @@ describe('normalizeBoxIQR', () => {
         color: {
           field: 'mean_people',
           type: 'quantitative',
-          title: 'Mean Population'
+          title: 'Mean of Population'
         },
         tooltip: [
           {
@@ -908,7 +908,7 @@ describe('normalizeBoxIQR', () => {
           },
           {
             field: 'mean_people',
-            title: 'Mean Population',
+            title: 'Mean of Population',
             type: 'quantitative'
           }
         ]

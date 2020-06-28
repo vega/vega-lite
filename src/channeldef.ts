@@ -49,7 +49,7 @@ import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeToExpr, isDateTime} from './datetime';
 import {Encoding} from './encoding';
-import {FormatMixins, Guide, GuideEncodingConditionalValueDef, TitleMixins} from './guide';
+import {FormatMixins, Guide, GuideEncodingConditionalValueDef} from './guide';
 import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
@@ -262,6 +262,13 @@ export interface FieldDefBase<F, B extends Bin = Bin> extends BandMixins {
    * __See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation.
    */
   bin?: B;
+
+  /**
+   * A title for the field. This title will be combined with the field's transformation function, used in axis/legend/header title.  For example, if the field definition is `{aggregate: "mean"", field: "mpg", title: "Miles per Gallon"}`, the default axis title would be "Mean of Miles per Gallon".
+   *
+   * __Default value:__ The value of the `field` property.
+   */
+  title?: string;
 }
 
 export function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase<string> {
@@ -315,7 +322,7 @@ export type TypedFieldDef<
   F extends Field,
   T extends Type = any,
   B extends Bin = boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
-> = FieldDefBase<F, B> & TitleMixins & TypeMixins<T>;
+> = FieldDefBase<F, B> & TypeMixins<T>;
 
 export interface SortableFieldDef<
   F extends Field,
@@ -386,7 +393,7 @@ export type ScaleDatumDef<F extends Field = string> = ScaleMixins & DatumDef<F>;
 /**
  * A field definition of a secondary channel that shares a scale with another primary channel. For example, `x2`, `xError` and `xError2` share the same scale with `x`.
  */
-export type SecondaryFieldDef<F extends Field> = FieldDefBase<F, null> & TitleMixins; // x2/y2 shouldn't have bin, but we keep bin property for simplicity of the codebase.
+export type SecondaryFieldDef<F extends Field> = FieldDefBase<F, null>; // x2/y2 shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
 export type Position2Def<F extends Field> = SecondaryFieldDef<F> | DatumDef<F> | PositionValueDef;
 
@@ -397,9 +404,7 @@ export type SecondaryChannelDef<F extends Field> = Encoding<F>['x2' | 'y2'];
  */
 export type FieldDefWithoutScale<F extends Field, T extends Type = StandardType> = TypedFieldDef<F, T>;
 
-export type LatLongFieldDef<F extends Field> = FieldDefBase<F, null> &
-  TitleMixins &
-  Partial<TypeMixins<'quantitative'>>; // Lat long shouldn't have bin, but we keep bin property for simplicity of the codebase.
+export type LatLongFieldDef<F extends Field> = FieldDefBase<F, null> & Partial<TypeMixins<'quantitative'>>; // Lat long shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
 export type LatLongDef<F extends Field> = LatLongFieldDef<F> | DatumDef<F> | NumericValueDef;
 
@@ -858,17 +863,16 @@ export function title(
 ) {
   const guideTitle = getGuide(fieldOrDatumDef)?.title;
 
-  if (!isFieldDef(fieldOrDatumDef)) {
+  if (!isFieldDef(fieldOrDatumDef) || !includeDefault) {
     return guideTitle;
   }
   const fieldDef = fieldOrDatumDef;
-
-  const def = includeDefault ? defaultTitle(fieldDef, config) : undefined;
+  const def = defaultTitle(fieldDef, config);
 
   if (allowDisabling) {
-    return getFirstDefined(guideTitle, fieldDef.title, def);
+    return getFirstDefined(guideTitle, def);
   } else {
-    return guideTitle ?? fieldDef.title ?? def;
+    return guideTitle ?? def;
   }
 }
 
@@ -884,6 +888,12 @@ export function getGuide(fieldDef: TypedFieldDef<string> | SecondaryFieldDef<str
 }
 
 export function defaultTitle(fieldDef: FieldDefBase<string>, config: Config) {
+  if (fieldDef.title) {
+    fieldDef = {
+      ...fieldDef,
+      field: fieldDef.title
+    };
+  }
   return titleFormatter(fieldDef, config);
 }
 

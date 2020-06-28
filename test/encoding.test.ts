@@ -337,7 +337,7 @@ describe('encoding', () => {
           y: {
             field: 'mean_b',
             type: 'quantitative',
-            title: 'foo',
+            title: 'Mean of foo',
             axis: {title: 'foo', format: '.2e'}
           }
         }

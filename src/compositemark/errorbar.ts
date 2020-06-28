@@ -1,12 +1,12 @@
 import {AggregateOp, Orientation, Text} from 'vega';
 import {PositionChannel} from '../channel';
 import {
+  defaultTitle,
   Field,
   isContinuousFieldOrDatumDef,
   isFieldOrDatumDef,
   PositionFieldDef,
   SecondaryFieldDef,
-  title,
   ValueDef
 } from '../channeldef';
 import {Config} from '../config';
@@ -493,21 +493,15 @@ function errorBarAggregationAndCalculation<
       tooltipSummary = [
         {
           fieldPrefix: 'upper_',
-          titlePrefix: title({field: continuousFieldName, aggregate: upperExtentOp, type: 'quantitative'}, config, {
-            allowDisabling: false
-          })
+          titlePrefix: defaultTitle({field: continuousFieldName, aggregate: upperExtentOp}, config)
         },
         {
           fieldPrefix: 'lower_',
-          titlePrefix: title({field: continuousFieldName, aggregate: lowerExtentOp, type: 'quantitative'}, config, {
-            allowDisabling: false
-          })
+          titlePrefix: defaultTitle({field: continuousFieldName, aggregate: lowerExtentOp}, config)
         },
         {
           fieldPrefix: 'center_',
-          titlePrefix: title({field: continuousFieldName, aggregate: centerOp, type: 'quantitative'}, config, {
-            allowDisabling: false
-          })
+          titlePrefix: defaultTitle({field: continuousFieldName, aggregate: centerOp}, config)
         }
       ];
     }

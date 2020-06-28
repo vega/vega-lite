@@ -15,7 +15,7 @@ import {
 } from 'vega';
 import {ConditionalPredicate, Value, ValueDef} from './channeldef';
 import {DateTime} from './datetime';
-import {Guide, GuideEncodingEntry, TitleMixins, VlOnlyGuideConfig} from './guide';
+import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
 import {ExcludeMappedValueRefButKeepSignal, VgEncodeChannel} from './vega.schema';
 
@@ -291,7 +291,7 @@ export interface AxisPropsWithConditionAndSignal {
   tickSize?: BaseAxisNoValueRefs['tickSize'] | ConditionalAxisNumber;
   tickWidth?: BaseAxisNoValueRefs['tickWidth'] | ConditionalAxisNumber;
   titleColor?: BaseAxisNoValueRefs['titleColor'] | SignalRef;
-  title?: TitleMixins['title'];
+  title?: Guide['title'];
 }
 
 export type AxisConfig = Guide &
