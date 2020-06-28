@@ -74,7 +74,7 @@ describe('FacetModel', () => {
     it('applies number format for fieldref of a quantitative field', () => {
       const model = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'quantitative', header: {format: 'd'}}
+          column: {field: 'a', type: 'nominal', header: {format: 'd'}}
         },
         spec: {
           mark: 'point',
@@ -519,11 +519,11 @@ describe('FacetModel', () => {
     it('should add calculate cardinality for child column facet', () => {
       const model: FacetModel = parseFacetModelWithScale({
         facet: {
-          column: {field: 'a', type: 'quantitative'}
+          column: {field: 'a', type: 'nominal'}
         },
         spec: {
           facet: {
-            column: {field: 'c', type: 'quantitative'}
+            column: {field: 'c', type: 'nominal'}
           },
           spec: {
             mark: 'point',

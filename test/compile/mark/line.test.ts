@@ -49,7 +49,7 @@ describe('Mark: Line', () => {
         encoding: {
           x: {field: 'year', type: 'ordinal'},
           y: {field: 'yield', type: 'quantitative', aggregate: 'mean'},
-          size: {field: 'variety', type: 'nominal'}
+          size: {field: 'variety', type: 'quantitative'}
         }
       });
       const props = line.encodeEntry(model);

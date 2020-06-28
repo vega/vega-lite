@@ -212,7 +212,7 @@ describe('compile/scale', () => {
 
     describe('dataTypeMatchScaleType()', () => {
       it('should return specified value if datatype is ordinal or nominal and specified scale type is the ordinal or nominal', () => {
-        expect(scaleType({type: ScaleType.ORDINAL}, 'shape', {type: 'ordinal'}, 'point')).toEqual(ScaleType.ORDINAL);
+        expect(scaleType({type: ScaleType.ORDINAL}, 'shape', {type: 'nominal'}, 'point')).toEqual(ScaleType.ORDINAL);
       });
 
       it('should return default scale type if data type is temporal but specified scale type is not time or utc', () => {

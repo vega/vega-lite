@@ -479,7 +479,7 @@ describe('compile/scale', () => {
               encoding: {
                 x: {field: 'x', type: 'nominal'},
                 y: {field: 'y', type: 'nominal'},
-                size: {field: 'x', type: 'nominal'}
+                size: {field: 'x', type: 'ordinal'}
               }
             });
             expect(parseRangeForChannel('size', model)).toEqual(

@@ -18,8 +18,8 @@ describe('Selection Predicate', () => {
         }
       },
       opacity: {
-        field: 'Origin',
-        type: 'nominal',
+        field: 'Acceleration',
+        type: 'quantitative',
         condition: {
           selection: {or: ['one', {and: ['two', {not: 'thr-ee'}]}]},
           value: 0.5
@@ -91,7 +91,7 @@ describe('Selection Predicate', () => {
             '(!(vlSelectionTest("thr_ee_store", datum, "intersect")))))',
           value: 0.5
         },
-        {scale: 'opacity', field: 'Origin'}
+        {scale: 'opacity', field: 'Acceleration'}
       ]
     });
   });

@@ -47,7 +47,7 @@ describe('Selection + Scales', () => {
               },
               opacity: {
                 field: 'symbol',
-                type: 'nominal',
+                type: 'ordinal',
                 scale: {domain: {selection: 'brush3'} as Domain}
               }
             }
