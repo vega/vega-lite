@@ -46,8 +46,7 @@
       "x": {
         "field": "p",
         "type": "quantitative",
-        "axis": {"format": "%"},
-        "title": null
+        "axis": {"format": "%", "title": null}
       },
       "color": {
         "field": "c",

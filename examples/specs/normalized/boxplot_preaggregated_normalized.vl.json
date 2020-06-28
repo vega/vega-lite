@@ -36,12 +36,11 @@
     {
       "mark": {"type": "rule"},
       "encoding": {
-        "y": {"field": "Species", "type": "nominal", "title": null},
+        "y": {"field": "Species", "type": "nominal"},
         "x": {
-          "field": "lower",
           "type": "quantitative",
           "scale": {"zero": false},
-          "title": null
+          "field": "lower"
         },
         "x2": {"field": "upper"}
       }
@@ -49,8 +48,8 @@
     {
       "mark": {"type": "bar", "size": 14},
       "encoding": {
-        "y": {"field": "Species", "type": "nominal", "title": null},
-        "x": {"field": "q1", "type": "quantitative"},
+        "y": {"field": "Species", "type": "nominal"},
+        "x": {"type": "quantitative", "scale": {"zero": false}, "field": "q1"},
         "x2": {"field": "q3"},
         "color": {"field": "Species", "type": "nominal", "legend": null}
       }
@@ -58,17 +57,26 @@
     {
       "mark": {"type": "tick", "color": "white", "size": 14},
       "encoding": {
-        "y": {"field": "Species", "type": "nominal", "title": null},
-        "x": {"field": "median", "type": "quantitative"}
+        "y": {"field": "Species", "type": "nominal"},
+        "x": {
+          "type": "quantitative",
+          "scale": {"zero": false},
+          "field": "median"
+        }
       }
     },
     {
       "transform": [{"flatten": ["outliers"]}],
       "mark": {"type": "point", "style": "boxplot-outliers"},
       "encoding": {
-        "y": {"field": "Species", "type": "nominal", "title": null},
-        "x": {"field": "outliers", "type": "quantitative"}
+        "y": {"field": "Species", "type": "nominal"},
+        "x": {
+          "type": "quantitative",
+          "scale": {"zero": false},
+          "field": "outliers"
+        }
       }
     }
-  ]
+  ],
+  "config": {"axis": {"title": null}}
 }

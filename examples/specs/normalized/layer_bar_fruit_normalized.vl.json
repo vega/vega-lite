@@ -18,8 +18,8 @@
     {
       "mark": "bar",
       "encoding": {
-        "y": {"field": "name", "type": "nominal", "sort": "-x", "title": null},
-        "x": {"field": "count", "type": "quantitative", "title": null},
+        "y": {"field": "name", "type": "nominal", "sort": "-x"},
+        "x": {"field": "count", "type": "quantitative"},
         "color": {
           "field": "count",
           "type": "quantitative",
@@ -30,8 +30,8 @@
     {
       "mark": {"type": "text", "align": "right", "xOffset": -4, "aria": false},
       "encoding": {
-        "y": {"field": "name", "type": "nominal", "sort": "-x", "title": null},
-        "x": {"field": "count", "type": "quantitative", "title": null},
+        "y": {"field": "name", "type": "nominal", "sort": "-x"},
+        "x": {"field": "count", "type": "quantitative"},
         "text": {"field": "count", "type": "quantitative"},
         "color": {
           "condition": {"test": {"field": "count", "gt": 10}, "value": "white"},
@@ -39,5 +39,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"axis": {"title": null}}
 }

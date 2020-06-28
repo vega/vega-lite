@@ -263,5 +263,6 @@
       "zindex": 0
     },
     {"scale": "y", "orient": "left", "grid": false, "zindex": 0}
-  ]
+  ],
+  "config": {"axis": {"title": null}}
 }
