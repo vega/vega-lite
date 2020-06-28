@@ -145,7 +145,7 @@ export function normalizeBoxPlot(
 
   // ## Whisker Layers
 
-  const endTick: MarkDef = {type: 'tick', color: 'black', opacity: 1, orient: ticksOrient, invalid: null};
+  const endTick: MarkDef = {type: 'tick', color: 'black', opacity: 1, orient: ticksOrient, invalid: null, aria: false};
   const whiskerTooltipEncoding: Encoding<string> =
     boxPlotType === 'min-max'
       ? fiveSummaryTooltipEncoding // for min-max, show five-summary tooltip for whisker
@@ -162,32 +162,28 @@ export function normalizeBoxPlot(
   const whiskerLayers = [
     ...makeBoxPlotExtent({
       partName: 'rule',
-      mark: {type: 'rule', invalid: null},
+      mark: {type: 'rule', invalid: null, aria: false},
       positionPrefix: 'lower_whisker',
       endPositionPrefix: 'lower_box',
-      aria: false,
       extraEncoding: whiskerTooltipEncoding
     }),
     ...makeBoxPlotExtent({
       partName: 'rule',
-      mark: {type: 'rule', invalid: null},
+      mark: {type: 'rule', invalid: null, aria: false},
       positionPrefix: 'upper_box',
       endPositionPrefix: 'upper_whisker',
-      aria: false,
       extraEncoding: whiskerTooltipEncoding
     }),
     ...makeBoxPlotExtent({
       partName: 'ticks',
       mark: endTick,
       positionPrefix: 'lower_whisker',
-      aria: false,
       extraEncoding: whiskerTooltipEncoding
     }),
     ...makeBoxPlotExtent({
       partName: 'ticks',
       mark: endTick,
       positionPrefix: 'upper_whisker',
-      aria: false,
       extraEncoding: whiskerTooltipEncoding
     })
   ];
@@ -217,9 +213,9 @@ export function normalizeBoxPlot(
         invalid: null,
         ...(isObject(config.boxplot.median) && config.boxplot.median.color ? {color: config.boxplot.median.color} : {}),
         ...(sizeValue ? {size: sizeValue} : {}),
-        orient: ticksOrient
+        orient: ticksOrient,
+        aria: false
       },
-      aria: false,
       positionPrefix: 'mid_box',
       extraEncoding: fiveSummaryTooltipEncoding
     })
@@ -287,7 +283,7 @@ export function normalizeBoxPlot(
     const title = getTitle(continuousAxisChannelDef);
     const axisWithoutTitle = omit(axis, ['title']);
 
-    const outlierLayersMixins = partLayerMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot, true, {
+    const outlierLayersMixins = partLayerMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot, {
       transform: [{filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`}],
       mark: 'point',
       encoding: {

@@ -62,7 +62,7 @@
       }
     },
     {
-      "mark": {"type": "line", "style": "errorband-borders", "aria": false},
+      "mark": {"type": "line", "aria": false, "style": "errorband-borders"},
       "encoding": {
         "y": {
           "field": "lower_Miles_per_Gallon",
@@ -92,7 +92,7 @@
       }
     },
     {
-      "mark": {"type": "line", "style": "errorband-borders", "aria": false},
+      "mark": {"type": "line", "aria": false, "style": "errorband-borders"},
       "encoding": {
         "y": {
           "field": "upper_Miles_per_Gallon",

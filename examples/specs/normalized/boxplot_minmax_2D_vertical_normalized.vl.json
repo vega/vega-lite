@@ -31,8 +31,8 @@
       "mark": {
         "type": "rule",
         "invalid": null,
-        "style": "boxplot-rule",
-        "aria": false
+        "aria": false,
+        "style": "boxplot-rule"
       },
       "encoding": {
         "y": {
@@ -77,8 +77,8 @@
       "mark": {
         "type": "rule",
         "invalid": null,
-        "style": "boxplot-rule",
-        "aria": false
+        "aria": false,
+        "style": "boxplot-rule"
       },
       "encoding": {
         "y": {
@@ -175,8 +175,8 @@
         "invalid": null,
         "size": 14,
         "orient": "horizontal",
-        "style": "boxplot-median",
-        "aria": false
+        "aria": false,
+        "style": "boxplot-median"
       },
       "encoding": {
         "y": {

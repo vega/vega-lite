@@ -71,10 +71,10 @@
         {
           "mark": {
             "type": "line",
+            "aria": false,
             "style": "errorband-borders",
             "opacity": 0.5,
-            "strokeDash": [6, 4],
-            "aria": false
+            "strokeDash": [6, 4]
           },
           "encoding": {
             "y": {
@@ -112,10 +112,10 @@
         {
           "mark": {
             "type": "line",
+            "aria": false,
             "style": "errorband-borders",
             "opacity": 0.5,
-            "strokeDash": [6, 4],
-            "aria": false
+            "strokeDash": [6, 4]
           },
           "encoding": {
             "y": {

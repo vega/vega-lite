@@ -32,8 +32,8 @@
       "mark": {
         "type": "rule",
         "invalid": null,
-        "style": "boxplot-rule",
-        "aria": false
+        "aria": false,
+        "style": "boxplot-rule"
       },
       "encoding": {
         "x": {
@@ -78,8 +78,8 @@
       "mark": {
         "type": "rule",
         "invalid": null,
-        "style": "boxplot-rule",
-        "aria": false
+        "aria": false,
+        "style": "boxplot-rule"
       },
       "encoding": {
         "x": {
@@ -175,8 +175,8 @@
         "invalid": null,
         "size": 14,
         "orient": "vertical",
-        "style": "boxplot-median",
-        "aria": false
+        "aria": false,
+        "style": "boxplot-median"
       },
       "encoding": {
         "x": {

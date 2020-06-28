@@ -145,21 +145,19 @@ export function normalizeErrorBar(
     config.errorbar
   );
 
-  const tick: MarkDef = {type: 'tick', orient: ticksOrient};
+  const tick: MarkDef = {type: 'tick', orient: ticksOrient, aria: false};
 
   const layer = [
     ...makeErrorBarPart({
       partName: 'ticks',
       mark: tick,
       positionPrefix: 'lower',
-      aria: false,
       extraEncoding: tooltipEncoding
     }),
     ...makeErrorBarPart({
       partName: 'ticks',
       mark: tick,
       positionPrefix: 'upper',
-      aria: false,
       extraEncoding: tooltipEncoding
     }),
     ...makeErrorBarPart({
