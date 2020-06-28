@@ -21,7 +21,7 @@
       "x": {
         "type": "quantitative",
         "scale": {"nice": false},
-        "title": null
+        "axis": {"title": null}
       }
     },
     "layer": [{

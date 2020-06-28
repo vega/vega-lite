@@ -48,7 +48,7 @@
     "mark": "bar",
     "encoding": {
       "y": {
-        "field": "age", "title": null,
+        "field": "age", "axis": {"title": null},
         "axis": null, "sort": "descending"
       },
       "x": {
