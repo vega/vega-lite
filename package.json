@@ -156,6 +156,9 @@
       "<rootDir>/src"
     ],
     "coverageDirectory": "./coverage/",
-    "collectCoverage": false
+    "collectCoverage": false,
+    "setupFiles": [
+      "./test/jest.overrides.ts"
+    ]
   }
 }
