@@ -39,7 +39,7 @@
           "title": "Miles per Gallon (95% CIs)",
           "scale": {"zero": false}
         },
-        "x": {"title": "Year (year)", "type": "temporal", "field": "year_Year"},
+        "x": {"type": "temporal", "field": "year_Year", "title": "Year (year)"},
         "tooltip": [
           {
             "field": "upper_Miles_per_Gallon",
@@ -56,7 +56,7 @@
             "type": "quantitative",
             "title": "Mean of Miles_per_Gallon"
           },
-          {"title": "Year (year)", "type": "temporal", "field": "year_Year"}
+          {"type": "temporal", "field": "year_Year", "title": "Year (year)"}
         ]
       }
     },
@@ -74,7 +74,7 @@
           "title": "Miles per Gallon (95% CIs)",
           "scale": {"zero": false}
         },
-        "x": {"title": "Year (year)", "type": "temporal", "field": "year_Year"},
+        "x": {"type": "temporal", "field": "year_Year", "title": "Year (year)"},
         "tooltip": [
           {
             "field": "upper_Miles_per_Gallon",
@@ -91,7 +91,7 @@
             "type": "quantitative",
             "title": "Mean of Miles_per_Gallon"
           },
-          {"title": "Year (year)", "type": "temporal", "field": "year_Year"}
+          {"type": "temporal", "field": "year_Year", "title": "Year (year)"}
         ]
       }
     },
@@ -109,7 +109,7 @@
           "scale": {"zero": false}
         },
         "y2": {"field": "upper_Miles_per_Gallon"},
-        "x": {"title": "Year (year)", "type": "temporal", "field": "year_Year"},
+        "x": {"type": "temporal", "field": "year_Year", "title": "Year (year)"},
         "tooltip": [
           {
             "field": "upper_Miles_per_Gallon",
@@ -126,7 +126,7 @@
             "type": "quantitative",
             "title": "Mean of Miles_per_Gallon"
           },
-          {"title": "Year (year)", "type": "temporal", "field": "year_Year"}
+          {"type": "temporal", "field": "year_Year", "title": "Year (year)"}
         ]
       }
     }
