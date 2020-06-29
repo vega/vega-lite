@@ -175,14 +175,15 @@ describe('compile/data/lookup', () => {
           from: {
             data: {url: 'data/lookup_people.csv'},
             key: 'name'
-          }
+          },
+          as: 'lookedup'
         },
         'lookup_0'
       );
       lookup.assemble();
 
       expect(lookup.hash()).toEqual(
-        'Lookup {"secondary":"lookup_0","transform":{"from":{"data":{"url":"data/lookup_people.csv"},"key":"name"},"lookup":"person"}}'
+        'Lookup {"secondary":"lookup_0","transform":{"as":"lookedup","from":{"data":{"url":"data/lookup_people.csv"},"key":"name"},"lookup":"person"}}'
       );
     });
   });

@@ -1,4 +1,5 @@
 import {DataSourceType} from '../../data';
+import * as log from '../../log';
 import {Dict, uniqueId} from '../../util';
 
 /**
@@ -64,7 +65,7 @@ export abstract class DataFlowNode {
   public addChild(child: DataFlowNode, loc?: number) {
     // do not add the same child twice
     if (this._children.indexOf(child) > -1) {
-      console.warn('Attempt to add the same child twice.');
+      log.warn(log.message.ADD_SAME_CHILD_TWICE);
       return;
     }
 

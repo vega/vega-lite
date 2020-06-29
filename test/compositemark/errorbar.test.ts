@@ -372,38 +372,29 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
   const centers: ErrorBarCenter[] = ['mean', 'median', undefined];
   const extents: ErrorBarExtent[] = ['stderr', 'stdev', 'ci', 'iqr', undefined];
 
-  const warningOutputMap = {
+  const warningIndex = {
     mean: {
-      stderr: [false, false],
-      stdev: [false, false],
-      ci: [false, true],
-      iqr: [true, true],
-      '': [false, false]
+      stderr: false,
+      stdev: false,
+      ci: false,
+      iqr: true,
+      '': false
     },
     median: {
-      stderr: [true, false],
-      stdev: [true, false],
-      ci: [true, true],
-      iqr: [false, true],
-      '': [false, false]
+      stderr: true,
+      stdev: true,
+      ci: true,
+      iqr: false,
+      '': false
     },
-    '': {
-      stderr: [false, false],
-      stdev: [false, false],
-      ci: [false, false],
-      iqr: [false, false],
-      '': [false, false]
+    undefined: {
+      stderr: false,
+      stdev: false,
+      ci: false,
+      iqr: false,
+      '': false
     }
   };
-
-  const warningMessage = [
-    (center: ErrorBarCenter, extent: ErrorBarExtent, type: 'errorbar' | 'errorband') => {
-      return log.message.errorBarCenterIsUsedWithWrongExtent(center, extent, type); // msg1
-    },
-    (_center: ErrorBarCenter, extent: ErrorBarExtent, type: 'errorbar' | 'errorband') => {
-      return log.message.errorBarCenterIsNotNeeded(extent, type); // msg2
-    }
-  ];
 
   const type = 'errorbar';
 
@@ -418,101 +409,74 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
         }
       };
 
-      const warningOutput = warningOutputMap[center ? center : ''][extent ? extent : ''];
+      it(
+        `should produce a correct layer spec for center=${center}, extent=${extent} and throw appropriate warning`,
+        log.wrap(localLogger => {
+          const outputSpec = normalize(spec);
+          const aggregateTransform = outputSpec.transform[0];
+          if (warningIndex[center][extent]) {
+            expect(localLogger.warns[0]).toEqual(log.message.errorBarCenterIsUsedWithWrongExtent(center, extent, type));
+          }
 
-      for (let k = 0; k < warningOutput.length; k++) {
-        const testMsg =
-          'should ' +
-          (warningOutput[k] ? '' : 'not ') +
-          'produce a warning if center is ' +
-          (center ? center : 'not specified') +
-          ' and extent is ' +
-          (extent ? extent : 'not specified') +
-          ' that ' +
-          warningMessage[k](center, extent, type);
-
-        it(
-          testMsg,
-          log.wrap(localLogger => {
-            normalize(spec);
-
-            expect(warningOutput[k]).toEqual(
-              some(localLogger.warns, message => {
-                return message === warningMessage[k](center, extent, type);
-              })
-            );
-          })
-        );
-      }
-
-      const outputSpec = normalize(spec);
-      const aggregateTransform = outputSpec.transform[0];
-      const testMsg =
-        'should produce a correct layer spec if center is ' +
-        (center ? center : 'not specified') +
-        ' and extent is ' +
-        (extent ? extent : 'not specified') +
-        '.';
-
-      it(testMsg, () => {
-        if (isAggregate(aggregateTransform)) {
-          if (extent === 'iqr' || (center === 'median' && !extent)) {
-            expect(
-              some(aggregateTransform.aggregate, aggregateFieldDef => {
-                return aggregateFieldDef.op === 'median';
-              })
-            ).toBe(true);
-          } else if (extent === 'ci') {
-            expect(
-              some(aggregateTransform.aggregate, aggregateFieldDef => {
-                return aggregateFieldDef.op === 'mean';
-              })
-            ).toBe(true);
-          } else {
-            if (center) {
+          if (isAggregate(aggregateTransform)) {
+            if (extent === 'iqr' || (center === 'median' && !extent)) {
               expect(
                 some(aggregateTransform.aggregate, aggregateFieldDef => {
-                  return aggregateFieldDef.op === center;
+                  return aggregateFieldDef.op === 'median';
                 })
               ).toBe(true);
-            } else {
+            } else if (extent === 'ci') {
               expect(
                 some(aggregateTransform.aggregate, aggregateFieldDef => {
                   return aggregateFieldDef.op === 'mean';
                 })
               ).toBe(true);
-            }
-
-            if (extent) {
-              expect(
-                some(aggregateTransform.aggregate, aggregateFieldDef => {
-                  return isPartOfExtent(extent, aggregateFieldDef.op);
-                })
-              ).toBe(true);
-            } else if (center === 'median') {
-              expect(
-                some(aggregateTransform.aggregate, aggregateFieldDef => {
-                  return isPartOfExtent('iqr', aggregateFieldDef.op);
-                })
-              ).toBe(true);
-
-              expect(
-                some(aggregateTransform.aggregate, aggregateFieldDef => {
-                  return aggregateFieldDef.op === 'median';
-                })
-              ).toBe(false);
             } else {
-              expect(
-                some(aggregateTransform.aggregate, aggregateFieldDef => {
-                  return isPartOfExtent('stderr', aggregateFieldDef.op);
-                })
-              ).toBe(true);
+              if (center) {
+                expect(
+                  some(aggregateTransform.aggregate, aggregateFieldDef => {
+                    return aggregateFieldDef.op === center;
+                  })
+                ).toBe(true);
+              } else {
+                expect(
+                  some(aggregateTransform.aggregate, aggregateFieldDef => {
+                    return aggregateFieldDef.op === 'mean';
+                  })
+                ).toBe(true);
+              }
+
+              if (extent) {
+                expect(
+                  some(aggregateTransform.aggregate, aggregateFieldDef => {
+                    return isPartOfExtent(extent, aggregateFieldDef.op);
+                  })
+                ).toBe(true);
+              } else if (center === 'median') {
+                expect(
+                  some(aggregateTransform.aggregate, aggregateFieldDef => {
+                    return isPartOfExtent('iqr', aggregateFieldDef.op);
+                  })
+                ).toBe(true);
+
+                expect(
+                  some(aggregateTransform.aggregate, aggregateFieldDef => {
+                    return aggregateFieldDef.op === 'median';
+                  })
+                ).toBe(false);
+              } else {
+                expect(
+                  some(aggregateTransform.aggregate, aggregateFieldDef => {
+                    return isPartOfExtent('stderr', aggregateFieldDef.op);
+                  })
+                ).toBe(true);
+              }
             }
+          } else {
+            expect(false).toBe(true);
           }
-        } else {
-          expect(false).toBe(true);
-        }
-      });
+        })
+      );
     }
   }
 });

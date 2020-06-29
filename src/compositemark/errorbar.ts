@@ -467,10 +467,6 @@ function errorBarAggregationAndCalculation<
       ];
       tooltipTitleWithFieldName = true;
     } else {
-      if (markDef.center && markDef.extent) {
-        log.warn(log.message.errorBarCenterIsNotNeeded(markDef.extent, compositeMark));
-      }
-
       let centerOp: AggregateOp;
       let lowerExtentOp: AggregateOp;
       let upperExtentOp: AggregateOp;

@@ -26,7 +26,7 @@ describe('Selection + Scales', () => {
           },
           {
             selection: {
-              brush3: {type: 'interval'}
+              brush3: {type: 'interval', fields: ['symbol']}
             },
             mark: 'area',
             encoding: {
@@ -43,11 +43,11 @@ describe('Selection + Scales', () => {
               color: {
                 field: 'symbol',
                 type: 'nominal',
-                scale: {domain: {selection: 'brush2'} as Domain}
+                scale: {domain: {selection: 'brush3'} as Domain}
               },
               opacity: {
                 field: 'symbol',
-                type: 'nominal',
+                type: 'ordinal',
                 scale: {domain: {selection: 'brush3'} as Domain}
               }
             }
@@ -80,11 +80,11 @@ describe('Selection + Scales', () => {
 
       expect(typeof cscale.domain).toBe('object');
       expect(cscale).toHaveProperty('domainRaw');
-      expect(cscale.domainRaw).toEqual({signal: 'brush2["price"]'});
+      expect(cscale.domainRaw).toEqual({signal: 'brush3["symbol"]'});
 
       expect(typeof oscale.domain).toBe('object');
       expect(oscale).toHaveProperty('domainRaw');
-      expect(oscale.domainRaw).toEqual({signal: 'brush3["date"]'});
+      expect(oscale.domainRaw).toEqual({signal: 'brush3["symbol"]'});
     });
 
     it('should be merged for layered views', () => {

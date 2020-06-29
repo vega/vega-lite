@@ -74,7 +74,7 @@ export function selectionNotFound(name: string) {
 export const SCALE_BINDINGS_CONTINUOUS =
   'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
 
-export const LEGEND_BINDINGS_PROJECT_LENGTH =
+export const LEGEND_BINDINGS_MUST_HAVE_PROJECTION =
   'Legend bindings are only supported for selections over an individual field or encoding channel.';
 export function noSameUnitLookup(name: string) {
   return (
@@ -108,6 +108,8 @@ export function unrecognizedParse(p: string) {
 export function differentParse(field: string, local: string, ancestor: string) {
   return `An ancestor parsed field "${field}" as ${ancestor} but a child wants to parse the field as ${local}.`;
 }
+
+export const ADD_SAME_CHILD_TWICE = 'Attempt to add the same child twice.';
 
 // TRANSFORMS
 export function invalidTransformIgnored(transform: any) {
@@ -335,10 +337,6 @@ export function errorBarContinuousAxisHasCustomizedAggregate(
   compositeMark: CompositeMark
 ) {
   return `Continuous axis should not have customized aggregation function ${aggregate}; ${compositeMark} already agregates the axis.`;
-}
-
-export function errorBarCenterIsNotNeeded(extent: ErrorBarExtent, mark: 'errorbar' | 'errorband') {
-  return `Center is not needed to be specified in ${mark} when extent is ${extent}.`;
 }
 
 export function errorBand1DNotSupport(property: 'interpolate' | 'tension') {

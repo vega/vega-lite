@@ -142,30 +142,28 @@ describe('Mark: Rect', () => {
   });
 
   describe('simple horizontal with size field', () => {
-    const model = parseUnitModelWithScaleAndLayoutSize({
-      data: {url: 'data/cars.json'},
-      mark: 'rect',
-      encoding: {
-        y: {field: 'Origin', type: 'nominal'},
-        x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
-        size: {aggregate: 'mean', field: 'Horsepower', type: 'quantitative'}
-      }
-    });
-    const props = rect.encodeEntry(model);
-
-    log.wrap(localLogger => {
-      it('should draw bar from zero to field value and with band value for x/width', () => {
+    it(
+      'should draw bar from zero to field value and with band value for x/width',
+      log.wrap(localLogger => {
+        const model = parseUnitModelWithScaleAndLayoutSize({
+          data: {url: 'data/cars.json'},
+          mark: 'rect',
+          encoding: {
+            y: {field: 'Origin', type: 'nominal'},
+            x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'},
+            size: {aggregate: 'mean', field: 'Horsepower', type: 'quantitative'}
+          }
+        });
+        const props = rect.encodeEntry(model);
         expect(props.y).toEqual({scale: 'y', field: 'Origin'});
         expect(props.height).toEqual({scale: 'y', band: 1});
         expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
         expect(props.x2).toEqual({scale: 'x', value: 0});
         expect(props.width).toBeUndefined();
-      });
 
-      it('should throw warning', () => {
-        expect(localLogger.warns[0]).toEqual(log.message.cannotApplySizeToNonOrientedMark('rect'));
-      });
-    });
+        expect(localLogger.warns[0]).toEqual(log.message.incompatibleChannel('size', 'rect'));
+      })
+    );
   });
 
   describe('horizontal bin', () => {

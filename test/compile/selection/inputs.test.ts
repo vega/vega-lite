@@ -2,6 +2,7 @@ import {selector as parseSelector} from 'vega-event-selector';
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import inputs from '../../../src/compile/selection/transforms/inputs';
+import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
 
 describe('Inputs Selection Transform', () => {
@@ -74,7 +75,6 @@ describe('Inputs Selection Transform', () => {
       on: 'click',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    twelve: {type: 'single', bind: 'legend'},
     'space separated': {
       type: 'single',
       bind: {input: 'range', min: 0, max: 10, step: 1}
@@ -84,6 +84,28 @@ describe('Inputs Selection Transform', () => {
       bind: {input: 'range', min: 0, max: 10, step: 1}
     }
   });
+
+  it(
+    'drop invalid selection',
+    log.wrap(localLogger => {
+      const model1 = parseUnitModel({
+        mark: 'circle',
+        encoding: {
+          x: {field: 'Horsepower', type: 'quantitative'},
+          y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+          color: {field: 'Origin', type: 'nominal'}
+        }
+      });
+
+      model1.parseScale();
+      const invalidBindLegendSelCmpts = parseUnitSelection(model1, {
+        twelve: {type: 'single', bind: 'legend'}
+      });
+
+      expect(inputs.has(invalidBindLegendSelCmpts['twelve'])).toBeFalsy();
+      expect(localLogger.warns[0]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
+    })
+  );
 
   it('identifies transform invocation', () => {
     expect(inputs.has(selCmpts['one'])).toBeTruthy();
@@ -96,7 +118,7 @@ describe('Inputs Selection Transform', () => {
     expect(inputs.has(selCmpts['nine'])).toBeTruthy();
     expect(inputs.has(selCmpts['ten'])).toBeTruthy();
     expect(inputs.has(selCmpts['eleven'])).toBeTruthy();
-    expect(inputs.has(selCmpts['twelve'])).toBeFalsy();
+
     expect(inputs.has(selCmpts['space_separated'])).toBeTruthy();
     expect(inputs.has(selCmpts['dash_separated'])).toBeTruthy();
   });

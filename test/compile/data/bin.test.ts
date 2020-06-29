@@ -1,9 +1,9 @@
 import {BinTransform as VgBinTransform} from 'vega';
+import {BIN_RANGE_DELIMITER} from '../../../src/compile/common';
 import {BinNode, getBinSignalName} from '../../../src/compile/data/bin';
 import {Model, ModelWithField} from '../../../src/compile/model';
 import {BinTransform} from '../../../src/transform';
 import {parseUnitModelWithScale, parseUnitModelWithScaleAndSelection} from '../../util';
-import {BIN_RANGE_DELIMITER} from '../../../src/compile/common';
 import {PlaceholderDataFlowNode} from './util';
 
 function assembleFromEncoding(model: ModelWithField) {
@@ -40,6 +40,10 @@ function makeMovieExampleWithSelection(t: BinTransform) {
     transform: [t],
     encoding: {
       x: {
+        field: 'Rotten_Tomatoes_Rating',
+        type: 'quantitative'
+      },
+      y: {
         field: 'Rotten_Tomatoes_Rating',
         type: 'quantitative'
       },
@@ -105,18 +109,23 @@ describe('compile/data/bin', () => {
 
     it('should add bin transform and correctly apply bin for binned field with selection extent', () => {
       const model = parseUnitModelWithScaleAndSelection({
-        selection: {foo: {type: 'interval'}},
+        selection: {foo: {type: 'interval', fields: ['Acceleration']}},
         mark: 'point',
         encoding: {
-          y: {
+          x: {
             bin: {extent: {selection: 'foo'}},
             field: 'Acceleration',
+            type: 'quantitative'
+          },
+          y: {
+            bin: {extent: {selection: 'foo'}},
+            field: 'mpg',
             type: 'quantitative'
           }
         }
       });
       const transform = assembleFromEncoding(model);
-      expect(transform).toHaveLength(2);
+      expect(transform).toHaveLength(4);
       expect(transform[0]).toEqual({
         type: 'extent',
         field: 'Acceleration',
@@ -138,10 +147,15 @@ describe('compile/data/bin', () => {
 
     it('should add bin transform and correctly apply bin for binned field with selection with field extent', () => {
       const model = parseUnitModelWithScaleAndSelection({
-        selection: {foo: {type: 'interval'}},
+        selection: {foo: {type: 'interval', fields: ['Acceleration']}},
         mark: 'point',
         encoding: {
           y: {
+            bin: {extent: {selection: 'foo', field: 'bar'}},
+            field: 'Acceleration',
+            type: 'quantitative'
+          },
+          x: {
             bin: {extent: {selection: 'foo', field: 'bar'}},
             field: 'Acceleration',
             type: 'quantitative'
