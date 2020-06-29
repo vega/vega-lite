@@ -80,7 +80,7 @@ describe('Selection + Scales', () => {
 
       expect(typeof cscale.domain).toBe('object');
       expect(cscale).toHaveProperty('domainRaw');
-      expect(cscale.domainRaw).toEqual({signal: 'brush2["symbol"]'});
+      expect(cscale.domainRaw).toEqual({signal: 'brush3["symbol"]'});
 
       expect(typeof oscale.domain).toBe('object');
       expect(oscale).toHaveProperty('domainRaw');
