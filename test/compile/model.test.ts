@@ -1,5 +1,6 @@
 import {NameMap} from '../../src/compile/model';
 import {parseFacetModelWithScale, parseModel} from '../util';
+import {DataSourceType} from '../../src/data';
 
 describe('Model', () => {
   describe('NameMap', () => {
@@ -42,6 +43,20 @@ describe('Model', () => {
       });
 
       expect(model.assembleGroupStyle()).toBe('notcell');
+    });
+  });
+
+  describe('getDataName', () => {
+    it('returns correct names for DataSourceType', () => {
+      const model = parseModel({
+        data: {values: []},
+        mark: 'point'
+      });
+      expect(model.getDataName(DataSourceType.Column)).toBe('column');
+      expect(model.getDataName(DataSourceType.Lookup)).toBe('lookup');
+      expect(model.getDataName(DataSourceType.Main)).toBe('main');
+      expect(model.getDataName(DataSourceType.Raw)).toBe('raw');
+      expect(model.getDataName(DataSourceType.Row)).toBe('row');
     });
   });
 
