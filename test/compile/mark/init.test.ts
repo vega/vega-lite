@@ -1,6 +1,6 @@
 import {initMarkdef} from '../../../src/compile/mark/init';
 import {defaultConfig} from '../../../src/config';
-import {CIRCLE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
+import {CIRCLE, GEOSHAPE, POINT, PRIMITIVE_MARKS, SQUARE, TICK} from '../../../src/mark';
 import {parseUnitModelWithScaleAndLayoutSize, without} from '../../util';
 
 describe('compile/mark/init', () => {
@@ -77,7 +77,7 @@ describe('compile/mark/init', () => {
     });
 
     it('should return undefined by default for other marks', () => {
-      const otherMarks = without(PRIMITIVE_MARKS, [POINT, TICK, CIRCLE, SQUARE]);
+      const otherMarks = without(PRIMITIVE_MARKS, [POINT, TICK, CIRCLE, SQUARE, GEOSHAPE]);
       for (const mark of otherMarks) {
         const model = parseUnitModelWithScaleAndLayoutSize({
           mark,

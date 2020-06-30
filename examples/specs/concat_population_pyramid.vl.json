@@ -19,7 +19,8 @@
       },
       "x": {
         "aggregate": "sum", "field": "people",
-        "axis": {"title": "population", "format": "s"},
+        "title": "population",
+        "axis": {"format": "s"},
         "sort": "descending"
       },
       "color": {
@@ -52,7 +53,8 @@
       },
       "x": {
         "aggregate": "sum", "field": "people",
-        "axis": {"title": "population", "format": "s"}
+        "title": "population",
+        "axis": {"format": "s"}
       },
       "color": {
         "field": "gender",

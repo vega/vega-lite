@@ -126,10 +126,10 @@ describe('fieldDef', () => {
     });
 
     it('converts header orient to labelOrient and titleOrient', () => {
-      const fieldDef: FacetFieldDef<string> = {field: 1 as any, type: 'quantitative', header: {orient: 'bottom'}};
+      const fieldDef: FacetFieldDef<string> = {field: 1 as any, type: 'nominal', header: {orient: 'bottom'}};
       expect(initChannelDef(fieldDef, 'row', defaultConfig)).toEqual({
         field: '1',
-        type: 'quantitative',
+        type: 'nominal',
         header: {labelOrient: 'bottom', titleOrient: 'bottom'}
       });
     });

@@ -23,7 +23,7 @@
     },
     "size": {
       "field": "speed", "type": "quantitative",
-      "scale": {"range": [0, 500]}
+      "scale": {"rangeMax": 500}
     }
   },
   "config": {

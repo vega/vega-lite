@@ -18,7 +18,7 @@
           "color": {
             "aggregate": "count",
             "legend": {
-              "title": "All Movies",
+              "title": "All Movies Count",
               "direction": "horizontal",
               "gradientLength": 120
             }
@@ -40,7 +40,7 @@
           },
           "size": {
             "aggregate": "count",
-            "legend": {"title": "In Selected Category"}
+            "legend": {"title": "Selected Category Count"}
           },
           "color": {
             "value": "#666"

@@ -10,7 +10,7 @@ import {GenericCompositeMarkDef, makeCompositeAggregatePartFactory, PartsMixins}
 import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './errorbar';
 
 export type ErrorBandUnitSpec<
-  EE = {} // extra encoding parameter (for faceted composite unit spec)
+  EE = undefined // extra encoding parameter (for faceted composite unit spec)
 > = GenericUnitSpec<ErrorEncoding<Field> & EE, ErrorBand | ErrorBandDef>;
 
 export const ERRORBAND = 'errorband' as const;
@@ -136,7 +136,8 @@ export function normalizeErrorBand(
     };
     bordersMark = {
       ...bordersMark,
-      ...interpolate
+      ...interpolate,
+      aria: false
     };
   } else if (errorBandDef.interpolate) {
     log.warn(log.message.errorBand1DNotSupport('interpolate'));
@@ -159,14 +160,13 @@ export function normalizeErrorBand(
         partName: 'borders',
         mark: bordersMark,
         positionPrefix: 'lower',
-        aria: false,
+
         extraEncoding: tooltipEncoding
       }),
       ...makeErrorBandPart({
         partName: 'borders',
         mark: bordersMark,
         positionPrefix: 'upper',
-        aria: false,
         extraEncoding: tooltipEncoding
       })
     ]

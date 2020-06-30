@@ -17,7 +17,7 @@
           },
           "size": {
             "aggregate": "count",
-            "legend": {"title": "All Movies"}
+            "title": "All Movies Count"
           },
           "opacity": {"value": 0.4}
         }
@@ -37,9 +37,7 @@
           },
           "size": {
             "aggregate": "count",
-            "legend": {
-              "title": "In Selected Category"
-            }
+            "title": "Selected Category Count"
           }
         }
       }],

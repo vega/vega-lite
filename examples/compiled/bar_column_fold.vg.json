@@ -127,7 +127,7 @@
               "fill": {"scale": "color", "field": "country"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"country\" + \": \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]) + \"; \" + \"value\" + \": \" + (format(datum[\"value\"], \"\"))"
+                "signal": "\"country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]) + \"; value: \" + (format(datum[\"value\"], \"\"))"
               },
               "x": {"scale": "x", "field": "country"},
               "width": {"scale": "x", "band": 1},

@@ -14,7 +14,7 @@ import {
   isFitType,
   TopLevelProperties
 } from '../spec/toplevel';
-import {keys} from '../util';
+import {Dict, keys} from '../util';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
 import {optimizeDataflow} from './data/optimize';
@@ -196,7 +196,7 @@ function assembleTopLevelModel(
   model: Model,
   topLevelProperties: TopLevelProperties & LayoutSizeMixins,
   datasets: Datasets = {},
-  usermeta: object
+  usermeta: Dict<any>
 ): VgSpec {
   // Config with Vega-Lite only config removed.
   const vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;

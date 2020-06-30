@@ -312,7 +312,7 @@
               ],
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"date (seconds)\" + \": \" + (timeFormat(datum[\"seconds_date\"], timeUnitSpecifier([\"seconds\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\"))"
+                "signal": "\"date (seconds): \" + (timeFormat(datum[\"seconds_date\"], timeUnitSpecifier([\"seconds\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; price: \" + (format(datum[\"price\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "seconds_date"},
               "y": {"scale": "concat_0_y", "field": "price"}
@@ -439,7 +439,7 @@
               "stroke": {"value": "goldenrod"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"date (minutes)\" + \": \" + (timeFormat(datum[\"minutes_date\"], timeUnitSpecifier([\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\"))"
+                "signal": "\"date (minutes): \" + (timeFormat(datum[\"minutes_date\"], timeUnitSpecifier([\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; price: \" + (format(datum[\"price\"], \"\"))"
               },
               "x": {"scale": "concat_1_x", "field": "minutes_date"},
               "y": {"scale": "concat_1_y", "field": "price"}

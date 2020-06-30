@@ -10,7 +10,7 @@
   "encoding": {
     "y": {
       "aggregate": "sum", "field": "people",
-      "axis": {"title": "population"},
+      "title": "population",
       "stack":  "normalize"
     },
     "x": {"field": "age"},

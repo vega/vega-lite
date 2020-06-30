@@ -179,7 +179,7 @@
               "fill": {"scale": "color", "field": "c"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"c\" + \": \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"]) + \"; \" + \"p\" + \": \" + (format(datum[\"p\"], \"%\")) + \"; \" + \"settings\" + \": \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"])"
+                "signal": "\"c: \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"]) + \"; p: \" + (format(datum[\"p\"], \"%\")) + \"; settings: \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"])"
               },
               "x": {"scale": "x", "field": "p"},
               "x2": {"scale": "x", "value": 0},

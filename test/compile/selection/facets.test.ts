@@ -25,7 +25,8 @@ describe('Faceted Selections', () => {
           },
           mark: 'rule',
           encoding: {
-            x: {value: 10}
+            x: {field: 'a'},
+            y: {field: 'b'}
           }
         }
       ]

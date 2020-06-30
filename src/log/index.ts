@@ -76,6 +76,10 @@ export function reset() {
   return current;
 }
 
+export function error(...args: readonly any[]) {
+  current.error(...args);
+}
+
 export function warn(...args: readonly any[]) {
   current.warn(...args);
 }

@@ -13,7 +13,8 @@
     },
     "y": {
       "aggregate": "sum", "field": "people",
-      "axis": {"title": "population", "grid": false}
+      "title": "population",
+      "axis": {"grid": false}
     },
     "x": {
       "field": "gender",

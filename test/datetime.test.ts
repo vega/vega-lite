@@ -128,7 +128,7 @@ describe('datetime', () => {
     it('should use utc expression if utc is specified', () => {
       const d: DateTime = {
         year: 2007,
-        day: 1,
+        date: 1,
         utc: true
       };
       const expr = dateTimeToExpr(d);

@@ -70,7 +70,7 @@
           "outerRadius": {"value": 80},
           "fill": {"scale": "color", "field": "category"},
           "description": {
-            "signal": "\"value\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"category\" + \": \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"])"
+            "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"])"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},
@@ -90,7 +90,7 @@
           "radius": {"value": 90},
           "fill": {"scale": "color", "field": "category"},
           "description": {
-            "signal": "\"value\" + \": \" + (format(datum[\"value\"], \"\")) + \"; \" + \"category\" + \": \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"])"
+            "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"])"
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},

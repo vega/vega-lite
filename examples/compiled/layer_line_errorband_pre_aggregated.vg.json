@@ -74,7 +74,7 @@
             "signal": "{\"ci0\": format(datum[\"upper_ci1\"], \"\"), \"ci1\": format(datum[\"lower_ci1\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%b %d, %Y')}"
           },
           "description": {
-            "signal": "\"Mean of Miles per Gallon (95% CIs)\" + \": \" + (format(datum[\"lower_ci1\"], \"\")) + \"; \" + \"upper_ci1\" + \": \" + (format(datum[\"upper_ci1\"], \"\")) + \"; \" + \"Year (year)\" + \": \" + (timeFormat(datum[\"year_Year\"], '%b %d, %Y')) + \"; \" + \"ci0\" + \": \" + (format(datum[\"upper_ci1\"], \"\")) + \"; \" + \"ci1\" + \": \" + (format(datum[\"lower_ci1\"], \"\"))"
+            "signal": "\"Mean of Miles per Gallon (95% CIs): \" + (format(datum[\"lower_ci1\"], \"\")) + \"; upper_ci1: \" + (format(datum[\"upper_ci1\"], \"\")) + \"; Year (year): \" + (timeFormat(datum[\"year_Year\"], '%b %d, %Y')) + \"; ci0: \" + (format(datum[\"upper_ci1\"], \"\")) + \"; ci1: \" + (format(datum[\"lower_ci1\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "lower_ci1"},
@@ -95,7 +95,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"center\" + \": \" + (format(datum[\"center\"], \"\")) + \"; \" + \"Year (year)\" + \": \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+            "signal": "\"center: \" + (format(datum[\"center\"], \"\")) + \"; Year (year): \" + (timeFormat(datum[\"year_Year\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": {"scale": "y", "field": "center"},

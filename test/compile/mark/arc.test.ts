@@ -67,7 +67,7 @@ describe('Mark: Arc', () => {
       mark: 'arc',
       encoding: {
         theta: {bin: true, field: 'field', type: 'quantitative'},
-        radius: {aggregate: 'count', type: 'nominal'}
+        radius: {aggregate: 'count', type: 'quantitative'}
       },
       config: {mark: {invalid: null}} // don't apply invalid check to simplify the test
     });

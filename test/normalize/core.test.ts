@@ -5,8 +5,6 @@ import {LocalLogger} from '../../src/log';
 import {normalize} from '../../src/normalize';
 import {TopLevelSpec} from '../../src/spec';
 
-// describe('isStacked()') -- tested as part of stackOffset in stack.test.ts
-
 describe('normalize()', () => {
   it('throws errors for invalid spec', () => {
     expect(() => normalize({} as any)).toThrow(log.message.invalidSpec({}));
@@ -332,8 +330,84 @@ describe('normalize()', () => {
       });
     });
 
+    it('correctly passes shared encoding type/scale to children of layer', () => {
+      const output = normalize(
+        {
+          data: {url: 'data/population.json'},
+          encoding: {
+            x: {type: 'quantitative', scale: {type: 'log'}, axis: {title: null}},
+            color: {scale: {range: ['blue', 'green']}}
+          },
+          layer: [
+            {mark: 'point', encoding: {x: {field: 'a'}}},
+            {
+              layer: [
+                {mark: 'rule', encoding: {x: {field: 'b'}}},
+                {
+                  mark: 'text',
+                  encoding: {
+                    x: {field: 'c'},
+                    color: {field: 'b1'},
+                    text: {field: 'a', type: 'nominal'}
+                  }
+                },
+                {
+                  mark: 'text',
+                  encoding: {x: {value: 1}, color: {condition: {test: 'a', field: 'b'}, value: 'red'}}
+                },
+                {
+                  mark: 'text'
+                }
+              ]
+            }
+          ]
+        },
+        defaultConfig
+      );
+
+      expect(output).toEqual({
+        data: {url: 'data/population.json'},
+        layer: [
+          {
+            mark: 'point',
+            encoding: {
+              x: {field: 'a', type: 'quantitative', scale: {type: 'log'}, axis: {title: null}}
+            }
+          },
+          {
+            layer: [
+              {
+                mark: 'rule',
+                encoding: {
+                  x: {field: 'b', type: 'quantitative', scale: {type: 'log'}, axis: {title: null}}
+                }
+              },
+              {
+                mark: 'text',
+                encoding: {
+                  x: {field: 'c', type: 'quantitative', scale: {type: 'log'}, axis: {title: null}},
+                  color: {field: 'b1', scale: {range: ['blue', 'green']}},
+                  text: {field: 'a', type: 'nominal'}
+                }
+              },
+              {
+                mark: 'text',
+                encoding: {
+                  x: {value: 1},
+                  color: {condition: {test: 'a', field: 'b', scale: {range: ['blue', 'green']}}, value: 'red'}
+                }
+              },
+              {
+                mark: 'text'
+              }
+            ]
+          }
+        ]
+      });
+    });
+
     it(
-      'correctly overrides shared projection and encoding and throws warnings',
+      'correctly overrides shared projection and throws warnings',
       log.wrap((localLogger: LocalLogger) => {
         const output = normalize(
           {

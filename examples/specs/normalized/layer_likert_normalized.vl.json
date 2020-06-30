@@ -243,15 +243,16 @@
           }
         },
         "x": {
-          "field": "value",
           "type": "quantitative",
           "scale": {"domain": [0, 6]},
-          "axis": {"grid": false, "values": [1, 2, 3, 4, 5]}
+          "axis": {"grid": false, "values": [1, 2, 3, 4, 5], "title": null},
+          "field": "value"
         },
         "size": {
           "aggregate": "count",
           "type": "quantitative",
-          "legend": {"title": "Number of Ratings", "offset": 75}
+          "title": "Number of Ratings",
+          "legend": {"offset": 75}
         },
         "color": {"value": "#6EB4FD"}
       }
@@ -273,9 +274,10 @@
           }
         },
         "x": {
-          "field": "median",
           "type": "quantitative",
-          "axis": {"title": null}
+          "scale": {"domain": [0, 6]},
+          "axis": {"grid": false, "values": [1, 2, 3, 4, 5], "title": null},
+          "field": "median"
         },
         "color": {"value": "black"}
       }
@@ -296,7 +298,7 @@
             "title": null
           }
         },
-        "text": {"field": "lo", "type": "nominal"}
+        "text": {"field": "lo"}
       }
     },
     {
@@ -315,7 +317,7 @@
             "title": null
           }
         },
-        "text": {"field": "hi", "type": "nominal"}
+        "text": {"field": "hi"}
       }
     }
   ]

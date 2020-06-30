@@ -542,7 +542,7 @@ describe('normalizeBoxIQR', () => {
           y: {
             field: 'people',
             type: 'quantitative',
-            axis: {title: 'Population'}
+            title: 'Population'
           },
           color: {value: 'skyblue'}
         }
@@ -839,13 +839,13 @@ describe('normalizeBoxIQR', () => {
           y: {
             field: 'people',
             type: 'quantitative',
-            axis: {title: 'Population'}
+            title: 'Population'
           },
           color: {
             aggregate: 'mean',
             field: 'people',
             type: 'quantitative',
-            legend: {title: 'Mean Population'}
+            title: 'Mean Population'
           }
         }
       },
@@ -859,7 +859,7 @@ describe('normalizeBoxIQR', () => {
         size: 14,
         orient: 'vertical',
         invalid: null,
-        aria: false
+        ariaRoleDescription: 'box'
       },
       encoding: {
         x: {field: 'age', type: 'quantitative'},
@@ -874,7 +874,7 @@ describe('normalizeBoxIQR', () => {
         color: {
           field: 'mean_people',
           type: 'quantitative',
-          legend: {title: 'Mean Population'}
+          title: 'Mean Population'
         },
         tooltip: [
           {

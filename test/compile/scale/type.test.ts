@@ -1,19 +1,19 @@
-import {
-  TimeUnit,
-  LOCAL_SINGLE_TIMEUNIT_INDEX,
-  UTC_SINGLE_TIMEUNIT_INDEX,
-  LOCAL_MULTI_TIMEUNIT_INDEX,
-  UTC_MULTI_TIMEUNIT_INDEX
-} from '../../../src/timeunit';
-import {keys, Flag} from '../../../src/util';
 import {rangeType, SCALE_CHANNELS, X, Y} from '../../../src/channel';
 import {scaleType} from '../../../src/compile/scale/type';
 import * as log from '../../../src/log';
 import {BAR, PRIMITIVE_MARKS, RECT, RULE} from '../../../src/mark';
 import {ScaleType} from '../../../src/scale';
-import {isUTCTimeUnit} from '../../../src/timeunit';
+import {
+  isUTCTimeUnit,
+  LOCAL_MULTI_TIMEUNIT_INDEX,
+  LOCAL_SINGLE_TIMEUNIT_INDEX,
+  TimeUnit,
+  UTC_MULTI_TIMEUNIT_INDEX,
+  UTC_SINGLE_TIMEUNIT_INDEX
+} from '../../../src/timeunit';
 import {NOMINAL, ORDINAL} from '../../../src/type';
 import * as util from '../../../src/util';
+import {Flag, keys} from '../../../src/util';
 
 const TIMEUNIT_INDEX: Flag<TimeUnit> = {
   ...LOCAL_SINGLE_TIMEUNIT_INDEX,
@@ -212,30 +212,34 @@ describe('compile/scale', () => {
 
     describe('dataTypeMatchScaleType()', () => {
       it('should return specified value if datatype is ordinal or nominal and specified scale type is the ordinal or nominal', () => {
-        expect(scaleType({type: ScaleType.ORDINAL}, 'shape', {type: 'ordinal'}, 'point')).toEqual(ScaleType.ORDINAL);
+        expect(scaleType({type: ScaleType.ORDINAL}, 'shape', {type: 'nominal'}, 'point')).toEqual(ScaleType.ORDINAL);
       });
 
-      it('should return default scale type if data type is temporal but specified scale type is not time or utc', () => {
-        expect(
-          scaleType({type: ScaleType.LINEAR}, 'x', {type: 'temporal', field: 'x', timeUnit: 'year'}, 'point')
-        ).toEqual(ScaleType.TIME);
+      it(
+        'should return default scale type if data type is temporal but specified scale type is not time or utc',
+        log.wrap(localLogger => {
+          expect(
+            scaleType({type: ScaleType.LINEAR}, 'x', {type: 'temporal', field: 'x', timeUnit: 'year'}, 'point')
+          ).toEqual(ScaleType.TIME);
 
-        expect(
-          scaleType({type: ScaleType.LINEAR}, 'color', {type: 'temporal', field: 'x', timeUnit: 'year'}, 'point')
-        ).toBe('time');
-      });
+          expect(
+            scaleType({type: ScaleType.LINEAR}, 'color', {type: 'temporal', field: 'x', timeUnit: 'year'}, 'point')
+          ).toBe('time');
 
-      it('should return time if data type is temporal but specified scale type is discrete', () => {
-        expect(
-          scaleType({type: ScaleType.POINT}, 'x', {type: 'temporal', field: 'x', timeUnit: 'year'}, 'point')
-        ).toEqual(ScaleType.TIME);
-      });
+          expect(localLogger.warns[0]).toEqual(log.message.scaleTypeNotWorkWithFieldDef('linear', 'time'));
+        })
+      );
 
-      it('should return default scale type if data type is temporal but specified scale type is time or utc or any discrete type', () => {
-        expect(
-          scaleType({type: ScaleType.LINEAR}, 'x', {type: 'temporal', field: 'x', timeUnit: 'year'}, 'point')
-        ).toEqual(ScaleType.TIME);
-      });
+      it(
+        'should return time if data type is temporal but specified scale type is discrete',
+        log.wrap(localLogger => {
+          expect(
+            scaleType({type: ScaleType.POINT}, 'x', {type: 'temporal', field: 'x', timeUnit: 'year'}, 'point')
+          ).toEqual(ScaleType.TIME);
+
+          expect(localLogger.warns[0]).toEqual(log.message.scaleTypeNotWorkWithFieldDef('point', 'time'));
+        })
+      );
 
       it('should return utc scale type if data type is temporal and specified scale type is utc', () => {
         expect(
@@ -243,17 +247,15 @@ describe('compile/scale', () => {
         ).toEqual(ScaleType.UTC);
       });
 
-      it('should return default scale type if data type is quantative but scale type do not support quantative', () => {
-        expect(scaleType({type: ScaleType.TIME}, 'color', {field: 'x', type: 'quantitative'}, 'point')).toEqual(
-          ScaleType.LINEAR
-        );
-      });
-
-      it('should return default scale type if data type is quantative and scale type supports quantative', () => {
-        expect(scaleType({type: ScaleType.TIME}, 'x', {field: 'x', type: 'quantitative'}, 'point')).toEqual(
-          ScaleType.LINEAR
-        );
-      });
+      it(
+        'should return default scale type if data type is quantitative and scale type is time',
+        log.wrap(localLogger => {
+          expect(scaleType({type: ScaleType.TIME}, 'x', {field: 'x', type: 'quantitative'}, 'point')).toEqual(
+            ScaleType.LINEAR
+          );
+          expect(localLogger.warns[0]).toEqual(log.message.scaleTypeNotWorkWithFieldDef('time', 'linear'));
+        })
+      );
 
       it('should return default scale type if data type is temporal and scale type supports quantative', () => {
         expect(scaleType({type: ScaleType.TIME}, 'x', {field: 'x', type: 'temporal'}, 'point')).toEqual(ScaleType.TIME);

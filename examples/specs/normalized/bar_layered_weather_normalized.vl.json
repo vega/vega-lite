@@ -25,10 +25,10 @@
           }
         },
         "y": {
-          "field": "record.low",
           "type": "quantitative",
           "scale": {"domain": [10, 70]},
-          "axis": {"title": "Temperature (F)"}
+          "axis": {"title": "Temperature (F)"},
+          "field": "record.low"
         },
         "y2": {"field": "record.high"},
         "size": {"value": 20},
@@ -50,7 +50,12 @@
             "orient": "top"
           }
         },
-        "y": {"field": "normal.low", "type": "quantitative"},
+        "y": {
+          "type": "quantitative",
+          "scale": {"domain": [10, 70]},
+          "axis": {"title": "Temperature (F)"},
+          "field": "normal.low"
+        },
         "y2": {"field": "normal.high"},
         "size": {"value": 20},
         "color": {"value": "#999"}
@@ -71,7 +76,12 @@
             "orient": "top"
           }
         },
-        "y": {"field": "actual.low", "type": "quantitative"},
+        "y": {
+          "type": "quantitative",
+          "scale": {"domain": [10, 70]},
+          "axis": {"title": "Temperature (F)"},
+          "field": "actual.low"
+        },
         "y2": {"field": "actual.high"},
         "size": {"value": 12},
         "color": {"value": "#000"}
@@ -92,7 +102,12 @@
             "orient": "top"
           }
         },
-        "y": {"field": "forecast.low.low", "type": "quantitative"},
+        "y": {
+          "type": "quantitative",
+          "scale": {"domain": [10, 70]},
+          "axis": {"title": "Temperature (F)"},
+          "field": "forecast.low.low"
+        },
         "y2": {"field": "forecast.low.high"},
         "size": {"value": 12},
         "color": {"value": "#000"}
@@ -113,7 +128,12 @@
             "orient": "top"
           }
         },
-        "y": {"field": "forecast.low.high", "type": "quantitative"},
+        "y": {
+          "type": "quantitative",
+          "scale": {"domain": [10, 70]},
+          "axis": {"title": "Temperature (F)"},
+          "field": "forecast.low.high"
+        },
         "y2": {"field": "forecast.high.low"},
         "size": {"value": 3},
         "color": {"value": "#000"}
@@ -134,7 +154,12 @@
             "orient": "top"
           }
         },
-        "y": {"field": "forecast.high.low", "type": "quantitative"},
+        "y": {
+          "type": "quantitative",
+          "scale": {"domain": [10, 70]},
+          "axis": {"title": "Temperature (F)"},
+          "field": "forecast.high.low"
+        },
         "y2": {"field": "forecast.high.high"},
         "size": {"value": 12},
         "color": {"value": "#000"}
@@ -160,7 +185,7 @@
             "orient": "top"
           }
         },
-        "text": {"field": "day", "type": "nominal"}
+        "text": {"field": "day"}
       }
     }
   ]

@@ -119,7 +119,7 @@
               },
               "ariaRoleDescription": {"value": "geoshape"},
               "description": {
-                "signal": "\"geo\" + \": \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; \" + \"population\" + \": \" + (format(datum[\"population\"], \"\"))"
+                "signal": "\"geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; population: \" + (format(datum[\"population\"], \"\"))"
               }
             }
           },
@@ -165,7 +165,7 @@
               },
               "ariaRoleDescription": {"value": "geoshape"},
               "description": {
-                "signal": "\"geo\" + \": \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; \" + \"engineers\" + \": \" + (format(datum[\"engineers\"], \"\"))"
+                "signal": "\"geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; engineers: \" + (format(datum[\"engineers\"], \"\"))"
               }
             }
           },
@@ -211,7 +211,7 @@
               },
               "ariaRoleDescription": {"value": "geoshape"},
               "description": {
-                "signal": "\"geo\" + \": \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; \" + \"hurricanes\" + \": \" + (format(datum[\"hurricanes\"], \"\"))"
+                "signal": "\"geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; hurricanes: \" + (format(datum[\"hurricanes\"], \"\"))"
               }
             }
           },

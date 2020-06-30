@@ -161,7 +161,7 @@ describe('compile/legend', () => {
             x: {field: 'a', type: 'nominal'}
           }
         };
-        spec.encoding[channel] = {field: 'a', type: 'nominal'};
+        spec.encoding[channel] = {field: 'a', type: channel === 'shape' ? 'nominal' : 'quantitative'};
 
         const model = parseUnitModelWithScale(spec);
 
@@ -190,7 +190,7 @@ describe('compile/legend', () => {
             x: {field: 'a', type: 'nominal'}
           }
         };
-        spec.encoding[channel] = {field: 'a', type: 'nominal'};
+        spec.encoding[channel] = {field: 'a', type: 'quantitative'};
 
         const model = parseUnitModelWithScale(spec);
 

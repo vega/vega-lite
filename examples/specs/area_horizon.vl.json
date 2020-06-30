@@ -17,35 +17,26 @@
       {"x": 19, "y": 49}, {"x": 20, "y": 15}
     ]
   },
-  "layer": [{
-    "mark": {"type": "area", "clip": true, "orient": "vertical"},
-    "encoding": {
-      "x": {
-        "field": "x", "type": "quantitative",
-        "scale": {"zero": false, "nice": false}
-      },
-      "y": {
-        "field": "y", "type": "quantitative",
-        "scale": {"domain": [0,50]}
-      },
-      "opacity": {"value": 0.6}
+  "encoding": {
+    "x": {
+      "field": "x", "type": "quantitative",
+      "scale": {"zero": false, "nice": false}
+    },
+    "y": {
+      "field": "y", "type": "quantitative",
+      "scale": {"domain": [0,50]},
+      "axis": {"title": "y"}
     }
+  },
+  "layer": [{
+    "mark": {"type": "area", "clip": true, "orient": "vertical", "opacity": 0.6}
   }, {
-    "transform": [
-      {
-        "calculate": "datum.y - 50",
-        "as": "ny"
-      }
-    ],
+    "transform": [{"calculate": "datum.y - 50", "as": "ny"}],
     "mark": {"type": "area", "clip": true, "orient": "vertical"},
     "encoding": {
-      "x": {
-        "field": "x", "type": "quantitative"
-      },
       "y": {
         "field": "ny", "type": "quantitative",
-        "scale": {"domain": [0,50]},
-        "axis": {"title": "y"}
+        "scale": {"domain": [0,50]}
       },
       "opacity": {"value": 0.3}
     }

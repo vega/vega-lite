@@ -17,7 +17,8 @@
     },
     "x": {
       "aggregate": "sum", "field": "signed_people",
-      "axis": {"title": "population", "format": "s"}
+      "title": "population",
+      "axis": {"format": "s"}
     },
     "color": {
       "field": "gender",

@@ -17,7 +17,7 @@ import {Encoding, fieldDefs} from '../encoding';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
-import {getFirstDefined, hash, isEmpty, omit, unique} from '../util';
+import {getFirstDefined, hash, unique} from '../util';
 import {isSignalRef} from '../vega.schema';
 import {toStringFieldDef} from './../channeldef';
 
@@ -136,8 +136,8 @@ export function getCompositeMarkTooltip(
 }
 
 export function getTitle(continuousAxisChannelDef: PositionFieldDef<string>) {
-  const {axis, title, field} = continuousAxisChannelDef;
-  return getFirstDefined(axis?.title, title, field);
+  const {title, field} = continuousAxisChannelDef;
+  return getFirstDefined(title, field);
 }
 
 export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
@@ -154,20 +154,17 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
     mark,
     positionPrefix,
     endPositionPrefix = undefined,
-    aria,
     extraEncoding = {}
   }: {
     partName: keyof P;
     mark: Mark | MarkDef;
     positionPrefix: string;
     endPositionPrefix?: string;
-    aria?: boolean;
     extraEncoding?: Encoding<string>;
   }) => {
     const title = getTitle(continuousAxisChannelDef);
-    const axisWithoutTitle = omit(axis, ['title']);
 
-    return partLayerMixins<P>(compositeMarkDef, partName, compositeMarkConfig, aria, {
+    return partLayerMixins<P>(compositeMarkDef, partName, compositeMarkConfig, {
       mark, // TODO better remove this method and just have mark as a parameter of the method
       encoding: {
         [continuousAxis]: {
@@ -175,8 +172,7 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
           type: continuousAxisChannelDef.type,
           ...(title !== undefined ? {title} : {}),
           ...(scale !== undefined ? {scale} : {}),
-          // add axis without title since we already added the title above
-          ...(isEmpty(axisWithoutTitle) ? {} : {axis: axisWithoutTitle})
+          ...(axis !== undefined ? {axis} : {})
         },
         ...(isString(endPositionPrefix)
           ? {
@@ -196,7 +192,6 @@ export function partLayerMixins<P extends PartsMixins<any>>(
   markDef: GenericCompositeMarkDef<any> & P,
   part: keyof P,
   compositeMarkConfig: P,
-  aria: boolean,
   partBaseSpec: NormalizedUnitSpec
 ): NormalizedUnitSpec[] {
   const {clip, color, opacity} = markDef;
@@ -214,8 +209,7 @@ export function partLayerMixins<P extends PartsMixins<any>>(
           ...(opacity ? {opacity} : {}),
           ...(isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : {type: partBaseSpec.mark}),
           style: `${mark}-${part}`,
-          ...(isBoolean(markDef[part]) ? {} : (markDef[part] as MarkConfig)),
-          ...(aria === false ? {aria} : {})
+          ...(isBoolean(markDef[part]) ? {} : (markDef[part] as MarkConfig))
         }
       }
     ];

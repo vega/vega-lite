@@ -11,7 +11,7 @@
       "name": "hover_store",
       "values": [
         {
-          "unit": "layer_0_layer_0",
+          "unit": "layer_0",
           "fields": [{"type": "E", "field": "symbol"}],
           "values": ["AAPL"]
         }
@@ -58,7 +58,7 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0_layer_0\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"symbol\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"symbol\"]]} : null",
           "force": true
         },
         {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
@@ -77,11 +77,11 @@
   ],
   "marks": [
     {
-      "name": "layer_0_layer_0_pathgroup",
+      "name": "layer_0_pathgroup",
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_0_layer_0_main",
+          "name": "faceted_path_layer_0_main",
           "data": "source_0",
           "groupby": ["symbol"]
         }
@@ -94,12 +94,12 @@
       },
       "marks": [
         {
-          "name": "layer_0_layer_0_marks",
+          "name": "layer_0_marks",
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"date\"]"},
           "interactive": true,
-          "from": {"data": "faceted_path_layer_0_layer_0_main"},
+          "from": {"data": "faceted_path_layer_0_main"},
           "encode": {
             "update": {
               "stroke": {"value": "transparent"},
@@ -112,7 +112,7 @@
                 {"value": 0.2}
               ],
               "description": {
-                "signal": "\"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; \" + \"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\"))"
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
@@ -125,11 +125,11 @@
       ]
     },
     {
-      "name": "layer_0_layer_1_pathgroup",
+      "name": "layer_1_pathgroup",
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_0_layer_1_main",
+          "name": "faceted_path_layer_1_main",
           "data": "source_0",
           "groupby": ["symbol"]
         }
@@ -142,12 +142,12 @@
       },
       "marks": [
         {
-          "name": "layer_0_layer_1_marks",
+          "name": "layer_1_marks",
           "type": "line",
           "style": ["line"],
           "sort": {"field": "datum[\"date\"]"},
           "interactive": false,
-          "from": {"data": "faceted_path_layer_0_layer_1_main"},
+          "from": {"data": "faceted_path_layer_1_main"},
           "encode": {
             "update": {
               "stroke": [
@@ -166,7 +166,7 @@
                 {"value": 0.2}
               ],
               "description": {
-                "signal": "\"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; \" + \"date\" + \": \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; \" + \"price\" + \": \" + (format(datum[\"price\"], \"\"))"
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "price"},
@@ -179,7 +179,7 @@
       ]
     },
     {
-      "name": "layer_1_layer_0_marks",
+      "name": "layer_2_layer_0_marks",
       "type": "symbol",
       "style": ["circle"],
       "interactive": false,
@@ -203,7 +203,7 @@
           ],
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; \" + \"Max of date\" + \": \" + (timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; \" + \"price for max date\" + \": \" + (format(datum[\"argmax_date\"][\"price\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"argmax_date\"][\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
           },
           "x": {"scale": "x", "field": "max_date"},
           "y": {"scale": "y", "field": "argmax_date[\"price\"]"},
@@ -212,7 +212,7 @@
       }
     },
     {
-      "name": "layer_1_layer_1_marks",
+      "name": "layer_2_layer_1_marks",
       "type": "text",
       "style": ["text"],
       "interactive": false,
@@ -237,7 +237,7 @@
             {"value": 0.2}
           ],
           "description": {
-            "signal": "\"symbol\" + \": \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; \" + \"Max of date\" + \": \" + (timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; \" + \"price for max date\" + \": \" + (format(datum[\"argmax_date\"][\"price\"], \"\"))"
+            "signal": "\"date: \" + (timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"argmax_date\"][\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
           },
           "x": {"scale": "x", "field": "max_date"},
           "y": {"scale": "y", "field": "argmax_date[\"price\"]"},

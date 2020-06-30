@@ -41,8 +41,8 @@
               "mark": {
                 "type": "rule",
                 "invalid": null,
-                "style": "boxplot-rule",
-                "aria": false
+                "aria": false,
+                "style": "boxplot-rule"
               },
               "encoding": {
                 "x": {
@@ -71,8 +71,8 @@
               "mark": {
                 "type": "rule",
                 "invalid": null,
-                "style": "boxplot-rule",
-                "aria": false
+                "aria": false,
+                "style": "boxplot-rule"
               },
               "encoding": {
                 "x": {
@@ -119,8 +119,8 @@
                 "size": 14,
                 "orient": "horizontal",
                 "invalid": null,
-                "style": "boxplot-box",
-                "aria": false
+                "ariaRoleDescription": "box",
+                "style": "boxplot-box"
               },
               "encoding": {
                 "x": {
@@ -167,7 +167,7 @@
                 "invalid": null,
                 "size": 14,
                 "orient": "vertical",
-                "ariaRoleDescription": "box",
+                "aria": false,
                 "style": "boxplot-median"
               },
               "encoding": {
@@ -215,11 +215,7 @@
       "mark": "circle",
       "encoding": {
         "y": {"field": "age", "type": "ordinal"},
-        "x": {
-          "field": "people",
-          "type": "quantitative",
-          "axis": {"title": "population"}
-        },
+        "x": {"field": "people", "type": "quantitative", "title": "population"},
         "color": {"value": "black"},
         "opacity": {"value": 0.2}
       }

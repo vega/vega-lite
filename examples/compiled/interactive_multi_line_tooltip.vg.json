@@ -84,7 +84,7 @@
             "signal": "{\"date (year-month-date)\": timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"temp_max\": format(datum[\"temp_max\"], \"\"), \"temp_min\": format(datum[\"temp_min\"], \"\")}"
           },
           "description": {
-            "signal": "\"date (year-month-date)\" + \": \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"temp_max\" + \": \" + (format(datum[\"temp_max\"], \"\")) + \"; \" + \"temp_min\" + \": \" + (format(datum[\"temp_min\"], \"\"))"
+            "signal": "\"date (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; temp_max: \" + (format(datum[\"temp_max\"], \"\")) + \"; temp_min: \" + (format(datum[\"temp_min\"], \"\"))"
           },
           "x": {"scale": "x", "field": "yearmonthdate_date"},
           "y": {"scale": "y", "field": "temp_max"},
@@ -108,7 +108,7 @@
             "signal": "{\"date (year-month-date)\": timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"temp_max\": format(datum[\"temp_max\"], \"\"), \"temp_min\": format(datum[\"temp_min\"], \"\")}"
           },
           "description": {
-            "signal": "\"date (year-month-date)\" + \": \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"temp_max\" + \": \" + (format(datum[\"temp_max\"], \"\")) + \"; \" + \"temp_min\" + \": \" + (format(datum[\"temp_min\"], \"\"))"
+            "signal": "\"date (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; temp_max: \" + (format(datum[\"temp_max\"], \"\")) + \"; temp_min: \" + (format(datum[\"temp_min\"], \"\"))"
           },
           "x": {"scale": "x", "field": "yearmonthdate_date"},
           "y": {"scale": "y", "field": "temp_min"},
@@ -137,7 +137,7 @@
             "signal": "{\"date (year-month-date)\": timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"temp_max\": format(datum[\"temp_max\"], \"\"), \"temp_min\": format(datum[\"temp_min\"], \"\")}"
           },
           "description": {
-            "signal": "\"date (year-month-date)\" + \": \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"temp_max\" + \": \" + (format(datum[\"temp_max\"], \"\")) + \"; \" + \"temp_min\" + \": \" + (format(datum[\"temp_min\"], \"\"))"
+            "signal": "\"date (year-month-date): \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; temp_max: \" + (format(datum[\"temp_max\"], \"\")) + \"; temp_min: \" + (format(datum[\"temp_min\"], \"\"))"
           },
           "x": {"scale": "x", "field": "yearmonthdate_date"},
           "y": {"value": 0},

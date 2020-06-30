@@ -28,7 +28,7 @@
     "y": {
       "field": "RatingDelta",
       "type": "quantitative",
-      "axis": {"title": "Rating Delta"}
+      "title": "Rating Delta"
     },
     "color": {
       "field": "RatingDelta",

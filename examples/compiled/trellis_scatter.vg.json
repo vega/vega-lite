@@ -128,7 +128,7 @@
               "stroke": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Worldwide Gross\" + \": \" + (format(datum[\"Worldwide Gross\"], \"\")) + \"; \" + \"US DVD Sales\" + \": \" + (format(datum[\"US DVD Sales\"], \"\"))"
+                "signal": "\"Worldwide Gross: \" + (format(datum[\"Worldwide Gross\"], \"\")) + \"; US DVD Sales: \" + (format(datum[\"US DVD Sales\"], \"\"))"
               },
               "x": {"scale": "x", "field": "Worldwide Gross"},
               "y": {"scale": "y", "field": "US DVD Sales"}

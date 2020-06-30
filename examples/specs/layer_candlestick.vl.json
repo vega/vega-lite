@@ -5,15 +5,20 @@
   "data": {"url": "data/ohlc.json"},
   "encoding": {
     "x": {
-      "field": "date", 
-      "type": "temporal", 
+      "field": "date",
+      "type": "temporal",
       "title": "Date in 2009",
       "axis": {
-            "format": "%m/%d",
-            "labelAngle": -45,
-            "title": "Date in 2009"
-          }
-      },
+        "format": "%m/%d",
+        "labelAngle": -45,
+        "title": "Date in 2009"
+      }
+    },
+    "y": {
+      "type": "quantitative",
+      "scale": {"zero": false},
+      "axis": {"title": "Price"}
+    },
     "color": {
       "condition": {
         "test": "datum.open < datum.close",
@@ -26,19 +31,14 @@
     {
       "mark": "rule",
       "encoding": {
-        "y": {
-          "field": "low", "type": "quantitative",
-          "scale": {"zero": false},
-          "title": "Price"
-
-        },
+        "y": {"field": "low"},
         "y2": {"field": "high"}
       }
     },
     {
       "mark": "bar",
       "encoding": {
-        "y": {"field": "open", "type": "quantitative"},
+        "y": {"field": "open"},
         "y2": {"field": "close"}
       }
     }

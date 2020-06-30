@@ -278,6 +278,26 @@ describe('compile/scale', () => {
 
         expect(parseRangeForChannel('angle', model)).toEqual(makeImplicit([0, 360]));
       });
+      it('should use default rangeMin if specified.', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            angle: {field: 'x', type: 'quantitative', scale: {rangeMin: 20}}
+          }
+        });
+
+        expect(parseRangeForChannel('angle', model)).toEqual(makeExplicit([20, 360]));
+      });
+      it('should use default rangeMax if specified.', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            angle: {field: 'x', type: 'quantitative', scale: {rangeMax: 90}}
+          }
+        });
+
+        expect(parseRangeForChannel('angle', model)).toEqual(makeExplicit([0, 90]));
+      });
     });
 
     describe('radius', () => {
@@ -459,7 +479,7 @@ describe('compile/scale', () => {
               encoding: {
                 x: {field: 'x', type: 'nominal'},
                 y: {field: 'y', type: 'nominal'},
-                size: {field: 'x', type: 'nominal'}
+                size: {field: 'x', type: 'ordinal'}
               }
             });
             expect(parseRangeForChannel('size', model)).toEqual(
@@ -541,17 +561,21 @@ describe('compile/scale', () => {
           });
         });
 
-        it('should return range interpolation of length 4 for threshold scale', () => {
-          const model = parseUnitModelWithScaleExceptRange({
-            mark: 'point',
-            encoding: {
-              size: {field: 'x', type: 'quantitative', scale: {type: 'threshold'}}
-            }
-          });
-          expect(parseRangeForChannel('size', model)).toEqual(
-            makeImplicit({signal: 'sequence(9, 361 + (361 - 9) / (3 - 1), (361 - 9) / (3 - 1))'})
-          );
-        });
+        it(
+          'should return range interpolation of length 4 for threshold scale',
+          log.wrap(localLogger => {
+            const model = parseUnitModelWithScaleExceptRange({
+              mark: 'point',
+              encoding: {
+                size: {field: 'x', type: 'quantitative', scale: {type: 'threshold'}}
+              }
+            });
+            expect(parseRangeForChannel('size', model)).toEqual(
+              makeImplicit({signal: 'sequence(9, 361 + (361 - 9) / (3 - 1), (361 - 9) / (3 - 1))'})
+            );
+            expect(localLogger.warns[0]).toEqual(log.message.domainRequiredForThresholdScale('size'));
+          })
+        );
       });
     });
 

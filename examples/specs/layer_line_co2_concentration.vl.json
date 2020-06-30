@@ -19,6 +19,16 @@
     }
   ],
   "encoding": {
+    "x": {
+      "type": "quantitative",
+      "title": "Year into Decade",
+      "axis": {"tickCount": 11}
+    },
+    "y": {
+      "title": "CO2 concentration in ppm",
+      "type": "quantitative",
+      "scale": {"zero": false}
+    },
     "color": {
       "field": "decade",
       "type": "ordinal",
@@ -31,57 +41,24 @@
     {
       "mark": "line",
       "encoding": {
-        "x": {
-          "field": "scaled_date",
-          "type": "quantitative",
-          "axis": {"title": "Year into Decade", "tickCount": 11}
-        },
-        "y": {
-          "field": "CO2",
-          "title": "CO2 concentration in ppm",
-          "type": "quantitative",
-          "scale": {"zero": false}
-        }
+        "x": {"field": "scaled_date"},
+        "y": {"field": "CO2"}
       }
     },
     {
-      "mark": {"type": "text", "baseline": "top"},
+      "mark": {"type": "text", "baseline": "top", "aria": false},
       "encoding": {
-        "x": {
-          "aggregate": "min",
-          "field": "scaled_date",
-          "type": "quantitative"
-        },
-        "y": {
-          "aggregate": {"argmin": "scaled_date"},
-          "field": "CO2",
-          "type": "quantitative"
-        },
-        "text": {
-          "aggregate": {"argmin": "scaled_date"},
-          "field": "year",
-          "type": "nominal"
-        }
+        "x": {"aggregate": "min", "field": "scaled_date"},
+        "y": {"aggregate": {"argmin": "scaled_date"}, "field": "CO2"},
+        "text": {"aggregate": {"argmin": "scaled_date"}, "field": "year"}
       }
     },
     {
-      "mark": {"type": "text"},
+      "mark": {"type": "text", "aria": false},
       "encoding": {
-        "x": {
-          "aggregate": "max",
-          "field": "scaled_date",
-          "type": "quantitative"
-        },
-        "y": {
-          "aggregate": {"argmax": "scaled_date"},
-          "field": "CO2",
-          "type": "quantitative"
-        },
-        "text": {
-          "aggregate": {"argmax": "scaled_date"},
-          "field": "year",
-          "type": "nominal"
-        }
+        "x": {"aggregate": "max", "field": "scaled_date"},
+        "y": {"aggregate": {"argmax": "scaled_date"}, "field": "CO2"},
+        "text": {"aggregate": {"argmax": "scaled_date"}, "field": "year"}
       }
     }
   ],

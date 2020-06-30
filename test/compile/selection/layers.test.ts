@@ -76,7 +76,7 @@ describe('Layered Selections', () => {
             },
             description: {
               signal:
-                '"Horsepower" + ": " + (format(datum["Horsepower"], "")) + "; " + "Miles_per_Gallon" + ": " + (format(datum["Miles_per_Gallon"], "")) + "; " + "Origin" + ": " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
+                '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
             },
             fill: [
               {
@@ -125,7 +125,7 @@ describe('Layered Selections', () => {
             },
             description: {
               signal:
-                '"Horsepower" + ": " + (format(datum["Horsepower"], "")) + "; " + "Miles_per_Gallon" + ": " + (format(datum["Miles_per_Gallon"], "")) + "; " + "Origin" + ": " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
+                '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
             },
             fill: [
               {
@@ -169,7 +169,7 @@ describe('Layered Selections', () => {
             },
             description: {
               signal:
-                '"Horsepower" + ": " + (format(datum["Horsepower"], "")) + "; " + "Miles_per_Gallon" + ": " + (format(datum["Miles_per_Gallon"], "")) + "; " + "Origin" + ": " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
+                '"Horsepower: " + (format(datum["Horsepower"], "")) + "; Miles_per_Gallon: " + (format(datum["Miles_per_Gallon"], "")) + "; Origin: " + (isValid(datum["Origin"]) ? datum["Origin"] : ""+datum["Origin"])'
             },
             fill: [
               {

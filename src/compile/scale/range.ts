@@ -41,12 +41,12 @@ import {
 import {isStep, LayoutSizeMixins} from '../../spec/base';
 import * as util from '../../util';
 import {isSignalRef, VgRange} from '../../vega.schema';
+import {signalOrStringValue} from '../common';
 import {getBinSignalName} from '../data/bin';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
-import {signalOrStringValue} from '../common';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
 
@@ -159,7 +159,20 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
     }
   }
 
-  return makeImplicit(defaultRange(channel, model));
+  const {rangeMin, rangeMax} = specifiedScale;
+  const d = defaultRange(channel, model);
+
+  if (
+    (rangeMin !== undefined || rangeMax !== undefined) &&
+    // it's ok to check just rangeMin's compatibility since rangeMin/rangeMax are the same
+    scaleTypeSupportProperty(scaleType, 'rangeMin') &&
+    isArray(d) &&
+    d.length === 2
+  ) {
+    return makeExplicit([rangeMin ?? d[0], rangeMax ?? d[1]]);
+  }
+
+  return makeImplicit(d);
 }
 
 function parseScheme(scheme: Scheme | SignalRef): RangeScheme {

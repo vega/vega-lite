@@ -29,8 +29,8 @@
       "mark": {
         "type": "tick",
         "orient": "horizontal",
-        "style": "errorbar-ticks",
-        "aria": false
+        "aria": false,
+        "style": "errorbar-ticks"
       },
       "encoding": {
         "y": {
@@ -64,8 +64,8 @@
       "mark": {
         "type": "tick",
         "orient": "horizontal",
-        "style": "errorbar-ticks",
-        "aria": false
+        "aria": false,
+        "style": "errorbar-ticks"
       },
       "encoding": {
         "y": {

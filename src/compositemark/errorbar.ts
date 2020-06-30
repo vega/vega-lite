@@ -145,21 +145,19 @@ export function normalizeErrorBar(
     config.errorbar
   );
 
-  const tick: MarkDef = {type: 'tick', orient: ticksOrient};
+  const tick: MarkDef = {type: 'tick', orient: ticksOrient, aria: false};
 
   const layer = [
     ...makeErrorBarPart({
       partName: 'ticks',
       mark: tick,
       positionPrefix: 'lower',
-      aria: false,
       extraEncoding: tooltipEncoding
     }),
     ...makeErrorBarPart({
       partName: 'ticks',
       mark: tick,
       positionPrefix: 'upper',
-      aria: false,
       extraEncoding: tooltipEncoding
     }),
     ...makeErrorBarPart({
@@ -469,10 +467,6 @@ function errorBarAggregationAndCalculation<
       ];
       tooltipTitleWithFieldName = true;
     } else {
-      if (markDef.center && markDef.extent) {
-        log.warn(log.message.errorBarCenterIsNotNeeded(markDef.extent, compositeMark));
-      }
-
       let centerOp: AggregateOp;
       let lowerExtentOp: AggregateOp;
       let upperExtentOp: AggregateOp;

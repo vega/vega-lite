@@ -109,7 +109,7 @@
     "svg2png-many": "^0.0.7",
     "terser": "^4.8.0",
     "ts-jest": "^26.1.1",
-    "ts-json-schema-generator": "^0.70.1",
+    "ts-json-schema-generator": "^0.70.2",
     "typescript": "~3.9.5",
     "vega-cli": "^5.13.0",
     "vega-datasets": "2.1.0",
@@ -156,6 +156,9 @@
       "<rootDir>/src"
     ],
     "coverageDirectory": "./coverage/",
-    "collectCoverage": false
+    "collectCoverage": false,
+    "setupFiles": [
+      "./test/jest.overrides.ts"
+    ]
   }
 }

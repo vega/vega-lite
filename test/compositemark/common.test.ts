@@ -1,14 +1,14 @@
-import {AggregateTransform} from './../../src/transform';
+import {Orientation} from 'vega';
+import {compositeMarkOrient} from '../../src/compositemark/common';
 import {isMarkDef, MarkDef} from '../../src/mark';
 import {normalize} from '../../src/normalize';
 import {isLayerSpec, isUnitSpec, TopLevelSpec} from '../../src/spec';
-import {isAggregate, isCalculate} from '../../src/transform';
-import {defaultConfig} from '.././../src/config';
 import {NormalizedUnitSpec} from '../../src/spec/unit';
-import {Orientation} from 'vega';
+import {isAggregate, isCalculate} from '../../src/transform';
 import {some} from '../../src/util';
+import {defaultConfig} from '.././../src/config';
 import {assertIsUnitSpec} from '../util';
-import {compositeMarkOrient} from '../../src/compositemark/common';
+import {AggregateTransform} from './../../src/transform';
 
 describe('common', () => {
   it('should clip all parts when clip property in composite mark def is true', () => {
@@ -45,7 +45,7 @@ describe('common', () => {
     expect(encoding.color).toBeTruthy();
   });
 
-  it('should use axis title', () => {
+  it('should keep axis title', () => {
     const outputSpec = normalize({
       data: {url: 'data/barley.json'},
       mark: 'errorbar',
@@ -60,8 +60,7 @@ describe('common', () => {
     const encoding = outputSpec.encoding;
     expect(encoding).toBeTruthy();
     expect(encoding.y).toBeTruthy();
-    expect((encoding.y as any).title).toBe('Hello Vega');
-    expect((encoding.y as any).axis).toEqual({grid: false});
+    expect((encoding.y as any).axis).toEqual({title: 'Hello Vega', grid: false});
   });
 
   it('should add timeFormat to axis when normalizing encoding with timeUnit', () => {

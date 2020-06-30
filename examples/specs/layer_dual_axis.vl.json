@@ -21,7 +21,8 @@
           "aggregate": "average",
           "field": "temp_max",
           "scale": {"domain": [0, 30]},
-          "axis": {"title": "Avg. Temperature (°C)", "titleColor": "#85C5A6"}
+          "title": "Avg. Temperature (°C)",
+          "axis": {"titleColor": "#85C5A6"}
         },
 
         "y2": {
@@ -36,7 +37,8 @@
         "y": {
           "aggregate": "average",
           "field": "precipitation",
-          "axis": {"title": "Precipitation (inches)", "titleColor":"#85A9C5"}
+          "title": "Precipitation (inches)",
+          "axis": {"titleColor":"#85A9C5"}
         }
       }
     }

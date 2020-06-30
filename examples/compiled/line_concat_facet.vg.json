@@ -73,25 +73,12 @@
     {
       "type": "group",
       "name": "concat_0_group",
-      "layout": {
-        "padding": 0,
-        "offset": {"rowTitle": 10},
-        "columns": 1,
-        "bounds": "full",
-        "align": "all"
+      "title": {
+        "text": "Annual and Total Mean Precipitation from 2012-2015",
+        "anchor": "start"
       },
+      "layout": {"padding": 5, "columns": 1, "bounds": "full", "align": "all"},
       "marks": [
-        {
-          "name": "row-title",
-          "type": "group",
-          "role": "row-title",
-          "title": {
-            "text": "date (year)",
-            "orient": "left",
-            "style": "guide-title",
-            "offset": 10
-          }
-        },
         {
           "name": "concat_0_row_header",
           "type": "group",
@@ -168,7 +155,7 @@
                 "update": {
                   "stroke": {"value": "#4c78a8"},
                   "description": {
-                    "signal": "\"Mean of precipitation\" + \": \" + (format(datum[\"mean_precipitation\"], \"\")) + \"; \" + \"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
+                    "signal": "\"Mean of precipitation: \" + (format(datum[\"mean_precipitation\"], \"\")) + \"; date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})))"
                   },
                   "x": {"scale": "concat_0_x", "field": "month_date"},
                   "y": {"scale": "concat_0_y", "field": "mean_precipitation"},
@@ -219,7 +206,7 @@
             "update": {
               "stroke": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"date (month)\" + \": \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; \" + \"All years\" + \": \" + (format(datum[\"mean_precipitation\"], \"\"))"
+                "signal": "\"date (month): \" + (timeFormat(datum[\"month_date\"], timeUnitSpecifier([\"month\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of precipitation: \" + (format(datum[\"mean_precipitation\"], \"\"))"
               },
               "x": {"scale": "concat_1_x", "field": "month_date"},
               "y": {"scale": "concat_1_y", "field": "mean_precipitation"},
@@ -261,7 +248,6 @@
           "scale": "concat_1_y",
           "orient": "left",
           "grid": false,
-          "title": "All years",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(concat_1_height/40)"},
           "zindex": 0

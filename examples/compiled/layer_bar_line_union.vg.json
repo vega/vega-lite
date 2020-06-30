@@ -48,7 +48,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"a\" + \": \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; \" + \"c\" + \": \" + (format(datum[\"c\"], \"\"))"
+            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; c: \" + (format(datum[\"c\"], \"\"))"
           },
           "x": {"scale": "x", "field": "a"},
           "width": {"scale": "x", "band": 1},
@@ -67,7 +67,7 @@
         "update": {
           "stroke": {"value": "red"},
           "description": {
-            "signal": "\"b\" + \": \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"]) + \"; \" + \"c\" + \": \" + (format(datum[\"c\"], \"\"))"
+            "signal": "\"b: \" + (isValid(datum[\"b\"]) ? datum[\"b\"] : \"\"+datum[\"b\"]) + \"; c: \" + (format(datum[\"c\"], \"\"))"
           },
           "x": {"scale": "x", "field": "b", "band": 0.5},
           "y": {"scale": "y", "field": "c"},

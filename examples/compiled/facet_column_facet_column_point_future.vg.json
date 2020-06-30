@@ -180,7 +180,7 @@
                   "stroke": {"value": "#4c78a8"},
                   "ariaRoleDescription": {"value": "point"},
                   "description": {
-                    "signal": "\"Horsepower\" + \": \" + (format(datum[\"Horsepower\"], \"\")) + \"; \" + \"Acceleration\" + \": \" + (format(datum[\"Acceleration\"], \"\"))"
+                    "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Acceleration: \" + (format(datum[\"Acceleration\"], \"\"))"
                   },
                   "x": {"scale": "x", "field": "Horsepower"},
                   "y": {"scale": "y", "field": "Acceleration"}

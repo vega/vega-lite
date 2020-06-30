@@ -38,8 +38,9 @@
             "y": {
               "field": "lower_Miles_per_Gallon",
               "type": "quantitative",
-              "title": "Miles per Gallon (95% CIs)",
-              "scale": {"zero": false}
+              "title": "Miles_per_Gallon",
+              "scale": {"zero": false},
+              "axis": {"title": "Miles per Gallon (95% CIs)"}
             },
             "y2": {"field": "upper_Miles_per_Gallon"},
             "x": {
@@ -70,17 +71,18 @@
         {
           "mark": {
             "type": "line",
+            "aria": false,
             "style": "errorband-borders",
             "opacity": 0.5,
-            "strokeDash": [6, 4],
-            "aria": false
+            "strokeDash": [6, 4]
           },
           "encoding": {
             "y": {
               "field": "lower_Miles_per_Gallon",
               "type": "quantitative",
-              "title": "Miles per Gallon (95% CIs)",
-              "scale": {"zero": false}
+              "title": "Miles_per_Gallon",
+              "scale": {"zero": false},
+              "axis": {"title": "Miles per Gallon (95% CIs)"}
             },
             "x": {
               "title": "Year (year)",
@@ -110,17 +112,18 @@
         {
           "mark": {
             "type": "line",
+            "aria": false,
             "style": "errorband-borders",
             "opacity": 0.5,
-            "strokeDash": [6, 4],
-            "aria": false
+            "strokeDash": [6, 4]
           },
           "encoding": {
             "y": {
               "field": "upper_Miles_per_Gallon",
               "type": "quantitative",
-              "title": "Miles per Gallon (95% CIs)",
-              "scale": {"zero": false}
+              "title": "Miles_per_Gallon",
+              "scale": {"zero": false},
+              "axis": {"title": "Miles per Gallon (95% CIs)"}
             },
             "x": {
               "title": "Year (year)",
@@ -152,12 +155,14 @@
     {
       "mark": "line",
       "encoding": {
+        "x": {"field": "Year", "timeUnit": "year"},
         "y": {
-          "field": "Miles_per_Gallon",
           "type": "quantitative",
+          "scale": {"zero": false},
+          "axis": {"title": "Miles per Gallon (95% CIs)"},
+          "field": "Miles_per_Gallon",
           "aggregate": "mean"
-        },
-        "x": {"field": "Year", "timeUnit": "year"}
+        }
       }
     }
   ]
