@@ -1,5 +1,6 @@
 import {PlaceholderDataFlowNode} from './util';
 import {OutputNode} from '../../../src/compile/data/dataflow';
+import {DataSourceType} from '../../../src/data';
 
 describe('compile/data/dataflow', () => {
   describe('DataFlowNode', () => {
@@ -156,14 +157,14 @@ describe('compile/data/dataflow', () => {
   describe('OutputNode', () => {
     describe('dependentFields', () => {
       it('should return empty set', () => {
-        const flatten = new OutputNode(null, 'src', 'main', {});
+        const flatten = new OutputNode(null, 'src', DataSourceType.Main, {});
         expect(flatten.dependentFields()).toEqual(new Set());
       });
     });
 
     describe('producedFields', () => {
       it('should return empty set', () => {
-        const flatten = new OutputNode(null, 'src', 'main', {});
+        const flatten = new OutputNode(null, 'src', DataSourceType.Main, {});
         expect(flatten.producedFields()).toEqual(new Set());
       });
     });
