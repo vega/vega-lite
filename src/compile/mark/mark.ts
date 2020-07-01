@@ -1,6 +1,6 @@
 import {isArray} from 'vega-util';
 import {FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef';
-import {MAIN} from '../../data';
+import {DataSourceType} from '../../data';
 import {isAggregate, pathGroupingFields} from '../../encoding';
 import {AREA, BAR, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortByEncoding, isSortField} from '../../sort';
@@ -68,8 +68,8 @@ function getPathGroups(model: UnitModel, details: string[]) {
       type: 'group',
       from: {
         facet: {
-          name: FACETED_PATH_PREFIX + model.requestDataName(MAIN),
-          data: model.requestDataName(MAIN),
+          name: FACETED_PATH_PREFIX + model.requestDataName(DataSourceType.Main),
+          data: model.requestDataName(DataSourceType.Main),
           groupby: details
         }
       },
@@ -211,8 +211,8 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
       type: 'group',
       from: {
         facet: {
-          data: model.requestDataName(MAIN),
-          name: STACK_GROUP_PREFIX + model.requestDataName(MAIN),
+          data: model.requestDataName(DataSourceType.Main),
+          name: STACK_GROUP_PREFIX + model.requestDataName(DataSourceType.Main),
           groupby,
           aggregate: {
             fields: [
@@ -320,7 +320,7 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
       ...(sort ? {sort} : {}),
       ...(interactive ? interactive : {}),
       ...(aria === false ? {aria} : {}),
-      from: {data: opt.fromPrefix + model.requestDataName(MAIN)},
+      from: {data: opt.fromPrefix + model.requestDataName(DataSourceType.Main)},
       encode: {
         update: markCompiler[mark].encodeEntry(model)
       },

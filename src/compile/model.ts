@@ -469,13 +469,17 @@ export abstract class Model {
     return varName((this.name ? this.name + '_' : '') + text);
   }
 
+  public getDataName(type: DataSourceType) {
+    return this.getName(DataSourceType[type].toLowerCase());
+  }
+
   /**
    * Request a data source name for the given data source type and mark that data source as required.
    * This method should be called in parse, so that all used data source can be correctly instantiated in assembleData().
    * You can lookup the correct dataset name in assemble with `lookupDataSource`.
    */
   public requestDataName(name: DataSourceType) {
-    const fullName = this.getName(name);
+    const fullName = this.getDataName(name);
 
     // Increase ref count. This is critical because otherwise we won't create a data source.
     // We also increase the ref counts on OutputNode.getSource() calls.

@@ -10,6 +10,7 @@ import {FilterNode} from '../data/filter';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {forEachTransform} from './transforms/transforms';
+import {DataSourceType} from '../../data';
 
 export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
@@ -129,7 +130,7 @@ export function materializeSelections(model: UnitModel, main: OutputNode) {
     model.component.data.outputNodes[lookupName] = selCmpt.materialized = new OutputNode(
       new FilterNode(main, model, {selection}),
       lookupName,
-      'lookup',
+      DataSourceType.Lookup,
       model.component.data.outputNodeRefCounts
     );
   });

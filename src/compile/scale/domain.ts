@@ -22,7 +22,7 @@ import {
   valueExpr,
   vgField
 } from '../../channeldef';
-import {MAIN, RAW} from '../../data';
+import {DataSourceType} from '../../data';
 import {DateTime} from '../../datetime';
 import * as log from '../../log';
 import {Domain, hasDiscreteDomain, isDomainUnionWith, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
@@ -261,7 +261,7 @@ function parseSingleChannelDomain(
       return makeImplicit([[0, 1]]);
     }
 
-    const data = model.requestDataName(MAIN);
+    const data = model.requestDataName(DataSourceType.Main);
     return makeImplicit([
       {
         data,
@@ -284,7 +284,7 @@ function parseSingleChannelDomain(
 
   const fieldDef = fieldOrDatumDef; // now we can be sure it's a fieldDef
   if (domain === 'unaggregated') {
-    const data = model.requestDataName(MAIN);
+    const data = model.requestDataName(DataSourceType.Main);
     const {field} = fieldOrDatumDef;
     return makeImplicit([
       {
@@ -309,7 +309,9 @@ function parseSingleChannelDomain(
         {
           // If sort by aggregation of a specified sort field, we need to use RAW table,
           // so we can aggregate values for the scale independently from the main aggregation.
-          data: util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
+          data: util.isBoolean(sort)
+            ? model.requestDataName(DataSourceType.Main)
+            : model.requestDataName(DataSourceType.Raw),
           // Use range if we added it and the scale does not support computing a range as a signal.
           field: model.vgField(channel, binRequiresRange(fieldDef, channel) ? {binSuffix: 'range'} : {}),
           // we have to use a sort object if sort = true to make the sort correct by bin start
@@ -336,7 +338,7 @@ function parseSingleChannelDomain(
       } else {
         return makeImplicit([
           {
-            data: model.requestDataName(MAIN),
+            data: model.requestDataName(DataSourceType.Main),
             field: model.vgField(channel, {})
           }
         ]);
@@ -354,7 +356,7 @@ function parseSingleChannelDomain(
       model.config
     )
   ) {
-    const data = model.requestDataName(MAIN);
+    const data = model.requestDataName(DataSourceType.Main);
     return makeImplicit([
       {
         data,
@@ -370,7 +372,9 @@ function parseSingleChannelDomain(
       {
         // If sort by aggregation of a specified sort field, we need to use RAW table,
         // so we can aggregate values for the scale independently from the main aggregation.
-        data: util.isBoolean(sort) ? model.requestDataName(MAIN) : model.requestDataName(RAW),
+        data: util.isBoolean(sort)
+          ? model.requestDataName(DataSourceType.Main)
+          : model.requestDataName(DataSourceType.Raw),
         field: model.vgField(channel),
         sort: sort
       }
@@ -378,7 +382,7 @@ function parseSingleChannelDomain(
   } else {
     return makeImplicit([
       {
-        data: model.requestDataName(MAIN),
+        data: model.requestDataName(DataSourceType.Main),
         field: model.vgField(channel)
       }
     ]);

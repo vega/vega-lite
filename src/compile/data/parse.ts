@@ -7,9 +7,8 @@ import {
   isNamedData,
   isSequenceGenerator,
   isUrlData,
-  MAIN,
-  ParseValue,
-  RAW
+  DataSourceType,
+  ParseValue
 } from '../../data';
 import * as log from '../../log';
 import {
@@ -359,8 +358,8 @@ export function parseData(model: Model): DataComponent {
   }
 
   // add an output node pre aggregation
-  const rawName = model.getName(RAW);
-  const raw = new OutputNode(head, rawName, RAW, outputNodeRefCounts);
+  const rawName = model.getDataName(DataSourceType.Raw);
+  const raw = new OutputNode(head, rawName, DataSourceType.Raw, outputNodeRefCounts);
   outputNodes[rawName] = raw;
   head = raw;
 
@@ -382,8 +381,8 @@ export function parseData(model: Model): DataComponent {
   }
 
   // output node for marks
-  const mainName = model.getName(MAIN);
-  const main = new OutputNode(head, mainName, MAIN, outputNodeRefCounts);
+  const mainName = model.getDataName(DataSourceType.Main);
+  const main = new OutputNode(head, mainName, DataSourceType.Main, outputNodeRefCounts);
   outputNodes[mainName] = main;
   head = main;
 

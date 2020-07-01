@@ -4,13 +4,14 @@ import {OutputNode} from '../../../src/compile/data/dataflow';
 import {SourceNode} from '../../../src/compile/data/source';
 import {WindowTransformNode} from '../../../src/compile/data/window';
 import {Transform} from '../../../src/transform';
+import {DataSourceType} from '../../../src/data';
 
 describe('compile/data/assemble', () => {
   describe('assembleData', () => {
     it('should assemble named data source', () => {
       const src = new SourceNode({name: 'foo'});
       const outputNodeRefCounts = {};
-      const main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
+      const main = new OutputNode(null, 'mainOut', DataSourceType.Main, outputNodeRefCounts);
       main.parent = src;
 
       expect(main.getSource()).toBe('mainOut');
@@ -32,11 +33,11 @@ describe('compile/data/assemble', () => {
     it('should assemble raw and main output', () => {
       const src = new SourceNode({url: 'foo.csv'});
       const outputNodeRefCounts = {};
-      const raw = new OutputNode(null, 'rawOut', 'raw', outputNodeRefCounts);
+      const raw = new OutputNode(null, 'rawOut', DataSourceType.Raw, outputNodeRefCounts);
       raw.parent = src;
       const agg = new AggregateNode(null, new Set(['a']), {b: {count: new Set(['count_*'])}});
       agg.parent = raw;
-      const main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
+      const main = new OutputNode(null, 'mainOut', DataSourceType.Main, outputNodeRefCounts);
       main.parent = agg;
 
       expect(raw.getSource()).toBe('rawOut');
@@ -77,7 +78,7 @@ describe('compile/data/assemble', () => {
     it('should assemble window transform node', () => {
       const src = new SourceNode({url: 'foo.csv'});
       const outputNodeRefCounts = {};
-      const raw = new OutputNode(null, 'rawOut', 'raw', outputNodeRefCounts);
+      const raw = new OutputNode(null, 'rawOut', DataSourceType.Raw, outputNodeRefCounts);
       raw.parent = src;
       const transform: Transform = {
         window: [
@@ -98,7 +99,7 @@ describe('compile/data/assemble', () => {
       };
       const agg = new WindowTransformNode(null, transform);
       agg.parent = raw;
-      const main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
+      const main = new OutputNode(null, 'mainOut', DataSourceType.Main, outputNodeRefCounts);
       main.parent = agg;
 
       expect(raw.getSource()).toBe('rawOut');
@@ -146,7 +147,7 @@ describe('compile/data/assemble', () => {
     it('should assemble named datasets with datastore', () => {
       const src = new SourceNode({name: 'foo'});
       const outputNodeRefCounts = {};
-      const main = new OutputNode(null, 'mainOut', 'main', outputNodeRefCounts);
+      const main = new OutputNode(null, 'mainOut', DataSourceType.Main, outputNodeRefCounts);
       main.parent = src;
 
       const data = assembleRootData(

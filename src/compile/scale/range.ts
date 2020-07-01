@@ -24,7 +24,7 @@ import {
 } from '../../channel';
 import {getFieldOrDatumDef, ScaleDatumDef, ScaleFieldDef} from '../../channeldef';
 import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config';
-import {MAIN} from '../../data';
+import {DataSourceType} from '../../data';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {
@@ -132,7 +132,7 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
               }
             } else if (isObject(range)) {
               return makeExplicit({
-                data: model.requestDataName(MAIN),
+                data: model.requestDataName(DataSourceType.Main),
                 field: range.field,
                 sort: {op: 'min', field: model.vgField(channel)}
               });
