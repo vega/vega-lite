@@ -13,6 +13,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -54,7 +56,7 @@ jobs:
       - name: Setup Git remote
         run: ./scripts/setup-git-ci.sh
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Check and Commit
         run: ./scripts/check-and-commit.sh
@@ -66,6 +68,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -104,7 +108,7 @@ jobs:
       - name: Setup Git remote
         run: ./scripts/setup-git-ci.sh
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Check and Commit
         run: ./scripts/check-and-commit-toc.sh
