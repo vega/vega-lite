@@ -16,6 +16,7 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
+    "strictNullChecks": false,
     "preserveConstEnums": true,
     "removeComments": false,
     "resolveJsonModule": true,

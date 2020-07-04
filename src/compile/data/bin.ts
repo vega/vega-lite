@@ -9,13 +9,16 @@ import {Dict, duplicate, hash, isEmpty, keys, replacePathInField, unique, vals, 
 import {binFormatExpression} from '../format';
 import {isUnitModel, Model, ModelWithField} from '../model';
 import {parseSelectionBinExtent} from '../selection/parse';
+import {NonPositionScaleChannel, PositionChannel} from './../../channel';
 import {DataFlowNode} from './dataflow';
 
 function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, channel: Channel, config: Config) {
   if (binRequiresRange(fieldDef, channel)) {
     // read format from axis or legend, if there is no format then use config.numberFormat
 
-    const guide = isUnitModel(model) ? model.axis(channel) ?? model.legend(channel) ?? {} : {};
+    const guide = isUnitModel(model)
+      ? model.axis(channel as PositionChannel) ?? model.legend(channel as NonPositionScaleChannel) ?? {}
+      : {};
 
     const startField = vgField(fieldDef, {expr: 'datum'});
     const endField = vgField(fieldDef, {expr: 'datum', binSuffix: 'end'});

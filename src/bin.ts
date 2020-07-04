@@ -1,8 +1,8 @@
 import {isBoolean, isObject} from 'vega-util';
 import {
-  Channel,
   COLOR,
   COLUMN,
+  ExtendedChannel,
   FILL,
   FILLOPACITY,
   OPACITY,
@@ -127,7 +127,7 @@ export function isSelectionExtent(extent: BinExtent): extent is SelectionExtent 
   return extent?.['selection'];
 }
 
-export function autoMaxBins(channel?: Channel): number {
+export function autoMaxBins(channel?: ExtendedChannel): number {
   switch (channel) {
     case ROW:
     case COLUMN:

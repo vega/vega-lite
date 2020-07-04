@@ -29,7 +29,7 @@ describe('UnitModel', () => {
             _y: {type: 'quantitative'}
           }
         } as any); // To make parseUnitModel accept the model with invalid encoding channel
-        expect(localLogger.warns[0]).toEqual(log.message.invalidEncodingChannel('_y'));
+        expect(localLogger.warns[0]).toEqual(log.message.invalidEncodingChannel('_y' as any));
       })
     );
 

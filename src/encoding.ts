@@ -4,7 +4,6 @@ import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
 import {
   ANGLE,
-  Channel,
   CHANNELS,
   COLOR,
   DESCRIPTION,
@@ -40,7 +39,8 @@ import {
   X,
   X2,
   Y,
-  Y2
+  Y2,
+  Channel
 } from './channel';
 import {
   binRequiresRange,
@@ -308,7 +308,10 @@ export interface Encoding<F extends Field> {
 
 export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
 
-export function channelHasField<F extends Field>(encoding: EncodingWithFacet<F>, channel: Channel): boolean {
+export function channelHasField<F extends Field>(
+  encoding: EncodingWithFacet<F>,
+  channel: keyof EncodingWithFacet<F>
+): boolean {
   const channelDef = encoding && encoding[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
@@ -429,15 +432,16 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
             }
           }
         }
+
         // now the field should refer to post-transformed field instead
-        encoding[channel] = newFieldDef;
+        encoding[channel as any] = newFieldDef;
       } else {
         groupby.push(field);
-        encoding[channel] = oldEncoding[channel];
+        encoding[channel as any] = oldEncoding[channel];
       }
     } else {
       // For value def / signal ref / datum def, just copy
-      encoding[channel] = oldEncoding[channel];
+      encoding[channel as any] = oldEncoding[channel];
     }
   });
 
@@ -541,7 +545,8 @@ export function initEncoding(
         log.warn(log.message.emptyFieldDef(channelDef, channel));
         return normalizedEncoding;
       }
-      normalizedEncoding[channel] = initChannelDef(channelDef as ChannelDef, channel, config);
+
+      normalizedEncoding[channel as any] = initChannelDef(channelDef as ChannelDef, channel, config);
     }
     return normalizedEncoding;
   }, {});
@@ -551,9 +556,10 @@ export function initEncoding(
  * For composite marks, we have to call initChannelDef during init so we can infer types earlier.
  */
 export function normalizeEncoding(encoding: Encoding<string>, config: Config): Encoding<string> {
-  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
-    const channelDef = encoding[channel];
-    normalizedEncoding[channel] = initChannelDef(channelDef as ChannelDef, channel, config, {compositeMark: true});
+  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel) => {
+    const newChannelDef = initChannelDef(encoding[channel], channel, config, {compositeMark: true});
+
+    normalizedEncoding[channel as any] = newChannelDef;
     return normalizedEncoding;
   }, {});
 }
@@ -576,9 +582,9 @@ export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): Fiel
   return arr;
 }
 
-export function forEach<U extends Partial<Record<Channel, any>>>(
+export function forEach<U extends Record<any, any>>(
   mapping: U,
-  f: (cd: ChannelDef, c: Channel) => void,
+  f: (cd: ChannelDef, c: keyof U) => void,
   thisArg?: any
 ) {
   if (!mapping) {
@@ -588,7 +594,7 @@ export function forEach<U extends Partial<Record<Channel, any>>>(
   for (const channel of keys(mapping)) {
     const el = mapping[channel];
     if (isArray(el)) {
-      for (const channelDef of el) {
+      for (const channelDef of el as unknown[]) {
         f.call(thisArg, channelDef, channel);
       }
     } else {
@@ -597,9 +603,9 @@ export function forEach<U extends Partial<Record<Channel, any>>>(
   }
 }
 
-export function reduce<T, U extends Partial<Record<Channel, any>>>(
+export function reduce<T, U extends Record<any, any>>(
   mapping: U,
-  f: (acc: any, fd: TypedFieldDef<string>, c: Channel) => U,
+  f: (acc: any, fd: TypedFieldDef<string>, c: keyof U) => U,
   init: T,
   thisArg?: any
 ) {

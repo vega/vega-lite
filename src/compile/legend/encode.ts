@@ -1,6 +1,6 @@
 import {ColorValueRef, EncodeEntry, Gradient, LegendEncode, LegendType, SignalRef, SymbolEncodeEntry} from 'vega';
 import {array, isArray, stringValue} from 'vega-util';
-import {COLOR, OPACITY, ScaleChannel} from '../../channel';
+import {COLOR, NonPositionScaleChannel, OPACITY} from '../../channel';
 import {
   Conditional,
   DatumDef,
@@ -24,7 +24,7 @@ import {LegendComponent} from './component';
 export interface LegendEncodeParams {
   fieldOrDatumDef: TypedFieldDef<string> | DatumDef;
   model: UnitModel;
-  channel: ScaleChannel;
+  channel: NonPositionScaleChannel;
   legendCmpt: LegendComponent;
 
   legendType: LegendType;

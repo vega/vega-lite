@@ -6,10 +6,11 @@
 import {RangeType} from './compile/scale/type';
 import {Encoding} from './encoding';
 import {Mark} from './mark';
-import {EncodingFacetMapping, EncodingFacetMapping as ExtendedFacetMapping} from './spec/facet';
+import {EncodingFacetMapping} from './spec/facet';
 import {Flag, keys} from './util';
 
-export type Channel = keyof Encoding<any> | keyof ExtendedFacetMapping<any>;
+export type Channel = keyof Encoding<any>;
+export type ExtendedChannel = Channel | FacetChannel;
 
 // Facet
 export const ROW = 'row' as const;
@@ -117,7 +118,7 @@ export function isGeoPositionChannel(c: Channel): c is GeoPositionChannel {
 
 export const GEOPOSITION_CHANNELS = keys(GEO_POSIITON_CHANNEL_INDEX);
 
-const UNIT_CHANNEL_INDEX: Flag<keyof Encoding<any>> = {
+const UNIT_CHANNEL_INDEX: Flag<Channel> = {
   ...POSITION_CHANNEL_INDEX,
   ...POLAR_POSITION_CHANNEL_INDEX,
 
@@ -204,12 +205,12 @@ export type SecondaryRangeChannel = 'x2' | 'y2' | 'latitude2' | 'longitude2' | '
 
 export const SECONDARY_RANGE_CHANNEL: SecondaryRangeChannel[] = [X2, Y2, LATITUDE2, LONGITUDE2, THETA2, RADIUS2];
 
-export function isSecondaryRangeChannel(c: Channel): c is SecondaryRangeChannel {
+export function isSecondaryRangeChannel(c: ExtendedChannel): c is SecondaryRangeChannel {
   const main = getMainRangeChannel(c);
   return main !== c;
 }
 
-export type MainChannelOf<C extends Channel> = C extends 'x2'
+export type MainChannelOf<C extends ExtendedChannel> = C extends 'x2'
   ? 'x'
   : C extends 'y2'
   ? 'y'
@@ -226,7 +227,7 @@ export type MainChannelOf<C extends Channel> = C extends 'x2'
 /**
  * Get the main channel for a range channel. E.g. `x` for `x2`.
  */
-export function getMainRangeChannel<C extends Channel>(channel: C): MainChannelOf<C> {
+export function getMainRangeChannel<C extends ExtendedChannel>(channel: C): MainChannelOf<C> {
   switch (channel) {
     case X2:
       return X as MainChannelOf<C>;
@@ -277,7 +278,7 @@ export function getVgPositionChannel(channel: PolarPositionChannel | PositionCha
 /**
  * Get the main channel for a range channel. E.g. `x` for `x2`.
  */
-export function getSecondaryRangeChannel<C extends Channel>(channel: C): SecondaryChannelOf<C> {
+export function getSecondaryRangeChannel<C extends Channel>(channel: C): SecondaryChannelOf<C> | undefined {
   switch (channel) {
     case X:
       return X2 as SecondaryChannelOf<C>;
@@ -295,6 +296,8 @@ export function getSecondaryRangeChannel<C extends Channel>(channel: C): Seconda
   return undefined;
 }
 
+export function getSizeChannel(channel: PositionChannel): 'width' | 'height';
+export function getSizeChannel(channel: Channel): 'width' | 'height' | undefined;
 export function getSizeChannel(channel: Channel): 'width' | 'height' | undefined {
   switch (channel) {
     case X:
@@ -364,7 +367,7 @@ export const POSITION_SCALE_CHANNEL_INDEX = {
 export const POSITION_SCALE_CHANNELS = keys(POSITION_SCALE_CHANNEL_INDEX);
 export type PositionScaleChannel = keyof typeof POSITION_SCALE_CHANNEL_INDEX;
 
-export function isXorY(channel: Channel): channel is PositionScaleChannel {
+export function isXorY(channel: ExtendedChannel): channel is PositionScaleChannel {
   return channel in POSITION_SCALE_CHANNEL_INDEX;
 }
 
@@ -476,7 +479,7 @@ const {geoshape: _g, ...ALL_MARKS_EXCEPT_GEOSHAPE} = ALL_MARKS;
  * @param channel
  * @return A dictionary mapping mark types to 'always', 'binned', or undefined
  */
-function getSupportedMark(channel: Channel): SupportedMark {
+function getSupportedMark(channel: ExtendedChannel): SupportedMark {
   switch (channel) {
     case COLOR:
     case FILL:
@@ -564,7 +567,7 @@ function getSupportedMark(channel: Channel): SupportedMark {
   }
 }
 
-export function rangeType(channel: Channel): RangeType {
+export function rangeType(channel: ExtendedChannel): RangeType {
   switch (channel) {
     case X:
     case Y:

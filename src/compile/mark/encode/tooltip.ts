@@ -1,6 +1,6 @@
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned} from '../../../bin';
-import {Channel, getMainRangeChannel, isXorY} from '../../../channel';
+import {getMainRangeChannel, isXorY, Channel} from '../../../channel';
 import {
   defaultTitle,
   getFieldDef,
@@ -83,7 +83,7 @@ export function tooltipData(
       ? fDef
       : {
           ...fDef,
-          type: encoding[mainChannel].type // for secondary field def, copy type from main channel
+          type: (encoding[mainChannel] as TypedFieldDef<any>).type // for secondary field def, copy type from main channel
         };
 
     const title = fieldDef.title || defaultTitle(fieldDef, config);

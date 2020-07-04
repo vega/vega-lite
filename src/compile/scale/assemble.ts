@@ -1,5 +1,5 @@
 import {isObject} from 'vega-util';
-import {Channel, isXorY, ScaleChannel} from '../../channel';
+import {isXorY, ScaleChannel} from '../../channel';
 import {keys} from '../../util';
 import {isDataRefDomain, isVgRangeStep, VgRange, VgScale} from '../../vega.schema';
 import {isConcatModel, isLayerModel, Model} from '../model';
@@ -52,7 +52,12 @@ export function assembleScalesForModel(model: Model): VgScale[] {
   }, [] as VgScale[]);
 }
 
-export function assembleScaleRange(scaleRange: VgRange, scaleName: string, channel: Channel, model?: Model): VgRange {
+export function assembleScaleRange(
+  scaleRange: VgRange,
+  scaleName: string,
+  channel: ScaleChannel,
+  model?: Model
+): VgRange {
   // add signals to x/y range
   if (isXorY(channel)) {
     if (isVgRangeStep(scaleRange)) {

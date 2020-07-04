@@ -1,12 +1,12 @@
 import {stringValue} from 'vega-util';
 import {VL_SELECTION_RESOLVE} from '..';
-import {Channel, isScaleChannel} from '../../../channel';
+import {isScaleChannel, ScaleChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
+import {isLayerModel, Model} from '../../model';
 import {UnitModel} from '../../unit';
 import {SelectionProjection} from './project';
 import {TransformCompiler} from './transforms';
-import {isLayerModel, Model} from '../../model';
 
 const scaleBindings: TransformCompiler = {
   has: selCmpt => {
@@ -86,7 +86,7 @@ const scaleBindings: TransformCompiler = {
 
 export default scaleBindings;
 
-export function domain(model: UnitModel, channel: Channel) {
+export function domain(model: UnitModel, channel: ScaleChannel) {
   const scale = stringValue(model.scaleName(channel));
   return `domain(${scale})`;
 }

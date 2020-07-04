@@ -1,4 +1,4 @@
-import {Channel, NONPOSITION_SCALE_CHANNELS} from '../../../src/channel';
+import {NONPOSITION_SCALE_CHANNELS} from '../../../src/channel';
 import * as rules from '../../../src/compile/scale/properties';
 import {AREA, BAR, LINE} from '../../../src/mark';
 import {ScaleType} from '../../../src/scale';
@@ -6,19 +6,19 @@ import {ScaleType} from '../../../src/scale';
 describe('compile/scale', () => {
   describe('nice', () => {
     it('should return nice for x and y.', () => {
-      for (const c of ['x', 'y'] as Channel[]) {
+      for (const c of ['x', 'y'] as const) {
         expect(rules.nice('linear', c, {type: 'quantitative'})).toEqual(true);
       }
     });
 
     it('should not return nice for binned x and y.', () => {
-      for (const c of ['x', 'y'] as Channel[]) {
+      for (const c of ['x', 'y'] as const) {
         expect(rules.nice('linear', c, {type: 'quantitative', field: 'a', bin: true})).toBeUndefined();
       }
     });
 
     it('should not return nice for temporal x and y.', () => {
-      for (const c of ['x', 'y'] as Channel[]) {
+      for (const c of ['x', 'y'] as const) {
         expect(rules.nice('time', c, {type: 'temporal'})).toBeUndefined();
       }
     });
@@ -26,7 +26,7 @@ describe('compile/scale', () => {
 
   describe('padding', () => {
     it('should be pointPadding for point scale if channel is x or y and padding is not specified.', () => {
-      for (const c of ['x', 'y'] as Channel[]) {
+      for (const c of ['x', 'y'] as const) {
         expect(rules.padding(c, 'point', {pointPadding: 13}, undefined, undefined, undefined)).toEqual(13);
       }
     });
@@ -96,12 +96,12 @@ describe('compile/scale', () => {
     });
 
     it('should be config.scale.bandPaddingOuter for band scale if channel is x or y and padding is not specified and config.scale.bandPaddingOuter.', () => {
-      for (const c of ['x', 'y'] as Channel[]) {
+      for (const c of ['x', 'y'] as const) {
         expect(rules.paddingOuter(undefined, c, 'band', 'bar', 0, {bandPaddingOuter: 16})).toEqual(16);
       }
     });
     it('should be paddingInner/2 for band scale if channel is x or y and padding is not specified and config.scale.bandPaddingOuter.', () => {
-      for (const c of ['x', 'y'] as Channel[]) {
+      for (const c of ['x', 'y'] as const) {
         expect(rules.paddingOuter(undefined, c, 'band', 'bar', 10, {})).toEqual(5);
       }
     });
@@ -165,7 +165,7 @@ describe('compile/scale', () => {
     });
 
     it('should return true when mapping a non-binned quantitative field to x/y of point', () => {
-      for (const channel of ['x', 'y'] as Channel[]) {
+      for (const channel of ['x', 'y'] as const) {
         expect(
           rules.zero(channel, {field: 'a', type: 'quantitative'}, undefined, {type: 'point'}, 'linear')
         ).toBeTruthy();
@@ -184,7 +184,7 @@ describe('compile/scale', () => {
     });
 
     it('should return false when mapping a binned quantitative field to x/y', () => {
-      for (const channel of ['x', 'y'] as Channel[]) {
+      for (const channel of ['x', 'y'] as const) {
         expect(
           !rules.zero(channel, {bin: true, field: 'a', type: 'quantitative'}, undefined, {type: 'point'}, 'linear')
         ).toBeTruthy();
@@ -192,7 +192,7 @@ describe('compile/scale', () => {
     });
 
     it('should return false when mapping a non-binned quantitative field with custom domain to x/y', () => {
-      for (const channel of ['x', 'y'] as Channel[]) {
+      for (const channel of ['x', 'y'] as const) {
         expect(
           !rules.zero(
             channel,
