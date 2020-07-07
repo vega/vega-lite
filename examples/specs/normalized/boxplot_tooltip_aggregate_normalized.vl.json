@@ -93,9 +93,9 @@
                 "x2": {"field": "lower_box_Body Mass (g)"},
                 "y": {"field": "Species", "type": "nominal"},
                 "tooltip": {
-                  "title": "Mean of Body Mass (g)",
                   "type": "quantitative",
-                  "field": "mean_Body Mass (g)"
+                  "field": "mean_Body Mass (g)",
+                  "title": "Mean of Body Mass (g)"
                 }
               }
             },
@@ -116,9 +116,9 @@
                 "x2": {"field": "upper_whisker_Body Mass (g)"},
                 "y": {"field": "Species", "type": "nominal"},
                 "tooltip": {
-                  "title": "Mean of Body Mass (g)",
                   "type": "quantitative",
-                  "field": "mean_Body Mass (g)"
+                  "field": "mean_Body Mass (g)",
+                  "title": "Mean of Body Mass (g)"
                 }
               }
             }
@@ -176,9 +176,9 @@
             "x2": {"field": "upper_box_Body Mass (g)"},
             "y": {"field": "Species", "type": "nominal"},
             "tooltip": {
-              "title": "Mean of Body Mass (g)",
               "type": "quantitative",
-              "field": "mean_Body Mass (g)"
+              "field": "mean_Body Mass (g)",
+              "title": "Mean of Body Mass (g)"
             }
           }
         },
@@ -201,9 +201,9 @@
             },
             "y": {"field": "Species", "type": "nominal"},
             "tooltip": {
-              "title": "Mean of Body Mass (g)",
               "type": "quantitative",
-              "field": "mean_Body Mass (g)"
+              "field": "mean_Body Mass (g)",
+              "title": "Mean of Body Mass (g)"
             }
           }
         }

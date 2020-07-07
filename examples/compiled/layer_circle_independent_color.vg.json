@@ -223,10 +223,10 @@
   ],
   "legends": [
     {
-      "title": "All Cars Count",
       "size": "size",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
+      "title": "Count of Records",
       "encode": {
         "symbols": {
           "update": {
@@ -237,10 +237,10 @@
       }
     },
     {
-      "title": "Cars from Japan Count",
       "size": "size",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
+      "title": "Count of Records",
       "encode": {
         "symbols": {
           "update": {

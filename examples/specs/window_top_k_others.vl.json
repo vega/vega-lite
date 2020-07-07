@@ -21,14 +21,13 @@
     "x": {
       "aggregate": "mean",
       "field": "aggregate_gross",
-      "type": "quantitative",
-      "title": null
+      "type": "quantitative"
     },
     "y": {
       "sort": {"op": "mean", "field": "aggregate_gross", "order": "descending"},
       "field": "ranked_director",
-      "type": "ordinal",
-      "title": null
+      "type": "ordinal"
     }
-  }
+  },
+  "config": {"axis": {"title": null}}
 }

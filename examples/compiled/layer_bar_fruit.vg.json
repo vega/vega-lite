@@ -165,5 +165,6 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "square"
     }
-  ]
+  ],
+  "config": {"axis": {"title": null}}
 }

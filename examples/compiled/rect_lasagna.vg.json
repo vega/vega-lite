@@ -123,10 +123,10 @@
   ],
   "legends": [
     {
-      "title": "Price",
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "square"
+      "symbolType": "square",
+      "title": "Sum of Price"
     }
   ]
 }

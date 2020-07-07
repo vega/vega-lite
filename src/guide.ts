@@ -4,21 +4,6 @@ import {LegendConfig} from './legend';
 import {Dict} from './util';
 import {VgEncodeChannel} from './vega.schema';
 
-export interface TitleMixins {
-  /**
-   * A title for the field. If `null`, the title will be removed.
-   *
-   * __Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `"Sum of Profit"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `"Profit (binned)"`, `"Transaction Date (year-month)"`). Otherwise, the title is simply the field name.
-   *
-   * __Notes__:
-   *
-   * 1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).
-   *
-   * 2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.
-   */
-  title?: Text | null | SignalRef;
-}
-
 export interface FormatMixins {
   /**
    * When used with the default `"number"` and `"time"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.
@@ -51,7 +36,18 @@ export interface FormatMixins {
   labelExpr?: string;
 }
 
-export interface Guide extends TitleMixins, FormatMixins {}
+export interface Guide extends FormatMixins {
+  /**
+   * A title for the guide (axis/legend/header). If `null`, the title will be removed.
+   *
+   * __Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `"Sum of Profit"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `"Profit (binned)"`, `"Transaction Date (year-month)"`). Otherwise, the title is simply the field name.
+   *
+   * __Notes__:
+   *
+   * 1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).
+   */
+  title?: Text | null | SignalRef;
+}
 
 export interface VlOnlyGuideConfig {
   /**

@@ -15,8 +15,8 @@
     ]
   },
   "encoding": {
-    "y": {"field": "name", "type": "nominal", "sort": "-x", "title": null},
-    "x": {"field": "count", "type": "quantitative", "title": null}
+    "y": {"field": "name", "type": "nominal", "sort": "-x"},
+    "x": {"field": "count", "type": "quantitative"}
   },
   "layer": [{
     "mark": "bar",
@@ -44,5 +44,6 @@
         "value": "black"
       }
     }
-  }]
+  }],
+  "config": {"axis": {"title": null}}
 }

@@ -37,7 +37,7 @@
     "color": {
       "field": "key",
       "type": "nominal",
-      "title": null
+      "axis": {"title": null}
     }
   }
 }

@@ -32,14 +32,14 @@
             },
             "y2": {"field": "upper_ci1"},
             "x": {
-              "title": "Year (year)",
               "type": "temporal",
-              "field": "year_Year"
+              "field": "year_Year",
+              "title": "Year (year)"
             },
             "tooltip": [
               {"field": "upper_ci1", "type": "quantitative", "title": "ci0"},
               {"field": "lower_ci1", "type": "quantitative", "title": "ci1"},
-              {"title": "Year (year)", "type": "temporal", "field": "year_Year"}
+              {"type": "temporal", "field": "year_Year", "title": "Year (year)"}
             ]
           }
         }

@@ -46,11 +46,11 @@ import {
   binRequiresRange,
   ChannelDef,
   ColorDef,
+  defaultTitle,
   Field,
   FieldDef,
   FieldDefWithoutScale,
   getFieldDef,
-  getGuide,
   hasConditionalFieldDef,
   initChannelDef,
   initFieldDef,
@@ -73,7 +73,6 @@ import {
   StringFieldDefWithCondition,
   StringValueDefWithCondition,
   TextDef,
-  title,
   TypedFieldDef,
   vgField
 } from './channeldef';
@@ -347,15 +346,12 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
     if (isFieldDef(channelDef)) {
       const {field, aggregate: aggOp, bin, timeUnit, ...remaining} = channelDef;
       if (aggOp || timeUnit || bin) {
-        const guide = getGuide(channelDef);
-        const isTitleDefined = guide && guide.title;
         let newField = vgField(channelDef, {forAs: true});
         const newFieldDef: FieldDef<string> = {
-          // Only add title if it doesn't exist
-          ...(isTitleDefined ? [] : {title: title(channelDef, config, {allowDisabling: true})}),
           ...remaining,
-          // Always overwrite field
-          field: newField
+          // Always overwrite field and title
+          field: newField,
+          title: defaultTitle(channelDef, config)
         };
 
         if (aggOp) {
