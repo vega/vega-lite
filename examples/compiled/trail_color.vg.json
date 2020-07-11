@@ -135,11 +135,6 @@
   ],
   "legends": [
     {"stroke": "color", "symbolType": "stroke", "title": "symbol"},
-    {
-      "strokeWidth": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "stroke",
-      "title": "price"
-    }
+    {"strokeWidth": "size", "symbolType": "stroke", "title": "price"}
   ]
 }

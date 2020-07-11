@@ -121,11 +121,7 @@
     }
   ],
   "legends": [
-    {
-      "fill": "color",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "square"
-    }
+    {"fill": "color", "gradientLength": {"signal": "clamp(height, 64, 200)"}}
   ],
   "config": {"style": {"cell": {"strokeWidth": 0}}, "axis": {"domain": false}}
 }

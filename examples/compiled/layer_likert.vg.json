@@ -410,7 +410,6 @@
       "offset": 75,
       "title": "Number of Ratings",
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
       "encode": {
         "symbols": {

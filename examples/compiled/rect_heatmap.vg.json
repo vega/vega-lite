@@ -124,7 +124,6 @@
     {
       "fill": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "square",
       "title": "Mean of Horsepower"
     }
   ],

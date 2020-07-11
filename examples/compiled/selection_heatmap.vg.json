@@ -168,7 +168,6 @@
     {
       "fill": "fill",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "square",
       "title": "count",
       "encode": {"gradient": {"update": {"opacity": {"value": 1}}}}
     }
