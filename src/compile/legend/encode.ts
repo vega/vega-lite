@@ -26,7 +26,6 @@ export interface LegendEncodeParams {
   model: UnitModel;
   channel: ScaleChannel;
   legendCmpt: LegendComponent;
-
   legendType: LegendType;
 }
 
@@ -41,14 +40,7 @@ export const legendEncodeRules: {
 
 export function symbols(
   symbolsSpec: any,
-  {
-    fieldOrDatumDef,
-
-    model,
-    channel,
-    legendCmpt,
-    legendType
-  }: LegendEncodeParams
+  {fieldOrDatumDef, model, channel, legendCmpt, legendType}: LegendEncodeParams
 ): SymbolEncodeEntry {
   if (legendType !== 'symbol') {
     return undefined;
@@ -62,7 +54,11 @@ export function symbols(
     ...mixins.color(model, {filled})
   } as SymbolEncodeEntry; // FIXME: remove this when VgEncodeEntry is compatible with SymbolEncodeEntry
 
-  const opacity = getMaxValue(encoding.opacity) ?? markDef.opacity;
+  const symbolOpacity = legendCmpt.get('symbolOpacity') ?? config.legend.symbolOpacity;
+  const symbolFillColor = legendCmpt.get('symbolFillColor') ?? config.legend.symbolFillColor;
+  const symbolStrokeColor = legendCmpt.get('symbolStrokeColor') ?? config.legend.symbolStrokeColor;
+
+  const opacity = symbolOpacity === undefined ? getMaxValue(encoding.opacity) ?? markDef.opacity : undefined;
 
   if (out.fill) {
     // for fill legend, we don't want any fill in symbol
@@ -71,7 +67,7 @@ export function symbols(
     } else {
       if (out.fill['field']) {
         // For others, set fill to some opaque value (or nothing if a color is already set)
-        if (legendCmpt.get('symbolFillColor')) {
+        if (symbolFillColor) {
           delete out.fill;
         } else {
           out.fill = signalOrValueRef(config.legend.symbolBaseFillColor ?? 'black');
@@ -91,7 +87,7 @@ export function symbols(
     if (channel === 'stroke' || (!filled && channel === COLOR)) {
       delete out.stroke;
     } else {
-      if (out.stroke['field']) {
+      if (out.stroke['field'] || symbolStrokeColor) {
         // For others, remove stroke field
         delete out.stroke;
       } else if (isArray(out.stroke)) {
@@ -125,14 +121,17 @@ export function symbols(
   return isEmpty(out) ? undefined : out;
 }
 
-export function gradient(gradientSpec: any, {model, legendType}: LegendEncodeParams) {
+export function gradient(gradientSpec: any, {model, legendType, legendCmpt}: LegendEncodeParams) {
   if (legendType !== 'gradient') {
     return undefined;
   }
 
+  const {config, markDef, encoding} = model;
+
   let out: SymbolEncodeEntry = {};
 
-  const opacity = getMaxValue(model.encoding.opacity) || model.markDef.opacity;
+  const gradientOpacity = legendCmpt.get('gradientOpacity') ?? config.legend.gradientOpacity;
+  const opacity = gradientOpacity === undefined ? getMaxValue(encoding.opacity) || markDef.opacity : undefined;
   if (opacity) {
     // only apply opacity if it is neither zero or undefined
     out.opacity = signalOrValueRef(opacity);
