@@ -1,4 +1,4 @@
-import {Gradient, SignalRef, Text} from 'vega';
+import {Gradient, SignalRef, Text, ColorValue} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -89,7 +89,7 @@ export type Value = PrimitiveValue | number[] | Gradient | Text | SignalRef;
 /**
  * Definition object for a constant value (primitive value or gradient definition) of an encoding channel.
  */
-export interface ValueDef<V extends Value = Value> {
+export interface ValueDef<V extends Value | ColorValue = Value> {
   /**
    * A constant value in visual domain (e.g., `"red"` / `"#0099ff"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).
    */

@@ -1,19 +1,17 @@
-import {Legend as VgLegend, LegendEncode} from 'vega';
+import {Legend as VgLegend} from 'vega';
 import {COLOR, NonPositionScaleChannel, SHAPE} from '../../channel';
 import {DatumDef, FieldDef, getFieldOrDatumDef, isFieldDef, MarkPropDatumDef, MarkPropFieldDef} from '../../channeldef';
 import {Legend, LEGEND_SCALE_CHANNELS} from '../../legend';
 import {normalizeTimeUnit} from '../../timeunit';
 import {GEOJSON} from '../../type';
-import {deleteNestedProperty, isEmpty, keys, varName} from '../../util';
+import {deleteNestedProperty, keys} from '../../util';
 import {mergeTitleComponent} from '../common';
-import {guideEncodeEntry} from '../guide';
 import {isUnitModel, Model} from '../model';
 import {parseGuideResolve} from '../resolve';
 import {parseInteractiveLegend} from '../selection/transforms/legends';
 import {defaultTieBreaker, Explicit, makeImplicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {LegendComponent, LegendComponentIndex, LegendComponentProps, LEGEND_COMPONENT_PROPERTIES} from './component';
-import {LegendEncodeParams, legendEncodeRules} from './encode';
 import {getDirection, getLegendType, LegendRuleParams, legendRules} from './properties';
 
 export function parseLegend(model: Model) {
@@ -126,6 +124,14 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   };
 
   for (const property of LEGEND_COMPONENT_PROPERTIES) {
+    // skip properties that don't make sense for the legend type
+    if (
+      (legendType == 'gradient' && property.startsWith('symbol')) ||
+      (legendType == 'symbol' && property.startsWith('gradient'))
+    ) {
+      continue;
+    }
+
     const value = property in legendRules ? legendRules[property](ruleParams) : legend[property];
     if (value !== undefined) {
       const explicit = isExplicit(value, property, legend, model.fieldDef(channel));
@@ -135,34 +141,34 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
     }
   }
 
-  const legendEncoding = legend?.encoding ?? {};
-  const selections = legendCmpt.get('selections');
-  const legendEncode: LegendEncode = {};
+  // const legendEncoding = legend?.encoding ?? {};
+  // const selections = legendCmpt.get('selections');
+  // const legendEncode: LegendEncode = {};
 
-  const legendEncodeParams: LegendEncodeParams = {fieldOrDatumDef, model, channel, legendCmpt, legendType};
+  // const legendEncodeParams: LegendEncodeParams = {fieldOrDatumDef, model, channel, legendCmpt, legendType};
 
-  for (const part of ['labels', 'legend', 'title', 'symbols', 'gradient', 'entries']) {
-    const legendEncodingPart = guideEncodeEntry(legendEncoding[part] ?? {}, model);
+  // for (const part of ['labels', 'legend', 'title', 'symbols', 'gradient', 'entries']) {
+  //   const legendEncodingPart = guideEncodeEntry(legendEncoding[part] ?? {}, model);
 
-    const value =
-      part in legendEncodeRules
-        ? legendEncodeRules[part](legendEncodingPart, legendEncodeParams) // apply rule
-        : legendEncodingPart; // no rule -- just default values
+  //   const value =
+  //     part in legendEncodeRules
+  //       ? legendEncodeRules[part](legendEncodingPart, legendEncodeParams) // apply rule
+  //       : legendEncodingPart; // no rule -- just default values
 
-    if (value !== undefined && !isEmpty(value)) {
-      legendEncode[part] = {
-        ...(selections?.length && isFieldDef(fieldOrDatumDef)
-          ? {name: `${varName(fieldOrDatumDef.field)}_legend_${part}`}
-          : {}),
-        ...(selections?.length ? {interactive: !!selections} : {}),
-        update: value
-      };
-    }
-  }
+  //   if (value !== undefined && !isEmpty(value)) {
+  //     legendEncode[part] = {
+  //       ...(selections?.length && isFieldDef(fieldOrDatumDef)
+  //         ? {name: `${varName(fieldOrDatumDef.field)}_legend_${part}`}
+  //         : {}),
+  //       ...(selections?.length ? {interactive: !!selections} : {}),
+  //       update: value
+  //     };
+  //   }
+  // }
 
-  if (!isEmpty(legendEncode)) {
-    legendCmpt.set('encode', legendEncode, !!legend?.encoding);
-  }
+  // if (!isEmpty(legendEncode)) {
+  //   legendCmpt.set('encode', legendEncode, !!legend?.encoding);
+  // }
 
   return legendCmpt;
 }

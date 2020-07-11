@@ -1,7 +1,25 @@
-import {LabelOverlap, LegendOrient, LegendType, Orientation, SignalRef, SymbolShape} from 'vega';
-import {isArray} from 'vega-util';
+import {FILL_STROKE_CONFIG} from './../../mark';
+import {
+  Color,
+  ColorValue,
+  Gradient,
+  LabelOverlap,
+  LegendOrient,
+  LegendType,
+  Orientation,
+  SignalRef,
+  SymbolShape
+} from 'vega';
+import {array, isArray} from 'vega-util';
 import {Channel, isColorChannel, NonPositionChannel} from '../../channel';
-import {DatumDef, MarkPropFieldOrDatumDef, title as fieldDefTitle, TypedFieldDef, valueArray} from '../../channeldef';
+import {
+  DatumDef,
+  hasConditionalValueDef,
+  MarkPropFieldOrDatumDef,
+  title as fieldDefTitle,
+  TypedFieldDef,
+  valueArray
+} from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding} from '../../encoding';
 import {Legend, LegendConfig} from '../../legend';
@@ -11,10 +29,13 @@ import {TimeUnit} from '../../timeunit';
 import {contains, getFirstDefined} from '../../util';
 import {isSignalRef} from '../../vega.schema';
 import {guideFormat, guideFormatType} from '../format';
+import * as mixins from '../mark/encode';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
+import {Conditional, isValueDef, Value, ValueDef} from './../../channeldef';
 import {LegendComponentProps} from './component';
 import {getFirstConditionValue} from './encode';
+import {applyMarkConfig} from '../common';
 
 export interface LegendRuleParams {
   legend: Legend;
@@ -58,6 +79,72 @@ export const legendRules: {
     return legend.gradientLength ?? legendConfig.gradientLength ?? defaultGradientLength(params);
   },
 
+  gradientOpacity: ({legend, legendConfig, model}) => {
+    const opacity =
+      legend.gradientOpacity ??
+      getMaxValue(model.encoding.opacity) ??
+      model.markDef.opacity ??
+      legendConfig.gradientOpacity;
+    return opacity < 1 ? opacity : undefined;
+  },
+
+  symbolOpacity: ({legend, legendConfig, model}) => {
+    const opacity =
+      legend.symbolOpacity ??
+      getMaxValue(model.encoding.opacity) ??
+      model.markDef.opacity ??
+      legendConfig.symbolOpacity;
+    return opacity < 1 ? opacity : undefined;
+  },
+
+  symbolFillColor: ({legend, legendConfig, encoding, model, channel}) => {
+    if (legend.symbolFillColor) {
+      return legend.symbolFillColor;
+    }
+
+    const {mark, markDef} = model;
+    const filled = markDef.filled && mark !== 'trail';
+    const defaultMarkFill = mixins.color(model, {filled}).fill;
+
+    console.log({
+      ...applyMarkConfig({}, model, FILL_STROKE_CONFIG),
+      ...mixins.color(model, {filled})
+    });
+
+    if (isArray(defaultMarkFill)) {
+      return (
+        getFirstConditionValue<ColorValue>(encoding.fill ?? encoding.color) ?? markDef.fill,
+        filled ? markDef.color : undefined ?? legendConfig.symbolFillColor
+      );
+    } else {
+      return defaultMarkFill?.field
+        ? isColorChannel(channel)
+          ? undefined
+          : legendConfig.symbolBaseFillColor ?? 'darkgray'
+        : (defaultMarkFill?.value as Color) ?? legendConfig.symbolFillColor;
+    }
+  },
+
+  symbolStrokeColor: ({legend, legendConfig, encoding, model}) => {
+    if (legend.symbolStrokeColor) {
+      return legend.symbolStrokeColor;
+    }
+
+    const {mark, markDef} = model;
+    const filled = markDef.filled && mark !== 'trail';
+    const defaultMarkStroke = mixins.color(model, {filled}).stroke;
+
+    if (isArray(defaultMarkStroke)) {
+      return getFirstConditionValue<ColorValue>(encoding.stroke ?? encoding.color) ?? (markDef.stroke && filled)
+        ? markDef.color
+        : undefined ?? legendConfig.symbolStrokeColor ?? 'transparent';
+    } else {
+      return defaultMarkStroke?.field
+        ? undefined
+        : (defaultMarkStroke?.value as Color) ?? legendConfig.symbolStrokeColor ?? 'transparent';
+    }
+  },
+
   labelOverlap: ({legend, legendConfig, scaleType}) =>
     legend.labelOverlap ?? legendConfig.labelOverlap ?? defaultLabelOverlap(scaleType),
 
@@ -67,6 +154,7 @@ export const legendRules: {
   title: ({fieldOrDatumDef, config}) => fieldDefTitle(fieldOrDatumDef, config, {allowDisabling: true}),
 
   type: ({legendType, scaleType, channel}) => {
+    // We determine the legend type earlier. Here we only determine whether we need to tell vega the type.
     if (isColorChannel(channel) && isContinuousToContinuous(scaleType)) {
       if (legendType === 'gradient') {
         return undefined;
@@ -75,7 +163,7 @@ export const legendRules: {
       return undefined;
     }
     return legendType;
-  }, // depended by other property, let's define upfront
+  },
 
   values: ({fieldOrDatumDef, legend}) => values(legend, fieldOrDatumDef)
 };
@@ -245,6 +333,22 @@ function gradientLengthSignal(model: Model, sizeType: 'width' | 'height', min: n
 export function defaultLabelOverlap(scaleType: ScaleType): LabelOverlap {
   if (contains(['quantile', 'threshold', 'log'], scaleType)) {
     return 'greedy';
+  }
+  return undefined;
+}
+
+function getMaxValue(channelDef: Encoding<string>['opacity']) {
+  return getConditionValue<number>(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
+}
+
+function getConditionValue<V extends Value | Gradient>(
+  channelDef: Encoding<string>['fill' | 'stroke' | 'shape' | 'opacity'],
+  reducer: (val: V, conditionalDef: Conditional<ValueDef<V>>) => V
+): V {
+  if (hasConditionalValueDef(channelDef)) {
+    return array(channelDef.condition).reduce(reducer, channelDef.value as any);
+  } else if (isValueDef(channelDef)) {
+    return channelDef.value as any;
   }
   return undefined;
 }

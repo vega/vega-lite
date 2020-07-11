@@ -1,4 +1,13 @@
-import {ColorValueRef, EncodeEntry, Gradient, LegendEncode, LegendType, SignalRef, SymbolEncodeEntry} from 'vega';
+import {
+  ColorValueRef,
+  EncodeEntry,
+  Gradient,
+  LegendEncode,
+  LegendType,
+  SignalRef,
+  SymbolEncodeEntry,
+  ColorValue
+} from 'vega';
 import {array, isArray, stringValue} from 'vega-util';
 import {COLOR, OPACITY, ScaleChannel} from '../../channel';
 import {
@@ -74,7 +83,7 @@ export function symbols(
         if (legendCmpt.get('symbolFillColor')) {
           delete out.fill;
         } else {
-          out.fill = signalOrValueRef(config.legend.symbolBaseFillColor ?? 'black');
+          out.fill = signalOrValueRef(config.legend.symbolBaseFillColor ?? 'darkgray');
           out.fillOpacity = signalOrValueRef(opacity ?? 1);
         }
       } else if (isArray(out.fill)) {
@@ -179,7 +188,7 @@ function getMaxValue(channelDef: Encoding<string>['opacity']) {
   return getConditionValue<number>(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
 }
 
-export function getFirstConditionValue<V extends Value | Gradient>(
+export function getFirstConditionValue<V extends Value | Gradient | ColorValue>(
   channelDef: Encoding<string>['fill' | 'stroke' | 'shape']
 ): V {
   return getConditionValue<V>(channelDef, (v: V, conditionalDef: Conditional<ValueDef<V>>) => {
@@ -187,7 +196,7 @@ export function getFirstConditionValue<V extends Value | Gradient>(
   });
 }
 
-function getConditionValue<V extends Value | Gradient>(
+function getConditionValue<V extends Value | Gradient | ColorValue>(
   channelDef: Encoding<string>['fill' | 'stroke' | 'shape' | 'opacity'],
   reducer: (val: V, conditionalDef: Conditional<ValueDef<V>>) => V
 ): V {
