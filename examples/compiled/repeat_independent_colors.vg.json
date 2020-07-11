@@ -1,4 +1,12 @@
 {
+  fill: { value: 'transparent' },
+  stroke: { scale: 'child__column_Origin_color', field: 'Origin' }
+}
+{
+  fill: { value: 'transparent' },
+  stroke: { scale: 'child__column_Cylinders_color', field: 'Cylinders' }
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
@@ -110,16 +118,10 @@
       "legends": [
         {
           "stroke": "child__column_Origin_color",
+          "symbolFillColor": "transparent",
+          "symbolOpacity": 0.7,
           "symbolType": "circle",
-          "title": "Origin",
-          "encode": {
-            "symbols": {
-              "update": {
-                "fill": {"value": "transparent"},
-                "opacity": {"value": 0.7}
-              }
-            }
-          }
+          "title": "Origin"
         }
       ]
     },
@@ -215,16 +217,10 @@
       "legends": [
         {
           "stroke": "child__column_Cylinders_color",
+          "symbolFillColor": "transparent",
+          "symbolOpacity": 0.7,
           "symbolType": "circle",
-          "title": "Cylinders",
-          "encode": {
-            "symbols": {
-              "update": {
-                "fill": {"value": "transparent"},
-                "opacity": {"value": 0.7}
-              }
-            }
-          }
+          "title": "Cylinders"
         }
       ]
     }

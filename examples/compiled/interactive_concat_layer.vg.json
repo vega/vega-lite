@@ -1,3 +1,4 @@
+{ fill: { value: 'transparent' }, stroke: { value: '#666' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A dashboard with cross-highlighting.",
@@ -259,22 +260,14 @@
           "direction": "horizontal",
           "gradientLength": 120,
           "title": "All Movies Count",
-          "fill": "color",
-          "symbolType": "square"
+          "fill": "color"
         },
         {
           "title": "Selected Category Count",
           "size": "size",
-          "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
-          "symbolType": "circle",
-          "encode": {
-            "symbols": {
-              "update": {
-                "fill": {"value": "transparent"},
-                "stroke": {"value": "#666"}
-              }
-            }
-          }
+          "symbolFillColor": "transparent",
+          "symbolStrokeColor": "#666",
+          "symbolType": "circle"
         }
       ]
     },

@@ -1,3 +1,4 @@
+{ fill: { value: 'transparent' }, stroke: { value: '#4c78a8' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Two horizonally concatenated charts that show a histogram of precipitation in Seattle and the relationship between min and max temperature.",
@@ -391,17 +392,10 @@
   "legends": [
     {
       "size": "size",
-      "gradientLength": {"signal": "clamp(childHeight, 64, 200)"},
+      "symbolFillColor": "transparent",
+      "symbolStrokeColor": "#4c78a8",
       "symbolType": "circle",
-      "title": "Count of Records",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "transparent"},
-            "stroke": {"value": "#4c78a8"}
-          }
-        }
-      }
+      "title": "Count of Records"
     }
   ]
 }

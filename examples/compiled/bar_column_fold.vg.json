@@ -1,3 +1,4 @@
+{ fill: { scale: 'color', field: 'country' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
@@ -179,5 +180,12 @@
       "range": "category"
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "square", "title": "country"}]
+  "legends": [
+    {
+      "fill": "color",
+      "symbolStrokeColor": "transparent",
+      "symbolType": "square",
+      "title": "country"
+    }
+  ]
 }

@@ -1,3 +1,4 @@
+{ fill: { scale: 'color', field: 'Species' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
@@ -157,5 +158,12 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "circle", "title": "Species"}]
+  "legends": [
+    {
+      "fill": "color",
+      "symbolStrokeColor": "transparent",
+      "symbolType": "circle",
+      "title": "Species"
+    }
+  ]
 }

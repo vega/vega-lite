@@ -1,4 +1,24 @@
 {
+  fill: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'Origin'
+    },
+    { value: 'grey' }
+  ]
+}
+{
+  fill: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'Origin'
+    },
+    { value: 'grey' }
+  ]
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
@@ -465,24 +485,17 @@
   "legends": [
     {
       "fill": "color",
+      "symbolOpacity": 0.7,
+      "symbolStrokeColor": "transparent",
       "symbolType": "circle",
-      "title": "Origin",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
+      "title": "Origin"
     },
     {
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolOpacity": 0.7,
+      "symbolStrokeColor": "transparent",
       "symbolType": "circle",
-      "title": "Cylinders",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "grey"},
-            "opacity": {"value": 0.7},
-            "stroke": {"value": "transparent"}
-          }
-        }
-      }
+      "title": "Cylinders"
     }
   ]
 }

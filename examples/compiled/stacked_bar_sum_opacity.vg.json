@@ -1,3 +1,4 @@
+{ fill: { value: '#4c78a8' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
@@ -134,17 +135,10 @@
   "legends": [
     {
       "opacity": "opacity",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolFillColor": "#4c78a8",
+      "symbolStrokeColor": "transparent",
       "symbolType": "square",
-      "title": "people",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "#4c78a8"},
-            "stroke": {"value": "transparent"}
-          }
-        }
-      }
+      "title": "people"
     }
   ]
 }

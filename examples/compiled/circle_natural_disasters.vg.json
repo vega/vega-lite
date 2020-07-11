@@ -1,4 +1,8 @@
 {
+  fill: { scale: 'color', field: 'Entity' },
+  stroke: { value: 'black' }
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
@@ -91,18 +95,10 @@
       "clipHeight": 30,
       "title": "Annual Global Deaths",
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "black"},
-            "stroke": {"value": "black"},
-            "fillOpacity": {"value": 0.8},
-            "opacity": {"value": 0.8}
-          }
-        }
-      }
+      "symbolFillColor": "darkgray",
+      "symbolOpacity": 0.8,
+      "symbolStrokeColor": "black",
+      "symbolType": "circle"
     }
   ]
 }

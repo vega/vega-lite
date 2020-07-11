@@ -1,3 +1,5 @@
+{ fill: { scale: 'color', field: 'gender' } }
+{ stroke: { scale: 'color', field: 'gender' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
@@ -197,9 +199,10 @@
   "legends": [
     {
       "fill": "color",
+      "symbolOpacity": 0.7,
+      "symbolStrokeColor": "transparent",
       "symbolType": "circle",
       "title": "gender",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
       "stroke": "color"
     }
   ]

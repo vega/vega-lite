@@ -1,4 +1,15 @@
 {
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'Cylinders'
+    },
+    { value: 'grey' }
+  ]
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Drag a rectangular brush to show (first 20) selected points in a table.",
   "background": "white",
@@ -490,16 +501,10 @@
       "legends": [
         {
           "stroke": "color",
+          "symbolFillColor": "transparent",
+          "symbolOpacity": 0.7,
           "symbolType": "circle",
-          "title": "Cylinders",
-          "encode": {
-            "symbols": {
-              "update": {
-                "fill": {"value": "transparent"},
-                "opacity": {"value": 0.7}
-              }
-            }
-          }
+          "title": "Cylinders"
         }
       ]
     },

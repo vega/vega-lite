@@ -1,3 +1,4 @@
+{ fill: { value: '#4c78a8' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
@@ -130,17 +131,11 @@
   "legends": [
     {
       "size": "size",
+      "symbolFillColor": "#4c78a8",
+      "symbolOpacity": 0.5,
+      "symbolStrokeColor": "transparent",
       "symbolType": "square",
-      "title": "weather",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "#4c78a8"},
-            "opacity": {"value": 0.5},
-            "stroke": {"value": "transparent"}
-          }
-        }
-      }
+      "title": "weather"
     }
   ]
 }

@@ -1,4 +1,12 @@
 {
+  fill: { value: 'transparent' },
+  stroke: { scale: 'color', field: 'Cylinders' }
+}
+{
+  fill: { value: 'transparent' },
+  stroke: { scale: 'color', field: 'Cylinders' }
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A scatterplot with custom star shapes.",
   "background": "white",
@@ -127,30 +135,17 @@
   "legends": [
     {
       "stroke": "color",
+      "symbolFillColor": "transparent",
+      "symbolOpacity": 0.7,
       "symbolType": "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z",
-      "title": "Cylinders",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "transparent"},
-            "opacity": {"value": 0.7}
-          }
-        }
-      }
+      "title": "Cylinders"
     },
     {
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolFillColor": "transparent",
+      "symbolOpacity": 0.7,
       "symbolType": "M0,0.2L0.2351,0.3236 0.1902,0.0618 0.3804,-0.1236 0.1175,-0.1618 0,-0.4 -0.1175,-0.1618 -0.3804,-0.1236 -0.1902,0.0618 -0.2351,0.3236 0,0.2Z",
-      "title": "Weight_in_lbs",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "transparent"},
-            "opacity": {"value": 0.7}
-          }
-        }
-      }
+      "title": "Weight_in_lbs"
     }
   ]
 }

@@ -1,4 +1,26 @@
 {
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '(vlSelectionTest("hover_store", datum))',
+      scale: 'color',
+      field: 'Cylinders'
+    },
+    { value: 'grey' }
+  ]
+}
+{
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '(vlSelectionTest("hover_store", datum))',
+      scale: 'color',
+      field: 'Cylinders'
+    },
+    { value: 'grey' }
+  ]
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Drag out a rectangular brush to highlight points.",
   "background": "white",
@@ -336,16 +358,10 @@
   "legends": [
     {
       "stroke": "color",
+      "symbolFillColor": "transparent",
+      "symbolOpacity": 0.7,
       "symbolType": "circle",
-      "title": "Cylinders",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "transparent"},
-            "opacity": {"value": 0.7}
-          }
-        }
-      }
+      "title": "Cylinders"
     }
   ]
 }

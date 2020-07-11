@@ -1,3 +1,4 @@
+{ fill: { value: '#4c78a8' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
@@ -116,17 +117,11 @@
   "legends": [
     {
       "opacity": "opacity",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolFillColor": "#4c78a8",
+      "symbolOpacity": 0.7,
+      "symbolStrokeColor": "transparent",
       "symbolType": "circle",
-      "title": "Miles_per_Gallon",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "#4c78a8"},
-            "stroke": {"value": "transparent"}
-          }
-        }
-      }
+      "title": "Miles_per_Gallon"
     }
   ]
 }

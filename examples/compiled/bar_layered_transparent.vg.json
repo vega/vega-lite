@@ -1,3 +1,4 @@
+{ fill: { scale: 'color', field: 'gender' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bar chart showing the US population distribution of age groups and gender in 2000.",
@@ -122,9 +123,10 @@
   "legends": [
     {
       "fill": "color",
+      "symbolOpacity": 0.7,
+      "symbolStrokeColor": "transparent",
       "symbolType": "square",
-      "title": "gender",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
+      "title": "gender"
     }
   ]
 }

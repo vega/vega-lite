@@ -1,4 +1,103 @@
 {
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'Origin'
+    },
+    { value: 'grey' }
+  ]
+}
+{
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'Origin'
+    },
+    { value: 'grey' }
+  ]
+}
+{
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'Origin'
+    },
+    { value: 'grey' }
+  ]
+}
+{
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'Origin'
+    },
+    { value: 'grey' }
+  ]
+}
+{
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'Origin'
+    },
+    { value: 'grey' }
+  ]
+}
+{
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'Origin'
+    },
+    { value: 'grey' }
+  ]
+}
+{
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'Origin'
+    },
+    { value: 'grey' }
+  ]
+}
+{
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'Origin'
+    },
+    { value: 'grey' }
+  ]
+}
+{
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'Origin'
+    },
+    { value: 'grey' }
+  ]
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
@@ -3767,16 +3866,10 @@
   "legends": [
     {
       "stroke": "color",
+      "symbolFillColor": "transparent",
+      "symbolOpacity": 0.7,
       "symbolType": "circle",
-      "title": "Origin",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "transparent"},
-            "opacity": {"value": 0.7}
-          }
-        }
-      }
+      "title": "Origin"
     }
   ]
 }

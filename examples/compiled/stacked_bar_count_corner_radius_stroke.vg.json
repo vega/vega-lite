@@ -1,4 +1,9 @@
 {
+  strokeWidth: { value: 2 },
+  fill: { scale: 'color', field: 'weather' },
+  stroke: { value: 'black' }
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
@@ -179,13 +184,9 @@
   "legends": [
     {
       "fill": "color",
+      "symbolStrokeColor": "black",
       "symbolType": "square",
-      "title": "weather",
-      "encode": {
-        "symbols": {
-          "update": {"strokeWidth": {"value": 2}, "stroke": {"value": "black"}}
-        }
-      }
+      "title": "weather"
     }
   ],
   "config": {"style": {"bar": {"strokeWidth": 2}}}

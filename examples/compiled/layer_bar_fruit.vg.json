@@ -162,8 +162,7 @@
     {
       "title": "Number of fruit",
       "fill": "color",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "square"
+      "gradientLength": {"signal": "clamp(height, 64, 200)"}
     }
   ]
 }

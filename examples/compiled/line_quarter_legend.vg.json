@@ -1,3 +1,4 @@
+{ stroke: { scale: 'color', field: 'quarter_date' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock price average broken down by quarter.",
@@ -156,7 +157,6 @@
       "format": {
         "signal": "timeUnitSpecifier([\"quarter\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
       },
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "stroke",
       "title": "date (quarter)",
       "type": "symbol"

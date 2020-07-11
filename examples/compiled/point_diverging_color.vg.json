@@ -120,9 +120,8 @@
     {
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
-      "title": "Weight_in_lbs",
-      "encode": {"gradient": {"update": {"opacity": {"value": 0.7}}}}
+      "gradientOpacity": 0.7,
+      "title": "Weight_in_lbs"
     }
   ]
 }

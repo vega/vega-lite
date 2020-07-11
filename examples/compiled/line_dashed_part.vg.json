@@ -1,3 +1,4 @@
+{ stroke: { value: '#4c78a8' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Line chart with a dashed part created by drawing multiple connecting lines. Note that the data source contains the data point at (E, 81) twice.",
@@ -129,9 +130,9 @@
   "legends": [
     {
       "strokeDash": "strokeDash",
+      "symbolStrokeColor": "#4c78a8",
       "symbolType": "stroke",
-      "title": "predicted",
-      "encode": {"symbols": {"update": {"stroke": {"value": "#4c78a8"}}}}
+      "title": "predicted"
     }
   ]
 }

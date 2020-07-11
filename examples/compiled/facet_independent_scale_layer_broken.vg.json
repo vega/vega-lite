@@ -1,3 +1,8 @@
+{ stroke: { scale: 'color', field: 'gender' } }
+{
+  fill: { value: 'transparent' },
+  stroke: { scale: 'color', field: 'gender' }
+}
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
@@ -295,7 +300,7 @@
       "stroke": "color",
       "symbolType": "circle",
       "title": "gender",
-      "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
+      "symbolFillColor": "transparent"
     }
   ],
   "config": {"style": {"cell": {"fill": "yellow"}}}

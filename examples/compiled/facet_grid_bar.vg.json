@@ -1,3 +1,4 @@
+{ fill: { scale: 'color', field: 'c' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A simple grid of bar charts to compare performance data.",
@@ -238,6 +239,7 @@
       "titleOrient": "left",
       "fill": "color",
       "direction": "horizontal",
+      "symbolStrokeColor": "transparent",
       "symbolType": "square"
     }
   ]

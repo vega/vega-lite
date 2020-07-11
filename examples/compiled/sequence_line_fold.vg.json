@@ -1,3 +1,4 @@
+{ stroke: { scale: 'color', field: 'key' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Plots two functions using a generated sequence.",

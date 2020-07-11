@@ -1,4 +1,9 @@
 {
+  stroke: {
+    signal: 'scale("color", 0.5 * datum["bin_maxbins_6_Acceleration"] + 0.5 * datum["bin_maxbins_6_Acceleration_end"])'
+  }
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
   "background": "white",
@@ -160,6 +165,7 @@
   "legends": [
     {
       "stroke": "color",
+      "symbolStrokeColor": "transparent",
       "symbolType": "stroke",
       "title": "Acceleration (binned)"
     }

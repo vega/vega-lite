@@ -1,3 +1,8 @@
+{ stroke: { scale: 'color', field: 'symbol' } }
+{
+  fill: { value: 'transparent' },
+  stroke: { scale: 'color', field: 'symbol' }
+}
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
@@ -286,14 +291,8 @@
       "stroke": "color",
       "symbolType": "circle",
       "title": "symbol",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "transparent"},
-            "opacity": {"value": 0.7}
-          }
-        }
-      }
+      "symbolFillColor": "transparent",
+      "symbolOpacity": 0.7
     }
   ]
 }

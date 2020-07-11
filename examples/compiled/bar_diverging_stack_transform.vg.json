@@ -1,3 +1,4 @@
+{ fill: { scale: 'color', field: 'type' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A diverging stacked bar chart for sentiments towards a set of eight questions, displayed as percentages with neutral responses straddling the 0% mark",
@@ -384,5 +385,12 @@
       "zindex": 0
     }
   ],
-  "legends": [{"title": "Response", "fill": "color", "symbolType": "square"}]
+  "legends": [
+    {
+      "title": "Response",
+      "fill": "color",
+      "symbolStrokeColor": "transparent",
+      "symbolType": "square"
+    }
+  ]
 }

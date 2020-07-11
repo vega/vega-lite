@@ -1,3 +1,4 @@
+{ fill: { scale: 'color', field: 'category' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A simple pie chart with embedded data.",
@@ -75,5 +76,12 @@
       "range": "category"
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "circle", "title": "category"}]
+  "legends": [
+    {
+      "fill": "color",
+      "symbolStrokeColor": "transparent",
+      "symbolType": "circle",
+      "title": "category"
+    }
+  ]
 }

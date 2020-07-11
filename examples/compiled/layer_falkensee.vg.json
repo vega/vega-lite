@@ -1,3 +1,4 @@
+{ fill: { scale: 'color', field: 'event' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "The population of the German city of Falkensee over time",
@@ -262,5 +263,12 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "square", "title": "event"}]
+  "legends": [
+    {
+      "fill": "color",
+      "symbolStrokeColor": "transparent",
+      "symbolType": "square",
+      "title": "event"
+    }
+  ]
 }

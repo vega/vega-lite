@@ -1,4 +1,8 @@
 {
+  fill: { value: 'transparent' },
+  stroke: { scale: 'color', field: 'id' }
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
@@ -146,8 +150,8 @@
       "offset": 0,
       "orient": "bottom-right",
       "stroke": "color",
-      "symbolType": "circle",
-      "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
+      "symbolFillColor": "transparent",
+      "symbolType": "circle"
     }
   ],
   "config": {"style": {"cell": {"stroke": "transparent"}}}

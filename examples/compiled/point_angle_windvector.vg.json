@@ -1,3 +1,4 @@
+{ fill: { scale: 'color', field: 'dir' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Vector array map showing wind speed and direction.",
@@ -87,19 +88,11 @@
   "legends": [
     {
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolFillColor": "darkgray",
+      "symbolOpacity": 0.7,
+      "symbolStrokeColor": "transparent",
       "symbolType": "wedge",
       "title": "speed",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "black"},
-            "fillOpacity": {"value": 0.7},
-            "opacity": {"value": 0.7},
-            "stroke": {"value": "transparent"}
-          }
-        }
-      },
       "aria": false
     }
   ],

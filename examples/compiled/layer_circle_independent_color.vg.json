@@ -1,3 +1,5 @@
+{ fill: { value: '#4c78a8' } }
+{ fill: { value: 'firebrick' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Cars from Japan compared to all cars. Demonstrates independent legends in layers.",
@@ -225,30 +227,16 @@
     {
       "title": "All Cars Count",
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "#4c78a8"},
-            "stroke": {"value": "transparent"}
-          }
-        }
-      }
+      "symbolFillColor": "#4c78a8",
+      "symbolStrokeColor": "transparent",
+      "symbolType": "circle"
     },
     {
       "title": "Cars from Japan Count",
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "firebrick"},
-            "stroke": {"value": "transparent"}
-          }
-        }
-      }
+      "symbolFillColor": "firebrick",
+      "symbolStrokeColor": "transparent",
+      "symbolType": "circle"
     }
   ]
 }

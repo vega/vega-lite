@@ -1,3 +1,4 @@
+{ fill: { value: '#000' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A bubble plot showing the correlation between health and income for 187 countries in the world (modified from an example in Lisa Charlotte Rost's blog post 'One Chart, Twelve Charting Libraries' --http://lisacharlotterost.github.io/2016/05/17/one-chart-code/).",
@@ -239,18 +240,11 @@
   "legends": [
     {
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolFillColor": "#000",
+      "symbolOpacity": 0.7,
+      "symbolStrokeColor": "transparent",
       "symbolType": "circle",
-      "title": "population",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "#000"},
-            "opacity": {"value": 0.7},
-            "stroke": {"value": "transparent"}
-          }
-        }
-      }
+      "title": "population"
     }
   ]
 }

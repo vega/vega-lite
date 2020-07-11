@@ -1,3 +1,4 @@
+{ fill: { scale: 'color', field: 'series' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
@@ -224,41 +225,9 @@
   "legends": [
     {
       "fill": "color",
+      "symbolStrokeColor": "transparent",
       "symbolType": "circle",
-      "title": "series",
-      "encode": {
-        "labels": {
-          "name": "series_legend_labels",
-          "interactive": true,
-          "update": {
-            "opacity": [
-              {
-                "test": "(!length(data(\"industry_store\")) || (industry[\"series\"] && indexof(industry[\"series\"], datum.value) >= 0))",
-                "value": 1
-              },
-              {"value": 0.35}
-            ]
-          }
-        },
-        "symbols": {
-          "name": "series_legend_symbols",
-          "interactive": true,
-          "update": {
-            "opacity": [
-              {
-                "test": "(!length(data(\"industry_store\")) || (industry[\"series\"] && indexof(industry[\"series\"], datum.value) >= 0))",
-                "value": 1
-              },
-              {"value": 0.35}
-            ]
-          }
-        },
-        "entries": {
-          "name": "series_legend_entries",
-          "interactive": true,
-          "update": {"fill": {"value": "transparent"}}
-        }
-      }
+      "title": "series"
     }
   ]
 }

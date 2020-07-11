@@ -1,3 +1,5 @@
+{ stroke: { scale: 'color', field: 'system' } }
+{ stroke: { scale: 'color', field: 'system' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",

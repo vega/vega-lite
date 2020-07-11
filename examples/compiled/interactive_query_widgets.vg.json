@@ -1,4 +1,15 @@
 {
+  fill: [
+    {
+      test: '!(length(data("CylYr_store"))) || (vlSelectionTest("CylYr_store", datum))',
+      scale: 'color',
+      field: 'Origin'
+    },
+    { value: 'grey' }
+  ]
+}
+{ fill: { scale: 'color', field: 'Origin' } }
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Drag the sliders to highlight points.",
   "background": "white",
@@ -238,9 +249,10 @@
   "legends": [
     {
       "fill": "color",
+      "symbolOpacity": 0.7,
+      "symbolStrokeColor": "transparent",
       "symbolType": "circle",
-      "title": "Origin",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
+      "title": "Origin"
     }
   ]
 }

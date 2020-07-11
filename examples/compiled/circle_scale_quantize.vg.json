@@ -1,3 +1,5 @@
+{ fill: { scale: 'color', field: 'b' } }
+{ fill: { scale: 'color', field: 'b' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
@@ -99,8 +101,10 @@
     {
       "title": "Quantize",
       "fill": "color",
+      "symbolOpacity": 0.7,
+      "symbolStrokeColor": "transparent",
       "symbolType": "circle",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
+      "symbolFillColor": "darkgray",
       "size": "size"
     }
   ]

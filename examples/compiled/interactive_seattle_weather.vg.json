@@ -1,4 +1,36 @@
 {
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'weather'
+    },
+    { value: 'lightgray' }
+  ]
+}
+{
+  fill: { value: 'transparent' },
+  stroke: [
+    {
+      test: '!(length(data("brush_store"))) || (vlSelectionTest("brush_store", datum))',
+      scale: 'color',
+      field: 'weather'
+    },
+    { value: 'lightgray' }
+  ]
+}
+{
+  fill: [
+    {
+      test: '!(length(data("click_store"))) || (vlSelectionTest("click_store", datum))',
+      scale: 'color',
+      field: 'weather'
+    },
+    { value: 'lightgray' }
+  ]
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
@@ -587,24 +619,18 @@
     {
       "title": "Weather",
       "stroke": "color",
+      "symbolFillColor": "transparent",
+      "symbolOpacity": 0.7,
       "symbolType": "circle",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
+      "symbolStrokeColor": "transparent",
       "fill": "color"
     },
     {
       "title": "Precipitation",
       "size": "size",
-      "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
-      "symbolType": "circle",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "transparent"},
-            "stroke": {"value": "lightgray"},
-            "opacity": {"value": 0.7}
-          }
-        }
-      }
+      "symbolFillColor": "transparent",
+      "symbolOpacity": 0.7,
+      "symbolType": "circle"
     }
   ]
 }

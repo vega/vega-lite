@@ -1,3 +1,4 @@
+{ fill: { scale: 'color', field: 'symbol' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock prices of four large companies as a small multiples of area charts.",
@@ -213,5 +214,12 @@
       "range": "category"
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "circle", "title": "symbol"}]
+  "legends": [
+    {
+      "fill": "color",
+      "symbolStrokeColor": "transparent",
+      "symbolType": "circle",
+      "title": "symbol"
+    }
+  ]
 }

@@ -1,3 +1,4 @@
+{ fill: { scale: 'color', field: 'category' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Reproducing http://robslink.com/SAS/democd91/pyramid_pie.htm",
@@ -79,6 +80,7 @@
       "legendY": 80,
       "orient": "none",
       "fill": "color",
+      "symbolStrokeColor": "transparent",
       "symbolType": "circle"
     }
   ]

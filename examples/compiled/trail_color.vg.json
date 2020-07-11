@@ -1,3 +1,5 @@
+{ stroke: { scale: 'color', field: 'symbol' } }
+{ stroke: { scale: 'color', field: 'symbol' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock prices of 5 Tech Companies over Time.",
@@ -135,11 +137,6 @@
   ],
   "legends": [
     {"stroke": "color", "symbolType": "stroke", "title": "symbol"},
-    {
-      "strokeWidth": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "stroke",
-      "title": "price"
-    }
+    {"strokeWidth": "size", "symbolType": "stroke", "title": "price"}
   ]
 }

@@ -1,3 +1,4 @@
+{ fill: { value: '#4c78a8' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Testing labelAngle signals",
@@ -161,17 +162,10 @@
   "legends": [
     {
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
+      "symbolFillColor": "#4c78a8",
+      "symbolStrokeColor": "transparent",
       "symbolType": "circle",
-      "title": "Sum of count",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "#4c78a8"},
-            "stroke": {"value": "transparent"}
-          }
-        }
-      }
+      "title": "Sum of count"
     }
   ],
   "config": {

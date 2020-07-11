@@ -1,3 +1,8 @@
+{ stroke: { scale: 'stroke', value: 'AAPL' } }
+{ stroke: { scale: 'stroke', value: 'AMZN' } }
+{ stroke: { scale: 'stroke', value: 'GOOG' } }
+{ stroke: { scale: 'stroke', value: 'IBM' } }
+{ stroke: { scale: 'stroke', value: 'MSFT' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Multi-series Line Chart with Halo. Use pivot and repeat-layer as a workaround to facet groups of lines and their halo strokes. See https://github.com/vega/vega-lite/issues/6192 for more discussion.",
@@ -303,5 +308,7 @@
       "zindex": 0
     }
   ],
-  "legends": [{"stroke": "stroke", "symbolType": "stroke"}]
+  "legends": [
+    {"stroke": "stroke", "symbolStrokeColor": "AAPL", "symbolType": "stroke"}
+  ]
 }

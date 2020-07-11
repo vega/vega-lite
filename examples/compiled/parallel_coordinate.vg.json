@@ -1,3 +1,4 @@
+{ stroke: { scale: 'color', field: 'Species' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Though Vega-Lite supports only one scale per axes, one can create a parallel coordinate plot by folding variables, using `joinaggregate` to normalize their values and using ticks and rules to manually create axes.",
@@ -275,9 +276,9 @@
   "legends": [
     {
       "stroke": "color",
+      "symbolOpacity": 0.3,
       "symbolType": "stroke",
-      "title": "Species",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.3}}}}
+      "title": "Species"
     }
   ],
   "config": {

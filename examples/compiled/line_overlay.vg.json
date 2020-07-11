@@ -1,3 +1,5 @@
+{ stroke: { scale: 'color', field: 'symbol' } }
+{ fill: { scale: 'color', field: 'symbol' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock prices of 5 Tech Companies over Time.",
@@ -192,8 +194,8 @@
       "stroke": "color",
       "symbolType": "circle",
       "title": "symbol",
-      "fill": "color",
-      "encode": {"symbols": {"update": {"opacity": {"value": 1}}}}
+      "symbolStrokeColor": "transparent",
+      "fill": "color"
     }
   ]
 }

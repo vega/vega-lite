@@ -1,3 +1,5 @@
+{ stroke: { scale: 'color', field: 'symbol' } }
+{ fill: { scale: 'color', field: 'symbol' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock price over time with color legend orient = left.",
@@ -175,8 +177,9 @@
       "stroke": "color",
       "symbolType": "circle",
       "title": "symbol",
-      "fill": "color",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
+      "symbolOpacity": 0.7,
+      "symbolStrokeColor": "transparent",
+      "fill": "color"
     }
   ]
 }

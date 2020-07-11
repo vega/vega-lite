@@ -1,3 +1,4 @@
+{ stroke: { value: '#4c78a8' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock prices of 5 Tech Companies over Time.",
@@ -129,9 +130,9 @@
   "legends": [
     {
       "strokeDash": "strokeDash",
+      "symbolStrokeColor": "#4c78a8",
       "symbolType": "stroke",
-      "title": "symbol",
-      "encode": {"symbols": {"update": {"stroke": {"value": "#4c78a8"}}}}
+      "title": "symbol"
     }
   ]
 }

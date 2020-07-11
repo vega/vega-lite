@@ -1,4 +1,10 @@
 {
+  fill: { value: 'transparent' },
+  stroke: {
+    signal: 'scale("color", 0.5 * datum["bin_maxbins_6_Acceleration"] + 0.5 * datum["bin_maxbins_6_Acceleration_end"])'
+  }
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "A scatterplot showing horsepower and miles per gallons with binned acceleration on color.",
   "background": "white",
@@ -135,16 +141,11 @@
   "legends": [
     {
       "stroke": "color",
+      "symbolFillColor": "transparent",
+      "symbolOpacity": 0.7,
+      "symbolStrokeColor": "transparent",
       "symbolType": "circle",
-      "title": "Acceleration (binned)",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "transparent"},
-            "opacity": {"value": 0.7}
-          }
-        }
-      }
+      "title": "Acceleration (binned)"
     }
   ]
 }

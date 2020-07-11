@@ -1,3 +1,9 @@
+{ fill: { scale: 'concat_0_color', field: 'b' } }
+{ fill: { scale: 'concat_0_color', field: 'b' } }
+{ fill: { scale: 'concat_1_color', field: 'b' } }
+{ fill: { scale: 'concat_1_color', field: 'b' } }
+{ fill: { scale: 'concat_2_color', field: 'b' } }
+{ fill: { scale: 'concat_2_color', field: 'b' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Horizontally concatenated charts that show different types of discretizing scales.",
@@ -116,8 +122,10 @@
         {
           "title": "Quantize",
           "fill": "concat_0_color",
+          "symbolOpacity": 0.7,
+          "symbolStrokeColor": "transparent",
           "symbolType": "circle",
-          "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
+          "symbolFillColor": "darkgray",
           "size": "concat_0_size"
         }
       ]
@@ -171,8 +179,10 @@
           "title": "Quantile",
           "fill": "concat_1_color",
           "labelOverlap": "greedy",
+          "symbolOpacity": 0.7,
+          "symbolStrokeColor": "transparent",
           "symbolType": "circle",
-          "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
+          "symbolFillColor": "darkgray",
           "size": "concat_1_size"
         }
       ]
@@ -225,8 +235,10 @@
           "title": "Threshold",
           "fill": "concat_2_color",
           "labelOverlap": "greedy",
+          "symbolOpacity": 0.7,
+          "symbolStrokeColor": "transparent",
           "symbolType": "circle",
-          "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
+          "symbolFillColor": "darkgray",
           "size": "concat_2_size"
         }
       ]

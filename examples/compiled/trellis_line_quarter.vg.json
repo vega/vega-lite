@@ -1,4 +1,8 @@
 {
+  fill: { value: 'transparent' },
+  stroke: { scale: 'color', field: 'symbol' }
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Stock price mean per quarter broken down by years.",
   "background": "white",
@@ -195,9 +199,9 @@
   "legends": [
     {
       "stroke": "color",
+      "symbolFillColor": "transparent",
       "symbolType": "circle",
-      "title": "symbol",
-      "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
+      "title": "symbol"
     }
   ]
 }

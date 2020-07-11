@@ -1,4 +1,8 @@
 {
+  fill: { value: 'transparent' },
+  stroke: { scale: 'trellis_barley_color', field: 'year' }
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "The Trellis display by Becker et al. helped establish small multiples as a “powerful mechanism for understanding interactions in studies of how a response depends on explanatory variables”. Here we reproduce a trellis of Barley yields from the 1930s, complete with main-effects ordering to facilitate comparison.",
   "background": "white",
@@ -183,9 +187,9 @@
   "legends": [
     {
       "stroke": "trellis_barley_color",
+      "symbolFillColor": "transparent",
       "symbolType": "circle",
-      "title": "year",
-      "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
+      "title": "year"
     }
   ]
 }

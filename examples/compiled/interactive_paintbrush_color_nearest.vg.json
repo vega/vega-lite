@@ -1,4 +1,14 @@
 {
+  fill: [
+    {
+      test: '!(length(data("paintbrush_store"))) || (vlSelectionTest("paintbrush_store", datum))',
+      scale: 'color',
+      field: 'Cylinders'
+    },
+    { value: 'grey' }
+  ]
+}
+{
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Select multiple points with the shift key.",
   "background": "white",
@@ -202,9 +212,10 @@
   "legends": [
     {
       "fill": "color",
+      "symbolOpacity": 0.7,
+      "symbolStrokeColor": "transparent",
       "symbolType": "circle",
-      "title": "Cylinders",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
+      "title": "Cylinders"
     }
   ]
 }

@@ -1,3 +1,9 @@
+{ stroke: { scale: 'color', field: 'location' } }
+{ stroke: { scale: 'color', field: 'location' } }
+{ stroke: { scale: 'color', field: 'location' } }
+{ stroke: { scale: 'color', field: 'location' } }
+{ stroke: { scale: 'color', field: 'location' } }
+{ stroke: { scale: 'color', field: 'location' } }
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "description": "Summarized and per year weather information for Seatle and New York.",
@@ -585,9 +591,9 @@
   "legends": [
     {
       "stroke": "color",
+      "symbolOpacity": 0.2,
       "symbolType": "stroke",
-      "title": "location",
-      "encode": {"symbols": {"update": {"opacity": {"value": 0.2}}}}
+      "title": "location"
     }
   ]
 }
