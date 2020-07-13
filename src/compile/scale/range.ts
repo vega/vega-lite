@@ -46,6 +46,7 @@ import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
 import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
+import {isFacetModel} from "../model";
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
 
@@ -213,12 +214,12 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       if (util.contains(['point', 'band'], scaleType)) {
         if (channel === X && !size.width) {
           const w = getViewConfigDiscreteSize(config.view, 'width');
-          if (isStep(w)) {
+          if (isStep(w) && (!isFacetModel(model.parent) || !model.parent.hasStaticOuterDimension('width'))) {
             return w;
           }
         } else if (channel === Y && !size.height) {
           const h = getViewConfigDiscreteSize(config.view, 'height');
-          if (isStep(h)) {
+          if (isStep(h) && (!isFacetModel(model.parent) || !model.parent.hasStaticOuterDimension('height'))) {
             return h;
           }
         }

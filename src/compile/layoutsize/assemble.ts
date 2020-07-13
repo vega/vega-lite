@@ -6,7 +6,9 @@ import {isVgRangeStep, VgRangeStep} from '../../vega.schema';
 import {signalOrStringValue} from '../common';
 import {isFacetModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
-import {LayoutSizeType} from './component';
+import {getSizeTypeFromLayoutSizeType, LayoutSizeType} from './component';
+import {isFacetMapping} from '../../spec/facet';
+import {FacetModel} from "../facet";
 
 export function assembleLayoutSignals(model: Model): NewSignal[] {
   return [
@@ -27,7 +29,14 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
   // Read size signal name from name map, just in case it is the top-level size signal that got renamed.
   const name = model.getSizeSignalRef(sizeType).signal;
 
-  if (size === 'step') {
+  if (isFacetModel(model.parent) && model.parent.hasStaticOuterDimension(getSizeTypeFromLayoutSizeType(sizeType))) {
+    return [
+      {
+        name,
+        update: autosizedFacetExpr(model.parent, sizeType)
+      }
+    ];
+  } else if (size === 'step') {
     const scaleComponent = model.getScaleComponent(channel);
 
     if (scaleComponent) {
@@ -64,34 +73,6 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
     const defaultValue = getViewConfigContinuousSize(model.config.view, isWidth ? 'width' : 'height');
     const safeExpr = `isFinite(${expr}) ? ${expr} : ${defaultValue}`;
     return [{name, init: safeExpr, on: [{update: safeExpr, events: 'window:resize'}]}];
-  } else if (isFacetModel(model.parent) && sizeType === 'width' && model.parent.size.width) {
-    return [
-      {
-        name,
-        // if the facet operator defines a column channel, the compiled vega spec includes the 'column_domain' data
-        // if however the facet operator is itself is a facet field definition, the compiled vega spec instead includes the 'facet_domain_column' data
-        // otherwise there is no column faceting so the width should be passed through
-        update: model.parent.facet.column
-          ? "width / length(data('column_domain'))"
-          : model.parent.facet.facet
-          ? "width / length(data('facet_domain_column'))"
-          : 'width'
-      }
-    ];
-  } else if (isFacetModel(model.parent) && sizeType === 'height' && model.parent.size.height) {
-    return [
-      {
-        name,
-        // if the facet operator defines a row channel, the compiled vega spec includes the 'row_domain' data
-        // if however the facet operator is itself is a facet field definition, the compiled vega spec instead includes the 'facet_domain_row' data
-        // otherwise there is no row faceting so the height should be passed through
-        update: model.parent.facet.row
-          ? "height / length(data('row_domain'))"
-          : model.parent.facet.facet
-          ? "height / length(data('facet_domain_row'))"
-          : 'height'
-      }
-    ];
   } else {
     return [
       {
@@ -127,4 +108,16 @@ export function sizeExpr(scaleName: string, scaleComponent: ScaleComponent, card
   return `bandspace(${cardinality}, ${signalOrStringValue(paddingInner)}, ${signalOrStringValue(
     paddingOuter
   )}) * ${scaleName}_step`;
+}
+
+export function autosizedFacetExpr(model: FacetModel, sizeType: LayoutSizeType) {
+  const channel = sizeType === 'width' ? 'column' : 'row';
+  if (!model.facet[channel] && isFacetMapping(model.facet)) {
+    // no faceting on this channel so just pass through the overall dimension of this channel
+    return sizeType;
+  }
+  // if the facet operator defines an explicit row or column channel, the compiled vega spec includes the '(row|column)_domain' data
+  // otherwise the facet operator is itself is a facet field definition, the compiled vega spec instead includes the 'facet_domain_(row|column)' data
+  const domain = !isFacetMapping(model.facet) ? `facet_domain_${channel}` : `${channel}_domain`;
+  return `${sizeType} / length(data('${domain}'))`;
 }

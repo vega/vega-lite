@@ -30,6 +30,8 @@ import {isFacetSpec} from '../spec';
 import {
   extractCompositionLayout,
   GenericCompositionLayoutWithColumns,
+  isStep,
+  LayoutSizeField,
   LayoutSizeMixins,
   SpecType,
   ViewBackground
@@ -662,6 +664,13 @@ export abstract class Model {
       this.component.axes.x?.some(a => a.hasOrientSignalRef()) ||
       this.component.axes.y?.some(a => a.hasOrientSignalRef())
     );
+  }
+
+  /**
+   * Returns true if the model has a static value (i.e. not a step) set for the given size dimension.
+   */
+  public hasStaticOuterDimension(dimension: LayoutSizeField) {
+    return this.size[dimension] && !isStep(this.size[dimension]);
   }
 }
 
