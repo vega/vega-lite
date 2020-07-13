@@ -225,7 +225,6 @@
     {
       "title": "All Cars Count",
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
       "encode": {
         "symbols": {
@@ -239,7 +238,6 @@
     {
       "title": "Cars from Japan Count",
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
       "encode": {
         "symbols": {

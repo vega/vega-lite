@@ -135,7 +135,6 @@
       "title": "Rating Delta",
       "stroke": "color",
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
-      "symbolType": "circle",
       "encode": {"gradient": {"update": {"opacity": {"value": 0.7}}}}
     }
   ]

@@ -391,7 +391,6 @@
   "legends": [
     {
       "size": "size",
-      "gradientLength": {"signal": "clamp(childHeight, 64, 200)"},
       "symbolType": "circle",
       "title": "Count of Records",
       "encode": {

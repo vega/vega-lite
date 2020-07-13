@@ -23,19 +23,12 @@ export interface LegendRuleParams {
   model: UnitModel;
   markDef: MarkDef;
   encoding: Encoding<string>;
-
   fieldOrDatumDef: MarkPropFieldOrDatumDef<string>;
-
   legendConfig: LegendConfig;
-
   config: Config;
-
   scaleType: ScaleType;
-
   orient: LegendOrient;
-
   legendType: LegendType;
-
   direction: Orientation;
 }
 

@@ -236,7 +236,6 @@
         {
           "title": "All Movies Count",
           "size": "size",
-          "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
           "symbolType": "circle",
           "encode": {
             "symbols": {
@@ -251,7 +250,6 @@
         {
           "title": "Selected Category Count",
           "size": "size",
-          "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
           "symbolType": "circle",
           "encode": {
             "symbols": {

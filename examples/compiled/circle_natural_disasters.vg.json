@@ -89,7 +89,6 @@
       "clipHeight": 30,
       "title": "Annual Global Deaths",
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
       "encode": {
         "symbols": {

@@ -594,7 +594,6 @@
     {
       "title": "Precipitation",
       "size": "size",
-      "gradientLength": {"signal": "clamp(concat_0_height, 64, 200)"},
       "symbolType": "circle",
       "encode": {
         "symbols": {

@@ -87,7 +87,6 @@
   "legends": [
     {
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "wedge",
       "title": "speed",
       "encode": {

@@ -29,8 +29,8 @@ describe('compile/legend', () => {
         }
       );
       expect(symbol.fill).toEqual({value: 'transparent'});
-      expect((symbol ?? {}).strokeDash).not.toBeDefined();
-      expect((symbol ?? {}).strokeDashOffset).not.toBeDefined();
+      expect((symbol ?? {}).strokeDash).toBeUndefined();
+      expect((symbol ?? {}).strokeDashOffset).toBeUndefined();
     });
 
     it('should have fill if a color encoding exists', () => {
@@ -76,7 +76,28 @@ describe('compile/legend', () => {
           legendType
         }
       );
-      expect(symbol.opacity['value']).toEqual(0.7); // default opacity is 0.7.
+      expect(symbol.opacity['value']).toBe(0.7); // default opacity is 0.7.
+    });
+
+    it('should use symbolOpacity when set', () => {
+      const symbolLegendWithProps = new LegendComponent({type: 'symbol', symbolOpacity: 0.9});
+      const legendType = getLegendType({legend: {}, channel: COLOR, scaleType: 'ordinal'});
+      const symbol = encode.symbols(
+        {},
+        {
+          fieldOrDatumDef: {field: 'a', type: 'nominal'},
+          model: parseUnitModelWithScale({
+            mark: 'point',
+            encoding: {
+              color: {field: 'a', type: 'nominal'}
+            }
+          }),
+          channel: COLOR,
+          legendCmpt: symbolLegendWithProps,
+          legendType
+        }
+      );
+      expect(symbol.opacity).toBeUndefined();
     });
 
     it('should return the maximum value when there is a condition', () => {
@@ -100,7 +121,7 @@ describe('compile/legend', () => {
           legendType
         }
       );
-      expect(symbol.opacity['value']).toEqual(1);
+      expect(symbol.opacity['value']).toBe(1);
     });
   });
 
@@ -122,7 +143,7 @@ describe('compile/legend', () => {
         }
       );
 
-      expect(gradient.opacity['value']).toEqual(0.7); // default opacity is 0.7.
+      expect(gradient.opacity['value']).toBe(0.7); // default opacity is 0.7.
     });
   });
 

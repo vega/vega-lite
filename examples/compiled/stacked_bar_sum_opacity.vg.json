@@ -134,7 +134,6 @@
   "legends": [
     {
       "opacity": "opacity",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "square",
       "title": "people",
       "encode": {

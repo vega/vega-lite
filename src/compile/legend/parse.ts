@@ -71,7 +71,6 @@ function isExplicit<T extends string | number | object | boolean>(
   switch (property) {
     case 'disable':
       return legend !== undefined; // if axis is specified or null/false, then it's enable/disable state is explicit
-
     case 'values':
       // specified legend.values is already respected, but may get transformed.
       return !!legend?.values;
@@ -126,6 +125,13 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   };
 
   for (const property of LEGEND_COMPONENT_PROPERTIES) {
+    if (
+      (legendType === 'gradient' && property.startsWith('symbol')) ||
+      (legendType === 'symbol' && property.startsWith('gradient'))
+    ) {
+      continue;
+    }
+
     const value = property in legendRules ? legendRules[property](ruleParams) : legend[property];
     if (value !== undefined) {
       const explicit = isExplicit(value, property, legend, model.fieldDef(channel));

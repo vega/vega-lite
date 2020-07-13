@@ -139,7 +139,6 @@
   "legends": [
     {
       "size": "size",
-      "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "symbolType": "circle",
       "title": "Acceleration (binned)",
       "encode": {
