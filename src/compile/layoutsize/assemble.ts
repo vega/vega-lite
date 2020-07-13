@@ -8,7 +8,7 @@ import {isFacetModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
 import {getSizeTypeFromLayoutSizeType, LayoutSizeType} from './component';
 import {isFacetMapping} from '../../spec/facet';
-import {FacetModel} from "../facet";
+import {FacetModel} from '../facet';
 
 export function assembleLayoutSignals(model: Model): NewSignal[] {
   return [
