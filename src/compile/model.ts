@@ -14,7 +14,8 @@ import {
   isChannel,
   isScaleChannel,
   ScaleChannel,
-  SingleDefChannel
+  SingleDefChannel,
+  ExtendedChannel
 } from '../channel';
 import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
@@ -674,7 +675,7 @@ export abstract class ModelWithField extends Model {
     return vgField(fieldDef, opt);
   }
 
-  protected abstract getMapping(): Partial<Record<Channel, any>>;
+  protected abstract getMapping(): Partial<Record<ExtendedChannel, any>>;
 
   public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T): T {
     return reduce(
@@ -690,10 +691,10 @@ export abstract class ModelWithField extends Model {
     );
   }
 
-  public forEachFieldDef(f: (fd: FieldDef<string>, c: Channel) => void, t?: any) {
+  public forEachFieldDef(f: (fd: FieldDef<string>, c: ExtendedChannel) => void, t?: any) {
     forEach(
       this.getMapping(),
-      (cd: ChannelDef, c: Channel) => {
+      (cd, c) => {
         const fieldDef = getFieldDef(cd);
         if (fieldDef) {
           f(fieldDef, c);
@@ -702,5 +703,6 @@ export abstract class ModelWithField extends Model {
       t
     );
   }
+
   public abstract channelHasField(channel: Channel): boolean;
 }

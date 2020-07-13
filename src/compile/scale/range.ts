@@ -3,7 +3,6 @@ import {isArray, isNumber, isObject} from 'vega-util';
 import {isBinning} from '../../bin';
 import {
   ANGLE,
-  Channel,
   COLOR,
   FILL,
   FILLOPACITY,
@@ -306,7 +305,7 @@ export function defaultContinuousToDiscreteCount(
   scaleType: 'quantile' | 'quantize' | 'threshold',
   config: Config,
   domain: Domain,
-  channel: Channel
+  channel: ScaleChannel
 ) {
   switch (scaleType) {
     case 'quantile':

@@ -1,14 +1,6 @@
-import * as CHANNEL from '../src/channel';
 import {ScaleChannel, SCALE_CHANNELS} from '../src/channel';
 import * as scale from '../src/scale';
-import {
-  channelSupportScaleType,
-  CONTINUOUS_TO_CONTINUOUS_SCALES,
-  getSupportedScaleType,
-  ScaleType,
-  SCALE_TYPES
-} from '../src/scale';
-import * as TYPE from '../src/type';
+import {channelSupportScaleType, CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType, SCALE_TYPES} from '../src/scale';
 import {some} from '../src/util';
 import {without} from './util';
 
@@ -94,59 +86,6 @@ describe('scale', () => {
           expect(channelSupportScaleType(channel, scaleType)).toBeTruthy();
         }
       }
-    });
-  });
-
-  describe('getSupportedScaleType', () => {
-    it('should return correct scale types for quantitative positional channels', () => {
-      const type = TYPE.QUANTITATIVE;
-      const positionalScaleTypes = [ScaleType.LINEAR, ScaleType.LOG, ScaleType.SYMLOG, ScaleType.POW, ScaleType.SQRT];
-
-      // x channel
-      let scaleTypes = getSupportedScaleType(CHANNEL.X, type);
-      expect(positionalScaleTypes).toEqual(expect.arrayContaining(scaleTypes));
-
-      // y channel
-      scaleTypes = getSupportedScaleType(CHANNEL.Y, TYPE.QUANTITATIVE);
-      expect(scaleTypes).toEqual(expect.arrayContaining(positionalScaleTypes));
-    });
-
-    it('should return correct scale types for quantitative positional channels with bin', () => {
-      const type = TYPE.QUANTITATIVE;
-
-      // x channel
-      let scaleTypes = getSupportedScaleType(CHANNEL.X, type);
-      expect(scaleTypes).toEqual(
-        expect.arrayContaining([ScaleType.LINEAR, ScaleType.LOG, ScaleType.SYMLOG, ScaleType.POW, ScaleType.SQRT])
-      );
-
-      // y channel
-      scaleTypes = getSupportedScaleType(CHANNEL.Y, type);
-      expect(scaleTypes).toEqual(
-        expect.arrayContaining([ScaleType.LINEAR, ScaleType.LOG, ScaleType.SYMLOG, ScaleType.POW, ScaleType.SQRT])
-      );
-    });
-
-    it('should return correct scale types for nominal positional channels', () => {
-      const type = TYPE.NOMINAL;
-      const nominalPositionalScaleTypes = [ScaleType.POINT, ScaleType.BAND];
-
-      let scaleTypes = getSupportedScaleType(CHANNEL.X, type);
-      expect(scaleTypes).toEqual(nominalPositionalScaleTypes);
-
-      scaleTypes = getSupportedScaleType(CHANNEL.Y, type);
-      expect(scaleTypes).toEqual(nominalPositionalScaleTypes);
-    });
-
-    it('should return correct scale types for temporal positional channels', () => {
-      const type = TYPE.TEMPORAL;
-      const temporalPositionalScaleTypes = [ScaleType.TIME, ScaleType.UTC];
-
-      let scaleTypes = getSupportedScaleType(CHANNEL.X, type);
-      expect(scaleTypes).toEqual(temporalPositionalScaleTypes);
-
-      scaleTypes = getSupportedScaleType(CHANNEL.Y, type);
-      expect(scaleTypes).toEqual(temporalPositionalScaleTypes);
     });
   });
 });

@@ -9,11 +9,11 @@ import {
 } from 'vega';
 import {isString, toSet} from 'vega-util';
 import * as CHANNEL from './channel';
-import {Channel, CHANNELS, isColorChannel} from './channel';
+import {Channel, isColorChannel} from './channel';
 import {DateTime} from './datetime';
 import * as log from './log';
 import {SelectionExtent} from './selection';
-import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type, TYPES} from './type';
+import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type';
 import {contains, Flag, keys} from './util';
 
 export const ScaleType = {
@@ -705,8 +705,6 @@ const {
 
 export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = keys(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
 
-export const SCALE_TYPE_INDEX = generateScaleTypeIndex();
-
 export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof Scale): boolean {
   switch (propName) {
     case 'type':
@@ -853,33 +851,4 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
     case CHANNEL.SHAPE:
       return scaleType === 'ordinal'; // shape = lookup only
   }
-}
-
-export function getSupportedScaleType(channel: Channel, fieldDefType: Type) {
-  return SCALE_TYPE_INDEX[generateScaleTypeIndexKey(channel, fieldDefType)];
-}
-
-export interface ScaleTypeIndex {
-  [channel: string]: ScaleType[];
-}
-
-// generates ScaleTypeIndex where keys are encoding channels and values are list of valid ScaleTypes
-function generateScaleTypeIndex() {
-  const index: ScaleTypeIndex = {};
-  for (const channel of CHANNELS) {
-    for (const fieldDefType of TYPES) {
-      for (const scaleType of SCALE_TYPES) {
-        const key = generateScaleTypeIndexKey(channel, fieldDefType);
-        if (channelSupportScaleType(channel, scaleType) && scaleTypeSupportDataType(scaleType, fieldDefType)) {
-          index[key] = index[key] ?? [];
-          index[key].push(scaleType);
-        }
-      }
-    }
-  }
-  return index;
-}
-
-function generateScaleTypeIndexKey(channel: Channel, fieldDefType: Type) {
-  return channel + '_' + fieldDefType;
 }

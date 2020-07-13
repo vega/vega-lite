@@ -41,7 +41,8 @@ import {
   X,
   X2,
   Y,
-  Y2
+  Y2,
+  ExtendedChannel
 } from './channel';
 import {getMarkConfig} from './compile/common';
 import {isCustomFormatType} from './compile/format';
@@ -898,7 +899,7 @@ export function getFormatMixins(fieldDef: TypedFieldDef<string> | DatumDef) {
   }
 }
 
-export function defaultType<T extends TypedFieldDef<Field>>(fieldDef: T, channel: Channel): Type {
+export function defaultType<T extends TypedFieldDef<Field>>(fieldDef: T, channel: ExtendedChannel): Type {
   switch (channel) {
     case 'latitude':
     case 'longitude':
@@ -968,7 +969,7 @@ export function getFieldOrDatumDef<F extends Field = string, CD extends ChannelD
  */
 export function initChannelDef(
   channelDef: ChannelDef<string>,
-  channel: Channel,
+  channel: ExtendedChannel,
   config: Config,
   opt: {compositeMark?: boolean} = {}
 ): ChannelDef<string> {
@@ -993,7 +994,7 @@ export function initChannelDef(
 
 export function initFieldOrDatumDef(
   fd: FieldDef<string, any> | DatumDef,
-  channel: Channel,
+  channel: ExtendedChannel,
   config: Config,
   opt: {compositeMark?: boolean}
 ): FieldDef<string, any> | DatumDef {
@@ -1039,7 +1040,7 @@ function initDatumDef(datumDef: DatumDef): DatumDef {
 
 export function initFieldDef(
   fd: FieldDef<string, any>,
-  channel: Channel,
+  channel: ExtendedChannel,
   {compositeMark = false}: {compositeMark?: boolean} = {}
 ) {
   const {aggregate, timeUnit, bin, field} = fd;
@@ -1131,7 +1132,7 @@ export function initFieldDef(
   return fieldDef;
 }
 
-export function normalizeBin(bin: BinParams | boolean | 'binned', channel?: Channel) {
+export function normalizeBin(bin: BinParams | boolean | 'binned', channel?: ExtendedChannel) {
   if (isBoolean(bin)) {
     return {maxbins: autoMaxBins(channel)};
   } else if (bin === 'binned') {
@@ -1148,7 +1149,7 @@ export function normalizeBin(bin: BinParams | boolean | 'binned', channel?: Chan
 const COMPATIBLE = {compatible: true};
 export function channelCompatibility(
   fieldDef: TypedFieldDef<Field>,
-  channel: Channel
+  channel: ExtendedChannel
 ): {compatible: boolean; warning?: string} {
   const type = fieldDef.type;
 

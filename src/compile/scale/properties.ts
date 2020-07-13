@@ -2,12 +2,12 @@ import {SignalRef, TimeInterval} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
 import {
-  Channel,
   COLOR,
   FILL,
   POLAR_POSITION_SCALE_CHANNELS,
   POSITION_SCALE_CHANNELS,
   POSITION_SCALE_CHANNEL_INDEX,
+  ScaleChannel,
   STROKE
 } from '../../channel';
 import {
@@ -128,7 +128,7 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
 
 export interface ScaleRuleParams {
   model: Model;
-  channel: Channel;
+  channel: ScaleChannel;
   fieldOrDatumDef: ScaleFieldDef<string, Type> | ScaleDatumDef;
   scaleType: ScaleType;
   scalePadding: number | SignalRef;
@@ -231,7 +231,7 @@ export function bins(model: Model, fieldDef: TypedFieldDef<string>) {
   return undefined;
 }
 
-export function interpolate(channel: Channel, type: Type): Scale['interpolate'] {
+export function interpolate(channel: ScaleChannel, type: Type): Scale['interpolate'] {
   if (contains([COLOR, FILL, STROKE], channel) && type !== 'nominal') {
     return 'hcl';
   }
@@ -240,7 +240,7 @@ export function interpolate(channel: Channel, type: Type): Scale['interpolate'] 
 
 export function nice(
   scaleType: ScaleType,
-  channel: Channel,
+  channel: ScaleChannel,
   fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef
 ): boolean | TimeInterval {
   if (getFieldDef(fieldOrDatumDef)?.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
@@ -250,7 +250,7 @@ export function nice(
 }
 
 export function padding(
-  channel: Channel,
+  channel: ScaleChannel,
   scaleType: ScaleType,
   scaleConfig: ScaleConfig,
   fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef,
@@ -278,7 +278,12 @@ export function padding(
   return undefined;
 }
 
-export function paddingInner(paddingValue: number | SignalRef, channel: Channel, mark: Mark, scaleConfig: ScaleConfig) {
+export function paddingInner(
+  paddingValue: number | SignalRef,
+  channel: ScaleChannel,
+  mark: Mark,
+  scaleConfig: ScaleConfig
+) {
   if (paddingValue !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingInner.
     return undefined;
@@ -299,7 +304,7 @@ export function paddingInner(paddingValue: number | SignalRef, channel: Channel,
 
 export function paddingOuter(
   paddingValue: number | SignalRef,
-  channel: Channel,
+  channel: ScaleChannel,
   scaleType: ScaleType,
   mark: Mark,
   paddingInnerValue: number | SignalRef,
@@ -329,7 +334,7 @@ export function paddingOuter(
   return undefined;
 }
 
-export function reverse(scaleType: ScaleType, sort: Sort<string>, channel: Channel, scaleConfig: ScaleConfig) {
+export function reverse(scaleType: ScaleType, sort: Sort<string>, channel: ScaleChannel, scaleConfig: ScaleConfig) {
   if (channel === 'x' && scaleConfig.xReverse !== undefined) {
     if (hasContinuousDomain(scaleType) && sort === 'descending') {
       if (isSignalRef(scaleConfig.xReverse)) {
@@ -350,7 +355,7 @@ export function reverse(scaleType: ScaleType, sort: Sort<string>, channel: Chann
 }
 
 export function zero(
-  channel: Channel,
+  channel: ScaleChannel,
   fieldDef: TypedFieldDef<string> | ScaleDatumDef,
   specifiedDomain: Domain,
   markDef: MarkDef,

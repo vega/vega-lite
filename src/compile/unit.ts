@@ -10,7 +10,9 @@ import {
   SingleDefChannel,
   supportLegend,
   X,
-  Y
+  Y,
+  PositionChannel,
+  NonPositionScaleChannel
 } from '../channel';
 import {
   getFieldDef,
@@ -135,11 +137,11 @@ export class UnitModel extends ModelWithField {
     return scale ? scale.domain : undefined;
   }
 
-  public axis(channel: Channel): Axis {
+  public axis(channel: PositionChannel): Axis {
     return this.specifiedAxes[channel];
   }
 
-  public legend(channel: Channel): Legend {
+  public legend(channel: NonPositionScaleChannel): Legend {
     return this.specifiedLegends[channel];
   }
 

@@ -1,7 +1,7 @@
 import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
-import {Channel, COLUMN, FacetChannel, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../channel';
+import {COLUMN, ExtendedChannel, FacetChannel, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../channel';
 import {FieldName, FieldRefOption, initChannelDef, TypedFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
 import {reduce} from '../encoding';
@@ -60,7 +60,7 @@ export class FacetModel extends ModelWithField {
 
     return reduce(
       facet,
-      (normalizedFacet, fieldDef: TypedFieldDef<string>, channel: Channel) => {
+      (normalizedFacet, fieldDef, channel) => {
         if (!contains([ROW, COLUMN], channel)) {
           // Drop unsupported channel
           log.warn(log.message.incompatibleChannel(channel, 'facet'));
@@ -80,11 +80,11 @@ export class FacetModel extends ModelWithField {
     );
   }
 
-  public channelHasField(channel: Channel): boolean {
+  public channelHasField(channel: ExtendedChannel): boolean {
     return !!this.facet[channel];
   }
 
-  public fieldDef(channel: Channel): TypedFieldDef<string> {
+  public fieldDef(channel: ExtendedChannel): TypedFieldDef<string> {
     return this.facet[channel];
   }
 
