@@ -50,6 +50,10 @@ To show more than one field, you can provide an array of field definitions. [Veg
 
 Alternatively, you can [calculate](calculate.html) a new field that concatenates multiple fields (and use a single field definition).
 
+To give the fields in the tooltip a label that is different from the field name, set the `title` parameter.
+
+<div class="vl-example" data-name="bar_tooltip_title"></div>
+
 ## Disable tooltips
 
 To disable tooltips for a particular single view specification, you can set the `"tooltip"` property of a mark definition block to `null`.
