@@ -7,9 +7,8 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
-
     name: Lint, Format, Schema, and Examples
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -62,9 +61,9 @@ jobs:
         run: ./scripts/check-and-commit.sh
 
   toc:
-    runs-on: ubuntu-latest
-
     name: TOC
+    if: "!contains(github.event.head_commit.message, '[CI]')"
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
