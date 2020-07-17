@@ -16,7 +16,9 @@ import {
   NormalizedUnitSpec,
   TopLevel,
   TopLevelSpec,
-  isUnitSpec
+  isUnitSpec,
+  isLayerSpec,
+  GenericLayerSpec
 } from '../src/spec';
 import {FrameMixins} from '../src/spec/base';
 import {contains} from '../src/util';
@@ -85,6 +87,12 @@ export function parseConcatModel(spec: TopLevel<NormalizedConcatSpec>) {
 export function assertIsUnitSpec(spec: BaseSpec): asserts spec is FacetedUnitSpec | NormalizedUnitSpec {
   if (!isUnitSpec(spec)) {
     throw new Error('Spec is not a unit spec!');
+  }
+}
+
+export function assertIsLayerSpec(spec: BaseSpec): asserts spec is GenericLayerSpec<any> {
+  if (!isLayerSpec(spec)) {
+    throw new Error('Spec is not a layer spec!');
   }
 }
 
