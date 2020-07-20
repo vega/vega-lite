@@ -7,12 +7,13 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-latest
-
     name: Lint, Format, Schema, and Examples
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -54,18 +55,20 @@ jobs:
       - name: Setup Git remote
         run: ./scripts/setup-git-ci.sh
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Check and Commit
         run: ./scripts/check-and-commit.sh
 
   toc:
-    runs-on: ubuntu-latest
-
     name: TOC
+    if: "!contains(github.event.head_commit.message, '[CI]')"
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
+        with:
+          persist-credentials: false
 
       - name: Get yarn cache directory path
         id: yarn-cache-dir-path
@@ -104,7 +107,7 @@ jobs:
       - name: Setup Git remote
         run: ./scripts/setup-git-ci.sh
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Check and Commit
         run: ./scripts/check-and-commit-toc.sh
