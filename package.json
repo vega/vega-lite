@@ -102,7 +102,7 @@
     "mkdirp": "^1.0.4",
     "pako": "^1.0.11",
     "prettier": "^2.0.5",
-    "puppeteer": "5.1.0",
+    "puppeteer": "5.2.0",
     "rollup": "^2.21.0",
     "rollup-plugin-sourcemaps": "^0.6.2",
     "rollup-plugin-terser": "^6.1.0",
