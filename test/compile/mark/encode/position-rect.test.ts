@@ -20,10 +20,10 @@ describe('compile/mark/encode/position-rect', () => {
         config
       });
       expect(props.x[1].offset).toEqual({
-        signal: 'r ? 1 : 0'
+        signal: '0.5 + (r ? -1 : 1) * -0.5'
       });
       expect(props.x2[1].offset).toEqual({
-        signal: 'r ? 0 : 1'
+        signal: '0.5 + (r ? -1 : 1) * 0.5'
       });
     });
 
@@ -60,10 +60,10 @@ describe('compile/mark/encode/position-rect', () => {
         config
       });
       expect(props.y2[1].offset).toEqual({
-        signal: 'r ? 1 : 0'
+        signal: '0.5 + (r ? -1 : 1) * -0.5'
       });
       expect(props.y[1].offset).toEqual({
-        signal: 'r ? 0 : 1'
+        signal: '0.5 + (r ? -1 : 1) * 0.5'
       });
     });
 
@@ -81,10 +81,10 @@ describe('compile/mark/encode/position-rect', () => {
         config
       });
       expect(props.x[1].offset).toEqual({
-        signal: 'r ? 1.5 : -0.5'
+        signal: '0.5 + (r ? -1 : 1) * -1'
       });
       expect(props.x2[1].offset).toEqual({
-        signal: 'r ? -0.5 : 1.5'
+        signal: '0.5 + (r ? -1 : 1) * 1'
       });
     });
 
@@ -102,10 +102,10 @@ describe('compile/mark/encode/position-rect', () => {
         config
       });
       expect(props.y2[1].offset).toEqual({
-        signal: 'r ? 1.5 : -0.5'
+        signal: '0.5 + (r ? -1 : 1) * -1'
       });
       expect(props.y[1].offset).toEqual({
-        signal: 'r ? -0.5 : 1.5'
+        signal: '0.5 + (r ? -1 : 1) * 1'
       });
     });
 
@@ -146,5 +146,47 @@ describe('compile/mark/encode/position-rect', () => {
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('y2'));
       })
     );
+
+    it('produces correct x-mixins for signal translate', () => {
+      const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
+      const props = rectBinPosition({
+        fieldDef,
+        channel: 'x',
+        band: 1,
+        scaleName: undefined,
+        axisTranslate: {signal: 't'}, // Vega default
+        reverse: false,
+        spacing: 1,
+        markDef: {type: 'bar'},
+        config
+      });
+      expect(props.x[1].offset).toEqual({
+        signal: 't + -0.5'
+      });
+      expect(props.x2[1].offset).toEqual({
+        signal: 't + 0.5'
+      });
+    });
+
+    it('produces correct x-mixins for signal translate, signal reverse, signal offset', () => {
+      const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
+      const props = rectBinPosition({
+        fieldDef,
+        channel: 'x',
+        band: 1,
+        scaleName: undefined,
+        axisTranslate: {signal: 't'}, // Vega default
+        reverse: {signal: 'r'},
+        spacing: 1,
+        markDef: {type: 'bar', xOffset: {signal: 'o'}},
+        config
+      });
+      expect(props.x[1].offset).toEqual({
+        signal: 't + (r ? -1 : 1) * (o + -0.5)'
+      });
+      expect(props.x2[1].offset).toEqual({
+        signal: 't + (r ? -1 : 1) * (o + 0.5)'
+      });
+    });
   });
 });
