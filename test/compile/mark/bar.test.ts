@@ -345,7 +345,7 @@ describe('Mark: Bar', () => {
     it('should draw bar with y and y2', () => {
       expect(props.y2).toEqual([
         fieldInvalidTestValueRef(y, 'y'),
-        {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: {signal: 'a'}}
+        {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: {signal: '0.5 + (a + -0.5)'}}
       ]);
       expect(props.y).toEqual([
         fieldInvalidTestValueRef(y, 'y'),
@@ -353,7 +353,7 @@ describe('Mark: Bar', () => {
           scale: 'y',
           field: 'bin_maxbins_10_Horsepower_end',
           offset: {
-            signal: '1 + a'
+            signal: '0.5 + (a + 0.5)'
           }
         }
       ]);

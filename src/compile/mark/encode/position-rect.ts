@@ -211,7 +211,7 @@ function getBinSpacing(
   channel: PositionChannel | PolarPositionChannel,
   spacing: number,
   reverse: boolean | SignalRef,
-  translate: number,
+  translate: number | SignalRef,
   offset: number | SignalRef
 ) {
   if (isPolarPositionChannel(channel)) {
@@ -220,22 +220,19 @@ function getBinSpacing(
 
   const spacingOffset = channel === 'x' || channel === 'y2' ? -spacing / 2 : spacing / 2;
 
-  if (isSignalRef(reverse)) {
+  if (isSignalRef(reverse) || isSignalRef(offset) || isSignalRef(translate)) {
+    const reverseExpr = signalOrStringValue(reverse);
     const offsetExpr = signalOrStringValue(offset);
+    const translateExpr = signalOrStringValue(translate);
+
+    const t = translateExpr ? `${translateExpr} + ` : '';
+    const r = reverseExpr ? `(${reverseExpr} ? -1 : 1) * ` : '';
+    const o = offsetExpr ? `(${offsetExpr} + ${spacingOffset})` : spacingOffset;
+
     return {
-      signal: `${reverse.signal} ? ${translate - spacingOffset}${offsetExpr ? '-' + offsetExpr : ''} : ${
-        translate + spacingOffset
-      }${offsetExpr ? '+' + offsetExpr : ''}`
+      signal: t + r + o
     };
   } else {
-    if (isSignalRef(offset)) {
-      const translateAndSpacingOffset = translate + (reverse ? -spacingOffset : spacingOffset);
-      return {
-        signal: `${translateAndSpacingOffset || ''}${reverse ? ' - ' : translateAndSpacingOffset ? ' + ' : ''}${
-          offset.signal
-        }`
-      };
-    }
     offset = offset || 0;
     return translate + (reverse ? -offset - spacingOffset : +offset + spacingOffset);
   }
@@ -260,7 +257,7 @@ export function rectBinPosition({
   scaleName: string;
   markDef: MarkDef<Mark>;
   spacing?: number;
-  axisTranslate: number;
+  axisTranslate: number | SignalRef;
   reverse: boolean | SignalRef;
   config: Config;
 }) {
