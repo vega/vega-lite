@@ -1070,4 +1070,31 @@ describe('normalizeBoxIQR', () => {
     const {tooltip} = normalizedSpecWithTooltip['layer'][0]['layer'][0]['encoding'];
     expect(tooltip).toEqual({field: 'year', type: 'quantitative'});
   });
+
+  it("should include timeUnit transform in filteredLayerMixins' transform", () => {
+    const field = 'Date';
+    const timeUnit = 'year';
+    const normalizedSpec = normalize(
+      {
+        data: {url: 'data/population.json'},
+        mark: 'boxplot',
+        encoding: {
+          x: {
+            field,
+            type: 'temporal',
+            timeUnit
+          },
+          y: {field: 'Anomaly', type: 'quantitative'}
+        }
+      },
+      defaultConfig
+    );
+
+    const filteredLayerMixins = normalizedSpec['layer'][1];
+    expect(filteredLayerMixins.transform[0]).toEqual({
+      timeUnit: {unit: 'year'},
+      field,
+      as: `${timeUnit}_${field}`
+    });
+  });
 });
