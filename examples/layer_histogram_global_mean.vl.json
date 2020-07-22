@@ -4,24 +4,13 @@
   "layer": [{
     "mark": "bar",
     "encoding": {
-      "x": {
-        "bin": true,
-        "field": "IMDB_Rating",
-        "type": "quantitative"
-      },
-      "y": {
-        "aggregate": "count",
-        "type": "quantitative"
-      }
+      "x": {"field": "IMDB Rating", "bin": true},
+      "y": {"aggregate": "count"}
     }
   },{
     "mark": "rule",
     "encoding": {
-      "x": {
-        "aggregate": "mean",
-        "field": "IMDB_Rating",
-        "type": "quantitative"
-      },
+      "x": {"aggregate": "mean", "field": "IMDB Rating"},
       "color": {"value": "red"},
       "size": {"value": 5}
     }

@@ -11,9 +11,6 @@
   },
   "encoding": {
     "x": {"field": "x", "type": "quantitative"},
-    "y": {
-      "field": "y", "type": "quantitative",
-      "scale": {"type": "log"}
-    }
+    "y": {"field": "y", "scale": {"type": "log"}}
   }
 }

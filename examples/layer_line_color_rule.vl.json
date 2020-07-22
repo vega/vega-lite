@@ -14,13 +14,9 @@
     {
       "mark": "rule",
       "encoding": {
-        "y": {
-          "field": "price",
-          "type": "quantitative",
-          "aggregate": "mean"
-        },
+        "y": {"field": "price", "aggregate": "mean"},
         "size": {"value": 2},
-        "color": {"field": "symbol", "type": "nominal"}
+        "color": {"field": "symbol"}
       }
     }
   ]

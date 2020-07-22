@@ -5,7 +5,7 @@
   "encoding": {
     "y": {"field": "Origin", "type": "nominal"},
     "x": {"field": "Cylinders", "type": "ordinal"},
-    "color": {"aggregate": "mean", "field": "Horsepower", "type": "quantitative"}
+    "color": {"aggregate": "mean", "field": "Horsepower"}
   },
   "config": {
     "axis": {"grid": true, "tickBand": "extent"}

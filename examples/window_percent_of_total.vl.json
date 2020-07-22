@@ -28,9 +28,7 @@
     "x": {
       "field": "PercentOfTotal",
       "type": "quantitative",
-      "axis": {
-        "title": "% of total Time"
-      }
+      "title": "% of total Time"
     },
     "y": {"field": "Activity", "type": "nominal"}
   }

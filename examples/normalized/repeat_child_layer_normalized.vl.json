@@ -10,27 +10,19 @@
         {
           "mark": "line",
           "encoding": {
-            "y": {
-              "aggregate": "mean",
-              "field": "temp_max",
-              "type": "quantitative"
-            },
+            "y": {"aggregate": "mean", "field": "temp_max"},
             "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-            "detail": {"timeUnit": "year", "type": "temporal", "field": "date"},
-            "color": {"type": "nominal", "field": "location"},
+            "detail": {"timeUnit": "year", "field": "date"},
+            "color": {"field": "location"},
             "opacity": {"value": 0.2}
           }
         },
         {
           "mark": "line",
           "encoding": {
-            "y": {
-              "aggregate": "mean",
-              "field": "temp_max",
-              "type": "quantitative"
-            },
+            "y": {"aggregate": "mean", "field": "temp_max"},
             "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-            "color": {"type": "nominal", "field": "location"}
+            "color": {"field": "location"}
           }
         }
       ],
@@ -41,27 +33,19 @@
         {
           "mark": "line",
           "encoding": {
-            "y": {
-              "aggregate": "mean",
-              "field": "precipitation",
-              "type": "quantitative"
-            },
+            "y": {"aggregate": "mean", "field": "precipitation"},
             "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-            "detail": {"timeUnit": "year", "type": "temporal", "field": "date"},
-            "color": {"type": "nominal", "field": "location"},
+            "detail": {"timeUnit": "year", "field": "date"},
+            "color": {"field": "location"},
             "opacity": {"value": 0.2}
           }
         },
         {
           "mark": "line",
           "encoding": {
-            "y": {
-              "aggregate": "mean",
-              "field": "precipitation",
-              "type": "quantitative"
-            },
+            "y": {"aggregate": "mean", "field": "precipitation"},
             "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-            "color": {"type": "nominal", "field": "location"}
+            "color": {"field": "location"}
           }
         }
       ],
@@ -72,19 +56,19 @@
         {
           "mark": "line",
           "encoding": {
-            "y": {"aggregate": "mean", "field": "wind", "type": "quantitative"},
+            "y": {"aggregate": "mean", "field": "wind"},
             "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-            "detail": {"timeUnit": "year", "type": "temporal", "field": "date"},
-            "color": {"type": "nominal", "field": "location"},
+            "detail": {"timeUnit": "year", "field": "date"},
+            "color": {"field": "location"},
             "opacity": {"value": 0.2}
           }
         },
         {
           "mark": "line",
           "encoding": {
-            "y": {"aggregate": "mean", "field": "wind", "type": "quantitative"},
+            "y": {"aggregate": "mean", "field": "wind"},
             "x": {"timeUnit": "month", "field": "date", "type": "ordinal"},
-            "color": {"type": "nominal", "field": "location"}
+            "color": {"field": "location"}
           }
         }
       ],

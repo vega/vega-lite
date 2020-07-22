@@ -18,8 +18,7 @@
         },
         "y": {
           "aggregate": "mean",
-          "field": "precipitation",
-          "type": "quantitative"
+          "field": "precipitation"
         }
       }
     },
@@ -28,18 +27,13 @@
       "encoding": {
         "x": {
           "field": "temp_min",
-          "type": "quantitative",
           "bin": true
         },
         "y": {
           "field": "temp_max",
-          "type": "quantitative",
           "bin": true
         },
-        "size": {
-          "aggregate": "count",
-          "type": "quantitative"
-        }
+        "size": {"aggregate": "count"}
       }
     }
   ]

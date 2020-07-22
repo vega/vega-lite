@@ -1,5 +1,5 @@
 {
-  "data": {"url": "data/iris.json"},
+  "data": {"url": "data/penguins.json"},
   "align": "all",
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "columns": 4,
@@ -10,18 +10,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "sepalLength",
+          "field": "Body Mass (g)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "petalWidth",
+          "field": "Beak Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_petalWidthcolumn_sepalLength"
+      "name": "child__row_Beak_Length__mm_column_Body_Mass__g_"
     },
     {
       "width": 150,
@@ -29,18 +29,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "sepalWidth",
+          "field": "Flipper Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "petalWidth",
+          "field": "Beak Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_petalWidthcolumn_sepalWidth"
+      "name": "child__row_Beak_Length__mm_column_Flipper_Length__mm_"
     },
     {
       "width": 150,
@@ -48,18 +48,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "petalLength",
+          "field": "Beak Depth (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "petalWidth",
+          "field": "Beak Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_petalWidthcolumn_petalLength"
+      "name": "child__row_Beak_Length__mm_column_Beak_Depth__mm_"
     },
     {
       "width": 150,
@@ -67,18 +67,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "petalWidth",
+          "field": "Beak Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "petalWidth",
+          "field": "Beak Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_petalWidthcolumn_petalWidth"
+      "name": "child__row_Beak_Length__mm_column_Beak_Length__mm_"
     },
     {
       "width": 150,
@@ -86,18 +86,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "sepalLength",
+          "field": "Body Mass (g)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "petalLength",
+          "field": "Beak Depth (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_petalLengthcolumn_sepalLength"
+      "name": "child__row_Beak_Depth__mm_column_Body_Mass__g_"
     },
     {
       "width": 150,
@@ -105,18 +105,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "sepalWidth",
+          "field": "Flipper Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "petalLength",
+          "field": "Beak Depth (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_petalLengthcolumn_sepalWidth"
+      "name": "child__row_Beak_Depth__mm_column_Flipper_Length__mm_"
     },
     {
       "width": 150,
@@ -124,18 +124,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "petalLength",
+          "field": "Beak Depth (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "petalLength",
+          "field": "Beak Depth (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_petalLengthcolumn_petalLength"
+      "name": "child__row_Beak_Depth__mm_column_Beak_Depth__mm_"
     },
     {
       "width": 150,
@@ -143,18 +143,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "petalWidth",
+          "field": "Beak Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "petalLength",
+          "field": "Beak Depth (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_petalLengthcolumn_petalWidth"
+      "name": "child__row_Beak_Depth__mm_column_Beak_Length__mm_"
     },
     {
       "width": 150,
@@ -162,18 +162,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "sepalLength",
+          "field": "Body Mass (g)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "sepalWidth",
+          "field": "Flipper Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_sepalWidthcolumn_sepalLength"
+      "name": "child__row_Flipper_Length__mm_column_Body_Mass__g_"
     },
     {
       "width": 150,
@@ -181,18 +181,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "sepalWidth",
+          "field": "Flipper Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "sepalWidth",
+          "field": "Flipper Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_sepalWidthcolumn_sepalWidth"
+      "name": "child__row_Flipper_Length__mm_column_Flipper_Length__mm_"
     },
     {
       "width": 150,
@@ -200,18 +200,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "petalLength",
+          "field": "Beak Depth (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "sepalWidth",
+          "field": "Flipper Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_sepalWidthcolumn_petalLength"
+      "name": "child__row_Flipper_Length__mm_column_Beak_Depth__mm_"
     },
     {
       "width": 150,
@@ -219,18 +219,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "petalWidth",
+          "field": "Beak Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "sepalWidth",
+          "field": "Flipper Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_sepalWidthcolumn_petalWidth"
+      "name": "child__row_Flipper_Length__mm_column_Beak_Length__mm_"
     },
     {
       "width": 150,
@@ -238,18 +238,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "sepalLength",
+          "field": "Body Mass (g)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "sepalLength",
+          "field": "Body Mass (g)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_sepalLengthcolumn_sepalLength"
+      "name": "child__row_Body_Mass__g_column_Body_Mass__g_"
     },
     {
       "width": 150,
@@ -257,18 +257,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "sepalWidth",
+          "field": "Flipper Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "sepalLength",
+          "field": "Body Mass (g)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_sepalLengthcolumn_sepalWidth"
+      "name": "child__row_Body_Mass__g_column_Flipper_Length__mm_"
     },
     {
       "width": 150,
@@ -276,18 +276,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "petalLength",
+          "field": "Beak Depth (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "sepalLength",
+          "field": "Body Mass (g)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_sepalLengthcolumn_petalLength"
+      "name": "child__row_Body_Mass__g_column_Beak_Depth__mm_"
     },
     {
       "width": 150,
@@ -295,18 +295,18 @@
       "mark": "point",
       "encoding": {
         "x": {
-          "field": "petalWidth",
+          "field": "Beak Length (mm)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
         "y": {
-          "field": "sepalLength",
+          "field": "Body Mass (g)",
           "type": "quantitative",
           "scale": {"zero": false}
         },
-        "color": {"field": "species", "type": "nominal"}
+        "color": {"field": "Species", "type": "nominal"}
       },
-      "name": "child__row_sepalLengthcolumn_petalWidth"
+      "name": "child__row_Body_Mass__g_column_Beak_Length__mm_"
     }
   ]
 }

@@ -10,7 +10,7 @@
     }
   },
   "encoding": {
-    "x": {"timeUnit": "year", "field": "date", "type": "temporal"},
+    "x": {"timeUnit": "year", "field": "date"},
     "y": {"aggregate":"mean", "field": "price", "type": "quantitative"},
     "color": {"field": "symbol", "type": "nominal"}
   }

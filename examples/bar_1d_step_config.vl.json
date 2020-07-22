@@ -7,8 +7,7 @@
   "mark": "bar",
   "encoding": {
     "x": {
-      "aggregate": "sum", "field": "people", "type": "quantitative",
-      "axis": {"title": "population"}
+      "aggregate": "sum", "field": "people", "title": "population"
     }
   },
   "config": {"view": {"step": 15}}

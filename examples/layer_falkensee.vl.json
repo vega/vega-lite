@@ -70,7 +70,6 @@
       "encoding": {
         "x": {
           "field": "start",
-          "type": "temporal",
           "timeUnit": "year"
         },
         "x2": {
@@ -85,7 +84,6 @@
       "encoding": {
         "x": {
           "field": "year",
-          "type": "temporal",
           "timeUnit": "year",
           "title": "year (year)"
         },
@@ -98,7 +96,6 @@
       "encoding": {
         "x": {
           "field": "year",
-          "type": "temporal",
           "timeUnit": "year"
         },
         "y": {"field": "population", "type": "quantitative"},

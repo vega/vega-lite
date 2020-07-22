@@ -9,8 +9,7 @@
         "theta": {"field": "data", "type": "quantitative", "stack": true},
         "radius": {
           "field": "data",
-          "type": "quantitative",
-          "scale": {"type": "sqrt", "zero": true, "range": [20, 100]}
+          "scale": {"type": "sqrt", "zero": true, "rangeMin": 20}
         },
         "color": {"field": "data", "type": "nominal", "legend": null}
       }
@@ -21,8 +20,7 @@
         "theta": {"field": "data", "type": "quantitative", "stack": true},
         "radius": {
           "field": "data",
-          "type": "quantitative",
-          "scale": {"type": "sqrt", "zero": true, "range": [20, 100]}
+          "scale": {"type": "sqrt", "zero": true, "rangeMin": 20}
         },
         "color": {"field": "data", "type": "nominal", "legend": null},
         "text": {"field": "data", "type": "quantitative"}

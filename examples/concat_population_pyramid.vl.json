@@ -15,16 +15,16 @@
     "mark": "bar",
     "encoding": {
       "y": {
-        "field": "age", "type": "ordinal",
-        "axis": null, "sort": "descending"
+        "field": "age", "axis": null, "sort": "descending"
       },
       "x": {
-        "aggregate": "sum", "field": "people", "type": "quantitative",
-        "axis": {"title": "population", "format": "s"},
+        "aggregate": "sum", "field": "people",
+        "title": "population",
+        "axis": {"format": "s"},
         "sort": "descending"
       },
       "color": {
-        "field": "gender", "type": "nominal",
+        "field": "gender",
         "scale": {"range": ["#675193", "#ca8861"]},
         "legend": null
       }
@@ -48,15 +48,16 @@
     "mark": "bar",
     "encoding": {
       "y": {
-        "field": "age", "type": "ordinal", "title": null,
+        "field": "age", "title": null,
         "axis": null, "sort": "descending"
       },
       "x": {
-        "aggregate": "sum", "field": "people", "type": "quantitative",
-        "axis": {"title": "population", "format": "s"}
+        "aggregate": "sum", "field": "people",
+        "title": "population",
+        "axis": {"format": "s"}
       },
       "color": {
-        "field": "gender", "type": "nominal",
+        "field": "gender",
         "legend": null
       }
     }

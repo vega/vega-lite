@@ -5,13 +5,9 @@
   "encoding": {
     "x": {
       "bin": true,
-      "field": "IMDB_Rating",
-      "type": "quantitative",
+      "field": "IMDB Rating",
       "scale": {"reverse": true}
     },
-    "y": {
-      "aggregate": "count",
-      "type": "quantitative"
-    }
+    "y": {"aggregate": "count"}
   }
 }

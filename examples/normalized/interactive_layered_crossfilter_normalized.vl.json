@@ -14,12 +14,8 @@
           "selection": {"brush": {"type": "interval", "encodings": ["x"]}},
           "mark": "bar",
           "encoding": {
-            "x": {
-              "field": "distance",
-              "bin": {"maxbins": 20},
-              "type": "quantitative"
-            },
-            "y": {"aggregate": "count", "type": "quantitative"},
+            "x": {"field": "distance", "bin": {"maxbins": 20}},
+            "y": {"aggregate": "count"},
             "color": {"value": "#ddd"}
           }
         },
@@ -27,12 +23,8 @@
           "transform": [{"filter": {"selection": "brush"}}],
           "mark": "bar",
           "encoding": {
-            "x": {
-              "field": "distance",
-              "bin": {"maxbins": 20},
-              "type": "quantitative"
-            },
-            "y": {"aggregate": "count", "type": "quantitative"}
+            "x": {"field": "distance", "bin": {"maxbins": 20}},
+            "y": {"aggregate": "count"}
           }
         }
       ],
@@ -44,12 +36,8 @@
           "selection": {"brush": {"type": "interval", "encodings": ["x"]}},
           "mark": "bar",
           "encoding": {
-            "x": {
-              "field": "delay",
-              "bin": {"maxbins": 20},
-              "type": "quantitative"
-            },
-            "y": {"aggregate": "count", "type": "quantitative"},
+            "x": {"field": "delay", "bin": {"maxbins": 20}},
+            "y": {"aggregate": "count"},
             "color": {"value": "#ddd"}
           }
         },
@@ -57,12 +45,8 @@
           "transform": [{"filter": {"selection": "brush"}}],
           "mark": "bar",
           "encoding": {
-            "x": {
-              "field": "delay",
-              "bin": {"maxbins": 20},
-              "type": "quantitative"
-            },
-            "y": {"aggregate": "count", "type": "quantitative"}
+            "x": {"field": "delay", "bin": {"maxbins": 20}},
+            "y": {"aggregate": "count"}
           }
         }
       ],
@@ -74,12 +58,8 @@
           "selection": {"brush": {"type": "interval", "encodings": ["x"]}},
           "mark": "bar",
           "encoding": {
-            "x": {
-              "field": "time",
-              "bin": {"maxbins": 20},
-              "type": "quantitative"
-            },
-            "y": {"aggregate": "count", "type": "quantitative"},
+            "x": {"field": "time", "bin": {"maxbins": 20}},
+            "y": {"aggregate": "count"},
             "color": {"value": "#ddd"}
           }
         },
@@ -87,12 +67,8 @@
           "transform": [{"filter": {"selection": "brush"}}],
           "mark": "bar",
           "encoding": {
-            "x": {
-              "field": "time",
-              "bin": {"maxbins": 20},
-              "type": "quantitative"
-            },
-            "y": {"aggregate": "count", "type": "quantitative"}
+            "x": {"field": "time", "bin": {"maxbins": 20}},
+            "y": {"aggregate": "count"}
           }
         }
       ],

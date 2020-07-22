@@ -9,18 +9,17 @@
   "mark": "area",
   "encoding": {
     "x": {
-      "axis": { "title": "Date", "format": "%b" },
+      "axis": {"format": "%b"},
+      "title": "Date",
       "field": "date",
-      "timeUnit": "monthdate",
-      "type": "temporal"
+      "timeUnit": "monthdate"
     },
     "y": {
       "title": "Daily Temperature Range (C)",
-      "field": "temp_max",
-      "type": "quantitative",
-      "aggregate": "max"
+      "aggregate": "max",
+      "field": "temp_max"
     },
-    "y2": { "field": "temp_min", "aggregate": "min" },
+    "y2": {"aggregate": "min", "field": "temp_min"},
     "opacity": { "value": 0.7 }
   }
 }

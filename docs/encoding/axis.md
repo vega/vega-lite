@@ -64,7 +64,7 @@ By default, Vega-Lite automatically sets the axis extent (the space axis ticks a
 
 ### Domain
 
-{% include table.html props="domain,domainCap,domainColor,domainOpacity,domainWidth" source="Axis" %}
+{% include table.html props="domain,domainCap,domainColor,domainOpacity,domainWidth,domainDash,domainDashOffset" source="Axis" %}
 
 {:#labels}
 
@@ -164,7 +164,9 @@ Axis configuration defines default settings for axes. Properties defined under t
 
 Additional property blocks can target more specific axis types based on the orientation (`"axisX"`, `"axisY"`, `"axisLeft"`, `"axisTop"`, etc.), band scale type (`"axisBand"`), scale's data type (`"axisDiscrete"`, `"axisQuantitative"`, and `"axisTemporal"`), or both orientation and scale/data type (e.g., `"axisXTemporal"`). For example, properties defined under the `"axisBand"` property will only apply to axes visualizing `"band"` scales.
 
-An axis configuration supports all [axis properties](#properties) except `position`, `orient`, `format`, `values`, and `zindex`.
+An axis configuration supports all [axis properties](#properties) except `position`, `orient`, `format`, `values`, and `zindex`. In addition, it also supports the `disable` property:
+
+{% include table.html props="disable" source="AxisConfig" %}
 
 **Note:**
 

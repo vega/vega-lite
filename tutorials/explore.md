@@ -19,11 +19,11 @@ Let's start by looking at the precipitation. Precipitation is a quantitative var
 
 <div class="vl-example" data-name="tick_dot"></div>
 
-It looks as though precipitation is skewed towards lower values; that is, when it rains, it usually doesn't rain very much. To better see this, we can create a histogram of the precipitation data. For this, we have to add an encoding channel for `y` that uses a special field `*` that is aggregated with `count`. It is difficult to see patterns across continuous variables. You can therefore discretize temperature values by setting `"bin": true`.
+It looks as though precipitation is skewed towards lower values; that is, when it rains, it usually doesn't rain very much. To better see this, we can create a histogram of the precipitation data. For this, we have to add an encoding channel for `y` that shows aggregated `count`. As it is difficult to see patterns across continuous variables, you can discretize temperature values by setting `"bin": true`. Note that aggregate and binned fields are quantitative by default, thus we don't have to explicitly specify "type".
 
 <div class="vl-example" data-name="bar_aggregate_count"></div>
 
-Next, let's look at how precipitation in Seattle changes throughout the year. Vega-Lite natively supports dates and discretization of dates when we set the type to `temporal`. For example, in the following plot, we sum up the precipitation for each month. To discretize the data into months, we set `"timeUnit": "month"`.
+Next, let's look at how precipitation in Seattle changes throughout the year. Vega-Lite natively supports dates and discretization of dates. In the following plot, we sum up the precipitation for each month by discretizing the data into months with `"timeUnit": "month"`.
 
 <div class="vl-example" data-name="line_mean_month"></div>
 

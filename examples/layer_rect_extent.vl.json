@@ -6,22 +6,22 @@
     "mark": "point",
     "encoding": {
       "x": {"field": "Horsepower", "type": "quantitative"},
-      "y": {"field": "Miles_per_Gallon", "type": "quantitative", "axis": {"title": "Miles per Gallon"}}
+      "y": {"field": "Miles_per_Gallon", "type": "quantitative", "title": "Miles per Gallon"}
     }
   },{
     "mark": "rule",
     "encoding": {
-      "y": {"aggregate": "min", "field": "Miles_per_Gallon", "type": "quantitative"}
+      "y": {"aggregate": "min", "field": "Miles_per_Gallon"}
     }
   },{
     "mark": "rule",
     "encoding": {
-      "y": {"aggregate": "max", "field": "Miles_per_Gallon", "type": "quantitative"}
+      "y": {"aggregate": "max", "field": "Miles_per_Gallon"}
     }
   },{
     "mark": "rect",
     "encoding": {
-      "y": {"aggregate": "max", "field": "Miles_per_Gallon", "type": "quantitative"},
+      "y": {"aggregate": "max", "field": "Miles_per_Gallon"},
       "y2": {"aggregate": "min", "field": "Miles_per_Gallon"},
       "opacity": {"value": 0.2}
     }

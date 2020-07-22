@@ -16,7 +16,7 @@
   "mark": "circle",
   "encoding": {
     "x": {"field": "data", "type": "ordinal"},
-    "y": {"aggregate": "count", "type": "quantitative", "stack": true, "band": 0.5},
-    "detail": {"field": "id", "type": "ordinal"}
+    "y": {"aggregate": "count", "stack": true, "band": 0.5},
+    "detail": {"field": "id"}
   }
 }

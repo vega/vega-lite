@@ -9,13 +9,11 @@
     "encoding": {
       "x": {
         "bin": true,
-        "field": "IMDB_Rating",
-        "type": "quantitative",
+        "field": "IMDB Rating",
         "axis": null
       },
       "y": {
         "aggregate": "count",
-        "type": "quantitative",
         "scale": {
           "domain": [0,1000]
         },
@@ -28,20 +26,9 @@
     "hconcat": [{
       "mark": "rect",
       "encoding": {
-        "x": {
-          "bin": true,
-          "field": "IMDB_Rating",
-          "type": "quantitative"
-        },
-        "y": {
-          "bin": true,
-          "field": "Rotten_Tomatoes_Rating",
-          "type": "quantitative"
-        },
-        "color": {
-          "aggregate": "count",
-          "type": "quantitative"
-        }
+        "x": {"bin": true, "field": "IMDB Rating"},
+        "y": {"bin": true, "field": "Rotten Tomatoes Rating"},
+        "color": {"aggregate": "count"}
       }
     }, {
       "mark": "bar",
@@ -49,16 +36,12 @@
       "encoding": {
         "y": {
           "bin": true,
-          "field": "Rotten_Tomatoes_Rating",
-          "type": "quantitative",
+          "field": "Rotten Tomatoes Rating",
           "axis": null
         },
         "x": {
           "aggregate": "count",
-          "type": "quantitative",
-          "scale": {
-            "domain": [0,1000]
-          },
+          "scale": {"domain": [0,1000]},
           "title": ""
         }
       }

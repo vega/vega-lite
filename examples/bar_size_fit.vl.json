@@ -5,13 +5,7 @@
   "data": {"url": "data/cars.json"},
   "mark": "bar",
   "encoding": {
-    "x": {
-      "field": "Origin",
-      "type": "nominal"
-    },
-    "y": {
-      "aggregate": "count",
-      "type": "quantitative"
-    }
+    "x": {"field": "Origin"},
+    "y": {"aggregate": "count"}
   }
 }

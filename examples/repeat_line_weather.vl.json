@@ -12,22 +12,12 @@
   "spec": {
     "mark": "line",
     "encoding": {
-      "x": {
-        "field": "date",
-        "timeUnit": "month",
-        "type": "temporal"
-      },
+      "x": {"field": "date", "timeUnit": "month"},
       "y": {
-        "field": {
-          "repeat": "repeat"
-        },
-        "type": "quantitative",
+        "field": {"repeat": "repeat"},
         "aggregate": "mean"
       },
-      "color": {
-        "field": "location",
-        "type": "nominal"
-      }
+      "color": {"field": "location"}
     }
   }
 }

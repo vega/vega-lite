@@ -8,8 +8,9 @@
   "encoding": {
     "y": {"field": "age", "type": "ordinal"},
     "x": {
-      "aggregate": "sum", "field": "people", "type": "quantitative",
-      "axis": {"title": "population", "format": ".2e"}
+      "aggregate": "sum", "field": "people",
+      "title": "population",
+      "axis": {"format": ".2e"}
     }
   }
 }

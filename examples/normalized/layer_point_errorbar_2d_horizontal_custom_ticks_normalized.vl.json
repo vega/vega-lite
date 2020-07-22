@@ -25,9 +25,9 @@
           "mark": {
             "type": "tick",
             "orient": "vertical",
+            "aria": false,
             "style": "errorbar-ticks",
-            "color": "teal",
-            "aria": false
+            "color": "teal"
           },
           "encoding": {
             "x": {
@@ -61,9 +61,9 @@
           "mark": {
             "type": "tick",
             "orient": "vertical",
+            "aria": false,
             "style": "errorbar-ticks",
-            "color": "teal",
-            "aria": false
+            "color": "teal"
           },
           "encoding": {
             "x": {

@@ -6,12 +6,12 @@
   },
   "mark": "rect",
   "encoding": {
-    "y": {"field": "Origin", "type": "ordinal"},
-    "x": {"field": "Cylinders", "type": "ordinal"},
+    "y": {"field": "Origin"},
+    "x": {"field": "Cylinders"},
     "color": {
       "condition": {
         "selection": "pts",
-        "aggregate": "count", "type": "quantitative"
+        "aggregate": "count"
       },
       "value": "grey"
     }

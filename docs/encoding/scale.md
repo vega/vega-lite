@@ -75,7 +75,7 @@ bar, image, rect, and rule marks while `"point"` is the default scales for all o
 
 By default, a scale in Vega-Lite draws domain values directly from a channel's encoded field. Users can specify the `domain` property of a scale to customize its domain values. To sort the order of the domain of the encoded, the [`sort`](sort.html) property of a [field definition](encoding.html#field-def) can be specified.
 
-{% include table.html props="domain,domainMid" source="Scale" %}
+{% include table.html props="domain,domainMax,domainMin,domainMid" source="Scale" %}
 
 A common use case for the `domain` property is to limit, for example, the `x` range of values to include in a plot. However, setting the domain property alone is insufficient to achieve the desired effect.
 
@@ -123,7 +123,25 @@ The range of the scale represents the set of output visual values. Vega-Lite aut
 
 To customize range values, users can directly specify `range` or specify the special [`scheme`](#scheme) property for [ordinal](#ordinal) and [continuous](#continuous) color scales.
 
-{% include table.html props="range" source="Scale" %}
+{% include table.html props="range,rangeMin,rangeMax" source="Scale" %}
+
+### Example: Setting Color Range based on a Field
+
+In this example, we create a scale that maps the field `"l"` to colors specified in the field `"c"`:
+
+<div class="vl-example" data-name="point_scale_range_field"></div>
+
+**Note:** This only works if there is a 1:1 mapping between the color domain field (`l`) and therange field (`c`).
+
+### Example: Setting Range Min/Max
+
+We may use `rangeMin` if we want to override just the minimum value of the range, while keeping the default maximum value of the range.
+
+<div class="vl-example" data-name="arc_radial"></div>
+
+Similarly, we may use `rangeMax` if we want to override just the maximum value of the range, while keeping the default minimum value of the range.
+
+<div class="vl-example" data-name="circle_natural_disasters"></div>
 
 {:#scheme}
 
@@ -149,11 +167,11 @@ By default, Vega-Lite assigns different [default color schemes](#range-config) b
 
 There are multiple ways to customize the scale range for the color encoding channel:
 
-1. Set a custom `scheme`.
+#### 1. Set a custom `scheme`.
 
 {% include table.html props="scheme" source="Scale" %}
 
-For example, the following plot use the `"category20b"` scheme.
+You can customize the scheme by referencing an [existing color scheme](https://vega.github.io/vega/docs/schemes/). For example, the following plot uses the `"category20b"` scheme.
 
 <div class="vl-example" data-name="stacked_area"></div>
 
@@ -163,11 +181,13 @@ The `scheme` property can also be a **scheme parameter object**, which contain t
 
 {% include table.html props="name,extent,count" source="SchemeParams" %}
 
-2. Setting the `range` property to an array of valid CSS color strings.
+#### 2. Setting the `range` property to an array of valid CSS color strings.
 
 <div class="vl-example" data-name="point_color_custom"></div>
 
-3. Change the default color schemes using the [range config](#range-config).
+#### 3. Change the default color schemes using the range config.
+
+See the [range config](#range-config) documentation for details.
 
 {:#continuous}
 

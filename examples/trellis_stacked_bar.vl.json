@@ -3,7 +3,7 @@
   "data": {"url": "data/barley.json"},
   "mark": "bar",
   "encoding": {
-    "column": {"field": "year", "type": "ordinal"},
+    "column": {"field": "year"},
     "x": {"field": "yield", "type": "quantitative", "aggregate": "sum"},
     "y": {"field": "variety", "type": "nominal"},
     "color": {"field": "site", "type": "nominal"}

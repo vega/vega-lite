@@ -6,12 +6,12 @@
   "mark": "area",
   "encoding": {
     "x": {
-      "timeUnit": "yearmonth", "field": "date", "type": "temporal",
+      "timeUnit": "yearmonth", "field": "date",
       "axis": {"format": "%Y"}
     },
     "y": {
-      "aggregate": "sum", "field": "count", "type": "quantitative",
-      "axis": {"title": "count"}
+      "aggregate": "sum", "field": "count",
+      "title": "count"
     }
   }
 }

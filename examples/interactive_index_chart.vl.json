@@ -53,7 +53,7 @@
         {
           "mark": {"type": "text", "align": "center", "fontWeight": 100},
           "encoding": {
-            "text": {"field": "date", "type": "temporal", "timeUnit": "yearmonth"},
+            "text": {"field": "date", "timeUnit": "yearmonth"},
             "y": {"value": 310}
           }
         }

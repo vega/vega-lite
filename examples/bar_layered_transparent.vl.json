@@ -11,12 +11,12 @@
   "encoding": {
     "x": {"field": "age", "type": "ordinal"},
     "y": {
-      "aggregate": "sum", "field": "people", "type": "quantitative",
-      "axis": {"title": "population"},
+      "aggregate": "sum", "field": "people",
+      "title": "population",
       "stack": null
     },
     "color": {
-      "field": "gender", "type": "nominal",
+      "field": "gender",
       "scale": {"range": ["#675193", "#ca8861"]}
     },
     "opacity": {"value": 0.7}

@@ -5,17 +5,12 @@
   "encoding": {
     "x": {
       "bin": {"maxbins": 10},
-      "field": "IMDB_Rating",
-      "type": "quantitative"
+      "field": "IMDB Rating"
     },
     "y": {
       "bin": {"maxbins": 10},
-      "field": "Rotten_Tomatoes_Rating",
-      "type": "quantitative"
+      "field": "Rotten Tomatoes Rating"
     },
-    "size": {
-      "aggregate": "count",
-      "type": "quantitative"
-    }
+    "size": {"aggregate": "count"}
   }
 }

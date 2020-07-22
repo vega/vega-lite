@@ -6,8 +6,8 @@
     "interpolate": "monotone"
   },
   "encoding": {
-    "x": {"timeUnit": "year", "field": "Year", "type": "temporal"},
-    "y": {"aggregate": "sum", "field": "Weight_in_lbs", "type": "quantitative"},
+    "x": {"timeUnit": "year", "field": "Year"},
+    "y": {"aggregate": "sum", "field": "Weight_in_lbs"},
     "color": {"field": "Cylinders", "type": "ordinal"}
   }
 }

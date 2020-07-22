@@ -6,7 +6,7 @@
   "mark": "bar",
   "transform": [
     {
-      "aggregate": [{"op": "mean", "field": "Worldwide_Gross", "as": "aggregate_gross"}],
+      "aggregate": [{"op": "mean", "field": "Worldwide Gross", "as": "aggregate_gross"}],
       "groupby": ["Director"]
     },
     {

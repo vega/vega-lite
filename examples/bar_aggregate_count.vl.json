@@ -3,14 +3,7 @@
   "data": {"url": "data/seattle-weather.csv"},
   "mark": "bar",
   "encoding": {
-    "x": {
-      "bin": true,
-      "field": "precipitation",
-      "type": "quantitative"
-      },
-    "y": {
-      "aggregate": "count",
-      "type": "quantitative"
-    }
+    "x": {"bin": true, "field": "precipitation"},
+    "y": {"aggregate": "count"}
   }
 }

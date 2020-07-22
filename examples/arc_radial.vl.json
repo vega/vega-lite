@@ -14,7 +14,7 @@
   }],
   "encoding": {
     "theta": {"field": "data", "type": "quantitative", "stack": true},
-    "radius": {"field": "data", "type": "quantitative", "scale": {"type": "sqrt", "zero": true, "range": [20, 100]}},
+    "radius": {"field": "data", "scale": {"type": "sqrt", "zero": true, "rangeMin": 20}},
     "color": {"field": "data", "type": "nominal", "legend": null}
   },
   "view": {"stroke": null}

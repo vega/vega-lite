@@ -1,33 +1,22 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "data": {"url": "data/movies.json"},
+  "title": "Distribution of Body Mass of Penguins",
   "width": 400,
-  "height": 100,
-  "transform":[
+  "height": 80,
+  "data": {
+    "url": "data/penguins.json"
+  },
+  "mark": "area",
+  "transform": [
     {
-      "density": "IMDB_Rating",
-      "bandwidth": 0.3,
-      "groupby": ["Major_Genre"],
-      "extent": [0, 10],
-      "counts": true,
-      "steps": 50
+      "density": "Body Mass (g)",
+      "groupby": ["Species"],
+      "extent": [2500, 6500]
     }
   ],
-  "mark": "area",
   "encoding": {
-    "x": {
-      "field": "value",
-      "type": "quantitative"
-    },
-    "y": {
-      "field": "density",
-      "type": "quantitative",
-      "stack": true
-    },
-    "color": {
-      "field": "Major_Genre",
-      "type": "nominal",
-      "scale": {"scheme": "category20"}
-    }
+    "x": {"field": "value", "type": "quantitative", "title": "Body Mass (g)"},
+    "y": {"field": "density", "type": "quantitative", "stack": "zero"},
+    "color": {"field": "Species", "type": "nominal"}
   }
 }

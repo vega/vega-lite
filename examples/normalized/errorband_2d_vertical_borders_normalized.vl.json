@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/cars.json"},
   "transform": [
-    {"timeUnit": "year", "field": "Year", "as": "year_Year"},
+    {"timeUnit": {"unit": "year"}, "field": "Year", "as": "year_Year"},
     {
       "aggregate": [
         {
@@ -62,7 +62,7 @@
       }
     },
     {
-      "mark": {"type": "line", "style": "errorband-borders", "aria": false},
+      "mark": {"type": "line", "aria": false, "style": "errorband-borders"},
       "encoding": {
         "y": {
           "field": "lower_Miles_per_Gallon",
@@ -92,7 +92,7 @@
       }
     },
     {
-      "mark": {"type": "line", "style": "errorband-borders", "aria": false},
+      "mark": {"type": "line", "aria": false, "style": "errorband-borders"},
       "encoding": {
         "y": {
           "field": "upper_Miles_per_Gallon",

@@ -201,6 +201,11 @@
         "grid": true,
         "title": null
       }
+    },
+    "x": {
+      "type": "quantitative",
+      "scale": {"domain": [0, 6]},
+      "axis": {"grid": false, "values": [1, 2, 3, 4, 5], "title": null}
     }
   },
   "view": {"stroke": null},
@@ -214,16 +219,12 @@
         {"filter": "datum.name != 'Participant ID'"}
       ],
       "encoding": {
-        "x": {
-          "field": "value",
-          "type": "quantitative",
-          "scale": {"domain": [0, 6]},
-          "axis": {"grid": false, "values": [1, 2, 3, 4, 5]}
-        },
+        "x": {"field": "value"},
         "size": {
           "aggregate": "count",
           "type": "quantitative",
-          "legend": {"title": "Number of Ratings", "offset": 75}
+          "title": "Number of Ratings",
+          "legend": {"offset": 75}
         },
         "color": {"value": "#6EB4FD"}
       }
@@ -231,24 +232,20 @@
     {
       "mark": "tick",
       "encoding": {
-        "x": {
-          "field": "median",
-          "type": "quantitative",
-          "axis": {"title": null}
-        },
+        "x": {"field": "median"},
         "color": {"value": "black"}
       }
     },
     {
       "mark": {"type": "text", "x": -5, "align": "right"},
       "encoding": {
-        "text": {"field": "lo", "type": "nominal"}
+        "text": {"field": "lo"}
       }
     },
     {
       "mark": {"type": "text", "x": 255, "align": "left"},
       "encoding": {
-        "text": {"field": "hi", "type": "nominal"}
+        "text": {"field": "hi"}
       }
     }
   ]

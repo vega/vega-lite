@@ -15,11 +15,7 @@
           "scale": {"zero": false},
           "title": "Miles per Gallon (95% CIs)"
         },
-        "x": {
-          "field": "Year",
-          "type": "temporal",
-          "timeUnit": "year"
-        },
+        "x": {"timeUnit": "year", "field": "Year"},
         "color": {"value": "black"}
       }
     }

@@ -78,7 +78,8 @@
         "name": "bar_negative",
         "title": "Bar Chart with negative values and a zero-baseline"
       },
-      { "name": "bar_axis_space_saving",
+      {
+        "name": "bar_axis_space_saving",
         "title": "Bar Chart with a spacing-saving y-axis"
       }
     ],
@@ -470,7 +471,7 @@
       }
     ]
   },
-  "Composite Mark": {
+  "Composite Marks": {
     "Error Bars & Error Bands": [
       {
         "name": "layer_point_errorbar_ci",
@@ -497,6 +498,10 @@
       {
         "name": "boxplot_2D_vertical",
         "title": "Tukey Box Plot (1.5 IQR)"
+      },
+      {
+        "name": "boxplot_preaggregated",
+        "title": "Box Plot with Pre-Calculated Summaries"
       }
     ]
   },

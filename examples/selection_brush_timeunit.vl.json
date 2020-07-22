@@ -15,11 +15,7 @@
       "brush": {"type": "interval", "encodings": ["x"]}
     },
     "encoding": {
-      "x": {
-        "field": "date",
-        "type": "temporal",
-        "timeUnit": "seconds"
-      },
+      "x": {"field": "date", "timeUnit": "seconds"},
       "y": {"field": "price", "type": "quantitative"},
       "color": {
         "condition": {"selection": "brush", "value": "goldenrod"},
@@ -30,15 +26,9 @@
     "transform": [{"filter": {"selection": "brush"}}],
     "mark": "point",
     "encoding": {
-      "x": {
-        "field": "date",
-        "type": "temporal",
-        "timeUnit": "minutes"
-      },
+      "x": {"field": "date", "timeUnit": "minutes"},
       "y": {"field": "price", "type": "quantitative"},
-      "color": {
-        "value": "goldenrod"
-      }
+      "color": {"value": "goldenrod"}
     }
   }]
 }

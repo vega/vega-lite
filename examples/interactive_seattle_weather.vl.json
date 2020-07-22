@@ -9,14 +9,14 @@
       "encoding": {
         "color": {
           "condition": {
+            "selection": "brush",
             "title": "Weather",
             "field": "weather",
+            "type": "nominal",
             "scale": {
               "domain": ["sun", "fog", "drizzle", "rain", "snow"],
               "range": ["#e7ba52", "#a7a7a7", "#aec7e8", "#1f77b4", "#9467bd"]
-            },
-            "selection": "brush",
-            "type": "nominal"
+            }
           },
           "value": "lightgray"
         },
@@ -27,13 +27,13 @@
           "type": "quantitative"
         },
         "x": {
-          "axis": {"title": "Date", "format": "%b"},
           "field": "date",
           "timeUnit": "monthdate",
-          "type": "temporal"
+          "title": "Date",
+          "axis": {"format": "%b"}
         },
         "y": {
-          "axis": {"title": "Maximum Daily Temperature (C)"},
+          "title": "Maximum Daily Temperature (C)",
           "field": "temp_max",
           "scale": {"domain": [-5, 40]},
           "type": "quantitative"
@@ -49,18 +49,17 @@
       "encoding": {
         "color": {
           "condition": {
+            "selection": "click",
             "field": "weather",
             "scale": {
               "domain": ["sun", "fog", "drizzle", "rain", "snow"],
               "range": ["#e7ba52", "#a7a7a7", "#aec7e8", "#1f77b4", "#9467bd"]
-            },
-            "selection": "click",
-            "type": "nominal"
+            }
           },
           "value": "lightgray"
         },
-        "x": {"aggregate": "count", "type": "quantitative"},
-        "y": {"title": "Weather", "field": "weather", "type": "nominal"}
+        "x": {"aggregate": "count"},
+        "y": {"title": "Weather", "field": "weather"}
       },
       "width": 600,
       "mark": "bar",

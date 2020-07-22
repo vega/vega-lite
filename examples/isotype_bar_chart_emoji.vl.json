@@ -55,7 +55,7 @@
   "encoding": {
     "x": {"field": "rank", "type": "ordinal", "axis": null},
     "y": {"field": "animal", "type": "nominal", "axis": null, "sort": null},
-    "row": {"field": "country", "type": "nominal", "header": {"title": ""}},
+    "row": {"field": "country", "header": {"title": ""}},
     "text": {"field": "emoji", "type": "nominal"},
     "size": {"value": 65}
   }

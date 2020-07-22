@@ -4,7 +4,7 @@
   "layer": [
     {
       "transform": [
-        {"timeUnit": "year", "field": "Year", "as": "year_Year"},
+        {"timeUnit": {"unit": "year"}, "field": "Year", "as": "year_Year"},
         {
           "aggregate": [
             {
@@ -71,12 +71,8 @@
     {
       "mark": "line",
       "encoding": {
-        "x": {"field": "Year", "type": "temporal", "timeUnit": "year"},
-        "y": {
-          "aggregate": "mean",
-          "field": "Miles_per_Gallon",
-          "type": "quantitative"
-        }
+        "x": {"field": "Year", "timeUnit": "year"},
+        "y": {"aggregate": "mean", "field": "Miles_per_Gallon"}
       }
     }
   ]

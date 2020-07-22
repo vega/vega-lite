@@ -5,7 +5,7 @@
   "data": {"url": "data/movies.json"},
   "encoding": {
     "y": {
-      "field": "Major_Genre",
+      "field": "Major Genre",
       "type": "nominal",
       "axis": null
     }
@@ -15,8 +15,7 @@
     "encoding": {
       "x": {
         "aggregate": "mean",
-        "field": "IMDB_Rating",
-        "type": "quantitative",
+        "field": "IMDB Rating",
         "scale": {"domain": [0, 10]},
         "title": "Mean IMDB Ratings"
       }
@@ -24,11 +23,8 @@
   }, {
     "mark": {"type": "text", "align": "left", "x": 5},
     "encoding": {
-      "text": {
-        "field": "Major_Genre",
-        "type": "nominal"
-      },
-      "detail": {"aggregate": "count", "type": "quantitative"}
+      "text": {"field": "Major Genre"},
+      "detail": {"aggregate": "count"}
     }
   }]
 }

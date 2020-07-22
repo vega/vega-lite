@@ -54,11 +54,7 @@
           "encoding": {
             "x": {"field": "date", "type": "temporal", "axis": null},
             "color": {"value": "firebrick"},
-            "text": {
-              "field": "date",
-              "type": "temporal",
-              "timeUnit": "yearmonth"
-            },
+            "text": {"field": "date", "timeUnit": "yearmonth"},
             "y": {"value": 310}
           }
         }

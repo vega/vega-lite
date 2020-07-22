@@ -22,6 +22,11 @@
         "titlePadding": 25,
         "orient": "top"
       }
+    },
+    "y": {
+      "type": "quantitative",
+      "scale": {"domain": [10, 70]},
+      "axis": {"title": "Temperature (F)"}
     }
   },
   "layer": [
@@ -31,12 +36,7 @@
         "style": "box"
       },
       "encoding": {
-        "y": {
-          "field": "record.low",
-          "type": "quantitative",
-          "scale": {"domain": [10, 70]},
-          "axis": {"title": "Temperature (F)"}
-        },
+        "y": {"field": "record.low"},
         "y2": {"field": "record.high"},
         "size": {"value": 20},
         "color": {"value": "#ccc"}
@@ -48,10 +48,7 @@
         "style": "box"
       },
       "encoding": {
-        "y": {
-          "field": "normal.low",
-          "type": "quantitative"
-        },
+        "y": {"field": "normal.low"},
         "y2": {"field": "normal.high"},
         "size": {"value": 20},
         "color": {"value": "#999"}
@@ -60,10 +57,7 @@
     {
       "mark": {"type": "bar", "style": "box"},
       "encoding": {
-        "y": {
-          "field": "actual.low",
-          "type": "quantitative"
-        },
+        "y": {"field": "actual.low"},
         "y2": {"field": "actual.high"},
         "size": {"value": 12},
         "color": {"value": "#000"}
@@ -72,10 +66,7 @@
     {
       "mark": {"type": "bar", "style": "box"},
       "encoding": {
-        "y": {
-          "field": "forecast.low.low",
-          "type": "quantitative"
-        },
+        "y": {"field": "forecast.low.low"},
         "y2": {"field": "forecast.low.high"},
         "size": {"value": 12},
         "color": {"value": "#000"}
@@ -84,10 +75,7 @@
     {
       "mark": {"type": "bar", "style": "box"},
       "encoding": {
-        "y": {
-          "field": "forecast.low.high",
-          "type": "quantitative"
-        },
+        "y": {"field": "forecast.low.high"},
         "y2": {"field": "forecast.high.low"},
         "size": {"value": 3},
         "color": {"value": "#000"}
@@ -96,10 +84,7 @@
     {
       "mark": {"type": "bar", "style": "box"},
       "encoding": {
-        "y": {
-          "field": "forecast.high.low",
-          "type": "quantitative"
-        },
+        "y": {"field": "forecast.high.low"},
         "y2": {"field": "forecast.high.high"},
         "size": {"value": 12},
         "color": {"value": "#000"}
@@ -108,10 +93,7 @@
     {
       "mark": {"type": "text", "align": "center", "baseline": "bottom", "y": -5},
       "encoding": {
-        "text": {
-          "field": "day",
-          "type": "nominal"
-        }
+        "text": {"field": "day"}
       }
     }
   ]

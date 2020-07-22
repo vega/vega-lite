@@ -4,7 +4,6 @@
   "encoding": {
     "x": {
       "field": "Year",
-      "type": "temporal",
       "timeUnit": "year"
     }
   },
@@ -24,8 +23,7 @@
       "encoding": {
         "y": {
           "aggregate": "mean",
-          "field": "Miles_per_Gallon",
-          "type": "quantitative"
+          "field": "Miles_per_Gallon"
         }
       }
     }

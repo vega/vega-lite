@@ -12,15 +12,16 @@
       "field": "age", "type": "ordinal", "spacing": 10
     },
     "y": {
-      "aggregate": "sum", "field": "people", "type": "quantitative",
-      "axis": {"title": "population", "grid": false}
+      "aggregate": "sum", "field": "people",
+      "title": "population",
+      "axis": {"grid": false}
     },
     "x": {
-      "field": "gender", "type": "nominal",
+      "field": "gender",
       "axis": {"title": ""}
     },
     "color": {
-      "field": "gender", "type": "nominal",
+      "field": "gender",
       "scale": {"range": ["#675193", "#ca8861"]}
     }
   },

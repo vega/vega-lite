@@ -5,30 +5,30 @@
     "url": "data/movies.json"
   },
   "transform": [
-    {"filter": "datum.IMDB_Rating != null"},
-    {"filter": {"timeUnit": "year", "field": "Release_Date", "range": [null, 2019]}},
+    {"filter": "datum['IMDB Rating'] != null"},
+    {"filter": {"timeUnit": "year", "field": "Release Date", "range": [null, 2019]}},
     {
       "joinaggregate": [{
         "op": "mean",
-        "field": "IMDB_Rating",
+        "field": "IMDB Rating",
         "as": "AverageRating"
       }]
     },
     {
-      "calculate": "datum.IMDB_Rating - datum.AverageRating",
+      "calculate": "datum['IMDB Rating'] - datum.AverageRating",
       "as": "RatingDelta"
     }
   ],
   "mark": "point",
   "encoding": {
     "x": {
-      "field": "Release_Date",
+      "field": "Release Date",
       "type": "temporal"
     },
     "y": {
       "field": "RatingDelta",
       "type": "quantitative",
-      "axis": {"title": "Rating Delta"}
+      "title": "Rating Delta"
     },
     "color": {
       "field": "RatingDelta",

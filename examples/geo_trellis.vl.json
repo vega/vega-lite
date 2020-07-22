@@ -26,6 +26,6 @@
   "encoding": {
     "shape": {"field": "geo", "type": "geojson"},
     "color": {"field": "pct", "type": "quantitative"},
-    "row": {"field": "group", "type": "nominal"}
+    "row": {"field": "group"}
   }
 }

@@ -17,7 +17,7 @@
       "aggregate": "sum",
       "field": "people",
       "type": "quantitative",
-      "axis": {"title": "population"}
+      "title": "population"
     },
     "opacity": {"field": "people", "type": "quantitative"}
   }

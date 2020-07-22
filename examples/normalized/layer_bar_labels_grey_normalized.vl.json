@@ -7,11 +7,10 @@
     {
       "mark": {"type": "bar", "color": "#ddd"},
       "encoding": {
-        "y": {"field": "Major_Genre", "type": "nominal", "axis": null},
+        "y": {"field": "Major Genre", "type": "nominal", "axis": null},
         "x": {
           "aggregate": "mean",
-          "field": "IMDB_Rating",
-          "type": "quantitative",
+          "field": "IMDB Rating",
           "scale": {"domain": [0, 10]},
           "title": "Mean IMDB Ratings"
         }
@@ -20,9 +19,9 @@
     {
       "mark": {"type": "text", "align": "left", "x": 5},
       "encoding": {
-        "y": {"field": "Major_Genre", "type": "nominal", "axis": null},
-        "text": {"field": "Major_Genre", "type": "nominal"},
-        "detail": {"aggregate": "count", "type": "quantitative"}
+        "y": {"field": "Major Genre", "type": "nominal", "axis": null},
+        "text": {"field": "Major Genre"},
+        "detail": {"aggregate": "count"}
       }
     }
   ]

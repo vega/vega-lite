@@ -7,12 +7,8 @@
   "encoding": {
     "x": {
       "field": "Name",
-      "type": "nominal",
       "scale": {"round": false}
     },
-    "y": {
-      "aggregate": "count",
-      "type": "quantitative"
-    }
+    "y": {"aggregate": "count"}
   }
 }

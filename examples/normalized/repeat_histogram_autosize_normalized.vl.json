@@ -8,16 +8,16 @@
     {
       "mark": "bar",
       "encoding": {
-        "x": {"field": "Horsepower", "bin": true, "type": "quantitative"},
-        "y": {"aggregate": "count", "type": "quantitative"}
+        "x": {"field": "Horsepower", "bin": true},
+        "y": {"aggregate": "count"}
       },
       "name": "child__Horsepower"
     },
     {
       "mark": "bar",
       "encoding": {
-        "x": {"field": "Miles_per_Gallon", "bin": true, "type": "quantitative"},
-        "y": {"aggregate": "count", "type": "quantitative"}
+        "x": {"field": "Miles_per_Gallon", "bin": true},
+        "y": {"aggregate": "count"}
       },
       "name": "child__Miles_per_Gallon"
     }

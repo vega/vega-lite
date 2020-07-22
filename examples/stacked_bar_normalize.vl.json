@@ -9,13 +9,13 @@
   "width": {"step": 17},
   "encoding": {
     "y": {
-      "aggregate": "sum", "field": "people", "type": "quantitative",
-      "axis": {"title": "population"},
+      "aggregate": "sum", "field": "people",
+      "title": "population",
       "stack":  "normalize"
     },
-    "x": {"field": "age", "type": "ordinal"},
+    "x": {"field": "age"},
     "color": {
-      "field": "gender", "type": "nominal",
+      "field": "gender",
       "scale": {"range": ["#675193", "#ca8861"]}
     }
   }

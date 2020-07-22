@@ -6,16 +6,16 @@
       "selection": {"brush": {"type": "interval", "encodings": ["x"]}},
       "mark": "area",
       "encoding": {
-        "x": {"timeUnit": "yearmonth", "field": "date", "type": "temporal"},
-        "y": {"aggregate": "sum", "field": "count", "type": "quantitative"}
+        "x": {"timeUnit": "yearmonth", "field": "date"},
+        "y": {"aggregate": "sum", "field": "count"}
       }
     },
     {
       "transform": [{"filter": {"selection": "brush"}}],
       "mark": {"type": "area", "color": "goldenrod"},
       "encoding": {
-        "x": {"timeUnit": "yearmonth", "field": "date", "type": "temporal"},
-        "y": {"aggregate": "sum", "field": "count", "type": "quantitative"}
+        "x": {"timeUnit": "yearmonth", "field": "date"},
+        "y": {"aggregate": "sum", "field": "count"}
       }
     }
   ]

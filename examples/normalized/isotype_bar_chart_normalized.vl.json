@@ -42,9 +42,7 @@
       {"country": "United States", "animal": "sheep", "col": 1}
     ]
   },
-  "facet": {
-    "row": {"field": "country", "type": "nominal", "header": {"title": ""}}
-  },
+  "facet": {"row": {"field": "country", "header": {"title": ""}}},
   "spec": {
     "width": 800,
     "height": 200,

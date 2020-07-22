@@ -9,20 +9,15 @@
         "encoding": {
           "x": {
             "bin": {"maxbins": 10},
-            "field": "IMDB_Rating",
-            "type": "quantitative"
+            "field": "IMDB Rating"
           },
           "y": {
             "bin": {"maxbins": 10},
-            "field": "Rotten_Tomatoes_Rating",
-            "type": "quantitative"
+            "field": "Rotten Tomatoes Rating"
           },
           "size": {
             "aggregate": "count",
-            "type": "quantitative",
-            "legend": {
-              "title": "All Movies"
-            }
+            "title": "All Movies Count"
           },
           "opacity": {"value": 0.4}
         }
@@ -34,20 +29,15 @@
         "encoding": {
           "x": {
             "bin": {"maxbins": 10},
-            "field": "IMDB_Rating",
-            "type": "quantitative"
+            "field": "IMDB Rating"
           },
           "y": {
             "bin": {"maxbins": 10},
-            "field": "Rotten_Tomatoes_Rating",
-            "type": "quantitative"
+            "field": "Rotten Tomatoes Rating"
           },
           "size": {
             "aggregate": "count",
-            "type": "quantitative",
-            "legend": {
-              "title": "In Selected Category"
-            }
+            "title": "Selected Category Count"
           }
         }
       }],
@@ -60,8 +50,8 @@
         "pts": {"type": "single", "encodings": ["x"]}
       },
       "encoding": {
-        "x": {"field": "Major_Genre", "type": "nominal", "axis": {"labelAngle": -40}},
-        "y": {"aggregate": "count", "type": "quantitative"},
+        "x": {"field": "Major Genre", "axis": {"labelAngle": -40}},
+        "y": {"aggregate": "count"},
         "color": {
           "condition": {
             "selection": "pts",

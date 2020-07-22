@@ -52,7 +52,6 @@
               }
             },
             "x": {
-              "field": "lo",
               "type": "quantitative",
               "scale": {"domain": [-3, 3]},
               "axis": {
@@ -62,7 +61,8 @@
                   "condition": {"test": "datum.value === 0", "value": "#666"},
                   "value": "#CCC"
                 }
-              }
+              },
+              "field": "lo"
             },
             "x2": {"field": "hi"}
           }
@@ -81,7 +81,19 @@
                 "grid": false
               }
             },
-            "x": {"field": "mean", "type": "quantitative"},
+            "x": {
+              "type": "quantitative",
+              "scale": {"domain": [-3, 3]},
+              "axis": {
+                "title": "",
+                "gridDash": [3, 3],
+                "gridColor": {
+                  "condition": {"test": "datum.value === 0", "value": "#666"},
+                  "value": "#CCC"
+                }
+              },
+              "field": "mean"
+            },
             "color": {
               "field": "measure",
               "type": "nominal",
@@ -104,10 +116,10 @@
           "mark": "rule",
           "encoding": {
             "x": {
-              "field": "from",
               "type": "quantitative",
               "scale": {"zero": false},
-              "axis": null
+              "axis": null,
+              "field": "from"
             },
             "x2": {"field": "to"}
           }
@@ -120,7 +132,12 @@
             "fill": "black"
           },
           "encoding": {
-            "x": {"field": "to", "type": "quantitative", "axis": null},
+            "x": {
+              "type": "quantitative",
+              "scale": {"zero": false},
+              "axis": null,
+              "field": "to"
+            },
             "shape": {
               "condition": {"test": "datum.to > 0", "value": "triangle-right"},
               "value": "triangle-left"
@@ -136,7 +153,12 @@
           },
           "transform": [{"filter": "datum.label === 'PoleStar'"}],
           "encoding": {
-            "x": {"field": "from", "type": "quantitative", "axis": null}
+            "x": {
+              "type": "quantitative",
+              "scale": {"zero": false},
+              "axis": null,
+              "field": "from"
+            }
           }
         },
         {
@@ -148,7 +170,12 @@
           },
           "transform": [{"filter": "datum.label !== 'PoleStar'"}],
           "encoding": {
-            "x": {"field": "from", "type": "quantitative", "axis": null}
+            "x": {
+              "type": "quantitative",
+              "scale": {"zero": false},
+              "axis": null,
+              "field": "from"
+            }
           }
         }
       ]

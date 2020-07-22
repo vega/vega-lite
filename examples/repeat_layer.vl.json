@@ -4,14 +4,14 @@
     "url": "data/movies.json"
   },
   "repeat": {
-    "layer": ["US_Gross", "Worldwide_Gross"]
+    "layer": ["US Gross", "Worldwide Gross"]
   },
   "spec": {
     "mark": "line",
     "encoding": {
       "x": {
         "bin": true,
-        "field": "IMDB_Rating",
+        "field": "IMDB Rating",
         "type": "quantitative"
       },
       "y": {

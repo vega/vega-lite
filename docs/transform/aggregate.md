@@ -4,7 +4,7 @@ title: Aggregation
 permalink: /docs/aggregate.html
 ---
 
-To aggregate data in Vega-Lite, users can either use the `aggregate` property of an [encoding field definition](#encoding) or the `aggregate` transform inside the [`transform`](#transform) array. Aggregate summarized a table as one record for each group. To preserve the original table structure and instead add a new column with the aggregate values, use the [join aggregate](joinaggregate.html) transform.
+To aggregate data in Vega-Lite, users can either use the `aggregate` property of an [encoding field definition](#encoding) or the `aggregate` transform inside the [`transform`](#transform) array. Aggregate summarizes a table as one record for each group. To preserve the original table structure and instead add a new column with the aggregate values, use the [join aggregate](joinaggregate.html) transform.
 
 <!--prettier-ignore-start-->
 ## Documentation Overview
@@ -47,6 +47,8 @@ If at least one fields in the specified encoding channels contain `aggregate`, t
 For example, the following bar chart aggregates mean of `Acceleration`, grouped by the number of `Cylinders`.
 
 <div class="vl-example" data-name="bar_aggregate_vertical"></div>
+
+**Note:** aggregated fields are quantitative by default while unaggregated (group by) fields in aggregated encodings are nominal by default.
 
 The `detail` channel can be used to specify additional summary and group-by fields without mapping the field(s) to any visual properties. For example, the following plots add `Origin` as a group by field.
 
@@ -98,8 +100,9 @@ The supported **aggregation operations** are:
 
 | Operation | Description |
 | :-- | :-- |
-| count | The total count of data objects in the group. <span class="note-line">**Note:** _'count'_ operates directly on the input objects and return the same value regardless of the provided field. Similar to SQL's `count(*)`, count can be specified with a `field` `"*"`. |
+| count | The total count of data objects in the group. <span class="note-line">**Note:** _'count'_ operates directly on the input objects and return the same value regardless of the provided field. |
 | valid | The count of field values that are not `null`, `undefined` or `NaN`. |
+| values | A list of data objects in the group. |
 | missing | The count of `null` or `undefined` field values. |
 | distinct | The count of distinct field values. |
 | sum | The sum of field values. |

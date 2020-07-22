@@ -22,75 +22,76 @@
     {
       "mark": "line",
       "encoding": {
-        "color": {
-          "field": "decade",
-          "type": "ordinal",
-          "scale": {"scheme": "magma"},
-          "legend": null
-        },
         "x": {
-          "field": "scaled_date",
           "type": "quantitative",
-          "axis": {"title": "Year into Decade", "tickCount": 11}
+          "title": "Year into Decade",
+          "axis": {"tickCount": 11},
+          "field": "scaled_date"
         },
         "y": {
-          "field": "CO2",
           "title": "CO2 concentration in ppm",
           "type": "quantitative",
-          "scale": {"zero": false}
-        }
-      }
-    },
-    {
-      "mark": {"type": "text", "baseline": "top"},
-      "encoding": {
+          "scale": {"zero": false},
+          "field": "CO2"
+        },
         "color": {
           "field": "decade",
           "type": "ordinal",
           "scale": {"scheme": "magma"},
           "legend": null
-        },
+        }
+      }
+    },
+    {
+      "mark": {"type": "text", "baseline": "top", "aria": false},
+      "encoding": {
         "x": {
+          "type": "quantitative",
+          "title": "Year into Decade",
+          "axis": {"tickCount": 11},
           "aggregate": "min",
-          "field": "scaled_date",
-          "type": "quantitative"
+          "field": "scaled_date"
         },
         "y": {
+          "title": "CO2 concentration in ppm",
+          "type": "quantitative",
+          "scale": {"zero": false},
           "aggregate": {"argmin": "scaled_date"},
-          "field": "CO2",
-          "type": "quantitative"
+          "field": "CO2"
         },
-        "text": {
-          "aggregate": {"argmin": "scaled_date"},
-          "field": "year",
-          "type": "nominal"
-        }
-      }
-    },
-    {
-      "mark": {"type": "text"},
-      "encoding": {
         "color": {
           "field": "decade",
           "type": "ordinal",
           "scale": {"scheme": "magma"},
           "legend": null
         },
+        "text": {"aggregate": {"argmin": "scaled_date"}, "field": "year"}
+      }
+    },
+    {
+      "mark": {"type": "text", "aria": false},
+      "encoding": {
         "x": {
+          "type": "quantitative",
+          "title": "Year into Decade",
+          "axis": {"tickCount": 11},
           "aggregate": "max",
-          "field": "scaled_date",
-          "type": "quantitative"
+          "field": "scaled_date"
         },
         "y": {
+          "title": "CO2 concentration in ppm",
+          "type": "quantitative",
+          "scale": {"zero": false},
           "aggregate": {"argmax": "scaled_date"},
-          "field": "CO2",
-          "type": "quantitative"
+          "field": "CO2"
         },
-        "text": {
-          "aggregate": {"argmax": "scaled_date"},
-          "field": "year",
-          "type": "nominal"
-        }
+        "color": {
+          "field": "decade",
+          "type": "ordinal",
+          "scale": {"scheme": "magma"},
+          "legend": null
+        },
+        "text": {"aggregate": {"argmax": "scaled_date"}, "field": "year"}
       }
     }
   ],

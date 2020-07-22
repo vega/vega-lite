@@ -7,31 +7,27 @@
     {
       "mark": "line",
       "encoding": {
-        "x": {"field": "date", "timeUnit": "month", "type": "temporal"},
-        "y": {"field": "temp_max", "type": "quantitative", "aggregate": "mean"},
-        "color": {"field": "location", "type": "nominal"}
+        "x": {"field": "date", "timeUnit": "month"},
+        "y": {"field": "temp_max", "aggregate": "mean"},
+        "color": {"field": "location"}
       },
       "name": "child__temp_max"
     },
     {
       "mark": "line",
       "encoding": {
-        "x": {"field": "date", "timeUnit": "month", "type": "temporal"},
-        "y": {
-          "field": "precipitation",
-          "type": "quantitative",
-          "aggregate": "mean"
-        },
-        "color": {"field": "location", "type": "nominal"}
+        "x": {"field": "date", "timeUnit": "month"},
+        "y": {"field": "precipitation", "aggregate": "mean"},
+        "color": {"field": "location"}
       },
       "name": "child__precipitation"
     },
     {
       "mark": "line",
       "encoding": {
-        "x": {"field": "date", "timeUnit": "month", "type": "temporal"},
-        "y": {"field": "wind", "type": "quantitative", "aggregate": "mean"},
-        "color": {"field": "location", "type": "nominal"}
+        "x": {"field": "date", "timeUnit": "month"},
+        "y": {"field": "wind", "aggregate": "mean"},
+        "color": {"field": "location"}
       },
       "name": "child__wind"
     }

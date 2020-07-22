@@ -15,7 +15,7 @@
     ]
   },
   "encoding": {
-    "y": {"field": "name", "type": "ordinal", "sort": "-x", "title": null},
+    "y": {"field": "name", "type": "nominal", "sort": "-x", "title": null},
     "x": {"field": "count", "type": "quantitative", "title": null}
   },
   "layer": [{

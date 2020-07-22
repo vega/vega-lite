@@ -5,12 +5,12 @@
     "url": "data/movies.json"
   },
   "transform": [
-      {"filter": "datum.IMDB_Rating != null"},
+      {"filter": "datum['IMDB Rating'] != null"},
       {"timeUnit": "year", "field": "Release_Date", "as": "year"},
       {
         "joinaggregate": [{
           "op": "mean",
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "as": "AverageYearRating"
         }],
         "groupby": [
@@ -18,16 +18,16 @@
         ]
       },
       {
-        "filter": "(datum.IMDB_Rating - datum.AverageYearRating) > 2.5"
+        "filter": "(datum['IMDB Rating'] - datum.AverageYearRating) > 2.5"
       }
   ],
   "layer": [{
       "mark": {"type": "bar", "clip": true},
       "encoding": {
         "x": {
-          "field": "IMDB_Rating",
+          "field": "IMDB Rating",
           "type": "quantitative",
-          "axis": {"title": "IMDB Rating"}
+          "title": "IMDB Rating"
         },
         "y": {
           "field": "Title",

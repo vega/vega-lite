@@ -110,11 +110,11 @@ An example of a `boxplot` where the `size` encoding channel is specified.
 
 You can add custom tooltips to box plots. The custom tooltip will override the default boxplot's tooltips.
 
-If the field in the tooltip encoding is unaggregated, it would replace the tooltips of the outlier marks.
+If the field in the tooltip encoding is unaggregated, it replaces the tooltips of the outlier marks.
 
 <div class="vl-example" data-name="boxplot_tooltip_not_aggregate"></div>
 
-On the other hand, if the field in the tooltip encoding is aggregated, it would replace the tooltips of the box and whisker marks.
+On the other hand, if the field in the tooltip encoding is aggregated, it replaces the tooltips of the box and whisker marks.
 
 <div class="vl-example" data-name="boxplot_tooltip_aggregate"></div>
 
@@ -138,3 +138,9 @@ On the other hand, if the field in the tooltip encoding is aggregated, it would 
 The `boxplot` config object sets the default properties for `boxplot` marks.
 
 The boxplot config can contain all [boxplot mark properties](#properties) but currently not supporting `color`, `opacity`, and `orient`. Please see issue [#3934](https://github.com/vega/vega-lite/issues/3934).
+
+## Box Plot with Pre-Calculated Summaries
+
+If you have data summaries pre-calculated for a box plot, you can use `layer` to build a box plot like this:
+
+<div class="vl-example" data-name="boxplot_preaggregated"></div>

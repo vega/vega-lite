@@ -3,6 +3,6 @@
   "data": {"url": "data/movies.json"},
   "mark": "point",
   "encoding": {
-    "x": {"field": "IMDB_Rating", "type": "quantitative"}
+    "x": {"field": "IMDB Rating", "type": "quantitative"}
   }
 }
