@@ -1,7 +1,7 @@
 {
   "name": "vega-lite",
   "author": "Dominik Moritz, Kanit \"Ham\" Wongsuphasawat, Arvind Satyanarayan, Jeffrey Heer",
-  "version": "4.13.1",
+  "version": "4.14.0",
   "collaborators": [
     "Kanit Wongsuphasawat (http://kanitw.yellowpigz.com)",
     "Dominik Moritz (https://www.domoritz.de)",
@@ -96,7 +96,6 @@
     "eslint-plugin-prettier": "^3.1.4",
     "gh-pages": "^3.1.0",
     "highlight.js": "^10.1.1",
-    "serve": "^11.3.2",
     "jest": "^26.1.0",
     "jest-puppeteer": "^4.4.0",
     "mkdirp": "^1.0.4",
@@ -106,6 +105,7 @@
     "rollup": "^2.21.0",
     "rollup-plugin-sourcemaps": "^0.6.2",
     "rollup-plugin-terser": "^6.1.0",
+    "serve": "^11.3.2",
     "svg2png-many": "^0.0.7",
     "terser": "^4.8.0",
     "ts-jest": "^26.1.2",
