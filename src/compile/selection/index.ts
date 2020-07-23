@@ -84,7 +84,7 @@ export const selectionCompilers: SelectionCompiler[] = [
   nearest
 ];
 
-function getFacetModel(model: Model): FacetModel {
+export function getFacetModel(model: Model): FacetModel {
   let parent = model.parent;
   while (parent) {
     if (isFacetModel(parent)) break;
