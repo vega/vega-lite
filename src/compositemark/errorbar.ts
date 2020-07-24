@@ -75,6 +75,12 @@ export type ErrorEncoding<F extends Field> = Pick<Encoding<F>, PositionChannel |
 export type ErrorBarPartsMixins = PartsMixins<ErrorBarPart>;
 
 export interface ErrorBarConfig extends ErrorBarPartsMixins {
+  /** Size of the ticks of an error bar */
+  size?: number;
+
+  /** Thickness of the ticks and the bar of an error bar */
+  thickness?: number;
+
   /**
    * The center of the errorbar. Available options include:
    * - `"mean"`: the mean of the data points.
@@ -136,6 +142,7 @@ export function normalizeErrorBar(
     outerSpec,
     tooltipEncoding
   } = errorBarParams(spec, ERRORBAR, config);
+  delete encodingWithoutContinuousAxis['size'];
 
   const makeErrorBarPart = makeCompositeAggregatePartFactory<ErrorBarPartsMixins>(
     markDef,
@@ -145,7 +152,15 @@ export function normalizeErrorBar(
     config.errorbar
   );
 
-  const tick: MarkDef = {type: 'tick', orient: ticksOrient, aria: false};
+  const thickness = markDef.thickness;
+  const size = markDef.size;
+  const tick: MarkDef = {
+    type: 'tick',
+    orient: ticksOrient,
+    aria: false,
+    ...(thickness !== undefined ? {thickness} : {}),
+    ...(size !== undefined ? {size} : {})
+  };
 
   const layer = [
     ...makeErrorBarPart({
@@ -164,7 +179,8 @@ export function normalizeErrorBar(
       partName: 'rule',
       mark: {
         type: 'rule',
-        ariaRoleDescription: 'errorbar'
+        ariaRoleDescription: 'errorbar',
+        ...(thickness !== undefined ? {size: thickness} : {})
       },
       positionPrefix: 'lower',
       endPositionPrefix: 'upper',
