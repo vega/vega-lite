@@ -361,7 +361,7 @@ function mergeEncoding({
             ...channelDef.condition
           }
         };
-      } else if (channelDef) {
+      } else if (channelDef || channelDef === null) {
         merged[channel] = channelDef;
       } else if (
         layer ||
