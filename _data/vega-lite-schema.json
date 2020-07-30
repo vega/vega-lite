@@ -6021,6 +6021,14 @@
             }
           ]
         },
+        "size": {
+          "description": "Size of the ticks of an error bar",
+          "type": "number"
+        },
+        "thickness": {
+          "description": "Thickness of the ticks and the bar of an error bar",
+          "type": "number"
+        },
         "ticks": {
           "anyOf": [
             {
@@ -6073,6 +6081,14 @@
               "$ref": "#/definitions/MarkConfig"
             }
           ]
+        },
+        "size": {
+          "description": "Size of the ticks of an error bar",
+          "type": "number"
+        },
+        "thickness": {
+          "description": "Thickness of the ticks and the bar of an error bar",
+          "type": "number"
         },
         "ticks": {
           "anyOf": [
