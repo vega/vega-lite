@@ -86,7 +86,6 @@
     "ajv": "^6.12.3",
     "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.3",
-    "codecov": "^3.7.2",
     "concurrently": "^5.2.0",
     "conventional-changelog-cli": "^2.0.34",
     "d3": "^5.16.0",
