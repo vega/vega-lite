@@ -647,7 +647,7 @@
     "Repeat & Concatenation": [
       {
         "name": "repeat_layer",
-        "title": "Repeat and Layer to Show Different Weather Measures"
+        "title": "Repeat and Layer to Show Different Movie Measures"
       },
       {
         "name": "vconcat_weather",
