@@ -61,16 +61,19 @@ export function isTrue(x: boolean) {
  * @param flag Flag that will be or'ed with return valued from optimization calls to the nodes.
  */
 function runOptimizer(optimizer: BottomUpOptimizer | TopDownOptimizer, nodes: DataFlowNode[]): boolean {
-  const flags = nodes.map(node => {
+  const mutatedFlags: Set<boolean> = new Set();
+
+  for (const node of nodes) {
     if (optimizer instanceof BottomUpOptimizer) {
       const runFlags = optimizer.optimizeNextFromLeaves(node);
       optimizer.reset();
-      return runFlags;
+      mutatedFlags.add(runFlags);
     } else {
-      return optimizer.run(node);
+      mutatedFlags.add(optimizer.run(node));
     }
-  });
-  return flags.some(isTrue);
+  }
+
+  return mutatedFlags.has(true);
 }
 
 function optimizationDataflowHelper(dataComponent: DataComponent, model: Model, firstPass: boolean) {

@@ -31,7 +31,7 @@ abstract class OptimizerBase {
 }
 
 /**
- * Starts from a node and runs the optimization function(the "run" method) upwards to the root,
+ * Starts from a node and runs the optimization function (the "run" method) upwards to the root,
  * depending on the continueFlag and mutatedFlag values returned by the optimization function.
  */
 export abstract class BottomUpOptimizer extends OptimizerBase {
@@ -86,7 +86,7 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
 }
 
 /**
- * The optimizer function( the "run" method), is invoked on the given node and then continues recursively.
+ * The optimizer function (the "run" method), is invoked on the given node and then continues recursively.
  */
 export abstract class TopDownOptimizer extends OptimizerBase {
   public abstract run(node: DataFlowNode): boolean;

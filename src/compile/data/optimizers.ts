@@ -279,6 +279,7 @@ export class RemoveUnnecessaryOutputNodes extends TopDownOptimizer {
 
 export class RemoveUnnecessaryIdentifierNodes extends TopDownOptimizer {
   private requiresSelectionId: boolean;
+
   constructor(model: Model) {
     super();
     this.requiresSelectionId = model && requiresSelectionId(model);
