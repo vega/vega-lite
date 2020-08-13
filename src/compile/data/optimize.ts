@@ -58,7 +58,6 @@ export function isTrue(x: boolean) {
  *
  * @param optimizer The optimizer instance to run.
  * @param nodes A set of nodes to optimize.
- * @param flag Flag that will be or'ed with return valued from optimization calls to the nodes.
  */
 function runOptimizer(optimizer: BottomUpOptimizer | TopDownOptimizer, nodes: DataFlowNode[]): boolean {
   const mutatedFlags: Set<boolean> = new Set();
