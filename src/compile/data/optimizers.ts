@@ -21,11 +21,12 @@ export interface OptimizerFlags {
   /**
    * If true, iteration continues.
    */
-  continueFlag: boolean;
+  continue: boolean;
+
   /**
-   * If true, the tree has been mutated by the function.
+   * If true, the tree has been modified by the function.
    */
-  mutatedFlag: boolean;
+  modified: boolean;
 }
 
 /**
@@ -47,7 +48,7 @@ export class MoveParseUp extends BottomUpOptimizer {
       }
 
       if (parent instanceof ParseNode) {
-        this.setMutated();
+        this.setModified();
         parent.merge(node);
       } else {
         // Don't swap with nodes that produce something that the parse node depends on (e.g. lookup).
@@ -55,7 +56,7 @@ export class MoveParseUp extends BottomUpOptimizer {
           this.setContinue();
           return this.flags;
         }
-        this.setMutated();
+        this.setModified();
         node.swapWithParent();
       }
     }
@@ -93,14 +94,14 @@ export class MergeIdenticalNodes extends TopDownOptimizer {
 
     for (const k of keys(buckets)) {
       if (buckets[k].length > 1) {
-        this.setMutated();
+        this.setModified();
         this.mergeNodes(node, buckets[k]);
       }
     }
     for (const child of node.children) {
       this.run(child);
     }
-    return this.mutatedFlag;
+    return this.modifiedFlag;
   }
 }
 
@@ -115,7 +116,7 @@ export class RemoveUnusedSubtrees extends BottomUpOptimizer {
       // no need to continue with parent because it is output node or will have children (there was a fork)
       return this.flags;
     } else {
-      this.setMutated();
+      this.setModified();
       node.remove();
     }
     return this.flags;
@@ -139,7 +140,7 @@ export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
     if (node instanceof TimeUnitNode) {
       const pfields = node.producedFields();
       if (hasIntersection(pfields, this.fields)) {
-        this.setMutated();
+        this.setModified();
         this.prev.remove();
       } else {
         this.fields = new Set([...this.fields, ...pfields]);
@@ -164,7 +165,7 @@ export class MergeTimeUnits extends BottomUpOptimizer {
     const timeUnitChildren = parent.children.filter(x => x instanceof TimeUnitNode) as TimeUnitNode[];
     const combination = timeUnitChildren.pop();
     for (const timeUnit of timeUnitChildren) {
-      this.setMutated();
+      this.setModified();
       combination.merge(timeUnit);
     }
     return this.flags;
@@ -265,7 +266,7 @@ export class RemoveUnnecessaryOutputNodes extends TopDownOptimizer {
 
   public run(node: DataFlowNode): boolean {
     if (node instanceof OutputNode && !node.isRequired()) {
-      this.setMutated();
+      this.setModified();
       node.remove();
     }
 
@@ -273,12 +274,13 @@ export class RemoveUnnecessaryOutputNodes extends TopDownOptimizer {
       this.run(child);
     }
 
-    return this.mutatedFlag;
+    return this.modifiedFlag;
   }
 }
 
 export class RemoveUnnecessaryIdentifierNodes extends TopDownOptimizer {
   private requiresSelectionId: boolean;
+
   constructor(model: Model) {
     super();
     this.requiresSelectionId = model && requiresSelectionId(model);
@@ -294,7 +296,7 @@ export class RemoveUnnecessaryIdentifierNodes extends TopDownOptimizer {
           (isDataSourceNode(node.parent) || node.parent instanceof AggregateNode || node.parent instanceof ParseNode)
         )
       ) {
-        this.setMutated();
+        this.setModified();
         node.remove();
       }
     }
@@ -303,7 +305,7 @@ export class RemoveUnnecessaryIdentifierNodes extends TopDownOptimizer {
       this.run(child);
     }
 
-    return this.mutatedFlag;
+    return this.modifiedFlag;
   }
 }
 
@@ -337,7 +339,7 @@ export class MergeParse extends BottomUpOptimizer {
       }
 
       if (!isEmpty(commonParse)) {
-        this.setMutated();
+        this.setModified();
         const mergedParseNode = new ParseNode(parent, commonParse);
         for (const childNode of originalChildren) {
           if (childNode instanceof ParseNode) {
@@ -392,7 +394,7 @@ export class MergeAggregates extends BottomUpOptimizer {
             agg.parent = mergedAggs;
             agg.remove();
 
-            this.setMutated();
+            this.setModified();
           }
         }
       }
@@ -437,7 +439,7 @@ export class MergeBins extends BottomUpOptimizer {
       for (const bin of promotableBins) {
         promotedBin.merge(bin, this.model.renameSignal.bind(this.model));
       }
-      this.setMutated();
+      this.setModified();
       if (parent instanceof BinNode) {
         parent.merge(promotedBin, this.model.renameSignal.bind(this.model));
       } else {
@@ -449,7 +451,7 @@ export class MergeBins extends BottomUpOptimizer {
       for (const bin of remainingBins) {
         remainingBin.merge(bin, this.model.renameSignal.bind(this.model));
       }
-      this.setMutated();
+      this.setModified();
     }
     this.setContinue();
     return this.flags;
@@ -507,7 +509,7 @@ export class MergeOutputs extends BottomUpOptimizer {
           mainOutput.parent.removeChild(mainOutput);
           mainOutput.parent = lastOutput;
 
-          this.setMutated();
+          this.setModified();
         } else {
           mainOutput = lastOutput;
         }
@@ -517,7 +519,7 @@ export class MergeOutputs extends BottomUpOptimizer {
     }
 
     if (otherChildren.length) {
-      this.setMutated();
+      this.setModified();
       for (const child of otherChildren) {
         child.parent.removeChild(child);
         child.parent = mainOutput;

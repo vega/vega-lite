@@ -58,51 +58,52 @@ export function isTrue(x: boolean) {
  *
  * @param optimizer The optimizer instance to run.
  * @param nodes A set of nodes to optimize.
- * @param flag Flag that will be or'ed with return valued from optimization calls to the nodes.
  */
 function runOptimizer(optimizer: BottomUpOptimizer | TopDownOptimizer, nodes: DataFlowNode[]): boolean {
-  const flags = nodes.map(node => {
+  let modified = false;
+
+  for (const node of nodes) {
     if (optimizer instanceof BottomUpOptimizer) {
-      const runFlags = optimizer.optimizeNextFromLeaves(node);
+      modified = optimizer.optimizeNextFromLeaves(node) || modified;
       optimizer.reset();
-      return runFlags;
     } else {
-      return optimizer.run(node);
+      modified = optimizer.run(node) || modified;
     }
-  });
-  return flags.some(isTrue);
+  }
+
+  return modified;
 }
 
 function optimizationDataflowHelper(dataComponent: DataComponent, model: Model, firstPass: boolean) {
   let roots = dataComponent.sources;
-  const mutatedFlags: Set<boolean> = new Set();
+  let modified = false;
 
-  mutatedFlags.add(runOptimizer(new optimizers.RemoveUnnecessaryOutputNodes(), roots));
-  mutatedFlags.add(runOptimizer(new optimizers.RemoveUnnecessaryIdentifierNodes(model), roots));
+  modified = runOptimizer(new optimizers.RemoveUnnecessaryOutputNodes(), roots) || modified;
+  modified = runOptimizer(new optimizers.RemoveUnnecessaryIdentifierNodes(model), roots) || modified;
 
   // remove source nodes that don't have any children because they also don't have output nodes
   roots = roots.filter(r => r.numChildren() > 0);
 
-  mutatedFlags.add(runOptimizer(new optimizers.RemoveUnusedSubtrees(), getLeaves(roots)));
+  modified = runOptimizer(new optimizers.RemoveUnusedSubtrees(), getLeaves(roots)) || modified;
 
   roots = roots.filter(r => r.numChildren() > 0);
 
   if (!firstPass) {
     // Only run these optimizations after the optimizer has moved down the facet node.
     // With this change, we can be more aggressive in the optimizations.
-    mutatedFlags.add(runOptimizer(new optimizers.MoveParseUp(), getLeaves(roots)));
-    mutatedFlags.add(runOptimizer(new optimizers.MergeBins(model), getLeaves(roots)));
-    mutatedFlags.add(runOptimizer(new optimizers.RemoveDuplicateTimeUnits(), getLeaves(roots)));
-    mutatedFlags.add(runOptimizer(new optimizers.MergeParse(), getLeaves(roots)));
-    mutatedFlags.add(runOptimizer(new optimizers.MergeAggregates(), getLeaves(roots)));
-    mutatedFlags.add(runOptimizer(new optimizers.MergeTimeUnits(), getLeaves(roots)));
-    mutatedFlags.add(runOptimizer(new optimizers.MergeIdenticalNodes(), roots));
-    mutatedFlags.add(runOptimizer(new optimizers.MergeOutputs(), getLeaves(roots)));
+    modified = runOptimizer(new optimizers.MoveParseUp(), getLeaves(roots)) || modified;
+    modified = runOptimizer(new optimizers.MergeBins(model), getLeaves(roots)) || modified;
+    modified = runOptimizer(new optimizers.RemoveDuplicateTimeUnits(), getLeaves(roots)) || modified;
+    modified = runOptimizer(new optimizers.MergeParse(), getLeaves(roots)) || modified;
+    modified = runOptimizer(new optimizers.MergeAggregates(), getLeaves(roots)) || modified;
+    modified = runOptimizer(new optimizers.MergeTimeUnits(), getLeaves(roots)) || modified;
+    modified = runOptimizer(new optimizers.MergeIdenticalNodes(), roots) || modified;
+    modified = runOptimizer(new optimizers.MergeOutputs(), getLeaves(roots)) || modified;
   }
 
   dataComponent.sources = roots;
 
-  return mutatedFlags.has(true);
+  return modified;
 }
 
 /**
