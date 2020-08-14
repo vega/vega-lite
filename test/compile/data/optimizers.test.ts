@@ -21,7 +21,7 @@ describe('compile/data/optimizer', () => {
       new ImputeNode(root, transform);
 
       const optimizer = new MergeIdenticalNodes();
-      optimizer.run(root);
+      optimizer.optimizeFromRoot(root);
 
       expect(root.children).toHaveLength(1);
       expect(root.children[0]).toEqual(transform1);
@@ -44,7 +44,7 @@ describe('compile/data/optimizer', () => {
       new FilterNode(root, null, 'datum.x > 2');
 
       const optimizer = new MergeIdenticalNodes();
-      optimizer.run(root);
+      optimizer.optimizeFromRoot(root);
 
       expect(root.children).toHaveLength(2);
       expect(root.children).toEqual([transform1, transform3]);

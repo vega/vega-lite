@@ -80,7 +80,7 @@ export class MergeIdenticalNodes extends TopDownOptimizer {
     }
   }
 
-  public run(node: DataFlowNode): boolean {
+  public run(node: DataFlowNode) {
     const hashes = node.children.map(x => x.hash());
     const buckets: {hash?: DataFlowNode[]} = {};
 
@@ -98,10 +98,6 @@ export class MergeIdenticalNodes extends TopDownOptimizer {
         this.mergeNodes(node, buckets[k]);
       }
     }
-    for (const child of node.children) {
-      this.run(child);
-    }
-    return this.modifiedFlag;
   }
 }
 
@@ -264,17 +260,11 @@ export class RemoveUnnecessaryOutputNodes extends TopDownOptimizer {
     super();
   }
 
-  public run(node: DataFlowNode): boolean {
+  public run(node: DataFlowNode) {
     if (node instanceof OutputNode && !node.isRequired()) {
       this.setModified();
       node.remove();
     }
-
-    for (const child of node.children) {
-      this.run(child);
-    }
-
-    return this.modifiedFlag;
   }
 }
 
@@ -286,7 +276,7 @@ export class RemoveUnnecessaryIdentifierNodes extends TopDownOptimizer {
     this.requiresSelectionId = model && requiresSelectionId(model);
   }
 
-  public run(node: DataFlowNode): boolean {
+  public run(node: DataFlowNode) {
     if (node instanceof IdentifierNode) {
       // Only preserve IdentifierNodes if we have default discrete selections
       // in our model tree, and if the nodes come after tuple producing nodes.
@@ -300,12 +290,6 @@ export class RemoveUnnecessaryIdentifierNodes extends TopDownOptimizer {
         node.remove();
       }
     }
-
-    for (const child of node.children) {
-      this.run(child);
-    }
-
-    return this.modifiedFlag;
   }
 }
 
