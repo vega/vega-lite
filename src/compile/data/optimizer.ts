@@ -65,6 +65,9 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
     }
   }
 
+  /**
+   * Run the optimizer at the node.
+   */
   public abstract run(node: DataFlowNode): OptimizerFlags;
 
   /**
@@ -74,7 +77,10 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
     // do nothing
   }
 
-  public optimizeNextFromLeaves(node: DataFlowNode): boolean {
+  /**
+   * Run the optimizer on all nodes starting from the leaves.
+   */
+  public optimizeFromLeaves(node: DataFlowNode): boolean {
     if (isDataSourceNode(node)) {
       return false;
     }
@@ -83,7 +89,7 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
     const flags = this.run(node);
 
     if (flags.continue) {
-      this.optimizeNextFromLeaves(next);
+      this.optimizeFromLeaves(next);
     }
     return this.modifiedFlag;
   }
@@ -93,5 +99,20 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
  * The optimizer function (the "run" method), is invoked on the given node and then continues recursively.
  */
 export abstract class TopDownOptimizer extends OptimizerBase {
-  public abstract run(node: DataFlowNode): boolean;
+  /**
+   * Run the optimizer depth first on all nodes starting from the roots.
+   */
+  public optimizeFromRoot(node: DataFlowNode): boolean {
+    this.run(node);
+
+    for (const child of node.children) {
+      this.optimizeFromRoot(child);
+    }
+    return this.modifiedFlag;
+  }
+
+  /**
+   * Run the optimizer at the node.
+   */
+  public abstract run(node: DataFlowNode): void;
 }

@@ -64,10 +64,10 @@ function runOptimizer(optimizer: BottomUpOptimizer | TopDownOptimizer, nodes: Da
 
   for (const node of nodes) {
     if (optimizer instanceof BottomUpOptimizer) {
-      modified = optimizer.optimizeNextFromLeaves(node) || modified;
+      modified = optimizer.optimizeFromLeaves(node) || modified;
       optimizer.reset();
     } else {
-      modified = optimizer.run(node) || modified;
+      modified = optimizer.optimizeFromRoot(node) || modified;
     }
   }
 
