@@ -16,7 +16,7 @@ import {
 } from './channel';
 import {normalizeBin} from './channeldef';
 import {SelectionExtent} from './selection';
-import {keys, varName} from './util';
+import {entries, keys, varName} from './util';
 
 export interface BaseBin {
   /**
@@ -100,7 +100,7 @@ export function binToString(bin: BinParams | true) {
   return (
     'bin' +
     keys(bin)
-      .map(p => (isSelectionExtent(bin[p]) ? varName(`_${p}_${Object.entries(bin[p])}`) : varName(`_${p}_${bin[p]}`)))
+      .map(p => (isSelectionExtent(bin[p]) ? varName(`_${p}_${entries(bin[p])}`) : varName(`_${p}_${bin[p]}`)))
       .join('')
   );
 }

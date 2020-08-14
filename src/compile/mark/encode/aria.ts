@@ -70,7 +70,7 @@ export function description(model: UnitModel) {
   return {
     description: {
       signal: entries(data)
-        .map(({key, value}, index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`)
+        .map(([key, value], index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`)
         .join(' + ')
     }
   };

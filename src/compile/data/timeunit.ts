@@ -3,7 +3,7 @@ import {getSecondaryRangeChannel} from '../../channel';
 import {hasBand, vgField} from '../../channeldef';
 import {getTimeUnitParts, normalizeTimeUnit} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
-import {Dict, duplicate, hash, isEmpty, replacePathInField, vals} from '../../util';
+import {Dict, duplicate, hash, isEmpty, replacePathInField, vals, entries} from '../../util';
 import {isUnitModel, ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
@@ -80,7 +80,7 @@ export class TimeUnitNode extends DataFlowNode {
     // if the same hash happen twice, merge "band"
     for (const key in other.formula) {
       if (!this.formula[key] || other.formula[key].band) {
-        // copy if it's not a duplicate or if we need to include copy band over
+        // copy if it's not a duplicate or if we need to copy band over
         this.formula[key] = other.formula[key];
       }
     }
@@ -91,6 +91,21 @@ export class TimeUnitNode extends DataFlowNode {
     }
 
     other.remove();
+  }
+
+  /**
+   * Remove time units coming from the other node.
+   */
+  public removeFormulas(fields: Set<string>) {
+    const newFormula = {};
+
+    for (const [key, timeUnit] of entries(this.formula)) {
+      if (!fields.has(timeUnit.as)) {
+        newFormula[key] = timeUnit;
+      }
+    }
+
+    this.formula = newFormula;
   }
 
   public producedFields() {

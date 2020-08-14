@@ -1,4 +1,4 @@
-import {DataSourceType, Parse} from '../../data';
+import {Parse} from '../../data';
 import {Dict, fieldIntersection, hash, hasIntersection, isEmpty, keys, some} from '../../util';
 import {Model} from '../model';
 import {requiresSelectionId} from '../selection';
@@ -9,61 +9,8 @@ import {FacetNode} from './facet';
 import {FilterNode} from './filter';
 import {ParseNode} from './formatparse';
 import {IdentifierNode} from './identifier';
-import {JoinAggregateTransformNode} from './joinaggregate';
-import {FACET_SCALE_PREFIX} from './optimize';
-import {BottomUpOptimizer, isDataSourceNode, TopDownOptimizer} from './optimizer';
-import * as optimizers from './optimizers';
-import {StackNode} from './stack';
+import {BottomUpOptimizer, isDataSourceNode, Optimizer, TopDownOptimizer} from './optimizer';
 import {TimeUnitNode} from './timeunit';
-import {WindowTransformNode} from './window';
-
-export interface OptimizerFlags {
-  /**
-   * If true, iteration continues.
-   */
-  continue: boolean;
-
-  /**
-   * If true, the tree has been modified by the function.
-   */
-  modified: boolean;
-}
-
-/**
- * Move parse nodes up to forks.
- */
-export class MoveParseUp extends BottomUpOptimizer {
-  public run(node: DataFlowNode): OptimizerFlags {
-    const parent = node.parent;
-    // Move parse up by merging or swapping.
-    if (node instanceof ParseNode) {
-      if (isDataSourceNode(parent)) {
-        return this.flags;
-      }
-
-      if (parent.numChildren() > 1) {
-        // Don't move parse further up but continue with parent.
-        this.setContinue();
-        return this.flags;
-      }
-
-      if (parent instanceof ParseNode) {
-        this.setModified();
-        parent.merge(node);
-      } else {
-        // Don't swap with nodes that produce something that the parse node depends on (e.g. lookup).
-        if (fieldIntersection(parent.producedFields(), node.dependentFields())) {
-          this.setContinue();
-          return this.flags;
-        }
-        this.setModified();
-        node.swapWithParent();
-      }
-    }
-    this.setContinue();
-    return this.flags;
-  }
-}
 
 /**
  * Merge identical nodes at forks by comparing hashes.
@@ -102,172 +49,8 @@ export class MergeIdenticalNodes extends TopDownOptimizer {
 }
 
 /**
- * Repeatedly remove leaf nodes that are not output or facet nodes.
- * The reason is that we don't need subtrees that don't have any output nodes.
- * Facet nodes are needed for the row or column domains.
+ * Optimizer that removes identifier nodes that are not needed for selections.
  */
-export class RemoveUnusedSubtrees extends BottomUpOptimizer {
-  public run(node: DataFlowNode): OptimizerFlags {
-    if (node instanceof OutputNode || node.numChildren() > 0 || node instanceof FacetNode) {
-      // no need to continue with parent because it is output node or will have children (there was a fork)
-      return this.flags;
-    } else {
-      this.setModified();
-      node.remove();
-    }
-    return this.flags;
-  }
-}
-
-/**
- * Removes duplicate time unit nodes (as determined by the name of the
- * output field) that may be generated due to selections projected over
- * time units.
- *
- * TODO: Try to make this a top down optimizer that keeps only the first
- * insance of a time unit node.
- * TODO: Try to make a generic version of this that only keeps one node per hash.
- */
-export class RemoveDuplicateTimeUnits extends BottomUpOptimizer {
-  private fields = new Set<string>();
-  private prev: DataFlowNode = null;
-  public run(node: DataFlowNode): OptimizerFlags {
-    this.setContinue();
-    if (node instanceof TimeUnitNode) {
-      const pfields = node.producedFields();
-      if (hasIntersection(pfields, this.fields)) {
-        this.setModified();
-        this.prev.remove();
-      } else {
-        this.fields = new Set([...this.fields, ...pfields]);
-      }
-      this.prev = node;
-    }
-    return this.flags;
-  }
-
-  public reset(): void {
-    this.fields.clear();
-  }
-}
-
-/**
- * Merge adjacent time unit nodes.
- */
-export class MergeTimeUnits extends BottomUpOptimizer {
-  public run(node: DataFlowNode): OptimizerFlags {
-    this.setContinue();
-    const parent = node.parent;
-    const timeUnitChildren = parent.children.filter(x => x instanceof TimeUnitNode) as TimeUnitNode[];
-    const combination = timeUnitChildren.pop();
-    for (const timeUnit of timeUnitChildren) {
-      this.setModified();
-      combination.merge(timeUnit);
-    }
-    return this.flags;
-  }
-}
-
-/**
- * Clones the subtree and ignores output nodes except for the leaves, which are renamed.
- */
-function cloneSubtree(facet: FacetNode) {
-  function clone(node: DataFlowNode): DataFlowNode[] {
-    if (!(node instanceof FacetNode)) {
-      const copy = node.clone();
-
-      if (copy instanceof OutputNode) {
-        const newName = FACET_SCALE_PREFIX + copy.getSource();
-        copy.setSource(newName);
-
-        facet.model.component.data.outputNodes[newName] = copy;
-      } else if (
-        copy instanceof AggregateNode ||
-        copy instanceof StackNode ||
-        copy instanceof WindowTransformNode ||
-        copy instanceof JoinAggregateTransformNode
-      ) {
-        copy.addDimensions(facet.fields);
-      }
-      for (const n of node.children.flatMap(clone)) {
-        n.parent = copy;
-      }
-
-      return [copy];
-    }
-
-    return node.children.flatMap(clone);
-  }
-  return clone;
-}
-
-/**
- * Move facet nodes down to the next fork or output node. Also pull the main output with the facet node.
- * After moving down the facet node, make a copy of the subtree and make it a child of the main output.
- */
-export function moveFacetDown(node: DataFlowNode) {
-  if (node instanceof FacetNode) {
-    if (node.numChildren() === 1 && !(node.children[0] instanceof OutputNode)) {
-      // move down until we hit a fork or output node
-      const child = node.children[0];
-
-      if (
-        child instanceof AggregateNode ||
-        child instanceof StackNode ||
-        child instanceof WindowTransformNode ||
-        child instanceof JoinAggregateTransformNode
-      ) {
-        child.addDimensions(node.fields);
-      }
-
-      child.swapWithParent();
-      moveFacetDown(node);
-    } else {
-      // move main to facet
-
-      const facetMain = node.model.component.data.main;
-      moveMainDownToFacet(facetMain);
-
-      // replicate the subtree and place it before the facet's main node
-      const cloner = cloneSubtree(node);
-      const copy: DataFlowNode[] = node.children.map(cloner).flat();
-      for (const c of copy) {
-        c.parent = facetMain;
-      }
-    }
-  } else {
-    node.children.map(moveFacetDown);
-  }
-}
-
-function moveMainDownToFacet(node: DataFlowNode) {
-  if (node instanceof OutputNode && node.type === DataSourceType.Main) {
-    if (node.numChildren() === 1) {
-      const child = node.children[0];
-      if (!(child instanceof FacetNode)) {
-        child.swapWithParent();
-        moveMainDownToFacet(node);
-      }
-    }
-  }
-}
-
-/**
- * Remove output nodes that are not required. Starting from a root.
- */
-export class RemoveUnnecessaryOutputNodes extends TopDownOptimizer {
-  constructor() {
-    super();
-  }
-
-  public run(node: DataFlowNode) {
-    if (node instanceof OutputNode && !node.isRequired()) {
-      this.setModified();
-      node.remove();
-    }
-  }
-}
-
 export class RemoveUnnecessaryIdentifierNodes extends TopDownOptimizer {
   private requiresSelectionId: boolean;
 
@@ -294,17 +77,99 @@ export class RemoveUnnecessaryIdentifierNodes extends TopDownOptimizer {
 }
 
 /**
+ * Removes duplicate time unit nodes (as determined by the name of the output field) that may be generated due to
+ * selections projected over time units. Only keeps the first time unit in any branch.
+ *
+ * This optimizer is a custom top down optimizer that keep track of produced fields in a branch.
+ */
+export class RemoveDuplicateTimeUnits extends Optimizer {
+  public optimize(node: DataFlowNode): boolean {
+    this.run(node, new Set());
+
+    return this.modifiedFlag;
+  }
+
+  public run(node: DataFlowNode, timeUnitFields: Set<string>) {
+    let producedFields = new Set<string>();
+
+    if (node instanceof TimeUnitNode) {
+      producedFields = node.producedFields();
+      if (hasIntersection(producedFields, timeUnitFields)) {
+        this.setModified();
+        node.removeFormulas(timeUnitFields);
+        if (node.producedFields.length === 0) {
+          node.remove();
+        }
+      }
+    }
+
+    for (const child of node.children) {
+      this.run(child, new Set([...timeUnitFields, ...producedFields]));
+    }
+  }
+}
+
+/**
+ * Remove output nodes that are not required.
+ */
+export class RemoveUnnecessaryOutputNodes extends TopDownOptimizer {
+  constructor() {
+    super();
+  }
+
+  public run(node: DataFlowNode) {
+    if (node instanceof OutputNode && !node.isRequired()) {
+      this.setModified();
+      node.remove();
+    }
+  }
+}
+
+/**
+ * Move parse nodes up to forks and merges them if possible.
+ */
+export class MoveParseUp extends BottomUpOptimizer {
+  public run(node: DataFlowNode) {
+    if (isDataSourceNode(node)) {
+      return;
+    }
+
+    if (node.numChildren() > 1) {
+      // Don't move parse further up but continue with parent.
+      return;
+    }
+
+    for (const child of node.children) {
+      if (child instanceof ParseNode) {
+        if (node instanceof ParseNode) {
+          this.setModified();
+          node.merge(child);
+        } else {
+          // Don't swap with nodes that produce something that the parse node depends on (e.g. lookup).
+          if (fieldIntersection(node.producedFields(), child.dependentFields())) {
+            continue;
+          }
+          this.setModified();
+          child.swapWithParent();
+        }
+      }
+    }
+
+    return;
+  }
+}
+
+/**
  * Inserts an intermediate ParseNode containing all non-conflicting parse fields and removes the empty ParseNodes.
  *
  * We assume that dependent paths that do not have a parse node can be just merged.
  */
 export class MergeParse extends BottomUpOptimizer {
-  public run(node: DataFlowNode): optimizers.OptimizerFlags {
-    const parent = node.parent;
-    const originalChildren = [...parent.children];
-    const parseChildren = parent.children.filter((child): child is ParseNode => child instanceof ParseNode);
+  public run(node: DataFlowNode) {
+    const originalChildren = [...node.children];
+    const parseChildren = node.children.filter((child): child is ParseNode => child instanceof ParseNode);
 
-    if (parent.numChildren() > 1 && parseChildren.length >= 1) {
+    if (node.numChildren() > 1 && parseChildren.length >= 1) {
       const commonParse: Parse = {};
       const conflictingParse = new Set<string>();
       for (const parseNode of parseChildren) {
@@ -324,7 +189,7 @@ export class MergeParse extends BottomUpOptimizer {
 
       if (!isEmpty(commonParse)) {
         this.setModified();
-        const mergedParseNode = new ParseNode(parent, commonParse);
+        const mergedParseNode = new ParseNode(node, commonParse);
         for (const childNode of originalChildren) {
           if (childNode instanceof ParseNode) {
             for (const key of keys(commonParse)) {
@@ -332,7 +197,7 @@ export class MergeParse extends BottomUpOptimizer {
             }
           }
 
-          parent.removeChild(childNode);
+          node.removeChild(childNode);
           childNode.parent = mergedParseNode;
 
           // remove empty parse nodes
@@ -342,16 +207,42 @@ export class MergeParse extends BottomUpOptimizer {
         }
       }
     }
+  }
+}
 
-    this.setContinue();
-    return this.flags;
+/**
+ * Repeatedly remove leaf nodes that are not output or facet nodes.
+ * The reason is that we don't need subtrees that don't have any output nodes.
+ * Facet nodes are needed for the row or column domains.
+ */
+export class RemoveUnusedSubtrees extends BottomUpOptimizer {
+  public run(node: DataFlowNode) {
+    if (node instanceof OutputNode || node.numChildren() > 0 || node instanceof FacetNode) {
+      // no need to continue with parent because it is output node or will have children (there was a fork)
+    } else {
+      this.setModified();
+      node.remove();
+    }
+  }
+}
+
+/**
+ * Merge adjacent time unit nodes.
+ */
+export class MergeTimeUnits extends BottomUpOptimizer {
+  public run(node: DataFlowNode) {
+    const timeUnitChildren = node.children.filter((x): x is TimeUnitNode => x instanceof TimeUnitNode);
+    const combination = timeUnitChildren.pop();
+    for (const timeUnit of timeUnitChildren) {
+      this.setModified();
+      combination.merge(timeUnit);
+    }
   }
 }
 
 export class MergeAggregates extends BottomUpOptimizer {
-  public run(node: DataFlowNode): optimizers.OptimizerFlags {
-    const parent = node.parent;
-    const aggChildren = parent.children.filter((child): child is AggregateNode => child instanceof AggregateNode);
+  public run(node: DataFlowNode) {
+    const aggChildren = node.children.filter((child): child is AggregateNode => child instanceof AggregateNode);
 
     // Object which we'll use to map the fields which an aggregate is grouped by to
     // the set of aggregates with that grouping. This is useful as only aggregates
@@ -374,7 +265,7 @@ export class MergeAggregates extends BottomUpOptimizer {
         const mergedAggs = mergeableAggs.pop();
         for (const agg of mergeableAggs) {
           if (mergedAggs.merge(agg)) {
-            parent.removeChild(agg);
+            node.removeChild(agg);
             agg.parent = mergedAggs;
             agg.remove();
 
@@ -383,9 +274,6 @@ export class MergeAggregates extends BottomUpOptimizer {
         }
       }
     }
-
-    this.setContinue();
-    return this.flags;
   }
 }
 
@@ -396,21 +284,21 @@ export class MergeBins extends BottomUpOptimizer {
   constructor(private model: Model) {
     super();
   }
-  public run(node: DataFlowNode): OptimizerFlags {
-    const parent = node.parent;
+
+  public run(node: DataFlowNode) {
     const moveBinsUp = !(
-      isDataSourceNode(parent) ||
-      parent instanceof FilterNode ||
-      parent instanceof ParseNode ||
-      parent instanceof IdentifierNode
+      isDataSourceNode(node) ||
+      node instanceof FilterNode ||
+      node instanceof ParseNode ||
+      node instanceof IdentifierNode
     );
 
     const promotableBins: BinNode[] = [];
     const remainingBins: BinNode[] = [];
 
-    for (const child of parent.children) {
+    for (const child of node.children) {
       if (child instanceof BinNode) {
-        if (moveBinsUp && !fieldIntersection(parent.producedFields(), child.dependentFields())) {
+        if (moveBinsUp && !fieldIntersection(node.producedFields(), child.dependentFields())) {
           promotableBins.push(child);
         } else {
           remainingBins.push(child);
@@ -424,8 +312,8 @@ export class MergeBins extends BottomUpOptimizer {
         promotedBin.merge(bin, this.model.renameSignal.bind(this.model));
       }
       this.setModified();
-      if (parent instanceof BinNode) {
-        parent.merge(promotedBin, this.model.renameSignal.bind(this.model));
+      if (node instanceof BinNode) {
+        node.merge(promotedBin, this.model.renameSignal.bind(this.model));
       } else {
         promotedBin.swapWithParent();
       }
@@ -437,8 +325,6 @@ export class MergeBins extends BottomUpOptimizer {
       }
       this.setModified();
     }
-    this.setContinue();
-    return this.flags;
   }
 }
 
@@ -451,13 +337,11 @@ export class MergeBins extends BottomUpOptimizer {
  */
 export class MergeOutputs extends BottomUpOptimizer {
   public run(node: DataFlowNode) {
-    const parent = node.parent;
-    const children = [...parent.children];
+    const children = [...node.children];
     const hasOutputChild = some(children, child => child instanceof OutputNode);
 
-    if (!hasOutputChild || parent.numChildren() <= 1) {
-      this.setContinue();
-      return this.flags;
+    if (!hasOutputChild || node.numChildren() <= 1) {
+      return;
     }
 
     const otherChildren: DataFlowNode[] = [];
@@ -487,7 +371,7 @@ export class MergeOutputs extends BottomUpOptimizer {
           // the main output's parent to the last output.
 
           // note: the child is the first output
-          parent.removeChild(child);
+          node.removeChild(child);
           child.parent = mainOutput.parent;
 
           mainOutput.parent.removeChild(mainOutput);
@@ -509,8 +393,5 @@ export class MergeOutputs extends BottomUpOptimizer {
         child.parent = mainOutput;
       }
     }
-
-    this.setContinue();
-    return this.flags;
   }
 }

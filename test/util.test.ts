@@ -11,6 +11,8 @@ import {
   hash,
   hasIntersection,
   isEqual,
+  isNumeric,
+  keys,
   prefixGenerator,
   replaceAll,
   replacePathInField,
@@ -18,8 +20,8 @@ import {
   stringify,
   unique,
   uniqueId,
-  varName,
-  isNumeric
+  vals,
+  varName
 } from '../src/util';
 
 describe('util', () => {
@@ -270,11 +272,23 @@ describe('util', () => {
     });
   });
 
+  describe('keys', () => {
+    it('should return keys', () => {
+      expect(keys({a: 12, b: 42})).toEqual(['a', 'b']);
+    });
+  });
+
+  describe('vals', () => {
+    it('should return values', () => {
+      expect(vals({a: 12, b: 42})).toEqual([12, 42]);
+    });
+  });
+
   describe('entries', () => {
     it('should return entries', () => {
       expect(entries({a: 12, b: 42})).toEqual([
-        {key: 'a', value: 12},
-        {key: 'b', value: 42}
+        ['a', 12],
+        ['b', 42]
       ]);
     });
   });

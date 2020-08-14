@@ -1,8 +1,7 @@
 import {DataFlowNode} from './dataflow';
-import {OptimizerFlags} from './optimizers';
-import {SourceNode} from './source';
 import {GraticuleNode} from './graticule';
 import {SequenceNode} from './sequence';
+import {SourceNode} from './source';
 
 /**
  * Whether this dataflow node is the source of the dataflow that produces data i.e. a source or a generator.
@@ -12,10 +11,10 @@ export function isDataSourceNode(node: DataFlowNode) {
 }
 
 /**
- * Abstract base class for BottomUpOptimizer and TopDownOptimizer.
+ * Abstract base class for Dataflow optimizers.
  * Contains only mutation handling logic. Subclasses need to implement iteration logic.
  */
-abstract class OptimizerBase {
+export abstract class Optimizer {
   #modified: boolean;
 
   constructor() {
@@ -30,67 +29,51 @@ abstract class OptimizerBase {
   get modifiedFlag() {
     return this.#modified;
   }
+
+  /**
+   * Run the optimization for the tree with the provided root.
+   */
+  public abstract optimize(root: DataFlowNode): boolean;
 }
 
 /**
  * Starts from a node and runs the optimization function (the "run" method) upwards to the root,
  * depending on the continue and modified flag values returned by the optimization function.
  */
-export abstract class BottomUpOptimizer extends OptimizerBase {
-  #continue: boolean;
-
-  constructor() {
-    super();
-    this.#continue = false;
-  }
-
-  public setContinue() {
-    this.#continue = true;
-  }
-
-  get continueFlag() {
-    return this.#continue;
-  }
-
-  get flags(): OptimizerFlags {
-    return {continue: this.continueFlag, modified: this.modifiedFlag};
-  }
-
-  set flags(flags: OptimizerFlags) {
-    if (flags.continue) {
-      this.setContinue();
-    }
-    if (flags.modified) {
-      this.setModified();
-    }
-  }
+export abstract class BottomUpOptimizer extends Optimizer {
+  /**
+   * Run the optimizer at the node. This method should not change the parent of the passed in node (it should only affect children).
+   */
+  public abstract run(node: DataFlowNode): void;
 
   /**
-   * Run the optimizer at the node.
+   * Compute a map of node depths that we can use to determine a topological sort order.
    */
-  public abstract run(node: DataFlowNode): OptimizerFlags;
+  private getNodeDepths(
+    node: DataFlowNode,
+    depth: number,
+    depths: Map<DataFlowNode, number>
+  ): Map<DataFlowNode, number> {
+    depths.set(node, depth);
 
-  /**
-   * Reset the state of the optimizer after it has completed a run from the bottom of the tree to the top.
-   */
-  public reset(): void {
-    // do nothing
+    for (const child of node.children) {
+      this.getNodeDepths(child, depth + 1, depths);
+    }
+
+    return depths;
   }
 
   /**
    * Run the optimizer on all nodes starting from the leaves.
    */
-  public optimizeFromLeaves(node: DataFlowNode): boolean {
-    if (isDataSourceNode(node)) {
-      return false;
+  public optimize(node: DataFlowNode): boolean {
+    const depths = this.getNodeDepths(node, 0, new Map());
+    const topologicalSort = [...depths.entries()].sort((a, b) => b[1] - a[1]);
+
+    for (const tuple of topologicalSort) {
+      this.run(tuple[0]);
     }
 
-    const next = node.parent;
-    const flags = this.run(node);
-
-    if (flags.continue) {
-      this.optimizeFromLeaves(next);
-    }
     return this.modifiedFlag;
   }
 }
@@ -98,21 +81,22 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
 /**
  * The optimizer function (the "run" method), is invoked on the given node and then continues recursively.
  */
-export abstract class TopDownOptimizer extends OptimizerBase {
-  /**
-   * Run the optimizer depth first on all nodes starting from the roots.
-   */
-  public optimizeFromRoot(node: DataFlowNode): boolean {
-    this.run(node);
-
-    for (const child of node.children) {
-      this.optimizeFromRoot(child);
-    }
-    return this.modifiedFlag;
-  }
-
+export abstract class TopDownOptimizer extends Optimizer {
   /**
    * Run the optimizer at the node.
    */
   public abstract run(node: DataFlowNode): void;
+
+  /**
+   * Run the optimizer depth first on all nodes starting from the roots.
+   */
+  public optimize(node: DataFlowNode): boolean {
+    this.run(node);
+
+    for (const child of node.children) {
+      this.optimize(child);
+    }
+
+    return this.modifiedFlag;
+  }
 }

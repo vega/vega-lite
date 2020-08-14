@@ -21,7 +21,7 @@ describe('compile/data/optimizer', () => {
       new ImputeNode(root, transform);
 
       const optimizer = new MergeIdenticalNodes();
-      optimizer.optimizeFromRoot(root);
+      optimizer.optimize(root);
 
       expect(root.children).toHaveLength(1);
       expect(root.children[0]).toEqual(transform1);
@@ -44,7 +44,7 @@ describe('compile/data/optimizer', () => {
       new FilterNode(root, null, 'datum.x > 2');
 
       const optimizer = new MergeIdenticalNodes();
-      optimizer.optimizeFromRoot(root);
+      optimizer.optimize(root);
 
       expect(root.children).toHaveLength(2);
       expect(root.children).toEqual([transform1, transform3]);
@@ -106,7 +106,7 @@ describe('compile/data/optimizer', () => {
       new TimeUnitNode(parent, {[hash(c1)]: c1, [hash(c3)]: c3});
 
       const optimizer = new MergeTimeUnits();
-      optimizer.run(parent.children[0]);
+      optimizer.run(parent);
 
       expect(parent.children).toHaveLength(1);
 
@@ -125,11 +125,11 @@ describe('compile/data/optimizer', () => {
   describe('MergeParse', () => {
     it('should merge non-conflicting ParseNodes', () => {
       const root = new PlaceholderDataFlowNode(null, 'root');
-      const parse1 = new ParseNode(root, {a: 'number', b: 'string'});
+      new ParseNode(root, {a: 'number', b: 'string'});
       new ParseNode(root, {b: 'string', c: 'boolean'});
 
       const optimizer = new MergeParse();
-      optimizer.run(parse1);
+      optimizer.run(root);
 
       expect(root.children).toHaveLength(1);
       const mergedParseNode = root.children[0] as ParseNode;
@@ -138,12 +138,12 @@ describe('compile/data/optimizer', () => {
 
     it('should not merge conflicting ParseNodes', () => {
       const root = new PlaceholderDataFlowNode(null, 'root');
-      const parse1 = new ParseNode(root, {a: 'number', b: 'string'});
+      new ParseNode(root, {a: 'number', b: 'string'});
       new ParseNode(root, {a: 'boolean', d: 'date'});
       new ParseNode(root, {a: 'boolean', b: 'string'});
 
       const optimizer = new MergeParse();
-      optimizer.run(parse1);
+      optimizer.run(root);
 
       expect(root.children).toHaveLength(1);
       const mergedParseNode = root.children[0] as ParseNode;
@@ -160,7 +160,7 @@ describe('compile/data/optimizer', () => {
       const otherChild = new PlaceholderDataFlowNode(root);
 
       const optimizer = new MergeParse();
-      optimizer.run(parse);
+      optimizer.run(root);
 
       expect(root.children).toHaveLength(1);
       const mergedParseNode = root.children[0] as ParseNode;
