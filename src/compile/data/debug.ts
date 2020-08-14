@@ -101,7 +101,7 @@ export function dotString(roots: readonly DataFlowNode[]) {
   node [shape=record]
   ${entries(nodes)
     .map(
-      ({key, value}) => `  "${key}" [
+      ([key, value]) => `  "${key}" [
     label = <${value.label}>;
     tooltip = "[${value.id}]&#010;${value.hash}"
   ]`

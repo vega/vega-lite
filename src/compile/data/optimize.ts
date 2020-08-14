@@ -2,8 +2,9 @@ import {DataComponent} from '.';
 import * as log from '../../log';
 import {Model} from '../model';
 import {DataFlowNode} from './dataflow';
-import {BottomUpOptimizer, TopDownOptimizer} from './optimizer';
+import {Optimizer} from './optimizer';
 import * as optimizers from './optimizers';
+import {moveFacetDown} from './subtree';
 
 export const FACET_SCALE_PREFIX = 'scale_';
 export const MAX_OPTIMIZATION_RUNS = 5;
@@ -29,46 +30,16 @@ export function checkLinks(nodes: readonly DataFlowNode[]): boolean {
 }
 
 /**
- * Return all leaf nodes.
- */
-function getLeaves(roots: DataFlowNode[]) {
-  const leaves: DataFlowNode[] = [];
-  function append(node: DataFlowNode) {
-    if (node.numChildren() === 0) {
-      leaves.push(node);
-    } else {
-      for (const child of node.children) {
-        append(child);
-      }
-    }
-  }
-
-  for (const child of roots) {
-    append(child);
-  }
-  return leaves;
-}
-
-export function isTrue(x: boolean) {
-  return x;
-}
-
-/**
  * Run the specified optimizer on the provided nodes.
  *
  * @param optimizer The optimizer instance to run.
  * @param nodes A set of nodes to optimize.
  */
-function runOptimizer(optimizer: BottomUpOptimizer | TopDownOptimizer, nodes: DataFlowNode[]): boolean {
+function runOptimizer(optimizer: Optimizer, nodes: DataFlowNode[]): boolean {
   let modified = false;
 
   for (const node of nodes) {
-    if (optimizer instanceof BottomUpOptimizer) {
-      modified = optimizer.optimizeFromLeaves(node) || modified;
-      optimizer.reset();
-    } else {
-      modified = optimizer.optimizeFromRoot(node) || modified;
-    }
+    modified = optimizer.optimize(node) || modified;
   }
 
   return modified;
@@ -84,21 +55,21 @@ function optimizationDataflowHelper(dataComponent: DataComponent, model: Model, 
   // remove source nodes that don't have any children because they also don't have output nodes
   roots = roots.filter(r => r.numChildren() > 0);
 
-  modified = runOptimizer(new optimizers.RemoveUnusedSubtrees(), getLeaves(roots)) || modified;
+  modified = runOptimizer(new optimizers.RemoveUnusedSubtrees(), roots) || modified;
 
   roots = roots.filter(r => r.numChildren() > 0);
 
   if (!firstPass) {
     // Only run these optimizations after the optimizer has moved down the facet node.
     // With this change, we can be more aggressive in the optimizations.
-    modified = runOptimizer(new optimizers.MoveParseUp(), getLeaves(roots)) || modified;
-    modified = runOptimizer(new optimizers.MergeBins(model), getLeaves(roots)) || modified;
-    modified = runOptimizer(new optimizers.RemoveDuplicateTimeUnits(), getLeaves(roots)) || modified;
-    modified = runOptimizer(new optimizers.MergeParse(), getLeaves(roots)) || modified;
-    modified = runOptimizer(new optimizers.MergeAggregates(), getLeaves(roots)) || modified;
-    modified = runOptimizer(new optimizers.MergeTimeUnits(), getLeaves(roots)) || modified;
+    modified = runOptimizer(new optimizers.MoveParseUp(), roots) || modified;
+    modified = runOptimizer(new optimizers.MergeBins(model), roots) || modified;
+    modified = runOptimizer(new optimizers.RemoveDuplicateTimeUnits(), roots) || modified;
+    modified = runOptimizer(new optimizers.MergeParse(), roots) || modified;
+    modified = runOptimizer(new optimizers.MergeAggregates(), roots) || modified;
+    modified = runOptimizer(new optimizers.MergeTimeUnits(), roots) || modified;
     modified = runOptimizer(new optimizers.MergeIdenticalNodes(), roots) || modified;
-    modified = runOptimizer(new optimizers.MergeOutputs(), getLeaves(roots)) || modified;
+    modified = runOptimizer(new optimizers.MergeOutputs(), roots) || modified;
   }
 
   dataComponent.sources = roots;
@@ -124,7 +95,7 @@ export function optimizeDataflow(data: DataComponent, model: Model) {
   }
 
   // move facets down and make a copy of the subtree so that we can have scales at the top level
-  data.sources.map(optimizers.moveFacetDown);
+  data.sources.map(moveFacetDown);
 
   for (let i = 0; i < MAX_OPTIMIZATION_RUNS; i++) {
     if (!optimizationDataflowHelper(data, model, false)) {

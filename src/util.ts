@@ -221,18 +221,7 @@ export const keys = Object.keys as <T>(o: T) => Extract<keyof T, string>[];
 
 export const vals = Object.values;
 
-export function entries<T>(x: {[key: string]: T}): {key: string; value: T}[] {
-  const _entries: {key: string; value: T}[] = [];
-  for (const k in x) {
-    if (hasOwnProperty(x, k)) {
-      _entries.push({
-        key: k,
-        value: x[k]
-      });
-    }
-  }
-  return _entries;
-}
+export const entries = Object.entries;
 
 // Using mapped type to declare a collect of flags for a string literal type S
 // https://www.typescriptlang.org/docs/handbook/advanced-types.html#mapped-types

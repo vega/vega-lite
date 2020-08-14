@@ -139,6 +139,6 @@ export function tooltipRefForEncoding(
 ) {
   const data = tooltipData(encoding, stack, config, {reactiveGeom});
 
-  const keyValues = entries(data).map(({key, value}) => `"${key}": ${value}`);
+  const keyValues = entries(data).map(([key, value]) => `"${key}": ${value}`);
   return keyValues.length > 0 ? {signal: `{${keyValues.join(', ')}}`} : undefined;
 }
