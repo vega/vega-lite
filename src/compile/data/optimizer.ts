@@ -16,50 +16,52 @@ export function isDataSourceNode(node: DataFlowNode) {
  * Contains only mutation handling logic. Subclasses need to implement iteration logic.
  */
 abstract class OptimizerBase {
-  private _mutated: boolean;
+  #modified: boolean;
+
   constructor() {
-    this._mutated = false;
-  }
-  // Once true, _mutated is never set to false
-  public setMutated() {
-    this._mutated = true;
+    this.#modified = false;
   }
 
-  get mutatedFlag() {
-    return this._mutated;
+  // Once true, #modified is never set to false
+  public setModified() {
+    this.#modified = true;
+  }
+
+  get modifiedFlag() {
+    return this.#modified;
   }
 }
 
 /**
  * Starts from a node and runs the optimization function (the "run" method) upwards to the root,
- * depending on the continueFlag and mutatedFlag values returned by the optimization function.
+ * depending on the continue and modified flag values returned by the optimization function.
  */
 export abstract class BottomUpOptimizer extends OptimizerBase {
-  private _continue: boolean;
+  #continue: boolean;
 
   constructor() {
     super();
-    this._continue = false;
+    this.#continue = false;
   }
 
   public setContinue() {
-    this._continue = true;
+    this.#continue = true;
   }
 
   get continueFlag() {
-    return this._continue;
+    return this.#continue;
   }
 
   get flags(): OptimizerFlags {
-    return {continueFlag: this.continueFlag, mutatedFlag: this.mutatedFlag};
+    return {continue: this.continueFlag, modified: this.modifiedFlag};
   }
 
-  set flags({continueFlag, mutatedFlag}: OptimizerFlags) {
-    if (continueFlag) {
+  set flags(flags: OptimizerFlags) {
+    if (flags.continue) {
       this.setContinue();
     }
-    if (mutatedFlag) {
-      this.setMutated();
+    if (flags.modified) {
+      this.setModified();
     }
   }
 
@@ -76,12 +78,14 @@ export abstract class BottomUpOptimizer extends OptimizerBase {
     if (isDataSourceNode(node)) {
       return false;
     }
+
     const next = node.parent;
-    const {continueFlag} = this.run(node);
-    if (continueFlag) {
+    const flags = this.run(node);
+
+    if (flags.continue) {
       this.optimizeNextFromLeaves(next);
     }
-    return this.mutatedFlag;
+    return this.modifiedFlag;
   }
 }
 
