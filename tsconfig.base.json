@@ -21,7 +21,6 @@
     "removeComments": false,
     "resolveJsonModule": true,
     "suppressImplicitAnyIndexErrors": true,
-    "incremental": true,
     "lib": ["esnext.array", "dom", "dom.iterable"]
   }
 }
