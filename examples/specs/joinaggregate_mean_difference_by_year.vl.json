@@ -6,7 +6,7 @@
   },
   "transform": [
       {"filter": "datum['IMDB Rating'] != null"},
-      {"timeUnit": "year", "field": "Release_Date", "as": "year"},
+      {"timeUnit": "year", "field": "Release Date", "as": "year"},
       {
         "joinaggregate": [{
           "op": "mean",
