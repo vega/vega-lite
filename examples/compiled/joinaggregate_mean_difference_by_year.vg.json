@@ -9,11 +9,11 @@
     {
       "name": "source_0",
       "url": "data/movies.json",
-      "format": {"type": "json", "parse": {"Release_Date": "date"}},
+      "format": {"type": "json", "parse": {"Release Date": "date"}},
       "transform": [
         {"type": "filter", "expr": "datum['IMDB Rating'] != null"},
         {
-          "field": "Release_Date",
+          "field": "Release Date",
           "type": "timeunit",
           "units": ["year"],
           "as": ["year", "year_end"]
