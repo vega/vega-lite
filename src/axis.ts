@@ -118,15 +118,6 @@ interface VLOnlyAxisMixins {
   style?: string | string[];
 }
 
-export type SignalAxisProp =
-  | 'domainColor'
-  | 'labelAlign'
-  | 'labelColor'
-  | 'gridColor'
-  | 'tickColor'
-  | 'titleColor'
-  | 'title';
-
 export type ConditionalAxisProp =
   | 'labelAlign'
   | 'labelBaseline'
@@ -151,16 +142,12 @@ export type ConditionalAxisProp =
   | 'tickWidth';
 
 export const CONDITIONAL_AXIS_PROP_INDEX: Record<
-  ConditionalAxisProp | SignalAxisProp,
+  ConditionalAxisProp,
   {
     part: keyof AxisEncode;
     vgProp: VgEncodeChannel;
   } | null // null if we need to convert condition to signal
 > = {
-  domainColor: {
-    part: 'domain',
-    vgProp: 'stroke'
-  },
   labelAlign: {
     part: 'labels',
     vgProp: 'align'
@@ -235,12 +222,7 @@ export const CONDITIONAL_AXIS_PROP_INDEX: Record<
   tickWidth: {
     part: 'ticks',
     vgProp: 'strokeWidth'
-  },
-  titleColor: {
-    part: 'title',
-    vgProp: 'fill'
-  },
-  title: null // title supports signal, let's use it.
+  }
 };
 
 export type ConditionalAxisProperty<V extends Value | number[]> = (ValueDef<V> | SignalRef) & {
@@ -263,34 +245,32 @@ export type ConditionalAxisLabelFontWeight = ConditionalAxisProperty<FontWeight 
 export type ConditionalAxisNumberArray = ConditionalAxisProperty<number[] | null>;
 
 // Vega axis config is the same as Vega axis base. If this is not the case, add specific type.
-export type AxisConfigBaseWithConditionalAndSignal = Omit<BaseAxisNoValueRefs, ConditionalAxisProp | SignalAxisProp> &
-  AxisPropsWithConditionAndSignal;
+export type AxisConfigBaseWithConditionalAndSignal = Omit<BaseAxisNoValueRefs, ConditionalAxisProp | 'title'> &
+  AxisPropsWithCondition;
 
-export interface AxisPropsWithConditionAndSignal {
-  domainColor?: BaseAxisNoValueRefs['domainColor'] | SignalRef;
+export interface AxisPropsWithCondition {
   labelAlign?: BaseAxisNoValueRefs['labelAlign'] | ConditionalAxisLabelAlign;
   labelBaseline?: BaseAxisNoValueRefs['labelBaseline'] | ConditionalAxisLabelBaseline;
-  labelColor?: BaseAxisNoValueRefs['labelColor'] | ConditionalAxisColor | SignalRef;
+  labelColor?: BaseAxisNoValueRefs['labelColor'] | ConditionalAxisColor;
   labelFont?: BaseAxisNoValueRefs['labelFont'] | ConditionalAxisString;
   labelFontSize?: BaseAxisNoValueRefs['labelFontSize'] | ConditionalAxisNumber;
   labelFontStyle?: BaseAxisNoValueRefs['labelFontStyle'] | ConditionalAxisLabelFontStyle;
   labelFontWeight?: BaseAxisNoValueRefs['labelFontWeight'] | ConditionalAxisLabelFontWeight;
-  labelLineHeight?: BaseAxisNoValueRefs['labelLineHeight'] | ConditionalAxisNumber | SignalRef;
+  labelLineHeight?: BaseAxisNoValueRefs['labelLineHeight'] | ConditionalAxisNumber;
   labelOpacity?: BaseAxisNoValueRefs['labelOpacity'] | ConditionalAxisNumber;
-  labelOffset?: BaseAxisNoValueRefs['labelOffset'] | ConditionalAxisNumber | SignalRef;
+  labelOffset?: BaseAxisNoValueRefs['labelOffset'] | ConditionalAxisNumber;
   labelPadding?: BaseAxisNoValueRefs['labelPadding'] | ConditionalAxisNumber;
-  gridColor?: BaseAxisNoValueRefs['gridColor'] | ConditionalAxisColor | SignalRef;
+  gridColor?: BaseAxisNoValueRefs['gridColor'] | ConditionalAxisColor;
   gridDash?: BaseAxisNoValueRefs['gridDash'] | ConditionalAxisNumberArray;
   gridDashOffset?: BaseAxisNoValueRefs['gridDashOffset'] | ConditionalAxisNumber;
   gridOpacity?: BaseAxisNoValueRefs['gridOpacity'] | ConditionalAxisNumber;
   gridWidth?: BaseAxisNoValueRefs['gridWidth'] | ConditionalAxisNumber;
-  tickColor?: BaseAxisNoValueRefs['tickColor'] | ConditionalAxisColor | SignalRef;
+  tickColor?: BaseAxisNoValueRefs['tickColor'] | ConditionalAxisColor;
   tickDash?: BaseAxisNoValueRefs['tickDash'] | ConditionalAxisNumberArray;
   tickDashOffset?: BaseAxisNoValueRefs['tickDashOffset'] | ConditionalAxisNumber;
   tickOpacity?: BaseAxisNoValueRefs['tickOpacity'] | ConditionalAxisNumber;
   tickSize?: BaseAxisNoValueRefs['tickSize'] | ConditionalAxisNumber;
   tickWidth?: BaseAxisNoValueRefs['tickWidth'] | ConditionalAxisNumber;
-  titleColor?: BaseAxisNoValueRefs['titleColor'] | SignalRef;
   title?: TitleMixins['title'];
 }
 
