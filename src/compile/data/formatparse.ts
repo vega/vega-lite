@@ -28,6 +28,7 @@ import {
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
 import {accessPathDepth, accessPathWithDatum, Dict, duplicate, hash, keys, removePathFromField} from '../../util';
+import {signalRefOrValue} from '../common';
 import {isFacetModel, isUnitModel, Model} from '../model';
 import {Split} from '../split';
 import {DataFlowNode} from './dataflow';
@@ -84,15 +85,15 @@ export function getImplicitFromFilterTransform(transform: FilterTransform) {
       // For RangeFilter and OneOfFilter, all array members should have
       // the same type, so we only use the first one.
       if (isFieldEqualPredicate(filter)) {
-        val = filter.equal;
+        val = signalRefOrValue(filter.equal);
       } else if (isFieldLTEPredicate(filter)) {
-        val = filter.lte;
+        val = signalRefOrValue(filter.lte);
       } else if (isFieldLTPredicate(filter)) {
-        val = filter.lt;
+        val = signalRefOrValue(filter.lt);
       } else if (isFieldGTPredicate(filter)) {
-        val = filter.gt;
+        val = signalRefOrValue(filter.gt);
       } else if (isFieldGTEPredicate(filter)) {
-        val = filter.gte;
+        val = signalRefOrValue(filter.gte);
       } else if (isFieldRangePredicate(filter)) {
         val = filter.range[0];
       } else if (isFieldOneOfPredicate(filter)) {

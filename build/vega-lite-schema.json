@@ -7168,6 +7168,9 @@
             },
             {
               "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "The value that the field should be equal to."
@@ -7211,6 +7214,9 @@
             },
             {
               "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "The value that the field should be greater than or equals to."
@@ -7250,6 +7256,9 @@
             },
             {
               "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "The value that the field should be greater than."
@@ -7289,6 +7298,9 @@
             },
             {
               "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "The value that the field should be less than or equals to."
@@ -7328,6 +7340,9 @@
             },
             {
               "$ref": "#/definitions/DateTime"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "The value that the field should be less than."
@@ -8278,23 +8293,33 @@
           "description": "Field to be tested."
         },
         "range": {
+          "anyOf": [
+            {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "number"
+                  },
+                  {
+                    "$ref": "#/definitions/DateTime"
+                  },
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "$ref": "#/definitions/ExprRef"
+                  }
+                ]
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "An array of inclusive minimum and maximum values\nfor a field value of a data item to be included in the filtered data.",
-          "items": {
-            "anyOf": [
-              {
-                "type": "number"
-              },
-              {
-                "$ref": "#/definitions/DateTime"
-              },
-              {
-                "type": "null"
-              }
-            ]
-          },
           "maxItems": 2,
-          "minItems": 2,
-          "type": "array"
+          "minItems": 2
         },
         "timeUnit": {
           "anyOf": [
