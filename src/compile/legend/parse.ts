@@ -1,7 +1,7 @@
 import {Legend as VgLegend, LegendEncode} from 'vega';
 import {COLOR, NonPositionScaleChannel, SHAPE} from '../../channel';
 import {DatumDef, FieldDef, getFieldOrDatumDef, isFieldDef, MarkPropDatumDef, MarkPropFieldDef} from '../../channeldef';
-import {Legend, LEGEND_SCALE_CHANNELS} from '../../legend';
+import {LegendInternal, LEGEND_SCALE_CHANNELS} from '../../legend';
 import {normalizeTimeUnit} from '../../timeunit';
 import {GEOJSON} from '../../type';
 import {deleteNestedProperty, isEmpty, keys, varName} from '../../util';
@@ -65,7 +65,7 @@ function getLegendDefWithScale(model: UnitModel, channel: NonPositionScaleChanne
 function isExplicit<T extends string | number | object | boolean>(
   value: T,
   property: keyof LegendComponentProps,
-  legend: Legend,
+  legend: LegendInternal,
   fieldDef: FieldDef<string>
 ) {
   switch (property) {

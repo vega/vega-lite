@@ -8,9 +8,10 @@ import {
   SignalRef
 } from 'vega';
 import {DateTime} from './datetime';
+import {ExprRef} from './expr';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {ExcludeMappedValueRefButKeepSignal} from './vega.schema';
+import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
 
 export const LEGEND_SCALE_CHANNELS = [
   'size',
@@ -22,11 +23,11 @@ export const LEGEND_SCALE_CHANNELS = [
   'opacity'
 ] as const;
 
-type BaseLegendNoValueRefs = ExcludeMappedValueRefButKeepSignal<BaseLegend>;
+type BaseLegendNoValueRefs<ES extends ExprRef | SignalRef> = MapExcludeValueRefAndReplaceSignalWith<BaseLegend, ES>;
 
-export type LegendConfig = LegendMixins &
+export type LegendConfig<ES extends ExprRef | SignalRef> = LegendMixins<ES> &
   VlOnlyGuideConfig &
-  VgLegendConfig & {
+  MapExcludeValueRefAndReplaceSignalWith<VgLegendConfig, ES> & {
     /**
      * Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
      *
@@ -84,7 +85,10 @@ export type LegendConfig = LegendMixins &
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend extends Omit<BaseLegendNoValueRefs, 'orient'>, LegendMixins, Guide {
+export interface Legend<ES extends ExprRef | SignalRef>
+  extends Omit<BaseLegendNoValueRefs<ES>, 'orient'>,
+    LegendMixins<ES>,
+    Guide {
   /**
    * Mark definitions for custom legend encoding.
    *
@@ -104,12 +108,12 @@ export interface Legend extends Omit<BaseLegendNoValueRefs, 'orient'>, LegendMix
    *
    * __Default value__: `undefined`
    */
-  tickMinStep?: number | SignalRef;
+  tickMinStep?: number | SignalRef | ExprRef;
 
   /**
    * Explicitly set the visible legend values.
    */
-  values?: number[] | string[] | boolean[] | DateTime[] | SignalRef; // Vega already supports Signal -- we have to re-declare here since VL supports special Date Time object that's not valid in Vega.
+  values?: number[] | string[] | boolean[] | DateTime[] | SignalRef | ExprRef; // Vega already supports Signal -- we have to re-declare here since VL supports special Date Time object that's not valid in Vega.
 
   /**
    * The type of the legend. Use `"symbol"` to create a discrete legend and `"gradient"` for a continuous color gradient.
@@ -130,13 +134,13 @@ export interface Legend extends Omit<BaseLegendNoValueRefs, 'orient'>, LegendMix
 }
 
 // Change comments to be Vega-Lite specific
-interface LegendMixins {
+interface LegendMixins<ES extends ExprRef | SignalRef> {
   /**
    * The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` or `"parity"`, a strategy of removing every other label is used. If set to `"greedy"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).
    *
    * __Default value:__ `"greedy"` for `log scales otherwise `true`.
    */
-  labelOverlap?: LabelOverlap | SignalRef; // override comment since our default differs from Vega
+  labelOverlap?: LabelOverlap | ES; // override comment since our default differs from Vega
 
   /**
    * The direction of the legend, one of `"vertical"` or `"horizontal"`.
@@ -155,6 +159,8 @@ interface LegendMixins {
    */
   orient?: LegendOrient; // Omit SignalRef
 }
+
+export type LegendInternal = Legend<SignalRef>;
 
 export interface LegendEncoding {
   /**
@@ -184,7 +190,7 @@ export interface LegendEncoding {
   gradient?: GuideEncodingEntry;
 }
 
-export const defaultLegendConfig: LegendConfig = {
+export const defaultLegendConfig: LegendConfig<SignalRef> = {
   gradientHorizontalMaxLength: 200,
   gradientHorizontalMinLength: 100,
   gradientVerticalMaxLength: 200,
@@ -192,7 +198,7 @@ export const defaultLegendConfig: LegendConfig = {
   unselectedOpacity: 0.35
 };
 
-export const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend)> = {
+export const COMMON_LEGEND_PROPERTY_INDEX: Flag<keyof (VgLegend | Legend<any>)> = {
   aria: 1,
   clipHeight: 1,
   columnPadding: 1,

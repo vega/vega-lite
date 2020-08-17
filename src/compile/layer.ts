@@ -1,4 +1,4 @@
-import {Legend as VgLegend, NewSignal, Title as VgTitle} from 'vega';
+import {Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
 import {Config} from '../config';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec';
@@ -24,7 +24,7 @@ export class LayerModel extends Model {
     parent: Model,
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins,
-    config: Config
+    config: Config<SignalRef>
   ) {
     super(spec, 'layer', parent, parentGivenName, config, spec.resolve, spec.view);
 

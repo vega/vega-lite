@@ -11,6 +11,7 @@ import {
   LayoutAlign,
   LinearScale,
   LogScale,
+  Mark,
   MarkConfig,
   NumericValueRef,
   OrdinalScale,
@@ -38,31 +39,32 @@ import {
   TimeScale,
   Title as VgTitle,
   Transforms as VgTransform,
-  UnionSortField as VgUnionSortField,
-  Mark
+  UnionSortField as VgUnionSortField
 } from 'vega';
 import {isArray} from 'vega-util';
 import {Value} from './channeldef';
+import {ExprOrSignalRef} from './expr';
 import {SortOrder} from './sort';
-import {Flag, keys, Dict} from './util';
+import {Dict, Flag, keys} from './util';
 
 export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
 // TODO: make recursive
-type ExcludeMapped<T, E> = {
+export type MappedExclude<T, E> = {
   [P in keyof T]: Exclude<T[P], E>;
 };
 
-type ExcludeMappedButKeepSignals<T, E> = {
-  [P in keyof T]: SignalRef extends T[P] ? Exclude<T[P], E> | SignalRef : Exclude<T[P], E>;
+export type MapExcludeAndKeepSignalAs<T, E, S extends ExprOrSignalRef> = {
+  [P in keyof T]: SignalRef extends T[P] ? Exclude<T[P], E> | S : Exclude<T[P], E>;
 };
 
 // Remove ValueRefs from mapped types
-export type ExcludeMappedValueRef<T> = ExcludeMapped<T, ScaledValueRef<any> | NumericValueRef | ColorValueRef>;
+export type MappedExcludeValueRef<T> = MappedExclude<T, ScaledValueRef<any> | NumericValueRef | ColorValueRef>;
 
-export type ExcludeMappedValueRefButKeepSignal<T> = ExcludeMappedButKeepSignals<
+export type MapExcludeValueRefAndReplaceSignalWith<T, S extends ExprOrSignalRef> = MapExcludeAndKeepSignalAs<
   T,
-  ScaledValueRef<any> | NumericValueRef | ColorValueRef
+  ScaledValueRef<any> | NumericValueRef | ColorValueRef,
+  S
 >;
 
 export interface VgData {

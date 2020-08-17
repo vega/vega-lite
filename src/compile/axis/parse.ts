@@ -1,4 +1,4 @@
-import {AxisEncode as VgAxisEncode, AxisOrient} from 'vega';
+import {AxisEncode as VgAxisEncode, AxisOrient, SignalRef} from 'vega';
 import {Axis, AXIS_PARTS, isAxisProperty, isConditionalAxisValue} from '../../axis';
 import {PositionScaleChannel, POSITION_SCALE_CHANNELS} from '../../channel';
 import {getFieldOrDatumDef, PositionDatumDef, PositionFieldDef} from '../../channeldef';
@@ -171,7 +171,7 @@ function mergeAxisComponent(merged: AxisComponent, child: AxisComponent): AxisCo
 function isExplicit<T extends string | number | boolean | object>(
   value: T,
   property: keyof AxisComponentProps,
-  axis: Axis,
+  axis: Axis<SignalRef>,
   model: UnitModel,
   channel: PositionScaleChannel
 ) {

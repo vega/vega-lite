@@ -1,6 +1,6 @@
 import {Legend as VgLegend} from 'vega';
 import {NonPositionScaleChannel} from '../../channel';
-import {COMMON_LEGEND_PROPERTY_INDEX, Legend} from '../../legend';
+import {COMMON_LEGEND_PROPERTY_INDEX, LegendInternal} from '../../legend';
 import {Flag, keys} from '../../util';
 import {Split} from '../split';
 
@@ -33,4 +33,4 @@ export class LegendComponent extends Split<LegendComponentProps> {}
 
 export type LegendComponentIndex = Partial<Record<NonPositionScaleChannel, LegendComponent>>;
 
-export type LegendIndex = Partial<Record<NonPositionScaleChannel, Legend>>;
+export type LegendInternalIndex = Partial<Record<NonPositionScaleChannel, LegendInternal>>;

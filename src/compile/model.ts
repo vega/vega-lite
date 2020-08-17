@@ -9,13 +9,13 @@ import {
 } from 'vega';
 import {
   Channel,
+  ExtendedChannel,
   FACET_CHANNELS,
   getPositionScaleChannel,
   isChannel,
   isScaleChannel,
   ScaleChannel,
-  SingleDefChannel,
-  ExtendedChannel
+  SingleDefChannel
 } from '../channel';
 import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
@@ -35,7 +35,7 @@ import {
 import {NormalizedSpec} from '../spec/index';
 import {extractTitleConfig, isText, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
-import {contains, Dict, duplicate, keys, varName, isEmpty} from '../util';
+import {contains, Dict, duplicate, isEmpty, keys, varName} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
@@ -187,7 +187,7 @@ export abstract class Model {
     public readonly type: SpecType,
     public readonly parent: Model,
     parentGivenName: string,
-    public readonly config: Config,
+    public readonly config: Config<SignalRef>,
     resolve: Resolve,
     public readonly view?: ViewBackground
   ) {
