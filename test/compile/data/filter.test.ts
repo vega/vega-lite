@@ -74,4 +74,11 @@ describe('compile/data/filter', () => {
       expect(filter.clone().parent).toBeNull();
     });
   });
+
+  describe('assemble()', () => {
+    it('converts expr in predicates correctly', () => {
+      const node = new FilterNode(null, null, {field: 'foo', equal: {expr: 'bar'}});
+      expect(node.assemble().expr).toEqual('datum["foo"]===bar');
+    });
+  });
 });
