@@ -7936,9 +7936,9 @@ ts-jest@^26.2.0:
     yargs-parser "18.x"
 
 ts-json-schema-generator@^0.71.0:
-  version "0.71.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.71.0.tgz#ce4cce8a02631a864c7352e2ea22d8d654258a94"
-  integrity sha512-cJdZO8dYPTF5CQWK92NnO1bIiojADsGRwOB06wA5O5U+4yn6o0b+Tqm35Zn9Akf7CWWeXAact80lb8mmY3lySg==
+  version "0.71.1"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.71.1.tgz#dbe7d19a1103b649adf0b68c24c4521a587f02c8"
+  integrity sha512-I+c5Yzkj04qVxjHZqPCqfWid3EGPB8GivG1vTmuJUEYfN8m/11KFNEv2oTkL4iraZyemiOsS4R7fjVpH+YTLeA==
   dependencies:
     "@types/json-schema" "^7.0.5"
     commander "~6.0.0"
