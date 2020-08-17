@@ -14,6 +14,13 @@ import {Explicit} from './split';
 import {UnitModel} from './unit';
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
+export function signalRefOrValue<T>(value: T | SignalRef | ExprRef): T | SignalRef {
+  if (isExprRef(value)) {
+    const {expr, ...rest} = value;
+    return {signal: expr, ...rest};
+  }
+  return value;
+}
 
 export function signalOrValueRef<T>(value: T | SignalRef | ExprRef): {value: T} | SignalRef {
   if (isExprRef(value)) {
