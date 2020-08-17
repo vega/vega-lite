@@ -74,7 +74,7 @@
     "@babel/preset-env": "^7.11.0",
     "@rollup/plugin-commonjs": "14.0.0",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^8.4.0",
+    "@rollup/plugin-node-resolve": "^9.0.0",
     "@types/chai": "^4.2.12",
     "@types/d3": "^5.7.2",
     "@types/jest": "^26.0.9",
