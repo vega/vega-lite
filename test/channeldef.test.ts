@@ -101,6 +101,10 @@ describe('fieldDef', () => {
       expect(defaultType({aggregate: {argmax: 'b'}, field: 'a'}, 'x')).toBe('nominal');
     });
 
+    it('should return ordinal for order channels', () => {
+      expect(defaultType({field: 'foo'}, 'order')).toBe('ordinal');
+    });
+
     it('should return nominal by default', () => {
       expect(defaultType({field: 'a'}, 'x')).toBe('nominal');
     });
