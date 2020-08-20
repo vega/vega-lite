@@ -556,12 +556,14 @@ export function initEncoding(
  * For composite marks, we have to call initChannelDef during init so we can infer types earlier.
  */
 export function normalizeEncoding(encoding: Encoding<string>, config: Config): Encoding<string> {
-  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel) => {
-    const newChannelDef = initChannelDef(encoding[channel], channel, config, {compositeMark: true});
+  const normalizedEncoding: Encoding<string> = {};
 
+  for (const channel of keys(encoding)) {
+    const newChannelDef = initChannelDef(encoding[channel], channel, config, {compositeMark: true});
     normalizedEncoding[channel as any] = newChannelDef;
-    return normalizedEncoding;
-  }, {});
+  }
+
+  return normalizedEncoding;
 }
 
 export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): FieldDef<F>[] {

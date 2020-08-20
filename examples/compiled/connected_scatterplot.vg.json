@@ -9,7 +9,7 @@
     {
       "name": "source_0",
       "url": "data/driving.json",
-      "format": {"type": "json", "parse": {"year": "date"}}
+      "format": {"type": "json"}
     },
     {
       "name": "data_0",
@@ -33,7 +33,7 @@
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"miles: \" + (format(datum[\"miles\"], \"\")) + \"; gas: \" + (format(datum[\"gas\"], \"\")) + \"; year: \" + (timeFormat(datum[\"year\"], '%b %d, %Y'))"
+            "signal": "\"miles: \" + (format(datum[\"miles\"], \"\")) + \"; gas: \" + (format(datum[\"gas\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
           },
           "x": {"scale": "x", "field": "miles"},
           "y": {"scale": "y", "field": "gas"},
@@ -55,7 +55,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"miles: \" + (format(datum[\"miles\"], \"\")) + \"; gas: \" + (format(datum[\"gas\"], \"\")) + \"; year: \" + (timeFormat(datum[\"year\"], '%b %d, %Y'))"
+            "signal": "\"miles: \" + (format(datum[\"miles\"], \"\")) + \"; gas: \" + (format(datum[\"gas\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
           },
           "x": [
             {

@@ -88,8 +88,7 @@
           "type": "quantitative"
         },
         "order": {
-          "field": "order",
-          "type": "ordinal"
+          "field": "order"
         }
       }
     }

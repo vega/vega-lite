@@ -30,7 +30,7 @@
       }
     },
     "order": {
-      "field": "order", "type": "quantitative"
+      "field": "order"
     }
   },
   "view": {"stroke": null}
