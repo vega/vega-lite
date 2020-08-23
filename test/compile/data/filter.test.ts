@@ -1,10 +1,10 @@
 import {AncestorParse} from '../../../src/compile/data';
-import {PlaceholderDataFlowNode} from './util';
 import {FilterNode} from '../../../src/compile/data/filter';
 import {ParseNode} from '../../../src/compile/data/formatparse';
 import {parseTransformArray} from '../../../src/compile/data/parse';
 import {Dict} from '../../../src/util';
 import {parseUnitModel} from '../../util';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/filter', () => {
   it('should create parse for filtered fields', () => {
@@ -14,7 +14,11 @@ describe('compile/data/filter', () => {
         {filter: {field: 'a', equal: {year: 2000}}},
         {filter: {field: 'b', oneOf: ['a', 'b']}},
         {filter: {field: 'c', range: [{year: 2000}, {year: 2001}]}},
-        {filter: {field: 'd', range: [1, 2]}}
+        {filter: {field: 'd', range: [1, 2]}},
+        {filter: {field: 'e', lt: {year: 2000}}},
+        {filter: {field: 'f', lte: {year: 2000}}},
+        {filter: {field: 'g', gte: {year: 2000}}},
+        {filter: {field: 'h', gt: {year: 2000}}}
       ],
       mark: 'point',
       encoding: {}
@@ -39,7 +43,11 @@ describe('compile/data/filter', () => {
       a: 'date',
       b: 'string',
       c: 'date',
-      d: 'number'
+      d: 'number',
+      e: 'date',
+      f: 'date',
+      g: 'date',
+      h: 'date'
     });
   });
 
