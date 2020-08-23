@@ -3,7 +3,6 @@ import {
   LabelOverlap,
   Legend as VgLegend,
   LegendConfig as VgLegendConfig,
-  LegendEncode,
   LegendOrient,
   Orientation,
   SignalRef
@@ -11,7 +10,7 @@ import {
 import {DateTime} from './datetime';
 import {Guide, GuideEncodingEntry, VlOnlyGuideConfig} from './guide';
 import {Flag, keys} from './util';
-import {ExcludeMappedValueRefButKeepSignal, VgEncodeChannel} from './vega.schema';
+import {ExcludeMappedValueRefButKeepSignal} from './vega.schema';
 
 export const LEGEND_SCALE_CHANNELS = [
   'size',
@@ -23,68 +22,11 @@ export const LEGEND_SCALE_CHANNELS = [
   'opacity'
 ] as const;
 
-export type SignalLegendProp =
-  | 'fillColor'
-  | 'gradientStrokeColor'
-  | 'labelColor'
-  | 'strokeColor'
-  | 'symbolFillColor'
-  | 'symbolStrokeColor'
-  | 'titleColor';
-
-export const SIGNAL_LEGEND_PROP_INDEX: Record<
-  SignalLegendProp,
-  {
-    part: keyof LegendEncode;
-    vgProp: VgEncodeChannel;
-  } | null // null if we need to convert condition to signal
-> = {
-  fillColor: {
-    part: 'legend',
-    vgProp: 'fill'
-  },
-  gradientStrokeColor: {
-    part: 'gradient',
-    vgProp: 'stroke'
-  },
-  labelColor: {
-    part: 'labels',
-    vgProp: 'fill'
-  },
-  strokeColor: {
-    part: 'legend',
-    vgProp: 'stroke'
-  },
-  symbolFillColor: {
-    part: 'symbols',
-    vgProp: 'fill'
-  },
-  symbolStrokeColor: {
-    part: 'symbols',
-    vgProp: 'stroke'
-  },
-  titleColor: {
-    part: 'title',
-    vgProp: 'fill'
-  }
-};
-
 type BaseLegendNoValueRefs = ExcludeMappedValueRefButKeepSignal<BaseLegend>;
-
-export interface LegendPropsWithSignal {
-  fillColor?: BaseLegendNoValueRefs['fillColor'] | SignalRef;
-  gradientStrokeColor?: BaseLegendNoValueRefs['gradientStrokeColor'] | SignalRef;
-  labelColor?: BaseLegendNoValueRefs['labelColor'] | SignalRef;
-  strokeColor?: BaseLegendNoValueRefs['strokeColor'] | SignalRef;
-  symbolFillColor?: BaseLegendNoValueRefs['symbolFillColor'] | SignalRef;
-  symbolStrokeColor?: BaseLegendNoValueRefs['symbolStrokeColor'] | SignalRef;
-  titleColor?: BaseLegendNoValueRefs['titleColor'] | SignalRef;
-}
 
 export type LegendConfig = LegendMixins &
   VlOnlyGuideConfig &
-  Omit<VgLegendConfig, SignalLegendProp> &
-  LegendPropsWithSignal & {
+  VgLegendConfig & {
     /**
      * Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.
      *
@@ -142,11 +84,7 @@ export type LegendConfig = LegendMixins &
 /**
  * Properties of a legend or boolean flag for determining whether to show it.
  */
-export interface Legend
-  extends Omit<BaseLegendNoValueRefs, SignalLegendProp | 'orient'>,
-    LegendPropsWithSignal,
-    LegendMixins,
-    Guide {
+export interface Legend extends Omit<BaseLegendNoValueRefs, 'orient'>, LegendMixins, Guide {
   /**
    * Mark definitions for custom legend encoding.
    *

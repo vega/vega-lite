@@ -1,23 +1,16 @@
 import {Axis as VgAxis, SignalRef, Text} from 'vega';
-import {
-  Axis,
-  AxisPart,
-  AxisPropsWithConditionAndSignal,
-  COMMON_AXIS_PROPERTIES_INDEX,
-  ConditionalAxisProp,
-  SignalAxisProp
-} from '../../axis';
+import {Axis, AxisPart, AxisPropsWithCondition, COMMON_AXIS_PROPERTIES_INDEX, ConditionalAxisProp} from '../../axis';
 import {FieldDefBase} from '../../channeldef';
 import {duplicate, Flag, keys} from '../../util';
-import {Split} from '../split';
 import {isSignalRef} from '../../vega.schema';
+import {Split} from '../split';
 
 function isFalseOrNull(v: any) {
   return v === false || v === null;
 }
 
-export type AxisComponentProps = Omit<VgAxis, 'title' | ConditionalAxisProp | SignalAxisProp> &
-  Omit<AxisPropsWithConditionAndSignal, 'title'> & {
+export type AxisComponentProps = Omit<VgAxis, 'title' | ConditionalAxisProp> &
+  Omit<AxisPropsWithCondition, 'title'> & {
     title: Text | FieldDefBase<string>[] | SignalRef;
     labelExpr: string;
     disable: boolean;
