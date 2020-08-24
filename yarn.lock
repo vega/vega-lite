@@ -8227,9 +8227,9 @@ vega-encode@~4.8.0:
     vega-util "^1.14.0"
 
 vega-event-selector@^2.0.3, vega-event-selector@~2.0.3:
-  version "2.0.3"
-  resolved "https://registry.yarnpkg.com/vega-event-selector/-/vega-event-selector-2.0.3.tgz#760c61af7ab5c325d3274fd3ab284d067ff16f8c"
-  integrity sha512-rUnAvBSy5tkk+0MELY7qICTgjMNjH/DDNIH603q3GRi+bBRCd4MlJxWrPYBhwZIYpmr6XCe130lZ90/F5SgVfA==
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/vega-event-selector/-/vega-event-selector-2.0.4.tgz#1aace76da65860f01cd6cd5d843181a708ff0fad"
+  integrity sha512-AfaELQSC0Rg3CBc0YXve6xi0Gk5pGk5rdhKuncTjNIrsal75j7RN7EoU/D0EIkyRwNFJlR41OjYH3gSjA6fA0A==
 
 vega-expression@^2.6.4, vega-expression@^2.6.5, vega-expression@~2.6.5:
   version "2.6.5"
