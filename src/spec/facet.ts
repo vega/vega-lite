@@ -101,11 +101,10 @@ export function isFacetFieldDef<F extends Field>(channelDef: ChannelDef<F>): cha
 /**
  * Base interface for a facet specification.
  */
-export interface GenericFacetSpec<
-  U extends GenericUnitSpec<any, any>,
-  L extends GenericLayerSpec<any>,
-  F extends Field
-> extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {
+export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends GenericLayerSpec<any>, F extends Field>
+  extends BaseSpec,
+    GenericCompositionLayoutWithColumns,
+    ResolveMixins {
   /**
    * Definition for how to facet the data. One of:
    * 1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)
