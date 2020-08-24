@@ -15,7 +15,16 @@ import {DateTime, isDateTime} from '../../datetime';
 import * as log from '../../log';
 import {forEachLeaf} from '../../logical';
 import {isPathMark} from '../../mark';
-import {isFieldEqualPredicate, isFieldOneOfPredicate, isFieldPredicate, isFieldRangePredicate} from '../../predicate';
+import {
+  isFieldEqualPredicate,
+  isFieldGTEPredicate,
+  isFieldGTPredicate,
+  isFieldLTEPredicate,
+  isFieldLTPredicate,
+  isFieldOneOfPredicate,
+  isFieldPredicate,
+  isFieldRangePredicate
+} from '../../predicate';
 import {isSortField} from '../../sort';
 import {FilterTransform} from '../../transform';
 import {accessPathDepth, accessPathWithDatum, Dict, duplicate, hash, keys, removePathFromField} from '../../util';
@@ -76,11 +85,20 @@ export function getImplicitFromFilterTransform(transform: FilterTransform) {
       // the same type, so we only use the first one.
       if (isFieldEqualPredicate(filter)) {
         val = filter.equal;
+      } else if (isFieldLTEPredicate(filter)) {
+        val = filter.lte;
+      } else if (isFieldLTPredicate(filter)) {
+        val = filter.lt;
+      } else if (isFieldGTPredicate(filter)) {
+        val = filter.gt;
+      } else if (isFieldGTEPredicate(filter)) {
+        val = filter.gte;
       } else if (isFieldRangePredicate(filter)) {
         val = filter.range[0];
       } else if (isFieldOneOfPredicate(filter)) {
         val = (filter.oneOf ?? filter['in'])[0];
       } // else -- for filter expression, we can't infer anything
+
       if (val) {
         if (isDateTime(val)) {
           implicit[filter.field] = 'date';
