@@ -105,7 +105,7 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
-          "stroke": {"value": "#4c78a8"},
+          "stroke": {"scale": "color", "field": "Species"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
             "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
@@ -238,7 +238,13 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "data_3", "field": "Species", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "Species"},
+          {"data": "data_3", "field": "Species"}
+        ],
+        "sort": true
+      },
       "range": "category"
     }
   ],
