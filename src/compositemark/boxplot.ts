@@ -300,6 +300,7 @@ export function normalizeBoxPlot(
         ...(isEmpty(axisWithoutTitle) ? {} : {axis: axisWithoutTitle})
       },
       ...encodingWithoutSizeColorContinuousAxisAndTooltip,
+      ...(color ? {color} : {}),
       ...(customTooltipWithoutAggregatedField ? {tooltip: customTooltipWithoutAggregatedField} : {})
     }
   })[0];
