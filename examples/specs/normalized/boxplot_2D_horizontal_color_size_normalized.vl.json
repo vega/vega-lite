@@ -36,7 +36,8 @@
               "title": "Body Mass (g)",
               "scale": {"zero": false}
             },
-            "y": {"field": "Species", "type": "nominal"}
+            "y": {"field": "Species", "type": "nominal"},
+            "color": {"value": "teal"}
           }
         },
         {

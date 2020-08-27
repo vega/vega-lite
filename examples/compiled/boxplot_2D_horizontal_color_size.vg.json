@@ -105,7 +105,7 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
-          "stroke": {"value": "#4c78a8"},
+          "stroke": {"value": "teal"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
             "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
