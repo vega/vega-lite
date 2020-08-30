@@ -465,7 +465,7 @@ export interface PositionMixins {
    *
    * __See also:__ [`axis`](https://vega.github.io/vega-lite/docs/axis.html) documentation.
    */
-  axis?: Axis | null;
+  axis?: Axis<ExprRef | SignalRef> | null;
 
   /**
    * An object defining the properties of the Impute Operation to be applied.
@@ -553,7 +553,7 @@ export interface LegendMixins {
    *
    * __See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation.
    */
-  legend?: Legend | null;
+  legend?: Legend<ExprRef | SignalRef> | null;
 }
 
 // Detail

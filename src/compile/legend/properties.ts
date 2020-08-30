@@ -4,7 +4,7 @@ import {isColorChannel} from '../../channel';
 import {DatumDef, MarkPropFieldOrDatumDef, title as fieldDefTitle, TypedFieldDef, valueArray} from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding} from '../../encoding';
-import {Legend, LegendConfig} from '../../legend';
+import {Legend, LegendConfig, LegendInternal} from '../../legend';
 import {Mark, MarkDef} from '../../mark';
 import {isContinuousToContinuous, ScaleType} from '../../scale';
 import {TimeUnit} from '../../timeunit';
@@ -18,13 +18,13 @@ import {LegendComponentProps} from './component';
 import {getFirstConditionValue} from './encode';
 
 export interface LegendRuleParams {
-  legend: Legend;
+  legend: LegendInternal;
   channel: NonPositionScaleChannel;
   model: UnitModel;
   markDef: MarkDef;
   encoding: Encoding<string>;
   fieldOrDatumDef: MarkPropFieldOrDatumDef<string>;
-  legendConfig: LegendConfig;
+  legendConfig: LegendConfig<SignalRef>;
   config: Config;
   scaleType: ScaleType;
   orient: LegendOrient;
@@ -74,7 +74,7 @@ export const legendRules: {
   values: ({fieldOrDatumDef, legend}) => values(legend, fieldOrDatumDef)
 };
 
-export function values(legend: Legend, fieldOrDatumDef: TypedFieldDef<string> | DatumDef) {
+export function values(legend: LegendInternal, fieldOrDatumDef: TypedFieldDef<string> | DatumDef) {
   const vals = legend.values;
 
   if (isArray(vals)) {
@@ -128,7 +128,7 @@ export function clipHeight(legendType: LegendType) {
 }
 
 export function getLegendType(params: {
-  legend: Legend;
+  legend: LegendInternal;
   channel: NonPositionScaleChannel;
   timeUnit?: TimeUnit;
   scaleType: ScaleType;
@@ -168,9 +168,9 @@ export function getDirection({
   legend
 }: {
   orient: LegendOrient;
-  legendConfig: LegendConfig;
+  legendConfig: LegendConfig<SignalRef>;
   legendType: LegendType;
-  legend: Legend;
+  legend: Legend<SignalRef>;
 }): Orientation {
   return (
     legend.direction ??
@@ -208,7 +208,7 @@ export function defaultGradientLength({
   direction: Orientation;
   orient: LegendOrient;
   model: Model;
-  legendConfig: LegendConfig;
+  legendConfig: LegendConfig<SignalRef>;
 }) {
   const {
     gradientHorizontalMaxLength,

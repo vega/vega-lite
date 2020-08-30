@@ -1,4 +1,4 @@
-import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
+import {AggregateOp, LayoutAlign, NewSignal, SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
 import {COLUMN, ExtendedChannel, FacetChannel, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../channel';
@@ -40,7 +40,7 @@ export class FacetModel extends ModelWithField {
 
   public readonly children: Model[];
 
-  constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, config: Config) {
+  constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, config: Config<SignalRef>) {
     super(spec, 'facet', parent, parentGivenName, config, spec.resolve);
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, config);

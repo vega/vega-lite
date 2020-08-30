@@ -626,54 +626,124 @@
       "additionalProperties": false,
       "properties": {
         "aria": {
-          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the axis from the ARIA accessibility tree.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the axis from the ARIA accessibility tree.\n\n__Default value:__ `true`",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "bandPosition": {
-          "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "description": {
-          "description": "A text description of this axis for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "A text description of this axis for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "domain": {
-          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "domainCap": {
-          "$ref": "#/definitions/StrokeCap",
-          "description": "The stroke cap for the domain line's ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StrokeCap",
+              "description": "The stroke cap for the domain line's ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "domainColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Color of axis domain line.\n\n__Default value:__ `\"gray\"`."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "Color of axis domain line.\n\n__Default value:__ `\"gray\"`."
+          ]
         },
         "domainDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed domain lines.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed domain lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "domainDashOffset": {
-          "description": "The pixel offset at which to start drawing with the domain dash array.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the domain dash array.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "domainOpacity": {
-          "description": "Opacity of the axis domain line.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the axis domain line.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "domainWidth": {
-          "description": "Stroke width of axis domain line\n\n__Default value:__ `1`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Stroke width of axis domain line\n\n__Default value:__ `1`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "format": {
           "anyOf": [
@@ -695,8 +765,15 @@
           "type": "boolean"
         },
         "gridCap": {
-          "$ref": "#/definitions/StrokeCap",
-          "description": "The stroke cap for grid lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StrokeCap",
+              "description": "The stroke cap for grid lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "gridColor": {
           "anyOf": [
@@ -710,6 +787,9 @@
                 }
               ],
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisColor"
@@ -726,6 +806,9 @@
               "type": "array"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumberArray"
             }
           ]
@@ -735,6 +818,9 @@
             {
               "description": "The pixel offset at which to start drawing with the grid dash array.",
               "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisNumber"
@@ -750,6 +836,9 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
@@ -760,6 +849,9 @@
               "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
               "minimum": 0,
               "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisNumber"
@@ -773,15 +865,25 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisLabelAlign"
             }
           ]
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
-          "maximum": 360,
-          "minimum": -360,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
+              "maximum": 360,
+              "minimum": -360,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelBaseline": {
           "anyOf": [
@@ -790,15 +892,25 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation.\nOne of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisLabelBaseline"
             }
           ]
         },
         "labelBound": {
-          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
-          "type": [
-            "number",
-            "boolean"
+          "anyOf": [
+            {
+              "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+              "type": [
+                "number",
+                "boolean"
+              ]
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
           ]
         },
         "labelColor": {
@@ -813,6 +925,9 @@
                 }
               ],
               "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisColor"
@@ -831,14 +946,24 @@
           ]
         },
         "labelFlushOffset": {
-          "description": "Indicates the number of pixels by which to offset flush-adjusted labels. For example, a value of `2` will push flush-adjusted labels 2 pixels outward from the center of the axis. Offsets can help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `0`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Indicates the number of pixels by which to offset flush-adjusted labels. For example, a value of `2` will push flush-adjusted labels 2 pixels outward from the center of the axis. Offsets can help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `0`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelFont": {
           "anyOf": [
             {
               "description": "The font of the tick label.",
               "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisString"
@@ -853,6 +978,9 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
@@ -862,6 +990,9 @@
             {
               "$ref": "#/definitions/FontStyle",
               "description": "Font style of the title."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisLabelFontStyle"
@@ -875,23 +1006,43 @@
               "description": "Font weight of axis tick labels."
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisLabelFontWeight"
             }
           ]
         },
         "labelLimit": {
-          "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelLineHeight": {
-          "description": "Line height in pixels for multi-line label text or label text with `\"line-top\"` or `\"line-bottom\"` baseline.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Line height in pixels for multi-line label text or label text with `\"line-top\"` or `\"line-bottom\"` baseline.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelOffset": {
           "anyOf": [
             {
               "description": "Position offset in pixels to apply to labels, in addition to tickOffset.\n\n__Default value:__ `0`",
               "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisNumber"
@@ -905,12 +1056,22 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
         "labelOverlap": {
-          "$ref": "#/definitions/LabelOverlap",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LabelOverlap"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
         },
         "labelPadding": {
@@ -920,37 +1081,82 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
         "labelSeparation": {
-          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labels": {
-          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__ `true`.",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__ `true`.",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "maxExtent": {
-          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30` for y-axis; `undefined` for x-axis.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30` for y-axis; `undefined` for x-axis.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "offset": {
           "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.\n\n__Default value:__ derived from the [axis config](https://vega.github.io/vega-lite/docs/config.html#facet-scale-config)'s `offset` (`0` by default)",
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/AxisOrient",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AxisOrient"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y-axis oriented towards the right edge of the chart).\n\n__Default value:__ `\"bottom\"` for x-axes and `\"left\"` for y-axes."
         },
         "position": {
-          "description": "The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`"
         },
         "style": {
           "anyOf": [
@@ -967,16 +1173,30 @@
           "description": "A string or array of strings indicating the name of custom styles to apply to the axis. A style is a named collection of axis property defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles.\n\n__Default value:__ (none)\n__Note:__ Any specified style will augment the default style. For example, an x-axis mark with `\"style\": \"foo\"` will use `config.axisX` and `config.style.foo` (the specified style `\"foo\"` has higher precedence)."
         },
         "tickBand": {
-          "description": "For band scales, indicates if ticks and grid lines should be placed at the `\"center\"` of a band (default) or at the band `\"extent\"`s to indicate intervals",
-          "enum": [
-            "center",
-            "extent"
-          ],
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "For band scales, indicates if ticks and grid lines should be placed at the `\"center\"` of a band (default) or at the band `\"extent\"`s to indicate intervals",
+              "enum": [
+                "center",
+                "extent"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tickCap": {
-          "$ref": "#/definitions/StrokeCap",
-          "description": "The stroke cap for the tick lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StrokeCap",
+              "description": "The stroke cap for the tick lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tickColor": {
           "anyOf": [
@@ -990,6 +1210,9 @@
                 }
               ],
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisColor"
@@ -1006,6 +1229,9 @@
             },
             {
               "$ref": "#/definitions/TimeIntervalStep"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.\n\nFor scales of type `\"time\"` or `\"utc\"`, the tick count can instead be a time interval specifier. Legal string values are `\"millisecond\"`, `\"second\"`, `\"minute\"`, `\"hour\"`, `\"day\"`, `\"week\"`, `\"month\"`, and \"year\". Alternatively, an object-valued interval specifier of the form `{\"interval\": \"month\", \"step\": 3}` includes a desired number of interval steps. Here, ticks are generated for each quarter (Jan, Apr, Jul, Oct) boundary.\n\n__Default value__: Determine using a formula `ceil(width/40)` for x and `ceil(height/40)` for y.",
@@ -1021,6 +1247,9 @@
               "type": "array"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumberArray"
             }
           ]
@@ -1032,21 +1261,45 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
         "tickExtra": {
-          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tickMinStep": {
-          "description": "The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value."
         },
         "tickOffset": {
-          "description": "Position offset in pixels to apply to ticks, labels, and gridlines.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Position offset in pixels to apply to ticks, labels, and gridlines.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tickOpacity": {
           "anyOf": [
@@ -1055,13 +1308,23 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
         "tickRound": {
-          "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tickSize": {
           "anyOf": [
@@ -1069,6 +1332,9 @@
               "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
               "minimum": 0,
               "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisNumber"
@@ -1083,13 +1349,23 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
         "ticks": {
-          "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "title": {
           "anyOf": [
@@ -1103,77 +1379,189 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "titleAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment of axis titles."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "Horizontal text alignment of axis titles."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleAnchor": {
-          "$ref": "#/definitions/TitleAnchor",
-          "description": "Text anchor position for placing axis titles."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TitleAnchor",
+              "description": "Text anchor position for placing axis titles."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleAngle": {
-          "description": "Angle in degrees of axis titles.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Angle in degrees of axis titles.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for axis titles. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "Vertical text baseline for axis titles. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Color of the title, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "Color of the title, can be in hex color code or regular color name."
+          ]
         },
         "titleFont": {
-          "description": "Font of the title. (e.g., `\"Helvetica Neue\"`).",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "Font of the title. (e.g., `\"Helvetica Neue\"`).",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleFontSize": {
-          "description": "Font size of the title.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Font size of the title.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "Font style of the title."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "Font style of the title."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "Font weight of the title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "Font weight of the title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleLimit": {
-          "description": "Maximum allowed pixel width of axis titles.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Maximum allowed pixel width of axis titles.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleLineHeight": {
-          "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleOpacity": {
-          "description": "Opacity of the axis title.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the axis title.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titlePadding": {
-          "description": "The padding, in pixels, between title and axis.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The padding, in pixels, between title and axis.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleX": {
-          "description": "X-coordinate of the axis title relative to the axis group.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "X-coordinate of the axis title relative to the axis group.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleY": {
-          "description": "Y-coordinate of the axis title relative to the axis group.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Y-coordinate of the axis title relative to the axis group.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "translate": {
-          "description": "Coordinate space translation offset for axis layout. By default, axes are translated by a 0.5 pixel offset for both the x and y coordinates in order to align stroked lines with the pixel grid. However, for vector graphics output these pixel-specific adjustments may be undesirable, in which case translate can be changed (for example, to zero).\n\n__Default value:__ `0.5`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Coordinate space translation offset for axis layout. By default, axes are translated by a 0.5 pixel offset for both the x and y coordinates in order to align stroked lines with the pixel grid. However, for vector graphics output these pixel-specific adjustments may be undesirable, in which case translate can be changed (for example, to zero).\n\n__Default value:__ `0.5`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "values": {
           "anyOf": [
@@ -1200,6 +1588,9 @@
                 "$ref": "#/definitions/DateTime"
               },
               "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "Explicitly set the visible axis tick values."
@@ -1216,58 +1607,128 @@
       "additionalProperties": false,
       "properties": {
         "aria": {
-          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the axis from the ARIA accessibility tree.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the axis from the ARIA accessibility tree.\n\n__Default value:__ `true`",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "bandPosition": {
-          "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "description": {
-          "description": "A text description of this axis for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "A text description of this axis for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "disable": {
           "description": "Disable axis by default.",
           "type": "boolean"
         },
         "domain": {
-          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "domainCap": {
-          "$ref": "#/definitions/StrokeCap",
-          "description": "The stroke cap for the domain line's ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StrokeCap",
+              "description": "The stroke cap for the domain line's ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "domainColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Color of axis domain line.\n\n__Default value:__ `\"gray\"`."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "Color of axis domain line.\n\n__Default value:__ `\"gray\"`."
+          ]
         },
         "domainDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed domain lines.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed domain lines.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "domainDashOffset": {
-          "description": "The pixel offset at which to start drawing with the domain dash array.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the domain dash array.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "domainOpacity": {
-          "description": "Opacity of the axis domain line.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the axis domain line.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "domainWidth": {
-          "description": "Stroke width of axis domain line\n\n__Default value:__ `1`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Stroke width of axis domain line\n\n__Default value:__ `1`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "format": {
           "anyOf": [
@@ -1289,8 +1750,15 @@
           "type": "boolean"
         },
         "gridCap": {
-          "$ref": "#/definitions/StrokeCap",
-          "description": "The stroke cap for grid lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StrokeCap",
+              "description": "The stroke cap for grid lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "gridColor": {
           "anyOf": [
@@ -1304,6 +1772,9 @@
                 }
               ],
               "description": "Color of gridlines.\n\n__Default value:__ `\"lightGray\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisColor"
@@ -1320,6 +1791,9 @@
               "type": "array"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumberArray"
             }
           ]
@@ -1329,6 +1803,9 @@
             {
               "description": "The pixel offset at which to start drawing with the grid dash array.",
               "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisNumber"
@@ -1344,6 +1821,9 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
@@ -1354,6 +1834,9 @@
               "description": "The grid width, in pixels.\n\n__Default value:__ `1`",
               "minimum": 0,
               "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisNumber"
@@ -1367,15 +1850,25 @@
               "description": "Horizontal text alignment of axis tick labels, overriding the default setting for the current axis orientation."
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisLabelAlign"
             }
           ]
         },
         "labelAngle": {
-          "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
-          "maximum": 360,
-          "minimum": -360,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The rotation angle of the axis labels.\n\n__Default value:__ `-90` for nominal and ordinal fields; `0` otherwise.",
+              "maximum": 360,
+              "minimum": -360,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelBaseline": {
           "anyOf": [
@@ -1384,15 +1877,25 @@
               "description": "Vertical text baseline of axis tick labels, overriding the default setting for the current axis orientation.\nOne of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisLabelBaseline"
             }
           ]
         },
         "labelBound": {
-          "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
-          "type": [
-            "number",
-            "boolean"
+          "anyOf": [
+            {
+              "description": "Indicates if labels should be hidden if they exceed the axis range. If `false` (the default) no bounds overlap analysis is performed. If `true`, labels will be hidden if they exceed the axis range by more than 1 pixel. If this property is a number, it specifies the pixel tolerance: the maximum amount by which a label bounding box may exceed the axis range.\n\n__Default value:__ `false`.",
+              "type": [
+                "number",
+                "boolean"
+              ]
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
           ]
         },
         "labelColor": {
@@ -1407,6 +1910,9 @@
                 }
               ],
               "description": "The color of the tick label, can be in hex color code or regular color name."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisColor"
@@ -1425,14 +1931,24 @@
           ]
         },
         "labelFlushOffset": {
-          "description": "Indicates the number of pixels by which to offset flush-adjusted labels. For example, a value of `2` will push flush-adjusted labels 2 pixels outward from the center of the axis. Offsets can help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `0`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Indicates the number of pixels by which to offset flush-adjusted labels. For example, a value of `2` will push flush-adjusted labels 2 pixels outward from the center of the axis. Offsets can help the labels better visually group with corresponding axis ticks.\n\n__Default value:__ `0`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelFont": {
           "anyOf": [
             {
               "description": "The font of the tick label.",
               "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisString"
@@ -1447,6 +1963,9 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
@@ -1456,6 +1975,9 @@
             {
               "$ref": "#/definitions/FontStyle",
               "description": "Font style of the title."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisLabelFontStyle"
@@ -1469,23 +1991,43 @@
               "description": "Font weight of axis tick labels."
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisLabelFontWeight"
             }
           ]
         },
         "labelLimit": {
-          "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Maximum allowed pixel width of axis tick labels.\n\n__Default value:__ `180`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelLineHeight": {
-          "description": "Line height in pixels for multi-line label text or label text with `\"line-top\"` or `\"line-bottom\"` baseline.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Line height in pixels for multi-line label text or label text with `\"line-top\"` or `\"line-bottom\"` baseline.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelOffset": {
           "anyOf": [
             {
               "description": "Position offset in pixels to apply to labels, in addition to tickOffset.\n\n__Default value:__ `0`",
               "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisNumber"
@@ -1499,12 +2041,22 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
         "labelOverlap": {
-          "$ref": "#/definitions/LabelOverlap",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LabelOverlap"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The strategy to use for resolving overlap of axis labels. If `false` (the default), no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used (this works well for standard linear axes). If set to `\"greedy\"`, a linear scan of the labels is performed, removing any labels that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true` for non-nominal fields with non-log scales; `\"greedy\"` for log scales; otherwise `false`."
         },
         "labelPadding": {
@@ -1514,37 +2066,82 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
         "labelSeparation": {
-          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labels": {
-          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__ `true`.",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__ `true`.",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "maxExtent": {
-          "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The maximum extent in pixels that axis ticks and labels should use. This determines a maximum offset value for axis titles.\n\n__Default value:__ `undefined`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "minExtent": {
-          "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30` for y-axis; `undefined` for x-axis.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The minimum extent in pixels that axis ticks and labels should use. This determines a minimum offset value for axis titles.\n\n__Default value:__ `30` for y-axis; `undefined` for x-axis.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "offset": {
           "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.\n\n__Default value:__ derived from the [axis config](https://vega.github.io/vega-lite/docs/config.html#facet-scale-config)'s `offset` (`0` by default)",
           "type": "number"
         },
         "orient": {
-          "$ref": "#/definitions/AxisOrient",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/AxisOrient"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The orientation of the axis. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`. The orientation can be used to further specialize the axis type (e.g., a y-axis oriented towards the right edge of the chart).\n\n__Default value:__ `\"bottom\"` for x-axes and `\"left\"` for y-axes."
         },
         "position": {
-          "description": "The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The anchor position of the axis in pixels. For x-axes with top or bottom orientation, this sets the axis group x coordinate. For y-axes with left or right orientation, this sets the axis group y coordinate.\n\n__Default value__: `0`"
         },
         "style": {
           "anyOf": [
@@ -1561,16 +2158,30 @@
           "description": "A string or array of strings indicating the name of custom styles to apply to the axis. A style is a named collection of axis property defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles.\n\n__Default value:__ (none)\n__Note:__ Any specified style will augment the default style. For example, an x-axis mark with `\"style\": \"foo\"` will use `config.axisX` and `config.style.foo` (the specified style `\"foo\"` has higher precedence)."
         },
         "tickBand": {
-          "description": "For band scales, indicates if ticks and grid lines should be placed at the `\"center\"` of a band (default) or at the band `\"extent\"`s to indicate intervals",
-          "enum": [
-            "center",
-            "extent"
-          ],
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "For band scales, indicates if ticks and grid lines should be placed at the `\"center\"` of a band (default) or at the band `\"extent\"`s to indicate intervals",
+              "enum": [
+                "center",
+                "extent"
+              ],
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tickCap": {
-          "$ref": "#/definitions/StrokeCap",
-          "description": "The stroke cap for the tick lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/StrokeCap",
+              "description": "The stroke cap for the tick lines' ending style. One of `\"butt\"`, `\"round\"` or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tickColor": {
           "anyOf": [
@@ -1584,6 +2195,9 @@
                 }
               ],
               "description": "The color of the axis's tick.\n\n__Default value:__ `\"gray\"`"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisColor"
@@ -1600,6 +2214,9 @@
             },
             {
               "$ref": "#/definitions/TimeIntervalStep"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A desired number of ticks, for axes visualizing quantitative scales. The resulting number may be different so that values are \"nice\" (multiples of 2, 5, 10) and lie within the underlying scale's range.\n\nFor scales of type `\"time\"` or `\"utc\"`, the tick count can instead be a time interval specifier. Legal string values are `\"millisecond\"`, `\"second\"`, `\"minute\"`, `\"hour\"`, `\"day\"`, `\"week\"`, `\"month\"`, and \"year\". Alternatively, an object-valued interval specifier of the form `{\"interval\": \"month\", \"step\": 3}` includes a desired number of interval steps. Here, ticks are generated for each quarter (Jan, Apr, Jul, Oct) boundary.\n\n__Default value__: Determine using a formula `ceil(width/40)` for x and `ceil(height/40)` for y.",
@@ -1615,6 +2232,9 @@
               "type": "array"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumberArray"
             }
           ]
@@ -1626,21 +2246,45 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
         "tickExtra": {
-          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tickMinStep": {
-          "description": "The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The minimum desired step between axis ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value."
         },
         "tickOffset": {
-          "description": "Position offset in pixels to apply to ticks, labels, and gridlines.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Position offset in pixels to apply to ticks, labels, and gridlines.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tickOpacity": {
           "anyOf": [
@@ -1649,13 +2293,23 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
         "tickRound": {
-          "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tickSize": {
           "anyOf": [
@@ -1663,6 +2317,9 @@
               "description": "The size in pixels of axis ticks.\n\n__Default value:__ `5`",
               "minimum": 0,
               "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             },
             {
               "$ref": "#/definitions/ConditionalAxisNumber"
@@ -1677,13 +2334,23 @@
               "type": "number"
             },
             {
+              "$ref": "#/definitions/ExprRef"
+            },
+            {
               "$ref": "#/definitions/ConditionalAxisNumber"
             }
           ]
         },
         "ticks": {
-          "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "title": {
           "anyOf": [
@@ -1697,77 +2364,189 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "titleAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment of axis titles."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "Horizontal text alignment of axis titles."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleAnchor": {
-          "$ref": "#/definitions/TitleAnchor",
-          "description": "Text anchor position for placing axis titles."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TitleAnchor",
+              "description": "Text anchor position for placing axis titles."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleAngle": {
-          "description": "Angle in degrees of axis titles.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Angle in degrees of axis titles.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for axis titles. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "Vertical text baseline for axis titles. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Color of the title, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "Color of the title, can be in hex color code or regular color name."
+          ]
         },
         "titleFont": {
-          "description": "Font of the title. (e.g., `\"Helvetica Neue\"`).",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "Font of the title. (e.g., `\"Helvetica Neue\"`).",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleFontSize": {
-          "description": "Font size of the title.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Font size of the title.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "Font style of the title."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "Font style of the title."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "Font weight of the title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "Font weight of the title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleLimit": {
-          "description": "Maximum allowed pixel width of axis titles.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Maximum allowed pixel width of axis titles.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleLineHeight": {
-          "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleOpacity": {
-          "description": "Opacity of the axis title.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the axis title.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titlePadding": {
-          "description": "The padding, in pixels, between title and axis.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The padding, in pixels, between title and axis.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleX": {
-          "description": "X-coordinate of the axis title relative to the axis group.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "X-coordinate of the axis title relative to the axis group.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleY": {
-          "description": "Y-coordinate of the axis title relative to the axis group.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Y-coordinate of the axis title relative to the axis group.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "translate": {
-          "description": "Coordinate space translation offset for axis layout. By default, axes are translated by a 0.5 pixel offset for both the x and y coordinates in order to align stroked lines with the pixel grid. However, for vector graphics output these pixel-specific adjustments may be undesirable, in which case translate can be changed (for example, to zero).\n\n__Default value:__ `0.5`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Coordinate space translation offset for axis layout. By default, axes are translated by a 0.5 pixel offset for both the x and y coordinates in order to align stroked lines with the pixel grid. However, for vector graphics output these pixel-specific adjustments may be undesirable, in which case translate can be changed (for example, to zero).\n\n__Default value:__ `0.5`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "values": {
           "anyOf": [
@@ -1794,6 +2573,9 @@
                 "$ref": "#/definitions/DateTime"
               },
               "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "Explicitly set the visible axis tick values."
@@ -2233,36 +3015,6 @@
             }
           ],
           "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
-        }
-      },
-      "type": "object"
-    },
-    "BaseLegendLayout": {
-      "additionalProperties": false,
-      "properties": {
-        "anchor": {
-          "$ref": "#/definitions/TitleAnchor",
-          "description": "The anchor point for legend orient group layout."
-        },
-        "bounds": {
-          "$ref": "#/definitions/LayoutBounds",
-          "description": "The bounds calculation to use for legend orient group layout."
-        },
-        "center": {
-          "description": "A flag to center legends within a shared orient group.",
-          "type": "boolean"
-        },
-        "direction": {
-          "$ref": "#/definitions/Orientation",
-          "description": "The layout direction for legend orient group layout."
-        },
-        "margin": {
-          "description": "The pixel margin between legends within a orient group.",
-          "type": "number"
-        },
-        "offset": {
-          "description": "The pixel offset from the chart body for a legend orient group.",
-          "type": "number"
         }
       },
       "type": "object"
@@ -3520,274 +4272,893 @@
       "$ref": "#/definitions/ConditionalAxisProperty<(number[]|null)>"
     },
     "ConditionalAxisProperty<(Align|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Align|null)>>"
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(Align|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(Align|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
             },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Align|null)>>"
-              },
-              "type": "array"
+            "value": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Align"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Align"
-            },
-            {
-              "type": "null"
-            }
+          },
+          "required": [
+            "condition",
+            "value"
           ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(Align|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(Align|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            }
+          },
+          "required": [
+            "condition",
+            "expr"
+          ],
+          "type": "object"
         }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
+      ]
     },
     "ConditionalAxisProperty<(Color|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Color|null)>>"
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(Color|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(Color|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
             },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Color|null)>>"
-              },
-              "type": "array"
+            "value": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Color"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Color"
-            },
-            {
-              "type": "null"
-            }
+          },
+          "required": [
+            "condition",
+            "value"
           ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(Color|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(Color|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            }
+          },
+          "required": [
+            "condition",
+            "expr"
+          ],
+          "type": "object"
         }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
+      ]
     },
     "ConditionalAxisProperty<(FontStyle|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontStyle|null)>>"
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(FontStyle|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(FontStyle|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
             },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontStyle|null)>>"
-              },
-              "type": "array"
+            "value": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/FontStyle"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontStyle"
-            },
-            {
-              "type": "null"
-            }
+          },
+          "required": [
+            "condition",
+            "value"
           ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(FontStyle|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(FontStyle|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            }
+          },
+          "required": [
+            "condition",
+            "expr"
+          ],
+          "type": "object"
         }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
+      ]
     },
     "ConditionalAxisProperty<(FontWeight|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontWeight|null)>>"
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(FontWeight|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(FontWeight|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
             },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(FontWeight|null)>>"
-              },
-              "type": "array"
+            "value": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/FontWeight"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontWeight"
-            },
-            {
-              "type": "null"
-            }
+          },
+          "required": [
+            "condition",
+            "value"
           ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(FontWeight|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(FontWeight|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            }
+          },
+          "required": [
+            "condition",
+            "expr"
+          ],
+          "type": "object"
         }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
+      ]
     },
     "ConditionalAxisProperty<(TextBaseline|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(TextBaseline|null)>>"
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(TextBaseline|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(TextBaseline|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
             },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(TextBaseline|null)>>"
-              },
-              "type": "array"
+            "value": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/TextBaseline"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextBaseline"
-            },
-            {
-              "type": "null"
-            }
+          },
+          "required": [
+            "condition",
+            "value"
           ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(TextBaseline|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(TextBaseline|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            }
+          },
+          "required": [
+            "condition",
+            "expr"
+          ],
+          "type": "object"
         }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
+      ]
     },
     "ConditionalAxisProperty<(number[]|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|null)>>"
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(number[]|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(number[]|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
             },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|null)>>"
-              },
-              "type": "array"
+            "value": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
             }
-          ]
-        },
-        "value": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
+          },
+          "required": [
+            "condition",
+            "value"
           ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(number[]|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(number[]|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            }
+          },
+          "required": [
+            "condition",
+            "expr"
+          ],
+          "type": "object"
         }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
+      ]
     },
     "ConditionalAxisProperty<(number|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|null)>>"
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(number|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(number|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
             },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|null)>>"
-              },
-              "type": "array"
+            "value": {
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+              "type": [
+                "number",
+                "null"
+              ]
             }
-          ]
+          },
+          "required": [
+            "condition",
+            "value"
+          ],
+          "type": "object"
         },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": [
-            "number",
-            "null"
-          ]
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(number|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(number|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            }
+          },
+          "required": [
+            "condition",
+            "expr"
+          ],
+          "type": "object"
         }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
+      ]
     },
     "ConditionalAxisProperty<(string|null)>": {
-      "additionalProperties": false,
-      "properties": {
-        "condition": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|null)>>"
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(string|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(string|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
             },
-            {
-              "items": {
-                "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|null)>>"
-              },
-              "type": "array"
+            "value": {
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+              "type": [
+                "string",
+                "null"
+              ]
             }
-          ]
+          },
+          "required": [
+            "condition",
+            "value"
+          ],
+          "type": "object"
         },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "null"
-          ]
+        {
+          "additionalProperties": false,
+          "properties": {
+            "condition": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(string|null)>|ExprRef)>"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/ConditionalPredicate<(ValueDef<(string|null)>|ExprRef)>"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            }
+          },
+          "required": [
+            "condition",
+            "expr"
+          ],
+          "type": "object"
         }
-      },
-      "required": [
-        "condition",
-        "value"
-      ],
-      "type": "object"
+      ]
     },
     "ConditionalAxisString": {
       "$ref": "#/definitions/ConditionalAxisProperty<(string|null)>"
+    },
+    "ConditionalPredicate<(ValueDef<(Align|null)>|ExprRef)>": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            },
+            "value": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Align"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+            }
+          },
+          "required": [
+            "test",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            },
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            }
+          },
+          "required": [
+            "expr",
+            "test"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ConditionalPredicate<(ValueDef<(Color|null)>|ExprRef)>": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            },
+            "value": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Color"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+            }
+          },
+          "required": [
+            "test",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            },
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            }
+          },
+          "required": [
+            "expr",
+            "test"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ConditionalPredicate<(ValueDef<(FontStyle|null)>|ExprRef)>": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            },
+            "value": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/FontStyle"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+            }
+          },
+          "required": [
+            "test",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            },
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            }
+          },
+          "required": [
+            "expr",
+            "test"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ConditionalPredicate<(ValueDef<(FontWeight|null)>|ExprRef)>": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            },
+            "value": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/FontWeight"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+            }
+          },
+          "required": [
+            "test",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            },
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            }
+          },
+          "required": [
+            "expr",
+            "test"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ConditionalPredicate<(ValueDef<(TextBaseline|null)>|ExprRef)>": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            },
+            "value": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/TextBaseline"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+            }
+          },
+          "required": [
+            "test",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            },
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            }
+          },
+          "required": [
+            "expr",
+            "test"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ConditionalPredicate<(ValueDef<(number[]|null)>|ExprRef)>": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            },
+            "value": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "number"
+                  },
+                  "type": "array"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+            }
+          },
+          "required": [
+            "test",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            },
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            }
+          },
+          "required": [
+            "expr",
+            "test"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ConditionalPredicate<(ValueDef<(number|null)>|ExprRef)>": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            },
+            "value": {
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+              "type": [
+                "number",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "test",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            },
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            }
+          },
+          "required": [
+            "expr",
+            "test"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ConditionalPredicate<(ValueDef<(string|null)>|ExprRef)>": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            },
+            "value": {
+              "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          },
+          "required": [
+            "test",
+            "value"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "expr": {
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "type": "string"
+            },
+            "test": {
+              "$ref": "#/definitions/PredicateComposition",
+              "description": "Predicate for triggering the condition"
+            }
+          },
+          "required": [
+            "expr",
+            "test"
+          ],
+          "type": "object"
+        }
+      ]
     },
     "ConditionalPredicate<MarkPropFieldOrDatumDef>": {
       "anyOf": [
@@ -4199,106 +5570,6 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(Align|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/PredicateComposition",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Align"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(Color|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/PredicateComposition",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Color"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(FontStyle|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/PredicateComposition",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontStyle"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(FontWeight|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/PredicateComposition",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontWeight"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
     "ConditionalPredicate<ValueDef<(Gradient|string|null|ExprRef)>>": {
       "additionalProperties": false,
       "properties": {
@@ -4319,31 +5590,6 @@
             },
             {
               "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(TextBaseline|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/PredicateComposition",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextBaseline"
-            },
-            {
-              "type": "null"
             }
           ],
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
@@ -4408,34 +5654,6 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(number[]|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/PredicateComposition",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
     "ConditionalPredicate<ValueDef<(number|ExprRef)>>": {
       "additionalProperties": false,
       "properties": {
@@ -4461,27 +5679,6 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(number|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/PredicateComposition",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": [
-            "number",
-            "null"
-          ]
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
     "ConditionalPredicate<ValueDef<(string|ExprRef)>>": {
       "additionalProperties": false,
       "properties": {
@@ -4499,27 +5696,6 @@
             }
           ],
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "test",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalPredicate<ValueDef<(string|null)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "test": {
-          "$ref": "#/definitions/PredicateComposition",
-          "description": "Predicate for triggering the condition"
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": [
-            "string",
-            "null"
-          ]
         }
       },
       "required": [
@@ -10524,40 +11700,75 @@
       ],
       "type": "string"
     },
-    "LayoutBounds": {
-      "enum": [
-        "full",
-        "flush"
-      ],
-      "type": "string"
-    },
     "Legend": {
       "additionalProperties": false,
       "description": "Properties of a legend or boolean flag for determining whether to show it.",
       "properties": {
         "aria": {
-          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the legend from the ARIA accessibility tree.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the legend from the ARIA accessibility tree.\n\n__Default value:__ `true`",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "clipHeight": {
-          "description": "The height in pixels to clip symbol legend entries and limit their size.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The height in pixels to clip symbol legend entries and limit their size.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "columnPadding": {
-          "description": "The horizontal padding in pixels between symbol legend entries.\n\n__Default value:__ `10`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The horizontal padding in pixels between symbol legend entries.\n\n__Default value:__ `10`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "columns": {
-          "description": "The number of columns in which to arrange symbol legend entries. A value of `0` or lower indicates a single row with one column per entry.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The number of columns in which to arrange symbol legend entries. A value of `0` or lower indicates a single row with one column per entry.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "cornerRadius": {
-          "description": "Corner radius for the full legend.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Corner radius for the full legend.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "description": {
-          "description": "A text description of this legend for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "A text description of this legend for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "direction": {
           "$ref": "#/definitions/Orientation",
@@ -10566,13 +11777,20 @@
         "fillColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Background fill color for the full legend."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "Background fill color for the full legend."
+          ]
         },
         "format": {
           "anyOf": [
@@ -10590,204 +11808,463 @@
           "type": "string"
         },
         "gradientLength": {
-          "description": "The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.\n\n__Default value:__ `200`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.\n\n__Default value:__ `200`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "gradientOpacity": {
-          "description": "Opacity of the color gradient.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the color gradient.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "gradientStrokeColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "The color of the gradient stroke, can be in hex color code or regular color name.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "The color of the gradient stroke, can be in hex color code or regular color name.\n\n__Default value:__ `\"lightGray\"`."
+          ]
         },
         "gradientStrokeWidth": {
-          "description": "The width of the gradient stroke, in pixels.\n\n__Default value:__ `0`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The width of the gradient stroke, in pixels.\n\n__Default value:__ `0`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "gradientThickness": {
-          "description": "The thickness in pixels of the color gradient. This value corresponds to the width of a vertical gradient or the height of a horizontal gradient.\n\n__Default value:__ `16`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The thickness in pixels of the color gradient. This value corresponds to the width of a vertical gradient or the height of a horizontal gradient.\n\n__Default value:__ `16`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "gridAlign": {
-          "$ref": "#/definitions/LayoutAlign",
-          "description": "The alignment to apply to symbol legends rows and columns. The supported string values are `\"all\"`, `\"each\"` (the default), and `none`. For more information, see the [grid layout documentation](https://vega.github.io/vega/docs/layout).\n\n__Default value:__ `\"each\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LayoutAlign",
+              "description": "The alignment to apply to symbol legends rows and columns. The supported string values are `\"all\"`, `\"each\"` (the default), and `none`. For more information, see the [grid layout documentation](https://vega.github.io/vega/docs/layout).\n\n__Default value:__ `\"each\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "The alignment of the legend label, can be left, center, or right."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "The alignment of the legend label, can be left, center, or right."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "The position of the baseline of legend label, can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`.\n\n__Default value:__ `\"middle\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "The position of the baseline of legend label, can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`.\n\n__Default value:__ `\"middle\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "The color of the legend label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "The color of the legend label, can be in hex color code or regular color name."
+          ]
         },
         "labelExpr": {
           "description": "[Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.\n\n__Note:__ The label text and value can be assessed via the `label` and `value` properties of the legend's backing `datum` object.",
           "type": "string"
         },
         "labelFont": {
-          "description": "The font of the legend label.",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "The font of the legend label.",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelFontSize": {
-          "description": "The font size of legend label.\n\n__Default value:__ `10`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The font size of legend label.\n\n__Default value:__ `10`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "The font style of legend label."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "The font style of legend label."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "The font weight of legend label."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "The font weight of legend label."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelLimit": {
-          "description": "Maximum allowed pixel width of legend tick labels.\n\n__Default value:__ `160`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Maximum allowed pixel width of legend tick labels.\n\n__Default value:__ `160`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelOffset": {
-          "description": "The offset of the legend label.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The offset of the legend label.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelOpacity": {
-          "description": "Opacity of labels.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of labels.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelOverlap": {
-          "$ref": "#/definitions/LabelOverlap",
-          "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` (default) or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LabelOverlap",
+              "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` (default) or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `true`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelPadding": {
-          "description": "Padding in pixels between the legend and legend labels.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Padding in pixels between the legend and legend labels.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelSeparation": {
-          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "legendX": {
-          "description": "Custom x-position for legend with orient \"none\".",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Custom x-position for legend with orient \"none\".",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "legendY": {
-          "description": "Custom y-position for legend with orient \"none\".",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Custom y-position for legend with orient \"none\".",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "offset": {
-          "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "orient": {
           "$ref": "#/definitions/LegendOrient",
           "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of `\"left\"`, `\"right\"`, `\"top\"`, `\"bottom\"`, `\"top-left\"`, `\"top-right\"`, `\"bottom-left\"`, `\"bottom-right\"`, `\"none\"`.\n\n__Default value:__ `\"right\"`"
         },
         "padding": {
-          "description": "The padding between the border and content of the legend group.\n\n__Default value:__ `0`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The padding between the border and content of the legend group.\n\n__Default value:__ `0`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "rowPadding": {
-          "description": "The vertical padding in pixels between symbol legend entries.\n\n__Default value:__ `2`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The vertical padding in pixels between symbol legend entries.\n\n__Default value:__ `2`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "strokeColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Border stroke color for the full legend."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "Border stroke color for the full legend."
+          ]
         },
         "symbolDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed symbol strokes.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed symbol strokes.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolDashOffset": {
-          "description": "The pixel offset at which to start drawing with the symbol stroke dash array.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the symbol stroke dash array.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolFillColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "The color of the legend symbol,"
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "The color of the legend symbol,"
+          ]
         },
         "symbolLimit": {
-          "description": "The maximum number of allowed entries for a symbol legend. Additional entries will be dropped.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The maximum number of allowed entries for a symbol legend. Additional entries will be dropped.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolOffset": {
-          "description": "Horizontal pixel offset for legend symbols.\n\n__Default value:__ `0`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Horizontal pixel offset for legend symbols.\n\n__Default value:__ `0`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolOpacity": {
-          "description": "Opacity of the legend symbols.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the legend symbols.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolSize": {
-          "description": "The size of the legend symbol, in pixels.\n\n__Default value:__ `100`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The size of the legend symbol, in pixels.\n\n__Default value:__ `100`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolStrokeColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Stroke color for legend symbols."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "Stroke color for legend symbols."
+          ]
         },
         "symbolStrokeWidth": {
-          "description": "The width of the symbol's stroke.\n\n__Default value:__ `1.5`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The width of the symbol's stroke.\n\n__Default value:__ `1.5`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolType": {
-          "$ref": "#/definitions/SymbolShape",
-          "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SymbolShape",
+              "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tickCount": {
-          "$ref": "#/definitions/TickCount",
-          "description": "The desired number of tick values for quantitative legends."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TickCount",
+              "description": "The desired number of tick values for quantitative legends."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tickMinStep": {
-          "description": "The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.\n\n__Default value__: `undefined`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The minimum desired step between legend ticks, in terms of scale domain values. For example, a value of `1` indicates that ticks should not be less than 1 unit apart. If `tickMinStep` is specified, the `tickCount` value will be adjusted, if necessary, to enforce the minimum step value.\n\n__Default value__: `undefined`"
         },
         "title": {
           "anyOf": [
@@ -10801,64 +12278,155 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "titleAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment for legend titles.\n\n__Default value:__ `\"left\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "Horizontal text alignment for legend titles.\n\n__Default value:__ `\"left\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleAnchor": {
-          "$ref": "#/definitions/TitleAnchor",
-          "description": "Text anchor position for placing legend titles."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TitleAnchor",
+              "description": "Text anchor position for placing legend titles."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for legend titles.  One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone.\n\n__Default value:__ `\"top\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "Vertical text baseline for legend titles.  One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone.\n\n__Default value:__ `\"top\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "The color of the legend title, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "The color of the legend title, can be in hex color code or regular color name."
+          ]
         },
         "titleFont": {
-          "description": "The font of the legend title.",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "The font of the legend title.",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleFontSize": {
-          "description": "The font size of the legend title.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The font size of the legend title.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "The font style of the legend title."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "The font style of the legend title."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "The font weight of the legend title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "The font weight of the legend title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleLimit": {
-          "description": "Maximum allowed pixel width of legend titles.\n\n__Default value:__ `180`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Maximum allowed pixel width of legend titles.\n\n__Default value:__ `180`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleLineHeight": {
-          "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleOpacity": {
-          "description": "Opacity of the legend title.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the legend title.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleOrient": {
-          "$ref": "#/definitions/Orient",
-          "description": "Orientation of the legend title."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Orient",
+              "description": "Orientation of the legend title."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titlePadding": {
-          "description": "The padding, in pixels, between title and legend.\n\n__Default value:__ `5`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The padding, in pixels, between title and legend.\n\n__Default value:__ `5`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "type": {
           "description": "The type of the legend. Use `\"symbol\"` to create a discrete legend and `\"gradient\"` for a continuous color gradient.\n\n__Default value:__ `\"gradient\"` for non-binned quantitative fields and temporal fields; `\"symbol\"` otherwise.",
@@ -10893,6 +12461,9 @@
                 "$ref": "#/definitions/DateTime"
               },
               "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "Explicitly set the visible legend values."
@@ -10922,28 +12493,70 @@
       "additionalProperties": false,
       "properties": {
         "aria": {
-          "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the legend from the ARIA accessibility tree.\n\n__Default value:__ `true`",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only).\nIf `false`, the \"aria-hidden\" attribute will be set on the output SVG group, removing the legend from the ARIA accessibility tree.\n\n__Default value:__ `true`",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "clipHeight": {
-          "description": "The height in pixels to clip symbol legend entries and limit their size.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The height in pixels to clip symbol legend entries and limit their size.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "columnPadding": {
-          "description": "The horizontal padding in pixels between symbol legend entries.\n\n__Default value:__ `10`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The horizontal padding in pixels between symbol legend entries.\n\n__Default value:__ `10`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "columns": {
-          "description": "The number of columns in which to arrange symbol legend entries. A value of `0` or lower indicates a single row with one column per entry.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The number of columns in which to arrange symbol legend entries. A value of `0` or lower indicates a single row with one column per entry.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "cornerRadius": {
-          "description": "Corner radius for the full legend.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Corner radius for the full legend.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "description": {
-          "description": "A text description of this legend for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "A text description of this legend for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only).\nIf the `aria` property is true, for SVG output the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute) will be set to this description.\nIf the description is unspecified it will be automatically generated.",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "direction": {
           "$ref": "#/definitions/Orientation",
@@ -10956,17 +12569,31 @@
         "fillColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Background fill color for the full legend."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "Background fill color for the full legend."
+          ]
         },
         "gradientDirection": {
-          "$ref": "#/definitions/Orientation",
-          "description": "The default direction (`\"horizontal\"` or `\"vertical\"`) for gradient legends.\n\n__Default value:__ `\"vertical\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Orientation",
+              "description": "The default direction (`\"horizontal\"` or `\"vertical\"`) for gradient legends.\n\n__Default value:__ `\"vertical\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "gradientHorizontalMaxLength": {
           "description": "Max legend length for a horizontal gradient when `config.legend.gradientLength` is undefined.\n\n__Default value:__ `200`",
@@ -10977,42 +12604,91 @@
           "type": "number"
         },
         "gradientLabelLimit": {
-          "description": "The maximum allowed length in pixels of color ramp gradient labels.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The maximum allowed length in pixels of color ramp gradient labels.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "gradientLabelOffset": {
-          "description": "Vertical offset in pixels for color ramp gradient labels.\n\n__Default value:__ `2`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Vertical offset in pixels for color ramp gradient labels.\n\n__Default value:__ `2`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "gradientLength": {
-          "description": "The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.\n\n__Default value:__ `200`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The length in pixels of the primary axis of a color gradient. This value corresponds to the height of a vertical gradient or the width of a horizontal gradient.\n\n__Default value:__ `200`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "gradientOpacity": {
-          "description": "Opacity of the color gradient.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the color gradient.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "gradientStrokeColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "The color of the gradient stroke, can be in hex color code or regular color name.\n\n__Default value:__ `\"lightGray\"`."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "The color of the gradient stroke, can be in hex color code or regular color name.\n\n__Default value:__ `\"lightGray\"`."
+          ]
         },
         "gradientStrokeWidth": {
-          "description": "The width of the gradient stroke, in pixels.\n\n__Default value:__ `0`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The width of the gradient stroke, in pixels.\n\n__Default value:__ `0`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "gradientThickness": {
-          "description": "The thickness in pixels of the color gradient. This value corresponds to the width of a vertical gradient or the height of a horizontal gradient.\n\n__Default value:__ `16`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The thickness in pixels of the color gradient. This value corresponds to the width of a vertical gradient or the height of a horizontal gradient.\n\n__Default value:__ `16`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "gradientVerticalMaxLength": {
           "description": "Max legend length for a vertical gradient when `config.legend.gradientLength` is undefined.\n\n__Default value:__ `200`",
@@ -11023,334 +12699,629 @@
           "type": "number"
         },
         "gridAlign": {
-          "$ref": "#/definitions/LayoutAlign",
-          "description": "The alignment to apply to symbol legends rows and columns. The supported string values are `\"all\"`, `\"each\"` (the default), and `none`. For more information, see the [grid layout documentation](https://vega.github.io/vega/docs/layout).\n\n__Default value:__ `\"each\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LayoutAlign",
+              "description": "The alignment to apply to symbol legends rows and columns. The supported string values are `\"all\"`, `\"each\"` (the default), and `none`. For more information, see the [grid layout documentation](https://vega.github.io/vega/docs/layout).\n\n__Default value:__ `\"each\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "The alignment of the legend label, can be left, center, or right."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "The alignment of the legend label, can be left, center, or right."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "The position of the baseline of legend label, can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`.\n\n__Default value:__ `\"middle\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "The position of the baseline of legend label, can be `\"top\"`, `\"middle\"`, `\"bottom\"`, or `\"alphabetic\"`.\n\n__Default value:__ `\"middle\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "The color of the legend label, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "The color of the legend label, can be in hex color code or regular color name."
+          ]
         },
         "labelFont": {
-          "description": "The font of the legend label.",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "The font of the legend label.",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelFontSize": {
-          "description": "The font size of legend label.\n\n__Default value:__ `10`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The font size of legend label.\n\n__Default value:__ `10`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "The font style of legend label."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "The font style of legend label."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "The font weight of legend label."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "The font weight of legend label."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelLimit": {
-          "description": "Maximum allowed pixel width of legend tick labels.\n\n__Default value:__ `160`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Maximum allowed pixel width of legend tick labels.\n\n__Default value:__ `160`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelOffset": {
-          "description": "The offset of the legend label.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The offset of the legend label.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelOpacity": {
-          "description": "Opacity of labels.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of labels.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelOverlap": {
-          "$ref": "#/definitions/LabelOverlap",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/LabelOverlap"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The strategy to use for resolving overlap of labels in gradient legends. If `false`, no overlap reduction is attempted. If set to `true` or `\"parity\"`, a strategy of removing every other label is used. If set to `\"greedy\"`, a linear scan of the labels is performed, removing any label that overlaps with the last visible label (this often works better for log-scaled axes).\n\n__Default value:__ `\"greedy\"` for `log scales otherwise `true`."
         },
         "labelPadding": {
-          "description": "Padding in pixels between the legend and legend labels.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Padding in pixels between the legend and legend labels.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "labelSeparation": {
-          "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The minimum separation that must be between label bounding boxes for them to be considered non-overlapping (default `0`). This property is ignored if *labelOverlap* resolution is not enabled.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "layout": {
-          "$ref": "#/definitions/LegendLayout",
-          "description": "Legend orient group layout parameters."
+          "$ref": "#/definitions/ExprRef"
         },
         "legendX": {
-          "description": "Custom x-position for legend with orient \"none\".",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Custom x-position for legend with orient \"none\".",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "legendY": {
-          "description": "Custom y-position for legend with orient \"none\".",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Custom y-position for legend with orient \"none\".",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "offset": {
-          "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The offset in pixels by which to displace the legend from the data rectangle and axes.\n\n__Default value:__ `18`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "orient": {
           "$ref": "#/definitions/LegendOrient",
           "description": "The orientation of the legend, which determines how the legend is positioned within the scene. One of `\"left\"`, `\"right\"`, `\"top\"`, `\"bottom\"`, `\"top-left\"`, `\"top-right\"`, `\"bottom-left\"`, `\"bottom-right\"`, `\"none\"`.\n\n__Default value:__ `\"right\"`"
         },
         "padding": {
-          "description": "The padding between the border and content of the legend group.\n\n__Default value:__ `0`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The padding between the border and content of the legend group.\n\n__Default value:__ `0`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "rowPadding": {
-          "description": "The vertical padding in pixels between symbol legend entries.\n\n__Default value:__ `2`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The vertical padding in pixels between symbol legend entries.\n\n__Default value:__ `2`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "strokeColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Border stroke color for the full legend."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "Border stroke color for the full legend."
+          ]
         },
         "strokeDash": {
-          "description": "Border stroke dash pattern for the full legend.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "Border stroke dash pattern for the full legend.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "strokeWidth": {
-          "description": "Border stroke width for the full legend.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Border stroke width for the full legend.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolBaseFillColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Default fill color for legend symbols. Only applied if there is no `\"fill\"` scale color encoding for the legend.\n\n__Default value:__ `\"transparent\"`."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "Default fill color for legend symbols. Only applied if there is no `\"fill\"` scale color encoding for the legend.\n\n__Default value:__ `\"transparent\"`."
+          ]
         },
         "symbolBaseStrokeColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Default stroke color for legend symbols. Only applied if there is no `\"fill\"` scale color encoding for the legend.\n\n__Default value:__ `\"gray\"`."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "Default stroke color for legend symbols. Only applied if there is no `\"fill\"` scale color encoding for the legend.\n\n__Default value:__ `\"gray\"`."
+          ]
         },
         "symbolDash": {
-          "description": "An array of alternating [stroke, space] lengths for dashed symbol strokes.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "An array of alternating [stroke, space] lengths for dashed symbol strokes.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolDashOffset": {
-          "description": "The pixel offset at which to start drawing with the symbol stroke dash array.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The pixel offset at which to start drawing with the symbol stroke dash array.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolDirection": {
-          "$ref": "#/definitions/Orientation",
-          "description": "The default direction (`\"horizontal\"` or `\"vertical\"`) for symbol legends.\n\n__Default value:__ `\"vertical\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Orientation",
+              "description": "The default direction (`\"horizontal\"` or `\"vertical\"`) for symbol legends.\n\n__Default value:__ `\"vertical\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolFillColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "The color of the legend symbol,"
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "The color of the legend symbol,"
+          ]
         },
         "symbolLimit": {
-          "description": "The maximum number of allowed entries for a symbol legend. Additional entries will be dropped.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The maximum number of allowed entries for a symbol legend. Additional entries will be dropped.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolOffset": {
-          "description": "Horizontal pixel offset for legend symbols.\n\n__Default value:__ `0`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Horizontal pixel offset for legend symbols.\n\n__Default value:__ `0`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolOpacity": {
-          "description": "Opacity of the legend symbols.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the legend symbols.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolSize": {
-          "description": "The size of the legend symbol, in pixels.\n\n__Default value:__ `100`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The size of the legend symbol, in pixels.\n\n__Default value:__ `100`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolStrokeColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "Stroke color for legend symbols."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "Stroke color for legend symbols."
+          ]
         },
         "symbolStrokeWidth": {
-          "description": "The width of the symbol's stroke.\n\n__Default value:__ `1.5`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The width of the symbol's stroke.\n\n__Default value:__ `1.5`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "symbolType": {
-          "$ref": "#/definitions/SymbolShape",
-          "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SymbolShape",
+              "description": "The symbol shape. One of the plotting shapes `circle` (default), `square`, `cross`, `diamond`, `triangle-up`, `triangle-down`, `triangle-right`, or `triangle-left`, the line symbol `stroke`, or one of the centered directional shapes `arrow`, `wedge`, or `triangle`. Alternatively, a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) can be provided. For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.\n\n__Default value:__ `\"circle\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tickCount": {
-          "$ref": "#/definitions/TickCount",
-          "description": "The desired number of tick values for quantitative legends."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TickCount",
+              "description": "The desired number of tick values for quantitative legends."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "title": {
           "description": "Set to null to disable title for the axis, legend, or header.",
           "type": "null"
         },
         "titleAlign": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment for legend titles.\n\n__Default value:__ `\"left\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align",
+              "description": "Horizontal text alignment for legend titles.\n\n__Default value:__ `\"left\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleAnchor": {
-          "$ref": "#/definitions/TitleAnchor",
-          "description": "Text anchor position for placing legend titles."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TitleAnchor",
+              "description": "Text anchor position for placing legend titles."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleBaseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for legend titles.  One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone.\n\n__Default value:__ `\"top\"`."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline",
+              "description": "Vertical text baseline for legend titles.  One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone.\n\n__Default value:__ `\"top\"`."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleColor": {
           "anyOf": [
             {
-              "type": "null"
+              "anyOf": [
+                {
+                  "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/Color"
+                }
+              ],
+              "description": "The color of the legend title, can be in hex color code or regular color name."
             },
             {
-              "$ref": "#/definitions/Color"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "The color of the legend title, can be in hex color code or regular color name."
+          ]
         },
         "titleFont": {
-          "description": "The font of the legend title.",
-          "type": "string"
+          "anyOf": [
+            {
+              "description": "The font of the legend title.",
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleFontSize": {
-          "description": "The font size of the legend title.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The font size of the legend title.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleFontStyle": {
-          "$ref": "#/definitions/FontStyle",
-          "description": "The font style of the legend title."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle",
+              "description": "The font style of the legend title."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleFontWeight": {
-          "$ref": "#/definitions/FontWeight",
-          "description": "The font weight of the legend title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight",
+              "description": "The font weight of the legend title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleLimit": {
-          "description": "Maximum allowed pixel width of legend titles.\n\n__Default value:__ `180`.",
-          "minimum": 0,
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Maximum allowed pixel width of legend titles.\n\n__Default value:__ `180`.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleLineHeight": {
-          "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Line height in pixels for multi-line title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleOpacity": {
-          "description": "Opacity of the legend title.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "Opacity of the legend title.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titleOrient": {
-          "$ref": "#/definitions/Orient",
-          "description": "Orientation of the legend title."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Orient",
+              "description": "Orientation of the legend title."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "titlePadding": {
-          "description": "The padding, in pixels, between title and legend.\n\n__Default value:__ `5`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The padding, in pixels, between title and legend.\n\n__Default value:__ `5`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "unselectedOpacity": {
           "description": "The opacity of unselected legend entries.\n\n__Default value:__ 0.35.",
           "type": "number"
         },
         "zindex": {
-          "description": "The integer z-index indicating the layering of the legend group relative to other axis, mark, and legend groups.",
-          "minimum": 0,
-          "type": "number"
-        }
-      },
-      "type": "object"
-    },
-    "LegendLayout": {
-      "additionalProperties": false,
-      "properties": {
-        "anchor": {
-          "$ref": "#/definitions/TitleAnchor",
-          "description": "The anchor point for legend orient group layout."
-        },
-        "bottom": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "bottom-left": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "bottom-right": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "bounds": {
-          "$ref": "#/definitions/LayoutBounds",
-          "description": "The bounds calculation to use for legend orient group layout."
-        },
-        "center": {
-          "description": "A flag to center legends within a shared orient group.",
-          "type": "boolean"
-        },
-        "direction": {
-          "$ref": "#/definitions/Orientation",
-          "description": "The layout direction for legend orient group layout."
-        },
-        "left": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "margin": {
-          "description": "The pixel margin between legends within a orient group.",
-          "type": "number"
-        },
-        "offset": {
-          "description": "The pixel offset from the chart body for a legend orient group.",
-          "type": "number"
-        },
-        "right": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "top": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "top-left": {
-          "$ref": "#/definitions/BaseLegendLayout"
-        },
-        "top-right": {
-          "$ref": "#/definitions/BaseLegendLayout"
+          "anyOf": [
+            {
+              "description": "The integer z-index indicating the layering of the legend group relative to other axis, mark, and legend groups.",
+              "minimum": 0,
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         }
       },
       "type": "object"
