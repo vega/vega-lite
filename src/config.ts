@@ -1,7 +1,9 @@
 import {Color, InitSignal, NewSignal, RangeConfig, RangeScheme, SignalRef} from 'vega';
 import {isObject, mergeConfig} from 'vega-util';
-import {Axis, AxisConfigMixins, isConditionalAxisValue} from './axis';
+import {Axis, AxisConfig, AxisConfigMixins, AXIS_CONFIGS, isConditionalAxisValue} from './axis';
+import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
+import {ExprOrSignalRef, ExprRef} from './expr';
 import {VL_ONLY_LEGEND_CONFIG} from './guide';
 import {HeaderConfigMixins} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
@@ -21,7 +23,7 @@ import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './select
 import {BaseViewBackground, CompositionConfigMixins, DEFAULT_SPACING, isStep} from './spec/base';
 import {TopLevelProperties} from './spec/toplevel';
 import {extractTitleConfig, TitleConfig} from './title';
-import {duplicate, getFirstDefined, isEmpty} from './util';
+import {duplicate, getFirstDefined, isEmpty, keys, omit} from './util';
 
 export interface ViewConfig extends BaseViewBackground {
   /**
@@ -175,7 +177,7 @@ export interface VLOnlyConfig {
   selection?: SelectionConfig;
 }
 
-export type StyleConfigIndex = Partial<Record<string, AnyMarkConfig | Axis>> &
+export type StyleConfigIndex = Partial<Record<string, AnyMarkConfig | Axis<ExprRef | SignalRef>>> &
   MarkConfigMixins & {
     /**
      * Default style for axis, legend, and header titles.
@@ -198,12 +200,12 @@ export type StyleConfigIndex = Partial<Record<string, AnyMarkConfig | Axis>> &
     'group-subtitle'?: MarkConfig;
   };
 
-export interface Config
+export interface Config<ES extends ExprRef | SignalRef = ExprRef | SignalRef>
   extends TopLevelProperties,
     VLOnlyConfig,
     MarkConfigMixins,
     CompositeMarkConfigMixins,
-    AxisConfigMixins,
+    AxisConfigMixins<ES>,
     HeaderConfigMixins,
     CompositionConfigMixins {
   /**
@@ -215,7 +217,7 @@ export interface Config
   /**
    * Legend configuration, which determines default properties for all [legends](https://vega.github.io/vega-lite/docs/legend.html). For a full list of legend configuration options, please see the [corresponding section of in the legend documentation](https://vega.github.io/vega-lite/docs/legend.html#config).
    */
-  legend?: LegendConfig;
+  legend?: LegendConfig<ES>;
 
   /**
    * Title configuration, which determines default properties for all [titles](https://vega.github.io/vega-lite/docs/title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](https://vega.github.io/vega-lite/docs/title.html#config).
@@ -248,7 +250,7 @@ export interface Config
   signals?: (InitSignal | NewSignal)[];
 }
 
-export const defaultConfig: Config = {
+export const defaultConfig: Config<SignalRef> = {
   background: 'white',
 
   padding: 5,
@@ -458,10 +460,32 @@ export function fontConfig(font: string): Config {
   };
 }
 
-export function initConfig(config: Config = {}) {
-  const {color, font, fontSize, ...restConfig} = config;
+function getAxisConfigInternal(axisConfig: AxisConfig<ExprOrSignalRef>) {
+  const props = keys(axisConfig);
+  const axisConfigInternal: AxisConfig<SignalRef> = {};
+  for (const prop of props) {
+    const val = axisConfig[prop];
+    axisConfigInternal[prop as any] = isConditionalAxisValue<any, ExprOrSignalRef>(val)
+      ? signalOrValueRefWithCondition<any>(val)
+      : signalRefOrValue(val);
+  }
+  return axisConfigInternal;
+}
 
-  return mergeConfig(
+function getLegendConfigInternal(legendConfig: LegendConfig<ExprOrSignalRef>) {
+  const props = keys(legendConfig);
+  const legendConfigInternal: LegendConfig<SignalRef> = {};
+  for (const prop of props) {
+    legendConfigInternal[prop as any] = signalRefOrValue(legendConfig[prop]);
+  }
+  return legendConfigInternal;
+}
+
+const configPropsWithExpr = [...AXIS_CONFIGS, 'legend' as const];
+
+export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
+  const {color, font, fontSize, ...restConfig} = specifiedConfig;
+  const mergedConfig = mergeConfig(
     {},
     defaultConfig,
     font ? fontConfig(font) : {},
@@ -469,6 +493,19 @@ export function initConfig(config: Config = {}) {
     fontSize ? fontSizeSignalConfig(fontSize) : {},
     restConfig || {}
   );
+  const outputConfig: Config<SignalRef> = omit(mergedConfig, configPropsWithExpr);
+
+  for (const axisConfigType of AXIS_CONFIGS) {
+    if (mergedConfig[axisConfigType]) {
+      outputConfig[axisConfigType] = getAxisConfigInternal(mergedConfig[axisConfigType]);
+    }
+  }
+
+  if (mergedConfig.legend) {
+    outputConfig.legend = getLegendConfigInternal(mergedConfig.legend);
+  }
+
+  return outputConfig;
 }
 
 const MARK_STYLES = ['view', ...PRIMITIVE_MARKS] as ('view' | Mark)[];

@@ -1,7 +1,17 @@
 import {ExprRef, SignalRef, Text} from 'vega';
-import {array, stringValue} from 'vega-util';
-import {AxisConfig} from '../axis';
-import {FieldDefBase, FieldRefOption, OrderFieldDef, vgField} from '../channeldef';
+import {array, isArray, stringValue} from 'vega-util';
+import {AxisConfig, ConditionalAxisProperty} from '../axis';
+import {
+  ConditionalPredicate,
+  DatumDef,
+  FieldDef,
+  FieldDefBase,
+  FieldRefOption,
+  OrderFieldDef,
+  Value,
+  ValueDef,
+  vgField
+} from '../channeldef';
 import {Config, StyleConfigIndex} from '../config';
 import {isExprRef} from '../expr';
 import {MarkConfig, MarkDef} from '../mark';
@@ -14,7 +24,31 @@ import {Explicit} from './split';
 import {UnitModel} from './unit';
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
+
+export function signalOrValueRefWithCondition<V extends Value | number[]>(
+  val: ConditionalAxisProperty<V, SignalRef | ExprRef>
+): ConditionalAxisProperty<V, SignalRef> {
+  const condition = isArray(val.condition)
+    ? (val.condition as ConditionalPredicate<ValueDef<any> | ExprRef | SignalRef>[]).map(conditionalSignalRefOrValue)
+    : conditionalSignalRefOrValue(val.condition);
+
+  return {
+    ...signalRefOrValue<ValueDef<any>>(val),
+    condition
+  };
+}
+
 export function signalRefOrValue<T>(value: T | SignalRef | ExprRef): T | SignalRef {
+  if (isExprRef(value)) {
+    const {expr, ...rest} = value;
+    return {signal: expr, ...rest};
+  }
+  return value;
+}
+
+export function conditionalSignalRefOrValue<T extends FieldDef<any> | DatumDef | ValueDef<any>>(
+  value: ConditionalPredicate<T | ExprRef | SignalRef>
+): ConditionalPredicate<T | SignalRef> {
   if (isExprRef(value)) {
     const {expr, ...rest} = value;
     return {signal: expr, ...rest};
@@ -24,7 +58,8 @@ export function signalRefOrValue<T>(value: T | SignalRef | ExprRef): T | SignalR
 
 export function signalOrValueRef<T>(value: T | SignalRef | ExprRef): {value: T} | SignalRef {
   if (isExprRef(value)) {
-    return {signal: value.expr};
+    const {expr, ...rest} = value;
+    return {signal: expr, ...rest};
   }
   if (isSignalRef(value)) {
     return value;
@@ -114,7 +149,7 @@ export function getMarkStyleConfig<P extends keyof MarkDef>(
   return getStyleConfig(prop, getStyles(mark), styleConfigIndex);
 }
 
-export function getStyleConfig<P extends keyof MarkDef | keyof AxisConfig>(
+export function getStyleConfig<P extends keyof MarkDef | keyof AxisConfig<SignalRef>>(
   p: P,
   styles: string | string[],
   styleConfigIndex: StyleConfigIndex

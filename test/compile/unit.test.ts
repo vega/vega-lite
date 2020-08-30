@@ -63,16 +63,30 @@ describe('UnitModel', () => {
   });
 
   describe('initAxes', () => {
-    it('it should have axis.offset = encode.x.axis.offset', () => {
+    it('it redirects encode.x.axis to axis.x and replace expression with signal', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
-          x: {field: 'a', type: 'ordinal', axis: {offset: 345}},
+          x: {field: 'a', type: 'ordinal', axis: {offset: 345, labelColor: {expr: 'red'}}},
           y: {field: 'b', type: 'ordinal'}
         }
       });
 
       expect(model.axis(X).offset).toEqual(345);
+      expect(model.axis(X).labelColor).toEqual({signal: 'red'});
+    });
+  });
+
+  describe('initLegend', () => {
+    it('it redirects encode.color.legend to legend.color and replace expression with signal', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          color: {field: 'a', type: 'ordinal', legend: {labelColor: {expr: 'red'}}}
+        }
+      });
+
+      expect(model.legend('color').labelColor).toEqual({signal: 'red'});
     });
   });
 });
