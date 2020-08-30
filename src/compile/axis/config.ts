@@ -96,7 +96,7 @@ export function getAxisConfigStyle(axisConfigTypes: string[], config: Config) {
   return Object.assign.apply(null, toMerge);
 }
 export function getAxisConfig(
-  property: keyof AxisConfig,
+  property: keyof AxisConfig<SignalRef>,
   styleConfigIndex: StyleConfigIndex,
   style: string | string[],
   axisConfigs: Partial<AxisConfigs> = {}

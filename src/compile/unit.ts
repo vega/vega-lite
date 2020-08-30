@@ -1,18 +1,18 @@
-import {NewSignal} from 'vega';
-import {Axis} from '../axis';
+import {NewSignal, SignalRef} from 'vega';
+import {Axis, AxisInternal, isConditionalAxisValue} from '../axis';
 import {
   Channel,
   GEOPOSITION_CHANNELS,
+  NonPositionScaleChannel,
   NONPOSITION_SCALE_CHANNELS,
+  PositionChannel,
   POSITION_SCALE_CHANNELS,
   ScaleChannel,
   SCALE_CHANNELS,
   SingleDefChannel,
   supportLegend,
   X,
-  Y,
-  PositionChannel,
-  NonPositionScaleChannel
+  Y
 } from '../channel';
 import {
   getFieldDef,
@@ -26,7 +26,8 @@ import {Config} from '../config';
 import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
 import {Encoding, initEncoding} from '../encoding';
-import {Legend} from '../legend';
+import {ExprOrSignalRef} from '../expr';
+import {Legend, LegendInternal} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {Domain} from '../scale';
@@ -34,16 +35,17 @@ import {SelectionDef} from '../selection';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {isFrameMixins} from '../spec/base';
 import {stack, StackProperties} from '../stack';
-import {Dict} from '../util';
+import {Dict, keys} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
-import {AxisIndex} from './axis/component';
+import {AxisInternalIndex} from './axis/component';
 import {parseUnitAxes} from './axis/parse';
+import {signalOrValueRefWithCondition, signalRefOrValue} from './common';
 import {parseData} from './data/parse';
 import {assembleLayoutSignals} from './layoutsize/assemble';
 import {initLayoutSize} from './layoutsize/init';
 import {parseUnitLayoutSize} from './layoutsize/parse';
-import {LegendIndex} from './legend/component';
+import {LegendInternalIndex} from './legend/component';
 import {defaultFilled, initMarkdef} from './mark/init';
 import {parseMarkGroups} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
@@ -67,9 +69,9 @@ export class UnitModel extends ModelWithField {
 
   public readonly stack: StackProperties;
 
-  protected specifiedAxes: AxisIndex = {};
+  protected specifiedAxes: AxisInternalIndex = {};
 
-  protected specifiedLegends: LegendIndex = {};
+  protected specifiedLegends: LegendInternalIndex = {};
 
   public specifiedProjection: Projection = {};
 
@@ -81,7 +83,7 @@ export class UnitModel extends ModelWithField {
     parent: Model,
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins = {},
-    config: Config
+    config: Config<SignalRef>
   ) {
     super(spec, 'unit', parent, parentGivenName, config, undefined, isFrameMixins(spec) ? spec.view : undefined);
 
@@ -114,7 +116,7 @@ export class UnitModel extends ModelWithField {
     this.specifiedScales = this.initScales(mark, encoding);
 
     this.specifiedAxes = this.initAxes(encoding);
-    this.specifiedLegends = this.initLegend(encoding);
+    this.specifiedLegends = this.initLegends(encoding);
     this.specifiedProjection = spec.projection;
 
     // Selections will be initialized upon parse.
@@ -137,11 +139,11 @@ export class UnitModel extends ModelWithField {
     return scale ? scale.domain : undefined;
   }
 
-  public axis(channel: PositionChannel): Axis {
+  public axis(channel: PositionChannel): AxisInternal {
     return this.specifiedAxes[channel];
   }
 
-  public legend(channel: NonPositionScaleChannel): Legend {
+  public legend(channel: NonPositionScaleChannel): LegendInternal {
     return this.specifiedLegends[channel];
   }
 
@@ -157,7 +159,7 @@ export class UnitModel extends ModelWithField {
     }, {} as ScaleIndex);
   }
 
-  private initAxes(encoding: Encoding<string>): AxisIndex {
+  private initAxes(encoding: Encoding<string>): AxisInternalIndex {
     return POSITION_SCALE_CHANNELS.reduce((_axis, channel) => {
       // Position Axis
 
@@ -170,23 +172,48 @@ export class UnitModel extends ModelWithField {
       ) {
         const axisSpec = isFieldOrDatumDef(channelDef) ? channelDef.axis : undefined;
 
-        _axis[channel] = axisSpec ? {...axisSpec} : axisSpec; // convert truthy value to object
+        _axis[channel] = axisSpec
+          ? this.initAxis({...axisSpec}) // convert truthy value to object
+          : axisSpec;
       }
       return _axis;
     }, {});
   }
 
-  private initLegend(encoding: Encoding<string>): LegendIndex {
+  private initAxis(axis: Axis<ExprOrSignalRef>): Axis<SignalRef> {
+    const props = keys(axis);
+    const axisInternal = {};
+    for (const prop of props) {
+      const val = axis[prop];
+      axisInternal[prop as any] = isConditionalAxisValue<any, ExprOrSignalRef>(val)
+        ? signalOrValueRefWithCondition<any>(val)
+        : signalRefOrValue(val);
+    }
+    return axisInternal;
+  }
+
+  private initLegends(encoding: Encoding<string>): LegendInternalIndex {
     return NONPOSITION_SCALE_CHANNELS.reduce((_legend, channel) => {
       const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as MarkPropFieldOrDatumDef<string>;
 
       if (fieldOrDatumDef && supportLegend(channel)) {
         const legend = fieldOrDatumDef.legend;
-        _legend[channel] = legend ? {...legend} : legend; // convert truthy value to object
+        _legend[channel] = legend
+          ? this.initLegend({...legend}) // convert truthy value to object
+          : legend;
       }
 
       return _legend;
     }, {});
+  }
+
+  private initLegend(legend: Legend<ExprOrSignalRef>) {
+    const props = keys(legend);
+    const legendInternal: Legend<SignalRef> = {};
+    for (const prop of props) {
+      legendInternal[prop as any] = signalRefOrValue(legend[prop]);
+    }
+    return legendInternal;
   }
 
   public parseData() {

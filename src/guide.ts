@@ -64,7 +64,7 @@ export type GuideEncodingConditionalValueDef = ValueDef & ConditionValueDefMixin
 
 export type GuideEncodingEntry = Partial<Record<VgEncodeChannel, GuideEncodingConditionalValueDef | SignalRef>>;
 
-export const VL_ONLY_LEGEND_CONFIG: (keyof LegendConfig)[] = [
+export const VL_ONLY_LEGEND_CONFIG: (keyof LegendConfig<any>)[] = [
   'gradientHorizontalMaxLength',
   'gradientHorizontalMinLength',
   'gradientVerticalMaxLength',
