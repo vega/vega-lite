@@ -157,9 +157,9 @@ export function isColorChannel(channel: Channel): channel is ColorChannel {
   return channel === COLOR || channel === FILL || channel === STROKE;
 }
 
-export type FacetChannel = keyof EncodingFacetMapping<any>;
+export type FacetChannel = keyof EncodingFacetMapping<any, any>;
 
-const FACET_CHANNEL_INDEX: Flag<keyof EncodingFacetMapping<any>> = {
+const FACET_CHANNEL_INDEX: Flag<keyof EncodingFacetMapping<any, any>> = {
   row: 1,
   column: 1,
   facet: 1
