@@ -81,7 +81,7 @@
     "@types/mkdirp": "^1.0.1",
     "@types/pako": "^1.0.1",
     "@types/puppeteer": "^3.0.1",
-    "@typescript-eslint/eslint-plugin": "^3.9.0",
+    "@typescript-eslint/eslint-plugin": "^4.0.0",
     "@typescript-eslint/parser": "^3.9.0",
     "ajv": "^6.12.3",
     "chai": "^4.2.0",
