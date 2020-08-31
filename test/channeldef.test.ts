@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega-typings/types';
 import {COUNTING_OPS} from '../src/aggregate';
 import {CHANNELS} from '../src/channel';
 import {
@@ -130,7 +131,7 @@ describe('fieldDef', () => {
     });
 
     it('converts header orient to labelOrient and titleOrient', () => {
-      const fieldDef: FacetFieldDef<string> = {field: 1 as any, type: 'nominal', header: {orient: 'bottom'}};
+      const fieldDef: FacetFieldDef<string, SignalRef> = {field: 1 as any, type: 'nominal', header: {orient: 'bottom'}};
       expect(initChannelDef(fieldDef, 'row', defaultConfig)).toEqual({
         field: '1',
         type: 'nominal',

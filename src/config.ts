@@ -5,7 +5,7 @@ import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common'
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
 import {ExprOrSignalRef, ExprRef} from './expr';
 import {VL_ONLY_LEGEND_CONFIG} from './guide';
-import {HeaderConfigMixins} from './header';
+import {HeaderConfig, HeaderConfigMixins, HEADER_CONFIGS} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
 import * as mark from './mark';
 import {
@@ -206,7 +206,7 @@ export interface Config<ES extends ExprRef | SignalRef = ExprRef | SignalRef>
     MarkConfigMixins,
     CompositeMarkConfigMixins,
     AxisConfigMixins<ES>,
-    HeaderConfigMixins,
+    HeaderConfigMixins<ES>,
     CompositionConfigMixins {
   /**
    * An object hash that defines default range arrays or schemes for using with scales.
@@ -481,7 +481,16 @@ function getLegendConfigInternal(legendConfig: LegendConfig<ExprOrSignalRef>) {
   return legendConfigInternal;
 }
 
-const configPropsWithExpr = [...AXIS_CONFIGS, 'legend' as const];
+function getHeaderConfigInternal(legendConfig: HeaderConfig<ExprOrSignalRef>) {
+  const props = keys(legendConfig);
+  const headerConfigInternal: HeaderConfig<SignalRef> = {};
+  for (const prop of props) {
+    headerConfigInternal[prop as any] = signalRefOrValue(legendConfig[prop]);
+  }
+  return headerConfigInternal;
+}
+
+const configPropsWithExpr = [...AXIS_CONFIGS, 'legend' as const, ...HEADER_CONFIGS];
 
 export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
   const {color, font, fontSize, ...restConfig} = specifiedConfig;
@@ -503,6 +512,12 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
 
   if (mergedConfig.legend) {
     outputConfig.legend = getLegendConfigInternal(mergedConfig.legend);
+  }
+
+  for (const headerConfigType of HEADER_CONFIGS) {
+    if (mergedConfig[headerConfigType]) {
+      outputConfig[headerConfigType] = getHeaderConfigInternal(mergedConfig[headerConfigType]);
+    }
   }
 
   return outputConfig;

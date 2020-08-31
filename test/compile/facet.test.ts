@@ -1,9 +1,10 @@
+import {SignalRef} from 'vega-typings/types';
 import {ROW} from '../../src/channel';
 import {FacetModel} from '../../src/compile/facet';
 import {assembleLabelTitle} from '../../src/compile/header/assemble';
 import * as log from '../../src/log';
 import {DEFAULT_SPACING} from '../../src/spec/base';
-import {FacetMapping} from '../../src/spec/facet';
+import {FacetFieldDef, FacetMapping} from '../../src/spec/facet';
 import {ORDINAL} from '../../src/type';
 import {parseFacetModel, parseFacetModelWithScale} from '../util';
 
@@ -389,7 +390,7 @@ describe('FacetModel', () => {
 
   describe('assembleMarks', () => {
     it('add label title for orthogonal orient label', () => {
-      const facet: FacetMapping<string> = {
+      const facet: FacetMapping<string, FacetFieldDef<string, SignalRef>> = {
         row: {field: 'a', type: 'ordinal', header: {labelOrient: 'top'}}
       };
       const model: FacetModel = parseFacetModelWithScale({

@@ -25,7 +25,7 @@ export interface LayoutHeaderComponent {
   // TODO: concat can have multiple header / footer.
   // Need to redesign this part a bit.
 
-  facetFieldDef?: FacetFieldDef<string>;
+  facetFieldDef?: FacetFieldDef<string, SignalRef>;
 
   /**
    * An array of header components for headers.
