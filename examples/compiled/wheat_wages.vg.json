@@ -362,12 +362,12 @@
     }
   ],
   "config": {
-    "style": {"cell": {"stroke": "transparent"}},
     "axis": {
       "title": null,
       "gridColor": "white",
       "gridOpacity": 0.25,
       "domain": false
-    }
+    },
+    "style": {"cell": {"stroke": "transparent"}}
   }
 }

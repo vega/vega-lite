@@ -281,16 +281,16 @@
     }
   ],
   "config": {
-    "style": {
-      "label": {"baseline": "middle", "align": "right", "dx": -5},
-      "tick": {"orient": "horizontal"},
-      "cell": {"stroke": null}
-    },
     "axisX": {
       "domain": false,
       "labelAngle": 0,
       "tickColor": "#ccc",
       "title": null
+    },
+    "style": {
+      "label": {"baseline": "middle", "align": "right", "dx": -5},
+      "tick": {"orient": "horizontal"},
+      "cell": {"stroke": null}
     }
   }
 }

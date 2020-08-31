@@ -135,7 +135,7 @@ export interface ScaleRuleParams {
   scalePaddingInner: number | SignalRef;
   domain: Scale['domain'];
   markDef: MarkDef;
-  config: Config;
+  config: Config<SignalRef>;
 }
 
 export const scaleRules: {
@@ -255,7 +255,7 @@ export function padding(
   scaleConfig: ScaleConfig,
   fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef,
   markDef: MarkDef,
-  barConfig: RectConfig
+  barConfig: RectConfig<SignalRef>
 ) {
   if (channel in POSITION_SCALE_CHANNEL_INDEX) {
     if (isContinuousToContinuous(scaleType)) {

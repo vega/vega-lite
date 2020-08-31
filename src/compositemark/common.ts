@@ -14,6 +14,7 @@ import {
   StringValueDefWithCondition
 } from '../channeldef';
 import {Encoding, fieldDefs} from '../encoding';
+import {ExprOrSignalRef, ExprRef} from '../expr';
 import * as log from '../log';
 import {ColorMixins, GenericMarkDef, isMarkDef, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
@@ -21,10 +22,10 @@ import {getFirstDefined, hash, unique} from '../util';
 import {isSignalRef} from '../vega.schema';
 import {toStringFieldDef} from './../channeldef';
 
-export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig>>;
+export type PartsMixins<P extends string> = Partial<Record<P, boolean | MarkConfig<ExprOrSignalRef>>>;
 
 export type GenericCompositeMarkDef<T> = GenericMarkDef<T> &
-  ColorMixins & {
+  ColorMixins<ExprRef | SignalRef> & {
     /**
      * The opacity (value between [0,1]) of the mark.
      */
@@ -203,13 +204,13 @@ export function partLayerMixins<P extends PartsMixins<any>>(
       {
         ...partBaseSpec,
         mark: {
-          ...(compositeMarkConfig[part] as MarkConfig),
+          ...(compositeMarkConfig[part] as MarkConfig<ExprOrSignalRef>),
           ...(clip ? {clip} : {}),
           ...(color ? {color} : {}),
           ...(opacity ? {opacity} : {}),
           ...(isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : {type: partBaseSpec.mark}),
           style: `${mark}-${part}`,
-          ...(isBoolean(markDef[part]) ? {} : (markDef[part] as MarkConfig))
+          ...(isBoolean(markDef[part]) ? {} : (markDef[part] as MarkConfig<ExprOrSignalRef>))
         }
       }
     ];
