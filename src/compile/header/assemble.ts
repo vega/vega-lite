@@ -2,7 +2,7 @@
  * Utility for generating row / column headers
  */
 
-import {TitleAnchor, TitleConfig} from 'vega';
+import {SignalRef, TitleAnchor, TitleConfig} from 'vega';
 import {isArray} from 'vega-util';
 import {FacetChannel, FACET_CHANNELS} from '../../channel';
 import {vgField} from '../../channeldef';
@@ -42,7 +42,7 @@ export function assembleTitleGroup(model: Model, channel: FacetChannel) {
 
   const {titleAnchor, titleAngle: ta, titleOrient} = getHeaderProperties(
     ['titleAnchor', 'titleAngle', 'titleOrient'],
-    facetFieldDef,
+    facetFieldDef.header,
     config,
     channel
   );
@@ -118,10 +118,14 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): 
   }
 }
 
-export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel: FacetChannel, config: Config) {
+export function assembleLabelTitle(
+  facetFieldDef: FacetFieldDef<string, SignalRef>,
+  channel: FacetChannel,
+  config: Config<SignalRef>
+) {
   const {format, formatType, labelAngle, labelAnchor, labelOrient, labelExpr} = getHeaderProperties(
     ['format', 'formatType', 'labelAngle', 'labelAnchor', 'labelOrient', 'labelExpr'],
-    facetFieldDef,
+    facetFieldDef.header,
     config,
     channel
   );
@@ -161,7 +165,7 @@ export function assembleHeaderGroup(
     const {facetFieldDef} = layoutHeader;
     const config = model.config ? model.config : undefined;
     if (facetFieldDef && headerComponent.labels) {
-      const {labelOrient} = getHeaderProperties(['labelOrient'], facetFieldDef, config, channel);
+      const {labelOrient} = getHeaderProperties(['labelOrient'], facetFieldDef.header, config, channel);
 
       // Include label title in the header if orient aligns with the channel
       if (
@@ -231,7 +235,7 @@ export function getLayoutTitleBand(titleAnchor: TitleAnchor, headerChannel: Head
 
 export function assembleLayoutTitleBand(
   headerComponentIndex: LayoutHeaderComponentIndex,
-  config: Config
+  config: Config<SignalRef>
 ): RowCol<number> {
   const titleBand = {};
 
@@ -240,7 +244,7 @@ export function assembleLayoutTitleBand(
     if (headerComponent?.facetFieldDef) {
       const {titleAnchor, titleOrient} = getHeaderProperties(
         ['titleAnchor', 'titleOrient'],
-        headerComponent.facetFieldDef,
+        headerComponent.facetFieldDef.header,
         config,
         channel
       );
@@ -257,11 +261,11 @@ export function assembleLayoutTitleBand(
 }
 
 export function assembleHeaderProperties(
-  config: Config,
-  facetFieldDef: FacetFieldDef<string>,
+  config: Config<SignalRef>,
+  facetFieldDef: FacetFieldDef<string, SignalRef>,
   channel: FacetChannel,
-  properties: (keyof CoreHeader)[],
-  propertiesMap: Partial<Record<keyof CoreHeader, keyof TitleConfig>>
+  properties: (keyof CoreHeader<SignalRef>)[],
+  propertiesMap: Partial<Record<keyof CoreHeader<SignalRef>, keyof TitleConfig>>
 ): Partial<VgTitle> {
   const props = {};
   for (const prop of properties) {
@@ -269,7 +273,7 @@ export function assembleHeaderProperties(
       continue;
     }
 
-    const value = getHeaderProperty(prop, facetFieldDef, config, channel);
+    const value = getHeaderProperty(prop, facetFieldDef?.header, config, channel);
     if (value !== undefined) {
       props[propertiesMap[prop]] = value;
     }
