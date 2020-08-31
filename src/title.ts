@@ -64,8 +64,8 @@ export interface TitleParams extends TitleBase {
 export function extractTitleConfig(
   titleConfig: TitleConfig
 ): {
-  titleMarkConfig: MarkConfig;
-  subtitleMarkConfig: MarkConfig;
+  titleMarkConfig: MarkConfig<SignalRef>;
+  subtitleMarkConfig: MarkConfig<SignalRef>;
   nonMark: BaseTitleNoValueRefs;
   subtitle: BaseTitleNoValueRefs;
 } {
@@ -92,7 +92,7 @@ export function extractTitleConfig(
     ...rest
   } = titleConfig;
 
-  const titleMarkConfig: MarkConfig = {
+  const titleMarkConfig: MarkConfig<SignalRef> = {
     ...rest,
     ...(color ? {fill: color} : {})
   };

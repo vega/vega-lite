@@ -1,7 +1,9 @@
 import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
 import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
+import {ExprRef} from './expr';
 import {contains, Flag, keys} from './util';
+import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
 
 /**
  * All types of primitive marks.
@@ -54,7 +56,7 @@ export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 
 
 export const PRIMITIVE_MARKS = keys(Mark);
 
-export interface ColorMixins {
+export interface ColorMixins<ES extends ExprRef | SignalRef> {
   /**
    * Default color.
    *
@@ -64,7 +66,7 @@ export interface ColorMixins {
    * - This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).
    * - The `fill` and `stroke` properties have higher precedence than `color` and will override `color`.
    */
-  color?: Color | Gradient | SignalRef;
+  color?: Color | Gradient | ES;
 }
 
 export interface TooltipContent {
@@ -74,7 +76,7 @@ export interface TooltipContent {
 /** @hidden */
 export type Hide = 'hide';
 
-export interface VLOnlyMarkConfig extends ColorMixins {
+export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorMixins<ES> {
   /**
    * Whether the mark's color should be used as fill color instead of stroke color.
    *
@@ -112,7 +114,7 @@ export interface VLOnlyMarkConfig extends ColorMixins {
   /**
    * The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise.
    */
-  theta2?: number | SignalRef; // In Vega, this is called endAngle
+  theta2?: number | ES; // In Vega, this is called endAngle
 
   /**
    * The secondary (inner) radius in pixels of arc marks.
@@ -120,10 +122,12 @@ export interface VLOnlyMarkConfig extends ColorMixins {
    * @minimum 0
    * __Default value:__ `0`
    */
-  radius2?: number | SignalRef; // In Vega, this is called innerRadius
+  radius2?: number | ES; // In Vega, this is called innerRadius
 }
 
-export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'tooltip'> {
+export interface MarkConfig<ES extends ExprRef | SignalRef>
+  extends VLOnlyMarkConfig<ES>,
+    MapExcludeValueRefAndReplaceSignalWith<Omit<VgMarkConfig, 'tooltip' | 'fill' | 'stroke'>, ES> {
   // ========== Overriding Vega ==========
 
   /**
@@ -137,7 +141,7 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
    *
    * __Default value:__ `null`
    */
-  tooltip?: number | string | boolean | TooltipContent | SignalRef | null; // VL has a special object form for tooltip content
+  tooltip?: number | string | boolean | TooltipContent | ES | null; // VL has a special object form for tooltip content
 
   /**
    * Default size for marks.
@@ -153,35 +157,35 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
    *
    * @minimum 0
    */
-  size?: number | SignalRef; // size works beyond symbol marks in VL
+  size?: number | ES; // size works beyond symbol marks in VL
 
   /**
    * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without specified `x2` or `width`.
    *
    * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
    */
-  x?: number | 'width' | SignalRef; // Vega doesn't have 'width'
+  x?: number | 'width' | ES; // Vega doesn't have 'width'
 
   /**
    * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without specified `y2` or `height`.
    *
    * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y?: number | 'height' | SignalRef; // Vega doesn't have 'height'
+  y?: number | 'height' | ES; // Vega doesn't have 'height'
 
   /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    *
    * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
    */
-  x2?: number | 'width' | SignalRef; // Vega doesn't have 'width'
+  x2?: number | 'width' | ES; // Vega doesn't have 'width'
 
   /**
    * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    *
    * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y2?: number | 'height' | SignalRef; // Vega doesn't have 'height'
+  y2?: number | 'height' | ES; // Vega doesn't have 'height'
 
   /**
    * Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.
@@ -189,7 +193,7 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
    * __Default value:__ (None)
    *
    */
-  fill?: Color | Gradient | null | SignalRef; // docs: Vega doesn't have config.color
+  fill?: Color | Gradient | null | ES; // docs: Vega doesn't have config.color
 
   /**
    * Default stroke color. This property has higher precedence than `config.color`. Set to `null` to remove stroke.
@@ -197,7 +201,7 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
    * __Default value:__ (None)
    *
    */
-  stroke?: Color | Gradient | null | SignalRef; // docs: Vega doesn't have config.color
+  stroke?: Color | Gradient | null | ES; // docs: Vega doesn't have config.color
 
   /**
    * The overall opacity (value between [0,1]).
@@ -207,7 +211,7 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
    * @minimum 0
    * @maximum 1
    */
-  opacity?: number | SignalRef; // docs (different defaults)
+  opacity?: number | ES; // docs (different defaults)
 
   /**
    * The orientation of a non-stacked bar, tick, area, and line charts.
@@ -240,7 +244,7 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
    * @minimum 0
    * @maximum 360
    */
-  theta?: number | SignalRef; // overriding VG
+  theta?: number | ES; // overriding VG
 
   /**
    *
@@ -252,7 +256,7 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
    *
    * __Default value:__ `min(plot_width, plot_height)/2`
    */
-  radius?: number | SignalRef; // overriding VG
+  radius?: number | ES; // overriding VG
 
   /**
    * The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.
@@ -260,7 +264,7 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
    * @minimum 0
    * __Default value:__ `0`
    */
-  innerRadius?: number | SignalRef;
+  innerRadius?: number | ES;
 
   /**
    * The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.
@@ -268,7 +272,7 @@ export interface MarkConfig extends VLOnlyMarkConfig, Omit<VgMarkConfig, 'toolti
    * @minimum 0
    * __Default value:__ `0`
    */
-  outerRadius?: number | SignalRef;
+  outerRadius?: number | ES;
 }
 
 export interface RectBinSpacingMixins {
@@ -309,7 +313,7 @@ export const FILL_CONFIG = ['fill', 'fillOpacity'] as const;
 
 export const FILL_STROKE_CONFIG = [...STROKE_CONFIG, ...FILL_CONFIG];
 
-const VL_ONLY_MARK_CONFIG_INDEX: Flag<keyof VLOnlyMarkConfig> = {
+const VL_ONLY_MARK_CONFIG_INDEX: Flag<keyof VLOnlyMarkConfig<any>> = {
   color: 1,
   filled: 1,
   invalid: 1,
@@ -323,7 +327,7 @@ const VL_ONLY_MARK_CONFIG_INDEX: Flag<keyof VLOnlyMarkConfig> = {
 export const VL_ONLY_MARK_CONFIG_PROPERTIES = keys(VL_ONLY_MARK_CONFIG_INDEX);
 
 export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
-  [k in Mark]?: (keyof Required<MarkConfigMixins>[k])[];
+  [k in Mark]?: (keyof Required<MarkConfigMixins<any>>[k])[];
 } = {
   area: ['line', 'point'],
   bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
@@ -332,65 +336,91 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   tick: ['bandSize', 'thickness']
 };
 
-export const defaultMarkConfig: MarkConfig = {
+export const defaultMarkConfig: MarkConfig<SignalRef> = {
   color: '#4c78a8',
   invalid: 'filter',
   timeUnitBand: 1
 };
 
 // TODO: replace with MarkConfigMixins[Mark] once https://github.com/vega/ts-json-schema-generator/issues/344 is fixed
-export type AnyMarkConfig = MarkConfig | AreaConfig | BarConfig | RectConfig | LineConfig | TickConfig;
+export type AnyMarkConfig<ES extends ExprRef | SignalRef> =
+  | MarkConfig<SignalRef>
+  | AreaConfig<ES>
+  | BarConfig<ES>
+  | RectConfig<ES>
+  | LineConfig<ES>
+  | TickConfig<ES>;
 
-export interface MarkConfigMixins {
+export interface MarkConfigMixins<ES extends ExprRef | SignalRef> {
   /** Mark Config */
-  mark?: MarkConfig;
+  mark?: MarkConfig<ES>;
 
   // MARK-SPECIFIC CONFIGS
 
   /** Arc-specific Config */
-  arc?: RectConfig;
+  arc?: RectConfig<ES>;
 
   /** Area-Specific Config */
-  area?: AreaConfig;
+  area?: AreaConfig<ES>;
 
   /** Bar-Specific Config */
-  bar?: BarConfig;
+  bar?: BarConfig<ES>;
 
   /** Circle-Specific Config */
-  circle?: MarkConfig;
+  circle?: MarkConfig<ES>;
 
   /** Image-specific Config */
-  image?: RectConfig;
+  image?: RectConfig<ES>;
 
   /** Line-Specific Config */
-  line?: LineConfig;
+  line?: LineConfig<ES>;
 
   /** Point-Specific Config */
-  point?: MarkConfig;
+  point?: MarkConfig<ES>;
 
   /** Rect-Specific Config */
-  rect?: RectConfig;
+  rect?: RectConfig<ES>;
 
   /** Rule-Specific Config */
-  rule?: MarkConfig;
+  rule?: MarkConfig<ES>;
 
   /** Square-Specific Config */
-  square?: MarkConfig;
+  square?: MarkConfig<ES>;
 
   /** Text-Specific Config */
-  text?: MarkConfig;
+  text?: MarkConfig<ES>;
 
   /** Tick-Specific Config */
-  tick?: TickConfig;
+  tick?: TickConfig<ES>;
 
   /** Trail-Specific Config */
-  trail?: LineConfig;
+  trail?: LineConfig<ES>;
 
   /** Geoshape-Specific Config */
-  geoshape?: MarkConfig;
+  geoshape?: MarkConfig<ES>;
 }
 
-export interface RectConfig extends RectBinSpacingMixins, MarkConfig {
+const MARK_CONFIG_INDEX: Flag<keyof MarkConfigMixins<any>> = {
+  mark: 1,
+  arc: 1,
+  area: 1,
+  bar: 1,
+  circle: 1,
+  image: 1,
+  line: 1,
+  point: 1,
+  rect: 1,
+  rule: 1,
+  square: 1,
+  text: 1,
+  tick: 1,
+  trail: 1,
+  geoshape: 1
+};
+
+export const MARK_CONFIGS = keys(MARK_CONFIG_INDEX);
+
+export interface RectConfig<ES extends ExprRef | SignalRef> extends RectBinSpacingMixins, MarkConfig<ES> {
   /**
    * The default size of the bars on continuous scales.
    *
@@ -423,11 +453,11 @@ export interface BarCornerRadiusMixins {
   cornerRadiusEnd?: number | SignalRef;
 }
 
-export type BarConfig = RectConfig & BarCornerRadiusMixins;
+export type BarConfig<ES extends ExprRef | SignalRef> = RectConfig<ES> & BarCornerRadiusMixins;
 
-export type OverlayMarkDef = MarkConfig & MarkDefMixins;
+export type OverlayMarkDef<ES extends ExprRef | SignalRef> = MarkConfig<ES> & MarkDefMixins<ES>;
 
-export interface PointOverlayMixins {
+export interface PointOverlayMixins<ES extends ExprRef | SignalRef> {
   /**
    * A flag for overlaying points on top of line or area marks, or an object defining the properties of the overlayed points.
    *
@@ -439,12 +469,12 @@ export interface PointOverlayMixins {
    *
    * __Default value:__ `false`.
    */
-  point?: boolean | OverlayMarkDef | 'transparent';
+  point?: boolean | OverlayMarkDef<ES> | 'transparent';
 }
 
-export interface LineConfig extends MarkConfig, PointOverlayMixins {}
+export interface LineConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, PointOverlayMixins<ES> {}
 
-export interface LineOverlayMixins {
+export interface LineOverlayMixins<ES extends ExprRef | SignalRef> {
   /**
    * A flag for overlaying line on top of area marks, or an object defining the properties of the overlayed lines.
    *
@@ -454,10 +484,13 @@ export interface LineOverlayMixins {
    *
    * __Default value:__ `false`.
    */
-  line?: boolean | OverlayMarkDef;
+  line?: boolean | OverlayMarkDef<ES>;
 }
 
-export interface AreaConfig extends MarkConfig, PointOverlayMixins, LineOverlayMixins {}
+export interface AreaConfig<ES extends ExprRef | SignalRef>
+  extends MarkConfig<ES>,
+    PointOverlayMixins<ES>,
+    LineOverlayMixins<ES> {}
 
 export interface TickThicknessMixins {
   /**
@@ -480,7 +513,7 @@ export interface GenericMarkDef<M> {
   type: M;
 }
 
-export interface MarkDefMixins {
+export interface MarkDefMixins<ES extends ExprRef | SignalRef> {
   /**
    * A string or array of strings indicating the name of custom styles to apply to the mark. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles. Any [mark properties](https://vega.github.io/vega-lite/docs/encoding.html#mark-prop) explicitly defined within the `encoding` will override a style default.
    *
@@ -499,86 +532,86 @@ export interface MarkDefMixins {
   /**
    * Offset for x-position.
    */
-  xOffset?: number | SignalRef;
+  xOffset?: number | ES;
 
   /**
    * Offset for y-position.
    */
-  yOffset?: number | SignalRef;
+  yOffset?: number | ES;
 
   /**
    * Offset for x2-position.
    */
-  x2Offset?: number | SignalRef;
+  x2Offset?: number | ES;
 
   /**
    * Offset for y2-position.
    */
-  y2Offset?: number | SignalRef;
+  y2Offset?: number | ES;
 
   /**
    * Offset for theta.
    */
-  thetaOffset?: number | SignalRef;
+  thetaOffset?: number | ES;
 
   /**
    * Offset for theta2.
    */
-  theta2Offset?: number | SignalRef;
+  theta2Offset?: number | ES;
 
   /**
    * Offset for radius.
    */
-  radiusOffset?: number | SignalRef;
+  radiusOffset?: number | ES;
 
   /**
    * Offset for radius2.
    */
-  radius2Offset?: number | SignalRef;
+  radius2Offset?: number | ES;
 }
 
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
-export interface MarkDef<M extends string | Mark = Mark>
+export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | SignalRef = ExprRef | SignalRef>
   extends GenericMarkDef<M>,
     Omit<
-      MarkConfig &
-        AreaConfig &
-        BarConfig & // always extends RectConfig
-        LineConfig &
-        TickConfig,
+      MarkConfig<ES> &
+        AreaConfig<ES> &
+        BarConfig<ES> & // always extends RectConfig
+        LineConfig<ES> &
+        TickConfig<ES>,
       'startAngle' | 'endAngle'
     >,
-    MarkDefMixins {
+    MarkDefMixins<ES> {
   // Omit startAngle/endAngle since we use theta/theta2 from Vega-Lite schema to avoid confusion
   // We still support start/endAngle  only in config, just in case people use Vega config with Vega-Lite.
 
   /**
    * @hidden
    */
-  startAngle?: number | SignalRef;
+  startAngle?: number | ES;
   /**
    * @hidden
    */
-  endAngle?: number | SignalRef;
+  endAngle?: number | ES;
 }
 
 const DEFAULT_RECT_BAND_SIZE = 5;
 
-export const defaultBarConfig: RectConfig = {
+export const defaultBarConfig: RectConfig<SignalRef> = {
   binSpacing: 1,
   continuousBandSize: DEFAULT_RECT_BAND_SIZE,
   timeUnitBandPosition: 0.5
 };
 
-export const defaultRectConfig: RectConfig = {
+export const defaultRectConfig: RectConfig<SignalRef> = {
   binSpacing: 0,
   continuousBandSize: DEFAULT_RECT_BAND_SIZE,
   timeUnitBandPosition: 0.5
 };
 
-export interface TickConfig extends MarkConfig, TickThicknessMixins {
+export interface TickConfig<ES extends ExprRef | SignalRef> extends MarkConfig<ES>, TickThicknessMixins {
   /**
    * The width of the ticks.
    *
@@ -588,7 +621,7 @@ export interface TickConfig extends MarkConfig, TickThicknessMixins {
   bandSize?: number;
 }
 
-export const defaultTickConfig: TickConfig = {
+export const defaultTickConfig: TickConfig<SignalRef> = {
   thickness: 1
 };
 

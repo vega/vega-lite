@@ -79,7 +79,7 @@ export function wrapPositionInvalidTest({
   channel: PositionChannel | PolarPositionChannel;
   markDef: MarkDef<Mark>;
   ref: VgValueRef;
-  config: Config;
+  config: Config<SignalRef>;
 }): VgValueRef | VgValueRef[] {
   if (isPathMark(markDef.type)) {
     // path mark already use defined to skip points, no need to do it here.
@@ -204,8 +204,8 @@ export interface MidPointParams {
   channelDef: ChannelDef;
   channel2Def?: SecondaryChannelDef<string>;
 
-  markDef: MarkDef<Mark>;
-  config: Config;
+  markDef: MarkDef<Mark, SignalRef>;
+  config: Config<SignalRef>;
 
   scaleName: string;
   scale: ScaleComponent;

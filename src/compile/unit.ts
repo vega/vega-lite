@@ -62,7 +62,7 @@ import {parseUnitSelection} from './selection/parse';
  * Internal model of Vega-Lite specification for the compiler.
  */
 export class UnitModel extends ModelWithField {
-  public readonly markDef: MarkDef;
+  public readonly markDef: MarkDef<Mark, SignalRef>;
   public readonly encoding: Encoding<string>;
 
   public readonly specifiedScales: ScaleIndex = {};

@@ -140,7 +140,7 @@ export function getLabelAngle(
   fieldOrDatumDef: PositionFieldDef<string> | PositionDatumDef<string>,
   axis: AxisInternal,
   channel: PositionScaleChannel,
-  styleConfig: StyleConfigIndex,
+  styleConfig: StyleConfigIndex<SignalRef>,
   axisConfigs?: AxisConfigs
 ) {
   const labelAngle = axis?.labelAngle;

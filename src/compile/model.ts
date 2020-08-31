@@ -21,6 +21,7 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../cha
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
+import {ExprRef, replaceExprRefInIndex} from '../expr';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
@@ -180,6 +181,8 @@ export abstract class Model {
 
   public readonly component: Component;
 
+  public readonly view?: ViewBackground<SignalRef>;
+
   public abstract readonly children: Model[] = [];
 
   constructor(
@@ -189,10 +192,11 @@ export abstract class Model {
     parentGivenName: string,
     public readonly config: Config<SignalRef>,
     resolve: Resolve,
-    public readonly view?: ViewBackground
+    view?: ViewBackground<ExprRef | SignalRef>
   ) {
     this.parent = parent;
     this.config = config;
+    this.view = replaceExprRefInIndex(view) as ViewBackground<SignalRef>;
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this.name = spec.name ?? parentGivenName;
@@ -304,7 +308,7 @@ export abstract class Model {
     return undefined;
   }
 
-  private assembleEncodeFromView(view: ViewBackground): VgEncodeEntry {
+  private assembleEncodeFromView(view: ViewBackground<SignalRef>): VgEncodeEntry {
     // Exclude "style"
     const {style: _, ...baseView} = view;
 

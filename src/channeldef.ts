@@ -56,7 +56,7 @@ import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalComposition} from './logical';
-import {isRectBasedMark, MarkDef} from './mark';
+import {isRectBasedMark, Mark, MarkDef} from './mark';
 import {Predicate} from './predicate';
 import {Scale, SCALE_CATEGORY_INDEX} from './scale';
 import {isSortByChannel, Sort, SortOrder} from './sort';
@@ -493,8 +493,8 @@ export function getBand({
   fieldDef: FieldDef<string> | DatumDef;
   fieldDef2?: SecondaryChannelDef<string>;
   stack: StackProperties;
-  markDef: MarkDef;
-  config: Config;
+  markDef: MarkDef<Mark, SignalRef>;
+  config: Config<SignalRef>;
 }): number {
   if (isFieldOrDatumDef(fieldDef) && fieldDef.band !== undefined) {
     return fieldDef.band;
@@ -523,8 +523,8 @@ export function hasBand(
   fieldDef: FieldDef<string>,
   fieldDef2: SecondaryChannelDef<string>,
   stack: StackProperties,
-  markDef: MarkDef,
-  config: Config
+  markDef: MarkDef<Mark, SignalRef>,
+  config: Config<SignalRef>
 ): boolean {
   if (isBinning(fieldDef.bin) || (fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal')) {
     return !!getBand({channel, fieldDef, fieldDef2, stack, markDef, config});

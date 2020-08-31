@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega-typings/types';
 import {
   Config,
   defaultConfig,
@@ -12,6 +13,24 @@ import {duplicate} from '../src/util';
 
 describe('config', () => {
   describe('initConfig', () => {
+    it('converts `expr`s in mark config to `signal`s', () => {
+      expect(
+        initConfig({
+          mark: {color: {expr: "'red'"}},
+          point: {color: {expr: "'green'"}},
+          style: {
+            foo: {color: {expr: "'blue'"}}
+          }
+        })
+      ).toMatchObject({
+        mark: {color: {signal: "'red'"}},
+        point: {color: {signal: "'green'"}},
+        style: {
+          foo: {color: {signal: "'blue'"}}
+        }
+      });
+    });
+
     it('produces correct default color, font, and fontSize config', () => {
       expect(initConfig({color: true, fontSize: true, font: 'abc'})).toEqual({
         ...defaultConfig,
@@ -94,7 +113,7 @@ describe('config', () => {
   });
 
   describe('stripAndRedirectConfig', () => {
-    const config: Config = {
+    const config: Config<SignalRef> = {
       ...defaultConfig,
       mark: {
         ...defaultConfig.mark,

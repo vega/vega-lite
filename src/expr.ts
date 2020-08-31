@@ -1,4 +1,6 @@
 import {SignalRef} from 'vega';
+import {signalRefOrValue} from './compile/common';
+import {keys} from './util';
 import {isSignalRef} from './vega.schema';
 
 export interface ExprRef {
@@ -17,3 +19,12 @@ export function isExprOrSignalRef(o: any): o is ExprRef | SignalRef {
 }
 
 export type ExprOrSignalRef = ExprRef | SignalRef;
+
+export function replaceExprRefInIndex(index: {[key: string]: any | ExprOrSignalRef}) {
+  const props = keys(index || {});
+  const newIndex: {[key: string]: any | SignalRef} = {};
+  for (const prop of props) {
+    newIndex[prop as any] = signalRefOrValue(index[prop]);
+  }
+  return newIndex;
+}
