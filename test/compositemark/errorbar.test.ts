@@ -2,7 +2,7 @@ import {AggregateOp} from 'vega';
 import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar';
 import {defaultConfig} from '../../src/config';
 import * as log from '../../src/log';
-import {isMarkDef, TickConfig} from '../../src/mark';
+import {isMarkDef} from '../../src/mark';
 import {normalize} from '../../src/normalize';
 import {isLayerSpec, isUnitSpec} from '../../src/spec';
 import {TopLevelUnitSpec} from '../../src/spec/unit';
@@ -462,7 +462,7 @@ describe('normalizeErrorBar with raw data input', () => {
         mark: {
           type: 'errorbar',
           thickness,
-          ticks: {thickness: tickThickness} as TickConfig,
+          ticks: {thickness: tickThickness} as any,
           rule: {size: ruleSize}
         },
         encoding: {x: {field: 'age', type: 'quantitative'}}

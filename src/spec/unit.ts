@@ -13,7 +13,6 @@ import {
   ResolveMixins
 } from './base';
 import {TopLevel} from './toplevel';
-
 /**
  * Base interface for a unit (single-view) specification.
  */

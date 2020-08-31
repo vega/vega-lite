@@ -48,12 +48,11 @@ export class FacetModel extends ModelWithField {
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, config);
     this.children = [this.child];
 
-    this.facet = this.initFacet(spec.facet, config);
+    this.facet = this.initFacet(spec.facet);
   }
 
   private initFacet(
-    facet: FacetFieldDef<FieldName> | FacetMapping<FieldName>,
-    config: Config<SignalRef>
+    facet: FacetFieldDef<FieldName> | FacetMapping<FieldName>
   ): EncodingFacetMapping<FieldName, SignalRef> {
     // clone to prevent side effect to the original spec
     if (!isFacetMapping(facet)) {

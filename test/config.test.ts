@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega-typings/types';
 import {
   Config,
   defaultConfig,
@@ -94,7 +95,7 @@ describe('config', () => {
   });
 
   describe('stripAndRedirectConfig', () => {
-    const config: Config = {
+    const config: Config<SignalRef> = {
       ...defaultConfig,
       mark: {
         ...defaultConfig.mark,
