@@ -92,7 +92,7 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
           config: vgSpec.config,
           renderer: 'svg'
         });
-        // remove as any even d3 typings are updated
+        // remove as any when d3 typings are updated
         (event as any).preventDefault();
       });
   }
