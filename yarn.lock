@@ -7391,7 +7391,7 @@ source-map-url@^0.4.0:
   resolved "https://registry.yarnpkg.com/source-map-url/-/source-map-url-0.4.0.tgz#3e935d7ddd73631b97659956d55128e87b5084a3"
   integrity sha1-PpNdfd1zYxuXZZlW1VEo6HtQhKM=
 
-source-map@^0.5.0, source-map@^0.5.6:
+source-map@^0.5.6:
   version "0.5.7"
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha1-igOdLRAh0i0eoUyA2OpGi6LvP8w=
@@ -8268,7 +8268,14 @@ vega-event-selector@^2.0.3, vega-event-selector@~2.0.3:
   resolved "https://registry.yarnpkg.com/vega-event-selector/-/vega-event-selector-2.0.5.tgz#9bf6ef3b12974b71a21640f199b00fa050607838"
   integrity sha512-bRm02Fnd+YrZDni0yr5y9Co1Z1zrjd7hkwY+gi/Y7zDFOxnESGrbYtpHvWT8fL9AqmYU3wDpsJZGyP4htRUNAQ==
 
-vega-expression@^2.6.4, vega-expression@^2.6.5, vega-expression@~2.6.5:
+vega-expression@^2.6.4, vega-expression@^2.6.5, vega-expression@~2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/vega-expression/-/vega-expression-2.7.0.tgz#63167305306cc8d1a2af314ad0c916116a32c19f"
+  integrity sha512-fMnHtcFfVAxuwjsKGh0qqP8OJNVABGIg0aSp33Jxh1D86LwDwaRe+EtwF1fv8YKD2AEiBl4UObC68QMT56MekQ==
+  dependencies:
+    vega-util "^1.15.1"
+
+vega-expression@~2.6.5:
   version "2.6.5"
   resolved "https://registry.yarnpkg.com/vega-expression/-/vega-expression-2.6.5.tgz#7bda7524b9223cbbf9034071695c7c2a9bd81971"
   integrity sha512-3hJts0gKomu3ePXYeIb+VAw7yNKoHJ6VqSKsHHFPyoEGNdwmlgI5d9IBblelPCiMCHK4sMt7h1OTWB33cfxZGA==
@@ -8465,7 +8472,7 @@ vega-typings@^0.18.0, vega-typings@~0.18.0:
   dependencies:
     vega-util "^1.14.0"
 
-vega-util@^1.13.2, vega-util@^1.14.0, vega-util@^1.14.1, vega-util@~1.15.0:
+vega-util@^1.13.2, vega-util@^1.14.0, vega-util@^1.14.1, vega-util@^1.15.1, vega-util@~1.15.0:
   version "1.15.1"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.15.1.tgz#52e27ad6b460bfa41ea1a9146d70b6144ec090ab"
   integrity sha512-kEbRQiVUP42dyou2LF8I+3TlBtk4TODTlnLzdSoI//uahXvDnz1ulfprWljfcHPbVjziObaFNWkpT56oSMTx+g==
