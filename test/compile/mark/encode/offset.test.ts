@@ -1,9 +1,10 @@
+import {SignalRef} from 'vega-typings/types';
 import {getOffset} from '../../../../src/compile/mark/encode/offset';
-import {MarkDef} from '../../../../src/mark';
+import {Mark, MarkDef} from '../../../../src/mark';
 
 describe('compile/mark/encode/offset', () => {
   describe('getOffset', () => {
-    const markDef: MarkDef = {
+    const markDef: MarkDef<Mark, SignalRef> = {
       type: 'point',
       x2Offset: 100
     };

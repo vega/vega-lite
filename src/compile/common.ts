@@ -14,7 +14,7 @@ import {
 } from '../channeldef';
 import {Config, StyleConfigIndex} from '../config';
 import {isExprRef} from '../expr';
-import {MarkConfig, MarkDef} from '../mark';
+import {Mark, MarkConfig, MarkDef} from '../mark';
 import {SortFields} from '../sort';
 import {isText} from '../title';
 import {deepEqual, getFirstDefined} from '../util';
@@ -81,7 +81,7 @@ export function signalOrStringValue(v: SignalRef | any) {
   return v == null ? null : stringValue(v);
 }
 
-export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {
+export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig<any>)[]) {
   for (const property of propsList) {
     const value = getMarkConfig(property, model.markDef, model.config);
     if (value !== undefined) {
@@ -95,15 +95,15 @@ export function getStyles(mark: MarkDef): string[] {
   return [].concat(mark.type, mark.style ?? []);
 }
 
-export function getMarkPropOrConfig<P extends keyof MarkDef>(
+export function getMarkPropOrConfig<P extends keyof MarkDef, ES extends ExprRef | SignalRef>(
   channel: P,
-  mark: MarkDef,
-  config: Config,
+  mark: MarkDef<Mark, ES>,
+  config: Config<SignalRef>,
   opt: {
     vgChannel?: VgEncodeChannel;
     ignoreVgConfig?: boolean;
   } = {}
-): MarkDef[P] {
+): MarkDef<Mark, ES>[P] {
   const {vgChannel, ignoreVgConfig} = opt;
   if (vgChannel && mark[vgChannel] !== undefined) {
     return mark[vgChannel];
@@ -120,13 +120,13 @@ export function getMarkPropOrConfig<P extends keyof MarkDef>(
  * Return property value from style or mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
-export function getMarkConfig<P extends keyof MarkDef>(
+export function getMarkConfig<P extends keyof MarkDef, ES extends ExprRef | SignalRef>(
   channel: P,
-  mark: MarkDef,
-  config: Config,
+  mark: MarkDef<Mark, ES>,
+  config: Config<SignalRef>,
   {vgChannel}: {vgChannel?: VgEncodeChannel} = {}
-): MarkDef[P] {
-  return getFirstDefined<MarkDef[P]>(
+): MarkDef<Mark, ES>[P] {
+  return getFirstDefined<MarkDef<Mark, ES>[P]>(
     // style config has highest precedence
     vgChannel ? getMarkStyleConfig(channel, mark, config.style) : undefined,
     getMarkStyleConfig(channel, mark, config.style),
@@ -141,10 +141,10 @@ export function getMarkConfig<P extends keyof MarkDef>(
   );
 }
 
-export function getMarkStyleConfig<P extends keyof MarkDef>(
+export function getMarkStyleConfig<P extends keyof MarkDef, ES extends ExprRef | SignalRef>(
   prop: P,
-  mark: MarkDef,
-  styleConfigIndex: StyleConfigIndex
+  mark: MarkDef<Mark, ES>,
+  styleConfigIndex: StyleConfigIndex<SignalRef>
 ) {
   return getStyleConfig(prop, getStyles(mark), styleConfigIndex);
 }
@@ -152,7 +152,7 @@ export function getMarkStyleConfig<P extends keyof MarkDef>(
 export function getStyleConfig<P extends keyof MarkDef | keyof AxisConfig<SignalRef>>(
   p: P,
   styles: string | string[],
-  styleConfigIndex: StyleConfigIndex
+  styleConfigIndex: StyleConfigIndex<SignalRef>
 ) {
   styles = array(styles);
   let value;

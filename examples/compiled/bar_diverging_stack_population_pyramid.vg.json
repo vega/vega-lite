@@ -124,5 +124,5 @@
       "symbolType": "square"
     }
   ],
-  "config": {"style": {"cell": {"stroke": null}}, "axis": {"grid": false}}
+  "config": {"axis": {"grid": false}, "style": {"cell": {"stroke": null}}}
 }

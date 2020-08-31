@@ -21,11 +21,11 @@ export interface LegendRuleParams {
   legend: LegendInternal;
   channel: NonPositionScaleChannel;
   model: UnitModel;
-  markDef: MarkDef;
+  markDef: MarkDef<Mark, SignalRef>;
   encoding: Encoding<string>;
   fieldOrDatumDef: MarkPropFieldOrDatumDef<string>;
   legendConfig: LegendConfig<SignalRef>;
-  config: Config;
+  config: Config<SignalRef>;
   scaleType: ScaleType;
   orient: LegendOrient;
   legendType: LegendType;

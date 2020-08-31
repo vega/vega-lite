@@ -2,6 +2,7 @@ import {Color, Cursor, SignalRef, Text} from 'vega';
 import {isNumber, isObject} from 'vega-util';
 import {NormalizedSpec} from '.';
 import {Data} from '../data';
+import {ExprRef} from '../expr';
 import {MarkConfig} from '../mark';
 import {Resolve} from '../resolve';
 import {TitleParams} from '../title';
@@ -98,17 +99,17 @@ export interface LayoutSizeMixins {
   height?: number | 'container' | Step; // Vega also supports SignalRef for width and height. However, we need to know if width is a step or not in VL and it's very difficult to check this at runtime, so we intentionally do not support SignalRef here.
 }
 
-export function isFrameMixins(o: any): o is FrameMixins {
+export function isFrameMixins(o: any): o is FrameMixins<any> {
   return o['view'] || o['width'] || o['height'];
 }
 
-export interface FrameMixins extends LayoutSizeMixins {
+export interface FrameMixins<ES extends ExprRef | SignalRef = ExprRef | SignalRef> extends LayoutSizeMixins {
   /**
    * An object defining the view background's fill and stroke.
    *
    * __Default value:__ none (transparent)
    */
-  view?: ViewBackground;
+  view?: ViewBackground<ES>;
 }
 
 export type DeprecatedFrameMixins = {
@@ -135,10 +136,10 @@ export interface ResolveMixins {
   resolve?: Resolve;
 }
 
-export interface BaseViewBackground
+export interface BaseViewBackground<ES extends ExprRef | SignalRef>
   extends Partial<
     Pick<
-      MarkConfig,
+      MarkConfig<ES>,
       | 'cornerRadius'
       | 'fillOpacity'
       | 'opacity'
@@ -157,14 +158,14 @@ export interface BaseViewBackground
    *
    * __Default value:__ `undefined`
    */
-  fill?: Color | null | SignalRef;
+  fill?: Color | null | ES;
 
   /**
    * The stroke color.
    *
    * __Default value:__ `"#ddd"`
    */
-  stroke?: Color | null | SignalRef;
+  stroke?: Color | null | ES;
 
   /**
    * The mouse cursor used over the view. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
@@ -172,7 +173,7 @@ export interface BaseViewBackground
   cursor?: Cursor;
 }
 
-export interface ViewBackground extends BaseViewBackground {
+export interface ViewBackground<ES extends ExprRef | SignalRef> extends BaseViewBackground<ES> {
   /**
    * A string or array of strings indicating the name of custom styles to apply to the view background. A style is a named collection of mark property defaults defined within the [style configuration](https://vega.github.io/vega-lite/docs/mark.html#style-config). If style is an array, later styles will override earlier styles.
    *

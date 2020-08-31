@@ -419,4 +419,19 @@ describe('Mark: Circle', () => {
     expect(filledCircleProps.stroke['value']).toBe('blue');
     expect(filledCircleProps.fill['value']).toBe('transparent');
   });
+
+  it('converts expression in mark properties into signal', () => {
+    const filledCircleModel = parseUnitModelWithScaleAndLayoutSize({
+      mark: {type: 'circle', stroke: {expr: "'red'"}},
+      config: {
+        mark: {
+          filled: false
+        }
+      }
+    });
+
+    const filledCircleProps = circle.encodeEntry(filledCircleModel);
+
+    expect(filledCircleProps.stroke).toEqual({signal: "'red'"});
+  });
 });

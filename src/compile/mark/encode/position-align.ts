@@ -1,4 +1,4 @@
-import {Align} from 'vega';
+import {Align, SignalRef} from 'vega';
 import {getVgPositionChannel} from '../../../channel';
 import {Config} from '../../../config';
 import {MarkDef} from '../../../mark';
@@ -20,7 +20,7 @@ const BASELINED_Y_CHANNEL = {
 export function vgAlignedPositionChannel(
   channel: 'x' | 'y' | 'radius' | 'theta',
   markDef: MarkDef,
-  config: Config,
+  config: Config<SignalRef>,
   defaultAlign: 'top' | 'middle' = 'middle'
 ) {
   if (channel === 'radius' || channel === 'theta') {

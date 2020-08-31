@@ -1,5 +1,4 @@
-import {FacetedUnitSpec} from '../src/spec/unit';
-import {BaseSpec} from '../src/spec/base';
+import {SignalRef} from 'vega-typings/types';
 import {buildModel} from '../src/compile/buildmodel';
 import {ConcatModel} from '../src/compile/concat';
 import {FacetModel} from '../src/compile/facet';
@@ -10,20 +9,21 @@ import {UnitModel} from '../src/compile/unit';
 import {initConfig} from '../src/config';
 import {normalize} from '../src/normalize';
 import {
+  GenericLayerSpec,
+  isLayerSpec,
+  isUnitSpec,
   NormalizedConcatSpec,
   NormalizedFacetSpec,
   NormalizedLayerSpec,
   NormalizedUnitSpec,
   TopLevel,
-  TopLevelSpec,
-  isUnitSpec,
-  isLayerSpec,
-  GenericLayerSpec
+  TopLevelSpec
 } from '../src/spec';
-import {FrameMixins} from '../src/spec/base';
+import {BaseSpec, FrameMixins} from '../src/spec/base';
+import {FacetedUnitSpec} from '../src/spec/unit';
 import {contains} from '../src/util';
 
-export type TopLevelNormalizedUnitSpecForTest = TopLevel<NormalizedUnitSpec> & FrameMixins;
+export type TopLevelNormalizedUnitSpecForTest = TopLevel<NormalizedUnitSpec> & FrameMixins<SignalRef>;
 
 export function parseModel(inputSpec: TopLevelSpec): Model {
   const config = initConfig(inputSpec.config);
