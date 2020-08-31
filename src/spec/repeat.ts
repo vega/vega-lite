@@ -1,8 +1,7 @@
 import {isArray} from 'vega-util';
-import {GenericSpec, LayerSpec} from '.';
-import {FieldName} from '../channeldef';
+import {LayerSpec, Spec} from '.';
 import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';
-import {FacetedUnitSpec, UnitSpec} from './unit';
+import {UnitSpec} from './unit';
 
 export interface RepeatMapping {
   /**
@@ -39,7 +38,7 @@ export interface NonLayerRepeatSpec extends BaseSpec, GenericCompositionLayoutWi
   /**
    * A specification of the view that gets repeated.
    */
-  spec: GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, FieldName>;
+  spec: Spec;
 }
 
 export interface LayerRepeatSpec extends BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins {

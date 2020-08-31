@@ -4,8 +4,7 @@
  * - The external specs (no prefix) would allow composite marks, row/column encodings, and mark macros like point/line overlay.
  * - The internal specs (with `Normalized` prefix) would only support primitive marks and support no macros/shortcuts.
  */
-import {Field} from '../channeldef';
-import {FieldName} from '../channeldef';
+import {Field, FieldName} from '../channeldef';
 import {DataMixins} from './base';
 import {GenericConcatSpec, GenericHConcatSpec, GenericVConcatSpec} from './concat';
 import {GenericFacetSpec} from './facet';
@@ -63,6 +62,8 @@ export type TopLevelSpec =
   | TopLevelFacetSpec
   | TopLevel<LayerSpec>
   | TopLevel<RepeatSpec>
-  | TopLevel<GenericConcatSpec<GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>>>
-  | TopLevel<GenericVConcatSpec<GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>>>
-  | TopLevel<GenericHConcatSpec<GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>>>;
+  | TopLevel<GenericConcatSpec<Spec>>
+  | TopLevel<GenericVConcatSpec<Spec>>
+  | TopLevel<GenericHConcatSpec<Spec>>;
+
+export type Spec = GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>;
