@@ -10568,7 +10568,14 @@
           "type": "string"
         },
         "labelAlign": {
-          "$ref": "#/definitions/Align",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "Horizontal text alignment of header labels. One of `\"left\"`, `\"center\"`, or `\"right\"`."
         },
         "labelAnchor": {
@@ -10582,11 +10589,25 @@
           "type": "number"
         },
         "labelBaseline": {
-          "$ref": "#/definitions/TextBaseline",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The vertical text baseline for the header labels. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`.\nThe `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone."
         },
         "labelColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The color of the header label, can be in hex color code or regular color name."
         },
         "labelExpr": {
@@ -10594,37 +10615,86 @@
           "type": "string"
         },
         "labelFont": {
-          "description": "The font of the header label.",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The font of the header label."
         },
         "labelFontSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The font size of the header label, in pixels.",
-          "minimum": 0,
-          "type": "number"
+          "minimum": 0
         },
         "labelFontStyle": {
-          "$ref": "#/definitions/FontStyle",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The font style of the header label."
         },
         "labelFontWeight": {
-          "$ref": "#/definitions/FontWeight",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The font weight of the header label."
         },
         "labelLimit": {
-          "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit"
         },
         "labelLineHeight": {
-          "description": "Line height in pixels for multi-line header labels or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Line height in pixels for multi-line header labels or title text with `\"line-top\"` or `\"line-bottom\"` baseline."
         },
         "labelOrient": {
           "$ref": "#/definitions/Orient",
           "description": "The orientation of the header label. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`."
         },
         "labelPadding": {
-          "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`"
         },
         "labels": {
           "description": "A boolean flag indicating if labels should be included as part of the header.\n\n__Default value:__ `true`.",
@@ -10646,7 +10716,14 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "titleAlign": {
-          "$ref": "#/definitions/Align",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "Horizontal text alignment (to the anchor) of header titles."
         },
         "titleAnchor": {
@@ -10660,45 +10737,108 @@
           "type": "number"
         },
         "titleBaseline": {
-          "$ref": "#/definitions/TextBaseline",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The vertical text baseline for the header title. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`.\nThe `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.\n\n__Default value:__ `\"middle\"`"
         },
         "titleColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "Color of the header title, can be in hex color code or regular color name."
         },
         "titleFont": {
-          "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`)."
         },
         "titleFontSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "Font size of the header title.",
-          "minimum": 0,
-          "type": "number"
+          "minimum": 0
         },
         "titleFontStyle": {
-          "$ref": "#/definitions/FontStyle",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The font style of the header title."
         },
         "titleFontWeight": {
-          "$ref": "#/definitions/FontWeight",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "Font weight of the header title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "titleLimit": {
-          "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit"
         },
         "titleLineHeight": {
-          "description": "Line height in pixels for multi-line header title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Line height in pixels for multi-line header title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline."
         },
         "titleOrient": {
           "$ref": "#/definitions/Orient",
           "description": "The orientation of the header title. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`."
         },
         "titlePadding": {
-          "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`"
         }
       },
       "type": "object"
@@ -10722,7 +10862,14 @@
           "type": "string"
         },
         "labelAlign": {
-          "$ref": "#/definitions/Align",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "Horizontal text alignment of header labels. One of `\"left\"`, `\"center\"`, or `\"right\"`."
         },
         "labelAnchor": {
@@ -10736,11 +10883,25 @@
           "type": "number"
         },
         "labelBaseline": {
-          "$ref": "#/definitions/TextBaseline",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The vertical text baseline for the header labels. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`.\nThe `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone."
         },
         "labelColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The color of the header label, can be in hex color code or regular color name."
         },
         "labelExpr": {
@@ -10748,37 +10909,86 @@
           "type": "string"
         },
         "labelFont": {
-          "description": "The font of the header label.",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The font of the header label."
         },
         "labelFontSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The font size of the header label, in pixels.",
-          "minimum": 0,
-          "type": "number"
+          "minimum": 0
         },
         "labelFontStyle": {
-          "$ref": "#/definitions/FontStyle",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The font style of the header label."
         },
         "labelFontWeight": {
-          "$ref": "#/definitions/FontWeight",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The font weight of the header label."
         },
         "labelLimit": {
-          "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The maximum length of the header label in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit"
         },
         "labelLineHeight": {
-          "description": "Line height in pixels for multi-line header labels or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Line height in pixels for multi-line header labels or title text with `\"line-top\"` or `\"line-bottom\"` baseline."
         },
         "labelOrient": {
           "$ref": "#/definitions/Orient",
           "description": "The orientation of the header label. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`."
         },
         "labelPadding": {
-          "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The padding, in pixel, between facet header's label and the plot.\n\n__Default value:__ `10`"
         },
         "labels": {
           "description": "A boolean flag indicating if labels should be included as part of the header.\n\n__Default value:__ `true`.",
@@ -10793,7 +11003,14 @@
           "type": "null"
         },
         "titleAlign": {
-          "$ref": "#/definitions/Align",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Align"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "Horizontal text alignment (to the anchor) of header titles."
         },
         "titleAnchor": {
@@ -10807,45 +11024,108 @@
           "type": "number"
         },
         "titleBaseline": {
-          "$ref": "#/definitions/TextBaseline",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TextBaseline"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The vertical text baseline for the header title. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`.\nThe `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `titleLineHeight` rather than `titleFontSize` alone.\n\n__Default value:__ `\"middle\"`"
         },
         "titleColor": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "Color of the header title, can be in hex color code or regular color name."
         },
         "titleFont": {
-          "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`).",
-          "type": "string"
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Font of the header title. (e.g., `\"Helvetica Neue\"`)."
         },
         "titleFontSize": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "Font size of the header title.",
-          "minimum": 0,
-          "type": "number"
+          "minimum": 0
         },
         "titleFontStyle": {
-          "$ref": "#/definitions/FontStyle",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontStyle"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The font style of the header title."
         },
         "titleFontWeight": {
-          "$ref": "#/definitions/FontWeight",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/FontWeight"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "Font weight of the header title.\nThis can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
         },
         "titleLimit": {
-          "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The maximum length of the header title in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0`, indicating no limit"
         },
         "titleLineHeight": {
-          "description": "Line height in pixels for multi-line header title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline.",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Line height in pixels for multi-line header title text or title text with `\"line-top\"` or `\"line-bottom\"` baseline."
         },
         "titleOrient": {
           "$ref": "#/definitions/Orient",
           "description": "The orientation of the header title. One of `\"top\"`, `\"bottom\"`, `\"left\"` or `\"right\"`."
         },
         "titlePadding": {
-          "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The padding, in pixel, between facet header's title and the label.\n\n__Default value:__ `10`"
         }
       },
       "type": "object"
