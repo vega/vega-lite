@@ -5,7 +5,9 @@ import {
   parseFacetModel,
   parseUnitModel,
   parseUnitModelWithScale,
-  parseUnitModelWithScaleAndLayoutSize
+  parseUnitModelWithScaleAndLayoutSize,
+  parseConcatModel,
+  parseUnitModelWithScaleAndSelection
 } from '../../util';
 
 describe('Mark', () => {
@@ -231,6 +233,78 @@ describe('Mark', () => {
 
       const markGroup = parseMarkGroups(model);
       expect(markGroup[0].aria).toBe(false);
+    });
+
+    describe('interactiveFlag', () => {
+      it('should not contain flag if no selections', () => {
+        const model = parseUnitModelWithScaleAndSelection({
+          mark: 'point',
+          encoding: {
+            x: {type: 'quantitative', field: 'foo'},
+            y: {type: 'nominal', field: 'bar'}
+          }
+        });
+
+        const markGroup = parseMarkGroups(model);
+        expect(markGroup[0].interactive).toBeUndefined();
+      });
+
+      it('should be true for units with a selection', () => {
+        const model = parseConcatModel({
+          vconcat: [
+            {
+              selection: {brush: {type: 'interval'}},
+              mark: 'point',
+              encoding: {
+                x: {type: 'quantitative', field: 'foo'},
+                y: {type: 'nominal', field: 'bar'}
+              }
+            },
+            {
+              mark: 'point',
+              encoding: {
+                x: {type: 'ordinal', field: 'baz'},
+                y: {type: 'quantitative', field: 'world'}
+              }
+            }
+          ]
+        });
+
+        model.parseScale();
+        model.parseSelections();
+        model.parseMarkGroup();
+        expect(model.children[0].component.mark[0].interactive).toBeTruthy();
+        expect(model.children[1].component.mark[0].interactive).toBeFalsy();
+      });
+
+      it('should be true for units with a selection or tooltip', () => {
+        const model = parseConcatModel({
+          vconcat: [
+            {
+              selection: {brush: {type: 'interval'}},
+              mark: 'point',
+              encoding: {
+                x: {type: 'quantitative', field: 'foo'},
+                y: {type: 'nominal', field: 'bar'}
+              }
+            },
+            {
+              mark: 'point',
+              encoding: {
+                x: {type: 'ordinal', field: 'baz'},
+                y: {type: 'quantitative', field: 'world'},
+                tooltip: {type: 'nominal', field: 'hello'}
+              }
+            }
+          ]
+        });
+
+        model.parseScale();
+        model.parseSelections();
+        model.parseMarkGroup();
+        expect(model.children[0].component.mark[0].interactive).toBeTruthy();
+        expect(model.children[1].component.mark[0].interactive).toBeTruthy();
+      });
     });
   });
 
