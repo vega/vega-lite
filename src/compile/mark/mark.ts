@@ -365,5 +365,9 @@ function interactiveFlag(model: UnitModel) {
     parentCount = keys(parent.component.selection).length;
     parent = parent.parent;
   }
-  return parentCount ? {interactive: unitCount > 0} : null;
+  return parentCount
+    ? {
+        interactive: unitCount > 0 || !!model.encoding.tooltip
+      }
+    : null;
 }

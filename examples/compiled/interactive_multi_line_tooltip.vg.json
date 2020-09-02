@@ -75,7 +75,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"yearmonthdate_date\"]"},
-      "interactive": false,
+      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -99,7 +99,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"yearmonthdate_date\"]"},
-      "interactive": false,
+      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
