@@ -98,7 +98,7 @@ For example, we can customize the box plot's `"median"` tick by setting `"color"
 
 ## Color, Size, and Opacity Encoding Channels
 
-You can customize the color, size, and opacity of the box in the `boxplot` by using the `color`, `size`, and `opacity` [encoding channels](encoding.html#channels). The `size` is applied to only the box and median tick. The `color` is applied to only the box, the median tick, and the outlier points. Meanwhile, the `opacity` is applied to the whole `boxplot`.
+You can customize the color, size, and opacity of the box in the `boxplot` by using the `color`, `size`, and `opacity` [encoding channels](encoding.html#channels). The `size` is applied to only the box and median tick. The `color` is applied to only the box and the outlier points. Meanwhile, the `opacity` is applied to the whole `boxplot`.
 
 An example of a `boxplot` where the `size` encoding channel is specified.
 

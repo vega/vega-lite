@@ -1,4 +1,4 @@
-import {event, select, selectAll, Selection} from 'd3-selection';
+import {select, selectAll, Selection} from 'd3-selection';
 // @ts-ignore
 import hljs from 'highlight.js/lib/core';
 // @ts-ignore
@@ -85,14 +85,15 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
       .append('a')
       .text('Open in Vega Editor')
       .attr('href', '#')
-      .on('click', function () {
+      .on('click', function (event) {
         post(window, editorURL, {
           mode: 'vega-lite',
           spec: compactStringify(spec),
           config: vgSpec.config,
           renderer: 'svg'
         });
-        event.preventDefault();
+        // remove as any when d3 typings are updated
+        (event as any).preventDefault();
       });
   }
 
