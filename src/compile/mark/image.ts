@@ -16,7 +16,8 @@ export const image: MarkCompiler = {
       }),
       ...encode.rectPosition(model, 'x', 'image'),
       ...encode.rectPosition(model, 'y', 'image'),
-      ...encode.text(model, 'url')
+      ...encode.text(model, 'url'),
+      ...encode.imageUrl(model)
     };
   }
 };
