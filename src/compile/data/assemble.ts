@@ -268,5 +268,38 @@ export function assembleRootData(dataComponent: DataComponent, datasets: Dict<In
     }
   }
 
+  // make the aggregate type transform in the first order
+  // to make it effective when there are more than one transforms in the data
+  for(const d of data){
+    swapTransformTypeIndex(d,"aggregate",0);
+  }
+
   return data;
+}
+
+// swap the index of transform for the type to the targetIndex
+function swapTransformTypeIndex(data:VgData,typeName:string,targetIndex:number) {
+  // if the data.transform is exist and its length >=2
+  if (data.transform && data.transform.length >= 2) {
+    const typeIndex = findTypeIndex(data.transform, typeName);
+
+    // if the typeIndex >=0 and is different from the targetIndex
+    if (typeIndex >= 0 && typeIndex!= targetIndex) {
+
+      // swap the values of the two variables
+      const temp = data.transform[typeIndex];
+      data.transform[typeIndex] = data.transform[targetIndex];
+      data.transform[targetIndex] = temp;
+    }
+  }
+}
+
+//find the type index from the data.transform, if not exist ,return -1
+function findTypeIndex(transform:Array<any>, type:string) {
+  for(let i:number = 0;i<transform.length;i++){
+    if(transform[i].type===type){
+      return i;
+    }
+  }
+  return -1;
 }
