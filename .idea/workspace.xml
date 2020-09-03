@@ -1,10 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="46880862-3ab2-402f-8700-8377541f4741" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/compile/mark/encode/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/compile/mark/encode/index.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/compile/mark/image.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/compile/mark/image.ts" afterDir="false" />
-    </list>
+    <list default="true" id="46880862-3ab2-402f-8700-8377541f4741" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
     <ignored path="$PROJECT_DIR$/tmp/" />
@@ -18,6 +15,7 @@
     <session id="898722867">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
+          <entry key="project.closed" value="1" />
           <entry key="project.open.time.2" value="1" />
           <entry key="project.opened" value="1" />
         </counts>
@@ -83,8 +81,8 @@
     </packageJsonPaths>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="811" />
-    <option name="y" value="87" />
+    <option name="x" value="537" />
+    <option name="y" value="77" />
     <option name="width" value="1325" />
     <option name="height" value="890" />
   </component>
@@ -99,11 +97,6 @@
             <path>
               <item name="vega-lite" type="b2602c69:ProjectViewProjectNode" />
               <item name="vega-lite" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="vega-lite" type="b2602c69:ProjectViewProjectNode" />
-              <item name="vega-lite" type="462c0819:PsiDirectoryNode" />
-              <item name="build" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -168,20 +161,19 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1599141121960</updated>
-      <workItem from="1599141124155" duration="1811000" />
+      <workItem from="1599141124155" duration="2186000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="1811000" />
+    <option name="totallyTimeSpent" value="2186000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="649" y="70" width="1060" height="712" extended-state="0" />
-    <editor active="true" />
+    <frame x="384" y="68" width="1060" height="712" extended-state="0" />
     <layout>
       <window_info id="npm" side_tool="true" />
       <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.20605469" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20605469" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="TypeScript" />
       <window_info anchor="bottom" id="Docker" show_stripe_button="false" />
