@@ -12,6 +12,7 @@ import {
 import {Config} from '../config';
 import {Data} from '../data';
 import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding';
+import {ExprOrSignalRef} from '../expr';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';
@@ -332,7 +333,7 @@ export function errorBarParams<
   markDef: MD;
   outerSpec: {
     data?: Data;
-    title?: Text | TitleParams;
+    title?: Text | TitleParams<ExprOrSignalRef>;
     name?: string;
     description?: string;
     transform?: Transform[];
