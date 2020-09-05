@@ -21,7 +21,7 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../cha
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ExprRef, replaceExprRefInIndex} from '../expr';
+import {ExprOrSignalRef, ExprRef, replaceExprRefInIndex} from '../expr';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
@@ -40,7 +40,7 @@ import {contains, Dict, duplicate, isEmpty, keys, varName} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
-import {signalOrValueRef} from './common';
+import {signalOrValueRef, signalRefOrValue} from './common';
 import {ConcatModel} from './concat';
 import {DataComponent} from './data';
 import {FacetModel} from './facet';
@@ -163,7 +163,7 @@ export abstract class Model {
 
   public size: LayoutSizeMixins;
 
-  public readonly title: TitleParams;
+  public readonly title: TitleParams<SignalRef>;
   public readonly description: string;
 
   public readonly data: Data | null;
@@ -200,7 +200,7 @@ export abstract class Model {
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this.name = spec.name ?? parentGivenName;
-    this.title = isText(spec.title) ? {text: spec.title} : (spec.title as TitleParams);
+    this.title = isText(spec.title) ? {text: spec.title} : spec.title ? this.initTitle(spec.title) : undefined;
 
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
@@ -236,6 +236,16 @@ export abstract class Model {
       axes: {},
       legends: {}
     };
+  }
+  private initTitle(title: TitleParams<ExprOrSignalRef>) {
+    const props = keys(title);
+    const titleInternal: TitleParams<SignalRef> = {
+      text: signalRefOrValue(title.text)
+    };
+    for (const prop of props) {
+      titleInternal[prop as any] = signalRefOrValue(title[prop]);
+    }
+    return titleInternal;
   }
 
   public get width(): SignalRef {
@@ -404,7 +414,7 @@ export abstract class Model {
   }
 
   public assembleTitle(): VgTitle {
-    const {encoding, ...titleNoEncoding} = this.title ?? ({} as TitleParams);
+    const {encoding, ...titleNoEncoding} = this.title ?? ({} as TitleParams<SignalRef>);
 
     const title: VgTitle = {
       ...extractTitleConfig(this.config.title).nonMark,

@@ -13,21 +13,23 @@ import {duplicate} from '../src/util';
 
 describe('config', () => {
   describe('initConfig', () => {
-    it('converts `expr`s in mark config to `signal`s', () => {
+    it('converts `expr`s in config to `signal`s', () => {
       expect(
         initConfig({
           mark: {color: {expr: "'red'"}},
           point: {color: {expr: "'green'"}},
           style: {
             foo: {color: {expr: "'blue'"}}
-          }
+          },
+          title: {color: {expr: "'violet'"}}
         })
       ).toMatchObject({
         mark: {color: {signal: "'red'"}},
         point: {color: {signal: "'green'"}},
         style: {
           foo: {color: {signal: "'blue'"}}
-        }
+        },
+        title: {color: {signal: "'violet'"}}
       });
     });
 
