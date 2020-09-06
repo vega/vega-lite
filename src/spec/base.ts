@@ -21,7 +21,7 @@ export interface BaseSpec {
   /**
    * Title for the plot.
    */
-  title?: Text | TitleParams;
+  title?: Text | TitleParams<ExprRef | SignalRef>;
 
   /**
    * Name of the visualization for later reference.

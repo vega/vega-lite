@@ -232,7 +232,7 @@ export interface Config<ES extends ExprRef | SignalRef = ExprRef | SignalRef>
   /**
    * Title configuration, which determines default properties for all [titles](https://vega.github.io/vega-lite/docs/title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](https://vega.github.io/vega-lite/docs/title.html#config).
    */
-  title?: TitleConfig;
+  title?: TitleConfig<ES>;
 
   /**
    * Projection configuration, which determines default properties for all [projections](https://vega.github.io/vega-lite/docs/projection.html). For a full list of projection configuration options, please see the [corresponding section of the projection documentation](https://vega.github.io/vega-lite/docs/projection.html#config).
@@ -500,6 +500,7 @@ const configPropsWithExpr = [
   'legend',
   'lineBreak',
   'style',
+  'title',
   'view'
 ] as const;
 
@@ -543,6 +544,10 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
 
   if (mergedConfig.style) {
     outputConfig.style = getStyleConfigInternal(mergedConfig.style);
+  }
+
+  if (mergedConfig.title) {
+    outputConfig.title = replaceExprRefInIndex(mergedConfig.title);
   }
 
   if (mergedConfig.view) {
@@ -670,7 +675,7 @@ export function stripAndRedirectConfig(config: Config<SignalRef>) {
  *
  * For subtitle configs in config.title, keep them in config.title as header titles never have subtitles.
  */
-function redirectTitleConfig(config: Config) {
+function redirectTitleConfig(config: Config<SignalRef>) {
   const {titleMarkConfig, subtitleMarkConfig, subtitle} = extractTitleConfig(config.title);
 
   // set config.style if title/subtitleMarkConfig is not an empty object
