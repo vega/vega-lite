@@ -228,13 +228,22 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
 
   /**
    * The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `"left"`, `"right"`, `"center"`.
+   *
+   * __Note:__ Expression reference is *not* supported for range marks.
    */
-  align?: Align; // Vega doesn't apply align to ranged marks. Since some logic depends on this property, Vega-Lite does NOT allow signal for align.
+  align?: Align | ES;
 
   /**
-   * The vertical text baseline. One of `"alphabetic"` (default), `"top"`, `"middle"`, `"bottom"`, `"line-top"`, or `"line-bottom"`. The `"line-top"` and `"line-bottom"` values operate similarly to `"top"` and `"bottom"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone.
+   * For text marks, the vertical text baseline. One of `"alphabetic"` (default), `"top"`, `"middle"`, `"bottom"`, `"line-top"`, `"line-bottom", or an expression reference that provides one of the valid values.
+   * The `"line-top"` and `"line-bottom"` values operate similarly to `"top"` and `"bottom"`,
+   * but are calculated relative to the `lineHeight` rather than `fontSize` alone.
+   *
+   * For range marks, the vertical alignment of the marks. One of `"top"`, `"middle"`, `"bottom"`.
+   *
+   * __Note:__ Expression reference is *not* supported for range marks.
+   *
    */
-  baseline?: TextBaseline; // Vega doesn't apply align to ranged marks. Since some logic depends on this property, Vega-Lite does NOT allow signal for baseline.
+  baseline?: TextBaseline | ES;
 
   /**
    * - For arc marks, the arc length in radians if theta2 is not specified, otherwise the start arc angle. (A value of 0 indicates up or “north”, increasing values proceed clockwise.)

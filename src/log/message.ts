@@ -5,12 +5,12 @@ import {AggregateOp} from 'vega';
 import {Aggregate} from '../aggregate';
 import {
   Channel,
+  ExtendedChannel,
   FacetChannel,
   GeoPositionChannel,
   getSizeChannel,
   PositionScaleChannel,
-  ScaleChannel,
-  ExtendedChannel
+  ScaleChannel
 } from '../channel';
 import {HiddenCompositeAggregate, TypedFieldDef, Value} from '../channeldef';
 import {SplitParentProperty} from '../compile/split';
@@ -210,6 +210,11 @@ export function discreteChannelCannotEncode(channel: Channel, type: Type) {
 }
 
 // MARK
+
+export function rangeMarkAlignmentCannotBeExpression(align: 'align' | 'baseline') {
+  return `The ${align} for range marks cannot be an expression`;
+}
+
 export function lineWithRange(hasX2: boolean, hasY2: boolean) {
   const channels = hasX2 && hasY2 ? 'x2 and y2' : hasX2 ? 'x2' : 'y2';
   return `Line mark is for continuous lines and thus cannot be used with ${channels}. We will use the rule mark (line segments) instead.`;
