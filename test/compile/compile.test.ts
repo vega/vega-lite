@@ -491,6 +491,21 @@ describe('compile/compile', () => {
     expect(spec.background).toBe('blue');
   });
 
+  it('should apply expr in top-level property.', () => {
+    const {spec} = compile(
+      {
+        background: {expr: "'red"},
+        mark: 'point',
+        data: {url: 'foo.csv'},
+        encoding: {}
+      },
+      {
+        config: {}
+      }
+    );
+    expect(spec.background).toEqual({signal: "'red"});
+  });
+
   it('should merge spec and provided config.', () => {
     const {spec} = compile(
       {
