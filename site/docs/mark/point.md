@@ -42,6 +42,8 @@ permalink: /docs/point.html
 }
 ```
 
+<span class="vl-example" data-name="point_params" figure-only=true></span>
+
 A point mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
 {% include table.html props="shape,size" source="MarkDef" %}

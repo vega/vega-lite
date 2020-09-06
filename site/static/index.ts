@@ -8,9 +8,9 @@ import diff from 'highlight.js/lib/languages/diff';
 // @ts-ignore
 import javascript from 'highlight.js/lib/languages/javascript';
 // @ts-ignore
-import typescript from 'highlight.js/lib/languages/typescript';
-// @ts-ignore
 import json from 'highlight.js/lib/languages/json';
+// @ts-ignore
+import typescript from 'highlight.js/lib/languages/typescript';
 // @ts-ignore
 import xml from 'highlight.js/lib/languages/xml';
 import compactStringify from 'json-stringify-pretty-compact';
@@ -50,7 +50,7 @@ selectAll('h2, h3, h4, h5, h6').each(function (this: d3.BaseType) {
 });
 
 /* Documentation */
-function renderExample($target: Selection<any, any, any, any>, specText: string) {
+function renderExample($target: Selection<any, any, any, any>, specText: string, figureOnly: boolean) {
   $target.classed('example', true);
   $target.text('');
 
@@ -58,8 +58,16 @@ function renderExample($target: Selection<any, any, any, any>, specText: string)
 
   // Decrease visual noise by removing $schema and description from code examples.
   const textClean = specText.replace(/(\s)+"(\$schema|description)": ".*?",/g, '');
-  const code = $target.append('pre').attr('class', 'example-code').append('code').attr('class', 'json').text(textClean);
-  hljs.highlightBlock(code.node() as any);
+
+  if (!figureOnly) {
+    const code = $target
+      .append('pre')
+      .attr('class', 'example-code')
+      .append('code')
+      .attr('class', 'json')
+      .text(textClean);
+    hljs.highlightBlock(code.node() as any);
+  }
 
   const spec = JSON.parse(specText);
 
@@ -103,6 +111,7 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
 function getSpec(el: d3.BaseType) {
   const sel = select(el);
   const name = sel.attr('data-name');
+  const figureOnly = !!sel.attr('figure-only');
   if (name) {
     const dir = sel.attr('data-dir');
     const fullUrl = BASEURL + '/examples/' + (dir ? dir + '/' : '') + name + '.vl.json';
@@ -112,7 +121,7 @@ function getSpec(el: d3.BaseType) {
         response
           .text()
           .then(spec => {
-            renderExample(sel, spec);
+            renderExample(sel, spec, figureOnly);
           })
           .catch(console.error);
       })

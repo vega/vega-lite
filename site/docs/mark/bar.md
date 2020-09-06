@@ -43,6 +43,8 @@ Bar marks are useful in many visualizations, including bar charts, [stacked bar 
 }
 ```
 
+<span class="vl-example" data-name="bar_params" figure-only=true></span>
+
 A bar mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
 {% include table.html props="orient,align,baseline,binSpacing,cornerRadius,cornerRadiusEnd,cornerRadiusTopLeft,cornerRadiusTopRight,cornerRadiusBottomRight,cornerRadiusBottomLeft" source="MarkDef" %}

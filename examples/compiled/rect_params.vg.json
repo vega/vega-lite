@@ -1,0 +1,92 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A scatterplot showing horsepower and miles per gallons for various cars.",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [{"name": "source_0", "values": [{}]}],
+  "signals": [
+    {
+      "name": "x",
+      "value": 25,
+      "bind": {"input": "range", "min": 1, "max": 100, "step": 1}
+    },
+    {
+      "name": "x2",
+      "value": 75,
+      "bind": {"input": "range", "min": 1, "max": 100, "step": 1}
+    },
+    {
+      "name": "y",
+      "value": 25,
+      "bind": {"input": "range", "min": 1, "max": 100, "step": 1}
+    },
+    {
+      "name": "y2",
+      "value": 75,
+      "bind": {"input": "range", "min": 1, "max": 100, "step": 1}
+    },
+    {
+      "name": "cornerRadius",
+      "value": 0,
+      "bind": {"input": "range", "min": 0, "max": 50, "step": 1}
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["rect"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "cornerRadius": {"signal": "cornerRadius"},
+          "fill": {"value": "orange"},
+          "x": {"scale": "x", "signal": "x"},
+          "x2": {"scale": "x", "signal": "x2"},
+          "y": {"scale": "y", "signal": "y"},
+          "y2": {"scale": "y", "signal": "y2"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": [0, 100],
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": [0, 100],
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

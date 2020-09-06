@@ -43,6 +43,8 @@ The `rule` mark represents each data point as a line segment. It can be used in 
 }
 ```
 
+<span class="vl-example" data-name="rule_params" figure-only=true></span>
+
 A rule mark definition can contain any [standard mark properties](mark.html#mark-def).
 
 ## Examples

@@ -1,0 +1,146 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"u": 1, "v": 28},
+        {"u": 2, "v": 55},
+        {"u": 3, "v": 42},
+        {"u": 4, "v": 34},
+        {"u": 5, "v": 36},
+        {"u": 6, "v": 48}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {"type": "formula", "expr": "toNumber(datum[\"u\"])", "as": "u"}
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "interpolate",
+      "value": "linear",
+      "bind": {
+        "input": "select",
+        "options": [
+          "basis",
+          "cardinal",
+          "catmull-rom",
+          "linear",
+          "monotone",
+          "natural",
+          "step",
+          "step-after",
+          "step-before"
+        ]
+      }
+    },
+    {
+      "name": "tension",
+      "value": 0,
+      "bind": {"input": "range", "min": 0, "max": 1, "step": 0.05}
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "area",
+      "style": ["area"],
+      "sort": {"field": "datum[\"u\"]"},
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "interpolate": {"signal": "interpolate"},
+          "tension": {"signal": "tension"},
+          "orient": {"value": "vertical"},
+          "fill": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"u: \" + (format(datum[\"u\"], \"\")) + \"; v: \" + (format(datum[\"v\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "u"},
+          "y": {"scale": "y", "field": "v"},
+          "y2": {"scale": "y", "value": 0},
+          "defined": {
+            "signal": "isValid(datum[\"u\"]) && isFinite(+datum[\"u\"]) && isValid(datum[\"v\"]) && isFinite(+datum[\"v\"])"
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "u"},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": false
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "v"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "u",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "v",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}

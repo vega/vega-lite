@@ -1,0 +1,216 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A simple bar chart with embedded data.",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"a": 30, "b": 28, "label": "Andy"},
+        {"a": 25, "b": 65, "label": "Brian"},
+        {"a": 70, "b": 43, "label": "Charlie"}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"a\"]) && isFinite(+datum[\"a\"]) && isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "angle",
+      "value": 0,
+      "bind": {"input": "range", "min": -180, "max": 180, "step": 1}
+    },
+    {
+      "name": "dx",
+      "value": 5,
+      "bind": {"input": "range", "min": -20, "max": 20, "step": 1}
+    },
+    {
+      "name": "dy",
+      "value": 0,
+      "bind": {"input": "range", "min": -20, "max": 20, "step": 1}
+    },
+    {
+      "name": "xOffset",
+      "value": 0,
+      "bind": {"input": "range", "min": -20, "max": 20, "step": 1}
+    },
+    {
+      "name": "yOffset",
+      "value": 0,
+      "bind": {"input": "range", "min": -20, "max": 20, "step": 1}
+    },
+    {
+      "name": "fontSize",
+      "value": 14,
+      "bind": {"input": "range", "min": 1, "max": 36, "step": 1}
+    },
+    {
+      "name": "limit",
+      "value": 0,
+      "bind": {"input": "range", "min": 0, "max": 150, "step": 1}
+    },
+    {
+      "name": "align",
+      "value": "left",
+      "bind": {"input": "select", "options": ["left", "center", "right"]}
+    },
+    {
+      "name": "baseline",
+      "value": "middle",
+      "bind": {
+        "input": "select",
+        "options": ["alphabetic", "top", "middle", "bottom"]
+      }
+    },
+    {
+      "name": "font",
+      "value": "sans-serif",
+      "bind": {
+        "input": "select",
+        "options": ["sans-serif", "serif", "monospace"]
+      }
+    },
+    {
+      "name": "fontWeight",
+      "value": "normal",
+      "bind": {"input": "select", "options": ["normal", "bold"]}
+    },
+    {
+      "name": "fontStyle",
+      "value": "normal",
+      "bind": {"input": "select", "options": ["normal", "italic"]}
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "a"},
+          "y": {"scale": "y", "field": "b"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "align": {"signal": "align"},
+          "baseline": {"signal": "baseline"},
+          "dx": {"signal": "dx"},
+          "dy": {"signal": "dy"},
+          "limit": {"signal": "limit"},
+          "angle": {"signal": "angle"},
+          "font": {"signal": "font"},
+          "fontSize": {"signal": "fontSize"},
+          "fontWeight": {"signal": "fontWeight"},
+          "fontStyle": {"signal": "fontStyle"},
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"a: \" + (format(datum[\"a\"], \"\")) + \"; b: \" + (format(datum[\"b\"], \"\")) + \"; label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"])"
+          },
+          "x": {"scale": "x", "field": "a", "offset": {"signal": "xOffset"}},
+          "y": {"scale": "y", "field": "b", "offset": {"signal": "yOffset"}},
+          "text": {
+            "signal": "isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]"
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": [0, 100],
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": [0, 100],
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "a",
+      "labelAngle": 0,
+      "labelBaseline": "top",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "b",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}
