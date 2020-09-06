@@ -1,8 +1,7 @@
-import {SignalRef} from 'vega';
-import {ValueDef} from '../channeldef';
 import {GuideEncodingEntry} from '../guide';
 import {keys} from '../util';
-import {isSignalRef, VgEncodeChannel} from '../vega.schema';
+import {VgEncodeChannel} from '../vega.schema';
+import {signalOrValueRef} from './common';
 import {wrapCondition} from './mark/encode';
 import {UnitModel} from './unit';
 
@@ -11,7 +10,7 @@ export function guideEncodeEntry(encoding: GuideEncodingEntry, model: UnitModel)
     const valueDef = encoding[channel];
     return {
       ...encode,
-      ...wrapCondition(model, valueDef, channel, (x: ValueDef | SignalRef) => (isSignalRef(x) ? x : {value: x.value}))
+      ...wrapCondition(model, valueDef, channel, def => signalOrValueRef(def.value))
     };
   }, {});
 }

@@ -324,7 +324,7 @@ describe('Axis', () => {
             axis: {
               encoding: {
                 labels: {
-                  dx: {signal: 'a'},
+                  dx: {value: {signal: 'a'}},
                   dy: {value: 2}
                 }
               }

@@ -1,4 +1,3 @@
-import {SignalRef} from 'vega';
 import {array} from 'vega-util';
 import {
   ChannelDef,
@@ -17,7 +16,7 @@ import {UnitModel} from '../../unit';
  * Return a mixin that includes a Vega production rule for a Vega-Lite conditional channel definition
  * or a simple mixin if channel def has no condition.
  */
-export function wrapCondition<CD extends ChannelDef | GuideEncodingConditionalValueDef | SignalRef>(
+export function wrapCondition<CD extends ChannelDef | GuideEncodingConditionalValueDef>(
   model: UnitModel,
   channelDef: CD,
   vgChannel: string,
