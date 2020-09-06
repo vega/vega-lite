@@ -41,7 +41,6 @@
     {% assign ref = type["$ref"] %}
    {% include type-ref.html ref=ref suffix=include.suffix %}
   {% endif %}
-
   {% assign splitstring = " | " %}
   {% unless forloop.last %}
     {{ splitstring }}

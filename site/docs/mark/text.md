@@ -43,6 +43,8 @@ permalink: /docs/text.html
 }
 ```
 
+<span class="vl-example" data-name="text_params" figure-only=true></span>
+
 A text mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 
 {% include table.html props="angle,align,baseline,dir,dx,dy,ellipsis,font,fontSize,fontStyle,fontWeight,limit,lineHeight,radius,text,theta" source="MarkDef" %}

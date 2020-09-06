@@ -56,6 +56,11 @@ dd {
   padding: 0;
   border-collapse: collapse;
 }
+
+.page-content table .table-column-type {
+  min-width: 70px;
+}
+
 .page-content table tr {
   border-top: 1px solid #cccccc;
   background-color: white;
@@ -567,12 +572,26 @@ footer .edit-page {
   margin-bottom: 1em;
   align-self: center;
 }
+.example .vega-bind {
+  min-width: 450px;
+  display: inline-block;
+  text-align: left;
+}
+
+.example .vega-bind-name {
+  display: inline-block;
+  min-width: 150px;
+}
+
 .vl-example-responsive .example-vis {
   width: 30%;
   border: 1px dashed #ddd;
 }
 .vl-example-responsive .example-vis svg {
   border: none;
+}
+.example-only .example-code {
+  display: none;
 }
 .example .example-code {
   flex: 1.618 1 0;
