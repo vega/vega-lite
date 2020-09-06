@@ -7381,7 +7381,14 @@
           "description": "Config for y-temporal axes."
         },
         "background": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`"
         },
         "bar": {
@@ -7485,7 +7492,14 @@
           "type": "string"
         },
         "padding": {
-          "$ref": "#/definitions/Padding",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Padding"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "point": {
@@ -29066,7 +29080,14 @@
           "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`"
         },
         "bounds": {
@@ -29127,7 +29148,14 @@
           "type": "string"
         },
         "padding": {
-          "$ref": "#/definitions/Padding",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Padding"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
@@ -29193,7 +29221,14 @@
           "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`"
         },
         "bounds": {
@@ -29243,7 +29278,14 @@
           "type": "string"
         },
         "padding": {
-          "$ref": "#/definitions/Padding",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Padding"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
@@ -29302,7 +29344,14 @@
           "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`"
         },
         "bounds": {
@@ -29345,7 +29394,14 @@
           "type": "string"
         },
         "padding": {
-          "$ref": "#/definitions/Padding",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Padding"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
@@ -29411,7 +29467,14 @@
           "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`"
         },
         "config": {
@@ -29477,7 +29540,14 @@
           "type": "string"
         },
         "padding": {
-          "$ref": "#/definitions/Padding",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Padding"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "projection": {
@@ -29570,7 +29640,14 @@
               "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
             },
             "background": {
-              "$ref": "#/definitions/Color",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Color"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
               "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`"
             },
             "bounds": {
@@ -29624,7 +29701,14 @@
               "type": "string"
             },
             "padding": {
-              "$ref": "#/definitions/Padding",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Padding"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
               "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
             },
             "repeat": {
@@ -29720,7 +29804,14 @@
               "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
             },
             "background": {
-              "$ref": "#/definitions/Color",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Color"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
               "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`"
             },
             "bounds": {
@@ -29774,7 +29865,14 @@
               "type": "string"
             },
             "padding": {
-              "$ref": "#/definitions/Padding",
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Padding"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                }
+              ],
               "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
             },
             "repeat": {
@@ -29869,7 +29967,14 @@
           "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`"
         },
         "bounds": {
@@ -29934,7 +30039,14 @@
           "type": "string"
         },
         "padding": {
-          "$ref": "#/definitions/Padding",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Padding"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "resolve": {
@@ -30050,7 +30162,14 @@
           "description": "How the visualization size should be determined. If a string, should be one of `\"pad\"`, `\"fit\"` or `\"none\"`.\nObject values can additionally specify parameters for content sizing and automatic resizing.\n\n__Default value__: `pad`"
         },
         "background": {
-          "$ref": "#/definitions/Color",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Color"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "CSS color property to use as the background of the entire view.\n\n__Default value:__ `\"white\"`"
         },
         "bounds": {
@@ -30125,7 +30244,14 @@
           "type": "string"
         },
         "padding": {
-          "$ref": "#/definitions/Padding",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Padding"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "projection": {

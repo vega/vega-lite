@@ -1,8 +1,10 @@
 import {Color, SignalRef} from 'vega';
 import {BaseSpec} from '.';
 import {getPositionScaleChannel} from '../channel';
+import {signalRefOrValue} from '../compile/common';
 import {Config} from '../config';
 import {InlineDataset} from '../data';
+import {ExprRef} from '../expr';
 import {Dict} from '../util';
 
 /**
@@ -38,13 +40,13 @@ export type TopLevel<S extends BaseSpec> = S &
     usermeta?: Dict<unknown>;
   };
 
-export interface TopLevelProperties {
+export interface TopLevelProperties<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
   /**
    * CSS color property to use as the background of the entire view.
    *
    * __Default value:__ `"white"`
    */
-  background?: Color | SignalRef;
+  background?: Color | ES;
 
   /**
    * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.
@@ -52,7 +54,7 @@ export interface TopLevelProperties {
    *
    * __Default value__: `5`
    */
-  padding?: Padding | SignalRef;
+  padding?: Padding | ES;
 
   /**
    * How the visualization size should be determined. If a string, should be one of `"pad"`, `"fit"` or `"none"`.
@@ -104,10 +106,10 @@ const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [
   // We do not include "autosize" here as it is supported by only unit and layer specs and thus need to be normalized
 ];
 
-export function extractTopLevelProperties<T extends TopLevelProperties>(t: T) {
+export function extractTopLevelProperties(t: TopLevelProperties): TopLevelProperties<SignalRef> {
   return TOP_LEVEL_PROPERTIES.reduce((o, p) => {
     if (t && t[p] !== undefined) {
-      o[p] = t[p];
+      o[p] = signalRefOrValue(t[p]);
     }
     return o;
   }, {});
