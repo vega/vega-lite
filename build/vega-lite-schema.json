@@ -5248,7 +5248,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             }
           },
@@ -5313,7 +5313,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             }
           },
@@ -5378,7 +5378,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             }
           },
@@ -5443,7 +5443,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             }
           },
@@ -5508,7 +5508,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             }
           },
@@ -5576,7 +5576,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             }
           },
@@ -5637,7 +5637,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             }
           },
@@ -5698,7 +5698,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             }
           },
@@ -5744,7 +5744,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             },
             "test": {
@@ -5791,7 +5791,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             },
             "test": {
@@ -5838,7 +5838,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             },
             "test": {
@@ -5885,7 +5885,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             },
             "test": {
@@ -5932,7 +5932,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             },
             "test": {
@@ -5982,7 +5982,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             },
             "test": {
@@ -6025,7 +6025,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             },
             "test": {
@@ -6068,7 +6068,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression.",
+              "description": "Vega expression (which can refer to Vega-Lite parameters).",
               "type": "string"
             },
             "test": {
@@ -7496,6 +7496,13 @@
           ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
+        "params": {
+          "description": "Dynamic variables that parameterize a visualization.",
+          "items": {
+            "$ref": "#/definitions/Parameter"
+          },
+          "type": "array"
+        },
         "point": {
           "$ref": "#/definitions/MarkConfig",
           "description": "Point-Specific Config"
@@ -8536,7 +8543,7 @@
       "additionalProperties": false,
       "properties": {
         "expr": {
-          "description": "Vega expression.",
+          "description": "Vega expression (which can refer to Vega-Lite parameters).",
           "type": "string"
         }
       },
@@ -20103,6 +20110,34 @@
       ],
       "minimum": 0
     },
+    "Parameter": {
+      "additionalProperties": false,
+      "properties": {
+        "bind": {
+          "$ref": "#/definitions/Binding",
+          "description": "Binds the parameter to an external input element such as a slider, selection list or radio button group."
+        },
+        "description": {
+          "description": "A text description of the parameter, useful for inline documentation.",
+          "type": "string"
+        },
+        "expr": {
+          "$ref": "#/definitions/Expr",
+          "description": "An expression for the value of the parameter. This expression may include other parameters, in which case the parameter will automatically update in response to upstream parameter changes."
+        },
+        "name": {
+          "description": "Required. A unique name for the parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or “$”, or “_”) and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+          "type": "string"
+        },
+        "value": {
+          "description": "The initial value of the parameter.\n\n__Default value:__ `undefined`"
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "type": "object"
+    },
     "Parse": {
       "additionalProperties": {
         "$ref": "#/definitions/ParseValue"
@@ -29235,6 +29270,13 @@
           ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
+        "params": {
+          "description": "Dynamic variables that parameterize a visualization.",
+          "items": {
+            "$ref": "#/definitions/Parameter"
+          },
+          "type": "array"
+        },
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for view composition specifications."
@@ -29365,6 +29407,13 @@
           ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
+        "params": {
+          "description": "Dynamic variables that parameterize a visualization.",
+          "items": {
+            "$ref": "#/definitions/Parameter"
+          },
+          "type": "array"
+        },
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for view composition specifications."
@@ -29480,6 +29529,13 @@
             }
           ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
+        },
+        "params": {
+          "description": "Dynamic variables that parameterize a visualization.",
+          "items": {
+            "$ref": "#/definitions/Parameter"
+          },
+          "type": "array"
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
@@ -29624,6 +29680,13 @@
             }
           ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
+        },
+        "params": {
+          "description": "Dynamic variables that parameterize a visualization.",
+          "items": {
+            "$ref": "#/definitions/Parameter"
+          },
+          "type": "array"
         },
         "projection": {
           "$ref": "#/definitions/Projection",
@@ -29783,6 +29846,13 @@
                 }
               ],
               "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
+            },
+            "params": {
+              "description": "Dynamic variables that parameterize a visualization.",
+              "items": {
+                "$ref": "#/definitions/Parameter"
+              },
+              "type": "array"
             },
             "repeat": {
               "anyOf": [
@@ -29947,6 +30017,13 @@
                 }
               ],
               "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
+            },
+            "params": {
+              "description": "Dynamic variables that parameterize a visualization.",
+              "items": {
+                "$ref": "#/definitions/Parameter"
+              },
+              "type": "array"
             },
             "repeat": {
               "$ref": "#/definitions/LayerRepeatMapping",
@@ -30121,6 +30198,13 @@
             }
           ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
+        },
+        "params": {
+          "description": "Dynamic variables that parameterize a visualization.",
+          "items": {
+            "$ref": "#/definitions/Parameter"
+          },
+          "type": "array"
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
@@ -30324,6 +30408,13 @@
             }
           ],
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.\nIf an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
+        },
+        "params": {
+          "description": "Dynamic variables that parameterize a visualization.",
+          "items": {
+            "$ref": "#/definitions/Parameter"
+          },
+          "type": "array"
         },
         "projection": {
           "$ref": "#/definitions/Projection",

@@ -5,7 +5,7 @@ import {isSignalRef} from './vega.schema';
 
 export interface ExprRef {
   /**
-   * Vega expression.
+   * Vega expression (which can refer to Vega-Lite parameters).
    */
   expr: string;
 }

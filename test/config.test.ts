@@ -215,6 +215,42 @@ describe('config', () => {
       });
       expect(stripAndRedirectConfig(cfg).title).toEqual({subtitleColor: 'red'});
     });
+
+    it('converts params config into signals', () => {
+      const cfg = initConfig({
+        signals: [
+          {
+            name: 'x',
+            update: 'foo'
+          }
+        ],
+        params: [
+          {
+            name: 'a',
+            expr: 'bar'
+          },
+          {
+            name: 'b',
+            bind: {input: 'range', min: -6.28, max: 6.28}
+          }
+        ]
+      });
+
+      expect(stripAndRedirectConfig(cfg).signals).toEqual([
+        {
+          name: 'x',
+          update: 'foo'
+        },
+        {
+          name: 'a',
+          update: 'bar'
+        },
+        {
+          name: 'b',
+          bind: {input: 'range', min: -6.28, max: 6.28}
+        }
+      ]);
+    });
   });
 
   describe('isVgScheme', () => {

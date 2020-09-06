@@ -5,6 +5,7 @@ import {signalRefOrValue} from '../compile/common';
 import {Config} from '../config';
 import {InlineDataset} from '../data';
 import {ExprRef} from '../expr';
+import {Parameter} from '../parameter';
 import {Dict} from '../util';
 
 /**
@@ -40,6 +41,9 @@ export type TopLevel<S extends BaseSpec> = S &
     usermeta?: Dict<unknown>;
   };
 
+/**
+ * Shared properties between Top-Level specs and Config
+ */
 export interface TopLevelProperties<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
   /**
    * CSS color property to use as the background of the entire view.
@@ -63,6 +67,11 @@ export interface TopLevelProperties<ES extends ExprRef | SignalRef = ExprRef | S
    * __Default value__: `pad`
    */
   autosize?: AutosizeType | AutoSizeParams; // Vega actually supports signal for autosize. However, we need to check autosize at compile time to infer the rest of the spec. Thus VL's autosize won't support SignalRef for now.
+
+  /**
+   * Dynamic variables that parameterize a visualization.
+   */
+  params?: Parameter[];
 }
 
 export type FitType = 'fit' | 'fit-x' | 'fit-y';
@@ -106,11 +115,15 @@ const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [
   // We do not include "autosize" here as it is supported by only unit and layer specs and thus need to be normalized
 ];
 
-export function extractTopLevelProperties(t: TopLevelProperties): TopLevelProperties<SignalRef> {
-  return TOP_LEVEL_PROPERTIES.reduce((o, p) => {
+export function extractTopLevelProperties(t: TopLevelProperties, includeParams: boolean) {
+  const o: TopLevelProperties<SignalRef> = {};
+  for (const p of TOP_LEVEL_PROPERTIES) {
     if (t && t[p] !== undefined) {
-      o[p] = signalRefOrValue(t[p]);
+      o[p as any] = signalRefOrValue(t[p]);
     }
-    return o;
-  }, {});
+  }
+  if (includeParams) {
+    o.params = t.params;
+  }
+  return o;
 }
