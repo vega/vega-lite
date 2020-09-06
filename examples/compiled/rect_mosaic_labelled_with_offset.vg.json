@@ -290,7 +290,7 @@
     }
   ],
   "config": {
-    "style": {"cell": {"stroke": ""}},
-    "axis": {"domain": false, "ticks": false, "labels": false, "grid": false}
+    "axis": {"domain": false, "ticks": false, "labels": false, "grid": false},
+    "style": {"cell": {"stroke": ""}}
   }
 }

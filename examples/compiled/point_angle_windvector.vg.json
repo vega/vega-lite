@@ -102,5 +102,5 @@
       "aria": false
     }
   ],
-  "config": {"style": {"cell": {"fill": "black"}}, "aria": false}
+  "config": {"aria": false, "style": {"cell": {"fill": "black"}}}
 }
