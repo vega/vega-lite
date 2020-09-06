@@ -4,6 +4,7 @@ import {
   Legend as VgLegend,
   NewSignal,
   Projection as VgProjection,
+  Signal,
   SignalRef,
   Title as VgTitle
 } from 'vega';
@@ -444,7 +445,7 @@ export abstract class Model {
   /**
    * Assemble the mark group for this model. We accept optional `signals` so that we can include concat top-level signals with the top-level model's local signals.
    */
-  public assembleGroup(signals: NewSignal[] = []) {
+  public assembleGroup(signals: Signal[] = []) {
     const group: VgMarkGroup = {};
 
     signals = signals.concat(this.assembleSignals());

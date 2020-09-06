@@ -18,6 +18,7 @@ import {
   VL_ONLY_MARK_CONFIG_PROPERTIES,
   VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX
 } from './mark';
+import {assembleParameterSignals} from './parameter';
 import {ProjectionConfig} from './projection';
 import {defaultScaleConfig, ScaleConfig} from './scale';
 import {defaultConfig as defaultSelectionConfig, SelectionConfig} from './selection';
@@ -507,6 +508,10 @@ const configPropsWithExpr = [
   'view'
 ] as const;
 
+/**
+ * Merge specified config with default config and config for the `color` flag,
+ * then replace all expressions with signals
+ */
 export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
   const {color, font, fontSize, ...restConfig} = specifiedConfig;
   const mergedConfig = mergeConfig(
@@ -638,6 +643,11 @@ export function stripAndRedirectConfig(config: Config<SignalRef>) {
     if (config.mark.tooltip && isObject(config.mark.tooltip)) {
       delete config.mark.tooltip;
     }
+  }
+
+  if (config.params) {
+    config.signals = (config.signals || []).concat(assembleParameterSignals(config.params));
+    delete config.params;
   }
 
   for (const markType of MARK_STYLES) {
