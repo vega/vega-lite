@@ -5250,7 +5250,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             }
           },
@@ -5315,7 +5315,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             }
           },
@@ -5380,7 +5380,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             }
           },
@@ -5445,7 +5445,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             }
           },
@@ -5510,7 +5510,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             }
           },
@@ -5578,7 +5578,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             }
           },
@@ -5639,7 +5639,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             }
           },
@@ -5700,7 +5700,7 @@
               ]
             },
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             }
           },
@@ -5746,7 +5746,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             },
             "test": {
@@ -5793,7 +5793,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             },
             "test": {
@@ -5840,7 +5840,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             },
             "test": {
@@ -5887,7 +5887,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             },
             "test": {
@@ -5934,7 +5934,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             },
             "test": {
@@ -5984,7 +5984,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             },
             "test": {
@@ -6027,7 +6027,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             },
             "test": {
@@ -6070,7 +6070,7 @@
           "additionalProperties": false,
           "properties": {
             "expr": {
-              "description": "Vega expression (which can refer to Vega-Lite parameters).",
+              "description": "Vega expression.",
               "type": "string"
             },
             "test": {
@@ -8550,7 +8550,7 @@
       "additionalProperties": false,
       "properties": {
         "expr": {
-          "description": "Vega expression (which can refer to Vega-Lite parameters).",
+          "description": "Vega expression.",
           "type": "string"
         }
       },
