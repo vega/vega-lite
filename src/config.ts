@@ -211,7 +211,7 @@ export type StyleConfigIndex<ES extends ExprRef | SignalRef> = Partial<Record<st
   };
 
 export interface Config<ES extends ExprRef | SignalRef = ExprRef | SignalRef>
-  extends TopLevelProperties,
+  extends TopLevelProperties<ES>,
     VLOnlyConfig<ES>,
     MarkConfigMixins<ES>,
     CompositeMarkConfigMixins,
@@ -497,6 +497,8 @@ const configPropsWithExpr = [
   ...MARK_CONFIGS,
   ...AXIS_CONFIGS,
   ...HEADER_CONFIGS,
+  'background',
+  'padding',
   'legend',
   'lineBreak',
   'style',
@@ -538,8 +540,10 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
     outputConfig.legend = replaceExprRefInIndex(mergedConfig.legend);
   }
 
-  if (mergedConfig.lineBreak) {
-    outputConfig.lineBreak = signalRefOrValue(mergedConfig.lineBreak);
+  for (const prop of ['background', 'lineBreak', 'padding']) {
+    if (mergedConfig[prop]) {
+      outputConfig[prop] = signalRefOrValue(mergedConfig[prop]);
+    }
   }
 
   if (mergedConfig.style) {

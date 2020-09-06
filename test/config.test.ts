@@ -16,6 +16,8 @@ describe('config', () => {
     it('converts `expr`s in config to `signal`s', () => {
       expect(
         initConfig({
+          background: {expr: "'yellow'"},
+          padding: {expr: '5'},
           mark: {color: {expr: "'red'"}},
           point: {color: {expr: "'green'"}},
           style: {
@@ -24,6 +26,8 @@ describe('config', () => {
           title: {color: {expr: "'violet'"}}
         })
       ).toMatchObject({
+        background: {signal: "'yellow'"},
+        padding: {signal: '5'},
         mark: {color: {signal: "'red'"}},
         point: {color: {signal: "'green'"}},
         style: {
