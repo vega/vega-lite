@@ -1,4 +1,5 @@
 import {NewSignal, SignalRef} from 'vega';
+import {isArray} from 'vega-util';
 import {Axis, AxisInternal, isConditionalAxisValue} from '../axis';
 import {
   Channel,
@@ -26,11 +27,11 @@ import {Config} from '../config';
 import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
 import {Encoding, initEncoding} from '../encoding';
-import {ExprOrSignalRef} from '../expr';
-import {Legend, LegendInternal} from '../legend';
+import {ExprOrSignalRef, replaceExprRefInIndex} from '../expr';
+import {LegendInternal} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
-import {Domain} from '../scale';
+import {Domain, Scale} from '../scale';
 import {SelectionDef} from '../selection';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {isFrameMixins} from '../spec/base';
@@ -153,10 +154,22 @@ export class UnitModel extends ModelWithField {
         | PositionFieldDef<string>
         | MarkPropFieldOrDatumDef<string>;
       if (fieldOrDatumDef) {
-        scales[channel] = fieldOrDatumDef.scale ?? {};
+        scales[channel] = this.initScale(fieldOrDatumDef.scale ?? {});
       }
       return scales;
     }, {} as ScaleIndex);
+  }
+
+  private initScale(scale: Scale<ExprOrSignalRef>): Scale<SignalRef> {
+    const {domain, range} = scale;
+    const scaleInternal: Scale<SignalRef> = replaceExprRefInIndex(scale);
+    if (isArray(domain)) {
+      scaleInternal.domain = domain.map(signalRefOrValue);
+    }
+    if (isArray(range)) {
+      scaleInternal.range = range.map(signalRefOrValue);
+    }
+    return scaleInternal;
   }
 
   private initAxes(encoding: Encoding<string>): AxisInternalIndex {
@@ -199,21 +212,12 @@ export class UnitModel extends ModelWithField {
       if (fieldOrDatumDef && supportLegend(channel)) {
         const legend = fieldOrDatumDef.legend;
         _legend[channel] = legend
-          ? this.initLegend({...legend}) // convert truthy value to object
+          ? replaceExprRefInIndex(legend) // convert truthy value to object
           : legend;
       }
 
       return _legend;
     }, {});
-  }
-
-  private initLegend(legend: Legend<ExprOrSignalRef>) {
-    const props = keys(legend);
-    const legendInternal: Legend<SignalRef> = {};
-    for (const prop of props) {
-      legendInternal[prop as any] = signalRefOrValue(legend[prop]);
-    }
-    return legendInternal;
   }
 
   public parseData() {

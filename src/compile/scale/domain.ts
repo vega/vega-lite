@@ -142,7 +142,7 @@ function normalizeUnaggregatedDomain(
   domain: Domain,
   fieldDef: TypedFieldDef<string>,
   scaleType: ScaleType,
-  scaleConfig: ScaleConfig
+  scaleConfig: ScaleConfig<SignalRef>
 ) {
   if (domain === 'unaggregated') {
     const {valid, reason} = canUseUnaggregatedDomain(fieldDef, scaleType);
