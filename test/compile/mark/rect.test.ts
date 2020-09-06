@@ -43,6 +43,23 @@ describe('Mark: Rect', () => {
     });
   });
 
+  it(
+    'should throw warning if align is expression',
+    log.wrap(localLogger => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {url: 'data/cars.json'},
+        mark: {type: 'rect', width: 50, height: 49, align: {expr: 'test'}, baseline: 'top'},
+        encoding: {
+          x: {field: 'x', type: 'quantitative'},
+          y: {type: 'quantitative', field: 'y'}
+        }
+      });
+      rect.encodeEntry(model);
+
+      expect(localLogger.warns[0]).toEqual(log.message.rangeMarkAlignmentCannotBeExpression('align'));
+    })
+  );
+
   describe('simple with width and height with right align and bottom baseline', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
