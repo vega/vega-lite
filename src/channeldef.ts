@@ -86,7 +86,12 @@ import {isSignalRef} from './vega.schema';
 
 export type PrimitiveValue = number | string | boolean | null;
 
-export type Value = PrimitiveValue | number[] | Gradient | Text | ExprRef | SignalRef;
+export type Value<ES extends ExprRef | SignalRef = ExprRef | SignalRef> =
+  | PrimitiveValue
+  | number[]
+  | Gradient
+  | Text
+  | ES;
 
 /**
  * Definition object for a constant value (primitive value or gradient definition) of an encoding channel.

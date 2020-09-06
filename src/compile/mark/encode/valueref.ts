@@ -28,6 +28,7 @@ import {
 } from '../../../channeldef';
 import {Config} from '../../../config';
 import {dateTimeToExpr, isDateTime} from '../../../datetime';
+import {isExprRef} from '../../../expr';
 import * as log from '../../../log';
 import {isPathMark, Mark, MarkDef} from '../../../mark';
 import {fieldValidPredicate} from '../../../predicate';
@@ -138,6 +139,8 @@ export function valueRefForFieldOrDatumDef(
       ref.signal = dateTimeToExpr(datum);
     } else if (isSignalRef(datum)) {
       ref.signal = datum.signal;
+    } else if (isExprRef(datum)) {
+      ref.signal = datum.expr;
     } else {
       ref.value = datum;
     }

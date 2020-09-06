@@ -92,7 +92,7 @@ export function isSignalRef(o: any): o is SignalRef {
 
 // TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
 export interface VgValueRef {
-  value?: Value | number[];
+  value?: Value<null>;
   field?:
     | string
     | {

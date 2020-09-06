@@ -434,4 +434,17 @@ describe('Mark: Circle', () => {
 
     expect(filledCircleProps.stroke).toEqual({signal: "'red'"});
   });
+
+  it('converts expression in mark properties into signal', () => {
+    const filledCircleModel = parseUnitModelWithScaleAndLayoutSize({
+      mark: {type: 'circle'},
+      encoding: {
+        x: {datum: {expr: 'myX'}, type: 'quantitative'}
+      }
+    });
+
+    const filledCircleProps = circle.encodeEntry(filledCircleModel);
+
+    expect(filledCircleProps.x).toEqual({scale: 'x', signal: 'myX'});
+  });
 });
