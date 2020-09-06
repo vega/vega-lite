@@ -20,6 +20,9 @@ describe('config', () => {
           padding: {expr: '5'},
           mark: {color: {expr: "'red'"}},
           point: {color: {expr: "'green'"}},
+          scale: {
+            bandPaddingInner: {expr: '0.1'}
+          },
           style: {
             foo: {color: {expr: "'blue'"}}
           },
@@ -30,6 +33,9 @@ describe('config', () => {
         padding: {signal: '5'},
         mark: {color: {signal: "'red'"}},
         point: {color: {signal: "'green'"}},
+        scale: {
+          bandPaddingInner: {signal: '0.1'}
+        },
         style: {
           foo: {color: {signal: "'blue'"}}
         },

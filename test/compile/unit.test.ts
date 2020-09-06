@@ -62,6 +62,21 @@ describe('UnitModel', () => {
     );
   });
 
+  describe('initScales', () => {
+    it('it redirects encode.x.scale to scale.x and replace expression with signal', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'ordinal', scale: {domain: [1, {expr: 'max'}], scheme: {signal: 'scheme'}}},
+          y: {field: 'b', type: 'ordinal'}
+        }
+      });
+
+      expect(model.scaleDomain(X)).toEqual([1, {signal: 'max'}]);
+      expect(model.specifiedScales['x'].scheme).toEqual({signal: 'scheme'});
+    });
+  });
+
   describe('initAxes', () => {
     it('it redirects encode.x.axis to axis.x and replace expression with signal', () => {
       const model = parseUnitModel({

@@ -133,7 +133,7 @@ export interface ScaleRuleParams {
   scaleType: ScaleType;
   scalePadding: number | SignalRef;
   scalePaddingInner: number | SignalRef;
-  domain: Scale['domain'];
+  domain: Domain;
   markDef: MarkDef;
   config: Config<SignalRef>;
 }
@@ -252,7 +252,7 @@ export function nice(
 export function padding(
   channel: ScaleChannel,
   scaleType: ScaleType,
-  scaleConfig: ScaleConfig,
+  scaleConfig: ScaleConfig<SignalRef>,
   fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef,
   markDef: MarkDef,
   barConfig: RectConfig<SignalRef>
@@ -282,7 +282,7 @@ export function paddingInner(
   paddingValue: number | SignalRef,
   channel: ScaleChannel,
   mark: Mark,
-  scaleConfig: ScaleConfig
+  scaleConfig: ScaleConfig<SignalRef>
 ) {
   if (paddingValue !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingInner.
@@ -308,7 +308,7 @@ export function paddingOuter(
   scaleType: ScaleType,
   mark: Mark,
   paddingInnerValue: number | SignalRef,
-  scaleConfig: ScaleConfig
+  scaleConfig: ScaleConfig<SignalRef>
 ) {
   if (paddingValue !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingOuter.
@@ -334,7 +334,12 @@ export function paddingOuter(
   return undefined;
 }
 
-export function reverse(scaleType: ScaleType, sort: Sort<string>, channel: ScaleChannel, scaleConfig: ScaleConfig) {
+export function reverse(
+  scaleType: ScaleType,
+  sort: Sort<string>,
+  channel: ScaleChannel,
+  scaleConfig: ScaleConfig<SignalRef>
+) {
   if (channel === 'x' && scaleConfig.xReverse !== undefined) {
     if (hasContinuousDomain(scaleType) && sort === 'descending') {
       if (isSignalRef(scaleConfig.xReverse)) {

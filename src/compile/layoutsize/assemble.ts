@@ -3,6 +3,7 @@ import {getViewConfigContinuousSize} from '../../config';
 import {hasDiscreteDomain} from '../../scale';
 import {getFirstDefined} from '../../util';
 import {isVgRangeStep, VgRangeStep} from '../../vega.schema';
+import {signalOrStringValue} from '../common';
 import {isFacetModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
 import {LayoutSizeType} from './component';
@@ -95,5 +96,7 @@ export function sizeExpr(scaleName: string, scaleComponent: ScaleComponent, card
       : // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
         // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
         1;
-  return `bandspace(${cardinality}, ${paddingInner}, ${paddingOuter}) * ${scaleName}_step`;
+  return `bandspace(${cardinality}, ${signalOrStringValue(paddingInner)}, ${signalOrStringValue(
+    paddingOuter
+  )}) * ${scaleName}_step`;
 }

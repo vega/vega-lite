@@ -181,7 +181,7 @@ export interface VLOnlyConfig<ES extends ExprRef | SignalRef> {
   /**
    * Scale configuration determines default properties for all [scales](https://vega.github.io/vega-lite/docs/scale.html). For a full list of scale configuration options, please see the [corresponding section of the scale documentation](https://vega.github.io/vega-lite/docs/scale.html#config).
    */
-  scale?: ScaleConfig;
+  scale?: ScaleConfig<ES>;
 
   /** An object hash for defining default properties for each type of selections. */
   selection?: SelectionConfig;
@@ -501,6 +501,7 @@ const configPropsWithExpr = [
   'padding',
   'legend',
   'lineBreak',
+  'scale',
   'style',
   'title',
   'view'
@@ -517,6 +518,12 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
     restConfig || {}
   );
   const outputConfig: Config<SignalRef> = omit(mergedConfig, configPropsWithExpr);
+
+  for (const prop of ['background', 'lineBreak', 'padding']) {
+    if (mergedConfig[prop]) {
+      outputConfig[prop] = signalRefOrValue(mergedConfig[prop]);
+    }
+  }
 
   for (const markConfigType of mark.MARK_CONFIGS) {
     if (mergedConfig[markConfigType]) {
@@ -540,10 +547,8 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
     outputConfig.legend = replaceExprRefInIndex(mergedConfig.legend);
   }
 
-  for (const prop of ['background', 'lineBreak', 'padding']) {
-    if (mergedConfig[prop]) {
-      outputConfig[prop] = signalRefOrValue(mergedConfig[prop]);
-    }
+  if (mergedConfig.scale) {
+    outputConfig.scale = replaceExprRefInIndex(mergedConfig.scale);
   }
 
   if (mergedConfig.style) {

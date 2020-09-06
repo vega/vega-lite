@@ -4,8 +4,7 @@ import {isBinning} from '../bin';
 import {COLUMN, ExtendedChannel, FacetChannel, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../channel';
 import {FieldName, FieldRefOption, initFieldDef, TypedFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
-import {ExprOrSignalRef} from '../expr';
-import {Header} from '../header';
+import {ExprOrSignalRef, replaceExprRefInIndex} from '../expr';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
@@ -14,7 +13,6 @@ import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from 
 import {contains, keys} from '../util';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
 import {buildModel} from './buildmodel';
-import {signalRefOrValue} from './common';
 import {assembleFacetData} from './data/assemble';
 import {sortArrayIndexField} from './data/calculate';
 import {parseData} from './data/parse';
@@ -86,18 +84,9 @@ export class FacetModel extends ModelWithField {
     // However, FacetFieldDef is a bit more constrained than the general FieldDef
     const facetFieldDef = initFieldDef(rest, channel) as FacetFieldDef<FieldName, SignalRef>;
     if (header) {
-      facetFieldDef.header = this.initHeader(header);
+      facetFieldDef.header = replaceExprRefInIndex(header);
     }
     return facetFieldDef;
-  }
-
-  private initHeader(header: Header<ExprOrSignalRef>): Header<SignalRef> {
-    const props = keys(header);
-    const headerInternal = {};
-    for (const prop of props) {
-      headerInternal[prop] = signalRefOrValue(header[prop]);
-    }
-    return headerInternal;
   }
 
   public channelHasField(channel: ExtendedChannel): boolean {

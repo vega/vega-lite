@@ -43,4 +43,4 @@ export class ScaleComponent extends Split<ScaleComponentProps> {
 
 export type ScaleComponentIndex = Partial<Record<ScaleChannel, ScaleComponent>>;
 
-export type ScaleIndex = Partial<Record<ScaleChannel, Scale>>;
+export type ScaleIndex = Partial<Record<ScaleChannel, Scale<SignalRef>>>;
