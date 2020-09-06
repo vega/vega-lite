@@ -39,6 +39,16 @@ Accepts boolean values. For example: `true`, `false`.
 
 Accepts a [valid CSS color string](https://developer.mozilla.org/en-US/docs/Web/CSS/color_value). For example: `#f304d3`, `#ccc`, `rgb(253, 12, 134)`, `steelblue`.
 
+{:#exprref}
+
+### Expression Reference (ExprRef)
+
+An object with an `expr` property defining a Vega [Expression](#expression).
+
+For example, we can set mark `color` to be `{expr: "lab(50,10,30)"}`.
+
+{:#expression}
+
 ### Expression
 
 To enable custom calculations, Vega-Lite uses Vega's expression language for writing basic formulas. Each datum object can be referred using bound variable `datum`.
