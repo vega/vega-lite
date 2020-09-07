@@ -8454,13 +8454,6 @@ vega-time@^2.0.2, vega-time@^2.0.3, vega-time@~2.0.3:
     d3-time "^2.0.0"
     vega-util "^1.15.1"
 
-vega-tooltip@^0.23.2:
-  version "0.23.2"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.23.2.tgz#f4e22c4ce967ce9f1de6518381a74f6fe5102a86"
-  integrity sha512-H7cIA1tZ26H+GJijTi1ZCBg5XWelWUv57ZNJB7No7VL6ZvV8ha7LJrFPvYQadqMP2bSdbbntKMP8oGtsKUFA7A==
-  dependencies:
-    vega-util "^1.14.1"
-
 vega-tooltip@^0.24.0:
   version "0.24.0"
   resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.24.0.tgz#8732a0916dae9fa9ac7104b20a96dc036762fea8"
@@ -8486,7 +8479,7 @@ vega-typings@^0.18.2, vega-typings@~0.18.2:
   dependencies:
     vega-util "^1.15.1"
 
-vega-util@^1.14.1, vega-util@^1.15.1, vega-util@~1.15.1:
+vega-util@^1.15.1, vega-util@~1.15.1:
   version "1.15.1"
   resolved "https://registry.yarnpkg.com/vega-util/-/vega-util-1.15.1.tgz#52e27ad6b460bfa41ea1a9146d70b6144ec090ab"
   integrity sha512-kEbRQiVUP42dyou2LF8I+3TlBtk4TODTlnLzdSoI//uahXvDnz1ulfprWljfcHPbVjziObaFNWkpT56oSMTx+g==
