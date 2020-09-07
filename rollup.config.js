@@ -105,8 +105,7 @@ if (!watch) {
               }
             ],
             '@babel/typescript'
-          ],
-          plugins: ['@babel/proposal-class-properties']
+          ]
         }),
         bundleSize()
       ],
