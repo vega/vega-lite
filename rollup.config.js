@@ -11,8 +11,8 @@ const watch = process.env.ROLLUP_WATCH;
 export function disallowedImports() {
   return {
     resolveId: module => {
-      if (module === 'vega' || module === 'util' || module === 'd3') {
-        throw new Error('Cannot import from Vega, Node Util, or D3 in Vega-Lite.');
+      if (module === 'util' || module === 'd3') {
+        throw new Error('Cannot import from Node Util, or D3 in Vega-Lite.');
       }
       return null;
     }
@@ -37,8 +37,7 @@ const outputs = [
     input: 'src/index.ts',
     output: {
       file: 'build/vega-lite.module.js',
-      format: 'esm',
-      sourcemap: true
+      format: 'esm'
     },
     plugins: [
       disallowedImports(),
@@ -63,6 +62,13 @@ const outputs = [
 if (!watch) {
   const extensions = ['.js', '.ts'];
 
+  const globals = {
+    vega: 'vega',
+    'vega-event-selector': 'vega',
+    'vega-expression': 'vega',
+    'vega-util': 'vega'
+  };
+
   for (const build of ['es5', 'es6']) {
     const buildFolder = build === 'es5' ? 'build-es5' : 'build';
     outputs.push({
@@ -71,20 +77,16 @@ if (!watch) {
         {
           file: `${buildFolder}/vega-lite.js`,
           format: 'umd',
-          sourcemap: true,
-          name: 'vegaEmbed',
-          globals: {
-            'vega-lite': 'vegaLite'
-          }
+
+          name: 'vegaLite',
+          globals
         },
         {
           file: `${buildFolder}/vega-lite.min.js`,
           format: 'iife',
-          sourcemap: true,
-          name: 'vegaEmbed',
-          globals: {
-            'vega-lite': 'vegaLite'
-          },
+
+          name: 'vegaLite',
+          globals,
           plugins: [terser()]
         }
       ],
@@ -108,7 +110,7 @@ if (!watch) {
         }),
         bundleSize()
       ],
-      external: ['vega', 'vega-lite']
+      external: ['vega', 'vega-event-selector', 'vega-expression', 'vega-util']
     });
   }
 }
