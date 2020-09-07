@@ -17,7 +17,7 @@ describe('Mark: Bar', () => {
     });
     const props = bar.encodeEntry(model);
 
-    it('should draw bar, with y from zero to field value and with band value for x/width ', () => {
+    it('should draw bar, with y from zero to field value and with band value for x/width', () => {
       expect(props.x).toEqual({scale: 'x', field: 'Origin'});
       expect(props.width).toEqual({scale: 'x', band: 1});
       expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});

@@ -523,7 +523,7 @@ describe('compile/scale', () => {
           }
         });
 
-        it('should return signal to calculate appropriate size if x is discrete and y is binned continuous and size is quantitative ', () => {
+        it('should return signal to calculate appropriate size if x is discrete and y is binned continuous and size is quantitative', () => {
           for (const mark of ['point', 'square', 'circle'] as Mark[]) {
             const model = parseUnitModelWithScaleExceptRange({
               width: {step: 11},

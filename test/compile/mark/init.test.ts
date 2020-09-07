@@ -265,7 +265,7 @@ describe('compile/mark/init', () => {
       expect(model.markDef.orient).toBeUndefined();
     });
 
-    it('should return correct orient for horizontal rules without x2 ', () => {
+    it('should return correct orient for horizontal rules without x2', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'rule',
         encoding: {
@@ -277,7 +277,7 @@ describe('compile/mark/init', () => {
       expect(model.markDef.orient).toBe('horizontal');
     });
 
-    it('should return correct orient for vertical rules without y2 ', () => {
+    it('should return correct orient for vertical rules without y2', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'rule',
         encoding: {

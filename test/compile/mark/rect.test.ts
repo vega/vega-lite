@@ -16,7 +16,7 @@ describe('Mark: Rect', () => {
     });
     const props = rect.encodeEntry(model);
 
-    it('should draw centered rect ', () => {
+    it('should draw centered rect', () => {
       expect(props.xc).toEqual({scale: 'x', field: 'x'});
       expect(props.width).toEqual({value: 50});
       expect(props.yc).toEqual({scale: 'y', field: 'y'});
@@ -73,7 +73,7 @@ describe('Mark: Rect', () => {
     });
     const props = rect.encodeEntry(model);
 
-    it('should draw centered rect ', () => {
+    it('should draw centered rect', () => {
       expect(props.x).toEqual({scale: 'x', field: 'x'});
       expect(props.x2).toEqual({value: -1});
       expect(props.y).toEqual({scale: 'y', field: 'y'});

@@ -63,7 +63,7 @@ describe('UnitModel', () => {
   });
 
   describe('initAxes', () => {
-    it('it should have axis.offset = encode.x.axis.offset', () => {
+    it('should have axis.offset = encode.x.axis.offset', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {

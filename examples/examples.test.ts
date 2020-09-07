@@ -70,7 +70,7 @@ for (const example of [...examples, ...normalizedExamples]) {
   const originalSpec = duplicate(jsonSpec);
 
   describe(
-    // eslint-disable-next-line jest/valid-describe
+    // eslint-disable-next-line jest/valid-describe, jest/valid-title
     example,
     log.wrap(localLogger => {
       const vegaSpec: VgSpec = compile(jsonSpec).spec;
