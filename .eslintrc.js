@@ -45,10 +45,13 @@ module.exports = {
         ignoreRestSiblings: true
       }
     ],
+    'no-shadow': 'off',
+    '@typescript-eslint/no-shadow': 'error',
     '@typescript-eslint/no-object-literal-type-assertion': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-namespace': 'off', // we can do this later
     '@typescript-eslint/ban-ts-comment': 'off', // we need it in a few places
+    'jest/no-conditional-expect': 'off',
     // https://eslint.org/docs/rules/
     'linebreak-style': ['error', 'unix'],
     'no-irregular-whitespace': ['error', {skipComments: true}],
@@ -56,7 +59,6 @@ module.exports = {
     'prefer-const': 'error',
     'no-return-assign': 'error',
     'no-useless-call': 'error',
-    'no-shadow': 'error',
     'no-useless-concat': 'error',
     // "prefer-template": "error",  // we can do this later
     'no-console': 'off', // we use console

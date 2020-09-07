@@ -249,7 +249,7 @@ describe('src/compile', () => {
     });
 
     describe('x ordinal point', () => {
-      it('should create an x point scale with a step-based range ', () => {
+      it('should create an x point scale with a step-based range', () => {
         const model = parseUnitModelWithScale({
           mark: 'point',
           encoding: {

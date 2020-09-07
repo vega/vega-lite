@@ -55,12 +55,12 @@ describe('fieldDef', () => {
     it('should return temporal if there is timeUnit', () => {
       expect(defaultType({timeUnit: 'month', field: 'a'}, 'x')).toBe('temporal');
     });
-    it('should return ordinal if there is a custom sort order ', () => {
+    it('should return ordinal if there is a custom sort order', () => {
       expect(defaultType({field: 'a', sort: [1, 2, 3]}, 'x')).toBe('ordinal');
       expect(defaultType({timeUnit: 'month', field: 'a', sort: [1, 2, 3]}, 'x')).toBe('ordinal');
     });
 
-    it('should return nominal if the field is sorted by another field ', () => {
+    it('should return nominal if the field is sorted by another field', () => {
       expect(defaultType({field: 'a', sort: '-x'}, 'x')).toBe('nominal');
       expect(defaultType({field: 'a', sort: {encoding: 'x'}}, 'x')).toBe('nominal');
       expect(defaultType({field: 'a', sort: {field: 'x'}}, 'x')).toBe('nominal');
