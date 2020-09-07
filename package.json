@@ -44,7 +44,7 @@
     "build:jekyll": "pushd site && bundle exec jekyll build -q && popd",
     "build:versions": "scripts/update-version.sh",
     "clean": "yarn clean:build && rimraf site/data/* && rimraf examples/compiled/*.png && find site/examples ! -name 'index.md' ! -name 'data' -type f -delete",
-    "clean:build": "find build ! -name 'vega-lite-schema.json' -delete && rimraf build-es5",
+    "clean:build": "find build ! -name 'vega-lite-schema.json' -type f -delete && rimraf build/src && rimraf build-es5",
     "predeploy:site": "yarn presite",
     "deploy:site": "gh-pages -d site",
     "data": "rsync -r node_modules/vega-datasets/data/* site/data",
@@ -60,7 +60,7 @@
     "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test",
     "test:runtime": "TZ=America/Los_Angeles jest test-runtime/",
     "test:runtime:generate": "yarn build:only && rimraf test-runtime/resources && VL_GENERATE_TESTS=true yarn test:runtime",
-    "watch:build": "yarn build:only -w",
+    "watch": "yarn build:only -w",
     "watch:site": "yarn build:site -w",
     "watch:test": "jest --watch"
   },
