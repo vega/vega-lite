@@ -1,11 +1,12 @@
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
-import ts from '@wessberg/rollup-plugin-ts';
 import bundleSize from 'rollup-plugin-bundle-size';
 import {terser} from 'rollup-plugin-terser';
+import typescript from 'rollup-plugin-typescript2';
+import babel from '@rollup/plugin-babel';
 
-const watch = !process.env.ROLLUP_WATCH;
+const watch = process.env.ROLLUP_WATCH;
 
 export function disallowedImports() {
   return {
@@ -31,28 +32,6 @@ export function debugImports() {
 
 const pkg = require('./package.json');
 
-const plugins = (browserslist, declaration) => [
-  disallowedImports(),
-  debugImports(),
-  json(),
-  resolve({browser: true}),
-  ts({
-    tsconfig: resolvedConfig => ({
-      ...resolvedConfig,
-      declaration,
-      declarationMap: declaration
-    }),
-    ...(browserslist
-      ? {
-          transpiler: 'babel',
-          browserslist
-        }
-      : {})
-  }),
-  commonjs(),
-  bundleSize()
-];
-
 const outputs = [
   {
     input: 'src/index.ts',
@@ -61,12 +40,29 @@ const outputs = [
       format: 'esm',
       sourcemap: true
     },
-    plugins: plugins(undefined, true),
+    plugins: [
+      disallowedImports(),
+      debugImports(),
+      json(),
+      resolve({browser: true}),
+      typescript({
+        tsconfigOverride: {
+          compilerOptions: {
+            declaration: true,
+            declarationMap: true
+          },
+          include: null
+        }
+      }),
+      bundleSize()
+    ],
     external: [...Object.keys(pkg.dependencies), ...Object.keys(pkg.peerDependencies)]
   }
 ];
 
 if (!watch) {
+  const extensions = ['.js', '.ts'];
+
   for (const build of ['es5', 'es6']) {
     const buildFolder = build === 'es5' ? 'build-es5' : 'build';
     outputs.push({
@@ -92,7 +88,26 @@ if (!watch) {
           plugins: [terser()]
         }
       ],
-      plugins: plugins(build === 'es5' ? 'defaults' : 'defaults and not IE 11', false),
+      plugins: [
+        resolve({browser: true, extensions}),
+        commonjs(),
+        json(),
+        babel({
+          extensions,
+          babelHelpers: 'bundled',
+          presets: [
+            [
+              '@babel/env',
+              {
+                targets: build === 'es5' ? 'defaults' : 'defaults and not IE 11'
+              }
+            ],
+            '@babel/typescript'
+          ],
+          plugins: ['@babel/proposal-class-properties']
+        }),
+        bundleSize()
+      ],
       external: ['vega', 'vega-lite']
     });
   }

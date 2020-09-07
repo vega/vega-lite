@@ -1,11 +1,11 @@
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import nodeResolve from '@rollup/plugin-node-resolve';
-import ts from '@wessberg/rollup-plugin-ts';
+import typescript from 'rollup-plugin-typescript2';
 import bundleSize from 'rollup-plugin-bundle-size';
 import {terser} from 'rollup-plugin-terser';
 
-const watch = !process.env.ROLLUP_WATCH;
+const watch = process.env.ROLLUP_WATCH;
 
 export default {
   input: 'site/static/index.ts',
@@ -17,10 +17,10 @@ export default {
   plugins: [
     json(),
     nodeResolve({browser: true}),
-    ts({
+    commonjs(),
+    typescript({
       tsconfig: 'site/tsconfig.site.json'
     }),
-    commonjs(),
     watch && terser(),
     bundleSize()
   ]

@@ -7,7 +7,6 @@
 
 const fs = require('fs');
 const examples = require('../site/_data/examples.json');
-const svg2png = require('svg2png-many');
 
 function createPage(example) {
   return `---
@@ -26,8 +25,6 @@ ${example.description || ''}
 `;
 }
 
-const fileMap = {};
-
 for (const category of Object.keys(examples)) {
   for (const subcategory of Object.keys(examples[category])) {
     for (const example of examples[category][subcategory]) {
@@ -43,9 +40,6 @@ for (const category of Object.keys(examples)) {
       }
 
       fs.writeFileSync(`site/examples/${name}.md`, createPage(example));
-      fileMap[`examples/compiled/${name}.svg`] = `examples/compiled/${name}.png`;
     }
   }
 }
-
-svg2png.svg2PngFiles(fileMap);

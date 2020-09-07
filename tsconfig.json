@@ -4,8 +4,6 @@
     "module": "ES2015",
     "moduleResolution": "Node",
 
-    "declaration": true,
-
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "noImplicitAny": true,
