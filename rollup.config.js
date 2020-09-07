@@ -31,19 +31,24 @@ export function debugImports() {
 
 const pkg = require('./package.json');
 
-const plugins = browserslist => [
+const plugins = (browserslist, declaration) => [
   disallowedImports(),
   debugImports(),
   json(),
   resolve({browser: true}),
-  ts(
-    browserslist
+  ts({
+    tsconfig: resolvedConfig => ({
+      ...resolvedConfig,
+      declaration,
+      declarationMap: declaration
+    }),
+    ...(browserslist
       ? {
           transpiler: 'babel',
-          browserslist: browserslist || 'defaults and not IE 11'
+          browserslist
         }
-      : {}
-  ),
+      : {})
+  }),
   commonjs(),
   bundleSize()
 ];
@@ -56,7 +61,7 @@ const outputs = [
       format: 'esm',
       sourcemap: true
     },
-    plugins: plugins(),
+    plugins: plugins(undefined, true),
     external: [...Object.keys(pkg.dependencies), ...Object.keys(pkg.peerDependencies)]
   }
 ];
@@ -69,7 +74,7 @@ if (!watch) {
       output: [
         {
           file: `${buildFolder}/vega-lite.js`,
-          format: 'iife',
+          format: 'umd',
           sourcemap: true,
           name: 'vegaEmbed',
           globals: {
@@ -87,7 +92,7 @@ if (!watch) {
           plugins: [terser()]
         }
       ],
-      plugins: plugins(build === 'es5' ? 'defaults' : null),
+      plugins: plugins(build === 'es5' ? 'defaults' : 'defaults and not IE 11', false),
       external: ['vega', 'vega-lite']
     });
   }

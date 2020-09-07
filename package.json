@@ -13,8 +13,8 @@
   "main": "build/vega-lite.js",
   "unpkg": "build/vega-lite.min.js",
   "jsdelivr": "build/vega-lite.min.js",
-  "module": "build/src/index",
-  "types": "build/src/index.d.ts",
+  "module": "build/vega-lite.module.js",
+  "types": "build/vega-lite.module.d.ts",
   "bin": {
     "vl2png": "./bin/vl2png",
     "vl2svg": "./bin/vl2svg",
