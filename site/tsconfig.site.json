@@ -1,14 +1,8 @@
 {
-  "extends": "../tsconfig.base.json",
+  "extends": "../tsconfig.json",
   "compilerOptions": {
-    "composite": true,
-    "outDir": "../build/site/"
+    "rootDir": ".."
   },
-  "references": [
-    {
-      "path": "../src/tsconfig.src.json"
-    }
-  ],
   "files": ["static/index.ts"],
   "include": ["static/*.ts"]
 }

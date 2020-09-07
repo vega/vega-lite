@@ -49,7 +49,7 @@ module.exports = {
     '@typescript-eslint/no-shadow': 'error',
     '@typescript-eslint/no-object-literal-type-assertion': 'off',
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-namespace': 'off', // we can do this later
+    '@typescript-eslint/no-namespace': 'error',
     '@typescript-eslint/ban-ts-comment': 'off', // we need it in a few places
     'jest/no-conditional-expect': 'off',
     // https://eslint.org/docs/rules/

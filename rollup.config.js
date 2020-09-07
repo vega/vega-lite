@@ -1,7 +1,9 @@
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import nodeResolve from '@rollup/plugin-node-resolve';
-import sourcemaps from 'rollup-plugin-sourcemaps';
+import resolve from '@rollup/plugin-node-resolve';
+import ts from '@wessberg/rollup-plugin-ts';
+import bundleSize from 'rollup-plugin-bundle-size';
+import {terser} from 'rollup-plugin-terser';
 
 export function disallowedImports() {
   return {
@@ -25,13 +27,66 @@ export function debugImports() {
   };
 }
 
-export default {
-  input: 'build/src/index.js',
-  output: {
-    file: 'build/vega-lite.js',
-    format: 'umd',
-    sourcemap: true,
-    name: 'vegaLite'
-  },
-  plugins: [disallowedImports(), debugImports(), nodeResolve({browser: true}), commonjs(), json(), sourcemaps()]
-};
+const pkg = require('./package.json');
+
+const plugins = browserslist => [
+  disallowedImports(),
+  debugImports(),
+  json(),
+  ts(
+    browserslist
+      ? {
+          transpiler: 'babel',
+          browserslist: browserslist || 'defaults and not IE 11'
+        }
+      : {}
+  ),
+  resolve({browser: true}),
+  commonjs(),
+  bundleSize()
+];
+
+const outputs = [
+  {
+    input: 'src/index.ts',
+    output: {
+      file: 'build/vega-lite.module.js',
+      format: 'esm',
+      sourcemap: true
+    },
+    plugins: plugins(),
+    external: [...Object.keys(pkg.dependencies), ...Object.keys(pkg.peerDependencies)]
+  }
+];
+
+for (const build of ['es5', 'es6']) {
+  const buildFolder = build === 'es5' ? 'build-es5' : 'build';
+  outputs.push({
+    input: 'src/index.ts',
+    output: [
+      {
+        file: `${buildFolder}/vega-lite.js`,
+        format: 'iife',
+        sourcemap: true,
+        name: 'vegaEmbed',
+        globals: {
+          'vega-lite': 'vegaLite'
+        }
+      },
+      {
+        file: `${buildFolder}/vega-lite.min.js`,
+        format: 'iife',
+        sourcemap: true,
+        name: 'vegaEmbed',
+        globals: {
+          'vega-lite': 'vegaLite'
+        },
+        plugins: [terser()]
+      }
+    ],
+    plugins: plugins(build === 'es5' ? 'defaults' : null),
+    external: ['vega', 'vega-lite']
+  });
+}
+
+export default outputs;

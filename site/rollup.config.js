@@ -1,6 +1,8 @@
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import nodeResolve from '@rollup/plugin-node-resolve';
+import ts from '@wessberg/rollup-plugin-ts';
+import bundleSize from 'rollup-plugin-bundle-size';
 import {terser} from 'rollup-plugin-terser';
 
 // `npm run build` -> `production` is true
@@ -8,12 +10,20 @@ import {terser} from 'rollup-plugin-terser';
 const production = !process.env.ROLLUP_WATCH;
 
 export default {
-  input: 'build/site/static/index.js',
+  input: 'site/static/index.ts',
   output: {
     file: 'site/static/bundle.js',
     format: 'iife',
-    name: 'app',
     sourcemap: true
   },
-  plugins: [nodeResolve({browser: true}), commonjs(), json(), production && terser()]
+  plugins: [
+    json(),
+    ts({
+      tsconfig: 'site/tsconfig.site.json'
+    }),
+    nodeResolve({browser: true}),
+    commonjs(),
+    production && terser(),
+    bundleSize()
+  ]
 };
