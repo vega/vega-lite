@@ -76,7 +76,7 @@ if (!watch) {
         },
         {
           file: `${buildFolder}/vega-lite.min.js`,
-          format: 'iife',
+          format: 'umd',
           sourcemap: true,
           name: 'vegaLite',
           plugins: [terser()]
