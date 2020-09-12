@@ -23,7 +23,7 @@ describe('autoMaxBins', () => {
 });
 
 describe('binToString', () => {
-  it('should generate the corrrect key for boolean', () => {
+  it('should generate the correct key for boolean', () => {
     expect(binToString(true)).toBe('bin_maxbins_10');
   });
 });
