@@ -63,7 +63,7 @@ describe('UnitModel', () => {
   });
 
   describe('initScales', () => {
-    it('it redirects encode.x.scale to scale.x and replaces expression with signal', () => {
+    it('redirects encode.x.scale to scale.x and replaces expression with signal', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
@@ -78,7 +78,7 @@ describe('UnitModel', () => {
   });
 
   describe('initAxes', () => {
-    it('it redirects encode.x.axis to axis.x and replace expression with signal', () => {
+    it('redirects encode.x.axis to axis.x and replace expression with signal', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
@@ -93,7 +93,7 @@ describe('UnitModel', () => {
   });
 
   describe('initLegend', () => {
-    it('it redirects encode.color.legend to legend.color and replace expression with signal', () => {
+    it('redirects encode.color.legend to legend.color and replace expression with signal', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {
