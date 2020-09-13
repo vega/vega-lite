@@ -63,7 +63,7 @@ describe('UnitModel', () => {
   });
 
   describe('initScales', () => {
-    it('it redirects encode.x.scale to scale.x and replace expression with signal', () => {
+    it('it redirects encode.x.scale to scale.x and replaces expression with signal', () => {
       const model = parseUnitModel({
         mark: 'point',
         encoding: {

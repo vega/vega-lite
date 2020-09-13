@@ -420,7 +420,7 @@ describe('Mark: Circle', () => {
     expect(filledCircleProps.fill['value']).toBe('transparent');
   });
 
-  it('converts expression in mark properties into signal', () => {
+  it('converts expression in mark properties to signal', () => {
     const filledCircleModel = parseUnitModelWithScaleAndLayoutSize({
       mark: {type: 'circle', stroke: {expr: "'red'"}},
       config: {
@@ -435,7 +435,7 @@ describe('Mark: Circle', () => {
     expect(filledCircleProps.stroke).toEqual({signal: "'red'"});
   });
 
-  it('converts expression in mark properties into signal', () => {
+  it('converts expression in encoding into signal', () => {
     const filledCircleModel = parseUnitModelWithScaleAndLayoutSize({
       mark: {type: 'circle'},
       encoding: {

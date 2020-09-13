@@ -582,8 +582,10 @@ export interface MarkDefMixins<ES extends ExprRef | SignalRef> {
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
-export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | SignalRef = ExprRef | SignalRef>
-  extends GenericMarkDef<M>,
+export interface MarkDef<
+  M extends string | Mark = Mark,
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef
+> extends GenericMarkDef<M>,
     Omit<
       MarkConfig<ES> &
         AreaConfig<ES> &
