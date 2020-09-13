@@ -378,7 +378,8 @@ export interface ScaleMixins {
 export interface DatumDef<
   F extends Field = string,
   V extends PrimitiveValue | DateTime | ExprRef | SignalRef = PrimitiveValue | DateTime | ExprRef | SignalRef
-> extends Partial<TypeMixins<Type>>, BandMixins {
+> extends Partial<TypeMixins<Type>>,
+    BandMixins {
   /**
    * A constant value in data domain.
    */
