@@ -79,19 +79,22 @@ export function findSource(data: Data, sources: SourceNode[]) {
       continue;
     }
 
+    const formatMesh = data['format']?.mesh;
+    const otherFeature = otherData.format?.feature;
+
     // feature and mesh are mutually exclusive
-    if (data['format']?.mesh && otherData.format?.feature) {
+    if (formatMesh && otherFeature) {
       continue;
     }
 
     // we have to extract the same feature or mesh
-    if (
-      (data['format']?.feature || otherData.format?.feature) &&
-      data['format']?.feature !== otherData.format?.feature
-    ) {
+    const formatFeature = data['format']?.feature;
+    if ((formatFeature || otherFeature) && formatFeature !== otherFeature) {
       continue;
     }
-    if ((data['format']?.mesh || otherData.format?.mesh) && data['format']?.mesh !== otherData.format?.mesh) {
+
+    const otherMesh = otherData.format?.mesh;
+    if ((formatMesh || otherMesh) && formatMesh !== otherMesh) {
       continue;
     }
 

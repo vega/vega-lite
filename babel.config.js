@@ -1,13 +1,15 @@
+// Only used for jest
 module.exports = {
   presets: [
     [
       '@babel/preset-env',
       {
         targets: {
-          ie: '11'
+          node: 'current'
         }
       }
-    ]
+    ],
+    '@babel/preset-typescript'
   ],
-  compact: false
+  plugins: ['@babel/proposal-class-properties']
 };

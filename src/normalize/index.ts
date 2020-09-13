@@ -118,4 +118,4 @@ export function normalizeAutoSize(
   return autosize;
 }
 
-export {NormalizerParams};
+export type {NormalizerParams};

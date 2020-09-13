@@ -1,7 +1,12 @@
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
-import nodeResolve from '@rollup/plugin-node-resolve';
-import sourcemaps from 'rollup-plugin-sourcemaps';
+import resolve from '@rollup/plugin-node-resolve';
+import bundleSize from 'rollup-plugin-bundle-size';
+import {terser} from 'rollup-plugin-terser';
+import typescript from 'rollup-plugin-typescript2';
+import babel from '@rollup/plugin-babel';
+
+const watch = process.env.ROLLUP_WATCH;
 
 export function disallowedImports() {
   return {
@@ -25,13 +30,80 @@ export function debugImports() {
   };
 }
 
-export default {
-  input: 'build/src/index.js',
-  output: {
-    file: 'build/vega-lite.js',
-    format: 'umd',
-    sourcemap: true,
-    name: 'vegaLite'
-  },
-  plugins: [disallowedImports(), debugImports(), nodeResolve({browser: true}), commonjs(), json(), sourcemaps()]
-};
+const pkg = require('./package.json');
+
+const outputs = [
+  {
+    input: 'src/index.ts',
+    output: {
+      file: 'build/vega-lite.module.js',
+      sourcemap: true,
+      format: 'esm'
+    },
+    plugins: [
+      disallowedImports(),
+      debugImports(),
+      json(),
+      resolve({browser: true}),
+      typescript({
+        tsconfigOverride: {
+          compilerOptions: {
+            declaration: true,
+            declarationMap: true
+          },
+          include: null
+        }
+      }),
+      bundleSize()
+    ],
+    external: [...Object.keys(pkg.dependencies), ...Object.keys(pkg.peerDependencies)]
+  }
+];
+
+if (!watch) {
+  const extensions = ['.js', '.ts'];
+
+  for (const build of ['es5', 'es6']) {
+    const buildFolder = build === 'es5' ? 'build-es5' : 'build';
+    outputs.push({
+      input: 'src/index.ts',
+      output: [
+        {
+          file: `${buildFolder}/vega-lite.js`,
+          format: 'umd',
+          sourcemap: true,
+          name: 'vegaLite'
+        },
+        {
+          file: `${buildFolder}/vega-lite.min.js`,
+          format: 'umd',
+          sourcemap: true,
+          name: 'vegaLite',
+          plugins: [terser()]
+        }
+      ],
+      plugins: [
+        resolve({browser: true, extensions}),
+        commonjs(),
+        json(),
+        babel({
+          extensions,
+          babelHelpers: 'bundled',
+          presets: [
+            [
+              '@babel/env',
+              {
+                targets: build === 'es5' ? 'defaults' : 'defaults and not IE 11'
+              }
+            ],
+            '@babel/typescript'
+          ]
+        }),
+        bundleSize()
+      ],
+      external: ['vega']
+    });
+  }
+}
+
+export default outputs;

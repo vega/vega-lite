@@ -172,7 +172,7 @@ During development, it can be convenient to rebuild automatically or to run test
 
 - `yarn watch:test` to start a watcher task that **lints and runs tests** when any `.ts` file changes.
 
-- `yarn watch:build` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
+- `yarn watch` to start a watcher task that **re-compiles Vega-Lite** when `.ts` files related to VL change.
 
 ### Website
 
@@ -195,7 +195,7 @@ We use the [Visual Studio Code](https://code.visualstudio.com/) editor.
 
 To manually test your changes locally, you should have a local instance of [Vega Editor](https://github.com/vega/editor) and link Vega-Lite to the editor (See [Vega Editor's README](https://github.com/vega/editor#local-testing--debugging) for instructions).
 
-To update the Vega-Lite code in the editor, you need to compile TypeScript to JavaScript. The easiest way is to run `yarn tsc:src -w` in the Vega-Lite directory. This command will automatically recompile the code whenever you make changes.
+To update the Vega-Lite code in the editor, you need to compile TypeScript to JavaScript. The easiest way is to run `yarn watch` in the Vega-Lite directory. This command will automatically recompile the code whenever you make changes.
 
 ## Pull Requests and Continuous Integration (CI)
 
