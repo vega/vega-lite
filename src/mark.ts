@@ -1,7 +1,7 @@
 import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
 import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
-import {ExprRef} from './expr';
+import {ExprOrSignalRef, ExprRef} from './expr';
 import {contains, Flag, keys} from './util';
 import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
 
@@ -454,15 +454,15 @@ export const BAR_CORNER_RADIUS_INDEX: Partial<Record<
   vertical: ['cornerRadiusTopLeft', 'cornerRadiusTopRight']
 };
 
-export interface BarCornerRadiusMixins {
+export interface BarCornerRadiusMixins<ES extends ExprOrSignalRef> {
   /**
    * - For vertical bars, top-left and top-right corner radius.
    * - For horizontal bars, top-right and bottom-right corner radius.
    */
-  cornerRadiusEnd?: number | SignalRef;
+  cornerRadiusEnd?: number | ES;
 }
 
-export type BarConfig<ES extends ExprRef | SignalRef> = RectConfig<ES> & BarCornerRadiusMixins;
+export type BarConfig<ES extends ExprRef | SignalRef> = RectConfig<ES> & BarCornerRadiusMixins<ES>;
 
 export type OverlayMarkDef<ES extends ExprRef | SignalRef> = MarkConfig<ES> & MarkDefMixins<ES>;
 
@@ -582,10 +582,8 @@ export interface MarkDefMixins<ES extends ExprRef | SignalRef> {
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
 
 // Point/Line OverlayMixins are only for area, line, and trail but we don't want to declare multiple types of MarkDef
-export interface MarkDef<
-  M extends string | Mark = Mark,
-  ES extends ExprRef | SignalRef = ExprRef | SignalRef
-> extends GenericMarkDef<M>,
+export interface MarkDef<M extends string | Mark = Mark, ES extends ExprRef | SignalRef = ExprRef | SignalRef>
+  extends GenericMarkDef<M>,
     Omit<
       MarkConfig<ES> &
         AreaConfig<ES> &
