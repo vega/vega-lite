@@ -620,9 +620,7 @@
               "$ref": "#/definitions/OverlayMarkDef"
             },
             {
-              "enum": [
-                "transparent"
-              ],
+              "const": "transparent",
               "type": "string"
             }
           ],
@@ -896,9 +894,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -913,9 +909,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -930,9 +924,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -947,9 +939,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -3751,9 +3741,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -3768,9 +3756,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -3785,9 +3771,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -3802,9 +3786,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -4218,9 +4200,7 @@
         "bin": {
           "anyOf": [
             {
-              "enum": [
-                true
-              ],
+              "const": true,
               "type": "boolean"
             },
             {
@@ -4251,9 +4231,7 @@
           "$ref": "#/definitions/Element"
         },
         "input": {
-          "enum": [
-            "checkbox"
-          ],
+          "const": "checkbox",
           "type": "string"
         },
         "name": {
@@ -4318,9 +4296,7 @@
           "$ref": "#/definitions/Element"
         },
         "input": {
-          "enum": [
-            "range"
-          ],
+          "const": "range",
           "type": "string"
         },
         "max": {
@@ -4385,9 +4361,7 @@
       ]
     },
     "BoxPlot": {
-      "enum": [
-        "boxplot"
-      ],
+      "const": "boxplot",
       "type": "string"
     },
     "BoxPlotConfig": {
@@ -4406,9 +4380,7 @@
         "extent": {
           "anyOf": [
             {
-              "enum": [
-                "min-max"
-              ],
+              "const": "min-max",
               "type": "string"
             },
             {
@@ -4498,9 +4470,7 @@
         "extent": {
           "anyOf": [
             {
-              "enum": [
-                "min-max"
-              ],
+              "const": "min-max",
               "type": "string"
             },
             {
@@ -6461,9 +6431,7 @@
               "$ref": "#/definitions/BinParams"
             },
             {
-              "enum": [
-                "binned"
-              ],
+              "const": "binned",
               "type": "string"
             },
             {
@@ -7051,9 +7019,7 @@
               "$ref": "#/definitions/BinParams"
             },
             {
-              "enum": [
-                "binned"
-              ],
+              "const": "binned",
               "type": "string"
             },
             {
@@ -8138,10 +8104,8 @@
           "description": "If set to `null`, disable type inference based on the spec and only use type inference based on the data.\nAlternatively, a parsing directive object can be provided for explicit data types. Each property of the object corresponds to a field name, and the value to the desired data type (one of `\"number\"`, `\"boolean\"`, `\"date\"`, or null (do not parse the field)).\nFor example, `\"parse\": {\"modified_on\": \"date\"}` parses the `modified_on` field in each input record a Date value.\n\nFor `\"date\"`, we parse data based using Javascript's [`Date.parse()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).\nFor Specific date formats can be provided (e.g., `{foo: \"date:'%m%d%Y'\"}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: \"utc:'%m%d%Y'\"}`). See more about [UTC time](https://vega.github.io/vega-lite/docs/timeunit.html#utc)"
         },
         "type": {
+          "const": "dsv",
           "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`, `\"dsv\"`.\n\n__Default value:__  The default format type is determined by the extension of the file URL.\nIf no extension is detected, `\"json\"` will be used by default.",
-          "enum": [
-            "dsv"
-          ],
           "type": "string"
         }
       },
@@ -8206,9 +8170,7 @@
       "type": "object"
     },
     "ErrorBand": {
-      "enum": [
-        "errorband"
-      ],
+      "const": "errorband",
       "type": "string"
     },
     "ErrorBandConfig": {
@@ -8325,9 +8287,7 @@
       "type": "object"
     },
     "ErrorBar": {
-      "enum": [
-        "errorbar"
-      ],
+      "const": "errorbar",
       "type": "string"
     },
     "ErrorBarConfig": {
@@ -8538,9 +8498,7 @@
               "$ref": "#/definitions/MarkType"
             },
             "source": {
-              "enum": [
-                "window"
-              ],
+              "const": "window",
               "type": "string"
             },
             "throttle": {
@@ -9222,9 +9180,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "container"
-              ],
+              "const": "container",
               "type": "string"
             },
             {
@@ -9295,9 +9251,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "container"
-              ],
+              "const": "container",
               "type": "string"
             },
             {
@@ -10282,9 +10236,7 @@
               "$ref": "#/definitions/BinParams"
             },
             {
-              "enum": [
-                "binned"
-              ],
+              "const": "binned",
               "type": "string"
             },
             {
@@ -10382,9 +10334,7 @@
               "$ref": "#/definitions/BinParams"
             },
             {
-              "enum": [
-                "binned"
-              ],
+              "const": "binned",
               "type": "string"
             },
             {
@@ -11491,9 +11441,7 @@
         "graticule": {
           "anyOf": [
             {
-              "enum": [
-                true
-              ],
+              "const": true,
               "type": "boolean"
             },
             {
@@ -12382,10 +12330,8 @@
       "additionalProperties": false,
       "properties": {
         "bind": {
+          "const": "scales",
           "description": "Establishes a two-way binding between the interval selection and the scales\nused within the same view. This allows a user to interactively pan and\nzoom the view.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.",
-          "enum": [
-            "scales"
-          ],
           "type": "string"
         },
         "clear": {
@@ -12455,10 +12401,8 @@
           ]
         },
         "type": {
+          "const": "interval",
           "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `\"single\"` -- to select a single discrete data value on `click`.\n- `\"multi\"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.\n- `\"interval\"` -- to select a continuous range of data values on `drag`.",
-          "enum": [
-            "interval"
-          ],
           "type": "string"
         },
         "zoom": {
@@ -12478,10 +12422,8 @@
       "additionalProperties": false,
       "properties": {
         "bind": {
+          "const": "scales",
           "description": "Establishes a two-way binding between the interval selection and the scales\nused within the same view. This allows a user to interactively pan and\nzoom the view.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.",
-          "enum": [
-            "scales"
-          ],
           "type": "string"
         },
         "clear": {
@@ -12624,10 +12566,8 @@
           "type": "string"
         },
         "type": {
+          "const": "json",
           "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`, `\"dsv\"`.\n\n__Default value:__  The default format type is determined by the extension of the file URL.\nIf no extension is detected, `\"json\"` will be used by default.",
-          "enum": [
-            "json"
-          ],
           "type": "string"
         }
       },
@@ -12639,15 +12579,11 @@
           "type": "boolean"
         },
         {
-          "enum": [
-            "parity"
-          ],
+          "const": "parity",
           "type": "string"
         },
         {
-          "enum": [
-            "greedy"
-          ],
+          "const": "greedy",
           "type": "string"
         }
       ]
@@ -12709,10 +12645,8 @@
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
         },
         "type": {
+          "const": "quantitative",
           "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation.",
-          "enum": [
-            "quantitative"
-          ],
           "type": "string"
         }
       },
@@ -12888,9 +12822,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "container"
-              ],
+              "const": "container",
               "type": "string"
             },
             {
@@ -12953,9 +12885,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "container"
-              ],
+              "const": "container",
               "type": "string"
             },
             {
@@ -13757,9 +13687,7 @@
     "LegendBinding": {
       "anyOf": [
         {
-          "enum": [
-            "legend"
-          ],
+          "const": "legend",
           "type": "string"
         },
         {
@@ -15138,9 +15066,7 @@
               "$ref": "#/definitions/OverlayMarkDef"
             },
             {
-              "enum": [
-                "transparent"
-              ],
+              "const": "transparent",
               "type": "string"
             }
           ],
@@ -15414,9 +15340,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -15431,9 +15355,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -15448,9 +15370,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -15465,9 +15385,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -15483,10 +15401,8 @@
       "additionalProperties": false,
       "properties": {
         "gradient": {
+          "const": "linear",
           "description": "The type of gradient. Use `\"linear\"` for a linear gradient.",
-          "enum": [
-            "linear"
-          ],
           "type": "string"
         },
         "id": {
@@ -16182,9 +16098,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             }
           ],
@@ -16196,9 +16110,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             }
           ],
@@ -16210,9 +16122,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             }
           ],
@@ -16224,9 +16134,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             }
           ],
@@ -16956,9 +16864,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -16973,9 +16879,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -16990,9 +16894,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -17007,9 +16909,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -17742,9 +17642,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -17759,9 +17657,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -17776,9 +17672,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -17793,9 +17687,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -18304,9 +18196,7 @@
               "$ref": "#/definitions/OverlayMarkDef"
             },
             {
-              "enum": [
-                "transparent"
-              ],
+              "const": "transparent",
               "type": "string"
             }
           ],
@@ -18636,9 +18526,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -18653,9 +18541,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -18692,9 +18578,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -18709,9 +18593,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -18948,10 +18830,8 @@
           ]
         },
         "type": {
+          "const": "multi",
           "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `\"single\"` -- to select a single discrete data value on `click`.\n- `\"multi\"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.\n- `\"interval\"` -- to select a continuous range of data values on `drag`.",
-          "enum": [
-            "multi"
-          ],
           "type": "string"
         }
       },
@@ -19238,9 +19118,7 @@
               "$ref": "#/definitions/BinParams"
             },
             {
-              "enum": [
-                "binned"
-              ],
+              "const": "binned",
               "type": "string"
             },
             {
@@ -20119,9 +19997,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -20136,9 +20012,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -20175,9 +20049,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -20192,9 +20064,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -20297,27 +20167,19 @@
           "type": "string"
         },
         {
-          "enum": [
-            "string"
-          ],
+          "const": "string",
           "type": "string"
         },
         {
-          "enum": [
-            "boolean"
-          ],
+          "const": "boolean",
           "type": "string"
         },
         {
-          "enum": [
-            "date"
-          ],
+          "const": "date",
           "type": "string"
         },
         {
-          "enum": [
-            "number"
-          ],
+          "const": "number",
           "type": "string"
         }
       ]
@@ -20565,9 +20427,7 @@
               "$ref": "#/definitions/BinParams"
             },
             {
-              "enum": [
-                "binned"
-              ],
+              "const": "binned",
               "type": "string"
             },
             {
@@ -20671,9 +20531,7 @@
               "$ref": "#/definitions/BinParams"
             },
             {
-              "enum": [
-                "binned"
-              ],
+              "const": "binned",
               "type": "string"
             },
             {
@@ -20971,10 +20829,8 @@
       "additionalProperties": false,
       "properties": {
         "gradient": {
+          "const": "radial",
           "description": "The type of gradient. Use `\"radial\"` for a radial gradient.",
-          "enum": [
-            "radial"
-          ],
           "type": "string"
         },
         "id": {
@@ -21037,7 +20893,7 @@
             },
             {
               "items": {
-                "type": "string"
+                "$ref": "#/definitions/Color"
               },
               "type": "array"
             }
@@ -21051,7 +20907,7 @@
             },
             {
               "items": {
-                "type": "string"
+                "$ref": "#/definitions/Color"
               },
               "type": "array"
             }
@@ -21065,7 +20921,7 @@
             },
             {
               "items": {
-                "type": "string"
+                "$ref": "#/definitions/Color"
               },
               "type": "array"
             }
@@ -21079,7 +20935,7 @@
             },
             {
               "items": {
-                "type": "string"
+                "$ref": "#/definitions/Color"
               },
               "type": "array"
             }
@@ -21093,7 +20949,7 @@
             },
             {
               "items": {
-                "type": "string"
+                "$ref": "#/definitions/Color"
               },
               "type": "array"
             }
@@ -21931,9 +21787,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -21948,9 +21802,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -21965,9 +21817,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -21982,9 +21832,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -22362,9 +22210,7 @@
               "type": "array"
             },
             {
-              "enum": [
-                "unaggregated"
-              ],
+              "const": "unaggregated",
               "type": "string"
             },
             {
@@ -23184,10 +23030,12 @@
     },
     "SequentialMultiHue": {
       "enum": [
+        "turbo",
         "viridis",
         "inferno",
         "magma",
         "plasma",
+        "cividis",
         "bluegreen",
         "bluegreen-3",
         "bluegreen-4",
@@ -23758,9 +23606,7 @@
                   "$ref": "#/definitions/BinParams"
                 },
                 {
-                  "enum": [
-                    "binned"
-                  ],
+                  "const": "binned",
                   "type": "string"
                 },
                 {
@@ -24231,9 +24077,7 @@
                   "$ref": "#/definitions/BinParams"
                 },
                 {
-                  "enum": [
-                    "binned"
-                  ],
+                  "const": "binned",
                   "type": "string"
                 },
                 {
@@ -24366,9 +24210,7 @@
                   "$ref": "#/definitions/BinParams"
                 },
                 {
-                  "enum": [
-                    "binned"
-                  ],
+                  "const": "binned",
                   "type": "string"
                 },
                 {
@@ -24473,10 +24315,8 @@
             "type": {
               "anyOf": [
                 {
+                  "const": "quantitative",
                   "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation.",
-                  "enum": [
-                    "quantitative"
-                  ],
                   "type": "string"
                 },
                 {
@@ -24570,15 +24410,11 @@
                   "type": "number"
                 },
                 {
-                  "enum": [
-                    "width"
-                  ],
+                  "const": "width",
                   "type": "string"
                 },
                 {
-                  "enum": [
-                    "height"
-                  ],
+                  "const": "height",
                   "type": "string"
                 },
                 {
@@ -24653,10 +24489,8 @@
             "type": {
               "anyOf": [
                 {
+                  "const": "quantitative",
                   "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`).\nIt can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if:\n(1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit`\nor (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria:\n- `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type).\n- `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale\n- `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`):\n- `\"quantitative\"` if the datum is a number\n- `\"nominal\"` if the datum is a string\n- `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__\n- Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data.\n- Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`).\n- When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin).\n- When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`.\n- Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation.",
-                  "enum": [
-                    "quantitative"
-                  ],
                   "type": "string"
                 },
                 {
@@ -24750,15 +24584,11 @@
                   "type": "number"
                 },
                 {
-                  "enum": [
-                    "width"
-                  ],
+                  "const": "width",
                   "type": "string"
                 },
                 {
-                  "enum": [
-                    "height"
-                  ],
+                  "const": "height",
                   "type": "string"
                 },
                 {
@@ -24968,9 +24798,7 @@
                   "$ref": "#/definitions/BinParams"
                 },
                 {
-                  "enum": [
-                    "binned"
-                  ],
+                  "const": "binned",
                   "type": "string"
                 },
                 {
@@ -25070,15 +24898,11 @@
                   "type": "number"
                 },
                 {
-                  "enum": [
-                    "width"
-                  ],
+                  "const": "width",
                   "type": "string"
                 },
                 {
-                  "enum": [
-                    "height"
-                  ],
+                  "const": "height",
                   "type": "string"
                 },
                 {
@@ -25160,15 +24984,11 @@
                   "type": "number"
                 },
                 {
-                  "enum": [
-                    "width"
-                  ],
+                  "const": "width",
                   "type": "string"
                 },
                 {
-                  "enum": [
-                    "height"
-                  ],
+                  "const": "height",
                   "type": "string"
                 },
                 {
@@ -26168,9 +25988,7 @@
                   "$ref": "#/definitions/BinParams"
                 },
                 {
-                  "enum": [
-                    "binned"
-                  ],
+                  "const": "binned",
                   "type": "string"
                 },
                 {
@@ -26326,9 +26144,7 @@
                   "$ref": "#/definitions/BinParams"
                 },
                 {
-                  "enum": [
-                    "binned"
-                  ],
+                  "const": "binned",
                   "type": "string"
                 },
                 {
@@ -26428,15 +26244,11 @@
                   "type": "number"
                 },
                 {
-                  "enum": [
-                    "width"
-                  ],
+                  "const": "width",
                   "type": "string"
                 },
                 {
-                  "enum": [
-                    "height"
-                  ],
+                  "const": "height",
                   "type": "string"
                 },
                 {
@@ -26518,15 +26330,11 @@
                   "type": "number"
                 },
                 {
-                  "enum": [
-                    "width"
-                  ],
+                  "const": "width",
                   "type": "string"
                 },
                 {
-                  "enum": [
-                    "height"
-                  ],
+                  "const": "height",
                   "type": "string"
                 },
                 {
@@ -26580,9 +26388,7 @@
                   "$ref": "#/definitions/BinParams"
                 },
                 {
-                  "enum": [
-                    "binned"
-                  ],
+                  "const": "binned",
                   "type": "string"
                 },
                 {
@@ -26726,9 +26532,7 @@
                   "$ref": "#/definitions/BinParams"
                 },
                 {
-                  "enum": [
-                    "binned"
-                  ],
+                  "const": "binned",
                   "type": "string"
                 },
                 {
@@ -26839,15 +26643,11 @@
                   "type": "number"
                 },
                 {
-                  "enum": [
-                    "width"
-                  ],
+                  "const": "width",
                   "type": "string"
                 },
                 {
-                  "enum": [
-                    "height"
-                  ],
+                  "const": "height",
                   "type": "string"
                 },
                 {
@@ -26929,15 +26729,11 @@
                   "type": "number"
                 },
                 {
-                  "enum": [
-                    "width"
-                  ],
+                  "const": "width",
                   "type": "string"
                 },
                 {
-                  "enum": [
-                    "height"
-                  ],
+                  "const": "height",
                   "type": "string"
                 },
                 {
@@ -27082,9 +26878,7 @@
                   "$ref": "#/definitions/BinParams"
                 },
                 {
-                  "enum": [
-                    "binned"
-                  ],
+                  "const": "binned",
                   "type": "string"
                 },
                 {
@@ -27195,15 +26989,11 @@
                   "type": "number"
                 },
                 {
-                  "enum": [
-                    "width"
-                  ],
+                  "const": "width",
                   "type": "string"
                 },
                 {
-                  "enum": [
-                    "height"
-                  ],
+                  "const": "height",
                   "type": "string"
                 },
                 {
@@ -27285,15 +27075,11 @@
                   "type": "number"
                 },
                 {
-                  "enum": [
-                    "width"
-                  ],
+                  "const": "width",
                   "type": "string"
                 },
                 {
-                  "enum": [
-                    "height"
-                  ],
+                  "const": "height",
                   "type": "string"
                 },
                 {
@@ -27521,10 +27307,8 @@
           "description": "With layered and multi-view displays, a strategy that determines how\nselections' data queries are resolved when applied in a filter transform,\nconditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
         },
         "type": {
+          "const": "single",
           "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `\"single\"` -- to select a single discrete data value on `click`.\n- `\"multi\"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.\n- `\"interval\"` -- to select a continuous range of data values on `drag`.",
-          "enum": [
-            "single"
-          ],
           "type": "string"
         }
       },
@@ -27772,9 +27556,7 @@
         "sphere": {
           "anyOf": [
             {
-              "enum": [
-                true
-              ],
+              "const": true,
               "type": "boolean"
             },
             {
@@ -27914,9 +27696,7 @@
               "$ref": "#/definitions/BinParams"
             },
             {
-              "enum": [
-                "binned"
-              ],
+              "const": "binned",
               "type": "string"
             },
             {
@@ -28109,24 +27889,18 @@
     "TextBaseline": {
       "anyOf": [
         {
-          "enum": [
-            "alphabetic"
-          ],
+          "const": "alphabetic",
           "type": "string"
         },
         {
           "$ref": "#/definitions/Baseline"
         },
         {
-          "enum": [
-            "line-top"
-          ],
+          "const": "line-top",
           "type": "string"
         },
         {
-          "enum": [
-            "line-bottom"
-          ],
+          "const": "line-bottom",
           "type": "string"
         }
       ]
@@ -28882,9 +28656,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -28899,9 +28671,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
@@ -28916,9 +28686,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -28933,9 +28701,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
@@ -29891,9 +29657,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "container"
-              ],
+              "const": "container",
               "type": "string"
             },
             {
@@ -29978,9 +29742,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "container"
-              ],
+              "const": "container",
               "type": "string"
             },
             {
@@ -30633,9 +30395,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "container"
-              ],
+              "const": "container",
               "type": "string"
             },
             {
@@ -30728,9 +30488,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "container"
-              ],
+              "const": "container",
               "type": "string"
             },
             {
@@ -30769,10 +30527,8 @@
           "description": "If set to `null`, disable type inference based on the spec and only use type inference based on the data.\nAlternatively, a parsing directive object can be provided for explicit data types. Each property of the object corresponds to a field name, and the value to the desired data type (one of `\"number\"`, `\"boolean\"`, `\"date\"`, or null (do not parse the field)).\nFor example, `\"parse\": {\"modified_on\": \"date\"}` parses the `modified_on` field in each input record a Date value.\n\nFor `\"date\"`, we parse data based using Javascript's [`Date.parse()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/parse).\nFor Specific date formats can be provided (e.g., `{foo: \"date:'%m%d%Y'\"}`), using the [d3-time-format syntax](https://github.com/d3/d3-time-format#locale_format). UTC date format parsing is supported similarly (e.g., `{foo: \"utc:'%m%d%Y'\"}`). See more about [UTC time](https://vega.github.io/vega-lite/docs/timeunit.html#utc)"
         },
         "type": {
+          "const": "topojson",
           "description": "Type of input data: `\"json\"`, `\"csv\"`, `\"tsv\"`, `\"dsv\"`.\n\n__Default value:__  The default format type is determined by the extension of the file URL.\nIf no extension is detected, `\"json\"` will be used by default.",
-          "enum": [
-            "topojson"
-          ],
           "type": "string"
         }
       },
@@ -30878,9 +30634,7 @@
               "$ref": "#/definitions/BinParams"
             },
             {
-              "enum": [
-                "binned"
-              ],
+              "const": "binned",
               "type": "string"
             },
             {
@@ -30951,9 +30705,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "container"
-              ],
+              "const": "container",
               "type": "string"
             },
             {
@@ -31009,9 +30761,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "container"
-              ],
+              "const": "container",
               "type": "string"
             },
             {
@@ -31054,9 +30804,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "container"
-              ],
+              "const": "container",
               "type": "string"
             },
             {
@@ -31112,9 +30860,7 @@
               "type": "number"
             },
             {
-              "enum": [
-                "container"
-              ],
+              "const": "container",
               "type": "string"
             },
             {
@@ -31210,15 +30956,11 @@
               "type": "number"
             },
             {
-              "enum": [
-                "width"
-              ],
+              "const": "width",
               "type": "string"
             },
             {
-              "enum": [
-                "height"
-              ],
+              "const": "height",
               "type": "string"
             },
             {
