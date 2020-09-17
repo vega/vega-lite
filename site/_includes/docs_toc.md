@@ -69,7 +69,7 @@
         - [Usage]({{site.baseurl}}/docs/pivot.html#usage)
         - [Example]({{site.baseurl}}/docs/pivot.html#example)
     - [Quantile]({{site.baseurl}}/docs/quantile.html)
-        - [Density Transform Definition]({{site.baseurl}}/docs/quantile.html#density-transform-definition)
+        - [Quantile Transform Definition]({{site.baseurl}}/docs/quantile.html#quantile-transform-definition)
         - [Usage]({{site.baseurl}}/docs/quantile.html#usage)
     - [Regression]({{site.baseurl}}/docs/regression.html)
         - [Regression Transform Definition]({{site.baseurl}}/docs/regression.html#regression-transform-definition)
