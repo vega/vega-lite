@@ -1,65 +1,25 @@
 #!/usr/bin/env node
+
 // Compile a Vega-Lite spec to Vega
 
-//@ts-check
-'use strict';
-
-const helpText = `Compile a Vega-Lite spec to Vega.
-
-Usage: vl2vg [vega_lite_json_file] [output_vega_json_file] [-p]
-  If no arguments are provided, reads from stdin.
-  If output_vega_json_file is not provided, writes to stdout.
-  Passing -p formats the generated Vega spec.`;
-
-// import required libraries
-const {createReadStream, createWriteStream} = require('fs');
-const vegaLite = require('../build/vega-lite');
+const {createWriteStream} = require('fs');
+const vegaLite = require('..');
 const compactStringify = require('json-stringify-pretty-compact');
+const read = require('./read');
+const args = require('./args');
 
-// arguments
-const args = require('yargs')
-  .usage(helpText)
-  .demand(0);
-
-args
-  .boolean('p')
-  .alias('p', 'pretty')
-  .describe('p', 'Output human readable/pretty spec.');
-
-const argv = args.help().version().argv;
-
-/**
- * Read a file.
- *
- * @param file {string} File path
- */
-function read(file) {
-  return new Promise((resolve, reject) => {
-    const input = file ? createReadStream(file) : process.stdin;
-    let text = '';
-
-    input.setEncoding('utf8');
-    input.on('error', err => reject(err));
-    input.on('data', chunk => (text += chunk));
-    input.on('end', () => resolve(text));
-  });
-}
+const arg = args('vega');
 
 // load spec, compile vg spec
-read(argv._[0]).then(text => compile(JSON.parse(text)));
+read(arg._[0]).then(text => compile(JSON.parse(text)));
 
-/**
- * Compile the Vega-Lite spec to Vega.
- *
- * @param vlSpec {import("../src").TopLevelSpec} The Vega-Lite spec.
- */
 function compile(vlSpec) {
   // @ts-ignore
   const vgSpec = vegaLite.compile(vlSpec).spec;
 
-  const file = argv._[1] || null;
+  const file = arg._[1] || null;
   const out = file ? createWriteStream(file) : process.stdout;
-  if (argv.p) {
+  if (arg.p) {
     out.write(compactStringify(vgSpec) + '\n');
   } else {
     out.write(JSON.stringify(vgSpec) + '\n');

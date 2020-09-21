@@ -1,9 +1,19 @@
-#!/bin/bash
+#!/usr/bin/env node
 
-# Expects the path to a Vega-Lite specification as the first argument.
-# Passes remaining arguments to vg2pdf using npx.
+// Render a Vega-Lite specification to PDF, using node canvas
+const {createWriteStream} = require('fs');
+const render = require('./render');
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+render(
+  'pdf',
+  function (canvas, arg) {
+    const file = arg._[1] || null;
+    const out = file ? createWriteStream(file) : process.stdout;
+    const stream = canvas.createPDFStream();
+    stream.on('data', chunk => {
+      out.write(chunk);
+    });
+  },
+  {type: 'pdf', context: {textDrawingMode: 'glyph'}}
+);
 
-# only passes the first argument to vl2vg
-$DIR/vl2vg $1 | npx -p vega vg2pdf '' ${@:2}
