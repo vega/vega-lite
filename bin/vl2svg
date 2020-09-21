@@ -1,9 +1,25 @@
-#!/bin/bash
+#!/usr/bin/env node
 
-# Expects the path to a Vega-Lite specification as the first argument.
-# Passes remaining arguments to vg2svg using npx.
+// Render a Vega-Lite specification to SVG
+const {writeFile} = require('fs');
+const render = require('./render');
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+const svgHeader =
+  '<?xml version="1.0" encoding="utf-8"?>\n' +
+  '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" ' +
+  '"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">\n';
 
-# only passes the first argument to vl2vg
-$DIR/vl2vg $1 | npx -p vega vg2svg '' ${@:2}
+render('svg', function (body, arg) {
+  const svg = (arg.h ? svgHeader : '') + body;
+  const file = arg._[1] || null;
+
+  if (file) {
+    // write to file
+    writeFile(file, svg, err => {
+      if (err) throw err;
+    });
+  } else {
+    // write to stdout
+    process.stdout.write(svg);
+  }
+});
