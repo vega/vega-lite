@@ -57,11 +57,10 @@ These two config properties define the default number and time formats for text 
 
 ### Providing Custom Formatters
 
-To customize how Vega-Lite formats numbers or text, you can register a new formatter by (1) setting the `customFormatTypes` config to `true` and then (2) registering [an expression function](https://vega.github.io/vega/docs/api/extensibility/#expressions) that takes a data point and an optional format parameter as input to the Vega View:
+To customize how Vega-Lite formats numbers or text, you can register a new formatter by (1) registering [an expression function](https://vega.github.io/vega/docs/api/extensibility/#expressions) that takes a data point and an optional format parameter and (2) setting the `customFormatTypes` config to `true`. For example, to register `customFormatA`, you run need to register the function:
 
 ```js
-view = new vega.View(...);
-view.expressionFunction('customFormatA', function(datum, params) {
+vega.expressionFunction('customFormatA', function(datum, params) {
   ...
   return "<formatted string>";
 });
