@@ -1601,9 +1601,9 @@
   integrity sha512-FA/BWv8t8ZWJ+gEOnLLd8ygxH/2UFbAvgEonyfN6yWGLKc7zVjbpl2Y4CTjid9h2RfgPP6SEt6uHwEOply00yw==
 
 "@types/yargs@^15.0.0":
-  version "15.0.6"
-  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-15.0.6.tgz#822919963e1acc0ed03dbb11570d548258004c62"
-  integrity sha512-sw6JBfeZeE7ep9Pmhcysxo4lgaMLlHuQ8ie0srx5VOEnN4RNJgLryCuvxCUotw6Jmd50zBwCJHs3iwjLyIJgbQ==
+  version "15.0.7"
+  resolved "https://registry.yarnpkg.com/@types/yargs/-/yargs-15.0.7.tgz#dad50a7a234a35ef9460737a56024287a3de1d2b"
+  integrity sha512-Gf4u3EjaPNcC9cTu4/j2oN14nSVhr8PQ+BvBcBQHAhDZfl0bVIiLgvnRXv/dn58XhTm9UXvBpvJpDlwV65QxOA==
   dependencies:
     "@types/yargs-parser" "*"
 
@@ -8267,7 +8267,7 @@ vega-transforms@~4.9.3:
     vega-time "^2.0.4"
     vega-util "^1.15.2"
 
-vega-typings@^0.19.0, vega-typings@~0.19.0:
+vega-typings@~0.19.0:
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.19.1.tgz#a53949143fa37721ae7bd146bbb9add5c78aca52"
   integrity sha512-OSyNYwMJ8FayTTNU/gohprbt1EFQBpoiMPP9p2vqo1O9z45XVnotQ92jYHAhraI6gWiMIIfo4OjPbSe/GX7etg==
