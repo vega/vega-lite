@@ -58,6 +58,8 @@ Note how the field for the y channel refers to a repeated field.
 },
 ```
 
+Please notice that if you try the chart above using areas, these won't be stacked as the stacking [layout algorithm expects data in long format](https://github.com/vega/vega-lite/issues/6891). Instead, try folding the data first.
+
 ### Multi-series Line Chart with Repeated Layers
 
 You can also use `repeat` with `layer` to create a multi-series line chart. Here we map a repeater field as data value ([`datum`](datum.html)) for the color encoding.
