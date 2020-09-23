@@ -39,6 +39,8 @@ In addition to [common properties of a view specification](spec.html#common), a 
 
 The `repeat` property can be an object with at least one of `"row"`, `"column"` and `"layer"` properties, which define the list of fields that should be repeated into a row, a column, or a layer.
 
+Note that when you repeat views into layers, the views are superimposed. Even if different layers use different colors, Vega-Lite will not generate a legend and not stack marks such as bars or areas. If you want a legend or stack different fields, use the [fold transform](fold.html) to convert your data to long form and then use a color encoding.
+
 {% include table.html props="row,column" source="RepeatMapping" %}
 
 ## Examples

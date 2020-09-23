@@ -19,7 +19,7 @@ The quantile transform calculates empirical [quantile](https://en.wikipedia.org/
 }
 ```
 
-## Density Transform Definition
+## Quantile Transform Definition
 
 {% include table.html props="quantile,groupby,probs,step,as" source="QuantileTransform" %}
 

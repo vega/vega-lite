@@ -355,6 +355,8 @@ DateTime:
   link: 'datetime.html'
 Color:
   link: 'types.html#color'
+ExprRef:
+  link: 'types.html#exprref'
 Gradient:
   link: 'gradient.html'
 GradientStop:

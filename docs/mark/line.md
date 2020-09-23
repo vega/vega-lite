@@ -44,6 +44,8 @@ The `line` mark represents the data points stored in a field with a line connect
 }
 ```
 
+<span class="vl-example" data-name="line_params" figure-only=true></span>
+
 An line mark definition can contain any [standard mark properties](mark.html#mark-def) and the following line interpolation and point overlay properties:
 
 {% include table.html props="orient,interpolate,tension,point" source="MarkDef" %}
