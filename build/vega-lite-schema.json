@@ -891,8 +891,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/URI",
-              "description": "The URL of the image file for image marks.",
-              "format": "uri"
+              "description": "The URL of the image file for image marks."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -3760,8 +3759,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/URI",
-              "description": "The URL of the image file for image marks.",
-              "format": "uri"
+              "description": "The URL of the image file for image marks."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -15381,8 +15379,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/URI",
-              "description": "The URL of the image file for image marks.",
-              "format": "uri"
+              "description": "The URL of the image file for image marks."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -16159,8 +16156,7 @@
         },
         "url": {
           "$ref": "#/definitions/URI",
-          "description": "The URL of the image file for image marks.",
-          "format": "uri"
+          "description": "The URL of the image file for image marks."
         },
         "width": {
           "description": "Width of the marks.",
@@ -16935,8 +16931,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/URI",
-              "description": "The URL of the image file for image marks.",
-              "format": "uri"
+              "description": "The URL of the image file for image marks."
             },
             {
               "$ref": "#/definitions/ExprOrSignalRef"
@@ -17735,8 +17730,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/URI",
-              "description": "The URL of the image file for image marks.",
-              "format": "uri"
+              "description": "The URL of the image file for image marks."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -18641,8 +18635,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/URI",
-              "description": "The URL of the image file for image marks.",
-              "format": "uri"
+              "description": "The URL of the image file for image marks."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -20134,8 +20127,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/URI",
-              "description": "The URL of the image file for image marks.",
-              "format": "uri"
+              "description": "The URL of the image file for image marks."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -21946,8 +21938,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/URI",
-              "description": "The URL of the image file for image marks.",
-              "format": "uri"
+              "description": "The URL of the image file for image marks."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -28837,8 +28828,7 @@
           "anyOf": [
             {
               "$ref": "#/definitions/URI",
-              "description": "The URL of the image file for image marks.",
-              "format": "uri"
+              "description": "The URL of the image file for image marks."
             },
             {
               "$ref": "#/definitions/ExprRef"
