@@ -479,9 +479,8 @@
         "href": {
           "anyOf": [
             {
-              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
-              "format": "uri",
-              "type": "string"
+              "$ref": "#/definitions/URI",
+              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -677,6 +676,17 @@
           ],
           "description": "Default size for marks. - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value. - For `bar`, this represents the band size of the bar, in pixels. - For `text`, this represents the font size, in pixels.\n\n__Default value:__ - `30` for point, circle, square marks; width/height's `step` - `2` for bar marks with discrete dimensions; - `5` for bar marks with continuous dimensions; - `11` for text marks.",
           "minimum": 0
+        },
+        "smooth": {
+          "anyOf": [
+            {
+              "description": "A boolean flag (default true) indicating if the image should be smoothed when resized. If false, individual pixels should be scaled directly rather than interpolated with smoothing. For SVG rendering, this option may not work in some browsers due to lack of standardization.",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "startAngle": {
           "anyOf": [
@@ -876,6 +886,18 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used. - If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used. - If set to `null` or `false`, then no tooltip will be used.\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.\n\n__Default value:__ `null`"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/URI",
+              "description": "The URL of the image file for image marks.",
+              "format": "uri"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "width": {
           "anyOf": [
@@ -3352,9 +3374,8 @@
         "href": {
           "anyOf": [
             {
-              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
-              "format": "uri",
-              "type": "string"
+              "$ref": "#/definitions/URI",
+              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -3524,6 +3545,17 @@
           ],
           "description": "Default size for marks. - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value. - For `bar`, this represents the band size of the bar, in pixels. - For `text`, this represents the font size, in pixels.\n\n__Default value:__ - `30` for point, circle, square marks; width/height's `step` - `2` for bar marks with discrete dimensions; - `5` for bar marks with continuous dimensions; - `11` for text marks.",
           "minimum": 0
+        },
+        "smooth": {
+          "anyOf": [
+            {
+              "description": "A boolean flag (default true) indicating if the image should be smoothed when resized. If false, individual pixels should be scaled directly rather than interpolated with smoothing. For SVG rendering, this option may not work in some browsers due to lack of standardization.",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "startAngle": {
           "anyOf": [
@@ -3723,6 +3755,18 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used. - If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used. - If set to `null` or `false`, then no tooltip will be used.\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.\n\n__Default value:__ `null`"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/URI",
+              "description": "The URL of the image file for image marks.",
+              "format": "uri"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "width": {
           "anyOf": [
@@ -14936,9 +14980,8 @@
         "href": {
           "anyOf": [
             {
-              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
-              "format": "uri",
-              "type": "string"
+              "$ref": "#/definitions/URI",
+              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -15123,6 +15166,17 @@
           ],
           "description": "Default size for marks. - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value. - For `bar`, this represents the band size of the bar, in pixels. - For `text`, this represents the font size, in pixels.\n\n__Default value:__ - `30` for point, circle, square marks; width/height's `step` - `2` for bar marks with discrete dimensions; - `5` for bar marks with continuous dimensions; - `11` for text marks.",
           "minimum": 0
+        },
+        "smooth": {
+          "anyOf": [
+            {
+              "description": "A boolean flag (default true) indicating if the image should be smoothed when resized. If false, individual pixels should be scaled directly rather than interpolated with smoothing. For SVG rendering, this option may not work in some browsers due to lack of standardization.",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "startAngle": {
           "anyOf": [
@@ -15322,6 +15376,18 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used. - If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used. - If set to `null` or `false`, then no tooltip will be used.\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.\n\n__Default value:__ `null`"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/URI",
+              "description": "The URL of the image file for image marks.",
+              "format": "uri"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "width": {
           "anyOf": [
@@ -15902,9 +15968,8 @@
           "type": "number"
         },
         "href": {
-          "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
-          "format": "uri",
-          "type": "string"
+          "$ref": "#/definitions/URI",
+          "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink."
         },
         "innerRadius": {
           "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.",
@@ -15985,6 +16050,10 @@
           "description": "Default size for marks. - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value. - For `bar`, this represents the band size of the bar, in pixels. - For `text`, this represents the font size, in pixels.\n\n__Default value:__ - `30` for point, circle, square marks; width/height's `step` - `2` for bar marks with discrete dimensions; - `5` for bar marks with continuous dimensions; - `11` for text marks.",
           "minimum": 0,
           "type": "number"
+        },
+        "smooth": {
+          "description": "A boolean flag (default true) indicating if the image should be smoothed when resized. If false, individual pixels should be scaled directly rather than interpolated with smoothing. For SVG rendering, this option may not work in some browsers due to lack of standardization.",
+          "type": "boolean"
         },
         "startAngle": {
           "description": "The start angle in radians for arc marks. A value of `0` indicates up (north), increasing values proceed clockwise.",
@@ -16087,6 +16156,11 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used. - If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used. - If set to `null` or `false`, then no tooltip will be used.\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.\n\n__Default value:__ `null`"
+        },
+        "url": {
+          "$ref": "#/definitions/URI",
+          "description": "The URL of the image file for image marks.",
+          "format": "uri"
         },
         "width": {
           "description": "Width of the marks.",
@@ -16475,9 +16549,8 @@
         "href": {
           "anyOf": [
             {
-              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
-              "format": "uri",
-              "type": "string"
+              "$ref": "#/definitions/URI",
+              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink."
             },
             {
               "$ref": "#/definitions/ExprOrSignalRef"
@@ -16647,6 +16720,17 @@
           ],
           "description": "Default size for marks. - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value. - For `bar`, this represents the band size of the bar, in pixels. - For `text`, this represents the font size, in pixels.\n\n__Default value:__ - `30` for point, circle, square marks; width/height's `step` - `2` for bar marks with discrete dimensions; - `5` for bar marks with continuous dimensions; - `11` for text marks.",
           "minimum": 0
+        },
+        "smooth": {
+          "anyOf": [
+            {
+              "description": "A boolean flag (default true) indicating if the image should be smoothed when resized. If false, individual pixels should be scaled directly rather than interpolated with smoothing. For SVG rendering, this option may not work in some browsers due to lack of standardization.",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprOrSignalRef"
+            }
+          ]
         },
         "startAngle": {
           "anyOf": [
@@ -16846,6 +16930,18 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used. - If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used. - If set to `null` or `false`, then no tooltip will be used.\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.\n\n__Default value:__ `null`"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/URI",
+              "description": "The URL of the image file for image marks.",
+              "format": "uri"
+            },
+            {
+              "$ref": "#/definitions/ExprOrSignalRef"
+            }
+          ]
         },
         "width": {
           "anyOf": [
@@ -17253,9 +17349,8 @@
         "href": {
           "anyOf": [
             {
-              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
-              "format": "uri",
-              "type": "string"
+              "$ref": "#/definitions/URI",
+              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -17425,6 +17520,17 @@
           ],
           "description": "Default size for marks. - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value. - For `bar`, this represents the band size of the bar, in pixels. - For `text`, this represents the font size, in pixels.\n\n__Default value:__ - `30` for point, circle, square marks; width/height's `step` - `2` for bar marks with discrete dimensions; - `5` for bar marks with continuous dimensions; - `11` for text marks.",
           "minimum": 0
+        },
+        "smooth": {
+          "anyOf": [
+            {
+              "description": "A boolean flag (default true) indicating if the image should be smoothed when resized. If false, individual pixels should be scaled directly rather than interpolated with smoothing. For SVG rendering, this option may not work in some browsers due to lack of standardization.",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "startAngle": {
           "anyOf": [
@@ -17624,6 +17730,18 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used. - If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used. - If set to `null` or `false`, then no tooltip will be used.\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.\n\n__Default value:__ `null`"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/URI",
+              "description": "The URL of the image file for image marks.",
+              "format": "uri"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "width": {
           "anyOf": [
@@ -18055,9 +18173,8 @@
         "href": {
           "anyOf": [
             {
-              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
-              "format": "uri",
-              "type": "string"
+              "$ref": "#/definitions/URI",
+              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -18275,6 +18392,17 @@
           ],
           "description": "Default size for marks. - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value. - For `bar`, this represents the band size of the bar, in pixels. - For `text`, this represents the font size, in pixels.\n\n__Default value:__ - `30` for point, circle, square marks; width/height's `step` - `2` for bar marks with discrete dimensions; - `5` for bar marks with continuous dimensions; - `11` for text marks.",
           "minimum": 0
+        },
+        "smooth": {
+          "anyOf": [
+            {
+              "description": "A boolean flag (default true) indicating if the image should be smoothed when resized. If false, individual pixels should be scaled directly rather than interpolated with smoothing. For SVG rendering, this option may not work in some browsers due to lack of standardization.",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "stroke": {
           "anyOf": [
@@ -18508,6 +18636,18 @@
         "type": {
           "$ref": "#/definitions/Mark",
           "description": "The mark type. This could a primitive mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"geoshape\"`, `\"rule\"`, and `\"text\"`) or a composite mark type (`\"boxplot\"`, `\"errorband\"`, `\"errorbar\"`)."
+        },
+        "url": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/URI",
+              "description": "The URL of the image file for image marks.",
+              "format": "uri"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "width": {
           "anyOf": [
@@ -19550,9 +19690,8 @@
         "href": {
           "anyOf": [
             {
-              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
-              "format": "uri",
-              "type": "string"
+              "$ref": "#/definitions/URI",
+              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -19744,6 +19883,17 @@
           ],
           "description": "Default size for marks. - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value. - For `bar`, this represents the band size of the bar, in pixels. - For `text`, this represents the font size, in pixels.\n\n__Default value:__ - `30` for point, circle, square marks; width/height's `step` - `2` for bar marks with discrete dimensions; - `5` for bar marks with continuous dimensions; - `11` for text marks.",
           "minimum": 0
+        },
+        "smooth": {
+          "anyOf": [
+            {
+              "description": "A boolean flag (default true) indicating if the image should be smoothed when resized. If false, individual pixels should be scaled directly rather than interpolated with smoothing. For SVG rendering, this option may not work in some browsers due to lack of standardization.",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "startAngle": {
           "anyOf": [
@@ -19979,6 +20129,18 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used. - If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used. - If set to `null` or `false`, then no tooltip will be used.\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.\n\n__Default value:__ `null`"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/URI",
+              "description": "The URL of the image file for image marks.",
+              "format": "uri"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "width": {
           "anyOf": [
@@ -21398,9 +21560,8 @@
         "href": {
           "anyOf": [
             {
-              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
-              "format": "uri",
-              "type": "string"
+              "$ref": "#/definitions/URI",
+              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -21570,6 +21731,17 @@
           ],
           "description": "Default size for marks. - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value. - For `bar`, this represents the band size of the bar, in pixels. - For `text`, this represents the font size, in pixels.\n\n__Default value:__ - `30` for point, circle, square marks; width/height's `step` - `2` for bar marks with discrete dimensions; - `5` for bar marks with continuous dimensions; - `11` for text marks.",
           "minimum": 0
+        },
+        "smooth": {
+          "anyOf": [
+            {
+              "description": "A boolean flag (default true) indicating if the image should be smoothed when resized. If false, individual pixels should be scaled directly rather than interpolated with smoothing. For SVG rendering, this option may not work in some browsers due to lack of standardization.",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "startAngle": {
           "anyOf": [
@@ -21769,6 +21941,18 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used. - If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used. - If set to `null` or `false`, then no tooltip will be used.\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.\n\n__Default value:__ `null`"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/URI",
+              "description": "The URL of the image file for image marks.",
+              "format": "uri"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "width": {
           "anyOf": [
@@ -28262,9 +28446,8 @@
         "href": {
           "anyOf": [
             {
-              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink.",
-              "format": "uri",
-              "type": "string"
+              "$ref": "#/definitions/URI",
+              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -28434,6 +28617,17 @@
           ],
           "description": "Default size for marks. - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value. - For `bar`, this represents the band size of the bar, in pixels. - For `text`, this represents the font size, in pixels.\n\n__Default value:__ - `30` for point, circle, square marks; width/height's `step` - `2` for bar marks with discrete dimensions; - `5` for bar marks with continuous dimensions; - `11` for text marks.",
           "minimum": 0
+        },
+        "smooth": {
+          "anyOf": [
+            {
+              "description": "A boolean flag (default true) indicating if the image should be smoothed when resized. If false, individual pixels should be scaled directly rather than interpolated with smoothing. For SVG rendering, this option may not work in some browsers due to lack of standardization.",
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "startAngle": {
           "anyOf": [
@@ -28638,6 +28832,18 @@
             }
           ],
           "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used. - If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used. - If set to `null` or `false`, then no tooltip will be used.\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.\n\n__Default value:__ `null`"
+        },
+        "url": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/URI",
+              "description": "The URL of the image file for image marks.",
+              "format": "uri"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "width": {
           "anyOf": [
@@ -30675,6 +30881,10 @@
         }
       },
       "type": "object"
+    },
+    "URI": {
+      "format": "uri-reference",
+      "type": "string"
     },
     "UnitSpec": {
       "additionalProperties": false,
