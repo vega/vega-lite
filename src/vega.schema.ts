@@ -1,4 +1,4 @@
-import {
+import type {
   AggregateOp,
   BandScale,
   BaseScale,
@@ -47,7 +47,7 @@ import {ExprOrSignalRef} from './expr';
 import {SortOrder} from './sort';
 import {Dict, Flag, keys} from './util';
 
-export {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
+export type {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
 // TODO: make recursive
 export type MappedExclude<T, E> = {
