@@ -64,7 +64,7 @@ export abstract class DataFlowNode {
 
   public addChild(child: DataFlowNode, loc?: number) {
     // do not add the same child twice
-    if (this._children.indexOf(child) > -1) {
+    if (this._children.includes(child)) {
       log.warn(log.message.ADD_SAME_CHILD_TWICE);
       return;
     }

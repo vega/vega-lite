@@ -44,7 +44,7 @@ for (const bind of [bound, unbound]) {
       if (bind === unbound) {
         const drag = (await page.evaluate(brush(brushKey, idx, parent)))[0];
         xold = drag.values[0].sort(cmp);
-        yold = encodings.indexOf('y') >= 0 ? drag.values[encodings.indexOf('x') + 1].sort(cmp) : null;
+        yold = encodings.includes('y') ? drag.values[encodings.indexOf('x') + 1].sort(cmp) : null;
       } else {
         xold = JSON.parse((await page.evaluate('JSON.stringify(view._runtime.scales.x.value.domain())')) as string);
         yold = (await page.evaluate('view._runtime.scales.y.value.domain()')) as number[];

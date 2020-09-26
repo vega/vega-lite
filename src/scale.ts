@@ -715,18 +715,18 @@ export function scaleTypeSupportProperty(scaleType: ScaleType, propName: keyof S
       return true;
     case 'scheme':
     case 'interpolate':
-      return !contains(['point', 'band', 'identity'], scaleType);
+      return !['point', 'band', 'identity'].includes(scaleType);
     case 'bins':
-      return !contains(['point', 'band', 'identity', 'ordinal'], scaleType);
+      return !['point', 'band', 'identity', 'ordinal'].includes(scaleType);
     case 'round':
       return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
     case 'padding':
     case 'rangeMin':
     case 'rangeMax':
-      return isContinuousToContinuous(scaleType) || contains(['point', 'band'], scaleType);
+      return isContinuousToContinuous(scaleType) || ['point', 'band'].includes(scaleType);
     case 'paddingOuter':
     case 'align':
-      return contains(['point', 'band'], scaleType);
+      return ['point', 'band'].includes(scaleType);
     case 'paddingInner':
       return scaleType === 'band';
     case 'domainMax':

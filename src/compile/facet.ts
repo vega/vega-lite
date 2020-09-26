@@ -10,7 +10,7 @@ import {hasDiscreteDomain} from '../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
 import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
-import {contains, keys} from '../util';
+import {keys} from '../util';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
@@ -60,7 +60,7 @@ export class FacetModel extends ModelWithField {
     const channels = keys(facet);
     const normalizedFacet = {};
     for (const channel of channels) {
-      if (!contains([ROW, COLUMN], channel)) {
+      if (![ROW, COLUMN].includes(channel)) {
         // Drop unsupported channel
         log.warn(log.message.incompatibleChannel(channel, 'facet'));
         break;
@@ -149,7 +149,7 @@ export class FacetModel extends ModelWithField {
         if (facetFieldDef) {
           const titleOrient = getHeaderProperty('titleOrient', facetFieldDef.header, this.config, channel);
 
-          if (contains(['right', 'bottom'], titleOrient)) {
+          if (['right', 'bottom'].includes(titleOrient)) {
             const headerChannel = getHeaderChannel(channel, titleOrient);
             layoutMixins.titleAnchor = layoutMixins.titleAnchor ?? {};
             layoutMixins.titleAnchor[headerChannel] = 'end';
@@ -379,7 +379,7 @@ export class FacetModel extends ModelWithField {
     for (const channel of HEADER_CHANNELS) {
       if (facet[channel]) {
         const labelOrient = getHeaderProperty('labelOrient', facet[channel]?.header, config, channel);
-        if (contains(ORTHOGONAL_ORIENT[channel], labelOrient)) {
+        if (ORTHOGONAL_ORIENT[channel].includes(labelOrient)) {
           // Row/Column with orthogonal labelOrient must use title to display labels
           return assembleLabelTitle(facet[channel], channel, config);
         }

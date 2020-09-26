@@ -33,7 +33,7 @@ const legendBindings: TransformCompiler = {
       const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
       for (const evt of selCmpt.events) {
         evt.filter = array(evt.filter ?? []);
-        if (evt.filter.indexOf(legendFilter) < 0) {
+        if (!evt.filter.includes(legendFilter)) {
           evt.filter.push(legendFilter);
         }
       }
