@@ -19,12 +19,12 @@ if ! [ -f build/vega-lite.min.js.map ]; then
   echo "ERROR: build/vega-lite.min.js.map not found."
   exit 1;
 fi
-if ! [ -f build/vega-lite.module.js ]; then
-  echo "ERROR: build/vega-lite.module.js not found."
+if ! [ -f build/src/index.js ]; then
+  echo "ERROR: build/src/index.js not found."
   exit 1;
 fi
-if ! [ -f build/vega-lite.module.js.map ]; then
-  echo "ERROR: build/vega-lite.module.js.map not found."
+if ! [ -f build/src/index.js.map ]; then
+  echo "ERROR: build/src/index.js.map not found."
   exit 1;
 fi
 if ! [ -f build/vega-lite-schema.json ]; then
