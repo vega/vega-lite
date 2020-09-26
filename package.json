@@ -27,7 +27,8 @@
   "files": [
     "build",
     "build-es5",
-    "src"
+    "src",
+    "vega-lite*"
   ],
   "scripts": {
     "changelog": "conventional-changelog -p angular -r 2",
