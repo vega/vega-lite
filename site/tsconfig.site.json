@@ -1,8 +1,0 @@
-{
-  "extends": "../tsconfig.json",
-  "compilerOptions": {
-    "rootDir": ".."
-  },
-  "files": ["static/index.ts"],
-  "include": ["static/*.ts"]
-}
