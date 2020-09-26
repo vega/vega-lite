@@ -3,8 +3,8 @@ import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import bundleSize from 'rollup-plugin-bundle-size';
 import {terser} from 'rollup-plugin-terser';
-import typescript from 'rollup-plugin-typescript2';
 import babel from '@rollup/plugin-babel';
+import simpleTS from './scripts/simple-ts';
 
 const watch = process.env.ROLLUP_WATCH;
 
@@ -45,15 +45,7 @@ const outputs = [
       debugImports(),
       json(),
       resolve({browser: true}),
-      typescript({
-        tsconfigOverride: {
-          compilerOptions: {
-            declaration: true,
-            declarationMap: true
-          },
-          include: null
-        }
-      }),
+      simpleTS('.', 'tsconfig.build.json', {noBuild: false, watch}),
       bundleSize()
     ],
     external: [...Object.keys(pkg.dependencies), ...Object.keys(pkg.peerDependencies)]
