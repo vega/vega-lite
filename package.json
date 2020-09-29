@@ -25,6 +25,7 @@
     "test": "test"
   },
   "files": [
+    "bin",
     "build",
     "build-es5",
     "src",
