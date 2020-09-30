@@ -1,4 +1,4 @@
-import {stringValue} from 'vega-util';
+import {isString, stringValue} from 'vega-util';
 import {TUPLE} from '..';
 import {varName} from '../../../util';
 import {assembleInit} from '../assemble';
@@ -18,11 +18,11 @@ const inputBindings: TransformCompiler = {
     );
   },
 
-  parse: (model, selCmpt, selDef, origDef) => {
+  parse: (model, selCmpt, selDef) => {
     // Binding a selection to input widgets disables default direct manipulation interaction.
     // A user can choose to re-enable it by explicitly specifying triggering input events.
-    if (!origDef.on) delete selCmpt.events;
-    if (!origDef.clear) delete selCmpt.clear;
+    if (isString(selDef.select) || !selDef.select.on) delete selCmpt.events;
+    if (isString(selDef.select) || !selDef.select.clear) delete selCmpt.clear;
   },
 
   topLevelSignals: (model, selCmpt, signals) => {

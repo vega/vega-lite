@@ -1,9 +1,9 @@
 import {selector as parseSelector} from 'vega-event-selector';
-import {isString, stringValue} from 'vega-util';
+import {array, isObject, isString, stringValue} from 'vega-util';
 import {forEachSelection, SelectionComponent, STORE} from '.';
 import {warn} from '../../log';
 import {LogicalComposition} from '../../logical';
-import {SelectionDef, SelectionExtent} from '../../selection';
+import {BaseSelectionConfig, SelectionDef, SelectionExtent} from '../../selection';
 import {Dict, duplicate, logicalExpr, varName} from '../../util';
 import {DataFlowNode, OutputNode} from '../data/dataflow';
 import {FilterNode} from '../data/filter';
@@ -17,39 +17,38 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionDef[]) {
   const selectionConfig = model.config.selection;
 
   for (const def of selDefs ?? []) {
-    const selDef = duplicate(def);
-    const {fields, encodings, ...cfg} = selectionConfig[selDef.type]; // Project transform applies its defaults.
+    const name = varName(def.name);
+    const selDef = def.select;
+    const type = isString(selDef) ? selDef : selDef.type;
+    const defaults: BaseSelectionConfig = isObject(selDef) ? selDef : {};
 
     // Set default values from config if a property hasn't been specified,
     // or if it is true. E.g., "translate": true should use the default
     // event handlers for translate. However, true may be a valid value for
-    // a property (e.g., "nearest": true).
+    // a property (e.g., "nearest": true). Project transform applies its defaults.
+    const {fields, encodings, ...cfg} = selectionConfig[type];
     for (const key in cfg) {
-      // A selection should contain either `encodings` or `fields`, only use
-      // default values for these two values if neither of them is specified.
-      if ((key === 'encodings' && selDef.fields) || (key === 'fields' && selDef.encodings)) {
-        continue;
-      }
-
       if (key === 'mark') {
-        selDef[key] = {...cfg[key], ...selDef[key]};
+        defaults[key] = {...cfg[key], ...defaults[key]};
       }
 
-      if (selDef[key] === undefined || selDef[key] === true) {
-        selDef[key] = cfg[key] ?? selDef[key];
+      if (defaults[key] === undefined || defaults[key] === true) {
+        defaults[key] = cfg[key] ?? defaults[key];
       }
     }
 
-    const safeName = varName(selDef.name);
-    const selCmpt = (selCmpts[safeName] = {
-      ...selDef,
-      name: safeName,
-      events: isString(selDef.on) ? parseSelector(selDef.on, 'scope') : duplicate(selDef.on)
+    const selCmpt: SelectionComponent<any> = (selCmpts[name] = {
+      ...defaults,
+      name,
+      type,
+      init: def.value,
+      bind: def.bind,
+      events: isString(defaults.on) ? parseSelector(defaults.on, 'scope') : array(duplicate(defaults.on))
     } as any);
 
     forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.has(selCmpt) && txCompiler.parse) {
-        txCompiler.parse(model, selCmpt, selDef, def);
+        txCompiler.parse(model, selCmpt, def);
       }
     });
   }

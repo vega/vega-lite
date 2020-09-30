@@ -72,33 +72,12 @@ export interface BaseSelectionConfig {
 
 export interface SingleSelectionConfig extends BaseSelectionConfig {
   /**
-   * When set, a selection is populated by input elements (also known as dynamic query widgets)
-   * or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;
-   * to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.
-   *
-   * Legend bindings are restricted to selections that only specify a single field or encoding.
-   *
-   * Query widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)
-   * or can be a mapping between projected field/encodings and binding definitions.
-   *
-   * __See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.
-   */
-  bind?: Binding | Record<string, Binding> | LegendBinding;
-
-  /**
    * When true, an invisible voronoi diagram is computed to accelerate discrete
    * selection. The data value _nearest_ the mouse cursor is added to the selection.
    *
    * __See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.
    */
   nearest?: boolean;
-
-  /**
-   * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.
-   *
-   * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
-   */
-  init?: SelectionInitMapping;
 }
 
 export interface MultiSelectionConfig extends BaseSelectionConfig {
@@ -124,22 +103,6 @@ export interface MultiSelectionConfig extends BaseSelectionConfig {
    * __See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.
    */
   nearest?: boolean;
-
-  /**
-   * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial
-   * value (or array of values).
-   *
-   * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
-   */
-  init?: SelectionInitMapping[];
-
-  /**
-   * When set, a selection is populated by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;
-   * to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.
-   *
-   * Legend bindings are restricted to selections that only specify a single field or encoding.
-   */
-  bind?: LegendBinding;
 }
 
 // Similar to BaseMarkConfig but the field documentations are specificly for an interval mark.
@@ -213,15 +176,6 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
   zoom?: string | boolean;
 
   /**
-   * Establishes a two-way binding between the interval selection and the scales
-   * used within the same view. This allows a user to interactively pan and
-   * zoom the view.
-   *
-   * __See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.
-   */
-  bind?: 'scales';
-
-  /**
    * An interval selection also adds a rectangle mark to depict the
    * extents of the interval. The `mark` property can be used to customize the
    * appearance of the mark.
@@ -229,17 +183,11 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
    * __See also:__ [`mark`](https://vega.github.io/vega-lite/docs/selection-mark.html) documentation.
    */
   mark?: BrushConfig;
-
-  /**
-   * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of
-   * initial values.
-   *
-   * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
-   */
-  init?: SelectionInitIntervalMapping;
 }
 
-export interface BaseSelectionDef<T extends 'single' | 'multi' | 'interval'> {
+export type SelectionTypeConfig = SingleSelectionConfig | MultiSelectionConfig | IntervalSelectionConfig;
+
+export interface BaseSelectionDef<T extends SelectionType> {
   /**
    * Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
    */
@@ -252,14 +200,57 @@ export interface BaseSelectionDef<T extends 'single' | 'multi' | 'interval'> {
    * - `"multi"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.
    * - `"interval"` -- to select a continuous range of data values on `drag`.
    */
-  type: T;
+  select:
+    | SelectionType
+    | ({
+        type: SelectionType;
+      } & (T extends 'single'
+        ? SingleSelectionConfig
+        : T extends 'multi'
+        ? MultiSelectionConfig
+        : T extends 'interval'
+        ? IntervalSelectionConfig
+        : never));
+
+  /**
+   * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.
+   *
+   * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
+   */
+  value?: T extends 'single'
+    ? SelectionInitMapping
+    : T extends 'multi'
+    ? SelectionInitMapping[]
+    : T extends 'interval'
+    ? SelectionInitIntervalMapping
+    : never;
+
+  /**
+   * When set, a selection is populated by input elements (also known as dynamic query widgets)
+   * or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;
+   * to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.
+   *
+   * Legend bindings are restricted to selections that only specify a single field or encoding.
+   *
+   * Query widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)
+   * or can be a mapping between projected field/encodings and binding definitions.
+   *
+   * __See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.
+   */
+  bind?: T extends 'single'
+    ? Binding | Record<string, Binding> | LegendBinding
+    : T extends 'multi'
+    ? LegendBinding
+    : T extends 'interval'
+    ? 'scales'
+    : never;
 }
 
-export interface SingleSelection extends BaseSelectionDef<'single'>, SingleSelectionConfig {}
+export type SingleSelection = BaseSelectionDef<'single'>;
 
-export interface MultiSelection extends BaseSelectionDef<'multi'>, MultiSelectionConfig {}
+export type MultiSelection = BaseSelectionDef<'multi'>;
 
-export interface IntervalSelection extends BaseSelectionDef<'interval'>, IntervalSelectionConfig {}
+export type IntervalSelection = BaseSelectionDef<'interval'>;
 
 export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
 
