@@ -9248,11 +9248,11 @@
           "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "selection": {
-          "additionalProperties": {
+          "description": "A key-value mapping between selection names and definitions.",
+          "items": {
             "$ref": "#/definitions/SelectionDef"
           },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
+          "type": "array"
         },
         "spacing": {
           "anyOf": [
@@ -12420,6 +12420,10 @@
           "$ref": "#/definitions/BrushConfig",
           "description": "An interval selection also adds a rectangle mark to depict the extents of the interval. The `mark` property can be used to customize the appearance of the mark.\n\n__See also:__ [`mark`](https://vega.github.io/vega-lite/docs/selection-mark.html) documentation."
         },
+        "name": {
+          "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+          "type": "string"
+        },
         "on": {
           "anyOf": [
             {
@@ -12456,6 +12460,7 @@
         }
       },
       "required": [
+        "name",
         "type"
       ],
       "type": "object"
@@ -18936,6 +18941,10 @@
           },
           "type": "array"
         },
+        "name": {
+          "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+          "type": "string"
+        },
         "nearest": {
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete selection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
           "type": "boolean"
@@ -18969,6 +18978,7 @@
         }
       },
       "required": [
+        "name",
         "type"
       ],
       "type": "object"
@@ -20294,7 +20304,7 @@
           "description": "An expression for the value of the parameter. This expression may include other parameters, in which case the parameter will automatically update in response to upstream parameter changes."
         },
         "name": {
-          "description": "Required. A unique name for the parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or “$”, or “_”) and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+          "description": "Required. A unique name for the parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
           "type": "string"
         },
         "value": {
@@ -27462,6 +27472,10 @@
           "$ref": "#/definitions/SelectionInitMapping",
           "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
         },
+        "name": {
+          "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+          "type": "string"
+        },
         "nearest": {
           "description": "When true, an invisible voronoi diagram is computed to accelerate discrete selection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
           "type": "boolean"
@@ -27488,6 +27502,7 @@
         }
       },
       "required": [
+        "name",
         "type"
       ],
       "type": "object"
@@ -30635,11 +30650,11 @@
           "description": "Scale, axis, and legend resolutions for view composition specifications."
         },
         "selection": {
-          "additionalProperties": {
+          "description": "A key-value mapping between selection names and definitions.",
+          "items": {
             "$ref": "#/definitions/SelectionDef"
           },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
+          "type": "array"
         },
         "spacing": {
           "anyOf": [
@@ -30927,11 +30942,11 @@
           "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks and to `latitude` and `\"longitude\"` channels for other marks."
         },
         "selection": {
-          "additionalProperties": {
+          "description": "A key-value mapping between selection names and definitions.",
+          "items": {
             "$ref": "#/definitions/SelectionDef"
           },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
+          "type": "array"
         },
         "title": {
           "anyOf": [
@@ -31026,11 +31041,11 @@
           "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks and to `latitude` and `\"longitude\"` channels for other marks."
         },
         "selection": {
-          "additionalProperties": {
+          "description": "A key-value mapping between selection names and definitions.",
+          "items": {
             "$ref": "#/definitions/SelectionDef"
           },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
+          "type": "array"
         },
         "title": {
           "anyOf": [
