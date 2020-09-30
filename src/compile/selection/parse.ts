@@ -4,7 +4,7 @@ import {forEachSelection, SelectionComponent, STORE} from '.';
 import {warn} from '../../log';
 import {LogicalComposition} from '../../logical';
 import {SelectionDef, SelectionExtent} from '../../selection';
-import {Dict, duplicate, keys, logicalExpr, varName} from '../../util';
+import {Dict, duplicate, logicalExpr, varName} from '../../util';
 import {DataFlowNode, OutputNode} from '../data/dataflow';
 import {FilterNode} from '../data/filter';
 import {Model} from '../model';
@@ -12,12 +12,12 @@ import {UnitModel} from '../unit';
 import {forEachTransform} from './transforms/transforms';
 import {DataSourceType} from '../../data';
 
-export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>) {
+export function parseUnitSelection(model: UnitModel, selDefs: SelectionDef[]) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
   const selectionConfig = model.config.selection;
 
-  for (const name of keys(selDefs ?? {})) {
-    const selDef = duplicate(selDefs[name]);
+  for (const def of selDefs ?? []) {
+    const selDef = duplicate(def);
     const {fields, encodings, ...cfg} = selectionConfig[selDef.type]; // Project transform applies its defaults.
 
     // Set default values from config if a property hasn't been specified,
@@ -40,7 +40,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
       }
     }
 
-    const safeName = varName(name);
+    const safeName = varName(selDef.name);
     const selCmpt = (selCmpts[safeName] = {
       ...selDef,
       name: safeName,
@@ -49,7 +49,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: Dict<SelectionDef>
 
     forEachTransform(selCmpt, txCompiler => {
       if (txCompiler.has(selCmpt) && txCompiler.parse) {
-        txCompiler.parse(model, selCmpt, selDef, selDefs[name]);
+        txCompiler.parse(model, selCmpt, selDef, def);
       }
     });
   }
