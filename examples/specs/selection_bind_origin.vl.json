@@ -1,13 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/cars.json"},
-  "selection": {
-    "org": {
-      "type": "single",
-      "fields": ["Origin"],
-      "bind": {"input": "select", "options": [null, "Europe", "Japan", "USA"]}
-    }
-  },
+  "selection": [{
+    "name": "org",
+    "select": {"type": "single", "fields": ["Origin"]},
+    "bind": {"input": "select", "options": [null, "Europe", "Japan", "USA"]}
+  }],
   "mark": "point",
   "encoding": {
     "x": {"field": "Horsepower", "type": "quantitative"},

@@ -1,12 +1,10 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/cars.json"},
-  "selection": {
-    "paintbrush": {
-      "type": "multi",
-      "toggle": false
-    }
-  },
+  "selection": [{
+    "name": "paintbrush",
+    "select": {"type": "multi", "toggle": false}
+  }],
   "mark": "circle",
   "encoding": {
     "x": {"field": "Horsepower", "type": "quantitative"},

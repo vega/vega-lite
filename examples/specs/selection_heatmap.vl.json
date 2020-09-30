@@ -13,9 +13,7 @@
       {"actual": "C", "predicted": "C", "count": 9}
     ]
   },
-  "selection": {
-    "highlight": {"type": "single"}
-  },
+  "selection": [{"name": "highlight", "select": "single"}],
   "mark": {"type": "rect", "strokeWidth": 2},
   "encoding": {
     "y": {

@@ -11,9 +11,10 @@
   },
   "hconcat": [{
     "mark": "point",
-    "selection": {
-      "brush": {"type": "interval", "encodings": ["x"]}
-    },
+    "selection": [{
+      "name": "brush",
+      "select": {"type": "interval", "encodings": ["x"]}
+    }],
     "encoding": {
       "x": {"field": "date", "timeUnit": "seconds"},
       "y": {"field": "price", "type": "quantitative"},

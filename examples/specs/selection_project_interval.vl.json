@@ -1,9 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/cars.json"},
-  "selection": {
-    "pts": {"type": "interval"}
-  },
+  "selection": [{"name": "pts", "select": "interval"}],
   "mark": "rect",
   "encoding": {
     "y": {"field": "Origin", "type": "ordinal"},

@@ -11,7 +11,12 @@
     {
       "layer": [
         {
-          "selection": {"brush": {"type": "multi", "encodings": ["x"]}},
+          "selection": [
+            {
+              "name": "brush",
+              "select": {"type": "multi", "encodings": ["x"]}
+            }
+          ],
           "mark": "bar",
           "encoding": {
             "x": {"field": "distance", "bin": {"maxbins": 20}},
@@ -33,7 +38,12 @@
     {
       "layer": [
         {
-          "selection": {"brush": {"type": "multi", "encodings": ["x"]}},
+          "selection": [
+            {
+              "name": "brush",
+              "select": {"type": "multi", "encodings": ["x"]}
+            }
+          ],
           "mark": "bar",
           "encoding": {
             "x": {"field": "delay", "bin": {"maxbins": 20}},
@@ -55,7 +65,12 @@
     {
       "layer": [
         {
-          "selection": {"brush": {"type": "multi", "encodings": ["x"]}},
+          "selection": [
+            {
+              "name": "brush",
+              "select": {"type": "multi", "encodings": ["x"]}
+            }
+          ],
           "mark": "bar",
           "encoding": {
             "x": {"field": "time", "bin": {"maxbins": 20}},

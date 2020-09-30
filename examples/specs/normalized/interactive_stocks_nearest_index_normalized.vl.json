@@ -13,14 +13,17 @@
       }
     },
     {
-      "selection": {
-        "index": {
-          "type": "single",
-          "on": "mousemove",
-          "encodings": ["x"],
-          "nearest": true
+      "selection": [
+        {
+          "name": "index",
+          "select": {
+            "type": "single",
+            "encodings": ["x"],
+            "on": "mousemove",
+            "nearest": true
+          }
         }
-      },
+      ],
       "mark": {"type": "point"},
       "encoding": {
         "x": {"field": "date", "type": "temporal"},
@@ -29,16 +32,12 @@
       }
     },
     {
-      "transform": [
-        {"filter": {"and": ["index.date", {"selection": "index"}]}}
-      ],
+      "transform": [{"filter": {"and": ["index.date", {"selection": "index"}]}}],
       "mark": "rule",
       "encoding": {"x": {"field": "date", "type": "temporal"}}
     },
     {
-      "transform": [
-        {"filter": {"and": ["index.date", {"selection": "index"}]}}
-      ],
+      "transform": [{"filter": {"and": ["index.date", {"selection": "index"}]}}],
       "mark": "text",
       "encoding": {
         "x": {"field": "date", "type": "temporal"},

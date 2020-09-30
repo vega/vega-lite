@@ -76,27 +76,38 @@
           }
         },
         {
-          "selection": {
-            "year": {
-              "type": "single",
-              "fields": ["year"],
-              "bind": {
-                "input": "range",
-                "min": 1955,
-                "max": 2005,
-                "step": 5,
-                "name": "Year"
+          "selection": [
+            {
+              "name": "year",
+              "value": {"year": 1955},
+              "select": {
+                "type": "single",
+                "fields": ["year"]
               },
-              "init": {"year": 1955}
+              "bind": {
+                "name": "Year",
+                "input": "range",
+                "min": 1955, "max": 2005, "step": 5
+              }
             },
-            "hovered": {
-              "type": "single",
-              "fields": ["country"],
-              "on": "mouseover",
-              "empty": "none"
+            {
+              "name": "hovered",
+              "select": {
+                "type": "single",
+                "fields": ["country"],
+                "on": "mouseover",
+                "empty": "none"
+              }
             },
-            "clicked": {"type": "multi", "fields": ["country"], "empty": "none"}
-          },
+            {
+              "name": "clicked",
+              "select": {
+                "type": "multi",
+                "fields": ["country"],
+                "empty": "none"
+              }
+            }
+          ],
           "transform": [{"filter": {"selection": "year"}}],
           "mark": {"type": "circle", "size": 100, "opacity": 0.9},
           "encoding": {"color": {"field": "name", "title": "Region"}}

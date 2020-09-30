@@ -28,9 +28,12 @@
     },
     {
       "mark": "rule",
-      "selection": {
-        "hover": {"type": "single", "on": "mouseover", "empty": "none"}
-      },
+      "selection": [
+        {
+          "name": "hover",
+          "select": {"type": "single", "on": "mouseover", "empty": "none"}
+        }
+      ],
       "encoding": {
         "x": {"timeUnit": "yearmonthdate", "field": "date"},
         "tooltip": [

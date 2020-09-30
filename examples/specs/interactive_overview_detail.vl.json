@@ -17,9 +17,10 @@
     "width": 480,
     "height": 60,
     "mark": "area",
-    "selection": {
-      "brush": {"type": "interval", "encodings": ["x"]}
-    },
+    "selection": [{
+      "name": "brush",
+      "select": {"type": "interval", "encodings": ["x"]}
+    }],
     "encoding": {
       "x": {
         "field": "date",

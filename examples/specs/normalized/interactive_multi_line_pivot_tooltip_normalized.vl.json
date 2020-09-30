@@ -42,16 +42,19 @@
           {"field": "MSFT", "type": "quantitative"}
         ]
       },
-      "selection": {
-        "hover": {
-          "type": "single",
-          "fields": ["date"],
-          "nearest": true,
-          "on": "mouseover",
-          "empty": "none",
-          "clear": "mouseout"
+      "selection": [
+        {
+          "name": "hover",
+          "select": {
+            "type": "single",
+            "fields": ["date"],
+            "on": "mouseover",
+            "nearest": true,
+            "clear": "mouseout",
+            "empty": "none"
+          }
         }
-      }
+      ]
     }
   ]
 }

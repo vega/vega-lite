@@ -6,11 +6,11 @@
     "column": ["Miles_per_Gallon", "Acceleration", "Horsepower"]
   },
   "spec": {
-    "selection": {
-      "grid": {
-        "type": "interval", "bind": "scales"
-      }
-    },
+    "selection": [{
+      "name": "grid",
+      "select": "interval",
+      "bind": "scales"
+    }],
     "mark": "point",
     "encoding": {
       "x": {"field": {"repeat": "column"}, "type": "quantitative"},

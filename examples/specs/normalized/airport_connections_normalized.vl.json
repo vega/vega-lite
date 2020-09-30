@@ -19,7 +19,7 @@
       "mark": {"type": "rule", "color": "#000", "opacity": 0.35},
       "data": {"url": "data/flights-airport.csv"},
       "transform": [
-        {"filter": {"selection": "single"}},
+        {"filter": {"selection": "org"}},
         {
           "lookup": "origin",
           "from": {
@@ -61,15 +61,18 @@
         },
         {"filter": "datum.state !== 'PR' && datum.state !== 'VI'"}
       ],
-      "selection": {
-        "single": {
-          "type": "single",
-          "on": "mouseover",
-          "nearest": true,
-          "fields": ["origin"],
-          "empty": "none"
+      "selection": [
+        {
+          "name": "org",
+          "select": {
+            "type": "single",
+            "fields": ["origin"],
+            "on": "mouseover",
+            "nearest": true,
+            "empty": "none"
+          }
         }
-      },
+      ],
       "encoding": {
         "latitude": {"field": "latitude"},
         "longitude": {"field": "longitude"},

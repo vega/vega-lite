@@ -15,15 +15,18 @@
           }
         },
         {
-          "selection": {
-            "label": {
-              "type": "single",
-              "nearest": true,
-              "on": "mouseover",
-              "encodings": ["x"],
-              "empty": "none"
+          "selection": [
+            {
+              "name": "label",
+              "select": {
+                "type": "single",
+                "encodings": ["x"],
+                "on": "mouseover",
+                "nearest": true,
+                "empty": "none"
+              }
             }
-          },
+          ],
           "mark": "point",
           "encoding": {
             "x": {"field": "date", "type": "temporal"},

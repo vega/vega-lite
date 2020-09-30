@@ -1,12 +1,10 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/cars.json"},
-  "selection": {
-    "pts": {
-      "type": "multi",
-      "fields": ["Cylinders", "Origin"]
-    }
-  },
+  "selection": [{
+    "name": "pts",
+    "select": {"type": "multi", "fields": ["Cylinders", "Origin"]}
+  }],
   "mark": "point",
   "encoding": {
     "x": {"field": "Horsepower", "type": "quantitative"},

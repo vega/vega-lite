@@ -2,12 +2,10 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "Select multiple points with the shift key.",
   "data": {"url": "data/cars.json"},
-  "selection": {
-    "paintbrush": {
-      "type": "multi", "on": "mouseover",
-      "nearest": true
-    }
-  },
+  "selection": [{
+    "name": "paintbrush",
+    "select": {"type": "multi", "on": "mouseover", "nearest": true}
+  }],
   "mark": "point",
   "encoding": {
     "x": {"field": "Horsepower", "type": "quantitative"},

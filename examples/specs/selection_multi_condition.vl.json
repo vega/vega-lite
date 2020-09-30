@@ -2,15 +2,16 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "Drag out a rectangular brush to highlight points.",
   "data": {"url": "data/cars.json"},
-  "selection": {
-    "brush": {
-      "type": "interval"
-    },
-    "hoverbrush": {
-      "type": "multi", "on": "mouseover",
-      "nearest": true
+  "selection": [
+    {"name": "brush", "select": "interval"},
+    {
+      "name": "hoverbrush",
+      "select": {
+        "type": "multi",
+        "on": "mouseover", "nearest": true
+      }
     }
-  },
+  ],
   "mark": "point",
   "encoding": {
     "x": {"field": "Horsepower", "type": "quantitative"},

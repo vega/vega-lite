@@ -51,9 +51,10 @@
       "width": 330,
       "height": 120,
       "mark": "bar",
-      "selection": {
-        "pts": {"type": "single", "encodings": ["x"]}
-      },
+      "selection": [{
+        "name": "pts",
+        "select": {"type": "single", "encodings": ["x"]}
+      }],
       "encoding": {
         "x": {"field": "Major Genre", "axis": {"labelAngle": -40}},
         "y": {"aggregate": "count"},

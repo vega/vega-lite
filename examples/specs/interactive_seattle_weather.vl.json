@@ -42,7 +42,10 @@
       "width": 600,
       "height": 300,
       "mark": "point",
-      "selection": {"brush": {"encodings": ["x"], "type": "interval"}},
+      "selection": [{
+        "name": "brush",
+        "select": {"type": "interval", "encodings": ["x"]}
+      }],
       "transform": [{"filter": {"selection": "click"}}]
     },
     {
@@ -63,7 +66,10 @@
       },
       "width": 600,
       "mark": "bar",
-      "selection": {"click": {"encodings": ["color"], "type": "multi"}},
+      "selection": [{
+        "name": "click",
+        "select": {"type": "multi", "encodings": ["color"]}
+      }],
       "transform": [{"filter": {"selection": "brush"}}]
     }
   ]

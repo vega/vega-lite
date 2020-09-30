@@ -6,11 +6,7 @@
     "window": [{"op": "row_number", "as": "row_number"}]
   }],
   "hconcat": [{
-    "selection": {
-      "brush": {
-        "type": "interval"
-      }
-    },
+    "selection": [{"name": "brush", "select": "interval"}],
     "mark": "point",
     "encoding": {
       "x": {"field": "Horsepower", "type": "quantitative"},

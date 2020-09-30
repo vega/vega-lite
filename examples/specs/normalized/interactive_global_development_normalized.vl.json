@@ -6,10 +6,7 @@
   "height": 500,
   "layer": [
     {
-      "transform": [
-        {"filter": {"field": "country", "equal": "Afghanistan"}},
-        {"filter": {"selection": "year"}}
-      ],
+      "transform": [{"filter": {"field": "country", "equal": "Afghanistan"}}, {"filter": {"selection": "year"}}],
       "mark": {
         "type": "text",
         "fontSize": 100,
@@ -74,27 +71,33 @@
           }
         },
         {
-          "selection": {
-            "year": {
-              "type": "single",
-              "fields": ["year"],
+          "selection": [
+            {
+              "name": "year",
+              "value": {"year": 1955},
+              "select": {"type": "single", "fields": ["year"]},
               "bind": {
+                "name": "Year",
                 "input": "range",
                 "min": 1955,
                 "max": 2005,
-                "step": 5,
-                "name": "Year"
-              },
-              "init": {"year": 1955}
+                "step": 5
+              }
             },
-            "hovered": {
-              "type": "single",
-              "fields": ["country"],
-              "on": "mouseover",
-              "empty": "none"
+            {
+              "name": "hovered",
+              "select": {
+                "type": "single",
+                "fields": ["country"],
+                "on": "mouseover",
+                "empty": "none"
+              }
             },
-            "clicked": {"type": "multi", "fields": ["country"], "empty": "none"}
-          },
+            {
+              "name": "clicked",
+              "select": {"type": "multi", "fields": ["country"], "empty": "none"}
+            }
+          ],
           "transform": [{"filter": {"selection": "year"}}],
           "mark": {"type": "circle", "size": 100, "opacity": 0.9},
           "encoding": {
@@ -117,10 +120,7 @@
           "transform": [
             {
               "filter": {
-                "and": [
-                  {"selection": "year"},
-                  {"or": [{"selection": "clicked"}, {"selection": "hovered"}]}
-                ]
+                "and": [{"selection": "year"}, {"or": [{"selection": "clicked"}, {"selection": "hovered"}]}]
               }
             }
           ],
@@ -148,10 +148,7 @@
           }
         },
         {
-          "transform": [
-            {"filter": {"selection": "hovered"}},
-            {"filter": {"not": {"selection": "year"}}}
-          ],
+          "transform": [{"filter": {"selection": "hovered"}}, {"filter": {"not": {"selection": "year"}}}],
           "layer": [
             {
               "mark": {
