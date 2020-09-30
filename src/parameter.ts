@@ -2,7 +2,7 @@ import {Binding, Expr, InitSignal, NewSignal} from 'vega-typings/types';
 
 export interface Parameter {
   /**
-   * Required. A unique name for the parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or “$”, or “_”) and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
+   * Required. A unique name for the parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
    */
   name: string;
 

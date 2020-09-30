@@ -241,6 +241,11 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
 
 export interface BaseSelectionDef<T extends 'single' | 'multi' | 'interval'> {
   /**
+   * Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
+   */
+  name: string;
+
+  /**
    * Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:
    *
    * - `"single"` -- to select a single discrete data value on `click`.
