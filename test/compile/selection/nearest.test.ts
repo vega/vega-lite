@@ -16,19 +16,52 @@ function getModel(markType: any) {
     }
   });
   model.parseScale();
-  model.component.selection = parseUnitSelection(model, {
-    one: {type: 'single', nearest: true},
-    two: {type: 'multi', nearest: true},
-    three: {type: 'interval'},
-    four: {type: 'single', nearest: false},
-    five: {type: 'multi'},
-    six: {type: 'multi', nearest: null},
-    seven: {type: 'single', nearest: true, encodings: ['x']},
-    eight: {type: 'single', nearest: true, encodings: ['y']},
-    nine: {type: 'single', nearest: true, encodings: ['color']},
-    ten: {type: 'single', nearest: true, on: 'mouseover'},
-    eleven: {type: 'multi', nearest: true, on: 'mouseover, dblclick'}
-  });
+  model.component.selection = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: {type: 'single', nearest: true}
+    },
+    {
+      name: 'two',
+      select: {type: 'multi', nearest: true}
+    },
+    {
+      name: 'three',
+      select: {type: 'interval'}
+    },
+    {
+      name: 'four',
+      select: {type: 'single', nearest: false}
+    },
+    {
+      name: 'five',
+      select: {type: 'multi'}
+    },
+    {
+      name: 'six',
+      select: {type: 'multi', nearest: null}
+    },
+    {
+      name: 'seven',
+      select: {type: 'single', nearest: true, encodings: ['x']}
+    },
+    {
+      name: 'eight',
+      select: {type: 'single', nearest: true, encodings: ['y']}
+    },
+    {
+      name: 'nine',
+      select: {type: 'single', nearest: true, encodings: ['color']}
+    },
+    {
+      name: 'ten',
+      select: {type: 'single', nearest: true, on: 'mouseover'}
+    },
+    {
+      name: 'eleven',
+      select: {type: 'multi', nearest: true, on: 'mouseover, dblclick'}
+    }
+  ]);
   model.parseMarkGroup();
 
   return model;

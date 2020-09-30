@@ -249,7 +249,7 @@ describe('Mark: Point', () => {
       ...pointXY({
         color: {condition: {selection: 'test', field: 'yield', type: 'quantitative'}}
       }),
-      selection: {test: {type: 'single'}}
+      selection: [{name: 'test', select: 'single'}]
     });
     model.parseSelections();
     const props = point.encodeEntry(model);

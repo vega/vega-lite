@@ -19,11 +19,23 @@ describe('Interactive Legends', () => {
       });
 
       m.parseScale();
-      const selCmpts = (m.component.selection = parseUnitSelection(m, {
-        three: {type: 'multi', fields: ['Origin', 'Cylinders'], bind: 'legend'},
-        five: {type: 'single', encodings: ['color', 'size'], bind: 'legend'},
-        six: {type: 'multi', bind: 'legend'}
-      }));
+      const selCmpts = (m.component.selection = parseUnitSelection(m, [
+        {
+          name: 'three',
+          select: {type: 'multi', fields: ['Origin', 'Cylinders']},
+          bind: 'legend'
+        },
+        {
+          name: 'five',
+          select: {type: 'single', encodings: ['color', 'size']},
+          bind: 'legend'
+        },
+        {
+          name: 'six',
+          select: 'multi',
+          bind: 'legend'
+        }
+      ]));
       m.parseLegends();
       expect(legends.has(selCmpts['three'])).toBeFalsy();
       expect(localLogger.warns[0]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
@@ -47,23 +59,47 @@ describe('Interactive Legends', () => {
   });
 
   model.parseScale();
-  const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'single', fields: ['Origin'], bind: 'legend'},
-    two: {type: 'multi', fields: ['Origin'], bind: {legend: 'dblclick, mouseover'}},
-    four: {type: 'single', encodings: ['color'], bind: 'legend'},
-    seven: {type: 'multi', fields: ['Origin'], bind: {legend: 'mouseover'}, on: 'click'},
-    eight: {type: 'multi', encodings: ['color'], bind: {legend: 'mouseover'}, on: 'click', clear: 'dblclick'},
-    nine: {
-      type: 'single',
+  const selCmpts = (model.component.selection = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: {type: 'single', fields: ['Origin']},
+      bind: 'legend'
+    },
+    {
+      name: 'two',
+      select: {type: 'multi', fields: ['Origin']},
+      bind: {legend: 'dblclick, mouseover'}
+    },
+    {
+      name: 'four',
+      select: {type: 'single', encodings: ['color']},
+      bind: 'legend'
+    },
+    {
+      name: 'seven',
+      select: {type: 'multi', fields: ['Origin'], on: 'click'},
+      bind: {legend: 'mouseover'}
+    },
+    {
+      name: 'eight',
+      select: {type: 'multi', encodings: ['color'], on: 'click', clear: 'dblclick'},
+      bind: {legend: 'mouseover'}
+    },
+    {
+      name: 'nine',
+      select: 'single',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    ten: {
-      type: 'multi',
-      fields: ['Origin'],
-      bind: 'legend',
-      init: [{Origin: 'USA'}, {Origin: 'Japan'}]
+    {
+      name: 'ten',
+      value: [{Origin: 'USA'}, {Origin: 'Japan'}],
+      select: {
+        type: 'multi',
+        fields: ['Origin']
+      },
+      bind: 'legend'
     }
-  }));
+  ]));
   model.parseLegends();
 
   it('identifies transform invocation', () => {

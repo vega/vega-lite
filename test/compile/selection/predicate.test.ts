@@ -30,12 +30,12 @@ describe('Selection Predicate', () => {
 
   model.parseScale();
 
-  model.component.selection = parseUnitSelection(model, {
-    one: {type: 'single'},
-    two: {type: 'multi', resolve: 'union'},
-    'thr-ee': {type: 'interval', resolve: 'intersect'},
-    four: {type: 'single', empty: 'none'}
-  });
+  model.component.selection = parseUnitSelection(model, [
+    {name: 'one', select: 'single'},
+    {name: 'two', select: {type: 'multi', resolve: 'union'}},
+    {name: 'thr-ee', select: {type: 'interval', resolve: 'intersect'}},
+    {name: 'four', select: {type: 'single', empty: 'none'}}
+  ]);
 
   it('generates the predicate expression', () => {
     expect(predicate(model, 'one')).toBe('!(length(data("one_store"))) || (vlSelectionTest("one_store", datum))');

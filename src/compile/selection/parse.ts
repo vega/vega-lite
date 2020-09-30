@@ -16,11 +16,13 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionDef[]) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
   const selectionConfig = model.config.selection;
 
-  for (const def of selDefs ?? []) {
+  if (!selDefs || !selDefs.length) return selCmpts;
+
+  for (const def of selDefs) {
     const name = varName(def.name);
     const selDef = def.select;
     const type = isString(selDef) ? selDef : selDef.type;
-    const defaults: BaseSelectionConfig = isObject(selDef) ? selDef : {};
+    const defaults: BaseSelectionConfig = isObject(selDef) ? duplicate(selDef) : {};
 
     // Set default values from config if a property hasn't been specified,
     // or if it is true. E.g., "translate": true should use the default

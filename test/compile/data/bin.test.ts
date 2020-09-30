@@ -35,7 +35,7 @@ function makeMovieExample(t: BinTransform) {
 function makeMovieExampleWithSelection(t: BinTransform) {
   return parseUnitModelWithScaleAndSelection({
     data: {url: 'data/movies.json'},
-    selection: {foo: {type: 'interval'}},
+    selection: [{name: 'foo', select: {type: 'interval'}}],
     mark: 'circle',
     transform: [t],
     encoding: {
@@ -109,7 +109,7 @@ describe('compile/data/bin', () => {
 
     it('should add bin transform and correctly apply bin for binned field with selection extent', () => {
       const model = parseUnitModelWithScaleAndSelection({
-        selection: {foo: {type: 'interval', fields: ['Acceleration']}},
+        selection: [{name: 'foo', select: {type: 'interval', fields: ['Acceleration']}}],
         mark: 'point',
         encoding: {
           x: {
@@ -147,7 +147,7 @@ describe('compile/data/bin', () => {
 
     it('should add bin transform and correctly apply bin for binned field with selection with field extent', () => {
       const model = parseUnitModelWithScaleAndSelection({
-        selection: {foo: {type: 'interval', fields: ['Acceleration']}},
+        selection: [{name: 'foo', select: {type: 'interval', fields: ['Acceleration']}}],
         mark: 'point',
         encoding: {
           y: {

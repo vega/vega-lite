@@ -19,11 +19,11 @@ describe('Selection', () => {
   model.parseScale();
 
   it('parses default selection definitions', () => {
-    const component = parseUnitSelection(model, {
-      one: {type: 'single'},
-      two: {type: 'multi'},
-      three: {type: 'interval'}
-    });
+    const component = parseUnitSelection(model, [
+      {name: 'one', select: 'single'},
+      {name: 'two', select: 'multi'},
+      {name: 'three', select: {type: 'interval'}}
+    ]);
 
     expect(keys(component)).toEqual(['one', 'two', 'three']);
 
@@ -63,26 +63,35 @@ describe('Selection', () => {
   });
 
   it('supports inline default overrides', () => {
-    const component = parseUnitSelection(model, {
-      one: {
-        type: 'single',
-        on: 'dblclick',
-        fields: ['Cylinders']
+    const component = parseUnitSelection(model, [
+      {
+        name: 'one',
+        select: {
+          type: 'single',
+          on: 'dblclick',
+          fields: ['Cylinders']
+        }
       },
-      two: {
-        type: 'multi',
-        on: 'mouseover',
-        toggle: 'event.ctrlKey',
-        encodings: ['color']
+      {
+        name: 'two',
+        select: {
+          type: 'multi',
+          on: 'mouseover',
+          toggle: 'event.ctrlKey',
+          encodings: ['color']
+        }
       },
-      three: {
-        type: 'interval',
-        on: '[mousedown[!event.shiftKey], mouseup] > mousemove',
-        encodings: ['y'],
-        translate: false,
-        zoom: 'wheel[event.altKey]'
+      {
+        name: 'three',
+        select: {
+          type: 'interval',
+          on: '[mousedown[!event.shiftKey], mouseup] > mousemove',
+          encodings: ['y'],
+          translate: false,
+          zoom: 'wheel[event.altKey]'
+        }
       }
-    });
+    ]);
 
     expect(keys(component)).toEqual(['one', 'two', 'three']);
 
@@ -133,11 +142,11 @@ describe('Selection', () => {
       }
     };
 
-    const component = parseUnitSelection(model, {
-      one: {type: 'single'},
-      two: {type: 'multi'},
-      three: {type: 'interval'}
-    });
+    const component = parseUnitSelection(model, [
+      {name: 'one', select: 'single'},
+      {name: 'two', select: 'multi'},
+      {name: 'three', select: {type: 'interval'}}
+    ]);
 
     expect(keys(component)).toEqual(['one', 'two', 'three']);
 
@@ -189,9 +198,7 @@ describe('Selection', () => {
 
       m.parseScale();
 
-      let c = parseUnitSelection(m, {
-        one: {type: 'interval', encodings: ['x']}
-      });
+      let c = parseUnitSelection(m, [{name: 'one', select: {type: 'interval', encodings: ['x']}}]);
 
       expect(c['one'].project.items).toEqual(
         expect.arrayContaining([
@@ -209,9 +216,7 @@ describe('Selection', () => {
 
       m.parseScale();
 
-      c = parseUnitSelection(m, {
-        one: {type: 'interval', encodings: ['x']}
-      });
+      c = parseUnitSelection(m, [{name: 'one', select: {type: 'interval', encodings: ['x']}}]);
 
       expect(c['one'].project.items).toEqual(
         expect.arrayContaining([
@@ -231,9 +236,7 @@ describe('Selection', () => {
 
       m.parseScale();
 
-      let c = parseUnitSelection(m, {
-        one: {type: 'single', encodings: ['x']}
-      });
+      let c = parseUnitSelection(m, [{name: 'one', select: {type: 'single', encodings: ['x']}}]);
 
       expect(c['one'].project.items).toEqual(
         expect.arrayContaining([
@@ -251,9 +254,12 @@ describe('Selection', () => {
 
       m.parseScale();
 
-      c = parseUnitSelection(m, {
-        one: {type: 'multi', encodings: ['x']}
-      });
+      c = parseUnitSelection(m, [
+        {
+          name: 'one',
+          select: {type: 'multi', encodings: ['x']}
+        }
+      ]);
 
       expect(c['one'].project.items).toEqual(
         expect.arrayContaining([
@@ -263,11 +269,23 @@ describe('Selection', () => {
     });
 
     it('infers from initial values', () => {
-      const component = parseUnitSelection(model, {
-        one: {type: 'single', init: {Origin: 5}},
-        two: {type: 'multi', init: [{color: 10}]},
-        three: {type: 'interval', init: {x: [10, 100]}}
-      });
+      const component = parseUnitSelection(model, [
+        {
+          name: 'one',
+          select: 'single',
+          value: {Origin: 5}
+        },
+        {
+          name: 'two',
+          select: 'multi',
+          value: [{color: 10}]
+        },
+        {
+          name: 'three',
+          select: {type: 'interval'},
+          value: {x: [10, 100]}
+        }
+      ]);
 
       expect(component['one'].project.items).toEqual(
         expect.arrayContaining([{field: 'Origin', type: 'E', signals: {data: 'one_Origin'}}])
@@ -287,9 +305,12 @@ describe('Selection', () => {
     });
 
     it('escapes flattened fields', () => {
-      const component = parseUnitSelection(model, {
-        one: {type: 'single', fields: ['nested.a', 'nested.b.aa']}
-      });
+      const component = parseUnitSelection(model, [
+        {
+          name: 'one',
+          select: {type: 'single', fields: ['nested.a', 'nested.b.aa']}
+        }
+      ]);
 
       expect(component['one'].project.items).toEqual([
         {field: 'nested.a', type: 'E', signals: {data: 'one_nested_a'}},
@@ -313,15 +334,18 @@ describe('Selection', () => {
       data: {url: 'data/stocks.csv'},
       layer: [
         {
-          selection: {
-            index: {
-              type: 'single',
-              on: 'mouseover',
-              encodings: ['x'],
-              nearest: true,
-              init: {x: {year: 2005, month: 1, date: 1}}
+          selection: [
+            {
+              name: 'index',
+              value: {x: {year: 2005, month: 1, date: 1}},
+              select: {
+                type: 'single',
+                on: 'mouseover',
+                encodings: ['x'],
+                nearest: true
+              }
             }
-          },
+          ],
           mark: 'point',
           encoding: {
             x: {field: 'price', type: 'quantitative', axis: null}
