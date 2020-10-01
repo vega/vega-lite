@@ -47,6 +47,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Vega node for Node-RED Dashboard](https://flows.nodered.org/node/node-red-node-ui-vega) supports Vega and Vega-Lite visualizations on the [Node-RED](https://nodered.org/) flow-based programming tool.
 - [hvega](https://hackage.haskell.org/package/hvega) generates Vega-Lite specifications in Haskell and is based on Elm-Vega.
 - [Vega-Lite "bindings" for Rust](https://github.com/procyon-rs/vega_lite_3.rs), create vega-lite v3, or [v4](https://github.com/procyon-rs/vega_lite_4.rs), vizualizations in Rust A high-level like Altair in under construction at [procyon](https://github.com/procyon-rs/procyon)
+- [Vega.rb](https://github.com/ankane/vega) brings Vega and Vega-Lite to Ruby.
 
 ## Programming / Data Science Environment that supports Vega-Lite
 
