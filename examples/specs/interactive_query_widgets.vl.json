@@ -4,7 +4,7 @@
   "data": {"url": "data/cars.json"},
   "transform": [{"calculate": "year(datum.Year)", "as": "Year"}],
   "layer": [{
-    "selection": [{
+    "params": [{
       "name": "CylYr",
       "value": {"Cylinders": 4, "Year": 1977},
       "select": {"type": "single", "fields": ["Cylinders", "Year"]},

@@ -7,7 +7,7 @@
   "spec": {
     "data": {"url": "data/cars.json"},
     "mark": "point",
-    "selection": [
+    "params": [
       {
         "name": "brush",
         "select": {

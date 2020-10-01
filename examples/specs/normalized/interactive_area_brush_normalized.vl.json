@@ -3,9 +3,7 @@
   "data": {"url": "data/unemployment-across-industries.json"},
   "layer": [
     {
-      "selection": [
-        {"name": "brush", "select": {"type": "interval", "encodings": ["x"]}}
-      ],
+      "params": [{"name": "brush", "select": {"type": "interval", "encodings": ["x"]}}],
       "mark": "area",
       "encoding": {
         "x": {"timeUnit": "yearmonth", "field": "date"},

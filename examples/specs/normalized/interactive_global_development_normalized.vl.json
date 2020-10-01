@@ -6,10 +6,7 @@
   "height": 500,
   "layer": [
     {
-      "transform": [
-        {"filter": {"field": "country", "equal": "Afghanistan"}},
-        {"filter": {"selection": "year"}}
-      ],
+      "transform": [{"filter": {"field": "country", "equal": "Afghanistan"}}, {"filter": {"selection": "year"}}],
       "mark": {
         "type": "text",
         "fontSize": 100,
@@ -74,7 +71,7 @@
           }
         },
         {
-          "selection": [
+          "params": [
             {
               "name": "year",
               "value": {"year": 1955},
@@ -127,10 +124,7 @@
           "transform": [
             {
               "filter": {
-                "and": [
-                  {"selection": "year"},
-                  {"or": [{"selection": "clicked"}, {"selection": "hovered"}]}
-                ]
+                "and": [{"selection": "year"}, {"or": [{"selection": "clicked"}, {"selection": "hovered"}]}]
               }
             }
           ],
@@ -158,10 +152,7 @@
           }
         },
         {
-          "transform": [
-            {"filter": {"selection": "hovered"}},
-            {"filter": {"not": {"selection": "year"}}}
-          ],
+          "transform": [{"filter": {"selection": "hovered"}}, {"filter": {"not": {"selection": "year"}}}],
           "layer": [
             {
               "mark": {

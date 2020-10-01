@@ -6,7 +6,7 @@
       "y": {"aggregate": "sum", "field": "count"}
   },
   "layer": [{
-    "selection": [{
+    "params": [{
       "name": "brush",
       "select": {"type": "interval", "encodings": ["x"]}
     }],

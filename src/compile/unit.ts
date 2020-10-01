@@ -121,7 +121,7 @@ export class UnitModel extends ModelWithField {
     this.specifiedProjection = spec.projection;
 
     // Selections will be initialized upon parse.
-    this.selection = spec.selection;
+    this.selection = (spec.params ?? []).filter(p => !!p.select);
   }
 
   public get hasProjection(): boolean {

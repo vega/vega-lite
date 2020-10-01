@@ -308,7 +308,7 @@
     {
       "mark": "bar",
       "height": 700,
-      "selection": [{
+      "params": [{
         "name": "brush",
         "select": {"type": "interval", "encodings": ["y"]}
       }],
@@ -331,7 +331,7 @@
     {
       "mark": "bar",
       "height": 700,
-      "selection": [{
+      "params": [{
         "name": "brush",
         "select": {"type": "interval", "encodings": ["y"]}
       }],
@@ -355,7 +355,7 @@
       "mark": "point",
       "width": 260,
       "height": 260,
-      "selection": [{"name": "brush", "select": "interval"}],
+      "params": [{"name": "brush", "select": "interval"}],
       "encoding": {
         "y": {
           "field": "Population_ages_15_64_of_total",

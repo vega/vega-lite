@@ -5,7 +5,7 @@
   "data": {
     "url": "data/gapminder-health-income.csv"
   },
-  "selection": [{
+  "params": [{
     "name": "view",
     "select": "interval",
     "bind": "scales"

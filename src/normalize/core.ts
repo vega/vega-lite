@@ -232,17 +232,17 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     );
   }
 
-  private mapFacetedUnit(spec: FacetedUnitSpec, params: NormalizerParams): NormalizedFacetSpec {
+  private mapFacetedUnit(spec: FacetedUnitSpec, normParams: NormalizerParams): NormalizedFacetSpec {
     // New encoding in the inside spec should not contain row / column
     // as row/column should be moved to facet
     const {row, column, facet, ...encoding} = spec.encoding;
 
     // Mark and encoding should be moved into the inner spec
-    const {mark, width, projection, height, view, selection, encoding: _, ...outerSpec} = spec;
+    const {mark, width, projection, height, view, params, encoding: _, ...outerSpec} = spec;
 
-    const {facetMapping, layout} = this.getFacetMappingAndLayout({row, column, facet}, params);
+    const {facetMapping, layout} = this.getFacetMappingAndLayout({row, column, facet}, normParams);
 
-    const newEncoding = replaceRepeaterInEncoding(encoding, params.repeater);
+    const newEncoding = replaceRepeaterInEncoding(encoding, normParams.repeater);
 
     return this.mapFacet(
       {
@@ -258,10 +258,10 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
           ...(projection ? {projection} : {}),
           mark,
           encoding: newEncoding,
-          ...(selection ? {selection} : {})
+          ...(params ? {params} : {})
         }
       },
-      params
+      normParams
     );
   }
 

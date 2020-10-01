@@ -190,7 +190,7 @@ describe('compile/data/formatparse', () => {
 
     it('should add flatten for nested fields in selection', () => {
       const model = parseUnitModel({
-        selection: [{name: 'foo', select: {type: 'single', fields: ['foo.bar', 'foo.baz']}}],
+        params: [{name: 'foo', select: {type: 'single', fields: ['foo.bar', 'foo.baz']}}],
         mark: 'point',
         encoding: {
           x: {field: 'bar', type: 'quantitative'},

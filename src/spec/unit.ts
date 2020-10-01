@@ -37,7 +37,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
   /**
    * An array of interactive selections, such as discrete points and continuous intervals.
    */
-  selection?: SelectionDef[];
+  params?: SelectionDef[];
 }
 
 /**

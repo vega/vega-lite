@@ -61,7 +61,7 @@
         },
         {"filter": "datum.state !== 'PR' && datum.state !== 'VI'"}
       ],
-      "selection": [
+      "params": [
         {
           "name": "org",
           "select": {

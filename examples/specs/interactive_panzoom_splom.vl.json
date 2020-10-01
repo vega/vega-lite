@@ -6,7 +6,7 @@
     "column": ["Miles_per_Gallon", "Acceleration", "Horsepower"]
   },
   "spec": {
-    "selection": [{
+    "params": [{
       "name": "grid",
       "select": "interval",
       "bind": "scales"

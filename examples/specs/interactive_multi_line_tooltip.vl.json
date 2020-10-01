@@ -21,7 +21,7 @@
     }
   }, {
     "mark": "rule",
-    "selection": [{
+    "params": [{
       "name": "hover",
       "select": {"type": "single", "on": "mouseover", "empty": "none"}
     }],
