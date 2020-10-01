@@ -254,6 +254,14 @@ export type IntervalSelection = BaseSelectionDef<'interval'>;
 
 export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
 
+export type TopLevelSelectionDef = SelectionDef & {
+  /**
+   * By default, top-level selections are applied to every view in the visualization.
+   * If this property is specified, selections will only be applied to views with the given names.
+   */
+  views?: string[];
+};
+
 export type SelectionExtent =
   | {
       /**
@@ -337,4 +345,8 @@ export function isLegendBinding(bind: any): bind is LegendBinding {
 
 export function isLegendStreamBinding(bind: any): bind is LegendStreamBinding {
   return isLegendBinding(bind) && isObject(bind);
+}
+
+export function isParameterSelection(param: any): param is SelectionDef {
+  return !!param['select'];
 }

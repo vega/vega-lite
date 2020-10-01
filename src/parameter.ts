@@ -1,4 +1,5 @@
 import {Binding, Expr, InitSignal, NewSignal} from 'vega-typings/types';
+import {isParameterSelection, TopLevelSelectionDef} from './selection';
 
 export interface Parameter {
   /**
@@ -29,9 +30,10 @@ export interface Parameter {
   bind?: Binding;
 }
 
-export function assembleParameterSignals(params: Parameter[]) {
+export function assembleParameterSignals(params: (Parameter | TopLevelSelectionDef)[]) {
   const signals: (NewSignal | InitSignal)[] = [];
   for (const param of params || []) {
+    if (isParameterSelection(param)) continue;
     const {expr, bind, ...rest} = param;
 
     if (bind && expr) {
