@@ -12,10 +12,7 @@
       "layer": [
         {
           "selection": [
-            {
-              "name": "brush",
-              "select": {"type": "multi", "encodings": ["x"]}
-            }
+            {"name": "brush", "select": {"type": "multi", "encodings": ["x"]}}
           ],
           "mark": "bar",
           "encoding": {
@@ -39,10 +36,7 @@
       "layer": [
         {
           "selection": [
-            {
-              "name": "brush",
-              "select": {"type": "multi", "encodings": ["x"]}
-            }
+            {"name": "brush", "select": {"type": "multi", "encodings": ["x"]}}
           ],
           "mark": "bar",
           "encoding": {
@@ -66,10 +60,7 @@
       "layer": [
         {
           "selection": [
-            {
-              "name": "brush",
-              "select": {"type": "multi", "encodings": ["x"]}
-            }
+            {"name": "brush", "select": {"type": "multi", "encodings": ["x"]}}
           ],
           "mark": "bar",
           "encoding": {

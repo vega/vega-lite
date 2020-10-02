@@ -21,8 +21,8 @@
               "select": {
                 "type": "single",
                 "encodings": ["x"],
-                "on": "mouseover",
                 "nearest": true,
+                "on": "mouseover",
                 "empty": "none"
               }
             }

@@ -48,10 +48,10 @@
           "select": {
             "type": "single",
             "fields": ["date"],
-            "on": "mouseover",
             "nearest": true,
-            "clear": "mouseout",
-            "empty": "none"
+            "on": "mouseover",
+            "empty": "none",
+            "clear": "mouseout"
           }
         }
       ]

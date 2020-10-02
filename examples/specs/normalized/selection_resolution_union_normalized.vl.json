@@ -6,10 +6,7 @@
   "concat": [
     {
       "selection": [
-        {
-          "name": "brush",
-          "select": {"type": "interval", "resolve": "union"}
-        }
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
       "encoding": {
@@ -28,10 +25,7 @@
     },
     {
       "selection": [
-        {
-          "name": "brush",
-          "select": {"type": "interval", "resolve": "union"}
-        }
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
       "encoding": {
@@ -50,10 +44,7 @@
     },
     {
       "selection": [
-        {
-          "name": "brush",
-          "select": {"type": "interval", "resolve": "union"}
-        }
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
       "encoding": {
@@ -72,10 +63,7 @@
     },
     {
       "selection": [
-        {
-          "name": "brush",
-          "select": {"type": "interval", "resolve": "union"}
-        }
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
       "encoding": {
@@ -94,10 +82,7 @@
     },
     {
       "selection": [
-        {
-          "name": "brush",
-          "select": {"type": "interval", "resolve": "union"}
-        }
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
       "encoding": {
@@ -116,10 +101,7 @@
     },
     {
       "selection": [
-        {
-          "name": "brush",
-          "select": {"type": "interval", "resolve": "union"}
-        }
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
       "encoding": {
@@ -138,10 +120,7 @@
     },
     {
       "selection": [
-        {
-          "name": "brush",
-          "select": {"type": "interval", "resolve": "union"}
-        }
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
       "encoding": {
@@ -160,10 +139,7 @@
     },
     {
       "selection": [
-        {
-          "name": "brush",
-          "select": {"type": "interval", "resolve": "union"}
-        }
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
       "encoding": {
@@ -182,10 +158,7 @@
     },
     {
       "selection": [
-        {
-          "name": "brush",
-          "select": {"type": "interval", "resolve": "union"}
-        }
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
       "encoding": {

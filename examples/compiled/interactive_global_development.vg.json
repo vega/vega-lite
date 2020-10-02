@@ -118,11 +118,11 @@
       "name": "year_year",
       "init": "1955",
       "bind": {
+        "name": "Year",
         "input": "range",
         "min": 1955,
         "max": 2005,
-        "step": 5,
-        "name": "Year"
+        "step": 5
       }
     },
     {"name": "year", "update": "vlSelectionResolve(\"year_store\", \"union\")"},
