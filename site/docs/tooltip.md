@@ -54,7 +54,7 @@ To give the fields in the tooltip a label that is different from the field name,
 
 <div class="vl-example" data-name="bar_tooltip_title"></div>
 
-Note that encoding a field without an [aggregation](aggregate.html) as a tooltip will result in the field being treated as a group by field. 
+Note that encoding a field without an [aggregation](aggregate.html) as a tooltip will result in the field being treated as a group by field.
 
 ## Disable tooltips
 
