@@ -10,6 +10,7 @@ import {FilterNode} from './filter';
 import {ParseNode} from './formatparse';
 import {IdentifierNode} from './identifier';
 import {BottomUpOptimizer, isDataSourceNode, Optimizer, TopDownOptimizer} from './optimizer';
+import {SourceNode} from './source';
 import {TimeUnitNode} from './timeunit';
 
 /**
@@ -219,6 +220,8 @@ export class RemoveUnusedSubtrees extends BottomUpOptimizer {
   public run(node: DataFlowNode) {
     if (node instanceof OutputNode || node.numChildren() > 0 || node instanceof FacetNode) {
       // no need to continue with parent because it is output node or will have children (there was a fork)
+    } else if (node instanceof SourceNode) {
+      // ignore empty unused sources as they will be removed in optimizationDataflowHelper
     } else {
       this.setModified();
       node.remove();
