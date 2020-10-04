@@ -56,3 +56,4 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 - [Top-K Plot with Others](https://beta.observablehq.com/@manzt/top-k-plot-with-others-vega-lite-example) by @manzt
 - [Trafford Data Lab's Vega-Lite graphics companion](https://www.trafforddatalab.io/interactive_graphics_companion/) by @trafforddatalab
 - [International Flight Map](https://observablehq.com/@alhenry/international-flight-map) by [@alhenry](https://twitter.com/maha_albert)
+- [BBC Visual and Data Journalism cookbook port to Vega-Lite](https://github.com/aezarebski/vegacookbook) by @aezarebski
