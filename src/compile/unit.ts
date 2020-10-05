@@ -32,7 +32,7 @@ import {LegendInternal} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {Domain, Scale} from '../scale';
-import {SelectionDef} from '../selection';
+import {isParameterSelection, SelectionDef} from '../selection';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {isFrameMixins} from '../spec/base';
 import {stack, StackProperties} from '../stack';
@@ -121,7 +121,7 @@ export class UnitModel extends ModelWithField {
     this.specifiedProjection = spec.projection;
 
     // Selections will be initialized upon parse.
-    this.selection = (spec.params ?? []).filter(p => !!p.select);
+    this.selection = (spec.params ?? []).filter(p => isParameterSelection(p)) as SelectionDef[];
   }
 
   public get hasProjection(): boolean {
