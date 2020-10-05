@@ -1,15 +1,14 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
-import {forEachSelection, SelectionComponent, STORE} from '.';
+import {selectionCompilers, SelectionComponent, STORE} from '.';
 import {warn} from '../../log';
 import {LogicalComposition} from '../../logical';
 import {BaseSelectionConfig, SelectionDef, SelectionExtent} from '../../selection';
-import {Dict, duplicate, logicalExpr, varName} from '../../util';
+import {Dict, duplicate, entries, logicalExpr, varName} from '../../util';
 import {DataFlowNode, OutputNode} from '../data/dataflow';
 import {FilterNode} from '../data/filter';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
-import {forEachTransform} from './transforms/transforms';
 import {DataSourceType} from '../../data';
 
 export function parseUnitSelection(model: UnitModel, selDefs: SelectionDef[]) {
@@ -48,11 +47,11 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionDef[]) {
       events: isString(defaults.on) ? parseSelector(defaults.on, 'scope') : array(duplicate(defaults.on))
     } as any);
 
-    forEachTransform(selCmpt, txCompiler => {
-      if (txCompiler.has(selCmpt) && txCompiler.parse) {
-        txCompiler.parse(model, selCmpt, def);
+    for (const c of selectionCompilers) {
+      if (c.defined(selCmpt) && c.parse) {
+        c.parse(model, selCmpt, def);
       }
-    });
+    }
   }
 
   return selCmpts;
@@ -125,8 +124,7 @@ export function parseSelectionBinExtent(selCmpt: SelectionComponent, extent: Sel
 }
 
 export function materializeSelections(model: UnitModel, main: OutputNode) {
-  forEachSelection(model, selCmpt => {
-    const selection = selCmpt.name;
+  for (const [selection, selCmpt] of entries(model.component.selection ?? {})) {
     const lookupName = model.getName(`lookup_${selection}`);
     model.component.data.outputNodes[lookupName] = selCmpt.materialized = new OutputNode(
       new FilterNode(main, model, {selection}),
@@ -134,5 +132,5 @@ export function materializeSelections(model: UnitModel, main: OutputNode) {
       DataSourceType.Lookup,
       model.component.data.outputNodeRefCounts
     );
-  });
+  }
 }

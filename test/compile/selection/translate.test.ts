@@ -1,7 +1,7 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import translate from '../../../src/compile/selection/transforms/translate';
+import translate from '../../../src/compile/selection/translate';
 import {ScaleType} from '../../../src/scale';
 import {parseUnitModel} from '../../util';
 
@@ -71,13 +71,13 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
 describe('Translate Selection Transform', () => {
   it('identifies transform invocation', () => {
     const {selCmpts} = getModel();
-    expect(translate.has(selCmpts['one'])).not.toBe(true);
-    expect(translate.has(selCmpts['two'])).not.toBe(true);
-    expect(translate.has(selCmpts['three'])).not.toBe(true);
-    expect(translate.has(selCmpts['four'])).not.toBe(false);
-    expect(translate.has(selCmpts['five'])).not.toBe(false);
-    expect(translate.has(selCmpts['six'])).not.toBe(false);
-    expect(translate.has(selCmpts['seven'])).not.toBe(true);
+    expect(translate.defined(selCmpts['one'])).not.toBe(true);
+    expect(translate.defined(selCmpts['two'])).not.toBe(true);
+    expect(translate.defined(selCmpts['three'])).not.toBe(true);
+    expect(translate.defined(selCmpts['four'])).not.toBe(false);
+    expect(translate.defined(selCmpts['five'])).not.toBe(false);
+    expect(translate.defined(selCmpts['six'])).not.toBe(false);
+    expect(translate.defined(selCmpts['seven'])).not.toBe(true);
   });
 
   describe('Anchor/Delta signals', () => {

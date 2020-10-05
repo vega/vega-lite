@@ -1,16 +1,11 @@
 import {array, isObject} from 'vega-util';
-import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../../channel';
-import * as log from '../../../log';
-import {hasContinuousDomain} from '../../../scale';
-import {
-  BaseSelectionConfig,
-  SelectionInit,
-  SelectionInitInterval,
-  SelectionInitIntervalMapping
-} from '../../../selection';
-import {Dict, hash, keys, replacePathInField, varName, isEmpty} from '../../../util';
-import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
-import {TransformCompiler} from './transforms';
+import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../channel';
+import * as log from '../../log';
+import {hasContinuousDomain} from '../../scale';
+import {BaseSelectionConfig, SelectionInit, SelectionInitInterval, SelectionInitIntervalMapping} from '../../selection';
+import {Dict, hash, keys, replacePathInField, varName, isEmpty} from '../../util';
+import {TimeUnitComponent, TimeUnitNode} from '../data/timeunit';
+import {SelectionCompiler} from '.';
 
 export const TUPLE_FIELDS = '_tuple_fields';
 
@@ -46,8 +41,8 @@ export class SelectionProjectionComponent {
   }
 }
 
-const project: TransformCompiler = {
-  has: () => {
+const project: SelectionCompiler = {
+  defined: () => {
     return true; // This transform handles its own defaults, so always run parse.
   },
 

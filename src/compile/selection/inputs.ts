@@ -1,14 +1,14 @@
 import {isString, stringValue} from 'vega-util';
-import {TUPLE} from '..';
-import {varName} from '../../../util';
-import {assembleInit} from '../assemble';
+import {TUPLE} from '.';
+import {varName} from '../../util';
+import {assembleInit} from './assemble';
 import nearest from './nearest';
 import {TUPLE_FIELDS} from './project';
-import {TransformCompiler} from './transforms';
-import {isLegendBinding} from '../../../selection';
+import {SelectionCompiler} from '.';
+import {isLegendBinding} from '../../selection';
 
-const inputBindings: TransformCompiler = {
-  has: selCmpt => {
+const inputBindings: SelectionCompiler = {
+  defined: selCmpt => {
     return (
       selCmpt.type === 'single' &&
       selCmpt.resolve === 'global' &&
@@ -30,7 +30,7 @@ const inputBindings: TransformCompiler = {
     const proj = selCmpt.project;
     const bind = selCmpt.bind;
     const init = selCmpt.init && selCmpt.init[0]; // Can only exist on single selections (one initial value).
-    const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
+    const datum = nearest.defined(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
 
     proj.items.forEach((p, i) => {
       const sgname = varName(`${name}_${p.field}`);

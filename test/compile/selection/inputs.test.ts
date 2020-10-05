@@ -1,7 +1,7 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import inputs from '../../../src/compile/selection/transforms/inputs';
+import inputs from '../../../src/compile/selection/inputs';
 import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
 
@@ -123,25 +123,25 @@ describe('Inputs Selection Transform', () => {
         }
       ]);
 
-      expect(inputs.has(invalidBindLegendSelCmpts['twelve'])).toBeFalsy();
+      expect(inputs.defined(invalidBindLegendSelCmpts['twelve'])).toBeFalsy();
       expect(localLogger.warns[0]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
     })
   );
 
   it('identifies transform invocation', () => {
-    expect(inputs.has(selCmpts['one'])).toBeTruthy();
-    expect(inputs.has(selCmpts['two'])).toBeTruthy();
-    expect(inputs.has(selCmpts['three'])).toBeTruthy();
-    expect(inputs.has(selCmpts['four'])).toBeFalsy();
-    expect(inputs.has(selCmpts['six'])).toBeFalsy();
-    expect(inputs.has(selCmpts['seven'])).toBeTruthy();
-    expect(inputs.has(selCmpts['eight'])).toBeTruthy();
-    expect(inputs.has(selCmpts['nine'])).toBeTruthy();
-    expect(inputs.has(selCmpts['ten'])).toBeTruthy();
-    expect(inputs.has(selCmpts['eleven'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['one'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['two'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['three'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['four'])).toBeFalsy();
+    expect(inputs.defined(selCmpts['six'])).toBeFalsy();
+    expect(inputs.defined(selCmpts['seven'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['eight'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['nine'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['ten'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['eleven'])).toBeTruthy();
 
-    expect(inputs.has(selCmpts['space_separated'])).toBeTruthy();
-    expect(inputs.has(selCmpts['dash_separated'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['space_separated'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['dash_separated'])).toBeTruthy();
   });
 
   it('adds widget binding for default projection', () => {

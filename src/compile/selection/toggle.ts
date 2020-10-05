@@ -1,10 +1,10 @@
-import {TUPLE, unitName} from '..';
-import {TransformCompiler} from './transforms';
+import {TUPLE, unitName} from '.';
+import {SelectionCompiler} from '.';
 
 export const TOGGLE = '_toggle';
 
-const toggle: TransformCompiler = {
-  has: selCmpt => {
+const toggle: SelectionCompiler = {
+  defined: selCmpt => {
     return selCmpt.type === 'multi' && !!selCmpt.toggle;
   },
 

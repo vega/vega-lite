@@ -65,7 +65,7 @@ describe('Single Selection', () => {
   ]));
 
   it('builds tuple signals', () => {
-    const oneSg = single.signals(model, selCmpts['one']);
+    const oneSg = single.signals(model, selCmpts['one'], []);
     expect(oneSg).toEqual([
       {
         name: 'one_tuple',
@@ -80,7 +80,7 @@ describe('Single Selection', () => {
       }
     ]);
 
-    const twoSg = single.signals(model, selCmpts['two']);
+    const twoSg = single.signals(model, selCmpts['two'], []);
     expect(twoSg).toEqual([
       {
         name: 'two_tuple',
@@ -95,7 +95,7 @@ describe('Single Selection', () => {
       }
     ]);
 
-    const threeSg = single.signals(model, selCmpts['thr_ee']);
+    const threeSg = single.signals(model, selCmpts['thr_ee'], []);
     expect(threeSg).toEqual([
       {
         name: 'thr_ee_tuple',
@@ -110,7 +110,7 @@ describe('Single Selection', () => {
       }
     ]);
 
-    const fourSg = single.signals(model, selCmpts['four']);
+    const fourSg = single.signals(model, selCmpts['four'], []);
     expect(fourSg).toEqual([
       {
         name: 'four_tuple',
@@ -125,7 +125,7 @@ describe('Single Selection', () => {
       }
     ]);
 
-    const fiveSg = single.signals(model, selCmpts['five']);
+    const fiveSg = single.signals(model, selCmpts['five'], []);
     expect(fiveSg).toEqual([
       {
         name: 'five_tuple',
@@ -145,12 +145,6 @@ describe('Single Selection', () => {
   });
 
   it('builds modify signals', () => {
-    const oneExpr = single.modifyExpr(model, selCmpts['one']);
-    expect(oneExpr).toBe('one_tuple, true');
-
-    const twoExpr = single.modifyExpr(model, selCmpts['two']);
-    expect(twoExpr).toBe('two_tuple, {unit: ""}');
-
     const signals = assembleUnitSelectionSignals(model, []);
     expect(signals).toEqual(
       expect.arrayContaining([
@@ -159,7 +153,7 @@ describe('Single Selection', () => {
           on: [
             {
               events: {signal: 'one_tuple'},
-              update: `modify("one_store", ${oneExpr})`
+              update: `modify("one_store", one_tuple, true)`
             }
           ]
         },
@@ -168,7 +162,7 @@ describe('Single Selection', () => {
           on: [
             {
               events: {signal: 'two_tuple'},
-              update: `modify("two_store", ${twoExpr})`
+              update: `modify("two_store", two_tuple, {unit: ""})`
             }
           ]
         }

@@ -1,6 +1,6 @@
 import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import toggle from '../../../src/compile/selection/transforms/toggle';
+import toggle from '../../../src/compile/selection/toggle';
 import {parseUnitModel} from '../../util';
 
 describe('Toggle Selection Transform', () => {
@@ -40,12 +40,12 @@ describe('Toggle Selection Transform', () => {
   ]));
 
   it('identifies transform invocation', () => {
-    expect(toggle.has(selCmpts['one'])).toBeTruthy();
-    expect(toggle.has(selCmpts['two'])).toBeTruthy();
-    expect(toggle.has(selCmpts['three'])).toBeFalsy();
-    expect(toggle.has(selCmpts['four'])).toBeFalsy();
-    expect(toggle.has(selCmpts['five'])).toBeFalsy();
-    expect(toggle.has(selCmpts['six'])).toBeFalsy();
+    expect(toggle.defined(selCmpts['one'])).toBeTruthy();
+    expect(toggle.defined(selCmpts['two'])).toBeTruthy();
+    expect(toggle.defined(selCmpts['three'])).toBeFalsy();
+    expect(toggle.defined(selCmpts['four'])).toBeFalsy();
+    expect(toggle.defined(selCmpts['five'])).toBeFalsy();
+    expect(toggle.defined(selCmpts['six'])).toBeFalsy();
   });
 
   it('builds toggle signals', () => {

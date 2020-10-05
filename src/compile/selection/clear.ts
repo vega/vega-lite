@@ -1,14 +1,14 @@
 import {Update} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {isString} from 'vega-util';
-import {TUPLE} from '..';
-import {varName} from '../../../util';
+import {TUPLE} from '.';
+import {varName} from '../../util';
 import inputBindings from './inputs';
 import toggle, {TOGGLE} from './toggle';
-import {TransformCompiler} from './transforms';
+import {SelectionCompiler} from '.';
 
-const clear: TransformCompiler = {
-  has: selCmpt => {
+const clear: SelectionCompiler = {
+  defined: selCmpt => {
     return selCmpt.clear !== undefined && selCmpt.clear !== false;
   },
 
@@ -19,7 +19,7 @@ const clear: TransformCompiler = {
   },
 
   topLevelSignals: (model, selCmpt, signals) => {
-    if (inputBindings.has(selCmpt)) {
+    if (inputBindings.defined(selCmpt)) {
       for (const proj of selCmpt.project.items) {
         const idx = signals.findIndex(n => n.name === varName(`${selCmpt.name}_${proj.field}`));
         if (idx !== -1) {
@@ -53,7 +53,7 @@ const clear: TransformCompiler = {
       let tIdx = signals.findIndex(n => n.name === selCmpt.name + TUPLE);
       addClear(tIdx, 'null');
 
-      if (toggle.has(selCmpt)) {
+      if (toggle.defined(selCmpt)) {
         tIdx = signals.findIndex(n => n.name === selCmpt.name + TOGGLE);
         addClear(tIdx, 'false');
       }

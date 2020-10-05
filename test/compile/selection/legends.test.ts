@@ -1,6 +1,6 @@
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import legends from '../../../src/compile/selection/transforms/legends';
+import legends from '../../../src/compile/selection/legends';
 import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
 
@@ -37,13 +37,13 @@ describe('Interactive Legends', () => {
         }
       ]));
       m.parseLegends();
-      expect(legends.has(selCmpts['three'])).toBeFalsy();
+      expect(legends.defined(selCmpts['three'])).toBeFalsy();
       expect(localLogger.warns[0]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
 
-      expect(legends.has(selCmpts['five'])).toBeFalsy();
+      expect(legends.defined(selCmpts['five'])).toBeFalsy();
       expect(localLogger.warns[1]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
 
-      expect(legends.has(selCmpts['six'])).toBeFalsy();
+      expect(legends.defined(selCmpts['six'])).toBeFalsy();
       expect(localLogger.warns[2]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
     })
   );
@@ -103,15 +103,15 @@ describe('Interactive Legends', () => {
   model.parseLegends();
 
   it('identifies transform invocation', () => {
-    expect(legends.has(selCmpts['one'])).toBeTruthy();
-    expect(legends.has(selCmpts['two'])).toBeTruthy();
+    expect(legends.defined(selCmpts['one'])).toBeTruthy();
+    expect(legends.defined(selCmpts['two'])).toBeTruthy();
 
-    expect(legends.has(selCmpts['four'])).toBeTruthy();
+    expect(legends.defined(selCmpts['four'])).toBeTruthy();
 
-    expect(legends.has(selCmpts['seven'])).toBeTruthy();
-    expect(legends.has(selCmpts['eight'])).toBeTruthy();
-    expect(legends.has(selCmpts['nine'])).toBeFalsy();
-    expect(legends.has(selCmpts['ten'])).toBeTruthy();
+    expect(legends.defined(selCmpts['seven'])).toBeTruthy();
+    expect(legends.defined(selCmpts['eight'])).toBeTruthy();
+    expect(legends.defined(selCmpts['nine'])).toBeFalsy();
+    expect(legends.defined(selCmpts['ten'])).toBeTruthy();
   });
 
   it('adds legend binding top-level signal', () => {

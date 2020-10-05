@@ -1,4 +1,4 @@
-import {Binding, NewSignal, Stream} from 'vega';
+import {Binding, NewSignal, Signal, Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel';
 import {
@@ -18,7 +18,17 @@ import {UnitModel} from '../unit';
 import interval from './interval';
 import multi from './multi';
 import single from './single';
-import {SelectionProjection, SelectionProjectionComponent} from './transforms/project';
+import {SelectionProjection, SelectionProjectionComponent} from './project';
+import {SelectionDef} from '../../selection';
+import clear from './clear';
+import inputs from './inputs';
+import nearest from './nearest';
+import project from './project';
+import scales from './scales';
+import legends from './legends';
+import toggle from './toggle';
+import translate from './translate';
+import zoom from './zoom';
 
 export const STORE = '_store';
 export const TUPLE = '_tuple';
@@ -55,33 +65,33 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
 }
 
 export interface SelectionCompiler<T extends SelectionType = SelectionType> {
-  signals: (model: UnitModel, selCmpt: SelectionComponent<T>) => NewSignal[];
+  defined: (selCmpt: SelectionComponent<T>) => boolean;
+  parse?: (model: UnitModel, selCmpt: SelectionComponent<T>, def: SelectionDef) => void;
+  signals?: (model: UnitModel, selCmpt: SelectionComponent<T>, signals: NewSignal[]) => Signal[]; // the output can be a new or a push signal
   topLevelSignals?: (model: Model, selCmpt: SelectionComponent<T>, signals: NewSignal[]) => NewSignal[];
-  modifyExpr: (model: UnitModel, selCmpt: SelectionComponent<T>) => string;
+  modifyExpr?: (model: UnitModel, selCmpt: SelectionComponent<T>, expr: string) => string;
   marks?: (model: UnitModel, selCmpt: SelectionComponent<T>, marks: any[]) => any[];
 }
 
-const compilers: Dict<SelectionCompiler> = {single, multi, interval};
-
-export function forEachSelection(
-  model: Model,
-  cb: (selCmpt: SelectionComponent, selCompiler: SelectionCompiler) => void | boolean
-) {
-  const selections = model.component.selection;
-  if (selections) {
-    for (const sel of vals(selections)) {
-      const success = cb(sel, compilers[sel.type]);
-      if (success === true) break;
-    }
-  }
-}
+export const selectionCompilers: SelectionCompiler[] = [
+  single,
+  multi,
+  interval,
+  project,
+  toggle,
+  scales,
+  legends,
+  translate,
+  zoom,
+  inputs,
+  nearest,
+  clear
+];
 
 function getFacetModel(model: Model): FacetModel {
   let parent = model.parent;
   while (parent) {
-    if (isFacetModel(parent)) {
-      break;
-    }
+    if (isFacetModel(parent)) break;
     parent = parent.parent;
   }
 
@@ -103,9 +113,7 @@ export function unitName(model: Model, {escape} = {escape: true}) {
 }
 
 export function requiresSelectionId(model: Model) {
-  let identifier = false;
-  forEachSelection(model, selCmpt => {
-    identifier = identifier || selCmpt.project.items.some(proj => proj.field === SELECTION_ID);
-  });
-  return identifier;
+  return vals(model.component.selection ?? {}).reduce((identifier, selCmpt) => {
+    return identifier || selCmpt.project.items.some(proj => proj.field === SELECTION_ID);
+  }, false);
 }

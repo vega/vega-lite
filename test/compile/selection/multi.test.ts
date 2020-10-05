@@ -82,7 +82,7 @@ describe('Multi Selection', () => {
   ]));
 
   it('builds tuple signals', () => {
-    const oneSg = multi.signals(model, selCmpts['one']);
+    const oneSg = multi.signals(model, selCmpts['one'], []);
     expect(oneSg).toEqual([
       {
         name: 'one_tuple',
@@ -97,7 +97,7 @@ describe('Multi Selection', () => {
       }
     ]);
 
-    const twoSg = multi.signals(model, selCmpts['two']);
+    const twoSg = multi.signals(model, selCmpts['two'], []);
     expect(twoSg).toEqual([
       {
         name: 'two_tuple',
@@ -112,7 +112,7 @@ describe('Multi Selection', () => {
       }
     ]);
 
-    const threeSg = multi.signals(model, selCmpts['thr_ee']);
+    const threeSg = multi.signals(model, selCmpts['thr_ee'], []);
     expect(threeSg).toEqual([
       {
         name: 'thr_ee_tuple',
@@ -127,7 +127,7 @@ describe('Multi Selection', () => {
       }
     ]);
 
-    const fourSg = multi.signals(model, selCmpts['four']);
+    const fourSg = multi.signals(model, selCmpts['four'], []);
     expect(fourSg).toEqual([
       {
         name: 'four_tuple',
@@ -142,7 +142,7 @@ describe('Multi Selection', () => {
       }
     ]);
 
-    const fiveSg = multi.signals(model, selCmpts['five']);
+    const fiveSg = multi.signals(model, selCmpts['five'], []);
     expect(fiveSg).toEqual([
       {
         name: 'five_tuple',
@@ -157,7 +157,7 @@ describe('Multi Selection', () => {
       }
     ]);
 
-    const sixSg = multi.signals(model, selCmpts['six']);
+    const sixSg = multi.signals(model, selCmpts['six'], []);
     expect(sixSg).toEqual([
       {
         name: 'six_tuple',

@@ -1,10 +1,14 @@
-import {Stream} from 'vega';
+import {NewSignal, Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from '.';
 import {UnitModel} from '../unit';
-import {TUPLE_FIELDS} from './transforms/project';
+import {TUPLE_FIELDS} from './project';
 
-export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionComponent<'single' | 'multi'>) {
+export function singleOrMultiSignals(
+  model: UnitModel,
+  selCmpt: SelectionComponent<'single' | 'multi'>,
+  signals: NewSignal[]
+) {
   const name = selCmpt.name;
   const fieldsSg = name + TUPLE_FIELDS;
   const project = selCmpt.project;
@@ -31,7 +35,7 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
 
   const events: Stream[] = selCmpt.events;
 
-  return [
+  return signals.concat([
     {
       name: name + TUPLE,
       on: events
@@ -44,10 +48,12 @@ export function singleOrMultiSignals(model: UnitModel, selCmpt: SelectionCompone
           ]
         : []
     }
-  ];
+  ]);
 }
 
 const multi: SelectionCompiler<'multi'> = {
+  defined: selCmpt => selCmpt.type === 'multi',
+
   signals: singleOrMultiSignals,
 
   modifyExpr: (model, selCmpt) => {

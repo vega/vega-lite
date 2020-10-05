@@ -1,6 +1,6 @@
 import {tooltip} from '../../../src/compile/mark/encode';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import nearest from '../../../src/compile/selection/transforms/nearest';
+import nearest from '../../../src/compile/selection/nearest';
 import * as log from '../../../src/log';
 import {duplicate} from '../../../src/util';
 import {VgEncodeEntry} from '../../../src/vega.schema';
@@ -99,12 +99,12 @@ function voronoiMark(x?: string | {expr: string}, y?: string | {expr: string}, t
 describe('Nearest Selection Transform', () => {
   it('identifies transform invocation', () => {
     const selCmpts = getModel('circle').component.selection;
-    expect(nearest.has(selCmpts['one'])).not.toBe(false);
-    expect(nearest.has(selCmpts['two'])).not.toBe(false);
-    expect(nearest.has(selCmpts['three'])).not.toBe(true);
-    expect(nearest.has(selCmpts['four'])).not.toBe(true);
-    expect(nearest.has(selCmpts['five'])).not.toBe(true);
-    expect(nearest.has(selCmpts['six'])).not.toBe(true);
+    expect(nearest.defined(selCmpts['one'])).not.toBe(false);
+    expect(nearest.defined(selCmpts['two'])).not.toBe(false);
+    expect(nearest.defined(selCmpts['three'])).not.toBe(true);
+    expect(nearest.defined(selCmpts['four'])).not.toBe(true);
+    expect(nearest.defined(selCmpts['five'])).not.toBe(true);
+    expect(nearest.defined(selCmpts['six'])).not.toBe(true);
   });
 
   it('scopes events to the voronoi mark', () => {

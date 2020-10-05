@@ -2,7 +2,7 @@ import {selector as parseSelector} from 'vega-event-selector';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {keys} from '../../../src/util';
 import {parseUnitModel, parseModelWithScale} from '../../util';
-import project from '../../../src/compile/selection/transforms/project';
+import project from '../../../src/compile/selection/project';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
 

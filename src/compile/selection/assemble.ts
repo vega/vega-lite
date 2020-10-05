@@ -1,16 +1,15 @@
 import {Signal, SignalRef} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
-import {forEachSelection, MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE} from '.';
+import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers} from '.';
 import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime';
 import {SelectionInit, SelectionInitInterval, SelectionExtent} from '../../selection';
-import {keys, varName} from '../../util';
+import {keys, vals, varName} from '../../util';
 import {VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
-import {forEachTransform} from './transforms/transforms';
 import {parseSelectionBinExtent} from './parse';
 
 export function assembleInit(
@@ -32,20 +31,15 @@ export function assembleInit(
 }
 
 export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]) {
-  forEachSelection(model, (selCmpt, selCompiler) => {
+  for (const selCmpt of vals(model.component.selection ?? {})) {
     const name = selCmpt.name;
-    let modifyExpr = selCompiler.modifyExpr(model, selCmpt);
+    let modifyExpr = `${name}${TUPLE}, ` + (selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`);
 
-    signals.push(...selCompiler.signals(model, selCmpt));
-
-    forEachTransform(selCmpt, txCompiler => {
-      if (txCompiler.signals) {
-        signals = txCompiler.signals(model, selCmpt, signals);
-      }
-      if (txCompiler.modifyExpr) {
-        modifyExpr = txCompiler.modifyExpr(model, selCmpt, modifyExpr);
-      }
-    });
+    for (const c of selectionCompilers) {
+      if (!c.defined(selCmpt)) continue;
+      if (c.signals) signals = c.signals(model, selCmpt, signals);
+      if (c.modifyExpr) modifyExpr = c.modifyExpr(model, selCmpt, modifyExpr);
+    }
 
     signals.push({
       name: name + MODIFY,
@@ -56,7 +50,7 @@ export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]
         }
       ]
     });
-  });
+  }
 
   return cleanupEmptyOnArray(signals);
 }
@@ -81,7 +75,7 @@ export function assembleFacetSignals(model: FacetModel, signals: Signal[]) {
 
 export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
   let hasSelections = false;
-  forEachSelection(model, (selCmpt, selCompiler) => {
+  for (const selCmpt of vals(model.component.selection ?? {})) {
     const name = selCmpt.name;
     const store = stringValue(name + STORE);
     const hasSg = signals.filter(s => s.name === name);
@@ -95,16 +89,12 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
     }
     hasSelections = true;
 
-    if (selCompiler.topLevelSignals) {
-      signals = selCompiler.topLevelSignals(model, selCmpt, signals);
-    }
-
-    forEachTransform(selCmpt, txCompiler => {
-      if (txCompiler.topLevelSignals) {
-        signals = txCompiler.topLevelSignals(model, selCmpt, signals);
+    for (const c of selectionCompilers) {
+      if (c.defined(selCmpt) && c.topLevelSignals) {
+        signals = c.topLevelSignals(model, selCmpt, signals);
       }
-    });
-  });
+    }
+  }
 
   if (hasSelections) {
     const hasUnit = signals.filter(s => s.name === 'unit');
@@ -122,7 +112,7 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
 
 export function assembleUnitSelectionData(model: UnitModel, data: readonly VgData[]): VgData[] {
   const dataCopy = [...data];
-  forEachSelection(model, selCmpt => {
+  for (const selCmpt of vals(model.component.selection ?? {})) {
     const init: VgData = {name: selCmpt.name + STORE};
     if (selCmpt.init) {
       const fields = selCmpt.project.items.map(proj => {
@@ -140,20 +130,19 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
     if (!contains.length) {
       dataCopy.push(init);
     }
-  });
+  }
 
   return dataCopy;
 }
 
 export function assembleUnitSelectionMarks(model: UnitModel, marks: any[]): any[] {
-  forEachSelection(model, (selCmpt, selCompiler) => {
-    marks = selCompiler.marks ? selCompiler.marks(model, selCmpt, marks) : marks;
-    forEachTransform(selCmpt, txCompiler => {
-      if (txCompiler.marks) {
-        marks = txCompiler.marks(model, selCmpt, marks);
+  for (const selCmpt of vals(model.component.selection ?? {})) {
+    for (const c of selectionCompilers) {
+      if (c.defined(selCmpt) && c.marks) {
+        marks = c.marks(model, selCmpt, marks);
       }
-    });
-  });
+    }
+  }
 
   return marks;
 }

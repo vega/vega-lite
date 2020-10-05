@@ -1,15 +1,15 @@
 import {stringValue} from 'vega-util';
-import {VL_SELECTION_RESOLVE} from '..';
-import {isScaleChannel, ScaleChannel} from '../../../channel';
-import * as log from '../../../log';
-import {hasContinuousDomain} from '../../../scale';
-import {isLayerModel, Model} from '../../model';
-import {UnitModel} from '../../unit';
+import {VL_SELECTION_RESOLVE} from '.';
+import {isScaleChannel, ScaleChannel} from '../../channel';
+import * as log from '../../log';
+import {hasContinuousDomain} from '../../scale';
+import {isLayerModel, Model} from '../model';
+import {UnitModel} from '../unit';
 import {SelectionProjection} from './project';
-import {TransformCompiler} from './transforms';
+import {SelectionCompiler} from '.';
 
-const scaleBindings: TransformCompiler = {
-  has: selCmpt => {
+const scaleBindings: SelectionCompiler = {
+  defined: selCmpt => {
     return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
   },
 

@@ -1,13 +1,10 @@
-import {SelectionCompiler, TUPLE, unitName} from '.';
+import {SelectionCompiler} from '.';
 import {singleOrMultiSignals} from './multi';
 
 const single: SelectionCompiler<'single'> = {
-  signals: singleOrMultiSignals,
+  defined: selCmpt => selCmpt.type === 'single',
 
-  modifyExpr: (model, selCmpt) => {
-    const tpl = selCmpt.name + TUPLE;
-    return tpl + ', ' + (selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`);
-  }
+  signals: singleOrMultiSignals
 };
 
 export default single;

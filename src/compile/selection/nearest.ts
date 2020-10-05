@@ -1,12 +1,12 @@
-import * as log from '../../../log';
-import {isPathMark} from '../../../mark';
-import {tooltip} from '../../mark/encode';
-import {TransformCompiler} from './transforms';
+import * as log from '../../log';
+import {isPathMark} from '../../mark';
+import {tooltip} from '../mark/encode';
+import {SelectionCompiler} from '.';
 
 const VORONOI = 'voronoi';
 
-const nearest: TransformCompiler = {
-  has: selCmpt => {
+const nearest: SelectionCompiler = {
+  defined: selCmpt => {
     return selCmpt.type !== 'interval' && selCmpt.nearest;
   },
 

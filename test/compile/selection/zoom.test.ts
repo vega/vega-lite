@@ -1,7 +1,7 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import zoom from '../../../src/compile/selection/transforms/zoom';
+import zoom from '../../../src/compile/selection/zoom';
 import {ScaleType} from '../../../src/scale';
 import {parseUnitModel} from '../../util';
 
@@ -71,13 +71,13 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
 describe('Zoom Selection Transform', () => {
   it('identifies transform invocation', () => {
     const {selCmpts} = getModel();
-    expect(zoom.has(selCmpts['one'])).not.toBe(true);
-    expect(zoom.has(selCmpts['two'])).not.toBe(true);
-    expect(zoom.has(selCmpts['three'])).not.toBe(true);
-    expect(zoom.has(selCmpts['four'])).not.toBe(false);
-    expect(zoom.has(selCmpts['five'])).not.toBe(false);
-    expect(zoom.has(selCmpts['six'])).not.toBe(false);
-    expect(zoom.has(selCmpts['seven'])).not.toBe(true);
+    expect(zoom.defined(selCmpts['one'])).not.toBe(true);
+    expect(zoom.defined(selCmpts['two'])).not.toBe(true);
+    expect(zoom.defined(selCmpts['three'])).not.toBe(true);
+    expect(zoom.defined(selCmpts['four'])).not.toBe(false);
+    expect(zoom.defined(selCmpts['five'])).not.toBe(false);
+    expect(zoom.defined(selCmpts['six'])).not.toBe(false);
+    expect(zoom.defined(selCmpts['seven'])).not.toBe(true);
   });
 
   describe('Anchor/Delta signals', () => {

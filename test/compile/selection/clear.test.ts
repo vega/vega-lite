@@ -4,7 +4,7 @@ import interval from '../../../src/compile/selection/interval';
 import multi from '../../../src/compile/selection/multi';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import single from '../../../src/compile/selection/single';
-import clear from '../../../src/compile/selection/transforms/clear';
+import clear from '../../../src/compile/selection/clear';
 import {parseUnitModel} from '../../util';
 
 describe('Clear selection transform, single and multi types', () => {
@@ -46,16 +46,16 @@ describe('Clear selection transform, single and multi types', () => {
   ]));
 
   it('identifies transform invocation', () => {
-    expect(clear.has(selCmpts['one'])).toBeTruthy();
-    expect(clear.has(selCmpts['two'])).toBeTruthy();
-    expect(clear.has(selCmpts['three'])).toBeTruthy();
-    expect(clear.has(selCmpts['four'])).toBeTruthy();
-    expect(clear.has(selCmpts['five'])).toBeFalsy();
-    expect(clear.has(selCmpts['six'])).toBeFalsy();
+    expect(clear.defined(selCmpts['one'])).toBeTruthy();
+    expect(clear.defined(selCmpts['two'])).toBeTruthy();
+    expect(clear.defined(selCmpts['three'])).toBeTruthy();
+    expect(clear.defined(selCmpts['four'])).toBeTruthy();
+    expect(clear.defined(selCmpts['five'])).toBeFalsy();
+    expect(clear.defined(selCmpts['six'])).toBeFalsy();
   });
 
   it('appends clear event trigger', () => {
-    const singleOneSg = single.signals(model, selCmpts['one']);
+    const singleOneSg = single.signals(model, selCmpts['one'], []);
     const oneSg = clear.signals(model, selCmpts['one'], singleOneSg);
     expect(oneSg).toEqual([
       {
@@ -72,7 +72,7 @@ describe('Clear selection transform, single and multi types', () => {
       }
     ]);
 
-    const multiTwoSg = multi.signals(model, selCmpts['two']);
+    const multiTwoSg = multi.signals(model, selCmpts['two'], []);
     const twoSg = clear.signals(model, selCmpts['two'], multiTwoSg);
     expect(twoSg).toEqual([
       {
@@ -89,7 +89,7 @@ describe('Clear selection transform, single and multi types', () => {
       }
     ]);
 
-    const singleThreeSg = single.signals(model, selCmpts['three']);
+    const singleThreeSg = single.signals(model, selCmpts['three'], []);
     const threeSg = clear.signals(model, selCmpts['three'], singleThreeSg);
     expect(threeSg).toEqual([
       {
@@ -106,7 +106,7 @@ describe('Clear selection transform, single and multi types', () => {
       }
     ]);
 
-    const multiFourSg = multi.signals(model, selCmpts['four']);
+    const multiFourSg = multi.signals(model, selCmpts['four'], []);
     const fourSg = clear.signals(model, selCmpts['four'], multiFourSg);
     expect(fourSg).toEqual([
       {
@@ -178,13 +178,13 @@ describe('Clear selection transform, interval type', () => {
   ]));
 
   it('identifies transform invocation', () => {
-    expect(clear.has(selCmpts['one'])).toBeTruthy();
-    expect(clear.has(selCmpts['two'])).toBeTruthy();
-    expect(clear.has(selCmpts['three'])).toBeFalsy();
+    expect(clear.defined(selCmpts['one'])).toBeTruthy();
+    expect(clear.defined(selCmpts['two'])).toBeTruthy();
+    expect(clear.defined(selCmpts['three'])).toBeFalsy();
   });
 
   it('appends clear transform', () => {
-    const intervalOneSg = interval.signals(model, selCmpts['one']);
+    const intervalOneSg = interval.signals(model, selCmpts['one'], []);
     const oneSg = clear.signals(model, selCmpts['one'], intervalOneSg);
     expect(oneSg).toEqual(
       expect.arrayContaining([
@@ -211,7 +211,7 @@ describe('Clear selection transform, interval type', () => {
   });
 
   it('creates clear transform', () => {
-    const intervalTwoSg = interval.signals(model, selCmpts['two']);
+    const intervalTwoSg = interval.signals(model, selCmpts['two'], []);
     const twoSg = clear.signals(model, selCmpts['two'], intervalTwoSg);
     expect(twoSg).toEqual(
       expect.arrayContaining([
