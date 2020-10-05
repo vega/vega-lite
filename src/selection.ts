@@ -259,7 +259,7 @@ export type TopLevelSelectionDef = SelectionDef & {
    * By default, top-level selections are applied to every view in the visualization.
    * If this property is specified, selections will only be applied to views with the given names.
    */
-  views?: string[];
+  views?: (string | string[])[];
 };
 
 export type SelectionExtent =

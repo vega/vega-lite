@@ -43,4 +43,5 @@ export interface NormalizerParams {
   repeater?: RepeaterValue;
   repeaterPrefix?: string;
   selections?: TopLevelSelectionDef[];
+  path?: string[];
 }
