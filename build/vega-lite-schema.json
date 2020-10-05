@@ -9578,7 +9578,14 @@
         "params": {
           "description": "An array of interactive selections, such as discrete points and continuous intervals.",
           "items": {
-            "$ref": "#/definitions/SelectionDef"
+            "anyOf": [
+              {
+                "$ref": "#/definitions/Parameter"
+              },
+              {
+                "$ref": "#/definitions/SelectionDef"
+              }
+            ]
           },
           "type": "array"
         },
@@ -31098,7 +31105,14 @@
         "params": {
           "description": "An array of interactive selections, such as discrete points and continuous intervals.",
           "items": {
-            "$ref": "#/definitions/SelectionDef"
+            "anyOf": [
+              {
+                "$ref": "#/definitions/Parameter"
+              },
+              {
+                "$ref": "#/definitions/SelectionDef"
+              }
+            ]
           },
           "type": "array"
         },
@@ -31394,7 +31408,14 @@
         "params": {
           "description": "An array of interactive selections, such as discrete points and continuous intervals.",
           "items": {
-            "$ref": "#/definitions/SelectionDef"
+            "anyOf": [
+              {
+                "$ref": "#/definitions/Parameter"
+              },
+              {
+                "$ref": "#/definitions/SelectionDef"
+              }
+            ]
           },
           "type": "array"
         },
@@ -31493,7 +31514,14 @@
         "params": {
           "description": "An array of interactive selections, such as discrete points and continuous intervals.",
           "items": {
-            "$ref": "#/definitions/SelectionDef"
+            "anyOf": [
+              {
+                "$ref": "#/definitions/Parameter"
+              },
+              {
+                "$ref": "#/definitions/SelectionDef"
+              }
+            ]
           },
           "type": "array"
         },
