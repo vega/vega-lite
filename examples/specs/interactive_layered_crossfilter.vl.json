@@ -8,9 +8,10 @@
   "repeat": {"column": ["distance", "delay", "time"]},
   "spec": {
     "layer": [{
-      "selection": {
-        "brush": {"type": "interval", "encodings": ["x"]}
-      },
+      "selection": [{
+        "name": "brush",
+        "select": {"type": "interval", "encodings": ["x"]}
+      }],
       "mark": "bar",
       "encoding": {
         "x": {

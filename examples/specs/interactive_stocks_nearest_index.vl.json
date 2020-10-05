@@ -15,13 +15,15 @@
       }
     },
     {
-      "selection": {
-        "index": {
-          "type": "single", "on": "mousemove",
+      "selection": [{
+        "name": "index",
+        "select": {
+          "type": "single",
           "encodings": ["x"],
+          "on": "mousemove",
           "nearest": true
         }
-      },
+      }],
       "mark": {"type": "point"},
       "encoding": {
         "y": {"field": "price", "type": "quantitative"},

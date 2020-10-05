@@ -17,12 +17,13 @@
       "type": "quantitative"
     }
   },
-  "selection": {
-    "brush": {
+  "selection": [{
+    "name": "brush",
+    "select": {
       "type": "interval",
       "encodings": ["x"],
       "mark": {"cursor": "pointer"}
     }
-  },
+  }],
   "view": {"cursor": "text"}
 }

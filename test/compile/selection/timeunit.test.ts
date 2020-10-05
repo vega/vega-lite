@@ -27,9 +27,12 @@ function getConcatModel(unit2: NormalizedUnitSpec, config?: Config) {
     hconcat: [
       {
         mark: 'point',
-        selection: {
-          two: {type: 'single', encodings: ['x', 'y']}
-        },
+        selection: [
+          {
+            name: 'two',
+            select: {type: 'single', encodings: ['x', 'y']}
+          }
+        ],
         encoding: {
           x: {
             field: 'date',
@@ -56,10 +59,10 @@ describe('Selection time unit', () => {
         y: {field: 'date', type: 'temporal', timeUnit: 'minutes'}
       }
     });
-    const selCmpts = (model.component.selection = parseUnitSelection(model, {
-      one: {type: 'single'},
-      two: {type: 'single', encodings: ['x', 'y']}
-    }));
+    const selCmpts = (model.component.selection = parseUnitSelection(model, [
+      {name: 'one', select: 'single'},
+      {name: 'two', select: {type: 'single', encodings: ['x', 'y']}}
+    ]));
 
     expect(selCmpts['one'].project.timeUnit).not.toBeDefined();
     expect(selCmpts['two'].project.timeUnit).toBeInstanceOf(TimeUnitNode);

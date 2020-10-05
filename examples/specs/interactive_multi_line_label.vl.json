@@ -15,15 +15,16 @@
       "layer": [
         {"mark": "line"},
         {
-          "selection": {
-            "label": {
+          "selection": [{
+            "name": "label",
+            "select": {
               "type": "single",
+              "encodings": ["x"],
               "nearest": true,
               "on": "mouseover",
-              "encodings": ["x"],
               "empty": "none"
             }
-          },
+          }],
           "mark": "point",
           "encoding": {
             "opacity": {

@@ -6,9 +6,12 @@ describe('Layered Selections', () => {
   const layers = parseLayerModel({
     layer: [
       {
-        selection: {
-          brush: {type: 'interval'}
-        },
+        selection: [
+          {
+            name: 'brush',
+            select: 'interval'
+          }
+        ],
         mark: 'circle',
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},
@@ -17,9 +20,13 @@ describe('Layered Selections', () => {
         }
       },
       {
-        selection: {
-          grid: {type: 'interval', bind: 'scales'}
-        },
+        selection: [
+          {
+            name: 'brush',
+            select: 'interval',
+            bind: 'scales'
+          }
+        ],
         mark: 'square',
         encoding: {
           x: {field: 'Horsepower', type: 'quantitative'},

@@ -15,28 +15,37 @@
       },
       "opacity": {"value": 1}
     },
-    "selection": {
-      "brush": {
-        "type": "interval",
-        "resolve": "intersect",
-        "encodings": ["x"],
-        "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
-        "translate": "[mousedown[event.shiftKey], mouseup] > mousemove"
+    "selection": [
+      {
+        "name": "brush",
+        "select": {
+          "type": "interval",
+          "encodings": ["x"],
+          "resolve": "intersect",
+          "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
+          "translate": "[mousedown[event.shiftKey], mouseup] > mousemove"
+        }
       },
-      "grid": {
-        "type": "interval",
-        "resolve": "global",
-        "bind": "scales",
-        "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
+      {
+        "name": "grid",
+        "select": {
+          "type": "interval",
+          "resolve": "global",
+          "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
+        },
+        "bind": "scales"
       },
-      "xenc": {
-        "type": "single",
-        "resolve": "global",
-        "on": "mouseover",
-        "nearest": true,
-        "fields": ["X"],
+      {
+        "name": "xenc",
+        "select": {
+          "type": "single",
+          "fields": ["X"],
+          "resolve": "global",
+          "on": "mouseover",
+          "nearest": true
+        },
         "bind": {"input": "number"}
       }
-    }
+    ]
   }
 }

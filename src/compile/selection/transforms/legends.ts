@@ -1,4 +1,4 @@
-import {MergedStream, Stream} from 'vega';
+import {isObject, MergedStream, Stream} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {array, isString} from 'vega-util';
 import {forEachSelection, SelectionComponent, TUPLE} from '..';
@@ -23,13 +23,13 @@ const legendBindings: TransformCompiler = {
     return spec && projLen;
   },
 
-  parse: (model, selCmpt, selDef, origDef) => {
+  parse: (model, selCmpt, selDef) => {
     // Binding a selection to a legend disables default direct manipulation interaction.
     // A user can choose to re-enable it by explicitly specifying triggering input events.
-    if (!origDef.on) delete selCmpt.events;
-    if (!origDef.clear) delete selCmpt.clear;
+    if (isString(selDef.select) || !selDef.select.on) delete selCmpt.events;
+    if (isString(selDef.select) || !selDef.select.clear) delete selCmpt.clear;
 
-    if (origDef.on || origDef.clear) {
+    if (isObject(selDef.select) && (selDef.select.on || selDef.select.clear)) {
       const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
       for (const evt of selCmpt.events) {
         evt.filter = array(evt.filter ?? []);

@@ -3,11 +3,11 @@
   "width": 300, "height": 200,
   "data": {"url": "data/unemployment-across-industries.json"},
   "mark": "area",
-  "selection": {
-    "industry": {
-      "type": "multi", "fields": ["series"], "bind": "legend"
-    }
-  },
+  "selection": [{
+    "name": "industry",
+    "select": {"type": "multi", "fields": ["series"]},
+    "bind": "legend"
+  }],
   "encoding": {
     "x": {
       "timeUnit": "yearmonth", "field": "date",

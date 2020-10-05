@@ -36,13 +36,13 @@ describe('compile/data/identifier', () => {
 
       run();
       for (const type of ['single', 'multi']) {
-        run({pt: {type, encodings: ['x']}});
+        run([{name: 'pt', select: {type, encodings: ['x']}}]);
       }
     });
 
     it('is added for default point selections', () => {
-      for (const type of ['single', 'multi']) {
-        const url = getVgData({pt: {type}});
+      for (const select of ['single', 'multi']) {
+        const url = getVgData([{name: 'pt', select}]);
         expect(url[0].transform[0].type).toBe('identifier');
       }
     });
@@ -55,8 +55,8 @@ describe('compile/data/identifier', () => {
         expect(transform[aggr + 1].type).toBe('identifier');
       }
 
-      for (const type of ['single', 'multi']) {
-        const sel = {pt: {type}};
+      for (const select of ['single', 'multi']) {
+        const sel = [{name: 'pt', select}];
         let data = getVgData(sel, {bin: true}, {aggregate: 'count'});
         run(data[0].transform);
 
@@ -66,8 +66,10 @@ describe('compile/data/identifier', () => {
     });
 
     it('is added before any user-specified transforms', () => {
-      for (const type of ['single', 'multi']) {
-        const data = getVgData({pt: {type}}, null, null, null, null, [{calculate: 'datum.Horsepower * 2', as: 'foo'}]);
+      for (const select of ['single', 'multi']) {
+        const data = getVgData([{name: 'pt', select}], null, null, null, null, [
+          {calculate: 'datum.Horsepower * 2', as: 'foo'}
+        ]);
         let calc = -1;
         data[0].transform.some((t, i) => ((calc = i), t.type === 'formula' && t.as === 'foo'));
         expect(data[0].transform[calc - 1].type).toBe('identifier');
@@ -80,9 +82,12 @@ describe('compile/data/identifier', () => {
           data: {url: 'data/cars.json'},
           hconcat: [
             {
-              selection: {
-                pt: {type: 'single'}
-              },
+              selection: [
+                {
+                  name: 'pt',
+                  select: 'single'
+                }
+              ],
               mark: 'circle',
               encoding: {
                 x: {field: 'Horsepower', type: 'quantitative'},

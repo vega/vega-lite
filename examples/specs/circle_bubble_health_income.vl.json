@@ -5,9 +5,11 @@
   "data": {
     "url": "data/gapminder-health-income.csv"
   },
-  "selection": {
-    "view": {"type": "interval", "bind": "scales"}
-  },
+  "selection": [{
+    "name": "view",
+    "select": "interval",
+    "bind": "scales"
+  }],
   "mark": "circle",
   "encoding": {
     "y": {

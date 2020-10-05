@@ -15,62 +15,80 @@ describe('Interval Selections', () => {
   });
   model.parseScale();
 
-  const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'interval', encodings: ['x'], clear: false, translate: false, zoom: false},
-    two: {
-      type: 'interval',
-      encodings: ['y'],
-      bind: 'scales',
-      clear: false,
-      translate: false,
-      zoom: false
+  const selCmpts = (model.component.selection = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: {type: 'interval', encodings: ['x'], clear: false, translate: false, zoom: false}
     },
-    'thr-ee': {
-      type: 'interval',
-      on: '[mousedown, mouseup] > mousemove, [keydown, keyup] > keypress',
-      clear: false,
-      translate: false,
-      zoom: false,
-      resolve: 'intersect',
-      mark: {
-        fill: 'red',
-        fillOpacity: 0.75,
-        stroke: 'black',
-        strokeWidth: 4,
-        strokeDash: [10, 5],
-        strokeDashOffset: 3,
-        strokeOpacity: 0.25
+    {
+      name: 'two',
+      select: {
+        type: 'interval',
+        encodings: ['y'],
+        clear: false,
+        translate: false,
+        zoom: false
+      },
+      bind: 'scales'
+    },
+    {
+      name: 'thr-ee',
+      select: {
+        type: 'interval',
+        on: '[mousedown, mouseup] > mousemove, [keydown, keyup] > keypress',
+        clear: false,
+        translate: false,
+        zoom: false,
+        resolve: 'intersect',
+        mark: {
+          fill: 'red',
+          fillOpacity: 0.75,
+          stroke: 'black',
+          strokeWidth: 4,
+          strokeDash: [10, 5],
+          strokeDashOffset: 3,
+          strokeOpacity: 0.25
+        }
       }
     },
-    four: {
-      type: 'interval',
-      clear: false,
-      translate: false,
-      zoom: false,
-      encodings: ['x'],
-      init: {x: [50, 70]}
+    {
+      name: 'four',
+      value: {x: [50, 70]},
+      select: {
+        type: 'interval',
+        encodings: ['x'],
+        clear: false,
+        translate: false,
+        zoom: false
+      }
     },
-    five: {
-      type: 'interval',
-      clear: false,
-      translate: false,
-      zoom: false,
-      init: {x: [50, 60], y: [23, 54]}
+    {
+      name: 'five',
+      value: {x: [50, 60], y: [23, 54]},
+      select: {
+        type: 'interval',
+        clear: false,
+        translate: false,
+        zoom: false
+      }
     },
-    six: {
-      type: 'interval',
-      clear: false,
-      translate: false,
-      zoom: false,
-      encodings: ['x'],
-      init: {
+    {
+      name: 'six',
+      value: {
         x: [
           {year: 2000, month: 10, date: 5},
           {year: 2001, month: 1, date: 13}
         ]
+      },
+      select: {
+        type: 'interval',
+        clear: false,
+        translate: false,
+        zoom: false,
+        encodings: ['x']
       }
     }
-  }));
+  ]));
 
   describe('Tuple Signals', () => {
     it('builds projection signals', () => {
@@ -447,14 +465,17 @@ describe('Interval Selections', () => {
 
       model2.parseScale();
 
-      const selCmpts2 = (model2.component.selection = parseUnitSelection(model2, {
-        one: {
-          type: 'interval',
-          encodings: ['x'],
-          translate: false,
-          zoom: false
+      const selCmpts2 = (model2.component.selection = parseUnitSelection(model2, [
+        {
+          name: 'one',
+          select: {
+            type: 'interval',
+            encodings: ['x'],
+            translate: false,
+            zoom: false
+          }
         }
-      }));
+      ]));
 
       const sg = interval.signals(model, selCmpts2['one']);
       expect(sg[0].name).toBe('one_x_1');
@@ -724,9 +745,12 @@ describe('Interval Selections', () => {
     });
     nameModel.parseScale();
 
-    const nameSelCmpts = (nameModel.component.selection = parseUnitSelection(nameModel, {
-      brush: {type: 'interval'}
-    }));
+    const nameSelCmpts = (nameModel.component.selection = parseUnitSelection(nameModel, [
+      {
+        name: 'brush',
+        select: 'interval'
+      }
+    ]));
 
     const signals = interval.signals(nameModel, nameSelCmpts['brush']);
     const names = signals.map(s => s.name);

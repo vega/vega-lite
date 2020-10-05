@@ -18,34 +18,44 @@ describe('Multi Selection', () => {
     }
   });
 
-  const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'multi', clear: false},
-    two: {
-      type: 'multi',
-      nearest: true,
-      clear: false,
-      on: 'mouseover',
-      toggle: 'event.ctrlKey',
-      encodings: ['y', 'color'],
-      resolve: 'intersect'
+  const selCmpts = (model.component.selection = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: {type: 'multi', clear: false}
     },
-    'thr-ee': {
-      type: 'multi',
-      fields: ['Horsepower'],
-      clear: false,
-      init: [{Horsepower: 50}]
+    {
+      name: 'two',
+      select: {
+        type: 'multi',
+        encodings: ['y', 'color'],
+        nearest: true,
+        clear: false,
+        on: 'mouseover',
+        toggle: 'event.ctrlKey',
+        resolve: 'intersect'
+      }
     },
-    four: {
-      type: 'multi',
-      encodings: ['x', 'color'],
-      clear: false,
-      init: [{Horsepower: 50, color: 'Japan'}]
+    {
+      name: 'thr-ee',
+      value: [{Horsepower: 50}],
+      select: {
+        type: 'multi',
+        fields: ['Horsepower'],
+        clear: false
+      }
     },
-    five: {
-      type: 'multi',
-      fields: ['Year', 'Origin'],
-      clear: false,
-      init: [
+    {
+      name: 'four',
+      value: [{Horsepower: 50, color: 'Japan'}],
+      select: {
+        type: 'multi',
+        encodings: ['x', 'color'],
+        clear: false
+      }
+    },
+    {
+      name: 'five',
+      value: [
         {
           Origin: 'Japan',
           Year: {year: 1970, month: 1, date: 1}
@@ -54,14 +64,22 @@ describe('Multi Selection', () => {
           Origin: 'USA',
           Year: {year: 1980, month: 1, date: 1}
         }
-      ]
+      ],
+      select: {
+        type: 'multi',
+        fields: ['Year', 'Origin'],
+        clear: false
+      }
     },
-    six: {
-      type: 'multi',
-      fields: ['nested.a', 'nested.b'],
-      clear: false
+    {
+      name: 'six',
+      select: {
+        type: 'multi',
+        fields: ['nested.a', 'nested.b'],
+        clear: false
+      }
     }
-  }));
+  ]));
 
   it('builds tuple signals', () => {
     const oneSg = multi.signals(model, selCmpts['one']);

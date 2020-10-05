@@ -13,14 +13,17 @@
       }
     },
     {
-      "selection": {
-        "index": {
-          "type": "single",
-          "on": "mousemove",
-          "encodings": ["x"],
-          "nearest": true
+      "selection": [
+        {
+          "name": "index",
+          "select": {
+            "type": "single",
+            "encodings": ["x"],
+            "on": "mousemove",
+            "nearest": true
+          }
         }
-      },
+      ],
       "mark": {"type": "point"},
       "encoding": {
         "x": {"field": "date", "type": "temporal"},

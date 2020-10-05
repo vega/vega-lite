@@ -107,13 +107,14 @@ export const hits = {
   }
 };
 
-function base(iter: number, sel: any, opts: any = {}): NormalizedUnitSpec | NormalizedLayerSpec {
+function base(iter: number, selDef: any, opts: any = {}): NormalizedUnitSpec | NormalizedLayerSpec {
   const data = {values: opts.values ?? tuples};
   const x = {field: 'a', type: 'quantitative', ...opts.x};
   const y = {field: 'b', type: 'quantitative', ...opts.y};
   const color = {field: 'c', type: 'nominal', ...opts.color};
   const size = {value: 100, ...opts.size};
-  const selection = {sel};
+  const {bind, ...select} = selDef;
+  const selection = [{name: 'sel', select, bind}];
   const mark = 'circle';
 
   if (iter % 2 === 0) {

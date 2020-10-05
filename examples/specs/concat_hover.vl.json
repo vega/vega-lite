@@ -3,13 +3,14 @@
   "description": "Drag out a rectangular brush to highlight points.",
   "data": {"url": "data/cars.json"},
   "hconcat": [{
-    "selection": {
-      "hover": {
+    "selection": [{
+      "name": "hover",
+      "select": {
         "type": "single",
         "on": "mouseover",
         "empty": "none"
       }
-    },
+    }],
     "mark": "point",
     "encoding": {
       "x": {"field": "Horsepower", "type": "quantitative"},
@@ -20,13 +21,14 @@
       }
     }
   },{
-    "selection": {
-      "hover": {
+    "selection": [{
+      "name": "hover",
+      "select": {
         "type": "single",
         "on": "mouseover",
         "empty": "none"
       }
-    },
+    }],
     "mark": "point",
     "encoding": {
       "x": {"field": "Horsepower", "type": "quantitative"},

@@ -1,12 +1,13 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/cars.json"},
-  "selection": {
-    "brush": {
+  "selection": [{
+    "name": "brush",
+    "select": {
       "type": "interval",
       "zoom": "wheel![event.shiftKey]"
     }
-  },
+  }],
   "mark": {"type": "circle", "clip": true},
   "encoding": {
     "x": {

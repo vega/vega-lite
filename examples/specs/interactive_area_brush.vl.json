@@ -6,12 +6,10 @@
       "y": {"aggregate": "sum", "field": "count"}
   },
   "layer": [{
-    "selection": {
-      "brush": {
-        "type": "interval",
-        "encodings": ["x"]
-      }
-    },
+    "selection": [{
+      "name": "brush",
+      "select": {"type": "interval", "encodings": ["x"]}
+    }],
     "mark": "area"
   }, {
     "transform": [

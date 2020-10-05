@@ -14,21 +14,30 @@ describe('Toggle Selection Transform', () => {
   });
 
   model.parseScale();
-  const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'multi', clear: false},
-    two: {
-      type: 'multi',
-      resolve: 'union',
-      on: 'mouseover',
-      clear: false,
-      toggle: 'event.ctrlKey',
-      encodings: ['y', 'color']
+  const selCmpts = (model.component.selection = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: {type: 'multi', clear: false}
     },
-    three: {type: 'multi', clear: false, toggle: false},
-    four: {type: 'multi', clear: false, toggle: null},
-    five: {type: 'single', clear: false},
-    six: {type: 'interval', clear: false}
-  }));
+    {
+      name: 'two',
+      select: {
+        type: 'multi',
+        encodings: ['y', 'color'],
+        resolve: 'union',
+        on: 'mouseover',
+        clear: false,
+        toggle: 'event.ctrlKey'
+      }
+    },
+    {
+      name: 'three',
+      select: {type: 'multi', clear: false, toggle: false}
+    },
+    {name: 'four', select: {type: 'multi', clear: false, toggle: null}},
+    {name: 'five', select: {type: 'single', clear: false}},
+    {name: 'six', select: {type: 'interval', clear: false}}
+  ]));
 
   it('identifies transform invocation', () => {
     expect(toggle.has(selCmpts['one'])).toBeTruthy();

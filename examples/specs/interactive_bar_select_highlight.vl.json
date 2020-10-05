@@ -8,10 +8,20 @@
       {"a": "G", "b": 19}, {"a": "H", "b": 87}, {"a": "I", "b": 52}
     ]
   },
-  "selection": {
-    "highlight": {"type": "single", "empty": "none", "on": "mouseover"},
-    "select": {"type": "multi"}
-  },
+  "selection": [
+    {
+      "name": "highlight",
+      "select": {
+        "type": "single",
+        "empty": "none",
+        "on": "mouseover"
+      }
+    },
+    {
+      "name": "select",
+      "select": {"type": "multi"}
+    }
+  ],
   "mark": {
     "type": "bar",
     "fill": "#4C78A8",
