@@ -5,7 +5,9 @@
   "columns": 3,
   "concat": [
     {
-      "selection": {"brush": {"type": "interval", "resolve": "union"}},
+      "selection": [
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
+      ],
       "mark": "point",
       "encoding": {
         "x": {"field": "Miles_per_Gallon", "type": "quantitative"},
@@ -22,7 +24,9 @@
       "name": "child__row_Horsepowercolumn_Miles_per_Gallon"
     },
     {
-      "selection": {"brush": {"type": "interval", "resolve": "union"}},
+      "selection": [
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
+      ],
       "mark": "point",
       "encoding": {
         "x": {"field": "Acceleration", "type": "quantitative"},
@@ -39,7 +43,9 @@
       "name": "child__row_Horsepowercolumn_Acceleration"
     },
     {
-      "selection": {"brush": {"type": "interval", "resolve": "union"}},
+      "selection": [
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
+      ],
       "mark": "point",
       "encoding": {
         "x": {"field": "Horsepower", "type": "quantitative"},
@@ -56,7 +62,9 @@
       "name": "child__row_Horsepowercolumn_Horsepower"
     },
     {
-      "selection": {"brush": {"type": "interval", "resolve": "union"}},
+      "selection": [
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
+      ],
       "mark": "point",
       "encoding": {
         "x": {"field": "Miles_per_Gallon", "type": "quantitative"},
@@ -73,7 +81,9 @@
       "name": "child__row_Accelerationcolumn_Miles_per_Gallon"
     },
     {
-      "selection": {"brush": {"type": "interval", "resolve": "union"}},
+      "selection": [
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
+      ],
       "mark": "point",
       "encoding": {
         "x": {"field": "Acceleration", "type": "quantitative"},
@@ -90,7 +100,9 @@
       "name": "child__row_Accelerationcolumn_Acceleration"
     },
     {
-      "selection": {"brush": {"type": "interval", "resolve": "union"}},
+      "selection": [
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
+      ],
       "mark": "point",
       "encoding": {
         "x": {"field": "Horsepower", "type": "quantitative"},
@@ -107,7 +119,9 @@
       "name": "child__row_Accelerationcolumn_Horsepower"
     },
     {
-      "selection": {"brush": {"type": "interval", "resolve": "union"}},
+      "selection": [
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
+      ],
       "mark": "point",
       "encoding": {
         "x": {"field": "Miles_per_Gallon", "type": "quantitative"},
@@ -124,7 +138,9 @@
       "name": "child__row_Miles_per_Galloncolumn_Miles_per_Gallon"
     },
     {
-      "selection": {"brush": {"type": "interval", "resolve": "union"}},
+      "selection": [
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
+      ],
       "mark": "point",
       "encoding": {
         "x": {"field": "Acceleration", "type": "quantitative"},
@@ -141,7 +157,9 @@
       "name": "child__row_Miles_per_Galloncolumn_Acceleration"
     },
     {
-      "selection": {"brush": {"type": "interval", "resolve": "union"}},
+      "selection": [
+        {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
+      ],
       "mark": "point",
       "encoding": {
         "x": {"field": "Horsepower", "type": "quantitative"},

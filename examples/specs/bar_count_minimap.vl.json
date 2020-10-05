@@ -22,12 +22,13 @@
   }, {
     "height": 200,
     "width": 50,
-    "selection": {
-      "brush": {
+    "selection": [{
+      "name": "brush",
+      "select": {
         "type": "interval",
         "encodings": ["y"]
       }
-    },
+    }],
     "mark": "bar",
     "encoding": {
       "y": {

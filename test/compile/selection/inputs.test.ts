@@ -16,74 +16,91 @@ describe('Inputs Selection Transform', () => {
   });
 
   model.parseScale();
-  const selCmpts = parseUnitSelection(model, {
-    one: {
-      type: 'single',
+  const selCmpts = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: 'single',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    two: {
-      type: 'single',
-      fields: ['Cylinders', 'Horsepower'],
+    {
+      name: 'two',
+      select: {
+        type: 'single',
+        fields: ['Cylinders', 'Horsepower']
+      },
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    three: {
-      type: 'single',
-      nearest: true,
-      fields: ['Cylinders', 'Origin'],
+    {
+      name: 'three',
+      select: {
+        type: 'single',
+        fields: ['Cylinders', 'Origin'],
+        nearest: true
+      },
       bind: {
         Horsepower: {input: 'range', min: 0, max: 10, step: 1},
         Origin: {input: 'select', options: ['Japan', 'USA', 'Europe']}
       }
     },
-    four: {
-      type: 'single',
+    {
+      name: 'four',
+      select: 'single',
       bind: null
     },
-    six: {
-      type: 'interval',
+    {
+      name: 'six',
+      select: 'interval',
       bind: 'scales'
     },
-    seven: {
-      type: 'single',
-      fields: ['Year'],
+    {
+      name: 'seven',
+      value: {
+        Year: {year: 1970, month: 3, date: 9}
+      },
+      select: {type: 'single', fields: ['Year']},
       bind: {
         Year: {input: 'range', min: 1970, max: 1980, step: 1}
-      },
-      init: {
-        Year: {year: 1970, month: 3, date: 9}
       }
     },
-    eight: {
-      type: 'single',
-      on: 'dblclick',
+    {
+      name: 'eight',
+      select: {type: 'single', on: 'dblclick'},
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    nine: {
-      type: 'single',
-      on: 'click',
-      clear: 'dblclick',
+    {
+      name: 'nine',
+      select: {
+        type: 'single',
+        on: 'click',
+        clear: 'dblclick'
+      },
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    ten: {
-      type: 'single',
-      fields: ['nested.a'],
+    {
+      name: 'ten',
+      select: {type: 'single', fields: ['nested.a']},
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    eleven: {
-      type: 'single',
-      fields: ['nested.a'],
-      on: 'click',
+    {
+      name: 'eleven',
+      select: {
+        type: 'single',
+        fields: ['nested.a'],
+        on: 'click'
+      },
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    'space separated': {
-      type: 'single',
+    {
+      name: 'space separated',
+      select: 'single',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    'dash-separated': {
-      type: 'single',
+    {
+      name: 'dash-separated',
+      select: 'single',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     }
-  });
+  ]);
 
   it(
     'drop invalid selection',
@@ -98,9 +115,13 @@ describe('Inputs Selection Transform', () => {
       });
 
       model1.parseScale();
-      const invalidBindLegendSelCmpts = parseUnitSelection(model1, {
-        twelve: {type: 'single', bind: 'legend'}
-      });
+      const invalidBindLegendSelCmpts = parseUnitSelection(model1, [
+        {
+          name: 'twelve',
+          select: 'single',
+          bind: 'legend'
+        }
+      ]);
 
       expect(inputs.has(invalidBindLegendSelCmpts['twelve'])).toBeFalsy();
       expect(localLogger.warns[0]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);

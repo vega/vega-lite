@@ -45,7 +45,7 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   mark?: BrushConfig;
 
   // Transforms
-  project?: SelectionProjectionComponent;
+  project: SelectionProjectionComponent;
   scales?: SelectionProjection[];
   toggle?: any;
   translate?: any;

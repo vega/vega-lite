@@ -36,7 +36,7 @@ import {SelectionDef} from '../selection';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {isFrameMixins} from '../spec/base';
 import {stack, StackProperties} from '../stack';
-import {Dict, keys} from '../util';
+import {keys} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
 import {AxisInternalIndex} from './axis/component';
@@ -76,7 +76,7 @@ export class UnitModel extends ModelWithField {
 
   public specifiedProjection: Projection = {};
 
-  public readonly selection: Dict<SelectionDef> = {};
+  public readonly selection: SelectionDef[] = [];
   public children: Model[] = [];
 
   constructor(

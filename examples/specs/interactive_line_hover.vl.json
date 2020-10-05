@@ -25,15 +25,16 @@
   },
   "layer": [{
     "description": "transparent layer to make it easier to trigger selection",
-    "selection": {
-      "hover": {
+    "selection": [{
+      "name": "hover",
+      "value": {"symbol": "AAPL"},
+      "select": {
         "type": "single",
-        "on": "mouseover",
-        "empty": "all",
         "fields": ["symbol"],
-        "init": {"symbol": "AAPL"}
+        "on": "mouseover",
+        "empty": "all"
       }
-    },
+    }],
     "mark": {"type": "line", "strokeWidth": 8, "stroke": "transparent"}
   }, {
     "mark": "line"

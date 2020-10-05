@@ -447,7 +447,7 @@ describe('compile/mark/init', () => {
     it('should return pointer cursor when href channel present', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'bar',
-        selection: {test: {type: 'single'}},
+        selection: [{name: 'test', select: 'single'}],
         encoding: {
           x: {field: 'a', type: 'ordinal'},
           y: {field: 'b', type: 'quantitative'},
@@ -464,7 +464,7 @@ describe('compile/mark/init', () => {
     it('should return specified cursor when href channel present but cursor specified', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'bar', cursor: 'auto'},
-        selection: {test: {type: 'single'}},
+        selection: [{name: 'test', select: 'single'}],
         encoding: {
           x: {field: 'a', type: 'ordinal'},
           y: {field: 'b', type: 'quantitative'},

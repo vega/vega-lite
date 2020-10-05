@@ -9,13 +9,14 @@
     },
     "layer": [
       {
-        "selection": {
-          "hover": {
+        "selection": [{
+          "name": "hover",
+          "select": {
             "type": "single",
             "on": "mouseover",
             "empty": "none"
           }
-        },
+        }],
         "mark": "point"
       },
       {
@@ -31,13 +32,14 @@
     "layer": [
       {
 
-        "selection": {
-          "hover": {
+        "selection": [{
+          "name": "hover",
+          "select": {
             "type": "single",
             "on": "mouseover",
             "empty": "none"
           }
-        },
+        }],
         "mark": "point"
       },
       {

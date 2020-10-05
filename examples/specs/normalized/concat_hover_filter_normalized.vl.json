@@ -6,9 +6,12 @@
     {
       "layer": [
         {
-          "selection": {
-            "hover": {"type": "single", "on": "mouseover", "empty": "none"}
-          },
+          "selection": [
+            {
+              "name": "hover",
+              "select": {"type": "single", "on": "mouseover", "empty": "none"}
+            }
+          ],
           "mark": "point",
           "encoding": {
             "x": {"field": "Horsepower", "type": "quantitative"},
@@ -28,9 +31,12 @@
     {
       "layer": [
         {
-          "selection": {
-            "hover": {"type": "single", "on": "mouseover", "empty": "none"}
-          },
+          "selection": [
+            {
+              "name": "hover",
+              "select": {"type": "single", "on": "mouseover", "empty": "none"}
+            }
+          ],
           "mark": "point",
           "encoding": {
             "x": {"field": "Horsepower", "type": "quantitative"},

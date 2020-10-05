@@ -1,8 +1,13 @@
-import {array} from 'vega-util';
+import {array, isObject} from 'vega-util';
 import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../../channel';
 import * as log from '../../../log';
 import {hasContinuousDomain} from '../../../scale';
-import {SelectionInit, SelectionInitInterval} from '../../../selection';
+import {
+  BaseSelectionConfig,
+  SelectionInit,
+  SelectionInitInterval,
+  SelectionInitIntervalMapping
+} from '../../../selection';
 import {Dict, hash, keys, replacePathInField, varName, isEmpty} from '../../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../../data/timeunit';
 import {TransformCompiler} from './transforms';
@@ -63,42 +68,46 @@ const project: TransformCompiler = {
       return {[range]: sg};
     };
 
+    const type = selCmpt.type;
+    const init = selDef.value;
+
     // If no explicit projection (either fields or encodings) is specified, set some defaults.
     // If an initial value is set, try to infer projections.
     // Otherwise, use the default configuration.
-    if (!selDef.fields && !selDef.encodings) {
-      const cfg = model.config.selection[selDef.type];
+    let {fields, encodings} = isObject(selDef.select) ? selDef.select : ({} as BaseSelectionConfig);
+    if (!fields && !encodings) {
+      const cfg = model.config.selection[type];
 
-      if (selDef.init) {
-        for (const init of array(selDef.init)) {
-          for (const key of keys(init)) {
+      if (init) {
+        for (const initVal of array(init)) {
+          for (const key of keys(initVal)) {
             if (isSingleDefUnitChannel(key)) {
-              (selDef.encodings || (selDef.encodings = [])).push(key as SingleDefUnitChannel);
+              (encodings || (encodings = [])).push(key as SingleDefUnitChannel);
             } else {
-              if (selDef.type === 'interval') {
+              if (type === 'interval') {
                 log.warn(log.message.INTERVAL_INITIALIZED_WITH_X_Y);
-                selDef.encodings = cfg.encodings;
+                encodings = cfg.encodings;
               } else {
-                (selDef.fields || (selDef.fields = [])).push(key);
+                (fields || (fields = [])).push(key);
               }
             }
           }
         }
       } else {
-        selDef.encodings = cfg.encodings;
-        selDef.fields = cfg.fields;
+        encodings = cfg.encodings;
+        fields = cfg.fields;
       }
     }
 
     // TODO: find a possible channel mapping for these fields.
-    for (const field of selDef.fields ?? []) {
+    for (const field of fields ?? []) {
       const p: SelectionProjection = {type: 'E', field};
       p.signals = {...signalName(p, 'data')};
       proj.items.push(p);
       proj.hasField[field] = p;
     }
 
-    for (const channel of selDef.encodings ?? []) {
+    for (const channel of encodings ?? []) {
       const fieldDef = model.fieldDef(channel);
       if (fieldDef) {
         let field = fieldDef.field;
@@ -132,17 +141,17 @@ const project: TransformCompiler = {
           // Determine whether the tuple will store enumerated or ranged values.
           // Interval selections store ranges for continuous scales, and enumerations otherwise.
           // Single/multi selections store ranges for binned fields, and enumerations otherwise.
-          let type: TupleStoreType = 'E';
-          if (selCmpt.type === 'interval') {
+          let tplType: TupleStoreType = 'E';
+          if (type === 'interval') {
             const scaleType = model.getScaleComponent(channel as ScaleChannel).get('type');
             if (hasContinuousDomain(scaleType)) {
-              type = 'R';
+              tplType = 'R';
             }
           } else if (fieldDef.bin) {
-            type = 'R-RE';
+            tplType = 'R-RE';
           }
 
-          const p: SelectionProjection = {field, channel, type};
+          const p: SelectionProjection = {field, channel, type: tplType};
           p.signals = {...signalName(p, 'data'), ...signalName(p, 'visual')};
           proj.items.push((parsed[field] = p));
           proj.hasField[field] = proj.hasChannel[channel] = parsed[field];
@@ -152,16 +161,15 @@ const project: TransformCompiler = {
       }
     }
 
-    if (selDef.init) {
+    if (init) {
       const parseInit = <T extends SelectionInit | SelectionInitInterval>(i: Dict<T>): T[] => {
         return proj.items.map(p => (i[p.channel] !== undefined ? i[p.channel] : i[p.field]));
       };
 
-      if (selDef.type === 'interval') {
-        selCmpt.init = parseInit(selDef.init);
+      if (type === 'interval') {
+        selCmpt.init = parseInit(selDef.value as SelectionInitIntervalMapping);
       } else {
-        const init = array(selDef.init);
-        selCmpt.init = init.map(parseInit);
+        selCmpt.init = array(selDef.value).map(parseInit);
       }
     }
 

@@ -20,34 +20,49 @@ describe('Single Selection', () => {
 
   model.parseScale();
 
-  const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'single', clear: false},
-    two: {
-      type: 'single',
-      clear: false,
-      nearest: true,
-      on: 'mouseover',
-      encodings: ['y', 'color'],
-      resolve: 'intersect'
+  const selCmpts = (model.component.selection = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: {type: 'single', clear: false}
     },
-    'thr-ee': {
-      type: 'single',
-      clear: false,
-      fields: ['Horsepower'],
-      init: {Horsepower: 50}
+    {
+      name: 'two',
+      select: {
+        type: 'single',
+        encodings: ['y', 'color'],
+        clear: false,
+        nearest: true,
+        on: 'mouseover',
+        resolve: 'intersect'
+      }
     },
-    four: {
-      type: 'single',
-      clear: false,
-      encodings: ['x', 'color'],
-      init: {x: 50, Origin: 'Japan'}
+    {
+      name: 'thr-ee',
+      value: {Horsepower: 50},
+      select: {
+        type: 'single',
+        fields: ['Horsepower'],
+        clear: false
+      }
     },
-    five: {
-      type: 'single',
-      fields: ['nested.a', 'nested.b'],
-      clear: false
+    {
+      name: 'four',
+      value: {x: 50, Origin: 'Japan'},
+      select: {
+        type: 'single',
+        encodings: ['x', 'color'],
+        clear: false
+      }
+    },
+    {
+      name: 'five',
+      select: {
+        type: 'single',
+        fields: ['nested.a', 'nested.b'],
+        clear: false
+      }
     }
-  }));
+  ]));
 
   it('builds tuple signals', () => {
     const oneSg = single.signals(model, selCmpts['one']);

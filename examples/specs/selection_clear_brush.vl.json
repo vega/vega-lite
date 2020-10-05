@@ -1,13 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/cars.json"},
-  "selection": {
-    "brush": {
-      "type": "interval",
-      "init": {"x": [55, 160], "y": [13, 37]},
-      "clear": "mouseup"
-    }
-  },
+  "selection": [{
+    "name": "brush",
+    "value": {"x": [55, 160], "y": [13, 37]},
+    "select": {"type": "interval", "clear": "mouseup"}
+  }],
   "mark": "point",
   "encoding": {
     "x": {"field": "Horsepower", "type": "quantitative"},

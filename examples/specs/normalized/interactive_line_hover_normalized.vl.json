@@ -6,15 +6,18 @@
   "layer": [
     {
       "description": "transparent layer to make it easier to trigger selection",
-      "selection": {
-        "hover": {
-          "type": "single",
-          "on": "mouseover",
-          "empty": "all",
-          "fields": ["symbol"],
-          "init": {"symbol": "AAPL"}
+      "selection": [
+        {
+          "name": "hover",
+          "value": {"symbol": "AAPL"},
+          "select": {
+            "type": "single",
+            "fields": ["symbol"],
+            "on": "mouseover",
+            "empty": "all"
+          }
         }
-      },
+      ],
       "mark": {"type": "line", "strokeWidth": 8, "stroke": "transparent"},
       "encoding": {
         "x": {"field": "date", "type": "temporal", "title": "date"},

@@ -35,9 +35,9 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
   projection?: Projection;
 
   /**
-   * A key-value mapping between selection names and definitions.
+   * An array of interactive selections, such as discrete points and continuous intervals.
    */
-  selection?: Record<string, SelectionDef>;
+  selection?: SelectionDef[];
 }
 
 /**

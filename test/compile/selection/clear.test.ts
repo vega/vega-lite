@@ -18,29 +18,32 @@ describe('Clear selection transform, single and multi types', () => {
   });
 
   model.parseScale();
-  const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'single'},
-    two: {type: 'multi'},
-    three: {type: 'single', clear: 'mouseout'},
-    four: {type: 'multi', clear: 'mouseout'},
-    five: {type: 'single', clear: false},
-    six: {type: 'multi', clear: false},
-    seven: {
-      type: 'single',
-      fields: ['Year'],
+  const selCmpts = (model.component.selection = parseUnitSelection(model, [
+    {name: 'one', select: 'single'},
+    {name: 'two', select: 'multi'},
+    {name: 'three', select: {type: 'single', clear: 'mouseout'}},
+    {name: 'four', select: {type: 'multi', clear: 'mouseout'}},
+    {name: 'five', select: {type: 'single', clear: false}},
+    {name: 'six', select: {type: 'multi', clear: false}},
+    {
+      name: 'seven',
+      select: {type: 'single', fields: ['Year']},
       bind: {
         Year: {input: 'range', min: 1970, max: 1980, step: 1}
       }
     },
-    eight: {
-      type: 'single',
-      fields: ['Year'],
-      clear: 'click',
+    {
+      name: 'eight',
+      select: {
+        type: 'single',
+        fields: ['Year'],
+        clear: 'click'
+      },
       bind: {
         Year: {input: 'range', min: 1970, max: 1980, step: 1}
       }
     }
-  }));
+  ]));
 
   it('identifies transform invocation', () => {
     expect(clear.has(selCmpts['one'])).toBeTruthy();
@@ -158,11 +161,21 @@ describe('Clear selection transform, interval type', () => {
   });
 
   model.parseScale();
-  const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'interval', encodings: ['x', 'y'], bind: 'scales', translate: false, zoom: false},
-    two: {type: 'interval', translate: false, zoom: false},
-    three: {type: 'interval', encodings: ['x', 'y'], clear: false, translate: false, zoom: false}
-  }));
+  const selCmpts = (model.component.selection = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: {type: 'interval', encodings: ['x', 'y'], translate: false, zoom: false},
+      bind: 'scales'
+    },
+    {
+      name: 'two',
+      select: {type: 'interval', translate: false, zoom: false}
+    },
+    {
+      name: 'three',
+      select: {type: 'interval', encodings: ['x', 'y'], clear: false, translate: false, zoom: false}
+    }
+  ]));
 
   it('identifies transform invocation', () => {
     expect(clear.has(selCmpts['one'])).toBeTruthy();

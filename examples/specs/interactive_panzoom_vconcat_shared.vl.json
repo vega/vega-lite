@@ -3,11 +3,11 @@
   "data": {"url": "data/cars.json"},
   "vconcat": [
     {
-      "selection": {
-        "region": {
-          "type": "interval", "bind": "scales"
-        }
-      },
+      "selection": [{
+        "name": "region",
+        "select": "interval",
+        "bind": "scales"
+      }],
       "mark": "point",
       "encoding": {
         "x": {"field": "Horsepower", "type": "quantitative"},

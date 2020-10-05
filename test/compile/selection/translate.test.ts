@@ -16,33 +16,54 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
   });
 
   model.parseScale();
-  const selCmpts = parseUnitSelection(model, {
-    one: {
-      type: 'single'
+  const selCmpts = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: {
+        type: 'single'
+      }
     },
-    two: {
-      type: 'multi'
+    {
+      name: 'two',
+      select: {
+        type: 'multi'
+      }
     },
-    three: {
-      type: 'interval',
-      translate: false
+    {
+      name: 'three',
+      select: {
+        type: 'interval',
+        translate: false
+      }
     },
-    four: {
-      type: 'interval'
+    {
+      name: 'four',
+      select: {
+        type: 'interval'
+      }
     },
-    five: {
-      type: 'interval',
-      translate: '[mousedown, mouseup] > mousemove, [keydown, keyup] > touchmove'
+    {
+      name: 'five',
+      select: {
+        type: 'interval',
+        translate: '[mousedown, mouseup] > mousemove, [keydown, keyup] > touchmove'
+      }
     },
-    six: {
-      type: 'interval',
+    {
+      name: 'six',
+      select: {
+        type: 'interval'
+      },
       bind: 'scales'
     },
-    seven: {
-      type: 'interval',
-      translate: null
+    {
+      name: 'seven',
+      select: {
+        type: 'interval',
+        translate: null
+      }
     }
-  });
+  ]);
 
   return {model, selCmpts};
 }
