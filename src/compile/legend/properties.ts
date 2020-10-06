@@ -237,7 +237,7 @@ function gradientLengthSignal(model: Model, sizeType: 'width' | 'height', min: n
 }
 
 export function defaultLabelOverlap(scaleType: ScaleType): LabelOverlap {
-  if (contains(['quantile', 'threshold', 'log'], scaleType)) {
+  if (contains(['quantile', 'threshold', 'log', 'symlog'], scaleType)) {
     return 'greedy';
   }
   return undefined;

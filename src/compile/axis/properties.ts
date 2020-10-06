@@ -277,7 +277,7 @@ export function defaultLabelFlush(type: Type, channel: PositionScaleChannel) {
 export function defaultLabelOverlap(type: Type, scaleType: ScaleType, hasTimeUnit: boolean, sort?: Sort<string>) {
   // do not prevent overlap for nominal data because there is no way to infer what the missing labels are
   if ((hasTimeUnit && !isObject(sort)) || (type !== 'nominal' && type !== 'ordinal')) {
-    if (scaleType === 'log') {
+    if (scaleType === 'log' || scaleType === 'symlog') {
       return 'greedy';
     }
     return true;

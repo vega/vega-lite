@@ -84,6 +84,11 @@ describe('compile/legend', () => {
       expect(overlap).toBe('greedy');
     });
 
+    it('should return greedy for symlog', () => {
+      const overlap = properties.defaultLabelOverlap('symlog');
+      expect(overlap).toBe('greedy');
+    });
+
     it('should return greedy for threshold', () => {
       const overlap = properties.defaultLabelOverlap('threshold');
       expect(overlap).toBe('greedy');
