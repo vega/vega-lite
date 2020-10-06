@@ -428,8 +428,9 @@ describe('compile/axis/properties', () => {
       expect(properties.defaultLabelOverlap('nominal', 'band', false)).toBeUndefined();
     });
 
-    it('returns greedy for log scale', () => {
+    it('returns greedy for log and symlog scale', () => {
       expect(properties.defaultLabelOverlap('quantitative', 'log', false)).toBe('greedy');
+      expect(properties.defaultLabelOverlap('quantitative', 'symlog', false)).toBe('greedy');
     });
   });
 
