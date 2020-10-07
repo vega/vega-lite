@@ -21,6 +21,7 @@ const interval: SelectionCompiler<'interval'> = {
     const name = selCmpt.name;
     const fieldsSg = name + TUPLE_FIELDS;
     const hasScales = scales.defined(selCmpt);
+    const init = selCmpt.init ? selCmpt.init[0] : null;
     const dataSignals: string[] = [];
     const scaleTriggers: {
       scaleName: string;
@@ -45,8 +46,8 @@ const interval: SelectionCompiler<'interval'> = {
         return;
       }
 
-      const init = selCmpt.init ? selCmpt.init[i] : null;
-      const cs = channelSignals(model, selCmpt, proj, init);
+      const val = init ? init[i] : null;
+      const cs = channelSignals(model, selCmpt, proj, val);
       const dname = proj.signals.data;
       const vname = proj.signals.visual;
       const scaleName = stringValue(model.scaleName(channel));
@@ -83,7 +84,6 @@ const interval: SelectionCompiler<'interval'> = {
     // Only add an interval to the store if it has valid data extents. Data extents
     // are set to null if pixel extents are equal to account for intervals over
     // ordinal/nominal domains which, when inverted, will still produce a valid datum.
-    const init = selCmpt.init;
     const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
     return signals.concat({
       name: name + TUPLE,

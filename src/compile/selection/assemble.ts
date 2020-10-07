@@ -81,10 +81,10 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
     const hasSg = signals.filter(s => s.name === name);
     if (hasSg.length === 0) {
       const resolve = selCmpt.resolve === 'global' ? 'union' : selCmpt.resolve;
-      const isMulti = selCmpt.type === 'multi' ? ', true)' : ')';
+      const isPoint = selCmpt.type === 'point' ? ', true)' : ')';
       signals.push({
         name: selCmpt.name,
-        update: `${VL_SELECTION_RESOLVE}(${store}, ${stringValue(resolve)}${isMulti}`
+        update: `${VL_SELECTION_RESOLVE}(${store}, ${stringValue(resolve)}${isPoint}`
       });
     }
     hasSelections = true;
@@ -120,11 +120,11 @@ export function assembleUnitSelectionData(model: UnitModel, data: readonly VgDat
         return rest;
       });
 
-      const insert = selCmpt.init.map(i => assembleInit(i, false));
-      init.values =
-        selCmpt.type === 'interval'
-          ? [{unit: unitName(model, {escape: false}), fields, values: insert}]
-          : insert.map(i => ({unit: unitName(model, {escape: false}), fields, values: i}));
+      init.values = selCmpt.init.map(i => ({
+        unit: unitName(model, {escape: false}),
+        fields,
+        values: assembleInit(i, false)
+      }));
     }
     const contains = dataCopy.filter(d => d.name === selCmpt.name + STORE);
     if (!contains.length) {

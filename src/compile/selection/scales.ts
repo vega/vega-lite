@@ -8,7 +8,7 @@ import {UnitModel} from '../unit';
 import {SelectionProjection} from './project';
 import {SelectionCompiler} from '.';
 
-const scaleBindings: SelectionCompiler = {
+const scaleBindings: SelectionCompiler<'interval'> = {
   defined: selCmpt => {
     return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
   },

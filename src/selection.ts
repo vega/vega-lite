@@ -6,7 +6,7 @@ import {DateTime} from './datetime';
 import {Dict} from './util';
 
 export const SELECTION_ID = '_vgsid_';
-export type SelectionType = 'single' | 'multi' | 'interval';
+export type SelectionType = 'point' | 'interval';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
 
 export type SelectionInit = PrimitiveValue | DateTime;
@@ -70,17 +70,7 @@ export interface BaseSelectionConfig {
   empty?: 'all' | 'none';
 }
 
-export interface SingleSelectionConfig extends BaseSelectionConfig {
-  /**
-   * When true, an invisible voronoi diagram is computed to accelerate discrete
-   * selection. The data value _nearest_ the mouse cursor is added to the selection.
-   *
-   * __See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.
-   */
-  nearest?: boolean;
-}
-
-export interface MultiSelectionConfig extends BaseSelectionConfig {
+export interface PointSelectionConfig extends BaseSelectionConfig {
   /**
    * Controls whether data values should be toggled or only ever inserted into
    * multi selections. Can be `true`, `false` (for insertion only), or a
@@ -185,45 +175,32 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
   mark?: BrushConfig;
 }
 
-export type SelectionTypeConfig = SingleSelectionConfig | MultiSelectionConfig | IntervalSelectionConfig;
+export type SelectionTypeConfig = PointSelectionConfig | IntervalSelectionConfig;
 
-export interface BaseSelectionDef<T extends SelectionType> {
+export interface SelectionDef<T extends SelectionType = SelectionType> {
   /**
    * Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
    */
   name: string;
 
   /**
-   * Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:
+   * Determines the default event processing and data query for the selection. Vega-Lite currently supports two selection types:
    *
-   * - `"single"` -- to select a single discrete data value on `click`.
-   * - `"multi"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.
+   * - `"point"` -- to select multiple discrete data values; the first value is selected on `click` and additional values toggled on shift-click.
    * - `"interval"` -- to select a continuous range of data values on `drag`.
    */
   select:
-    | SelectionType
+    | T
     | ({
-        type: SelectionType;
-      } & (T extends 'single'
-        ? SingleSelectionConfig
-        : T extends 'multi'
-        ? MultiSelectionConfig
-        : T extends 'interval'
-        ? IntervalSelectionConfig
-        : never));
+        type: T;
+      } & (T extends 'point' ? PointSelectionConfig : T extends 'interval' ? IntervalSelectionConfig : never));
 
   /**
    * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.
    *
    * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
-  value?: T extends 'single'
-    ? SelectionInitMapping
-    : T extends 'multi'
-    ? SelectionInitMapping[]
-    : T extends 'interval'
-    ? SelectionInitIntervalMapping
-    : never;
+  value?: T extends 'point' ? SelectionInitMapping[] : T extends 'interval' ? SelectionInitIntervalMapping : never;
 
   /**
    * When set, a selection is populated by input elements (also known as dynamic query widgets)
@@ -237,22 +214,12 @@ export interface BaseSelectionDef<T extends SelectionType> {
    *
    * __See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.
    */
-  bind?: T extends 'single'
+  bind?: T extends 'point'
     ? Binding | Record<string, Binding> | LegendBinding
-    : T extends 'multi'
-    ? LegendBinding
     : T extends 'interval'
     ? 'scales'
     : never;
 }
-
-export type SingleSelection = BaseSelectionDef<'single'>;
-
-export type MultiSelection = BaseSelectionDef<'multi'>;
-
-export type IntervalSelection = BaseSelectionDef<'interval'>;
-
-export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
 
 export type TopLevelSelectionDef = SelectionDef & {
   /**
@@ -288,20 +255,12 @@ export type SelectionExtent =
 
 export interface SelectionConfig {
   /**
-   * The default definition for a [`single`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations
-   *  for a single selection definition (except `type`) may be specified here.
+   * The default definition for a [`point`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations
+   *  for a point selection definition (except `type`) may be specified here.
    *
-   * For instance, setting `single` to `{"on": "dblclick"}` populates single selections on double-click by default.
+   * For instance, setting `point` to `{"on": "dblclick"}` populates point selections on double-click by default.
    */
-  single?: SingleSelectionConfig;
-  /**
-   * The default definition for a [`multi`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations
-   * for a multi selection definition (except `type`) may be specified here.
-   *
-   * For instance, setting `multi` to `{"toggle": "event.altKey"}` adds additional values to
-   * multi selections when clicking with the alt-key pressed by default.
-   */
-  multi?: MultiSelectionConfig;
+  point?: PointSelectionConfig;
   /**
    * The default definition for an [`interval`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations
    * for an interval selection definition (except `type`) may be specified here.
@@ -313,14 +272,7 @@ export interface SelectionConfig {
 }
 
 export const defaultConfig: SelectionConfig = {
-  single: {
-    on: 'click',
-    fields: [SELECTION_ID],
-    resolve: 'global',
-    empty: 'all',
-    clear: 'dblclick'
-  },
-  multi: {
+  point: {
     on: 'click',
     fields: [SELECTION_ID],
     toggle: 'event.shiftKey',

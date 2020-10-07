@@ -1,7 +1,7 @@
 import {isObject, MergedStream, Stream} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {array, isString} from 'vega-util';
-import {SelectionComponent, TUPLE} from '.';
+import {disableDirectManipulation, TUPLE} from '.';
 import {NonPositionScaleChannel} from '../../channel';
 import * as log from '../../log';
 import {isLegendBinding, isLegendStreamBinding, SELECTION_ID} from '../../selection';
@@ -12,7 +12,7 @@ import {TUPLE_FIELDS} from './project';
 import {TOGGLE} from './toggle';
 import {SelectionCompiler} from '.';
 
-const legendBindings: SelectionCompiler = {
+const legendBindings: SelectionCompiler<'point'> = {
   defined: selCmpt => {
     const spec = selCmpt.resolve === 'global' && selCmpt.bind && isLegendBinding(selCmpt.bind);
     const projLen = selCmpt.project.items.length === 1 && selCmpt.project.items[0].field !== SELECTION_ID;
@@ -24,10 +24,7 @@ const legendBindings: SelectionCompiler = {
   },
 
   parse: (model, selCmpt, selDef) => {
-    // Binding a selection to a legend disables default direct manipulation interaction.
-    // A user can choose to re-enable it by explicitly specifying triggering input events.
-    if (isString(selDef.select) || !selDef.select.on) delete selCmpt.events;
-    if (isString(selDef.select) || !selDef.select.clear) delete selCmpt.clear;
+    disableDirectManipulation(selCmpt, selDef);
 
     if (isObject(selDef.select) && (selDef.select.on || selDef.select.clear)) {
       const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
@@ -44,7 +41,7 @@ const legendBindings: SelectionCompiler = {
     selCmpt.bind = {legend: {merge: stream}};
   },
 
-  topLevelSignals: (model, selCmpt: SelectionComponent<'single' | 'multi'>, signals) => {
+  topLevelSignals: (model, selCmpt, signals) => {
     const selName = selCmpt.name;
     const stream = isLegendStreamBinding(selCmpt.bind) && (selCmpt.bind.legend as MergedStream);
     const markName = (name: string) => (s: Stream) => {
