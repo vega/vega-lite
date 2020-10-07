@@ -19,13 +19,13 @@ describe('Inputs Selection Transform', () => {
   const selCmpts = parseUnitSelection(model, [
     {
       name: 'one',
-      select: 'single',
+      select: 'point',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     {
       name: 'two',
       select: {
-        type: 'single',
+        type: 'point',
         fields: ['Cylinders', 'Horsepower']
       },
       bind: {input: 'range', min: 0, max: 10, step: 1}
@@ -33,7 +33,7 @@ describe('Inputs Selection Transform', () => {
     {
       name: 'three',
       select: {
-        type: 'single',
+        type: 'point',
         fields: ['Cylinders', 'Origin'],
         nearest: true
       },
@@ -44,7 +44,7 @@ describe('Inputs Selection Transform', () => {
     },
     {
       name: 'four',
-      select: 'single',
+      select: 'point',
       bind: null
     },
     {
@@ -54,23 +54,25 @@ describe('Inputs Selection Transform', () => {
     },
     {
       name: 'seven',
-      value: {
-        Year: {year: 1970, month: 3, date: 9}
-      },
-      select: {type: 'single', fields: ['Year']},
+      value: [
+        {
+          Year: {year: 1970, month: 3, date: 9}
+        }
+      ],
+      select: {type: 'point', fields: ['Year']},
       bind: {
         Year: {input: 'range', min: 1970, max: 1980, step: 1}
       }
     },
     {
       name: 'eight',
-      select: {type: 'single', on: 'dblclick'},
+      select: {type: 'point', on: 'dblclick'},
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     {
       name: 'nine',
       select: {
-        type: 'single',
+        type: 'point',
         on: 'click',
         clear: 'dblclick'
       },
@@ -78,13 +80,13 @@ describe('Inputs Selection Transform', () => {
     },
     {
       name: 'ten',
-      select: {type: 'single', fields: ['nested.a']},
+      select: {type: 'point', fields: ['nested.a']},
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     {
       name: 'eleven',
       select: {
-        type: 'single',
+        type: 'point',
         fields: ['nested.a'],
         on: 'click'
       },
@@ -92,12 +94,12 @@ describe('Inputs Selection Transform', () => {
     },
     {
       name: 'space separated',
-      select: 'single',
+      select: 'point',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     {
       name: 'dash-separated',
-      select: 'single',
+      select: 'point',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     }
   ]);
@@ -118,7 +120,7 @@ describe('Inputs Selection Transform', () => {
       const invalidBindLegendSelCmpts = parseUnitSelection(model1, [
         {
           name: 'twelve',
-          select: 'single',
+          select: 'point',
           bind: 'legend'
         }
       ]);

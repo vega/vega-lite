@@ -1,13 +1,12 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {assembleTopLevelSignals} from '../../../src/compile/selection/assemble';
 import interval from '../../../src/compile/selection/interval';
-import multi from '../../../src/compile/selection/multi';
+import point from '../../../src/compile/selection/point';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import single from '../../../src/compile/selection/single';
 import clear from '../../../src/compile/selection/clear';
 import {parseUnitModel} from '../../util';
 
-describe('Clear selection transform, single and multi types', () => {
+describe('Clear selection transform, point types', () => {
   const model = parseUnitModel({
     mark: 'circle',
     encoding: {
@@ -19,15 +18,14 @@ describe('Clear selection transform, single and multi types', () => {
 
   model.parseScale();
   const selCmpts = (model.component.selection = parseUnitSelection(model, [
-    {name: 'one', select: 'single'},
-    {name: 'two', select: 'multi'},
-    {name: 'three', select: {type: 'single', clear: 'mouseout'}},
-    {name: 'four', select: {type: 'multi', clear: 'mouseout'}},
-    {name: 'five', select: {type: 'single', clear: false}},
-    {name: 'six', select: {type: 'multi', clear: false}},
+    {name: 'one', select: 'point'},
+    {name: 'three', select: {type: 'point', clear: 'mouseout'}},
+    {name: 'four', select: {type: 'point', clear: 'mouseout'}},
+    {name: 'five', select: {type: 'point', clear: false}},
+    {name: 'six', select: {type: 'point', clear: false}},
     {
       name: 'seven',
-      select: {type: 'single', fields: ['Year']},
+      select: {type: 'point', fields: ['Year']},
       bind: {
         Year: {input: 'range', min: 1970, max: 1980, step: 1}
       }
@@ -35,7 +33,7 @@ describe('Clear selection transform, single and multi types', () => {
     {
       name: 'eight',
       select: {
-        type: 'single',
+        type: 'point',
         fields: ['Year'],
         clear: 'click'
       },
@@ -47,7 +45,6 @@ describe('Clear selection transform, single and multi types', () => {
 
   it('identifies transform invocation', () => {
     expect(clear.defined(selCmpts['one'])).toBeTruthy();
-    expect(clear.defined(selCmpts['two'])).toBeTruthy();
     expect(clear.defined(selCmpts['three'])).toBeTruthy();
     expect(clear.defined(selCmpts['four'])).toBeTruthy();
     expect(clear.defined(selCmpts['five'])).toBeFalsy();
@@ -55,7 +52,7 @@ describe('Clear selection transform, single and multi types', () => {
   });
 
   it('appends clear event trigger', () => {
-    const singleOneSg = single.signals(model, selCmpts['one'], []);
+    const singleOneSg = point.signals(model, selCmpts['one'], []);
     const oneSg = clear.signals(model, selCmpts['one'], singleOneSg);
     expect(oneSg).toEqual([
       {
@@ -72,24 +69,7 @@ describe('Clear selection transform, single and multi types', () => {
       }
     ]);
 
-    const multiTwoSg = multi.signals(model, selCmpts['two'], []);
-    const twoSg = clear.signals(model, selCmpts['two'], multiTwoSg);
-    expect(twoSg).toEqual([
-      {
-        name: 'two_tuple',
-        on: [
-          {
-            events: selCmpts['two'].events,
-            update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: two_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
-            force: true
-          },
-          {events: parseSelector('dblclick', 'scope'), update: 'null'}
-        ]
-      }
-    ]);
-
-    const singleThreeSg = single.signals(model, selCmpts['three'], []);
+    const singleThreeSg = point.signals(model, selCmpts['three'], []);
     const threeSg = clear.signals(model, selCmpts['three'], singleThreeSg);
     expect(threeSg).toEqual([
       {
@@ -106,7 +86,7 @@ describe('Clear selection transform, single and multi types', () => {
       }
     ]);
 
-    const multiFourSg = multi.signals(model, selCmpts['four'], []);
+    const multiFourSg = point.signals(model, selCmpts['four'], []);
     const fourSg = clear.signals(model, selCmpts['four'], multiFourSg);
     expect(fourSg).toEqual([
       {

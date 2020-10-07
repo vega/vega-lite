@@ -22,17 +22,17 @@ describe('Interactive Legends', () => {
       const selCmpts = (m.component.selection = parseUnitSelection(m, [
         {
           name: 'three',
-          select: {type: 'multi', fields: ['Origin', 'Cylinders']},
+          select: {type: 'point', fields: ['Origin', 'Cylinders']},
           bind: 'legend'
         },
         {
           name: 'five',
-          select: {type: 'single', encodings: ['color', 'size']},
+          select: {type: 'point', encodings: ['color', 'size']},
           bind: 'legend'
         },
         {
           name: 'six',
-          select: 'multi',
+          select: 'point',
           bind: 'legend'
         }
       ]));
@@ -62,39 +62,39 @@ describe('Interactive Legends', () => {
   const selCmpts = (model.component.selection = parseUnitSelection(model, [
     {
       name: 'one',
-      select: {type: 'single', fields: ['Origin']},
+      select: {type: 'point', fields: ['Origin']},
       bind: 'legend'
     },
     {
       name: 'two',
-      select: {type: 'multi', fields: ['Origin']},
+      select: {type: 'point', fields: ['Origin']},
       bind: {legend: 'dblclick, mouseover'}
     },
     {
       name: 'four',
-      select: {type: 'single', encodings: ['color']},
+      select: {type: 'point', encodings: ['color']},
       bind: 'legend'
     },
     {
       name: 'seven',
-      select: {type: 'multi', fields: ['Origin'], on: 'click'},
+      select: {type: 'point', fields: ['Origin'], on: 'click'},
       bind: {legend: 'mouseover'}
     },
     {
       name: 'eight',
-      select: {type: 'multi', encodings: ['color'], on: 'click', clear: 'dblclick'},
+      select: {type: 'point', encodings: ['color'], on: 'click', clear: 'dblclick'},
       bind: {legend: 'mouseover'}
     },
     {
       name: 'nine',
-      select: 'single',
+      select: 'point',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     {
       name: 'ten',
       value: [{Origin: 'USA'}, {Origin: 'Japan'}],
       select: {
-        type: 'multi',
+        type: 'point',
         fields: ['Origin']
       },
       bind: 'legend'

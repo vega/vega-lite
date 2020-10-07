@@ -17,7 +17,7 @@ describe('Selection + Scales', () => {
             mark: 'area',
             params: [
               {name: 'brush', select: {type: 'interval', encodings: ['x']}},
-              {name: 'brush2', select: {type: 'multi', fields: ['price'], resolve: 'intersect'}}
+              {name: 'brush2', select: {type: 'point', fields: ['price'], resolve: 'intersect'}}
             ],
             encoding: {
               x: {field: 'date', type: 'temporal'},

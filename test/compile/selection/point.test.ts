@@ -1,14 +1,14 @@
 import {
-  assembleTopLevelSignals,
   assembleUnitSelectionData,
   assembleUnitSelectionMarks,
-  assembleUnitSelectionSignals
+  assembleUnitSelectionSignals,
+  assembleTopLevelSignals
 } from '../../../src/compile/selection/assemble';
+import point from '../../../src/compile/selection/point';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import single from '../../../src/compile/selection/single';
 import {parseUnitModelWithScale} from '../../util';
 
-describe('Single Selection', () => {
+describe('Multi Selection', () => {
   const model = parseUnitModelWithScale({
     mark: 'circle',
     encoding: {
@@ -18,46 +18,63 @@ describe('Single Selection', () => {
     }
   });
 
-  model.parseScale();
-
   const selCmpts = (model.component.selection = parseUnitSelection(model, [
     {
       name: 'one',
-      select: {type: 'single', clear: false}
+      select: {type: 'point', toggle: false, clear: false}
     },
     {
       name: 'two',
       select: {
-        type: 'single',
+        type: 'point',
         encodings: ['y', 'color'],
-        clear: false,
         nearest: true,
+        clear: false,
         on: 'mouseover',
+        toggle: false,
         resolve: 'intersect'
       }
     },
     {
       name: 'thr-ee',
-      value: {Horsepower: 50},
+      value: [{Horsepower: 50}],
       select: {
-        type: 'single',
+        type: 'point',
         fields: ['Horsepower'],
         clear: false
       }
     },
     {
       name: 'four',
-      value: {x: 50, Origin: 'Japan'},
+      value: [{Horsepower: 50, color: 'Japan'}],
       select: {
-        type: 'single',
+        type: 'point',
         encodings: ['x', 'color'],
         clear: false
       }
     },
     {
       name: 'five',
+      value: [
+        {
+          Origin: 'Japan',
+          Year: {year: 1970, month: 1, date: 1}
+        },
+        {
+          Origin: 'USA',
+          Year: {year: 1980, month: 1, date: 1}
+        }
+      ],
       select: {
-        type: 'single',
+        type: 'point',
+        fields: ['Year', 'Origin'],
+        clear: false
+      }
+    },
+    {
+      name: 'six',
+      select: {
+        type: 'point',
         fields: ['nested.a', 'nested.b'],
         clear: false
       }
@@ -65,7 +82,7 @@ describe('Single Selection', () => {
   ]));
 
   it('builds tuple signals', () => {
-    const oneSg = single.signals(model, selCmpts['one'], []);
+    const oneSg = point.signals(model, selCmpts['one'], []);
     expect(oneSg).toEqual([
       {
         name: 'one_tuple',
@@ -80,7 +97,7 @@ describe('Single Selection', () => {
       }
     ]);
 
-    const twoSg = single.signals(model, selCmpts['two'], []);
+    const twoSg = point.signals(model, selCmpts['two'], []);
     expect(twoSg).toEqual([
       {
         name: 'two_tuple',
@@ -95,7 +112,7 @@ describe('Single Selection', () => {
       }
     ]);
 
-    const threeSg = single.signals(model, selCmpts['thr_ee'], []);
+    const threeSg = point.signals(model, selCmpts['thr_ee'], []);
     expect(threeSg).toEqual([
       {
         name: 'thr_ee_tuple',
@@ -110,7 +127,7 @@ describe('Single Selection', () => {
       }
     ]);
 
-    const fourSg = single.signals(model, selCmpts['four'], []);
+    const fourSg = point.signals(model, selCmpts['four'], []);
     expect(fourSg).toEqual([
       {
         name: 'four_tuple',
@@ -125,7 +142,7 @@ describe('Single Selection', () => {
       }
     ]);
 
-    const fiveSg = single.signals(model, selCmpts['five'], []);
+    const fiveSg = point.signals(model, selCmpts['five'], []);
     expect(fiveSg).toEqual([
       {
         name: 'five_tuple',
@@ -133,7 +150,22 @@ describe('Single Selection', () => {
           {
             events: [{source: 'scope', type: 'click'}],
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: five_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["nested.a"], (item().isVoronoi ? datum.datum : datum)["nested.b"]]} : null',
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: five_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Year"], (item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+            force: true
+          }
+        ]
+      }
+    ]);
+
+    const sixSg = point.signals(model, selCmpts['six'], []);
+    expect(sixSg).toEqual([
+      {
+        name: 'six_tuple',
+        on: [
+          {
+            events: [{source: 'scope', type: 'click'}],
+            update:
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: six_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["nested.a"], (item().isVoronoi ? datum.datum : datum)["nested.b"]]} : null',
             force: true
           }
         ]
@@ -141,7 +173,7 @@ describe('Single Selection', () => {
     ]);
 
     const signals = assembleUnitSelectionSignals(model, []);
-    expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg, ...fiveSg]));
+    expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg, ...fiveSg, ...sixSg]));
   });
 
   it('builds modify signals', () => {
@@ -176,11 +208,11 @@ describe('Single Selection', () => {
       expect.arrayContaining([
         {
           name: 'one',
-          update: 'vlSelectionResolve("one_store", "union")'
+          update: 'vlSelectionResolve("one_store", "union", true)'
         },
         {
           name: 'two',
-          update: 'vlSelectionResolve("two_store", "intersect")'
+          update: 'vlSelectionResolve("two_store", "intersect", true)'
         },
         {
           name: 'unit',
@@ -192,8 +224,7 @@ describe('Single Selection', () => {
   });
 
   it('builds unit datasets', () => {
-    const data: any[] = [];
-    expect(assembleUnitSelectionData(model, data)).toEqual([
+    expect(assembleUnitSelectionData(model, [])).toEqual([
       {name: 'one_store'},
       {name: 'two_store'},
       {
@@ -219,7 +250,28 @@ describe('Single Selection', () => {
           }
         ]
       },
-      {name: 'five_store'}
+      {
+        name: 'five_store',
+        values: [
+          {
+            unit: '',
+            fields: [
+              {type: 'E', field: 'Year'},
+              {type: 'E', field: 'Origin'}
+            ],
+            values: [+new Date(1970, 0, 1, 0, 0, 0, 0), 'Japan']
+          },
+          {
+            unit: '',
+            fields: [
+              {type: 'E', field: 'Year'},
+              {type: 'E', field: 'Origin'}
+            ],
+            values: [+new Date(1980, 0, 1, 0, 0, 0, 0), 'USA']
+          }
+        ]
+      },
+      {name: 'six_store'}
     ]);
   });
 

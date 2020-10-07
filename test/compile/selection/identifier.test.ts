@@ -35,16 +35,12 @@ describe('compile/data/identifier', () => {
       }
 
       run();
-      for (const type of ['single', 'multi']) {
-        run([{name: 'pt', select: {type, encodings: ['x']}}]);
-      }
+      run([{name: 'pt', select: {type: 'point', encodings: ['x']}}]);
     });
 
     it('is added for default point selections', () => {
-      for (const select of ['single', 'multi']) {
-        const url = getVgData([{name: 'pt', select}]);
-        expect(url[0].transform[0].type).toBe('identifier');
-      }
+      const url = getVgData([{name: 'pt', select: 'point'}]);
+      expect(url[0].transform[0].type).toBe('identifier');
     });
 
     it('is added immediately after aggregate transforms', () => {
@@ -55,25 +51,21 @@ describe('compile/data/identifier', () => {
         expect(transform[aggr + 1].type).toBe('identifier');
       }
 
-      for (const select of ['single', 'multi']) {
-        const sel = [{name: 'pt', select}];
-        let data = getVgData(sel, {bin: true}, {aggregate: 'count'});
-        run(data[0].transform);
+      const sel = [{name: 'pt', select: 'point'}];
+      let data = getVgData(sel, {bin: true}, {aggregate: 'count'});
+      run(data[0].transform);
 
-        data = getVgData(sel, {aggregate: 'sum'}, null, 'bar', {column: {field: 'Cylinders', type: 'ordinal'}});
-        run(data[0].transform);
-      }
+      data = getVgData(sel, {aggregate: 'sum'}, null, 'bar', {column: {field: 'Cylinders', type: 'ordinal'}});
+      run(data[0].transform);
     });
 
     it('is added before any user-specified transforms', () => {
-      for (const select of ['single', 'multi']) {
-        const data = getVgData([{name: 'pt', select}], null, null, null, null, [
-          {calculate: 'datum.Horsepower * 2', as: 'foo'}
-        ]);
-        let calc = -1;
-        data[0].transform.some((t, i) => ((calc = i), t.type === 'formula' && t.as === 'foo'));
-        expect(data[0].transform[calc - 1].type).toBe('identifier');
-      }
+      const data = getVgData([{name: 'pt', select: 'point'}], null, null, null, null, [
+        {calculate: 'datum.Horsepower * 2', as: 'foo'}
+      ]);
+      let calc = -1;
+      data[0].transform.some((t, i) => ((calc = i), t.type === 'formula' && t.as === 'foo'));
+      expect(data[0].transform[calc - 1].type).toBe('identifier');
     });
 
     it('is added to the source dataset in multi-views', () => {
@@ -85,7 +77,7 @@ describe('compile/data/identifier', () => {
               params: [
                 {
                   name: 'pt',
-                  select: 'single'
+                  select: 'point'
                 }
               ],
               mark: 'circle',

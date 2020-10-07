@@ -1,7 +1,7 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {keys} from '../../../src/util';
-import {parseUnitModel, parseModelWithScale} from '../../util';
+import {parseUnitModel, parseModelWithScale, parseUnitModelWithScale} from '../../util';
 import project from '../../../src/compile/selection/project';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
@@ -20,46 +20,35 @@ describe('Selection', () => {
 
   it('parses default selection definitions', () => {
     const component = parseUnitSelection(model, [
-      {name: 'one', select: 'single'},
-      {name: 'two', select: 'multi'},
-      {name: 'three', select: {type: 'interval'}}
+      {name: 'one', select: 'point'},
+      {name: 'two', select: {type: 'interval'}}
     ]);
 
-    expect(keys(component)).toEqual(['one', 'two', 'three']);
+    expect(keys(component)).toEqual(['one', 'two']);
 
     expect(component.one.name).toBe('one');
-    expect(component.one.type).toBe('single');
+    expect(component.one.type).toBe('point');
     expect(component['one'].project.items).toEqual(
       expect.arrayContaining([{field: '_vgsid_', type: 'E', signals: {data: 'one__vgsid_'}}])
     );
     expect(component['one'].events).toEqual(parseSelector('click', 'scope'));
 
     expect(component.two.name).toBe('two');
-    expect(component.two.type).toBe('multi');
-    expect(component.two.toggle).toBe('event.shiftKey');
+    expect(component.two.type).toBe('interval');
+    expect(component.two.translate).toBe('[mousedown, window:mouseup] > window:mousemove!');
+    expect(component.two.zoom).toBe('wheel!');
     expect(component['two'].project.items).toEqual(
-      expect.arrayContaining([{field: '_vgsid_', type: 'E', signals: {data: 'two__vgsid_'}}])
-    );
-    expect(component['two'].events).toEqual(parseSelector('click', 'scope'));
-
-    expect(component.three.name).toBe('three');
-    expect(component.three.type).toBe('interval');
-    expect(component.three.translate).toBe('[mousedown, window:mouseup] > window:mousemove!');
-    expect(component.three.zoom).toBe('wheel!');
-    expect(component['three'].project.items).toEqual(
       expect.arrayContaining([
-        {field: 'Horsepower', channel: 'x', type: 'R', signals: {data: 'three_Horsepower', visual: 'three_x'}},
+        {field: 'Horsepower', channel: 'x', type: 'R', signals: {data: 'two_Horsepower', visual: 'two_x'}},
         {
           field: 'Miles_per_Gallon',
           channel: 'y',
           type: 'R',
-          signals: {data: 'three_Miles_per_Gallon', visual: 'three_y'}
+          signals: {data: 'two_Miles_per_Gallon', visual: 'two_y'}
         }
       ])
     );
-    expect(component['three'].events).toEqual(
-      parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')
-    );
+    expect(component['two'].events).toEqual(parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'));
   });
 
   it('supports inline default overrides', () => {
@@ -67,7 +56,7 @@ describe('Selection', () => {
       {
         name: 'one',
         select: {
-          type: 'single',
+          type: 'point',
           on: 'dblclick',
           fields: ['Cylinders']
         }
@@ -75,7 +64,7 @@ describe('Selection', () => {
       {
         name: 'two',
         select: {
-          type: 'multi',
+          type: 'point',
           on: 'mouseover',
           toggle: 'event.ctrlKey',
           encodings: ['color']
@@ -96,14 +85,14 @@ describe('Selection', () => {
     expect(keys(component)).toEqual(['one', 'two', 'three']);
 
     expect(component.one.name).toBe('one');
-    expect(component.one.type).toBe('single');
+    expect(component.one.type).toBe('point');
     expect(component['one'].project.items).toEqual(
       expect.arrayContaining([{field: 'Cylinders', type: 'E', signals: {data: 'one_Cylinders'}}])
     );
     expect(component['one'].events).toEqual(parseSelector('dblclick', 'scope'));
 
     expect(component.two.name).toBe('two');
-    expect(component.two.type).toBe('multi');
+    expect(component.two.type).toBe('point');
     expect(component.two.toggle).toBe('event.ctrlKey');
     expect(component['two'].project.items).toEqual(
       expect.arrayContaining([
@@ -133,8 +122,7 @@ describe('Selection', () => {
 
   it('respects selection configs', () => {
     model.config.selection = {
-      single: {on: 'dblclick', fields: ['Cylinders']},
-      multi: {on: 'mouseover', encodings: ['color'], toggle: 'event.ctrlKey'},
+      point: {on: 'mouseover', encodings: ['color'], toggle: 'event.ctrlKey'},
       interval: {
         on: '[mousedown[!event.shiftKey], mouseup] > mousemove',
         encodings: ['y'],
@@ -143,45 +131,37 @@ describe('Selection', () => {
     };
 
     const component = parseUnitSelection(model, [
-      {name: 'one', select: 'single'},
-      {name: 'two', select: 'multi'},
-      {name: 'three', select: {type: 'interval'}}
+      {name: 'one', select: 'point'},
+      {name: 'two', select: {type: 'interval'}}
     ]);
 
-    expect(keys(component)).toEqual(['one', 'two', 'three']);
+    expect(keys(component)).toEqual(['one', 'two']);
 
     expect(component.one.name).toBe('one');
-    expect(component.one.type).toBe('single');
+    expect(component.one.type).toBe('point');
+    expect(component.one.toggle).toBe('event.ctrlKey');
     expect(component['one'].project.items).toEqual(
-      expect.arrayContaining([{field: 'Cylinders', type: 'E', signals: {data: 'one_Cylinders'}}])
-    );
-    expect(component['one'].events).toEqual(parseSelector('dblclick', 'scope'));
-
-    expect(component.two.name).toBe('two');
-    expect(component.two.type).toBe('multi');
-    expect(component.two.toggle).toBe('event.ctrlKey');
-    expect(component['two'].project.items).toEqual(
       expect.arrayContaining([
-        {field: 'Origin', channel: 'color', type: 'E', signals: {data: 'two_Origin', visual: 'two_color'}}
+        {field: 'Origin', channel: 'color', type: 'E', signals: {data: 'one_Origin', visual: 'one_color'}}
       ])
     );
-    expect(component['two'].events).toEqual(parseSelector('mouseover', 'scope'));
+    expect(component['one'].events).toEqual(parseSelector('mouseover', 'scope'));
 
-    expect(component.three.name).toBe('three');
-    expect(component.three.type).toBe('interval');
-    expect(!component.three.translate).toBeTruthy();
-    expect(component.three.zoom).toBe('wheel[event.altKey]');
-    expect(component['three'].project.items).toEqual(
+    expect(component.two.name).toBe('two');
+    expect(component.two.type).toBe('interval');
+    expect(!component.two.translate).toBeTruthy();
+    expect(component.two.zoom).toBe('wheel[event.altKey]');
+    expect(component['two'].project.items).toEqual(
       expect.arrayContaining([
         {
           field: 'Miles_per_Gallon',
           channel: 'y',
           type: 'R',
-          signals: {data: 'three_Miles_per_Gallon', visual: 'three_y'}
+          signals: {data: 'two_Miles_per_Gallon', visual: 'two_y'}
         }
       ])
     );
-    expect(component['three'].events).toEqual(
+    expect(component['two'].events).toEqual(
       parseSelector('[mousedown[!event.shiftKey], mouseup] > mousemove', 'scope')
     );
   });
@@ -225,8 +205,8 @@ describe('Selection', () => {
       );
     });
 
-    it('uses ranged types for single/multi selections', () => {
-      let m = parseUnitModel({
+    it('uses ranged types for point selections', () => {
+      const m = parseUnitModelWithScale({
         mark: 'circle',
         encoding: {
           x: {field: 'Acceleration', type: 'quantitative', bin: true},
@@ -234,32 +214,7 @@ describe('Selection', () => {
         }
       });
 
-      m.parseScale();
-
-      let c = parseUnitSelection(m, [{name: 'one', select: {type: 'single', encodings: ['x']}}]);
-
-      expect(c['one'].project.items).toEqual(
-        expect.arrayContaining([
-          {field: 'Acceleration', channel: 'x', type: 'R-RE', signals: {data: 'one_Acceleration', visual: 'one_x'}}
-        ])
-      );
-
-      m = parseUnitModel({
-        mark: 'bar',
-        encoding: {
-          x: {field: 'Acceleration', type: 'quantitative', bin: true},
-          y: {field: 'Miles_per_Gallon', type: 'quantitative'}
-        }
-      });
-
-      m.parseScale();
-
-      c = parseUnitSelection(m, [
-        {
-          name: 'one',
-          select: {type: 'multi', encodings: ['x']}
-        }
-      ]);
+      const c = parseUnitSelection(m, [{name: 'one', select: {type: 'point', encodings: ['x']}}]);
 
       expect(c['one'].project.items).toEqual(
         expect.arrayContaining([
@@ -272,12 +227,12 @@ describe('Selection', () => {
       const component = parseUnitSelection(model, [
         {
           name: 'one',
-          select: 'single',
-          value: {Origin: 5}
+          select: 'point',
+          value: [{Origin: 5}]
         },
         {
           name: 'two',
-          select: 'multi',
+          select: 'point',
           value: [{color: 10}]
         },
         {
@@ -308,7 +263,7 @@ describe('Selection', () => {
       const component = parseUnitSelection(model, [
         {
           name: 'one',
-          select: {type: 'single', fields: ['nested.a', 'nested.b.aa']}
+          select: {type: 'point', fields: ['nested.a', 'nested.b.aa']}
         }
       ]);
 
@@ -339,7 +294,7 @@ describe('Selection', () => {
               name: 'index',
               value: {x: {year: 2005, month: 1, date: 1}},
               select: {
-                type: 'single',
+                type: 'point',
                 on: 'mouseover',
                 encodings: ['x'],
                 nearest: true

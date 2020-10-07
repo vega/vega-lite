@@ -5,6 +5,7 @@ import * as log from '../../../src/log';
 import {duplicate} from '../../../src/util';
 import {VgEncodeEntry} from '../../../src/vega.schema';
 import {parseUnitModel} from '../../util';
+import {SelectionComponent} from '../../../src/compile/selection';
 
 function getModel(markType: any) {
   const model = parseUnitModel({
@@ -19,11 +20,11 @@ function getModel(markType: any) {
   model.component.selection = parseUnitSelection(model, [
     {
       name: 'one',
-      select: {type: 'single', nearest: true}
+      select: {type: 'point', nearest: true}
     },
     {
       name: 'two',
-      select: {type: 'multi', nearest: true}
+      select: {type: 'point', nearest: true}
     },
     {
       name: 'three',
@@ -31,35 +32,35 @@ function getModel(markType: any) {
     },
     {
       name: 'four',
-      select: {type: 'single', nearest: false}
+      select: {type: 'point', nearest: false}
     },
     {
       name: 'five',
-      select: {type: 'multi'}
+      select: {type: 'point'}
     },
     {
       name: 'six',
-      select: {type: 'multi', nearest: null}
+      select: {type: 'point', nearest: null}
     },
     {
       name: 'seven',
-      select: {type: 'single', nearest: true, encodings: ['x']}
+      select: {type: 'point', nearest: true, encodings: ['x']}
     },
     {
       name: 'eight',
-      select: {type: 'single', nearest: true, encodings: ['y']}
+      select: {type: 'point', nearest: true, encodings: ['y']}
     },
     {
       name: 'nine',
-      select: {type: 'single', nearest: true, encodings: ['color']}
+      select: {type: 'point', nearest: true, encodings: ['color']}
     },
     {
       name: 'ten',
-      select: {type: 'single', nearest: true, on: 'mouseover'}
+      select: {type: 'point', nearest: true, on: 'mouseover'}
     },
     {
       name: 'eleven',
-      select: {type: 'multi', nearest: true, on: 'mouseover, dblclick'}
+      select: {type: 'point', nearest: true, on: 'mouseover, dblclick'}
     }
   ]);
   model.parseMarkGroup();
@@ -121,7 +122,7 @@ describe('Nearest Selection Transform', () => {
     const model = getModel('circle');
     const selCmpts = model.component.selection;
     const marks: any[] = [{hello: 'world'}];
-    const nearestMarks = nearest.marks(model, selCmpts['one'], marks);
+    const nearestMarks = nearest.marks(model, selCmpts['one'] as SelectionComponent<'point'>, marks);
     expect(nearestMarks).toMatchObject(voronoiMark(null, null, tooltip(model, {reactiveGeom: true})));
   });
 
@@ -131,7 +132,7 @@ describe('Nearest Selection Transform', () => {
       const model = getModel('line');
       const selCmpts = model.component.selection;
       const marks: any[] = [];
-      expect(nearest.marks(model, selCmpts['one'], marks)).toEqual(marks);
+      expect(nearest.marks(model, selCmpts['one'] as SelectionComponent<'point'>, marks)).toEqual(marks);
       expect(localLogger.warns[0]).toEqual(log.message.nearestNotSupportForContinuous('line'));
     })
   );
@@ -141,8 +142,8 @@ describe('Nearest Selection Transform', () => {
     const selCmpts = model.component.selection;
     const marks: any[] = [{hello: 'world'}];
 
-    const marks2 = nearest.marks(model, selCmpts['one'], marks);
-    expect(nearest.marks(model, selCmpts['two'], marks2)).toMatchObject(voronoiMark());
+    const marks2 = nearest.marks(model, selCmpts['one'] as SelectionComponent<'point'>, marks);
+    expect(nearest.marks(model, selCmpts['two'] as SelectionComponent<'point'>, marks2)).toMatchObject(voronoiMark());
   });
 
   it('supports 1D voronoi', () => {
@@ -150,10 +151,16 @@ describe('Nearest Selection Transform', () => {
     const selCmpts = model.component.selection;
     const marks: any[] = [{hello: 'world'}];
 
-    expect(nearest.marks(model, selCmpts['seven'], duplicate(marks))).toMatchObject(voronoiMark(null, {expr: '0'}));
+    expect(nearest.marks(model, selCmpts['seven'] as SelectionComponent<'point'>, duplicate(marks))).toMatchObject(
+      voronoiMark(null, {expr: '0'})
+    );
 
-    expect(nearest.marks(model, selCmpts['eight'], duplicate(marks))).toMatchObject(voronoiMark({expr: '0'}));
+    expect(nearest.marks(model, selCmpts['eight'] as SelectionComponent<'point'>, duplicate(marks))).toMatchObject(
+      voronoiMark({expr: '0'})
+    );
 
-    expect(nearest.marks(model, selCmpts['nine'], duplicate(marks))).toMatchObject(voronoiMark());
+    expect(nearest.marks(model, selCmpts['nine'] as SelectionComponent<'point'>, duplicate(marks))).toMatchObject(
+      voronoiMark()
+    );
   });
 });

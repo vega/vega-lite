@@ -20,13 +20,7 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
     {
       name: 'one',
       select: {
-        type: 'single'
-      }
-    },
-    {
-      name: 'two',
-      select: {
-        type: 'multi'
+        type: 'point'
       }
     },
     {
@@ -72,7 +66,6 @@ describe('Zoom Selection Transform', () => {
   it('identifies transform invocation', () => {
     const {selCmpts} = getModel();
     expect(zoom.defined(selCmpts['one'])).not.toBe(true);
-    expect(zoom.defined(selCmpts['two'])).not.toBe(true);
     expect(zoom.defined(selCmpts['three'])).not.toBe(true);
     expect(zoom.defined(selCmpts['four'])).not.toBe(false);
     expect(zoom.defined(selCmpts['five'])).not.toBe(false);

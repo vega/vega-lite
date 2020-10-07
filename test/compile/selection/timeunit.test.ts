@@ -30,7 +30,7 @@ function getConcatModel(unit2: NormalizedUnitSpec, config?: Config) {
         params: [
           {
             name: 'two',
-            select: {type: 'single', encodings: ['x', 'y']}
+            select: {type: 'point', encodings: ['x', 'y']}
           }
         ],
         encoding: {
@@ -60,8 +60,8 @@ describe('Selection time unit', () => {
       }
     });
     const selCmpts = (model.component.selection = parseUnitSelection(model, [
-      {name: 'one', select: 'single'},
-      {name: 'two', select: {type: 'single', encodings: ['x', 'y']}}
+      {name: 'one', select: 'point'},
+      {name: 'two', select: {type: 'point', encodings: ['x', 'y']}}
     ]));
 
     expect(selCmpts['one'].project.timeUnit).not.toBeDefined();

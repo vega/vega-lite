@@ -20,13 +20,7 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
     {
       name: 'one',
       select: {
-        type: 'single'
-      }
-    },
-    {
-      name: 'two',
-      select: {
-        type: 'multi'
+        type: 'point'
       }
     },
     {
@@ -72,7 +66,6 @@ describe('Translate Selection Transform', () => {
   it('identifies transform invocation', () => {
     const {selCmpts} = getModel();
     expect(translate.defined(selCmpts['one'])).not.toBe(true);
-    expect(translate.defined(selCmpts['two'])).not.toBe(true);
     expect(translate.defined(selCmpts['three'])).not.toBe(true);
     expect(translate.defined(selCmpts['four'])).not.toBe(false);
     expect(translate.defined(selCmpts['five'])).not.toBe(false);

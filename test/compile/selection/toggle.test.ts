@@ -17,12 +17,12 @@ describe('Toggle Selection Transform', () => {
   const selCmpts = (model.component.selection = parseUnitSelection(model, [
     {
       name: 'one',
-      select: {type: 'multi', clear: false}
+      select: {type: 'point', clear: false}
     },
     {
       name: 'two',
       select: {
-        type: 'multi',
+        type: 'point',
         encodings: ['y', 'color'],
         resolve: 'union',
         on: 'mouseover',
@@ -32,11 +32,10 @@ describe('Toggle Selection Transform', () => {
     },
     {
       name: 'three',
-      select: {type: 'multi', clear: false, toggle: false}
+      select: {type: 'point', clear: false, toggle: false}
     },
-    {name: 'four', select: {type: 'multi', clear: false, toggle: null}},
-    {name: 'five', select: {type: 'single', clear: false}},
-    {name: 'six', select: {type: 'interval', clear: false}}
+    {name: 'four', select: {type: 'point', clear: false, toggle: null}},
+    {name: 'five', select: {type: 'interval', clear: false}}
   ]));
 
   it('identifies transform invocation', () => {
@@ -45,7 +44,6 @@ describe('Toggle Selection Transform', () => {
     expect(toggle.defined(selCmpts['three'])).toBeFalsy();
     expect(toggle.defined(selCmpts['four'])).toBeFalsy();
     expect(toggle.defined(selCmpts['five'])).toBeFalsy();
-    expect(toggle.defined(selCmpts['six'])).toBeFalsy();
   });
 
   it('builds toggle signals', () => {
