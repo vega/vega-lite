@@ -234,7 +234,7 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
   align?: Align | ES;
 
   /**
-   * For text marks, the vertical text baseline. One of `"alphabetic"` (default), `"top"`, `"middle"`, `"bottom"`, `"line-top"`, `"line-bottom", or an expression reference that provides one of the valid values.
+   * For text marks, the vertical text baseline. One of `"alphabetic"` (default), `"top"`, `"middle"`, `"bottom"`, `"line-top"`, `"line-bottom"`, or an expression reference that provides one of the valid values.
    * The `"line-top"` and `"line-bottom"` values operate similarly to `"top"` and `"bottom"`,
    * but are calculated relative to the `lineHeight` rather than `fontSize` alone.
    *
