@@ -12,7 +12,7 @@
         "params": [{
           "name": "hover",
           "select": {
-            "type": "single",
+            "type": "point",
             "on": "mouseover",
             "empty": "none"
           }
@@ -35,7 +35,7 @@
         "params": [{
           "name": "hover",
           "select": {
-            "type": "single",
+            "type": "point",
             "on": "mouseover",
             "empty": "none"
           }

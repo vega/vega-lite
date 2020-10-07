@@ -18,7 +18,7 @@
       "params": [{
         "name": "index",
         "select": {
-          "type": "single",
+          "type": "point",
           "encodings": ["x"],
           "on": "mousemove",
           "nearest": true

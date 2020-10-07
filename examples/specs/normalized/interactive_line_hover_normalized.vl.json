@@ -9,9 +9,9 @@
       "params": [
         {
           "name": "hover",
-          "value": {"symbol": "AAPL"},
+          "value": [{"symbol": "AAPL"}],
           "select": {
-            "type": "single",
+            "type": "point",
             "fields": ["symbol"],
             "on": "mouseover",
             "empty": "all"

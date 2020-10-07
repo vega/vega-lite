@@ -12,14 +12,14 @@
     {
       "name": "highlight",
       "select": {
-        "type": "single",
+        "type": "point",
         "empty": "none",
         "on": "mouseover"
       }
     },
     {
       "name": "select",
-      "select": {"type": "multi"}
+      "select": {"type": "point"}
     }
   ],
   "mark": {

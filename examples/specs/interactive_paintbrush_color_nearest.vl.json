@@ -5,7 +5,7 @@
   "params": [{
     "name": "paintbrush",
     "select": {
-      "type": "multi",
+      "type": "point",
       "on": "mouseover",
       "nearest": true
     }

@@ -3,7 +3,7 @@
   "data": {"url": "data/cars.json"},
   "params": [{
     "name": "pts",
-    "select": {"type": "multi", "fields": ["Origin"]}
+    "select": {"type": "point", "fields": ["Origin"]}
   }],
   "mark": "point",
   "encoding": {

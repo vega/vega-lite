@@ -68,7 +68,7 @@
       "mark": "bar",
       "params": [{
         "name": "click",
-        "select": {"type": "multi", "encodings": ["color"]}
+        "select": {"type": "point", "encodings": ["color"]}
       }],
       "transform": [{"filter": {"selection": "brush"}}]
     }

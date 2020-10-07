@@ -6,8 +6,8 @@
   "layer": [{
     "params": [{
       "name": "CylYr",
-      "value": {"Cylinders": 4, "Year": 1977},
-      "select": {"type": "single", "fields": ["Cylinders", "Year"]},
+      "value": [{"Cylinders": 4, "Year": 1977}],
+      "select": {"type": "point", "fields": ["Cylinders", "Year"]},
       "bind": {
         "Cylinders": {"input": "range", "min": 3, "max": 8, "step": 1},
         "Year": {"input": "range", "min": 1969, "max": 1981, "step": 1}

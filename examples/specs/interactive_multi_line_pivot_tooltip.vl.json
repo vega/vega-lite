@@ -34,7 +34,7 @@
       "params": [{
         "name": "hover",
         "select": {
-          "type": "single",
+          "type": "point",
           "fields": ["date"],
           "nearest": true,
           "on": "mouseover",

@@ -1,7 +1,7 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "data": {"url": "data/cars.json"},
-  "params": [{"name": "pts", "select": "multi"}],
+  "params": [{"name": "pts", "select": "point"}],
   "mark": "rect",
   "encoding": {
     "y": {"field": "Origin"},

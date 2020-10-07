@@ -15,7 +15,7 @@
         },
         {
           "name": "cyl",
-          "select": {"type": "single", "fields": ["Cylinders"]},
+          "select": {"type": "point", "fields": ["Cylinders"]},
           "bind": {"input": "range", "min": 3, "max": 8, "step": 1}
         }
       ],

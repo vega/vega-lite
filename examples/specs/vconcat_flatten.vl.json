@@ -32,7 +32,7 @@
       "mark": "circle",
       "params": [{
         "name": "pts",
-        "select": {"type": "multi", "fields": ["id"], "empty": "all"}
+        "select": {"type": "point", "fields": ["id"], "empty": "all"}
       }],
       "encoding": {
         "x": {"field": "ra", "type": "quantitative", "scale": {"zero": false}},

@@ -6,10 +6,7 @@
   "height": 500,
   "layer": [
     {
-      "transform": [
-        {"filter": {"field": "country", "equal": "Afghanistan"}},
-        {"filter": {"selection": "year"}}
-      ],
+      "transform": [{"filter": {"field": "country", "equal": "Afghanistan"}}, {"filter": {"selection": "year"}}],
       "mark": {
         "type": "text",
         "fontSize": 100,
@@ -77,8 +74,8 @@
           "params": [
             {
               "name": "year",
-              "value": {"year": 1955},
-              "select": {"type": "single", "fields": ["year"]},
+              "value": [{"year": 1955}],
+              "select": {"type": "point", "fields": ["year"]},
               "bind": {
                 "name": "Year",
                 "input": "range",
@@ -90,7 +87,7 @@
             {
               "name": "hovered",
               "select": {
-                "type": "single",
+                "type": "point",
                 "fields": ["country"],
                 "on": "mouseover",
                 "empty": "none"
@@ -99,7 +96,7 @@
             {
               "name": "clicked",
               "select": {
-                "type": "multi",
+                "type": "point",
                 "fields": ["country"],
                 "empty": "none"
               }
@@ -127,10 +124,7 @@
           "transform": [
             {
               "filter": {
-                "and": [
-                  {"selection": "year"},
-                  {"or": [{"selection": "clicked"}, {"selection": "hovered"}]}
-                ]
+                "and": [{"selection": "year"}, {"or": [{"selection": "clicked"}, {"selection": "hovered"}]}]
               }
             }
           ],
@@ -158,10 +152,7 @@
           }
         },
         {
-          "transform": [
-            {"filter": {"selection": "hovered"}},
-            {"filter": {"not": {"selection": "year"}}}
-          ],
+          "transform": [{"filter": {"selection": "hovered"}}, {"filter": {"not": {"selection": "year"}}}],
           "layer": [
             {
               "mark": {
