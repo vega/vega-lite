@@ -29,50 +29,45 @@ export function debugImports() {
 
 const extensions = ['.js', '.ts'];
 
-const outputs = [];
-
-for (const build of ['es5', 'es6']) {
-  const buildFolder = build === 'es5' ? 'build-es5' : 'build';
-  outputs.push({
-    input: 'src/index.ts',
-    output: [
-      {
-        file: `${buildFolder}/vega-lite.js`,
-        format: 'umd',
-        sourcemap: true,
-        name: 'vegaLite'
-      },
-      {
-        file: `${buildFolder}/vega-lite.min.js`,
-        format: 'umd',
-        sourcemap: true,
-        name: 'vegaLite',
-        plugins: [terser()]
-      }
-    ],
-    plugins: [
-      disallowedImports(),
-      debugImports(),
-      resolve({browser: true, extensions}),
-      commonjs(),
-      json(),
-      babel({
-        extensions,
-        babelHelpers: 'bundled',
-        presets: [
-          [
-            '@babel/env',
-            {
-              targets: build === 'es5' ? 'defaults' : 'defaults and not IE 11'
-            }
-          ],
-          '@babel/typescript'
-        ]
-      }),
-      bundleSize()
-    ],
-    external: ['vega']
-  });
-}
+const outputs = [{
+  input: 'src/index.ts',
+  output: [
+    {
+      file: 'build/vega-lite.js',
+      format: 'umd',
+      sourcemap: true,
+      name: 'vegaLite'
+    },
+    {
+      file: 'build/vega-lite.min.js',
+      format: 'umd',
+      sourcemap: true,
+      name: 'vegaLite',
+      plugins: [terser()]
+    }
+  ],
+  plugins: [
+    disallowedImports(),
+    debugImports(),
+    resolve({browser: true, extensions}),
+    commonjs(),
+    json(),
+    babel({
+      extensions,
+      babelHelpers: 'bundled',
+      presets: [
+        [
+          '@babel/env',
+          {
+            targets: 'defaults and not IE 11'
+          }
+        ],
+        '@babel/typescript'
+      ]
+    }),
+    bundleSize()
+  ],
+  external: ['vega']
+}];
 
 export default outputs;
