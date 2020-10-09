@@ -60,16 +60,16 @@
           "name": "region_Horsepower",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "region_translate_delta"},
               "update": "panLinear(region_translate_anchor.extent_x, -region_translate_delta.x / width)"
             },
             {
               "events": {"signal": "region_zoom_delta"},
               "update": "zoomLinear(domain(\"x\"), region_zoom_anchor.x, region_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -78,16 +78,16 @@
           "name": "region_Miles_per_Gallon",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "region_translate_delta"},
               "update": "panLinear(region_translate_anchor.extent_y, region_translate_delta.y / childHeight)"
             },
             {
               "events": {"signal": "region_zoom_delta"},
               "update": "zoomLinear(domain(\"concat_0_y\"), region_zoom_anchor.y, region_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"

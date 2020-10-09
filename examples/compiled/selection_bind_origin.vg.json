@@ -32,7 +32,10 @@
       "value": null,
       "bind": {"input": "select", "options": [null, "Europe", "Japan", "USA"]}
     },
-    {"name": "org", "update": "vlSelectionResolve(\"org_store\", \"union\")"},
+    {
+      "name": "org",
+      "update": "vlSelectionResolve(\"org_store\", \"union\", true)"
+    },
     {
       "name": "org_tuple",
       "update": "org_Origin !== null ? {fields: org_tuple_fields, values: [org_Origin]} : null"
@@ -43,7 +46,7 @@
       "on": [
         {
           "events": {"signal": "org_tuple"},
-          "update": "modify(\"org_store\", org_tuple, true)"
+          "update": "modify(\"org_store\", org_toggle ? null : org_tuple, org_toggle ? null : true, org_toggle ? org_tuple : null)"
         }
       ]
     }

@@ -27,7 +27,10 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\", \"union\")"},
+    {
+      "name": "pts",
+      "update": "vlSelectionResolve(\"pts_store\", \"union\", true)"
+    },
     {
       "name": "pts_tuple",
       "on": [
@@ -47,11 +50,22 @@
       ]
     },
     {
+      "name": "pts_toggle",
+      "value": false,
+      "on": [
+        {
+          "events": [{"source": "scope", "type": "click"}],
+          "update": "event.shiftKey"
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
+      ]
+    },
+    {
       "name": "pts_modify",
       "on": [
         {
           "events": {"signal": "pts_tuple"},
-          "update": "modify(\"pts_store\", pts_tuple, true)"
+          "update": "modify(\"pts_store\", pts_toggle ? null : pts_tuple, pts_toggle ? null : true, pts_toggle ? pts_tuple : null)"
         }
       ]
     }

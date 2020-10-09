@@ -121,7 +121,10 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "org", "update": "vlSelectionResolve(\"org_store\", \"union\")"},
+    {
+      "name": "org",
+      "update": "vlSelectionResolve(\"org_store\", \"union\", true)"
+    },
     {
       "name": "org_tuple",
       "on": [
@@ -141,11 +144,28 @@
     },
     {"name": "org_tuple_fields", "value": [{"type": "E", "field": "origin"}]},
     {
+      "name": "org_toggle",
+      "value": false,
+      "on": [
+        {
+          "events": [
+            {
+              "source": "scope",
+              "type": "mouseover",
+              "markname": "layer_2_voronoi"
+            }
+          ],
+          "update": "event.shiftKey"
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
+      ]
+    },
+    {
       "name": "org_modify",
       "on": [
         {
           "events": {"signal": "org_tuple"},
-          "update": "modify(\"org_store\", org_tuple, true)"
+          "update": "modify(\"org_store\", org_toggle ? null : org_tuple, org_toggle ? null : true, org_toggle ? org_tuple : null)"
         }
       ]
     }

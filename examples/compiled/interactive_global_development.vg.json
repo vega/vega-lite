@@ -125,10 +125,13 @@
         "step": 5
       }
     },
-    {"name": "year", "update": "vlSelectionResolve(\"year_store\", \"union\")"},
+    {
+      "name": "year",
+      "update": "vlSelectionResolve(\"year_store\", \"union\", true)"
+    },
     {
       "name": "hovered",
-      "update": "vlSelectionResolve(\"hovered_store\", \"union\")"
+      "update": "vlSelectionResolve(\"hovered_store\", \"union\", true)"
     },
     {
       "name": "clicked",
@@ -144,7 +147,7 @@
       "on": [
         {
           "events": {"signal": "year_tuple"},
-          "update": "modify(\"year_store\", year_tuple, true)"
+          "update": "modify(\"year_store\", year_toggle ? null : year_tuple, year_toggle ? null : true, year_toggle ? year_tuple : null)"
         }
       ]
     },
@@ -164,11 +167,22 @@
       "value": [{"type": "E", "field": "country"}]
     },
     {
+      "name": "hovered_toggle",
+      "value": false,
+      "on": [
+        {
+          "events": [{"source": "scope", "type": "mouseover"}],
+          "update": "event.shiftKey"
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
+      ]
+    },
+    {
       "name": "hovered_modify",
       "on": [
         {
           "events": {"signal": "hovered_tuple"},
-          "update": "modify(\"hovered_store\", hovered_tuple, true)"
+          "update": "modify(\"hovered_store\", hovered_toggle ? null : hovered_tuple, hovered_toggle ? null : true, hovered_toggle ? hovered_tuple : null)"
         }
       ]
     },

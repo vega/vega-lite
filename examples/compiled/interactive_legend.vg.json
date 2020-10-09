@@ -97,16 +97,6 @@
       "value": [{"type": "E", "field": "series"}]
     },
     {
-      "name": "industry_toggle",
-      "value": false,
-      "on": [
-        {
-          "events": {"merge": [{"source": "view", "type": "click"}]},
-          "update": "event.shiftKey"
-        }
-      ]
-    },
-    {
       "name": "industry_modify",
       "on": [
         {

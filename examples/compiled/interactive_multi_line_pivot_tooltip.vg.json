@@ -51,7 +51,7 @@
     },
     {
       "name": "hover",
-      "update": "vlSelectionResolve(\"hover_store\", \"union\")"
+      "update": "vlSelectionResolve(\"hover_store\", \"union\", true)"
     },
     {
       "name": "hover_tuple",
@@ -72,11 +72,28 @@
     },
     {"name": "hover_tuple_fields", "value": [{"type": "E", "field": "date"}]},
     {
+      "name": "hover_toggle",
+      "value": false,
+      "on": [
+        {
+          "events": [
+            {
+              "source": "scope",
+              "type": "mouseover",
+              "markname": "layer_1_voronoi"
+            }
+          ],
+          "update": "event.shiftKey"
+        },
+        {"events": [{"source": "scope", "type": "mouseout"}], "update": "false"}
+      ]
+    },
+    {
       "name": "hover_modify",
       "on": [
         {
           "events": {"signal": "hover_tuple"},
-          "update": "modify(\"hover_store\", hover_tuple, true)"
+          "update": "modify(\"hover_store\", hover_toggle ? null : hover_tuple, hover_toggle ? null : true, hover_toggle ? hover_tuple : null)"
         }
       ]
     }
