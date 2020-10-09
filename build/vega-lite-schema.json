@@ -3840,335 +3840,6 @@
       },
       "type": "object"
     },
-    "BaseSelectionDef<\"interval\">": {
-      "additionalProperties": false,
-      "properties": {
-        "bind": {
-          "const": "scales",
-          "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.",
-          "type": "string"
-        },
-        "name": {
-          "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
-          "type": "string"
-        },
-        "select": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SelectionType"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "clear": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/Stream"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "boolean"
-                    }
-                  ],
-                  "description": "Clears the selection, emptying it of all values. Can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
-                },
-                "empty": {
-                  "description": "By default, `all` data values are considered to lie within an empty selection. When set to `none`, empty selections contain no data values.",
-                  "enum": [
-                    "all",
-                    "none"
-                  ],
-                  "type": "string"
-                },
-                "encodings": {
-                  "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-                  "items": {
-                    "$ref": "#/definitions/SingleDefUnitChannel"
-                  },
-                  "type": "array"
-                },
-                "fields": {
-                  "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-                  "items": {
-                    "$ref": "#/definitions/FieldName"
-                  },
-                  "type": "array"
-                },
-                "mark": {
-                  "$ref": "#/definitions/BrushConfig",
-                  "description": "An interval selection also adds a rectangle mark to depict the extents of the interval. The `mark` property can be used to customize the appearance of the mark.\n\n__See also:__ [`mark`](https://vega.github.io/vega-lite/docs/selection-mark.html) documentation."
-                },
-                "on": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/Stream"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ],
-                  "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
-                },
-                "resolve": {
-                  "$ref": "#/definitions/SelectionResolution",
-                  "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
-                },
-                "translate": {
-                  "description": "When truthy, allows a user to interactively move an interval selection back-and-forth. Can be `true`, `false` (to disable panning), or a [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/) which must include a start and end event to trigger continuous panning.\n\n__Default value:__ `true`, which corresponds to `[mousedown, window:mouseup] > window:mousemove!` which corresponds to clicks and dragging within an interval selection to reposition it.\n\n__See also:__ [`translate`](https://vega.github.io/vega-lite/docs/translate.html) documentation.",
-                  "type": [
-                    "string",
-                    "boolean"
-                  ]
-                },
-                "type": {
-                  "$ref": "#/definitions/SelectionType"
-                },
-                "zoom": {
-                  "description": "When truthy, allows a user to interactively resize an interval selection. Can be `true`, `false` (to disable zooming), or a [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/). Currently, only `wheel` events are supported.\n\n__Default value:__ `true`, which corresponds to `wheel!`.\n\n__See also:__ [`zoom`](https://vega.github.io/vega-lite/docs/zoom.html) documentation.",
-                  "type": [
-                    "string",
-                    "boolean"
-                  ]
-                }
-              },
-              "required": [
-                "type"
-              ],
-              "type": "object"
-            }
-          ],
-          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `\"single\"` -- to select a single discrete data value on `click`. - `\"multi\"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`. - `\"interval\"` -- to select a continuous range of data values on `drag`."
-        },
-        "value": {
-          "$ref": "#/definitions/SelectionInitIntervalMapping",
-          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
-        }
-      },
-      "required": [
-        "name",
-        "select"
-      ],
-      "type": "object"
-    },
-    "BaseSelectionDef<\"multi\">": {
-      "additionalProperties": false,
-      "properties": {
-        "bind": {
-          "$ref": "#/definitions/LegendBinding",
-          "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
-        },
-        "name": {
-          "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
-          "type": "string"
-        },
-        "select": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SelectionType"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "clear": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/Stream"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "boolean"
-                    }
-                  ],
-                  "description": "Clears the selection, emptying it of all values. Can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
-                },
-                "empty": {
-                  "description": "By default, `all` data values are considered to lie within an empty selection. When set to `none`, empty selections contain no data values.",
-                  "enum": [
-                    "all",
-                    "none"
-                  ],
-                  "type": "string"
-                },
-                "encodings": {
-                  "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-                  "items": {
-                    "$ref": "#/definitions/SingleDefUnitChannel"
-                  },
-                  "type": "array"
-                },
-                "fields": {
-                  "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-                  "items": {
-                    "$ref": "#/definitions/FieldName"
-                  },
-                  "type": "array"
-                },
-                "nearest": {
-                  "description": "When true, an invisible voronoi diagram is computed to accelerate discrete selection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
-                  "type": "boolean"
-                },
-                "on": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/Stream"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ],
-                  "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
-                },
-                "resolve": {
-                  "$ref": "#/definitions/SelectionResolution",
-                  "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
-                },
-                "toggle": {
-                  "description": "Controls whether data values should be toggled or only ever inserted into multi selections. Can be `true`, `false` (for insertion only), or a [Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e., data values are toggled when a user interacts with the shift-key pressed).\n\nSetting the value to the Vega expression `\"true\"` will toggle data values without the user pressing the shift-key.\n\n__See also:__ [`toggle`](https://vega.github.io/vega-lite/docs/toggle.html) documentation.",
-                  "type": [
-                    "string",
-                    "boolean"
-                  ]
-                },
-                "type": {
-                  "$ref": "#/definitions/SelectionType"
-                }
-              },
-              "required": [
-                "type"
-              ],
-              "type": "object"
-            }
-          ],
-          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `\"single\"` -- to select a single discrete data value on `click`. - `\"multi\"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`. - `\"interval\"` -- to select a continuous range of data values on `drag`."
-        },
-        "value": {
-          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.",
-          "items": {
-            "$ref": "#/definitions/SelectionInitMapping"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "name",
-        "select"
-      ],
-      "type": "object"
-    },
-    "BaseSelectionDef<\"single\">": {
-      "additionalProperties": false,
-      "properties": {
-        "bind": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Binding"
-            },
-            {
-              "additionalProperties": {
-                "$ref": "#/definitions/Binding"
-              },
-              "type": "object"
-            },
-            {
-              "$ref": "#/definitions/LegendBinding"
-            }
-          ],
-          "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
-        },
-        "name": {
-          "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
-          "type": "string"
-        },
-        "select": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SelectionType"
-            },
-            {
-              "additionalProperties": false,
-              "properties": {
-                "clear": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/Stream"
-                    },
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "boolean"
-                    }
-                  ],
-                  "description": "Clears the selection, emptying it of all values. Can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
-                },
-                "empty": {
-                  "description": "By default, `all` data values are considered to lie within an empty selection. When set to `none`, empty selections contain no data values.",
-                  "enum": [
-                    "all",
-                    "none"
-                  ],
-                  "type": "string"
-                },
-                "encodings": {
-                  "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-                  "items": {
-                    "$ref": "#/definitions/SingleDefUnitChannel"
-                  },
-                  "type": "array"
-                },
-                "fields": {
-                  "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-                  "items": {
-                    "$ref": "#/definitions/FieldName"
-                  },
-                  "type": "array"
-                },
-                "nearest": {
-                  "description": "When true, an invisible voronoi diagram is computed to accelerate discrete selection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
-                  "type": "boolean"
-                },
-                "on": {
-                  "anyOf": [
-                    {
-                      "$ref": "#/definitions/Stream"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ],
-                  "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
-                },
-                "resolve": {
-                  "$ref": "#/definitions/SelectionResolution",
-                  "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
-                },
-                "type": {
-                  "$ref": "#/definitions/SelectionType"
-                }
-              },
-              "required": [
-                "type"
-              ],
-              "type": "object"
-            }
-          ],
-          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `\"single\"` -- to select a single discrete data value on `click`. - `\"multi\"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`. - `\"interval\"` -- to select a continuous range of data values on `drag`."
-        },
-        "value": {
-          "$ref": "#/definitions/SelectionInitMapping",
-          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
-        }
-      },
-      "required": [
-        "name",
-        "select"
-      ],
-      "type": "object"
-    },
     "BaseTitleNoValueRefs": {
       "additionalProperties": false,
       "properties": {
@@ -12711,9 +12382,6 @@
       "minimum": 100,
       "type": "string"
     },
-    "IntervalSelection": {
-      "$ref": "#/definitions/BaseSelectionDef<\"interval\">"
-    },
     "IntervalSelectionConfig": {
       "additionalProperties": false,
       "properties": {
@@ -19131,77 +18799,6 @@
       "minimum": 1,
       "type": "number"
     },
-    "MultiSelection": {
-      "$ref": "#/definitions/BaseSelectionDef<\"multi\">"
-    },
-    "MultiSelectionConfig": {
-      "additionalProperties": false,
-      "properties": {
-        "clear": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Stream"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "boolean"
-            }
-          ],
-          "description": "Clears the selection, emptying it of all values. Can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
-        },
-        "empty": {
-          "description": "By default, `all` data values are considered to lie within an empty selection. When set to `none`, empty selections contain no data values.",
-          "enum": [
-            "all",
-            "none"
-          ],
-          "type": "string"
-        },
-        "encodings": {
-          "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-          "items": {
-            "$ref": "#/definitions/SingleDefUnitChannel"
-          },
-          "type": "array"
-        },
-        "fields": {
-          "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-          "items": {
-            "$ref": "#/definitions/FieldName"
-          },
-          "type": "array"
-        },
-        "nearest": {
-          "description": "When true, an invisible voronoi diagram is computed to accelerate discrete selection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
-          "type": "boolean"
-        },
-        "on": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Stream"
-            },
-            {
-              "type": "string"
-            }
-          ],
-          "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
-        },
-        "resolve": {
-          "$ref": "#/definitions/SelectionResolution",
-          "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
-        },
-        "toggle": {
-          "description": "Controls whether data values should be toggled or only ever inserted into multi selections. Can be `true`, `false` (for insertion only), or a [Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e., data values are toggled when a user interacts with the shift-key pressed).\n\nSetting the value to the Vega expression `\"true\"` will toggle data values without the user pressing the shift-key.\n\n__See also:__ [`toggle`](https://vega.github.io/vega-lite/docs/toggle.html) documentation.",
-          "type": [
-            "string",
-            "boolean"
-          ]
-        }
-      },
-      "type": "object"
-    },
     "MultiTimeUnit": {
       "anyOf": [
         {
@@ -20519,6 +20116,74 @@
         "pivot",
         "value"
       ],
+      "type": "object"
+    },
+    "PointSelectionConfig": {
+      "additionalProperties": false,
+      "properties": {
+        "clear": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "boolean"
+            }
+          ],
+          "description": "Clears the selection, emptying it of all values. Can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+        },
+        "empty": {
+          "description": "By default, `all` data values are considered to lie within an empty selection. When set to `none`, empty selections contain no data values.",
+          "enum": [
+            "all",
+            "none"
+          ],
+          "type": "string"
+        },
+        "encodings": {
+          "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
+          "items": {
+            "$ref": "#/definitions/SingleDefUnitChannel"
+          },
+          "type": "array"
+        },
+        "fields": {
+          "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
+          "items": {
+            "$ref": "#/definitions/FieldName"
+          },
+          "type": "array"
+        },
+        "nearest": {
+          "description": "When true, an invisible voronoi diagram is computed to accelerate discrete selection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
+          "type": "boolean"
+        },
+        "on": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Stream"
+            },
+            {
+              "type": "string"
+            }
+          ],
+          "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
+        },
+        "resolve": {
+          "$ref": "#/definitions/SelectionResolution",
+          "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
+        },
+        "toggle": {
+          "description": "Controls whether data values should be toggled or only ever inserted into multi selections. Can be `true`, `false` (for insertion only), or a [Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e., data values are toggled when a user interacts with the shift-key pressed).\n\nSetting the value to the Vega expression `\"true\"` will toggle data values without the user pressing the shift-key.\n\n__See also:__ [`toggle`](https://vega.github.io/vega-lite/docs/toggle.html) documentation.",
+          "type": [
+            "string",
+            "boolean"
+          ]
+        }
+      },
       "type": "object"
     },
     "PolarDef": {
@@ -23195,29 +22860,224 @@
           "$ref": "#/definitions/IntervalSelectionConfig",
           "description": "The default definition for an [`interval`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations for an interval selection definition (except `type`) may be specified here.\n\nFor instance, setting `interval` to `{\"translate\": false}` disables the ability to move interval selections by default."
         },
-        "multi": {
-          "$ref": "#/definitions/MultiSelectionConfig",
-          "description": "The default definition for a [`multi`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations for a multi selection definition (except `type`) may be specified here.\n\nFor instance, setting `multi` to `{\"toggle\": \"event.altKey\"}` adds additional values to multi selections when clicking with the alt-key pressed by default."
-        },
-        "single": {
-          "$ref": "#/definitions/SingleSelectionConfig",
-          "description": "The default definition for a [`single`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations   for a single selection definition (except `type`) may be specified here.\n\nFor instance, setting `single` to `{\"on\": \"dblclick\"}` populates single selections on double-click by default."
+        "point": {
+          "$ref": "#/definitions/PointSelectionConfig",
+          "description": "The default definition for a [`point`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations   for a point selection definition (except `type`) may be specified here.\n\nFor instance, setting `point` to `{\"on\": \"dblclick\"}` populates point selections on double-click by default."
         }
       },
       "type": "object"
     },
     "SelectionDef": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/SingleSelection"
+      "additionalProperties": false,
+      "properties": {
+        "bind": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Binding"
+            },
+            {
+              "additionalProperties": {
+                "$ref": "#/definitions/Binding"
+              },
+              "type": "object"
+            },
+            {
+              "$ref": "#/definitions/LegendBinding"
+            },
+            {
+              "const": "scales",
+              "type": "string"
+            }
+          ],
+          "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
         },
-        {
-          "$ref": "#/definitions/MultiSelection"
+        "name": {
+          "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+          "type": "string"
         },
-        {
-          "$ref": "#/definitions/IntervalSelection"
+        "select": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SelectionType"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "clear": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/Stream"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ],
+                  "description": "Clears the selection, emptying it of all values. Can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+                },
+                "empty": {
+                  "description": "By default, `all` data values are considered to lie within an empty selection. When set to `none`, empty selections contain no data values.",
+                  "enum": [
+                    "all",
+                    "none"
+                  ],
+                  "type": "string"
+                },
+                "encodings": {
+                  "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
+                  "items": {
+                    "$ref": "#/definitions/SingleDefUnitChannel"
+                  },
+                  "type": "array"
+                },
+                "fields": {
+                  "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
+                  "items": {
+                    "$ref": "#/definitions/FieldName"
+                  },
+                  "type": "array"
+                },
+                "nearest": {
+                  "description": "When true, an invisible voronoi diagram is computed to accelerate discrete selection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
+                  "type": "boolean"
+                },
+                "on": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/Stream"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
+                },
+                "resolve": {
+                  "$ref": "#/definitions/SelectionResolution",
+                  "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
+                },
+                "toggle": {
+                  "description": "Controls whether data values should be toggled or only ever inserted into multi selections. Can be `true`, `false` (for insertion only), or a [Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e., data values are toggled when a user interacts with the shift-key pressed).\n\nSetting the value to the Vega expression `\"true\"` will toggle data values without the user pressing the shift-key.\n\n__See also:__ [`toggle`](https://vega.github.io/vega-lite/docs/toggle.html) documentation.",
+                  "type": [
+                    "string",
+                    "boolean"
+                  ]
+                },
+                "type": {
+                  "$ref": "#/definitions/SelectionType"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "type": "object"
+            },
+            {
+              "additionalProperties": false,
+              "properties": {
+                "clear": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/Stream"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ],
+                  "description": "Clears the selection, emptying it of all values. Can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+                },
+                "empty": {
+                  "description": "By default, `all` data values are considered to lie within an empty selection. When set to `none`, empty selections contain no data values.",
+                  "enum": [
+                    "all",
+                    "none"
+                  ],
+                  "type": "string"
+                },
+                "encodings": {
+                  "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
+                  "items": {
+                    "$ref": "#/definitions/SingleDefUnitChannel"
+                  },
+                  "type": "array"
+                },
+                "fields": {
+                  "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
+                  "items": {
+                    "$ref": "#/definitions/FieldName"
+                  },
+                  "type": "array"
+                },
+                "mark": {
+                  "$ref": "#/definitions/BrushConfig",
+                  "description": "An interval selection also adds a rectangle mark to depict the extents of the interval. The `mark` property can be used to customize the appearance of the mark.\n\n__See also:__ [`mark`](https://vega.github.io/vega-lite/docs/selection-mark.html) documentation."
+                },
+                "on": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/Stream"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
+                },
+                "resolve": {
+                  "$ref": "#/definitions/SelectionResolution",
+                  "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
+                },
+                "translate": {
+                  "description": "When truthy, allows a user to interactively move an interval selection back-and-forth. Can be `true`, `false` (to disable panning), or a [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/) which must include a start and end event to trigger continuous panning.\n\n__Default value:__ `true`, which corresponds to `[mousedown, window:mouseup] > window:mousemove!` which corresponds to clicks and dragging within an interval selection to reposition it.\n\n__See also:__ [`translate`](https://vega.github.io/vega-lite/docs/translate.html) documentation.",
+                  "type": [
+                    "string",
+                    "boolean"
+                  ]
+                },
+                "type": {
+                  "$ref": "#/definitions/SelectionType"
+                },
+                "zoom": {
+                  "description": "When truthy, allows a user to interactively resize an interval selection. Can be `true`, `false` (to disable zooming), or a [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/). Currently, only `wheel` events are supported.\n\n__Default value:__ `true`, which corresponds to `wheel!`.\n\n__See also:__ [`zoom`](https://vega.github.io/vega-lite/docs/zoom.html) documentation.",
+                  "type": [
+                    "string",
+                    "boolean"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "type": "object"
+            }
+          ],
+          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports two selection types:\n\n- `\"point\"` -- to select multiple discrete data values; the first value is selected on `click` and additional values toggled on shift-click. - `\"interval\"` -- to select a continuous range of data values on `drag`."
+        },
+        "value": {
+          "anyOf": [
+            {
+              "items": {
+                "$ref": "#/definitions/SelectionInitMapping"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/SelectionInitIntervalMapping"
+            }
+          ],
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
         }
-      ]
+      },
+      "required": [
+        "name",
+        "select"
+      ],
+      "type": "object"
     },
     "SelectionExtent": {
       "anyOf": [
@@ -23312,8 +23172,7 @@
     },
     "SelectionType": {
       "enum": [
-        "single",
-        "multi",
+        "point",
         "interval"
       ],
       "type": "string"
@@ -27560,70 +27419,6 @@
       ],
       "type": "string"
     },
-    "SingleSelection": {
-      "$ref": "#/definitions/BaseSelectionDef<\"single\">"
-    },
-    "SingleSelectionConfig": {
-      "additionalProperties": false,
-      "properties": {
-        "clear": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Stream"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "boolean"
-            }
-          ],
-          "description": "Clears the selection, emptying it of all values. Can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
-        },
-        "empty": {
-          "description": "By default, `all` data values are considered to lie within an empty selection. When set to `none`, empty selections contain no data values.",
-          "enum": [
-            "all",
-            "none"
-          ],
-          "type": "string"
-        },
-        "encodings": {
-          "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-          "items": {
-            "$ref": "#/definitions/SingleDefUnitChannel"
-          },
-          "type": "array"
-        },
-        "fields": {
-          "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-          "items": {
-            "$ref": "#/definitions/FieldName"
-          },
-          "type": "array"
-        },
-        "nearest": {
-          "description": "When true, an invisible voronoi diagram is computed to accelerate discrete selection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
-          "type": "boolean"
-        },
-        "on": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Stream"
-            },
-            {
-              "type": "string"
-            }
-          ],
-          "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
-        },
-        "resolve": {
-          "$ref": "#/definitions/SelectionResolution",
-          "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
-        }
-      },
-      "type": "object"
-    },
     "SingleTimeUnit": {
       "anyOf": [
         {
@@ -30572,388 +30367,233 @@
       "type": "object"
     },
     "TopLevelSelectionDef": {
-      "anyOf": [
-        {
-          "additionalProperties": false,
-          "properties": {
-            "bind": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Binding"
-                },
-                {
-                  "additionalProperties": {
-                    "$ref": "#/definitions/Binding"
-                  },
-                  "type": "object"
-                },
-                {
-                  "$ref": "#/definitions/LegendBinding"
-                }
-              ],
-              "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
+      "additionalProperties": false,
+      "properties": {
+        "bind": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Binding"
             },
-            "name": {
-              "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
-              "type": "string"
-            },
-            "select": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SelectionType"
-                },
-                {
-                  "additionalProperties": false,
-                  "properties": {
-                    "clear": {
-                      "anyOf": [
-                        {
-                          "$ref": "#/definitions/Stream"
-                        },
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "boolean"
-                        }
-                      ],
-                      "description": "Clears the selection, emptying it of all values. Can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
-                    },
-                    "empty": {
-                      "description": "By default, `all` data values are considered to lie within an empty selection. When set to `none`, empty selections contain no data values.",
-                      "enum": [
-                        "all",
-                        "none"
-                      ],
-                      "type": "string"
-                    },
-                    "encodings": {
-                      "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-                      "items": {
-                        "$ref": "#/definitions/SingleDefUnitChannel"
-                      },
-                      "type": "array"
-                    },
-                    "fields": {
-                      "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-                      "items": {
-                        "$ref": "#/definitions/FieldName"
-                      },
-                      "type": "array"
-                    },
-                    "nearest": {
-                      "description": "When true, an invisible voronoi diagram is computed to accelerate discrete selection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
-                      "type": "boolean"
-                    },
-                    "on": {
-                      "anyOf": [
-                        {
-                          "$ref": "#/definitions/Stream"
-                        },
-                        {
-                          "type": "string"
-                        }
-                      ],
-                      "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
-                    },
-                    "resolve": {
-                      "$ref": "#/definitions/SelectionResolution",
-                      "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
-                    },
-                    "type": {
-                      "$ref": "#/definitions/SelectionType"
-                    }
-                  },
-                  "required": [
-                    "type"
-                  ],
-                  "type": "object"
-                }
-              ],
-              "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `\"single\"` -- to select a single discrete data value on `click`. - `\"multi\"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`. - `\"interval\"` -- to select a continuous range of data values on `drag`."
-            },
-            "value": {
-              "$ref": "#/definitions/SelectionInitMapping",
-              "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
-            },
-            "views": {
-              "description": "By default, top-level selections are applied to every view in the visualization. If this property is specified, selections will only be applied to views with the given names.",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "items": {
-                      "type": "string"
-                    },
-                    "type": "array"
-                  }
-                ]
+            {
+              "additionalProperties": {
+                "$ref": "#/definitions/Binding"
               },
-              "type": "array"
-            }
-          },
-          "required": [
-            "name",
-            "select"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "bind": {
-              "$ref": "#/definitions/LegendBinding",
-              "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
+              "type": "object"
             },
-            "name": {
-              "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+            {
+              "$ref": "#/definitions/LegendBinding"
+            },
+            {
+              "const": "scales",
               "type": "string"
+            }
+          ],
+          "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
+        },
+        "name": {
+          "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+          "type": "string"
+        },
+        "select": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/SelectionType"
             },
-            "select": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SelectionType"
-                },
-                {
-                  "additionalProperties": false,
-                  "properties": {
-                    "clear": {
-                      "anyOf": [
-                        {
-                          "$ref": "#/definitions/Stream"
-                        },
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "boolean"
-                        }
-                      ],
-                      "description": "Clears the selection, emptying it of all values. Can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+            {
+              "additionalProperties": false,
+              "properties": {
+                "clear": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/Stream"
                     },
-                    "empty": {
-                      "description": "By default, `all` data values are considered to lie within an empty selection. When set to `none`, empty selections contain no data values.",
-                      "enum": [
-                        "all",
-                        "none"
-                      ],
+                    {
                       "type": "string"
                     },
-                    "encodings": {
-                      "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-                      "items": {
-                        "$ref": "#/definitions/SingleDefUnitChannel"
-                      },
-                      "type": "array"
-                    },
-                    "fields": {
-                      "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-                      "items": {
-                        "$ref": "#/definitions/FieldName"
-                      },
-                      "type": "array"
-                    },
-                    "nearest": {
-                      "description": "When true, an invisible voronoi diagram is computed to accelerate discrete selection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
+                    {
                       "type": "boolean"
-                    },
-                    "on": {
-                      "anyOf": [
-                        {
-                          "$ref": "#/definitions/Stream"
-                        },
-                        {
-                          "type": "string"
-                        }
-                      ],
-                      "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
-                    },
-                    "resolve": {
-                      "$ref": "#/definitions/SelectionResolution",
-                      "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
-                    },
-                    "toggle": {
-                      "description": "Controls whether data values should be toggled or only ever inserted into multi selections. Can be `true`, `false` (for insertion only), or a [Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e., data values are toggled when a user interacts with the shift-key pressed).\n\nSetting the value to the Vega expression `\"true\"` will toggle data values without the user pressing the shift-key.\n\n__See also:__ [`toggle`](https://vega.github.io/vega-lite/docs/toggle.html) documentation.",
-                      "type": [
-                        "string",
-                        "boolean"
-                      ]
-                    },
-                    "type": {
-                      "$ref": "#/definitions/SelectionType"
                     }
-                  },
-                  "required": [
-                    "type"
                   ],
-                  "type": "object"
+                  "description": "Clears the selection, emptying it of all values. Can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+                },
+                "empty": {
+                  "description": "By default, `all` data values are considered to lie within an empty selection. When set to `none`, empty selections contain no data values.",
+                  "enum": [
+                    "all",
+                    "none"
+                  ],
+                  "type": "string"
+                },
+                "encodings": {
+                  "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
+                  "items": {
+                    "$ref": "#/definitions/SingleDefUnitChannel"
+                  },
+                  "type": "array"
+                },
+                "fields": {
+                  "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
+                  "items": {
+                    "$ref": "#/definitions/FieldName"
+                  },
+                  "type": "array"
+                },
+                "nearest": {
+                  "description": "When true, an invisible voronoi diagram is computed to accelerate discrete selection. The data value _nearest_ the mouse cursor is added to the selection.\n\n__See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.",
+                  "type": "boolean"
+                },
+                "on": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/Stream"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
+                },
+                "resolve": {
+                  "$ref": "#/definitions/SelectionResolution",
+                  "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
+                },
+                "toggle": {
+                  "description": "Controls whether data values should be toggled or only ever inserted into multi selections. Can be `true`, `false` (for insertion only), or a [Vega expression](https://vega.github.io/vega/docs/expressions/).\n\n__Default value:__ `true`, which corresponds to `event.shiftKey` (i.e., data values are toggled when a user interacts with the shift-key pressed).\n\nSetting the value to the Vega expression `\"true\"` will toggle data values without the user pressing the shift-key.\n\n__See also:__ [`toggle`](https://vega.github.io/vega-lite/docs/toggle.html) documentation.",
+                  "type": [
+                    "string",
+                    "boolean"
+                  ]
+                },
+                "type": {
+                  "$ref": "#/definitions/SelectionType"
                 }
+              },
+              "required": [
+                "type"
               ],
-              "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `\"single\"` -- to select a single discrete data value on `click`. - `\"multi\"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`. - `\"interval\"` -- to select a continuous range of data values on `drag`."
+              "type": "object"
             },
-            "value": {
-              "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.",
+            {
+              "additionalProperties": false,
+              "properties": {
+                "clear": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/Stream"
+                    },
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "boolean"
+                    }
+                  ],
+                  "description": "Clears the selection, emptying it of all values. Can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
+                },
+                "empty": {
+                  "description": "By default, `all` data values are considered to lie within an empty selection. When set to `none`, empty selections contain no data values.",
+                  "enum": [
+                    "all",
+                    "none"
+                  ],
+                  "type": "string"
+                },
+                "encodings": {
+                  "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
+                  "items": {
+                    "$ref": "#/definitions/SingleDefUnitChannel"
+                  },
+                  "type": "array"
+                },
+                "fields": {
+                  "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
+                  "items": {
+                    "$ref": "#/definitions/FieldName"
+                  },
+                  "type": "array"
+                },
+                "mark": {
+                  "$ref": "#/definitions/BrushConfig",
+                  "description": "An interval selection also adds a rectangle mark to depict the extents of the interval. The `mark` property can be used to customize the appearance of the mark.\n\n__See also:__ [`mark`](https://vega.github.io/vega-lite/docs/selection-mark.html) documentation."
+                },
+                "on": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/Stream"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ],
+                  "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
+                },
+                "resolve": {
+                  "$ref": "#/definitions/SelectionResolution",
+                  "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
+                },
+                "translate": {
+                  "description": "When truthy, allows a user to interactively move an interval selection back-and-forth. Can be `true`, `false` (to disable panning), or a [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/) which must include a start and end event to trigger continuous panning.\n\n__Default value:__ `true`, which corresponds to `[mousedown, window:mouseup] > window:mousemove!` which corresponds to clicks and dragging within an interval selection to reposition it.\n\n__See also:__ [`translate`](https://vega.github.io/vega-lite/docs/translate.html) documentation.",
+                  "type": [
+                    "string",
+                    "boolean"
+                  ]
+                },
+                "type": {
+                  "$ref": "#/definitions/SelectionType"
+                },
+                "zoom": {
+                  "description": "When truthy, allows a user to interactively resize an interval selection. Can be `true`, `false` (to disable zooming), or a [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/). Currently, only `wheel` events are supported.\n\n__Default value:__ `true`, which corresponds to `wheel!`.\n\n__See also:__ [`zoom`](https://vega.github.io/vega-lite/docs/zoom.html) documentation.",
+                  "type": [
+                    "string",
+                    "boolean"
+                  ]
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "type": "object"
+            }
+          ],
+          "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports two selection types:\n\n- `\"point\"` -- to select multiple discrete data values; the first value is selected on `click` and additional values toggled on shift-click. - `\"interval\"` -- to select a continuous range of data values on `drag`."
+        },
+        "value": {
+          "anyOf": [
+            {
               "items": {
                 "$ref": "#/definitions/SelectionInitMapping"
               },
               "type": "array"
             },
-            "views": {
-              "description": "By default, top-level selections are applied to every view in the visualization. If this property is specified, selections will only be applied to views with the given names.",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "items": {
-                      "type": "string"
-                    },
-                    "type": "array"
-                  }
-                ]
-              },
-              "type": "array"
+            {
+              "$ref": "#/definitions/SelectionInitIntervalMapping"
             }
-          },
-          "required": [
-            "name",
-            "select"
           ],
-          "type": "object"
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
         },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "bind": {
-              "const": "scales",
-              "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.",
-              "type": "string"
-            },
-            "name": {
-              "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
-              "type": "string"
-            },
-            "select": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SelectionType"
-                },
-                {
-                  "additionalProperties": false,
-                  "properties": {
-                    "clear": {
-                      "anyOf": [
-                        {
-                          "$ref": "#/definitions/Stream"
-                        },
-                        {
-                          "type": "string"
-                        },
-                        {
-                          "type": "boolean"
-                        }
-                      ],
-                      "description": "Clears the selection, emptying it of all values. Can be a [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.\n\n__Default value:__ `dblclick`.\n\n__See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation."
-                    },
-                    "empty": {
-                      "description": "By default, `all` data values are considered to lie within an empty selection. When set to `none`, empty selections contain no data values.",
-                      "enum": [
-                        "all",
-                        "none"
-                      ],
-                      "type": "string"
-                    },
-                    "encodings": {
-                      "description": "An array of encoding channels. The corresponding data field values must match for a data tuple to fall within the selection.\n\n__See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-                      "items": {
-                        "$ref": "#/definitions/SingleDefUnitChannel"
-                      },
-                      "type": "array"
-                    },
-                    "fields": {
-                      "description": "An array of field names whose values must match for a data tuple to fall within the selection.\n\n__See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.",
-                      "items": {
-                        "$ref": "#/definitions/FieldName"
-                      },
-                      "type": "array"
-                    },
-                    "mark": {
-                      "$ref": "#/definitions/BrushConfig",
-                      "description": "An interval selection also adds a rectangle mark to depict the extents of the interval. The `mark` property can be used to customize the appearance of the mark.\n\n__See also:__ [`mark`](https://vega.github.io/vega-lite/docs/selection-mark.html) documentation."
-                    },
-                    "on": {
-                      "anyOf": [
-                        {
-                          "$ref": "#/definitions/Stream"
-                        },
-                        {
-                          "type": "string"
-                        }
-                      ],
-                      "description": "A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection. For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters)."
-                    },
-                    "resolve": {
-                      "$ref": "#/definitions/SelectionResolution",
-                      "description": "With layered and multi-view displays, a strategy that determines how selections' data queries are resolved when applied in a filter transform, conditional encoding rule, or scale domain.\n\n__See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation."
-                    },
-                    "translate": {
-                      "description": "When truthy, allows a user to interactively move an interval selection back-and-forth. Can be `true`, `false` (to disable panning), or a [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/) which must include a start and end event to trigger continuous panning.\n\n__Default value:__ `true`, which corresponds to `[mousedown, window:mouseup] > window:mousemove!` which corresponds to clicks and dragging within an interval selection to reposition it.\n\n__See also:__ [`translate`](https://vega.github.io/vega-lite/docs/translate.html) documentation.",
-                      "type": [
-                        "string",
-                        "boolean"
-                      ]
-                    },
-                    "type": {
-                      "$ref": "#/definitions/SelectionType"
-                    },
-                    "zoom": {
-                      "description": "When truthy, allows a user to interactively resize an interval selection. Can be `true`, `false` (to disable zooming), or a [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/). Currently, only `wheel` events are supported.\n\n__Default value:__ `true`, which corresponds to `wheel!`.\n\n__See also:__ [`zoom`](https://vega.github.io/vega-lite/docs/zoom.html) documentation.",
-                      "type": [
-                        "string",
-                        "boolean"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "type"
-                  ],
-                  "type": "object"
-                }
-              ],
-              "description": "Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:\n\n- `\"single\"` -- to select a single discrete data value on `click`. - `\"multi\"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`. - `\"interval\"` -- to select a continuous range of data values on `drag`."
-            },
-            "value": {
-              "$ref": "#/definitions/SelectionInitIntervalMapping",
-              "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
-            },
-            "views": {
-              "description": "By default, top-level selections are applied to every view in the visualization. If this property is specified, selections will only be applied to views with the given names.",
-              "items": {
-                "anyOf": [
-                  {
-                    "type": "string"
-                  },
-                  {
-                    "items": {
-                      "type": "string"
-                    },
-                    "type": "array"
-                  }
-                ]
+        "views": {
+          "description": "By default, top-level selections are applied to every view in the visualization. If this property is specified, selections will only be applied to views with the given names.",
+          "items": {
+            "anyOf": [
+              {
+                "type": "string"
               },
-              "type": "array"
-            }
+              {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            ]
           },
-          "required": [
-            "name",
-            "select"
-          ],
-          "type": "object"
+          "type": "array"
         }
-      ]
+      },
+      "required": [
+        "name",
+        "select"
+      ],
+      "type": "object"
     },
     "TopLevelSpec": {
       "anyOf": [
