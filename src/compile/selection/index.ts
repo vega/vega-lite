@@ -45,8 +45,6 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   bind?: 'scales' | Binding | Dict<Binding> | LegendBinding;
   resolve: SelectionResolution;
   mark?: BrushConfig;
-
-  // Transforms
   project: SelectionProjectionComponent;
   scales?: SelectionProjection[];
   toggle?: string;

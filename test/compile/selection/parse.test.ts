@@ -48,7 +48,12 @@ describe('Selection', () => {
         }
       ])
     );
-    expect(component['two'].events).toEqual(parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope'));
+    expect(component['two'].events).toEqual(
+      parseSelector(
+        '[mousedown[!event.item || event.item.mark.name !== "two_brush"], window:mouseup] > window:mousemove!',
+        'scope'
+      )
+    );
   });
 
   it('supports inline default overrides', () => {

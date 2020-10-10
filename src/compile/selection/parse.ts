@@ -39,7 +39,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
       }
 
       if (defaults[key] === undefined || defaults[key] === true) {
-        defaults[key] = cfg[key] ?? defaults[key];
+        defaults[key] = duplicate(cfg[key] ?? defaults[key]);
       }
     }
 

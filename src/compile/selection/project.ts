@@ -1,5 +1,11 @@
 import {array, isObject} from 'vega-util';
-import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../channel';
+import {
+  getPositionChannelFromLatLong,
+  isGeoPositionChannel,
+  isScaleChannel,
+  isSingleDefUnitChannel,
+  SingleDefUnitChannel
+} from '../../channel';
 import * as log from '../../log';
 import {hasContinuousDomain} from '../../scale';
 import {PointSelectionConfig, SelectionInitIntervalMapping, SelectionInitMapping, SELECTION_ID} from '../../selection';
@@ -140,20 +146,24 @@ const project: SelectionCompiler = {
           // Determine whether the tuple will store enumerated or ranged values.
           // Interval selections store ranges for continuous scales, and enumerations otherwise.
           // Single/multi selections store ranges for binned fields, and enumerations otherwise.
-          let tplType: TupleStoreType = 'E';
-          if (type === 'interval') {
-            const scaleType = model.getScaleComponent(channel as ScaleChannel).get('type');
-            if (hasContinuousDomain(scaleType)) {
-              tplType = 'R';
-            }
-          } else if (fieldDef.bin) {
-            tplType = 'R-RE';
-          }
+          const tplType: TupleStoreType =
+            type === 'interval' &&
+            isScaleChannel(channel) &&
+            hasContinuousDomain(model.getScaleComponent(channel).get('type'))
+              ? 'R'
+              : fieldDef.bin
+              ? 'R-RE'
+              : 'E';
 
-          const p: SelectionProjection = {field, channel, type: tplType};
+          const posChannel = isGeoPositionChannel(channel) ? getPositionChannelFromLatLong(channel) : channel;
+          const p: SelectionProjection = {
+            field,
+            channel: posChannel,
+            type: tplType
+          };
           p.signals = {...signalName(p, 'data'), ...signalName(p, 'visual')};
           proj.items.push((parsed[field] = p));
-          proj.hasField[field] = proj.hasChannel[channel] = parsed[field];
+          proj.hasField[field] = proj.hasChannel[posChannel] = parsed[field];
           proj.hasSelectionId = proj.hasSelectionId || field === SELECTION_ID;
         }
       } else {
