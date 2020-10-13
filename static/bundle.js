@@ -1848,7 +1848,7 @@
       }
 
       resumingScanAtSamePosition() {
-        return this.regexIndex != 0;
+        return this.regexIndex !== 0;
       }
 
       considerAll() {
@@ -1866,17 +1866,50 @@
       exec(s) {
         const m = this.getMatcher(this.regexIndex);
         m.lastIndex = this.lastIndex;
-        const result = m.exec(s);
+        let result = m.exec(s); // The following is because we have no easy way to say "resume scanning at the
+        // existing position but also skip the current rule ONLY". What happens is
+        // all prior rules are also skipped which can result in matching the wrong
+        // thing. Example of matching "booger":
+        // our matcher is [string, "booger", number]
+        //
+        // ....booger....
+        // if "booger" is ignored then we'd really need a regex to scan from the
+        // SAME position for only: [string, number] but ignoring "booger" (if it
+        // was the first match), a simple resume would scan ahead who knows how
+        // far looking only for "number", ignoring potential string matches (or
+        // future "booger" matches that might be valid.)
+        // So what we do: We execute two matchers, one resuming at the same
+        // position, but the second full matcher starting at the position after:
+        //     /--- resume first regex match here (for [number])
+        //     |/---- full match here for [string, "booger", number]
+        //     vv
+        // ....booger....
+        // Which ever results in a match first is then used. So this 3-4 step
+        // process essentially allows us to say "match at this position, excluding
+        // a prior rule that was ignored".
+        //
+        // 1. Match "booger" first, ignore. Also proves that [string] does non match.
+        // 2. Resume matching for [number]
+        // 3. Match at index + 1 for [string, "booger", number]
+        // 4. If #2 and #3 result in matches, which came first?
+
+        if (this.resumingScanAtSamePosition()) {
+          if (result && result.index === this.lastIndex) ;else {
+            // use the second matcher result
+            const m2 = this.getMatcher(0);
+            m2.lastIndex = this.lastIndex + 1;
+            result = m2.exec(s);
+          }
+        }
 
         if (result) {
           this.regexIndex += result.position + 1;
 
           if (this.regexIndex === this.count) {
-            // wrap-around
-            this.regexIndex = 0;
+            // wrap-around to considering all matches again
+            this.considerAll();
           }
-        } // this.regexIndex = 0;
-
+        }
 
         return result;
       }
@@ -2193,7 +2226,7 @@
     return COMMON_KEYWORDS.includes(keyword.toLowerCase());
   }
 
-  var version = "10.2.0"; // @ts-nocheck
+  var version = "10.2.1"; // @ts-nocheck
 
   function hasValueOrEmptyAttribute(value) {
     return Boolean(value || value === "");
@@ -2537,15 +2570,6 @@
         }
       }
       /**
-       * Advance a single character
-       */
-
-
-      function advanceOne() {
-        mode_buffer += codeToHighlight[index];
-        index += 1;
-      }
-      /**
        * Handle matching but then ignoring a sequence of text
        *
        * @param {string} lexeme - string containing full match text
@@ -2803,19 +2827,11 @@
             // considered for a potential match
             resumeScanAtSamePosition = false;
           } else {
-            top.matcher.lastIndex = index;
             top.matcher.considerAll();
           }
 
+          top.matcher.lastIndex = index;
           const match = top.matcher.exec(codeToHighlight); // console.log("match", match[0], match.rule && match.rule.begin)
-          // if our failure to match was the result of a "resumed scan" then we
-          // need to advance one position and revert to full scanning before we
-          // decide there are truly no more matches at all to be had
-
-          if (!match && top.matcher.resumingScanAtSamePosition()) {
-            advanceOne();
-            continue;
-          }
 
           if (!match) break;
           const beforeMatch = codeToHighlight.substring(index, match.index);
@@ -4816,6 +4832,10 @@
     return Object.prototype.toString.call(_) === '[object Date]';
   }
 
+  function isIterable(_) {
+    return _ && isFunction(_[Symbol.iterator]);
+  }
+
   function isNumber(_) {
     return typeof _ === 'number';
   }
@@ -5005,6 +5025,231 @@
     }
   }
 
+  //   https://...    file://...    //...
+
+  const protocol_re = /^([A-Za-z]+:)?\/\//; // Matches allowed URIs. From https://github.com/cure53/DOMPurify/blob/master/src/regexp.js with added file://
+
+  const allowed_re = /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp|file|data):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i; // eslint-disable-line no-useless-escape
+
+  const whitespace_re = /[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205f\u3000]/g; // eslint-disable-line no-control-regex
+  // Special treatment in node.js for the file: protocol
+
+  const fileProtocol = 'file://';
+  /**
+   * Factory for a loader constructor that provides methods for requesting
+   * files from either the network or disk, and for sanitizing request URIs.
+   * @param {function} fetch - The Fetch API for HTTP network requests.
+   *   If null or undefined, HTTP loading will be disabled.
+   * @param {object} fs - The file system interface for file loading.
+   *   If null or undefined, local file loading will be disabled.
+   * @return {function} A loader constructor with the following signature:
+   *   param {object} [options] - Optional default loading options to use.
+   *   return {object} - A new loader instance.
+   */
+
+  function loaderFactory (fetch, fs) {
+    return options => ({
+      options: options || {},
+      sanitize: sanitize,
+      load: load,
+      fileAccess: !!fs,
+      file: fileLoader(fs),
+      http: httpLoader(fetch)
+    });
+  }
+  /**
+   * Load an external resource, typically either from the web or from the local
+   * filesystem. This function uses {@link sanitize} to first sanitize the uri,
+   * then calls either {@link http} (for web requests) or {@link file} (for
+   * filesystem loading).
+   * @param {string} uri - The resource indicator (e.g., URL or filename).
+   * @param {object} [options] - Optional loading options. These options will
+   *   override any existing default options.
+   * @return {Promise} - A promise that resolves to the loaded content.
+   */
+
+  async function load(uri, options) {
+    const opt = await this.sanitize(uri, options),
+          url = opt.href;
+    return opt.localFile ? this.file(url) : this.http(url, options);
+  }
+  /**
+   * URI sanitizer function.
+   * @param {string} uri - The uri (url or filename) to sanity check.
+   * @param {object} options - An options hash.
+   * @return {Promise} - A promise that resolves to an object containing
+   *  sanitized uri data, or rejects it the input uri is deemed invalid.
+   *  The properties of the resolved object are assumed to be
+   *  valid attributes for an HTML 'a' tag. The sanitized uri *must* be
+   *  provided by the 'href' property of the returned object.
+   */
+
+
+  async function sanitize(uri, options) {
+    options = extend({}, this.options, options);
+    const fileAccess = this.fileAccess,
+          result = {
+      href: null
+    };
+    let isFile, loadFile, base;
+    const isAllowed = allowed_re.test(uri.replace(whitespace_re, ''));
+
+    if (uri == null || typeof uri !== 'string' || !isAllowed) {
+      error('Sanitize failure, invalid URI: ' + $(uri));
+    }
+
+    const hasProtocol = protocol_re.test(uri); // if relative url (no protocol/host), prepend baseURL
+
+    if ((base = options.baseURL) && !hasProtocol) {
+      // Ensure that there is a slash between the baseURL (e.g. hostname) and url
+      if (!uri.startsWith('/') && base[base.length - 1] !== '/') {
+        uri = '/' + uri;
+      }
+
+      uri = base + uri;
+    } // should we load from file system?
+
+
+    loadFile = (isFile = uri.startsWith(fileProtocol)) || options.mode === 'file' || options.mode !== 'http' && !hasProtocol && fileAccess;
+
+    if (isFile) {
+      // strip file protocol
+      uri = uri.slice(fileProtocol.length);
+    } else if (uri.startsWith('//')) {
+      if (options.defaultProtocol === 'file') {
+        // if is file, strip protocol and set loadFile flag
+        uri = uri.slice(2);
+        loadFile = true;
+      } else {
+        // if relative protocol (starts with '//'), prepend default protocol
+        uri = (options.defaultProtocol || 'http') + ':' + uri;
+      }
+    } // set non-enumerable mode flag to indicate local file load
+
+
+    Object.defineProperty(result, 'localFile', {
+      value: !!loadFile
+    }); // set uri
+
+    result.href = uri; // set default result target, if specified
+
+    if (options.target) {
+      result.target = options.target + '';
+    } // set default result rel, if specified (#1542)
+
+
+    if (options.rel) {
+      result.rel = options.rel + '';
+    } // provide control over cross-origin image handling (#2238)
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image
+
+
+    if (options.context === 'image' && options.crossOrigin) {
+      result.crossOrigin = options.crossOrigin + '';
+    } // return
+
+
+    return result;
+  }
+  /**
+   * File system loader factory.
+   * @param {object} fs - The file system interface.
+   * @return {function} - A file loader with the following signature:
+   *   param {string} filename - The file system path to load.
+   *   param {string} filename - The file system path to load.
+   *   return {Promise} A promise that resolves to the file contents.
+   */
+
+
+  function fileLoader(fs) {
+    return fs ? filename => new Promise((accept, reject) => {
+      fs.readFile(filename, (error, data) => {
+        if (error) reject(error);else accept(data);
+      });
+    }) : fileReject;
+  }
+  /**
+   * Default file system loader that simply rejects.
+   */
+
+
+  async function fileReject() {
+    error('No file system access.');
+  }
+  /**
+   * HTTP request handler factory.
+   * @param {function} fetch - The Fetch API method.
+   * @return {function} - An http loader with the following signature:
+   *   param {string} url - The url to request.
+   *   param {object} options - An options hash.
+   *   return {Promise} - A promise that resolves to the file contents.
+   */
+
+
+  function httpLoader(fetch) {
+    return fetch ? async function (url, options) {
+      const opt = extend({}, this.options.http, options),
+            type = options && options.response,
+            response = await fetch(url, opt);
+      return !response.ok ? error(response.status + '' + response.statusText) : isFunction(response[type]) ? response[type]() : response.text();
+    } : httpReject;
+  }
+  /**
+   * Default http request handler that simply rejects.
+   */
+
+
+  async function httpReject() {
+    error('No HTTP fetch method available.');
+  }
+
+  const isValid = _ => _ != null && _ === _;
+
+  const isBoolean$1 = _ => _ === 'true' || _ === 'false' || _ === true || _ === false;
+
+  const isDate$1 = _ => !Number.isNaN(Date.parse(_));
+
+  const isNumber$1 = _ => !Number.isNaN(+_) && !(_ instanceof Date);
+
+  const isInteger = _ => isNumber$1(_) && Number.isInteger(+_);
+
+  const typeParsers = {
+    boolean: toBoolean,
+    integer: toNumber,
+    number: toNumber,
+    date: toDate,
+    string: toString,
+    unknown: identity
+  };
+  const typeTests = [isBoolean$1, isInteger, isNumber$1, isDate$1];
+  const typeList = ['boolean', 'integer', 'number', 'date'];
+  function inferType(values, field) {
+    if (!values || !values.length) return 'unknown';
+    const n = values.length,
+          m = typeTests.length,
+          a = typeTests.map((_, i) => i + 1);
+
+    for (let i = 0, t = 0, j, value; i < n; ++i) {
+      value = field ? values[i][field] : values[i];
+
+      for (j = 0; j < m; ++j) {
+        if (a[j] && isValid(value) && !typeTests[j](value)) {
+          a[j] = 0;
+          ++t;
+          if (t === typeTests.length) return 'string';
+        }
+      }
+    }
+
+    return typeList[a.reduce((u, v) => u === 0 ? v : u, 0) - 1];
+  }
+  function inferTypes(data, fields) {
+    return fields.reduce((types, field) => {
+      types[field] = inferType(data, field);
+      return types;
+    }, {});
+  }
+
   var EOL = {},
       EOF = {},
       QUOTE = 34,
@@ -5171,6 +5416,44 @@
       formatRow: formatRow,
       formatValue: formatValue
     };
+  }
+
+  function delimitedFormat(delimiter) {
+    const parse = function (data, format) {
+      const delim = {
+        delimiter: delimiter
+      };
+      return dsv(data, format ? extend(format, delim) : delim);
+    };
+
+    parse.responseType = 'text';
+    return parse;
+  }
+  function dsv(data, format) {
+    if (format.header) {
+      data = format.header.map($).join(format.delimiter) + '\n' + data;
+    }
+
+    return dsvFormat(format.delimiter).parse(data + '');
+  }
+  dsv.responseType = 'text';
+
+  function isBuffer(_) {
+    return typeof Buffer === 'function' && isFunction(Buffer.isBuffer) ? Buffer.isBuffer(_) : false;
+  }
+
+  function json$1(data, format) {
+    const prop = format && format.property ? field(format.property) : identity;
+    return isObject(data) && !isBuffer(data) ? parseJSON(prop(data), format) : prop(JSON.parse(data));
+  }
+  json$1.responseType = 'json';
+
+  function parseJSON(data, format) {
+    if (!isArray(data) && isIterable(data)) {
+      data = [...data];
+    }
+
+    return format && format.copy ? JSON.parse(JSON.stringify(data)) : data;
   }
 
   function identity$1 (x) {
@@ -5477,6 +5760,50 @@
       if (filter(geoms[0].g, geoms[geoms.length - 1].g)) arcs.push(geoms[0].i);
     });
     return arcs;
+  }
+
+  const filters = {
+    interior: (a, b) => a !== b,
+    exterior: (a, b) => a === b
+  };
+  function topojson(data, format) {
+    let method, object, property, filter;
+    data = json$1(data, format);
+
+    if (format && format.feature) {
+      method = feature;
+      property = format.feature;
+    } else if (format && format.mesh) {
+      method = mesh;
+      property = format.mesh;
+      filter = filters[format.filter];
+    } else {
+      error('Missing TopoJSON feature or mesh parameter.');
+    }
+
+    object = (object = data.objects[property]) ? method(data, object, filter) : error('Invalid TopoJSON object: ' + property);
+    return object && object.features || [object];
+  }
+  topojson.responseType = 'json';
+
+  const format = {
+    dsv: dsv,
+    csv: delimitedFormat(','),
+    tsv: delimitedFormat('\t'),
+    json: json$1,
+    topojson: topojson
+  };
+  function formats(name, reader) {
+    if (arguments.length > 1) {
+      format[name] = reader;
+      return this;
+    } else {
+      return has(format, name) ? format[name] : null;
+    }
+  }
+  function responseType(type) {
+    const f = formats(type);
+    return f && f.responseType || 'text';
   }
 
   function ascending$2 (a, b) {
@@ -6164,7 +6491,7 @@
   }
 
   var locale;
-  var format;
+  var format$1;
   var formatPrefix;
   defaultLocale({
     thousands: ",",
@@ -6173,7 +6500,7 @@
   });
   function defaultLocale(definition) {
     locale = formatLocale(definition);
-    format = locale.format;
+    format$1 = locale.format;
     formatPrefix = locale.formatPrefix;
     return locale;
   }
@@ -7634,7 +7961,7 @@
 
   function resetNumberFormatDefaultLocale() {
     return defaultNumberLocale = numberLocale({
-      format: format,
+      format: format$1,
       formatPrefix: formatPrefix
     });
   }
@@ -7723,317 +8050,7 @@
     return args ? createLocale(numberFormatDefaultLocale(numberSpec), timeFormatDefaultLocale(timeSpec)) : createLocale(numberFormatDefaultLocale(), timeFormatDefaultLocale());
   }
 
-  const protocol_re = /^([A-Za-z]+:)?\/\//; // Matches allowed URIs. From https://github.com/cure53/DOMPurify/blob/master/src/regexp.js with added file://
-
-  const allowed_re = /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp|file|data):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i; // eslint-disable-line no-useless-escape
-
-  const whitespace_re = /[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205f\u3000]/g; // eslint-disable-line no-control-regex
-  // Special treatment in node.js for the file: protocol
-
-  const fileProtocol = 'file://';
-  /**
-   * Factory for a loader constructor that provides methods for requesting
-   * files from either the network or disk, and for sanitizing request URIs.
-   * @param {function} fetch - The Fetch API for HTTP network requests.
-   *   If null or undefined, HTTP loading will be disabled.
-   * @param {object} fs - The file system interface for file loading.
-   *   If null or undefined, local file loading will be disabled.
-   * @return {function} A loader constructor with the following signature:
-   *   param {object} [options] - Optional default loading options to use.
-   *   return {object} - A new loader instance.
-   */
-
-  function loaderFactory(fetch, fs) {
-    return options => ({
-      options: options || {},
-      sanitize: sanitize,
-      load: load,
-      fileAccess: !!fs,
-      file: fileLoader(fs),
-      http: httpLoader(fetch)
-    });
-  }
-  /**
-   * Load an external resource, typically either from the web or from the local
-   * filesystem. This function uses {@link sanitize} to first sanitize the uri,
-   * then calls either {@link http} (for web requests) or {@link file} (for
-   * filesystem loading).
-   * @param {string} uri - The resource indicator (e.g., URL or filename).
-   * @param {object} [options] - Optional loading options. These options will
-   *   override any existing default options.
-   * @return {Promise} - A promise that resolves to the loaded content.
-   */
-
-
-  async function load(uri, options) {
-    const opt = await this.sanitize(uri, options),
-          url = opt.href;
-    return opt.localFile ? this.file(url) : this.http(url, options);
-  }
-  /**
-   * URI sanitizer function.
-   * @param {string} uri - The uri (url or filename) to sanity check.
-   * @param {object} options - An options hash.
-   * @return {Promise} - A promise that resolves to an object containing
-   *  sanitized uri data, or rejects it the input uri is deemed invalid.
-   *  The properties of the resolved object are assumed to be
-   *  valid attributes for an HTML 'a' tag. The sanitized uri *must* be
-   *  provided by the 'href' property of the returned object.
-   */
-
-
-  async function sanitize(uri, options) {
-    options = extend({}, this.options, options);
-    const fileAccess = this.fileAccess,
-          result = {
-      href: null
-    };
-    let isFile, loadFile, base;
-    const isAllowed = allowed_re.test(uri.replace(whitespace_re, ''));
-
-    if (uri == null || typeof uri !== 'string' || !isAllowed) {
-      error('Sanitize failure, invalid URI: ' + $(uri));
-    }
-
-    const hasProtocol = protocol_re.test(uri); // if relative url (no protocol/host), prepend baseURL
-
-    if ((base = options.baseURL) && !hasProtocol) {
-      // Ensure that there is a slash between the baseURL (e.g. hostname) and url
-      if (!uri.startsWith('/') && base[base.length - 1] !== '/') {
-        uri = '/' + uri;
-      }
-
-      uri = base + uri;
-    } // should we load from file system?
-
-
-    loadFile = (isFile = uri.startsWith(fileProtocol)) || options.mode === 'file' || options.mode !== 'http' && !hasProtocol && fileAccess;
-
-    if (isFile) {
-      // strip file protocol
-      uri = uri.slice(fileProtocol.length);
-    } else if (uri.startsWith('//')) {
-      if (options.defaultProtocol === 'file') {
-        // if is file, strip protocol and set loadFile flag
-        uri = uri.slice(2);
-        loadFile = true;
-      } else {
-        // if relative protocol (starts with '//'), prepend default protocol
-        uri = (options.defaultProtocol || 'http') + ':' + uri;
-      }
-    } // set non-enumerable mode flag to indicate local file load
-
-
-    Object.defineProperty(result, 'localFile', {
-      value: !!loadFile
-    }); // set uri
-
-    result.href = uri; // set default result target, if specified
-
-    if (options.target) {
-      result.target = options.target + '';
-    } // set default result rel, if specified (#1542)
-
-
-    if (options.rel) {
-      result.rel = options.rel + '';
-    } // provide control over cross-origin image handling (#2238)
-    // https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image
-
-
-    if (options.context === 'image' && options.crossOrigin) {
-      result.crossOrigin = options.crossOrigin + '';
-    } // return
-
-
-    return result;
-  }
-  /**
-   * File system loader factory.
-   * @param {object} fs - The file system interface.
-   * @return {function} - A file loader with the following signature:
-   *   param {string} filename - The file system path to load.
-   *   param {string} filename - The file system path to load.
-   *   return {Promise} A promise that resolves to the file contents.
-   */
-
-
-  function fileLoader(fs) {
-    return fs ? filename => new Promise((accept, reject) => {
-      fs.readFile(filename, (error, data) => {
-        if (error) reject(error);else accept(data);
-      });
-    }) : fileReject;
-  }
-  /**
-   * Default file system loader that simply rejects.
-   */
-
-
-  async function fileReject() {
-    error('No file system access.');
-  }
-  /**
-   * HTTP request handler factory.
-   * @param {function} fetch - The Fetch API method.
-   * @return {function} - An http loader with the following signature:
-   *   param {string} url - The url to request.
-   *   param {object} options - An options hash.
-   *   return {Promise} - A promise that resolves to the file contents.
-   */
-
-
-  function httpLoader(fetch) {
-    return fetch ? async function (url, options) {
-      const opt = extend({}, this.options.http, options),
-            type = options && options.response,
-            response = await fetch(url, opt);
-      return !response.ok ? error(response.status + '' + response.statusText) : isFunction(response[type]) ? response[type]() : response.text();
-    } : httpReject;
-  }
-  /**
-   * Default http request handler that simply rejects.
-   */
-
-
-  async function httpReject() {
-    error('No HTTP fetch method available.');
-  }
-
-  const isValid = _ => _ != null && _ === _;
-
-  const isBoolean$1 = _ => _ === 'true' || _ === 'false' || _ === true || _ === false;
-
-  const isDate$1 = _ => !Number.isNaN(Date.parse(_));
-
-  const isNumber$1 = _ => !Number.isNaN(+_) && !(_ instanceof Date);
-
-  const isInteger = _ => isNumber$1(_) && Number.isInteger(+_);
-
-  const typeParsers = {
-    boolean: toBoolean,
-    integer: toNumber,
-    number: toNumber,
-    date: toDate,
-    string: toString,
-    unknown: identity
-  };
-  const typeTests = [isBoolean$1, isInteger, isNumber$1, isDate$1];
-  const typeList = ['boolean', 'integer', 'number', 'date'];
-
-  function inferType(values, field) {
-    if (!values || !values.length) return 'unknown';
-    const n = values.length,
-          m = typeTests.length,
-          a = typeTests.map((_, i) => i + 1);
-
-    for (let i = 0, t = 0, j, value; i < n; ++i) {
-      value = field ? values[i][field] : values[i];
-
-      for (j = 0; j < m; ++j) {
-        if (a[j] && isValid(value) && !typeTests[j](value)) {
-          a[j] = 0;
-          ++t;
-          if (t === typeTests.length) return 'string';
-        }
-      }
-    }
-
-    return typeList[a.reduce((u, v) => u === 0 ? v : u, 0) - 1];
-  }
-
-  function inferTypes(data, fields) {
-    return fields.reduce((types, field) => {
-      types[field] = inferType(data, field);
-      return types;
-    }, {});
-  }
-
-  function delimitedFormat(delimiter) {
-    const parse = function (data, format) {
-      const delim = {
-        delimiter: delimiter
-      };
-      return dsv(data, format ? extend(format, delim) : delim);
-    };
-
-    parse.responseType = 'text';
-    return parse;
-  }
-
-  function dsv(data, format) {
-    if (format.header) {
-      data = format.header.map($).join(format.delimiter) + '\n' + data;
-    }
-
-    return dsvFormat(format.delimiter).parse(data + '');
-  }
-
-  dsv.responseType = 'text';
-
-  function isBuffer(_) {
-    return typeof Buffer === 'function' && isFunction(Buffer.isBuffer) ? Buffer.isBuffer(_) : false;
-  }
-
-  function json$1(data, format) {
-    const prop = format && format.property ? field(format.property) : identity;
-    return isObject(data) && !isBuffer(data) ? parseJSON(prop(data), format) : prop(JSON.parse(data));
-  }
-
-  json$1.responseType = 'json';
-
-  function parseJSON(data, format) {
-    return format && format.copy ? JSON.parse(JSON.stringify(data)) : data;
-  }
-
-  const filters = {
-    interior: (a, b) => a !== b,
-    exterior: (a, b) => a === b
-  };
-
-  function topojson(data, format) {
-    let method, object, property, filter;
-    data = json$1(data, format);
-
-    if (format && format.feature) {
-      method = feature;
-      property = format.feature;
-    } else if (format && format.mesh) {
-      method = mesh;
-      property = format.mesh;
-      filter = filters[format.filter];
-    } else {
-      error('Missing TopoJSON feature or mesh parameter.');
-    }
-
-    object = (object = data.objects[property]) ? method(data, object, filter) : error('Invalid TopoJSON object: ' + property);
-    return object && object.features || [object];
-  }
-
-  topojson.responseType = 'json';
-  const format$1 = {
-    dsv: dsv,
-    csv: delimitedFormat(','),
-    tsv: delimitedFormat('\t'),
-    json: json$1,
-    topojson: topojson
-  };
-
-  function formats(name, reader) {
-    if (arguments.length > 1) {
-      format$1[name] = reader;
-      return this;
-    } else {
-      return has(format$1, name) ? format$1[name] : null;
-    }
-  }
-
-  function responseType(type) {
-    const f = formats(type);
-    return f && f.responseType || 'text';
-  }
-
-  function read(data, schema, timeParser, utcParser) {
+  function read (data, schema, timeParser, utcParser) {
     schema = schema || {};
     const reader = formats(schema.type || 'json');
     if (!reader) error('Unknown data format type: ' + schema.type);
@@ -17380,7 +17397,6 @@
 
     return null;
   }
-
   const domImage = () => typeof Image !== 'undefined' ? Image : null;
 
   function initRange(domain, range) {
@@ -18748,7 +18764,7 @@
         }
     }
 
-    return format(specifier);
+    return format$1(specifier);
   }
 
   function linearish(scale) {
@@ -18966,7 +18982,7 @@
 
     scale.tickFormat = function (count, specifier) {
       if (specifier == null) specifier = base === 10 ? ".0e" : ",";
-      if (typeof specifier !== "function") specifier = format(specifier);
+      if (typeof specifier !== "function") specifier = format$1(specifier);
       if (count === Infinity) return specifier;
       if (count == null) count = 10;
       var k = Math.max(1, base * count / scale.ticks().length); // TODO fast estimate?
@@ -61800,7 +61816,7 @@
   function defaultLabelOverlap(type, scaleType, hasTimeUnit, sort) {
     // do not prevent overlap for nominal data because there is no way to infer what the missing labels are
     if (hasTimeUnit && !isObject(sort) || type !== 'nominal' && type !== 'ordinal') {
-      if (scaleType === 'log') {
+      if (scaleType === 'log' || scaleType === 'symlog') {
         return 'greedy';
       }
 
@@ -62810,7 +62826,7 @@
   }
 
   function defaultLabelOverlap$1(scaleType) {
-    if (contains$1(['quantile', 'threshold', 'log'], scaleType)) {
+    if (contains$1(['quantile', 'threshold', 'log', 'symlog'], scaleType)) {
       return 'greedy';
     }
 
@@ -65081,7 +65097,7 @@
 
   class RemoveUnusedSubtrees extends BottomUpOptimizer {
     run(node) {
-      if (node instanceof OutputNode || node.numChildren() > 0 || node instanceof FacetNode) ; else {
+      if (node instanceof OutputNode || node.numChildren() > 0 || node instanceof FacetNode) ; else if (node instanceof SourceNode) ; else {
         this.setModified();
         node.remove();
       }
