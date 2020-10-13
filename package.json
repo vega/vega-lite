@@ -27,7 +27,6 @@
   "files": [
     "bin",
     "build",
-    "build-es5",
     "src",
     "vega-lite*"
   ],
@@ -46,7 +45,7 @@
     "build:jekyll": "pushd site && bundle exec jekyll build -q && popd",
     "build:versions": "scripts/update-version.sh",
     "clean": "yarn clean:build && rimraf site/data/* && rimraf examples/compiled/*.png && find site/examples ! -name 'index.md' ! -name 'data' -type f -delete",
-    "clean:build": "find build ! -name 'vega-lite-schema.json' -type f -delete && rimraf build/src && rimraf build-es5",
+    "clean:build": "find build ! -name 'vega-lite-schema.json' -type f -delete && rimraf build/src",
     "predeploy:site": "yarn presite",
     "deploy:site": "gh-pages -d site",
     "data": "rsync -r node_modules/vega-datasets/data/* site/data",
