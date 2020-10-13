@@ -4,7 +4,6 @@ import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
 import bundleSize from 'rollup-plugin-bundle-size';
 import {terser} from 'rollup-plugin-terser';
-import pkg from './package.json';
 
 export function disallowedImports() {
   return {
@@ -30,27 +29,21 @@ export function debugImports() {
 
 const extensions = ['.js', '.ts'];
 
-const globals = {
-  'vega-util': 'vega'
-}
-
 const outputs = [{
   input: 'src/index.ts',
   output: [
     {
-      file: pkg.main,
+      file: 'build/vega-lite.js',
       format: 'umd',
       sourcemap: true,
-      name: 'vegaLite',
-      globals
+      name: 'vegaLite'
     },
     {
-      file: pkg.unpkg,
+      file: 'build/vega-lite.min.js',
       format: 'umd',
       sourcemap: true,
       name: 'vegaLite',
-      plugins: [terser()],
-      globals
+      plugins: [terser()]
     }
   ],
   plugins: [
@@ -74,7 +67,7 @@ const outputs = [{
     }),
     bundleSize()
   ],
-  external: ['vega', 'vega-util']
+  external: ['vega']
 }];
 
 export default outputs;
