@@ -9,8 +9,7 @@ perl -pi -e s,'<ExprRef>','',g build/vega-lite-schema.json
 perl -pi -e s,'\,ExprRef>','>',g build/vega-lite-schema.json
 
 perl -pi -e s,'CompositeEncoding','Encoding',g build/vega-lite-schema.json
-perl -pi -e s,'Generic(.*)<FacetedUnitSpec\,LayerSpec\,?.*\,FieldName>','\1',g build/vega-lite-schema.json
-perl -pi -e s,'Generic(.*)<FacetedUnitSpec\,LayerSpec\,?.*\,Field>','Normalized\1',g build/vega-lite-schema.json
+perl -pi -e s,'Generic(.*)<FacetedUnitSpec\,LayerSpec\,?.*\,Field>','\1',g build/vega-lite-schema.json
 
 perl -pi -e s,'ValueDef(.*)<Value>','ValueDef\1',g build/vega-lite-schema.json
 perl -pi -e s,'Conditional<(.*)>','Conditional\1',g build/vega-lite-schema.json

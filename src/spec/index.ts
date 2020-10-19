@@ -4,8 +4,8 @@
  * - The external specs (no prefix) would allow composite marks, row/column encodings, and mark macros like point/line overlay.
  * - The internal specs (with `Normalized` prefix) would only support primitive marks and support no macros/shortcuts.
  */
-import {Field} from '../channeldef';
-import {FieldName} from '../channeldef';
+import {Field, FieldName} from '../channeldef';
+import {Encoding} from '../encoding';
 import {DataMixins} from './base';
 import {GenericConcatSpec, GenericHConcatSpec, GenericVConcatSpec} from './concat';
 import {GenericFacetSpec} from './facet';
@@ -33,8 +33,8 @@ export {FacetedUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec, UnitSp
  * Any specification in Vega-Lite.
  */
 export type GenericSpec<
-  U extends GenericUnitSpec<any, any>,
-  L extends GenericLayerSpec<any>,
+  U extends GenericUnitSpec<Encoding<F>, any>,
+  L extends GenericLayerSpec<U>,
   R extends RepeatSpec,
   F extends Field
 > =
@@ -51,7 +51,16 @@ export type GenericSpec<
  */
 export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec, never, FieldName>;
 
-export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<UnitSpecWithFrame, LayerSpec, Field>> & DataMixins;
+/**
+ * @internal
+ */
+export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<UnitSpecWithFrame<Field>, LayerSpec<Field>, Field>> &
+  DataMixins;
+
+/**
+ * @internal
+ */
+export type NonNormalizedSpec = GenericSpec<FacetedUnitSpec<Field>, LayerSpec<Field>, RepeatSpec, Field>;
 
 /**
  * A Vega-Lite top-level specification.
@@ -59,10 +68,10 @@ export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<UnitSpecWithFrame, Lay
  * (The json schema is generated from this type.)
  */
 export type TopLevelSpec =
-  | TopLevelUnitSpec
+  | TopLevelUnitSpec<Field>
   | TopLevelFacetSpec
-  | TopLevel<LayerSpec>
+  | TopLevel<LayerSpec<Field>>
   | TopLevel<RepeatSpec>
-  | TopLevel<GenericConcatSpec<GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>>>
-  | TopLevel<GenericVConcatSpec<GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>>>
-  | TopLevel<GenericHConcatSpec<GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>>>;
+  | TopLevel<GenericConcatSpec<NonNormalizedSpec>>
+  | TopLevel<GenericVConcatSpec<NonNormalizedSpec>>
+  | TopLevel<GenericHConcatSpec<NonNormalizedSpec>>;

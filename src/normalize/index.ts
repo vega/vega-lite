@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega-typings/types';
+import {SignalRef} from 'vega';
 import {isString} from 'vega-util';
 import {Field} from '../channeldef';
 import {Config, initConfig} from '../config';
@@ -45,7 +45,7 @@ const normalizer = new CoreNormalizer();
  * Decompose extended unit specs into composition of pure unit specs.
  */
 function normalizeGenericSpec(
-  spec: GenericSpec<UnitSpec, LayerSpec, RepeatSpec, Field> | FacetedUnitSpec | RepeatSpec,
+  spec: GenericSpec<UnitSpec<Field>, LayerSpec<Field>, RepeatSpec, Field> | FacetedUnitSpec<Field> | RepeatSpec,
   config: Config<SignalRef> = {}
 ) {
   return normalizer.map(spec, {config});

@@ -1,4 +1,5 @@
 import {AggregateOp} from 'vega';
+import {FieldName} from '../../src/channeldef';
 import {ErrorBarCenter, ErrorBarExtent} from '../../src/compositemark/errorbar';
 import {defaultConfig} from '../../src/config';
 import * as log from '../../src/log';
@@ -515,7 +516,7 @@ describe('normalizeErrorBar for all possible extents and centers with raw data i
 
   for (const center of centers) {
     for (const extent of extents) {
-      const spec: TopLevelUnitSpec = {
+      const spec: TopLevelUnitSpec<FieldName> = {
         data: {url: 'data/population.json'},
         mark: {type, ...(center ? {center} : {}), ...(extent ? {extent} : {})},
         encoding: {

@@ -53,20 +53,18 @@ export function remove(mark: string) {
   delete compositeMarkRegistry[mark];
 }
 
-export type CompositeEncoding<F extends Field = Field> = Encoding<F> & ErrorExtraEncoding<F>;
+export type CompositeEncoding<F extends Field> = Encoding<F> & ErrorExtraEncoding<F>;
 
 export type PartialIndex<T extends Encoding<any>> = {
   [t in keyof T]?: Partial<T[t]>;
 };
 
-export type SharedCompositeEncoding<F extends Field = Field> = PartialIndex<
+export type SharedCompositeEncoding<F extends Field> = PartialIndex<
   Omit<CompositeEncoding<F>, 'detail' | 'order' | 'tooltip'> // need to omit and cherry pick detail / order / tooltip since they allow array
 > &
   Pick<Encoding<F>, 'detail' | 'order' | 'tooltip'>;
 
-export type FacetedCompositeEncoding<F extends Field = Field> = Encoding<F> &
-  ErrorExtraEncoding<F> &
-  EncodingFacetMapping<F>;
+export type FacetedCompositeEncoding<F extends Field> = Encoding<F> & ErrorExtraEncoding<F> & EncodingFacetMapping<F>;
 
 export type CompositeMark = BoxPlot | ErrorBar | ErrorBand;
 
