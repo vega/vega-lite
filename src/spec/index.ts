@@ -51,15 +51,9 @@ export type GenericSpec<
  */
 export type NormalizedSpec = GenericSpec<NormalizedUnitSpec, NormalizedLayerSpec, never, FieldName>;
 
-/**
- * @internal
- */
 export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<UnitSpecWithFrame<Field>, LayerSpec<Field>, Field>> &
   DataMixins;
 
-/**
- * @internal
- */
 export type NonNormalizedSpec = GenericSpec<FacetedUnitSpec<Field>, LayerSpec<Field>, RepeatSpec, Field>;
 
 /**
