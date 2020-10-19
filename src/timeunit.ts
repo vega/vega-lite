@@ -20,7 +20,7 @@ export const LOCAL_SINGLE_TIMEUNIT_INDEX = {
 
 export type LocalSingleTimeUnit = keyof typeof LOCAL_SINGLE_TIMEUNIT_INDEX;
 
-export const TIMEUNIT_PARTS = keys(LOCAL_SINGLE_TIMEUNIT_INDEX);
+export const TIMEUNIT_PARTS: LocalSingleTimeUnit[] = keys(LOCAL_SINGLE_TIMEUNIT_INDEX);
 
 export function isLocalSingleTimeUnit(timeUnit: string): timeUnit is LocalSingleTimeUnit {
   return !!LOCAL_SINGLE_TIMEUNIT_INDEX[timeUnit];
