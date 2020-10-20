@@ -450,7 +450,7 @@ export type SupportedMark = Partial<Record<Mark, 'always' | 'binned'>>;
  * @param mark the mark type
  * @return whether the mark supports the channel
  */
-export function supportMark(channel: Channel, mark: Mark) {
+export function supportMark(channel: ExtendedChannel, mark: Mark) {
   return getSupportedMark(channel)[mark];
 }
 
