@@ -411,7 +411,7 @@ export type LatLongFieldDef<F extends Field> = FieldDefBase<F, null> &
   TitleMixins &
   Partial<TypeMixins<'quantitative'>>; // Lat long shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
-export type LatLongDef<F extends Field> = LatLongFieldDef<F> | DatumDef<F> | NumericValueDef;
+export type LatLongDef<F extends Field> = LatLongFieldDef<F> | DatumDef<F>;
 
 export type PositionFieldDefBase<F extends Field> = ScaleFieldDef<
   F,
