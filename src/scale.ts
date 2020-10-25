@@ -182,12 +182,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   /**
    * Default inner padding for `x` and `y` band-ordinal scales.
    *
-   * __Default value:__
-   * - `barBandPaddingInner` for bar marks (`0.1` by default)
-   * - `rectBandPaddingInner` for rect and other marks (`0` by default)
-   *
-   * @minimum 0
-   * @maximum 1
+   * __Default value:__ `0`
    */
   bandPaddingInner?: number | ES;
 
@@ -200,26 +195,6 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
    * @maximum 1
    */
   bandPaddingOuter?: number | ES;
-
-  /**
-   * Default inner padding for `x` and `y` band-ordinal scales of `"bar"` marks.
-   *
-   * __Default value:__ `0.1`
-   *
-   * @minimum 0
-   * @maximum 1
-   */
-  barBandPaddingInner?: number | ES;
-
-  /**
-   * Default inner padding for `x` and `y` band-ordinal scales of `"rect"` marks.
-   *
-   * __Default value:__ `0`
-   *
-   * @minimum 0
-   * @maximum 1
-   */
-  rectBandPaddingInner?: number | ES;
 
   /**
    * Default padding for continuous scales.
@@ -371,8 +346,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
 export const defaultScaleConfig: ScaleConfig<SignalRef> = {
   pointPadding: 0.5,
 
-  barBandPaddingInner: 0.1,
-  rectBandPaddingInner: 0,
+  bandPaddingInner: 0,
 
   minBandSize: 2,
 

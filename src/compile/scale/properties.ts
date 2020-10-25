@@ -151,7 +151,7 @@ export const scaleRules: {
     padding(channel, scaleType, config.scale, fieldOrDatumDef, markDef, config.bar),
 
   paddingInner: ({scalePadding, channel, markDef, config}) =>
-    paddingInner(scalePadding, channel, markDef.type, config.scale),
+    paddingInner(scalePadding, channel, config.scale),
 
   paddingOuter: ({scalePadding, channel, scaleType, markDef, scalePaddingInner, config}) =>
     paddingOuter(scalePadding, channel, scaleType, markDef.type, scalePaddingInner, config.scale),
@@ -286,7 +286,6 @@ export function padding(
 export function paddingInner(
   paddingValue: number | SignalRef,
   channel: ScaleChannel,
-  mark: Mark,
   scaleConfig: ScaleConfig<SignalRef>
 ) {
   if (paddingValue !== undefined) {
@@ -299,10 +298,7 @@ export function paddingInner(
     // Basically it doesn't make sense to add padding for color and size.
 
     // paddingOuter would only be called if it's a band scale, just return the default for bandScale.
-
-    const {bandPaddingInner, barBandPaddingInner, rectBandPaddingInner} = scaleConfig;
-
-    return getFirstDefined(bandPaddingInner, mark === 'bar' ? barBandPaddingInner : rectBandPaddingInner);
+    return scaleConfig.bandPaddingInner;
   }
   return undefined;
 }

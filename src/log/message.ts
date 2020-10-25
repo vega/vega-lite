@@ -217,6 +217,8 @@ export function orientOverridden(original: string, actual: string) {
   return `Specified orient "${original}" overridden with "${actual}".`;
 }
 
+export const CANNOT_USE_BAND_RATIO_WITH_POINT_SCALE = 'Cannot use band ratio with point scale.';
+
 // SCALE
 export const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN =
   'Custom domain scale cannot be unioned with default field-based domain.';

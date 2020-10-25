@@ -19,7 +19,7 @@ describe('Mark: Bar', () => {
 
     it('should draw bar, with y from zero to field value and with band value for x/width', () => {
       expect(props.x).toEqual({scale: 'x', field: 'Origin'});
-      expect(props.width).toEqual({scale: 'x', band: 1});
+      expect(props.width).toEqual({scale: 'x', band: 0.9});
       expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
       expect(props.y2).toEqual({scale: 'y', value: 0});
       expect(props.height).toBeUndefined();
@@ -64,7 +64,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     expect(props.x).toEqual({scale: 'x', field: 'Origin'});
-    expect(props.width).toEqual({scale: 'x', band: 1});
+    expect(props.width).toEqual({scale: 'x', band: 0.9});
     expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
     expect(props.y2).toEqual({scale: 'y', value: 0});
     expect(props.height).toBeUndefined();
@@ -146,7 +146,7 @@ describe('Mark: Bar', () => {
 
     it('should draw bar from zero to field value and with band value for x/width', () => {
       expect(props.y).toEqual({scale: 'y', field: 'Origin'});
-      expect(props.height).toEqual({scale: 'y', band: 1});
+      expect(props.height).toEqual({scale: 'y', band: 0.9});
       expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
       expect(props.x2).toEqual({scale: 'x', value: 0});
       expect(props.width).toBeUndefined();
@@ -491,7 +491,7 @@ describe('Mark: Bar', () => {
 
     it('should draw bar with y', () => {
       expect(props.y).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower_range'});
-      expect(props.height).toEqual({scale: 'y', band: 1});
+      expect(props.height).toEqual({scale: 'y', band: 0.9});
     });
   });
 
@@ -673,7 +673,7 @@ describe('Mark: Bar', () => {
       });
       expect(props.width).toEqual({
         scale: 'x',
-        band: 1
+        band: 0.9
       });
     });
   });
@@ -698,7 +698,7 @@ describe('Mark: Bar', () => {
       });
       expect(props.height).toEqual({
         scale: 'y',
-        band: 1
+        band: 0.9
       });
     });
   });
@@ -786,7 +786,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should not use config.mark.size', () => {
-      expect(props.width).toEqual({value: 18});
+      expect(props.width).toEqual({field: {group: 'width'}, mult: 0.9});
     });
   });
 
@@ -973,9 +973,9 @@ describe('Mark: Bar', () => {
       const props = bar.encodeEntry(model);
 
       expect(props.x).toEqual({scale: 'x', field: 'Origin'});
-      expect(props.width).toEqual({scale: 'x', band: 1});
+      expect(props.width).toEqual({scale: 'x', band: 0.9});
       expect(props.y).toEqual({scale: 'y', field: 'Cylinders'});
-      expect(props.height).toEqual({scale: 'y', band: 1});
+      expect(props.height).toEqual({scale: 'y', band: 0.9});
     });
   });
 

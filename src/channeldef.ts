@@ -541,6 +541,7 @@ export function getBand({
         return isRectBasedMark(mark.type) ? getMarkConfig('timeUnitBand', mark, config) : 0;
       }
     } else if (isBinning(bin)) {
+      // FIXME -- this should depend on scale type too
       return isRectBasedMark(mark.type) && !isMidPoint ? 1 : 0.5;
     }
   }

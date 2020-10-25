@@ -14,7 +14,7 @@ import {getBand, isFieldDef, isFieldOrDatumDef, TypedFieldDef, vgField} from '..
 import {Config, DEFAULT_STEP, getViewConfigDiscreteStep} from '../../../config';
 import {Encoding} from '../../../encoding';
 import * as log from '../../../log';
-import {Mark, MarkDef} from '../../../mark';
+import {BandSize, isRelativeBandSize, Mark, MarkDef} from '../../../mark';
 import {hasDiscreteDomain, ScaleType} from '../../../scale';
 import {getFirstDefined} from '../../../util';
 import {isSignalRef, isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
@@ -85,23 +85,26 @@ function defaultSizeRef(
   scaleName: string,
   scale: ScaleComponent,
   config: Config,
-  band: number | true
+  bandSize: BandSize
 ): VgValueRef {
   if (scale) {
     const scaleType = scale.get('type');
     if (scaleType === 'point' || scaleType === 'band') {
-      if (config[mark].discreteBandSize !== undefined) {
-        return {value: config[mark].discreteBandSize};
-      }
       if (scaleType === ScaleType.POINT) {
         const scaleRange = scale.get('range');
-        if (isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
+        if (isNumber(bandSize)) {
+          return {value: bandSize};
+        } else if (isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
           return {value: scaleRange.step - 2};
         }
         return {value: DEFAULT_STEP - 2};
       } else {
-        // BAND
-        return {scale: scaleName, band};
+        // Band Scale
+        if (isRelativeBandSize(bandSize)) {
+          return {scale: scaleName, band: bandSize.band};
+        } else {
+          return {value: bandSize};
+        }
       }
     } else {
       // continuous scale
@@ -109,15 +112,22 @@ function defaultSizeRef(
     }
   }
   // No Scale
-
   const step = getViewConfigDiscreteStep(config.view, sizeChannel);
+  const {discreteBandSize} = config[mark];
 
-  const value = getFirstDefined(
-    // No scale is like discrete bar (with one item)
-    config[mark].discreteBandSize,
-    step - 2
-  );
-  return value !== undefined ? {value} : undefined;
+  if (isRelativeBandSize(discreteBandSize)) {
+    return {
+      mult: discreteBandSize.band,
+      field: {group: sizeChannel}
+    };
+  } else {
+    const value = getFirstDefined(
+      // No scale is like discrete bar (with one item)
+      discreteBandSize,
+      step - 2
+    );
+    return value !== undefined ? {value} : undefined;
+  }
 }
 
 /**
@@ -155,8 +165,10 @@ function positionAndSize(
   }
 
   // Otherwise, apply default value
-  const band = (isFieldOrDatumDef(fieldDef) ? getBand({channel, fieldDef, markDef, stack, config}) : undefined) ?? 1;
-  sizeMixins = sizeMixins || {[vgSizeChannel]: defaultSizeRef(mark, vgSizeChannel, scaleName, scale, config, band)};
+  const band = isFieldOrDatumDef(fieldDef) ? getBand({channel, fieldDef, markDef, stack, config}) : undefined;
+
+  const bandSize = band !== undefined ? {band} : config[mark]?.discreteBandSize ?? {band: 1};
+  sizeMixins = sizeMixins || {[vgSizeChannel]: defaultSizeRef(mark, vgSizeChannel, scaleName, scale, config, bandSize)};
 
   /*
     Band scales with size value and all point scales, use xc/yc + band=0.5

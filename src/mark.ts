@@ -443,7 +443,20 @@ export interface RectConfig<ES extends ExprRef | SignalRef> extends RectBinSpaci
    * The default size of the bars with discrete dimensions. If unspecified, the default size is  `step-2`, which provides 2 pixel offset between bars.
    * @minimum 0
    */
-  discreteBandSize?: number;
+  discreteBandSize?: number | RelativeBandSize;
+}
+
+export type BandSize = number | RelativeBandSize;
+
+export interface RelativeBandSize {
+  /**
+   * The relative band size.  For example `0.5` means half of the band scale's band width.
+   */
+  band: number;
+}
+
+export function isRelativeBandSize(o: number | RelativeBandSize): o is RelativeBandSize {
+  return o && o['band'] != undefined;
 }
 
 export const BAR_CORNER_RADIUS_INDEX: Partial<
@@ -615,6 +628,7 @@ const DEFAULT_RECT_BAND_SIZE = 5;
 export const defaultBarConfig: RectConfig<SignalRef> = {
   binSpacing: 1,
   continuousBandSize: DEFAULT_RECT_BAND_SIZE,
+  discreteBandSize: {band: 0.9},
   timeUnitBandPosition: 0.5
 };
 

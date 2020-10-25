@@ -78,18 +78,18 @@ describe('compile/scale', () => {
   });
 
   describe('paddingInner', () => {
-    it('should be undefined if padding is specified', () => {
-      expect(rules.paddingInner(10, 'x', 'bar', {})).toBeUndefined();
+    it('should be undefined if padding is specified.', () => {
+      expect(rules.paddingInner(10, 'x', {})).toBeUndefined();
     });
 
-    it('should be bandPaddingInner if channel is x or y and padding is not specified', () => {
-      expect(rules.paddingInner(undefined, 'x', 'bar', {bandPaddingInner: 15})).toEqual(15);
-      expect(rules.paddingInner(undefined, 'y', 'bar', {bandPaddingInner: 15})).toEqual(15);
+    it('should be bandPaddingInner if channel is x or y and padding is not specified.', () => {
+      expect(rules.paddingInner(undefined, 'x', {bandPaddingInner: 15})).toEqual(15);
+      expect(rules.paddingInner(undefined, 'y', {bandPaddingInner: 15})).toEqual(15);
     });
 
     it('should be undefined for non-xy channels', () => {
       for (const c of NONPOSITION_SCALE_CHANNELS) {
-        expect(rules.paddingInner(undefined, c, 'bar', {bandPaddingInner: 15})).toBeUndefined();
+        expect(rules.paddingInner(undefined, c, {bandPaddingInner: 15})).toBeUndefined();
       }
     });
   });

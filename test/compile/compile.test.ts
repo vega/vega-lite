@@ -188,7 +188,7 @@ describe('compile/compile', () => {
       },
       {
         name: 'width',
-        update: `bandspace(domain('x').length, 0.1, 0.05) * x_step`
+        update: `bandspace(domain('x').length, 0, 0) * x_step`
       }
     ]);
     expect(spec.height).toBe(200);

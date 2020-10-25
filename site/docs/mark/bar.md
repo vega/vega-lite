@@ -151,3 +151,9 @@ The `bar` property of the top-level [`config`](config.html) object sets the defa
 Besides standard [mark properties](#properties), bar config can contain the following additional properties:
 
 {% include table.html props="binSpacing,continuousBandSize,discreteBandSize" source="BarConfig" %}
+
+### Relative Band Size
+
+One can specify discrete band size to be proportional to the scale's band size by specifying a relative band size. For example `{"band": 0.5}` means half of the band scale's band width.
+
+{% include table.html props="band" source="RelativeBandSize" %}
