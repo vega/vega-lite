@@ -92,3 +92,7 @@ The `vg2vg` command supports an optional argument `p` that formats the generated
 The easiest way to run these commands is to use [`npx`](https://github.com/npm/npx). `npx` will automatically run the commands from the local `node_modules/.bin`, or from a central cache, installing any packages needed in order for the commands to run. It Is not necessary to have Vega or Vega-Lite installed ahead of time for `npx` to work.
 
 `npx vl2vg spec.vl.json`
+
+### Using npx
+
+To use [npx](https://github.com/npm/npx), a tool to execute npm binaries, provide the required packages and choose the binary you want to run. For example, to run `vl2png`, run `npx -p vega -p vega-lite vl2png --help`.
