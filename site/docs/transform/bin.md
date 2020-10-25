@@ -110,7 +110,7 @@ If `bin` is `true`, default binning parameters are used. To customize binning pa
 
 ### Example: Customizing Max Bins
 
-Setting the `maxbins` parameter changes the number of output bins.
+Setting the `maxbins` parameter changes the maximum number of output bins. There will often be fewer bins since the domain get sliced at "nicely-rounded" values.
 
 <div class="vl-example" data-name="histogram_bin_change"></div>
 
