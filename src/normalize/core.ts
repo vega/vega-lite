@@ -28,7 +28,6 @@ import {isEmpty, keys, omit, varName} from '../util';
 import {isSignalRef} from '../vega.schema';
 import {NonFacetUnitNormalizer, NormalizerParams} from './base';
 import {PathOverlayNormalizer} from './pathoverlay';
-import {RangeStepNormalizer} from './rangestep';
 import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from './repeater';
 import {RuleForRangedLineNormalizer} from './ruleforrangedline';
 
@@ -38,8 +37,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     errorBarNormalizer,
     errorBandNormalizer,
     new PathOverlayNormalizer(),
-    new RuleForRangedLineNormalizer(),
-    new RangeStepNormalizer()
+    new RuleForRangedLineNormalizer()
   ];
 
   public map(spec: GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>, params: NormalizerParams) {
