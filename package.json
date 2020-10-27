@@ -81,7 +81,7 @@
     "@rollup/plugin-babel": "^5.2.1",
     "@rollup/plugin-commonjs": "^15.1.0",
     "@rollup/plugin-json": "^4.1.0",
-    "@rollup/plugin-node-resolve": "^9.0.0",
+    "@rollup/plugin-node-resolve": "^10.0.0",
     "@types/chai": "^4.2.13",
     "@types/d3": "^5.16.3",
     "@types/jest": "^26.0.14",
