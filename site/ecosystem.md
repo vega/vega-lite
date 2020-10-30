@@ -78,6 +78,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Lens.org](https://www.lens.org/): Provides free search and analysis for millions of patents and scholarly works. Simplified interface for creating Vega-Lite data visualisations.
 - [DataVoyager.jl](https://github.com/queryverse/DataVoyager.jl), a Julia package that exposes the [Voyager (2)](https://github.com/vega/voyager) UI to the Julia programming language.
 - [ProfileVega.jl](https://github.com/davidanthoff/ProfileVega.jl), a Julia profile visualization tool that uses Vega-Lite.
+- [Voyager clone](https://matyunya-simple-voyager-clone.ellx.app), a basic Voyager clone with step-by-step tutorial made with [Ellx](https://ellx.io).
 
 ## Tools for Embedding Vega-Lite Visualizations
 
