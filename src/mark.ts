@@ -2,7 +2,7 @@ import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalR
 import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {ExprOrSignalRef, ExprRef} from './expr';
-import {contains, Flag, keys} from './util';
+import {Flag, keys} from './util';
 import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
 
 /**
@@ -47,11 +47,11 @@ export function isMark(m: string): m is Mark {
 }
 
 export function isPathMark(m: Mark | CompositeMark): m is 'line' | 'area' | 'trail' {
-  return contains(['line', 'area', 'trail'], m);
+  return ['line', 'area', 'trail'].includes(m);
 }
 
 export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 'image' | 'arc' {
-  return contains(['rect', 'bar', 'image', 'arc' /* arc is rect/interval in polar coordinate */], m);
+  return ['rect', 'bar', 'image', 'arc' /* arc is rect/interval in polar coordinate */].includes(m);
 }
 
 export const PRIMITIVE_MARKS = keys(Mark);

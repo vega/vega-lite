@@ -45,7 +45,7 @@ export function parseMarkGroups(model: UnitModel): any[] {
       return getPathGroups(model, details);
     }
     // otherwise use standard mark groups
-  } else if (contains([BAR], model.mark)) {
+  } else if (model.mark === BAR) {
     const hasCornerRadius = VG_CORNERRADIUS_CHANNELS.some(prop =>
       getMarkPropOrConfig(prop, model.markDef, model.config)
     );

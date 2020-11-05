@@ -62,10 +62,10 @@ function parseExpression(field: string, parse: string): string {
     return `toDate(${f})`;
   } else if (parse === 'flatten') {
     return f;
-  } else if (parse.indexOf('date:') === 0) {
+  } else if (parse.startsWith('date:')) {
     const specifier = unquote(parse.slice(5, parse.length));
     return `timeParse(${f},'${specifier}')`;
-  } else if (parse.indexOf('utc:') === 0) {
+  } else if (parse.startsWith('utc:')) {
     const specifier = unquote(parse.slice(4, parse.length));
     return `utcParse(${f},'${specifier}')`;
   } else {

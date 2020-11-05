@@ -30,7 +30,7 @@ const interval: SelectionCompiler<'interval'> = {
       const filterExpr = `!event.item || event.item.mark.name !== ${stringValue(name + BRUSH)}`;
       events(selCmpt, (on: OnEvent[], evt: Stream) => {
         const filters = array(evt.between[0].filter ?? (evt.between[0].filter = []));
-        if (filters.indexOf(filterExpr) < 0) {
+        if (!filters.includes(filterExpr)) {
           filters.push(filterExpr);
         }
         return on;

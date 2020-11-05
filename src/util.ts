@@ -81,7 +81,7 @@ export function isNullOrFalse(x: any): x is false | null {
 }
 
 export function contains<T>(array: readonly T[], item: T) {
-  return array.indexOf(item) > -1;
+  return array.includes(item);
 }
 
 /**
@@ -375,7 +375,7 @@ export function internalField(name: string) {
 }
 
 export function isInternalField(name: string) {
-  return name.indexOf('__') === 0;
+  return name.startsWith('__');
 }
 
 /**

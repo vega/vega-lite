@@ -73,7 +73,6 @@ import {
 import {AggregatedFieldDef, WindowFieldDef} from './transform';
 import {getFullName, QUANTITATIVE, StandardType, Type} from './type';
 import {
-  contains,
   flatAccessWithDatum,
   getFirstDefined,
   internalField,
@@ -746,7 +745,7 @@ export function vgField(
           }
         } else if (timeUnit) {
           fn = timeUnitToString(timeUnit);
-          suffix = ((!contains(['range', 'mid'], opt.binSuffix) && opt.binSuffix) || '') + (opt.suffix ?? '');
+          suffix = ((!['range', 'mid'].includes(opt.binSuffix) && opt.binSuffix) || '') + (opt.suffix ?? '');
         }
       }
     }
@@ -1231,7 +1230,7 @@ export function channelCompatibility(
       return COMPATIBLE;
 
     case STROKEDASH:
-      if (!contains(['ordinal', 'nominal'], fieldDef.type)) {
+      if (!['ordinal', 'nominal'].includes(fieldDef.type)) {
         return {
           compatible: false,
           warning: 'StrokeDash channel should be used with only discrete data.'
@@ -1240,7 +1239,7 @@ export function channelCompatibility(
       return COMPATIBLE;
 
     case SHAPE:
-      if (!contains(['ordinal', 'nominal', 'geojson'], fieldDef.type)) {
+      if (!['ordinal', 'nominal', 'geojson'].includes(fieldDef.type)) {
         return {
           compatible: false,
           warning: 'Shape channel should be used with only either discrete or geojson data.'
@@ -1357,5 +1356,5 @@ export function binRequiresRange(fieldDef: FieldDef<string>, channel: Channel): 
 
   // We need the range only when the user explicitly forces a binned field to be use discrete scale. In this case, bin range is used in axis and legend labels.
   // We could check whether the axis or legend exists (not disabled) but that seems overkill.
-  return isScaleChannel(channel) && contains(['ordinal', 'nominal'], (fieldDef as ScaleFieldDef<string>).type);
+  return isScaleChannel(channel) && ['ordinal', 'nominal'].includes((fieldDef as ScaleFieldDef<string>).type);
 }
