@@ -1,0 +1,84 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 20,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {"name": "source_0", "values": [28, 55, 28, 91, 81, 55, 19, 81, 52]},
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [],
+          "ops": ["mean"],
+          "fields": ["data"],
+          "as": ["mean_data"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_data\"]) && isFinite(+datum[\"mean_data\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["tick"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "tooltip": {"signal": "format(datum[\"mean_data\"], \"\")"},
+          "ariaRoleDescription": {"value": "tick"},
+          "description": {
+            "signal": "\"Mean of data: \" + (format(datum[\"mean_data\"], \"\"))"
+          },
+          "xc": {"signal": "width", "mult": 0.5},
+          "yc": {"scale": "y", "field": "mean_data"},
+          "width": {"value": 15},
+          "height": {"value": 1}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "mean_data"},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Mean of data",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}
