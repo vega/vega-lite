@@ -4,6 +4,7 @@ import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
 import {
   ANGLE,
+  Channel,
   CHANNELS,
   COLOR,
   DESCRIPTION,
@@ -39,8 +40,7 @@ import {
   X,
   X2,
   Y,
-  Y2,
-  Channel
+  Y2
 } from './channel';
 import {
   binRequiresRange,
@@ -48,7 +48,6 @@ import {
   ColorDef,
   Field,
   FieldDef,
-  FieldDefWithoutScale,
   getFieldDef,
   getGuide,
   hasConditionalFieldDef,
@@ -59,6 +58,7 @@ import {
   isFieldDef,
   isTypedFieldDef,
   isValueDef,
+  KeyFieldDef,
   LatLongDef,
   NumericArrayMarkPropDef,
   NumericMarkPropDef,
@@ -257,16 +257,17 @@ export interface Encoding<F extends Field> {
    * __Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`"circle"` if unset.)
    */
   shape?: ShapeDef<F>;
+
   /**
    * Additional levels of detail for grouping data in aggregate views and
    * in line, trail, and area marks without mapping data to a specific visual channel.
    */
-  detail?: FieldDefWithoutScale<F> | FieldDefWithoutScale<F>[];
+  detail?: KeyFieldDef<F> | KeyFieldDef<F>[];
 
   /**
    * A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data.
    */
-  key?: FieldDefWithoutScale<F>;
+  key?: KeyFieldDef<F>;
 
   /**
    * Text of the `text` mark.
@@ -328,7 +329,7 @@ export function isAggregate(encoding: EncodingWithFacet<any>) {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
       if (isArray(channelDef)) {
-        return some(channelDef, fieldDef => !!fieldDef.aggregate);
+        return some(channelDef, fieldDef => 'aggregate' in fieldDef);
       } else {
         const fieldDef = getFieldDef(channelDef);
         return fieldDef && !!fieldDef.aggregate;
@@ -675,7 +676,8 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
         const channelDef = encoding[channel];
         if (isArray(channelDef) || isFieldDef(channelDef)) {
           for (const fieldDef of array(channelDef)) {
-            if (!fieldDef.aggregate) {
+            // aggregated fields are never grouped by
+            if (!('aggregate' in fieldDef)) {
               details.push(vgField(fieldDef, {}));
             }
           }

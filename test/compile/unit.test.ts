@@ -53,10 +53,10 @@ describe('UnitModel', () => {
         const model = parseUnitModel({
           mark: 'bar',
           encoding: {
-            detail: [{field: 'a', type: 'ordinal'}, {type: 'quantitative'}]
+            detail: [{field: 'a'}, {type: 'quantitative'} as any]
           }
         });
-        expect(model.encoding.detail).toEqual([{field: 'a', type: 'ordinal'}]);
+        expect(model.encoding.detail).toEqual([{field: 'a', type: 'nominal'}]);
         expect(localLogger.warns[0]).toEqual(log.message.emptyFieldDef({type: QUANTITATIVE}, DETAIL));
       })
     );

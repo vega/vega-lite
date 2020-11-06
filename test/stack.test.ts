@@ -104,7 +104,7 @@ describe('stack', () => {
             x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: s},
             y: {field: 'variety', type: 'nominal'},
             color: {aggregate: 'count', type: 'quantitative'},
-            detail: {field: 'site', type: 'nominal'}
+            detail: {field: 'site'}
           }
         };
 
@@ -123,7 +123,7 @@ describe('stack', () => {
       encoding: {
         x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
         y: {field: 'variety', type: 'nominal'},
-        detail: {field: 'site', type: 'nominal'},
+        detail: {field: 'site'},
         tooltip: {field: 'total_yield', type: 'nominal'}
       }
     };

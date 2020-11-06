@@ -82,7 +82,7 @@ describe('Mark', () => {
         encoding: {
           x: {field: 'date', type: 'temporal', axis: {format: '%Y'}},
           y: {field: 'price', type: 'quantitative'},
-          key: {field: 'k', type: 'quantitative'}
+          key: {field: 'k'}
         }
       });
       it('should have mark group with proper data and key', () => {

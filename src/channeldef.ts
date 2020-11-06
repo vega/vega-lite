@@ -221,7 +221,7 @@ export function isRepeatRef(field: Field | any): field is RepeatRef {
 /** @@hidden */
 export type HiddenCompositeAggregate = CompositeAggregate;
 
-export interface FieldDefBase<F, B extends Bin = Bin> extends BandMixins {
+export interface KeyFieldDef<F extends Field, B extends Bin = Bin> {
   /**
    * __Required.__ A string defining the name of the field from which to pull a data value
    * or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.
@@ -249,16 +249,6 @@ export interface FieldDefBase<F, B extends Bin = Bin> extends BandMixins {
   timeUnit?: TimeUnit | TimeUnitParams;
 
   /**
-   * Aggregation function for the field
-   * (e.g., `"mean"`, `"sum"`, `"median"`, `"min"`, `"max"`, `"count"`).
-   *
-   * __Default value:__ `undefined` (None)
-   *
-   * __See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation.
-   */
-  aggregate?: Aggregate | HiddenCompositeAggregate;
-
-  /**
    * A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`"binned"`).
    *
    * - If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.
@@ -270,6 +260,18 @@ export interface FieldDefBase<F, B extends Bin = Bin> extends BandMixins {
    * __See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation.
    */
   bin?: B;
+}
+
+export interface FieldDefBase<F extends Field, B extends Bin = Bin> extends KeyFieldDef<F, B>, BandMixins {
+  /**
+   * Aggregation function for the field
+   * (e.g., `"mean"`, `"sum"`, `"median"`, `"min"`, `"max"`, `"count"`).
+   *
+   * __Default value:__ `undefined` (None)
+   *
+   * __See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation.
+   */
+  aggregate?: Aggregate | HiddenCompositeAggregate;
 }
 
 export function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase<string> {
@@ -317,7 +319,7 @@ export interface TypeMixins<T extends Type> {
 }
 
 /**
- *  Definition object for a data field, its type and transformation of an encoding channel.
+ * Definition object for a data field, its type and transformation of an encoding channel.
  */
 export type TypedFieldDef<
   F extends Field,
@@ -400,11 +402,6 @@ export type SecondaryFieldDef<F extends Field> = FieldDefBase<F, null> & TitleMi
 export type Position2Def<F extends Field> = SecondaryFieldDef<F> | DatumDef<F> | PositionValueDef;
 
 export type SecondaryChannelDef<F extends Field> = Encoding<F>['x2' | 'y2'];
-
-/**
- * Field Def without scale (and without bin: "binned" support).
- */
-export type FieldDefWithoutScale<F extends Field, T extends Type = StandardType> = TypedFieldDef<F, T>;
 
 export type LatLongFieldDef<F extends Field> = FieldDefBase<F, null> &
   TitleMixins &
@@ -565,7 +562,7 @@ export interface LegendMixins {
 
 // Order Path have no scale
 
-export interface OrderFieldDef<F extends Field> extends FieldDefWithoutScale<F> {
+export interface OrderFieldDef<F extends Field> extends TypedFieldDef<F> {
   /**
    * The sort order. One of `"ascending"` (default) or `"descending"`.
    */
@@ -574,7 +571,7 @@ export interface OrderFieldDef<F extends Field> extends FieldDefWithoutScale<F> 
 
 export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;
 
-export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
+export interface StringFieldDef<F extends Field> extends TypedFieldDef<F, StandardType>, FormatMixins {}
 
 export type FieldDef<F extends Field, T extends Type = any> = SecondaryFieldDef<F> | TypedFieldDef<F, T>;
 export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>];

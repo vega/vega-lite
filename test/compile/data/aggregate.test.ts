@@ -113,10 +113,7 @@ describe('compile/data/aggregate', () => {
         mark: 'point',
         encoding: {
           x: {aggregate: 'mean', field: 'Displacement', type: 'quantitative'},
-          detail: [
-            {field: 'Origin', type: 'ordinal'},
-            {field: 'Cylinders', type: 'quantitative'}
-          ]
+          detail: [{field: 'Origin'}, {field: 'Cylinders'}]
         }
       });
 

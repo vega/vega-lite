@@ -184,7 +184,7 @@ describe('encoding', () => {
           {
             x: {field: 'a', type: 'quantitative'},
             y: {field: 'b', type: 'ordinal'},
-            detail: {field: 'c', timeUnit: 'month', type: 'nominal'}
+            color: {field: 'c', timeUnit: 'month', type: 'nominal'}
           },
           'line',
           false,
@@ -193,7 +193,7 @@ describe('encoding', () => {
         defaultConfig
       );
 
-      expect(output.encoding.detail).toEqual({
+      expect(output.encoding.color).toEqual({
         legend: {
           formatType: 'time'
         },
@@ -208,7 +208,7 @@ describe('encoding', () => {
           {
             x: {field: 'a', type: 'quantitative'},
             y: {field: 'b', type: 'ordinal'},
-            detail: {field: 'c', timeUnit: 'month', type: 'temporal'}
+            color: {field: 'c', timeUnit: 'month', type: 'temporal'}
           },
           'line',
           false,
@@ -217,7 +217,7 @@ describe('encoding', () => {
         defaultConfig
       );
 
-      expect(output.encoding.detail).toEqual({
+      expect(output.encoding.color).toEqual({
         field: 'month_c',
         title: 'c (month)',
         type: 'temporal'
