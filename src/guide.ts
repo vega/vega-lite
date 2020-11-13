@@ -42,13 +42,6 @@ export interface FormatMixins {
    * - `"number"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.
    */
   formatType?: 'number' | 'time' | string;
-
-  /**
-   * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels text.
-   *
-   * __Note:__ The label text and value can be assessed via the `label` and `value` properties of the axis's backing `datum` object.
-   */
-  labelExpr?: string;
 }
 
 export interface Guide extends TitleMixins, FormatMixins {}
