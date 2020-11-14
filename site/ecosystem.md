@@ -79,6 +79,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [DataVoyager.jl](https://github.com/queryverse/DataVoyager.jl), a Julia package that exposes the [Voyager (2)](https://github.com/vega/voyager) UI to the Julia programming language.
 - [ProfileVega.jl](https://github.com/davidanthoff/ProfileVega.jl), a Julia profile visualization tool that uses Vega-Lite.
 - [Voyager clone](https://matyunya-simple-voyager-clone.ellx.app), a basic Voyager clone with step-by-step tutorial made with [Ellx](https://ellx.io).
+- [NL4DV](https://nl4dv.github.io/nl4dv/), a Python toolkit that generates analytic specifications (attributes + tasks + vega-lite visualizations) from natural language (NL) queries, helping people prototype NL systems for data visualization.
 
 ## Tools for Embedding Vega-Lite Visualizations
 
