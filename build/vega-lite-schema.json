@@ -8185,32 +8185,6 @@
       },
       "type": "object"
     },
-    "EncodingSortField<FieldName>": {
-      "additionalProperties": false,
-      "description": "A sort definition for sorting a discrete scale in an encoding field definition.",
-      "properties": {
-        "field": {
-          "$ref": "#/definitions/FieldName",
-          "description": "The data [field](https://vega.github.io/vega-lite/docs/field.html) to sort by.\n\n__Default value:__ If unspecified, defaults to the field specified in the outer data reference."
-        },
-        "op": {
-          "$ref": "#/definitions/NonArgAggregateOp",
-          "description": "An [aggregate operation](https://vega.github.io/vega-lite/docs/aggregate.html#ops) to perform on the field prior to sorting (e.g., `\"count\"`, `\"mean\"` and `\"median\"`). An aggregation is required when there are multiple values of the sort field for each encoded data field. The input data objects will be aggregated, grouped by the encoded data field.\n\nFor a full list of operations, please see the documentation for [aggregate](https://vega.github.io/vega-lite/docs/aggregate.html#ops).\n\n__Default value:__ `\"sum\"` for stacked plots. Otherwise, `\"min\"`."
-        },
-        "order": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SortOrder"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "The sort order. One of `\"ascending\"` (default), `\"descending\"`, or `null` (no not sort)."
-        }
-      },
-      "type": "object"
-    },
     "ErrorBand": {
       "const": "errorband",
       "type": "string"
@@ -8808,87 +8782,6 @@
       },
       "type": "object"
     },
-    "FacetFieldDef<FieldName>": {
-      "additionalProperties": false,
-      "properties": {
-        "aggregate": {
-          "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field (e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
-        },
-        "band": {
-          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/BinParams"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
-        },
-        "field": {
-          "$ref": "#/definitions/FieldName",
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__ 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`). If field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`). See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html). 2) `field` is not required if `aggregate` is `count`."
-        },
-        "header": {
-          "$ref": "#/definitions/Header",
-          "description": "An object defining properties of a facet's header."
-        },
-        "sort": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/SortArray"
-            },
-            {
-              "$ref": "#/definitions/SortOrder"
-            },
-            {
-              "$ref": "#/definitions/EncodingSortField<FieldName>"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following: - `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript. - [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field. - [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`). - `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` is not supported for `row` and `column`."
-        },
-        "timeUnit": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TimeUnit"
-            },
-            {
-              "$ref": "#/definitions/TimeUnitParams"
-            }
-          ],
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field. or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
-        },
-        "title": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
-        },
-        "type": {
-          "$ref": "#/definitions/StandardType",
-          "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria: - `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type). - `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale - `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`): - `\"quantitative\"` if the datum is a number - `\"nominal\"` if the datum is a string - `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__ - Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data. - Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`). - When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`. - Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
-        }
-      },
-      "type": "object"
-    },
     "FacetMapping": {
       "additionalProperties": false,
       "properties": {
@@ -8898,20 +8791,6 @@
         },
         "row": {
           "$ref": "#/definitions/FacetFieldDef",
-          "description": "A field definition for the vertical facet of trellis plots."
-        }
-      },
-      "type": "object"
-    },
-    "FacetMapping<FieldName>": {
-      "additionalProperties": false,
-      "properties": {
-        "column": {
-          "$ref": "#/definitions/FacetFieldDef<FieldName>",
-          "description": "A field definition for the horizontal facet of trellis plots."
-        },
-        "row": {
-          "$ref": "#/definitions/FacetFieldDef<FieldName>",
           "description": "A field definition for the vertical facet of trellis plots."
         }
       },
@@ -10653,109 +10532,6 @@
         }
       ]
     },
-    "NormalizedConcatSpec<GenericSpec>": {
-      "additionalProperties": false,
-      "description": "Base interface for a generalized concatenation specification.",
-      "properties": {
-        "align": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LayoutAlign"
-            },
-            {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
-            }
-          ],
-          "description": "The alignment to apply to grid rows and columns. The supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other. - For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size. - For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
-        },
-        "bounds": {
-          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used. - If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
-          "enum": [
-            "full",
-            "flush"
-          ],
-          "type": "string"
-        },
-        "center": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/RowCol<boolean>"
-            }
-          ],
-          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
-        },
-        "columns": {
-          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to `hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for: - the general (wrappable) `concat` operator (not `hconcat`/`vconcat`) - the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
-          "type": "number"
-        },
-        "concat": {
-          "description": "A list of views to be concatenated.",
-          "items": {
-            "$ref": "#/definitions/NormalizedSpec"
-          },
-          "type": "array"
-        },
-        "data": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Data"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "resolve": {
-          "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for view composition specifications."
-        },
-        "spacing": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/RowCol<number>"
-            }
-          ],
-          "description": "The spacing in pixels between sub-views of the composition operator. An object of the form `{\"row\": number, \"column\": number}` can be used to set different spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "concat"
-      ],
-      "type": "object"
-    },
     "ConcatSpec<GenericSpec>": {
       "additionalProperties": false,
       "description": "Base interface for a generalized concatenation specification.",
@@ -10859,7 +10635,7 @@
       ],
       "type": "object"
     },
-    "NormalizedFacetSpec": {
+    "FacetSpec": {
       "additionalProperties": false,
       "description": "Base interface for a facet specification.",
       "properties": {
@@ -10978,199 +10754,6 @@
       ],
       "type": "object"
     },
-    "FacetSpec": {
-      "additionalProperties": false,
-      "description": "Base interface for a facet specification.",
-      "properties": {
-        "align": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LayoutAlign"
-            },
-            {
-              "$ref": "#/definitions/RowCol<LayoutAlign>"
-            }
-          ],
-          "description": "The alignment to apply to grid rows and columns. The supported string values are `\"all\"`, `\"each\"`, and `\"none\"`.\n\n- For `\"none\"`, a flow layout will be used, in which adjacent subviews are simply placed one after the other. - For `\"each\"`, subviews will be aligned into a clean grid structure, but each row or column may be of variable size. - For `\"all\"`, subviews will be aligned and each row or column will be sized identically based on the maximum observed size. String values for this property will be applied to both grid rows and columns.\n\nAlternatively, an object value of the form `{\"row\": string, \"column\": string}` can be used to supply different alignments for rows and columns.\n\n__Default value:__ `\"all\"`."
-        },
-        "bounds": {
-          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used. - If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
-          "enum": [
-            "full",
-            "flush"
-          ],
-          "type": "string"
-        },
-        "center": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/RowCol<boolean>"
-            }
-          ],
-          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\nAn object value of the form `{\"row\": boolean, \"column\": boolean}` can be used to supply different centering values for rows and columns.\n\n__Default value:__ `false`"
-        },
-        "columns": {
-          "description": "The number of columns to include in the view composition layout.\n\n__Default value__: `undefined` -- An infinite number of columns (a single row) will be assumed. This is equivalent to `hconcat` (for `concat`) and to using the `column` channel (for `facet` and `repeat`).\n\n__Note__:\n\n1) This property is only for: - the general (wrappable) `concat` operator (not `hconcat`/`vconcat`) - the `facet` and `repeat` operator with one field/repetition definition (without row/column nesting)\n\n2) Setting the `columns` to `1` is equivalent to `vconcat` (for `concat`) and to using the `row` channel (for `facet` and `repeat`).",
-          "type": "number"
-        },
-        "data": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Data"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "facet": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FacetFieldDef<FieldName>"
-            },
-            {
-              "$ref": "#/definitions/FacetMapping<FieldName>"
-            }
-          ],
-          "description": "Definition for how to facet the data. One of: 1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def) 2) [An object that maps `row` and `column` channels to their field definitions](https://vega.github.io/vega-lite/docs/facet.html#mapping)"
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "resolve": {
-          "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for view composition specifications."
-        },
-        "spacing": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/RowCol<number>"
-            }
-          ],
-          "description": "The spacing in pixels between sub-views of the composition operator. An object of the form `{\"row\": number, \"column\": number}` can be used to set different spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
-        },
-        "spec": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/LayerSpec"
-            },
-            {
-              "$ref": "#/definitions/FacetedUnitSpec"
-            }
-          ],
-          "description": "A specification of the view that gets faceted."
-        },
-        "title": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "facet",
-        "spec"
-      ],
-      "type": "object"
-    },
-    "NormalizedHConcatSpec<GenericSpec>": {
-      "additionalProperties": false,
-      "description": "Base interface for a horizontal concatenation specification.",
-      "properties": {
-        "bounds": {
-          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used. - If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
-          "enum": [
-            "full",
-            "flush"
-          ],
-          "type": "string"
-        },
-        "center": {
-          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\n__Default value:__ `false`",
-          "type": "boolean"
-        },
-        "data": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Data"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "hconcat": {
-          "description": "A list of views to be concatenated and put into a row.",
-          "items": {
-            "$ref": "#/definitions/NormalizedSpec"
-          },
-          "type": "array"
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "resolve": {
-          "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for view composition specifications."
-        },
-        "spacing": {
-          "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
-          "type": "number"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "hconcat"
-      ],
-      "type": "object"
-    },
     "HConcatSpec<GenericSpec>": {
       "additionalProperties": false,
       "description": "Base interface for a horizontal concatenation specification.",
@@ -11245,32 +10828,6 @@
       ],
       "type": "object"
     },
-    "NormalizedSpec": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/FacetedUnitSpec"
-        },
-        {
-          "$ref": "#/definitions/LayerSpec"
-        },
-        {
-          "$ref": "#/definitions/RepeatSpec"
-        },
-        {
-          "$ref": "#/definitions/NormalizedFacetSpec"
-        },
-        {
-          "$ref": "#/definitions/NormalizedConcatSpec<GenericSpec>"
-        },
-        {
-          "$ref": "#/definitions/NormalizedVConcatSpec<GenericSpec>"
-        },
-        {
-          "$ref": "#/definitions/NormalizedHConcatSpec<GenericSpec>"
-        }
-      ],
-      "description": "Any specification in Vega-Lite."
-    },
     "Spec": {
       "anyOf": [
         {
@@ -11296,80 +10853,6 @@
         }
       ],
       "description": "Any specification in Vega-Lite."
-    },
-    "NormalizedVConcatSpec<GenericSpec>": {
-      "additionalProperties": false,
-      "description": "Base interface for a vertical concatenation specification.",
-      "properties": {
-        "bounds": {
-          "description": "The bounds calculation method to use for determining the extent of a sub-plot. One of `full` (the default) or `flush`.\n\n- If set to `full`, the entire calculated bounds (including axes, title, and legend) will be used. - If set to `flush`, only the specified width and height values for the sub-view will be used. The `flush` setting can be useful when attempting to place sub-plots without axes or legends into a uniform grid structure.\n\n__Default value:__ `\"full\"`",
-          "enum": [
-            "full",
-            "flush"
-          ],
-          "type": "string"
-        },
-        "center": {
-          "description": "Boolean flag indicating if subviews should be centered relative to their respective rows or columns.\n\n__Default value:__ `false`",
-          "type": "boolean"
-        },
-        "data": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Data"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "resolve": {
-          "$ref": "#/definitions/Resolve",
-          "description": "Scale, axis, and legend resolutions for view composition specifications."
-        },
-        "spacing": {
-          "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
-          "type": "number"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        },
-        "vconcat": {
-          "description": "A list of views to be concatenated and put into a column.",
-          "items": {
-            "$ref": "#/definitions/NormalizedSpec"
-          },
-          "type": "array"
-        }
-      },
-      "required": [
-        "vconcat"
-      ],
-      "type": "object"
     },
     "VConcatSpec<GenericSpec>": {
       "additionalProperties": false,
@@ -19189,7 +18672,7 @@
           "description": "The spacing in pixels between sub-views of the composition operator. An object of the form `{\"row\": number, \"column\": number}` can be used to set different spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
         },
         "spec": {
-          "$ref": "#/definitions/Spec",
+          "$ref": "#/definitions/NonNormalizedSpec",
           "description": "A specification of the view that gets repeated."
         },
         "title": {
@@ -19216,6 +18699,9 @@
         "spec"
       ],
       "type": "object"
+    },
+    "NonNormalizedSpec": {
+      "$ref": "#/definitions/Spec"
     },
     "NumericArrayMarkPropDef": {
       "$ref": "#/definitions/MarkPropDef<number[]>"
@@ -29343,7 +28829,7 @@
       ],
       "type": "object"
     },
-    "TopLevelNormalizedConcatSpec<GenericSpec>": {
+    "TopLevelConcatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -29410,7 +28896,7 @@
         "concat": {
           "description": "A list of views to be concatenated.",
           "items": {
-            "$ref": "#/definitions/NormalizedSpec"
+            "$ref": "#/definitions/NonNormalizedSpec"
           },
           "type": "array"
         },
@@ -29502,7 +28988,7 @@
       ],
       "type": "object"
     },
-    "TopLevelNormalizedHConcatSpec<GenericSpec>": {
+    "TopLevelHConcatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -29570,7 +29056,7 @@
         "hconcat": {
           "description": "A list of views to be concatenated and put into a row.",
           "items": {
-            "$ref": "#/definitions/NormalizedSpec"
+            "$ref": "#/definitions/NonNormalizedSpec"
           },
           "type": "array"
         },
@@ -29632,7 +29118,7 @@
       ],
       "type": "object"
     },
-    "TopLevelNormalizedVConcatSpec<GenericSpec>": {
+    "TopLevelVConcatSpec": {
       "additionalProperties": false,
       "properties": {
         "$schema": {
@@ -29752,7 +29238,7 @@
         "vconcat": {
           "description": "A list of views to be concatenated and put into a column.",
           "items": {
-            "$ref": "#/definitions/NormalizedSpec"
+            "$ref": "#/definitions/NonNormalizedSpec"
           },
           "type": "array"
         }
@@ -30066,7 +29552,7 @@
               "description": "The spacing in pixels between sub-views of the composition operator. An object of the form `{\"row\": number, \"column\": number}` can be used to set different spacing values for rows and columns.\n\n__Default value__: Depends on `\"spacing\"` property of [the view composition configuration](https://vega.github.io/vega-lite/docs/config.html#view-config) (`20` by default)"
             },
             "spec": {
-              "$ref": "#/definitions/Spec",
+              "$ref": "#/definitions/NonNormalizedSpec",
               "description": "A specification of the view that gets repeated."
             },
             "title": {
@@ -30459,13 +29945,13 @@
           "$ref": "#/definitions/TopLevelRepeatSpec"
         },
         {
-          "$ref": "#/definitions/TopLevelNormalizedConcatSpec<GenericSpec>"
+          "$ref": "#/definitions/TopLevelConcatSpec"
         },
         {
-          "$ref": "#/definitions/TopLevelNormalizedVConcatSpec<GenericSpec>"
+          "$ref": "#/definitions/TopLevelVConcatSpec"
         },
         {
-          "$ref": "#/definitions/TopLevelNormalizedHConcatSpec<GenericSpec>"
+          "$ref": "#/definitions/TopLevelHConcatSpec"
         }
       ],
       "description": "A Vega-Lite top-level specification. This is the root class for all Vega-Lite specifications. (The json schema is generated from this type.)"

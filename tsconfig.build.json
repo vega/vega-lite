@@ -7,6 +7,5 @@
     "declarationMap": true,
     "sourceMap": true
   },
-  "files": ["src/index.ts"],
   "include": []
 }

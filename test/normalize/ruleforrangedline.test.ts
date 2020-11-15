@@ -1,3 +1,4 @@
+import {FieldName} from '../../src/channeldef';
 import * as log from '../../src/log';
 import {normalize} from '../../src/normalize';
 import {TopLevelUnitSpec} from '../../src/spec/unit';
@@ -6,7 +7,7 @@ describe('RuleForRangedLineNormalizer', () => {
   it(
     'correctly normalizes line with rule where there is x2 or y2.',
     log.wrap(localLogger => {
-      const spec: TopLevelUnitSpec = {
+      const spec: TopLevelUnitSpec<FieldName> = {
         data: {url: 'data/stocks.csv', format: {type: 'csv'}},
         mark: 'line',
         encoding: {
@@ -26,7 +27,7 @@ describe('RuleForRangedLineNormalizer', () => {
   );
 
   it('does not normalize line when there is x2 or y2, but its primary channel is "binned".', () => {
-    const spec: TopLevelUnitSpec = {
+    const spec: TopLevelUnitSpec<FieldName> = {
       data: {url: 'data/stocks.csv', format: {type: 'csv'}},
       mark: 'line',
       encoding: {

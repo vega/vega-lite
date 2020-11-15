@@ -1,7 +1,7 @@
 /**
  * Utility files for producing Vega ValueRef for marks
  */
-import {SignalRef} from 'vega-typings/types';
+import {SignalRef} from 'vega';
 import {getOffsetChannel, PolarPositionChannel, PositionChannel} from '../../../channel';
 import {Mark, MarkDef} from '../../../mark';
 

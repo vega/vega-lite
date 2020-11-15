@@ -1,4 +1,4 @@
-import {Binding, Expr, InitSignal, NewSignal} from 'vega-typings/types';
+import {Binding, Expr, InitSignal, NewSignal} from 'vega';
 
 export interface Parameter {
   /**

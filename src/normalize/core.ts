@@ -31,7 +31,7 @@ import {PathOverlayNormalizer} from './pathoverlay';
 import {replaceRepeaterInEncoding, replaceRepeaterInFacet} from './repeater';
 import {RuleForRangedLineNormalizer} from './ruleforrangedline';
 
-export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec, LayerSpec> {
+export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec<Field>, LayerSpec<Field>> {
   private nonFacetUnitNormalizers: NonFacetUnitNormalizer<any>[] = [
     boxPlotNormalizer,
     errorBarNormalizer,
@@ -40,7 +40,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     new RuleForRangedLineNormalizer()
   ];
 
-  public map(spec: GenericSpec<FacetedUnitSpec, LayerSpec, RepeatSpec, Field>, params: NormalizerParams) {
+  public map(spec: GenericSpec<FacetedUnitSpec<Field>, LayerSpec<Field>, RepeatSpec, Field>, params: NormalizerParams) {
     // Special handling for a faceted unit spec as it can return a facet spec, not just a layer or unit spec like a normal unit spec.
     if (isUnitSpec(spec)) {
       const hasRow = channelHasField(spec.encoding, ROW);
@@ -56,7 +56,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
   }
 
   // This is for normalizing non-facet unit
-  public mapUnit(spec: UnitSpec, params: NormalizerParams): NormalizedUnitSpec | NormalizedLayerSpec {
+  public mapUnit(spec: UnitSpec<Field>, params: NormalizerParams): NormalizedUnitSpec | NormalizedLayerSpec {
     const {parentEncoding, parentProjection} = params;
 
     const encoding = replaceRepeaterInEncoding(spec.encoding, params.repeater);
@@ -194,7 +194,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
   }
 
   protected mapFacet(
-    spec: GenericFacetSpec<UnitSpec, LayerSpec, Field>,
+    spec: GenericFacetSpec<UnitSpec<Field>, LayerSpec<Field>, Field>,
     params: NormalizerParams
   ): GenericFacetSpec<NormalizedUnitSpec, NormalizedLayerSpec, FieldName> {
     const {facet} = spec;
@@ -209,7 +209,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
   }
 
   private mapUnitWithParentEncodingOrProjection(
-    spec: FacetedUnitSpec,
+    spec: FacetedUnitSpec<Field>,
     params: NormalizerParams
   ): NormalizedUnitSpec | NormalizedLayerSpec {
     const {encoding, projection} = spec;
@@ -230,7 +230,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
     );
   }
 
-  private mapFacetedUnit(spec: FacetedUnitSpec, params: NormalizerParams): NormalizedFacetSpec {
+  private mapFacetedUnit(spec: FacetedUnitSpec<Field>, params: NormalizerParams): NormalizedFacetSpec {
     // New encoding in the inside spec should not contain row / column
     // as row/column should be moved to facet
     const {row, column, facet, ...encoding} = spec.encoding;
@@ -312,7 +312,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
   }
 
   public mapLayer(
-    spec: LayerSpec,
+    spec: LayerSpec<Field>,
     {parentEncoding, parentProjection, ...otherParams}: NormalizerParams
   ): NormalizedLayerSpec {
     // Special handling for extended layer spec

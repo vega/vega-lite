@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega-typings/types';
+import {SignalRef} from 'vega';
 import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel';
 import {isFieldOrDatumDef} from '../../../channeldef';
 import {MarkConfig} from '../../../mark';

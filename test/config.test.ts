@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega-typings/types';
+import {SignalRef} from 'vega';
 import {
   Config,
   defaultConfig,
