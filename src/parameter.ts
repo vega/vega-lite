@@ -33,6 +33,8 @@ export interface Parameter {
 export function assembleParameterSignals(params: (Parameter | TopLevelSelectionDef)[]) {
   const signals: (NewSignal | InitSignal)[] = [];
   for (const param of params || []) {
+    // Selection parameters are handled separately via assembleSelectionTopLevelSignals
+    // and assembleSignals methods registered on the Model.
     if (isParameterSelection(param)) continue;
     const {expr, bind, ...rest} = param;
 
