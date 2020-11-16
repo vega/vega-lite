@@ -1,4 +1,5 @@
 import {isArray, isString} from 'vega';
+import {Field} from '../channeldef';
 import {Parameter} from '../parameter';
 import {isParameterSelection, SelectionDef} from '../selection';
 import {
@@ -33,7 +34,7 @@ export class TopLevelSelectionsNormalizer extends SpecMapper<NormalizerParams, N
     return super.map(spec, addSpecNameToParams(spec, normParams));
   }
 
-  public mapUnit(spec: UnitSpec, normParams: NormalizerParams): NormalizedUnitSpec | NormalizedLayerSpec {
+  public mapUnit(spec: UnitSpec<Field>, normParams: NormalizerParams): NormalizedUnitSpec | NormalizedLayerSpec {
     const selections = normParams.selections;
     if (!selections || !selections.length) return spec as NormalizedUnitSpec;
 
