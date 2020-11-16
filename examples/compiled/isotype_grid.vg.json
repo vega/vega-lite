@@ -167,16 +167,16 @@
         },
         {"events": {"signal": "highlight_scale_trigger"}, "update": "[0, 0]"},
         {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
+        },
+        {
           "events": {"signal": "highlight_translate_delta"},
           "update": "clampRange(panLinear(highlight_translate_anchor.extent_x, highlight_translate_delta.x / span(highlight_translate_anchor.extent_x)), 0, width)"
         },
         {
           "events": {"signal": "highlight_zoom_delta"},
           "update": "clampRange(zoomLinear(highlight_x, highlight_zoom_anchor.x, highlight_zoom_delta), 0, width)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },
@@ -223,16 +223,16 @@
         },
         {"events": {"signal": "highlight_scale_trigger"}, "update": "[0, 0]"},
         {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
+        },
+        {
           "events": {"signal": "highlight_translate_delta"},
           "update": "clampRange(panLinear(highlight_translate_anchor.extent_y, highlight_translate_delta.y / span(highlight_translate_anchor.extent_y)), 0, height)"
         },
         {
           "events": {"signal": "highlight_zoom_delta"},
           "update": "clampRange(zoomLinear(highlight_y, highlight_zoom_anchor.y, highlight_zoom_delta), 0, height)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },

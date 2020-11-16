@@ -32,6 +32,7 @@
     {
       "name": "view_income",
       "on": [
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"},
         {
           "events": {"signal": "view_translate_delta"},
           "update": "panLog(view_translate_anchor.extent_x, -view_translate_delta.x / width)"
@@ -39,13 +40,13 @@
         {
           "events": {"signal": "view_zoom_delta"},
           "update": "zoomLog(domain(\"x\"), view_zoom_anchor.x, view_zoom_delta)"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
       "name": "view_health",
       "on": [
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"},
         {
           "events": {"signal": "view_translate_delta"},
           "update": "panLinear(view_translate_anchor.extent_y, view_translate_delta.y / height)"
@@ -53,8 +54,7 @@
         {
           "events": {"signal": "view_zoom_delta"},
           "update": "zoomLinear(domain(\"y\"), view_zoom_anchor.y, view_zoom_delta)"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {

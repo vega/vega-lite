@@ -48,7 +48,7 @@
     },
     {
       "name": "highlight",
-      "update": "vlSelectionResolve(\"highlight_store\", \"union\")"
+      "update": "vlSelectionResolve(\"highlight_store\", \"union\", true)"
     },
     {
       "name": "highlight_tuple",
@@ -66,11 +66,22 @@
       "value": [{"type": "E", "field": "_vgsid_"}]
     },
     {
+      "name": "highlight_toggle",
+      "value": false,
+      "on": [
+        {
+          "events": [{"source": "scope", "type": "click"}],
+          "update": "event.shiftKey"
+        },
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
+      ]
+    },
+    {
       "name": "highlight_modify",
       "on": [
         {
           "events": {"signal": "highlight_tuple"},
-          "update": "modify(\"highlight_store\", highlight_tuple, true)"
+          "update": "modify(\"highlight_store\", highlight_toggle ? null : highlight_tuple, highlight_toggle ? null : true, highlight_toggle ? highlight_tuple : null)"
         }
       ]
     }

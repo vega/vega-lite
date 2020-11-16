@@ -1,5 +1,6 @@
 import {Page} from 'puppeteer';
 import {stringValue} from 'vega-util';
+import {SelectionType} from '../src/selection';
 import {compositeTypes, embedFn, parentSelector, spec, testRenderFn} from './util';
 
 declare const page: Page;
@@ -17,14 +18,14 @@ function toggle(key: string, idx: number, shiftKey: boolean, parent?: string) {
   return `${fn}(${hits[key][idx]}, ${stringValue(parent)}, ${!!shiftKey})`;
 }
 
-describe('Toggle multi selections at runtime', () => {
+describe('Toggle point selections at runtime', () => {
   beforeAll(async () => {
     await page.goto('http://0.0.0.0:8000/test-runtime/');
   });
 
-  const type = 'multi';
+  const type: SelectionType = 'point';
   const embed = embedFn(page);
-  const testRender = testRenderFn(page, 'multi/toggle');
+  const testRender = testRenderFn(page, 'point/toggle');
 
   it('should toggle values into/out of the store', async () => {
     await embed(spec('unit', 0, {type}));

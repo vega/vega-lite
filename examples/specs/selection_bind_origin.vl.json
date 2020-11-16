@@ -3,7 +3,7 @@
   "data": {"url": "data/cars.json"},
   "params": [{
     "name": "org",
-    "select": {"type": "single", "fields": ["Origin"]},
+    "select": {"type": "point", "fields": ["Origin"]},
     "bind": {"input": "select", "options": [null, "Europe", "Japan", "USA"]}
   }],
   "mark": "point",

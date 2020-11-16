@@ -38,7 +38,7 @@
       {
         "name": "xenc",
         "select": {
-          "type": "single",
+          "type": "point",
           "fields": ["X"],
           "resolve": "global",
           "on": "mouseover",

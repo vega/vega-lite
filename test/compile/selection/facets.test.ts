@@ -19,9 +19,8 @@ describe('Faceted Selections', () => {
         },
         {
           params: [
-            {name: 'one', select: 'single'},
-            {name: 'twp', select: 'multi'},
-            {name: 'three', select: 'interval'}
+            {name: 'one', select: 'point'},
+            {name: 'two', select: 'interval'}
           ],
           mark: 'rule',
           encoding: {

@@ -31,10 +31,10 @@ describe('Selection Predicate', () => {
   model.parseScale();
 
   model.component.selection = parseUnitSelection(model, [
-    {name: 'one', select: 'single'},
-    {name: 'two', select: {type: 'multi', resolve: 'union'}},
+    {name: 'one', select: 'point'},
+    {name: 'two', select: {type: 'point', resolve: 'union'}},
     {name: 'thr-ee', select: {type: 'interval', resolve: 'intersect'}},
-    {name: 'four', select: {type: 'single', empty: 'none'}}
+    {name: 'four', select: {type: 'point', empty: 'none'}}
   ]);
 
   it('generates the predicate expression', () => {

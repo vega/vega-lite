@@ -68,16 +68,16 @@
         },
         {"events": {"signal": "pts_scale_trigger"}, "update": "[0, 0]"},
         {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
+        },
+        {
           "events": {"signal": "pts_translate_delta"},
           "update": "clampRange(panLinear(pts_translate_anchor.extent_y, pts_translate_delta.y / span(pts_translate_anchor.extent_y)), 0, height)"
         },
         {
           "events": {"signal": "pts_zoom_delta"},
           "update": "clampRange(zoomLinear(pts_y, pts_zoom_anchor.y, pts_zoom_delta), 0, height)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },

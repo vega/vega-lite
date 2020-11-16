@@ -16,8 +16,8 @@ describe('TopLevelSelectionNormalizer', () => {
   it('should push top-level selections to all units by default', () => {
     const spec: TopLevel<NormalizedSpec> = {
       params: [
-        {name: 'one', select: 'single'},
-        {name: 'two', select: 'multi'},
+        {name: 'one', select: 'point'},
+        {name: 'two', select: 'point'},
         {name: 'three', select: 'interval'},
         {name: 'four', expr: 'true'},
         {name: 'five', bind: {input: 'range'}}
@@ -36,8 +36,8 @@ describe('TopLevelSelectionNormalizer', () => {
   it('should push top-level selections to given units', () => {
     const spec: TopLevel<NormalizedSpec> = {
       params: [
-        {name: 'one', select: 'single', views: ['a']},
-        {name: 'two', select: 'multi', views: ['b']},
+        {name: 'one', select: 'point', views: ['a']},
+        {name: 'two', select: 'point', views: ['b']},
         {name: 'three', select: 'interval', views: ['a', 'b']},
         {name: 'four', expr: 'true'},
         {name: 'five', bind: {input: 'range'}}
@@ -62,8 +62,8 @@ describe('TopLevelSelectionNormalizer', () => {
   it('should handle nested paths', () => {
     const spec: TopLevelSpec = {
       params: [
-        {name: 'one', select: 'single', views: ['child__row_Acceleration']},
-        {name: 'two', select: 'multi', views: [['child__row_Horsepower', 'b']]},
+        {name: 'one', select: 'point', views: ['child__row_Acceleration']},
+        {name: 'two', select: 'point', views: [['child__row_Horsepower', 'b']]},
         {name: 'three', select: 'interval', views: ['a', ['child__row_Horsepower', 'b', 'c']]},
         {name: 'four', expr: 'true'},
         {name: 'five', bind: {input: 'range'}}

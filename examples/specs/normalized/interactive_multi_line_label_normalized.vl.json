@@ -19,7 +19,7 @@
             {
               "name": "label",
               "select": {
-                "type": "single",
+                "type": "point",
                 "encodings": ["x"],
                 "nearest": true,
                 "on": "mouseover",

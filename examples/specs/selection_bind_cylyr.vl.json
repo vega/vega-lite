@@ -4,7 +4,7 @@
   "transform": [{"calculate": "year(datum.Year)", "as": "Year"}],
   "params": [{
     "name": "CylYr",
-    "select": {"type": "single", "fields": ["Cylinders", "Year"]},
+    "select": {"type": "point", "fields": ["Cylinders", "Year"]},
     "bind": {
       "Cylinders": {"input": "range", "min": 3,"max": 8,"step": 1},
       "Year": {"input": "range", "min": 1969,"max": 1981,"step": 1}

@@ -1,16 +1,16 @@
-import {isString, stringValue} from 'vega-util';
-import {TUPLE} from '..';
-import {varName} from '../../../util';
-import {assembleInit} from '../assemble';
+import {stringValue} from 'vega-util';
+import {disableDirectManipulation, TUPLE} from '.';
+import {varName} from '../../util';
+import {assembleInit} from './assemble';
 import nearest from './nearest';
 import {TUPLE_FIELDS} from './project';
-import {TransformCompiler} from './transforms';
-import {isLegendBinding} from '../../../selection';
+import {SelectionCompiler} from '.';
+import {isLegendBinding} from '../../selection';
 
-const inputBindings: TransformCompiler = {
-  has: selCmpt => {
+const inputBindings: SelectionCompiler<'point'> = {
+  defined: selCmpt => {
     return (
-      selCmpt.type === 'single' &&
+      selCmpt.type === 'point' &&
       selCmpt.resolve === 'global' &&
       selCmpt.bind &&
       selCmpt.bind !== 'scales' &&
@@ -18,19 +18,14 @@ const inputBindings: TransformCompiler = {
     );
   },
 
-  parse: (model, selCmpt, selDef) => {
-    // Binding a selection to input widgets disables default direct manipulation interaction.
-    // A user can choose to re-enable it by explicitly specifying triggering input events.
-    if (isString(selDef.select) || !selDef.select.on) delete selCmpt.events;
-    if (isString(selDef.select) || !selDef.select.clear) delete selCmpt.clear;
-  },
+  parse: (model, selCmpt, selDef) => disableDirectManipulation(selCmpt, selDef),
 
   topLevelSignals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const proj = selCmpt.project;
     const bind = selCmpt.bind;
     const init = selCmpt.init && selCmpt.init[0]; // Can only exist on single selections (one initial value).
-    const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
+    const datum = nearest.defined(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
 
     proj.items.forEach((p, i) => {
       const sgname = varName(`${name}_${p.field}`);

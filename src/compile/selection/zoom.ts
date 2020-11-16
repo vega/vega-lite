@@ -1,25 +1,25 @@
 import {NewSignal} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {stringValue} from 'vega-util';
-import {SelectionComponent} from '..';
-import {ScaleChannel, X, Y} from '../../../channel';
-import {UnitModel} from '../../unit';
-import {BRUSH as INTERVAL_BRUSH} from '../interval';
+import {SelectionComponent} from '.';
+import {ScaleChannel, X, Y} from '../../channel';
+import {UnitModel} from '../unit';
+import {BRUSH as INTERVAL_BRUSH} from './interval';
 import {SelectionProjection} from './project';
 import {default as scalesCompiler, domain} from './scales';
-import {TransformCompiler} from './transforms';
+import {SelectionCompiler} from '.';
 
 const ANCHOR = '_zoom_anchor';
 const DELTA = '_zoom_delta';
 
-const zoom: TransformCompiler = {
-  has: selCmpt => {
+const zoom: SelectionCompiler<'interval'> = {
+  defined: selCmpt => {
     return selCmpt.type === 'interval' && selCmpt.zoom;
   },
 
   signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
-    const hasScales = scalesCompiler.has(selCmpt);
+    const hasScales = scalesCompiler.defined(selCmpt);
     const delta = name + DELTA;
     const {x, y} = selCmpt.project.hasChannel;
     const sx = stringValue(model.scaleName(X));
@@ -81,7 +81,7 @@ function onDelta(
 ) {
   const name = selCmpt.name;
   const channel = proj.channel as ScaleChannel;
-  const hasScales = scalesCompiler.has(selCmpt);
+  const hasScales = scalesCompiler.defined(selCmpt);
   const signal = signals.filter(s => s.name === proj.signals[hasScales ? 'data' : 'visual'])[0];
   const sizeSg = model.getSizeSignalRef(size).signal;
   const scaleCmpt = model.getScaleComponent(channel);

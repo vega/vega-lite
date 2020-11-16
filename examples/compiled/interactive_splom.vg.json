@@ -171,16 +171,16 @@
               "update": "[scale(\"child__row_Horsepowercolumn_Miles_per_Gallon_x\", brush_Miles_per_Gallon[0]), scale(\"child__row_Horsepowercolumn_Miles_per_Gallon_x\", brush_Miles_per_Gallon[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -232,16 +232,16 @@
               "update": "[scale(\"child__row_Horsepowercolumn_Miles_per_Gallon_y\", brush_Horsepower[0]), scale(\"child__row_Horsepowercolumn_Miles_per_Gallon_y\", brush_Horsepower[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, childHeight)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, childHeight)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -375,16 +375,16 @@
           "name": "grid_Miles_per_Gallon",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / childWidth)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Horsepowercolumn_Miles_per_Gallon_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -393,16 +393,16 @@
           "name": "grid_Horsepower",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / childHeight)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Horsepowercolumn_Miles_per_Gallon_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -683,16 +683,16 @@
               "update": "[scale(\"child__row_Horsepowercolumn_Acceleration_x\", brush_Acceleration[0]), scale(\"child__row_Horsepowercolumn_Acceleration_x\", brush_Acceleration[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -744,16 +744,16 @@
               "update": "[scale(\"child__row_Horsepowercolumn_Acceleration_y\", brush_Horsepower[0]), scale(\"child__row_Horsepowercolumn_Acceleration_y\", brush_Horsepower[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, childHeight)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, childHeight)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -885,16 +885,16 @@
           "name": "grid_Acceleration",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / childWidth)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Horsepowercolumn_Acceleration_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -903,16 +903,16 @@
           "name": "grid_Horsepower",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / childHeight)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Horsepowercolumn_Acceleration_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -1191,16 +1191,16 @@
               "update": "[scale(\"child__row_Horsepowercolumn_Horsepower_x\", brush_Horsepower[0]), scale(\"child__row_Horsepowercolumn_Horsepower_x\", brush_Horsepower[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -1326,16 +1326,16 @@
           "name": "grid_Horsepower",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / childWidth)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Horsepowercolumn_Horsepower_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -1608,16 +1608,16 @@
               "update": "[scale(\"child__row_Accelerationcolumn_Miles_per_Gallon_x\", brush_Miles_per_Gallon[0]), scale(\"child__row_Accelerationcolumn_Miles_per_Gallon_x\", brush_Miles_per_Gallon[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -1669,16 +1669,16 @@
               "update": "[scale(\"child__row_Accelerationcolumn_Miles_per_Gallon_y\", brush_Acceleration[0]), scale(\"child__row_Accelerationcolumn_Miles_per_Gallon_y\", brush_Acceleration[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, childHeight)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, childHeight)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -1812,16 +1812,16 @@
           "name": "grid_Miles_per_Gallon",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / childWidth)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Accelerationcolumn_Miles_per_Gallon_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -1830,16 +1830,16 @@
           "name": "grid_Acceleration",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / childHeight)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Accelerationcolumn_Miles_per_Gallon_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -2120,16 +2120,16 @@
               "update": "[scale(\"child__row_Accelerationcolumn_Acceleration_x\", brush_Acceleration[0]), scale(\"child__row_Accelerationcolumn_Acceleration_x\", brush_Acceleration[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -2257,16 +2257,16 @@
           "name": "grid_Acceleration",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / childWidth)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Accelerationcolumn_Acceleration_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -2539,16 +2539,16 @@
               "update": "[scale(\"child__row_Accelerationcolumn_Horsepower_x\", brush_Horsepower[0]), scale(\"child__row_Accelerationcolumn_Horsepower_x\", brush_Horsepower[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -2600,16 +2600,16 @@
               "update": "[scale(\"child__row_Accelerationcolumn_Horsepower_y\", brush_Acceleration[0]), scale(\"child__row_Accelerationcolumn_Horsepower_y\", brush_Acceleration[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, childHeight)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, childHeight)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -2741,16 +2741,16 @@
           "name": "grid_Horsepower",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / childWidth)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Accelerationcolumn_Horsepower_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -2759,16 +2759,16 @@
           "name": "grid_Acceleration",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / childHeight)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Accelerationcolumn_Horsepower_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -3047,16 +3047,16 @@
               "update": "[scale(\"child__row_Miles_per_Galloncolumn_Miles_per_Gallon_x\", brush_Miles_per_Gallon[0]), scale(\"child__row_Miles_per_Galloncolumn_Miles_per_Gallon_x\", brush_Miles_per_Gallon[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -3186,16 +3186,16 @@
           "name": "grid_Miles_per_Gallon",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / childWidth)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Miles_per_Galloncolumn_Miles_per_Gallon_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -3468,16 +3468,16 @@
               "update": "[scale(\"child__row_Miles_per_Galloncolumn_Acceleration_x\", brush_Acceleration[0]), scale(\"child__row_Miles_per_Galloncolumn_Acceleration_x\", brush_Acceleration[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -3529,16 +3529,16 @@
               "update": "[scale(\"child__row_Miles_per_Galloncolumn_Acceleration_y\", brush_Miles_per_Gallon[0]), scale(\"child__row_Miles_per_Galloncolumn_Acceleration_y\", brush_Miles_per_Gallon[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, childHeight)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, childHeight)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -3672,16 +3672,16 @@
           "name": "grid_Acceleration",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / childWidth)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Miles_per_Galloncolumn_Acceleration_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -3690,16 +3690,16 @@
           "name": "grid_Miles_per_Gallon",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / childHeight)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Miles_per_Galloncolumn_Acceleration_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -3980,16 +3980,16 @@
               "update": "[scale(\"child__row_Miles_per_Galloncolumn_Horsepower_x\", brush_Horsepower[0]), scale(\"child__row_Miles_per_Galloncolumn_Horsepower_x\", brush_Horsepower[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, childWidth)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, childWidth)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -4041,16 +4041,16 @@
               "update": "[scale(\"child__row_Miles_per_Galloncolumn_Horsepower_y\", brush_Miles_per_Gallon[0]), scale(\"child__row_Miles_per_Galloncolumn_Horsepower_y\", brush_Miles_per_Gallon[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, childHeight)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, childHeight)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -4184,16 +4184,16 @@
           "name": "grid_Horsepower",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / childWidth)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Miles_per_Galloncolumn_Horsepower_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -4202,16 +4202,16 @@
           "name": "grid_Miles_per_Gallon",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / childHeight)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"child__row_Miles_per_Galloncolumn_Horsepower_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"

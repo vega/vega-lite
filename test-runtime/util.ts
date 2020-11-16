@@ -10,7 +10,7 @@ const generate = process.env.VL_GENERATE_TESTS;
 const output = 'test-runtime/resources';
 
 export type ComposeType = 'unit' | 'repeat' | 'facet';
-export const selectionTypes: SelectionType[] = ['single', 'multi', 'interval'];
+export const selectionTypes: SelectionType[] = ['point', 'interval'];
 export const compositeTypes: ComposeType[] = ['repeat', 'facet'];
 export const resolutions: SelectionResolution[] = ['union', 'intersect'];
 

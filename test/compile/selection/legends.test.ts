@@ -1,6 +1,6 @@
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import legends from '../../../src/compile/selection/transforms/legends';
+import legends from '../../../src/compile/selection/legends';
 import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
 
@@ -22,28 +22,28 @@ describe('Interactive Legends', () => {
       const selCmpts = (m.component.selection = parseUnitSelection(m, [
         {
           name: 'three',
-          select: {type: 'multi', fields: ['Origin', 'Cylinders']},
+          select: {type: 'point', fields: ['Origin', 'Cylinders']},
           bind: 'legend'
         },
         {
           name: 'five',
-          select: {type: 'single', encodings: ['color', 'size']},
+          select: {type: 'point', encodings: ['color', 'size']},
           bind: 'legend'
         },
         {
           name: 'six',
-          select: 'multi',
+          select: 'point',
           bind: 'legend'
         }
       ]));
       m.parseLegends();
-      expect(legends.has(selCmpts['three'])).toBeFalsy();
+      expect(legends.defined(selCmpts['three'])).toBeFalsy();
       expect(localLogger.warns[0]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
 
-      expect(legends.has(selCmpts['five'])).toBeFalsy();
+      expect(legends.defined(selCmpts['five'])).toBeFalsy();
       expect(localLogger.warns[1]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
 
-      expect(legends.has(selCmpts['six'])).toBeFalsy();
+      expect(legends.defined(selCmpts['six'])).toBeFalsy();
       expect(localLogger.warns[2]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
     })
   );
@@ -62,39 +62,39 @@ describe('Interactive Legends', () => {
   const selCmpts = (model.component.selection = parseUnitSelection(model, [
     {
       name: 'one',
-      select: {type: 'single', fields: ['Origin']},
+      select: {type: 'point', fields: ['Origin']},
       bind: 'legend'
     },
     {
       name: 'two',
-      select: {type: 'multi', fields: ['Origin']},
+      select: {type: 'point', fields: ['Origin']},
       bind: {legend: 'dblclick, mouseover'}
     },
     {
       name: 'four',
-      select: {type: 'single', encodings: ['color']},
+      select: {type: 'point', encodings: ['color']},
       bind: 'legend'
     },
     {
       name: 'seven',
-      select: {type: 'multi', fields: ['Origin'], on: 'click'},
+      select: {type: 'point', fields: ['Origin'], on: 'click'},
       bind: {legend: 'mouseover'}
     },
     {
       name: 'eight',
-      select: {type: 'multi', encodings: ['color'], on: 'click', clear: 'dblclick'},
+      select: {type: 'point', encodings: ['color'], on: 'click', clear: 'dblclick'},
       bind: {legend: 'mouseover'}
     },
     {
       name: 'nine',
-      select: 'single',
+      select: 'point',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     {
       name: 'ten',
       value: [{Origin: 'USA'}, {Origin: 'Japan'}],
       select: {
-        type: 'multi',
+        type: 'point',
         fields: ['Origin']
       },
       bind: 'legend'
@@ -103,15 +103,15 @@ describe('Interactive Legends', () => {
   model.parseLegends();
 
   it('identifies transform invocation', () => {
-    expect(legends.has(selCmpts['one'])).toBeTruthy();
-    expect(legends.has(selCmpts['two'])).toBeTruthy();
+    expect(legends.defined(selCmpts['one'])).toBeTruthy();
+    expect(legends.defined(selCmpts['two'])).toBeTruthy();
 
-    expect(legends.has(selCmpts['four'])).toBeTruthy();
+    expect(legends.defined(selCmpts['four'])).toBeTruthy();
 
-    expect(legends.has(selCmpts['seven'])).toBeTruthy();
-    expect(legends.has(selCmpts['eight'])).toBeTruthy();
-    expect(legends.has(selCmpts['nine'])).toBeFalsy();
-    expect(legends.has(selCmpts['ten'])).toBeTruthy();
+    expect(legends.defined(selCmpts['seven'])).toBeTruthy();
+    expect(legends.defined(selCmpts['eight'])).toBeTruthy();
+    expect(legends.defined(selCmpts['nine'])).toBeFalsy();
+    expect(legends.defined(selCmpts['ten'])).toBeTruthy();
   });
 
   it('adds legend binding top-level signal', () => {

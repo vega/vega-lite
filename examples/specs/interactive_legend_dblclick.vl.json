@@ -5,7 +5,7 @@
   "mark": "area",
   "params": [{
     "name": "industry",
-    "select": {"type": "multi", "fields": ["series"]},
+    "select": {"type": "point", "fields": ["series"]},
     "bind": {"legend": "dblclick"}
   }],
   "encoding": {

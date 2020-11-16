@@ -8,18 +8,20 @@ import {SelectionInitInterval} from '../../selection';
 import {keys} from '../../util';
 import {UnitModel} from '../unit';
 import {assembleInit} from './assemble';
-import {SelectionProjection, TUPLE_FIELDS} from './transforms/project';
-import scales from './transforms/scales';
+import {SelectionProjection, TUPLE_FIELDS} from './project';
+import scales from './scales';
 
 export const BRUSH = '_brush';
 export const SCALE_TRIGGER = '_scale_trigger';
 
 const interval: SelectionCompiler<'interval'> = {
-  signals: (model, selCmpt) => {
+  defined: selCmpt => selCmpt.type === 'interval',
+
+  signals: (model, selCmpt, signals) => {
     const name = selCmpt.name;
     const fieldsSg = name + TUPLE_FIELDS;
-    const hasScales = scales.has(selCmpt);
-    const signals: NewSignal[] = [];
+    const hasScales = scales.defined(selCmpt);
+    const init = selCmpt.init ? selCmpt.init[0] : null;
     const dataSignals: string[] = [];
     const scaleTriggers: {
       scaleName: string;
@@ -44,8 +46,8 @@ const interval: SelectionCompiler<'interval'> = {
         return;
       }
 
-      const init = selCmpt.init ? selCmpt.init[i] : null;
-      const cs = channelSignals(model, selCmpt, proj, init);
+      const val = init ? init[i] : null;
+      const cs = channelSignals(model, selCmpt, proj, val);
       const dname = proj.signals.data;
       const vname = proj.signals.visual;
       const scaleName = stringValue(model.scaleName(channel));
@@ -82,7 +84,6 @@ const interval: SelectionCompiler<'interval'> = {
     // Only add an interval to the store if it has valid data extents. Data extents
     // are set to null if pixel extents are equal to account for intervals over
     // ordinal/nominal domains which, when inverted, will still produce a valid datum.
-    const init = selCmpt.init;
     const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
     return signals.concat({
       name: name + TUPLE,
@@ -96,11 +97,6 @@ const interval: SelectionCompiler<'interval'> = {
     });
   },
 
-  modifyExpr: (model, selCmpt) => {
-    const tpl = selCmpt.name + TUPLE;
-    return tpl + ', ' + (selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`);
-  },
-
   marks: (model, selCmpt, marks) => {
     const name = selCmpt.name;
     const {x, y} = selCmpt.project.hasChannel;
@@ -109,7 +105,7 @@ const interval: SelectionCompiler<'interval'> = {
     const store = `data(${stringValue(selCmpt.name + STORE)})`;
 
     // Do not add a brush if we're binding to scales.
-    if (scales.has(selCmpt)) {
+    if (scales.defined(selCmpt)) {
       return marks;
     }
 
@@ -196,7 +192,7 @@ function channelSignals(
   const channel = proj.channel;
   const vname = proj.signals.visual;
   const dname = proj.signals.data;
-  const hasScales = scales.has(selCmpt);
+  const hasScales = scales.defined(selCmpt);
   const scaleName = stringValue(model.scaleName(channel));
   const scale = model.getScaleComponent(channel as ScaleChannel);
   const scaleType = scale ? scale.get('type') : undefined;

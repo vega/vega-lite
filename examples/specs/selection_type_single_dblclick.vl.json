@@ -3,7 +3,7 @@
   "data": {"url": "data/cars.json"},
   "params": [{
     "name": "pts",
-    "select": {"type": "single", "on": "dblclick"}
+    "select": {"type": "point", "on": "dblclick"}
   }],
   "mark": "rect",
   "encoding": {

@@ -10,7 +10,7 @@
     "layer": [{
       "params": [{
         "name": "brush",
-        "select": {"type": "multi", "encodings": ["x"]}
+        "select": {"type": "point", "encodings": ["x"]}
       }],
       "mark": "bar",
       "encoding": {

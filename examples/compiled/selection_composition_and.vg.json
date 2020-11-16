@@ -76,16 +76,16 @@
         },
         {"events": {"signal": "alex_scale_trigger"}, "update": "[0, 0]"},
         {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
+        },
+        {
           "events": {"signal": "alex_translate_delta"},
           "update": "clampRange(panLinear(alex_translate_anchor.extent_x, alex_translate_delta.x / span(alex_translate_anchor.extent_x)), 0, width)"
         },
         {
           "events": {"signal": "alex_zoom_delta"},
           "update": "clampRange(zoomLinear(alex_x, alex_zoom_anchor.x, alex_zoom_delta), 0, width)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },
@@ -133,16 +133,16 @@
         },
         {"events": {"signal": "alex_scale_trigger"}, "update": "[0, 0]"},
         {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
+        },
+        {
           "events": {"signal": "alex_translate_delta"},
           "update": "clampRange(panLinear(alex_translate_anchor.extent_y, alex_translate_delta.y / span(alex_translate_anchor.extent_y)), 0, height)"
         },
         {
           "events": {"signal": "alex_zoom_delta"},
           "update": "clampRange(zoomLinear(alex_y, alex_zoom_anchor.y, alex_zoom_delta), 0, height)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },
@@ -299,16 +299,16 @@
         },
         {"events": {"signal": "morgan_scale_trigger"}, "update": "[0, 0]"},
         {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
+        },
+        {
           "events": {"signal": "morgan_translate_delta"},
           "update": "clampRange(panLinear(morgan_translate_anchor.extent_x, morgan_translate_delta.x / span(morgan_translate_anchor.extent_x)), 0, width)"
         },
         {
           "events": {"signal": "morgan_zoom_delta"},
           "update": "clampRange(zoomLinear(morgan_x, morgan_zoom_anchor.x, morgan_zoom_delta), 0, width)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },
@@ -356,16 +356,16 @@
         },
         {"events": {"signal": "morgan_scale_trigger"}, "update": "[0, 0]"},
         {
+          "events": [{"source": "scope", "type": "dblclick"}],
+          "update": "[0, 0]"
+        },
+        {
           "events": {"signal": "morgan_translate_delta"},
           "update": "clampRange(panLinear(morgan_translate_anchor.extent_y, morgan_translate_delta.y / span(morgan_translate_anchor.extent_y)), 0, height)"
         },
         {
           "events": {"signal": "morgan_zoom_delta"},
           "update": "clampRange(zoomLinear(morgan_y, morgan_zoom_anchor.y, morgan_zoom_delta), 0, height)"
-        },
-        {
-          "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "[0, 0]"
         }
       ]
     },

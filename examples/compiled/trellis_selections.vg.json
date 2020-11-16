@@ -58,7 +58,10 @@
     {"name": "grid", "update": "{\"X\": grid_X, \"Y\": grid_Y}"},
     {"name": "grid_X"},
     {"name": "grid_Y"},
-    {"name": "xenc", "update": "vlSelectionResolve(\"xenc_store\", \"union\")"}
+    {
+      "name": "xenc",
+      "update": "vlSelectionResolve(\"xenc_store\", \"union\", true)"
+    }
   ],
   "layout": {
     "padding": 20,
@@ -190,16 +193,16 @@
               "update": "[scale(\"x\", brush_X[0]), scale(\"x\", brush_X[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, child_width)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, child_width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -322,16 +325,16 @@
           "name": "grid_X",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / child_width)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -340,16 +343,16 @@
           "name": "grid_Y",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / child_height)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"y\"), grid_zoom_anchor.y, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -443,11 +446,27 @@
         },
         {"name": "xenc_tuple_fields", "value": [{"type": "E", "field": "X"}]},
         {
+          "name": "xenc_toggle",
+          "value": false,
+          "on": [
+            {
+              "events": [
+                {
+                  "source": "scope",
+                  "type": "mouseover",
+                  "markname": "child_voronoi"
+                }
+              ],
+              "update": "event.shiftKey"
+            }
+          ]
+        },
+        {
           "name": "xenc_modify",
           "on": [
             {
               "events": {"signal": "xenc_tuple"},
-              "update": "modify(\"xenc_store\", xenc_tuple, true)"
+              "update": "modify(\"xenc_store\", xenc_toggle ? null : xenc_tuple, xenc_toggle ? null : true, xenc_toggle ? xenc_tuple : null)"
             }
           ]
         }

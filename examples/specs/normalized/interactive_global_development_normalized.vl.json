@@ -77,8 +77,8 @@
           "params": [
             {
               "name": "year",
-              "value": {"year": 1955},
-              "select": {"type": "single", "fields": ["year"]},
+              "value": [{"year": 1955}],
+              "select": {"type": "point", "fields": ["year"]},
               "bind": {
                 "name": "Year",
                 "input": "range",
@@ -90,7 +90,7 @@
             {
               "name": "hovered",
               "select": {
-                "type": "single",
+                "type": "point",
                 "fields": ["country"],
                 "on": "mouseover",
                 "empty": "none"
@@ -99,7 +99,7 @@
             {
               "name": "clicked",
               "select": {
-                "type": "multi",
+                "type": "point",
                 "fields": ["country"],
                 "empty": "none"
               }

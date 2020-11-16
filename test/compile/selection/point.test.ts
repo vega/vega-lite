@@ -4,7 +4,7 @@ import {
   assembleUnitSelectionSignals,
   assembleTopLevelSignals
 } from '../../../src/compile/selection/assemble';
-import multi from '../../../src/compile/selection/multi';
+import point from '../../../src/compile/selection/point';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {parseUnitModelWithScale} from '../../util';
 
@@ -21,17 +21,17 @@ describe('Multi Selection', () => {
   const selCmpts = (model.component.selection = parseUnitSelection(model, [
     {
       name: 'one',
-      select: {type: 'multi', clear: false}
+      select: {type: 'point', toggle: false, clear: false}
     },
     {
       name: 'two',
       select: {
-        type: 'multi',
+        type: 'point',
         encodings: ['y', 'color'],
         nearest: true,
         clear: false,
         on: 'mouseover',
-        toggle: 'event.ctrlKey',
+        toggle: false,
         resolve: 'intersect'
       }
     },
@@ -39,7 +39,7 @@ describe('Multi Selection', () => {
       name: 'thr-ee',
       value: [{Horsepower: 50}],
       select: {
-        type: 'multi',
+        type: 'point',
         fields: ['Horsepower'],
         clear: false
       }
@@ -48,7 +48,7 @@ describe('Multi Selection', () => {
       name: 'four',
       value: [{Horsepower: 50, color: 'Japan'}],
       select: {
-        type: 'multi',
+        type: 'point',
         encodings: ['x', 'color'],
         clear: false
       }
@@ -66,7 +66,7 @@ describe('Multi Selection', () => {
         }
       ],
       select: {
-        type: 'multi',
+        type: 'point',
         fields: ['Year', 'Origin'],
         clear: false
       }
@@ -74,7 +74,7 @@ describe('Multi Selection', () => {
     {
       name: 'six',
       select: {
-        type: 'multi',
+        type: 'point',
         fields: ['nested.a', 'nested.b'],
         clear: false
       }
@@ -82,7 +82,7 @@ describe('Multi Selection', () => {
   ]));
 
   it('builds tuple signals', () => {
-    const oneSg = multi.signals(model, selCmpts['one']);
+    const oneSg = point.signals(model, selCmpts['one'], []);
     expect(oneSg).toEqual([
       {
         name: 'one_tuple',
@@ -97,7 +97,7 @@ describe('Multi Selection', () => {
       }
     ]);
 
-    const twoSg = multi.signals(model, selCmpts['two']);
+    const twoSg = point.signals(model, selCmpts['two'], []);
     expect(twoSg).toEqual([
       {
         name: 'two_tuple',
@@ -112,7 +112,7 @@ describe('Multi Selection', () => {
       }
     ]);
 
-    const threeSg = multi.signals(model, selCmpts['thr_ee']);
+    const threeSg = point.signals(model, selCmpts['thr_ee'], []);
     expect(threeSg).toEqual([
       {
         name: 'thr_ee_tuple',
@@ -127,7 +127,7 @@ describe('Multi Selection', () => {
       }
     ]);
 
-    const fourSg = multi.signals(model, selCmpts['four']);
+    const fourSg = point.signals(model, selCmpts['four'], []);
     expect(fourSg).toEqual([
       {
         name: 'four_tuple',
@@ -142,7 +142,7 @@ describe('Multi Selection', () => {
       }
     ]);
 
-    const fiveSg = multi.signals(model, selCmpts['five']);
+    const fiveSg = point.signals(model, selCmpts['five'], []);
     expect(fiveSg).toEqual([
       {
         name: 'five_tuple',
@@ -157,7 +157,7 @@ describe('Multi Selection', () => {
       }
     ]);
 
-    const sixSg = multi.signals(model, selCmpts['six']);
+    const sixSg = point.signals(model, selCmpts['six'], []);
     expect(sixSg).toEqual([
       {
         name: 'six_tuple',
@@ -174,6 +174,32 @@ describe('Multi Selection', () => {
 
     const signals = assembleUnitSelectionSignals(model, []);
     expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg, ...fiveSg, ...sixSg]));
+  });
+
+  it('builds modify signals', () => {
+    const signals = assembleUnitSelectionSignals(model, []);
+    expect(signals).toEqual(
+      expect.arrayContaining([
+        {
+          name: 'one_modify',
+          on: [
+            {
+              events: {signal: 'one_tuple'},
+              update: `modify("one_store", one_tuple, true)`
+            }
+          ]
+        },
+        {
+          name: 'two_modify',
+          on: [
+            {
+              events: {signal: 'two_tuple'},
+              update: `modify("two_store", two_tuple, {unit: ""})`
+            }
+          ]
+        }
+      ])
+    );
   });
 
   it('builds top-level signals', () => {

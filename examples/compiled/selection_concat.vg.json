@@ -98,16 +98,16 @@
               "update": "[scale(\"concat_0_x\", brush_Miles_per_Gallon[0]), scale(\"concat_0_x\", brush_Miles_per_Gallon[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -157,16 +157,16 @@
               "update": "[scale(\"concat_0_y\", brush_Horsepower[0]), scale(\"concat_0_y\", brush_Horsepower[1])]"
             },
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, childHeight)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_y, brush_zoom_anchor.y, brush_zoom_delta), 0, childHeight)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -463,16 +463,16 @@
           "name": "grid_Displacement",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / width)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"concat_1_x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"
@@ -481,16 +481,16 @@
           "name": "grid_Acceleration",
           "on": [
             {
+              "events": [{"source": "scope", "type": "dblclick"}],
+              "update": "null"
+            },
+            {
               "events": {"signal": "grid_translate_delta"},
               "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / childHeight)"
             },
             {
               "events": {"signal": "grid_zoom_delta"},
               "update": "zoomLinear(domain(\"concat_1_y\"), grid_zoom_anchor.y, grid_zoom_delta)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "null"
             }
           ],
           "push": "outer"

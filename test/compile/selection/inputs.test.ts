@@ -1,7 +1,7 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import inputs from '../../../src/compile/selection/transforms/inputs';
+import inputs from '../../../src/compile/selection/inputs';
 import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
 
@@ -19,13 +19,13 @@ describe('Inputs Selection Transform', () => {
   const selCmpts = parseUnitSelection(model, [
     {
       name: 'one',
-      select: 'single',
+      select: 'point',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     {
       name: 'two',
       select: {
-        type: 'single',
+        type: 'point',
         fields: ['Cylinders', 'Horsepower']
       },
       bind: {input: 'range', min: 0, max: 10, step: 1}
@@ -33,7 +33,7 @@ describe('Inputs Selection Transform', () => {
     {
       name: 'three',
       select: {
-        type: 'single',
+        type: 'point',
         fields: ['Cylinders', 'Origin'],
         nearest: true
       },
@@ -44,7 +44,7 @@ describe('Inputs Selection Transform', () => {
     },
     {
       name: 'four',
-      select: 'single',
+      select: 'point',
       bind: null
     },
     {
@@ -54,23 +54,25 @@ describe('Inputs Selection Transform', () => {
     },
     {
       name: 'seven',
-      value: {
-        Year: {year: 1970, month: 3, date: 9}
-      },
-      select: {type: 'single', fields: ['Year']},
+      value: [
+        {
+          Year: {year: 1970, month: 3, date: 9}
+        }
+      ],
+      select: {type: 'point', fields: ['Year']},
       bind: {
         Year: {input: 'range', min: 1970, max: 1980, step: 1}
       }
     },
     {
       name: 'eight',
-      select: {type: 'single', on: 'dblclick'},
+      select: {type: 'point', on: 'dblclick'},
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     {
       name: 'nine',
       select: {
-        type: 'single',
+        type: 'point',
         on: 'click',
         clear: 'dblclick'
       },
@@ -78,13 +80,13 @@ describe('Inputs Selection Transform', () => {
     },
     {
       name: 'ten',
-      select: {type: 'single', fields: ['nested.a']},
+      select: {type: 'point', fields: ['nested.a']},
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     {
       name: 'eleven',
       select: {
-        type: 'single',
+        type: 'point',
         fields: ['nested.a'],
         on: 'click'
       },
@@ -92,12 +94,12 @@ describe('Inputs Selection Transform', () => {
     },
     {
       name: 'space separated',
-      select: 'single',
+      select: 'point',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
     {
       name: 'dash-separated',
-      select: 'single',
+      select: 'point',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     }
   ]);
@@ -118,30 +120,30 @@ describe('Inputs Selection Transform', () => {
       const invalidBindLegendSelCmpts = parseUnitSelection(model1, [
         {
           name: 'twelve',
-          select: 'single',
+          select: 'point',
           bind: 'legend'
         }
       ]);
 
-      expect(inputs.has(invalidBindLegendSelCmpts['twelve'])).toBeFalsy();
+      expect(inputs.defined(invalidBindLegendSelCmpts['twelve'])).toBeFalsy();
       expect(localLogger.warns[0]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
     })
   );
 
   it('identifies transform invocation', () => {
-    expect(inputs.has(selCmpts['one'])).toBeTruthy();
-    expect(inputs.has(selCmpts['two'])).toBeTruthy();
-    expect(inputs.has(selCmpts['three'])).toBeTruthy();
-    expect(inputs.has(selCmpts['four'])).toBeFalsy();
-    expect(inputs.has(selCmpts['six'])).toBeFalsy();
-    expect(inputs.has(selCmpts['seven'])).toBeTruthy();
-    expect(inputs.has(selCmpts['eight'])).toBeTruthy();
-    expect(inputs.has(selCmpts['nine'])).toBeTruthy();
-    expect(inputs.has(selCmpts['ten'])).toBeTruthy();
-    expect(inputs.has(selCmpts['eleven'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['one'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['two'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['three'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['four'])).toBeFalsy();
+    expect(inputs.defined(selCmpts['six'])).toBeFalsy();
+    expect(inputs.defined(selCmpts['seven'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['eight'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['nine'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['ten'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['eleven'])).toBeTruthy();
 
-    expect(inputs.has(selCmpts['space_separated'])).toBeTruthy();
-    expect(inputs.has(selCmpts['dash_separated'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['space_separated'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['dash_separated'])).toBeTruthy();
   });
 
   it('adds widget binding for default projection', () => {

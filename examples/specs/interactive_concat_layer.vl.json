@@ -53,7 +53,7 @@
       "mark": "bar",
       "params": [{
         "name": "pts",
-        "select": {"type": "single", "encodings": ["x"]}
+        "select": {"type": "point", "encodings": ["x"]}
       }],
       "encoding": {
         "x": {"field": "Major Genre", "axis": {"labelAngle": -40}},

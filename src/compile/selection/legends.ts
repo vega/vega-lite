@@ -1,19 +1,19 @@
 import {isObject, MergedStream, Stream} from 'vega';
 import {selector as parseSelector} from 'vega-event-selector';
 import {array, isString} from 'vega-util';
-import {forEachSelection, SelectionComponent, TUPLE} from '..';
-import {NonPositionScaleChannel} from '../../../channel';
-import * as log from '../../../log';
-import {isLegendBinding, isLegendStreamBinding, SELECTION_ID} from '../../../selection';
-import {duplicate, varName} from '../../../util';
-import {LegendComponent} from '../../legend/component';
-import {UnitModel} from '../../unit';
+import {disableDirectManipulation, TUPLE} from '.';
+import {NonPositionScaleChannel} from '../../channel';
+import * as log from '../../log';
+import {isLegendBinding, isLegendStreamBinding, SELECTION_ID} from '../../selection';
+import {duplicate, vals, varName} from '../../util';
+import {LegendComponent} from '../legend/component';
+import {UnitModel} from '../unit';
 import {TUPLE_FIELDS} from './project';
 import {TOGGLE} from './toggle';
-import {TransformCompiler} from './transforms';
+import {SelectionCompiler} from '.';
 
-const legendBindings: TransformCompiler = {
-  has: (selCmpt: SelectionComponent<'single' | 'multi'>) => {
+const legendBindings: SelectionCompiler<'point'> = {
+  defined: selCmpt => {
     const spec = selCmpt.resolve === 'global' && selCmpt.bind && isLegendBinding(selCmpt.bind);
     const projLen = selCmpt.project.items.length === 1 && selCmpt.project.items[0].field !== SELECTION_ID;
     if (spec && !projLen) {
@@ -24,10 +24,7 @@ const legendBindings: TransformCompiler = {
   },
 
   parse: (model, selCmpt, selDef) => {
-    // Binding a selection to a legend disables default direct manipulation interaction.
-    // A user can choose to re-enable it by explicitly specifying triggering input events.
-    if (isString(selDef.select) || !selDef.select.on) delete selCmpt.events;
-    if (isString(selDef.select) || !selDef.select.clear) delete selCmpt.clear;
+    disableDirectManipulation(selCmpt, selDef);
 
     if (isObject(selDef.select) && (selDef.select.on || selDef.select.clear)) {
       const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
@@ -44,7 +41,7 @@ const legendBindings: TransformCompiler = {
     selCmpt.bind = {legend: {merge: stream}};
   },
 
-  topLevelSignals: (model, selCmpt: SelectionComponent<'single' | 'multi'>, signals) => {
+  topLevelSignals: (model, selCmpt, signals) => {
     const selName = selCmpt.name;
     const stream = isLegendStreamBinding(selCmpt.bind) && (selCmpt.bind.legend as MergedStream);
     const markName = (name: string) => (s: Stream) => {
@@ -119,13 +116,13 @@ export function parseInteractiveLegend(
   legendCmpt: LegendComponent
 ) {
   const field = model.fieldDef(channel)?.field;
-  forEachSelection(model, selCmpt => {
+  for (const selCmpt of vals(model.component.selection ?? {})) {
     const proj = selCmpt.project.hasField[field] ?? selCmpt.project.hasChannel[channel];
-    if (proj && legendBindings.has(selCmpt)) {
+    if (proj && legendBindings.defined(selCmpt)) {
       const legendSelections = legendCmpt.get('selections') ?? [];
       legendSelections.push(selCmpt.name);
       legendCmpt.set('selections', legendSelections, false);
       proj.hasLegend = true;
     }
-  });
+  }
 }

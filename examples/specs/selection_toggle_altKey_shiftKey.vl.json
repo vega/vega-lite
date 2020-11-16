@@ -4,7 +4,7 @@
   "params": [{
     "name": "paintbrush",
     "select": {
-      "type": "multi",
+      "type": "point",
       "toggle": "event.altKey && event.shiftKey"
     }
   }],

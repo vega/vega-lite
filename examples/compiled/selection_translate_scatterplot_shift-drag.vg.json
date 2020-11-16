@@ -31,6 +31,7 @@
     {
       "name": "grid_Horsepower",
       "on": [
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"},
         {
           "events": {"signal": "grid_translate_delta"},
           "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / width)"
@@ -38,13 +39,13 @@
         {
           "events": {"signal": "grid_zoom_delta"},
           "update": "zoomLinear(domain(\"x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {
       "name": "grid_Miles_per_Gallon",
       "on": [
+        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"},
         {
           "events": {"signal": "grid_translate_delta"},
           "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / height)"
@@ -52,8 +53,7 @@
         {
           "events": {"signal": "grid_zoom_delta"},
           "update": "zoomLinear(domain(\"y\"), grid_zoom_anchor.y, grid_zoom_delta)"
-        },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        }
       ]
     },
     {

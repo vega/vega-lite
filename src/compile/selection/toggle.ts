@@ -1,19 +1,21 @@
-import {TUPLE, unitName} from '..';
-import {TransformCompiler} from './transforms';
+import {TUPLE, unitName} from '.';
+import {SelectionCompiler} from '.';
 
 export const TOGGLE = '_toggle';
 
-const toggle: TransformCompiler = {
-  has: selCmpt => {
-    return selCmpt.type === 'multi' && !!selCmpt.toggle;
+const toggle: SelectionCompiler<'point'> = {
+  defined: selCmpt => {
+    return selCmpt.type === 'point' && !!selCmpt.toggle;
   },
 
   signals: (model, selCmpt, signals) => {
-    return signals.concat({
-      name: selCmpt.name + TOGGLE,
-      value: false,
-      on: [{events: selCmpt.events, update: selCmpt.toggle}]
-    });
+    return selCmpt.events
+      ? signals.concat({
+          name: selCmpt.name + TOGGLE,
+          value: false,
+          on: [{events: selCmpt.events, update: selCmpt.toggle}]
+        })
+      : signals;
   },
 
   modifyExpr: (model, selCmpt) => {

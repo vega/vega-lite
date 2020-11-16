@@ -73,7 +73,7 @@
     },
     {
       "name": "CylYr",
-      "update": "vlSelectionResolve(\"CylYr_store\", \"union\")"
+      "update": "vlSelectionResolve(\"CylYr_store\", \"union\", true)"
     },
     {
       "name": "CylYr_tuple",
@@ -91,7 +91,7 @@
       "on": [
         {
           "events": {"signal": "CylYr_tuple"},
-          "update": "modify(\"CylYr_store\", CylYr_tuple, true)"
+          "update": "modify(\"CylYr_store\", CylYr_toggle ? null : CylYr_tuple, CylYr_toggle ? null : true, CylYr_toggle ? CylYr_tuple : null)"
         }
       ]
     }
