@@ -11,7 +11,7 @@
     {
       "layer": [
         {
-          "selection": [
+          "params": [
             {"name": "brush", "select": {"type": "multi", "encodings": ["x"]}}
           ],
           "mark": "bar",
@@ -35,7 +35,7 @@
     {
       "layer": [
         {
-          "selection": [
+          "params": [
             {"name": "brush", "select": {"type": "multi", "encodings": ["x"]}}
           ],
           "mark": "bar",
@@ -59,7 +59,7 @@
     {
       "layer": [
         {
-          "selection": [
+          "params": [
             {"name": "brush", "select": {"type": "multi", "encodings": ["x"]}}
           ],
           "mark": "bar",

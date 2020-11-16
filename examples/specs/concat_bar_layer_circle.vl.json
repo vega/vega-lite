@@ -46,7 +46,7 @@
       "width": 330,
       "height": 120,
       "mark": "bar",
-      "selection": [{
+      "params": [{
         "name": "pts",
         "select": {"type": "single", "encodings": ["x"]}
       }],

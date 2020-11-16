@@ -5,7 +5,7 @@
   "columns": 3,
   "concat": [
     {
-      "selection": [
+      "params": [
         {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
@@ -24,7 +24,7 @@
       "name": "child__row_Horsepowercolumn_Miles_per_Gallon"
     },
     {
-      "selection": [
+      "params": [
         {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
@@ -43,7 +43,7 @@
       "name": "child__row_Horsepowercolumn_Acceleration"
     },
     {
-      "selection": [
+      "params": [
         {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
@@ -62,7 +62,7 @@
       "name": "child__row_Horsepowercolumn_Horsepower"
     },
     {
-      "selection": [
+      "params": [
         {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
@@ -81,7 +81,7 @@
       "name": "child__row_Accelerationcolumn_Miles_per_Gallon"
     },
     {
-      "selection": [
+      "params": [
         {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
@@ -100,7 +100,7 @@
       "name": "child__row_Accelerationcolumn_Acceleration"
     },
     {
-      "selection": [
+      "params": [
         {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
@@ -119,7 +119,7 @@
       "name": "child__row_Accelerationcolumn_Horsepower"
     },
     {
-      "selection": [
+      "params": [
         {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
@@ -138,7 +138,7 @@
       "name": "child__row_Miles_per_Galloncolumn_Miles_per_Gallon"
     },
     {
-      "selection": [
+      "params": [
         {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",
@@ -157,7 +157,7 @@
       "name": "child__row_Miles_per_Galloncolumn_Acceleration"
     },
     {
-      "selection": [
+      "params": [
         {"name": "brush", "select": {"type": "interval", "resolve": "union"}}
       ],
       "mark": "point",

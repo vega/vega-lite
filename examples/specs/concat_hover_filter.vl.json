@@ -9,7 +9,7 @@
     },
     "layer": [
       {
-        "selection": [{
+        "params": [{
           "name": "hover",
           "select": {
             "type": "single",
@@ -32,7 +32,7 @@
     "layer": [
       {
 
-        "selection": [{
+        "params": [{
           "name": "hover",
           "select": {
             "type": "single",

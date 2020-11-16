@@ -17,7 +17,7 @@
       "type": "quantitative"
     }
   },
-  "selection": [{
+  "params": [{
     "name": "brush",
     "select": {
       "type": "interval",

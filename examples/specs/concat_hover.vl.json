@@ -3,7 +3,7 @@
   "description": "Drag out a rectangular brush to highlight points.",
   "data": {"url": "data/cars.json"},
   "hconcat": [{
-    "selection": [{
+    "params": [{
       "name": "hover",
       "select": {
         "type": "single",
@@ -21,7 +21,7 @@
       }
     }
   },{
-    "selection": [{
+    "params": [{
       "name": "hover",
       "select": {
         "type": "single",

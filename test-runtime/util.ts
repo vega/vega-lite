@@ -114,13 +114,13 @@ function base(iter: number, selDef: any, opts: any = {}): NormalizedUnitSpec | N
   const color = {field: 'c', type: 'nominal', ...opts.color};
   const size = {value: 100, ...opts.size};
   const {bind, ...select} = selDef;
-  const selection = [{name: 'sel', select, bind}];
+  const params = [{name: 'sel', select, bind}];
   const mark = 'circle';
 
   if (iter % 2 === 0) {
     return {
       data,
-      selection,
+      params,
       mark,
       encoding: {
         x,
@@ -137,7 +137,7 @@ function base(iter: number, selDef: any, opts: any = {}): NormalizedUnitSpec | N
       data,
       layer: [
         {
-          selection,
+          params,
           mark,
           encoding: {
             x,

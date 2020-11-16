@@ -6,11 +6,11 @@ import {Mark} from '../../../src/mark';
 import {SELECTION_ID} from '../../../src/selection';
 import {parseConcatModel, parseUnitModelWithScaleAndSelection} from '../../util';
 
-function getVgData(selection: any, x?: any, y?: any, mark?: Mark, enc?: any, transform?: any) {
+function getVgData(params: any, x?: any, y?: any, mark?: Mark, enc?: any, transform?: any) {
   const model = parseUnitModelWithScaleAndSelection({
     data: {url: 'data/cars.json'},
     transform,
-    selection,
+    params,
     mark: mark || 'circle',
     encoding: {
       x: {field: 'Horsepower', type: 'quantitative', ...x},
@@ -82,7 +82,7 @@ describe('compile/data/identifier', () => {
           data: {url: 'data/cars.json'},
           hconcat: [
             {
-              selection: [
+              params: [
                 {
                   name: 'pt',
                   select: 'single'

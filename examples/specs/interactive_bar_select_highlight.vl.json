@@ -8,7 +8,7 @@
       {"a": "G", "b": 19}, {"a": "H", "b": 87}, {"a": "I", "b": 52}
     ]
   },
-  "selection": [
+  "params": [
     {
       "name": "highlight",
       "select": {

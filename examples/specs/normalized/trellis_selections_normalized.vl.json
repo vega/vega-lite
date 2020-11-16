@@ -15,7 +15,7 @@
       },
       "opacity": {"value": 1}
     },
-    "selection": [
+    "params": [
       {
         "name": "brush",
         "select": {

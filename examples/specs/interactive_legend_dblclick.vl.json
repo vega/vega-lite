@@ -3,7 +3,7 @@
   "width": 300, "height": 200,
   "data": {"url": "data/unemployment-across-industries.json"},
   "mark": "area",
-  "selection": [{
+  "params": [{
     "name": "industry",
     "select": {"type": "multi", "fields": ["series"]},
     "bind": {"legend": "dblclick"}
