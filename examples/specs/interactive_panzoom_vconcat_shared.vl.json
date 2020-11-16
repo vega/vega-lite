@@ -3,7 +3,7 @@
   "data": {"url": "data/cars.json"},
   "vconcat": [
     {
-      "selection": [{
+      "params": [{
         "name": "region",
         "select": "interval",
         "bind": "scales"

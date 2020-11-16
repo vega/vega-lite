@@ -22,7 +22,7 @@
   }, {
     "height": 200,
     "width": 50,
-    "selection": [{
+    "params": [{
       "name": "brush",
       "select": {
         "type": "interval",

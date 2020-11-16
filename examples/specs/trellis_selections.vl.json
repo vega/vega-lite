@@ -3,7 +3,7 @@
   "description": "Anscombe's Quartet",
   "data": {"url": "data/anscombe.json"},
   "mark": "circle",
-  "selection": [
+  "params": [
     {
       "name": "brush",
       "select": {

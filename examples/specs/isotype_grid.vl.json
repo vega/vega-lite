@@ -124,5 +124,5 @@
     },
     "size": {"value": 90}
   },
-  "selection": [{"name": "highlight", "select": "interval"}]
+  "params": [{"name": "highlight", "select": "interval"}]
 }

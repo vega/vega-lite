@@ -42,7 +42,7 @@
           {"field": "MSFT", "type": "quantitative"}
         ]
       },
-      "selection": [
+      "params": [
         {
           "name": "hover",
           "select": {

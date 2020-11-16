@@ -8,7 +8,7 @@
   "height": 300,
   "layer": [
     {
-      "selection": [{
+      "params": [{
         "name": "index",
         "value": {"x": {"year": 2005, "month": 1, "date": 1}},
         "select": {

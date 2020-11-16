@@ -17,7 +17,7 @@
     "width": 480,
     "height": 60,
     "mark": "area",
-    "selection": [{
+    "params": [{
       "name": "brush",
       "select": {"type": "interval", "encodings": ["x"]}
     }],

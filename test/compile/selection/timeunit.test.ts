@@ -27,7 +27,7 @@ function getConcatModel(unit2: NormalizedUnitSpec, config?: Config) {
     hconcat: [
       {
         mark: 'point',
-        selection: [
+        params: [
           {
             name: 'two',
             select: {type: 'single', encodings: ['x', 'y']}

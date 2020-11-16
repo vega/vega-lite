@@ -87,11 +87,11 @@ export function normalizeBoxPlot(
     ...spec,
     encoding: normalizeEncoding(spec.encoding, config)
   };
-  const {mark, encoding: _encoding, selection, projection: _p, ...outerSpec} = spec;
+  const {mark, encoding: _encoding, params, projection: _p, ...outerSpec} = spec;
   const markDef: BoxPlotDef = isMarkDef(mark) ? mark : {type: mark};
 
   // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
-  if (selection) {
+  if (params) {
     log.warn(log.message.selectionNotSupported('boxplot'));
   }
 

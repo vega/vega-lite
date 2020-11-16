@@ -15,7 +15,7 @@ describe('Selection + Scales', () => {
         vconcat: [
           {
             mark: 'area',
-            selection: [
+            params: [
               {name: 'brush', select: {type: 'interval', encodings: ['x']}},
               {name: 'brush2', select: {type: 'multi', fields: ['price'], resolve: 'intersect'}}
             ],
@@ -25,7 +25,7 @@ describe('Selection + Scales', () => {
             }
           },
           {
-            selection: [{name: 'brush3', select: {type: 'interval', fields: ['symbol']}}],
+            params: [{name: 'brush3', select: {type: 'interval', fields: ['symbol']}}],
             mark: 'area',
             encoding: {
               x: {
@@ -106,7 +106,7 @@ describe('Selection + Scales', () => {
           },
           {
             mark: 'area',
-            selection: [
+            params: [
               {
                 name: 'brush',
                 select: {type: 'interval', encodings: ['x']}
@@ -129,7 +129,7 @@ describe('Selection + Scales', () => {
 
     it('should handle nested field references', () => {
       let model: Model = parseUnitModelWithScale({
-        selection: [
+        params: [
           {
             name: 'grid',
             select: 'interval',
@@ -163,7 +163,7 @@ describe('Selection + Scales', () => {
         vconcat: [
           {
             mark: 'area',
-            selection: [
+            params: [
               {
                 name: 'brush',
                 select: {type: 'interval', encodings: ['x']}
@@ -233,7 +233,7 @@ describe('Selection + Scales', () => {
       spec: {
         data: {url: 'data/cars.json'},
         mark: 'point',
-        selection: [
+        params: [
           {
             name: 'grid',
             select: {
@@ -260,7 +260,7 @@ describe('Selection + Scales', () => {
             x: {type: 'quantitative', field: 'Miles_per_Gallon'},
             y: {type: 'quantitative', field: 'Weight_in_lbs'}
           },
-          selection: [{name: 'selector001', select: 'interval', bind: 'scales'}]
+          params: [{name: 'selector001', select: 'interval', bind: 'scales'}]
         },
         {
           mark: 'point',
@@ -268,7 +268,7 @@ describe('Selection + Scales', () => {
             x: {type: 'quantitative', field: 'Acceleration'},
             y: {type: 'quantitative', field: 'Horsepower'}
           },
-          selection: [{name: 'selector001', select: {type: 'interval'}, bind: 'scales'}]
+          params: [{name: 'selector001', select: {type: 'interval'}, bind: 'scales'}]
         }
       ]
     });
@@ -332,7 +332,7 @@ describe('Selection + Scales', () => {
     log.wrap(localLogger => {
       let model = parseUnitModelWithScale({
         data: {url: 'data/cars.json'},
-        selection: [
+        params: [
           {
             name: 'grid',
             select: 'interval',
@@ -349,7 +349,7 @@ describe('Selection + Scales', () => {
 
       model = parseUnitModelWithScale({
         data: {url: 'data/cars.json'},
-        selection: [
+        params: [
           {
             name: 'grid',
             select: {type: 'interval'},

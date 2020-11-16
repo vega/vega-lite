@@ -17,6 +17,7 @@ import {AutoSizeParams, AutosizeType, TopLevel} from '../spec/toplevel';
 import {deepEqual} from '../util';
 import {NormalizerParams} from './base';
 import {CoreNormalizer} from './core';
+import {TopLevelSelectionsNormalizer} from './toplevelselection';
 
 export function normalize(
   spec: TopLevelSpec & LayoutSizeMixins,
@@ -38,15 +39,18 @@ export function normalize(
 }
 
 const normalizer = new CoreNormalizer();
+const selectionNormalizer = new TopLevelSelectionsNormalizer();
 
 /**
  * Decompose extended unit specs into composition of pure unit specs.
+ * And push top-level selection definitions down to unit specs.
  */
 function normalizeGenericSpec(
   spec: NonNormalizedSpec | FacetedUnitSpec<Field> | RepeatSpec,
   config: Config<SignalRef> = {}
 ) {
-  return normalizer.map(spec, {config});
+  const normParams = {config};
+  return selectionNormalizer.map(normalizer.map(spec, normParams), normParams);
 }
 
 function _normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {

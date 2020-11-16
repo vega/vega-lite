@@ -30,7 +30,7 @@
       "title": "Sky position",
       "transform": [{"aggregate": [], "groupby": ["ra", "dec", "id"]}],
       "mark": "circle",
-      "selection": [{
+      "params": [{
         "name": "pts",
         "select": {"type": "multi", "fields": ["id"], "empty": "all"}
       }],

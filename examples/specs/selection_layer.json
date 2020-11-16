@@ -4,7 +4,7 @@
   "data": {"url": "data/cars.json"},
   "layer": [
     {
-      "selection": [
+      "params": [
         {
           "name": "grid",
           "select": {
@@ -33,7 +33,7 @@
     },
     {
       "mark": "square",
-      "selection": [
+      "params": [
         {
           "name": "brush",
           "select": {

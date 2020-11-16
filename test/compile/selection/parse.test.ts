@@ -334,7 +334,7 @@ describe('Selection', () => {
       data: {url: 'data/stocks.csv'},
       layer: [
         {
-          selection: [
+          params: [
             {
               name: 'index',
               value: {x: {year: 2005, month: 1, date: 1}},
