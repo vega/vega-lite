@@ -18,7 +18,7 @@ export function printDebugDataflow(node: DataFlowNode) {
 }
 
 /**
- * Show the dataflow graph as an image (rendered by https://kroki.io/) on the command line.
+ * Show the dataflow graph as an image (rendered by https://kroki.io/) on the console.
  */
 export function drawDataflow(roots: readonly DataFlowNode[], size = 500) {
   const dot = dotString(roots);
