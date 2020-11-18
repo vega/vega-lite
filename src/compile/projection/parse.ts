@@ -21,7 +21,7 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
     const size = fit ? [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')] : undefined;
     const data = fit ? gatherFitData(model) : undefined;
 
-    return new ProjectionComponent(
+    const projComp = new ProjectionComponent(
       model.projectionName(true),
       {
         ...(model.config.projection ?? {}),
@@ -30,6 +30,12 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
       size,
       data
     );
+
+    if (!projComp.get('type')) {
+      projComp.set('type', 'equalEarth', false);
+    }
+
+    return projComp;
   }
 
   return undefined;
