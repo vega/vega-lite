@@ -194,16 +194,8 @@ export const VEGALITE_TIMEFORMAT: TimeFormatConfig = {
   'year-month-date': '%b %d, %Y '
 };
 
-export function getTimeUnitParts(timeUnit: TimeUnit) {
-  const parts: LocalSingleTimeUnit[] = [];
-
-  for (const part of TIMEUNIT_PARTS) {
-    if (containsTimeUnit(timeUnit, part)) {
-      parts.push(part);
-    }
-  }
-
-  return parts;
+export function getTimeUnitParts(timeUnit: TimeUnit): LocalSingleTimeUnit[] {
+  return TIMEUNIT_PARTS.filter(part => containsTimeUnit(timeUnit, part));
 }
 
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
