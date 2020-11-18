@@ -1,7 +1,6 @@
-import {SignalRef} from 'vega';
 import {signalRefOrValue} from './compile/common';
-import {keys} from './util';
-import {isSignalRef} from './vega.schema';
+import {Dict, keys} from './util';
+import {MappedExclude} from './vega.schema';
 
 export interface ExprRef {
   /**
@@ -14,17 +13,11 @@ export function isExprRef(o: any): o is ExprRef {
   return o && !!o['expr'];
 }
 
-export function isExprOrSignalRef(o: any): o is ExprRef | SignalRef {
-  return isExprRef(o) || isSignalRef(o);
-}
-
-export type ExprOrSignalRef = ExprRef | SignalRef;
-
-export function replaceExprRefInIndex(index: {[key: string]: any | ExprOrSignalRef}) {
+export function replaceExprRefInIndex<T extends Dict<any>>(index: T) {
   const props = keys(index || {});
-  const newIndex: {[key: string]: any | SignalRef} = {};
+  const newIndex: Dict<any> = {};
   for (const prop of props) {
-    newIndex[prop as any] = signalRefOrValue(index[prop]);
+    newIndex[prop] = signalRefOrValue(index[prop]);
   }
-  return newIndex;
+  return newIndex as MappedExclude<T, ExprRef>;
 }

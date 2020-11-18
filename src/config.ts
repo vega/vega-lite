@@ -3,7 +3,7 @@ import {isObject, mergeConfig} from 'vega-util';
 import {Axis, AxisConfig, AxisConfigMixins, AXIS_CONFIGS, isConditionalAxisValue} from './axis';
 import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
-import {ExprOrSignalRef, ExprRef, replaceExprRefInIndex} from './expr';
+import {ExprRef, replaceExprRefInIndex} from './expr';
 import {VL_ONLY_LEGEND_CONFIG} from './guide';
 import {HeaderConfigMixins, HEADER_CONFIGS} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
@@ -471,19 +471,19 @@ export function fontConfig(font: string): Config {
   };
 }
 
-function getAxisConfigInternal(axisConfig: AxisConfig<ExprOrSignalRef>) {
+function getAxisConfigInternal(axisConfig: AxisConfig<ExprRef | SignalRef>) {
   const props = keys(axisConfig || {});
   const axisConfigInternal: AxisConfig<SignalRef> = {};
   for (const prop of props) {
     const val = axisConfig[prop];
-    axisConfigInternal[prop as any] = isConditionalAxisValue<any, ExprOrSignalRef>(val)
+    axisConfigInternal[prop as any] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
       ? signalOrValueRefWithCondition<any>(val)
       : signalRefOrValue(val);
   }
   return axisConfigInternal;
 }
 
-function getStyleConfigInternal(styleConfig: StyleConfigIndex<ExprOrSignalRef>) {
+function getStyleConfigInternal(styleConfig: StyleConfigIndex<ExprRef | SignalRef>) {
   const props = keys(styleConfig);
 
   const styleConfigInternal: StyleConfigIndex<SignalRef> = {};
@@ -532,7 +532,8 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
 
   for (const markConfigType of mark.MARK_CONFIGS) {
     if (mergedConfig[markConfigType]) {
-      outputConfig[markConfigType] = replaceExprRefInIndex(mergedConfig[markConfigType]);
+      // FIXME: outputConfig[markConfigType] expects that types are replaced recursively but replaceExprRefInIndex only replaces one level deep
+      outputConfig[markConfigType] = replaceExprRefInIndex(mergedConfig[markConfigType]) as any;
     }
   }
 
