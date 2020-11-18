@@ -4,7 +4,7 @@ import {identity, isArray, stringValue} from 'vega-util';
 import {forEachSelection, MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE} from '.';
 import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime';
 import {SelectionInit, SelectionInitInterval, SelectionExtent} from '../../selection';
-import {keys, varName} from '../../util';
+import {keys, stringify, varName} from '../../util';
 import {VgData} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
@@ -28,7 +28,7 @@ export function assembleInit(
       return wrap(dateTimeToTimestamp(init));
     }
   }
-  return isExpr ? wrap(JSON.stringify(init)) : init;
+  return isExpr ? wrap(stringify(init)) : init;
 }
 
 export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]) {

@@ -5,7 +5,7 @@ import {getFieldOrDatumDef} from '../../channeldef';
 import {DataSourceType} from '../../data';
 import {PROJECTION_PROPERTIES} from '../../projection';
 import {GEOJSON} from '../../type';
-import {duplicate, every, stringify} from '../../util';
+import {deepEqual, duplicate, every} from '../../util';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {ProjectionComponent} from './component';
@@ -76,20 +76,20 @@ function mergeIfNoConflict(first: ProjectionComponent, second: ProjectionCompone
       hasOwnProperty(first.explicit, prop) &&
       hasOwnProperty(second.explicit, prop) &&
       // some properties might be signals or objects and require hashing for comparison
-      stringify(first.get(prop)) === stringify(second.get(prop))
+      deepEqual(first.get(prop), second.get(prop))
     ) {
       return true;
     }
     return false;
   });
 
-  const size = stringify(first.size) === stringify(second.size);
+  const size = deepEqual(first.size, second.size);
   if (size) {
     if (allPropertiesShared) {
       return first;
-    } else if (stringify(first.explicit) === stringify({})) {
+    } else if (deepEqual(first.explicit, {})) {
       return second;
-    } else if (stringify(second.explicit) === stringify({})) {
+    } else if (deepEqual(second.explicit, {})) {
       return first;
     }
   }
