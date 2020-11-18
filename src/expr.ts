@@ -13,7 +13,7 @@ export function isExprRef(o: any): o is ExprRef {
   return o && !!o['expr'];
 }
 
-export function replaceExprRefInIndex<T extends Dict<any>>(index: T) {
+export function replaceExprRef<T extends Dict<any>>(index: T) {
   const props = keys(index || {});
   const newIndex: Dict<any> = {};
   for (const prop of props) {

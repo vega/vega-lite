@@ -27,7 +27,7 @@ import {Config} from '../config';
 import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
 import {Encoding, initEncoding} from '../encoding';
-import {ExprRef, replaceExprRefInIndex} from '../expr';
+import {ExprRef, replaceExprRef} from '../expr';
 import {LegendInternal} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
@@ -163,7 +163,7 @@ export class UnitModel extends ModelWithField {
   private initScale(scale: Scale<ExprRef | SignalRef>): Scale<SignalRef> {
     const {domain, range} = scale;
     // TODO: we could simplify this function if we had a recursive replace function
-    const scaleInternal = replaceExprRefInIndex(scale);
+    const scaleInternal = replaceExprRef(scale);
     if (isArray(domain)) {
       scaleInternal.domain = domain.map(signalRefOrValue);
     }
@@ -213,7 +213,7 @@ export class UnitModel extends ModelWithField {
       if (fieldOrDatumDef && supportLegend(channel)) {
         const legend = fieldOrDatumDef.legend;
         _legend[channel] = legend
-          ? replaceExprRefInIndex(legend) // convert truthy value to object
+          ? replaceExprRef(legend) // convert truthy value to object
           : legend;
       }
 

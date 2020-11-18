@@ -22,7 +22,7 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../cha
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ExprRef, replaceExprRefInIndex} from '../expr';
+import {ExprRef, replaceExprRef} from '../expr';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
@@ -197,11 +197,11 @@ export abstract class Model {
   ) {
     this.parent = parent;
     this.config = config;
-    this.view = replaceExprRefInIndex(view);
+    this.view = replaceExprRef(view);
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this.name = spec.name ?? parentGivenName;
-    this.title = isText(spec.title) ? {text: spec.title} : spec.title ? replaceExprRefInIndex(spec.title) : undefined;
+    this.title = isText(spec.title) ? {text: spec.title} : spec.title ? replaceExprRef(spec.title) : undefined;
 
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
