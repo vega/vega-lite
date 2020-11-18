@@ -16,11 +16,9 @@ export class Split<T extends object> {
   }
 
   public combine(): Partial<T> {
-    // FIXME remove "as any".
-    // Add "as any" to avoid an error "Spread types may only be created from object types".
     return {
-      ...(this.explicit as any), // Explicit properties comes first
-      ...(this.implicit as any)
+      ...this.explicit, // Explicit properties comes first
+      ...this.implicit
     };
   }
 
@@ -39,9 +37,9 @@ export class Split<T extends object> {
     return {explicit: false, value: undefined};
   }
 
-  public setWithExplicit<K extends keyof T>(key: K, value: Explicit<T[K]>) {
-    if (value.value !== undefined) {
-      this.set(key, value.value, value.explicit);
+  public setWithExplicit<K extends keyof T>(key: K, {value, explicit}: Explicit<T[K]>) {
+    if (value !== undefined) {
+      this.set(key, value, explicit);
     }
   }
 
@@ -51,12 +49,12 @@ export class Split<T extends object> {
     return this;
   }
 
-  public copyKeyFromSplit<S extends T>(key: keyof T, s: Split<S>) {
+  public copyKeyFromSplit<S extends T>(key: keyof T, {explicit, implicit}: Split<S>) {
     // Explicit has higher precedence
-    if (s.explicit[key] !== undefined) {
-      this.set(key, s.explicit[key], true);
-    } else if (s.implicit[key] !== undefined) {
-      this.set(key, s.implicit[key], false);
+    if (explicit[key] !== undefined) {
+      this.set(key, explicit[key], true);
+    } else if (implicit[key] !== undefined) {
+      this.set(key, implicit[key], false);
     }
   }
   public copyKeyFromObject<S extends T>(key: keyof T, s: Partial<S>) {
