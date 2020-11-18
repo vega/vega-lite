@@ -29,5 +29,6 @@
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

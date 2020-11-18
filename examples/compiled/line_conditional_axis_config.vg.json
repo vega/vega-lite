@@ -141,6 +141,7 @@
     }
   ],
   "config": {
+    "projection": {"type": "equalEarth"},
     "axis": {"domainColor": "#ddd", "tickColor": "#ddd"},
     "axisX": {
       "labelAlign": "left",

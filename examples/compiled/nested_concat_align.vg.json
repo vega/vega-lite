@@ -622,5 +622,9 @@
       "zero": true
     }
   ],
-  "config": {"axisX": {"titleLimit": 150}, "axisY": {"minExtent": 40}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "axisX": {"titleLimit": 150},
+    "axisY": {"minExtent": 40}
+  }
 }

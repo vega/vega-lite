@@ -151,5 +151,6 @@
       "title": "Title",
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

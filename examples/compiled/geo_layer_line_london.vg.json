@@ -5,6 +5,7 @@
   "width": 700,
   "height": 500,
   "style": "cell",
+  "encode": {"update": {"stroke": {"value": "transparent"}}},
   "data": [
     {
       "name": "source_0",
@@ -46,7 +47,8 @@
       "size": {"signal": "[width, height]"},
       "fit": {
         "signal": "[data('source_0'), layer_1_geojson_0, data('source_2')]"
-      }
+      },
+      "type": "equalEarth"
     }
   ],
   "marks": [
@@ -150,5 +152,5 @@
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
   ],
-  "config": {"style": {"cell": {"stroke": "transparent"}}}
+  "config": {"projection": {"type": "equalEarth"}}
 }

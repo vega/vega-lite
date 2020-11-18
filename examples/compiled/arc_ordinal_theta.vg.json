@@ -77,5 +77,6 @@
       "range": "category"
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "circle", "title": "dir"}]
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "dir"}],
+  "config": {"projection": {"type": "equalEarth"}}
 }

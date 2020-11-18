@@ -392,5 +392,6 @@
       "nice": true,
       "zero": true
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

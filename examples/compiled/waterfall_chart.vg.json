@@ -322,5 +322,8 @@
       "zindex": 0
     }
   ],
-  "config": {"style": {"text": {"fontWeight": "bold"}}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "style": {"text": {"fontWeight": "bold"}}
+  }
 }

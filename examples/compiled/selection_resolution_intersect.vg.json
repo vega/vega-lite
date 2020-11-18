@@ -3346,5 +3346,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

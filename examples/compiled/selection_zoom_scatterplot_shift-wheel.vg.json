@@ -272,5 +272,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

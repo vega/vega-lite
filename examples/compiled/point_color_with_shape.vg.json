@@ -147,5 +147,6 @@
       },
       "shape": "shape"
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

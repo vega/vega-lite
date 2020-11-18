@@ -72,5 +72,6 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "title": "rate"
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

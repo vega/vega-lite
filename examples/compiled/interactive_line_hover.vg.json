@@ -336,5 +336,8 @@
       "zindex": 0
     }
   ],
-  "config": {"style": {"cell": {"stroke": null}}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "style": {"cell": {"stroke": null}}
+  }
 }

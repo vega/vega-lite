@@ -111,5 +111,6 @@
       "title": "Major Genre",
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

@@ -141,5 +141,6 @@
       "title": "student",
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

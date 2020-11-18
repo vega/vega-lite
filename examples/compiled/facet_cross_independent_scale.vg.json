@@ -214,5 +214,6 @@
         }
       ]
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

@@ -73,5 +73,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

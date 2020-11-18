@@ -1992,5 +1992,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

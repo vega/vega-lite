@@ -55,5 +55,8 @@
       }
     }
   ],
-  "config": {"style": {"cell": {"stroke": "transparent"}}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "style": {"cell": {"stroke": "transparent"}}
+  }
 }

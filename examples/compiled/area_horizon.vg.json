@@ -167,5 +167,8 @@
       "zindex": 0
     }
   ],
-  "config": {"style": {"area": {"interpolate": "monotone"}}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "style": {"area": {"interpolate": "monotone"}}
+  }
 }

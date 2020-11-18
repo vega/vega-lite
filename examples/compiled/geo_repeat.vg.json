@@ -256,5 +256,6 @@
       "interpolate": "hcl",
       "zero": false
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

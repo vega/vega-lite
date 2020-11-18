@@ -150,5 +150,8 @@
       "padding": 0.5
     }
   ],
-  "config": {"style": {"cell": {"stroke": ""}}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "style": {"cell": {"stroke": ""}}
+  }
 }

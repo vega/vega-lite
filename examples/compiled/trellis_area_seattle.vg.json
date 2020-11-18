@@ -180,5 +180,8 @@
       "nice": true
     }
   ],
-  "config": {"axis": {"grid": false, "domain": false}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "axis": {"grid": false, "domain": false}
+  }
 }

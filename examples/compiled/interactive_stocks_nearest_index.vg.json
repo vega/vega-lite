@@ -284,5 +284,8 @@
     }
   ],
   "legends": [{"stroke": "color", "symbolType": "stroke", "title": "symbol"}],
-  "config": {"style": {"text": {"align": "right", "dx": -5, "dy": 5}}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "style": {"text": {"align": "right", "dx": -5, "dy": 5}}
+  }
 }

@@ -208,5 +208,6 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

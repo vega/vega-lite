@@ -240,5 +240,6 @@
       "direction": "horizontal",
       "symbolType": "square"
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

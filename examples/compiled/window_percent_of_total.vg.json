@@ -116,5 +116,6 @@
       "title": "Activity",
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

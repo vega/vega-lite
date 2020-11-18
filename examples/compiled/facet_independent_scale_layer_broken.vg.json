@@ -298,5 +298,8 @@
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
   ],
-  "config": {"style": {"cell": {"fill": "yellow"}}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "style": {"cell": {"fill": "yellow"}}
+  }
 }

@@ -174,5 +174,6 @@
       "title": "variety",
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

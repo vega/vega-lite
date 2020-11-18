@@ -211,5 +211,8 @@
     }
   ],
   "legends": [{"fill": "color", "symbolType": "square", "title": "gender"}],
-  "config": {"style": {"cell": {"fill": "yellow"}}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "style": {"cell": {"fill": "yellow"}}
+  }
 }

@@ -188,5 +188,6 @@
       "zero": false,
       "nice": true
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

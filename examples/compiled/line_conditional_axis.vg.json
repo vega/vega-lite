@@ -144,5 +144,8 @@
       "zindex": 0
     }
   ],
-  "config": {"axis": {"domainColor": "#ddd", "tickColor": "#ddd"}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "axis": {"domainColor": "#ddd", "tickColor": "#ddd"}
+  }
 }

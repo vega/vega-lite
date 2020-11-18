@@ -79,5 +79,8 @@
       "zindex": 0
     }
   ],
-  "config": {"axis": {"domain": false, "grid": false}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "axis": {"domain": false, "grid": false}
+  }
 }

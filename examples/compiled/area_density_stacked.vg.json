@@ -157,5 +157,6 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "circle", "title": "Species"}]
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "Species"}],
+  "config": {"projection": {"type": "equalEarth"}}
 }

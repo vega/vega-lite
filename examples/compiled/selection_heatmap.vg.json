@@ -172,6 +172,7 @@
     }
   ],
   "config": {
+    "projection": {"type": "equalEarth"},
     "range": {"ramp": {"scheme": "yellowgreenblue"}},
     "axis": {"domain": false}
   }

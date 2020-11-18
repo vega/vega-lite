@@ -263,5 +263,8 @@
       "zindex": 0
     }
   ],
-  "config": {"style": {"text": {"align": "left", "dx": 3, "dy": 1}}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "style": {"text": {"align": "left", "dx": 3, "dy": 1}}
+  }
 }

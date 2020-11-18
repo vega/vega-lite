@@ -182,5 +182,8 @@
       "fill": "layer_0_color"
     }
   ],
-  "config": {"axis": {"grid": true, "tickBand": "extent"}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "axis": {"grid": true, "tickBand": "extent"}
+  }
 }

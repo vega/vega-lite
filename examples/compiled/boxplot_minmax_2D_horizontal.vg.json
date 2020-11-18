@@ -176,5 +176,6 @@
       "title": "Species",
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

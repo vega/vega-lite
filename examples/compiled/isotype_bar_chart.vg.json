@@ -150,5 +150,8 @@
       ]
     }
   ],
-  "config": {"style": {"cell": {"stroke": ""}}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "style": {"cell": {"stroke": ""}}
+  }
 }

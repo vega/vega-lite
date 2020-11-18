@@ -163,5 +163,6 @@
       "symbolType": "stroke",
       "title": "Acceleration (binned)"
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

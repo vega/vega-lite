@@ -133,5 +133,6 @@
       },
       "range": "category"
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

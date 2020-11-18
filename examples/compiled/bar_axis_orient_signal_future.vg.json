@@ -122,6 +122,7 @@
     }
   ],
   "config": {
+    "projection": {"type": "equalEarth"},
     "signals": [
       {
         "name": "xAxisOrient",

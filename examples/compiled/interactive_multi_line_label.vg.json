@@ -350,5 +350,6 @@
       "encode": {"symbols": {"update": {"opacity": {"value": 1}}}},
       "fill": "color"
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

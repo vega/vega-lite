@@ -125,5 +125,6 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "square", "title": "gender"}]
+  "legends": [{"fill": "color", "symbolType": "square", "title": "gender"}],
+  "config": {"projection": {"type": "equalEarth"}}
 }

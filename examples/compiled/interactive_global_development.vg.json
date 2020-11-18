@@ -481,5 +481,6 @@
       "symbolType": "circle",
       "encode": {"symbols": {"update": {"opacity": {"value": 0.9}}}}
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

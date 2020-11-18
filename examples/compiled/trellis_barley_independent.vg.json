@@ -187,5 +187,6 @@
       "title": "year",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

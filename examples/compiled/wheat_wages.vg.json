@@ -362,6 +362,7 @@
     }
   ],
   "config": {
+    "projection": {"type": "equalEarth"},
     "axis": {
       "title": null,
       "gridColor": "white",

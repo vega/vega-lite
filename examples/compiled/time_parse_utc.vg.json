@@ -75,5 +75,6 @@
       "labelOverlap": true,
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"projection": {"type": "equalEarth"}}
 }

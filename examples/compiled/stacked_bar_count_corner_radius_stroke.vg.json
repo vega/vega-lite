@@ -188,5 +188,8 @@
       }
     }
   ],
-  "config": {"style": {"bar": {"strokeWidth": 2}}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "style": {"bar": {"strokeWidth": 2}}
+  }
 }

@@ -124,5 +124,9 @@
       "symbolType": "square"
     }
   ],
-  "config": {"axis": {"grid": false}, "style": {"cell": {"stroke": null}}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "axis": {"grid": false},
+    "style": {"cell": {"stroke": null}}
+  }
 }

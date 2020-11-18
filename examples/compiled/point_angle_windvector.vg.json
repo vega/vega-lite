@@ -37,8 +37,7 @@
     {
       "name": "projection",
       "size": {"signal": "[width, height]"},
-      "fit": {"signal": "geojson_0"},
-      "type": "equalEarth"
+      "fit": {"signal": "geojson_0"}
     }
   ],
   "marks": [
@@ -102,5 +101,9 @@
       "aria": false
     }
   ],
-  "config": {"aria": false, "style": {"cell": {"fill": "black"}}}
+  "config": {
+    "projection": {"type": "equalEarth"},
+    "aria": false,
+    "style": {"cell": {"fill": "black"}}
+  }
 }
