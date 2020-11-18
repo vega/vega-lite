@@ -4415,7 +4415,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -4437,7 +4437,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -4447,7 +4447,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -4457,7 +4457,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -4471,7 +4471,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         }
@@ -4487,7 +4487,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -4527,7 +4527,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -4545,7 +4545,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -4555,7 +4555,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -4569,7 +4569,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -8190,7 +8190,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -8200,7 +8200,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -8230,7 +8230,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -8240,7 +8240,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -8311,7 +8311,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -8329,7 +8329,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         }
@@ -8375,7 +8375,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -8393,7 +8393,7 @@
               "type": "boolean"
             },
             {
-              "$ref": "#/definitions/MarkConfig<ExprOrSignalRef>"
+              "$ref": "#/definitions/MarkConfig"
             }
           ]
         },
@@ -8550,9 +8550,6 @@
     },
     "Expr": {
       "type": "string"
-    },
-    "ExprOrSignalRef": {
-      "$ref": "#/definitions/ExprRef"
     },
     "ExprRef": {
       "additionalProperties": false,
@@ -15666,805 +15663,6 @@
             {
               "const": "height",
               "type": "string"
-            }
-          ],
-          "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
-        }
-      },
-      "type": "object"
-    },
-    "MarkConfig<ExprOrSignalRef>": {
-      "additionalProperties": false,
-      "properties": {
-        "align": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Align"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "The horizontal alignment of the text or ranged marks (area, bar, image, rect, rule). One of `\"left\"`, `\"right\"`, `\"center\"`.\n\n__Note:__ Expression reference is *not* supported for range marks."
-        },
-        "angle": {
-          "anyOf": [
-            {
-              "description": "The rotation angle of the text, in degrees.",
-              "maximum": 360,
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "aria": {
-          "anyOf": [
-            {
-              "description": "A boolean flag indicating if [ARIA attributes](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) should be included (SVG output only). If `false`, the \"aria-hidden\" attribute will be set on the output SVG element, removing the mark item from the ARIA accessibility tree.",
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "ariaRole": {
-          "anyOf": [
-            {
-              "description": "Sets the type of user interface element of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only). If specified, this property determines the \"role\" attribute. Warning: this property is experimental and may be changed in the future.",
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "ariaRoleDescription": {
-          "anyOf": [
-            {
-              "description": "A human-readable, author-localized description for the role of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only). If specified, this property determines the \"aria-roledescription\" attribute. Warning: this property is experimental and may be changed in the future.",
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "aspect": {
-          "anyOf": [
-            {
-              "description": "Whether to keep aspect ratio of image marks.",
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "baseline": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextBaseline"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "For text marks, the vertical text baseline. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, `\"line-bottom\"`, or an expression reference that provides one of the valid values. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the `lineHeight` rather than `fontSize` alone.\n\nFor range marks, the vertical alignment of the marks. One of `\"top\"`, `\"middle\"`, `\"bottom\"`.\n\n__Note:__ Expression reference is *not* supported for range marks."
-        },
-        "blend": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Blend",
-              "description": "The color blend mode for drawing an item on its current background. Any valid [CSS mix-blend-mode](https://developer.mozilla.org/en-US/docs/Web/CSS/mix-blend-mode) value can be used.\n\n__Default value: `\"source-over\"`"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "color": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Color"
-            },
-            {
-              "$ref": "#/definitions/Gradient"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "Default color.\n\n__Default value:__ <span style=\"color: #4682b4;\">&#9632;</span> `\"#4682b4\"`\n\n__Note:__ - This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config). - The `fill` and `stroke` properties have higher precedence than `color` and will override `color`."
-        },
-        "cornerRadius": {
-          "anyOf": [
-            {
-              "description": "The radius in pixels of rounded rectangles or arcs' corners.\n\n__Default value:__ `0`",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "cornerRadiusBottomLeft": {
-          "anyOf": [
-            {
-              "description": "The radius in pixels of rounded rectangles' bottom left corner.\n\n__Default value:__ `0`",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "cornerRadiusBottomRight": {
-          "anyOf": [
-            {
-              "description": "The radius in pixels of rounded rectangles' bottom right corner.\n\n__Default value:__ `0`",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "cornerRadiusTopLeft": {
-          "anyOf": [
-            {
-              "description": "The radius in pixels of rounded rectangles' top right corner.\n\n__Default value:__ `0`",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "cornerRadiusTopRight": {
-          "anyOf": [
-            {
-              "description": "The radius in pixels of rounded rectangles' top left corner.\n\n__Default value:__ `0`",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "cursor": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Cursor",
-              "description": "The mouse cursor used over the mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used."
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "description": {
-          "anyOf": [
-            {
-              "description": "A text description of the mark item for [ARIA accessibility](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA) (SVG output only). If specified, this property determines the [\"aria-label\" attribute](https://developer.mozilla.org/en-US/docs/Web/Accessibility/ARIA/ARIA_Techniques/Using_the_aria-label_attribute).",
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "dir": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TextDirection",
-              "description": "The direction of the text. One of `\"ltr\"` (left-to-right) or `\"rtl\"` (right-to-left). This property determines on which side is truncated in response to the limit parameter.\n\n__Default value:__ `\"ltr\"`"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "dx": {
-          "anyOf": [
-            {
-              "description": "The horizontal offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "dy": {
-          "anyOf": [
-            {
-              "description": "The vertical offset, in pixels, between the text label and its anchor point. The offset is applied after rotation by the _angle_ property.",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "ellipsis": {
-          "anyOf": [
-            {
-              "description": "The ellipsis string for text truncated in response to the limit parameter.\n\n__Default value:__ `\"…\"`",
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "endAngle": {
-          "anyOf": [
-            {
-              "description": "The end angle in radians for arc marks. A value of `0` indicates up (north), increasing values proceed clockwise.",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "fill": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Color"
-            },
-            {
-              "$ref": "#/definitions/Gradient"
-            },
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "Default fill color. This property has higher precedence than `config.color`. Set to `null` to remove fill.\n\n__Default value:__ (None)"
-        },
-        "fillOpacity": {
-          "anyOf": [
-            {
-              "description": "The fill opacity (value between [0,1]).\n\n__Default value:__ `1`",
-              "maximum": 1,
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "filled": {
-          "description": "Whether the mark's color should be used as fill color instead of stroke color.\n\n__Default value:__ `false` for all `point`, `line`, and `rule` marks as well as `geoshape` marks for [`graticule`](https://vega.github.io/vega-lite/docs/data.html#graticule) data sources; otherwise, `true`.\n\n__Note:__ This property cannot be used in a [style config](https://vega.github.io/vega-lite/docs/mark.html#style-config).",
-          "type": "boolean"
-        },
-        "font": {
-          "anyOf": [
-            {
-              "description": "The typeface to set the text in (e.g., `\"Helvetica Neue\"`).",
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "fontSize": {
-          "anyOf": [
-            {
-              "description": "The font size, in pixels.\n\n__Default value:__ `11`",
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "fontStyle": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontStyle",
-              "description": "The font style (e.g., `\"italic\"`)."
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "fontWeight": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/FontWeight",
-              "description": "The font weight. This can be either a string (e.g `\"bold\"`, `\"normal\"`) or a number (`100`, `200`, `300`, ..., `900` where `\"normal\"` = `400` and `\"bold\"` = `700`)."
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "height": {
-          "anyOf": [
-            {
-              "description": "Height of the marks.",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "href": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/URI",
-              "description": "A URL to load upon mouse click. If defined, the mark acts as a hyperlink."
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "innerRadius": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`."
-        },
-        "interpolate": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Interpolate",
-              "description": "The line interpolation method to use for line and area marks. One of the following: - `\"linear\"`: piecewise linear segments, as in a polyline. - `\"linear-closed\"`: close the linear segments to form a polygon. - `\"step\"`: alternate between horizontal and vertical segments, as in a step function. - `\"step-before\"`: alternate between vertical and horizontal segments, as in a step function. - `\"step-after\"`: alternate between horizontal and vertical segments, as in a step function. - `\"basis\"`: a B-spline, with control point duplication on the ends. - `\"basis-open\"`: an open B-spline; may not intersect the start or end. - `\"basis-closed\"`: a closed B-spline, as in a loop. - `\"cardinal\"`: a Cardinal spline, with control point duplication on the ends. - `\"cardinal-open\"`: an open Cardinal spline; may not intersect the start or end, but will intersect other control points. - `\"cardinal-closed\"`: a closed Cardinal spline, as in a loop. - `\"bundle\"`: equivalent to basis, except the tension parameter is used to straighten the spline. - `\"monotone\"`: cubic interpolation that preserves monotonicity in y."
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "invalid": {
-          "description": "Defines how Vega-Lite should handle marks for invalid values (`null` and `NaN`). - If set to `\"filter\"` (default), all data items with null values will be skipped (for line, trail, and area marks) or filtered (for other marks). - If `null`, all data items are included. In this case, invalid values will be interpreted as zeroes.",
-          "enum": [
-            "filter",
-            null
-          ],
-          "type": [
-            "string",
-            "null"
-          ]
-        },
-        "limit": {
-          "anyOf": [
-            {
-              "description": "The maximum length of the text mark in pixels. The text value will be automatically truncated if the rendered size exceeds the limit.\n\n__Default value:__ `0` -- indicating no limit",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "lineBreak": {
-          "anyOf": [
-            {
-              "description": "A delimiter, such as a newline character, upon which to break text strings into multiple lines. This property is ignored if the text is array-valued.",
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "lineHeight": {
-          "anyOf": [
-            {
-              "description": "The line height in pixels (the spacing between subsequent lines of text) for multi-line text marks.",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "opacity": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "The overall opacity (value between [0,1]).\n\n__Default value:__ `0.7` for non-aggregate plots with `point`, `tick`, `circle`, or `square` marks or layered `bar` charts and `1` otherwise.",
-          "maximum": 1,
-          "minimum": 0
-        },
-        "order": {
-          "description": "For line and trail marks, this `order` property can be set to `null` or `false` to make the lines use the original order in the data sources.",
-          "type": [
-            "null",
-            "boolean"
-          ]
-        },
-        "orient": {
-          "$ref": "#/definitions/Orientation",
-          "description": "The orientation of a non-stacked bar, tick, area, and line charts. The value is either horizontal (default) or vertical. - For bar, rule and tick, this determines whether the size of the bar and tick should be applied to x or y dimension. - For area, this property determines the orient property of the Vega output. - For line and trail marks, this property determines the sort order of the points in the line if `config.sortLineBy` is not specified. For stacked charts, this is always determined by the orientation of the stack; therefore explicitly specified value will be ignored."
-        },
-        "outerRadius": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`."
-        },
-        "padAngle": {
-          "anyOf": [
-            {
-              "description": "The angular padding applied to sides of the arc, in radians.",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "radius": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "For arc mark, the primary (outer) radius in pixels.\n\nFor text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties."
-        },
-        "radius2": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "The secondary (inner) radius in pixels of arc marks."
-        },
-        "shape": {
-          "anyOf": [
-            {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/SymbolShape"
-                },
-                {
-                  "type": "string"
-                }
-              ],
-              "description": "Shape of the point marks. Supported values include: - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`. - the line symbol `\"stroke\"` - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"` - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n__Default value:__ `\"circle\"`"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "size": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "Default size for marks. - For `point`/`circle`/`square`, this represents the pixel area of the marks. Note that this value sets the area of the symbol; the side lengths will increase with the square root of this value. - For `bar`, this represents the band size of the bar, in pixels. - For `text`, this represents the font size, in pixels.\n\n__Default value:__ - `30` for point, circle, square marks; width/height's `step` - `2` for bar marks with discrete dimensions; - `5` for bar marks with continuous dimensions; - `11` for text marks.",
-          "minimum": 0
-        },
-        "smooth": {
-          "anyOf": [
-            {
-              "description": "A boolean flag (default true) indicating if the image should be smoothed when resized. If false, individual pixels should be scaled directly rather than interpolated with smoothing. For SVG rendering, this option may not work in some browsers due to lack of standardization.",
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "startAngle": {
-          "anyOf": [
-            {
-              "description": "The start angle in radians for arc marks. A value of `0` indicates up (north), increasing values proceed clockwise.",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "stroke": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Color"
-            },
-            {
-              "$ref": "#/definitions/Gradient"
-            },
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "Default stroke color. This property has higher precedence than `config.color`. Set to `null` to remove stroke.\n\n__Default value:__ (None)"
-        },
-        "strokeCap": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/StrokeCap",
-              "description": "The stroke cap for line ending style. One of `\"butt\"`, `\"round\"`, or `\"square\"`.\n\n__Default value:__ `\"butt\"`"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "strokeDash": {
-          "anyOf": [
-            {
-              "description": "An array of alternating stroke, space lengths for creating dashed or dotted lines.",
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "strokeDashOffset": {
-          "anyOf": [
-            {
-              "description": "The offset (in pixels) into which to begin drawing with the stroke dash array.",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "strokeJoin": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/StrokeJoin",
-              "description": "The stroke line join method. One of `\"miter\"`, `\"round\"` or `\"bevel\"`.\n\n__Default value:__ `\"miter\"`"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "strokeMiterLimit": {
-          "anyOf": [
-            {
-              "description": "The miter limit at which to bevel a line join.",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "strokeOffset": {
-          "anyOf": [
-            {
-              "description": "The offset in pixels at which to draw the group stroke and fill. If unspecified, the default behavior is to dynamically offset stroked groups such that 1 pixel stroke widths align with the pixel grid.",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "strokeOpacity": {
-          "anyOf": [
-            {
-              "description": "The stroke opacity (value between [0,1]).\n\n__Default value:__ `1`",
-              "maximum": 1,
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "strokeWidth": {
-          "anyOf": [
-            {
-              "description": "The stroke width, in pixels.",
-              "minimum": 0,
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "tension": {
-          "anyOf": [
-            {
-              "description": "Depending on the interpolation type, sets the tension parameter (for line and area marks).",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "text": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text",
-              "description": "Placeholder text if the `text` channel is not specified"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "theta": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "- For arc marks, the arc length in radians if theta2 is not specified, otherwise the start arc angle. (A value of 0 indicates up or “north”, increasing values proceed clockwise.)\n\n- For text marks, polar coordinate angle in radians.",
-          "maximum": 360,
-          "minimum": 0
-        },
-        "theta2": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise."
-        },
-        "timeUnitBand": {
-          "description": "Default relative band size for a time unit. If set to `1`, the bandwidth of the marks will be equal to the time unit band step. If set to `0.5`, bandwidth of the marks will be half of the time unit band step.",
-          "type": "number"
-        },
-        "timeUnitBandPosition": {
-          "description": "Default relative band position for a time unit. If set to `0`, the marks will be positioned at the beginning of the time unit band step. If set to `0.5`, the marks will be positioned in the middle of the time unit band step.",
-          "type": "number"
-        },
-        "tooltip": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/TooltipContent"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "The tooltip text string to show upon mouse hover or an object defining which fields should the tooltip be derived from.\n\n- If `tooltip` is `true` or `{\"content\": \"encoding\"}`, then all fields from `encoding` will be used. - If `tooltip` is `{\"content\": \"data\"}`, then all fields that appear in the highlighted data point will be used. - If set to `null` or `false`, then no tooltip will be used.\n\nSee the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip  in Vega-Lite.\n\n__Default value:__ `null`"
-        },
-        "url": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/URI",
-              "description": "The URL of the image file for image marks."
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "width": {
-          "anyOf": [
-            {
-              "description": "Width of the marks.",
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ]
-        },
-        "x": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "const": "width",
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "X coordinates of the marks, or width of horizontal `\"bar\"` and `\"area\"` without specified `x2` or `width`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
-        },
-        "x2": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "const": "width",
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "X2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"width\"` for the width of the plot."
-        },
-        "y": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "const": "height",
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
-            }
-          ],
-          "description": "Y coordinates of the marks, or height of vertical `\"bar\"` and `\"area\"` without specified `y2` or `height`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
-        },
-        "y2": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "const": "height",
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/ExprOrSignalRef"
             }
           ],
           "description": "Y2 coordinates for ranged `\"area\"`, `\"bar\"`, `\"rect\"`, and  `\"rule\"`.\n\nThe `value` of this channel can be a number or a string `\"height\"` for the height of the plot."
