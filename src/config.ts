@@ -3,7 +3,7 @@ import {isObject, mergeConfig} from 'vega-util';
 import {Axis, AxisConfig, AxisConfigMixins, AXIS_CONFIGS, isConditionalAxisValue} from './axis';
 import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
-import {ExprRef, replaceExprRefInIndex} from './expr';
+import {ExprRef, replaceExprRef} from './expr';
 import {VL_ONLY_LEGEND_CONFIG} from './guide';
 import {HeaderConfigMixins, HEADER_CONFIGS} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
@@ -519,7 +519,7 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
   for (const markConfigType of mark.MARK_CONFIGS) {
     if (mergedConfig[markConfigType]) {
       // FIXME: outputConfig[markConfigType] expects that types are replaced recursively but replaceExprRefInIndex only replaces one level deep
-      outputConfig[markConfigType] = replaceExprRefInIndex(mergedConfig[markConfigType]) as any;
+      outputConfig[markConfigType] = replaceExprRef(mergedConfig[markConfigType]) as any;
     }
   }
 
@@ -531,16 +531,16 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
 
   for (const headerConfigType of HEADER_CONFIGS) {
     if (mergedConfig[headerConfigType]) {
-      outputConfig[headerConfigType] = replaceExprRefInIndex(mergedConfig[headerConfigType]);
+      outputConfig[headerConfigType] = replaceExprRef(mergedConfig[headerConfigType]);
     }
   }
 
   if (mergedConfig.legend) {
-    outputConfig.legend = replaceExprRefInIndex(mergedConfig.legend);
+    outputConfig.legend = replaceExprRef(mergedConfig.legend);
   }
 
   if (mergedConfig.scale) {
-    outputConfig.scale = replaceExprRefInIndex(mergedConfig.scale);
+    outputConfig.scale = replaceExprRef(mergedConfig.scale);
   }
 
   if (mergedConfig.style) {
@@ -548,11 +548,11 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
   }
 
   if (mergedConfig.title) {
-    outputConfig.title = replaceExprRefInIndex(mergedConfig.title);
+    outputConfig.title = replaceExprRef(mergedConfig.title);
   }
 
   if (mergedConfig.view) {
-    outputConfig.view = replaceExprRefInIndex(mergedConfig.view);
+    outputConfig.view = replaceExprRef(mergedConfig.view);
   }
 
   return outputConfig;
