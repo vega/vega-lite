@@ -35,7 +35,7 @@ import {fieldValidPredicate} from '../../../predicate';
 import {hasDiscreteDomain, isContinuousToContinuous} from '../../../scale';
 import {StackProperties} from '../../../stack';
 import {TEMPORAL} from '../../../type';
-import {contains} from '../../../util';
+import {contains, stringify} from '../../../util';
 import {isSignalRef, VgValueRef} from '../../../vega.schema';
 import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {ScaleComponent} from '../../scale/component';
@@ -118,7 +118,7 @@ export function datumDefToExpr(datumDef: DatumDef<string>) {
   if (isDateTime(datum)) {
     return dateTimeToExpr(datum);
   }
-  return `${JSON.stringify(datum)}`;
+  return `${stringify(datum)}`;
 }
 
 export function valueRefForFieldOrDatumDef(

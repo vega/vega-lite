@@ -16,8 +16,6 @@ export function parseLayerLayoutSize(model: Model) {
   parseNonUnitLayoutSizeForChannel(model, 'height');
 }
 
-export const parseRepeatLayoutSize = parseConcatLayoutSize;
-
 export function parseConcatLayoutSize(model: ConcatModel) {
   parseChildrenLayoutSize(model);
 

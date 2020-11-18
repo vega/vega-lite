@@ -5,6 +5,7 @@ import {DateTime} from './datetime';
 import {ExprRef} from './expr';
 import {LogicalComposition} from './logical';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit, TimeUnitParams} from './timeunit';
+import {stringify} from './util';
 import {isSignalRef} from './vega.schema';
 
 export type Predicate =
@@ -246,7 +247,7 @@ export function fieldFilterExpression(predicate: FieldPredicate, useInRange = tr
   }
 
   /* istanbul ignore next: it should never reach here */
-  throw new Error(`Invalid field predicate: ${JSON.stringify(predicate)}`);
+  throw new Error(`Invalid field predicate: ${stringify(predicate)}`);
 }
 
 export function fieldValidPredicate(fieldExpr: string, valid = true) {

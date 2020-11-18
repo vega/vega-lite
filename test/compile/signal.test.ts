@@ -1,5 +1,5 @@
 import {SignalRefWrapper} from '../../src/compile/signal';
-import {keys} from '../../src/util';
+import {keys, stringify} from '../../src/util';
 
 describe('SignalRefWrapper', () => {
   const s = new SignalRefWrapper(() => 'hello world');
@@ -11,7 +11,7 @@ describe('SignalRefWrapper', () => {
   });
 
   it('should serialize correctly', () => {
-    expect(JSON.stringify(s)).toBe('{"signal":"hello world"}');
+    expect(stringify(s)).toBe('{"signal":"hello world"}');
   });
 
   it('should look like a signal', () => {

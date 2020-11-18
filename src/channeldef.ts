@@ -80,6 +80,7 @@ import {
   omit,
   removePathFromField,
   replacePathInField,
+  stringify,
   titleCase
 } from './util';
 import {isSignalRef} from './vega.schema';
@@ -1331,7 +1332,7 @@ export function valueExpr(
     expr = dateTimeToExpr(v);
   } else if (isString(v) || isNumber(v)) {
     if (isTime) {
-      expr = `datetime(${JSON.stringify(v)})`;
+      expr = `datetime(${stringify(v)})`;
 
       if (isLocalSingleTimeUnit(unit)) {
         // for single timeUnit, we will use dateTimeToExpr to convert number/string to match the timeUnit
@@ -1345,7 +1346,7 @@ export function valueExpr(
     return wrapTime && isTime ? `time(${expr})` : expr;
   }
   // number or boolean or normal string
-  return undefinedIfExprNotRequired ? undefined : JSON.stringify(v);
+  return undefinedIfExprNotRequired ? undefined : stringify(v);
 }
 
 /**

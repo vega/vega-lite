@@ -26,7 +26,7 @@ import {stringify} from '../util';
 import {VgSortField} from '../vega.schema';
 
 export function invalidSpec(spec: GenericSpec<any, any, any, any>) {
-  return `Invalid specification ${JSON.stringify(
+  return `Invalid specification ${stringify(
     spec
   )}. Make sure the specification includes at least one of the following properties: "mark", "layer", "facet", "hconcat", "vconcat", "concat", or "repeat".`;
 }
