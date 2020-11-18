@@ -31,8 +31,9 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
       data
     );
 
-    if (!projComp.get('type')) {
-      projComp.set('type', 'equalEarth', false);
+    if (projComp.get('type') === 'equalEarth') {
+      // remove default since it's set in the config
+      projComp.set('type', undefined, false);
     }
 
     return projComp;

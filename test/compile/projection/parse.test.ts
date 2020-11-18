@@ -24,7 +24,7 @@ describe('src/compile/projection/parse', () => {
       expect(model.component.projection.explicit).toEqual({type: 'albersUsa'});
     });
 
-    it('should create projection with no props', () => {
+    it('should create projection with only the type form the config', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'geoshape',
         data: {
@@ -38,7 +38,7 @@ describe('src/compile/projection/parse', () => {
       });
       model.parse();
       expect(model.component.projection.explicit).toEqual({});
-      expect(model.component.projection.implicit).toEqual({name: 'projection', type: 'equalEarth'});
+      expect(model.component.projection.implicit).toEqual({name: 'projection'});
     });
 
     it('should create projection from config', () => {

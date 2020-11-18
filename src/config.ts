@@ -312,7 +312,9 @@ export const defaultConfig: Config<SignalRef> = {
 
   scale: defaultScaleConfig,
 
-  projection: {},
+  projection: {
+    type: 'equalEarth'
+  },
 
   legend: defaultLegendConfig,
   header: {titlePadding: 10, labelPadding: 10},
