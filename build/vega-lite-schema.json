@@ -20265,105 +20265,272 @@
       "additionalProperties": false,
       "properties": {
         "center": {
-          "$ref": "#/definitions/Vector2<number>",
-          "description": "The projection's center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Vector2<number>",
+              "description": "The projection's center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "clipAngle": {
-          "description": "The projection's clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The projection's clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "clipExtent": {
-          "$ref": "#/definitions/Vector2<Vector2<number>>",
-          "description": "The projection's viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Vector2<Vector2<number>>",
+              "description": "The projection's viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "coefficient": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "distance": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "extent": {
-          "$ref": "#/definitions/Vector2<Vector2<number>>"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Vector2<Vector2<number>>"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "fit": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Fit"
+              "items": {
+                "$ref": "#/definitions/GeoJsonFeature"
+              },
+              "type": "array"
             },
             {
               "items": {
                 "$ref": "#/definitions/Fit"
               },
               "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ]
         },
         "fraction": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "lobes": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "parallel": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "parallels": {
-          "description": "For conic projections, the [two standard parallels](https://en.wikipedia.org/wiki/Map_projection#Conic) that define the map layout. The default depends on the specific conic projection used.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "For conic projections, the [two standard parallels](https://en.wikipedia.org/wiki/Map_projection#Conic) that define the map layout. The default depends on the specific conic projection used.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "pointRadius": {
-          "description": "The default radius (in pixels) to use when drawing GeoJSON `Point` and `MultiPoint` geometries. This parameter sets a constant default value. To modify the point radius in response to data, see the corresponding parameter of the GeoPath and GeoShape transforms.\n\n__Default value:__ `4.5`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The default radius (in pixels) to use when drawing GeoJSON `Point` and `MultiPoint` geometries. This parameter sets a constant default value. To modify the point radius in response to data, see the corresponding parameter of the GeoPath and GeoShape transforms.\n\n__Default value:__ `4.5`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "precision": {
-          "description": "The threshold for the projection's [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection's current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The threshold for the projection's [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection's current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "radius": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "ratio": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "reflectX": {
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "reflectY": {
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "rotate": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Vector2<number>"
+                },
+                {
+                  "$ref": "#/definitions/Vector3<number>"
+                }
+              ],
+              "description": "The projection's three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
+        },
+        "scale": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The projection’s scale (zoom) factor, overriding automatic fitting. The default scale is projection-specific. The scale factor corresponds linearly to the distance between projected points; however, scale factor values are not equivalent across projections."
+        },
+        "size": {
           "anyOf": [
             {
               "$ref": "#/definitions/Vector2<number>"
             },
             {
-              "$ref": "#/definitions/Vector3<number>"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "The projection's three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`"
-        },
-        "scale": {
-          "description": "The projection’s scale (zoom) factor, overriding automatic fitting. The default scale is projection-specific. The scale factor corresponds linearly to the distance between projected points; however, scale factor values are not equivalent across projections.",
-          "type": "number"
-        },
-        "size": {
-          "$ref": "#/definitions/Vector2<number>"
+          ]
         },
         "spacing": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tilt": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "translate": {
-          "$ref": "#/definitions/Vector2<number>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Vector2<number>"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The projection’s translation offset as a two-element array `[tx, ty]`."
         },
         "type": {
-          "$ref": "#/definitions/ProjectionType",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ProjectionType"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The cartographic projection to use. This value is case-insensitive, for example `\"albers\"` and `\"Albers\"` indicate the same projection type. You can find all valid projection types [in the documentation](https://vega.github.io/vega-lite/docs/projection.html#projection-types).\n\n__Default value:__ `equalEarth`"
         }
       },

@@ -1,5 +1,6 @@
 import {Field} from '../channeldef';
 import {SharedCompositeEncoding} from '../compositemark';
+import {ExprRef} from '../expr';
 import {Projection} from '../projection';
 import {BaseSpec, FrameMixins, ResolveMixins} from './base';
 import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
@@ -35,7 +36,7 @@ export interface LayerSpec<F extends Field> extends BaseSpec, FrameMixins, Resol
   /**
    * An object defining properties of the geographic projection shared by underlying layers.
    */
-  projection?: Projection;
+  projection?: Projection<ExprRef>;
 }
 
 /**

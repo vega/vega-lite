@@ -27,7 +27,7 @@ import {Config} from '../config';
 import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
 import {Encoding, initEncoding} from '../encoding';
-import {ExprOrSignalRef, replaceExprRefInIndex} from '../expr';
+import {ExprOrSignalRef, ExprRef, replaceExprRefInIndex} from '../expr';
 import {LegendInternal} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
@@ -74,7 +74,7 @@ export class UnitModel extends ModelWithField {
 
   protected specifiedLegends: LegendInternalIndex = {};
 
-  public specifiedProjection: Projection = {};
+  public specifiedProjection: Projection<ExprRef | SignalRef> = {};
 
   public readonly selection: Dict<SelectionDef> = {};
   public children: Model[] = [];
