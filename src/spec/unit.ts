@@ -6,14 +6,7 @@ import {AnyMark, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {SelectionDef} from '../selection';
 import {Field} from './../channeldef';
-import {
-  BaseSpec,
-  DataMixins,
-  DeprecatedFrameMixins,
-  FrameMixins,
-  GenericCompositionLayout,
-  ResolveMixins
-} from './base';
+import {BaseSpec, DataMixins, FrameMixins, GenericCompositionLayout, ResolveMixins} from './base';
 import {TopLevel} from './toplevel';
 /**
  * Base interface for a unit (single-view) specification.
@@ -50,7 +43,7 @@ export type NormalizedUnitSpec = GenericUnitSpec<Encoding<FieldName>, Mark | Mar
 /**
  * A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types).
  */
-export type UnitSpec<F extends Field> = GenericUnitSpec<CompositeEncoding<F>, AnyMark> & DeprecatedFrameMixins;
+export type UnitSpec<F extends Field> = GenericUnitSpec<CompositeEncoding<F>, AnyMark>;
 
 export type UnitSpecWithFrame<F extends Field> = GenericUnitSpec<CompositeEncoding<F>, AnyMark> & FrameMixins;
 

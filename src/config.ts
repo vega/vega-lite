@@ -29,20 +29,6 @@ import {duplicate, getFirstDefined, isEmpty, keys, omit} from './util';
 
 export interface ViewConfig<ES extends ExprRef | SignalRef> extends BaseViewBackground<ES> {
   /**
-   * Default width
-   *
-   * __Deprecated:__ Since Vega-Lite 4.0. Please use continuousWidth and discreteWidth instead.
-   */
-  width?: number;
-
-  /**
-   * Default height
-   *
-   * __Deprecated:__ Since Vega-Lite 4.0. Please use continuousHeight and discreteHeight instead.
-   */
-  height?: number;
-
-  /**
    * The default width when the plot has a continuous field for x or longitude, or has arc marks.
    *
    * __Default value:__ `200`

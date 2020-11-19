@@ -112,23 +112,6 @@ export interface FrameMixins<ES extends ExprRef | SignalRef = ExprRef | SignalRe
   view?: ViewBackground<ES>;
 }
 
-export type DeprecatedFrameMixins = {
-  /**
-   * __Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec.
-   */
-  width?: FrameMixins['width'];
-
-  /**
-   * __Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec.
-   */
-  height?: FrameMixins['height'];
-
-  /**
-   * __Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec.
-   */
-  view?: FrameMixins['view'];
-};
-
 export interface ResolveMixins {
   /**
    * Scale, axis, and legend resolutions for view composition specifications.
