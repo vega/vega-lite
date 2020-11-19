@@ -3,6 +3,7 @@ import {hasOwnProperty} from 'vega-util';
 import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {getFieldOrDatumDef} from '../../channeldef';
 import {DataSourceType} from '../../data';
+import {replaceExprRefInIndex} from '../../expr';
 import {PROJECTION_PROPERTIES} from '../../projection';
 import {GEOJSON} from '../../type';
 import {deepEqual, duplicate, every} from '../../util';
@@ -16,7 +17,7 @@ export function parseProjection(model: Model) {
 
 function parseUnitProjection(model: UnitModel): ProjectionComponent {
   if (model.hasProjection) {
-    const proj = model.specifiedProjection;
+    const proj = replaceExprRefInIndex(model.specifiedProjection);
     const fit = !(proj && (proj.scale != null || proj.translate != null));
     const size = fit ? [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')] : undefined;
     const data = fit ? gatherFitData(model) : undefined;
@@ -24,7 +25,7 @@ function parseUnitProjection(model: UnitModel): ProjectionComponent {
     const projComp = new ProjectionComponent(
       model.projectionName(true),
       {
-        ...(model.config.projection ?? {}),
+        ...(replaceExprRefInIndex(model.config.projection) ?? {}),
         ...(proj ?? {})
       },
       size,

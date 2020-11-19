@@ -1,6 +1,5 @@
-import {SignalRef} from 'vega';
+import {Projection as VgProjection, SignalRef} from 'vega';
 import {Projection} from '../../projection';
-import {Projection as VgProjection} from 'vega';
 import {Split} from '../split';
 
 export class ProjectionComponent extends Split<VgProjection> {
@@ -8,7 +7,7 @@ export class ProjectionComponent extends Split<VgProjection> {
 
   constructor(
     name: string,
-    public specifiedProjection: Projection,
+    public specifiedProjection: Projection<SignalRef>,
     public size: SignalRef[],
     public data: (string | SignalRef)[]
   ) {

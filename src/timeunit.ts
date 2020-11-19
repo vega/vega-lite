@@ -1,7 +1,6 @@
-import stringify from 'fast-json-stable-stringify';
 import {isObject, isString} from 'vega-util';
 import {DateTimeExpr, dateTimeExprToExpr} from './datetime';
-import {accessPathWithDatum, keys, varName} from './util';
+import {accessPathWithDatum, keys, stringify, varName} from './util';
 
 /** Time Unit that only corresponds to only one part of Date objects. */
 export const LOCAL_SINGLE_TIMEUNIT_INDEX = {
