@@ -1,0 +1,65 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 500,
+  "height": 300,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/world-110m.json",
+      "format": {"type": "topojson", "feature": "countries"}
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "size": {"signal": "[width, height]"},
+      "fit": {"signal": "data('source_0')"},
+      "type": {"signal": "projection"}
+    }
+  ],
+  "signals": [
+    {
+      "name": "projection",
+      "value": "equalEarth",
+      "bind": {
+        "input": "select",
+        "options": [
+          "albers",
+          "albersUsa",
+          "azimuthalEqualArea",
+          "azimuthalEquidistant",
+          "conicConformal",
+          "conicEqualArea",
+          "conicEquidistant",
+          "equalEarth",
+          "equirectangular",
+          "gnomonic",
+          "mercator",
+          "naturalEarth1",
+          "orthographic",
+          "stereographic",
+          "transverseMercator"
+        ]
+      }
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "shape",
+      "style": ["geoshape"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "lightgray"},
+          "stroke": {"value": "gray"},
+          "ariaRoleDescription": {"value": "geoshape"}
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    }
+  ]
+}
