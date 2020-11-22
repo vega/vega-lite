@@ -446,10 +446,12 @@ export interface RectConfig<ES extends ExprRef | SignalRef> extends RectBinSpaci
   discreteBandSize?: number;
 }
 
-export const BAR_CORNER_RADIUS_INDEX: Partial<Record<
-  Orientation,
-  ('cornerRadiusTopLeft' | 'cornerRadiusTopRight' | 'cornerRadiusBottomLeft' | 'cornerRadiusBottomRight')[]
->> = {
+export const BAR_CORNER_RADIUS_INDEX: Partial<
+  Record<
+    Orientation,
+    ('cornerRadiusTopLeft' | 'cornerRadiusTopRight' | 'cornerRadiusBottomLeft' | 'cornerRadiusBottomRight')[]
+  >
+> = {
   horizontal: ['cornerRadiusTopRight', 'cornerRadiusBottomRight'],
   vertical: ['cornerRadiusTopLeft', 'cornerRadiusTopRight']
 };
