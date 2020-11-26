@@ -75,7 +75,7 @@
     "url": "https://github.com/vega/vega-lite/issues"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.7",
+    "@babel/core": "^7.12.9",
     "@babel/preset-env": "^7.12.7",
     "@babel/preset-typescript": "^7.12.7",
     "@rollup/plugin-babel": "^5.2.1",
@@ -88,8 +88,8 @@
     "@types/mkdirp": "^1.0.1",
     "@types/pako": "^1.0.1",
     "@types/puppeteer": "^5.4.0",
-    "@typescript-eslint/eslint-plugin": "^4.8.1",
-    "@typescript-eslint/parser": "^4.8.1",
+    "@typescript-eslint/eslint-plugin": "^4.8.2",
+    "@typescript-eslint/parser": "^4.8.2",
     "ajv": "^6.12.6",
     "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.3",
@@ -113,7 +113,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "serve": "^11.3.2",
     "terser": "^5.5.0",
-    "ts-json-schema-generator": "^0.78.0",
+    "ts-json-schema-generator": "^0.79.0",
     "typescript": "~4.1.2",
     "vega-cli": "^5.17.0",
     "vega-datasets": "~2.2.0",
