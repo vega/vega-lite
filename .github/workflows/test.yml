@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - '**'
+  pull_request:
 
 jobs:
   test-matrix:
@@ -12,6 +13,9 @@ jobs:
     strategy:
       matrix:
         node: [10, 12, 14]
+
+    # We want to run on external PRs, but not on our own internal PRs as they'll be run by the push to the branch.
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
 
     steps:
       - uses: actions/checkout@v2
@@ -50,9 +54,8 @@ jobs:
         run: yarn build:site
 
   runtime-coverage:
-    runs-on: ubuntu-latest
-
     name: Runtime and Coverage
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
