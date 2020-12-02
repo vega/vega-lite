@@ -5,6 +5,7 @@ import {isStep} from '../../spec/base';
 import {isVgRangeStep} from '../../vega.schema';
 import {ConcatModel} from '../concat';
 import {Model} from '../model';
+import {defaultScaleResolve} from '../resolve';
 import {Explicit, mergeValuesWithExplicit} from '../split';
 import {UnitModel} from '../unit';
 import {getSizeTypeFromLayoutSizeType, LayoutSize, LayoutSizeIndex, LayoutSizeType} from './component';
@@ -55,7 +56,7 @@ function parseNonUnitLayoutSizeForChannel(model: Model, layoutSizeType: LayoutSi
   // Try to merge layout size
   for (const child of model.children) {
     const childSize = child.component.layoutSize.getWithExplicit(sizeType);
-    const scaleResolve = resolve.scale[channel];
+    const scaleResolve = resolve.scale[channel] ?? defaultScaleResolve(channel, model);
     if (scaleResolve === 'independent' && childSize.value === 'step') {
       // Do not merge independent scales with range-step as their size depends
       // on the scale domains, which can be different between scales.

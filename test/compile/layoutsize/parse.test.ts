@@ -1,4 +1,4 @@
-import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
+import {parseModelWithScaleAndLayoutSize, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('compile/layout', () => {
   describe('parseUnitLayoutSize', () => {
@@ -90,6 +90,66 @@ describe('compile/layout', () => {
 
       expect(model.component.layoutSize.get('width')).toBe('step');
       expect(model.component.layoutSize.get('height')).toBe('step');
+    });
+  });
+
+  describe('parseConcatLayoutSize', () => {
+    it('should have independent layout sizes for concatenated charts of different heights', () => {
+      const model = parseModelWithScaleAndLayoutSize({
+        data: {values: []},
+        vconcat: [
+          {
+            height: 100,
+            encoding: {
+              x: {field: 'a', type: 'nominal'},
+              y: {field: 'b', type: 'quantitative'}
+            },
+            layer: [{mark: 'point'}],
+            resolve: {scale: {y: 'independent'}}
+          },
+          {
+            height: 200,
+            encoding: {
+              x: {field: 'a', type: 'nominal'},
+              y: {field: 'b', type: 'quantitative'}
+            },
+            layer: [{mark: 'point'}],
+            resolve: {scale: {y: 'independent'}}
+          }
+        ]
+      });
+
+      expect(model.component.layoutSize.get('height')).toBeUndefined();
+      expect(model.component.layoutSize.get('childHeight')).toBeUndefined();
+    });
+
+    it('should have the same layout sizes for concatenated charts of the same height', () => {
+      const model = parseModelWithScaleAndLayoutSize({
+        data: {values: []},
+        vconcat: [
+          {
+            height: 100,
+            encoding: {
+              x: {field: 'a', type: 'nominal'},
+              y: {field: 'b', type: 'quantitative'}
+            },
+            layer: [{mark: 'point'}],
+            resolve: {scale: {y: 'independent'}}
+          },
+          {
+            height: 100,
+            encoding: {
+              x: {field: 'a', type: 'nominal'},
+              y: {field: 'b', type: 'quantitative'}
+            },
+            layer: [{mark: 'point'}],
+            resolve: {scale: {y: 'independent'}}
+          }
+        ]
+      });
+
+      expect(model.component.layoutSize.get('height')).toBeUndefined();
+      expect(model.component.layoutSize.get('childHeight')).toBe(100);
     });
   });
 });
