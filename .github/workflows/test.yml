@@ -50,9 +50,8 @@ jobs:
         run: yarn build:site
 
   runtime-coverage:
-    runs-on: ubuntu-latest
-
     name: Runtime and Coverage
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
