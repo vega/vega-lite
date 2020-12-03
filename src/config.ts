@@ -518,7 +518,7 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
 
   for (const markConfigType of mark.MARK_CONFIGS) {
     if (mergedConfig[markConfigType]) {
-      // FIXME: outputConfig[markConfigType] expects that types are replaced recursively but replaceExprRefInIndex only replaces one level deep
+      // FIXME: outputConfig[markConfigType] expects that types are replaced recursively but replaceExprRef only replaces one level deep
       outputConfig[markConfigType] = replaceExprRef(mergedConfig[markConfigType]) as any;
     }
   }

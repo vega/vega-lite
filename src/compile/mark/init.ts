@@ -26,7 +26,7 @@ import {contains, getFirstDefined} from '../../util';
 import {getMarkConfig, getMarkPropOrConfig} from '../common';
 
 export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>, config: Config<SignalRef>) {
-  // FIXME: markDef expects that exprRefs are replaced recursively but replaceExprRefInIndex only replaces the top level
+  // FIXME: markDef expects that exprRefs are replaced recursively but replaceExprRef only replaces the top level
   const markDef: MarkDef<Mark, SignalRef> = replaceExprRef(originalMarkDef) as any;
 
   // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
