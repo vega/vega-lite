@@ -383,7 +383,7 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   tickColor: 'main',
   tickDash: 'main',
   tickDashOffset: 'main',
-  tickMinStep: 'main',
+  tickMinStep: 'both',
   tickOffset: 'both', // Need to be applied to grid axis too, so the grid will align with ticks.
   tickOpacity: 'main',
   tickRound: 'both', // Apply rounding to grid and ticks so they are aligned.

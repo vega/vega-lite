@@ -74,7 +74,7 @@ export class UnitModel extends ModelWithField {
 
   protected specifiedLegends: LegendInternalIndex = {};
 
-  public specifiedProjection: Projection = {};
+  public specifiedProjection: Projection<ExprRef | SignalRef> = {};
 
   public readonly selection: Dict<SelectionDef> = {};
   public children: Model[] = [];

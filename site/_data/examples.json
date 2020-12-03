@@ -736,6 +736,12 @@
         "title": "London Tube Lines",
         "description": "This example was created by @jwoLondon.",
         "png": true
+      },
+      {
+        "name": "geo_params_projections",
+        "title": "Projection explorer",
+        "description": "Compare different projections.",
+        "png": true
       }
     ]
   },

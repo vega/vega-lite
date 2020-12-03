@@ -60,6 +60,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [data.world](https://data.world), upload `.vg.json` and `.vl.json` files along side your raw data, or [embed Vega](https://docs.data.world/tutorials/markdown/#vega-and-vega-lite) directly into comments and summary markdown.
 - [nextjournal](https://nextjournal.com/), scientific computing environment with support for data visualizations including [Vega-Lite](https://nextjournal.com/blog/plotting-with-vega-lite-in-nextjournal)
 - [Liminoid](https://liminoid.io/), toolkit for building interactive analytics applications with Python and WebAssembly. Can pass Python data to JavaScript callbacks which render Vega/Vega-Lite specifications.
+- [Neptune.ai](https://neptune.ai), machine learning experiment tracking tool with Vega-Lite and Altair visualizations.
 
 ## Tools that use Vega-Lite
 

@@ -1045,7 +1045,7 @@
         "bandPosition": {
           "anyOf": [
             {
-              "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
+              "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n __Default value:__ `0.5`",
               "type": "number"
             },
             {
@@ -2026,7 +2026,7 @@
         "bandPosition": {
           "anyOf": [
             {
-              "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
+              "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n __Default value:__ `0.5`",
               "type": "number"
             },
             {
@@ -4955,7 +4955,7 @@
         },
         "shape": {
           "$ref": "#/definitions/ShapeDef",
-          "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:    - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.    - the line symbol `\"stroke\"`    - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`    - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
+          "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.   - the line symbol `\"stroke\"`   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
         },
         "size": {
           "$ref": "#/definitions/NumericMarkPropDef",
@@ -8906,7 +8906,7 @@
         },
         "shape": {
           "$ref": "#/definitions/ShapeDef",
-          "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:    - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.    - the line symbol `\"stroke\"`    - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`    - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
+          "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.   - the line symbol `\"stroke\"`   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
         },
         "size": {
           "$ref": "#/definitions/NumericMarkPropDef",
@@ -9465,7 +9465,7 @@
     },
     "FieldOrDatumDefWithCondition<DatumDef,(Gradient|string|null)>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "band": {
           "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
@@ -9513,7 +9513,7 @@
     },
     "FieldOrDatumDefWithCondition<DatumDef,(string|null)>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "band": {
           "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
@@ -9561,7 +9561,7 @@
     },
     "FieldOrDatumDefWithCondition<DatumDef,number>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "band": {
           "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
@@ -9609,7 +9609,7 @@
     },
     "FieldOrDatumDefWithCondition<DatumDef,number[]>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "band": {
           "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
@@ -9657,7 +9657,7 @@
     },
     "FieldOrDatumDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
@@ -9758,7 +9758,7 @@
     },
     "FieldOrDatumDefWithCondition<MarkPropFieldDef,number>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
@@ -9859,7 +9859,7 @@
     },
     "FieldOrDatumDefWithCondition<MarkPropFieldDef,number[]>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
@@ -9960,7 +9960,7 @@
     },
     "FieldOrDatumDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
@@ -10061,7 +10061,7 @@
     },
     "FieldOrDatumDefWithCondition<StringDatumDef,Text>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "band": {
           "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
@@ -10124,7 +10124,7 @@
     },
     "FieldOrDatumDefWithCondition<StringFieldDef,Text>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
@@ -10218,7 +10218,7 @@
     },
     "FieldOrDatumDefWithCondition<StringFieldDef,string>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
@@ -10398,7 +10398,7 @@
       "properties": {
         "filter": {
           "$ref": "#/definitions/PredicateComposition",
-          "description": "The `filter` property must be a predication definition, which can take one of the following forms:\n\n1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string, where `datum` can be used to refer to the current data object. For example, `{filter: \"datum.b2 > 60\"}` would make the output data includes only items that have values in the field `b2` over 60.\n\n2) one of the [field predicates](https://vega.github.io/vega-lite/docs/predicate.html#field-predicate):  [`equal`](https://vega.github.io/vega-lite/docs/predicate.html#field-equal-predicate), [`lt`](https://vega.github.io/vega-lite/docs/predicate.html#lt-predicate), [`lte`](https://vega.github.io/vega-lite/docs/predicate.html#lte-predicate), [`gt`](https://vega.github.io/vega-lite/docs/predicate.html#gt-predicate), [`gte`](https://vega.github.io/vega-lite/docs/predicate.html#gte-predicate), [`range`](https://vega.github.io/vega-lite/docs/predicate.html#range-predicate), [`oneOf`](https://vega.github.io/vega-lite/docs/predicate.html#one-of-predicate), or [`valid`](https://vega.github.io/vega-lite/docs/predicate.html#valid-predicate),\n\n3) a [selection predicate](https://vega.github.io/vega-lite/docs/predicate.html#selection-predicate), which define the names of a selection that the data point should belong to (or a logical composition of selections).\n\n4) a [logical composition](https://vega.github.io/vega-lite/docs/predicate.html#composition) of (1), (2), or (3)."
+          "description": "The `filter` property must be a predication definition, which can take one of the following forms:\n\n1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string, where `datum` can be used to refer to the current data object. For example, `{filter: \"datum.b2 > 60\"}` would make the output data includes only items that have values in the field `b2` over 60.\n\n2) one of the [field predicates](https://vega.github.io/vega-lite/docs/predicate.html#field-predicate): [`equal`](https://vega.github.io/vega-lite/docs/predicate.html#field-equal-predicate), [`lt`](https://vega.github.io/vega-lite/docs/predicate.html#lt-predicate), [`lte`](https://vega.github.io/vega-lite/docs/predicate.html#lte-predicate), [`gt`](https://vega.github.io/vega-lite/docs/predicate.html#gt-predicate), [`gte`](https://vega.github.io/vega-lite/docs/predicate.html#gte-predicate), [`range`](https://vega.github.io/vega-lite/docs/predicate.html#range-predicate), [`oneOf`](https://vega.github.io/vega-lite/docs/predicate.html#one-of-predicate), or [`valid`](https://vega.github.io/vega-lite/docs/predicate.html#valid-predicate),\n\n3) a [selection predicate](https://vega.github.io/vega-lite/docs/predicate.html#selection-predicate), which define the names of a selection that the data point should belong to (or a logical composition of selections).\n\n4) a [logical composition](https://vega.github.io/vega-lite/docs/predicate.html#composition) of (1), (2), or (3)."
         }
       },
       "required": [
@@ -10833,6 +10833,72 @@
         }
       ],
       "description": "Any specification in Vega-Lite."
+    },
+    "GenericUnitSpec<Encoding,AnyMark>": {
+      "additionalProperties": false,
+      "description": "Base interface for a unit (single-view) specification.",
+      "properties": {
+        "data": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Data"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
+        },
+        "description": {
+          "description": "Description of this mark for commenting purpose.",
+          "type": "string"
+        },
+        "encoding": {
+          "$ref": "#/definitions/Encoding",
+          "description": "A key-value mapping between encoding channels and definition of fields."
+        },
+        "mark": {
+          "$ref": "#/definitions/AnyMark",
+          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
+        },
+        "name": {
+          "description": "Name of the visualization for later reference.",
+          "type": "string"
+        },
+        "projection": {
+          "$ref": "#/definitions/Projection",
+          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks and to `latitude` and `\"longitude\"` channels for other marks."
+        },
+        "selection": {
+          "additionalProperties": {
+            "$ref": "#/definitions/SelectionDef"
+          },
+          "description": "A key-value mapping between selection names and definitions.",
+          "type": "object"
+        },
+        "title": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "$ref": "#/definitions/TitleParams"
+            }
+          ],
+          "description": "Title for the plot."
+        },
+        "transform": {
+          "description": "An array of data transformations such as filter and new field calculation.",
+          "items": {
+            "$ref": "#/definitions/Transform"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "mark"
+      ],
+      "type": "object"
     },
     "VConcatSpec<GenericSpec>": {
       "additionalProperties": false,
@@ -15238,8 +15304,7 @@
           "description": "The output fields on which to store the looked up data values.\n\nFor data lookups, this property may be left blank if `from.fields` has been specified (those field names will be used); if `from.fields` has not been specified, `as` must be a string.\n\nFor selection lookups, this property is optional: if unspecified, looked up values will be stored under a property named for the selection; and if specified, it must correspond to `from.fields`."
         },
         "default": {
-          "description": "The default value to use if lookup fails.\n\n__Default value:__ `null`",
-          "type": "string"
+          "description": "The default value to use if lookup fails.\n\n__Default value:__ `null`"
         },
         "from": {
           "anyOf": [
@@ -20265,105 +20330,272 @@
       "additionalProperties": false,
       "properties": {
         "center": {
-          "$ref": "#/definitions/Vector2<number>",
-          "description": "The projection's center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Vector2<number>",
+              "description": "The projection's center, a two-element array of longitude and latitude in degrees.\n\n__Default value:__ `[0, 0]`"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "clipAngle": {
-          "description": "The projection's clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The projection's clipping circle radius to the specified angle in degrees. If `null`, switches to [antimeridian](http://bl.ocks.org/mbostock/3788999) cutting rather than small-circle clipping.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "clipExtent": {
-          "$ref": "#/definitions/Vector2<Vector2<number>>",
-          "description": "The projection's viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed."
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Vector2<Vector2<number>>",
+              "description": "The projection's viewport clip extent to the specified bounds in pixels. The extent bounds are specified as an array `[[x0, y0], [x1, y1]]`, where `x0` is the left-side of the viewport, `y0` is the top, `x1` is the right and `y1` is the bottom. If `null`, no viewport clipping is performed."
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "coefficient": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "distance": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "extent": {
-          "$ref": "#/definitions/Vector2<Vector2<number>>"
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Vector2<Vector2<number>>"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "fit": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Fit"
+              "items": {
+                "$ref": "#/definitions/GeoJsonFeature"
+              },
+              "type": "array"
             },
             {
               "items": {
                 "$ref": "#/definitions/Fit"
               },
               "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ]
         },
         "fraction": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "lobes": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "parallel": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "parallels": {
-          "description": "For conic projections, the [two standard parallels](https://en.wikipedia.org/wiki/Map_projection#Conic) that define the map layout. The default depends on the specific conic projection used.",
-          "items": {
-            "type": "number"
-          },
-          "type": "array"
+          "anyOf": [
+            {
+              "description": "For conic projections, the [two standard parallels](https://en.wikipedia.org/wiki/Map_projection#Conic) that define the map layout. The default depends on the specific conic projection used.",
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "pointRadius": {
-          "description": "The default radius (in pixels) to use when drawing GeoJSON `Point` and `MultiPoint` geometries. This parameter sets a constant default value. To modify the point radius in response to data, see the corresponding parameter of the GeoPath and GeoShape transforms.\n\n__Default value:__ `4.5`",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The default radius (in pixels) to use when drawing GeoJSON `Point` and `MultiPoint` geometries. This parameter sets a constant default value. To modify the point radius in response to data, see the corresponding parameter of the GeoPath and GeoShape transforms.\n\n__Default value:__ `4.5`",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "precision": {
-          "description": "The threshold for the projection's [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection's current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
-          "type": "number"
+          "anyOf": [
+            {
+              "description": "The threshold for the projection's [adaptive resampling](http://bl.ocks.org/mbostock/3795544) to the specified value in pixels. This value corresponds to the [Douglas–Peucker distance](http://en.wikipedia.org/wiki/Ramer%E2%80%93Douglas%E2%80%93Peucker_algorithm). If precision is not specified, returns the projection's current resampling precision which defaults to `√0.5 ≅ 0.70710…`.",
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "radius": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "ratio": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "reflectX": {
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "reflectY": {
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "rotate": {
+          "anyOf": [
+            {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Vector2<number>"
+                },
+                {
+                  "$ref": "#/definitions/Vector3<number>"
+                }
+              ],
+              "description": "The projection's three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
+        },
+        "scale": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The projection’s scale (zoom) factor, overriding automatic fitting. The default scale is projection-specific. The scale factor corresponds linearly to the distance between projected points; however, scale factor values are not equivalent across projections."
+        },
+        "size": {
           "anyOf": [
             {
               "$ref": "#/definitions/Vector2<number>"
             },
             {
-              "$ref": "#/definitions/Vector3<number>"
+              "$ref": "#/definitions/ExprRef"
             }
-          ],
-          "description": "The projection's three-axis rotation to the specified angles, which must be a two- or three-element array of numbers [`lambda`, `phi`, `gamma`] specifying the rotation angles in degrees about each spherical axis. (These correspond to yaw, pitch and roll.)\n\n__Default value:__ `[0, 0, 0]`"
-        },
-        "scale": {
-          "description": "The projection’s scale (zoom) factor, overriding automatic fitting. The default scale is projection-specific. The scale factor corresponds linearly to the distance between projected points; however, scale factor values are not equivalent across projections.",
-          "type": "number"
-        },
-        "size": {
-          "$ref": "#/definitions/Vector2<number>"
+          ]
         },
         "spacing": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "tilt": {
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ]
         },
         "translate": {
-          "$ref": "#/definitions/Vector2<number>",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Vector2<number>"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The projection’s translation offset as a two-element array `[tx, ty]`."
         },
         "type": {
-          "$ref": "#/definitions/ProjectionType",
+          "anyOf": [
+            {
+              "$ref": "#/definitions/ProjectionType"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
           "description": "The cartographic projection to use. This value is case-insensitive, for example `\"albers\"` and `\"Albers\"` indicate the same projection type. You can find all valid projection types [in the documentation](https://vega.github.io/vega-lite/docs/projection.html#projection-types).\n\n__Default value:__ `equalEarth`"
         }
       },
@@ -22511,7 +22743,7 @@
         },
         "single": {
           "$ref": "#/definitions/SingleSelectionConfig",
-          "description": "The default definition for a [`single`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations   for a single selection definition (except `type`) may be specified here.\n\nFor instance, setting `single` to `{\"on\": \"dblclick\"}` populates single selections on double-click by default."
+          "description": "The default definition for a [`single`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations  for a single selection definition (except `type`) may be specified here.\n\nFor instance, setting `single` to `{\"on\": \"dblclick\"}` populates single selections on double-click by default."
         }
       },
       "type": "object"
@@ -30126,7 +30358,7 @@
           "type": "string"
         },
         "mesh": {
-          "description": "The name of the TopoJSON object set to convert to mesh. Similar to the `feature` option, `mesh` extracts a named TopoJSON object set.   Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features. Extracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
+          "description": "The name of the TopoJSON object set to convert to mesh. Similar to the `feature` option, `mesh` extracts a named TopoJSON object set.  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features. Extracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
           "type": "string"
         },
         "parse": {
@@ -30295,104 +30527,8 @@
       "type": "string"
     },
     "UnitSpec": {
-      "additionalProperties": false,
-      "description": "A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types).",
-      "properties": {
-        "data": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Data"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "An object describing the data source. Set to `null` to ignore the parent's data source. If no data is set, it is derived from the parent."
-        },
-        "description": {
-          "description": "Description of this mark for commenting purpose.",
-          "type": "string"
-        },
-        "encoding": {
-          "$ref": "#/definitions/Encoding",
-          "description": "A key-value mapping between encoding channels and definition of fields."
-        },
-        "height": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "const": "container",
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/Step"
-            }
-          ],
-          "description": "__Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec."
-        },
-        "mark": {
-          "$ref": "#/definitions/AnyMark",
-          "description": "A string describing the mark type (one of `\"bar\"`, `\"circle\"`, `\"square\"`, `\"tick\"`, `\"line\"`, `\"area\"`, `\"point\"`, `\"rule\"`, `\"geoshape\"`, and `\"text\"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def)."
-        },
-        "name": {
-          "description": "Name of the visualization for later reference.",
-          "type": "string"
-        },
-        "projection": {
-          "$ref": "#/definitions/Projection",
-          "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks and to `latitude` and `\"longitude\"` channels for other marks."
-        },
-        "selection": {
-          "additionalProperties": {
-            "$ref": "#/definitions/SelectionDef"
-          },
-          "description": "A key-value mapping between selection names and definitions.",
-          "type": "object"
-        },
-        "title": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text"
-            },
-            {
-              "$ref": "#/definitions/TitleParams"
-            }
-          ],
-          "description": "Title for the plot."
-        },
-        "transform": {
-          "description": "An array of data transformations such as filter and new field calculation.",
-          "items": {
-            "$ref": "#/definitions/Transform"
-          },
-          "type": "array"
-        },
-        "view": {
-          "$ref": "#/definitions/ViewBackground",
-          "description": "__Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec."
-        },
-        "width": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "const": "container",
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/Step"
-            }
-          ],
-          "description": "__Deprecated:__ Please avoid using width in a unit spec that's a part of a layer spec."
-        }
-      },
-      "required": [
-        "mark"
-      ],
-      "type": "object"
+      "$ref": "#/definitions/GenericUnitSpec<Encoding,AnyMark>",
+      "description": "A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types)."
     },
     "UnitSpecWithFrame": {
       "additionalProperties": false,
@@ -31182,10 +31318,6 @@
             }
           ]
         },
-        "height": {
-          "description": "Default height\n\n__Deprecated:__ Since Vega-Lite 4.0. Please use continuousHeight and discreteHeight instead.",
-          "type": "number"
-        },
         "opacity": {
           "anyOf": [
             {
@@ -31299,10 +31431,6 @@
               "$ref": "#/definitions/ExprRef"
             }
           ]
-        },
-        "width": {
-          "description": "Default width\n\n__Deprecated:__ Since Vega-Lite 4.0. Please use continuousWidth and discreteWidth instead.",
-          "type": "number"
         }
       },
       "type": "object"

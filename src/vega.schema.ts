@@ -49,7 +49,7 @@ import {Dict, Flag, keys} from './util';
 
 export type {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
-// TODO: make recursive
+// TODO: make recursive (e.g. with https://stackoverflow.com/a/64900252/214950 but needs https://github.com/vega/ts-json-schema-generator/issues/568)
 export type MappedExclude<T, E> = {
   [P in keyof T]: Exclude<T[P], E>;
 };

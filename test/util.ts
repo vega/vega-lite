@@ -67,6 +67,12 @@ export function parseUnitModelWithScaleAndLayoutSize(spec: TopLevelNormalizedUni
   return model;
 }
 
+export function parseModelWithScaleAndLayoutSize(spec: TopLevelSpec) {
+  const model = parseModelWithScale(spec);
+  model.parseLayoutSize();
+  return model;
+}
+
 export function parseLayerModel(spec: TopLevel<NormalizedLayerSpec>) {
   return new LayerModel(spec, null, '', undefined, initConfig(spec.config));
 }

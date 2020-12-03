@@ -69,7 +69,7 @@ if [[ $GIT_BRANCH != 'master' ]]; then
   # should be empty
   git status
 
-  # Then push all the changes (schema, examples, prettier)
+  # Then push all the changes (schema, examples, formatting)
   git pull --rebase origin ${GITHUB_REF}
   git push origin ${GITHUB_REF}
 fi

@@ -1,18 +1,12 @@
-import {Field} from './../channeldef';
 import {FieldName} from '../channeldef';
 import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark';
 import {Encoding} from '../encoding';
+import {ExprRef} from '../expr';
 import {AnyMark, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {SelectionDef} from '../selection';
-import {
-  BaseSpec,
-  DataMixins,
-  DeprecatedFrameMixins,
-  FrameMixins,
-  GenericCompositionLayout,
-  ResolveMixins
-} from './base';
+import {Field} from './../channeldef';
+import {BaseSpec, DataMixins, FrameMixins, GenericCompositionLayout, ResolveMixins} from './base';
 import {TopLevel} from './toplevel';
 /**
  * Base interface for a unit (single-view) specification.
@@ -33,7 +27,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
    * An object defining properties of geographic projection, which will be applied to `shape` path for `"geoshape"` marks
    * and to `latitude` and `"longitude"` channels for other marks.
    */
-  projection?: Projection;
+  projection?: Projection<ExprRef>;
 
   /**
    * A key-value mapping between selection names and definitions.
@@ -49,7 +43,7 @@ export type NormalizedUnitSpec = GenericUnitSpec<Encoding<FieldName>, Mark | Mar
 /**
  * A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types).
  */
-export type UnitSpec<F extends Field> = GenericUnitSpec<CompositeEncoding<F>, AnyMark> & DeprecatedFrameMixins;
+export type UnitSpec<F extends Field> = GenericUnitSpec<CompositeEncoding<F>, AnyMark>;
 
 export type UnitSpecWithFrame<F extends Field> = GenericUnitSpec<CompositeEncoding<F>, AnyMark> & FrameMixins;
 
