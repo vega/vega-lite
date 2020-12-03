@@ -81,9 +81,7 @@ function makeWalkTree(data: VgData[]) {
         node.data = dataSource.source;
       }
 
-      for (const d of node.assemble()) {
-        data.push(d);
-      }
+      data.push(...node.assemble());
 
       // break here because the rest of the tree has to be taken care of by the facet.
       return;
@@ -96,7 +94,6 @@ function makeWalkTree(data: VgData[]) {
       node instanceof FilterNode ||
       node instanceof CalculateNode ||
       node instanceof GeoPointNode ||
-      node instanceof GeoJSONNode ||
       node instanceof AggregateNode ||
       node instanceof LookupNode ||
       node instanceof WindowTransformNode ||
@@ -118,7 +115,8 @@ function makeWalkTree(data: VgData[]) {
       node instanceof BinNode ||
       node instanceof TimeUnitNode ||
       node instanceof ImputeNode ||
-      node instanceof StackNode
+      node instanceof StackNode ||
+      node instanceof GeoJSONNode
     ) {
       dataSource.transform.push(...node.assemble());
     }
