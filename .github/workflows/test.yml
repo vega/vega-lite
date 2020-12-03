@@ -54,8 +54,8 @@ jobs:
       - name: Build
         run: yarn build:site
 
-  runtime-lint:
-    name: Runtime and Linting
+  runtime-lint-coverage:
+    name: Runtime, Linting, and Coverage
     runs-on: ubuntu-latest
 
     if: github.event.pull_request.head.repo.full_name == github.repository
@@ -69,26 +69,14 @@ jobs:
       - name: Install extra dependencies for Puppeteer
         run: sudo apt-get install libgbm1
 
-      - name: Lint
-        run: yarn lint
-
       - name: Build
         run: yarn build:only
 
+      - name: Lint
+        run: yarn lint
+
       - name: Runtime tests
         run: yarn test:runtime
-
-  coverage:
-    name: Coverage
-    runs-on: ubuntu-latest
-
-    if: github.event.pull_request.head.repo.full_name == github.repository
-
-    steps:
-      - uses: actions/checkout@v2
-
-      - name: Install Node dependencies
-        run: yarn --frozen-lockfile
 
       - name: Test coverage
         run: yarn jest test/ --collectCoverage=true
