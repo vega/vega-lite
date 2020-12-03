@@ -8,7 +8,7 @@ on:
 
 jobs:
   test-matrix:
-    name: Node ${{ matrix.node }}
+    name: Node
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -19,7 +19,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Node
+      - name: Setup Node ${{ matrix.node }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
