@@ -47,7 +47,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Check and Commit
-        if: github.event.pull_request.head.repo.full_name == github.repository
         run: ./scripts/check-and-commit.sh
 
   toc:
@@ -89,5 +88,4 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Check and Commit
-        if: github.event.pull_request.head.repo.full_name == github.repository
         run: ./scripts/check-and-commit-toc.sh
