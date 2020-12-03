@@ -7,7 +7,7 @@ on:
 
 jobs:
   check:
-    name: Lint, Format, Schema, and Examples
+    name: Format, Schema, and Examples
     runs-on: ubuntu-latest
 
     steps:

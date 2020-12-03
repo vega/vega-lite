@@ -1,19 +1,25 @@
 name: Test
 
-on: pull_request
+on:
+  push:
+    branches:
+      - '**'
+  pull_request:
 
 jobs:
   test-matrix:
-    name: Node ${{ matrix.node }}
+    name: Node
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node: [10, 12, 14]
 
+    if: github.event.pull_request.head.repo.full_name == github.repository
+
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Node
+      - name: Setup Node ${{ matrix.node }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
@@ -37,6 +43,8 @@ jobs:
     name: Build Site
     runs-on: ubuntu-latest
 
+    if: github.event.pull_request.head.repo.full_name == github.repository
+
     steps:
       - uses: actions/checkout@v2
 
@@ -49,6 +57,8 @@ jobs:
   runtime-lint-coverage:
     name: Runtime, Linting, and Coverage
     runs-on: ubuntu-latest
+
+    if: github.event.pull_request.head.repo.full_name == github.repository
 
     steps:
       - uses: actions/checkout@v2
@@ -80,6 +90,8 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
+
+    if: github.event.pull_request.head.repo.full_name == github.repository
 
     steps:
       - uses: actions/checkout@v2
