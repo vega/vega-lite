@@ -212,7 +212,7 @@ function getBinSpacing(
   spacing: number,
   reverse: boolean | SignalRef,
   translate: number | SignalRef,
-  offset: number | SignalRef
+  offset: number | SignalRef = 0
 ) {
   if (isPolarPositionChannel(channel)) {
     return 0;
@@ -233,7 +233,6 @@ function getBinSpacing(
       signal: t + r + o
     };
   } else {
-    offset = offset || 0;
     return translate + (reverse ? -offset - spacingOffset : +offset + spacingOffset);
   }
 }
