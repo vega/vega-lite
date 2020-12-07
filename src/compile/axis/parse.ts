@@ -176,7 +176,7 @@ function isExplicit<T extends string | number | boolean | object>(
   channel: PositionScaleChannel
 ) {
   if (property === 'disable') {
-    return axis !== undefined; // if axis is specified or null/false, then it's enable/disable state is explicit
+    return axis !== undefined; // if axis is specified or null/false, then its enable/disable state is explicit
   }
 
   axis = axis || {};

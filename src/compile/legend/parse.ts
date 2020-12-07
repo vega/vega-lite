@@ -70,7 +70,7 @@ function isExplicit<T extends string | number | object | boolean>(
 ) {
   switch (property) {
     case 'disable':
-      return legend !== undefined; // if axis is specified or null/false, then it's enable/disable state is explicit
+      return legend !== undefined; // if axis is specified or null/false, then its enable/disable state is explicit
     case 'values':
       // specified legend.values is already respected, but may get transformed.
       return !!legend?.values;
