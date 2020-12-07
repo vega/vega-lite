@@ -4,7 +4,7 @@ import {isBinning} from '../bin';
 import {COLUMN, ExtendedChannel, FacetChannel, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../channel';
 import {FieldName, FieldRefOption, initFieldDef, TypedFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
-import {ExprOrSignalRef, replaceExprRefInIndex} from '../expr';
+import {ExprRef, replaceExprRef} from '../expr';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
@@ -78,13 +78,13 @@ export class FacetModel extends ModelWithField {
     return normalizedFacet;
   }
 
-  private initFacetFieldDef(fieldDef: FacetFieldDef<FieldName, ExprOrSignalRef>, channel: FacetChannel) {
+  private initFacetFieldDef(fieldDef: FacetFieldDef<FieldName, ExprRef | SignalRef>, channel: FacetChannel) {
     const {header, ...rest} = fieldDef;
     // Cast because we call initFieldDef, which assumes general FieldDef.
     // However, FacetFieldDef is a bit more constrained than the general FieldDef
     const facetFieldDef = initFieldDef(rest, channel) as FacetFieldDef<FieldName, SignalRef>;
     if (header) {
-      facetFieldDef.header = replaceExprRefInIndex(header);
+      facetFieldDef.header = replaceExprRef(header);
     }
     return facetFieldDef;
   }

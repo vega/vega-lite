@@ -3,7 +3,7 @@ import {isBinned, isBinning} from '../../bin';
 import {isContinuousFieldOrDatumDef, isFieldDef, isNumericDataDef, TypedFieldDef} from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
-import {replaceExprRefInIndex} from '../../expr';
+import {replaceExprRef} from '../../expr';
 import * as log from '../../log';
 import {
   AREA,
@@ -26,7 +26,8 @@ import {contains, getFirstDefined} from '../../util';
 import {getMarkConfig, getMarkPropOrConfig} from '../common';
 
 export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>, config: Config<SignalRef>) {
-  const markDef = replaceExprRefInIndex(originalMarkDef) as MarkDef<Mark, SignalRef>;
+  // FIXME: markDef expects that exprRefs are replaced recursively but replaceExprRef only replaces the top level
+  const markDef: MarkDef<Mark, SignalRef> = replaceExprRef(originalMarkDef) as any;
 
   // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
   const specifiedOrient = getMarkPropOrConfig('orient', markDef, config);

@@ -43,7 +43,7 @@ import type {
 } from 'vega';
 import {isArray} from 'vega-util';
 import {Value} from './channeldef';
-import {ExprOrSignalRef} from './expr';
+import {ExprRef} from './expr';
 import {SortOrder} from './sort';
 import {Dict, Flag, keys} from './util';
 
@@ -54,14 +54,14 @@ export type MappedExclude<T, E> = {
   [P in keyof T]: Exclude<T[P], E>;
 };
 
-export type MapExcludeAndKeepSignalAs<T, E, S extends ExprOrSignalRef> = {
+export type MapExcludeAndKeepSignalAs<T, E, S extends ExprRef | SignalRef> = {
   [P in keyof T]: SignalRef extends T[P] ? Exclude<T[P], E> | S : Exclude<T[P], E>;
 };
 
 // Remove ValueRefs from mapped types
 export type MappedExcludeValueRef<T> = MappedExclude<T, ScaledValueRef<any> | NumericValueRef | ColorValueRef>;
 
-export type MapExcludeValueRefAndReplaceSignalWith<T, S extends ExprOrSignalRef> = MapExcludeAndKeepSignalAs<
+export type MapExcludeValueRefAndReplaceSignalWith<T, S extends ExprRef | SignalRef> = MapExcludeAndKeepSignalAs<
   T,
   ScaledValueRef<any> | NumericValueRef | ColorValueRef,
   S

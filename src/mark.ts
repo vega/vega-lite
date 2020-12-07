@@ -1,7 +1,7 @@
 import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
 import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
-import {ExprOrSignalRef, ExprRef} from './expr';
+import {ExprRef} from './expr';
 import {Flag, keys} from './util';
 import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
 
@@ -456,7 +456,7 @@ export const BAR_CORNER_RADIUS_INDEX: Partial<
   vertical: ['cornerRadiusTopLeft', 'cornerRadiusTopRight']
 };
 
-export interface BarCornerRadiusMixins<ES extends ExprOrSignalRef> {
+export interface BarCornerRadiusMixins<ES extends ExprRef | SignalRef> {
   /**
    * - For vertical bars, top-left and top-right corner radius.
    * - For horizontal bars, top-right and bottom-right corner radius.

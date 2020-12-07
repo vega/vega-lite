@@ -1,4 +1,4 @@
-import {AggregateOp, Orientation, Text} from 'vega';
+import {AggregateOp, Orientation, SignalRef, Text} from 'vega';
 import {PositionChannel} from '../channel';
 import {
   Field,
@@ -12,7 +12,7 @@ import {
 import {Config} from '../config';
 import {Data} from '../data';
 import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding';
-import {ExprOrSignalRef} from '../expr';
+import {ExprRef} from '../expr';
 import * as log from '../log';
 import {isMarkDef, MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';
@@ -333,7 +333,7 @@ export function errorBarParams<
   markDef: MD;
   outerSpec: {
     data?: Data;
-    title?: Text | TitleParams<ExprOrSignalRef>;
+    title?: Text | TitleParams<ExprRef | SignalRef>;
     name?: string;
     description?: string;
     transform?: Transform[];

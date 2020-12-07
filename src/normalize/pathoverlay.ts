@@ -2,7 +2,7 @@ import {SignalRef} from 'vega';
 import {isObject} from 'vega-util';
 import {Config} from '../config';
 import {Encoding, normalizeEncoding} from '../encoding';
-import {ExprOrSignalRef} from '../expr';
+import {ExprRef} from '../expr';
 import {AreaConfig, isMarkDef, LineConfig, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {isUnitSpec} from '../spec/unit';
@@ -33,9 +33,9 @@ function dropLineAndPointFromConfig(config: Config<SignalRef>) {
 
 function getPointOverlay(
   markDef: MarkDef,
-  markConfig: LineConfig<ExprOrSignalRef> = {},
+  markConfig: LineConfig<ExprRef | SignalRef> = {},
   encoding: Encoding<string>
-): MarkConfig<ExprOrSignalRef> {
+): MarkConfig<ExprRef | SignalRef> {
   if (markDef.point === 'transparent') {
     return {opacity: 0};
   } else if (markDef.point) {
@@ -55,7 +55,10 @@ function getPointOverlay(
   }
 }
 
-function getLineOverlay(markDef: MarkDef, markConfig: AreaConfig<ExprOrSignalRef> = {}): MarkConfig<ExprOrSignalRef> {
+function getLineOverlay(
+  markDef: MarkDef,
+  markConfig: AreaConfig<ExprRef | SignalRef> = {}
+): MarkConfig<ExprRef | SignalRef> {
   if (markDef.line) {
     // true or object
     return markDef.line === true ? {} : markDef.line;
