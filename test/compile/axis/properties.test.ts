@@ -232,7 +232,8 @@ describe('compile/axis/properties', () => {
 
     it('correctly align y-axis labels for labelAngle and orient signals', () => {
       const ast = parse(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
-      let a: number, o: AxisOrient;
+      let a: number;
+      let o: AxisOrient;
       // test all angles
       for (a of range(-360, 375, 15)) {
         for (o of ['left', 'right'] as AxisOrient[]) {
@@ -250,7 +251,8 @@ describe('compile/axis/properties', () => {
     it('correctly align x-axis labels for labelAngle and orient signals', () => {
       return new Promise(done => {
         const ast = parse(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
-        let a: number, o: AxisOrient;
+        let a: number;
+        let o: AxisOrient;
         // test all angles
         for (a of range(-360, 375, 15)) {
           for (o of ['top', 'bottom'] as AxisOrient[]) {
@@ -269,7 +271,8 @@ describe('compile/axis/properties', () => {
 
     it('correctly align y-axis labels for orient signal', () => {
       return new Promise(done => {
-        let a: number, o: AxisOrient;
+        let a: number;
+        let o: AxisOrient;
         // test all angles
         for (a of range(-360, 375, 15)) {
           a = normalizeAngle(a);
@@ -286,7 +289,8 @@ describe('compile/axis/properties', () => {
 
     it('correctly align x-axis labels for orient signal', () => {
       return new Promise(done => {
-        let a: number, o: AxisOrient;
+        let a: number;
+        let o: AxisOrient;
         // test all angles
         for (a of range(-360, 375, 15)) {
           a = normalizeAngle(a);
@@ -340,7 +344,8 @@ describe('compile/axis/properties', () => {
     it('correctly align y-axis labels for labelAngle and orient signals', () => {
       return new Promise(done => {
         const ast = parse(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
-        let a: number, o: AxisOrient;
+        let a: number;
+        let o: AxisOrient;
         // test all angles
         for (a of range(-360, 375, 15)) {
           for (o of ['left', 'right'] as AxisOrient[]) {
@@ -360,7 +365,8 @@ describe('compile/axis/properties', () => {
     it('correctly align x-axis labels for labelAngle and orient signals', () => {
       return new Promise(done => {
         const ast = parse(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
-        let a: number, o: AxisOrient;
+        let a: number;
+        let o: AxisOrient;
         // test all angles
         for (a of range(-360, 375, 15)) {
           for (o of ['top', 'bottom'] as AxisOrient[]) {
@@ -379,7 +385,8 @@ describe('compile/axis/properties', () => {
 
     it('correctly align y-axis labels for orient signal', () => {
       return new Promise(done => {
-        let a: number, o: AxisOrient;
+        let a: number;
+        let o: AxisOrient;
         // test all angles
         for (a of range(-360, 375, 15)) {
           a = normalizeAngle(a);
@@ -398,7 +405,8 @@ describe('compile/axis/properties', () => {
 
     it('correctly align x-axis labels for orient signal', () => {
       return new Promise(done => {
-        let a: number, o: AxisOrient;
+        let a: number;
+        let o: AxisOrient;
         // test all angles
         for (a of range(-360, 375, 15)) {
           a = normalizeAngle(a);
