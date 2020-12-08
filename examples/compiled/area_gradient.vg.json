@@ -11,7 +11,25 @@
       "name": "source_0",
       "url": "data/stocks.csv",
       "format": {"type": "csv", "parse": {"date": "date"}},
-      "transform": [{"type": "filter", "expr": "datum.symbol==='GOOG'"}]
+      "transform": [
+        {"type": "filter", "expr": "datum.symbol==='GOOG'"},
+        {
+          "type": "impute",
+          "field": "price",
+          "groupby": [],
+          "key": "date",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["date"],
+          "field": "price",
+          "sort": {"field": [], "order": []},
+          "as": ["price_start", "price_end"],
+          "offset": "zero"
+        }
+      ]
     }
   ],
   "marks": [
@@ -42,8 +60,8 @@
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
-          "y": {"scale": "y", "field": "price"},
-          "y2": {"scale": "y", "value": 0},
+          "y": {"scale": "y", "field": "price_end"},
+          "y2": {"scale": "y", "field": "price_start"},
           "defined": {
             "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
           }
@@ -63,7 +81,7 @@
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
-          "y": {"scale": "y", "field": "price"},
+          "y": {"scale": "y", "field": "price_end"},
           "defined": {
             "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
           }
@@ -81,7 +99,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "price"},
+      "domain": {"data": "source_0", "fields": ["price_start", "price_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

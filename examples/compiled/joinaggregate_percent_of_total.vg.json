@@ -32,6 +32,14 @@
           "as": "PercentOfTotal"
         },
         {
+          "type": "stack",
+          "groupby": ["Activity"],
+          "field": "PercentOfTotal",
+          "sort": {"field": [], "order": []},
+          "as": ["PercentOfTotal_start", "PercentOfTotal_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"PercentOfTotal\"]) && isFinite(+datum[\"PercentOfTotal\"])"
         }
@@ -58,8 +66,8 @@
           "description": {
             "signal": "\"% of total Time: \" + (format(datum[\"PercentOfTotal\"], \"\")) + \"; Activity: \" + (isValid(datum[\"Activity\"]) ? datum[\"Activity\"] : \"\"+datum[\"Activity\"])"
           },
-          "x": {"scale": "x", "field": "PercentOfTotal"},
-          "x2": {"scale": "x", "value": 0},
+          "x": {"scale": "x", "field": "PercentOfTotal_end"},
+          "x2": {"scale": "x", "field": "PercentOfTotal_start"},
           "y": {"scale": "y", "field": "Activity"},
           "height": {"scale": "y", "band": 1}
         }
@@ -70,7 +78,10 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "PercentOfTotal"},
+      "domain": {
+        "data": "data_0",
+        "fields": ["PercentOfTotal_start", "PercentOfTotal_end"]
+      },
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true

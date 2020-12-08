@@ -32,6 +32,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["Day"],
+          "field": "Value",
+          "sort": {"field": [], "order": []},
+          "as": ["Value_start", "Value_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"Value\"]) && isFinite(+datum[\"Value\"])"
         }
@@ -72,8 +80,8 @@
           },
           "x": {"scale": "x", "field": "Day"},
           "width": {"scale": "x", "band": 1},
-          "y": {"scale": "y", "field": "Value"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {"scale": "y", "field": "Value_end"},
+          "y2": {"scale": "y", "field": "Value_start"}
         }
       }
     },
@@ -149,7 +157,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "Value"},
+          {"data": "data_1", "field": "Value_start"},
+          {"data": "data_1", "field": "Value_end"},
           {"data": "data_2", "field": "baseline"},
           {"data": "data_2", "field": "Value"},
           [300]

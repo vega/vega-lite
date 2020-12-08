@@ -30,6 +30,14 @@
           "groupby": ["country"]
         },
         {
+          "type": "stack",
+          "groupby": ["country"],
+          "field": "gold",
+          "sort": {"field": [], "order": []},
+          "as": ["gold_start", "gold_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"gold\"]) && isFinite(+datum[\"gold\"])"
         }
@@ -58,8 +66,8 @@
           },
           "x": {"scale": "x", "field": "country"},
           "width": {"scale": "x", "band": 1},
-          "y": {"scale": "y", "field": "gold"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {"scale": "y", "field": "gold_end"},
+          "y2": {"scale": "y", "field": "gold_start"}
         }
       }
     }
@@ -76,7 +84,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "gold"},
+      "domain": {"data": "data_0", "fields": ["gold_start", "gold_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

@@ -9,6 +9,50 @@
       "name": "source_0",
       "url": "data/sp500.csv",
       "format": {"type": "csv", "parse": {"date": "date"}}
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "impute",
+          "field": "price",
+          "groupby": [],
+          "key": "date",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["date"],
+          "field": "price",
+          "sort": {"field": [], "order": []},
+          "as": ["price_start", "price_end"],
+          "offset": "zero"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "impute",
+          "field": "price",
+          "groupby": [],
+          "key": "date",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["date"],
+          "field": "price",
+          "sort": {"field": [], "order": []},
+          "as": ["price_start", "price_end"],
+          "offset": "zero"
+        }
+      ]
     }
   ],
   "signals": [
@@ -46,7 +90,7 @@
           "style": ["area"],
           "sort": {"field": "datum[\"date\"]"},
           "interactive": false,
-          "from": {"data": "source_0"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "orient": {"value": "vertical"},
@@ -55,8 +99,8 @@
                 "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
               },
               "x": {"scale": "concat_0_x", "field": "date"},
-              "y": {"scale": "concat_0_y", "field": "price"},
-              "y2": {"scale": "concat_0_y", "value": 0},
+              "y": {"scale": "concat_0_y", "field": "price_end"},
+              "y2": {"scale": "concat_0_y", "field": "price_start"},
               "defined": {
                 "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
               }
@@ -337,7 +381,7 @@
           "style": ["area"],
           "sort": {"field": "datum[\"date\"]"},
           "interactive": true,
-          "from": {"data": "source_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "orient": {"value": "vertical"},
@@ -346,8 +390,8 @@
                 "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
               },
               "x": {"scale": "concat_1_x", "field": "date"},
-              "y": {"scale": "concat_1_y", "field": "price"},
-              "y2": {"scale": "concat_1_y", "value": 0},
+              "y": {"scale": "concat_1_y", "field": "price_end"},
+              "y2": {"scale": "concat_1_y", "field": "price_start"},
               "defined": {
                 "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
               }
@@ -438,14 +482,14 @@
     {
       "name": "concat_0_x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "date"},
+      "domain": {"data": "data_0", "field": "date"},
       "domainRaw": {"signal": "brush[\"date\"]"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "concat_0_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "price"},
+      "domain": {"data": "data_0", "fields": ["price_start", "price_end"]},
       "range": [{"signal": "concat_0_height"}, 0],
       "nice": true,
       "zero": true
@@ -453,13 +497,13 @@
     {
       "name": "concat_1_x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "date"},
+      "domain": {"data": "data_1", "field": "date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "concat_1_y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "price"},
+      "domain": {"data": "data_1", "fields": ["price_start", "price_end"]},
       "range": [{"signal": "concat_1_height"}, 0],
       "nice": true,
       "zero": true

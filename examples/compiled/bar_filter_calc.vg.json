@@ -27,6 +27,14 @@
         {"type": "formula", "expr": "2*datum.b", "as": "b2"},
         {"type": "filter", "expr": "datum.b2 > 60"},
         {
+          "type": "stack",
+          "groupby": ["a"],
+          "field": "b2",
+          "sort": {"field": [], "order": []},
+          "as": ["b2_start", "b2_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"b2\"]) && isFinite(+datum[\"b2\"])"
         }
@@ -55,8 +63,8 @@
           },
           "x": {"scale": "x", "field": "a"},
           "width": {"scale": "x", "band": 1},
-          "y": {"scale": "y", "field": "b2"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {"scale": "y", "field": "b2_end"},
+          "y2": {"scale": "y", "field": "b2_start"}
         }
       }
     }
@@ -73,7 +81,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "b2"},
+      "domain": {"data": "data_0", "fields": ["b2_start", "b2_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

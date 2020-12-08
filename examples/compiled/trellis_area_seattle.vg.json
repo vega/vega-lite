@@ -20,6 +20,22 @@
           "type": "timeunit",
           "units": ["hours"],
           "as": ["hours_date", "hours_date_end"]
+        },
+        {
+          "type": "impute",
+          "field": "temperature",
+          "groupby": ["hours_date"],
+          "key": "date",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["date", "hours_date"],
+          "field": "temperature",
+          "sort": {"field": [], "order": []},
+          "as": ["temperature_start", "temperature_end"],
+          "offset": "zero"
         }
       ]
     },
@@ -153,8 +169,8 @@
                 "signal": "\"Month: \" + (timeFormat(datum[\"date\"], '%b')) + \"; temperature: \" + (format(datum[\"temperature\"], \"\"))"
               },
               "x": {"scale": "x", "field": "date"},
-              "y": {"scale": "y", "field": "temperature"},
-              "y2": {"field": {"group": "height"}},
+              "y": {"scale": "y", "field": "temperature_end"},
+              "y2": {"scale": "y", "field": "temperature_start"},
               "defined": {
                 "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"temperature\"]) && isFinite(+datum[\"temperature\"])"
               }
@@ -174,7 +190,10 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "temperature"},
+      "domain": {
+        "data": "source_0",
+        "fields": ["temperature_start", "temperature_end"]
+      },
       "range": [{"signal": "child_height"}, 0],
       "zero": false,
       "nice": true

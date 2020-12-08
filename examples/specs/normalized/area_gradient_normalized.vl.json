@@ -29,7 +29,7 @@
       "mark": {"type": "line", "color": "darkgreen"},
       "encoding": {
         "x": {"field": "date", "type": "temporal"},
-        "y": {"field": "price", "type": "quantitative"}
+        "y": {"field": "price", "type": "quantitative", "stack": "zero"}
       }
     }
   ]

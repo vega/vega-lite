@@ -24,6 +24,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["a"],
+          "field": "c",
+          "sort": {"field": [], "order": []},
+          "as": ["c_start", "c_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"c\"]) && isFinite(+datum[\"c\"])"
         }
@@ -52,8 +60,8 @@
           },
           "x": {"scale": "x", "field": "a"},
           "width": {"scale": "x", "band": 1},
-          "y": {"scale": "y", "field": "c"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {"scale": "y", "field": "c_end"},
+          "y2": {"scale": "y", "field": "c_start"}
         }
       }
     },
@@ -98,7 +106,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "c"},
+          {"data": "data_0", "field": "c_start"},
+          {"data": "data_0", "field": "c_end"},
           {"data": "source_0", "field": "c"}
         ]
       },
