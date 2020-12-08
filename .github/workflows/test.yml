@@ -27,9 +27,6 @@ jobs:
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
 
-      - name: Install extra dependencies for Puppeteer
-        run: sudo apt-get install libgbm1
-
       - name: Tests
         run: yarn jest test/
 
