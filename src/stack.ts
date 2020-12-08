@@ -220,7 +220,7 @@ export function stack(
   }
 
   // warn when stacking non-linear
-  if (stackedFieldDef.scale && stackedFieldDef.scale.type && stackedFieldDef.scale.type !== ScaleType.LINEAR) {
+  if (stackedFieldDef?.scale?.type && stackedFieldDef?.scale?.type !== ScaleType.LINEAR) {
     if (opt.disallowNonLinearStack) {
       return null;
     } else {
