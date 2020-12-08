@@ -207,8 +207,7 @@ export function stack(
     } else {
       offset = stackedFieldDef.stack;
     }
-  } else if (stackBy.length > 0 && STACK_BY_DEFAULT_MARKS.has(mark)) {
-    // Bar and Area with sum ops are automatically stacked by default
+  } else if (STACK_BY_DEFAULT_MARKS.has(mark)) {
     offset = 'zero';
   }
 

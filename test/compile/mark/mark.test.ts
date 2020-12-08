@@ -217,7 +217,7 @@ describe('Mark', () => {
       });
 
       const markGroup = parseMarkGroups(model);
-      expect(markGroup[0].aria).toBe(false);
+      expect(markGroup[0].marks[0].marks[0].aria).toBe(false);
     });
 
     it('should set aria to false for line mark', () => {
