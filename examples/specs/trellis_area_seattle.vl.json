@@ -32,11 +32,13 @@
         "field": "date",
         "type": "temporal",
         "title": "Month",
+        "timeUnit": "monthdate",
         "axis": {"format": "%b"}
       },
       "y": {
         "field": "temperature",
         "type": "quantitative",
+        "aggregate": "mean",
         "scale": {"zero": false},
         "axis": {"title": null, "labels": false, "ticks": false}
       }
