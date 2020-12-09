@@ -101,9 +101,9 @@ export class StackNode extends DataFlowNode {
     if (isValidAsArray(as)) {
       normalizedAs = as;
     } else if (isString(as)) {
-      normalizedAs = [as, as + '_end'];
+      normalizedAs = [as, `${as}_end`];
     } else {
-      normalizedAs = [stackTransform.stack + '_start', stackTransform.stack + '_end'];
+      normalizedAs = [`${stackTransform.stack}_start`, `${stackTransform.stack}_end`];
     }
 
     return new StackNode(parent, {

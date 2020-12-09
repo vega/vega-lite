@@ -63,7 +63,7 @@ export function assembleScaleRange(
     if (isVgRangeStep(scaleRange)) {
       // For width/height step, use a signal created in layout assemble instead of a constant step.
       return {
-        step: {signal: scaleName + '_step'}
+        step: {signal: `${scaleName}_step`}
       };
     }
   } else if (isObject(scaleRange) && isDataRefDomain(scaleRange)) {

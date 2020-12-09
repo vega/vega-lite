@@ -83,15 +83,13 @@ export function parseSelectionPredicate(
       stores.push(store);
     }
 
-    return (
-      `vlSelectionTest(${store}, ${datum}` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
-    );
+    return `vlSelectionTest(${store}, ${datum}${
+      selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`
+    }`;
   }
 
   const predicateStr = logicalExpr(selections, expr);
-  return (
-    (stores.length ? '!(' + stores.map(s => `length(data(${s}))`).join(' || ') + ') || ' : '') + `(${predicateStr})`
-  );
+  return `${stores.length ? `!(${stores.map(s => `length(data(${s}))`).join(' || ')}) || ` : ''}(${predicateStr})`;
 }
 
 export function parseSelectionBinExtent(selCmpt: SelectionComponent, extent: SelectionExtent) {
