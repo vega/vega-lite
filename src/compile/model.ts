@@ -472,7 +472,7 @@ export abstract class Model {
   }
 
   public getName(text: string) {
-    return varName((this.name ? this.name + '_' : '') + text);
+    return varName((this.name ? `${this.name}_` : '') + text);
   }
 
   public getDataName(type: DataSourceType) {

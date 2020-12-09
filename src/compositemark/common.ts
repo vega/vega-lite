@@ -120,7 +120,7 @@ export function getCompositeMarkTooltip(
       return {
         field: fieldPrefix + continuousAxisChannelDef.field,
         type: continuousAxisChannelDef.type,
-        title: isSignalRef(titlePrefix) ? {signal: titlePrefix + `"${escape(mainTitle)}"`} : titlePrefix + mainTitle
+        title: isSignalRef(titlePrefix) ? {signal: `${titlePrefix}"${escape(mainTitle)}"`} : titlePrefix + mainTitle
       };
     }
   );
@@ -169,7 +169,7 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
       mark, // TODO better remove this method and just have mark as a parameter of the method
       encoding: {
         [continuousAxis]: {
-          field: positionPrefix + '_' + continuousAxisChannelDef.field,
+          field: `${positionPrefix}_${continuousAxisChannelDef.field}`,
           type: continuousAxisChannelDef.type,
           ...(title !== undefined ? {title} : {}),
           ...(scale !== undefined ? {scale} : {}),
@@ -177,8 +177,8 @@ export function makeCompositeAggregatePartFactory<P extends PartsMixins<any>>(
         },
         ...(isString(endPositionPrefix)
           ? {
-              [continuousAxis + '2']: {
-                field: endPositionPrefix + '_' + continuousAxisChannelDef.field
+              [`${continuousAxis}2`]: {
+                field: `${endPositionPrefix}_${continuousAxisChannelDef.field}`
               }
             }
           : {}),
@@ -233,9 +233,9 @@ export function compositeMarkContinuousAxis<M extends CompositeMark>(
   const continuousAxis: 'x' | 'y' = orient === 'vertical' ? 'y' : 'x';
 
   const continuousAxisChannelDef = encoding[continuousAxis] as PositionFieldDef<string>; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
-  const continuousAxisChannelDef2 = encoding[continuousAxis + '2'] as SecondaryFieldDef<string>;
-  const continuousAxisChannelDefError = encoding[continuousAxis + 'Error'] as SecondaryFieldDef<string>;
-  const continuousAxisChannelDefError2 = encoding[continuousAxis + 'Error2'] as SecondaryFieldDef<string>;
+  const continuousAxisChannelDef2 = encoding[`${continuousAxis}2`] as SecondaryFieldDef<string>;
+  const continuousAxisChannelDefError = encoding[`${continuousAxis}Error`] as SecondaryFieldDef<string>;
+  const continuousAxisChannelDefError2 = encoding[`${continuousAxis}Error2`] as SecondaryFieldDef<string>;
 
   return {
     continuousAxisChannelDef: filterAggregateFromChannelDef(continuousAxisChannelDef, compositeMark),

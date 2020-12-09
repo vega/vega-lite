@@ -58,7 +58,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
       specifiedScale = specifiedScale ?? {};
 
       const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, mark);
-      scaleComponents[channel] = new ScaleComponent(model.scaleName(channel + '', true), {
+      scaleComponents[channel] = new ScaleComponent(model.scaleName(`${channel}`, true), {
         value: sType,
         explicit: specifiedScale.type === sType
       });

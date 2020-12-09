@@ -242,7 +242,7 @@ export function defaultLabelAlign(
     const orientIsMain = isSignalRef(orient) ? `(${orient.signal} === "${mainOrient}")` : orient === mainOrient;
     return {
       signal:
-        `(${startAngle ? '(' + a + ' + 90)' : a} % 180 === 0) ? ${isX ? null : '"center"'} :` +
+        `(${startAngle ? `(${a} + 90)` : a} % 180 === 0) ? ${isX ? null : '"center"'} :` +
         `(${startAngle} < ${a} && ${a} < ${180 + startAngle}) === ${orientIsMain} ? "left" : "right"`
     };
   }

@@ -59,8 +59,8 @@ function validateVega(vegaSpec: VgSpec) {
 const BROKEN_SUFFIX = '_broken.vl.json';
 const FUTURE_SUFFIX = '_future.vl.json';
 
-const examples = fs.readdirSync('examples/specs').map(file => 'examples/specs/' + file);
-const normalizedExamples = fs.readdirSync('examples/specs/normalized').map(file => 'examples/specs/normalized/' + file);
+const examples = fs.readdirSync('examples/specs').map(file => `examples/specs/${file}`);
+const normalizedExamples = fs.readdirSync('examples/specs/normalized').map(file => `examples/specs/normalized/${file}`);
 
 for (const example of [...examples, ...normalizedExamples]) {
   if (path.extname(example) !== '.json') {

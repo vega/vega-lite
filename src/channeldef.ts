@@ -860,7 +860,7 @@ export function functionalTitleFormatter(fieldDef: FieldDefBase<string>) {
 
   const fn = aggregate || timeUnitParams?.unit || (timeUnitParams?.maxbins && 'timeunit') || (isBinning(bin) && 'bin');
   if (fn) {
-    return fn.toUpperCase() + '(' + field + ')';
+    return `${fn.toUpperCase()}(${field})`;
   } else {
     return field;
   }

@@ -42,7 +42,7 @@ function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
       title = isArray(title) ? title.join(', ') : title;
 
       // merge title with child to produce "Title / Subtitle / Sub-subtitle"
-      title += ' / ' + child.component.layoutHeaders[channel].title;
+      title += ` / ${child.component.layoutHeaders[channel].title}`;
       child.component.layoutHeaders[channel].title = null;
     }
 

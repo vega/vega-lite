@@ -76,7 +76,7 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
 
 function stepSignal(scaleName: string, range: VgRangeStep): NewSignal {
   return {
-    name: scaleName + '_step',
+    name: `${scaleName}_step`,
     value: range.step
   };
 }
