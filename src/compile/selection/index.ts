@@ -50,7 +50,7 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   // Transforms
   project: SelectionProjectionComponent;
   scales?: SelectionProjection[];
-  toggle?: any;
+  toggle?: string;
   translate?: any;
   zoom?: any;
   nearest?: any;
@@ -119,4 +119,5 @@ export function requiresSelectionId(model: Model) {
 export function disableDirectManipulation(selCmpt: SelectionComponent, selDef: SelectionDef<'point'>) {
   if (isString(selDef.select) || !selDef.select.on) delete selCmpt.events;
   if (isString(selDef.select) || !selDef.select.clear) delete selCmpt.clear;
+  if (isString(selDef.select) || !selDef.select.toggle) delete selCmpt.toggle;
 }
