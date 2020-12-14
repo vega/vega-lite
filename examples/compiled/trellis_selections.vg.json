@@ -446,27 +446,11 @@
         },
         {"name": "xenc_tuple_fields", "value": [{"type": "E", "field": "X"}]},
         {
-          "name": "xenc_toggle",
-          "value": false,
-          "on": [
-            {
-              "events": [
-                {
-                  "source": "scope",
-                  "type": "mouseover",
-                  "markname": "child_voronoi"
-                }
-              ],
-              "update": "event.shiftKey"
-            }
-          ]
-        },
-        {
           "name": "xenc_modify",
           "on": [
             {
               "events": {"signal": "xenc_tuple"},
-              "update": "modify(\"xenc_store\", xenc_toggle ? null : xenc_tuple, xenc_toggle ? null : true, xenc_toggle ? xenc_tuple : null)"
+              "update": "modify(\"xenc_store\", xenc_tuple, true)"
             }
           ]
         }

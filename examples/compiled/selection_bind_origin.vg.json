@@ -46,7 +46,7 @@
       "on": [
         {
           "events": {"signal": "org_tuple"},
-          "update": "modify(\"org_store\", org_toggle ? null : org_tuple, org_toggle ? null : true, org_toggle ? org_tuple : null)"
+          "update": "modify(\"org_store\", org_tuple, true)"
         }
       ]
     }
