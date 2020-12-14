@@ -2493,7 +2493,7 @@ combined-stream@^1.0.6, combined-stream@~1.0.6:
   dependencies:
     delayed-stream "~1.0.0"
 
-commander@2, commander@^2.14.1, commander@^2.18.0, commander@^2.20.0:
+commander@2, commander@^2.18.0, commander@^2.20.0:
   version "2.20.3"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
   integrity sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==
@@ -5183,10 +5183,10 @@ js-tokens@^4.0.0:
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-4.0.0.tgz#19203fb59991df98e3a287050d4647cdeaf32499"
   integrity sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==
 
-js-yaml@^3.10.0, js-yaml@^3.13.1:
-  version "3.14.0"
-  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.14.0.tgz#a7a34170f26a21bb162424d8adacb4113a69e482"
-  integrity sha512-/4IbIeHcD9VMHFqDR/gQ7EdZdLimOvW2DdcxFjdyyZ9NsbS+ccrXqVWDtab/lRl5AlUqmpBx8EhPaWR+OtY17A==
+js-yaml@^3.13.1, js-yaml@^3.14.1:
+  version "3.14.1"
+  resolved "https://registry.yarnpkg.com/js-yaml/-/js-yaml-3.14.1.tgz#dae812fdb3825fa306609a8717383c50c36a0537"
+  integrity sha512-okMH7OXXJ7YrN9Ok3/SXrnu4iX9yOk+25nqX4imS2npuvTYDmo/QEZoqwZkYaIDk3jVvBOTOIEgEhaLOynBS9g==
   dependencies:
     argparse "^1.0.7"
     esprima "^4.0.0"
@@ -8456,12 +8456,12 @@ yallist@^4.0.0:
   integrity sha512-3wdGidZyq5PB084XLES5TpOSRA3wjXAlIWMhum2kRcv/41Sn2emQ0dycQW4uZXLejwKvg6EsvbdlVL+FYEct7A==
 
 yaml-front-matter@^4.1.0:
-  version "4.1.0"
-  resolved "https://registry.yarnpkg.com/yaml-front-matter/-/yaml-front-matter-4.1.0.tgz#218da823c2539901a441a041fcf7092c48ec1595"
-  integrity sha512-E2NKXUe8Amsf3kyLDK48c2gvnfom0Yj3m7455iVVg+G5UbX66V5iqFSpEUkQ+A3iJCKIz+mvAbkN7BQ+N0wiLA==
+  version "4.1.1"
+  resolved "https://registry.yarnpkg.com/yaml-front-matter/-/yaml-front-matter-4.1.1.tgz#66eaa9a998fc3dd723708c73aa8e06e79cac91c9"
+  integrity sha512-ULGbghCLsN8Hs8vfExlqrJIe8Hl2TUjD7/zsIGMP8U+dgRXEsDXk4yydxeZJgdGiimP1XB7zhmhOB4/HyfqOyQ==
   dependencies:
-    commander "^2.14.1"
-    js-yaml "^3.10.0"
+    commander "^6.2.0"
+    js-yaml "^3.14.1"
 
 yargs-parser@^18.1.2:
   version "18.1.3"
