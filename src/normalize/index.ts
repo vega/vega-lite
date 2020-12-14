@@ -17,6 +17,7 @@ import {AutoSizeParams, AutosizeType, TopLevel} from '../spec/toplevel';
 import {deepEqual} from '../util';
 import {NormalizerParams} from './base';
 import {CoreNormalizer} from './core';
+import {SelectionCompatibilityNormalizer} from './selectioncompat';
 import {TopLevelSelectionsNormalizer} from './toplevelselection';
 
 export function normalize(
@@ -38,8 +39,9 @@ export function normalize(
   };
 }
 
-const normalizer = new CoreNormalizer();
-const selectionNormalizer = new TopLevelSelectionsNormalizer();
+const coreNormalizer = new CoreNormalizer();
+const selectionCompatNormalizer = new SelectionCompatibilityNormalizer();
+const topLevelSelectionNormalizer = new TopLevelSelectionsNormalizer();
 
 /**
  * Decompose extended unit specs into composition of pure unit specs.
@@ -50,7 +52,10 @@ function normalizeGenericSpec(
   config: Config<SignalRef> = {}
 ) {
   const normParams = {config};
-  return selectionNormalizer.map(normalizer.map(spec, normParams), normParams);
+  return topLevelSelectionNormalizer.map(
+    selectionCompatNormalizer.map(coreNormalizer.map(spec, normParams), normParams),
+    normParams
+  );
 }
 
 function _normalizeAutoSize(autosize: AutosizeType | AutoSizeParams) {
