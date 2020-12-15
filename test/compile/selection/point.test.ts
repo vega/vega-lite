@@ -208,11 +208,11 @@ describe('Multi Selection', () => {
       expect.arrayContaining([
         {
           name: 'one',
-          update: 'vlSelectionResolve("one_store", "union", true)'
+          update: 'vlSelectionResolve("one_store", "union", true, true)'
         },
         {
           name: 'two',
-          update: 'vlSelectionResolve("two_store", "intersect", true)'
+          update: 'vlSelectionResolve("two_store", "intersect", true, true)'
         },
         {
           name: 'unit',
