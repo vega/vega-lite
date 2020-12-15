@@ -27,7 +27,9 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<NormalizerParam
       });
     }
 
-    if (params.length) spec.params = params;
+    if (params.length) {
+      spec.params = params;
+    }
     return spec;
   }
 }
