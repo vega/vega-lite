@@ -24,7 +24,7 @@ const legendBindings: SelectionCompiler<'point'> = {
   },
 
   parse: (model, selCmpt, selDef) => {
-    // Allow legend items to be toggleable by default even though direct manip is disabled.
+    // Allow legend items to be toggleable by default even though direct manipulation is disabled.
     const selDef_ = duplicate(selDef);
     selDef_.select = isString(selDef_.select)
       ? {type: selDef_.select, toggle: selCmpt.toggle}
