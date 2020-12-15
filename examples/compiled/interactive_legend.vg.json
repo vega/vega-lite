@@ -86,7 +86,7 @@
     },
     {
       "name": "industry",
-      "update": "vlSelectionResolve(\"industry_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"industry_store\", \"union\", true, true)"
     },
     {
       "name": "industry_tuple",

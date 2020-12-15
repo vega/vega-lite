@@ -124,7 +124,7 @@
     },
     {
       "name": "pts",
-      "update": "vlSelectionResolve(\"pts_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"pts_store\", \"union\", true, true)"
     }
   ],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},

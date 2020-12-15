@@ -67,7 +67,7 @@
     },
     {
       "name": "label",
-      "update": "vlSelectionResolve(\"label_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"label_store\", \"union\", true, true)"
     },
     {
       "name": "label_tuple",

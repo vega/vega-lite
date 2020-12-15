@@ -76,7 +76,7 @@
     },
     {
       "name": "click",
-      "update": "vlSelectionResolve(\"click_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"click_store\", \"union\", true, true)"
     }
   ],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},

@@ -40,7 +40,7 @@
     },
     {
       "name": "CylYr",
-      "update": "vlSelectionResolve(\"CylYr_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"CylYr_store\", \"union\", true, true)"
     },
     {
       "name": "CylYr_tuple",

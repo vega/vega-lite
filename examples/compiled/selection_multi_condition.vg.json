@@ -36,7 +36,7 @@
     },
     {
       "name": "hoverbrush",
-      "update": "vlSelectionResolve(\"hoverbrush_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"hoverbrush_store\", \"union\", true, true)"
     },
     {
       "name": "brush_x",

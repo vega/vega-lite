@@ -48,7 +48,7 @@
     },
     {
       "name": "highlight",
-      "update": "vlSelectionResolve(\"highlight_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"highlight_store\", \"union\", true, true)"
     },
     {
       "name": "highlight_tuple",

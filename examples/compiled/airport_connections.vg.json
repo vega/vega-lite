@@ -123,7 +123,7 @@
     },
     {
       "name": "org",
-      "update": "vlSelectionResolve(\"org_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"org_store\", \"union\", true, true)"
     },
     {
       "name": "org_tuple",

@@ -51,7 +51,7 @@
     },
     {
       "name": "hover",
-      "update": "vlSelectionResolve(\"hover_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"hover_store\", \"union\", true, true)"
     },
     {
       "name": "hover_tuple",

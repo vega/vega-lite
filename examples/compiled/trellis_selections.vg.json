@@ -60,7 +60,7 @@
     {"name": "grid_Y"},
     {
       "name": "xenc",
-      "update": "vlSelectionResolve(\"xenc_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"xenc_store\", \"union\", true, true)"
     }
   ],
   "layout": {
