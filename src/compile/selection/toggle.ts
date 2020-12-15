@@ -9,13 +9,11 @@ const toggle: SelectionCompiler<'point'> = {
   },
 
   signals: (model, selCmpt, signals) => {
-    return selCmpt.events
-      ? signals.concat({
-          name: selCmpt.name + TOGGLE,
-          value: false,
-          on: [{events: selCmpt.events, update: selCmpt.toggle}]
-        })
-      : signals;
+    return signals.concat({
+      name: selCmpt.name + TOGGLE,
+      value: false,
+      on: [{events: selCmpt.events, update: selCmpt.toggle}]
+    });
   },
 
   modifyExpr: (model, selCmpt) => {

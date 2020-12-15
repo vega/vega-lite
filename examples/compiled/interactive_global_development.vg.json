@@ -147,7 +147,7 @@
       "on": [
         {
           "events": {"signal": "year_tuple"},
-          "update": "modify(\"year_store\", year_toggle ? null : year_tuple, year_toggle ? null : true, year_toggle ? year_tuple : null)"
+          "update": "modify(\"year_store\", year_tuple, true)"
         }
       ]
     },

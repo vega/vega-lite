@@ -24,7 +24,12 @@ const legendBindings: SelectionCompiler<'point'> = {
   },
 
   parse: (model, selCmpt, selDef) => {
-    disableDirectManipulation(selCmpt, selDef);
+    // Allow legend items to be toggleable by default even though direct manipulation is disabled.
+    const selDef_ = duplicate(selDef);
+    selDef_.select = isString(selDef_.select)
+      ? {type: selDef_.select, toggle: selCmpt.toggle}
+      : {...selDef_.select, toggle: selCmpt.toggle};
+    disableDirectManipulation(selCmpt, selDef_);
 
     if (isObject(selDef.select) && (selDef.select.on || selDef.select.clear)) {
       const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
