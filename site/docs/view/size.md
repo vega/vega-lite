@@ -69,6 +69,8 @@ For a discrete x-field or discrete y-field, we can also set `width` (or `height`
 
 The specified dimensions of a chart as explained above set the size of the data rectangle (plotting) dimensions. You can override this behavior by setting the autosize property in [the top level specification](spec.html#top-level). Please note the [limitations below](#limitations).
 
+Note that for performance reasons Vega-Lite doesn't re-calculate layouts on every view change by default. If your view is cut off after the view updates, you can either set `resize` to `true` or manually call `view.resize()` through the [Vega view API](https://vega.github.io/vega/docs/api/view/#view_resize).
+
 The autosize property can be a string or an object with the following properties:
 
 {% include table.html props="type,resize,contains" source="AutoSizeParams" %}
