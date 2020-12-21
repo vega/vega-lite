@@ -11890,8 +11890,6 @@
         "step-before",
         "step-after"
       ],
-      "maximum": 900,
-      "minimum": 100,
       "type": "string"
     },
     "IntervalSelection": {
