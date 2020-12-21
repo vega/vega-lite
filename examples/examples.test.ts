@@ -14,12 +14,19 @@ import {duplicate} from '../src/util';
 // import {inspect} from 'util';
 
 const ajv = new Ajv({
-  allowUnionTypes: true
+  allowUnionTypes: true,
+  strictTypes: false,
+  strictTuples: false
 });
 
-ajv.addMetaSchema(draft6Schema);
 ajv.addFormat('color-hex', () => true);
 addFormats(ajv);
+
+// for Vega until it's fixed
+ajv.addMetaSchema(draft6Schema);
+ajv.addKeyword('defs');
+ajv.addKeyword('refs');
+ajv.addKeyword('numItems'); // TODO: remove when https://github.com/vega/vega/pull/3026 is released
 
 const validateVl = ajv.compile(vlSchema);
 const validateVg = ajv.compile(vgSchema);

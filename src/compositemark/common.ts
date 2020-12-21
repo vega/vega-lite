@@ -28,6 +28,9 @@ export type GenericCompositeMarkDef<T> = GenericMarkDef<T> &
   ColorMixins<ExprRef | SignalRef> & {
     /**
      * The opacity (value between [0,1]) of the mark.
+     *
+     * @minimum 0
+     * @maximum 1
      */
     opacity?: number;
 
