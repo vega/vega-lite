@@ -4533,6 +4533,8 @@
         },
         "opacity": {
           "description": "The opacity (value between [0,1]) of the mark.",
+          "maximum": 1,
+          "minimum": 0,
           "type": "number"
         },
         "orient": {
@@ -8272,6 +8274,8 @@
         },
         "opacity": {
           "description": "The opacity (value between [0,1]) of the mark.",
+          "maximum": 1,
+          "minimum": 0,
           "type": "number"
         },
         "orient": {
@@ -8363,6 +8367,8 @@
         },
         "opacity": {
           "description": "The opacity (value between [0,1]) of the mark.",
+          "maximum": 1,
+          "minimum": 0,
           "type": "number"
         },
         "orient": {
