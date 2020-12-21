@@ -1,4 +1,5 @@
-import Ajv from 'ajv';
+import Ajv, {ErrorObject} from 'ajv';
+import addFormats from 'ajv-formats';
 import draft6Schema from 'ajv/lib/refs/json-schema-draft-06.json';
 import fs from 'fs';
 import path from 'path';
@@ -13,19 +14,12 @@ import {duplicate} from '../src/util';
 // import {inspect} from 'util';
 
 const ajv = new Ajv({
-  validateSchema: true,
-  allErrors: true,
-  // format: 'full',  // remove since we don't encode refs
-  extendRefs: 'fail',
-  schemaId: 'auto' // for draft 04 and 06 schemas
+  allowUnionTypes: true
 });
 
 ajv.addMetaSchema(draft6Schema);
 ajv.addFormat('color-hex', () => true);
-
-console.warn = () => {
-  throw new Error('We should not call console.warn.');
-};
+addFormats(ajv);
 
 const validateVl = ajv.compile(vlSchema);
 const validateVg = ajv.compile(vgSchema);
@@ -38,7 +32,7 @@ function validateVL(spec: TopLevelSpec) {
     // console.log(inspect(errors, {depth: 10, colors: true}));
   }
 
-  expect(errors?.map((err: Ajv.ErrorObject) => err.message).join(', ')).toBeUndefined();
+  expect(errors?.map((err: ErrorObject) => err.message).join(', ')).toBeUndefined();
   expect(valid).toBe(true);
 
   expect(spec.$schema.substr(0, 42)).toBe('https://vega.github.io/schema/vega-lite/v4');
@@ -52,7 +46,7 @@ function validateVega(vegaSpec: VgSpec) {
     // console.log(inspect(errors, {depth: 10, colors: true}));
   }
 
-  expect(errors?.map((err: Ajv.ErrorObject) => err.message).join(', ')).toBeUndefined();
+  expect(errors?.map((err: ErrorObject) => err.message).join(', ')).toBeUndefined();
   expect(valid).toBe(true);
 }
 
