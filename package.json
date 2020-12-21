@@ -90,7 +90,7 @@
     "@types/puppeteer": "^5.4.2",
     "@typescript-eslint/eslint-plugin": "^4.10.0",
     "@typescript-eslint/parser": "^4.10.0",
-    "ajv": "^6.12.6",
+    "ajv": "^7.0.2",
     "chai": "^4.2.0",
     "cheerio": "^1.0.0-rc.3",
     "conventional-changelog-cli": "^2.1.1",
