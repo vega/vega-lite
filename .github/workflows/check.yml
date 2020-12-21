@@ -1,9 +1,6 @@
 name: Check
 
-on:
-  push:
-    branches:
-      - '**'
+on: pull_request
 
 jobs:
   check:

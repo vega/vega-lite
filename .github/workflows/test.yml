@@ -1,32 +1,14 @@
 name: Test
 
-on:
-  push:
-    branches:
-      - '**'
-  pull_request:
+on: pull_request
 
 jobs:
-  pre_job:
-    name: Check for duplicate jobs
-    runs-on: ubuntu-latest
-
-    outputs:
-      should_skip: ${{ steps.skip_check.outputs.should_skip }}
-
-    steps:
-      - id: skip_check
-        uses: fkirc/skip-duplicate-actions@master
-
   test-matrix:
     name: Node
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node: [10, 12, 14]
-
-    needs: pre_job
-    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
 
     steps:
       - uses: actions/checkout@v2
@@ -52,9 +34,6 @@ jobs:
     name: Build Site
     runs-on: ubuntu-latest
 
-    needs: pre_job
-    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
-
     steps:
       - uses: actions/checkout@v2
 
@@ -67,9 +46,6 @@ jobs:
   runtime-lint-coverage:
     name: Runtime, Linting, and Coverage
     runs-on: ubuntu-latest
-
-    needs: pre_job
-    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
 
     steps:
       - uses: actions/checkout@v2
@@ -101,9 +77,6 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-
-    needs: pre_job
-    if: ${{ needs.pre_job.outputs.should_skip != 'true' }}
 
     steps:
       - uses: actions/checkout@v2
