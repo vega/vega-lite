@@ -272,6 +272,8 @@ export interface FieldDefBase<F, B extends Bin = Bin> extends BandMixins {
    * __See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation.
    */
   bin?: B;
+
+  foo?: number;
 }
 
 export function toFieldDefBase(fieldDef: FieldDef<string>): FieldDefBase<string> {
