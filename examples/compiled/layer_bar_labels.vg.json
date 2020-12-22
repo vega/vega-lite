@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Bar chart with text labels. Apply scale padding to make the frame cover the labels.",
+  "description": "Bar chart with text labels. Set domain to make the frame cover the labels.",
   "background": "white",
   "padding": 5,
   "width": 200,
@@ -91,15 +91,8 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "data_1", "field": "b_start"},
-          {"data": "data_1", "field": "b_end"},
-          {"data": "data_2", "field": "b"}
-        ]
-      },
+      "domain": [0, 60],
       "range": [0, {"signal": "width"}],
-      "padding": 10,
       "nice": true,
       "zero": true
     },
