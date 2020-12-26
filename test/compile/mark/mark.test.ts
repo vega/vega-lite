@@ -235,6 +235,22 @@ describe('Mark', () => {
       expect(markGroup[0].aria).toBe(false);
     });
 
+    it('should group mark with corder radius by nominal field', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          cornerRadius: 2
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'},
+          y: {type: 'nominal', field: 'bar'}
+        }
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].from.facet.groupby).toEqual(['bar']);
+    });
+
     describe('interactiveFlag', () => {
       it('should not contain flag if no selections', () => {
         const model = parseUnitModelWithScaleAndSelection({
