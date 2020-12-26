@@ -38,7 +38,7 @@ describe('stack', () => {
         }
       };
       const stackProps = stack(spec.mark, spec.encoding, undefined);
-      expect(stackProps.fieldChannel).toBe('x');
+      expect(stackProps.fieldChannel).toBe(X);
     }
   });
 
@@ -58,6 +58,21 @@ describe('stack', () => {
     }
   });
 
+  it('should stack default stack marks', () => {
+    for (const mark of STACK_BY_DEFAULT_MARKS) {
+      const spec: TopLevel<NormalizedUnitSpec> = {
+        data: {url: 'data/barley.json'},
+        mark: mark,
+        encoding: {
+          x: {field: 'yield', type: 'quantitative'},
+          y: {field: 'variety', type: 'nominal'}
+        }
+      };
+      const stackProps = stack(spec.mark, spec.encoding, undefined);
+      expect(stackProps.fieldChannel).toBe(X);
+    }
+  });
+
   it('should prioritize axis with stack', () => {
     for (const mark of STACKABLE_NON_POLAR_MARKS) {
       const spec: TopLevel<NormalizedUnitSpec> = {
@@ -70,7 +85,7 @@ describe('stack', () => {
         }
       };
       const stackProps = stack(spec.mark, spec.encoding, undefined);
-      expect(stackProps.fieldChannel).toBe('x');
+      expect(stackProps.fieldChannel).toBe(X);
     }
   });
 

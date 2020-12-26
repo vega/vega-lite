@@ -170,14 +170,14 @@ describe('PathOverlayNormalizer', () => {
           mark: {type: 'line'},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'}
+            y: {field: 'price', type: 'quantitative', stack: 'zero'}
           }
         },
         {
           mark: {type: 'point', opacity: 1, filled: true},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'}
+            y: {field: 'price', type: 'quantitative', stack: 'zero'}
           }
         }
       ],
@@ -210,7 +210,7 @@ describe('PathOverlayNormalizer', () => {
           mark: {type: 'line', interpolate: 'monotone'},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'}
+            y: {field: 'price', type: 'quantitative', stack: 'zero'}
           }
         }
       ],
@@ -349,7 +349,7 @@ describe('PathOverlayNormalizer', () => {
           mark: {type: 'line'},
           encoding: {
             x: {field: 'date', type: 'temporal'},
-            y: {field: 'price', type: 'quantitative'}
+            y: {field: 'price', type: 'quantitative', stack: 'zero'}
           }
         }
       ]

@@ -16,6 +16,14 @@
       "transform": [
         {"type": "fold", "fields": ["gold", "silver"], "as": ["key", "value"]},
         {
+          "type": "stack",
+          "groupby": ["country", "key"],
+          "field": "value",
+          "sort": {"field": [], "order": []},
+          "as": ["value_start", "value_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
         }
@@ -131,8 +139,8 @@
               },
               "x": {"scale": "x", "field": "country"},
               "width": {"scale": "x", "band": 1},
-              "y": {"scale": "y", "field": "value"},
-              "y2": {"scale": "y", "value": 0}
+              "y": {"scale": "y", "field": "value_end"},
+              "y2": {"scale": "y", "field": "value_start"}
             }
           }
         }
@@ -167,7 +175,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "value"},
+      "domain": {"data": "data_0", "fields": ["value_start", "value_end"]},
       "range": [{"signal": "child_height"}, 0],
       "nice": true,
       "zero": true

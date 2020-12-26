@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Bar chart with text labels. Apply scale padding to make the frame cover the labels.",
+  "description": "Bar chart with text labels. Set domain to make the frame cover the labels.",
   "background": "white",
   "padding": 5,
   "width": 200,
@@ -11,7 +11,25 @@
       "values": [{"a": "A", "b": 28}, {"a": "B", "b": 55}, {"a": "C", "b": 43}]
     },
     {
-      "name": "data_0",
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["a"],
+          "field": "b",
+          "sort": {"field": [], "order": []},
+          "as": ["b_start", "b_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
       "source": "source_0",
       "transform": [
         {
@@ -33,7 +51,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"value": "#4c78a8"},
@@ -41,8 +59,8 @@
           "description": {
             "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "b"},
-          "x2": {"scale": "x", "value": 0},
+          "x": {"scale": "x", "field": "b_end"},
+          "x2": {"scale": "x", "field": "b_start"},
           "y": {"scale": "y", "field": "a"},
           "height": {"scale": "y", "band": 1}
         }
@@ -52,7 +70,7 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "align": {"value": "left"},
@@ -73,16 +91,21 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": [0, 60],
       "range": [0, {"signal": "width"}],
-      "padding": 10,
       "nice": true,
       "zero": true
     },
     {
       "name": "y",
       "type": "band",
-      "domain": {"data": "data_0", "field": "a", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "a"},
+          {"data": "data_2", "field": "a"}
+        ],
+        "sort": true
+      },
       "range": {"step": {"signal": "y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

@@ -18,6 +18,14 @@
           "as": ["mean_acc"]
         },
         {
+          "type": "stack",
+          "groupby": ["Cylinders"],
+          "field": "mean_acc",
+          "sort": {"field": [], "order": []},
+          "as": ["mean_acc_start", "mean_acc_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"mean_acc\"]) && isFinite(+datum[\"mean_acc\"])"
         }
@@ -46,8 +54,8 @@
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": 1},
-          "y": {"scale": "y", "field": "mean_acc"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {"scale": "y", "field": "mean_acc_end"},
+          "y2": {"scale": "y", "field": "mean_acc_start"}
         }
       }
     }
@@ -64,7 +72,10 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "mean_acc"},
+      "domain": {
+        "data": "source_0",
+        "fields": ["mean_acc_start", "mean_acc_end"]
+      },
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

@@ -36,6 +36,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["Title"],
+          "field": "IMDB Rating",
+          "sort": {"field": [], "order": []},
+          "as": ["IMDB Rating_start", "IMDB Rating_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"IMDB Rating\"]) && isFinite(+datum[\"IMDB Rating\"])"
         }
@@ -73,8 +81,8 @@
           "description": {
             "signal": "\"IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; Title: \" + (isValid(datum[\"Title\"]) ? datum[\"Title\"] : \"\"+datum[\"Title\"])"
           },
-          "x": {"scale": "x", "field": "IMDB Rating"},
-          "x2": {"scale": "x", "value": 0},
+          "x": {"scale": "x", "field": "IMDB Rating_end"},
+          "x2": {"scale": "x", "field": "IMDB Rating_start"},
           "y": {"scale": "y", "field": "Title"},
           "height": {"scale": "y", "band": 1}
         }
@@ -107,7 +115,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_0", "field": "IMDB Rating"},
+          {"data": "data_0", "field": "IMDB Rating_start"},
+          {"data": "data_0", "field": "IMDB Rating_end"},
           {"data": "data_1", "field": "AverageYearRating"}
         ]
       },

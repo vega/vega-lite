@@ -19,6 +19,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["color"],
+          "field": "b",
+          "sort": {"field": [], "order": []},
+          "as": ["b_start", "b_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
         }
@@ -47,8 +55,8 @@
           },
           "x": {"scale": "x", "field": "color"},
           "width": {"scale": "x", "band": 1},
-          "y": {"scale": "y", "field": "b"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {"scale": "y", "field": "b_end"},
+          "y2": {"scale": "y", "field": "b_start"}
         }
       }
     }
@@ -65,7 +73,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "data_0", "fields": ["b_start", "b_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

@@ -27,6 +27,14 @@
           "as": ["hours_a", "hours_a_end"]
         },
         {
+          "type": "stack",
+          "groupby": ["hours_a"],
+          "field": "b",
+          "sort": {"field": [], "order": []},
+          "as": ["b_start", "b_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "(isDate(datum[\"hours_a\"]) || (isValid(datum[\"hours_a\"]) && isFinite(+datum[\"hours_a\"]))) && isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
         }
@@ -60,8 +68,8 @@
             },
             {"scale": "x", "field": "hours_a_end"}
           ],
-          "y": {"scale": "y", "field": "b"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {"scale": "y", "field": "b_end"},
+          "y2": {"scale": "y", "field": "b_start"}
         }
       }
     }
@@ -81,7 +89,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "data_0", "fields": ["b_start", "b_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

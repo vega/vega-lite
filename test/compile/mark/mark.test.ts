@@ -217,7 +217,7 @@ describe('Mark', () => {
       });
 
       const markGroup = parseMarkGroups(model);
-      expect(markGroup[0].aria).toBe(false);
+      expect(markGroup[0].marks[0].marks[0].aria).toBe(false);
     });
 
     it('should set aria to false for line mark', () => {
@@ -233,6 +233,22 @@ describe('Mark', () => {
 
       const markGroup = parseMarkGroups(model);
       expect(markGroup[0].aria).toBe(false);
+    });
+
+    it('should group mark with corder radius by nominal field', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        mark: {
+          type: 'bar',
+          cornerRadius: 2
+        },
+        encoding: {
+          x: {type: 'quantitative', field: 'foo'},
+          y: {type: 'nominal', field: 'bar'}
+        }
+      });
+
+      const markGroup = parseMarkGroups(model);
+      expect(markGroup[0].from.facet.groupby).toEqual(['bar']);
     });
 
     describe('interactiveFlag', () => {

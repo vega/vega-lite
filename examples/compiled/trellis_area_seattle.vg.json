@@ -20,6 +20,19 @@
           "type": "timeunit",
           "units": ["hours"],
           "as": ["hours_date", "hours_date_end"]
+        },
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["month", "date"],
+          "as": ["monthdate_date", "monthdate_date_end"]
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["monthdate_date", "hours_date"],
+          "ops": ["mean"],
+          "fields": ["temperature"],
+          "as": ["mean_temperature"]
         }
       ]
     },
@@ -143,20 +156,20 @@
           "name": "child_marks",
           "type": "area",
           "style": ["area"],
-          "sort": {"field": "datum[\"date\"]"},
+          "sort": {"field": "datum[\"monthdate_date\"]"},
           "from": {"data": "facet"},
           "encode": {
             "update": {
               "orient": {"value": "vertical"},
               "fill": {"value": "#4c78a8"},
               "description": {
-                "signal": "\"Month: \" + (timeFormat(datum[\"date\"], '%b')) + \"; temperature: \" + (format(datum[\"temperature\"], \"\"))"
+                "signal": "\"Month: \" + (timeFormat(datum[\"monthdate_date\"], '%b')) + \"; Mean of temperature: \" + (format(datum[\"mean_temperature\"], \"\"))"
               },
-              "x": {"scale": "x", "field": "date"},
-              "y": {"scale": "y", "field": "temperature"},
+              "x": {"scale": "x", "field": "monthdate_date"},
+              "y": {"scale": "y", "field": "mean_temperature"},
               "y2": {"field": {"group": "height"}},
               "defined": {
-                "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"temperature\"]) && isFinite(+datum[\"temperature\"])"
+                "signal": "isValid(datum[\"monthdate_date\"]) && isFinite(+datum[\"monthdate_date\"]) && isValid(datum[\"mean_temperature\"]) && isFinite(+datum[\"mean_temperature\"])"
               }
             }
           }
@@ -168,13 +181,13 @@
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "date"},
+      "domain": {"data": "source_0", "field": "monthdate_date"},
       "range": [0, {"signal": "child_width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "temperature"},
+      "domain": {"data": "source_0", "field": "mean_temperature"},
       "range": [{"signal": "child_height"}, 0],
       "zero": false,
       "nice": true

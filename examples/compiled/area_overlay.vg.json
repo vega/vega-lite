@@ -18,6 +18,36 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "impute",
+          "field": "price",
+          "groupby": [],
+          "key": "date",
+          "method": "value",
+          "value": 0
+        },
+        {
+          "type": "stack",
+          "groupby": ["date"],
+          "field": "price",
+          "sort": {"field": [], "order": []},
+          "as": ["price_start", "price_end"],
+          "offset": "zero"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["date"],
+          "field": "price",
+          "sort": {"field": [], "order": []},
+          "as": ["price_start", "price_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
         }
@@ -30,7 +60,7 @@
       "type": "area",
       "style": ["area"],
       "sort": {"field": "datum[\"date\"]"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -40,8 +70,8 @@
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
-          "y": {"scale": "y", "field": "price"},
-          "y2": {"scale": "y", "value": 0},
+          "y": {"scale": "y", "field": "price_end"},
+          "y2": {"scale": "y", "field": "price_start"},
           "defined": {
             "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
           }
@@ -53,7 +83,7 @@
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"date\"]"},
-      "from": {"data": "source_0"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
@@ -61,7 +91,7 @@
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
-          "y": {"scale": "y", "field": "price"},
+          "y": {"scale": "y", "field": "price_end"},
           "defined": {
             "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
           }
@@ -72,7 +102,7 @@
       "name": "layer_2_marks",
       "type": "symbol",
       "style": ["point"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "opacity": {"value": 1},
@@ -82,7 +112,7 @@
             "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "date"},
-          "y": {"scale": "y", "field": "price"}
+          "y": {"scale": "y", "field": "price_end"}
         }
       }
     }
@@ -93,8 +123,8 @@
       "type": "time",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "date"},
-          {"data": "data_0", "field": "date"}
+          {"data": "data_0", "field": "date"},
+          {"data": "data_1", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -104,8 +134,10 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "price"},
-          {"data": "data_0", "field": "price"}
+          {"data": "data_0", "field": "price_start"},
+          {"data": "data_0", "field": "price_end"},
+          {"data": "data_1", "field": "price_start"},
+          {"data": "data_1", "field": "price_end"}
         ]
       },
       "range": [{"signal": "height"}, 0],

@@ -24,6 +24,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["dir"],
+          "field": "strength",
+          "sort": {"field": [], "order": []},
+          "as": ["strength_start", "strength_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"strength\"]) && isFinite(+datum[\"strength\"])"
         }
@@ -44,8 +52,8 @@
           },
           "x": {"signal": "width", "mult": 0.5},
           "y": {"signal": "height", "mult": 0.5},
-          "outerRadius": {"scale": "radius", "field": "strength"},
-          "innerRadius": {"scale": "radius", "value": 0},
+          "outerRadius": {"scale": "radius", "field": "strength_end"},
+          "innerRadius": {"scale": "radius", "field": "strength_start"},
           "startAngle": {"scale": "theta", "field": "dir"},
           "endAngle": {
             "scale": "theta",
@@ -66,7 +74,10 @@
     {
       "name": "radius",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "strength"},
+      "domain": {
+        "data": "data_0",
+        "fields": ["strength_start", "strength_end"]
+      },
       "range": [0, {"signal": "min(width,height)/2"}],
       "zero": true
     },
