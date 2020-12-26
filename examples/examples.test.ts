@@ -26,7 +26,6 @@ addFormats(ajv);
 ajv.addMetaSchema(draft6Schema);
 ajv.addKeyword('defs');
 ajv.addKeyword('refs');
-ajv.addKeyword('numItems'); // TODO: remove when https://github.com/vega/vega/pull/3026 is released
 
 const validateVl = ajv.compile(vlSchema);
 const validateVg = ajv.compile(vgSchema);
