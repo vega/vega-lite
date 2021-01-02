@@ -1,7 +1,7 @@
 import {isArray, isString} from 'vega';
 import {Field} from '../channeldef';
-import {Parameter} from '../parameter';
-import {isParameterSelection, SelectionDef} from '../selection';
+import {VariableParameter} from '../parameter';
+import {isInteractiveParameter, SelectionParameter} from '../selection';
 import {
   BaseSpec,
   isUnitSpec,
@@ -18,9 +18,9 @@ export class TopLevelSelectionsNormalizer extends SpecMapper<NormalizerParams, N
   public map(spec: TopLevel<NormalizedSpec>, normParams: NormalizerParams): TopLevel<NormalizedSpec> {
     const selections = normParams.selections ?? [];
     if (spec.params && !isUnitSpec(spec)) {
-      const params: Parameter[] = [];
+      const params: VariableParameter[] = [];
       for (const param of spec.params) {
-        if (isParameterSelection(param)) {
+        if (isInteractiveParameter(param)) {
           selections.push(param);
         } else {
           params.push(param);
@@ -39,7 +39,7 @@ export class TopLevelSelectionsNormalizer extends SpecMapper<NormalizerParams, N
     if (!selections || !selections.length) return spec as NormalizedUnitSpec;
 
     const path = (normParams.path ?? []).concat(spec.name);
-    const params: SelectionDef[] = [];
+    const params: SelectionParameter[] = [];
 
     for (const selection of selections) {
       // By default, apply selections to all unit views.

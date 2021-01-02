@@ -3,6 +3,7 @@ import {isObject} from 'vega-util';
 import {SingleDefUnitChannel} from './channel';
 import {FieldName, PrimitiveValue} from './channeldef';
 import {DateTime} from './datetime';
+import {ParameterBase} from './parameter';
 import {Dict} from './util';
 
 export const SELECTION_ID = '_vgsid_';
@@ -177,12 +178,7 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
 
 export type SelectionTypeConfig = PointSelectionConfig | IntervalSelectionConfig;
 
-export interface SelectionDef<T extends SelectionType = SelectionType> {
-  /**
-   * Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
-   */
-  name: string;
-
+export interface SelectionParameter<T extends SelectionType = SelectionType> extends ParameterBase {
   /**
    * Determines the default event processing and data query for the selection. Vega-Lite currently supports two selection types:
    *
@@ -221,7 +217,7 @@ export interface SelectionDef<T extends SelectionType = SelectionType> {
     : never;
 }
 
-export type TopLevelSelectionDef = SelectionDef & {
+export type TopLevelSelectionParameter = SelectionParameter & {
   /**
    * By default, top-level selections are applied to every view in the visualization.
    * If this property is specified, selections will only be applied to views with the given names.
@@ -299,6 +295,6 @@ export function isLegendStreamBinding(bind: any): bind is LegendStreamBinding {
   return isLegendBinding(bind) && isObject(bind);
 }
 
-export function isParameterSelection(param: any): param is SelectionDef {
+export function isInteractiveParameter(param: any): param is SelectionParameter {
   return !!param['select'];
 }

@@ -1,4 +1,4 @@
-import {SelectionDef} from '../selection';
+import {SelectionParameter} from '../selection';
 import {NormalizedUnitSpec} from '../spec';
 import {SpecMapper} from '../spec/map';
 import {NormalizerParams} from './base';
@@ -6,7 +6,7 @@ import {NormalizerParams} from './base';
 export class SelectionCompatibilityNormalizer extends SpecMapper<NormalizerParams, NormalizedUnitSpec> {
   public mapUnit(spec: NormalizedUnitSpec) {
     const selections = (spec as any).selection;
-    const params: SelectionDef[] = [];
+    const params: SelectionParameter[] = [];
 
     if (!selections) return spec;
 

@@ -5,8 +5,8 @@ import {signalRefOrValue} from '../compile/common';
 import {Config} from '../config';
 import {InlineDataset} from '../data';
 import {ExprRef} from '../expr';
-import {Parameter} from '../parameter';
-import {TopLevelSelectionDef} from '../selection';
+import {VariableParameter} from '../parameter';
+import {TopLevelSelectionParameter} from '../selection';
 import {Dict} from '../util';
 
 /**
@@ -72,7 +72,7 @@ export interface TopLevelProperties<ES extends ExprRef | SignalRef = ExprRef | S
   /**
    * Dynamic variables that parameterize a visualization.
    */
-  params?: (Parameter | TopLevelSelectionDef)[];
+  params?: (VariableParameter | TopLevelSelectionParameter)[];
 }
 
 export type FitType = 'fit' | 'fit-x' | 'fit-y';

@@ -3,7 +3,7 @@ import {FieldName} from '../channeldef';
 import {Config} from '../config';
 import {Encoding} from '../encoding';
 import {Projection} from '../projection';
-import {TopLevelSelectionDef} from '../selection';
+import {TopLevelSelectionParameter} from '../selection';
 import {GenericSpec, NormalizedSpec} from '../spec';
 import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec/unit';
@@ -42,6 +42,6 @@ export interface NormalizerParams {
   parentProjection?: Projection;
   repeater?: RepeaterValue;
   repeaterPrefix?: string;
-  selections?: TopLevelSelectionDef[];
+  selections?: TopLevelSelectionParameter[];
   path?: string[];
 }

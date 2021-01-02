@@ -6,6 +6,7 @@ import {
   LegendBinding,
   SelectionInit,
   SelectionInitInterval,
+  SelectionParameter,
   SelectionResolution,
   SelectionType,
   SELECTION_ID
@@ -15,16 +16,14 @@ import {OutputNode} from '../data/dataflow';
 import {FacetModel} from '../facet';
 import {isFacetModel, Model} from '../model';
 import {UnitModel} from '../unit';
-import interval from './interval';
-import point from './point';
-import {SelectionProjection, SelectionProjectionComponent} from './project';
-import {SelectionDef} from '../../selection';
 import clear from './clear';
 import inputs from './inputs';
-import nearest from './nearest';
-import project from './project';
-import scales from './scales';
+import interval from './interval';
 import legends from './legends';
+import nearest from './nearest';
+import point from './point';
+import project, {SelectionProjection, SelectionProjectionComponent} from './project';
+import scales from './scales';
 import toggle from './toggle';
 import translate from './translate';
 import zoom from './zoom';
@@ -59,7 +58,7 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
 
 export interface SelectionCompiler<T extends SelectionType = SelectionType> {
   defined: (selCmpt: SelectionComponent) => boolean;
-  parse?: (model: UnitModel, selCmpt: SelectionComponent<T>, def: SelectionDef<T>) => void;
+  parse?: (model: UnitModel, selCmpt: SelectionComponent<T>, def: SelectionParameter<T>) => void;
   signals?: (model: UnitModel, selCmpt: SelectionComponent<T>, signals: NewSignal[]) => Signal[]; // the output can be a new or a push signal
   topLevelSignals?: (model: Model, selCmpt: SelectionComponent<T>, signals: NewSignal[]) => NewSignal[];
   modifyExpr?: (model: UnitModel, selCmpt: SelectionComponent<T>, expr: string) => string;
@@ -116,7 +115,7 @@ export function requiresSelectionId(model: Model) {
 
 // Binding a point selection to query widgets or legends disables default direct manipulation interaction.
 // A user can choose to re-enable it by explicitly specifying triggering input events.
-export function disableDirectManipulation(selCmpt: SelectionComponent, selDef: SelectionDef<'point'>) {
+export function disableDirectManipulation(selCmpt: SelectionComponent, selDef: SelectionParameter<'point'>) {
   if (isString(selDef.select) || !selDef.select.on) delete selCmpt.events;
   if (isString(selDef.select) || !selDef.select.clear) delete selCmpt.clear;
   if (isString(selDef.select) || !selDef.select.toggle) delete selCmpt.toggle;

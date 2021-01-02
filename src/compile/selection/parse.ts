@@ -1,17 +1,17 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
 import {selectionCompilers, SelectionComponent, STORE} from '.';
+import {DataSourceType} from '../../data';
 import {warn} from '../../log';
 import {LogicalComposition} from '../../logical';
-import {BaseSelectionConfig, SelectionDef, SelectionExtent} from '../../selection';
+import {BaseSelectionConfig, SelectionExtent, SelectionParameter} from '../../selection';
 import {Dict, duplicate, entries, logicalExpr, varName} from '../../util';
 import {DataFlowNode, OutputNode} from '../data/dataflow';
 import {FilterNode} from '../data/filter';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
-import {DataSourceType} from '../../data';
 
-export function parseUnitSelection(model: UnitModel, selDefs: SelectionDef[]) {
+export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter[]) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
   const selectionConfig = model.config.selection;
 
