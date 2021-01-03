@@ -7542,10 +7542,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/TopLevelSelectionDef"
+                "$ref": "#/definitions/TopLevelSelectionParameter"
               }
             ]
           },
@@ -9122,10 +9122,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/SelectionDef"
+                "$ref": "#/definitions/SelectionParameter"
               }
             ]
           },
@@ -19485,34 +19485,6 @@
       ],
       "minimum": 0
     },
-    "Parameter": {
-      "additionalProperties": false,
-      "properties": {
-        "bind": {
-          "$ref": "#/definitions/Binding",
-          "description": "Binds the parameter to an external input element such as a slider, selection list or radio button group."
-        },
-        "description": {
-          "description": "A text description of the parameter, useful for inline documentation.",
-          "type": "string"
-        },
-        "expr": {
-          "$ref": "#/definitions/Expr",
-          "description": "An expression for the value of the parameter. This expression may include other parameters, in which case the parameter will automatically update in response to upstream parameter changes."
-        },
-        "name": {
-          "description": "Required. A unique name for the parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
-          "type": "string"
-        },
-        "value": {
-          "description": "The initial value of the parameter.\n\n__Default value:__ `undefined`"
-        }
-      },
-      "required": [
-        "name"
-      ],
-      "type": "object"
-    },
     "Parse": {
       "additionalProperties": {
         "$ref": "#/definitions/ParseValue"
@@ -22327,7 +22299,77 @@
       },
       "type": "object"
     },
-    "SelectionDef": {
+    "SelectionExtent": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "$ref": "#/definitions/FieldName",
+              "description": "The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings."
+            },
+            "selection": {
+              "description": "The name of a selection.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "selection"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "encoding": {
+              "$ref": "#/definitions/SingleDefUnitChannel",
+              "description": "The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings."
+            },
+            "selection": {
+              "description": "The name of a selection.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "selection"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "SelectionInit": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/PrimitiveValue"
+        },
+        {
+          "$ref": "#/definitions/DateTime"
+        }
+      ]
+    },
+    "SelectionInitInterval": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Vector2<boolean>"
+        },
+        {
+          "$ref": "#/definitions/Vector2<number>"
+        },
+        {
+          "$ref": "#/definitions/Vector2<string>"
+        },
+        {
+          "$ref": "#/definitions/Vector2<DateTime>"
+        }
+      ]
+    },
+    "SelectionInitIntervalMapping": {
+      "$ref": "#/definitions/Dict<SelectionInitInterval>"
+    },
+    "SelectionInitMapping": {
+      "$ref": "#/definitions/Dict<SelectionInit>"
+    },
+    "SelectionParameter": {
       "additionalProperties": false,
       "properties": {
         "bind": {
@@ -22351,8 +22393,12 @@
           ],
           "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
         },
+        "description": {
+          "description": "A text description of the parameter, useful for inline documentation.",
+          "type": "string"
+        },
         "name": {
-          "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+          "description": "Required. A unique name for the parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
           "type": "string"
         },
         "select": {
@@ -22538,76 +22584,6 @@
         "select"
       ],
       "type": "object"
-    },
-    "SelectionExtent": {
-      "anyOf": [
-        {
-          "additionalProperties": false,
-          "properties": {
-            "field": {
-              "$ref": "#/definitions/FieldName",
-              "description": "The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings."
-            },
-            "selection": {
-              "description": "The name of a selection.",
-              "type": "string"
-            }
-          },
-          "required": [
-            "selection"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "encoding": {
-              "$ref": "#/definitions/SingleDefUnitChannel",
-              "description": "The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings."
-            },
-            "selection": {
-              "description": "The name of a selection.",
-              "type": "string"
-            }
-          },
-          "required": [
-            "selection"
-          ],
-          "type": "object"
-        }
-      ]
-    },
-    "SelectionInit": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/PrimitiveValue"
-        },
-        {
-          "$ref": "#/definitions/DateTime"
-        }
-      ]
-    },
-    "SelectionInitInterval": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/Vector2<boolean>"
-        },
-        {
-          "$ref": "#/definitions/Vector2<number>"
-        },
-        {
-          "$ref": "#/definitions/Vector2<string>"
-        },
-        {
-          "$ref": "#/definitions/Vector2<DateTime>"
-        }
-      ]
-    },
-    "SelectionInitIntervalMapping": {
-      "$ref": "#/definitions/Dict<SelectionInitInterval>"
-    },
-    "SelectionInitMapping": {
-      "$ref": "#/definitions/Dict<SelectionInit>"
     },
     "SelectionPredicate": {
       "additionalProperties": false,
@@ -28748,10 +28724,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/TopLevelSelectionDef"
+                "$ref": "#/definitions/TopLevelSelectionParameter"
               }
             ]
           },
@@ -28892,10 +28868,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/TopLevelSelectionDef"
+                "$ref": "#/definitions/TopLevelSelectionParameter"
               }
             ]
           },
@@ -29022,10 +28998,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/TopLevelSelectionDef"
+                "$ref": "#/definitions/TopLevelSelectionParameter"
               }
             ]
           },
@@ -29180,10 +29156,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/TopLevelSelectionDef"
+                "$ref": "#/definitions/TopLevelSelectionParameter"
               }
             ]
           },
@@ -29353,10 +29329,10 @@
               "items": {
                 "anyOf": [
                   {
-                    "$ref": "#/definitions/Parameter"
+                    "$ref": "#/definitions/VariableParameter"
                   },
                   {
-                    "$ref": "#/definitions/TopLevelSelectionDef"
+                    "$ref": "#/definitions/TopLevelSelectionParameter"
                   }
                 ]
               },
@@ -29531,10 +29507,10 @@
               "items": {
                 "anyOf": [
                   {
-                    "$ref": "#/definitions/Parameter"
+                    "$ref": "#/definitions/VariableParameter"
                   },
                   {
-                    "$ref": "#/definitions/TopLevelSelectionDef"
+                    "$ref": "#/definitions/TopLevelSelectionParameter"
                   }
                 ]
               },
@@ -29719,10 +29695,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/TopLevelSelectionDef"
+                "$ref": "#/definitions/TopLevelSelectionParameter"
               }
             ]
           },
@@ -29784,7 +29760,7 @@
       ],
       "type": "object"
     },
-    "TopLevelSelectionDef": {
+    "TopLevelSelectionParameter": {
       "additionalProperties": false,
       "properties": {
         "bind": {
@@ -29808,8 +29784,12 @@
           ],
           "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
         },
+        "description": {
+          "description": "A text description of the parameter, useful for inline documentation.",
+          "type": "string"
+        },
         "name": {
-          "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+          "description": "Required. A unique name for the parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
           "type": "string"
         },
         "select": {
@@ -30165,10 +30145,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/SelectionDef"
+                "$ref": "#/definitions/SelectionParameter"
               }
             ]
           },
@@ -30468,10 +30448,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/SelectionDef"
+                "$ref": "#/definitions/SelectionParameter"
               }
             ]
           },
@@ -30574,10 +30554,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/SelectionDef"
+                "$ref": "#/definitions/SelectionParameter"
               }
             ]
           },
@@ -30967,6 +30947,34 @@
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
+      "type": "object"
+    },
+    "VariableParameter": {
+      "additionalProperties": false,
+      "properties": {
+        "bind": {
+          "$ref": "#/definitions/Binding",
+          "description": "Binds the parameter to an external input element such as a slider, selection list or radio button group."
+        },
+        "description": {
+          "description": "A text description of the parameter, useful for inline documentation.",
+          "type": "string"
+        },
+        "expr": {
+          "$ref": "#/definitions/Expr",
+          "description": "An expression for the value of the parameter. This expression may include other parameters, in which case the parameter will automatically update in response to upstream parameter changes."
+        },
+        "name": {
+          "description": "Required. A unique name for the parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+          "type": "string"
+        },
+        "value": {
+          "description": "The initial value of the parameter.\n\n__Default value:__ `undefined`"
+        }
+      },
+      "required": [
+        "name"
+      ],
       "type": "object"
     },
     "Vector2<DateTime>": {
