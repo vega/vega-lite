@@ -190,6 +190,7 @@
       "grid": false,
       "title": "Day",
       "labelAngle": 0,
+      "labelAlign": "right",
       "labelBaseline": "top",
       "zindex": 0
     },
