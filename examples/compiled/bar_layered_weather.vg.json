@@ -133,7 +133,7 @@
     {
       "name": "layer_0_marks",
       "type": "rect",
-      "style": ["bar", "box"],
+      "style": ["bar"],
       "from": {"data": "data_0"},
       "encode": {
         "update": {
@@ -164,7 +164,7 @@
     {
       "name": "layer_1_marks",
       "type": "rect",
-      "style": ["bar", "box"],
+      "style": ["bar"],
       "from": {"data": "data_1"},
       "encode": {
         "update": {
@@ -195,7 +195,7 @@
     {
       "name": "layer_2_marks",
       "type": "rect",
-      "style": ["bar", "box"],
+      "style": ["bar"],
       "from": {"data": "data_2"},
       "encode": {
         "update": {
@@ -226,7 +226,7 @@
     {
       "name": "layer_3_marks",
       "type": "rect",
-      "style": ["bar", "box"],
+      "style": ["bar"],
       "from": {"data": "data_3"},
       "encode": {
         "update": {
@@ -257,7 +257,7 @@
     {
       "name": "layer_4_marks",
       "type": "rect",
-      "style": ["bar", "box"],
+      "style": ["bar"],
       "from": {"data": "data_4"},
       "encode": {
         "update": {
@@ -288,7 +288,7 @@
     {
       "name": "layer_5_marks",
       "type": "rect",
-      "style": ["bar", "box"],
+      "style": ["bar"],
       "from": {"data": "data_5"},
       "encode": {
         "update": {
@@ -404,5 +404,6 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"style": {"hilo": {"size": 20}}}
 }
