@@ -9,7 +9,7 @@ Parameters (`params`) are dynamic variables that can parameterize a visualizatio
 
 ## Parameter Properties
 
-parameters can contain the following properties:
+Parameters can have the following properties:
 
 {% include table.html props="name,description,value,expr,bind" source="Parameter" %}
 
