@@ -353,7 +353,7 @@ export const defaultMarkConfig: MarkConfig<SignalRef> = {
 
 // TODO: replace with MarkConfigMixins[Mark] once https://github.com/vega/ts-json-schema-generator/issues/344 is fixed
 export type AnyMarkConfig<ES extends ExprRef | SignalRef> =
-  | MarkConfig<SignalRef>
+  | MarkConfig<ES>
   | AreaConfig<ES>
   | BarConfig<ES>
   | RectConfig<ES>
