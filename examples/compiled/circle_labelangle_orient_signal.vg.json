@@ -57,6 +57,16 @@
     {
       "name": "height",
       "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+    },
+    {
+      "name": "xLabelAngle",
+      "value": 0,
+      "bind": {"input": "range", "min": -360, "max": 360}
+    },
+    {
+      "name": "yLabelAngle",
+      "value": 0,
+      "bind": {"input": "range", "min": -360, "max": 360}
     }
   ],
   "marks": [
@@ -172,19 +182,5 @@
         }
       }
     }
-  ],
-  "config": {
-    "signals": [
-      {
-        "name": "xLabelAngle",
-        "value": 0,
-        "bind": {"input": "range", "min": -360, "max": 360}
-      },
-      {
-        "name": "yLabelAngle",
-        "value": 0,
-        "bind": {"input": "range", "min": -360, "max": 360}
-      }
-    ]
-  }
+  ]
 }

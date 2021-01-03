@@ -45,6 +45,16 @@
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    },
+    {
+      "name": "xAxisOrient",
+      "value": "bottom",
+      "bind": {"input": "select", "options": ["top", "bottom"]}
+    },
+    {
+      "name": "yAxisOrient",
+      "value": "left",
+      "bind": {"input": "select", "options": ["left", "right"]}
     }
   ],
   "marks": [
@@ -128,19 +138,5 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ],
-  "config": {
-    "signals": [
-      {
-        "name": "xAxisOrient",
-        "value": "bottom",
-        "bind": {"input": "select", "options": ["top", "bottom"]}
-      },
-      {
-        "name": "yAxisOrient",
-        "value": "left",
-        "bind": {"input": "select", "options": ["left", "right"]}
-      }
-    ]
-  }
+  ]
 }
