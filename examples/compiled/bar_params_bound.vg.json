@@ -45,7 +45,11 @@
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
     },
-    {"name": "cornerRadius", "value": 5}
+    {
+      "name": "cornerRadius",
+      "value": 0,
+      "bind": {"input": "range", "min": 0, "max": 50, "step": 1}
+    }
   ],
   "marks": [
     {
