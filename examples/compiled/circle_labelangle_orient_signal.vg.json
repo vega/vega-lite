@@ -1,0 +1,186 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Testing labelAngle signals",
+  "background": "white",
+  "padding": 5,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/github.csv",
+      "format": {"type": "csv", "parse": {"time": "date"}},
+      "transform": [
+        {
+          "field": "time",
+          "type": "timeunit",
+          "units": ["day"],
+          "as": ["day_time", "day_time_end"]
+        },
+        {
+          "field": "time",
+          "type": "timeunit",
+          "units": ["hours"],
+          "as": ["hours_time", "hours_time_end"]
+        },
+        {
+          "type": "formula",
+          "expr": "time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 2, 0, 0, 0, 0)) ? 0 : time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 3, 0, 0, 0, 0)) ? 1 : time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 4, 0, 0, 0, 0)) ? 2 : time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 5, 0, 0, 0, 0)) ? 3 : time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 6, 0, 0, 0, 0)) ? 4 : time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 7, 0, 0, 0, 0)) ? 5 : time(datetime(2012, 0, day(datum[\"time\"])+1, 0, 0, 0, 0))===time(datetime(2012, 0, 1, 0, 0, 0, 0)) ? 6 : 7",
+          "as": "y_day_time_sort_index"
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["day_time", "hours_time"],
+          "ops": ["sum"],
+          "fields": ["count"],
+          "as": ["sum_count"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_count\"]) && isFinite(+datum[\"sum_count\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 20},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+    },
+    {"name": "y_step", "value": 20},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+    },
+    {
+      "name": "xLabelAngle",
+      "value": 0,
+      "bind": {"input": "range", "min": -360, "max": 360}
+    },
+    {
+      "name": "yLabelAngle",
+      "value": 0,
+      "bind": {"input": "range", "min": -360, "max": 360}
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"time (day): \" + (timeFormat(datum[\"day_time\"], timeUnitSpecifier([\"day\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; time (hours): \" + (timeFormat(datum[\"hours_time\"], timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of count: \" + (format(datum[\"sum_count\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "hours_time"},
+          "y": {"scale": "y", "field": "day_time"},
+          "size": {"scale": "size", "field": "sum_count"},
+          "shape": {"value": "circle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "point",
+      "domain": {"data": "data_0", "field": "hours_time", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "y",
+      "type": "point",
+      "domain": {
+        "data": "source_0",
+        "field": "day_time",
+        "sort": {"op": "min", "field": "y_day_time_sort_index"}
+      },
+      "range": {"step": {"signal": "y_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "size",
+      "type": "linear",
+      "domain": {"data": "data_0", "field": "sum_count"},
+      "range": [0, 361],
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "top",
+      "grid": false,
+      "title": "time (hours)",
+      "labelAngle": {"signal": "xLabelAngle"},
+      "format": {
+        "signal": "timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "formatType": "time",
+      "labelOverlap": true,
+      "encode": {
+        "labels": {
+          "update": {
+            "align": {
+              "signal": "((((xLabelAngle % 360) + 360) % 360) % 180 === 0) ? null :(0 < (((xLabelAngle % 360) + 360) % 360) && (((xLabelAngle % 360) + 360) % 360) < 180) === false ? \"left\" : \"right\""
+            },
+            "baseline": {
+              "signal": "(45 < (((xLabelAngle % 360) + 360) % 360) && (((xLabelAngle % 360) + 360) % 360) < 135) || (225 < (((xLabelAngle % 360) + 360) % 360) && (((xLabelAngle % 360) + 360) % 360) < 315) ? \"middle\" :((((xLabelAngle % 360) + 360) % 360) <= 45 || 315 <= (((xLabelAngle % 360) + 360) % 360)) === true ? \"bottom\" : \"top\""
+            }
+          }
+        }
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "right",
+      "grid": false,
+      "title": "time (day)",
+      "labelAngle": {"signal": "yLabelAngle"},
+      "format": {
+        "signal": "timeUnitSpecifier([\"day\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
+      "formatType": "time",
+      "encode": {
+        "labels": {
+          "update": {
+            "align": {
+              "signal": "(((((yLabelAngle % 360) + 360) % 360) + 90) % 180 === 0) ? \"center\" :(90 < (((yLabelAngle % 360) + 360) % 360) && (((yLabelAngle % 360) + 360) % 360) < 270) === false ? \"left\" : \"right\""
+            },
+            "baseline": {
+              "signal": "(((yLabelAngle % 360) + 360) % 360) <= 45 || 315 <= (((yLabelAngle % 360) + 360) % 360) || (135 <= (((yLabelAngle % 360) + 360) % 360) && (((yLabelAngle % 360) + 360) % 360) <= 225) ? null : (45 <= (((yLabelAngle % 360) + 360) % 360) && (((yLabelAngle % 360) + 360) % 360) <= 135) === false ? \"top\" : \"bottom\""
+            }
+          }
+        }
+      },
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "size": "size",
+      "symbolType": "circle",
+      "title": "Sum of count",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "#4c78a8"},
+            "stroke": {"value": "transparent"}
+          }
+        }
+      }
+    }
+  ]
+}

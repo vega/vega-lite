@@ -1,0 +1,142 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A bar chart that uses signals for axis orient.",
+  "autosize": {"type": "pad", "resize": true},
+  "background": "white",
+  "padding": 5,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"a": "A", "b": 28},
+        {"a": "B", "b": 55},
+        {"a": "C", "b": 43},
+        {"a": "D", "b": 91},
+        {"a": "E", "b": 81},
+        {"a": "F", "b": 53},
+        {"a": "G", "b": 19},
+        {"a": "H", "b": 87},
+        {"a": "I", "b": 52}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["a"],
+          "field": "b",
+          "sort": {"field": [], "order": []},
+          "as": ["b_start", "b_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 20},
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    },
+    {
+      "name": "xAxisOrient",
+      "value": "bottom",
+      "bind": {"input": "select", "options": ["top", "bottom"]}
+    },
+    {
+      "name": "yAxisOrient",
+      "value": "left",
+      "bind": {"input": "select", "options": ["left", "right"]}
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "a"},
+          "width": {"scale": "x", "band": 1},
+          "y": {"scale": "y", "field": "b_end"},
+          "y2": {"scale": "y", "field": "b_start"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "a", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "fields": ["b_start", "b_end"]},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "y",
+      "orient": {"signal": "yAxisOrient"},
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": {"signal": "xAxisOrient"},
+      "grid": false,
+      "title": "a",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "encode": {
+        "labels": {
+          "update": {
+            "align": {
+              "signal": "xAxisOrient !== \"bottom\" ? \"left\" : \"right\""
+            }
+          }
+        }
+      },
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": {"signal": "yAxisOrient"},
+      "grid": false,
+      "title": "b",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ]
+}
