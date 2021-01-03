@@ -173,7 +173,7 @@ describe('compile/axis/properties', () => {
 
   describe('defaultLabelAlign', () => {
     it('correctly aligns the x-labels for all degrees', () => {
-      expect(defaultLabelAlign(0, 'top', 'x')).toBeNull();
+      expect(defaultLabelAlign(0, 'top', 'x')).toBeUndefined();
       expect(defaultLabelAlign(15, 'top', 'x')).toBe('right');
       expect(defaultLabelAlign(30, 'top', 'x')).toBe('right');
       expect(defaultLabelAlign(45, 'top', 'x')).toBe('right');
@@ -185,7 +185,7 @@ describe('compile/axis/properties', () => {
       expect(defaultLabelAlign(135, 'top', 'x')).toBe('right');
       expect(defaultLabelAlign(150, 'top', 'x')).toBe('right');
       expect(defaultLabelAlign(165, 'top', 'x')).toBe('right');
-      expect(defaultLabelAlign(180, 'top', 'x')).toBeNull();
+      expect(defaultLabelAlign(180, 'top', 'x')).toBeUndefined();
       expect(defaultLabelAlign(195, 'bottom', 'x')).toBe('right');
       expect(defaultLabelAlign(210, 'bottom', 'x')).toBe('right');
       expect(defaultLabelAlign(225, 'bottom', 'x')).toBe('right');
@@ -262,7 +262,9 @@ describe('compile/axis/properties', () => {
 
             const result = eval(code);
             const expected = defaultLabelAlign(normalizeAngle(a), o, 'x');
-            expect(result).toEqual(expected);
+            expect(
+              result ?? undefined // Need to add ?? undefined because we can't use undefined in the signal and also can't use null in the raw Vega output (since it will fail Vega validation)
+            ).toEqual(expected);
           }
         }
         done();
@@ -323,8 +325,8 @@ describe('compile/axis/properties', () => {
     });
 
     it('is middle for 0 and 180 horizontal orients', () => {
-      expect(defaultLabelBaseline(0, 'left', 'y')).toBeNull();
-      expect(defaultLabelBaseline(180, 'right', 'y')).toBeNull();
+      expect(defaultLabelBaseline(0, 'left', 'y')).toBeUndefined();
+      expect(defaultLabelBaseline(180, 'right', 'y')).toBeUndefined();
     });
 
     it('is top for bottom orients for 1st and 2nd quadrants', () => {
@@ -355,7 +357,9 @@ describe('compile/axis/properties', () => {
 
             const result = eval(code);
             const expected = defaultLabelBaseline(normalizeAngle(a), o, 'y');
-            expect(result).toEqual(expected);
+            expect(
+              result ?? undefined // Need to add ?? undefined because we can't use undefined in the signal and also can't use null in the raw Vega output (since it will fail Vega validation)
+            ).toEqual(expected);
           }
         }
         done();

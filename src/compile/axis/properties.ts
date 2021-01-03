@@ -210,7 +210,7 @@ export function defaultLabelBaseline(
       }
 
       if (angle <= 45 || 315 <= angle || (135 <= angle && angle <= 225)) {
-        return alwaysIncludeMiddle ? 'middle' : null;
+        return alwaysIncludeMiddle ? 'middle' : undefined;
       }
 
       if (isSignalRef(orient)) {
@@ -249,7 +249,7 @@ export function defaultLabelAlign(
 
   if ((angle + startAngle) % 180 === 0) {
     // For bottom, use default label align so label flush still works
-    return isX ? null : 'center';
+    return isX ? undefined : 'center';
   }
 
   if (isSignalRef(orient)) {

@@ -173,7 +173,6 @@
       "labelPadding": 4,
       "ticks": false,
       "labelAlign": "right",
-      "labelBaseline": null,
       "zindex": 0
     }
   ]
