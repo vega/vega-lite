@@ -1,0 +1,150 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Bump chart",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"build": 1, "result": "PASSED"},
+        {"build": 2, "result": "PASSED"},
+        {"build": 3, "result": "FAILED"},
+        {"build": 4, "result": "FAILED"},
+        {"build": 5, "result": "SKIPPED"},
+        {"build": 6, "result": "PASSED"},
+        {"build": 7, "result": "PASSED"},
+        {"build": 8, "result": "FAILED"},
+        {"build": 9, "result": "PASSED"},
+        {"build": 10, "result": "PASSED"},
+        {"build": 11, "result": "SKIPPED"},
+        {"build": 12, "result": "PASSED"},
+        {"build": 13, "result": "PASSED"},
+        {"build": 14, "result": "FAILED"},
+        {"build": 15, "result": "PASSED"},
+        {"build": 16, "result": "SKIPPED"}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"build\"]) && isFinite(+datum[\"build\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 20},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "line",
+      "style": ["line"],
+      "sort": {"field": ["datum[\"build\"]"], "order": ["ascending"]},
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "#4c78a8"},
+          "description": {
+            "signal": "\"build: \" + (format(datum[\"build\"], \"\")) + \"; result: \" + (isValid(datum[\"result\"]) ? datum[\"result\"] : \"\"+datum[\"result\"])"
+          },
+          "x": {"scale": "x", "field": "build"},
+          "y": {"scale": "y", "field": "result"},
+          "defined": {
+            "signal": "isValid(datum[\"build\"]) && isFinite(+datum[\"build\"])"
+          }
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "sort": {"field": ["datum[\"build\"]"], "order": ["ascending"]},
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 1},
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"build: \" + (format(datum[\"build\"], \"\")) + \"; result: \" + (isValid(datum[\"result\"]) ? datum[\"result\"] : \"\"+datum[\"result\"])"
+          },
+          "x": {"scale": "x", "field": "build"},
+          "y": {"scale": "y", "field": "result"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "build"},
+          {"data": "data_0", "field": "build"}
+        ]
+      },
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "point",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "result"},
+          {"data": "data_0", "field": "result"}
+        ],
+        "sort": true
+      },
+      "range": {"step": {"signal": "y_step"}},
+      "padding": 0.5
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "build",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "result",
+      "zindex": 0
+    }
+  ]
+}
