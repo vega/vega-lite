@@ -263,6 +263,10 @@
         "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
+        "name": "line_bump",
+        "title": "Bump Chart"
+      },
+      {
         "name": "trail_color",
         "title": "Line Chart with Varying Size (using the trail mark)"
       },

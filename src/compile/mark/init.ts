@@ -175,7 +175,10 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
       // Tick is opposite to bar, line, area and never have ranged mark.
       const xIsContinuous = isContinuousFieldOrDatumDef(x);
       const yIsContinuous = isContinuousFieldOrDatumDef(y);
-      if (xIsContinuous && !yIsContinuous) {
+
+      if (specifiedOrient) {
+        return specifiedOrient;
+      } else if (xIsContinuous && !yIsContinuous) {
         return mark !== 'tick' ? 'horizontal' : 'vertical';
       } else if (!xIsContinuous && yIsContinuous) {
         return mark !== 'tick' ? 'vertical' : 'horizontal';
@@ -198,20 +201,8 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
         } else if (xDef.aggregate && !yDef.aggregate) {
           return mark !== 'tick' ? 'horizontal' : 'vertical';
         }
-
-        if (specifiedOrient) {
-          // When ambiguous, use user specified one.
-          return specifiedOrient;
-        }
-
         return 'vertical';
       } else {
-        // Discrete x Discrete case
-        if (specifiedOrient) {
-          // When ambiguous, use user specified one.
-          return specifiedOrient;
-        }
-
         return undefined;
       }
     }
