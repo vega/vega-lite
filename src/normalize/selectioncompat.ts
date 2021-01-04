@@ -5,12 +5,12 @@ import {NormalizerParams} from './base';
 
 export class SelectionCompatibilityNormalizer extends SpecMapper<NormalizerParams, NormalizedUnitSpec> {
   public mapUnit(spec: NormalizedUnitSpec) {
-    const selections = (spec as any).selection;
-    const params: SelectionDef[] = [];
+    const oldSelection = (spec as any).selection;
+    const selections: SelectionDef[] = [];
 
-    if (!selections) return spec;
+    if (!oldSelection) return spec;
 
-    for (const [name, selDef] of Object.entries(selections)) {
+    for (const [name, selDef] of Object.entries(oldSelection)) {
       const {init, bind, ...select} = selDef as any;
       if (select.type === 'single') {
         select.type = 'point';
@@ -19,7 +19,7 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<NormalizerParam
         select.type = 'point';
       }
 
-      params.push({
+      selections.push({
         name,
         value: init,
         select,
@@ -27,8 +27,8 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<NormalizerParam
       });
     }
 
-    if (params.length) {
-      spec.params = params;
+    if (selections.length) {
+      spec.selections = selections;
     }
     return spec;
   }

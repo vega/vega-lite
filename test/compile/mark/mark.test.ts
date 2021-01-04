@@ -2,11 +2,11 @@ import {getSort, parseMarkGroups} from '../../../src/compile/mark/mark';
 import {UnitModel} from '../../../src/compile/unit';
 import {GEOSHAPE} from '../../../src/mark';
 import {
+  parseConcatModel,
   parseFacetModel,
   parseUnitModel,
   parseUnitModelWithScale,
   parseUnitModelWithScaleAndLayoutSize,
-  parseConcatModel,
   parseUnitModelWithScaleAndSelection
 } from '../../util';
 
@@ -253,7 +253,7 @@ describe('Mark', () => {
         const model = parseConcatModel({
           vconcat: [
             {
-              params: [{name: 'brush', select: 'interval'}],
+              selections: [{name: 'brush', select: 'interval'}],
               mark: 'point',
               encoding: {
                 x: {type: 'quantitative', field: 'foo'},
@@ -281,7 +281,7 @@ describe('Mark', () => {
         const model = parseConcatModel({
           vconcat: [
             {
-              params: [{name: 'brush', select: {type: 'interval'}}],
+              selections: [{name: 'brush', select: {type: 'interval'}}],
               mark: 'point',
               encoding: {
                 x: {type: 'quantitative', field: 'foo'},

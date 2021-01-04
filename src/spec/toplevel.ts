@@ -72,7 +72,12 @@ export interface TopLevelProperties<ES extends ExprRef | SignalRef = ExprRef | S
   /**
    * Dynamic variables that parameterize a visualization.
    */
-  params?: (Parameter | TopLevelSelectionDef)[];
+  params?: Parameter[];
+
+  /**
+   * An array of interactive selections, such as discrete points and continuous intervals.
+   */
+  selections?: TopLevelSelectionDef[];
 }
 
 export type FitType = 'fit' | 'fit-x' | 'fit-y';

@@ -18,7 +18,7 @@ describe('Faceted Selections', () => {
           encoding: {y: {value: 10}}
         },
         {
-          params: [
+          selections: [
             {name: 'one', select: 'point'},
             {name: 'two', select: 'interval'}
           ],

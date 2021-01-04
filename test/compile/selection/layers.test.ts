@@ -6,7 +6,7 @@ describe('Layered Selections', () => {
   const layers = parseLayerModel({
     layer: [
       {
-        params: [
+        selections: [
           {
             name: 'brush',
             select: 'interval'
@@ -20,7 +20,7 @@ describe('Layered Selections', () => {
         }
       },
       {
-        params: [
+        selections: [
           {
             name: 'brush',
             select: 'interval',

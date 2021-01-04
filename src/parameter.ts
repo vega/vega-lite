@@ -1,5 +1,4 @@
 import {Binding, Expr, InitSignal, NewSignal} from 'vega';
-import {isParameterSelection, TopLevelSelectionDef} from './selection';
 
 export interface Parameter {
   /**
@@ -30,12 +29,9 @@ export interface Parameter {
   bind?: Binding;
 }
 
-export function assembleParameterSignals(params: (Parameter | TopLevelSelectionDef)[]) {
+export function assembleParameterSignals(params: Parameter[]) {
   const signals: (NewSignal | InitSignal)[] = [];
   for (const param of params || []) {
-    // Selection parameters are handled separately via assembleSelectionTopLevelSignals
-    // and assembleSignals methods registered on the Model.
-    if (isParameterSelection(param)) continue;
     const {expr, bind, ...rest} = param;
 
     if (bind && expr) {

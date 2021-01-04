@@ -5,8 +5,8 @@ import {Model} from '../../../src/compile/model';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {Config} from '../../../src/config';
 import {NormalizedUnitSpec} from '../../../src/spec';
-import {parseModel, parseUnitModel} from '../../util';
 import {deepEqual} from '../../../src/util';
+import {parseModel, parseUnitModel} from '../../util';
 
 function getData(model: Model) {
   optimizeDataflow(model.component.data, null);
@@ -27,7 +27,7 @@ function getConcatModel(unit2: NormalizedUnitSpec, config?: Config) {
     hconcat: [
       {
         mark: 'point',
-        params: [
+        selections: [
           {
             name: 'two',
             select: {type: 'point', encodings: ['x', 'y']}

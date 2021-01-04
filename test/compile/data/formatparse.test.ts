@@ -1,10 +1,10 @@
 import {AncestorParse} from '../../../src/compile/data';
-import {PlaceholderDataFlowNode} from './util';
-import {ParseNode, getImplicitFromEncoding, getImplicitFromSelection} from '../../../src/compile/data/formatparse';
+import {getImplicitFromEncoding, getImplicitFromSelection, ParseNode} from '../../../src/compile/data/formatparse';
 import {parseTransformArray} from '../../../src/compile/data/parse';
 import {ModelWithField} from '../../../src/compile/model';
 import * as log from '../../../src/log';
 import {parseFacetModel, parseUnitModel} from '../../util';
+import {PlaceholderDataFlowNode} from './util';
 
 describe('compile/data/formatparse', () => {
   describe('makeWithAncestors', () => {
@@ -190,7 +190,7 @@ describe('compile/data/formatparse', () => {
 
     it('should add flatten for nested fields in selection', () => {
       const model = parseUnitModel({
-        params: [{name: 'foo', select: {type: 'point', fields: ['foo.bar', 'foo.baz']}}],
+        selections: [{name: 'foo', select: {type: 'point', fields: ['foo.bar', 'foo.baz']}}],
         mark: 'point',
         encoding: {
           x: {field: 'bar', type: 'quantitative'},

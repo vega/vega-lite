@@ -74,7 +74,7 @@ describe('compile/data/identifier', () => {
           data: {url: 'data/cars.json'},
           hconcat: [
             {
-              params: [
+              selections: [
                 {
                   name: 'pt',
                   select: 'point'

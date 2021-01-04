@@ -39,12 +39,12 @@ export class TopLevelSelectionsNormalizer extends SpecMapper<NormalizerParams, N
     if (!selections || !selections.length) return spec as NormalizedUnitSpec;
 
     const path = (normParams.path ?? []).concat(spec.name);
-    const params: SelectionDef[] = [];
+    const appliedSelections: SelectionDef[] = [];
 
     for (const selection of selections) {
       // By default, apply selections to all unit views.
       if (!selection.views || !selection.views.length) {
-        params.push(selection);
+        appliedSelections.push(selection);
       } else {
         for (const view of selection.views) {
           // view is either a specific unit name, or a partial path through the spec tree.
@@ -53,13 +53,13 @@ export class TopLevelSelectionsNormalizer extends SpecMapper<NormalizerParams, N
             (isArray(view) &&
               view.map(v => path.indexOf(v)).every((v, i, arr) => v !== -1 && (i === 0 || v > arr[i - 1])))
           ) {
-            params.push(selection);
+            appliedSelections.push(selection);
           }
         }
       }
     }
 
-    if (params.length) spec.params = params;
+    if (appliedSelections.length) spec.selections = appliedSelections;
     return spec as NormalizedUnitSpec;
   }
 }
