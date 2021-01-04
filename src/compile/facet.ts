@@ -79,13 +79,12 @@ export class FacetModel extends ModelWithField {
   }
 
   private initFacetFieldDef(fieldDef: FacetFieldDef<FieldName, ExprRef | SignalRef>, channel: FacetChannel) {
-    const {header, ...rest} = fieldDef;
     // Cast because we call initFieldDef, which assumes general FieldDef.
     // However, FacetFieldDef is a bit more constrained than the general FieldDef
-    const facetFieldDef = initFieldDef(rest, channel) as FacetFieldDef<FieldName, SignalRef>;
-    if (header) {
-      facetFieldDef.header = replaceExprRef(header);
-    } else if (header === null) {
+    const facetFieldDef = initFieldDef(fieldDef, channel) as FacetFieldDef<FieldName, SignalRef>;
+    if (facetFieldDef.header) {
+      facetFieldDef.header = replaceExprRef(facetFieldDef.header);
+    } else if (facetFieldDef.header === null) {
       facetFieldDef.header = null;
     }
     return facetFieldDef;
