@@ -1,0 +1,173 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A trellis bar chart showing the US population distribution of age groups and gender in 2000.",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/population.json",
+      "format": {"type": "json"},
+      "transform": [
+        {"type": "filter", "expr": "datum.year == 2000"},
+        {
+          "type": "formula",
+          "expr": "datum.sex == 2 ? 'Female' : 'Male'",
+          "as": "gender"
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["age", "gender"],
+          "ops": ["sum"],
+          "fields": ["people"],
+          "as": ["sum_people"]
+        },
+        {
+          "type": "stack",
+          "groupby": ["age", "gender"],
+          "field": "sum_people",
+          "sort": {"field": ["gender"], "order": ["descending"]},
+          "as": ["sum_people_start", "sum_people_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_people\"]) && isFinite(+datum[\"sum_people\"])"
+        }
+      ]
+    },
+    {
+      "name": "row_domain",
+      "source": "source_0",
+      "transform": [{"type": "aggregate", "groupby": ["gender"]}]
+    }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 17},
+    {
+      "name": "child_width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    },
+    {"name": "child_height", "value": 200}
+  ],
+  "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "all"},
+  "marks": [
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {"data": "row_domain"},
+      "sort": {"field": "datum[\"gender\"]", "order": "ascending"},
+      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "population",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "age",
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "style": "cell",
+      "from": {
+        "facet": {"name": "facet", "data": "source_0", "groupby": ["gender"]}
+      },
+      "sort": {"field": ["datum[\"gender\"]"], "order": ["ascending"]},
+      "encode": {
+        "update": {
+          "width": {"signal": "child_width"},
+          "height": {"signal": "child_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "rect",
+          "style": ["bar"],
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "fill": {"scale": "color", "field": "gender"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"population: \" + (format(datum[\"sum_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+              },
+              "x": {"scale": "x", "field": "age"},
+              "width": {"scale": "x", "band": 1},
+              "y": {"scale": "y", "field": "sum_people_end"},
+              "y2": {"scale": "y", "field": "sum_people_start"}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "gridScale": "x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "domain": false,
+          "labels": false,
+          "aria": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "age", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["sum_people_start", "sum_people_end"]
+      },
+      "range": [{"signal": "child_height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "gender", "sort": true},
+      "range": ["#675193", "#ca8861"]
+    }
+  ],
+  "legends": [{"fill": "color", "symbolType": "square", "title": "gender"}]
+}
