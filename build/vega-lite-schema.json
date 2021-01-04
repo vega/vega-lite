@@ -7540,14 +7540,7 @@
         "params": {
           "description": "Dynamic variables that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/Parameter"
-              },
-              {
-                "$ref": "#/definitions/TopLevelSelectionDef"
-              }
-            ]
+            "$ref": "#/definitions/Parameter"
           },
           "type": "array"
         },
@@ -7578,6 +7571,13 @@
         "selection": {
           "$ref": "#/definitions/SelectionConfig",
           "description": "An object hash for defining default properties for each type of selections."
+        },
+        "selections": {
+          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "items": {
+            "$ref": "#/definitions/TopLevelSelectionDef"
+          },
+          "type": "array"
         },
         "square": {
           "$ref": "#/definitions/MarkConfig",
@@ -9118,16 +9118,9 @@
           "type": "string"
         },
         "params": {
-          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "description": "Dynamic variables that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/Parameter"
-              },
-              {
-                "$ref": "#/definitions/SelectionDef"
-              }
-            ]
+            "$ref": "#/definitions/Parameter"
           },
           "type": "array"
         },
@@ -9138,6 +9131,13 @@
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
+        "selections": {
+          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "items": {
+            "$ref": "#/definitions/SelectionDef"
+          },
+          "type": "array"
         },
         "spacing": {
           "anyOf": [
@@ -28746,20 +28746,20 @@
         "params": {
           "description": "Dynamic variables that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/Parameter"
-              },
-              {
-                "$ref": "#/definitions/TopLevelSelectionDef"
-              }
-            ]
+            "$ref": "#/definitions/Parameter"
           },
           "type": "array"
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
+        "selections": {
+          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "items": {
+            "$ref": "#/definitions/TopLevelSelectionDef"
+          },
+          "type": "array"
         },
         "spacing": {
           "anyOf": [
@@ -28890,20 +28890,20 @@
         "params": {
           "description": "Dynamic variables that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/Parameter"
-              },
-              {
-                "$ref": "#/definitions/TopLevelSelectionDef"
-              }
-            ]
+            "$ref": "#/definitions/Parameter"
           },
           "type": "array"
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
+        "selections": {
+          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "items": {
+            "$ref": "#/definitions/TopLevelSelectionDef"
+          },
+          "type": "array"
         },
         "spacing": {
           "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
@@ -29020,20 +29020,20 @@
         "params": {
           "description": "Dynamic variables that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/Parameter"
-              },
-              {
-                "$ref": "#/definitions/TopLevelSelectionDef"
-              }
-            ]
+            "$ref": "#/definitions/Parameter"
           },
           "type": "array"
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
+        "selections": {
+          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "items": {
+            "$ref": "#/definitions/TopLevelSelectionDef"
+          },
+          "type": "array"
         },
         "spacing": {
           "description": "The spacing in pixels between sub-views of the concat operator.\n\n__Default value__: `10`",
@@ -29178,14 +29178,7 @@
         "params": {
           "description": "Dynamic variables that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/Parameter"
-              },
-              {
-                "$ref": "#/definitions/TopLevelSelectionDef"
-              }
-            ]
+            "$ref": "#/definitions/Parameter"
           },
           "type": "array"
         },
@@ -29196,6 +29189,13 @@
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
+        "selections": {
+          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "items": {
+            "$ref": "#/definitions/TopLevelSelectionDef"
+          },
+          "type": "array"
         },
         "title": {
           "anyOf": [
@@ -29351,14 +29351,7 @@
             "params": {
               "description": "Dynamic variables that parameterize a visualization.",
               "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/definitions/Parameter"
-                  },
-                  {
-                    "$ref": "#/definitions/TopLevelSelectionDef"
-                  }
-                ]
+                "$ref": "#/definitions/Parameter"
               },
               "type": "array"
             },
@@ -29379,6 +29372,13 @@
             "resolve": {
               "$ref": "#/definitions/Resolve",
               "description": "Scale, axis, and legend resolutions for view composition specifications."
+            },
+            "selections": {
+              "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+              "items": {
+                "$ref": "#/definitions/TopLevelSelectionDef"
+              },
+              "type": "array"
             },
             "spacing": {
               "anyOf": [
@@ -29529,14 +29529,7 @@
             "params": {
               "description": "Dynamic variables that parameterize a visualization.",
               "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/definitions/Parameter"
-                  },
-                  {
-                    "$ref": "#/definitions/TopLevelSelectionDef"
-                  }
-                ]
+                "$ref": "#/definitions/Parameter"
               },
               "type": "array"
             },
@@ -29547,6 +29540,13 @@
             "resolve": {
               "$ref": "#/definitions/Resolve",
               "description": "Scale, axis, and legend resolutions for view composition specifications."
+            },
+            "selections": {
+              "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+              "items": {
+                "$ref": "#/definitions/TopLevelSelectionDef"
+              },
+              "type": "array"
             },
             "spacing": {
               "anyOf": [
@@ -29717,20 +29717,20 @@
         "params": {
           "description": "Dynamic variables that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/Parameter"
-              },
-              {
-                "$ref": "#/definitions/TopLevelSelectionDef"
-              }
-            ]
+            "$ref": "#/definitions/Parameter"
           },
           "type": "array"
         },
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
+        "selections": {
+          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "items": {
+            "$ref": "#/definitions/TopLevelSelectionDef"
+          },
+          "type": "array"
         },
         "spacing": {
           "anyOf": [
@@ -30161,16 +30161,9 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides. If an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "params": {
-          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "description": "Dynamic variables that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/Parameter"
-              },
-              {
-                "$ref": "#/definitions/SelectionDef"
-              }
-            ]
+            "$ref": "#/definitions/Parameter"
           },
           "type": "array"
         },
@@ -30181,6 +30174,13 @@
         "resolve": {
           "$ref": "#/definitions/Resolve",
           "description": "Scale, axis, and legend resolutions for view composition specifications."
+        },
+        "selections": {
+          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "items": {
+            "$ref": "#/definitions/SelectionDef"
+          },
+          "type": "array"
         },
         "spacing": {
           "anyOf": [
@@ -30464,22 +30464,22 @@
           "type": "string"
         },
         "params": {
-          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "description": "Dynamic variables that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/Parameter"
-              },
-              {
-                "$ref": "#/definitions/SelectionDef"
-              }
-            ]
+            "$ref": "#/definitions/Parameter"
           },
           "type": "array"
         },
         "projection": {
           "$ref": "#/definitions/Projection",
           "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks and to `latitude` and `\"longitude\"` channels for other marks."
+        },
+        "selections": {
+          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "items": {
+            "$ref": "#/definitions/SelectionDef"
+          },
+          "type": "array"
         },
         "title": {
           "anyOf": [
@@ -30570,22 +30570,22 @@
           "type": "string"
         },
         "params": {
-          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "description": "Dynamic variables that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/Parameter"
-              },
-              {
-                "$ref": "#/definitions/SelectionDef"
-              }
-            ]
+            "$ref": "#/definitions/Parameter"
           },
           "type": "array"
         },
         "projection": {
           "$ref": "#/definitions/Projection",
           "description": "An object defining properties of geographic projection, which will be applied to `shape` path for `\"geoshape\"` marks and to `latitude` and `\"longitude\"` channels for other marks."
+        },
+        "selections": {
+          "description": "An array of interactive selections, such as discrete points and continuous intervals.",
+          "items": {
+            "$ref": "#/definitions/SelectionDef"
+          },
+          "type": "array"
         },
         "title": {
           "anyOf": [
