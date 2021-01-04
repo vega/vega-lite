@@ -85,6 +85,8 @@ export class FacetModel extends ModelWithField {
     const facetFieldDef = initFieldDef(rest, channel) as FacetFieldDef<FieldName, SignalRef>;
     if (header) {
       facetFieldDef.header = replaceExprRef(header);
+    } else if (header === null) {
+      facetFieldDef.header = null;
     }
     return facetFieldDef;
   }
