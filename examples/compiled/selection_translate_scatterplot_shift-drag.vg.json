@@ -6,7 +6,6 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "grid_store"},
     {
       "name": "source_0",
       "url": "data/cars.json",
@@ -21,133 +20,19 @@
   ],
   "signals": [
     {
-      "name": "unit",
-      "value": {},
-      "on": [
-        {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
-      ]
-    },
-    {"name": "grid", "update": "vlSelectionResolve(\"grid_store\", \"union\")"},
-    {
-      "name": "grid_Horsepower",
-      "on": [
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"},
-        {
-          "events": {"signal": "grid_translate_delta"},
-          "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / width)"
-        },
-        {
-          "events": {"signal": "grid_zoom_delta"},
-          "update": "zoomLinear(domain(\"x\"), grid_zoom_anchor.x, grid_zoom_delta)"
-        }
-      ]
-    },
-    {
-      "name": "grid_Miles_per_Gallon",
-      "on": [
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"},
-        {
-          "events": {"signal": "grid_translate_delta"},
-          "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / height)"
-        },
-        {
-          "events": {"signal": "grid_zoom_delta"},
-          "update": "zoomLinear(domain(\"y\"), grid_zoom_anchor.y, grid_zoom_delta)"
-        }
-      ]
-    },
-    {
-      "name": "grid_tuple",
-      "on": [
-        {
-          "events": [{"signal": "grid_Horsepower || grid_Miles_per_Gallon"}],
-          "update": "grid_Horsepower && grid_Miles_per_Gallon ? {unit: \"\", fields: grid_tuple_fields, values: [grid_Horsepower,grid_Miles_per_Gallon]} : null"
-        }
-      ]
-    },
-    {
-      "name": "grid_tuple_fields",
-      "value": [
-        {"field": "Horsepower", "channel": "x", "type": "R"},
-        {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
-      ]
-    },
-    {
-      "name": "grid_translate_anchor",
-      "value": {},
-      "on": [
-        {
-          "events": [
-            {
-              "source": "scope",
-              "type": "mousedown",
-              "filter": ["event.shiftKey"]
-            }
-          ],
-          "update": "{x: x(unit), y: y(unit), extent_x: domain(\"x\"), extent_y: domain(\"y\")}"
-        }
-      ]
-    },
-    {
-      "name": "grid_translate_delta",
-      "value": {},
-      "on": [
-        {
-          "events": [
-            {
-              "source": "window",
-              "type": "mousemove",
-              "consume": true,
-              "between": [
-                {
-                  "source": "scope",
-                  "type": "mousedown",
-                  "filter": ["event.shiftKey"]
-                },
-                {"source": "window", "type": "mouseup"}
-              ]
-            }
-          ],
-          "update": "{x: grid_translate_anchor.x - x(unit), y: grid_translate_anchor.y - y(unit)}"
-        }
-      ]
-    },
-    {
-      "name": "grid_zoom_anchor",
-      "on": [
-        {
-          "events": [{"source": "scope", "type": "wheel", "consume": true}],
-          "update": "{x: invert(\"x\", x(unit)), y: invert(\"y\", y(unit))}"
-        }
-      ]
-    },
-    {
-      "name": "grid_zoom_delta",
-      "on": [
-        {
-          "events": [{"source": "scope", "type": "wheel", "consume": true}],
-          "force": true,
-          "update": "pow(1.001, event.deltaY * pow(16, event.deltaMode))"
-        }
-      ]
-    },
-    {
-      "name": "grid_modify",
-      "on": [
-        {
-          "events": {"signal": "grid_tuple"},
-          "update": "modify(\"grid_store\", grid_tuple, true)"
-        }
-      ]
+      "name": "grid",
+      "select": {
+        "type": "interval",
+        "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!"
+      },
+      "bind": "scales"
     }
   ],
   "marks": [
     {
       "name": "marks",
       "type": "symbol",
-      "clip": true,
       "style": ["circle"],
-      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
@@ -182,7 +67,6 @@
       "name": "x",
       "type": "linear",
       "domain": [75, 150],
-      "domainRaw": {"signal": "grid[\"Horsepower\"]"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": false
@@ -191,7 +75,6 @@
       "name": "y",
       "type": "linear",
       "domain": [20, 40],
-      "domainRaw": {"signal": "grid[\"Miles_per_Gallon\"]"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": false
