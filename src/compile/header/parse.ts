@@ -46,7 +46,7 @@ function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
       child.component.layoutHeaders[channel].title = null;
     }
 
-    const labelOrient = getHeaderProperty('labelOrient', fieldDef, config, channel);
+    const labelOrient = getHeaderProperty('labelOrient', fieldDef.header, config, channel);
 
     const labels =
       fieldDef.header !== null ? getFirstDefined(fieldDef.header?.labels, config.header.labels, true) : false;
