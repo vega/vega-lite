@@ -5,7 +5,7 @@ import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';
 import {Config} from '../../config';
 import {isText} from '../../title';
-import {getFirstDefined, isEmpty, replaceAll} from '../../util';
+import {contains, getFirstDefined, isEmpty, replaceAll} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
 import {exprFromValueOrSignalRef} from '../common';
 import {Model} from '../model';
@@ -100,6 +100,12 @@ export function assembleAxis(
         setAxisEncode(axis, part, vgProp, propValue);
         delete axis[prop];
       } // else do nothing since the property already supports signal
+    }
+
+    // Do not pass labelAlign/Baseline = null to Vega since it won't pass the schema
+    // Note that we need to use null so the default labelAlign is preserved.
+    if (contains(['labelAlign', 'labelBaseline'], prop) && axis[prop] === null) {
+      delete axis[prop];
     }
   }
 
