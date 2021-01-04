@@ -39,13 +39,48 @@ interface AxisOverrideMixins<ES extends ExprRef | SignalRef> {
    */
   tickMinStep?: number | ES;
 
-  // Override comments to be Vega-Lite specific
+  // ---------- Properties that do not support signal / expression ----------
+  /**
+   * A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.
+   *
+   * __Default value:__ `true`
+   */
+  domain?: boolean;
+
   /**
    * A boolean flag indicating if grid lines should be included as part of the axis
    *
    * __Default value:__ `true` for [continuous scales](https://vega.github.io/vega-lite/docs/scale.html#continuous) that are not binned; otherwise, `false`.
    */
   grid?: boolean;
+
+  /**
+   * A boolean flag indicating if labels should be included as part of the axis.
+   *
+   * __Default value:__ `true`.
+   */
+  labels?: boolean;
+
+  /**
+   * Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `"bandPosition": 1` and an axis `"padding"` value of `0`.
+   */
+  tickExtra?: boolean;
+
+  /**
+   * Boolean flag indicating if pixel position values should be rounded to the nearest integer.
+   *
+   * __Default value:__ `true`
+   */
+  tickRound?: boolean;
+
+  /**
+   * Boolean value that determines whether the axis should include ticks.
+   *
+   * __Default value:__ `true`
+   */
+  ticks?: boolean;
+
+  // Override comments to be Vega-Lite specific
 
   /**
    * Indicates if the first and last axis labels should be aligned flush with the scale range. Flush alignment for a horizontal axis will left-align the first label and right-align the last label. For vertical axes, bottom and top text baselines are applied instead. If this property is a number, it also indicates the number of pixels by which to offset the first and last labels; for example, a value of 2 will flush-align the first and last labels and also push them 2 pixels outward from the center of the axis. The additional adjustment can sometimes help the labels better visually group with corresponding axis ticks.
@@ -66,7 +101,7 @@ interface AxisOverrideMixins<ES extends ExprRef | SignalRef> {
    *
    * __Default value:__ derived from the [axis config](https://vega.github.io/vega-lite/docs/config.html#facet-scale-config)'s `offset` (`0` by default)
    */
-  offset?: number;
+  offset?: number | ES;
 
   /**
    * The orientation of the axis. One of `"top"`, `"bottom"`, `"left"` or `"right"`. The orientation can be used to further specialize the axis type (e.g., a y-axis oriented towards the right edge of the chart).
