@@ -1065,15 +1065,8 @@
           ]
         },
         "domain": {
-          "anyOf": [
-            {
-              "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ]
+          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "domainCap": {
           "anyOf": [
@@ -1506,15 +1499,8 @@
           ]
         },
         "labels": {
-          "anyOf": [
-            {
-              "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__ `true`.",
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ]
+          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__ `true`.",
+          "type": "boolean"
         },
         "maxExtent": {
           "anyOf": [
@@ -1539,8 +1525,15 @@
           ]
         },
         "offset": {
-          "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.\n\n__Default value:__ derived from the [axis config](https://vega.github.io/vega-lite/docs/config.html#facet-scale-config)'s `offset` (`0` by default)",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.\n\n__Default value:__ derived from the [axis config](https://vega.github.io/vega-lite/docs/config.html#facet-scale-config)'s `offset` (`0` by default)"
         },
         "orient": {
           "anyOf": [
@@ -1675,15 +1668,8 @@
           ]
         },
         "tickExtra": {
-          "anyOf": [
-            {
-              "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ]
+          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
+          "type": "boolean"
         },
         "tickMinStep": {
           "anyOf": [
@@ -1722,15 +1708,8 @@
           ]
         },
         "tickRound": {
-          "anyOf": [
-            {
-              "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ]
+          "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "tickSize": {
           "anyOf": [
@@ -1763,15 +1742,8 @@
           ]
         },
         "ticks": {
-          "anyOf": [
-            {
-              "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ]
+          "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "title": {
           "anyOf": [
@@ -2050,15 +2022,8 @@
           "type": "boolean"
         },
         "domain": {
-          "anyOf": [
-            {
-              "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ]
+          "description": "A boolean flag indicating if the domain (the axis baseline) should be included as part of the axis.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "domainCap": {
           "anyOf": [
@@ -2491,15 +2456,8 @@
           ]
         },
         "labels": {
-          "anyOf": [
-            {
-              "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__ `true`.",
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ]
+          "description": "A boolean flag indicating if labels should be included as part of the axis.\n\n__Default value:__ `true`.",
+          "type": "boolean"
         },
         "maxExtent": {
           "anyOf": [
@@ -2524,8 +2482,15 @@
           ]
         },
         "offset": {
-          "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.\n\n__Default value:__ derived from the [axis config](https://vega.github.io/vega-lite/docs/config.html#facet-scale-config)'s `offset` (`0` by default)",
-          "type": "number"
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "The offset, in pixels, by which to displace the axis from the edge of the enclosing group or data rectangle.\n\n__Default value:__ derived from the [axis config](https://vega.github.io/vega-lite/docs/config.html#facet-scale-config)'s `offset` (`0` by default)"
         },
         "orient": {
           "anyOf": [
@@ -2660,15 +2625,8 @@
           ]
         },
         "tickExtra": {
-          "anyOf": [
-            {
-              "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ]
+          "description": "Boolean flag indicating if an extra axis tick should be added for the initial position of the axis. This flag is useful for styling axes for `band` scales such that ticks are placed on band boundaries rather in the middle of a band. Use in conjunction with `\"bandPosition\": 1` and an axis `\"padding\"` value of `0`.",
+          "type": "boolean"
         },
         "tickMinStep": {
           "anyOf": [
@@ -2707,15 +2665,8 @@
           ]
         },
         "tickRound": {
-          "anyOf": [
-            {
-              "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ]
+          "description": "Boolean flag indicating if pixel position values should be rounded to the nearest integer.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "tickSize": {
           "anyOf": [
@@ -2748,15 +2699,8 @@
           ]
         },
         "ticks": {
-          "anyOf": [
-            {
-              "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ]
+          "description": "Boolean value that determines whether the axis should include ticks.\n\n__Default value:__ `true`",
+          "type": "boolean"
         },
         "title": {
           "anyOf": [
