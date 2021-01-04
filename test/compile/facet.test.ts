@@ -58,6 +58,21 @@ describe('FacetModel', () => {
         row: {field: 'a', type: 'nominal', header: {titleOrient: 'right', labelOrient: 'right'}}
       });
     });
+
+    it('keeps header: null', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'nominal', header: null}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {}
+        }
+      });
+      expect(model.facet).toEqual({
+        row: {field: 'a', type: 'nominal', header: null}
+      });
+    });
   });
 
   describe('parseAxisAndHeader', () => {
