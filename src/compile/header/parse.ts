@@ -46,14 +46,14 @@ function parseFacetHeader(model: FacetModel, channel: FacetChannel) {
       child.component.layoutHeaders[channel].title = null;
     }
 
-    const labelOrient = getHeaderProperty('labelOrient', fieldDef, config, channel);
+    const labelOrient = getHeaderProperty('labelOrient', fieldDef.header, config, channel);
 
-    const header = fieldDef.header ?? {};
-    const labels = getFirstDefined(header.labels, config.header.labels, true);
+    const labels =
+      fieldDef.header !== null ? getFirstDefined(fieldDef.header?.labels, config.header.labels, true) : false;
     const headerType = contains(['bottom', 'right'], labelOrient) ? 'footer' : 'header';
 
     component.layoutHeaders[channel] = {
-      title,
+      title: fieldDef.header !== null ? title : null,
       facetFieldDef: fieldDef,
       [headerType]: channel === 'facet' ? [] : [makeHeaderComponent(model, channel, labels)]
     };

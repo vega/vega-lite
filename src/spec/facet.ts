@@ -14,7 +14,7 @@ export interface FacetFieldDef<F extends Field, ES extends ExprRef | SignalRef =
   /**
    * An object defining properties of a facet's header.
    */
-  header?: Header<ES>;
+  header?: Header<ES> | null;
 
   // Note: `"sort"` for facet field def is different from encoding field def as it does not support `SortByEncoding`
 
