@@ -1,5 +1,6 @@
 import {array, isObject} from 'vega-util';
 import {
+  GeoPositionChannel,
   getPositionChannelFromLatLong,
   isGeoPositionChannel,
   isScaleChannel,
@@ -28,7 +29,9 @@ export type TupleStoreType =
 export interface SelectionProjection {
   type: TupleStoreType;
   field: string;
+  index: number;
   channel?: SingleDefUnitChannel;
+  geoChannel?: GeoPositionChannel;
   signals?: {data?: string; visual?: string};
   hasLegend?: boolean;
 }
@@ -77,6 +80,10 @@ const project: SelectionCompiler = {
         ? (array(selDef.value as any) as SelectionInitMapping[] | SelectionInitIntervalMapping[])
         : null;
 
+    if (init && selCmpt.type === 'interval' && model.hasProjection && init[0].length !== 2) {
+      log.warn(log.message.INITIALIZE_GEO_INTERVAL);
+    }
+
     // If no explicit projection (either fields or encodings) is specified, set some defaults.
     // If an initial value is set, try to infer projections.
     let {fields, encodings} = (isObject(selDef.select) ? selDef.select : {}) as PointSelectionConfig;
@@ -92,10 +99,10 @@ const project: SelectionCompiler = {
             (encodings || (encodings = [])).push(key as SingleDefUnitChannel);
           } else {
             if (type === 'interval') {
-              log.warn(log.message.INTERVAL_INITIALIZED_WITH_X_Y);
+              log.warn(log.message.INTERVAL_INITIALIZED_WITH_POS);
               encodings = cfg.encodings;
             } else {
-              (fields || (fields = [])).push(key);
+              (fields ??= []).push(key);
             }
           }
         }
@@ -155,16 +162,19 @@ const project: SelectionCompiler = {
               ? 'R-RE'
               : 'E';
 
-          const posChannel = isGeoPositionChannel(channel) ? getPositionChannelFromLatLong(channel) : channel;
-          const p: SelectionProjection = {
-            field,
-            channel: posChannel,
-            type: tplType
-          };
+          const p: SelectionProjection = {field, channel, type: tplType, index: proj.items.length};
           p.signals = {...signalName(p, 'data'), ...signalName(p, 'visual')};
           proj.items.push((parsed[field] = p));
-          proj.hasField[field] = proj.hasChannel[posChannel] = parsed[field];
+          proj.hasField[field] = parsed[field];
           proj.hasSelectionId = proj.hasSelectionId || field === SELECTION_ID;
+
+          if (isGeoPositionChannel(channel)) {
+            p.geoChannel = channel;
+            p.channel = getPositionChannelFromLatLong(channel);
+            proj.hasChannel[p.channel] = parsed[field];
+          } else {
+            proj.hasChannel[channel] = parsed[field];
+          }
         }
       } else {
         log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
@@ -173,7 +183,7 @@ const project: SelectionCompiler = {
 
     for (const field of fields ?? []) {
       if (proj.hasField[field]) continue;
-      const p: SelectionProjection = {type: 'E', field};
+      const p: SelectionProjection = {type: 'E', field, index: proj.items.length};
       p.signals = {...signalName(p, 'data')};
       proj.items.push(p);
       proj.hasField[field] = p;
@@ -184,7 +194,9 @@ const project: SelectionCompiler = {
       selCmpt.init = (init as any).map((v: SelectionInitMapping | SelectionInitIntervalMapping) => {
         // Selections can be initialized either with a full object that maps projections to values
         // or scalar values to smoothen the abstraction gradient from variable params to point selections.
-        return proj.items.map(p => (isObject(v) ? (v[p.channel] !== undefined ? v[p.channel] : v[p.field]) : v));
+        return proj.items.map(p =>
+          isObject(v) ? (v[p.geoChannel || p.channel] !== undefined ? v[p.geoChannel || p.channel] : v[p.field]) : v
+        );
       });
     }
 
