@@ -347,7 +347,7 @@ describe('Selection', () => {
           transform: [
             {
               type: 'filter',
-              expr: '!(length(data("index_store"))) || (vlSelectionTest("index_store", datum))'
+              expr: '!length(data("index_store")) || vlSelectionTest("index_store", datum)'
             }
           ]
         },

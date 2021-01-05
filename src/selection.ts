@@ -62,12 +62,6 @@ export interface BaseSelectionConfig {
    * __See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.
    */
   fields?: FieldName[];
-
-  /**
-   * By default, `all` data values are considered to lie within an empty selection.
-   * When set to `none`, empty selections contain no data values.
-   */
-  empty?: 'all' | 'none';
 }
 
 export interface PointSelectionConfig extends BaseSelectionConfig {
@@ -277,7 +271,6 @@ export const defaultConfig: SelectionConfig = {
     fields: [SELECTION_ID],
     toggle: 'event.shiftKey',
     resolve: 'global',
-    empty: 'all',
     clear: 'dblclick'
   },
   interval: {

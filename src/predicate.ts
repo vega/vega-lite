@@ -35,9 +35,14 @@ export type FieldPredicate =
 
 export interface SelectionPredicate {
   /**
-   * Filter using a selection name or a logical composition of selection names.
+   * Filter using a selection name.
    */
-  selection: LogicalComposition<string>;
+  selection: string;
+  /**
+   * By default, the predicate of empty selections returns true.
+   * Override this behavior, by setting this property `empty: false`.
+   */
+  empty?: boolean;
 }
 
 export function isSelectionPredicate(predicate: LogicalComposition<Predicate>): predicate is SelectionPredicate {

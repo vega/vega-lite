@@ -21,14 +21,17 @@
               "type": "point",
               "encodings": ["x"],
               "nearest": true,
-              "on": "mouseover",
-              "empty": "none"
+              "on": "mouseover"
             }
           }],
           "mark": "point",
           "encoding": {
             "opacity": {
-              "condition": {"selection": "label", "value": 1},
+              "condition": {
+                "selection": "label",
+                "empty": false,
+                "value": 1
+              },
               "value": 0
             }
           }
@@ -36,7 +39,7 @@
       ]
     },
     {
-      "transform": [{"filter": {"selection": "label"}}],
+      "transform": [{"filter": {"selection": "label", "empty": false}}],
       "layer": [
         {
           "mark": {"type": "rule", "color": "gray"},
