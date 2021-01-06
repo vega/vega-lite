@@ -1,10 +1,16 @@
+import {Field} from '../channeldef';
 import {SelectionDef} from '../selection';
-import {NormalizedUnitSpec} from '../spec';
+import {FacetedUnitSpec, LayerSpec, UnitSpec} from '../spec';
 import {SpecMapper} from '../spec/map';
 import {NormalizerParams} from './base';
 
-export class SelectionCompatibilityNormalizer extends SpecMapper<NormalizerParams, NormalizedUnitSpec> {
-  public mapUnit(spec: NormalizedUnitSpec) {
+export class SelectionCompatibilityNormalizer extends SpecMapper<
+  NormalizerParams,
+  FacetedUnitSpec<Field>,
+  LayerSpec<Field>,
+  UnitSpec<Field>
+> {
+  public mapUnit(spec: UnitSpec<Field>) {
     const selections = (spec as any).selection;
     const params: SelectionDef[] = [];
 

@@ -1,3 +1,4 @@
+import {normalize} from '../../src';
 import {SelectionCompatibilityNormalizer} from '../../src/normalize/selectioncompat';
 import {NormalizedUnitSpec} from '../../src/spec';
 
@@ -84,5 +85,31 @@ describe('SelectionCompatibilityNormalizer', () => {
     expect(normedUnit.params[1]).toHaveProperty('name', 'grid');
     expect(normedUnit.params[0]).toHaveProperty('value', {x: [55, 160], y: [13, 37]});
     expect(normedUnit.params[1]).toHaveProperty('bind', 'scales');
+  });
+
+  it('should be the first normalizer run', () => {
+    const spec: any = {
+      data: {url: 'data/cars.json'},
+      selection: {
+        brush: {
+          type: 'interval',
+          init: {x: [55, 160], y: [13, 37]}
+        }
+      },
+      mark: {type: 'line', point: true},
+      encoding: {
+        row: {field: 'Origin', type: 'nominal'},
+        x: {field: 'Horsepower', type: 'quantitative'},
+        y: {field: 'Miles_per_Gallon', type: 'quantitative'},
+        color: {
+          condition: {selection: 'brush', field: 'Cylinders', type: 'ordinal'},
+          value: 'grey'
+        }
+      }
+    };
+
+    const normalized = normalize(spec) as any;
+    expect(normalized.spec.layer[0]).toHaveProperty('params');
+    expect(normalized.spec.layer[0].params[0].name).toBe('brush');
   });
 });
