@@ -91,6 +91,8 @@ function onDelta(
     ? 'panLinear'
     : scaleType === 'log'
     ? 'panLog'
+    : scaleType === 'symlog'
+    ? 'panSymlog'
     : scaleType === 'pow'
     ? 'panPow'
     : 'panLinear';

@@ -93,6 +93,8 @@ function onDelta(
     ? 'zoomLinear'
     : scaleType === 'log'
     ? 'zoomLog'
+    : scaleType === 'symlog'
+    ? 'zoomSymlog'
     : scaleType === 'pow'
     ? 'zoomPow'
     : 'zoomLinear';
