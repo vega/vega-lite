@@ -5,33 +5,39 @@ import {ScaleType} from '../../../src/scale';
 
 describe('compile/scale', () => {
   describe('nice', () => {
-    it('should return nice for x and y.', () => {
+    it('should return nice for x and y', () => {
       for (const c of ['x', 'y'] as const) {
-        expect(rules.nice('linear', c, {type: 'quantitative'})).toEqual(true);
+        expect(rules.nice('linear', c, undefined, {type: 'quantitative'})).toEqual(true);
       }
     });
 
-    it('should not return nice for binned x and y.', () => {
+    it('should not return nice for binned x and y', () => {
       for (const c of ['x', 'y'] as const) {
-        expect(rules.nice('linear', c, {type: 'quantitative', field: 'a', bin: true})).toBeUndefined();
+        expect(rules.nice('linear', c, undefined, {type: 'quantitative', field: 'a', bin: true})).toBeUndefined();
       }
     });
 
-    it('should not return nice for temporal x and y.', () => {
+    it('should not return nice for temporal x and y', () => {
       for (const c of ['x', 'y'] as const) {
-        expect(rules.nice('time', c, {type: 'temporal'})).toBeUndefined();
+        expect(rules.nice('time', c, undefined, {type: 'temporal'})).toBeUndefined();
+      }
+    });
+
+    it('should not return nice when domain is set explicitly', () => {
+      for (const c of ['x', 'y'] as const) {
+        expect(rules.nice('time', c, [0, 42], {type: 'quantitative'})).toBeUndefined();
       }
     });
   });
 
   describe('padding', () => {
-    it('should be pointPadding for point scale if channel is x or y and padding is not specified.', () => {
+    it('should be pointPadding for point scale if channel is x or y and padding is not specified', () => {
       for (const c of ['x', 'y'] as const) {
         expect(rules.padding(c, 'point', {pointPadding: 13}, undefined, undefined, undefined)).toEqual(13);
       }
     });
 
-    it('should be continuousBandSize for linear x-scale of vertical bar.', () => {
+    it('should be continuousBandSize for linear x-scale of vertical bar', () => {
       expect(
         rules.padding(
           'x',
@@ -44,7 +50,7 @@ describe('compile/scale', () => {
       ).toEqual(13);
     });
 
-    it('should be undefined for linear x-scale for binned field of vertical bar.', () => {
+    it('should be undefined for linear x-scale for binned field of vertical bar', () => {
       expect(
         rules.padding(
           'x',
@@ -57,7 +63,7 @@ describe('compile/scale', () => {
       ).toBeUndefined();
     });
 
-    it('should be continuousBandSize for linear y-scale of horizontal bar.', () => {
+    it('should be continuousBandSize for linear y-scale of horizontal bar', () => {
       expect(
         rules.padding(
           'y',
@@ -72,16 +78,16 @@ describe('compile/scale', () => {
   });
 
   describe('paddingInner', () => {
-    it('should be undefined if padding is specified.', () => {
+    it('should be undefined if padding is specified', () => {
       expect(rules.paddingInner(10, 'x', 'bar', {})).toBeUndefined();
     });
 
-    it('should be bandPaddingInner if channel is x or y and padding is not specified.', () => {
+    it('should be bandPaddingInner if channel is x or y and padding is not specified', () => {
       expect(rules.paddingInner(undefined, 'x', 'bar', {bandPaddingInner: 15})).toEqual(15);
       expect(rules.paddingInner(undefined, 'y', 'bar', {bandPaddingInner: 15})).toEqual(15);
     });
 
-    it('should be undefined for non-xy channels.', () => {
+    it('should be undefined for non-xy channels', () => {
       for (const c of NONPOSITION_SCALE_CHANNELS) {
         expect(rules.paddingInner(undefined, c, 'bar', {bandPaddingInner: 15})).toBeUndefined();
       }
@@ -89,24 +95,24 @@ describe('compile/scale', () => {
   });
 
   describe('paddingOuter', () => {
-    it('should be undefined if padding is specified.', () => {
+    it('should be undefined if padding is specified', () => {
       for (const scaleType of ['point', 'band'] as ScaleType[]) {
         expect(rules.paddingOuter(10, 'x', scaleType, 'bar', 0, {})).toBeUndefined();
       }
     });
 
-    it('should be config.scale.bandPaddingOuter for band scale if channel is x or y and padding is not specified and config.scale.bandPaddingOuter.', () => {
+    it('should be config.scale.bandPaddingOuter for band scale if channel is x or y and padding is not specified and config.scale.bandPaddingOuter', () => {
       for (const c of ['x', 'y'] as const) {
         expect(rules.paddingOuter(undefined, c, 'band', 'bar', 0, {bandPaddingOuter: 16})).toEqual(16);
       }
     });
-    it('should be paddingInner/2 for band scale if channel is x or y and padding is not specified and config.scale.bandPaddingOuter.', () => {
+    it('should be paddingInner/2 for band scale if channel is x or y and padding is not specified and config.scale.bandPaddingOuter', () => {
       for (const c of ['x', 'y'] as const) {
         expect(rules.paddingOuter(undefined, c, 'band', 'bar', 10, {})).toEqual(5);
       }
     });
 
-    it('should be undefined for non-xy channels.', () => {
+    it('should be undefined for non-xy channels', () => {
       for (const c of NONPOSITION_SCALE_CHANNELS) {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
           expect(rules.paddingOuter(undefined, c, scaleType, 'bar', 0, {})).toBeUndefined();
@@ -116,19 +122,19 @@ describe('compile/scale', () => {
   });
 
   describe('reverse', () => {
-    it('should return true for a continuous scale with sort = "descending".', () => {
+    it('should return true for a continuous scale with sort = "descending"', () => {
       expect(rules.reverse('linear', 'descending', 'x', {})).toBe(true);
     });
 
-    it('should return false for a discrete scale with sort = "descending".', () => {
+    it('should return false for a discrete scale with sort = "descending"', () => {
       expect(rules.reverse('point', 'descending', 'x', {})).not.toBeDefined();
     });
 
-    it('should return xReverse for continuous x scale.', () => {
+    it('should return xReverse for continuous x scale', () => {
       expect(rules.reverse('linear', 'ascending', 'x', {xReverse: {signal: 'rtl'}})).toEqual({signal: 'rtl'});
     });
 
-    it('should return flip xReverse for continuous x scale with descending sort.', () => {
+    it('should return flip xReverse for continuous x scale with descending sort', () => {
       expect(rules.reverse('linear', 'descending', 'x', {xReverse: {signal: 'rtl'}})).toEqual({signal: '!rtl'});
 
       expect(rules.reverse('linear', 'descending', 'x', {xReverse: true})).toEqual(false);
