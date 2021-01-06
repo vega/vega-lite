@@ -53,7 +53,7 @@ function normalizeGenericSpec(
 ) {
   const normParams = {config};
   return topLevelSelectionNormalizer.map(
-    selectionCompatNormalizer.map(coreNormalizer.map(spec, normParams), normParams),
+    coreNormalizer.map(selectionCompatNormalizer.map(spec, normParams), normParams),
     normParams
   );
 }
