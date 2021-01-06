@@ -7,6 +7,7 @@ import {isLayerModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {SelectionProjection} from './project';
 import {SelectionCompiler} from '.';
+import {replacePathInField} from '../../util';
 
 const scaleBindings: SelectionCompiler<'interval'> = {
   defined: selCmpt => {
@@ -55,10 +56,12 @@ const scaleBindings: SelectionCompiler<'interval'> = {
     const namedSg = signals.filter(s => s.name === selCmpt.name)[0];
     let update = namedSg.update;
     if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
-      namedSg.update = `{${bound.map(proj => `${stringValue(proj.field)}: ${proj.signals.data}`).join(', ')}}`;
+      namedSg.update = `{${bound
+        .map(proj => `${stringValue(replacePathInField(proj.field))}: ${proj.signals.data}`)
+        .join(', ')}}`;
     } else {
       for (const proj of bound) {
-        const mapping = `${stringValue(proj.field)}: ${proj.signals.data}`;
+        const mapping = `${stringValue(replacePathInField(proj.field))}: ${proj.signals.data}`;
         if (!update.includes(mapping)) {
           update = `${update.substring(0, update.length - 1)}, ${mapping}}`;
         }

@@ -4,7 +4,7 @@ import {selectionCompilers, SelectionComponent, STORE} from '.';
 import {warn} from '../../log';
 import {LogicalComposition} from '../../logical';
 import {BaseSelectionConfig, SelectionDef, SelectionExtent} from '../../selection';
-import {Dict, duplicate, entries, logicalExpr, varName} from '../../util';
+import {Dict, duplicate, entries, logicalExpr, replacePathInField, varName} from '../../util';
 import {DataFlowNode, OutputNode} from '../data/dataflow';
 import {FilterNode} from '../data/filter';
 import {Model} from '../model';
@@ -120,7 +120,7 @@ export function parseSelectionBinExtent(selCmpt: SelectionComponent, extent: Sel
     }
   }
 
-  return `${selCmpt.name}[${stringValue(field)}]`;
+  return `${selCmpt.name}[${stringValue(replacePathInField(field))}]`;
 }
 
 export function materializeSelections(model: UnitModel, main: OutputNode) {

@@ -155,9 +155,9 @@ describe('Selection + Scales', () => {
 
       let scales = assembleScalesForModel(model);
       expect(scales[0]).toHaveProperty('domainRaw');
-      expect(scales[0].domainRaw).toEqual({signal: 'grid["nested.b"]'});
+      expect(scales[0].domainRaw).toEqual({signal: 'grid["nested\\\\.b"]'});
       expect(scales[1]).toHaveProperty('domainRaw');
-      expect(scales[1].domainRaw).toEqual({signal: 'grid["nested.a"]'});
+      expect(scales[1].domainRaw).toEqual({signal: 'grid["nested\\\\.a"]'});
 
       model = parseConcatModel({
         vconcat: [
@@ -216,11 +216,11 @@ describe('Selection + Scales', () => {
 
       scales = assembleScalesForModel(model.children[1]);
       expect(scales[0]).toHaveProperty('domainRaw');
-      expect(scales[0].domainRaw).toEqual({signal: 'brush["nested.a"]'});
+      expect(scales[0].domainRaw).toEqual({signal: 'brush["nested\\\\.a"]'});
 
       scales = assembleScalesForModel(model.children[2]);
       expect(scales[0]).toHaveProperty('domainRaw');
-      expect(scales[0].domainRaw).toEqual({signal: 'brush["nested.a"]'});
+      expect(scales[0].domainRaw).toEqual({signal: 'brush["nested\\\\.a"]'});
     });
   });
 
@@ -324,6 +324,40 @@ describe('Selection + Scales', () => {
       expect(namedSelector[0].update).toBe(
         '{"Miles_per_Gallon": selector001_Miles_per_Gallon, "Weight_in_lbs": selector001_Weight_in_lbs, "Acceleration": selector001_Acceleration, "Horsepower": selector001_Horsepower}'
       );
+    });
+
+    it('should correctly nest fields for top-level signals', () => {
+      const model = parseModel({
+        repeat: {
+          row: ['p.x', 'p.y'],
+          column: ['p.x', 'p.y']
+        },
+        spec: {
+          mark: 'point',
+          params: [
+            {
+              name: 'sel11',
+              select: 'interval',
+              bind: 'scales'
+            }
+          ],
+          encoding: {
+            x: {field: {repeat: 'column'}, type: 'quantitative'},
+            y: {field: {repeat: 'row'}, type: 'quantitative'}
+          },
+          data: {
+            values: [{p: {x: 1, y: 1}}, {p: {x: 2, y: 1}}, {p: {x: 1, y: 2}}, {p: {x: 3, y: 3}}, {p: {x: 3, y: 2}}]
+          }
+        }
+      });
+
+      model.parseScale();
+      model.parseSelections();
+
+      const signals = assembleTopLevelSignals(model.children[2] as UnitModel, []);
+      const named = signals.filter(s => s.name === 'sel11') as NewSignal[];
+      expect(named).toHaveLength(1);
+      expect(named[0].update).toEqual('{"p\\\\.x": sel11_p_x, "p\\\\.y": sel11_p_y}');
     });
   });
 
