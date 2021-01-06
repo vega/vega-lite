@@ -174,7 +174,6 @@
       "domain": [75, 150],
       "domainRaw": {"signal": "grid[\"Horsepower\"]"},
       "range": [0, {"signal": "width"}],
-      "nice": true,
       "zero": false
     },
     {
@@ -183,7 +182,6 @@
       "domain": [20, 40],
       "domainRaw": {"signal": "grid[\"Miles_per_Gallon\"]"},
       "range": [{"signal": "height"}, 0],
-      "nice": true,
       "zero": false
     },
     {

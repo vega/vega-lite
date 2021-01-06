@@ -91,7 +91,6 @@
       "type": "linear",
       "domain": [0, 30],
       "range": [{"signal": "height"}, 0],
-      "nice": true,
       "zero": true
     },
     {

@@ -145,7 +145,7 @@ export const scaleRules: {
 
   interpolate: ({channel, fieldOrDatumDef}) => interpolate(channel, fieldOrDatumDef.type),
 
-  nice: ({scaleType, channel, fieldOrDatumDef}) => nice(scaleType, channel, fieldOrDatumDef),
+  nice: ({scaleType, channel, domain, fieldOrDatumDef}) => nice(scaleType, channel, domain, fieldOrDatumDef),
 
   padding: ({channel, scaleType, fieldOrDatumDef, markDef, config}) =>
     padding(channel, scaleType, config.scale, fieldOrDatumDef, markDef, config.bar),
@@ -241,9 +241,14 @@ export function interpolate(channel: ScaleChannel, type: Type): Scale['interpola
 export function nice(
   scaleType: ScaleType,
   channel: ScaleChannel,
+  specifiedDomain: Domain,
   fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef
 ): boolean | TimeInterval {
-  if (getFieldDef(fieldOrDatumDef)?.bin || util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
+  if (
+    getFieldDef(fieldOrDatumDef)?.bin ||
+    isArray(specifiedDomain) ||
+    util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)
+  ) {
     return undefined;
   }
   return channel in POSITION_SCALE_CHANNEL_INDEX ? true : undefined;
@@ -366,7 +371,7 @@ export function zero(
   markDef: MarkDef,
   scaleType: ScaleType
 ) {
-  // If users explicitly provide a domain range, we should not augment zero as that will be unexpected.
+  // If users explicitly provide a domain, we should not augment zero as that will be unexpected.
   const hasCustomDomain = !!specifiedDomain && specifiedDomain !== 'unaggregated';
   if (hasCustomDomain) {
     if (hasContinuousDomain(scaleType)) {
