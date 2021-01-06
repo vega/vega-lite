@@ -56,7 +56,6 @@
       "type": "linear",
       "domain": [300, 450],
       "range": [0, {"signal": "width"}],
-      "nice": true,
       "zero": false
     },
     {

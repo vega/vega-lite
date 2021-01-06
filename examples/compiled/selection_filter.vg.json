@@ -550,7 +550,6 @@
       "type": "linear",
       "domain": [0, 25],
       "range": [0, {"signal": "width"}],
-      "nice": true,
       "zero": true
     },
     {
@@ -558,7 +557,6 @@
       "type": "linear",
       "domain": [0, 500],
       "range": [{"signal": "childHeight"}, 0],
-      "nice": true,
       "zero": true
     }
   ]

@@ -150,7 +150,6 @@
       "type": "linear",
       "domain": [0, 100],
       "range": [0, {"signal": "width"}],
-      "nice": true,
       "zero": true
     },
     {
@@ -158,7 +157,6 @@
       "type": "linear",
       "domain": [0, 100],
       "range": [{"signal": "height"}, 0],
-      "nice": true,
       "zero": true
     }
   ],

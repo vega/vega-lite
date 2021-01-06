@@ -363,7 +363,6 @@
       "type": "linear",
       "domain": [10, 70],
       "range": [{"signal": "height"}, 0],
-      "nice": true,
       "zero": false
     }
   ],

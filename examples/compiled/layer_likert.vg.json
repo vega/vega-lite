@@ -346,7 +346,6 @@
       "type": "linear",
       "domain": [0, 6],
       "range": [0, {"signal": "width"}],
-      "nice": true,
       "zero": true
     },
     {
