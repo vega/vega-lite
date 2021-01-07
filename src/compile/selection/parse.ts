@@ -94,7 +94,7 @@ export function parseSelectionPredicate(
   );
 }
 
-export function parseSelectionBinExtent(selCmpt: SelectionComponent, extent: SelectionExtent) {
+export function parseSelectionExtent(selCmpt: SelectionComponent, extent: SelectionExtent) {
   const encoding = extent['encoding'];
   let field = extent['field'];
 

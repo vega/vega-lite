@@ -6,7 +6,7 @@ import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../sr
 import {UnitModel} from '../../../src/compile/unit';
 import * as log from '../../../src/log';
 import {Domain} from '../../../src/scale';
-import {parseConcatModel, parseModel, parseUnitModelWithScale} from '../../util';
+import {parseConcatModel, parseModel, parseUnitModelWithScaleAndSelection} from '../../util';
 
 describe('Selection + Scales', () => {
   describe('selectionExtent', () => {
@@ -128,7 +128,7 @@ describe('Selection + Scales', () => {
     });
 
     it('should handle nested field references', () => {
-      let model: Model = parseUnitModelWithScale({
+      let model: Model = parseUnitModelWithScaleAndSelection({
         params: [
           {
             name: 'grid',
@@ -151,7 +151,6 @@ describe('Selection + Scales', () => {
           }
         }
       });
-      model.parseSelections();
 
       let scales = assembleScalesForModel(model);
       expect(scales[0]).toHaveProperty('domainRaw');
@@ -221,6 +220,31 @@ describe('Selection + Scales', () => {
       scales = assembleScalesForModel(model.children[2]);
       expect(scales[0]).toHaveProperty('domainRaw');
       expect(scales[0].domainRaw).toEqual({signal: 'brush["nested\\\\.a"]'});
+    });
+
+    it('should respect ordering of explicit scale domains', () => {
+      const model = parseUnitModelWithScaleAndSelection({
+        mark: 'point',
+        encoding: {
+          x: {
+            type: 'quantitative',
+            field: 'Horsepower',
+            scale: {domain: [250, 0]}
+          },
+          y: {type: 'quantitative', field: 'Miles_per_Gallon'}
+        },
+        params: [
+          {
+            name: 'pan',
+            select: 'interval',
+            bind: 'scales'
+          }
+        ]
+      });
+
+      const scales = assembleScalesForModel(model);
+      expect(scales[0]).toHaveProperty('domainRaw');
+      expect(scales[0].domainRaw).toEqual({signal: 'isValid(pan["Horsepower"]) && reverse(pan["Horsepower"])'});
     });
   });
 
@@ -364,7 +388,7 @@ describe('Selection + Scales', () => {
   it(
     'should not bind for unavailable/unsupported scales',
     log.wrap(localLogger => {
-      let model = parseUnitModelWithScale({
+      parseUnitModelWithScaleAndSelection({
         data: {url: 'data/cars.json'},
         params: [
           {
@@ -378,10 +402,9 @@ describe('Selection + Scales', () => {
           y: {field: 'Miles_per_Gallon', type: 'quantitative'}
         }
       });
-      model.parseSelections();
       expect(localLogger.warns[0]).toEqual(log.message.cannotProjectOnChannelWithoutField(X));
 
-      model = parseUnitModelWithScale({
+      parseUnitModelWithScaleAndSelection({
         data: {url: 'data/cars.json'},
         params: [
           {
@@ -396,7 +419,6 @@ describe('Selection + Scales', () => {
           y: {field: 'Miles_per_Gallon', type: 'quantitative'}
         }
       });
-      model.parseSelections();
       expect(localLogger.warns[1]).toEqual(log.message.SCALE_BINDINGS_CONTINUOUS);
     })
   );
