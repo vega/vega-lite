@@ -98,10 +98,14 @@ function onDelta(
     : scaleType === 'pow'
     ? 'zoomPow'
     : 'zoomLinear';
-  const update =
-    `${zoomFn}(${base}, ${anchor}, ${delta}` +
-    (hasScales && scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') ?? 1}` : '') +
-    ')';
+  const arg = !hasScales
+    ? ''
+    : scaleType === 'pow'
+    ? `, ${scaleCmpt.get('exponent') ?? 1}`
+    : scaleType === 'symlog'
+    ? `, ${scaleCmpt.get('constant') ?? 1}`
+    : '';
+  const update = `${zoomFn}(${base}, ${anchor}, ${delta}${arg})`;
 
   signal.on.push({
     events: {signal: delta},
