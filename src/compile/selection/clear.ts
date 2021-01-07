@@ -14,7 +14,7 @@ const clear: SelectionCompiler = {
 
   parse: (model, selCmpt) => {
     if (selCmpt.clear) {
-      selCmpt.clear = isString(selCmpt.clear) ? parseSelector(selCmpt.clear, 'scope') : selCmpt.clear;
+      selCmpt.clear = isString(selCmpt.clear) ? parseSelector(selCmpt.clear, 'view') : selCmpt.clear;
     }
   },
 

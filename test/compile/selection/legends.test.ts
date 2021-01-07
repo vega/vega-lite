@@ -395,7 +395,7 @@ describe('Interactive Legends', () => {
             {
               events: [
                 {
-                  source: 'scope',
+                  source: 'view',
                   type: 'dblclick'
                 }
               ],
