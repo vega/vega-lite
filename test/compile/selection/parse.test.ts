@@ -282,6 +282,20 @@ describe('Selection', () => {
         }
       ]);
     });
+
+    it('does not add duplicate projections', () => {
+      const component = parseUnitSelection(model, [
+        {
+          name: 'one',
+          select: {type: 'interval', fields: ['Horsepower', 'Miles_per_Gallon'], encodings: ['x', 'y']}
+        }
+      ]);
+
+      expect(component['one'].project.items).toEqual([
+        {field: 'Horsepower', channel: 'x', type: 'R', signals: {data: 'one_Horsepower', visual: 'one_x'}},
+        {field: 'Miles_per_Gallon', channel: 'y', type: 'R', signals: {data: 'one_Miles_per_Gallon', visual: 'one_y'}}
+      ]);
+    });
   });
 
   it('materializes a selection', () => {

@@ -96,14 +96,6 @@ const project: SelectionCompiler = {
       }
     }
 
-    // TODO: find a possible channel mapping for these fields.
-    for (const field of fields ?? []) {
-      const p: SelectionProjection = {type: 'E', field};
-      p.signals = {...signalName(p, 'data')};
-      proj.items.push(p);
-      proj.hasField[field] = p;
-    }
-
     for (const channel of encodings ?? []) {
       const fieldDef = model.fieldDef(channel);
       if (fieldDef) {
@@ -156,6 +148,15 @@ const project: SelectionCompiler = {
       } else {
         log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
       }
+    }
+
+    // TODO: find a possible channel mapping for these fields.
+    for (const field of fields ?? []) {
+      if (proj.hasField[field]) continue;
+      const p: SelectionProjection = {type: 'E', field};
+      p.signals = {...signalName(p, 'data')};
+      proj.items.push(p);
+      proj.hasField[field] = p;
     }
 
     if (init) {
