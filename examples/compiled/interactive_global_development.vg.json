@@ -159,7 +159,7 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1_layer_1\", fields: hovered_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"country\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -174,7 +174,7 @@
           "events": [{"source": "scope", "type": "mouseover"}],
           "update": "event.shiftKey"
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
       ]
     },
     {
@@ -194,7 +194,7 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1_layer_1\", fields: clicked_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"country\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -209,7 +209,7 @@
           "events": [{"source": "scope", "type": "click"}],
           "update": "event.shiftKey"
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
       ]
     },
     {

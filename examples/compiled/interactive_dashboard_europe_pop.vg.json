@@ -406,7 +406,7 @@
             },
             {"events": {"signal": "brush_scale_trigger"}, "update": "[0, 0]"},
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {
@@ -727,7 +727,7 @@
             },
             {"events": {"signal": "brush_scale_trigger"}, "update": "[0, 0]"},
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {
@@ -1051,7 +1051,7 @@
               "update": "[scale(\"concat_2_x\", brush_Population_ages_65_and_above_of_total[0]), scale(\"concat_2_x\", brush_Population_ages_65_and_above_of_total[1])]"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {
@@ -1110,7 +1110,7 @@
               "update": "[scale(\"concat_2_y\", brush_Population_ages_15_64_of_total[0]), scale(\"concat_2_y\", brush_Population_ages_15_64_of_total[1])]"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {

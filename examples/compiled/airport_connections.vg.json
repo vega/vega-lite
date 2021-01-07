@@ -139,7 +139,7 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_2\", fields: org_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"origin\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {"name": "org_tuple_fields", "value": [{"type": "E", "field": "origin"}]},
@@ -157,7 +157,7 @@
           ],
           "update": "event.shiftKey"
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
       ]
     },
     {

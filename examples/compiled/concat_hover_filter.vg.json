@@ -96,7 +96,7 @@
               "force": true
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "null"
             }
           ]
@@ -114,7 +114,7 @@
               "update": "event.shiftKey"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "false"
             }
           ]
@@ -241,7 +241,7 @@
               "force": true
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "null"
             }
           ]
@@ -259,7 +259,7 @@
               "update": "event.shiftKey"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "false"
             }
           ]

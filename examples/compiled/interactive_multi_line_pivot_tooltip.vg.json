@@ -67,7 +67,7 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "mouseout"}], "update": "null"}
+        {"events": [{"source": "view", "type": "mouseout"}], "update": "null"}
       ]
     },
     {"name": "hover_tuple_fields", "value": [{"type": "E", "field": "date"}]},
@@ -85,7 +85,7 @@
           ],
           "update": "event.shiftKey"
         },
-        {"events": [{"source": "scope", "type": "mouseout"}], "update": "false"}
+        {"events": [{"source": "view", "type": "mouseout"}], "update": "false"}
       ]
     },
     {

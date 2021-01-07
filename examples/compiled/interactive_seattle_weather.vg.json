@@ -129,7 +129,7 @@
               "update": "[scale(\"concat_0_x\", brush_monthdate_date[0]), scale(\"concat_0_x\", brush_monthdate_date[1])]"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {
@@ -441,7 +441,7 @@
               "force": true
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "null"
             }
           ]
@@ -459,7 +459,7 @@
               "update": "event.shiftKey"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "false"
             }
           ]

@@ -75,7 +75,7 @@
           "update": "[scale(\"x\", brush_Horsepower[0]), scale(\"x\", brush_Horsepower[1])]"
         },
         {
-          "events": [{"source": "scope", "type": "dblclick"}],
+          "events": [{"source": "view", "type": "dblclick"}],
           "update": "[0, 0]"
         },
         {
@@ -134,7 +134,7 @@
           "update": "[scale(\"y\", brush_Miles_per_Gallon[0]), scale(\"y\", brush_Miles_per_Gallon[1])]"
         },
         {
-          "events": [{"source": "scope", "type": "dblclick"}],
+          "events": [{"source": "view", "type": "dblclick"}],
           "update": "[0, 0]"
         },
         {
@@ -270,7 +270,7 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: hoverbrush_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -287,7 +287,7 @@
           ],
           "update": "event.shiftKey"
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
       ]
     },
     {

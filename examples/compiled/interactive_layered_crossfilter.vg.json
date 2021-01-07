@@ -245,7 +245,7 @@
               "update": "[scale(\"child__column_distance_x\", brush_distance[0]), scale(\"child__column_distance_x\", brush_distance[1])]"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {
@@ -620,7 +620,7 @@
               "update": "[scale(\"child__column_delay_x\", brush_delay[0]), scale(\"child__column_delay_x\", brush_delay[1])]"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {
@@ -995,7 +995,7 @@
               "update": "[scale(\"child__column_time_x\", brush_time[0]), scale(\"child__column_time_x\", brush_time[1])]"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {

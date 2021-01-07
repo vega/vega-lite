@@ -65,7 +65,7 @@
           "update": "[scale(\"x\", brush_date[0]), scale(\"x\", brush_date[1])]"
         },
         {
-          "events": [{"source": "scope", "type": "dblclick"}],
+          "events": [{"source": "view", "type": "dblclick"}],
           "update": "[0, 0]"
         },
         {

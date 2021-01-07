@@ -68,7 +68,7 @@
           "update": "[scale(\"x\", brush_Horsepower[0]), scale(\"x\", brush_Horsepower[1])]"
         },
         {
-          "events": [{"source": "scope", "type": "dblclick"}],
+          "events": [{"source": "view", "type": "dblclick"}],
           "update": "[0, 0]"
         },
         {
@@ -127,7 +127,7 @@
           "update": "[scale(\"y\", brush_Miles_per_Gallon[0]), scale(\"y\", brush_Miles_per_Gallon[1])]"
         },
         {
-          "events": [{"source": "scope", "type": "dblclick"}],
+          "events": [{"source": "view", "type": "dblclick"}],
           "update": "[0, 0]"
         },
         {
