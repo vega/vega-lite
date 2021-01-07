@@ -3,14 +3,16 @@ import {selector as parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
 import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers} from '.';
 import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime';
+import {hasContinuousDomain} from '../../scale';
 import {SelectionInit, SelectionInitInterval, SelectionExtent} from '../../selection';
 import {keys, vals, varName} from '../../util';
-import {VgData} from '../../vega.schema';
+import {VgData, VgDomain} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
 import {isUnitModel, Model} from '../model';
+import {ScaleComponent} from '../scale/component';
 import {UnitModel} from '../unit';
-import {parseSelectionBinExtent} from './parse';
+import {parseSelectionExtent} from './parse';
 
 export function assembleInit(
   init: readonly (SelectionInit | readonly SelectionInit[] | SelectionInitInterval)[] | SelectionInit,
@@ -157,10 +159,22 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
   return marks;
 }
 
-export function assembleSelectionScaleDomain(model: Model, extent: SelectionExtent): SignalRef {
+export function assembleSelectionScaleDomain(
+  model: Model,
+  extent: SelectionExtent,
+  scaleCmpt: ScaleComponent,
+  domain: VgDomain
+): SignalRef {
   const name = extent.selection;
   const selCmpt = model.getSelectionComponent(name, varName(name));
-  return {signal: parseSelectionBinExtent(selCmpt, extent)};
+  const parsedExtent = parseSelectionExtent(selCmpt, extent);
+
+  return {
+    signal:
+      hasContinuousDomain(scaleCmpt.get('type')) && isArray(domain) && domain[0] > domain[1]
+        ? `isValid(${parsedExtent}) && reverse(${parsedExtent})`
+        : parsedExtent
+  };
 }
 
 function cleanupEmptyOnArray(signals: Signal[]) {

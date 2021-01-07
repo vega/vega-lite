@@ -8,7 +8,7 @@ import {BinTransform} from '../../transform';
 import {Dict, duplicate, hash, isEmpty, keys, replacePathInField, unique, vals, varName} from '../../util';
 import {binFormatExpression} from '../format';
 import {isUnitModel, Model, ModelWithField} from '../model';
-import {parseSelectionBinExtent} from '../selection/parse';
+import {parseSelectionExtent} from '../selection/parse';
 import {NonPositionScaleChannel, PositionChannel} from './../../channel';
 import {DataFlowNode} from './dataflow';
 
@@ -69,7 +69,7 @@ function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolea
   if (isSelectionExtent(normalizedBin.extent)) {
     const ext = normalizedBin.extent;
     const selName = ext.selection;
-    span = parseSelectionBinExtent(model.getSelectionComponent(varName(selName), selName), ext);
+    span = parseSelectionExtent(model.getSelectionComponent(varName(selName), selName), ext);
     delete normalizedBin.extent; // Vega-Lite selection extent map to Vega's span property.
   }
 

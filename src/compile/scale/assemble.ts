@@ -31,12 +31,10 @@ export function assembleScalesForModel(model: Model): VgScale[] {
     const {name, type, selectionExtent, domains: _d, range: _r, reverse, ...otherScaleProps} = scale;
     const range = assembleScaleRange(scale.range, name, channel, model);
 
-    let domainRaw;
-    if (selectionExtent) {
-      domainRaw = assembleSelectionScaleDomain(model, selectionExtent);
-    }
-
     const domain = assembleDomain(model, channel);
+    const domainRaw = selectionExtent
+      ? assembleSelectionScaleDomain(model, selectionExtent, scaleComponent, domain)
+      : null;
 
     scales.push({
       name,
