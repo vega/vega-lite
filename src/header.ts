@@ -113,7 +113,7 @@ export interface CoreHeader<ES extends ExprRef | SignalRef> extends FormatMixins
   /**
    * The orientation of the header title. One of `"top"`, `"bottom"`, `"left"` or `"right"`.
    */
-  titleOrient?: Orient;
+  titleOrient?: Orient; // no signal ref since there is a dependent logic
 
   /**
    * The padding, in pixel, between facet header's title and the label.
