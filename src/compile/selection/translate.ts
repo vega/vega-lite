@@ -84,7 +84,8 @@ function onDelta(
   const sizeSg = model.getSizeSignalRef(size).signal;
   const scaleCmpt = model.getScaleComponent(channel);
   const scaleType = scaleCmpt.get('type');
-  const sign = hasScales && channel === X ? '-' : ''; // Invert delta when panning x-scales.
+  const reversed = scaleCmpt.get('reverse'); // scale parsing sets this flag for fieldDef.sort
+  const sign = !hasScales ? '' : channel === X ? (reversed ? '' : '-') : reversed ? '-' : '';
   const extent = `${anchor}.extent_${channel}`;
   const offset = `${sign}${delta}.${channel} / ` + (hasScales ? `${sizeSg}` : `span(${extent})`);
   const panFn = !hasScales
