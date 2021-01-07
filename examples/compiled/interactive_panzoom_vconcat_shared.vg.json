@@ -60,7 +60,7 @@
           "name": "region_Horsepower",
           "on": [
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "null"
             },
             {
@@ -78,7 +78,7 @@
           "name": "region_Miles_per_Gallon",
           "on": [
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "null"
             },
             {

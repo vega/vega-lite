@@ -124,7 +124,7 @@
           "update": "[scale(\"x\", brush_Acceleration[0]), scale(\"x\", brush_Acceleration[1])]"
         },
         {
-          "events": [{"source": "scope", "type": "dblclick"}],
+          "events": [{"source": "view", "type": "dblclick"}],
           "update": "[0, 0]"
         },
         {

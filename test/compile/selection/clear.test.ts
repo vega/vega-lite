@@ -64,7 +64,7 @@ describe('Clear selection transform, point types', () => {
               'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: one_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
             force: true
           },
-          {events: parseSelector('dblclick', 'scope'), update: 'null'}
+          {events: parseSelector('dblclick', 'view'), update: 'null'}
         ]
       }
     ]);
@@ -81,7 +81,7 @@ describe('Clear selection transform, point types', () => {
               'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: three_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
             force: true
           },
-          {events: parseSelector('mouseout', 'scope'), update: 'null'}
+          {events: parseSelector('mouseout', 'view'), update: 'null'}
         ]
       }
     ]);
@@ -98,7 +98,7 @@ describe('Clear selection transform, point types', () => {
               'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: four_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
             force: true
           },
-          {events: parseSelector('mouseout', 'scope'), update: 'null'}
+          {events: parseSelector('mouseout', 'view'), update: 'null'}
         ]
       }
     ]);
@@ -122,7 +122,7 @@ describe('Clear selection transform, point types', () => {
         {
           name: 'eight_Year',
           value: null,
-          on: [{events: parseSelector('click', 'scope'), update: 'null'}],
+          on: [{events: parseSelector('click', 'view'), update: 'null'}],
           bind: {input: 'range', min: 1970, max: 1980, step: 1}
         }
       ])
@@ -172,7 +172,7 @@ describe('Clear selection transform, interval type', () => {
           name: 'one_Horsepower',
           on: [
             {
-              events: parseSelector('dblclick', 'scope'),
+              events: parseSelector('dblclick', 'view'),
               update: 'null'
             }
           ]
@@ -181,7 +181,7 @@ describe('Clear selection transform, interval type', () => {
           name: 'one_Miles_per_Gallon',
           on: [
             {
-              events: parseSelector('dblclick', 'scope'),
+              events: parseSelector('dblclick', 'view'),
               update: 'null'
             }
           ]
@@ -212,7 +212,7 @@ describe('Clear selection transform, interval type', () => {
               update: '[scale("x", two_Horsepower[0]), scale("x", two_Horsepower[1])]'
             },
             {
-              events: parseSelector('dblclick', 'scope'),
+              events: parseSelector('dblclick', 'view'),
               update: '[0, 0]'
             }
           ]
@@ -234,7 +234,7 @@ describe('Clear selection transform, interval type', () => {
               update: '[scale("y", two_Miles_per_Gallon[0]), scale("y", two_Miles_per_Gallon[1])]'
             },
             {
-              events: parseSelector('dblclick', 'scope'),
+              events: parseSelector('dblclick', 'view'),
               update: '[0, 0]'
             }
           ]

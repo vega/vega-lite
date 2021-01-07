@@ -193,7 +193,7 @@
               "update": "[scale(\"x\", brush_X[0]), scale(\"x\", brush_X[1])]"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {
@@ -325,7 +325,7 @@
           "name": "grid_X",
           "on": [
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "null"
             },
             {
@@ -343,7 +343,7 @@
           "name": "grid_Y",
           "on": [
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "null"
             },
             {

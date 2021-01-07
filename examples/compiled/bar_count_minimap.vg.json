@@ -176,7 +176,7 @@
             },
             {"events": {"signal": "brush_scale_trigger"}, "update": "[0, 0]"},
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {

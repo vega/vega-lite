@@ -167,7 +167,7 @@
         },
         {"events": {"signal": "highlight_scale_trigger"}, "update": "[0, 0]"},
         {
-          "events": [{"source": "scope", "type": "dblclick"}],
+          "events": [{"source": "view", "type": "dblclick"}],
           "update": "[0, 0]"
         },
         {
@@ -223,7 +223,7 @@
         },
         {"events": {"signal": "highlight_scale_trigger"}, "update": "[0, 0]"},
         {
-          "events": [{"source": "scope", "type": "dblclick"}],
+          "events": [{"source": "view", "type": "dblclick"}],
           "update": "[0, 0]"
         },
         {

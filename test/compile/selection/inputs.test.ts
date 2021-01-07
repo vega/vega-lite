@@ -295,7 +295,7 @@ describe('Inputs Selection Transform', () => {
               events: [{source: 'scope', type: 'click'}],
               update: 'datum && item().mark.marktype !== \'group\' ? datum["_vgsid_"] : null'
             },
-            {events: parseSelector('dblclick', 'scope'), update: 'null'}
+            {events: parseSelector('dblclick', 'view'), update: 'null'}
           ],
           bind: {input: 'range', min: 0, max: 10, step: 1}
         }

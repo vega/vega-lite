@@ -31,7 +31,7 @@
     {
       "name": "grid_Horsepower",
       "on": [
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"},
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"},
         {
           "events": {"signal": "grid_translate_delta"},
           "update": "panLinear(grid_translate_anchor.extent_x, -grid_translate_delta.x / width)"
@@ -45,7 +45,7 @@
     {
       "name": "grid_Miles_per_Gallon",
       "on": [
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"},
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"},
         {
           "events": {"signal": "grid_translate_delta"},
           "update": "panLinear(grid_translate_anchor.extent_y, grid_translate_delta.y / height)"

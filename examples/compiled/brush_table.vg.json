@@ -131,7 +131,7 @@
               "update": "[scale(\"concat_0_x\", brush_Horsepower[0]), scale(\"concat_0_x\", brush_Horsepower[1])]"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {
@@ -190,7 +190,7 @@
               "update": "[scale(\"concat_0_y\", brush_Miles_per_Gallon[0]), scale(\"concat_0_y\", brush_Miles_per_Gallon[1])]"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "[0, 0]"
             },
             {

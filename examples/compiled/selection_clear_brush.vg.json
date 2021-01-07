@@ -79,10 +79,7 @@
           "events": {"signal": "brush_scale_trigger"},
           "update": "[scale(\"x\", brush_Horsepower[0]), scale(\"x\", brush_Horsepower[1])]"
         },
-        {
-          "events": [{"source": "scope", "type": "mouseup"}],
-          "update": "[0, 0]"
-        },
+        {"events": [{"source": "view", "type": "mouseup"}], "update": "[0, 0]"},
         {
           "events": {"signal": "brush_translate_delta"},
           "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
@@ -139,10 +136,7 @@
           "events": {"signal": "brush_scale_trigger"},
           "update": "[scale(\"y\", brush_Miles_per_Gallon[0]), scale(\"y\", brush_Miles_per_Gallon[1])]"
         },
-        {
-          "events": [{"source": "scope", "type": "mouseup"}],
-          "update": "[0, 0]"
-        },
+        {"events": [{"source": "view", "type": "mouseup"}], "update": "[0, 0]"},
         {
           "events": {"signal": "brush_translate_delta"},
           "update": "clampRange(panLinear(brush_translate_anchor.extent_y, brush_translate_delta.y / span(brush_translate_anchor.extent_y)), 0, height)"
