@@ -1,6 +1,12 @@
 import {ScaleChannel, SCALE_CHANNELS} from '../src/channel';
 import * as scale from '../src/scale';
-import {channelSupportScaleType, CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType, SCALE_TYPES} from '../src/scale';
+import {
+  channelSupportScaleType,
+  CONTINUOUS_TO_CONTINUOUS_SCALES,
+  CONTINUOUS_TO_DISCRETE_SCALES,
+  ScaleType,
+  SCALE_TYPES
+} from '../src/scale';
 import {some} from '../src/util';
 import {without} from './util';
 
@@ -51,11 +57,25 @@ describe('scale', () => {
       }
     });
 
-    it('shape should support only ordinal', () => {
-      expect(channelSupportScaleType('shape', 'ordinal')).toBeTruthy();
-      const nonOrdinal = without<ScaleType>(SCALE_TYPES, ['ordinal']);
-      for (const scaleType of nonOrdinal) {
+    it('shape should support only ordinal and discretizing scales', () => {
+      const supportedScales = [ScaleType.ORDINAL, ...CONTINUOUS_TO_DISCRETE_SCALES] as const;
+      for (const scaleType of supportedScales) {
+        expect(channelSupportScaleType('shape', scaleType)).toBeTruthy();
+      }
+      const unsupported = without(SCALE_TYPES, supportedScales);
+      for (const scaleType of unsupported) {
         expect(!channelSupportScaleType('shape', scaleType)).toBeTruthy();
+      }
+    });
+
+    it('strokeDash should support only ordinal and discretizing scales', () => {
+      const supportedScales = [ScaleType.ORDINAL, ...CONTINUOUS_TO_DISCRETE_SCALES] as const;
+      for (const scaleType of supportedScales) {
+        expect(channelSupportScaleType('strokeDash', scaleType)).toBeTruthy();
+      }
+      const unsupported = without(SCALE_TYPES, supportedScales);
+      for (const scaleType of unsupported) {
+        expect(!channelSupportScaleType('strokeDash', scaleType)).toBeTruthy();
       }
     });
 
