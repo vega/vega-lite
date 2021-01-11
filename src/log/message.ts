@@ -188,8 +188,12 @@ export function invalidEncodingChannel(channel: ExtendedChannel) {
   return `${channel}-encoding is dropped as ${channel} is not a valid encoding channel.`;
 }
 
-export function facetChannelShouldBeDiscrete(channel: FacetChannel) {
+export function channelShouldBeDiscrete(channel: ExtendedChannel) {
   return `${channel} encoding should be discrete (ordinal / nominal / binned).`;
+}
+
+export function channelShouldBeDiscreteOrDiscretizing(channel: ExtendedChannel) {
+  return `${channel} encoding should be discrete (ordinal / nominal / binned) or use a discretizing scale (e.g. threshold).`;
 }
 
 export function facetChannelDropped(channels: FacetChannel[]) {
