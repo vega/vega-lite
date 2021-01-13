@@ -85,7 +85,7 @@
           "opacity": {"value": 0.7},
           "fill": [
             {
-              "test": "!(length(data(\"paintbrush_store\"))) || (vlSelectionTest(\"paintbrush_store\", datum))",
+              "test": "!length(data(\"paintbrush_store\")) || vlSelectionTest(\"paintbrush_store\", datum)",
               "scale": "color",
               "field": "Cylinders"
             },

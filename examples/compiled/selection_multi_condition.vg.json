@@ -351,11 +351,11 @@
           "fill": {"value": "transparent"},
           "stroke": [
             {
-              "test": "!(length(data(\"hoverbrush_store\"))) || (vlSelectionTest(\"hoverbrush_store\", datum))",
+              "test": "!length(data(\"hoverbrush_store\")) || vlSelectionTest(\"hoverbrush_store\", datum)",
               "value": "teal"
             },
             {
-              "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
+              "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum)",
               "value": "skyblue"
             },
             {"value": "grey"}

@@ -321,7 +321,7 @@
           "fill": {"value": "transparent"},
           "stroke": [
             {
-              "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
+              "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum)",
               "scale": "color",
               "field": "Cylinders"
             },

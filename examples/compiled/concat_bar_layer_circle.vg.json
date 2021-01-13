@@ -54,7 +54,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))"
+          "expr": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)"
         },
         {
           "type": "aggregate",
@@ -329,7 +329,7 @@
             "update": {
               "fill": [
                 {
-                  "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
+                  "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
                   "value": "steelblue"
                 },
                 {"value": "grey"}

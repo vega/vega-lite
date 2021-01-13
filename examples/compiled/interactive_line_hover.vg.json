@@ -117,7 +117,7 @@
               "strokeWidth": {"value": 8},
               "opacity": [
                 {
-                  "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+                  "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
                   "value": 1
                 },
                 {"value": 0.2}
@@ -163,7 +163,7 @@
             "update": {
               "stroke": [
                 {
-                  "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+                  "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
                   "scale": "color",
                   "field": "symbol"
                 },
@@ -171,7 +171,7 @@
               ],
               "opacity": [
                 {
-                  "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+                  "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
                   "value": 1
                 },
                 {"value": 0.2}
@@ -199,7 +199,7 @@
         "update": {
           "fill": [
             {
-              "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+              "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
               "scale": "color",
               "field": "symbol"
             },
@@ -207,7 +207,7 @@
           ],
           "opacity": [
             {
-              "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+              "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
               "value": 1
             },
             {"value": 0.2}
@@ -234,7 +234,7 @@
           "dx": {"value": 4},
           "fill": [
             {
-              "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+              "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
               "scale": "color",
               "field": "symbol"
             },
@@ -242,7 +242,7 @@
           ],
           "opacity": [
             {
-              "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+              "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
               "value": 1
             },
             {"value": 0.2}

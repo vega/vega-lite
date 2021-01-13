@@ -147,7 +147,7 @@
               "fill": {"scale": "color", "field": "series"},
               "opacity": [
                 {
-                  "test": "!(length(data(\"industry_store\"))) || (vlSelectionTest(\"industry_store\", datum))",
+                  "test": "!length(data(\"industry_store\")) || vlSelectionTest(\"industry_store\", datum)",
                   "value": 1
                 },
                 {"value": 0.2}

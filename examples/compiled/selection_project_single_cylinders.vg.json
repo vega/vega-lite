@@ -80,7 +80,7 @@
           "fill": {"value": "transparent"},
           "stroke": [
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
+              "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
               "scale": "color",
               "field": "Cylinders"
             },
@@ -94,7 +94,7 @@
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": [
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
+              "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
               "value": 200
             },
             {"value": 50}

@@ -65,7 +65,10 @@
             "opacity": {
               "condition": {
                 "test": {
-                  "or": [{"selection": "hovered"}, {"selection": "clicked"}]
+                  "or": [
+                    {"selection": "hovered", "empty": false},
+                    {"selection": "clicked", "empty": false}
+                  ]
                 },
                 "value": 0.8
               },
@@ -92,17 +95,13 @@
               "select": {
                 "type": "point",
                 "fields": ["country"],
-                "on": "mouseover",
-                "empty": "none"
+                "toggle": false,
+                "on": "mouseover"
               }
             },
             {
               "name": "clicked",
-              "select": {
-                "type": "point",
-                "fields": ["country"],
-                "empty": "none"
-              }
+              "select": {"type": "point", "fields": ["country"]}
             }
           ],
           "transform": [{"filter": {"selection": "year"}}],
@@ -129,7 +128,12 @@
               "filter": {
                 "and": [
                   {"selection": "year"},
-                  {"or": [{"selection": "clicked"}, {"selection": "hovered"}]}
+                  {
+                    "or": [
+                      {"selection": "clicked", "empty": false},
+                      {"selection": "hovered", "empty": false}
+                    ]
+                  }
                 ]
               }
             }
@@ -159,7 +163,7 @@
         },
         {
           "transform": [
-            {"filter": {"selection": "hovered"}},
+            {"filter": {"selection": "hovered", "empty": false}},
             {"filter": {"not": {"selection": "year"}}}
           ],
           "layer": [

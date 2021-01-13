@@ -115,7 +115,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "(vlSelectionTest(\"hover_store\", datum))",
+                  "test": "length(data(\"hover_store\")) && vlSelectionTest(\"hover_store\", datum)",
                   "scale": "color",
                   "field": "Cylinders"
                 },
@@ -247,7 +247,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "(vlSelectionTest(\"hover_store\", datum))",
+                  "test": "length(data(\"hover_store\")) && vlSelectionTest(\"hover_store\", datum)",
                   "scale": "color",
                   "field": "Cylinders"
                 },

@@ -26,7 +26,10 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {"type": "filter", "expr": "(vlSelectionTest(\"hover_store\", datum))"}
+        {
+          "type": "filter",
+          "expr": "length(data(\"hover_store\")) && vlSelectionTest(\"hover_store\", datum)"
+        }
       ]
     },
     {

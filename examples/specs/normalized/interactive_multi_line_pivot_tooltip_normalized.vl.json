@@ -15,7 +15,7 @@
           }
         },
         {
-          "transform": [{"filter": {"selection": "hover"}}],
+          "transform": [{"filter": {"selection": "hover", "empty": false}}],
           "mark": "point",
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
@@ -31,7 +31,7 @@
       "encoding": {
         "x": {"field": "date", "type": "temporal"},
         "opacity": {
-          "condition": {"value": 0.3, "selection": "hover"},
+          "condition": {"value": 0.3, "selection": "hover", "empty": false},
           "value": 0
         },
         "tooltip": [
@@ -50,7 +50,6 @@
             "fields": ["date"],
             "nearest": true,
             "on": "mouseover",
-            "empty": "none",
             "clear": "mouseout"
           }
         }

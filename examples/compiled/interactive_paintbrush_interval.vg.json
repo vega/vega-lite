@@ -319,7 +319,7 @@
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": [
             {
-              "test": "!(length(data(\"paintbrush_store\"))) || (vlSelectionTest(\"paintbrush_store\", datum))",
+              "test": "!length(data(\"paintbrush_store\")) || vlSelectionTest(\"paintbrush_store\", datum)",
               "value": 300
             },
             {"value": 50}

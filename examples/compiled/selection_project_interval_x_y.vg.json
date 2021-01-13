@@ -298,7 +298,7 @@
         "update": {
           "fill": [
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
+              "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
               "scale": "color",
               "field": "__count"
             },

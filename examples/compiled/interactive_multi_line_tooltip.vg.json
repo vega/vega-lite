@@ -139,10 +139,10 @@
         "update": {
           "stroke": [
             {
-              "test": "(!(vlSelectionTest(\"hover_store\", datum)))",
-              "value": "transparent"
+              "test": "length(data(\"hover_store\")) && vlSelectionTest(\"hover_store\", datum)",
+              "value": "black"
             },
-            {"value": "black"}
+            {"value": "transparent"}
           ],
           "tooltip": {
             "signal": "{\"date (year-month-date)\": timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})), \"temp_max\": format(datum[\"temp_max\"], \"\"), \"temp_min\": format(datum[\"temp_min\"], \"\")}"

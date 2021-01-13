@@ -307,7 +307,7 @@
           "opacity": {"value": 0.7},
           "fill": [
             {
-              "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
+              "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum)",
               "scale": "color",
               "field": "Origin"
             },

@@ -586,10 +586,10 @@
             "update": {
               "fill": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (!(vlSelectionTest(\"brush_store\", datum)))",
-                  "value": "steelblue"
+                  "test": "length(data(\"brush_store\")) && vlSelectionTest(\"brush_store\", datum)",
+                  "value": "goldenrod"
                 },
-                {"value": "goldenrod"}
+                {"value": "steelblue"}
               ],
               "ariaRoleDescription": {"value": "bar"},
               "description": {
@@ -907,10 +907,10 @@
             "update": {
               "fill": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (!(vlSelectionTest(\"brush_store\", datum)))",
-                  "value": "steelblue"
+                  "test": "length(data(\"brush_store\")) && vlSelectionTest(\"brush_store\", datum)",
+                  "value": "goldenrod"
                 },
-                {"value": "goldenrod"}
+                {"value": "steelblue"}
               ],
               "ariaRoleDescription": {"value": "bar"},
               "description": {
@@ -1307,10 +1307,10 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (!(vlSelectionTest(\"brush_store\", datum)))",
-                  "value": "steelblue"
+                  "test": "length(data(\"brush_store\")) && vlSelectionTest(\"brush_store\", datum)",
+                  "value": "goldenrod"
                 },
-                {"value": "goldenrod"}
+                {"value": "steelblue"}
               ],
               "ariaRoleDescription": {"value": "point"},
               "description": {

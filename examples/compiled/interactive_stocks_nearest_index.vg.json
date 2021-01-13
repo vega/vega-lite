@@ -28,7 +28,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(index.date) && (!(length(data(\"index_store\"))) || (vlSelectionTest(\"index_store\", datum)))"
+          "expr": "(index.date) && (!length(data(\"index_store\")) || vlSelectionTest(\"index_store\", datum))"
         },
         {
           "type": "filter",

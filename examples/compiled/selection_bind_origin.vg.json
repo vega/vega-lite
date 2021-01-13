@@ -64,7 +64,7 @@
           "fill": {"value": "transparent"},
           "stroke": [
             {
-              "test": "!(length(data(\"org_store\"))) || (vlSelectionTest(\"org_store\", datum))",
+              "test": "!length(data(\"org_store\")) || vlSelectionTest(\"org_store\", datum)",
               "scale": "color",
               "field": "Cylinders"
             },
