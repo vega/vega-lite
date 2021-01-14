@@ -47,7 +47,7 @@
     },
     {
       "name": "index",
-      "update": "vlSelectionResolve(\"index_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"index_store\", \"union\", true, true)"
     },
     {
       "name": "index_tuple",

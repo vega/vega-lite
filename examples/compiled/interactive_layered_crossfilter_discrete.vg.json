@@ -192,7 +192,7 @@
     },
     {
       "name": "brush",
-      "update": "vlSelectionResolve(\"brush_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"brush_store\", \"union\", true, true)"
     }
   ],
   "layout": {"padding": 20, "columns": 3, "bounds": "full", "align": "all"},

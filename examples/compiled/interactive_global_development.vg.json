@@ -127,15 +127,15 @@
     },
     {
       "name": "year",
-      "update": "vlSelectionResolve(\"year_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"year_store\", \"union\", true, true)"
     },
     {
       "name": "hovered",
-      "update": "vlSelectionResolve(\"hovered_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"hovered_store\", \"union\", true, true)"
     },
     {
       "name": "clicked",
-      "update": "vlSelectionResolve(\"clicked_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"clicked_store\", \"union\", true, true)"
     },
     {
       "name": "year_tuple",

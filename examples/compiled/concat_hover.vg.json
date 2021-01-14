@@ -44,7 +44,7 @@
     },
     {
       "name": "hover",
-      "update": "vlSelectionResolve(\"hover_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"hover_store\", \"union\", true, true)"
     }
   ],
   "layout": {"padding": 20, "bounds": "full", "align": "each"},

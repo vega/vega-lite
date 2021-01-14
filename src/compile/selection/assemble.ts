@@ -83,7 +83,7 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
     const hasSg = signals.filter(s => s.name === name);
     if (hasSg.length === 0) {
       const resolve = selCmpt.resolve === 'global' ? 'union' : selCmpt.resolve;
-      const isPoint = selCmpt.type === 'point' ? ', true)' : ')';
+      const isPoint = selCmpt.type === 'point' ? ', true, true)' : ')';
       signals.push({
         name: selCmpt.name,
         update: `${VL_SELECTION_RESOLVE}(${store}, ${stringValue(resolve)}${isPoint}`
