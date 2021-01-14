@@ -72,6 +72,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Django Chartflo](https://github.com/synw/django-chartflo), charts for the lazy ones in Django
 - [Vega-Lite for PowerBI](https://github.com/Microsoft/vegalite-for-powerbi/) is an example of a PowerBI custom visual built with Vega-Lite.
 - [Sci-Hub stats browser](https://github.com/greenelab/scihub) provides coverage and usage statistics for Sci-Hub.
+- [github-repo-stats](https://github.com/jgehrcke/github-repo-stats), a GitHub Action for advanced repository traffic analysis and reporting.
 - [Iris](https://hackernoon.com/a-conversational-agent-for-data-science-4ae300cdc220), a conversational agent for data science.
 - [dashcard](https://github.com/scottcame/dashcard): a simple [Bootstrap](https://getbootstrap.com/)-based UI for dynamic dashboarding using Vega-Lite and [Mondrian](https://community.hds.com/docs/DOC-1009853) via a [REST API](https://github.com/ojbc/mondrian-rest).
 - [histbook](https://github.com/diana-hep/histbook), a versatile, high-performance histogram toolkit for Numpy.
