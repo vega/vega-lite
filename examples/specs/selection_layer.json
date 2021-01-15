@@ -24,7 +24,7 @@
         "x": {"field": "Horsepower", "type": "quantitative"},
         "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
         "color": {
-          "condition": {"selection": "brush", "value": "grey"},
+          "condition": {"param": "brush", "value": "grey"},
           "field": "Cylinders",
           "type": "ordinal"
         },
@@ -47,13 +47,13 @@
         "x": {"field": "Horsepower", "type": "quantitative"},
         "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
         "color": {
-          "condition": {"selection": "brush", "field": "Cylinders", "type": "ordinal"},
+          "condition": {"param": "brush", "field": "Cylinders", "type": "ordinal"},
           "value": "grey"
         },
         "size": {
           "value": 50,
           "condition": {
-            "selection": "cyl",
+            "param": "cyl",
             "value": 150
           }
         }

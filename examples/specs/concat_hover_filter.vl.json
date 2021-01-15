@@ -18,7 +18,7 @@
       {
         "mark": {"type": "point", "color": "goldenrod"},
         "transform": [
-          {"filter": {"selection": "hover", "empty": false}}
+          {"filter": {"param": "hover", "empty": false}}
         ]
       }
     ]
@@ -39,7 +39,7 @@
       {
         "mark": {"type": "point", "color": "goldenrod"},
         "transform": [
-          {"filter": {"selection": "hover", "empty": false}}
+          {"filter": {"param": "hover", "empty": false}}
         ]
       }
     ]

@@ -9,7 +9,7 @@
       "encoding": {
         "color": {
           "condition": {
-            "selection": "brush",
+            "param": "brush",
             "title": "Weather",
             "field": "weather",
             "type": "nominal",
@@ -46,13 +46,13 @@
         "name": "brush",
         "select": {"type": "interval", "encodings": ["x"]}
       }],
-      "transform": [{"filter": {"selection": "click"}}]
+      "transform": [{"filter": {"param": "click"}}]
     },
     {
       "encoding": {
         "color": {
           "condition": {
-            "selection": "click",
+            "param": "click",
             "field": "weather",
             "scale": {
               "domain": ["sun", "fog", "drizzle", "rain", "snow"],
@@ -70,7 +70,7 @@
         "name": "click",
         "select": {"type": "point", "encodings": ["color"]}
       }],
-      "transform": [{"filter": {"selection": "brush"}}]
+      "transform": [{"filter": {"param": "brush"}}]
     }
   ]
 }

@@ -32,7 +32,7 @@
             "y": {"field": "price", "type": "quantitative"},
             "color": {"field": "symbol", "type": "nominal"},
             "opacity": {
-              "condition": {"selection": "label", "empty": false, "value": 1},
+              "condition": {"param": "label", "empty": false, "value": 1},
               "value": 0
             }
           }
@@ -40,7 +40,7 @@
       ]
     },
     {
-      "transform": [{"filter": {"selection": "label", "empty": false}}],
+      "transform": [{"filter": {"param": "label", "empty": false}}],
       "layer": [
         {
           "mark": {"type": "rule", "color": "gray"},

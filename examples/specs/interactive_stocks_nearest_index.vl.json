@@ -33,7 +33,7 @@
     {
       "transform": [
         {"filter": {
-          "and": ["index.date", {"selection": "index"}]
+          "and": ["index.date", {"param": "index"}]
         }}
       ],
       "mark": "rule"
@@ -41,7 +41,7 @@
     {
       "transform": [
         {"filter": {
-          "and": ["index.date", {"selection": "index"}]
+          "and": ["index.date", {"param": "index"}]
         }}
       ],
       "mark": "text",

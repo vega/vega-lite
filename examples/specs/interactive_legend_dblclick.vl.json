@@ -22,7 +22,7 @@
       "scale": {"scheme": "category20b"}
     },
     "opacity": {
-      "condition": {"selection": "industry", "value": 1},
+      "condition": {"param": "industry", "value": 1},
       "value": 0.2
     }
   }

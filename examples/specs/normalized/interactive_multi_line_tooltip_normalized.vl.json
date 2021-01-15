@@ -28,9 +28,7 @@
     },
     {
       "mark": "rule",
-      "params": [
-        {"name": "hover", "select": {"type": "point", "on": "mouseover"}}
-      ],
+      "params": [{"name": "hover", "select": {"type": "point", "on": "mouseover"}}],
       "encoding": {
         "x": {"timeUnit": "yearmonthdate", "field": "date"},
         "tooltip": [
@@ -39,7 +37,7 @@
           {"field": "temp_min", "type": "quantitative"}
         ],
         "color": {
-          "condition": {"selection": "hover", "empty": false, "value": "black"},
+          "condition": {"param": "hover", "empty": false, "value": "black"},
           "value": "transparent"
         }
       }

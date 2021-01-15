@@ -15,7 +15,7 @@
           }
         },
         {
-          "transform": [{"filter": {"selection": "hover", "empty": false}}],
+          "transform": [{"filter": {"param": "hover", "empty": false}}],
           "mark": "point",
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
@@ -31,7 +31,7 @@
       "encoding": {
         "x": {"field": "date", "type": "temporal"},
         "opacity": {
-          "condition": {"value": 0.3, "selection": "hover", "empty": false},
+          "condition": {"value": 0.3, "param": "hover", "empty": false},
           "value": 0
         },
         "tooltip": [

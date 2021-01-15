@@ -8,7 +8,7 @@
     "x": {"field": "Cylinders", "type": "ordinal"},
     "color": {
       "condition": {
-        "selection": "pts",
+        "param": "pts",
         "aggregate": "count"
       },
       "value": "grey"

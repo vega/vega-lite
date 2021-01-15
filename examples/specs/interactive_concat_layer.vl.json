@@ -26,7 +26,7 @@
         }
       }, {
         "transform": [{
-          "filter": {"selection": "pts"}
+          "filter": {"param": "pts"}
         }],
         "mark": "point",
         "encoding": {
@@ -60,7 +60,7 @@
         "y": {"aggregate": "count"},
         "color": {
           "condition": {
-            "selection": "pts",
+            "param": "pts",
             "value": "steelblue"
           },
           "value": "grey"

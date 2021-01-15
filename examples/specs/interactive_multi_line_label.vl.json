@@ -28,7 +28,7 @@
           "encoding": {
             "opacity": {
               "condition": {
-                "selection": "label",
+                "param": "label",
                 "empty": false,
                 "value": 1
               },
@@ -39,7 +39,7 @@
       ]
     },
     {
-      "transform": [{"filter": {"selection": "label", "empty": false}}],
+      "transform": [{"filter": {"param": "label", "empty": false}}],
       "layer": [
         {
           "mark": {"type": "rule", "color": "gray"},

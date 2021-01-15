@@ -25,7 +25,7 @@
     },
     {
       "transform": [
-        {"lookup": "symbol", "from": {"selection": "index", "key": "symbol"}},
+        {"lookup": "symbol", "from": {"param": "index", "key": "symbol"}},
         {
           "calculate": "datum.index && datum.index.price > 0 ? (datum.price - datum.index.price)/datum.index.price : 0",
           "as": "indexed_price"
@@ -43,7 +43,7 @@
       }
     },
     {
-      "transform": [{"filter": {"selection": "index"}}],
+      "transform": [{"filter": {"param": "index"}}],
       "layer": [
         {
           "mark": {"type": "rule", "strokeWidth": 0.5},

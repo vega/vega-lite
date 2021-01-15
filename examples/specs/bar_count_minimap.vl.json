@@ -4,7 +4,7 @@
   "hconcat": [{
     "mark": "bar",
     "transform": [{
-      "filter": {"selection": "brush"}
+      "filter": {"param": "brush"}
     }],
     "encoding": {
       "y": {

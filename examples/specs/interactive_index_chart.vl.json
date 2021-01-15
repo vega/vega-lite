@@ -28,7 +28,7 @@
       "transform": [
         {
           "lookup": "symbol",
-          "from": {"selection": "index", "key": "symbol"}
+          "from": {"param": "index", "key": "symbol"}
         },
         {
           "calculate": "datum.index && datum.index.price > 0 ? (datum.price - datum.index.price)/datum.index.price : 0",
@@ -46,7 +46,7 @@
       }
     },
     {
-      "transform": [{"filter": {"selection": "index"}}],
+      "transform": [{"filter": {"param": "index"}}],
       "encoding": {
         "x": {"field": "date", "type": "temporal", "axis": null},
         "color": {"value": "firebrick"}

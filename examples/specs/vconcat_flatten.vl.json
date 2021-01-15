@@ -38,7 +38,7 @@
         "x": {"field": "ra", "type": "quantitative", "scale": {"zero": false}},
         "y": {"field": "dec", "type": "quantitative"},
         "color": {
-          "condition": {"selection": "pts", "value": "steelblue"},
+          "condition": {"param": "pts", "value": "steelblue"},
           "value": "grey"
         },
         "size": {"value": 100}
@@ -48,7 +48,7 @@
       "width": 300,
       "height": 200,
       "title": "Light curve",
-      "transform": [{"filter": {"selection": "pts"}}],
+      "transform": [{"filter": {"param": "pts"}}],
       "mark": "line",
       "encoding": {
         "x": {

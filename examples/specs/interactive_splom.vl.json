@@ -38,7 +38,7 @@
       },
       "color": {
         "condition": {
-          "selection": "brush",
+          "param": "brush",
           "field": "Origin",
           "type": "nominal"
         },

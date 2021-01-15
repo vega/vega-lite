@@ -19,7 +19,7 @@
         "y": {"field": "price", "type": "quantitative", "title": "price"},
         "color": {
           "condition": {
-            "selection": "hover",
+            "param": "hover",
             "field": "symbol",
             "type": "nominal",
             "legend": null
@@ -27,7 +27,7 @@
           "value": "grey"
         },
         "opacity": {
-          "condition": {"selection": "hover", "value": 1},
+          "condition": {"param": "hover", "value": 1},
           "value": 0.2
         }
       }
@@ -39,7 +39,7 @@
         "y": {"field": "price", "type": "quantitative", "title": "price"},
         "color": {
           "condition": {
-            "selection": "hover",
+            "param": "hover",
             "field": "symbol",
             "type": "nominal",
             "legend": null
@@ -47,7 +47,7 @@
           "value": "grey"
         },
         "opacity": {
-          "condition": {"selection": "hover", "value": 1},
+          "condition": {"param": "hover", "value": 1},
           "value": 0.2
         }
       }
@@ -71,7 +71,7 @@
             },
             "color": {
               "condition": {
-                "selection": "hover",
+                "param": "hover",
                 "field": "symbol",
                 "type": "nominal",
                 "legend": null
@@ -79,7 +79,7 @@
               "value": "grey"
             },
             "opacity": {
-              "condition": {"selection": "hover", "value": 1},
+              "condition": {"param": "hover", "value": 1},
               "value": 0.2
             }
           }
@@ -101,7 +101,7 @@
             },
             "color": {
               "condition": {
-                "selection": "hover",
+                "param": "hover",
                 "field": "symbol",
                 "type": "nominal",
                 "legend": null
@@ -109,7 +109,7 @@
               "value": "grey"
             },
             "opacity": {
-              "condition": {"selection": "hover", "value": 1},
+              "condition": {"param": "hover", "value": 1},
               "value": 0.2
             },
             "text": {"field": "symbol", "type": "nominal"}

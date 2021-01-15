@@ -14,7 +14,7 @@
       }
     },
     {
-      "transform": [{"filter": {"selection": "brush"}}],
+      "transform": [{"filter": {"param": "brush"}}],
       "mark": "bar",
       "encoding": {
         "x": {"field": "Acceleration", "bin": true},
