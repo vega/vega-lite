@@ -33,7 +33,10 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {"type": "filter", "expr": "(vlSelectionTest(\"hover_store\", datum))"},
+        {
+          "type": "filter",
+          "expr": "length(data(\"hover_store\")) && vlSelectionTest(\"hover_store\", datum)"
+        },
         {
           "type": "filter",
           "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
@@ -169,7 +172,10 @@
         "update": {
           "stroke": {"value": "black"},
           "opacity": [
-            {"test": "(vlSelectionTest(\"hover_store\", datum))", "value": 0.3},
+            {
+              "test": "length(data(\"hover_store\")) && vlSelectionTest(\"hover_store\", datum)",
+              "value": 0.3
+            },
             {"value": 0}
           ],
           "tooltip": {

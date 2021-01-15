@@ -11,16 +11,9 @@
   "params": [
     {
       "name": "highlight",
-      "select": {
-        "type": "point",
-        "empty": "none",
-        "on": "mouseover"
-      }
+      "select": {"type": "point", "on": "mouseover"}
     },
-    {
-      "name": "select",
-      "select": {"type": "point"}
-    }
+    {"name": "select", "select": "point"}
   ],
   "mark": {
     "type": "bar",
@@ -38,15 +31,15 @@
     "strokeWidth": {
       "condition": [
         {
-          "test": {
-            "and": [
-              {"selection": "select"},
-              "length(data(\"select_store\"))"
-            ]
-          },
+          "selection": "select",
+          "empty": false,
           "value": 2
         },
-        {"selection": "highlight", "value": 1}
+        {
+          "selection": "highlight",
+          "empty": false,
+          "value": 1
+        }
       ],
       "value": 0
     }

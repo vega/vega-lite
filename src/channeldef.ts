@@ -57,7 +57,7 @@ import {Legend} from './legend';
 import * as log from './log';
 import {LogicalComposition} from './logical';
 import {isRectBasedMark, Mark, MarkDef} from './mark';
-import {Predicate} from './predicate';
+import {Predicate, SelectionPredicate} from './predicate';
 import {Scale, SCALE_CATEGORY_INDEX} from './scale';
 import {isSortByChannel, Sort, SortOrder} from './sort';
 import {isFacetFieldDef} from './spec/facet';
@@ -146,12 +146,9 @@ export type ConditionalPredicate<CD extends FieldDef<any> | DatumDef | ValueDef<
   test: LogicalComposition<Predicate>;
 } & CD;
 
-export type ConditionalSelection<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> = {
-  /**
-   * A [selection name](https://vega.github.io/vega-lite/docs/selection.html), or a series of [composed selections](https://vega.github.io/vega-lite/docs/selection.html#compose).
-   */
-  selection: LogicalComposition<string>;
-} & CD;
+export type ConditionalSelection<
+  CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef
+> = SelectionPredicate & CD;
 
 export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSelection<T> {
   return c['selection'];

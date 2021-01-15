@@ -29,10 +29,7 @@
     {
       "mark": "rule",
       "params": [
-        {
-          "name": "hover",
-          "select": {"type": "point", "on": "mouseover", "empty": "none"}
-        }
+        {"name": "hover", "select": {"type": "point", "on": "mouseover"}}
       ],
       "encoding": {
         "x": {"timeUnit": "yearmonthdate", "field": "date"},
@@ -42,7 +39,8 @@
           {"field": "temp_min", "type": "quantitative"}
         ],
         "color": {
-          "condition": {"selection": {"not": "hover"}, "value": "transparent"}
+          "condition": {"selection": "hover", "empty": false, "value": "black"},
+          "value": "transparent"
         }
       }
     }

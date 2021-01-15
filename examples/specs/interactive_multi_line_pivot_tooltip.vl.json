@@ -12,7 +12,7 @@
       },
       "layer": [
         {"mark": "line"},
-        {"transform": [{"filter": {"selection": "hover"}}], "mark": "point"}
+        {"transform": [{"filter": {"selection": "hover", "empty": false}}], "mark": "point"}
       ]
     },
     {
@@ -20,7 +20,7 @@
       "mark": "rule",
       "encoding": {
         "opacity": {
-          "condition": {"value": 0.3, "selection": "hover"},
+          "condition": {"value": 0.3, "selection": "hover", "empty": false},
           "value": 0
         },
         "tooltip": [
@@ -38,7 +38,6 @@
           "fields": ["date"],
           "nearest": true,
           "on": "mouseover",
-          "empty": "none",
           "clear": "mouseout"
         }
       }]

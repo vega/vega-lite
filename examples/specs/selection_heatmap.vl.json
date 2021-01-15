@@ -29,7 +29,11 @@
       "type": "quantitative"
     },
     "stroke": {
-      "condition": {"test": {"and": [{"selection": "highlight"}, "length(data(\"highlight_store\"))"]}, "value": "black"},
+      "condition": {
+        "selection": "highlight",
+        "empty": false,
+        "value": "black"
+      },
       "value": null
     },
     "opacity": {

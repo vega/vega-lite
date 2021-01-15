@@ -356,7 +356,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum, \"union\"))",
+                  "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum, \"union\")",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -720,7 +720,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum, \"union\"))",
+                  "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum, \"union\")",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -1019,7 +1019,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum, \"union\"))",
+                  "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum, \"union\")",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -1382,7 +1382,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum, \"union\"))",
+                  "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum, \"union\")",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -1683,7 +1683,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum, \"union\"))",
+                  "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum, \"union\")",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -2044,7 +2044,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum, \"union\"))",
+                  "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum, \"union\")",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -2347,7 +2347,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum, \"union\"))",
+                  "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum, \"union\")",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -2710,7 +2710,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum, \"union\"))",
+                  "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum, \"union\")",
                   "scale": "color",
                   "field": "Origin"
                 },
@@ -3076,7 +3076,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum, \"union\"))",
+                  "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum, \"union\")",
                   "scale": "color",
                   "field": "Origin"
                 },

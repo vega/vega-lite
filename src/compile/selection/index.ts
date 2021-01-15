@@ -44,7 +44,6 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   materialized: OutputNode;
   bind?: 'scales' | Binding | Dict<Binding> | LegendBinding;
   resolve: SelectionResolution;
-  empty: 'all' | 'none';
   mark?: BrushConfig;
 
   // Transforms

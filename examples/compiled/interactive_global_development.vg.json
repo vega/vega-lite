@@ -42,7 +42,7 @@
         {"type": "filter", "expr": "datum[\"country\"]===\"Afghanistan\""},
         {
           "type": "filter",
-          "expr": "!(length(data(\"year_store\"))) || (vlSelectionTest(\"year_store\", datum))"
+          "expr": "!length(data(\"year_store\")) || vlSelectionTest(\"year_store\", datum)"
         }
       ]
     },
@@ -65,7 +65,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"year_store\"))) || (vlSelectionTest(\"year_store\", datum))"
+          "expr": "!length(data(\"year_store\")) || vlSelectionTest(\"year_store\", datum)"
         },
         {
           "type": "filter",
@@ -79,7 +79,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(!(length(data(\"year_store\"))) || (vlSelectionTest(\"year_store\", datum))) && (((vlSelectionTest(\"clicked_store\", datum))) || ((vlSelectionTest(\"hovered_store\", datum))))"
+          "expr": "(!length(data(\"year_store\")) || vlSelectionTest(\"year_store\", datum)) && ((length(data(\"clicked_store\")) && vlSelectionTest(\"clicked_store\", datum)) || (length(data(\"hovered_store\")) && vlSelectionTest(\"hovered_store\", datum)))"
         },
         {
           "type": "filter",
@@ -93,11 +93,11 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(vlSelectionTest(\"hovered_store\", datum))"
+          "expr": "length(data(\"hovered_store\")) && vlSelectionTest(\"hovered_store\", datum)"
         },
         {
           "type": "filter",
-          "expr": "!(!(length(data(\"year_store\"))) || (vlSelectionTest(\"year_store\", datum)))"
+          "expr": "!(!length(data(\"year_store\")) || vlSelectionTest(\"year_store\", datum))"
         },
         {
           "type": "filter",
@@ -167,22 +167,11 @@
       "value": [{"type": "E", "field": "country"}]
     },
     {
-      "name": "hovered_toggle",
-      "value": false,
-      "on": [
-        {
-          "events": [{"source": "scope", "type": "mouseover"}],
-          "update": "event.shiftKey"
-        },
-        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
-      ]
-    },
-    {
       "name": "hovered_modify",
       "on": [
         {
           "events": {"signal": "hovered_tuple"},
-          "update": "modify(\"hovered_store\", hovered_toggle ? null : hovered_tuple, hovered_toggle ? null : true, hovered_toggle ? hovered_tuple : null)"
+          "update": "modify(\"hovered_store\", hovered_tuple, true)"
         }
       ]
     },
@@ -277,7 +266,7 @@
               "stroke": {"value": "lightgray"},
               "opacity": [
                 {
-                  "test": "((vlSelectionTest(\"hovered_store\", datum))) || ((vlSelectionTest(\"clicked_store\", datum)))",
+                  "test": "(length(data(\"hovered_store\")) && vlSelectionTest(\"hovered_store\", datum)) || (length(data(\"clicked_store\")) && vlSelectionTest(\"clicked_store\", datum))",
                   "value": 0.8
                 },
                 {"value": 0}

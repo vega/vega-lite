@@ -23,7 +23,10 @@
       "name": "data_0",
       "source": "source_1",
       "transform": [
-        {"type": "filter", "expr": "(vlSelectionTest(\"org_store\", datum))"},
+        {
+          "type": "filter",
+          "expr": "length(data(\"org_store\")) && vlSelectionTest(\"org_store\", datum)"
+        },
         {
           "type": "lookup",
           "from": "source_2",

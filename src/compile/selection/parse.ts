@@ -2,14 +2,14 @@ import {selector as parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
 import {selectionCompilers, SelectionComponent, STORE} from '.';
 import {warn} from '../../log';
-import {LogicalComposition} from '../../logical';
 import {BaseSelectionConfig, SelectionDef, SelectionExtent} from '../../selection';
-import {Dict, duplicate, entries, logicalExpr, replacePathInField, varName} from '../../util';
+import {Dict, duplicate, entries, replacePathInField, varName} from '../../util';
 import {DataFlowNode, OutputNode} from '../data/dataflow';
 import {FilterNode} from '../data/filter';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {DataSourceType} from '../../data';
+import {SelectionPredicate} from '../../predicate';
 
 export function parseUnitSelection(model: UnitModel, selDefs: SelectionDef[]) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
@@ -59,39 +59,30 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionDef[]) {
 
 export function parseSelectionPredicate(
   model: Model,
-  selections: LogicalComposition<string>,
+  pred: SelectionPredicate,
   dfnode?: DataFlowNode,
   datum = 'datum'
 ): string {
-  const stores: string[] = [];
-  function expr(name: string): string {
-    const vname = varName(name);
-    const selCmpt = model.getSelectionComponent(vname, name);
-    const store = stringValue(vname + STORE);
+  const name = isString(pred) ? pred : pred.selection;
+  const vname = varName(name);
+  const selCmpt = model.getSelectionComponent(vname, name);
+  const store = stringValue(vname + STORE);
 
-    if (selCmpt.project.timeUnit) {
-      const child = dfnode ?? model.component.data.raw;
-      const tunode = selCmpt.project.timeUnit.clone();
-      if (child.parent) {
-        tunode.insertAsParentOf(child);
-      } else {
-        child.parent = tunode;
-      }
+  if (selCmpt.project.timeUnit) {
+    const child = dfnode ?? model.component.data.raw;
+    const tunode = selCmpt.project.timeUnit.clone();
+    if (child.parent) {
+      tunode.insertAsParentOf(child);
+    } else {
+      child.parent = tunode;
     }
-
-    if (selCmpt.empty !== 'none') {
-      stores.push(store);
-    }
-
-    return (
-      `vlSelectionTest(${store}, ${datum}` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`)
-    );
   }
 
-  const predicateStr = logicalExpr(selections, expr);
-  return (
-    (stores.length ? '!(' + stores.map(s => `length(data(${s}))`).join(' || ') + ') || ' : '') + `(${predicateStr})`
-  );
+  const test =
+    `vlSelectionTest(${store}, ${datum}` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`);
+  const length = `length(data(${store}))`;
+
+  return pred.empty === false ? `${length} && ${test}` : `!${length} || ${test}`;
 }
 
 export function parseSelectionExtent(selCmpt: SelectionComponent, extent: SelectionExtent) {

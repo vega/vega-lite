@@ -404,7 +404,7 @@
           "opacity": {"value": 0.7},
           "fill": [
             {
-              "test": "!(length(data(\"highlight_store\"))) || (vlSelectionTest(\"highlight_store\", datum))",
+              "test": "!length(data(\"highlight_store\")) || vlSelectionTest(\"highlight_store\", datum)",
               "value": "rgb(194,81,64)"
             },
             {"value": "rgb(167,165,156)"}

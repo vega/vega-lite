@@ -22,7 +22,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(datum.Weight_in_lbs > 3000) && (!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum)))"
+          "expr": "(datum.Weight_in_lbs > 3000) && (!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum))"
         },
         {
           "type": "filter",

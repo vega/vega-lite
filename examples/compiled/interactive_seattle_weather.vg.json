@@ -24,7 +24,7 @@
         },
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
+          "expr": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum)"
         },
         {
           "type": "aggregate",
@@ -41,7 +41,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"click_store\"))) || (vlSelectionTest(\"click_store\", datum))"
+          "expr": "!length(data(\"click_store\")) || vlSelectionTest(\"click_store\", datum)"
         },
         {
           "field": "date",
@@ -311,7 +311,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
+                  "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum)",
                   "scale": "color",
                   "field": "weather"
                 },
@@ -485,7 +485,7 @@
             "update": {
               "fill": [
                 {
-                  "test": "!(length(data(\"click_store\"))) || (vlSelectionTest(\"click_store\", datum))",
+                  "test": "!length(data(\"click_store\")) || vlSelectionTest(\"click_store\", datum)",
                   "scale": "color",
                   "field": "weather"
                 },

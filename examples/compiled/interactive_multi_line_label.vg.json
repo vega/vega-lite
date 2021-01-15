@@ -26,7 +26,10 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {"type": "filter", "expr": "(vlSelectionTest(\"label_store\", datum))"}
+        {
+          "type": "filter",
+          "expr": "length(data(\"label_store\")) && vlSelectionTest(\"label_store\", datum)"
+        }
       ]
     },
     {
@@ -167,7 +170,10 @@
       "encode": {
         "update": {
           "opacity": [
-            {"test": "(vlSelectionTest(\"label_store\", datum))", "value": 1},
+            {
+              "test": "length(data(\"label_store\")) && vlSelectionTest(\"label_store\", datum)",
+              "value": 1
+            },
             {"value": 0}
           ],
           "fill": {"value": "transparent"},

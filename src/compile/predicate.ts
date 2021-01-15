@@ -15,7 +15,7 @@ export function expression(model: Model, filterOp: LogicalComposition<Predicate>
     if (isString(predicate)) {
       return predicate;
     } else if (isSelectionPredicate(predicate)) {
-      return parseSelectionPredicate(model, predicate.selection, node);
+      return parseSelectionPredicate(model, predicate, node);
     } else {
       // Filter Object
       return fieldFilterExpression(predicate);

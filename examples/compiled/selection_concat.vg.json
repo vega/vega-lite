@@ -584,7 +584,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
+                  "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum)",
                   "value": "steelblue"
                 },
                 {"value": "red"}

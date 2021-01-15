@@ -140,18 +140,18 @@
           "cursor": {"value": "pointer"},
           "fillOpacity": [
             {
-              "test": "!(length(data(\"select_store\"))) || (vlSelectionTest(\"select_store\", datum))",
+              "test": "!length(data(\"select_store\")) || vlSelectionTest(\"select_store\", datum)",
               "value": 1
             },
             {"value": 0.3}
           ],
           "strokeWidth": [
             {
-              "test": "(!(length(data(\"select_store\"))) || (vlSelectionTest(\"select_store\", datum))) && (length(data(\"select_store\")))",
+              "test": "length(data(\"select_store\")) && vlSelectionTest(\"select_store\", datum)",
               "value": 2
             },
             {
-              "test": "(vlSelectionTest(\"highlight_store\", datum))",
+              "test": "length(data(\"highlight_store\")) && vlSelectionTest(\"highlight_store\", datum)",
               "value": 1
             },
             {"value": 0}

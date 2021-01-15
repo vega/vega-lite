@@ -485,7 +485,7 @@
               "opacity": {"value": 1},
               "fill": [
                 {
-                  "test": "!(length(data(\"xenc_store\"))) || (vlSelectionTest(\"xenc_store\", datum))",
+                  "test": "!length(data(\"xenc_store\")) || vlSelectionTest(\"xenc_store\", datum)",
                   "value": "red"
                 },
                 {"value": "steelblue"}
@@ -510,7 +510,7 @@
               ],
               "size": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum, \"intersect\"))",
+                  "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum, \"intersect\")",
                   "value": 250
                 },
                 {"value": 100}

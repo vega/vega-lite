@@ -575,7 +575,7 @@
         "update": {
           "fill": [
             {
-              "test": "!(length(data(\"alex_store\")) || length(data(\"morgan_store\"))) || ((vlSelectionTest(\"alex_store\", datum)) || (vlSelectionTest(\"morgan_store\", datum)))",
+              "test": "(!length(data(\"alex_store\")) || vlSelectionTest(\"alex_store\", datum)) || (!length(data(\"morgan_store\")) || vlSelectionTest(\"morgan_store\", datum))",
               "scale": "color",
               "field": "__count"
             },

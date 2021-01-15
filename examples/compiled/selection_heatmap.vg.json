@@ -99,21 +99,21 @@
           "fill": {"scale": "fill", "field": "count"},
           "stroke": [
             {
-              "test": "(!(length(data(\"highlight_store\"))) || (vlSelectionTest(\"highlight_store\", datum))) && (length(data(\"highlight_store\")))",
+              "test": "length(data(\"highlight_store\")) && vlSelectionTest(\"highlight_store\", datum)",
               "value": "black"
             },
             {"value": null}
           ],
           "opacity": [
             {
-              "test": "!(length(data(\"highlight_store\"))) || (vlSelectionTest(\"highlight_store\", datum))",
+              "test": "!length(data(\"highlight_store\")) || vlSelectionTest(\"highlight_store\", datum)",
               "value": 1
             },
             {"value": 0.5}
           ],
           "zindex": [
             {
-              "test": "!(length(data(\"highlight_store\"))) || (vlSelectionTest(\"highlight_store\", datum))",
+              "test": "!length(data(\"highlight_store\")) || vlSelectionTest(\"highlight_store\", datum)",
               "value": 1
             },
             {"value": 0}

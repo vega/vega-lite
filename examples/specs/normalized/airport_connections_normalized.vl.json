@@ -19,7 +19,7 @@
       "mark": {"type": "rule", "color": "#000", "opacity": 0.35},
       "data": {"url": "data/flights-airport.csv"},
       "transform": [
-        {"filter": {"selection": "org"}},
+        {"filter": {"selection": "org", "empty": false}},
         {
           "lookup": "origin",
           "from": {
@@ -68,8 +68,7 @@
             "type": "point",
             "on": "mouseover",
             "nearest": true,
-            "fields": ["origin"],
-            "empty": "none"
+            "fields": ["origin"]
           }
         }
       ],
