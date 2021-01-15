@@ -26,10 +26,7 @@
           },
           "value": "grey"
         },
-        "opacity": {
-          "condition": {"param": "hover", "value": 1},
-          "value": 0.2
-        }
+        "opacity": {"condition": {"param": "hover", "value": 1}, "value": 0.2}
       }
     },
     {
@@ -46,10 +43,7 @@
           },
           "value": "grey"
         },
-        "opacity": {
-          "condition": {"param": "hover", "value": 1},
-          "value": 0.2
-        }
+        "opacity": {"condition": {"param": "hover", "value": 1}, "value": 0.2}
       }
     },
     {

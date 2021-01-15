@@ -6,7 +6,9 @@
     {
       "layer": [
         {
-          "params": [{"name": "hover", "select": {"type": "point", "on": "mouseover"}}],
+          "params": [
+            {"name": "hover", "select": {"type": "point", "on": "mouseover"}}
+          ],
           "mark": "point",
           "encoding": {
             "x": {"field": "Horsepower", "type": "quantitative"},
@@ -26,7 +28,9 @@
     {
       "layer": [
         {
-          "params": [{"name": "hover", "select": {"type": "point", "on": "mouseover"}}],
+          "params": [
+            {"name": "hover", "select": {"type": "point", "on": "mouseover"}}
+          ],
           "mark": "point",
           "encoding": {
             "x": {"field": "Horsepower", "type": "quantitative"},

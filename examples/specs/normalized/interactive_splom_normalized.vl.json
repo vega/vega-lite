@@ -36,11 +36,7 @@
           "axis": {"minExtent": 30}
         },
         "color": {
-          "condition": {
-            "param": "brush",
-            "field": "Origin",
-            "type": "nominal"
-          },
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
           "value": "grey"
         }
       },
@@ -78,11 +74,7 @@
           "axis": {"minExtent": 30}
         },
         "color": {
-          "condition": {
-            "param": "brush",
-            "field": "Origin",
-            "type": "nominal"
-          },
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
           "value": "grey"
         }
       },
@@ -120,11 +112,7 @@
           "axis": {"minExtent": 30}
         },
         "color": {
-          "condition": {
-            "param": "brush",
-            "field": "Origin",
-            "type": "nominal"
-          },
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
           "value": "grey"
         }
       },
@@ -162,11 +150,7 @@
           "axis": {"minExtent": 30}
         },
         "color": {
-          "condition": {
-            "param": "brush",
-            "field": "Origin",
-            "type": "nominal"
-          },
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
           "value": "grey"
         }
       },
@@ -204,11 +188,7 @@
           "axis": {"minExtent": 30}
         },
         "color": {
-          "condition": {
-            "param": "brush",
-            "field": "Origin",
-            "type": "nominal"
-          },
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
           "value": "grey"
         }
       },
@@ -246,11 +226,7 @@
           "axis": {"minExtent": 30}
         },
         "color": {
-          "condition": {
-            "param": "brush",
-            "field": "Origin",
-            "type": "nominal"
-          },
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
           "value": "grey"
         }
       },
@@ -288,11 +264,7 @@
           "axis": {"minExtent": 30}
         },
         "color": {
-          "condition": {
-            "param": "brush",
-            "field": "Origin",
-            "type": "nominal"
-          },
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
           "value": "grey"
         }
       },
@@ -330,11 +302,7 @@
           "axis": {"minExtent": 30}
         },
         "color": {
-          "condition": {
-            "param": "brush",
-            "field": "Origin",
-            "type": "nominal"
-          },
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
           "value": "grey"
         }
       },
@@ -372,11 +340,7 @@
           "axis": {"minExtent": 30}
         },
         "color": {
-          "condition": {
-            "param": "brush",
-            "field": "Origin",
-            "type": "nominal"
-          },
+          "condition": {"param": "brush", "field": "Origin", "type": "nominal"},
           "value": "grey"
         }
       },

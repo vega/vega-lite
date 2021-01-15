@@ -6,7 +6,10 @@
   "height": 500,
   "layer": [
     {
-      "transform": [{"filter": {"field": "country", "equal": "Afghanistan"}}, {"filter": {"param": "year"}}],
+      "transform": [
+        {"filter": {"field": "country", "equal": "Afghanistan"}},
+        {"filter": {"param": "year"}}
+      ],
       "mark": {
         "type": "text",
         "fontSize": 100,
@@ -159,7 +162,10 @@
           }
         },
         {
-          "transform": [{"filter": {"param": "hovered", "empty": false}}, {"filter": {"not": {"param": "year"}}}],
+          "transform": [
+            {"filter": {"param": "hovered", "empty": false}},
+            {"filter": {"not": {"param": "year"}}}
+          ],
           "layer": [
             {
               "mark": {
