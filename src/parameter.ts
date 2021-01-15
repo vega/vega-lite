@@ -1,9 +1,9 @@
 import {Binding, Expr, InitSignal, NewSignal} from 'vega';
-import {isParameterSelection, TopLevelSelectionDef} from './selection';
+import {isSelectionParameter, TopLevelSelectionParameter} from './selection';
 
-export interface Parameter {
+export interface VariableParameter {
   /**
-   * Required. A unique name for the parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
+   * Required. A unique name for the variable parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
    */
   name: string;
 
@@ -30,12 +30,12 @@ export interface Parameter {
   bind?: Binding;
 }
 
-export function assembleParameterSignals(params: (Parameter | TopLevelSelectionDef)[]) {
+export function assembleParameterSignals(params: (VariableParameter | TopLevelSelectionParameter)[]) {
   const signals: (NewSignal | InitSignal)[] = [];
   for (const param of params || []) {
     // Selection parameters are handled separately via assembleSelectionTopLevelSignals
     // and assembleSignals methods registered on the Model.
-    if (isParameterSelection(param)) continue;
+    if (isSelectionParameter(param)) continue;
     const {expr, bind, ...rest} = param;
 
     if (bind && expr) {

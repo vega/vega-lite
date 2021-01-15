@@ -247,7 +247,7 @@ describe('Mark: Point', () => {
   describe('with x, y, and condition-only color', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       ...pointXY({
-        color: {condition: {selection: 'test', field: 'yield', type: 'quantitative'}}
+        color: {condition: {param: 'test', field: 'yield', type: 'quantitative'}}
       }),
       params: [{name: 'test', select: 'point'}]
     });

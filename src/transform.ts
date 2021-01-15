@@ -16,7 +16,7 @@ export interface FilterTransform {
    * where `datum` can be used to refer to the current data object.
    * For example, `{filter: "datum.b2 > 60"}` would make the output data includes only items that have values in the field `b2` over 60.
    *
-   * 2) one of the [field predicates](https://vega.github.io/vega-lite/docs/predicate.html#field-predicate): 
+   * 2) one of the [field predicates](https://vega.github.io/vega-lite/docs/predicate.html#field-predicate):
    * [`equal`](https://vega.github.io/vega-lite/docs/predicate.html#field-equal-predicate),
    * [`lt`](https://vega.github.io/vega-lite/docs/predicate.html#lt-predicate),
    * [`lte`](https://vega.github.io/vega-lite/docs/predicate.html#lte-predicate),
@@ -327,9 +327,9 @@ export interface LookupData extends LookupBase {
 
 export interface LookupSelection extends LookupBase {
   /**
-   * Selection name to look up.
+   * Selection parameter name to look up.
    */
-  selection: string;
+  param: string;
 }
 
 export interface LookupTransform {
@@ -373,7 +373,7 @@ export function isLookupData(from: LookupData | LookupSelection): from is Lookup
 }
 
 export function isLookupSelection(from: LookupData | LookupSelection): from is LookupData {
-  return 'selection' in from;
+  return 'param' in from;
 }
 
 export interface FoldTransform {

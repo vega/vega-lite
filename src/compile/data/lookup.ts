@@ -40,9 +40,17 @@ export class LookupNode extends DataFlowNode {
       );
       model.component.data.outputNodes[fromOutputName] = fromOutputNode;
     } else if (isLookupSelection(from)) {
-      const selName = from.selection;
+      const selName = from.param;
       transform = {as: selName, ...transform};
-      fromOutputNode = model.getSelectionComponent(varName(selName), selName).materialized;
+      let selCmpt;
+
+      try {
+        selCmpt = model.getSelectionComponent(varName(selName), selName);
+      } catch (e) {
+        throw new Error(log.message.cannotLookupVariableParameter(selName));
+      }
+
+      fromOutputNode = selCmpt.materialized;
       if (!fromOutputNode) {
         throw new Error(log.message.noSameUnitLookup(selName));
       }

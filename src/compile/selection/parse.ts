@@ -2,16 +2,16 @@ import {selector as parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
 import {selectionCompilers, SelectionComponent, STORE} from '.';
 import {warn} from '../../log';
-import {BaseSelectionConfig, SelectionDef, SelectionExtent} from '../../selection';
+import {BaseSelectionConfig, SelectionParameter, ParameterExtent} from '../../selection';
 import {Dict, duplicate, entries, replacePathInField, varName} from '../../util';
 import {DataFlowNode, OutputNode} from '../data/dataflow';
 import {FilterNode} from '../data/filter';
 import {Model} from '../model';
 import {UnitModel} from '../unit';
 import {DataSourceType} from '../../data';
-import {SelectionPredicate} from '../../predicate';
+import {ParameterPredicate} from '../../predicate';
 
-export function parseUnitSelection(model: UnitModel, selDefs: SelectionDef[]) {
+export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter[]) {
   const selCmpts: Dict<SelectionComponent<any /* this has to be "any" so typing won't fail in test files*/>> = {};
   const selectionConfig = model.config.selection;
 
@@ -59,14 +59,21 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionDef[]) {
 
 export function parseSelectionPredicate(
   model: Model,
-  pred: SelectionPredicate,
+  pred: ParameterPredicate,
   dfnode?: DataFlowNode,
   datum = 'datum'
 ): string {
-  const name = isString(pred) ? pred : pred.selection;
+  const name = isString(pred) ? pred : pred.param;
   const vname = varName(name);
-  const selCmpt = model.getSelectionComponent(vname, name);
   const store = stringValue(vname + STORE);
+  let selCmpt;
+
+  try {
+    selCmpt = model.getSelectionComponent(vname, name);
+  } catch (e) {
+    // If a selection isn't found, treat as a variable parameter and coerce to boolean.
+    return `!!${vname}`;
+  }
 
   if (selCmpt.project.timeUnit) {
     const child = dfnode ?? model.component.data.raw;
@@ -85,9 +92,18 @@ export function parseSelectionPredicate(
   return pred.empty === false ? `${length} && ${test}` : `!${length} || ${test}`;
 }
 
-export function parseSelectionExtent(selCmpt: SelectionComponent, extent: SelectionExtent) {
+export function parseSelectionExtent(model: Model, name: string, extent: ParameterExtent) {
+  const vname = varName(name);
   const encoding = extent['encoding'];
   let field = extent['field'];
+  let selCmpt;
+
+  try {
+    selCmpt = model.getSelectionComponent(vname, name);
+  } catch (e) {
+    // If a selection isn't found, treat it as a variable parameter.
+    return vname;
+  }
 
   if (!encoding && !field) {
     field = selCmpt.project.items[0].field;
@@ -103,7 +119,7 @@ export function parseSelectionExtent(selCmpt: SelectionComponent, extent: Select
       field = selCmpt.project.items[0].field;
       warn(
         (!encodings.length ? 'No ' : 'Multiple ') +
-          `matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.selection)}. ` +
+          `matching ${stringValue(encoding)} encoding found for selection ${stringValue(extent.param)}. ` +
           `Using "field": ${stringValue(field)}.`
       );
     } else {
@@ -118,7 +134,7 @@ export function materializeSelections(model: UnitModel, main: OutputNode) {
   for (const [selection, selCmpt] of entries(model.component.selection ?? {})) {
     const lookupName = model.getName(`lookup_${selection}`);
     model.component.data.outputNodes[lookupName] = selCmpt.materialized = new OutputNode(
-      new FilterNode(main, model, {selection}),
+      new FilterNode(main, model, {param: selection}),
       lookupName,
       DataSourceType.Lookup,
       model.component.data.outputNodeRefCounts

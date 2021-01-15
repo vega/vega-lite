@@ -15,7 +15,7 @@ import {
   STROKEWIDTH
 } from './channel';
 import {normalizeBin} from './channeldef';
-import {SelectionExtent} from './selection';
+import {ParameterExtent} from './selection';
 import {entries, keys, varName} from './util';
 
 export interface BaseBin {
@@ -88,7 +88,7 @@ export interface BinParams extends BaseBin {
 
 export type Bin = boolean | BinParams | 'binned' | null;
 
-export type BinExtent = [number, number] | SelectionExtent;
+export type BinExtent = [number, number] | ParameterExtent;
 
 /**
  * Create a key for the bin configuration. Not for prebinned bin.
@@ -100,7 +100,7 @@ export function binToString(bin: BinParams | true) {
   return (
     'bin' +
     keys(bin)
-      .map(p => (isSelectionExtent(bin[p]) ? varName(`_${p}_${entries(bin[p])}`) : varName(`_${p}_${bin[p]}`)))
+      .map(p => (isParameterExtent(bin[p]) ? varName(`_${p}_${entries(bin[p])}`) : varName(`_${p}_${bin[p]}`)))
       .join('')
   );
 }
@@ -123,8 +123,8 @@ export function isBinParams(bin: BinParams | boolean | 'binned'): bin is BinPara
   return isObject(bin);
 }
 
-export function isSelectionExtent(extent: BinExtent): extent is SelectionExtent {
-  return extent?.['selection'];
+export function isParameterExtent(extent: BinExtent): extent is ParameterExtent {
+  return extent?.['param'];
 }
 
 export function autoMaxBins(channel?: ExtendedChannel): number {

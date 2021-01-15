@@ -85,7 +85,7 @@ describe('Selection time unit', () => {
         },
         y: {field: 'price', type: 'quantitative'},
         color: {
-          condition: {selection: 'two', value: 'goldenrod'},
+          condition: {param: 'two', value: 'goldenrod'},
           value: 'steelblue'
         }
       }
@@ -99,7 +99,7 @@ describe('Selection time unit', () => {
   it('is added before selection filters', () => {
     const model = getConcatModel(
       {
-        transform: [{filter: {selection: 'two'}}],
+        transform: [{filter: {param: 'two'}}],
         mark: 'point',
         encoding: {
           x: {
@@ -134,7 +134,7 @@ describe('Selection time unit', () => {
 
   it('removes duplicate time unit formulae', () => {
     const model = getConcatModel({
-      transform: [{filter: {selection: 'two'}}],
+      transform: [{filter: {param: 'two'}}],
       mark: 'point',
       encoding: {
         x: {

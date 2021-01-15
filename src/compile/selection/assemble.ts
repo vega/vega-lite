@@ -4,8 +4,8 @@ import {identity, isArray, stringValue} from 'vega-util';
 import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers} from '.';
 import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime';
 import {hasContinuousDomain} from '../../scale';
-import {SelectionInit, SelectionInitInterval, SelectionExtent} from '../../selection';
-import {keys, vals, varName} from '../../util';
+import {SelectionInit, SelectionInitInterval, ParameterExtent} from '../../selection';
+import {keys, vals} from '../../util';
 import {VgData, VgDomain} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
@@ -161,13 +161,11 @@ export function assembleLayerSelectionMarks(model: LayerModel, marks: any[]): an
 
 export function assembleSelectionScaleDomain(
   model: Model,
-  extent: SelectionExtent,
+  extent: ParameterExtent,
   scaleCmpt: ScaleComponent,
   domain: VgDomain
 ): SignalRef {
-  const name = extent.selection;
-  const selCmpt = model.getSelectionComponent(name, varName(name));
-  const parsedExtent = parseSelectionExtent(selCmpt, extent);
+  const parsedExtent = parseSelectionExtent(model, extent.param, extent);
 
   return {
     signal:

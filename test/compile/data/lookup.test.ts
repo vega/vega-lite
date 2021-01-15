@@ -99,6 +99,28 @@ describe('compile/data/lookup', () => {
     })
   );
 
+  // Selection lookups are more fully tested in test/compile/selection/parse.test.ts
+  it('should throw error for unknown selection', () => {
+    expect(() => {
+      const model = parseUnitModel({
+        data: {url: 'data/lookup_groups.csv'},
+        transform: [
+          {
+            lookup: 'person',
+            from: {
+              param: 'foobar',
+              key: 'person'
+            }
+          }
+        ],
+        mark: 'bar',
+        encoding: {}
+      });
+
+      parseTransformArray(null, model, new AncestorParse());
+    }).toThrow();
+  });
+
   describe('dependentFields', () => {
     it('should return proper dependent fields', () => {
       const lookup = new LookupNode(

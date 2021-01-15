@@ -463,7 +463,7 @@ describe('encoding', () => {
         expect(
           pathGroupingFields('line', {
             [channel]: {
-              condition: {selection: 'sel', field: 'a', type: 'nominal'}
+              condition: {param: 'sel', field: 'a', type: 'nominal'}
             }
           })
         ).toEqual(['a']);

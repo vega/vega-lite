@@ -87,7 +87,7 @@ describe('Repeat', () => {
       const resolved = replaceRepeaterInEncoding(
         {
           color: {
-            condition: {selection: 'test', field: {repeat: 'row'}, type: 'quantitative'},
+            condition: {param: 'test', field: {repeat: 'row'}, type: 'quantitative'},
             value: 'red'
           }
         },
@@ -96,7 +96,7 @@ describe('Repeat', () => {
 
       expect(resolved).toEqual({
         color: {
-          condition: {selection: 'test', field: 'foo', type: 'quantitative'},
+          condition: {param: 'test', field: 'foo', type: 'quantitative'},
           value: 'red'
         }
       });
@@ -106,7 +106,7 @@ describe('Repeat', () => {
       const resolved = replaceRepeaterInEncoding(
         {
           color: {
-            condition: {selection: 'test', value: 'red'},
+            condition: {param: 'test', value: 'red'},
             field: {repeat: 'row'},
             type: 'quantitative'
           }
@@ -116,7 +116,7 @@ describe('Repeat', () => {
 
       expect(resolved).toEqual({
         color: {
-          condition: {selection: 'test', value: 'red'},
+          condition: {param: 'test', value: 'red'},
           field: 'foo',
           type: 'quantitative'
         }
@@ -129,7 +129,7 @@ describe('Repeat', () => {
         const resolved = replaceRepeaterInEncoding(
           {
             color: {
-              condition: {selection: 'test', field: {repeat: 'row'}, type: 'quantitative'},
+              condition: {param: 'test', field: {repeat: 'row'}, type: 'quantitative'},
               value: 'red'
             }
           },
@@ -149,7 +149,7 @@ describe('Repeat', () => {
         const resolved = replaceRepeaterInEncoding(
           {
             color: {
-              condition: {selection: 'test', value: 'red'},
+              condition: {param: 'test', value: 'red'},
               field: {repeat: 'row'},
               type: 'quantitative'
             }
@@ -160,7 +160,7 @@ describe('Repeat', () => {
         expect(localLogger.warns[0]).toEqual(log.message.noSuchRepeatedValue('row'));
         expect(resolved).toEqual({
           color: {
-            condition: {selection: 'test', value: 'red'}
+            condition: {param: 'test', value: 'red'}
           }
         });
       })

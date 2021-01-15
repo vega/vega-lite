@@ -454,12 +454,12 @@ describe('src/compile', () => {
           x: {
             field: 'date',
             type: 'temporal',
-            scale: {domain: {selection: 'brush', encoding: 'x'}}
+            scale: {domain: {param: 'brush', encoding: 'x'}}
           },
           y: {
             field: 'date',
             type: 'temporal',
-            scale: {domain: {selection: 'foobar', field: 'Miles_per_Gallon'}}
+            scale: {domain: {param: 'foobar', field: 'Miles_per_Gallon'}}
           }
         }
       });
@@ -469,11 +469,11 @@ describe('src/compile', () => {
 
       it('should add a selection extent', () => {
         expect('selectionExtent' in xScale.explicit).toBeTruthy();
-        expect(xScale.explicit.selectionExtent.selection).toEqual('brush');
+        expect(xScale.explicit.selectionExtent.param).toEqual('brush');
         expect(xScale.explicit.selectionExtent['encoding']).toEqual('x');
 
         expect('selectionExtent' in yScale.explicit).toBeTruthy();
-        expect(yScale.explicit.selectionExtent.selection).toEqual('foobar');
+        expect(yScale.explicit.selectionExtent.param).toEqual('foobar');
         expect(yScale.explicit.selectionExtent['field']).toEqual('Miles_per_Gallon');
       });
     });
