@@ -372,7 +372,7 @@ export function isLookupData(from: LookupData | LookupSelection): from is Lookup
   return 'data' in from;
 }
 
-export function isLookupSelection(from: LookupData | LookupSelection): from is LookupData {
+export function isLookupSelection(from: LookupData | LookupSelection): from is LookupSelection {
   return 'param' in from;
 }
 
