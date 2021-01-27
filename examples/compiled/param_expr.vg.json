@@ -6,13 +6,12 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "pts_store"},
+    {"name": "sel_store"},
     {
       "name": "source_0",
       "url": "data/cars.json",
       "format": {"type": "json"},
       "transform": [
-        {"type": "identifier", "as": "_vgsid_"},
         {
           "type": "filter",
           "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
@@ -29,27 +28,35 @@
       ]
     },
     {
-      "name": "pts",
-      "update": "vlSelectionResolve(\"pts_store\", \"union\", true, true)"
+      "name": "sel",
+      "update": "vlSelectionResolve(\"sel_store\", \"union\", true, true)"
     },
     {
-      "name": "pts_tuple",
+      "name": "opacityVar",
+      "value": 50,
+      "bind": {"input": "range", "min": 1, "max": 100}
+    },
+    {
+      "name": "sel_tuple",
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: sel_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Miles_per_Gallon\"]]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
-    {"name": "pts_tuple_fields", "value": [{"type": "E", "field": "_vgsid_"}]},
     {
-      "name": "pts_modify",
+      "name": "sel_tuple_fields",
+      "value": [{"type": "E", "field": "Miles_per_Gallon"}]
+    },
+    {
+      "name": "sel_modify",
       "on": [
         {
-          "events": {"signal": "pts_tuple"},
-          "update": "modify(\"pts_store\", pts_tuple, true)"
+          "events": {"signal": "sel_tuple"},
+          "update": "modify(\"sel_store\", sel_tuple, true)"
         }
       ]
     }
@@ -63,29 +70,16 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
-          "opacity": {"value": 0.7},
+          "opacity": {"signal": "opacityVar/100"},
+          "size": {"signal": "sel.Miles_per_Gallon * 10 || 75"},
           "fill": {"value": "transparent"},
-          "stroke": [
-            {
-              "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
-              "scale": "color",
-              "field": "Cylinders"
-            },
-            {"value": "grey"}
-          ],
+          "stroke": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
+            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Horsepower"},
-          "y": {"scale": "y", "field": "Miles_per_Gallon"},
-          "size": [
-            {
-              "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
-              "value": 200
-            },
-            {"value": 50}
-          ]
+          "y": {"scale": "y", "field": "Miles_per_Gallon"}
         }
       }
     }
@@ -106,13 +100,6 @@
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
-    },
-    {
-      "name": "color",
-      "type": "ordinal",
-      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
-      "range": {"scheme": "yelloworangebrown"},
-      "interpolate": "hcl"
     }
   ],
   "axes": [
@@ -162,21 +149,6 @@
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
-    }
-  ],
-  "legends": [
-    {
-      "stroke": "color",
-      "symbolType": "circle",
-      "title": "Cylinders",
-      "encode": {
-        "symbols": {
-          "update": {
-            "fill": {"value": "transparent"},
-            "opacity": {"value": 0.7}
-          }
-        }
-      }
     }
   ]
 }

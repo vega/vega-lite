@@ -6,13 +6,33 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "paintbrush_store"},
+    {
+      "name": "CylYr_store",
+      "values": [
+        {
+          "unit": "",
+          "fields": [
+            {"type": "E", "field": "Cylinders"},
+            {"type": "E", "field": "Year"}
+          ],
+          "values": [4, 1981]
+        },
+        {
+          "unit": "",
+          "fields": [
+            {"type": "E", "field": "Cylinders"},
+            {"type": "E", "field": "Year"}
+          ],
+          "values": [8, 1972]
+        }
+      ]
+    },
     {
       "name": "source_0",
       "url": "data/cars.json",
       "format": {"type": "json"},
       "transform": [
-        {"type": "identifier", "as": "_vgsid_"},
+        {"type": "formula", "expr": "year(datum.Year)", "as": "Year"},
         {
           "type": "filter",
           "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"])"
@@ -29,41 +49,44 @@
       ]
     },
     {
-      "name": "paintbrush",
-      "update": "vlSelectionResolve(\"paintbrush_store\", \"union\", true, true)"
+      "name": "CylYr",
+      "update": "vlSelectionResolve(\"CylYr_store\", \"union\", true, true)"
     },
     {
-      "name": "paintbrush_tuple",
+      "name": "CylYr_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: paintbrush_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+          "events": [{"source": "scope", "type": "click"}],
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: CylYr_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Cylinders\"], (item().isVoronoi ? datum.datum : datum)[\"Year\"]]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
-      "name": "paintbrush_tuple_fields",
-      "value": [{"type": "E", "field": "_vgsid_"}]
+      "name": "CylYr_tuple_fields",
+      "value": [
+        {"type": "E", "field": "Cylinders"},
+        {"type": "E", "field": "Year"}
+      ]
     },
     {
-      "name": "paintbrush_toggle",
+      "name": "CylYr_toggle",
       "value": false,
       "on": [
         {
-          "events": [{"source": "scope", "type": "mouseover"}],
+          "events": [{"source": "scope", "type": "click"}],
           "update": "event.shiftKey"
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
       ]
     },
     {
-      "name": "paintbrush_modify",
+      "name": "CylYr_modify",
       "on": [
         {
-          "events": {"signal": "paintbrush_tuple"},
-          "update": "modify(\"paintbrush_store\", paintbrush_toggle ? null : paintbrush_tuple, paintbrush_toggle ? null : true, paintbrush_toggle ? paintbrush_tuple : null)"
+          "events": {"signal": "CylYr_tuple"},
+          "update": "modify(\"CylYr_store\", CylYr_toggle ? null : CylYr_tuple, CylYr_toggle ? null : true, CylYr_toggle ? CylYr_tuple : null)"
         }
       ]
     }
@@ -72,27 +95,27 @@
     {
       "name": "marks",
       "type": "symbol",
-      "style": ["point"],
+      "style": ["circle"],
       "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "transparent"},
-          "stroke": {"value": "#4c78a8"},
-          "ariaRoleDescription": {"value": "point"},
+          "fill": [
+            {
+              "test": "!length(data(\"CylYr_store\")) || vlSelectionTest(\"CylYr_store\", datum)",
+              "scale": "color",
+              "field": "Origin"
+            },
+            {"value": "grey"}
+          ],
+          "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\"))"
+            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
-          "size": [
-            {
-              "test": "!length(data(\"paintbrush_store\")) || vlSelectionTest(\"paintbrush_store\", datum)",
-              "value": 300
-            },
-            {"value": 50}
-          ]
+          "shape": {"value": "circle"}
         }
       }
     }
@@ -113,6 +136,12 @@
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "range": "category"
     }
   ],
   "axes": [
@@ -162,6 +191,14 @@
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "fill": "color",
+      "symbolType": "circle",
+      "title": "Origin",
+      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}}
     }
   ]
 }

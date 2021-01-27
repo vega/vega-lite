@@ -32,6 +32,7 @@
       "name": "paintbrush",
       "update": "vlSelectionResolve(\"paintbrush_store\", \"union\", true, true)"
     },
+    {"name": "toggleOrigin", "bind": {"input": "checkbox"}},
     {
       "name": "paintbrush_tuple",
       "on": [
@@ -79,10 +80,13 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
-          "stroke": {"value": "#4c78a8"},
+          "stroke": [
+            {"test": "!!toggleOrigin", "scale": "color", "field": "Origin"},
+            {"value": "steelblue"}
+          ],
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\"))"
+            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
@@ -113,6 +117,12 @@
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "range": "category"
     }
   ],
   "axes": [
@@ -162,6 +172,21 @@
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "stroke": "color",
+      "symbolType": "circle",
+      "title": "Origin",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "transparent"},
+            "opacity": {"value": 0.7}
+          }
+        }
+      }
     }
   ]
 }
