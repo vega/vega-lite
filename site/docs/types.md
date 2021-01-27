@@ -5,7 +5,7 @@ title: Parameter Types
 permalink: /docs/types.html
 ---
 
-Reference documentation for common parameter **types** expected by Vega-Lite specification properties.
+Reference documentation for common property **types** expected by Vega-Lite specification properties.
 
 {:#reference}
 
@@ -61,11 +61,11 @@ Accepts number values. For example: `1`, `3.14`, `1e5`.
 
 ### Object
 
-Accepts general object literals. For example: `{"left":5, "right":30, "top":5, "bottom":50}`. The valid object property names and types will vary across parameters; read the individual parameter descriptions for more information.
+Accepts general object literals. For example: `{"left":5, "right":30, "top":5, "bottom":50}`. The valid object property names and types will vary across properties; read the individual property descriptions for more information.
 
 ### String
 
-Accepts general string values. For example: `"bold"`, `"step-before"`, `""`. The valid object property names and types may vary across parameters; read the individual parameter descriptions for more information.
+Accepts general string values. For example: `"bold"`, `"step-before"`, `""`. The valid object property names and types may vary across properties; read the individual property descriptions for more information.
 
 ### Text
 

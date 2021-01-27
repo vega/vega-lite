@@ -1,7 +1,7 @@
 ---
 layout: docs
 menu: docs
-title: Customizing Selection Mark
+title: Customizing an Interval Selection's Mark
 permalink: /docs/selection-mark.html
 ---
 

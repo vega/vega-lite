@@ -3,7 +3,7 @@
   "data": {"url": "data/cars.json"},
   "params": [{
     "name": "pts",
-    "select": {"type": "point", "fields": ["Cylinders"]}
+    "select": {"type": "point", "fields": ["Cylinders"], "toggle": false}
   }],
   "mark": "point",
   "encoding": {

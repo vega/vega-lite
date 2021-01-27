@@ -18,7 +18,15 @@ export type SelectionInitIntervalMapping = Dict<SelectionInitInterval>;
 export type LegendStreamBinding = {legend: string | Stream};
 export type LegendBinding = 'legend' | LegendStreamBinding;
 
-export interface BaseSelectionConfig {
+export interface BaseSelectionConfig<T extends SelectionType = SelectionType> {
+  /**
+   * Determines the default event processing and data query for the selection. Vega-Lite currently supports two selection types:
+   *
+   * - `"point"` -- to select multiple discrete data values; the first value is selected on `click` and additional values toggled on shift-click.
+   * - `"interval"` -- to select a continuous range of data values on `drag`.
+   */
+  type: T;
+
   /**
    * Clears the selection, emptying it of all values. Can be a
    * [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
@@ -64,7 +72,7 @@ export interface BaseSelectionConfig {
   fields?: FieldName[];
 }
 
-export interface PointSelectionConfig extends BaseSelectionConfig {
+export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
   /**
    * Controls whether data values should be toggled or only ever inserted into
    * multi selections. Can be `true`, `false` (for insertion only), or a
@@ -132,7 +140,7 @@ export interface BrushConfig {
   cursor?: Cursor;
 }
 
-export interface IntervalSelectionConfig extends BaseSelectionConfig {
+export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'> {
   /**
    * When truthy, allows a user to interactively move an interval selection
    * back-and-forth. Can be `true`, `false` (to disable panning), or a
@@ -169,8 +177,6 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
   mark?: BrushConfig;
 }
 
-export type SelectionTypeConfig = PointSelectionConfig | IntervalSelectionConfig;
-
 export interface SelectionParameter<T extends SelectionType = SelectionType> {
   /**
    * Required. A unique name for the selection parameter. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
@@ -183,11 +189,7 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
    * - `"point"` -- to select multiple discrete data values; the first value is selected on `click` and additional values toggled on shift-click.
    * - `"interval"` -- to select a continuous range of data values on `drag`.
    */
-  select:
-    | T
-    | ({
-        type: T;
-      } & (T extends 'point' ? PointSelectionConfig : T extends 'interval' ? IntervalSelectionConfig : never));
+  select: T | (T extends 'point' ? PointSelectionConfig : T extends 'interval' ? IntervalSelectionConfig : never);
 
   /**
    * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.
@@ -249,20 +251,20 @@ export type ParameterExtent =
 
 export interface SelectionConfig {
   /**
-   * The default definition for a [`point`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations
+   * The default definition for a [`point`](https://vega.github.io/vega-lite/docs/parameter.html#select) selection. All properties and transformations
    *  for a point selection definition (except `type`) may be specified here.
    *
    * For instance, setting `point` to `{"on": "dblclick"}` populates point selections on double-click by default.
    */
-  point?: PointSelectionConfig;
+  point?: Omit<PointSelectionConfig, 'type'>;
   /**
-   * The default definition for an [`interval`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations
+   * The default definition for an [`interval`](https://vega.github.io/vega-lite/docs/parameter.html#select) selection. All properties and transformations
    * for an interval selection definition (except `type`) may be specified here.
    *
    * For instance, setting `interval` to `{"translate": false}` disables the ability to move
    * interval selections by default.
    */
-  interval?: IntervalSelectionConfig;
+  interval?: Omit<IntervalSelectionConfig, 'type'>;
 }
 
 export const defaultConfig: SelectionConfig = {

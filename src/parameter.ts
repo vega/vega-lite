@@ -3,7 +3,7 @@ import {isSelectionParameter, TopLevelSelectionParameter} from './selection';
 
 export interface VariableParameter {
   /**
-   * Required. A unique name for the variable parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
+   * A unique name for the variable parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
    */
   name: string;
 
@@ -13,7 +13,7 @@ export interface VariableParameter {
   description?: string;
 
   /**
-   * The initial value of the parameter.
+   * The [initial value](http://vega.github.io/vega-lite/docs/init.html) of the parameter.
    *
    * __Default value:__ `undefined`
    */

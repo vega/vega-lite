@@ -39,9 +39,9 @@ This example uses `lookup` to add the properties `age` and `height` to the main 
 
 ### Lookup Selection
 
-The secondary data reference (set with `from`) canalso be a selection name reference.
+The secondary data reference (set with `from`) can also be a selection parameter name.
 
-{% include table.html props="selection" source="LookupSelection" %}
+{% include table.html props="param" source="LookupSelection" %}
 
 #### Example: Interactive Index Chart
 
