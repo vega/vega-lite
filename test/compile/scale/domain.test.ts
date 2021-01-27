@@ -94,7 +94,7 @@ describe('compile/scale', () => {
         mark: 'bar',
         encoding: {
           color: {
-            condition: {selection: 'sel', field: 'a', type: 'quantitative'}
+            condition: {param: 'sel', field: 'a', type: 'quantitative'}
           }
         }
       });

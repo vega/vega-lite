@@ -83,6 +83,10 @@ export const SCALE_BINDINGS_CONTINUOUS =
 
 export const LEGEND_BINDINGS_MUST_HAVE_PROJECTION =
   'Legend bindings are only supported for selections over an individual field or encoding channel.';
+export function cannotLookupVariableParameter(name: string) {
+  return `Lookups can only be performed on selection parameters. "${name}" is a variable parameter.`;
+}
+
 export function noSameUnitLookup(name: string) {
   return (
     `Cannot define and lookup the "${name}" selection in the same view. ` +

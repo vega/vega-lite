@@ -16,13 +16,13 @@
     "y": {"field": "Miles_per_Gallon", "type": "quantitative"},
     "color": {
       "condition": {
-        "selection": "CylYr",
+        "param": "CylYr",
         "field": "Origin", "type": "nominal"
       },
       "value": "grey"
     },
     "size": {
-      "condition": {"selection": "CylYr", "value": 100},
+      "condition": {"param": "CylYr", "value": 100},
       "value": 50
     }
   }

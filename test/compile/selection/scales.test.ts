@@ -17,7 +17,8 @@ describe('Selection + Scales', () => {
             mark: 'area',
             params: [
               {name: 'brush', select: {type: 'interval', encodings: ['x']}},
-              {name: 'brush2', select: {type: 'point', fields: ['price'], resolve: 'intersect'}}
+              {name: 'brush2', select: {type: 'point', fields: ['price'], resolve: 'intersect'}},
+              {name: 'var'}
             ],
             encoding: {
               x: {field: 'date', type: 'temporal'},
@@ -31,22 +32,22 @@ describe('Selection + Scales', () => {
               x: {
                 field: 'date',
                 type: 'temporal',
-                scale: {domain: {selection: 'brush', encoding: 'x'}}
+                scale: {domain: {param: 'brush', encoding: 'x'}}
               },
               y: {
                 field: 'price',
                 type: 'quantitative',
-                scale: {domain: {selection: 'brush2', field: 'price'}}
+                scale: {domain: {param: 'brush2', field: 'price'}}
               },
               color: {
                 field: 'symbol',
                 type: 'nominal',
-                scale: {domain: {selection: 'brush3'} as Domain}
+                scale: {domain: {param: 'brush3'} as Domain}
               },
               opacity: {
                 field: 'symbol',
                 type: 'ordinal',
-                scale: {domain: {selection: 'brush3'} as Domain}
+                scale: {domain: {param: 'var'} as Domain}
               }
             }
           }
@@ -82,7 +83,7 @@ describe('Selection + Scales', () => {
 
       expect(typeof oscale.domain).toBe('object');
       expect(oscale).toHaveProperty('domainRaw');
-      expect(oscale.domainRaw).toEqual({signal: 'brush3["symbol"]'});
+      expect(oscale.domainRaw).toEqual({signal: 'var'});
     });
 
     it('should be merged for layered views', () => {
@@ -97,7 +98,7 @@ describe('Selection + Scales', () => {
                   x: {
                     field: 'date',
                     type: 'temporal',
-                    scale: {domain: {selection: 'brush'}}
+                    scale: {domain: {param: 'brush'}}
                   },
                   y: {field: 'price', type: 'quantitative'}
                 }
@@ -179,7 +180,7 @@ describe('Selection + Scales', () => {
               x: {
                 field: 'date',
                 type: 'temporal',
-                scale: {domain: {selection: 'brush', encoding: 'x'}}
+                scale: {domain: {param: 'brush', encoding: 'x'}}
               },
               y: {
                 field: 'price',
@@ -193,7 +194,7 @@ describe('Selection + Scales', () => {
               x: {
                 field: 'date',
                 type: 'temporal',
-                scale: {domain: {selection: 'brush', field: 'nested.a'}}
+                scale: {domain: {param: 'brush', field: 'nested.a'}}
               },
               y: {
                 field: 'price',

@@ -24,7 +24,7 @@
       "color": {
         "value": "red",
         "condition": {
-          "selection": "brush", "value": "steelblue"
+          "param": "brush", "value": "steelblue"
         }
       }
     }

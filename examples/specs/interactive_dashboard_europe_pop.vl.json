@@ -324,7 +324,7 @@
         },
         "color": {
           "condition": {
-            "selection": "brush",
+            "param": "brush",
             "empty": false,
             "value": "goldenrod"
           },
@@ -351,7 +351,7 @@
         },
         "color": {
           "condition": {
-            "selection": "brush",
+            "param": "brush",
             "empty": false,
             "value": "goldenrod"
           },
@@ -377,7 +377,7 @@
         },
         "color": {
           "condition": {
-            "selection": "brush",
+            "param": "brush",
             "empty": false,
             "value": "goldenrod"
           },

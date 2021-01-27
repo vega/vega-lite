@@ -171,9 +171,9 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
 
 export type SelectionTypeConfig = PointSelectionConfig | IntervalSelectionConfig;
 
-export interface SelectionDef<T extends SelectionType = SelectionType> {
+export interface SelectionParameter<T extends SelectionType = SelectionType> {
   /**
-   * Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
+   * Required. A unique name for the selection parameter. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
    */
   name: string;
 
@@ -215,7 +215,7 @@ export interface SelectionDef<T extends SelectionType = SelectionType> {
     : never;
 }
 
-export type TopLevelSelectionDef = SelectionDef & {
+export type TopLevelSelectionParameter = SelectionParameter & {
   /**
    * By default, top-level selections are applied to every view in the visualization.
    * If this property is specified, selections will only be applied to views with the given names.
@@ -223,26 +223,26 @@ export type TopLevelSelectionDef = SelectionDef & {
   views?: (string | string[])[];
 };
 
-export type SelectionExtent =
+export type ParameterExtent =
   | {
       /**
-       * The name of a selection.
+       * The name of a parameter.
        */
-      selection: string;
+      param: string;
       /**
-       * The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
-       * over multiple fields or encodings.
+       * If a selection parameter is specified, the field name to extract selected values for
+       * when the selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings.
        */
       field?: FieldName;
     }
   | {
       /**
-       * The name of a selection.
+       * The name of a parameter.
        */
-      selection: string;
+      param: string;
       /**
-       * The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
-       * over multiple fields or encodings.
+       * If a selection parameter is specified, the encoding channel to extract selected values for
+       * when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings.
        */
       encoding?: SingleDefUnitChannel;
     };
@@ -292,6 +292,6 @@ export function isLegendStreamBinding(bind: any): bind is LegendStreamBinding {
   return isLegendBinding(bind) && isObject(bind);
 }
 
-export function isParameterSelection(param: any): param is SelectionDef {
+export function isSelectionParameter(param: any): param is SelectionParameter {
   return !!param['select'];
 }

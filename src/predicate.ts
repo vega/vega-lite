@@ -19,7 +19,7 @@ export type Predicate =
   | FieldGTEPredicate
   | FieldValidPredicate
   // b) Selection Predicate
-  | SelectionPredicate
+  | ParameterPredicate
   // c) Vega Expression string
   | string;
 
@@ -33,20 +33,20 @@ export type FieldPredicate =
   | FieldOneOfPredicate
   | FieldValidPredicate;
 
-export interface SelectionPredicate {
+export interface ParameterPredicate {
   /**
-   * Filter using a selection name.
+   * Filter using a parameter name.
    */
-  selection: string;
+  param: string;
   /**
-   * By default, the predicate of empty selections returns true.
+   * For selection parameters, the predicate of empty selections returns true by default.
    * Override this behavior, by setting this property `empty: false`.
    */
   empty?: boolean;
 }
 
-export function isSelectionPredicate(predicate: LogicalComposition<Predicate>): predicate is SelectionPredicate {
-  return predicate?.['selection'];
+export function isSelectionPredicate(predicate: LogicalComposition<Predicate>): predicate is ParameterPredicate {
+  return predicate?.['param'];
 }
 
 export interface FieldPredicateBase {

@@ -3,9 +3,9 @@ import {FieldName} from '../channeldef';
 import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark';
 import {Encoding} from '../encoding';
 import {AnyMark, Mark, MarkDef} from '../mark';
-import {Parameter} from '../parameter';
+import {VariableParameter} from '../parameter';
 import {Projection} from '../projection';
-import {SelectionDef} from '../selection';
+import {SelectionParameter} from '../selection';
 import {
   BaseSpec,
   DataMixins,
@@ -39,7 +39,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
   /**
    * An array of interactive selections, such as discrete points and continuous intervals.
    */
-  params?: (Parameter | SelectionDef)[];
+  params?: (VariableParameter | SelectionParameter)[];
 }
 
 /**

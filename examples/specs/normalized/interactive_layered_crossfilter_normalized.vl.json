@@ -25,7 +25,7 @@
           }
         },
         {
-          "transform": [{"filter": {"selection": "brush"}}],
+          "transform": [{"filter": {"param": "brush"}}],
           "mark": "bar",
           "encoding": {
             "x": {"field": "distance", "bin": {"maxbins": 20}},
@@ -52,7 +52,7 @@
           }
         },
         {
-          "transform": [{"filter": {"selection": "brush"}}],
+          "transform": [{"filter": {"param": "brush"}}],
           "mark": "bar",
           "encoding": {
             "x": {"field": "delay", "bin": {"maxbins": 20}},
@@ -79,7 +79,7 @@
           }
         },
         {
-          "transform": [{"filter": {"selection": "brush"}}],
+          "transform": [{"filter": {"param": "brush"}}],
           "mark": "bar",
           "encoding": {
             "x": {"field": "time", "bin": {"maxbins": 20}},

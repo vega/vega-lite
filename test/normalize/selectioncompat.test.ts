@@ -28,6 +28,7 @@ describe('SelectionCompatibilityNormalizer', () => {
     };
 
     const normedUnit = selectionCompatNormalizer.mapUnit(spec);
+    expect(normedUnit.selection).toBeUndefined();
     expect(normedUnit.params).toHaveLength(1);
     expect(normedUnit.params[0]).toHaveProperty('name', 'CylYr');
     expect(normedUnit.params[0]).toHaveProperty('value', {Cylinders: 4, Year: 1977});
@@ -54,6 +55,7 @@ describe('SelectionCompatibilityNormalizer', () => {
     };
 
     const normedUnit = selectionCompatNormalizer.mapUnit(spec);
+    expect(normedUnit.selection).toBeUndefined();
     expect(normedUnit.params).toHaveLength(1);
     expect(normedUnit.params[0]).toHaveProperty('name', 'Org');
     expect(normedUnit.params[0]).toHaveProperty('value', {Origin: 'Japan'});
@@ -80,11 +82,253 @@ describe('SelectionCompatibilityNormalizer', () => {
     };
 
     const normedUnit = selectionCompatNormalizer.mapUnit(spec);
+    expect(normedUnit.selection).toBeUndefined();
     expect(normedUnit.params).toHaveLength(2);
     expect(normedUnit.params[0]).toHaveProperty('name', 'brush');
     expect(normedUnit.params[1]).toHaveProperty('name', 'grid');
     expect(normedUnit.params[0]).toHaveProperty('value', {x: [55, 160], y: [13, 37]});
     expect(normedUnit.params[1]).toHaveProperty('bind', 'scales');
+  });
+
+  it('should normalize selection predicates', () => {
+    const spec: any = {
+      data: {url: 'data/cars.json'},
+      transform: [
+        {filter: {selection: 'foo'}},
+        {filter: {selection: {and: ['foo', 'bar']}}},
+        {filter: {or: [{selection: {not: 'foo'}}, 'false']}}
+      ],
+      selection: {
+        foo: {type: 'single'},
+        bar: {type: 'multi'},
+        brush: {type: 'interval'}
+      },
+      mark: 'line',
+      encoding: {
+        x: {
+          field: 'Horsepower',
+          type: 'quantitative',
+          condition: {
+            selection: 'bar',
+            value: 5
+          }
+        },
+        y: {
+          value: 10,
+          condition: {
+            selection: {or: ['foo', 'brush']},
+            field: 'Miles_per_Gallon',
+            type: 'quantitative'
+          }
+        },
+        color: {
+          condition: {
+            test: {and: [{selection: {not: 'foo'}}, 'true']},
+            field: 'Cylinders',
+            type: 'ordinal'
+          },
+          value: 'grey'
+        }
+      }
+    };
+
+    const normalized = normalize(spec) as any;
+    expect(normalized.transform).toEqual(
+      expect.arrayContaining([
+        {filter: {param: 'foo'}},
+        {filter: {and: [{param: 'foo'}, {param: 'bar'}]}},
+        {filter: {or: [{not: {param: 'foo'}}, 'false']}}
+      ])
+    );
+    expect(normalized.encoding.x.condition.test).toEqual({param: 'bar'});
+    expect(normalized.encoding.y.condition.test).toEqual({
+      or: [{param: 'foo'}, {param: 'brush'}]
+    });
+    expect(normalized.encoding.color.condition.test).toEqual({
+      and: [{not: {param: 'foo'}}, 'true']
+    });
+
+    // And make sure we didn't delete any properties by mistake
+    expect(normalized.encoding.x).toHaveProperty('field', 'Horsepower');
+    expect(normalized.encoding.x).toHaveProperty('type', 'quantitative');
+    expect(normalized.encoding.x).toHaveProperty('condition.value', 5);
+    expect(normalized.encoding.y).toHaveProperty('value', 10);
+    expect(normalized.encoding.y).toHaveProperty('condition.field', 'Miles_per_Gallon');
+    expect(normalized.encoding.y).toHaveProperty('condition.type', 'quantitative');
+    expect(normalized.encoding.color).toHaveProperty('value', 'grey');
+    expect(normalized.encoding.color).toHaveProperty('condition.field', 'Cylinders');
+    expect(normalized.encoding.color).toHaveProperty('condition.type', 'ordinal');
+  });
+
+  it('should normalize bin extents', () => {
+    const spec: any = {
+      data: {url: 'data/cars.json'},
+      transform: [
+        {bin: true, field: 'Horsepower', as: 'bin_HP'},
+        {bin: {extent: {selection: 'foo'}, nice: true}, field: 'Miles_per_Gallon', as: 'bin_MPG'},
+        {bin: {extent: {selection: 'bar', field: 'Accl'}, nice: false}, field: 'Acceleration', as: 'bin_Accl'}
+      ],
+      selection: {
+        foo: {type: 'single'},
+        bar: {type: 'multi'},
+        brush: {type: 'interval'}
+      },
+      mark: 'line',
+      encoding: {
+        x: {
+          field: 'Horsepower',
+          type: 'quantitative',
+          bin: true
+        },
+        y: {
+          field: 'Miles_per_Gallon',
+          type: 'quantitative',
+          bin: {extent: {selection: 'foo'}, nice: true}
+        },
+        color: {
+          field: 'Acceleration',
+          type: 'quantitative',
+          bin: {extent: {selection: 'foo', encoding: 'x'}, nice: false}
+        },
+        size: {
+          value: 50,
+          condition: {
+            selection: 'bar',
+            field: 'Displacement',
+            type: 'quantitative',
+            bin: true
+          }
+        },
+        opacity: {
+          value: 1,
+          condition: {
+            selection: 'foo',
+            field: 'Weight_in_lbs',
+            type: 'quantitative',
+            bin: {extent: {selection: 'brush', field: 'Lbs'}, nice: true}
+          }
+        }
+      }
+    };
+
+    const normalized = normalize(spec) as any;
+    expect(normalized.transform).toEqual(
+      expect.arrayContaining([
+        {bin: true, field: 'Horsepower', as: 'bin_HP'},
+        {bin: {extent: {param: 'foo'}, nice: true}, field: 'Miles_per_Gallon', as: 'bin_MPG'},
+        {bin: {extent: {param: 'bar', field: 'Accl'}, nice: false}, field: 'Acceleration', as: 'bin_Accl'}
+      ])
+    );
+
+    expect(normalized.encoding.x.bin).toEqual(true);
+    expect(normalized.encoding.y.bin).toEqual({extent: {param: 'foo'}, nice: true});
+    expect(normalized.encoding.color.bin).toEqual({extent: {param: 'foo', encoding: 'x'}, nice: false});
+    expect(normalized.encoding.size.condition.bin).toEqual(true);
+    expect(normalized.encoding.opacity.condition.bin).toEqual({extent: {param: 'brush', field: 'Lbs'}, nice: true});
+  });
+
+  it('should normalize scale domains', () => {
+    const spec: any = {
+      data: {url: 'data/cars.json'},
+      selection: {
+        foo: {type: 'single'},
+        bar: {type: 'multi'},
+        brush: {type: 'interval'}
+      },
+      mark: 'line',
+      encoding: {
+        x: {
+          field: 'Horsepower',
+          type: 'quantitative',
+          scale: {domain: {selection: 'brush'}, reverse: true}
+        },
+        y: {
+          field: 'Miles_per_Gallon',
+          type: 'quantitative',
+          scale: {domain: {selection: 'bar', field: 'MPG'}, round: true}
+        },
+        size: {
+          value: 50,
+          condition: {
+            selection: 'bar',
+            field: 'Displacement',
+            type: 'quantitative',
+            scale: {domain: {selection: 'foo'}, reverse: true}
+          }
+        },
+        opacity: {
+          value: 1,
+          condition: {
+            selection: 'foo',
+            field: 'Weight_in_lbs',
+            type: 'quantitative',
+            scale: {domain: {selection: 'foo', encoding: 'y'}, round: true}
+          }
+        }
+      }
+    };
+
+    const normalized = normalize(spec) as any;
+    expect(normalized.encoding.x.scale).toEqual({domain: {param: 'brush'}, reverse: true});
+    expect(normalized.encoding.y.scale).toEqual({domain: {param: 'bar', field: 'MPG'}, round: true});
+    expect(normalized.encoding.size.condition.scale).toEqual({domain: {param: 'foo'}, reverse: true});
+    expect(normalized.encoding.opacity.condition.scale).toEqual({domain: {param: 'foo', encoding: 'y'}, round: true});
+  });
+
+  it('should normalize lookups', () => {
+    const spec: any = {
+      data: {url: 'data/cars.json'},
+      transform: [
+        {
+          lookup: 'person',
+          from: {
+            data: {url: 'data/lookup_people.csv'},
+            key: 'name',
+            fields: ['age', 'height']
+          }
+        },
+        {
+          lookup: 'symbol',
+          from: {selection: 'index', key: 'symbol'},
+          default: 5
+        }
+      ],
+      selection: {
+        foo: {type: 'single'},
+        bar: {type: 'multi'},
+        brush: {type: 'interval'}
+      },
+      mark: 'line',
+      encoding: {
+        x: {
+          field: 'Horsepower',
+          type: 'quantitative'
+        },
+        y: {
+          field: 'Miles_per_Gallon',
+          type: 'quantitative'
+        }
+      }
+    };
+
+    const normalized = normalize(spec) as any;
+    expect(normalized.transform).toEqual(
+      expect.arrayContaining([
+        {
+          lookup: 'person',
+          from: {
+            data: {url: 'data/lookup_people.csv'},
+            key: 'name',
+            fields: ['age', 'height']
+          }
+        },
+        {
+          lookup: 'symbol',
+          from: {param: 'index', key: 'symbol'},
+          default: 5
+        }
+      ])
+    );
   });
 
   it('should be the first normalizer run', () => {
@@ -110,6 +354,6 @@ describe('SelectionCompatibilityNormalizer', () => {
 
     const normalized = normalize(spec) as any;
     expect(normalized.spec.layer[0]).toHaveProperty('params');
-    expect(normalized.spec.layer[0].params[0].name).toBe('brush');
+    expect(normalized.spec.layer[0].params[0].name).toEqual('brush');
   });
 });

@@ -27,8 +27,8 @@
     "color": {
       "condition": {
         "test": {"and": [
-          {"selection": "alex"},
-          {"selection": "morgan"}
+          {"param": "alex"},
+          {"param": "morgan"}
         ]},
         "aggregate": "count"
       },

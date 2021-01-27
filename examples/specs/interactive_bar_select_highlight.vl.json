@@ -25,18 +25,18 @@
     "x": {"field": "a", "type": "ordinal"},
     "y": {"field": "b", "type": "quantitative"},
     "fillOpacity": {
-      "condition": {"selection": "select", "value": 1},
+      "condition": {"param": "select", "value": 1},
       "value": 0.3
     },
     "strokeWidth": {
       "condition": [
         {
-          "selection": "select",
+          "param": "select",
           "empty": false,
           "value": 2
         },
         {
-          "selection": "highlight",
+          "param": "highlight",
           "empty": false,
           "value": 1
         }

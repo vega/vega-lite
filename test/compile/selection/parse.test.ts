@@ -324,7 +324,7 @@ describe('Selection', () => {
           transform: [
             {
               lookup: 'symbol',
-              from: {selection: 'index', key: 'symbol'}
+              from: {param: 'index', key: 'symbol'}
             }
           ],
           mark: 'line',

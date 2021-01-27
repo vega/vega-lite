@@ -10,7 +10,7 @@
     }
   }, {
     "transform": [
-      {"filter": {"selection": "brush"}}
+      {"filter": {"param": "brush"}}
     ],
     "mark": "point",
     "encoding": {

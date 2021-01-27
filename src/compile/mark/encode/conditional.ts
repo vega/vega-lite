@@ -1,5 +1,5 @@
 import {array} from 'vega-util';
-import {ChannelDef, ConditionalPredicate, isConditionalDef, isConditionalSelection} from '../../../channeldef';
+import {ChannelDef, ConditionalPredicate, isConditionalDef, isConditionalParameter} from '../../../channeldef';
 import {GuideEncodingConditionalValueDef} from '../../../guide';
 import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {expression} from '../../predicate';
@@ -22,9 +22,9 @@ export function wrapCondition<CD extends ChannelDef | GuideEncodingConditionalVa
     const conditions = array(condition);
     const vgConditions = conditions.map(c => {
       const conditionValueRef = refFn(c);
-      if (isConditionalSelection<any>(c)) {
-        const {selection, empty} = c;
-        const test = parseSelectionPredicate(model, {selection, empty});
+      if (isConditionalParameter<any>(c)) {
+        const {param, empty} = c;
+        const test = parseSelectionPredicate(model, {param, empty});
         return {test, ...conditionValueRef};
       } else {
         const test = expression(model, (c as ConditionalPredicate<any>).test); // FIXME: remove casting once TS is no longer dumb about it

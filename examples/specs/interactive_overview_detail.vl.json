@@ -8,7 +8,7 @@
       "x": {
         "field": "date",
         "type": "temporal",
-        "scale": {"domain": {"selection": "brush"}},
+        "scale": {"domain": {"param": "brush"}},
         "axis": {"title": ""}
       },
       "y": {"field": "price", "type": "quantitative"}

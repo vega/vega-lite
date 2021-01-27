@@ -127,7 +127,7 @@ function base(iter: number, selDef: any, opts: any = {}): NormalizedUnitSpec | N
         y,
         size,
         color: {
-          condition: {selection: 'sel', ...color},
+          condition: {param: 'sel', ...color},
           value: 'grey'
         }
       }
@@ -148,7 +148,7 @@ function base(iter: number, selDef: any, opts: any = {}): NormalizedUnitSpec | N
           }
         },
         {
-          transform: [{filter: {selection: 'sel'}}],
+          transform: [{filter: {param: 'sel'}}],
           mark,
           encoding: {x, y, size, color}
         }

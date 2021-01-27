@@ -24,7 +24,7 @@
     "encoding": {
       "x": {
         "field": "time",
-        "bin": {"maxbins": 30, "extent": {"selection": "brush"}}
+        "bin": {"maxbins": 30, "extent": {"param": "brush"}}
       },
       "y": {"aggregate": "count"}
     }

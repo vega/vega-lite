@@ -15,7 +15,7 @@
     "size": {"field": "Cylinders", "type": "quantitative"},
     "color": {
       "condition": {
-        "selection": "brush",
+        "param": "brush",
         "field": "Origin", "type": "nominal"
       },
       "value": "grey"

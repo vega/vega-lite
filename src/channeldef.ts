@@ -57,7 +57,7 @@ import {Legend} from './legend';
 import * as log from './log';
 import {LogicalComposition} from './logical';
 import {isRectBasedMark, Mark, MarkDef} from './mark';
-import {Predicate, SelectionPredicate} from './predicate';
+import {Predicate, ParameterPredicate} from './predicate';
 import {Scale, SCALE_CATEGORY_INDEX} from './scale';
 import {isSortByChannel, Sort, SortOrder} from './sort';
 import {isFacetFieldDef} from './spec/facet';
@@ -121,7 +121,7 @@ export type ValueDefWithCondition<F extends FieldDef<any> | DatumDef<any>, V ext
   ValueDef<V | ExprRef | SignalRef>
 > & {
   /**
-   * A field definition or one or more value definition(s) with a selection predicate.
+   * A field definition or one or more value definition(s) with a parameter predicate.
    */
   condition?:
     | Conditional<F>
@@ -137,7 +137,7 @@ export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
 export type Conditional<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> =
   | ConditionalPredicate<CD>
-  | ConditionalSelection<CD>;
+  | ConditionalParameter<CD>;
 
 export type ConditionalPredicate<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> = {
   /**
@@ -146,17 +146,17 @@ export type ConditionalPredicate<CD extends FieldDef<any> | DatumDef | ValueDef<
   test: LogicalComposition<Predicate>;
 } & CD;
 
-export type ConditionalSelection<
+export type ConditionalParameter<
   CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef
-> = SelectionPredicate & CD;
+> = ParameterPredicate & CD;
 
-export function isConditionalSelection<T>(c: Conditional<T>): c is ConditionalSelection<T> {
-  return c['selection'];
+export function isConditionalParameter<T>(c: Conditional<T>): c is ConditionalParameter<T> {
+  return c['param'];
 }
 
 export interface ConditionValueDefMixins<V extends Value = Value> {
   /**
-   * One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).
+   * One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).
    *
    * __Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value)
    * since Vega-Lite only allows at most one encoded field per encoding channel.

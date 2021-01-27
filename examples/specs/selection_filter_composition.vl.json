@@ -13,7 +13,7 @@
       "filter": {
         "and": [
           "datum.Weight_in_lbs > 3000",
-          {"selection": "brush"}
+          {"param": "brush"}
         ]
       }
     }],

@@ -20,14 +20,14 @@
       },
       "opacity": {
         "condition": {
-          "selection": "brush", "value": 1
+          "param": "brush", "value": 1
         },
         "value": 0.7
       }
     }
   }, {
     "transform": [{
-      "filter": {"selection": "brush"}
+      "filter": {"param": "brush"}
     }],
     "mark": "rule",
     "encoding": {

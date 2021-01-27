@@ -136,7 +136,7 @@ describe('compile/data/aggregate', () => {
         encoding: {
           x: {aggregate: 'mean', field: 'Displacement', type: 'quantitative'},
           color: {
-            condition: {selection: 'a', field: 'Origin', type: 'ordinal'},
+            condition: {param: 'a', field: 'Origin', type: 'ordinal'},
             value: 'red'
           }
         }

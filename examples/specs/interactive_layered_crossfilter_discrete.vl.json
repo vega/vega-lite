@@ -22,7 +22,7 @@
         "color": {"value": "#ddd"}
       }
     }, {
-      "transform": [{"filter": {"selection": "brush"}}],
+      "transform": [{"filter": {"param": "brush"}}],
       "mark": "bar",
       "encoding": {
         "x": {

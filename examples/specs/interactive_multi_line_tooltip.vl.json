@@ -28,7 +28,7 @@
     "encoding": {
       "color": {
         "condition": {
-          "selection": "hover",
+          "param": "hover",
           "empty": false,
           "value": "black"
         },

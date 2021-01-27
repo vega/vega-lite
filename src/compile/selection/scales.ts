@@ -32,8 +32,7 @@ const scaleBindings: SelectionCompiler<'interval'> = {
         continue;
       }
 
-      const extent = {selection: selCmpt.name, field: proj.field};
-      scale.set('selectionExtent', extent, true);
+      scale.set('selectionExtent', {param: selCmpt.name, field: proj.field}, true);
       bound.push(proj);
     }
   },

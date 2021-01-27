@@ -8,7 +8,7 @@
     "y": {"field": "price", "type": "quantitative", "title": "price"},
     "color": {
       "condition": {
-        "selection": "hover",
+        "param": "hover",
         "field":"symbol",
         "type":"nominal",
         "legend": null
@@ -17,7 +17,7 @@
     },
     "opacity": {
       "condition": {
-        "selection": "hover",
+        "param": "hover",
         "value": 1
       },
       "value": 0.2

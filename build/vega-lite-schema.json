@@ -4156,7 +4156,7 @@
           "type": "array"
         },
         {
-          "$ref": "#/definitions/SelectionExtent"
+          "$ref": "#/definitions/ParameterExtent"
         }
       ]
     },
@@ -5129,7 +5129,7 @@
           "$ref": "#/definitions/ConditionalPredicate<MarkPropFieldOrDatumDef>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<MarkPropFieldOrDatumDef>"
+          "$ref": "#/definitions/ConditionalParameter<MarkPropFieldOrDatumDef>"
         }
       ]
     },
@@ -5139,7 +5139,7 @@
           "$ref": "#/definitions/ConditionalPredicate<MarkPropFieldOrDatumDef<TypeForShape>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<MarkPropFieldOrDatumDef<TypeForShape>>"
+          "$ref": "#/definitions/ConditionalParameter<MarkPropFieldOrDatumDef<TypeForShape>>"
         }
       ]
     },
@@ -5149,7 +5149,7 @@
           "$ref": "#/definitions/ConditionalPredicate<StringFieldDef>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<StringFieldDef>"
+          "$ref": "#/definitions/ConditionalParameter<StringFieldDef>"
         }
       ]
     },
@@ -5159,7 +5159,7 @@
           "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Gradient|string|null|ExprRef)>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<(Gradient|string|null|ExprRef)>>"
+          "$ref": "#/definitions/ConditionalParameter<ValueDef<(Gradient|string|null|ExprRef)>>"
         }
       ]
     },
@@ -5169,7 +5169,7 @@
           "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Text|ExprRef)>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<(Text|ExprRef)>>"
+          "$ref": "#/definitions/ConditionalParameter<ValueDef<(Text|ExprRef)>>"
         }
       ]
     },
@@ -5179,7 +5179,7 @@
           "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number[]|ExprRef)>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<(number[]|ExprRef)>>"
+          "$ref": "#/definitions/ConditionalParameter<ValueDef<(number[]|ExprRef)>>"
         }
       ]
     },
@@ -5189,7 +5189,7 @@
           "$ref": "#/definitions/ConditionalPredicate<ValueDef<(number|ExprRef)>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<(number|ExprRef)>>"
+          "$ref": "#/definitions/ConditionalParameter<ValueDef<(number|ExprRef)>>"
         }
       ]
     },
@@ -5199,7 +5199,7 @@
           "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|ExprRef)>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<(string|ExprRef)>>"
+          "$ref": "#/definitions/ConditionalParameter<ValueDef<(string|ExprRef)>>"
         }
       ]
     },
@@ -5209,7 +5209,7 @@
           "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|null|ExprRef)>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<(string|null|ExprRef)>>"
+          "$ref": "#/definitions/ConditionalParameter<ValueDef<(string|null|ExprRef)>>"
         }
       ]
     },
@@ -5219,7 +5219,7 @@
           "$ref": "#/definitions/ConditionalPredicate<ValueDef<number>>"
         },
         {
-          "$ref": "#/definitions/ConditionalSelection<ValueDef<number>>"
+          "$ref": "#/definitions/ConditionalParameter<ValueDef<number>>"
         }
       ]
     },
@@ -5761,6 +5761,638 @@
     },
     "ConditionalAxisString": {
       "$ref": "#/definitions/ConditionalAxisProperty<(string|null)>"
+    },
+    "ConditionalParameter<MarkPropFieldOrDatumDef>": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "aggregate": {
+              "$ref": "#/definitions/Aggregate",
+              "description": "Aggregation function for the field (e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+            },
+            "band": {
+              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            "bin": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "$ref": "#/definitions/BinParams"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+            },
+            "empty": {
+              "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+              "type": "boolean"
+            },
+            "field": {
+              "$ref": "#/definitions/Field",
+              "description": "__Required.__ A string defining the name of the field from which to pull a data value or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__ 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`). If field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`). See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html). 2) `field` is not required if `aggregate` is `count`."
+            },
+            "legend": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An object defining properties of the legend. If `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.\n\n__See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation."
+            },
+            "param": {
+              "description": "Filter using a parameter name.",
+              "type": "string"
+            },
+            "scale": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Scale"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
+            },
+            "sort": {
+              "$ref": "#/definitions/Sort",
+              "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following: - `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript. - [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`. - [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field. - [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`). - `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
+            },
+            "timeUnit": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/TimeUnitParams"
+                }
+              ],
+              "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field. or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
+            },
+            "title": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Text"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
+            },
+            "type": {
+              "$ref": "#/definitions/StandardType",
+              "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria: - `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type). - `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale - `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`): - `\"quantitative\"` if the datum is a number - `\"nominal\"` if the datum is a string - `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__ - Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data. - Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`). - When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`. - Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+            }
+          },
+          "required": [
+            "param"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "band": {
+              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            "datum": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/PrimitiveValue"
+                },
+                {
+                  "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                },
+                {
+                  "$ref": "#/definitions/RepeatRef"
+                }
+              ],
+              "description": "A constant value in data domain."
+            },
+            "empty": {
+              "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+              "type": "boolean"
+            },
+            "legend": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An object defining properties of the legend. If `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.\n\n__See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation."
+            },
+            "param": {
+              "description": "Filter using a parameter name.",
+              "type": "string"
+            },
+            "scale": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Scale"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
+            },
+            "type": {
+              "$ref": "#/definitions/Type",
+              "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria: - `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type). - `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale - `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`): - `\"quantitative\"` if the datum is a number - `\"nominal\"` if the datum is a string - `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__ - Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data. - Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`). - When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`. - Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+            }
+          },
+          "required": [
+            "param"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ConditionalParameter<MarkPropFieldOrDatumDef<TypeForShape>>": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "aggregate": {
+              "$ref": "#/definitions/Aggregate",
+              "description": "Aggregation function for the field (e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+            },
+            "band": {
+              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            "bin": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "$ref": "#/definitions/BinParams"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+            },
+            "empty": {
+              "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+              "type": "boolean"
+            },
+            "field": {
+              "$ref": "#/definitions/Field",
+              "description": "__Required.__ A string defining the name of the field from which to pull a data value or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__ 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`). If field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`). See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html). 2) `field` is not required if `aggregate` is `count`."
+            },
+            "legend": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An object defining properties of the legend. If `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.\n\n__See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation."
+            },
+            "param": {
+              "description": "Filter using a parameter name.",
+              "type": "string"
+            },
+            "scale": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Scale"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
+            },
+            "sort": {
+              "$ref": "#/definitions/Sort",
+              "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following: - `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript. - [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`. - [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field. - [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`). - `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
+            },
+            "timeUnit": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/TimeUnit"
+                },
+                {
+                  "$ref": "#/definitions/TimeUnitParams"
+                }
+              ],
+              "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field. or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
+            },
+            "title": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Text"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
+            },
+            "type": {
+              "$ref": "#/definitions/TypeForShape",
+              "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria: - `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type). - `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale - `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`): - `\"quantitative\"` if the datum is a number - `\"nominal\"` if the datum is a string - `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__ - Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data. - Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`). - When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`. - Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+            }
+          },
+          "required": [
+            "param"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "band": {
+              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+              "maximum": 1,
+              "minimum": 0,
+              "type": "number"
+            },
+            "datum": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/PrimitiveValue"
+                },
+                {
+                  "$ref": "#/definitions/DateTime"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
+                },
+                {
+                  "$ref": "#/definitions/RepeatRef"
+                }
+              ],
+              "description": "A constant value in data domain."
+            },
+            "empty": {
+              "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+              "type": "boolean"
+            },
+            "legend": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Legend"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An object defining properties of the legend. If `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.\n\n__See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation."
+            },
+            "param": {
+              "description": "Filter using a parameter name.",
+              "type": "string"
+            },
+            "scale": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Scale"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
+            },
+            "type": {
+              "$ref": "#/definitions/Type",
+              "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria: - `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type). - `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale - `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`): - `\"quantitative\"` if the datum is a number - `\"nominal\"` if the datum is a string - `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__ - Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data. - Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`). - When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`. - Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+            }
+          },
+          "required": [
+            "param"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ConditionalParameter<StringFieldDef>": {
+      "additionalProperties": false,
+      "properties": {
+        "aggregate": {
+          "$ref": "#/definitions/Aggregate",
+          "description": "Aggregation function for the field (e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
+        },
+        "band": {
+          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
+          "maximum": 1,
+          "minimum": 0,
+          "type": "number"
+        },
+        "bin": {
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/BinParams"
+            },
+            {
+              "const": "binned",
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
+        },
+        "empty": {
+          "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+          "type": "boolean"
+        },
+        "field": {
+          "$ref": "#/definitions/Field",
+          "description": "__Required.__ A string defining the name of the field from which to pull a data value or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__ 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`). If field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`). See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html). 2) `field` is not required if `aggregate` is `count`."
+        },
+        "format": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/Dict<unknown>"
+            }
+          ],
+          "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format). - If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/docs/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
+        },
+        "formatType": {
+          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type).\n\n__Default value:__ - `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`. - `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
+          "type": "string"
+        },
+        "param": {
+          "description": "Filter using a parameter name.",
+          "type": "string"
+        },
+        "timeUnit": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/TimeUnit"
+            },
+            {
+              "$ref": "#/definitions/TimeUnitParams"
+            }
+          ],
+          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field. or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
+        },
+        "title": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
+        },
+        "type": {
+          "$ref": "#/definitions/StandardType",
+          "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria: - `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type). - `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale - `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`): - `\"quantitative\"` if the datum is a number - `\"nominal\"` if the datum is a string - `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__ - Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data. - Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`). - When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`. - Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
+        }
+      },
+      "required": [
+        "param"
+      ],
+      "type": "object"
+    },
+    "ConditionalParameter<ValueDef<(Gradient|string|null|ExprRef)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "empty": {
+          "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+          "type": "boolean"
+        },
+        "param": {
+          "description": "Filter using a parameter name.",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "param",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalParameter<ValueDef<(Text|ExprRef)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "empty": {
+          "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+          "type": "boolean"
+        },
+        "param": {
+          "description": "Filter using a parameter name.",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Text"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "param",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalParameter<ValueDef<(number[]|ExprRef)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "empty": {
+          "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+          "type": "boolean"
+        },
+        "param": {
+          "description": "Filter using a parameter name.",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "items": {
+                "type": "number"
+              },
+              "type": "array"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "param",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalParameter<ValueDef<(number|ExprRef)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "empty": {
+          "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+          "type": "boolean"
+        },
+        "param": {
+          "description": "Filter using a parameter name.",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "param",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalParameter<ValueDef<(string|ExprRef)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "empty": {
+          "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+          "type": "boolean"
+        },
+        "param": {
+          "description": "Filter using a parameter name.",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "param",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalParameter<ValueDef<(string|null|ExprRef)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "empty": {
+          "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+          "type": "boolean"
+        },
+        "param": {
+          "description": "Filter using a parameter name.",
+          "type": "string"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "param",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalParameter<ValueDef<number>>": {
+      "additionalProperties": false,
+      "properties": {
+        "empty": {
+          "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+          "type": "boolean"
+        },
+        "param": {
+          "description": "Filter using a parameter name.",
+          "type": "string"
+        },
+        "value": {
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "type": "number"
+        }
+      },
+      "required": [
+        "param",
+        "value"
+      ],
+      "type": "object"
     },
     "ConditionalPredicate<(ValueDef<(Align|null)>|ExprRef)>": {
       "anyOf": [
@@ -6717,638 +7349,6 @@
       ],
       "type": "object"
     },
-    "ConditionalSelection<MarkPropFieldOrDatumDef>": {
-      "anyOf": [
-        {
-          "additionalProperties": false,
-          "properties": {
-            "aggregate": {
-              "$ref": "#/definitions/Aggregate",
-              "description": "Aggregation function for the field (e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
-            },
-            "band": {
-              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
-              "maximum": 1,
-              "minimum": 0,
-              "type": "number"
-            },
-            "bin": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/BinParams"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
-            },
-            "empty": {
-              "description": "By default, the predicate of empty selections returns true. Override this behavior, by setting this property `empty: false`.",
-              "type": "boolean"
-            },
-            "field": {
-              "$ref": "#/definitions/Field",
-              "description": "__Required.__ A string defining the name of the field from which to pull a data value or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__ 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`). If field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`). See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html). 2) `field` is not required if `aggregate` is `count`."
-            },
-            "legend": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Legend"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "An object defining properties of the legend. If `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.\n\n__See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation."
-            },
-            "scale": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Scale"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
-            },
-            "selection": {
-              "description": "Filter using a selection name.",
-              "type": "string"
-            },
-            "sort": {
-              "$ref": "#/definitions/Sort",
-              "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following: - `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript. - [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`. - [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field. - [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`). - `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
-            },
-            "timeUnit": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/TimeUnit"
-                },
-                {
-                  "$ref": "#/definitions/TimeUnitParams"
-                }
-              ],
-              "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field. or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
-            },
-            "title": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Text"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
-            },
-            "type": {
-              "$ref": "#/definitions/StandardType",
-              "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria: - `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type). - `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale - `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`): - `\"quantitative\"` if the datum is a number - `\"nominal\"` if the datum is a string - `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__ - Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data. - Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`). - When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`. - Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
-            }
-          },
-          "required": [
-            "selection"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "band": {
-              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
-              "maximum": 1,
-              "minimum": 0,
-              "type": "number"
-            },
-            "datum": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PrimitiveValue"
-                },
-                {
-                  "$ref": "#/definitions/DateTime"
-                },
-                {
-                  "$ref": "#/definitions/ExprRef"
-                },
-                {
-                  "$ref": "#/definitions/RepeatRef"
-                }
-              ],
-              "description": "A constant value in data domain."
-            },
-            "empty": {
-              "description": "By default, the predicate of empty selections returns true. Override this behavior, by setting this property `empty: false`.",
-              "type": "boolean"
-            },
-            "legend": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Legend"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "An object defining properties of the legend. If `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.\n\n__See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation."
-            },
-            "scale": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Scale"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
-            },
-            "selection": {
-              "description": "Filter using a selection name.",
-              "type": "string"
-            },
-            "type": {
-              "$ref": "#/definitions/Type",
-              "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria: - `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type). - `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale - `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`): - `\"quantitative\"` if the datum is a number - `\"nominal\"` if the datum is a string - `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__ - Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data. - Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`). - When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`. - Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
-            }
-          },
-          "required": [
-            "selection"
-          ],
-          "type": "object"
-        }
-      ]
-    },
-    "ConditionalSelection<MarkPropFieldOrDatumDef<TypeForShape>>": {
-      "anyOf": [
-        {
-          "additionalProperties": false,
-          "properties": {
-            "aggregate": {
-              "$ref": "#/definitions/Aggregate",
-              "description": "Aggregation function for the field (e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
-            },
-            "band": {
-              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
-              "maximum": 1,
-              "minimum": 0,
-              "type": "number"
-            },
-            "bin": {
-              "anyOf": [
-                {
-                  "type": "boolean"
-                },
-                {
-                  "$ref": "#/definitions/BinParams"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
-            },
-            "empty": {
-              "description": "By default, the predicate of empty selections returns true. Override this behavior, by setting this property `empty: false`.",
-              "type": "boolean"
-            },
-            "field": {
-              "$ref": "#/definitions/Field",
-              "description": "__Required.__ A string defining the name of the field from which to pull a data value or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__ 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`). If field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`). See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html). 2) `field` is not required if `aggregate` is `count`."
-            },
-            "legend": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Legend"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "An object defining properties of the legend. If `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.\n\n__See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation."
-            },
-            "scale": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Scale"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
-            },
-            "selection": {
-              "description": "Filter using a selection name.",
-              "type": "string"
-            },
-            "sort": {
-              "$ref": "#/definitions/Sort",
-              "description": "Sort order for the encoded field.\n\nFor continuous fields (quantitative or temporal), `sort` can be either `\"ascending\"` or `\"descending\"`.\n\nFor discrete fields, `sort` can be one of the following: - `\"ascending\"` or `\"descending\"` -- for sorting by the values' natural order in JavaScript. - [A string indicating an encoding channel name to sort by](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding) (e.g., `\"x\"` or `\"y\"`) with an optional minus prefix for descending sort (e.g., `\"-x\"` to sort by x-field, descending). This channel string is short-form of [a sort-by-encoding definition](https://vega.github.io/vega-lite/docs/sort.html#sort-by-encoding). For example, `\"sort\": \"-x\"` is equivalent to `\"sort\": {\"encoding\": \"x\", \"order\": \"descending\"}`. - [A sort field definition](https://vega.github.io/vega-lite/docs/sort.html#sort-field) for sorting by another field. - [An array specifying the field values in preferred order](https://vega.github.io/vega-lite/docs/sort.html#sort-array). In this case, the sort order will obey the values in the array, followed by any unspecified values in their original order. For discrete time field, values in the sort array can be [date-time definition objects](types#datetime). In addition, for time units `\"month\"` and `\"day\"`, the values can be the month or day names (case insensitive) or their 3-letter initials (e.g., `\"Mon\"`, `\"Tue\"`). - `null` indicating no sort.\n\n__Default value:__ `\"ascending\"`\n\n__Note:__ `null` and sorting by another channel is not supported for `row` and `column`.\n\n__See also:__ [`sort`](https://vega.github.io/vega-lite/docs/sort.html) documentation."
-            },
-            "timeUnit": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/TimeUnit"
-                },
-                {
-                  "$ref": "#/definitions/TimeUnitParams"
-                }
-              ],
-              "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field. or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
-            },
-            "title": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Text"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
-            },
-            "type": {
-              "$ref": "#/definitions/TypeForShape",
-              "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria: - `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type). - `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale - `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`): - `\"quantitative\"` if the datum is a number - `\"nominal\"` if the datum is a string - `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__ - Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data. - Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`). - When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`. - Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
-            }
-          },
-          "required": [
-            "selection"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "band": {
-              "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
-              "maximum": 1,
-              "minimum": 0,
-              "type": "number"
-            },
-            "datum": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/PrimitiveValue"
-                },
-                {
-                  "$ref": "#/definitions/DateTime"
-                },
-                {
-                  "$ref": "#/definitions/ExprRef"
-                },
-                {
-                  "$ref": "#/definitions/RepeatRef"
-                }
-              ],
-              "description": "A constant value in data domain."
-            },
-            "empty": {
-              "description": "By default, the predicate of empty selections returns true. Override this behavior, by setting this property `empty: false`.",
-              "type": "boolean"
-            },
-            "legend": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Legend"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "An object defining properties of the legend. If `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.\n\n__See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation."
-            },
-            "scale": {
-              "anyOf": [
-                {
-                  "$ref": "#/definitions/Scale"
-                },
-                {
-                  "type": "null"
-                }
-              ],
-              "description": "An object defining properties of the channel's scale, which is the function that transforms values in the data domain (numbers, dates, strings, etc) to visual values (pixels, colors, sizes) of the encoding channels.\n\nIf `null`, the scale will be [disabled and the data value will be directly encoded](https://vega.github.io/vega-lite/docs/scale.html#disable).\n\n__Default value:__ If undefined, default [scale properties](https://vega.github.io/vega-lite/docs/scale.html) are applied.\n\n__See also:__ [`scale`](https://vega.github.io/vega-lite/docs/scale.html) documentation."
-            },
-            "selection": {
-              "description": "Filter using a selection name.",
-              "type": "string"
-            },
-            "type": {
-              "$ref": "#/definitions/Type",
-              "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria: - `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type). - `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale - `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`): - `\"quantitative\"` if the datum is a number - `\"nominal\"` if the datum is a string - `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__ - Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data. - Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`). - When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`. - Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
-            }
-          },
-          "required": [
-            "selection"
-          ],
-          "type": "object"
-        }
-      ]
-    },
-    "ConditionalSelection<StringFieldDef>": {
-      "additionalProperties": false,
-      "properties": {
-        "aggregate": {
-          "$ref": "#/definitions/Aggregate",
-          "description": "Aggregation function for the field (e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
-        },
-        "band": {
-          "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
-          "maximum": 1,
-          "minimum": 0,
-          "type": "number"
-        },
-        "bin": {
-          "anyOf": [
-            {
-              "type": "boolean"
-            },
-            {
-              "$ref": "#/definitions/BinParams"
-            },
-            {
-              "const": "binned",
-              "type": "string"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A flag for binning a `quantitative` field, [an object defining binning parameters](https://vega.github.io/vega-lite/docs/bin.html#params), or indicating that the data for `x` or `y` channel are binned before they are imported into Vega-Lite (`\"binned\"`).\n\n- If `true`, default [binning parameters](https://vega.github.io/vega-lite/docs/bin.html) will be applied.\n\n- If `\"binned\"`, this indicates that the data for the `x` (or `y`) channel are already binned. You can map the bin-start field to `x` (or `y`) and the bin-end field to `x2` (or `y2`). The scale and axis will be formatted similar to binning in Vega-Lite.  To adjust the axis ticks based on the bin step, you can also set the axis's [`tickMinStep`](https://vega.github.io/vega-lite/docs/axis.html#ticks) property.\n\n__Default value:__ `false`\n\n__See also:__ [`bin`](https://vega.github.io/vega-lite/docs/bin.html) documentation."
-        },
-        "empty": {
-          "description": "By default, the predicate of empty selections returns true. Override this behavior, by setting this property `empty: false`.",
-          "type": "boolean"
-        },
-        "field": {
-          "$ref": "#/definitions/Field",
-          "description": "__Required.__ A string defining the name of the field from which to pull a data value or an object defining iterated values from the [`repeat`](https://vega.github.io/vega-lite/docs/repeat.html) operator.\n\n__See also:__ [`field`](https://vega.github.io/vega-lite/docs/field.html) documentation.\n\n__Notes:__ 1)  Dots (`.`) and brackets (`[` and `]`) can be used to access nested objects (e.g., `\"field\": \"foo.bar\"` and `\"field\": \"foo['bar']\"`). If field names contain dots or brackets but are not nested, you can use `\\\\` to escape dots and brackets (e.g., `\"a\\\\.b\"` and `\"a\\\\[0\\\\]\"`). See more details about escaping in the [field documentation](https://vega.github.io/vega-lite/docs/field.html). 2) `field` is not required if `aggregate` is `count`."
-        },
-        "format": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/Dict<unknown>"
-            }
-          ],
-          "description": "When used with the default `\"number\"` and `\"time\"` format type, the text formatting pattern for labels of guides (axes, legends, headers) and text marks.\n\n- If the format type is `\"number\"` (e.g., for quantitative fields), this is D3's [number format pattern](https://github.com/d3/d3-format#locale_format). - If the format type is `\"time\"` (e.g., for temporal fields), this is D3's [time format pattern](https://github.com/d3/d3-time-format#locale_format).\n\nSee the [format documentation](https://vega.github.io/vega-lite/docs/format.html) for more examples.\n\nWhen used with a [custom `formatType`](https://vega.github.io/vega-lite/docs/config.html#custom-format-type), this value will be passed as `format` alongside `datum.value` to the registered function.\n\n__Default value:__  Derived from [numberFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for number format and from [timeFormat](https://vega.github.io/vega-lite/docs/config.html#format) config for time format."
-        },
-        "formatType": {
-          "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type).\n\n__Default value:__ - `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`. - `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
-          "type": "string"
-        },
-        "selection": {
-          "description": "Filter using a selection name.",
-          "type": "string"
-        },
-        "timeUnit": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/TimeUnit"
-            },
-            {
-              "$ref": "#/definitions/TimeUnitParams"
-            }
-          ],
-          "description": "Time unit (e.g., `year`, `yearmonth`, `month`, `hours`) for a temporal field. or [a temporal field that gets casted as ordinal](https://vega.github.io/vega-lite/docs/type.html#cast).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html) documentation."
-        },
-        "title": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text"
-            },
-            {
-              "type": "null"
-            }
-          ],
-          "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/docs/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
-        },
-        "type": {
-          "$ref": "#/definitions/StandardType",
-          "description": "The type of measurement (`\"quantitative\"`, `\"temporal\"`, `\"ordinal\"`, or `\"nominal\"`) for the encoded field or constant value (`datum`). It can also be a `\"geojson\"` type for encoding ['geoshape'](https://vega.github.io/vega-lite/docs/geoshape.html).\n\nVega-Lite automatically infers data types in many cases as discussed below. However, type is required for a field if: (1) the field is not nominal and the field encoding has no specified `aggregate` (except `argmin` and `argmax`), `bin`, scale type, custom `sort` order, nor `timeUnit` or (2) if you wish to use an ordinal scale for a field with `bin` or `timeUnit`.\n\n__Default value:__\n\n1) For a data `field`, `\"nominal\"` is the default data type unless the field encoding has `aggregate`, `channel`, `bin`, scale type, `sort`, or `timeUnit` that satisfies the following criteria: - `\"quantitative\"` is the default type if (1) the encoded field contains `bin` or `aggregate` except `\"argmin\"` and `\"argmax\"`, (2) the encoding channel is `latitude` or `longitude` channel or (3) if the specified scale type is [a quantitative scale](https://vega.github.io/vega-lite/docs/scale.html#type). - `\"temporal\"` is the default type if (1) the encoded field contains `timeUnit` or (2) the specified scale type is a time or utc scale - `ordinal\"\"` is the default type if (1) the encoded field contains a [custom `sort` order](https://vega.github.io/vega-lite/docs/sort.html#specifying-custom-sort-order), (2) the specified scale type is an ordinal/point/band scale, or (3) the encoding channel is `order`.\n\n2) For a constant value in data domain (`datum`): - `\"quantitative\"` if the datum is a number - `\"nominal\"` if the datum is a string - `\"temporal\"` if the datum is [a date time object](https://vega.github.io/vega-lite/docs/datetime.html)\n\n__Note:__ - Data `type` describes the semantics of the data rather than the primitive data types (number, string, etc.). The same primitive data type can have different types of measurement. For example, numeric data can represent quantitative, ordinal, or nominal data. - Data values for a temporal field can be either a date-time string (e.g., `\"2015-03-07 12:32:17\"`, `\"17:01\"`, `\"2015-03-16\"`. `\"2015\"`) or a timestamp number (e.g., `1552199579097`). - When using with [`bin`](https://vega.github.io/vega-lite/docs/bin.html), the `type` property can be either `\"quantitative\"` (for using a linear bin scale) or [`\"ordinal\"` (for using an ordinal bin scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`timeUnit`](https://vega.github.io/vega-lite/docs/timeunit.html), the `type` property can be either `\"temporal\"` (default, for using a temporal scale) or [`\"ordinal\"` (for using an ordinal scale)](https://vega.github.io/vega-lite/docs/type.html#cast-bin). - When using with [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html), the `type` property refers to the post-aggregation data type. For example, we can calculate count `distinct` of a categorical field `\"cat\"` using `{\"aggregate\": \"distinct\", \"field\": \"cat\"}`. The `\"type\"` of the aggregate output is `\"quantitative\"`. - Secondary channels (e.g., `x2`, `y2`, `xError`, `yError`) do not have `type` as they must have exactly the same type as their primary channels (e.g., `x`, `y`).\n\n__See also:__ [`type`](https://vega.github.io/vega-lite/docs/type.html) documentation."
-        }
-      },
-      "required": [
-        "selection"
-      ],
-      "type": "object"
-    },
-    "ConditionalSelection<ValueDef<(Gradient|string|null|ExprRef)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "empty": {
-          "description": "By default, the predicate of empty selections returns true. Override this behavior, by setting this property `empty: false`.",
-          "type": "boolean"
-        },
-        "selection": {
-          "description": "Filter using a selection name.",
-          "type": "string"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Gradient"
-            },
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalSelection<ValueDef<(Text|ExprRef)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "empty": {
-          "description": "By default, the predicate of empty selections returns true. Override this behavior, by setting this property `empty: false`.",
-          "type": "boolean"
-        },
-        "selection": {
-          "description": "Filter using a selection name.",
-          "type": "string"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Text"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalSelection<ValueDef<(number[]|ExprRef)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "empty": {
-          "description": "By default, the predicate of empty selections returns true. Override this behavior, by setting this property `empty: false`.",
-          "type": "boolean"
-        },
-        "selection": {
-          "description": "Filter using a selection name.",
-          "type": "string"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "items": {
-                "type": "number"
-              },
-              "type": "array"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalSelection<ValueDef<(number|ExprRef)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "empty": {
-          "description": "By default, the predicate of empty selections returns true. Override this behavior, by setting this property `empty: false`.",
-          "type": "boolean"
-        },
-        "selection": {
-          "description": "Filter using a selection name.",
-          "type": "string"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "type": "number"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalSelection<ValueDef<(string|ExprRef)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "empty": {
-          "description": "By default, the predicate of empty selections returns true. Override this behavior, by setting this property `empty: false`.",
-          "type": "boolean"
-        },
-        "selection": {
-          "description": "Filter using a selection name.",
-          "type": "string"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalSelection<ValueDef<(string|null|ExprRef)>>": {
-      "additionalProperties": false,
-      "properties": {
-        "empty": {
-          "description": "By default, the predicate of empty selections returns true. Override this behavior, by setting this property `empty: false`.",
-          "type": "boolean"
-        },
-        "selection": {
-          "description": "Filter using a selection name.",
-          "type": "string"
-        },
-        "value": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "null"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
-    "ConditionalSelection<ValueDef<number>>": {
-      "additionalProperties": false,
-      "properties": {
-        "empty": {
-          "description": "By default, the predicate of empty selections returns true. Override this behavior, by setting this property `empty: false`.",
-          "type": "boolean"
-        },
-        "selection": {
-          "description": "Filter using a selection name.",
-          "type": "string"
-        },
-        "value": {
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
-          "type": "number"
-        }
-      },
-      "required": [
-        "selection",
-        "value"
-      ],
-      "type": "object"
-    },
     "Config": {
       "additionalProperties": false,
       "properties": {
@@ -7586,14 +7586,14 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides. If an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "params": {
-          "description": "Dynamic variables that parameterize a visualization.",
+          "description": "Dynamic variables or selections that parameterize a visualization.",
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/TopLevelSelectionDef"
+                "$ref": "#/definitions/TopLevelSelectionParameter"
               }
             ]
           },
@@ -9170,10 +9170,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/SelectionDef"
+                "$ref": "#/definitions/SelectionParameter"
               }
             ]
           },
@@ -9547,7 +9547,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+          "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "datum": {
           "anyOf": [
@@ -9595,7 +9595,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+          "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "datum": {
           "anyOf": [
@@ -9643,7 +9643,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+          "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "datum": {
           "anyOf": [
@@ -9691,7 +9691,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+          "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "datum": {
           "anyOf": [
@@ -9757,7 +9757,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+          "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -9858,7 +9858,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+          "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -9959,7 +9959,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+          "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -10060,7 +10060,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+          "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -10143,7 +10143,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+          "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "datum": {
           "anyOf": [
@@ -10228,7 +10228,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+          "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -10322,7 +10322,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+          "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "field": {
           "$ref": "#/definitions/Field",
@@ -10460,7 +10460,7 @@
       "properties": {
         "filter": {
           "$ref": "#/definitions/PredicateComposition",
-          "description": "The `filter` property must be a predication definition, which can take one of the following forms:\n\n1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string, where `datum` can be used to refer to the current data object. For example, `{filter: \"datum.b2 > 60\"}` would make the output data includes only items that have values in the field `b2` over 60.\n\n2) one of the [field predicates](https://vega.github.io/vega-lite/docs/predicate.html#field-predicate):  [`equal`](https://vega.github.io/vega-lite/docs/predicate.html#field-equal-predicate), [`lt`](https://vega.github.io/vega-lite/docs/predicate.html#lt-predicate), [`lte`](https://vega.github.io/vega-lite/docs/predicate.html#lte-predicate), [`gt`](https://vega.github.io/vega-lite/docs/predicate.html#gt-predicate), [`gte`](https://vega.github.io/vega-lite/docs/predicate.html#gte-predicate), [`range`](https://vega.github.io/vega-lite/docs/predicate.html#range-predicate), [`oneOf`](https://vega.github.io/vega-lite/docs/predicate.html#one-of-predicate), or [`valid`](https://vega.github.io/vega-lite/docs/predicate.html#valid-predicate),\n\n3) a [selection predicate](https://vega.github.io/vega-lite/docs/predicate.html#selection-predicate), which define the names of a selection that the data point should belong to (or a logical composition of selections).\n\n4) a [logical composition](https://vega.github.io/vega-lite/docs/predicate.html#composition) of (1), (2), or (3)."
+          "description": "The `filter` property must be a predication definition, which can take one of the following forms:\n\n1) an [expression](https://vega.github.io/vega-lite/docs/types.html#expression) string, where `datum` can be used to refer to the current data object. For example, `{filter: \"datum.b2 > 60\"}` would make the output data includes only items that have values in the field `b2` over 60.\n\n2) one of the [field predicates](https://vega.github.io/vega-lite/docs/predicate.html#field-predicate): [`equal`](https://vega.github.io/vega-lite/docs/predicate.html#field-equal-predicate), [`lt`](https://vega.github.io/vega-lite/docs/predicate.html#lt-predicate), [`lte`](https://vega.github.io/vega-lite/docs/predicate.html#lte-predicate), [`gt`](https://vega.github.io/vega-lite/docs/predicate.html#gt-predicate), [`gte`](https://vega.github.io/vega-lite/docs/predicate.html#gte-predicate), [`range`](https://vega.github.io/vega-lite/docs/predicate.html#range-predicate), [`oneOf`](https://vega.github.io/vega-lite/docs/predicate.html#one-of-predicate), or [`valid`](https://vega.github.io/vega-lite/docs/predicate.html#valid-predicate),\n\n3) a [selection predicate](https://vega.github.io/vega-lite/docs/predicate.html#selection-predicate), which define the names of a selection that the data point should belong to (or a logical composition of selections).\n\n4) a [logical composition](https://vega.github.io/vega-lite/docs/predicate.html#composition) of (1), (2), or (3)."
         }
       },
       "required": [
@@ -15104,14 +15104,14 @@
           "$ref": "#/definitions/FieldName",
           "description": "Key in data to lookup."
         },
-        "selection": {
-          "description": "Selection name to look up.",
+        "param": {
+          "description": "Selection parameter name to look up.",
           "type": "string"
         }
       },
       "required": [
         "key",
-        "selection"
+        "param"
       ],
       "type": "object"
     },
@@ -18501,7 +18501,7 @@
               "type": "array"
             }
           ],
-          "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+          "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
         },
         "value": {
           "anyOf": [
@@ -19467,31 +19467,58 @@
       ],
       "minimum": 0
     },
-    "Parameter": {
+    "ParameterExtent": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "field": {
+              "$ref": "#/definitions/FieldName",
+              "description": "If a selection parameter is specified, the field name to extract selected values for when the selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings."
+            },
+            "param": {
+              "description": "The name of a parameter.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "param"
+          ],
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "encoding": {
+              "$ref": "#/definitions/SingleDefUnitChannel",
+              "description": "If a selection parameter is specified, the encoding channel to extract selected values for when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings."
+            },
+            "param": {
+              "description": "The name of a parameter.",
+              "type": "string"
+            }
+          },
+          "required": [
+            "param"
+          ],
+          "type": "object"
+        }
+      ]
+    },
+    "ParameterPredicate": {
       "additionalProperties": false,
       "properties": {
-        "bind": {
-          "$ref": "#/definitions/Binding",
-          "description": "Binds the parameter to an external input element such as a slider, selection list or radio button group."
+        "empty": {
+          "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+          "type": "boolean"
         },
-        "description": {
-          "description": "A text description of the parameter, useful for inline documentation.",
+        "param": {
+          "description": "Filter using a parameter name.",
           "type": "string"
-        },
-        "expr": {
-          "$ref": "#/definitions/Expr",
-          "description": "An expression for the value of the parameter. This expression may include other parameters, in which case the parameter will automatically update in response to upstream parameter changes."
-        },
-        "name": {
-          "description": "Required. A unique name for the parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
-          "type": "string"
-        },
-        "value": {
-          "description": "The initial value of the parameter.\n\n__Default value:__ `undefined`"
         }
       },
       "required": [
-        "name"
+        "param"
       ],
       "type": "object"
     },
@@ -20035,7 +20062,7 @@
           "$ref": "#/definitions/FieldValidPredicate"
         },
         {
-          "$ref": "#/definitions/SelectionPredicate"
+          "$ref": "#/definitions/ParameterPredicate"
         },
         {
           "type": "string"
@@ -21638,7 +21665,7 @@
               "type": "string"
             },
             {
-              "$ref": "#/definitions/SelectionExtent"
+              "$ref": "#/definitions/ParameterExtent"
             },
             {
               "$ref": "#/definitions/DomainUnionWith"
@@ -21647,7 +21674,7 @@
               "$ref": "#/definitions/ExprRef"
             }
           ],
-          "description": "Customized domain values in the form of constant values or dynamic values driven by a selection.\n\n1) Constant `domain` for _quantitative_ fields can take one of the following forms:\n\n- A two-element array with minimum and maximum values. To create a diverging scale, this two-element array can be combined with the `domainMid` property. - An array with more than two entries, for [Piecewise quantitative scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). - A string value `\"unaggregated\"`, if the input field is aggregated, to indicate that the domain should include the raw data values prior to the aggregation.\n\n2) Constant `domain` for _temporal_ fields can be a two-element array with minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](https://vega.github.io/vega-lite/docs/types.html#datetime).\n\n3) Constant `domain` for _ordinal_ and _nominal_ fields can be an array that lists valid input values.\n\n4) To combine (union) specified constant domain with the field's values, `domain` can be an object with a `unionWith` property that specify constant domain to be combined. For example, `domain: {unionWith: [0, 100]}` for a quantitative scale means that the scale domain always includes `[0, 100]`, but will include other values in the fields beyond `[0, 100]`.\n\n5) Domain can also takes an object defining a field or encoding of a selection that [interactively determines](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain."
+          "description": "Customized domain values in the form of constant values or dynamic values driven by a parameter.\n\n1) Constant `domain` for _quantitative_ fields can take one of the following forms:\n\n- A two-element array with minimum and maximum values. To create a diverging scale, this two-element array can be combined with the `domainMid` property. - An array with more than two entries, for [Piecewise quantitative scales](https://vega.github.io/vega-lite/docs/scale.html#piecewise). - A string value `\"unaggregated\"`, if the input field is aggregated, to indicate that the domain should include the raw data values prior to the aggregation.\n\n2) Constant `domain` for _temporal_ fields can be a two-element array with minimum and maximum values, in the form of either timestamps or the [DateTime definition objects](https://vega.github.io/vega-lite/docs/types.html#datetime).\n\n3) Constant `domain` for _ordinal_ and _nominal_ fields can be an array that lists valid input values.\n\n4) To combine (union) specified constant domain with the field's values, `domain` can be an object with a `unionWith` property that specify constant domain to be combined. For example, `domain: {unionWith: [0, 100]}` for a quantitative scale means that the scale domain always includes `[0, 100]`, but will include other values in the fields beyond `[0, 100]`.\n\n5) Domain can also takes an object defining a field or encoding of a parameter that [interactively determines](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain."
         },
         "domainMax": {
           "anyOf": [
@@ -22301,7 +22328,39 @@
       },
       "type": "object"
     },
-    "SelectionDef": {
+    "SelectionInit": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/PrimitiveValue"
+        },
+        {
+          "$ref": "#/definitions/DateTime"
+        }
+      ]
+    },
+    "SelectionInitInterval": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/Vector2<boolean>"
+        },
+        {
+          "$ref": "#/definitions/Vector2<number>"
+        },
+        {
+          "$ref": "#/definitions/Vector2<string>"
+        },
+        {
+          "$ref": "#/definitions/Vector2<DateTime>"
+        }
+      ]
+    },
+    "SelectionInitIntervalMapping": {
+      "$ref": "#/definitions/Dict<SelectionInitInterval>"
+    },
+    "SelectionInitMapping": {
+      "$ref": "#/definitions/Dict<SelectionInit>"
+    },
+    "SelectionParameter": {
       "additionalProperties": false,
       "properties": {
         "bind": {
@@ -22326,7 +22385,7 @@
           "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
         },
         "name": {
-          "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+          "description": "Required. A unique name for the selection parameter. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
           "type": "string"
         },
         "select": {
@@ -22494,93 +22553,6 @@
       "required": [
         "name",
         "select"
-      ],
-      "type": "object"
-    },
-    "SelectionExtent": {
-      "anyOf": [
-        {
-          "additionalProperties": false,
-          "properties": {
-            "field": {
-              "$ref": "#/definitions/FieldName",
-              "description": "The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings."
-            },
-            "selection": {
-              "description": "The name of a selection.",
-              "type": "string"
-            }
-          },
-          "required": [
-            "selection"
-          ],
-          "type": "object"
-        },
-        {
-          "additionalProperties": false,
-          "properties": {
-            "encoding": {
-              "$ref": "#/definitions/SingleDefUnitChannel",
-              "description": "The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings."
-            },
-            "selection": {
-              "description": "The name of a selection.",
-              "type": "string"
-            }
-          },
-          "required": [
-            "selection"
-          ],
-          "type": "object"
-        }
-      ]
-    },
-    "SelectionInit": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/PrimitiveValue"
-        },
-        {
-          "$ref": "#/definitions/DateTime"
-        }
-      ]
-    },
-    "SelectionInitInterval": {
-      "anyOf": [
-        {
-          "$ref": "#/definitions/Vector2<boolean>"
-        },
-        {
-          "$ref": "#/definitions/Vector2<number>"
-        },
-        {
-          "$ref": "#/definitions/Vector2<string>"
-        },
-        {
-          "$ref": "#/definitions/Vector2<DateTime>"
-        }
-      ]
-    },
-    "SelectionInitIntervalMapping": {
-      "$ref": "#/definitions/Dict<SelectionInitInterval>"
-    },
-    "SelectionInitMapping": {
-      "$ref": "#/definitions/Dict<SelectionInit>"
-    },
-    "SelectionPredicate": {
-      "additionalProperties": false,
-      "properties": {
-        "empty": {
-          "description": "By default, the predicate of empty selections returns true. Override this behavior, by setting this property `empty: false`.",
-          "type": "boolean"
-        },
-        "selection": {
-          "description": "Filter using a selection name.",
-          "type": "string"
-        }
-      },
-      "required": [
-        "selection"
       ],
       "type": "object"
     },
@@ -22915,7 +22887,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -22932,10 +22904,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "datum": {
               "anyOf": [
@@ -23074,7 +23046,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -23091,10 +23063,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "datum": {
               "anyOf": [
@@ -23243,7 +23215,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -23260,10 +23232,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "field": {
               "$ref": "#/definitions/Field",
@@ -23382,7 +23354,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -23399,10 +23371,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "datum": {
               "anyOf": [
@@ -23547,7 +23519,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -23564,10 +23536,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "datum": {
               "anyOf": [
@@ -23710,7 +23682,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -23727,10 +23699,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "field": {
               "$ref": "#/definitions/Field",
@@ -24225,7 +24197,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -24242,10 +24214,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "datum": {
               "anyOf": [
@@ -24625,7 +24597,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -24642,10 +24614,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "datum": {
               "anyOf": [
@@ -24787,7 +24759,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -24804,10 +24776,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "datum": {
               "anyOf": [
@@ -24946,7 +24918,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -24963,10 +24935,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "datum": {
               "anyOf": [
@@ -25111,7 +25083,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -25128,10 +25100,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "datum": {
               "anyOf": [
@@ -25273,7 +25245,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -25290,10 +25262,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "datum": {
               "anyOf": [
@@ -25432,7 +25404,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -25449,10 +25421,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "datum": {
               "anyOf": [
@@ -25595,7 +25567,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -25612,10 +25584,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "datum": {
               "anyOf": [
@@ -25991,7 +25963,7 @@
                       "type": "array"
                     }
                   ],
-                  "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+                  "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
                 },
                 {
                   "anyOf": [
@@ -26008,10 +25980,10 @@
                       "type": "array"
                     }
                   ],
-                  "description": "A field definition or one or more value definition(s) with a selection predicate."
+                  "description": "A field definition or one or more value definition(s) with a parameter predicate."
                 }
               ],
-              "description": "One or more value definition(s) with [a selection or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
+              "description": "One or more value definition(s) with [a parameter or a test predicate](https://vega.github.io/vega-lite/docs/condition.html).\n\n__Note:__ A field definition's `condition` property can only contain [conditional value definitions](https://vega.github.io/vega-lite/docs/condition.html#value) since Vega-Lite only allows at most one encoded field per encoding channel."
             },
             "field": {
               "$ref": "#/definitions/Field",
@@ -28706,14 +28678,14 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides. If an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "params": {
-          "description": "Dynamic variables that parameterize a visualization.",
+          "description": "Dynamic variables or selections that parameterize a visualization.",
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/TopLevelSelectionDef"
+                "$ref": "#/definitions/TopLevelSelectionParameter"
               }
             ]
           },
@@ -28850,14 +28822,14 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides. If an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "params": {
-          "description": "Dynamic variables that parameterize a visualization.",
+          "description": "Dynamic variables or selections that parameterize a visualization.",
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/TopLevelSelectionDef"
+                "$ref": "#/definitions/TopLevelSelectionParameter"
               }
             ]
           },
@@ -28980,14 +28952,14 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides. If an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "params": {
-          "description": "Dynamic variables that parameterize a visualization.",
+          "description": "Dynamic variables or selections that parameterize a visualization.",
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/TopLevelSelectionDef"
+                "$ref": "#/definitions/TopLevelSelectionParameter"
               }
             ]
           },
@@ -29138,14 +29110,14 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides. If an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "params": {
-          "description": "Dynamic variables that parameterize a visualization.",
+          "description": "Dynamic variables or selections that parameterize a visualization.",
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/TopLevelSelectionDef"
+                "$ref": "#/definitions/TopLevelSelectionParameter"
               }
             ]
           },
@@ -29311,14 +29283,14 @@
               "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides. If an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
             },
             "params": {
-              "description": "Dynamic variables that parameterize a visualization.",
+              "description": "Dynamic variables or selections that parameterize a visualization.",
               "items": {
                 "anyOf": [
                   {
-                    "$ref": "#/definitions/Parameter"
+                    "$ref": "#/definitions/VariableParameter"
                   },
                   {
-                    "$ref": "#/definitions/TopLevelSelectionDef"
+                    "$ref": "#/definitions/TopLevelSelectionParameter"
                   }
                 ]
               },
@@ -29489,14 +29461,14 @@
               "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides. If an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
             },
             "params": {
-              "description": "Dynamic variables that parameterize a visualization.",
+              "description": "Dynamic variables or selections that parameterize a visualization.",
               "items": {
                 "anyOf": [
                   {
-                    "$ref": "#/definitions/Parameter"
+                    "$ref": "#/definitions/VariableParameter"
                   },
                   {
-                    "$ref": "#/definitions/TopLevelSelectionDef"
+                    "$ref": "#/definitions/TopLevelSelectionParameter"
                   }
                 ]
               },
@@ -29677,14 +29649,14 @@
           "description": "The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides. If an object, the value should have the format `{\"left\": 5, \"top\": 5, \"right\": 5, \"bottom\": 5}` to specify padding for each side of the visualization.\n\n__Default value__: `5`"
         },
         "params": {
-          "description": "Dynamic variables that parameterize a visualization.",
+          "description": "Dynamic variables or selections that parameterize a visualization.",
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/TopLevelSelectionDef"
+                "$ref": "#/definitions/TopLevelSelectionParameter"
               }
             ]
           },
@@ -29746,7 +29718,7 @@
       ],
       "type": "object"
     },
-    "TopLevelSelectionDef": {
+    "TopLevelSelectionParameter": {
       "additionalProperties": false,
       "properties": {
         "bind": {
@@ -29771,7 +29743,7 @@
           "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
         },
         "name": {
-          "description": "Required. A unique name for the selection. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+          "description": "Required. A unique name for the selection parameter. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
           "type": "string"
         },
         "select": {
@@ -30111,10 +30083,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/SelectionDef"
+                "$ref": "#/definitions/SelectionParameter"
               }
             ]
           },
@@ -30414,10 +30386,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/SelectionDef"
+                "$ref": "#/definitions/SelectionParameter"
               }
             ]
           },
@@ -30520,10 +30492,10 @@
           "items": {
             "anyOf": [
               {
-                "$ref": "#/definitions/Parameter"
+                "$ref": "#/definitions/VariableParameter"
               },
               {
-                "$ref": "#/definitions/SelectionDef"
+                "$ref": "#/definitions/SelectionParameter"
               }
             ]
           },
@@ -30709,7 +30681,7 @@
               "type": "array"
             }
           ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
+          "description": "A field definition or one or more value definition(s) with a parameter predicate."
         },
         "value": {
           "anyOf": [
@@ -30750,7 +30722,7 @@
               "type": "array"
             }
           ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
+          "description": "A field definition or one or more value definition(s) with a parameter predicate."
         },
         "value": {
           "anyOf": [
@@ -30788,7 +30760,7 @@
               "type": "array"
             }
           ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
+          "description": "A field definition or one or more value definition(s) with a parameter predicate."
         },
         "value": {
           "anyOf": [
@@ -30823,7 +30795,7 @@
               "type": "array"
             }
           ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
+          "description": "A field definition or one or more value definition(s) with a parameter predicate."
         },
         "value": {
           "anyOf": [
@@ -30861,7 +30833,7 @@
               "type": "array"
             }
           ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
+          "description": "A field definition or one or more value definition(s) with a parameter predicate."
         },
         "value": {
           "anyOf": [
@@ -30899,7 +30871,7 @@
               "type": "array"
             }
           ],
-          "description": "A field definition or one or more value definition(s) with a selection predicate."
+          "description": "A field definition or one or more value definition(s) with a parameter predicate."
         },
         "value": {
           "anyOf": [
@@ -30913,6 +30885,34 @@
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
         }
       },
+      "type": "object"
+    },
+    "VariableParameter": {
+      "additionalProperties": false,
+      "properties": {
+        "bind": {
+          "$ref": "#/definitions/Binding",
+          "description": "Binds the parameter to an external input element such as a slider, selection list or radio button group."
+        },
+        "description": {
+          "description": "A text description of the parameter, useful for inline documentation.",
+          "type": "string"
+        },
+        "expr": {
+          "$ref": "#/definitions/Expr",
+          "description": "An expression for the value of the parameter. This expression may include other parameters, in which case the parameter will automatically update in response to upstream parameter changes."
+        },
+        "name": {
+          "description": "Required. A unique name for the variable parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
+          "type": "string"
+        },
+        "value": {
+          "description": "The initial value of the parameter.\n\n__Default value:__ `undefined`"
+        }
+      },
+      "required": [
+        "name"
+      ],
       "type": "object"
     },
     "Vector2<DateTime>": {

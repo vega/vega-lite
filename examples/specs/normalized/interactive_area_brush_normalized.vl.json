@@ -13,7 +13,7 @@
       }
     },
     {
-      "transform": [{"filter": {"selection": "brush"}}],
+      "transform": [{"filter": {"param": "brush"}}],
       "mark": {"type": "area", "color": "goldenrod"},
       "encoding": {
         "x": {"timeUnit": "yearmonth", "field": "date"},

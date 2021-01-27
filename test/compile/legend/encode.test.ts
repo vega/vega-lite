@@ -111,7 +111,7 @@ describe('compile/legend', () => {
             encoding: {
               color: {field: 'a', type: 'nominal'},
               opacity: {
-                condition: {selection: 'brush', value: 1},
+                condition: {param: 'brush', value: 1},
                 value: 0
               }
             }
