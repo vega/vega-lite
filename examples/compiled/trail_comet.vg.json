@@ -1,0 +1,217 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "title": {
+    "text": "Barley Yield comparison between 1932 and 1931",
+    "anchor": "start"
+  },
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/barley.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "pivot",
+          "field": "year",
+          "value": "yield",
+          "groupby": ["variety", "site"]
+        },
+        {"type": "fold", "fields": ["1931", "1932"], "as": ["year", "yield"]},
+        {"type": "formula", "expr": "toNumber(datum.year)", "as": "year"},
+        {
+          "type": "formula",
+          "expr": "datum['1932'] - datum['1931']",
+          "as": "delta"
+        }
+      ]
+    },
+    {
+      "name": "column_domain",
+      "source": "source_0",
+      "transform": [{"type": "aggregate", "groupby": ["site"]}]
+    }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 20},
+    {
+      "name": "child_width",
+      "update": "bandspace(domain('x').length, 1, 0.5) * x_step"
+    },
+    {"name": "y_step", "value": 20},
+    {
+      "name": "child_height",
+      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+    }
+  ],
+  "layout": {
+    "padding": 20,
+    "offset": {"columnTitle": 10},
+    "columns": {"signal": "length(data('column_domain'))"},
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "name": "column-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {"text": "Site", "style": "guide-title", "offset": 10}
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "Variety",
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "column_header",
+      "type": "group",
+      "role": "column-header",
+      "from": {"data": "column_domain"},
+      "sort": {"field": "datum[\"site\"]", "order": "ascending"},
+      "title": {
+        "text": {
+          "signal": "isValid(parent[\"site\"]) ? parent[\"site\"] : \"\"+parent[\"site\"]"
+        },
+        "style": "guide-label",
+        "frame": "group",
+        "offset": 10
+      },
+      "encode": {"update": {"width": {"signal": "child_width"}}}
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "from": {"data": "column_domain"},
+      "sort": {"field": "datum[\"site\"]", "order": "ascending"},
+      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "labelAlign": "right",
+          "labelAngle": 270,
+          "labelBaseline": "middle",
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "style": "cell",
+      "from": {
+        "facet": {"name": "facet", "data": "source_0", "groupby": ["site"]}
+      },
+      "sort": {"field": ["datum[\"site\"]"], "order": ["ascending"]},
+      "encode": {
+        "update": {
+          "width": {"signal": "child_width"},
+          "height": {"signal": "child_height"},
+          "stroke": {"value": null}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_pathgroup",
+          "type": "group",
+          "from": {
+            "facet": {
+              "name": "faceted_path_child_main",
+              "data": "facet",
+              "groupby": ["delta"]
+            }
+          },
+          "encode": {
+            "update": {
+              "width": {"field": {"group": "width"}},
+              "height": {"field": {"group": "height"}}
+            }
+          },
+          "marks": [
+            {
+              "name": "child_marks",
+              "type": "trail",
+              "style": ["trail"],
+              "sort": {"field": "datum[\"year\"]"},
+              "from": {"data": "faceted_path_child_main"},
+              "encode": {
+                "update": {
+                  "fill": {"scale": "color", "field": "delta"},
+                  "tooltip": {
+                    "signal": "{\"year\": format(datum[\"year\"], \"\"), \"yield\": isValid(datum[\"yield\"]) ? datum[\"yield\"] : \"\"+datum[\"yield\"]}"
+                  },
+                  "description": {
+                    "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]) + \"; Variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; Barley Yield (bushels/acre): \" + (format(datum[\"yield\"], \"\")) + \"; yield: \" + (isValid(datum[\"yield\"]) ? datum[\"yield\"] : \"\"+datum[\"yield\"]) + \"; Yield Delta (%): \" + (format(datum[\"delta\"], \"\"))"
+                  },
+                  "x": {"scale": "x", "field": "year"},
+                  "y": {"scale": "y", "field": "variety"},
+                  "size": {"scale": "size", "field": "yield"}
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "point",
+      "domain": {"data": "source_0", "field": "year", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "y",
+      "type": "point",
+      "domain": {"data": "source_0", "field": "variety", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "padding": 0.5
+    },
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "delta"},
+      "range": "diverging",
+      "domainMid": 0,
+      "interpolate": "hcl",
+      "zero": false
+    },
+    {
+      "name": "size",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "yield"},
+      "range": [0, 12],
+      "zero": true
+    }
+  ],
+  "legends": [
+    {
+      "title": "Yield Delta (%)",
+      "stroke": "color",
+      "gradientLength": {"signal": "clamp(child_width, 100, 200)"}
+    },
+    {
+      "title": "Barley Yield (bushels/acre)",
+      "values": [20, 60],
+      "strokeWidth": "size",
+      "symbolType": "stroke"
+    }
+  ],
+  "config": {"legend": {"orient": "bottom", "direction": "horizontal"}}
+}
