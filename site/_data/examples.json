@@ -275,6 +275,10 @@
         "title": "Line Chart with Varying Size (using the trail mark)"
       },
       {
+        "name": "trail_comet",
+        "title": "A comet chart showing changes between between two states"
+      },
+      {
         "name": "line_skip_invalid_mid_overlay",
         "title": "Line Chart with Markers and Invalid Values",
         "style": "background-size: auto 105%; background-position: center center !important;"
