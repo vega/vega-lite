@@ -153,12 +153,12 @@ describe('Mark: Bar', () => {
     });
   });
 
-  describe('simple horizontal with band', () => {
+  describe('simple horizontal with height band', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
-      mark: 'bar',
+      mark: {type: 'bar', height: {band: 0.6}},
       encoding: {
-        y: {field: 'Origin', type: 'nominal', band: 0.6},
+        y: {field: 'Origin', type: 'nominal'},
         x: {aggregate: 'mean', field: 'Acceleration', type: 'quantitative'}
       }
     });
@@ -266,7 +266,7 @@ describe('Mark: Bar', () => {
     });
     const props = bar.encodeEntry(model);
 
-    it('should draw bar from zero to field value and with band value for x/width', () => {
+    it('should draw bar from zero to field value and with band value for yc/height', () => {
       expect(props.yc).toEqual({scale: 'y', field: 'Origin', band: 0.5});
       expect(props.height).toEqual({scale: 'size', field: 'mean_Horsepower'});
       expect(props.x).toEqual({scale: 'x', field: 'mean_Acceleration'});
@@ -739,20 +739,22 @@ describe('Mark: Bar', () => {
 
   describe('1D vertical', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
-      mark: 'bar',
-      encoding: {y: {type: 'quantitative', field: 'US_Gross', aggregate: 'sum'}},
-      data: {url: 'data/movies.json'}
+      data: {url: 'data/cars.json'},
+      mark: {type: 'bar', width: {band: 0.5}},
+      encoding: {
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
+      }
     });
     const props = bar.encodeEntry(model);
-
     it('should have y end on axis, have no-height and have x-offset', () => {
-      expect(props.y).toEqual({scale: 'y', field: 'sum_US_Gross'});
+      expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
       expect(props.y2).toEqual({scale: 'y', value: 0});
       expect(props.height).toBeUndefined();
       expect(props.xc).toEqual({
         mult: 0.5,
         signal: 'width'
       });
+      expect(props.width).toEqual({mult: 0.5, field: {group: 'width'}});
     });
   });
 

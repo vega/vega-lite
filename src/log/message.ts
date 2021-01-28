@@ -171,6 +171,10 @@ export function droppingColor(type: 'encoding' | 'property', opt: {fill?: boolea
   }.`;
 }
 
+export function relativeBandSizeNotSupported(sizeChannel: 'width' | 'height') {
+  return `Position range does not support relative band size for ${sizeChannel}.`;
+}
+
 export function emptyFieldDef(fieldDef: unknown, channel: ExtendedChannel) {
   return `Dropping ${stringify(
     fieldDef
@@ -231,6 +235,10 @@ export const CANNOT_UNION_CUSTOM_DOMAIN_WITH_FIELD_DOMAIN =
 
 export function cannotUseScalePropertyWithNonColor(prop: string) {
   return `Cannot use the scale property "${prop}" with non-color channel.`;
+}
+
+export function cannotUseRelativeBandSizeWithNonBandScale(scaleType: ScaleType) {
+  return `Cannot use the relative band size with ${scaleType} scale.`;
 }
 
 export function unaggregateDomainHasNoEffectForRawField(fieldDef: TypedFieldDef<string>) {

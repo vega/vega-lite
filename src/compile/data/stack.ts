@@ -220,16 +220,16 @@ export class StackNode extends DataFlowNode {
 
     // Impute
     if (impute && dimensionFieldDef) {
-      const {band = 0.5, bin} = dimensionFieldDef;
+      const {bandPosition = 0.5, bin} = dimensionFieldDef;
       if (bin) {
         // As we can only impute one field at a time, we need to calculate
         // mid point for a binned field
         transform.push({
           type: 'formula',
           expr:
-            `${band}*` +
+            `${bandPosition}*` +
             vgField(dimensionFieldDef, {expr: 'datum'}) +
-            `+${1 - band}*` +
+            `+${1 - bandPosition}*` +
             vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}),
           as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true})
         });

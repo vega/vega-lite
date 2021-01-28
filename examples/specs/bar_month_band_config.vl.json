@@ -14,7 +14,7 @@
   },
   "config": {
     "mark": {
-      "timeUnitBand": 0.7
+      "timeUnitBandSize": 0.7
     }
   }
 }

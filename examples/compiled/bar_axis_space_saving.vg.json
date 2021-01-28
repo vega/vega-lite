@@ -35,6 +35,7 @@
         "update": {
           "cornerRadiusTopRight": {"value": 2},
           "cornerRadiusBottomRight": {"value": 2},
+          "height": {"scale": "y", "band": 0.5},
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
@@ -42,8 +43,7 @@
           },
           "x": {"scale": "x", "field": "__count"},
           "x2": {"scale": "x", "value": 0},
-          "y": {"scale": "y", "field": "Origin", "offset": 5, "band": 0.25},
-          "height": {"scale": "y", "band": 0.5}
+          "y": {"scale": "y", "field": "Origin", "offset": 5, "band": 0.25}
         }
       }
     }

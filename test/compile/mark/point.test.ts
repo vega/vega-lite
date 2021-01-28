@@ -83,7 +83,7 @@ describe('Mark: Point', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'point',
       encoding: {
-        x: {field: 'a', type: 'quantitative', band: 0.5, stack: 'zero'},
+        x: {field: 'a', type: 'quantitative', bandPosition: 0.5, stack: 'zero'},
         color: {field: 'b', type: 'ordinal'}
       },
       data: {url: 'data/barley.json'}
@@ -100,7 +100,7 @@ describe('Mark: Point', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'point',
       encoding: {
-        x: {bin: true, field: 'a', type: 'quantitative', band: 0.6}
+        x: {bin: true, field: 'a', type: 'quantitative', bandPosition: 0.6}
       },
       data: {url: 'data/barley.json'}
     });
@@ -112,6 +112,23 @@ describe('Mark: Point', () => {
       {signal: 'scale("x", 0.6 * datum["bin_maxbins_10_a"] + 0.4 * datum["bin_maxbins_10_a_end"])'}
     ]);
   });
+  it('interpolates x timeUnit with timeUnitBand = 0.5', () => {
+    // This is a simplified example for stacked point.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/barley.json'},
+      mark: 'point',
+      encoding: {
+        x: {timeUnit: 'year', field: 'a'}
+      },
+      config: {
+        point: {timeUnitBandPosition: 0.5}
+      }
+    });
+
+    const props = point.encodeEntry(model);
+    expect(props.x).toEqual({signal: 'scale("x", 0.5 * datum["year_a"] + 0.5 * datum["year_a_end"])'});
+  });
 
   it('interpolates nominal x on a band scale with band = 0.6', () => {
     // This is a simplified example for stacked point.
@@ -119,7 +136,7 @@ describe('Mark: Point', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: 'point',
       encoding: {
-        x: {field: 'a', type: 'nominal', band: 0.6, scale: {type: 'band'}}
+        x: {field: 'a', type: 'nominal', bandPosition: 0.6, scale: {type: 'band'}}
       },
       data: {url: 'data/barley.json'}
     });

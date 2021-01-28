@@ -1,7 +1,8 @@
 import {SignalRef} from 'vega';
 import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel';
 import {isFieldOrDatumDef} from '../../../channeldef';
-import {MarkConfig} from '../../../mark';
+import * as log from '../../../log';
+import {isRelativeBandSize, Mark, MarkConfig, MarkDef} from '../../../mark';
 import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {getMarkStyleConfig} from '../../common';
 import {UnitModel} from '../../unit';
@@ -166,7 +167,10 @@ export function position2Ref({
   });
 }
 
-function position2orSize(channel: 'x2' | 'y2' | 'radius2' | 'theta2', markDef: MarkConfig<SignalRef>) {
+function position2orSize(
+  channel: 'x2' | 'y2' | 'radius2' | 'theta2',
+  markDef: MarkConfig<SignalRef> | MarkDef<Mark, SignalRef>
+) {
   const sizeChannel = getSizeChannel(channel);
   const vgChannel = getVgPositionChannel(channel);
   if (markDef[vgChannel] !== undefined) {
@@ -174,7 +178,12 @@ function position2orSize(channel: 'x2' | 'y2' | 'radius2' | 'theta2', markDef: M
   } else if (markDef[channel] !== undefined) {
     return {[vgChannel]: ref.widthHeightValueOrSignalRef(channel, markDef[channel])};
   } else if (markDef[sizeChannel]) {
-    return {[sizeChannel]: ref.widthHeightValueOrSignalRef(channel, markDef[sizeChannel])};
+    const dimensionSize = markDef[sizeChannel];
+    if (isRelativeBandSize(dimensionSize)) {
+      log.warn(log.message.relativeBandSizeNotSupported(sizeChannel));
+    } else {
+      return {[sizeChannel]: ref.widthHeightValueOrSignalRef(channel, dimensionSize)};
+    }
   }
   return undefined;
 }

@@ -1,8 +1,8 @@
 import {isBinning} from '../../bin';
-import {Channel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
+import {Channel, getSizeChannel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
 import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
 import * as log from '../../log';
-import {Mark} from '../../mark';
+import {isRelativeBandSize, MarkDef} from '../../mark';
 import {channelSupportScaleType, Scale, ScaleType, scaleTypeSupportDataType} from '../../scale';
 import {normalizeTimeUnit} from '../../timeunit';
 import * as util from '../../util';
@@ -19,7 +19,7 @@ export function scaleType(
   specifiedScale: Scale,
   channel: Channel,
   fieldDef: TypedFieldDef<string> | DatumDef,
-  mark: Mark
+  mark: MarkDef
 ): ScaleType {
   const defaultScaleType = defaultType(channel, fieldDef, mark);
   const {type} = specifiedScale;
@@ -51,10 +51,10 @@ export function scaleType(
  * Determine appropriate default scale type.
  */
 // NOTE: Voyager uses this method.
-function defaultType(channel: Channel, fieldDef: TypedFieldDef<string> | ScaleDatumDef, mark: Mark): ScaleType {
+function defaultType(channel: Channel, fieldDef: TypedFieldDef<string> | ScaleDatumDef, mark: MarkDef): ScaleType {
   switch (fieldDef.type) {
     case 'nominal':
-    case 'ordinal':
+    case 'ordinal': {
       if (isColorChannel(channel) || rangeType(channel) === 'discrete') {
         if (channel === 'shape' && fieldDef.type === 'ordinal') {
           log.warn(log.message.discreteChannelCannotEncode(channel, 'ordinal'));
@@ -63,20 +63,26 @@ function defaultType(channel: Channel, fieldDef: TypedFieldDef<string> | ScaleDa
       }
 
       if (channel in POSITION_SCALE_CHANNEL_INDEX) {
-        if (util.contains(['rect', 'bar', 'image', 'rule'], mark)) {
+        if (util.contains(['rect', 'bar', 'image', 'rule'], mark.type)) {
           // The rect/bar mark should fit into a band.
           // For rule, using band scale to make rule align with axis ticks better https://github.com/vega/vega-lite/issues/3429
           return 'band';
         }
-      } else if (mark === 'arc' && channel in POLAR_POSITION_SCALE_CHANNEL_INDEX) {
+      } else if (mark.type === 'arc' && channel in POLAR_POSITION_SCALE_CHANNEL_INDEX) {
         return 'band';
       }
 
-      if (fieldDef.band !== undefined || (isPositionFieldOrDatumDef(fieldDef) && fieldDef.axis?.tickBand)) {
+      const dimensionSize = mark[getSizeChannel(channel)];
+      if (isRelativeBandSize(dimensionSize)) {
+        return 'band';
+      }
+
+      if (isPositionFieldOrDatumDef(fieldDef) && fieldDef.axis?.tickBand) {
         return 'band';
       }
       // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
       return 'point';
+    }
 
     case 'temporal':
       if (isColorChannel(channel)) {

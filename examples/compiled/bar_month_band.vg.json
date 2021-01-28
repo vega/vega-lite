@@ -39,6 +39,7 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
+          "width": {"value": {"band": 0.7}},
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {

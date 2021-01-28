@@ -1,8 +1,9 @@
-import {rangeType, SCALE_CHANNELS, X, Y} from '../../../src/channel';
-import {scaleType} from '../../../src/compile/scale/type';
+import {Channel, rangeType, SCALE_CHANNELS, X, Y} from '../../../src/channel';
+import {DatumDef, TypedFieldDef} from '../../../src/channeldef';
+import {scaleType as _scaleType} from '../../../src/compile/scale/type';
 import * as log from '../../../src/log';
-import {BAR, PRIMITIVE_MARKS, RECT, RULE} from '../../../src/mark';
-import {ScaleType} from '../../../src/scale';
+import {BAR, Mark, PRIMITIVE_MARKS, RECT, RULE} from '../../../src/mark';
+import {Scale, ScaleType} from '../../../src/scale';
 import {
   isUTCTimeUnit,
   LOCAL_MULTI_TIMEUNIT_INDEX,
@@ -23,6 +24,15 @@ const TIMEUNIT_INDEX: Flag<TimeUnit> = {
 };
 
 const TIMEUNITS = keys(TIMEUNIT_INDEX);
+
+function scaleType(
+  specifiedScale: Scale,
+  channel: Channel,
+  fieldDef: TypedFieldDef<string> | DatumDef,
+  mark: Mark
+): ScaleType {
+  return _scaleType(specifiedScale, channel, fieldDef, {type: mark});
+}
 
 describe('compile/scale', () => {
   describe('type()', () => {
