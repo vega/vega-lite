@@ -5811,8 +5811,8 @@
               "description": "An object defining properties of the legend. If `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.\n\n__See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation."
             },
             "param": {
-              "description": "Filter using a parameter name.",
-              "type": "string"
+              "$ref": "#/definitions/ParameterName",
+              "description": "Filter using a parameter name."
             },
             "scale": {
               "anyOf": [
@@ -5903,8 +5903,8 @@
               "description": "An object defining properties of the legend. If `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.\n\n__See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation."
             },
             "param": {
-              "description": "Filter using a parameter name.",
-              "type": "string"
+              "$ref": "#/definitions/ParameterName",
+              "description": "Filter using a parameter name."
             },
             "scale": {
               "anyOf": [
@@ -5978,8 +5978,8 @@
               "description": "An object defining properties of the legend. If `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.\n\n__See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation."
             },
             "param": {
-              "description": "Filter using a parameter name.",
-              "type": "string"
+              "$ref": "#/definitions/ParameterName",
+              "description": "Filter using a parameter name."
             },
             "scale": {
               "anyOf": [
@@ -6070,8 +6070,8 @@
               "description": "An object defining properties of the legend. If `null`, the legend for the encoding channel will be removed.\n\n__Default value:__ If undefined, default [legend properties](https://vega.github.io/vega-lite/docs/legend.html) are applied.\n\n__See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation."
             },
             "param": {
-              "description": "Filter using a parameter name.",
-              "type": "string"
+              "$ref": "#/definitions/ParameterName",
+              "description": "Filter using a parameter name."
             },
             "scale": {
               "anyOf": [
@@ -6151,8 +6151,8 @@
           "type": "string"
         },
         "param": {
-          "description": "Filter using a parameter name.",
-          "type": "string"
+          "$ref": "#/definitions/ParameterName",
+          "description": "Filter using a parameter name."
         },
         "timeUnit": {
           "anyOf": [
@@ -6194,8 +6194,8 @@
           "type": "boolean"
         },
         "param": {
-          "description": "Filter using a parameter name.",
-          "type": "string"
+          "$ref": "#/definitions/ParameterName",
+          "description": "Filter using a parameter name."
         },
         "value": {
           "anyOf": [
@@ -6229,8 +6229,8 @@
           "type": "boolean"
         },
         "param": {
-          "description": "Filter using a parameter name.",
-          "type": "string"
+          "$ref": "#/definitions/ParameterName",
+          "description": "Filter using a parameter name."
         },
         "value": {
           "anyOf": [
@@ -6258,8 +6258,8 @@
           "type": "boolean"
         },
         "param": {
-          "description": "Filter using a parameter name.",
-          "type": "string"
+          "$ref": "#/definitions/ParameterName",
+          "description": "Filter using a parameter name."
         },
         "value": {
           "anyOf": [
@@ -6290,8 +6290,8 @@
           "type": "boolean"
         },
         "param": {
-          "description": "Filter using a parameter name.",
-          "type": "string"
+          "$ref": "#/definitions/ParameterName",
+          "description": "Filter using a parameter name."
         },
         "value": {
           "anyOf": [
@@ -6319,8 +6319,8 @@
           "type": "boolean"
         },
         "param": {
-          "description": "Filter using a parameter name.",
-          "type": "string"
+          "$ref": "#/definitions/ParameterName",
+          "description": "Filter using a parameter name."
         },
         "value": {
           "anyOf": [
@@ -6348,8 +6348,8 @@
           "type": "boolean"
         },
         "param": {
-          "description": "Filter using a parameter name.",
-          "type": "string"
+          "$ref": "#/definitions/ParameterName",
+          "description": "Filter using a parameter name."
         },
         "value": {
           "anyOf": [
@@ -6380,8 +6380,8 @@
           "type": "boolean"
         },
         "param": {
-          "description": "Filter using a parameter name.",
-          "type": "string"
+          "$ref": "#/definitions/ParameterName",
+          "description": "Filter using a parameter name."
         },
         "value": {
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
@@ -15113,8 +15113,8 @@
           "description": "Key in data to lookup."
         },
         "param": {
-          "description": "Selection parameter name to look up.",
-          "type": "string"
+          "$ref": "#/definitions/ParameterName",
+          "description": "Selection parameter name to look up."
         }
       },
       "required": [
@@ -19485,8 +19485,8 @@
               "description": "If a selection parameter is specified, the field name to extract selected values for when the selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings."
             },
             "param": {
-              "description": "The name of a parameter.",
-              "type": "string"
+              "$ref": "#/definitions/ParameterName",
+              "description": "The name of a parameter."
             }
           },
           "required": [
@@ -19502,8 +19502,8 @@
               "description": "If a selection parameter is specified, the encoding channel to extract selected values for when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings."
             },
             "param": {
-              "description": "The name of a parameter.",
-              "type": "string"
+              "$ref": "#/definitions/ParameterName",
+              "description": "The name of a parameter."
             }
           },
           "required": [
@@ -19513,6 +19513,9 @@
         }
       ]
     },
+    "ParameterName": {
+      "type": "string"
+    },
     "ParameterPredicate": {
       "additionalProperties": false,
       "properties": {
@@ -19521,8 +19524,8 @@
           "type": "boolean"
         },
         "param": {
-          "description": "Filter using a parameter name.",
-          "type": "string"
+          "$ref": "#/definitions/ParameterName",
+          "description": "Filter using a parameter name."
         }
       },
       "required": [
@@ -22522,8 +22525,8 @@
           "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
         },
         "name": {
-          "description": "Required. A unique name for the selection parameter. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
-          "type": "string"
+          "$ref": "#/definitions/ParameterName",
+          "description": "Required. A unique name for the selection parameter. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\"."
         },
         "select": {
           "anyOf": [
@@ -29747,8 +29750,8 @@
           "description": "When set, a selection is populated by input elements (also known as dynamic query widgets) or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default; to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.\n\nLegend bindings are restricted to selections that only specify a single field or encoding.\n\nQuery widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind) or can be a mapping between projected field/encodings and binding definitions.\n\n__See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation."
         },
         "name": {
-          "description": "Required. A unique name for the selection parameter. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
-          "type": "string"
+          "$ref": "#/definitions/ParameterName",
+          "description": "Required. A unique name for the selection parameter. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\"."
         },
         "select": {
           "anyOf": [
@@ -30774,8 +30777,8 @@
           "description": "An expression for the value of the parameter. This expression may include other parameters, in which case the parameter will automatically update in response to upstream parameter changes."
         },
         "name": {
-          "description": "A unique name for the variable parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\".",
-          "type": "string"
+          "$ref": "#/definitions/ParameterName",
+          "description": "A unique name for the variable parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\"."
         },
         "value": {
           "description": "The [initial value](http://vega.github.io/vega-lite/docs/init.html) of the parameter.\n\n__Default value:__ `undefined`"

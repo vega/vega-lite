@@ -3,6 +3,7 @@ import {isObject} from 'vega-util';
 import {SingleDefUnitChannel} from './channel';
 import {FieldName, PrimitiveValue} from './channeldef';
 import {DateTime} from './datetime';
+import {ParameterName} from './parameter';
 import {Dict} from './util';
 
 export const SELECTION_ID = '_vgsid_';
@@ -181,7 +182,7 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
   /**
    * Required. A unique name for the selection parameter. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
    */
-  name: string;
+  name: ParameterName;
 
   /**
    * Determines the default event processing and data query for the selection. Vega-Lite currently supports two selection types:
@@ -230,7 +231,7 @@ export type ParameterExtent =
       /**
        * The name of a parameter.
        */
-      param: string;
+      param: ParameterName;
       /**
        * If a selection parameter is specified, the field name to extract selected values for
        * when the selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings.
@@ -241,7 +242,7 @@ export type ParameterExtent =
       /**
        * The name of a parameter.
        */
-      param: string;
+      param: ParameterName;
       /**
        * If a selection parameter is specified, the encoding channel to extract selected values for
        * when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings.

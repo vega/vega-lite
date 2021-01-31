@@ -4,6 +4,7 @@ import {FieldName} from './channeldef';
 import {Data} from './data';
 import {ImputeParams} from './impute';
 import {LogicalComposition, normalizeLogicalComposition} from './logical';
+import {ParameterName} from './parameter';
 import {normalizePredicate, Predicate} from './predicate';
 import {SortField} from './sort';
 import {TimeUnit, TimeUnitParams} from './timeunit';
@@ -329,7 +330,7 @@ export interface LookupSelection extends LookupBase {
   /**
    * Selection parameter name to look up.
    */
-  param: string;
+  param: ParameterName;
 }
 
 export interface LookupTransform {
