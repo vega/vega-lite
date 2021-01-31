@@ -1,5 +1,6 @@
 import {AggregateOp} from 'vega';
 import {isString, toSet} from 'vega-util';
+import {FieldName} from './channeldef';
 import {contains, Flag, keys} from './util';
 
 const AGGREGATE_OP_INDEX: Flag<AggregateOp> = {
@@ -35,11 +36,11 @@ export const MULTIDOMAIN_SORT_OP_INDEX = {
 };
 
 export interface ArgminDef {
-  argmin: string;
+  argmin: FieldName;
 }
 
 export interface ArgmaxDef {
-  argmax: string;
+  argmax: FieldName;
 }
 
 export type NonArgAggregateOp = Exclude<AggregateOp, 'argmin' | 'argmax'>;
