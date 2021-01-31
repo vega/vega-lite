@@ -195,7 +195,7 @@ SingleDefUnitChannel:
   name: 'Channel'
   link: 'encoding.html#channels'
 AllSortString:
-  name: 'String'
+  name: String
 
 # Channel Definitions
 NumericMarkPropDef:
@@ -350,6 +350,8 @@ SelectionInitMapping:
 SelectionInitIntervalMapping:
   name: 'Object'
   link: 'init.html'
+ParameterName:
+  name: String
 
 # Types
 Any:

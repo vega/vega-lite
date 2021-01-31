@@ -28,6 +28,7 @@ import legends from './legends';
 import toggle from './toggle';
 import translate from './translate';
 import zoom from './zoom';
+import {ParameterName} from '../../parameter';
 
 export const STORE = '_store';
 export const TUPLE = '_tuple';
@@ -36,7 +37,7 @@ export const SELECTION_DOMAIN = '_selection_domain_';
 export const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
 
 export interface SelectionComponent<T extends SelectionType = SelectionType> {
-  name: string;
+  name: ParameterName;
   type: T;
   // Use conditional types for stricter type of init (as the type of init depends on selection type).
   init?: (T extends 'interval' ? SelectionInitInterval : T extends 'point' ? SelectionInit : never)[][];

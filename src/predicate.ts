@@ -4,6 +4,7 @@ import {FieldName, valueExpr, vgField} from './channeldef';
 import {DateTime} from './datetime';
 import {ExprRef} from './expr';
 import {LogicalComposition} from './logical';
+import {ParameterName} from './parameter';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit, TimeUnitParams} from './timeunit';
 import {isSignalRef} from './vega.schema';
 
@@ -37,7 +38,7 @@ export interface ParameterPredicate {
   /**
    * Filter using a parameter name.
    */
-  param: string;
+  param: ParameterName;
   /**
    * For selection parameters, the predicate of empty selections returns true by default.
    * Override this behavior, by setting this property `empty: false`.

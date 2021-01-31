@@ -1,11 +1,13 @@
 import {Binding, Expr, InitSignal, NewSignal} from 'vega';
 import {isSelectionParameter, TopLevelSelectionParameter} from './selection';
 
+export type ParameterName = string;
+
 export interface VariableParameter {
   /**
    * A unique name for the variable parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
    */
-  name: string;
+  name: ParameterName;
 
   /**
    * A text description of the parameter, useful for inline documentation.
