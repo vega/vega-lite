@@ -1,11 +1,11 @@
 ---
 layout: docs
 menu: docs
-title: Parameter Types
+title: Property Value Types
 permalink: /docs/types.html
 ---
 
-Reference documentation for common property **types** expected by Vega-Lite specification properties.
+Reference documentation for common **types** expected by Vega-Lite specification properties.
 
 {:#reference}
 
