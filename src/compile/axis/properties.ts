@@ -56,13 +56,8 @@ export const axisRules: {
     return guideFormatType(formatType, fieldOrDatumDef, scaleType);
   },
 
-  grid: ({fieldOrDatumDef, axis, scaleType}) => {
-    if (isFieldDef(fieldOrDatumDef) && isBinned(fieldOrDatumDef.bin)) {
-      return false;
-    } else {
-      return axis.grid ?? defaultGrid(scaleType, fieldOrDatumDef);
-    }
-  },
+  grid: ({fieldOrDatumDef, axis, scaleType}) =>
+    axis.grid ?? defaultGrid(scaleType, fieldOrDatumDef),
 
   gridScale: ({model, channel}) => gridScale(model, channel),
 
@@ -125,7 +120,7 @@ export const axisRules: {
  */
 
 export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string> | DatumDef) {
-  return !hasDiscreteDomain(scaleType) && isFieldDef(fieldDef) && !isBinning(fieldDef?.bin);
+  return !hasDiscreteDomain(scaleType) && isFieldDef(fieldDef) && !isBinning(fieldDef?.bin) && !isBinned(fieldDef?.bin);
 }
 
 export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
