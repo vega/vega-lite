@@ -40,7 +40,7 @@ describe('FacetModel', () => {
           }
         });
         expect(model.facet).toEqual({row: {field: 'a', type: 'quantitative'}});
-        expect(localLogger.warns[0]).toEqual(log.message.facetChannelShouldBeDiscrete(ROW));
+        expect(localLogger.warns[0]).toEqual(log.message.channelShouldBeDiscrete(ROW));
       })
     );
 

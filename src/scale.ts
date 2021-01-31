@@ -70,7 +70,7 @@ export const SCALE_CATEGORY_INDEX: Record<ScaleType, ScaleType | 'numeric' | 'or
   threshold: 'discretizing'
 };
 
-export const SCALE_TYPES = keys(SCALE_CATEGORY_INDEX) as ScaleType[];
+export const SCALE_TYPES: ScaleType[] = keys(SCALE_CATEGORY_INDEX);
 
 /**
  * Whether the two given scale types can be merged together.
@@ -839,8 +839,7 @@ export function channelSupportScaleType(channel: Channel, scaleType: ScaleType):
     case CHANNEL.STROKE:
       return scaleType !== 'band'; // band does not make sense with color
     case CHANNEL.STROKEDASH:
-      return scaleType === 'ordinal' || isContinuousToDiscrete(scaleType);
     case CHANNEL.SHAPE:
-      return scaleType === 'ordinal'; // shape = lookup only
+      return scaleType === 'ordinal' || isContinuousToDiscrete(scaleType);
   }
 }
