@@ -56,8 +56,7 @@ export const axisRules: {
     return guideFormatType(formatType, fieldOrDatumDef, scaleType);
   },
 
-  grid: ({fieldOrDatumDef, axis, scaleType}) =>
-    axis.grid ?? defaultGrid(scaleType, fieldOrDatumDef),
+  grid: ({fieldOrDatumDef, axis, scaleType}) => axis.grid ?? defaultGrid(scaleType, fieldOrDatumDef),
 
   gridScale: ({model, channel}) => gridScale(model, channel),
 
