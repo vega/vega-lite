@@ -18,7 +18,7 @@ permalink: /docs/parameter.html
 }
 ```
 
-Parameters are the basic building block in Vega-Lite's _grammar of interaction._ Parameters can either be simple variables, that can optionally be bound to input widgets (e.g., sliders or drop down menus), or more complex _selections_ that map user input (e.g., mouse clicks and drags) to data queries. Parameters can then be used throughout the remainder of the specification to determine encoding rules, filter data points, determine data extents, or in expression strings.
+Parameters are the basic building block in Vega-Lite's _grammar of interaction._ Parameters can either be simple variables or more complex _selections_ that map user input (e.g., mouse clicks and drags) to data queries. Parameters can be used throughout the remainder of the chart specification to determine encoding rules, filter data points, determine data extents, or in expression strings. They can also optionally be bound to input widgets (e.g., sliders or drop down menus).
 
 <!--prettier-ignore-start-->
 ## Documentation Overview
