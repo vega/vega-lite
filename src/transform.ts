@@ -416,7 +416,7 @@ export interface PivotTransform {
    * The aggregation operation to apply to grouped `value` field values.
    * __Default value:__ `sum`
    */
-  op?: string;
+  op?: AggregateOp;
 }
 
 export function isPivot(t: Transform): t is PivotTransform {
