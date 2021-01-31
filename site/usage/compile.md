@@ -93,6 +93,10 @@ The easiest way to run these commands is to use [`npx`](https://github.com/npm/n
 
 `npx vl2vg spec.vl.json`
 
+If you want to use the scripts in your project, you can prefix the calls with `node_modules/.bin/`. Alternatively, you can install vega and vega-lite globally (although we do not recommend it).
+
+If you get an error `Error: CanvasRenderer is missing a valid canvas or context`, please install the [`canvas`](https://github.com/Automattic/node-canvas) package (or install vega-cli).
+
 ### Using npx
 
 To use [npx](https://github.com/npm/npx), a tool to execute npm binaries, provide the required packages and choose the binary you want to run. For example, to run `vl2png`, run `npx -p vega -p vega-lite vl2png --help`.
