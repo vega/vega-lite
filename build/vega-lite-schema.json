@@ -18648,8 +18648,8 @@
           "type": "number"
         },
         "op": {
-          "description": "The aggregation operation to apply to grouped `value` field values. __Default value:__ `sum`",
-          "type": "string"
+          "$ref": "#/definitions/AggregateOp",
+          "description": "The aggregation operation to apply to grouped `value` field values. __Default value:__ `sum`"
         },
         "pivot": {
           "$ref": "#/definitions/FieldName",
