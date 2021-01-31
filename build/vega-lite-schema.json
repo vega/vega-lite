@@ -976,7 +976,7 @@
       "additionalProperties": false,
       "properties": {
         "argmax": {
-          "type": "string"
+          "$ref": "#/definitions/FieldName"
         }
       },
       "required": [
@@ -988,7 +988,7 @@
       "additionalProperties": false,
       "properties": {
         "argmin": {
-          "type": "string"
+          "$ref": "#/definitions/FieldName"
         }
       },
       "required": [
