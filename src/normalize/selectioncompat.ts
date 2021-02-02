@@ -1,10 +1,11 @@
+import {isArray} from 'vega';
 import {BinParams, isBinParams} from '../bin';
-import {Field} from '../channeldef';
+import {ChannelDef, Field, isConditionalDef, isFieldDef, isScaleFieldDef} from '../channeldef';
 import {LogicalComposition, normalizeLogicalComposition} from '../logical';
-import {SelectionParameter} from '../selection';
 import {FacetedUnitSpec, GenericSpec, LayerSpec, RepeatSpec, UnitSpec} from '../spec';
 import {SpecMapper} from '../spec/map';
 import {isBin, isFilter, isLookup} from '../transform';
+import {duplicate} from '../util';
 import {NormalizerParams} from './base';
 
 export class SelectionCompatibilityNormalizer extends SpecMapper<
@@ -14,95 +15,114 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<
   UnitSpec<Field>
 > {
   public map(spec: GenericSpec<FacetedUnitSpec<Field>, LayerSpec<Field>, RepeatSpec, Field>, params: NormalizerParams) {
-    if (spec.transform) {
-      spec.transform = spec.transform.map(t => {
-        if (isFilter(t)) {
-          return {filter: normalizePredicate(t)};
-        } else if (isBin(t) && isBinParams(t.bin)) {
-          return {
-            ...t,
-            bin: normalizeBinExtent(t.bin)
-          };
-        } else if (isLookup(t)) {
-          const {selection, ...rest} = t.from as any;
-          return selection
-            ? {
-                ...t,
-                from: {param: selection, ...rest}
-              }
-            : t;
-        }
-        return t;
-      });
+    spec = normalizeTransforms(spec);
+    return super.map(spec, params);
+  }
+
+  public mapLayerOrUnit(spec: FacetedUnitSpec<Field> | LayerSpec<Field>, params: NormalizerParams) {
+    spec = normalizeTransforms(spec);
+
+    if (spec.encoding) {
+      const encoding = {};
+      for (const [channel, enc] of Object.entries(spec.encoding)) {
+        encoding[channel] = normalizeChannelDef(enc);
+      }
+
+      spec = {...spec, encoding};
     }
 
-    return super.map(spec, params);
+    return super.mapLayerOrUnit(spec, params);
   }
 
   public mapUnit(spec: UnitSpec<Field>) {
     const {selection, ...rest} = spec as any;
-    const encoding = {};
-    const params: SelectionParameter[] = [];
+    if (selection) {
+      return {
+        ...rest,
+        params: Object.entries(selection).map(([name, selDef]) => {
+          const {init: value, bind, ...select} = selDef as any;
+          if (select.type === 'single') {
+            select.type = 'point';
+            select.toggle = false;
+          } else if (select.type === 'multi') {
+            select.type = 'point';
+          }
 
-    if (!selection) return spec;
-
-    for (const [name, selDef] of Object.entries(selection)) {
-      const {init, bind, ...select} = selDef as any;
-      if (select.type === 'single') {
-        select.type = 'point';
-        select.toggle = false;
-      } else if (select.type === 'multi') {
-        select.type = 'point';
-      }
-
-      params.push({
-        name,
-        value: init,
-        select,
-        bind
-      });
-    }
-
-    for (const [channel, enc] of Object.entries(spec.encoding)) {
-      encoding[channel] = {
-        ...normalizeChannelDef(enc),
-        ...(enc.condition
-          ? {
-              condition: {
-                ...normalizeChannelDef(enc.condition),
-                test: normalizePredicate(enc.condition)
-              }
-            }
-          : {})
+          return {name, value, select, bind};
+        })
       };
     }
 
-    return {...rest, params, encoding};
+    return spec;
   }
 }
 
-function normalizeChannelDef(obj: any) {
-  const {bin, scale, selection, ...rest} = obj;
-  const {selection: param, ...domain} = scale?.domain || {};
-  return {
-    ...rest,
-    ...(bin ? {bin: isBinParams(bin) ? normalizeBinExtent(bin) : bin} : {}),
-    ...(scale
-      ? {
-          scale: {
-            ...scale,
-            domain: param ? {...domain, param} : domain
-          }
-        }
-      : {})
-  };
+function normalizeTransforms(spec: any) {
+  const {transform: tx, ...rest} = spec;
+  if (tx) {
+    const transform = tx.map((t: any) => {
+      if (isFilter(t)) {
+        return {filter: normalizePredicate(t)};
+      } else if (isBin(t) && isBinParams(t.bin)) {
+        return {
+          ...t,
+          bin: normalizeBinExtent(t.bin)
+        };
+      } else if (isLookup(t)) {
+        const {selection: param, ...from} = t.from as any;
+        return param
+          ? {
+              ...t,
+              from: {param, ...from}
+            }
+          : t;
+      }
+      return t;
+    });
+
+    return {...rest, transform};
+  }
+
+  return spec;
+}
+
+function normalizeChannelDef(obj: any): ChannelDef {
+  const enc = duplicate(obj);
+
+  if (isFieldDef(enc) && isBinParams(enc.bin)) {
+    enc.bin = normalizeBinExtent(enc.bin);
+  }
+
+  if (isScaleFieldDef(enc) && (enc.scale?.domain as any)?.selection) {
+    const {selection: param, ...domain} = enc.scale.domain as any;
+    enc.scale.domain = {...domain, ...(param ? {param} : {})};
+  }
+
+  if (isConditionalDef(enc)) {
+    if (isArray(enc.condition)) {
+      enc.condition = enc.condition.map((c: any) => {
+        const {selection, param, test, ...cond} = c;
+        return param ? c : {...cond, test: normalizePredicate(c)};
+      });
+    } else {
+      const {selection, param, test, ...cond} = normalizeChannelDef(enc.condition) as any;
+      enc.condition = param
+        ? enc.condition
+        : {
+            ...cond,
+            test: normalizePredicate(enc.condition)
+          };
+    }
+  }
+
+  return enc;
 }
 
 function normalizeBinExtent(bin: BinParams): BinParams {
   const ext = bin.extent as any;
   if (ext?.selection) {
-    const {selection, ...rest} = ext;
-    return {...bin, extent: {...rest, param: selection}};
+    const {selection: param, ...rest} = ext;
+    return {...bin, extent: {...rest, param}};
   }
 
   return bin;

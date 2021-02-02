@@ -128,6 +128,18 @@ describe('SelectionCompatibilityNormalizer', () => {
             type: 'ordinal'
           },
           value: 'grey'
+        },
+        strokeWidth: {
+          condition: [
+            {
+              test: {
+                and: [{selection: 'foo'}, 'length(data("foo_store"))']
+              },
+              value: 2
+            },
+            {selection: 'bar', value: 1}
+          ],
+          value: 0
         }
       }
     };
@@ -147,6 +159,16 @@ describe('SelectionCompatibilityNormalizer', () => {
     expect(normalized.encoding.color.condition.test).toEqual({
       and: [{not: {param: 'foo'}}, 'true']
     });
+    expect(normalized.encoding.strokeWidth.condition).toEqual([
+      {
+        value: 2,
+        test: {and: [{param: 'foo'}, 'length(data("foo_store"))']}
+      },
+      {
+        value: 1,
+        test: {param: 'bar'}
+      }
+    ]);
 
     // And make sure we didn't delete any properties by mistake
     expect(normalized.encoding.x).toHaveProperty('field', 'Horsepower');
@@ -355,5 +377,129 @@ describe('SelectionCompatibilityNormalizer', () => {
     const normalized = normalize(spec) as any;
     expect(normalized.spec.layer[0]).toHaveProperty('params');
     expect(normalized.spec.layer[0].params[0].name).toEqual('brush');
+  });
+
+  it('should normalize multi-views', () => {
+    const spec: any = {
+      data: {url: 'data/stocks.csv'},
+      encoding: {
+        color: {
+          condition: {
+            selection: 'hover',
+            field: 'symbol',
+            type: 'nominal',
+            legend: null
+          },
+          value: 'grey'
+        }
+      },
+      layer: [
+        {
+          encoding: {
+            x: {field: 'date', type: 'temporal', title: 'date'},
+            y: {field: 'price', type: 'quantitative', title: 'price'}
+          },
+          layer: [
+            {
+              selection: {
+                hover: {
+                  type: 'single',
+                  on: 'mouseover',
+                  empty: 'all',
+                  fields: ['symbol'],
+                  init: {symbol: 'AAPL'}
+                }
+              },
+              mark: {type: 'line', strokeWidth: 8, stroke: 'transparent'}
+            },
+            {
+              mark: 'line'
+            }
+          ]
+        },
+        {
+          mark: {type: 'circle'},
+          encoding: {
+            x: {aggregate: 'max', field: 'date', type: 'temporal'},
+            y: {aggregate: {argmax: 'date'}, field: 'price', type: 'quantitative'}
+          }
+        }
+      ]
+    };
+
+    expect(normalize(spec)).toEqual({
+      data: {url: 'data/stocks.csv'},
+      layer: [
+        {
+          layer: [
+            {
+              mark: {type: 'line', strokeWidth: 8, stroke: 'transparent'},
+              params: [
+                {
+                  name: 'hover',
+                  value: {symbol: 'AAPL'},
+                  select: {
+                    type: 'point',
+                    on: 'mouseover',
+                    empty: 'all',
+                    fields: ['symbol'],
+                    toggle: false
+                  }
+                }
+              ],
+              encoding: {
+                color: {
+                  condition: {
+                    field: 'symbol',
+                    type: 'nominal',
+                    legend: null,
+                    test: {param: 'hover'}
+                  },
+                  value: 'grey'
+                },
+                x: {field: 'date', type: 'temporal', title: 'date'},
+                y: {field: 'price', type: 'quantitative', title: 'price'}
+              }
+            },
+            {
+              mark: 'line',
+              encoding: {
+                color: {
+                  condition: {
+                    field: 'symbol',
+                    type: 'nominal',
+                    legend: null,
+                    test: {param: 'hover'}
+                  },
+                  value: 'grey'
+                },
+                x: {field: 'date', type: 'temporal', title: 'date'},
+                y: {field: 'price', type: 'quantitative', title: 'price'}
+              }
+            }
+          ]
+        },
+        {
+          mark: {type: 'circle'},
+          encoding: {
+            color: {
+              condition: {
+                field: 'symbol',
+                type: 'nominal',
+                legend: null,
+                test: {param: 'hover'}
+              },
+              value: 'grey'
+            },
+            x: {aggregate: 'max', field: 'date', type: 'temporal'},
+            y: {
+              aggregate: {argmax: 'date'},
+              field: 'price',
+              type: 'quantitative'
+            }
+          }
+        }
+      ]
+    });
   });
 });
