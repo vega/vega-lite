@@ -2,7 +2,6 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
   "description": "Multi-series line chart with labels and interactive highlight on hover.  We also set the selection's initial value to provide a better screenshot",
   "data": {"url": "data/stocks.csv"},
-  "transform": [{"filter": "datum.symbol!=='IBM'"}],
   "layer": [
     {
       "description": "transparent layer to make it easier to trigger selection",
@@ -112,5 +111,6 @@
       ]
     }
   ],
-  "config": {"view": {"stroke": null}}
+  "config": {"view": {"stroke": null}},
+  "transform": [{"filter": "datum.symbol!=='IBM'"}]
 }

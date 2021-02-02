@@ -40,7 +40,6 @@
       ]
     },
     {
-      "transform": [{"filter": {"param": "label", "empty": false}}],
       "layer": [
         {
           "mark": {"type": "rule", "color": "gray"},
@@ -76,7 +75,8 @@
             }
           ]
         }
-      ]
+      ],
+      "transform": [{"filter": {"param": "label", "empty": false}}]
     }
   ]
 }

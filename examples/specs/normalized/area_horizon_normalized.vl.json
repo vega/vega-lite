@@ -50,7 +50,6 @@
       }
     },
     {
-      "transform": [{"calculate": "datum.y - 50", "as": "ny"}],
       "mark": {"type": "area", "clip": true, "orient": "vertical"},
       "encoding": {
         "x": {
@@ -65,7 +64,8 @@
           "axis": {"title": "y"}
         },
         "opacity": {"value": 0.3}
-      }
+      },
+      "transform": [{"calculate": "datum.y - 50", "as": "ny"}]
     }
   ],
   "config": {"area": {"interpolate": "monotone"}}

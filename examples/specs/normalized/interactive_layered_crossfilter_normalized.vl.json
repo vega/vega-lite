@@ -25,12 +25,12 @@
           }
         },
         {
-          "transform": [{"filter": {"param": "brush"}}],
           "mark": "bar",
           "encoding": {
             "x": {"field": "distance", "bin": {"maxbins": 20}},
             "y": {"aggregate": "count"}
-          }
+          },
+          "transform": [{"filter": {"param": "brush"}}]
         }
       ],
       "name": "child__column_distance"
@@ -52,12 +52,12 @@
           }
         },
         {
-          "transform": [{"filter": {"param": "brush"}}],
           "mark": "bar",
           "encoding": {
             "x": {"field": "delay", "bin": {"maxbins": 20}},
             "y": {"aggregate": "count"}
-          }
+          },
+          "transform": [{"filter": {"param": "brush"}}]
         }
       ],
       "name": "child__column_delay"
@@ -79,12 +79,12 @@
           }
         },
         {
-          "transform": [{"filter": {"param": "brush"}}],
           "mark": "bar",
           "encoding": {
             "x": {"field": "time", "bin": {"maxbins": 20}},
             "y": {"aggregate": "count"}
-          }
+          },
+          "transform": [{"filter": {"param": "brush"}}]
         }
       ],
       "name": "child__column_time"

@@ -15,8 +15,8 @@
           }
         },
         {
-          "transform": [{"filter": {"param": "hover", "empty": false}}],
           "mark": "point",
+          "transform": [{"filter": {"param": "hover", "empty": false}}],
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
             "color": {"field": "symbol", "type": "nominal"},
@@ -26,7 +26,6 @@
       ]
     },
     {
-      "transform": [{"pivot": "symbol", "value": "price", "groupby": ["date"]}],
       "mark": "rule",
       "encoding": {
         "x": {"field": "date", "type": "temporal"},
@@ -53,7 +52,8 @@
             "clear": "mouseout"
           }
         }
-      ]
+      ],
+      "transform": [{"pivot": "symbol", "value": "price", "groupby": ["date"]}]
     }
   ]
 }
