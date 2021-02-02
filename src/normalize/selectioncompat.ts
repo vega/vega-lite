@@ -14,38 +14,49 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<
   LayerSpec<Field>,
   UnitSpec<Field>
 > {
-  public map(spec: GenericSpec<FacetedUnitSpec<Field>, LayerSpec<Field>, RepeatSpec, Field>, params: NormalizerParams) {
-    spec = normalizeTransforms(spec);
-    return super.map(spec, params);
+  public map(
+    spec: GenericSpec<FacetedUnitSpec<Field>, LayerSpec<Field>, RepeatSpec, Field>,
+    normParams: NormalizerParams
+  ) {
+    normParams.emptySelections = normParams.emptySelections || {};
+    normParams.selectionPredicates = normParams.selectionPredicates || {};
+    spec = normalizeTransforms(spec, normParams);
+    return super.map(spec, normParams);
   }
 
-  public mapLayerOrUnit(spec: FacetedUnitSpec<Field> | LayerSpec<Field>, params: NormalizerParams) {
-    spec = normalizeTransforms(spec);
+  public mapLayerOrUnit(spec: FacetedUnitSpec<Field> | LayerSpec<Field>, normParams: NormalizerParams) {
+    spec = normalizeTransforms(spec, normParams);
 
     if (spec.encoding) {
       const encoding = {};
       for (const [channel, enc] of Object.entries(spec.encoding)) {
-        encoding[channel] = normalizeChannelDef(enc);
+        encoding[channel] = normalizeChannelDef(enc, normParams);
       }
 
       spec = {...spec, encoding};
     }
 
-    return super.mapLayerOrUnit(spec, params);
+    return super.mapLayerOrUnit(spec, normParams);
   }
 
-  public mapUnit(spec: UnitSpec<Field>) {
+  public mapUnit(spec: UnitSpec<Field>, normParams: NormalizerParams) {
     const {selection, ...rest} = spec as any;
     if (selection) {
       return {
         ...rest,
         params: Object.entries(selection).map(([name, selDef]) => {
-          const {init: value, bind, ...select} = selDef as any;
+          const {init: value, bind, empty, ...select} = selDef as any;
           if (select.type === 'single') {
             select.type = 'point';
             select.toggle = false;
           } else if (select.type === 'multi') {
             select.type = 'point';
+          }
+
+          // Propagate emptiness forwards and backwards
+          normParams.emptySelections[name] = empty !== 'none';
+          for (const pred of Object.values(normParams.selectionPredicates[name] ?? {})) {
+            pred.empty = empty !== 'none';
           }
 
           return {name, value, select, bind};
@@ -57,12 +68,12 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<
   }
 }
 
-function normalizeTransforms(spec: any) {
+function normalizeTransforms(spec: any, normParams: NormalizerParams) {
   const {transform: tx, ...rest} = spec;
   if (tx) {
     const transform = tx.map((t: any) => {
       if (isFilter(t)) {
-        return {filter: normalizePredicate(t)};
+        return {filter: normalizePredicate(t, normParams)};
       } else if (isBin(t) && isBinParams(t.bin)) {
         return {
           ...t,
@@ -86,7 +97,7 @@ function normalizeTransforms(spec: any) {
   return spec;
 }
 
-function normalizeChannelDef(obj: any): ChannelDef {
+function normalizeChannelDef(obj: any, normParams: NormalizerParams): ChannelDef {
   const enc = duplicate(obj);
 
   if (isFieldDef(enc) && isBinParams(enc.bin)) {
@@ -102,15 +113,15 @@ function normalizeChannelDef(obj: any): ChannelDef {
     if (isArray(enc.condition)) {
       enc.condition = enc.condition.map((c: any) => {
         const {selection, param, test, ...cond} = c;
-        return param ? c : {...cond, test: normalizePredicate(c)};
+        return param ? c : {...cond, test: normalizePredicate(c, normParams)};
       });
     } else {
-      const {selection, param, test, ...cond} = normalizeChannelDef(enc.condition) as any;
+      const {selection, param, test, ...cond} = normalizeChannelDef(enc.condition, normParams) as any;
       enc.condition = param
         ? enc.condition
         : {
             ...cond,
-            test: normalizePredicate(enc.condition)
+            test: normalizePredicate(enc.condition, normParams)
           };
     }
   }
@@ -128,10 +139,16 @@ function normalizeBinExtent(bin: BinParams): BinParams {
   return bin;
 }
 
-function normalizePredicate(op: any) {
+function normalizePredicate(op: any, normParams: NormalizerParams) {
   // Normalize old compositions of selection names (e.g., selection: {and: ["one", "two"]})
   const normalizeSelectionComposition = (o: LogicalComposition<string>) => {
-    return normalizeLogicalComposition(o, param => ({param} as any));
+    return normalizeLogicalComposition(o, param => {
+      const empty = normParams.emptySelections[param] || true;
+      const pred = {param, empty};
+      normParams.selectionPredicates[param] = normParams.selectionPredicates[param] || [];
+      normParams.selectionPredicates[param].push(pred);
+      return pred as any;
+    });
   };
 
   return op.selection

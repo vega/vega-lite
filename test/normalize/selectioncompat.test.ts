@@ -1,7 +1,9 @@
 import {normalize} from '../../src';
+import {NormalizerParams} from '../../src/normalize';
 import {SelectionCompatibilityNormalizer} from '../../src/normalize/selectioncompat';
 import {NormalizedUnitSpec} from '../../src/spec';
 
+const normParams: NormalizerParams = {config: {}, emptySelections: {}, selectionPredicates: {}};
 const selectionCompatNormalizer = new SelectionCompatibilityNormalizer();
 const unit: NormalizedUnitSpec = {
   data: {url: 'data/cars.json'},
@@ -27,7 +29,7 @@ describe('SelectionCompatibilityNormalizer', () => {
       }
     };
 
-    const normedUnit = selectionCompatNormalizer.mapUnit(spec);
+    const normedUnit = selectionCompatNormalizer.mapUnit(spec, normParams);
     expect(normedUnit.selection).toBeUndefined();
     expect(normedUnit.params).toHaveLength(1);
     expect(normedUnit.params[0]).toHaveProperty('name', 'CylYr');
@@ -54,7 +56,7 @@ describe('SelectionCompatibilityNormalizer', () => {
       }
     };
 
-    const normedUnit = selectionCompatNormalizer.mapUnit(spec);
+    const normedUnit = selectionCompatNormalizer.mapUnit(spec, normParams);
     expect(normedUnit.selection).toBeUndefined();
     expect(normedUnit.params).toHaveLength(1);
     expect(normedUnit.params[0]).toHaveProperty('name', 'Org');
@@ -81,7 +83,7 @@ describe('SelectionCompatibilityNormalizer', () => {
       }
     };
 
-    const normedUnit = selectionCompatNormalizer.mapUnit(spec);
+    const normedUnit = selectionCompatNormalizer.mapUnit(spec, normParams);
     expect(normedUnit.selection).toBeUndefined();
     expect(normedUnit.params).toHaveLength(2);
     expect(normedUnit.params[0]).toHaveProperty('name', 'brush');
@@ -99,8 +101,8 @@ describe('SelectionCompatibilityNormalizer', () => {
         {filter: {or: [{selection: {not: 'foo'}}, 'false']}}
       ],
       selection: {
-        foo: {type: 'single'},
-        bar: {type: 'multi'},
+        foo: {type: 'single', empty: 'all'},
+        bar: {type: 'multi', empty: 'none'},
         brush: {type: 'interval'}
       },
       mark: 'line',
@@ -147,26 +149,36 @@ describe('SelectionCompatibilityNormalizer', () => {
     const normalized = normalize(spec) as any;
     expect(normalized.transform).toEqual(
       expect.arrayContaining([
-        {filter: {param: 'foo'}},
-        {filter: {and: [{param: 'foo'}, {param: 'bar'}]}},
-        {filter: {or: [{not: {param: 'foo'}}, 'false']}}
+        {filter: {param: 'foo', empty: true}},
+        {
+          filter: {
+            and: [
+              {param: 'foo', empty: true},
+              {param: 'bar', empty: false}
+            ]
+          }
+        },
+        {filter: {or: [{not: {param: 'foo', empty: true}}, 'false']}}
       ])
     );
-    expect(normalized.encoding.x.condition.test).toEqual({param: 'bar'});
+    expect(normalized.encoding.x.condition.test).toEqual({param: 'bar', empty: false});
     expect(normalized.encoding.y.condition.test).toEqual({
-      or: [{param: 'foo'}, {param: 'brush'}]
+      or: [
+        {param: 'foo', empty: true},
+        {param: 'brush', empty: true}
+      ]
     });
     expect(normalized.encoding.color.condition.test).toEqual({
-      and: [{not: {param: 'foo'}}, 'true']
+      and: [{not: {param: 'foo', empty: true}}, 'true']
     });
     expect(normalized.encoding.strokeWidth.condition).toEqual([
       {
         value: 2,
-        test: {and: [{param: 'foo'}, 'length(data("foo_store"))']}
+        test: {and: [{param: 'foo', empty: true}, 'length(data("foo_store"))']}
       },
       {
         value: 1,
-        test: {param: 'bar'}
+        test: {param: 'bar', empty: false}
       }
     ]);
 
@@ -387,8 +399,7 @@ describe('SelectionCompatibilityNormalizer', () => {
           condition: {
             selection: 'hover',
             field: 'symbol',
-            type: 'nominal',
-            legend: null
+            type: 'nominal'
           },
           value: 'grey'
         }
@@ -441,7 +452,6 @@ describe('SelectionCompatibilityNormalizer', () => {
                   select: {
                     type: 'point',
                     on: 'mouseover',
-                    empty: 'all',
                     fields: ['symbol'],
                     toggle: false
                   }
@@ -452,8 +462,7 @@ describe('SelectionCompatibilityNormalizer', () => {
                   condition: {
                     field: 'symbol',
                     type: 'nominal',
-                    legend: null,
-                    test: {param: 'hover'}
+                    test: {param: 'hover', empty: true}
                   },
                   value: 'grey'
                 },
@@ -468,8 +477,7 @@ describe('SelectionCompatibilityNormalizer', () => {
                   condition: {
                     field: 'symbol',
                     type: 'nominal',
-                    legend: null,
-                    test: {param: 'hover'}
+                    test: {param: 'hover', empty: true}
                   },
                   value: 'grey'
                 },
@@ -486,8 +494,7 @@ describe('SelectionCompatibilityNormalizer', () => {
               condition: {
                 field: 'symbol',
                 type: 'nominal',
-                legend: null,
-                test: {param: 'hover'}
+                test: {param: 'hover', empty: true}
               },
               value: 'grey'
             },
