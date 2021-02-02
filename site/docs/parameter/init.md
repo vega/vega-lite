@@ -5,7 +5,12 @@ title: Initializing a Parameter
 permalink: /docs/init.html
 ---
 
-Parameters can be initialized using the `value` property. For variable parameters, this `value` can be set to any valid JSON primitive type including booleans, numbers, or string. For selection parameters, `value` should specify mappings between [projected channels or field names](project.html) to initial values. Point selections are initialized with an array of such mappings while interval selections are initialized with a single object mapping to arrays of values.
+Parameters can be initialized using the `value` property.
+
+- For variable parameters, this `value` can be set to any valid JSON primitive type including booleans, numbers, or string.
+- For selection parameters, `value` should specify mappings between [projected channels or field names](project.html) to initial values.
+  - Point selections are initialized with an array of such mappings.
+  - Interval selections are initialized with a single object mapping to arrays of values.
 
 ## Examples
 
