@@ -59,6 +59,7 @@
     "format": "yarn eslintbase --fix && yarn prettierbase --write",
     "lint": "yarn eslintbase && yarn prettierbase --check",
     "test": "jest test/ && yarn lint && yarn schema && jest examples/ && yarn test:runtime",
+    "test:cover": "jest --collectCoverage test/",
     "test:inspect": "node --inspect-brk ./node_modules/.bin/jest --runInBand test",
     "test:runtime": "TZ=America/Los_Angeles jest test-runtime/",
     "test:runtime:generate": "yarn build:only && rimraf test-runtime/resources && VL_GENERATE_TESTS=true yarn test:runtime",
