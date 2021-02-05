@@ -6,7 +6,7 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "pts_store"},
+    {"name": "paintbrush_store"},
     {
       "name": "source_0",
       "url": "data/cars.json",
@@ -29,27 +29,42 @@
       ]
     },
     {
-      "name": "pts",
-      "update": "vlSelectionResolve(\"pts_store\", \"union\", true, true)"
+      "name": "paintbrush",
+      "update": "vlSelectionResolve(\"paintbrush_store\", \"union\", true, true)"
     },
+    {"name": "toggleOrigin", "bind": {"input": "checkbox"}},
     {
-      "name": "pts_tuple",
+      "name": "paintbrush_tuple",
       "on": [
         {
-          "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+          "events": [{"source": "scope", "type": "mouseover"}],
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: paintbrush_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
-    {"name": "pts_tuple_fields", "value": [{"type": "E", "field": "_vgsid_"}]},
     {
-      "name": "pts_modify",
+      "name": "paintbrush_tuple_fields",
+      "value": [{"type": "E", "field": "_vgsid_"}]
+    },
+    {
+      "name": "paintbrush_toggle",
+      "value": false,
       "on": [
         {
-          "events": {"signal": "pts_tuple"},
-          "update": "modify(\"pts_store\", pts_tuple, true)"
+          "events": [{"source": "scope", "type": "mouseover"}],
+          "update": "event.shiftKey"
+        },
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
+      ]
+    },
+    {
+      "name": "paintbrush_modify",
+      "on": [
+        {
+          "events": {"signal": "paintbrush_tuple"},
+          "update": "modify(\"paintbrush_store\", paintbrush_toggle ? null : paintbrush_tuple, paintbrush_toggle ? null : true, paintbrush_toggle ? paintbrush_tuple : null)"
         }
       ]
     }
@@ -66,23 +81,19 @@
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
           "stroke": [
-            {
-              "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
-              "scale": "color",
-              "field": "Cylinders"
-            },
-            {"value": "grey"}
+            {"test": "!!toggleOrigin", "scale": "color", "field": "Origin"},
+            {"value": "steelblue"}
           ],
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"])"
+            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
           },
           "x": {"scale": "x", "field": "Horsepower"},
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": [
             {
-              "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
-              "value": 200
+              "test": "!length(data(\"paintbrush_store\")) || vlSelectionTest(\"paintbrush_store\", datum)",
+              "value": 300
             },
             {"value": 50}
           ]
@@ -110,9 +121,8 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
-      "range": {"scheme": "yelloworangebrown"},
-      "interpolate": "hcl"
+      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "range": "category"
     }
   ],
   "axes": [
@@ -168,7 +178,7 @@
     {
       "stroke": "color",
       "symbolType": "circle",
-      "title": "Cylinders",
+      "title": "Origin",
       "encode": {
         "symbols": {
           "update": {

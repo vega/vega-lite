@@ -138,7 +138,7 @@ By default, Vega-Lite will output data in local time (even when input is parsed 
 
 ## Time Unit Parameters
 
-To customize time unit parameters, you can set `timeUnit` to be a time unit definition object. It can have the following properties.
+To customize time unit properties, you can set `timeUnit` to be a time unit definition object. It can have the following properties.
 
 {% include table.html props="unit,maxbins,step,utc" source="TimeUnitParams" %}
 

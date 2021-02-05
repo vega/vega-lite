@@ -21,7 +21,7 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
     const name = varName(def.name);
     const selDef = def.select;
     const type = isString(selDef) ? selDef : selDef.type;
-    const defaults: BaseSelectionConfig = isObject(selDef) ? duplicate(selDef) : {};
+    const defaults: BaseSelectionConfig = isObject(selDef) ? duplicate(selDef) : {type};
 
     // Set default values from config if a property hasn't been specified,
     // or if it is true. E.g., "translate": true should use the default

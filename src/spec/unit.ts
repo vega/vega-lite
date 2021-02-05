@@ -37,7 +37,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
   projection?: Projection;
 
   /**
-   * An array of interactive selections, such as discrete points and continuous intervals.
+   * An array of parameters that may either be simple variables, or more complex selections that map user input to data queries.
    */
   params?: (VariableParameter | SelectionParameter)[];
 }

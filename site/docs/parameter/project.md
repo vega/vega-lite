@@ -1,24 +1,24 @@
 ---
 layout: docs
 menu: docs
-title: Project a Selection
+title: Projecting a Selection
 permalink: /docs/project.html
 ---
 
-A [selection's type](selection.html#selection-types) determines which data values fall within it by default:
+A [selection's type](parameter.html#select) determines which data values fall within it by default:
 
-- For `single` and `multi` selections, only values that have been directly interacted with (i.e., those that have been clicked on) are considered to be "selected."
+- For `point` selections, only values that have been directly interacted with (e.g., those that have been clicked on) are considered to be "selected."
 - For `interval` selections, values that fall within _both_ the horizontal (`x`) and vertical (`y`) extents are considered to be "selected."
 
-These default inclusion criteria can be modified with the **project** selection transformation, which offers the following two properties:
+These default inclusion criteria can be modified using the following two properties, specified in the `select` block:
 
-{% include table.html props="encodings,fields" source="SingleSelection" %}
+{% include table.html props="encodings,fields" source="PointSelectionConfig" %}
 
 ## Examples
 
-In the scatterplot example below, use the project transformation to highlight <select name="point" onchange="buildProjection('point')"><option value="single">a single</option><option value="multi">multiple</option></select>: <label onclick="buildProjection('point')"><input type="checkbox" name="point" value="cylinders" />Number(s) of Cylinders</label> <label onclick="buildProjection('point')"><input type="checkbox" name="point" value="origin" />Origin(s)</label>.
+In the scatterplot example below, highlight <select name="point" onchange="buildProjection('point')"><option value="multi">multiple</option><option value="single">a single</option></select>: <label onclick="buildProjection('point')"><input type="checkbox" name="point" value="cylinders" />Cylinder(s)</label> <label onclick="buildProjection('point')"><input type="checkbox" name="point" value="origin" />Origin(s)</label>.
 
-<div id="point" class="vl-example" data-name="selection_project_single"></div>
+<div id="point" class="vl-example" data-name="selection_project_multi"></div>
 
 With interval selections, the project transformation can be used to restrict the region to just the <label onclick="buildProjection('interval')"><input type="checkbox" name="interval" value="x" />horizontal (`x`)</label> and/or <label onclick="buildProjection('interval')"><input type="checkbox" name="interval" value="y" />vertical (`y`)</label> dimensions.
 
