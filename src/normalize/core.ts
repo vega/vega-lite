@@ -291,7 +291,7 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
           for (const prop of ['align', 'center', 'spacing'] as const) {
             if (def[prop] !== undefined) {
-              layout[prop] = layout[prop] ?? {};
+              layout[prop] ??= {};
               layout[prop][channel] = def[prop];
             }
           }

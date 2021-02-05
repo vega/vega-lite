@@ -83,7 +83,7 @@ function mergeChildAxis(model: FacetModel, channel: 'x' | 'y') {
       const layoutHeader = layoutHeaders[headerChannel];
       for (const axisComponent of child.component.axes[channel]) {
         const headerType = getHeaderType(axisComponent.get('orient'));
-        layoutHeader[headerType] = layoutHeader[headerType] ?? [makeHeaderComponent(model, headerChannel, false)];
+        layoutHeader[headerType] ??= [makeHeaderComponent(model, headerChannel, false)];
 
         // FIXME: assemble shouldn't be called here, but we do it this way so we only extract the main part of the axes
         const mainAxis = assembleAxis(axisComponent, 'main', model.config, {header: true});

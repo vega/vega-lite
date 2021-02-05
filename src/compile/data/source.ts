@@ -22,7 +22,7 @@ export class SourceNode extends DataFlowNode {
   constructor(data: Data) {
     super(null); // source cannot have parent
 
-    data = data ?? {name: 'source'};
+    data ??= {name: 'source'};
     let format;
 
     if (!isGenerator(data)) {

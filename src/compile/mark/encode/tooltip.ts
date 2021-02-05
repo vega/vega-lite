@@ -108,7 +108,7 @@ export function tooltipData(
       }
     }
 
-    value = value ?? textRef(fieldDef, config, expr).signal;
+    value ??= textRef(fieldDef, config, expr).signal;
 
     tuples.push({channel, key, value});
   }

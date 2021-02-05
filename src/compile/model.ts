@@ -417,14 +417,14 @@ export abstract class Model {
       if (contains(['unit', 'layer'], this.type)) {
         // Unit/Layer
         if (contains<AnchorValue>(['middle', undefined], title.anchor)) {
-          title.frame = title.frame ?? 'group';
+          title.frame ??= 'group';
         }
       } else {
         // composition with Vega layout
 
         // Set title = "start" by default for composition as "middle" does not look nice
         // https://github.com/vega/vega/issues/960#issuecomment-471360328
-        title.anchor = title.anchor ?? 'start';
+        title.anchor ??= 'start';
       }
 
       return isEmpty(title) ? undefined : title;
