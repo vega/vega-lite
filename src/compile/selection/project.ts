@@ -63,6 +63,7 @@ const project: SelectionCompiler = {
     };
 
     const type = selCmpt.type;
+    const cfg = model.config.selection[type];
     const init =
       selDef.value !== undefined
         ? (array(selDef.value as any) as SelectionInitMapping[] | SelectionInitIntervalMapping[])
@@ -70,30 +71,35 @@ const project: SelectionCompiler = {
 
     // If no explicit projection (either fields or encodings) is specified, set some defaults.
     // If an initial value is set, try to infer projections.
-    // Otherwise, use the default configuration.
     let {fields, encodings} = isObject(selDef.select) ? selDef.select : ({} as BaseSelectionConfig);
-    if (!fields && !encodings) {
-      const cfg = model.config.selection[type];
+    if (!fields && !encodings && init) {
+      for (const initVal of init) {
+        // initVal may be a scalar value to smoothen varParam -> pointSelection gradient.
+        if (!isObject(initVal)) {
+          continue;
+        }
 
-      if (init) {
-        for (const initVal of init) {
-          for (const key of keys(initVal)) {
-            if (isSingleDefUnitChannel(key)) {
-              (encodings || (encodings = [])).push(key as SingleDefUnitChannel);
+        for (const key of keys(initVal)) {
+          if (isSingleDefUnitChannel(key)) {
+            (encodings || (encodings = [])).push(key as SingleDefUnitChannel);
+          } else {
+            if (type === 'interval') {
+              log.warn(log.message.INTERVAL_INITIALIZED_WITH_X_Y);
+              encodings = cfg.encodings;
             } else {
-              if (type === 'interval') {
-                log.warn(log.message.INTERVAL_INITIALIZED_WITH_X_Y);
-                encodings = cfg.encodings;
-              } else {
-                (fields || (fields = [])).push(key);
-              }
+              (fields || (fields = [])).push(key);
             }
           }
         }
-      } else {
-        encodings = cfg.encodings;
-        fields = cfg.fields;
       }
+    }
+
+    // If no initial value is specified, use the default configuration.
+    // We break this out as a separate if block (instead of an else condition)
+    // to account for unprojected point selections that have scalar initial values
+    if (!fields && !encodings) {
+      encodings = cfg.encodings;
+      fields = cfg.fields;
     }
 
     for (const channel of encodings ?? []) {
@@ -161,7 +167,9 @@ const project: SelectionCompiler = {
 
     if (init) {
       selCmpt.init = (init as any).map((v: SelectionInitMapping | SelectionInitIntervalMapping) => {
-        return proj.items.map(p => (v[p.channel] !== undefined ? v[p.channel] : v[p.field]));
+        // Selections can be initialized either with a full object that maps projections to values
+        // or scalar values to smoothen the abstraction gradient from variable params to point selections.
+        return proj.items.map(p => (isObject(v) ? (v[p.channel] !== undefined ? v[p.channel] : v[p.field]) : v));
       });
     }
 

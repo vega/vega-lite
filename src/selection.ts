@@ -197,7 +197,11 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
    *
    * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
-  value?: T extends 'point' ? SelectionInitMapping[] : T extends 'interval' ? SelectionInitIntervalMapping : never;
+  value?: T extends 'point'
+    ? SelectionInit | SelectionInitMapping[]
+    : T extends 'interval'
+    ? SelectionInitIntervalMapping
+    : never;
 
   /**
    * When set, a selection is populated by input elements (also known as dynamic query widgets)
