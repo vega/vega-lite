@@ -5,7 +5,7 @@ import {LogicalComposition, normalizeLogicalComposition} from '../logical';
 import {FacetedUnitSpec, GenericSpec, LayerSpec, RepeatSpec, UnitSpec} from '../spec';
 import {SpecMapper} from '../spec/map';
 import {isBin, isFilter, isLookup} from '../transform';
-import {duplicate} from '../util';
+import {duplicate, entries, vals} from '../util';
 import {NormalizerParams} from './base';
 
 export class SelectionCompatibilityNormalizer extends SpecMapper<
@@ -18,8 +18,8 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<
     spec: GenericSpec<FacetedUnitSpec<Field>, LayerSpec<Field>, RepeatSpec, Field>,
     normParams: NormalizerParams
   ) {
-    normParams.emptySelections = normParams.emptySelections || {};
-    normParams.selectionPredicates = normParams.selectionPredicates || {};
+    normParams.emptySelections = normParams.emptySelections ?? {};
+    normParams.selectionPredicates = normParams.selectionPredicates ?? {};
     spec = normalizeTransforms(spec, normParams);
     return super.map(spec, normParams);
   }
@@ -29,7 +29,7 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<
 
     if (spec.encoding) {
       const encoding = {};
-      for (const [channel, enc] of Object.entries(spec.encoding)) {
+      for (const [channel, enc] of entries(spec.encoding)) {
         encoding[channel] = normalizeChannelDef(enc, normParams);
       }
 
@@ -44,7 +44,7 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<
     if (selection) {
       return {
         ...rest,
-        params: Object.entries(selection).map(([name, selDef]) => {
+        params: entries(selection).map(([name, selDef]) => {
           const {init: value, bind, empty, ...select} = selDef as any;
           if (select.type === 'single') {
             select.type = 'point';
@@ -55,7 +55,7 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<
 
           // Propagate emptiness forwards and backwards
           normParams.emptySelections[name] = empty !== 'none';
-          for (const pred of Object.values(normParams.selectionPredicates[name] ?? {})) {
+          for (const pred of vals(normParams.selectionPredicates[name] ?? {})) {
             pred.empty = empty !== 'none';
           }
 
@@ -143,9 +143,9 @@ function normalizePredicate(op: any, normParams: NormalizerParams) {
   // Normalize old compositions of selection names (e.g., selection: {and: ["one", "two"]})
   const normalizeSelectionComposition = (o: LogicalComposition<string>) => {
     return normalizeLogicalComposition(o, param => {
-      const empty = normParams.emptySelections[param] || true;
+      const empty = normParams.emptySelections[param] ?? true;
       const pred = {param, empty};
-      normParams.selectionPredicates[param] = normParams.selectionPredicates[param] || [];
+      normParams.selectionPredicates[param] = normParams.selectionPredicates[param] ?? [];
       normParams.selectionPredicates[param].push(pred);
       return pred as any;
     });
