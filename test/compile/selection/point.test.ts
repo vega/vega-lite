@@ -78,6 +78,18 @@ describe('Multi Selection', () => {
         fields: ['nested.a', 'nested.b'],
         clear: false
       }
+    },
+    // Seven ensures a smooth abstraction gradient for "value" var params -> point selections
+    {
+      name: 'seven',
+      value: 50,
+      select: {type: 'point', fields: ['Horsepower']}
+    },
+    // Eight ensures this smooth "value" gradient logic doesn't kick in on unprojected point selections
+    {
+      name: 'eight',
+      value: 75,
+      select: 'point'
     }
   ]));
 
@@ -271,7 +283,27 @@ describe('Multi Selection', () => {
           }
         ]
       },
-      {name: 'six_store'}
+      {name: 'six_store'},
+      {
+        name: 'seven_store',
+        values: [
+          {
+            unit: '',
+            fields: [{type: 'E', field: 'Horsepower'}],
+            values: [50]
+          }
+        ]
+      },
+      {
+        name: 'eight_store',
+        values: [
+          {
+            unit: '',
+            fields: [{type: 'E', field: '_vgsid_'}],
+            values: [75]
+          }
+        ]
+      }
     ]);
   });
 
