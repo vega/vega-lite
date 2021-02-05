@@ -24,7 +24,7 @@
           "field": "low"
         },
         "color": {
-          "condition": {"test": "datum.open < datum.close", "value": "#06982d"},
+          "condition": {"value": "#06982d", "test": "datum.open < datum.close"},
           "value": "#ae1325"
         },
         "y2": {"field": "high"}
@@ -50,7 +50,7 @@
           "field": "open"
         },
         "color": {
-          "condition": {"test": "datum.open < datum.close", "value": "#06982d"},
+          "condition": {"value": "#06982d", "test": "datum.open < datum.close"},
           "value": "#ae1325"
         },
         "y2": {"field": "close"}

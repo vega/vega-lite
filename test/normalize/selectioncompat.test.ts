@@ -1,7 +1,9 @@
 import {normalize} from '../../src';
+import {NormalizerParams} from '../../src/normalize';
 import {SelectionCompatibilityNormalizer} from '../../src/normalize/selectioncompat';
 import {NormalizedUnitSpec} from '../../src/spec';
 
+const normParams: NormalizerParams = {config: {}, emptySelections: {}, selectionPredicates: {}};
 const selectionCompatNormalizer = new SelectionCompatibilityNormalizer();
 const unit: NormalizedUnitSpec = {
   data: {url: 'data/cars.json'},
@@ -27,7 +29,7 @@ describe('SelectionCompatibilityNormalizer', () => {
       }
     };
 
-    const normedUnit = selectionCompatNormalizer.mapUnit(spec);
+    const normedUnit = selectionCompatNormalizer.mapUnit(spec, normParams);
     expect(normedUnit.selection).toBeUndefined();
     expect(normedUnit.params).toHaveLength(1);
     expect(normedUnit.params[0]).toHaveProperty('name', 'CylYr');
@@ -54,7 +56,7 @@ describe('SelectionCompatibilityNormalizer', () => {
       }
     };
 
-    const normedUnit = selectionCompatNormalizer.mapUnit(spec);
+    const normedUnit = selectionCompatNormalizer.mapUnit(spec, normParams);
     expect(normedUnit.selection).toBeUndefined();
     expect(normedUnit.params).toHaveLength(1);
     expect(normedUnit.params[0]).toHaveProperty('name', 'Org');
@@ -81,7 +83,7 @@ describe('SelectionCompatibilityNormalizer', () => {
       }
     };
 
-    const normedUnit = selectionCompatNormalizer.mapUnit(spec);
+    const normedUnit = selectionCompatNormalizer.mapUnit(spec, normParams);
     expect(normedUnit.selection).toBeUndefined();
     expect(normedUnit.params).toHaveLength(2);
     expect(normedUnit.params[0]).toHaveProperty('name', 'brush');
@@ -99,8 +101,8 @@ describe('SelectionCompatibilityNormalizer', () => {
         {filter: {or: [{selection: {not: 'foo'}}, 'false']}}
       ],
       selection: {
-        foo: {type: 'single'},
-        bar: {type: 'multi'},
+        foo: {type: 'single', empty: 'all'},
+        bar: {type: 'multi', empty: 'none'},
         brush: {type: 'interval'}
       },
       mark: 'line',
@@ -128,6 +130,18 @@ describe('SelectionCompatibilityNormalizer', () => {
             type: 'ordinal'
           },
           value: 'grey'
+        },
+        strokeWidth: {
+          condition: [
+            {
+              test: {
+                and: [{selection: 'foo'}, 'length(data("foo_store"))']
+              },
+              value: 2
+            },
+            {selection: 'bar', value: 1}
+          ],
+          value: 0
         }
       }
     };
@@ -135,18 +149,38 @@ describe('SelectionCompatibilityNormalizer', () => {
     const normalized = normalize(spec) as any;
     expect(normalized.transform).toEqual(
       expect.arrayContaining([
-        {filter: {param: 'foo'}},
-        {filter: {and: [{param: 'foo'}, {param: 'bar'}]}},
-        {filter: {or: [{not: {param: 'foo'}}, 'false']}}
+        {filter: {param: 'foo', empty: true}},
+        {
+          filter: {
+            and: [
+              {param: 'foo', empty: true},
+              {param: 'bar', empty: false}
+            ]
+          }
+        },
+        {filter: {or: [{not: {param: 'foo', empty: true}}, 'false']}}
       ])
     );
-    expect(normalized.encoding.x.condition.test).toEqual({param: 'bar'});
+    expect(normalized.encoding.x.condition.test).toEqual({param: 'bar', empty: false});
     expect(normalized.encoding.y.condition.test).toEqual({
-      or: [{param: 'foo'}, {param: 'brush'}]
+      or: [
+        {param: 'foo', empty: true},
+        {param: 'brush', empty: true}
+      ]
     });
     expect(normalized.encoding.color.condition.test).toEqual({
-      and: [{not: {param: 'foo'}}, 'true']
+      and: [{not: {param: 'foo', empty: true}}, 'true']
     });
+    expect(normalized.encoding.strokeWidth.condition).toEqual([
+      {
+        value: 2,
+        test: {and: [{param: 'foo', empty: true}, 'length(data("foo_store"))']}
+      },
+      {
+        value: 1,
+        test: {param: 'bar', empty: false}
+      }
+    ]);
 
     // And make sure we didn't delete any properties by mistake
     expect(normalized.encoding.x).toHaveProperty('field', 'Horsepower');
@@ -355,5 +389,124 @@ describe('SelectionCompatibilityNormalizer', () => {
     const normalized = normalize(spec) as any;
     expect(normalized.spec.layer[0]).toHaveProperty('params');
     expect(normalized.spec.layer[0].params[0].name).toEqual('brush');
+  });
+
+  it('should normalize multi-views', () => {
+    const spec: any = {
+      data: {url: 'data/stocks.csv'},
+      encoding: {
+        color: {
+          condition: {
+            selection: 'hover',
+            field: 'symbol',
+            type: 'nominal'
+          },
+          value: 'grey'
+        }
+      },
+      layer: [
+        {
+          encoding: {
+            x: {field: 'date', type: 'temporal', title: 'date'},
+            y: {field: 'price', type: 'quantitative', title: 'price'}
+          },
+          layer: [
+            {
+              selection: {
+                hover: {
+                  type: 'single',
+                  on: 'mouseover',
+                  empty: 'all',
+                  fields: ['symbol'],
+                  init: {symbol: 'AAPL'}
+                }
+              },
+              mark: {type: 'line', strokeWidth: 8, stroke: 'transparent'}
+            },
+            {
+              mark: 'line'
+            }
+          ]
+        },
+        {
+          mark: {type: 'circle'},
+          encoding: {
+            x: {aggregate: 'max', field: 'date', type: 'temporal'},
+            y: {aggregate: {argmax: 'date'}, field: 'price', type: 'quantitative'}
+          }
+        }
+      ]
+    };
+
+    expect(normalize(spec)).toEqual({
+      data: {url: 'data/stocks.csv'},
+      layer: [
+        {
+          layer: [
+            {
+              mark: {type: 'line', strokeWidth: 8, stroke: 'transparent'},
+              params: [
+                {
+                  name: 'hover',
+                  value: {symbol: 'AAPL'},
+                  select: {
+                    type: 'point',
+                    on: 'mouseover',
+                    fields: ['symbol'],
+                    toggle: false
+                  }
+                }
+              ],
+              encoding: {
+                color: {
+                  condition: {
+                    field: 'symbol',
+                    type: 'nominal',
+                    test: {param: 'hover', empty: true}
+                  },
+                  value: 'grey'
+                },
+                x: {field: 'date', type: 'temporal', title: 'date'},
+                y: {field: 'price', type: 'quantitative', title: 'price'}
+              }
+            },
+            {
+              mark: 'line',
+              encoding: {
+                color: {
+                  condition: {
+                    field: 'symbol',
+                    type: 'nominal',
+                    test: {param: 'hover', empty: true}
+                  },
+                  value: 'grey'
+                },
+                x: {field: 'date', type: 'temporal', title: 'date'},
+                y: {field: 'price', type: 'quantitative', title: 'price'}
+              }
+            }
+          ]
+        },
+        {
+          mark: {type: 'circle'},
+          encoding: {
+            color: {
+              condition: {
+                field: 'symbol',
+                type: 'nominal',
+                test: {param: 'hover', empty: true}
+              },
+              value: 'grey'
+            },
+            x: {aggregate: 'max', field: 'date', type: 'temporal'},
+            y: {
+              aggregate: {argmax: 'date'},
+              field: 'price',
+              type: 'quantitative'
+            }
+          }
+        }
+      ]
+    });
   });
 });

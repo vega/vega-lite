@@ -18,6 +18,12 @@
     {
       "mark": {"type": "rule", "color": "#000", "opacity": 0.35},
       "data": {"url": "data/flights-airport.csv"},
+      "encoding": {
+        "latitude": {"field": "latitude"},
+        "longitude": {"field": "longitude"},
+        "latitude2": {"field": "lat2"},
+        "longitude2": {"field": "lon2"}
+      },
       "transform": [
         {"filter": {"param": "org", "empty": false}},
         {
@@ -38,29 +44,11 @@
           "as": ["lat2", "lon2"]
         }
       ],
-      "encoding": {
-        "latitude": {"field": "latitude"},
-        "longitude": {"field": "longitude"},
-        "latitude2": {"field": "lat2"},
-        "longitude2": {"field": "lon2"}
-      },
       "projection": {"type": "albersUsa"}
     },
     {
       "mark": {"type": "circle"},
       "data": {"url": "data/flights-airport.csv"},
-      "transform": [
-        {"aggregate": [{"op": "count", "as": "routes"}], "groupby": ["origin"]},
-        {
-          "lookup": "origin",
-          "from": {
-            "data": {"url": "data/airports.csv"},
-            "key": "iata",
-            "fields": ["state", "latitude", "longitude"]
-          }
-        },
-        {"filter": "datum.state !== 'PR' && datum.state !== 'VI'"}
-      ],
       "params": [
         {
           "name": "org",
@@ -83,6 +71,18 @@
         },
         "order": {"field": "routes", "sort": "descending"}
       },
+      "transform": [
+        {"aggregate": [{"op": "count", "as": "routes"}], "groupby": ["origin"]},
+        {
+          "lookup": "origin",
+          "from": {
+            "data": {"url": "data/airports.csv"},
+            "key": "iata",
+            "fields": ["state", "latitude", "longitude"]
+          }
+        },
+        {"filter": "datum.state !== 'PR' && datum.state !== 'VI'"}
+      ],
       "projection": {"type": "albersUsa"}
     }
   ],

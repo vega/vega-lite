@@ -13,8 +13,8 @@
       }
     },
     {
-      "transform": [{"filter": {"param": "brush"}}],
       "mark": {"type": "area", "color": "goldenrod"},
+      "transform": [{"filter": {"param": "brush"}}],
       "encoding": {
         "x": {"timeUnit": "yearmonth", "field": "date"},
         "y": {"aggregate": "sum", "field": "count"}

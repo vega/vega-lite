@@ -6,10 +6,6 @@
   "height": 500,
   "layer": [
     {
-      "transform": [
-        {"filter": {"field": "country", "equal": "Afghanistan"}},
-        {"filter": {"param": "year"}}
-      ],
       "mark": {
         "type": "text",
         "fontSize": 100,
@@ -17,28 +13,13 @@
         "y": 250,
         "opacity": 0.06
       },
-      "encoding": {"text": {"field": "year"}}
+      "encoding": {"text": {"field": "year"}},
+      "transform": [
+        {"filter": {"field": "country", "equal": "Afghanistan"}},
+        {"filter": {"param": "year"}}
+      ]
     },
     {
-      "transform": [
-        {
-          "lookup": "cluster",
-          "from": {
-            "key": "id",
-            "fields": ["name"],
-            "data": {
-              "values": [
-                {"id": 0, "name": "South Asia"},
-                {"id": 1, "name": "Europe & Central Asia"},
-                {"id": 2, "name": "Sub-Saharan Africa"},
-                {"id": 3, "name": "America"},
-                {"id": 4, "name": "East Asia & Pacific"},
-                {"id": 5, "name": "Middle East & North Africa"}
-              ]
-            }
-          }
-        }
-      ],
       "layer": [
         {
           "mark": {
@@ -64,13 +45,13 @@
             "order": {"field": "year"},
             "opacity": {
               "condition": {
+                "value": 0.8,
                 "test": {
                   "or": [
                     {"param": "hovered", "empty": false},
                     {"param": "clicked", "empty": false}
                   ]
-                },
-                "value": 0.8
+                }
               },
               "value": 0
             }
@@ -104,7 +85,6 @@
               "select": {"type": "point", "fields": ["country"]}
             }
           ],
-          "transform": [{"filter": {"param": "year"}}],
           "mark": {"type": "circle", "size": 100, "opacity": 0.9},
           "encoding": {
             "x": {
@@ -120,24 +100,10 @@
               "axis": {"tickCount": 5, "title": "Life Expectancy"}
             },
             "color": {"field": "name", "title": "Region"}
-          }
+          },
+          "transform": [{"filter": {"param": "year"}}]
         },
         {
-          "transform": [
-            {
-              "filter": {
-                "and": [
-                  {"param": "year"},
-                  {
-                    "or": [
-                      {"param": "clicked", "empty": false},
-                      {"param": "hovered", "empty": false}
-                    ]
-                  }
-                ]
-              }
-            }
-          ],
           "mark": {
             "type": "text",
             "yOffset": -12,
@@ -159,13 +125,24 @@
             },
             "text": {"field": "country"},
             "color": {"field": "name", "title": "Region"}
-          }
+          },
+          "transform": [
+            {
+              "filter": {
+                "and": [
+                  {"param": "year"},
+                  {
+                    "or": [
+                      {"param": "clicked", "empty": false},
+                      {"param": "hovered", "empty": false}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
         },
         {
-          "transform": [
-            {"filter": {"param": "hovered", "empty": false}},
-            {"filter": {"not": {"param": "year"}}}
-          ],
           "layer": [
             {
               "mark": {
@@ -207,7 +184,30 @@
                 }
               }
             }
+          ],
+          "transform": [
+            {"filter": {"param": "hovered", "empty": false}},
+            {"filter": {"not": {"param": "year"}}}
           ]
+        }
+      ],
+      "transform": [
+        {
+          "lookup": "cluster",
+          "from": {
+            "key": "id",
+            "fields": ["name"],
+            "data": {
+              "values": [
+                {"id": 0, "name": "South Asia"},
+                {"id": 1, "name": "Europe & Central Asia"},
+                {"id": 2, "name": "Sub-Saharan Africa"},
+                {"id": 3, "name": "America"},
+                {"id": 4, "name": "East Asia & Pacific"},
+                {"id": 5, "name": "Middle East & North Africa"}
+              ]
+            }
+          }
         }
       ]
     }

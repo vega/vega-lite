@@ -32,18 +32,18 @@
       }
     },
     {
-      "transform": [{"filter": {"and": ["index.date", {"param": "index"}]}}],
       "mark": "rule",
+      "transform": [{"filter": {"and": ["index.date", {"param": "index"}]}}],
       "encoding": {"x": {"field": "date", "type": "temporal"}}
     },
     {
-      "transform": [{"filter": {"and": ["index.date", {"param": "index"}]}}],
       "mark": "text",
       "encoding": {
         "x": {"field": "date", "type": "temporal"},
         "y": {"value": 10},
         "text": {"field": "date", "type": "temporal"}
-      }
+      },
+      "transform": [{"filter": {"and": ["index.date", {"param": "index"}]}}]
     }
   ],
   "config": {"text": {"align": "right", "dx": -5, "dy": 5}}
