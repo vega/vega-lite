@@ -53,6 +53,14 @@
       "source": "data_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["student"],
+          "field": "score",
+          "sort": {"field": [], "order": []},
+          "as": ["score_start", "score_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"score\"]) && isFinite(+datum[\"score\"])"
         }
@@ -79,8 +87,8 @@
           "description": {
             "signal": "\"score: \" + (format(datum[\"score\"], \"\")) + \"; student: \" + (isValid(datum[\"student\"]) ? datum[\"student\"] : \"\"+datum[\"student\"])"
           },
-          "x": {"scale": "x", "field": "score"},
-          "x2": {"scale": "x", "value": 0},
+          "x": {"scale": "x", "field": "score_end"},
+          "x2": {"scale": "x", "field": "score_start"},
           "y": {"scale": "y", "field": "student"},
           "height": {"scale": "y", "band": 1}
         }
@@ -91,7 +99,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "score"},
+      "domain": {"data": "data_1", "fields": ["score_start", "score_end"]},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true

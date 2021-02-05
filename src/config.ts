@@ -3,7 +3,7 @@ import {isObject, mergeConfig} from 'vega-util';
 import {Axis, AxisConfig, AxisConfigMixins, AXIS_CONFIGS, isConditionalAxisValue} from './axis';
 import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';
-import {ExprOrSignalRef, ExprRef, replaceExprRefInIndex} from './expr';
+import {ExprRef, replaceExprRef} from './expr';
 import {VL_ONLY_LEGEND_CONFIG} from './guide';
 import {HeaderConfigMixins, HEADER_CONFIGS} from './header';
 import {defaultLegendConfig, LegendConfig} from './legend';
@@ -28,20 +28,6 @@ import {extractTitleConfig, TitleConfig} from './title';
 import {duplicate, getFirstDefined, isEmpty, keys, omit} from './util';
 
 export interface ViewConfig<ES extends ExprRef | SignalRef> extends BaseViewBackground<ES> {
-  /**
-   * Default width
-   *
-   * __Deprecated:__ Since Vega-Lite 4.0. Please use continuousWidth and discreteWidth instead.
-   */
-  width?: number;
-
-  /**
-   * Default height
-   *
-   * __Deprecated:__ Since Vega-Lite 4.0. Please use continuousHeight and discreteHeight instead.
-   */
-  height?: number;
-
   /**
    * The default width when the plot has a continuous field for x or longitude, or has arc marks.
    *
@@ -471,19 +457,19 @@ export function fontConfig(font: string): Config {
   };
 }
 
-function getAxisConfigInternal(axisConfig: AxisConfig<ExprOrSignalRef>) {
+function getAxisConfigInternal(axisConfig: AxisConfig<ExprRef | SignalRef>) {
   const props = keys(axisConfig || {});
   const axisConfigInternal: AxisConfig<SignalRef> = {};
   for (const prop of props) {
     const val = axisConfig[prop];
-    axisConfigInternal[prop as any] = isConditionalAxisValue<any, ExprOrSignalRef>(val)
+    axisConfigInternal[prop as any] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
       ? signalOrValueRefWithCondition<any>(val)
       : signalRefOrValue(val);
   }
   return axisConfigInternal;
 }
 
-function getStyleConfigInternal(styleConfig: StyleConfigIndex<ExprOrSignalRef>) {
+function getStyleConfigInternal(styleConfig: StyleConfigIndex<ExprRef | SignalRef>) {
   const props = keys(styleConfig);
 
   const styleConfigInternal: StyleConfigIndex<SignalRef> = {};
@@ -532,7 +518,8 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
 
   for (const markConfigType of mark.MARK_CONFIGS) {
     if (mergedConfig[markConfigType]) {
-      outputConfig[markConfigType] = replaceExprRefInIndex(mergedConfig[markConfigType]);
+      // FIXME: outputConfig[markConfigType] expects that types are replaced recursively but replaceExprRef only replaces one level deep
+      outputConfig[markConfigType] = replaceExprRef(mergedConfig[markConfigType]) as any;
     }
   }
 
@@ -544,16 +531,16 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
 
   for (const headerConfigType of HEADER_CONFIGS) {
     if (mergedConfig[headerConfigType]) {
-      outputConfig[headerConfigType] = replaceExprRefInIndex(mergedConfig[headerConfigType]);
+      outputConfig[headerConfigType] = replaceExprRef(mergedConfig[headerConfigType]);
     }
   }
 
   if (mergedConfig.legend) {
-    outputConfig.legend = replaceExprRefInIndex(mergedConfig.legend);
+    outputConfig.legend = replaceExprRef(mergedConfig.legend);
   }
 
   if (mergedConfig.scale) {
-    outputConfig.scale = replaceExprRefInIndex(mergedConfig.scale);
+    outputConfig.scale = replaceExprRef(mergedConfig.scale);
   }
 
   if (mergedConfig.style) {
@@ -561,11 +548,11 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
   }
 
   if (mergedConfig.title) {
-    outputConfig.title = replaceExprRefInIndex(mergedConfig.title);
+    outputConfig.title = replaceExprRef(mergedConfig.title);
   }
 
   if (mergedConfig.view) {
-    outputConfig.view = replaceExprRefInIndex(mergedConfig.view);
+    outputConfig.view = replaceExprRef(mergedConfig.view);
   }
 
   return outputConfig;

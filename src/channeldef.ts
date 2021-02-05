@@ -58,7 +58,7 @@ import * as log from './log';
 import {LogicalComposition} from './logical';
 import {isRectBasedMark, Mark, MarkDef} from './mark';
 import {Predicate, ParameterPredicate} from './predicate';
-import {Scale, SCALE_CATEGORY_INDEX} from './scale';
+import {isContinuousToDiscrete, Scale, SCALE_CATEGORY_INDEX} from './scale';
 import {isSortByChannel, Sort, SortOrder} from './sort';
 import {isFacetFieldDef} from './spec/facet';
 import {StackOffset, StackProperties} from './stack';
@@ -80,6 +80,7 @@ import {
   omit,
   removePathFromField,
   replacePathInField,
+  stringify,
   titleCase
 } from './util';
 import {isSignalRef} from './vega.schema';
@@ -653,7 +654,7 @@ export function isContinuousFieldOrDatumDef<F extends Field>(
   cd: ChannelDef<F>
 ): cd is TypedFieldDef<F> | DatumDef<F, number> {
   // TODO: make datum support DateTime object
-  return (isTypedFieldDef(cd) && isContinuous(cd)) || isNumericDataDef(cd);
+  return (isTypedFieldDef(cd) && !isDiscrete(cd)) || isNumericDataDef(cd);
 }
 
 export function isQuantitativeFieldOrDatumDef<F extends Field>(cd: ChannelDef<F>) {
@@ -811,8 +812,8 @@ export function isDiscrete(def: TypedFieldDef<Field> | DatumDef<any, any>) {
   throw new Error(log.message.invalidFieldType(def.type));
 }
 
-export function isContinuous(fieldDef: TypedFieldDef<Field>) {
-  return !isDiscrete(fieldDef);
+export function isDiscretizing(def: TypedFieldDef<Field> | DatumDef<any, any>) {
+  return isScaleFieldDef(def) && isContinuousToDiscrete(def.scale?.type);
 }
 
 export function isCount(fieldDef: FieldDefBase<Field>) {
@@ -856,7 +857,7 @@ export function functionalTitleFormatter(fieldDef: FieldDefBase<string>) {
 
   const fn = aggregate || timeUnitParams?.unit || (timeUnitParams?.maxbins && 'timeunit') || (isBinning(bin) && 'bin');
   if (fn) {
-    return fn.toUpperCase() + '(' + field + ')';
+    return `${fn.toUpperCase()}(${field})`;
   } else {
     return field;
   }
@@ -1150,16 +1151,18 @@ export function initFieldDef(
 
   if (isFacetFieldDef(fieldDef)) {
     const {header} = fieldDef;
-    const {orient, ...rest} = header;
-    if (orient) {
-      return {
-        ...fieldDef,
-        header: {
-          ...rest,
-          labelOrient: header.labelOrient || orient,
-          titleOrient: header.titleOrient || orient
-        }
-      };
+    if (header) {
+      const {orient, ...rest} = header;
+      if (orient) {
+        return {
+          ...fieldDef,
+          header: {
+            ...rest,
+            labelOrient: header.labelOrient || orient,
+            titleOrient: header.titleOrient || orient
+          }
+        };
+      }
     }
   }
 
@@ -1198,10 +1201,10 @@ export function channelCompatibility(
     case ROW:
     case COLUMN:
     case FACET:
-      if (isContinuous(fieldDef)) {
+      if (!isDiscrete(fieldDef)) {
         return {
           compatible: false,
-          warning: log.message.facetChannelShouldBeDiscrete(channel)
+          warning: log.message.channelShouldBeDiscrete(channel)
         };
       }
       return COMPATIBLE;
@@ -1252,20 +1255,12 @@ export function channelCompatibility(
       }
       return COMPATIBLE;
 
-    case STROKEDASH:
-      if (!['ordinal', 'nominal'].includes(fieldDef.type)) {
-        return {
-          compatible: false,
-          warning: 'StrokeDash channel should be used with only discrete data.'
-        };
-      }
-      return COMPATIBLE;
-
     case SHAPE:
-      if (!['ordinal', 'nominal', 'geojson'].includes(fieldDef.type)) {
+    case STROKEDASH:
+      if (!isDiscrete(fieldDef) && !isDiscretizing(fieldDef)) {
         return {
           compatible: false,
-          warning: 'Shape channel should be used with only either discrete or geojson data.'
+          warning: log.message.channelShouldBeDiscreteOrDiscretizing(channel)
         };
       }
       return COMPATIBLE;
@@ -1328,7 +1323,7 @@ export function valueExpr(
     expr = dateTimeToExpr(v);
   } else if (isString(v) || isNumber(v)) {
     if (isTime) {
-      expr = `datetime(${JSON.stringify(v)})`;
+      expr = `datetime(${stringify(v)})`;
 
       if (isLocalSingleTimeUnit(unit)) {
         // for single timeUnit, we will use dateTimeToExpr to convert number/string to match the timeUnit
@@ -1342,7 +1337,7 @@ export function valueExpr(
     return wrapTime && isTime ? `time(${expr})` : expr;
   }
   // number or boolean or normal string
-  return undefinedIfExprNotRequired ? undefined : JSON.stringify(v);
+  return undefinedIfExprNotRequired ? undefined : stringify(v);
 }
 
 /**

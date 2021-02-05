@@ -43,7 +43,7 @@ Bar marks are useful in many visualizations, including bar charts, [stacked bar 
 }
 ```
 
-<span class="vl-example" data-name="bar_params" figure-only=true></span>
+<span class="vl-example" data-name="bar_params_bound" figure-only=true></span>
 
 A bar mark definition can contain any [standard mark properties](mark.html#mark-def) and the following special properties:
 

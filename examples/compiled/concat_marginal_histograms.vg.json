@@ -391,7 +391,6 @@
       "type": "linear",
       "domain": [0, 1000],
       "range": [{"signal": "concat_0_height"}, 0],
-      "nice": true,
       "zero": true
     },
     {
@@ -421,7 +420,6 @@
       "type": "linear",
       "domain": [0, 1000],
       "range": [0, {"signal": "concat_1_concat_1_width"}],
-      "nice": true,
       "zero": true
     },
     {

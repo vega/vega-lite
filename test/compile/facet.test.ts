@@ -40,9 +40,39 @@ describe('FacetModel', () => {
           }
         });
         expect(model.facet).toEqual({row: {field: 'a', type: 'quantitative'}});
-        expect(localLogger.warns[0]).toEqual(log.message.facetChannelShouldBeDiscrete(ROW));
+        expect(localLogger.warns[0]).toEqual(log.message.channelShouldBeDiscrete(ROW));
       })
     );
+
+    it('converts orient to titleOrient and labelOrient', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'nominal', header: {orient: 'right'}}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {}
+        }
+      });
+      expect(model.facet).toEqual({
+        row: {field: 'a', type: 'nominal', header: {titleOrient: 'right', labelOrient: 'right'}}
+      });
+    });
+
+    it('keeps header: null', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {field: 'a', type: 'nominal', header: null}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {}
+        }
+      });
+      expect(model.facet).toEqual({
+        row: {field: 'a', type: 'nominal', header: null}
+      });
+    });
   });
 
   describe('parseAxisAndHeader', () => {

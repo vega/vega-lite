@@ -244,11 +244,11 @@ export function varName(s: string): string {
 
 export function logicalExpr<T>(op: LogicalComposition<T>, cb: (...args: readonly any[]) => string): string {
   if (isLogicalNot(op)) {
-    return '!(' + logicalExpr(op.not, cb) + ')';
+    return `!(${logicalExpr(op.not, cb)})`;
   } else if (isLogicalAnd(op)) {
-    return '(' + op.and.map((and: LogicalComposition<T>) => logicalExpr(and, cb)).join(') && (') + ')';
+    return `(${op.and.map((and: LogicalComposition<T>) => logicalExpr(and, cb)).join(') && (')})`;
   } else if (isLogicalOr(op)) {
-    return '(' + op.or.map((or: LogicalComposition<T>) => logicalExpr(or, cb)).join(') || (') + ')';
+    return `(${op.or.map((or: LogicalComposition<T>) => logicalExpr(or, cb)).join(') || (')})`;
   } else {
     return cb(op);
   }

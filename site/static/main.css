@@ -324,6 +324,7 @@ nav > .dropdown {
 
 .vl-title {
   padding: 0 20px 2px 20px;
+  width: 124px;
   font-weight: bold;
   font-size: 1.4em;
   color: #eee;
@@ -688,7 +689,7 @@ footer .edit-page {
 nav .dropdown-content {
   position: absolute;
   display: none;
-  min-width: 141px;
+  min-width: 164px;
   top: 54px; /* For Firefox */
 }
 

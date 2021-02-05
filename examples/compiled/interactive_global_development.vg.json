@@ -404,7 +404,6 @@
       "type": "linear",
       "domain": [0, 9],
       "range": [0, {"signal": "width"}],
-      "nice": true,
       "zero": true
     },
     {
@@ -412,7 +411,6 @@
       "type": "linear",
       "domain": [20, 85],
       "range": [{"signal": "height"}, 0],
-      "nice": true,
       "zero": false
     },
     {

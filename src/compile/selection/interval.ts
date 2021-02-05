@@ -75,7 +75,7 @@ const interval: SelectionCompiler<'interval'> = {
         on: [
           {
             events: scaleTriggers.map(t => ({scale: t.scaleName})),
-            update: scaleTriggers.map(t => t.expr).join(' && ') + ` ? ${name + SCALE_TRIGGER} : {}`
+            update: `${scaleTriggers.map(t => t.expr).join(' && ')} ? ${name + SCALE_TRIGGER} : {}`
           }
         ]
       });
@@ -91,7 +91,7 @@ const interval: SelectionCompiler<'interval'> = {
       on: [
         {
           events: [{signal: dataSignals.join(' || ')}], // Prevents double invocation, see https://github.com/vega/vega#1672.
-          update: dataSignals.join(' && ') + ` ? {${update}: [${dataSignals}]} : null`
+          update: `${dataSignals.join(' && ')} ? {${update}: [${dataSignals}]} : null`
         }
       ]
     });
@@ -151,7 +151,7 @@ const interval: SelectionCompiler<'interval'> = {
 
     return [
       {
-        name: name + BRUSH + '_bg',
+        name: `${name + BRUSH}_bg`,
         type: 'rect',
         clip: true,
         encode: {

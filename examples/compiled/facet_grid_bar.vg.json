@@ -41,6 +41,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["c", "a", "b"],
+          "field": "p",
+          "sort": {"field": [], "order": []},
+          "as": ["p_start", "p_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"p\"]) && isFinite(+datum[\"p\"])"
         }
@@ -181,8 +189,8 @@
               "description": {
                 "signal": "\"c: \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"]) + \"; p: \" + (format(datum[\"p\"], \"%\")) + \"; settings: \" + (isValid(datum[\"c\"]) ? datum[\"c\"] : \"\"+datum[\"c\"])"
               },
-              "x": {"scale": "x", "field": "p"},
-              "x2": {"scale": "x", "value": 0},
+              "x": {"scale": "x", "field": "p_end"},
+              "x2": {"scale": "x", "field": "p_start"},
               "y": {"scale": "y", "field": "c"},
               "height": {"scale": "y", "band": 1}
             }
@@ -211,7 +219,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "p"},
+      "domain": {"data": "data_0", "fields": ["p_start", "p_end"]},
       "range": [0, {"signal": "child_width"}],
       "nice": true,
       "zero": true

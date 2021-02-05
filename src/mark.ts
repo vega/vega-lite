@@ -1,7 +1,7 @@
 import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
 import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
-import {ExprOrSignalRef, ExprRef} from './expr';
+import {ExprRef} from './expr';
 import {Flag, keys} from './util';
 import {MapExcludeValueRefAndReplaceSignalWith} from './vega.schema';
 
@@ -353,7 +353,7 @@ export const defaultMarkConfig: MarkConfig<SignalRef> = {
 
 // TODO: replace with MarkConfigMixins[Mark] once https://github.com/vega/ts-json-schema-generator/issues/344 is fixed
 export type AnyMarkConfig<ES extends ExprRef | SignalRef> =
-  | MarkConfig<SignalRef>
+  | MarkConfig<ES>
   | AreaConfig<ES>
   | BarConfig<ES>
   | RectConfig<ES>
@@ -446,15 +446,17 @@ export interface RectConfig<ES extends ExprRef | SignalRef> extends RectBinSpaci
   discreteBandSize?: number;
 }
 
-export const BAR_CORNER_RADIUS_INDEX: Partial<Record<
-  Orientation,
-  ('cornerRadiusTopLeft' | 'cornerRadiusTopRight' | 'cornerRadiusBottomLeft' | 'cornerRadiusBottomRight')[]
->> = {
+export const BAR_CORNER_RADIUS_INDEX: Partial<
+  Record<
+    Orientation,
+    ('cornerRadiusTopLeft' | 'cornerRadiusTopRight' | 'cornerRadiusBottomLeft' | 'cornerRadiusBottomRight')[]
+  >
+> = {
   horizontal: ['cornerRadiusTopRight', 'cornerRadiusBottomRight'],
   vertical: ['cornerRadiusTopLeft', 'cornerRadiusTopRight']
 };
 
-export interface BarCornerRadiusMixins<ES extends ExprOrSignalRef> {
+export interface BarCornerRadiusMixins<ES extends ExprRef | SignalRef> {
   /**
    * - For vertical bars, top-left and top-right corner radius.
    * - For horizontal bars, top-right and bottom-right corner radius.

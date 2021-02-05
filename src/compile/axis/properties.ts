@@ -56,13 +56,7 @@ export const axisRules: {
     return guideFormatType(formatType, fieldOrDatumDef, scaleType);
   },
 
-  grid: ({fieldOrDatumDef, axis, scaleType}) => {
-    if (isFieldDef(fieldOrDatumDef) && isBinned(fieldOrDatumDef.bin)) {
-      return false;
-    } else {
-      return axis.grid ?? defaultGrid(scaleType, fieldOrDatumDef);
-    }
-  },
+  grid: ({fieldOrDatumDef, axis, scaleType}) => axis.grid ?? defaultGrid(scaleType, fieldOrDatumDef),
 
   gridScale: ({model, channel}) => gridScale(model, channel),
 
@@ -125,7 +119,7 @@ export const axisRules: {
  */
 
 export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string> | DatumDef) {
-  return !hasDiscreteDomain(scaleType) && isFieldDef(fieldDef) && !isBinning(fieldDef?.bin);
+  return !hasDiscreteDomain(scaleType) && isFieldDef(fieldDef) && !isBinning(fieldDef?.bin) && !isBinned(fieldDef?.bin);
 }
 
 export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
@@ -242,7 +236,7 @@ export function defaultLabelAlign(
     const orientIsMain = isSignalRef(orient) ? `(${orient.signal} === "${mainOrient}")` : orient === mainOrient;
     return {
       signal:
-        `(${startAngle ? '(' + a + ' + 90)' : a} % 180 === 0) ? ${isX ? null : '"center"'} :` +
+        `(${startAngle ? `(${a} + 90)` : a} % 180 === 0) ? ${isX ? null : '"center"'} :` +
         `(${startAngle} < ${a} && ${a} < ${180 + startAngle}) === ${orientIsMain} ? "left" : "right"`
     };
   }

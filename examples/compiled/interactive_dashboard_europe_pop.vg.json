@@ -314,6 +314,17 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["Country"],
+          "field": "Population_ages_15_64_of_total",
+          "sort": {"field": [], "order": []},
+          "as": [
+            "Population_ages_15_64_of_total_start",
+            "Population_ages_15_64_of_total_end"
+          ],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"Population_ages_15_64_of_total\"]) && isFinite(+datum[\"Population_ages_15_64_of_total\"])"
         }
@@ -323,6 +334,17 @@
       "name": "data_2",
       "source": "source_0",
       "transform": [
+        {
+          "type": "stack",
+          "groupby": ["Country"],
+          "field": "Population_ages_65_and_above_of_total",
+          "sort": {"field": [], "order": []},
+          "as": [
+            "Population_ages_65_and_above_of_total_start",
+            "Population_ages_65_and_above_of_total_end"
+          ],
+          "offset": "zero"
+        },
         {
           "type": "filter",
           "expr": "isValid(datum[\"Population_ages_65_and_above_of_total\"]) && isFinite(+datum[\"Population_ages_65_and_above_of_total\"])"
@@ -597,9 +619,12 @@
               },
               "x": {
                 "scale": "concat_0_x",
-                "field": "Population_ages_15_64_of_total"
+                "field": "Population_ages_15_64_of_total_end"
               },
-              "x2": {"scale": "concat_0_x", "value": 0},
+              "x2": {
+                "scale": "concat_0_x",
+                "field": "Population_ages_15_64_of_total_start"
+              },
               "y": {"scale": "concat_0_y", "field": "Country"},
               "height": {"scale": "concat_0_y", "band": 1}
             }
@@ -918,9 +943,12 @@
               },
               "x": {
                 "scale": "concat_1_x",
-                "field": "Population_ages_65_and_above_of_total"
+                "field": "Population_ages_65_and_above_of_total_end"
               },
-              "x2": {"scale": "concat_1_x", "value": 0},
+              "x2": {
+                "scale": "concat_1_x",
+                "field": "Population_ages_65_and_above_of_total_start"
+              },
               "y": {"scale": "concat_1_y", "field": "Country"},
               "height": {"scale": "concat_1_y", "band": 1}
             }
@@ -1440,7 +1468,13 @@
     {
       "name": "concat_0_x",
       "type": "linear",
-      "domain": {"data": "data_1", "field": "Population_ages_15_64_of_total"},
+      "domain": {
+        "data": "data_1",
+        "fields": [
+          "Population_ages_15_64_of_total_start",
+          "Population_ages_15_64_of_total_end"
+        ]
+      },
       "range": [0, {"signal": "concat_0_width"}],
       "nice": true,
       "zero": true
@@ -1452,7 +1486,7 @@
         "data": "source_0",
         "field": "Country",
         "sort": {
-          "op": "min",
+          "op": "sum",
           "field": "Population_ages_15_64_of_total",
           "order": "descending"
         }
@@ -1466,7 +1500,10 @@
       "type": "linear",
       "domain": {
         "data": "data_2",
-        "field": "Population_ages_65_and_above_of_total"
+        "fields": [
+          "Population_ages_65_and_above_of_total_start",
+          "Population_ages_65_and_above_of_total_end"
+        ]
       },
       "range": [0, {"signal": "concat_1_width"}],
       "nice": true,
@@ -1479,7 +1516,7 @@
         "data": "source_0",
         "field": "Country",
         "sort": {
-          "op": "min",
+          "op": "sum",
           "field": "Population_ages_65_and_above_of_total",
           "order": "descending"
         }

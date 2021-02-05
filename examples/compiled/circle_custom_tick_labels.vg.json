@@ -1,0 +1,110 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "style": "cell",
+  "data": [
+    {"name": "source_0", "url": "data/movies.json", "format": {"type": "json"}},
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["Major Genre"],
+          "ops": ["mean"],
+          "fields": ["IMDB Rating"],
+          "as": ["mean_IMDB Rating"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"mean_IMDB Rating\"]) && isFinite(+datum[\"mean_IMDB Rating\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 20},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "size": {"value": 80},
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"Mean of IMDB Rating: \" + (format(datum[\"mean_IMDB Rating\"], \"\")) + \"; Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"])"
+          },
+          "x": {"scale": "x", "field": "mean_IMDB Rating"},
+          "y": {"scale": "y", "field": "Major Genre"},
+          "shape": {"value": "circle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": [0, 10],
+      "range": [0, {"signal": "width"}],
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "point",
+      "domain": {
+        "data": "source_0",
+        "field": "Major Genre",
+        "sort": {"op": "mean", "field": "IMDB Rating"}
+      },
+      "range": {"step": {"signal": "y_step"}},
+      "padding": 0.5
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "values": [0, 5, 10],
+      "gridScale": "y",
+      "grid": true,
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "labelFlush": false,
+      "values": [0, 5, 10],
+      "labelOverlap": true,
+      "encode": {
+        "labels": {
+          "update": {
+            "text": {
+              "signal": "datum.label == 0 ? 'Poor' : datum.label == 5 ? 'Neutral' : 'Great'"
+            }
+          }
+        }
+      },
+      "zindex": 0
+    },
+    {"scale": "y", "orient": "left", "grid": false, "zindex": 0}
+  ]
+}

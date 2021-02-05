@@ -1,0 +1,179 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A bar chart with negative values. We can hide the axis domain line, and instead use a conditional grid color to draw a zero baseline.",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"a": "A", "b": -28},
+        {"a": "B", "b": 55},
+        {"a": "C", "b": -33},
+        {"a": "D", "b": 91},
+        {"a": "E", "b": 81},
+        {"a": "F", "b": 53},
+        {"a": "G", "b": -19},
+        {"a": "H", "b": 87},
+        {"a": "I", "b": 52}
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["a"],
+          "field": "b",
+          "sort": {"field": [], "order": []},
+          "as": ["b_start", "b_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 20},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "b_end"},
+          "x2": {"scale": "x", "field": "b_start"},
+          "y": {"scale": "y", "field": "a"},
+          "height": {"scale": "y", "band": 1}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "align": {"signal": "datum.b < 0 ? 'right' : 'left'"},
+          "dx": {"signal": "datum.b < 0 ? -2 : 2"},
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "b"},
+          "y": {"scale": "y", "field": "a", "band": 0.5},
+          "text": {"signal": "format(datum[\"b\"], \"\")"},
+          "baseline": {"value": "middle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "b_start"},
+          {"data": "data_1", "field": "b_end"},
+          {"data": "data_2", "field": "b"}
+        ]
+      },
+      "range": [0, {"signal": "width"}],
+      "padding": 20,
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "a"},
+          {"data": "data_2", "field": "a"}
+        ],
+        "sort": true
+      },
+      "range": {"step": {"signal": "y_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "grid": {
+          "update": {
+            "stroke": [
+              {"test": "datum.value === 0", "value": "black"},
+              {"value": "#ddd"}
+            ]
+          }
+        }
+      },
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "b",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "a",
+      "domain": false,
+      "labelAngle": 0,
+      "labelPadding": 4,
+      "ticks": false,
+      "labelAlign": "right",
+      "zindex": 0
+    }
+  ]
+}

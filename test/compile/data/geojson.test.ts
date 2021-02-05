@@ -1,4 +1,4 @@
-import {FieldRef, Vector2} from 'vega';
+import {FieldRef, GeoJSONTransform, Vector2} from 'vega';
 import {GeoJSONNode} from '../../../src/compile/data/geojson';
 import {contains, every} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
@@ -29,23 +29,52 @@ describe('compile/data/geojson', () => {
     const root = new PlaceholderDataFlowNode(null);
     GeoJSONNode.parseAll(root, model);
 
-    let node = root.children[0];
+    const node = root.children[0];
 
-    while (node != null) {
-      expect(node).toBeInstanceOf(GeoJSONNode);
-      const transform = (node as GeoJSONNode).assemble();
-      expect(transform.type).toBe('geojson');
-      expect(every(['longitude', 'latitude'], field => contains(transform.fields as Vector2<FieldRef>, field))).toBe(
-        true
-      );
-      expect(transform.geojson).not.toBeDefined();
+    expect(node).toBeInstanceOf(GeoJSONNode);
+    const transforms = (node as GeoJSONNode).assemble();
 
-      expect(node.children.length).toBeLessThanOrEqual(1);
-      node = node.children[0];
-    }
+    expect(transforms).toHaveLength(1);
+
+    const geoJSONTransform = transforms[0] as GeoJSONTransform;
+
+    expect(geoJSONTransform.type).toBe('geojson');
+    expect(
+      every(['longitude', 'latitude'], field => contains(geoJSONTransform.fields as Vector2<FieldRef>, field))
+    ).toBe(true);
+    expect(geoJSONTransform.geojson).not.toBeDefined();
   });
 
-  it('should skip geojson if custom projection', () => {
+  it('should add filter when shape channel is used', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {values: []},
+      mark: 'geoshape',
+      encoding: {
+        shape: {field: 'geo', type: 'geojson'},
+        color: {field: 'state', type: 'nominal'}
+      }
+    });
+
+    const root = new PlaceholderDataFlowNode(null);
+    GeoJSONNode.parseAll(root, model);
+
+    const node = root.children[0];
+
+    expect(node).toBeInstanceOf(GeoJSONNode);
+    const transforms = (node as GeoJSONNode).assemble();
+
+    expect(transforms).toHaveLength(2);
+
+    expect(transforms[0]).toEqual({
+      type: 'filter',
+      expr: 'isValid(datum["geo"])'
+    });
+
+    expect(transforms[1].type).toBe('geojson');
+    expect(transforms[1].geojson).toBe('geo');
+  });
+
+  it('should skip geojson when there is a custom projection', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {
         url: 'data/zipcodes.csv',

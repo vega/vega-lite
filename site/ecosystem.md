@@ -60,6 +60,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [data.world](https://data.world), upload `.vg.json` and `.vl.json` files along side your raw data, or [embed Vega](https://docs.data.world/tutorials/markdown/#vega-and-vega-lite) directly into comments and summary markdown.
 - [nextjournal](https://nextjournal.com/), scientific computing environment with support for data visualizations including [Vega-Lite](https://nextjournal.com/blog/plotting-with-vega-lite-in-nextjournal)
 - [Liminoid](https://liminoid.io/), toolkit for building interactive analytics applications with Python and WebAssembly. Can pass Python data to JavaScript callbacks which render Vega/Vega-Lite specifications.
+- [Neptune.ai](https://neptune.ai), machine learning experiment tracking tool with Vega-Lite and Altair visualizations.
 
 ## Tools that use Vega-Lite
 
@@ -71,6 +72,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Django Chartflo](https://github.com/synw/django-chartflo), charts for the lazy ones in Django
 - [Vega-Lite for PowerBI](https://github.com/Microsoft/vegalite-for-powerbi/) is an example of a PowerBI custom visual built with Vega-Lite.
 - [Sci-Hub stats browser](https://github.com/greenelab/scihub) provides coverage and usage statistics for Sci-Hub.
+- [github-repo-stats](https://github.com/jgehrcke/github-repo-stats), a GitHub Action for advanced repository traffic analysis and reporting.
 - [Iris](https://hackernoon.com/a-conversational-agent-for-data-science-4ae300cdc220), a conversational agent for data science.
 - [dashcard](https://github.com/scottcame/dashcard): a simple [Bootstrap](https://getbootstrap.com/)-based UI for dynamic dashboarding using Vega-Lite and [Mondrian](https://community.hds.com/docs/DOC-1009853) via a [REST API](https://github.com/ojbc/mondrian-rest).
 - [histbook](https://github.com/diana-hep/histbook), a versatile, high-performance histogram toolkit for Numpy.

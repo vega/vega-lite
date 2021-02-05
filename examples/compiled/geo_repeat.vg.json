@@ -26,6 +26,7 @@
           "fields": ["id"],
           "as": ["geo"]
         },
+        {"type": "filter", "expr": "isValid(datum[\"geo\"])"},
         {
           "type": "geojson",
           "geojson": "geo",
@@ -48,6 +49,7 @@
           "fields": ["id"],
           "as": ["geo"]
         },
+        {"type": "filter", "expr": "isValid(datum[\"geo\"])"},
         {
           "type": "geojson",
           "geojson": "geo",
@@ -70,6 +72,7 @@
           "fields": ["id"],
           "as": ["geo"]
         },
+        {"type": "filter", "expr": "isValid(datum[\"geo\"])"},
         {
           "type": "geojson",
           "geojson": "geo",

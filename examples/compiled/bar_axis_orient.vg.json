@@ -26,6 +26,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["a"],
+          "field": "b",
+          "sort": {"field": [], "order": []},
+          "as": ["b_start", "b_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"b\"]) && isFinite(+datum[\"b\"])"
         }
@@ -37,6 +45,16 @@
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    },
+    {
+      "name": "xAxisOrient",
+      "value": "bottom",
+      "bind": {"input": "select", "options": ["top", "bottom"]}
+    },
+    {
+      "name": "yAxisOrient",
+      "value": "left",
+      "bind": {"input": "select", "options": ["left", "right"]}
     }
   ],
   "marks": [
@@ -54,8 +72,8 @@
           },
           "x": {"scale": "x", "field": "a"},
           "width": {"scale": "x", "band": 1},
-          "y": {"scale": "y", "field": "b"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {"scale": "y", "field": "b_end"},
+          "y2": {"scale": "y", "field": "b_start"}
         }
       }
     }
@@ -72,7 +90,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "b"},
+      "domain": {"data": "data_0", "fields": ["b_start", "b_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -120,19 +138,5 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ],
-  "config": {
-    "signals": [
-      {
-        "name": "xAxisOrient",
-        "value": "bottom",
-        "bind": {"input": "select", "options": ["top", "bottom"]}
-      },
-      {
-        "name": "yAxisOrient",
-        "value": "left",
-        "bind": {"input": "select", "options": ["left", "right"]}
-      }
-    ]
-  }
+  ]
 }

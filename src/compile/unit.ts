@@ -27,7 +27,7 @@ import {Config} from '../config';
 import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
 import {Encoding, initEncoding} from '../encoding';
-import {ExprOrSignalRef, replaceExprRefInIndex} from '../expr';
+import {ExprRef, replaceExprRef} from '../expr';
 import {LegendInternal} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
@@ -74,7 +74,7 @@ export class UnitModel extends ModelWithField {
 
   protected specifiedLegends: LegendInternalIndex = {};
 
-  public specifiedProjection: Projection = {};
+  public specifiedProjection: Projection<ExprRef | SignalRef> = {};
 
   public readonly selection: SelectionParameter[] = [];
   public children: Model[] = [];
@@ -160,16 +160,17 @@ export class UnitModel extends ModelWithField {
     }, {} as ScaleIndex);
   }
 
-  private initScale(scale: Scale<ExprOrSignalRef>): Scale<SignalRef> {
+  private initScale(scale: Scale<ExprRef | SignalRef>): Scale<SignalRef> {
     const {domain, range} = scale;
-    const scaleInternal: Scale<SignalRef> = replaceExprRefInIndex(scale);
+    // TODO: we could simplify this function if we had a recursive replace function
+    const scaleInternal = replaceExprRef(scale);
     if (isArray(domain)) {
       scaleInternal.domain = domain.map(signalRefOrValue);
     }
     if (isArray(range)) {
       scaleInternal.range = range.map(signalRefOrValue);
     }
-    return scaleInternal;
+    return scaleInternal as Scale<SignalRef>;
   }
 
   private initAxes(encoding: Encoding<string>): AxisInternalIndex {
@@ -193,12 +194,12 @@ export class UnitModel extends ModelWithField {
     }, {});
   }
 
-  private initAxis(axis: Axis<ExprOrSignalRef>): Axis<SignalRef> {
+  private initAxis(axis: Axis<ExprRef | SignalRef>): Axis<SignalRef> {
     const props = keys(axis);
     const axisInternal = {};
     for (const prop of props) {
       const val = axis[prop];
-      axisInternal[prop as any] = isConditionalAxisValue<any, ExprOrSignalRef>(val)
+      axisInternal[prop as any] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
         ? signalOrValueRefWithCondition<any>(val)
         : signalRefOrValue(val);
     }
@@ -212,7 +213,7 @@ export class UnitModel extends ModelWithField {
       if (fieldOrDatumDef && supportLegend(channel)) {
         const legend = fieldOrDatumDef.legend;
         _legend[channel] = legend
-          ? replaceExprRefInIndex(legend) // convert truthy value to object
+          ? replaceExprRef(legend) // convert truthy value to object
           : legend;
       }
 

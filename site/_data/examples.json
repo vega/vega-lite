@@ -76,11 +76,15 @@
       },
       {
         "name": "bar_negative",
-        "title": "Bar Chart with negative values and a zero-baseline"
+        "title": "Bar Chart with Negative Values and a Zero-Baseline"
+      },
+      {
+        "name": "bar_negative_horizontal_label",
+        "title": "Horizontal Bar Chart with Negative Values and Labels"
       },
       {
         "name": "bar_axis_space_saving",
-        "title": "Bar Chart with a spacing-saving y-axis"
+        "title": "Bar Chart with a Spacing-Saving Y-Axis"
       }
     ],
     "Histograms, Density Plots, and Dot Plots": [
@@ -199,6 +203,11 @@
       {
         "name": "scatter_image",
         "title": "Image-based Scatter Plot"
+      },
+      {
+        "name": "circle_custom_tick_labels",
+        "description": "After using the numerical values to calculate the average rating, they are replaced by string labels.",
+        "title": "Strip plot with custom axis tick labels"
       }
     ],
     "Line Charts": [
@@ -258,8 +267,16 @@
         "style": "background-size: auto 105%; background-position: center center !important;"
       },
       {
+        "name": "line_bump",
+        "title": "Bump Chart"
+      },
+      {
         "name": "trail_color",
         "title": "Line Chart with Varying Size (using the trail mark)"
+      },
+      {
+        "name": "trail_comet",
+        "title": "A comet chart showing changes between between two states"
       },
       {
         "name": "line_skip_invalid_mid_overlay",
@@ -730,6 +747,12 @@
         "name": "geo_layer_line_london",
         "title": "London Tube Lines",
         "description": "This example was created by @jwoLondon.",
+        "png": true
+      },
+      {
+        "name": "geo_params_projections",
+        "title": "Projection explorer",
+        "description": "Compare different projections.",
         "png": true
       }
     ]

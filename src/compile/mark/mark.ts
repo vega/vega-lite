@@ -167,12 +167,19 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
     }
   }
 
-  // For bin and time unit, we have to add bin/timeunit -end channels.
-  const groupByField = model.fieldDef(model.stack.groupbyChannel);
-  const groupby: string[] = vgField(groupByField) ? [vgField(groupByField)] : [];
+  const groupby: string[] = [];
 
-  if (groupByField?.bin || groupByField?.timeUnit) {
-    groupby.push(vgField(groupByField, {binSuffix: 'end'}));
+  if (model.stack.groupbyChannel) {
+    // For bin and time unit, we have to add bin/timeunit -end channels.
+    const groupByField = model.fieldDef(model.stack.groupbyChannel);
+    const field = vgField(groupByField);
+    if (field) {
+      groupby.push(field);
+    }
+
+    if (groupByField?.bin || groupByField?.timeUnit) {
+      groupby.push(vgField(groupByField, {binSuffix: 'end'}));
+    }
   }
 
   const strokeProperties = [

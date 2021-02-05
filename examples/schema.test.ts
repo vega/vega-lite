@@ -4,13 +4,7 @@ import specSchema from '../build/vega-lite-schema.json';
 
 describe('Schema', () => {
   it('should be valid', () => {
-    const ajv = new Ajv({
-      allErrors: true,
-      verbose: true,
-      // format: 'full',  // remove since we don't encode refs
-      extendRefs: 'fail'
-    });
-
+    const ajv = new Ajv();
     ajv.addFormat('color-hex', () => true);
 
     // now validate our data against the schema

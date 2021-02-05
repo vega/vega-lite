@@ -24,6 +24,17 @@
           "as": "argmax_US_Gross.Production Budget"
         },
         {
+          "type": "stack",
+          "groupby": ["Major Genre"],
+          "field": "argmax_US_Gross\\.Production Budget",
+          "sort": {"field": [], "order": []},
+          "as": [
+            "argmax_US_Gross.Production Budget._start",
+            "argmax_US_Gross.Production Budget._end"
+          ],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"argmax_US_Gross.Production Budget\"]) && isFinite(+datum[\"argmax_US_Gross.Production Budget\"])"
         }
@@ -50,8 +61,14 @@
           "description": {
             "signal": "\"argmax_US_Gross['Production Budget']: \" + (format(datum[\"argmax_US_Gross.Production Budget\"], \"\")) + \"; Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"])"
           },
-          "x": {"scale": "x", "field": "argmax_US_Gross\\.Production Budget"},
-          "x2": {"scale": "x", "value": 0},
+          "x": {
+            "scale": "x",
+            "field": "argmax_US_Gross\\.Production Budget\\._end"
+          },
+          "x2": {
+            "scale": "x",
+            "field": "argmax_US_Gross\\.Production Budget\\._start"
+          },
           "y": {"scale": "y", "field": "Major Genre"},
           "height": {"scale": "y", "band": 1}
         }
@@ -64,7 +81,10 @@
       "type": "linear",
       "domain": {
         "data": "source_0",
-        "field": "argmax_US_Gross\\.Production Budget"
+        "fields": [
+          "argmax_US_Gross\\.Production Budget\\._start",
+          "argmax_US_Gross\\.Production Budget\\._end"
+        ]
       },
       "range": [0, {"signal": "width"}],
       "nice": true,

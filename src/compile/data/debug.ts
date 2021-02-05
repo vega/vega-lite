@@ -18,14 +18,15 @@ export function printDebugDataflow(node: DataFlowNode) {
 }
 
 /**
- * Show the dataflow graph as an image (rendered by https://kroki.io/) on the command line.
+ * Show the dataflow graph as an image (rendered by https://kroki.io/) on the console.
  */
 export function drawDataflow(roots: readonly DataFlowNode[], size = 500) {
   const dot = dotString(roots);
   const text = new TextEncoder().encode(dot);
-  const compressed = pako.deflate(text, {level: 9, to: 'string'});
-  const result = btoa(compressed).replace(/\+/g, '-').replace(/\//g, '_');
-  const imageURL = `https://kroki.io/plantuml/png/${result}`;
+  const compressed = pako.deflate(text, {level: 9});
+  const result = Buffer.from(compressed).toString('base64').replace(/\+/g, '-').replace(/\//g, '_');
+  const imageURL = `https://kroki.io/graphviz/png/${result}`;
+  console.log('Dataflow visualization: ', imageURL);
   console.log('%c ', `font-size:${size}px; background:url(${imageURL}) no-repeat; background-size:contain`);
 }
 

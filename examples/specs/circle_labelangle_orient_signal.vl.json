@@ -11,7 +11,7 @@
       "sort": ["mon", "tue", "wed", "thu", "fri", "sat", "sun"],
       "axis": {
         "orient": "right",
-        "labelAngle": {"signal": "yLabelAngle"}
+        "labelAngle": {"expr": "yLabelAngle"}
       }
     },
     "x": {
@@ -20,7 +20,7 @@
       "timeUnit": "hours",
       "axis": {
         "orient": "top",
-        "labelAngle": {"signal": "xLabelAngle"}
+        "labelAngle": {"expr": "xLabelAngle"}
       }
     },
     "size": {
@@ -29,13 +29,11 @@
       "aggregate": "sum"
     }
   },
-  "config": {
-    "signals": [{
-      "name": "xLabelAngle", "value": 0,
-      "bind": {"input": "range", "min": -360, "max": 360}
-    },{
-      "name": "yLabelAngle", "value": 0,
-      "bind": {"input": "range", "min": -360, "max": 360}
-    }]
-  }
+  "params": [{
+    "name": "xLabelAngle", "value": 0,
+    "bind": {"input": "range", "min": -360, "max": 360}
+  },{
+    "name": "yLabelAngle", "value": 0,
+    "bind": {"input": "range", "min": -360, "max": 360}
+  }]
 }

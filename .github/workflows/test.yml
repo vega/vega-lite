@@ -3,11 +3,12 @@ name: Test
 on:
   push:
     branches:
-      - '**'
+      - master
+  pull_request:
 
 jobs:
   test-matrix:
-    name: Node ${{ matrix.node }}
+    name: Node
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -16,16 +17,13 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Node
+      - name: Setup Node ${{ matrix.node }}
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node }}
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
-
-      - name: Install extra dependencies for Puppeteer
-        run: sudo apt-get install libgbm1
 
       - name: Tests
         run: yarn jest test/
@@ -49,10 +47,9 @@ jobs:
       - name: Build
         run: yarn build:site
 
-  runtime-coverage:
+  runtime-lint-coverage:
+    name: Runtime, Linting, and Coverage
     runs-on: ubuntu-latest
-
-    name: Runtime and Coverage
 
     steps:
       - uses: actions/checkout@v2
@@ -65,6 +62,9 @@ jobs:
 
       - name: Build
         run: yarn build:only
+
+      - name: Lint
+        run: yarn lint
 
       - name: Runtime tests
         run: yarn test:runtime

@@ -1,7 +1,6 @@
-import stringify from 'fast-json-stable-stringify';
 import {isObject, isString} from 'vega-util';
 import {DateTimeExpr, dateTimeExprToExpr} from './datetime';
-import {accessPathWithDatum, keys, varName} from './util';
+import {accessPathWithDatum, keys, stringify, varName} from './util';
 
 /** Time Unit that only corresponds to only one part of Date objects. */
 export const LOCAL_SINGLE_TIMEUNIT_INDEX = {
@@ -194,16 +193,8 @@ export const VEGALITE_TIMEFORMAT: TimeFormatConfig = {
   'year-month-date': '%b %d, %Y '
 };
 
-export function getTimeUnitParts(timeUnit: TimeUnit) {
-  const parts: LocalSingleTimeUnit[] = [];
-
-  for (const part of TIMEUNIT_PARTS) {
-    if (containsTimeUnit(timeUnit, part)) {
-      parts.push(part);
-    }
-  }
-
-  return parts;
+export function getTimeUnitParts(timeUnit: TimeUnit): LocalSingleTimeUnit[] {
+  return TIMEUNIT_PARTS.filter(part => containsTimeUnit(timeUnit, part));
 }
 
 /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */

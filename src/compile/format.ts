@@ -15,7 +15,7 @@ import {fieldValidPredicate} from '../predicate';
 import {ScaleType} from '../scale';
 import {formatExpression, normalizeTimeUnit, timeUnitSpecifierExpression} from '../timeunit';
 import {QUANTITATIVE, Type} from '../type';
-import {Dict} from '../util';
+import {Dict, stringify} from '../util';
 import {isSignalRef} from '../vega.schema';
 import {TimeUnit} from './../timeunit';
 import {datumDefToExpr} from './mark/encode/valueref';
@@ -25,7 +25,7 @@ export function isCustomFormatType(formatType: string) {
 }
 
 function customFormatExpr(formatType: string, field: string, format: string | Dict<unknown>) {
-  return `${formatType}(${field}${format ? `, ${JSON.stringify(format)}` : ''})`;
+  return `${formatType}(${field}${format ? `, ${stringify(format)}` : ''})`;
 }
 
 export const BIN_RANGE_DELIMITER = ' \u2013 ';

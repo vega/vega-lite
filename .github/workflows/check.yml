@@ -7,7 +7,7 @@ on:
 
 jobs:
   check:
-    name: Lint, Format, Schema, and Examples
+    name: Format, Schema, and Examples
     runs-on: ubuntu-latest
 
     steps:
@@ -25,10 +25,6 @@ jobs:
           chmod +x parallel
           cp parallel sem
           sudo mv parallel sem /usr/local/bin
-
-      - name: Lint
-        if: github.ref == 'refs/heads/master'
-        run: yarn lint
 
       - name: Format
         if: github.ref != 'refs/heads/master'

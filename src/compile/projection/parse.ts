@@ -3,9 +3,10 @@ import {hasOwnProperty} from 'vega-util';
 import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {getFieldOrDatumDef} from '../../channeldef';
 import {DataSourceType} from '../../data';
+import {replaceExprRef} from '../../expr';
 import {PROJECTION_PROPERTIES} from '../../projection';
 import {GEOJSON} from '../../type';
-import {duplicate, every, stringify} from '../../util';
+import {deepEqual, duplicate, every} from '../../util';
 import {isUnitModel, Model} from '../model';
 import {UnitModel} from '../unit';
 import {ProjectionComponent} from './component';
@@ -16,20 +17,26 @@ export function parseProjection(model: Model) {
 
 function parseUnitProjection(model: UnitModel): ProjectionComponent {
   if (model.hasProjection) {
-    const proj = model.specifiedProjection;
+    const proj = replaceExprRef(model.specifiedProjection);
     const fit = !(proj && (proj.scale != null || proj.translate != null));
     const size = fit ? [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')] : undefined;
     const data = fit ? gatherFitData(model) : undefined;
 
-    return new ProjectionComponent(
+    const projComp = new ProjectionComponent(
       model.projectionName(true),
       {
-        ...(model.config.projection ?? {}),
+        ...(replaceExprRef(model.config.projection) ?? {}),
         ...(proj ?? {})
       },
       size,
       data
     );
+
+    if (!projComp.get('type')) {
+      projComp.set('type', 'equalEarth', false);
+    }
+
+    return projComp;
   }
 
   return undefined;
@@ -76,20 +83,20 @@ function mergeIfNoConflict(first: ProjectionComponent, second: ProjectionCompone
       hasOwnProperty(first.explicit, prop) &&
       hasOwnProperty(second.explicit, prop) &&
       // some properties might be signals or objects and require hashing for comparison
-      stringify(first.get(prop)) === stringify(second.get(prop))
+      deepEqual(first.get(prop), second.get(prop))
     ) {
       return true;
     }
     return false;
   });
 
-  const size = stringify(first.size) === stringify(second.size);
+  const size = deepEqual(first.size, second.size);
   if (size) {
     if (allPropertiesShared) {
       return first;
-    } else if (stringify(first.explicit) === stringify({})) {
+    } else if (deepEqual(first.explicit, {})) {
       return second;
-    } else if (stringify(second.explicit) === stringify({})) {
+    } else if (deepEqual(second.explicit, {})) {
       return first;
     }
   }

@@ -248,7 +248,7 @@ function dateTimeParts(d: DateTime | DateTimeExpr, normalize: boolean) {
     parts.push(month);
   } else if (d.quarter !== undefined) {
     const quarter = normalize ? normalizeQuarter(d.quarter) : d.quarter;
-    parts.push(isNumber(quarter) ? quarter * 3 : quarter + '*3');
+    parts.push(isNumber(quarter) ? quarter * 3 : `${quarter}*3`);
   } else {
     parts.push(0); // months start at zero in JS
   }
@@ -259,7 +259,7 @@ function dateTimeParts(d: DateTime | DateTimeExpr, normalize: boolean) {
     // HACK: Day only works as a standalone unit
     // This is only correct because we always set year to 2006 for day
     const day = normalize ? normalizeDay(d.day) : d.day;
-    parts.push(isNumber(day) ? day + 1 : day + '+1');
+    parts.push(isNumber(day) ? day + 1 : `${day}+1`);
   } else {
     parts.push(1); // Date starts at 1 in JS
   }

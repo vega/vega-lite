@@ -5,7 +5,7 @@ import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers
 import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime';
 import {hasContinuousDomain} from '../../scale';
 import {SelectionInit, SelectionInitInterval, ParameterExtent} from '../../selection';
-import {keys, vals} from '../../util';
+import {keys, stringify, vals} from '../../util';
 import {VgData, VgDomain} from '../../vega.schema';
 import {FacetModel} from '../facet';
 import {LayerModel} from '../layer';
@@ -29,7 +29,7 @@ export function assembleInit(
       return wrap(dateTimeToTimestamp(init));
     }
   }
-  return isExpr ? wrap(JSON.stringify(init)) : init;
+  return isExpr ? wrap(stringify(init)) : init;
 }
 
 export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]) {

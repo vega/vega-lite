@@ -22,7 +22,7 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../cha
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ExprOrSignalRef, ExprRef, replaceExprRefInIndex} from '../expr';
+import {ExprRef, replaceExprRef} from '../expr';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
@@ -41,7 +41,7 @@ import {contains, Dict, duplicate, isEmpty, keys, varName} from '../util';
 import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
-import {signalOrValueRef, signalRefOrValue} from './common';
+import {signalOrValueRef} from './common';
 import {ConcatModel} from './concat';
 import {DataComponent} from './data';
 import {FacetModel} from './facet';
@@ -197,11 +197,11 @@ export abstract class Model {
   ) {
     this.parent = parent;
     this.config = config;
-    this.view = replaceExprRefInIndex(view) as ViewBackground<SignalRef>;
+    this.view = replaceExprRef(view);
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this.name = spec.name ?? parentGivenName;
-    this.title = isText(spec.title) ? {text: spec.title} : spec.title ? this.initTitle(spec.title) : undefined;
+    this.title = isText(spec.title) ? {text: spec.title} : spec.title ? replaceExprRef(spec.title) : undefined;
 
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
@@ -237,16 +237,6 @@ export abstract class Model {
       axes: {},
       legends: {}
     };
-  }
-  private initTitle(title: TitleParams<ExprOrSignalRef>) {
-    const props = keys(title);
-    const titleInternal: TitleParams<SignalRef> = {
-      text: signalRefOrValue(title.text)
-    };
-    for (const prop of props) {
-      titleInternal[prop as any] = signalRefOrValue(title[prop]);
-    }
-    return titleInternal;
   }
 
   public get width(): SignalRef {
@@ -482,7 +472,7 @@ export abstract class Model {
   }
 
   public getName(text: string) {
-    return varName((this.name ? this.name + '_' : '') + text);
+    return varName((this.name ? `${this.name}_` : '') + text);
   }
 
   public getDataName(type: DataSourceType) {

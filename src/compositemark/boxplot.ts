@@ -255,23 +255,23 @@ export function normalizeBoxPlot(
           {
             op: 'min',
             field: continuousAxisChannelDef.field,
-            as: 'lower_whisker_' + continuousAxisChannelDef.field
+            as: `lower_whisker_${continuousAxisChannelDef.field}`
           },
           {
             op: 'max',
             field: continuousAxisChannelDef.field,
-            as: 'upper_whisker_' + continuousAxisChannelDef.field
+            as: `upper_whisker_${continuousAxisChannelDef.field}`
           },
           // preserve lower_box / upper_box
           {
             op: 'min',
-            field: 'lower_box_' + continuousAxisChannelDef.field,
-            as: 'lower_box_' + continuousAxisChannelDef.field
+            field: `lower_box_${continuousAxisChannelDef.field}`,
+            as: `lower_box_${continuousAxisChannelDef.field}`
           },
           {
             op: 'max',
-            field: 'upper_box_' + continuousAxisChannelDef.field,
-            as: 'upper_box_' + continuousAxisChannelDef.field
+            field: `upper_box_${continuousAxisChannelDef.field}`,
+            as: `upper_box_${continuousAxisChannelDef.field}`
           },
           ...aggregate
         ],
@@ -335,12 +335,12 @@ function boxParamsQuartiles(continousAxisField: string): AggregatedFieldDef[] {
     {
       op: 'q1',
       field: continousAxisField,
-      as: 'lower_box_' + continousAxisField
+      as: `lower_box_${continousAxisField}`
     },
     {
       op: 'q3',
       field: continousAxisField,
-      as: 'upper_box_' + continousAxisField
+      as: `upper_box_${continousAxisField}`
     }
   ];
 }
@@ -361,7 +361,7 @@ function boxParams(
     {
       op: 'median',
       field: continuousFieldName,
-      as: 'mid_box_' + continuousFieldName
+      as: `mid_box_${continuousFieldName}`
     },
     {
       op: 'min',
@@ -382,15 +382,15 @@ function boxParams(
           // This is for the  original k-IQR, which we do not expose
           {
             calculate: `datum["upper_box_${continuousFieldName}"] - datum["lower_box_${continuousFieldName}"]`,
-            as: 'iqr_' + continuousFieldName
+            as: `iqr_${continuousFieldName}`
           },
           {
             calculate: `min(datum["upper_box_${continuousFieldName}"] + datum["iqr_${continuousFieldName}"] * ${extent}, datum["max_${continuousFieldName}"])`,
-            as: 'upper_whisker_' + continuousFieldName
+            as: `upper_whisker_${continuousFieldName}`
           },
           {
             calculate: `max(datum["lower_box_${continuousFieldName}"] - datum["iqr_${continuousFieldName}"] * ${extent}, datum["min_${continuousFieldName}"])`,
-            as: 'lower_whisker_' + continuousFieldName
+            as: `lower_whisker_${continuousFieldName}`
           }
         ];
 

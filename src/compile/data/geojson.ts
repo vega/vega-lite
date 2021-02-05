@@ -1,4 +1,4 @@
-import {GeoJSONTransform as VgGeoJSONTransform, Vector2} from 'vega';
+import {Transforms as VgTransform, Vector2} from 'vega';
 import {isString} from 'vega-util';
 import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {getFieldOrDatumDef, isDatumDef, isFieldDef, isValueDef} from '../../channeldef';
@@ -72,12 +72,22 @@ export class GeoJSONNode extends DataFlowNode {
     return `GeoJSON ${this.geojson} ${this.signal} ${hash(this.fields)}`;
   }
 
-  public assemble(): VgGeoJSONTransform {
-    return {
-      type: 'geojson',
-      ...(this.fields ? {fields: this.fields} : {}),
-      ...(this.geojson ? {geojson: this.geojson} : {}),
-      signal: this.signal
-    };
+  public assemble(): VgTransform[] {
+    return [
+      ...(this.geojson
+        ? [
+            {
+              type: 'filter',
+              expr: `isValid(datum["${this.geojson}"])`
+            } as const
+          ]
+        : []),
+      {
+        type: 'geojson',
+        ...(this.fields ? {fields: this.fields} : {}),
+        ...(this.geojson ? {geojson: this.geojson} : {}),
+        signal: this.signal
+      }
+    ];
   }
 }

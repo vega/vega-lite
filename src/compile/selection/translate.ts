@@ -36,8 +36,8 @@ const translate: SelectionCompiler<'interval'> = {
             events: events.map(e => e.between[0]),
             update:
               '{x: x(unit), y: y(unit)' +
-              (x !== undefined ? ', extent_x: ' + (hasScales ? domain(model, X) : `slice(${x.signals.visual})`) : '') +
-              (y !== undefined ? ', extent_y: ' + (hasScales ? domain(model, Y) : `slice(${y.signals.visual})`) : '') +
+              (x !== undefined ? `, extent_x: ${hasScales ? domain(model, X) : `slice(${x.signals.visual})`}` : '') +
+              (y !== undefined ? `, extent_y: ${hasScales ? domain(model, Y) : `slice(${y.signals.visual})`}` : '') +
               '}'
           }
         ]
@@ -87,7 +87,7 @@ function onDelta(
   const reversed = scaleCmpt.get('reverse'); // scale parsing sets this flag for fieldDef.sort
   const sign = !hasScales ? '' : channel === X ? (reversed ? '' : '-') : reversed ? '-' : '';
   const extent = `${anchor}.extent_${channel}`;
-  const offset = `${sign}${delta}.${channel} / ` + (hasScales ? `${sizeSg}` : `span(${extent})`);
+  const offset = `${sign}${delta}.${channel} / ${hasScales ? `${sizeSg}` : `span(${extent})`}`;
   const panFn = !hasScales
     ? 'panLinear'
     : scaleType === 'log'

@@ -3,7 +3,7 @@ import {isBinned, isBinning} from '../../bin';
 import {isContinuousFieldOrDatumDef, isFieldDef, isNumericDataDef, TypedFieldDef} from '../../channeldef';
 import {Config} from '../../config';
 import {Encoding, isAggregate} from '../../encoding';
-import {replaceExprRefInIndex} from '../../expr';
+import {replaceExprRef} from '../../expr';
 import * as log from '../../log';
 import {
   AREA,
@@ -26,7 +26,8 @@ import {contains, getFirstDefined} from '../../util';
 import {getMarkConfig, getMarkPropOrConfig} from '../common';
 
 export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>, config: Config<SignalRef>) {
-  const markDef = replaceExprRefInIndex(originalMarkDef) as MarkDef<Mark, SignalRef>;
+  // FIXME: markDef expects that exprRefs are replaced recursively but replaceExprRef only replaces the top level
+  const markDef: MarkDef<Mark, SignalRef> = replaceExprRef(originalMarkDef) as any;
 
   // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
   const specifiedOrient = getMarkPropOrConfig('orient', markDef, config);
@@ -174,7 +175,10 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
       // Tick is opposite to bar, line, area and never have ranged mark.
       const xIsContinuous = isContinuousFieldOrDatumDef(x);
       const yIsContinuous = isContinuousFieldOrDatumDef(y);
-      if (xIsContinuous && !yIsContinuous) {
+
+      if (specifiedOrient) {
+        return specifiedOrient;
+      } else if (xIsContinuous && !yIsContinuous) {
         return mark !== 'tick' ? 'horizontal' : 'vertical';
       } else if (!xIsContinuous && yIsContinuous) {
         return mark !== 'tick' ? 'vertical' : 'horizontal';
@@ -197,20 +201,8 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
         } else if (xDef.aggregate && !yDef.aggregate) {
           return mark !== 'tick' ? 'horizontal' : 'vertical';
         }
-
-        if (specifiedOrient) {
-          // When ambiguous, use user specified one.
-          return specifiedOrient;
-        }
-
         return 'vertical';
       } else {
-        // Discrete x Discrete case
-        if (specifiedOrient) {
-          // When ambiguous, use user specified one.
-          return specifiedOrient;
-        }
-
         return undefined;
       }
     }
