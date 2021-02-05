@@ -1,48 +1,69 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import translate from '../../../src/compile/selection/transforms/translate';
-import {ScaleType} from '../../../src/scale';
+import translate from '../../../src/compile/selection/translate';
+import {Scale} from '../../../src/scale';
+import {Sort} from '../../../src/sort';
 import {parseUnitModel} from '../../util';
 
-function getModel(xscale?: ScaleType, yscale?: ScaleType) {
+function getModel(
+  xscale: Scale = {type: 'linear'},
+  yscale: Scale = {type: 'linear'},
+  xsort?: Sort<string>,
+  ysort?: Sort<string>
+) {
   const model = parseUnitModel({
     mark: 'circle',
     encoding: {
-      x: {field: 'Horsepower', type: 'quantitative', scale: {type: xscale ?? 'linear'}},
-      y: {field: 'Miles_per_Gallon', type: 'quantitative', scale: {type: yscale ?? 'linear'}},
+      x: {field: 'Horsepower', type: 'quantitative', scale: xscale, ...(xsort ? {sort: xsort} : {})},
+      y: {field: 'Miles_per_Gallon', type: 'quantitative', scale: yscale, ...(ysort ? {sort: ysort} : {})},
       color: {field: 'Origin', type: 'nominal'}
     }
   });
 
   model.parseScale();
-  const selCmpts = parseUnitSelection(model, {
-    one: {
-      type: 'single'
+  const selCmpts = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: {
+        type: 'point'
+      }
     },
-    two: {
-      type: 'multi'
+    {
+      name: 'three',
+      select: {
+        type: 'interval',
+        translate: false
+      }
     },
-    three: {
-      type: 'interval',
-      translate: false
+    {
+      name: 'four',
+      select: {
+        type: 'interval'
+      }
     },
-    four: {
-      type: 'interval'
+    {
+      name: 'five',
+      select: {
+        type: 'interval',
+        translate: '[mousedown, mouseup] > mousemove, [keydown, keyup] > touchmove'
+      }
     },
-    five: {
-      type: 'interval',
-      translate: '[mousedown, mouseup] > mousemove, [keydown, keyup] > touchmove'
-    },
-    six: {
-      type: 'interval',
+    {
+      name: 'six',
+      select: {
+        type: 'interval'
+      },
       bind: 'scales'
     },
-    seven: {
-      type: 'interval',
-      translate: null
+    {
+      name: 'seven',
+      select: {
+        type: 'interval',
+        translate: null
+      }
     }
-  });
+  ]);
 
   return {model, selCmpts};
 }
@@ -50,13 +71,12 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
 describe('Translate Selection Transform', () => {
   it('identifies transform invocation', () => {
     const {selCmpts} = getModel();
-    expect(translate.has(selCmpts['one'])).not.toBe(true);
-    expect(translate.has(selCmpts['two'])).not.toBe(true);
-    expect(translate.has(selCmpts['three'])).not.toBe(true);
-    expect(translate.has(selCmpts['four'])).not.toBe(false);
-    expect(translate.has(selCmpts['five'])).not.toBe(false);
-    expect(translate.has(selCmpts['six'])).not.toBe(false);
-    expect(translate.has(selCmpts['seven'])).not.toBe(true);
+    expect(translate.defined(selCmpts['one'])).not.toBe(true);
+    expect(translate.defined(selCmpts['three'])).not.toBe(true);
+    expect(translate.defined(selCmpts['four'])).not.toBe(false);
+    expect(translate.defined(selCmpts['five'])).not.toBe(false);
+    expect(translate.defined(selCmpts['six'])).not.toBe(false);
+    expect(translate.defined(selCmpts['seven'])).not.toBe(true);
   });
 
   describe('Anchor/Delta signals', () => {
@@ -170,7 +190,7 @@ describe('Translate Selection Transform', () => {
           'clampRange(panLinear(four_translate_anchor.extent_y, four_translate_delta.y / span(four_translate_anchor.extent_y)), 0, height)'
       });
 
-      const model2 = getModel('log', 'pow').model;
+      const model2 = getModel({type: 'log'}, {type: 'pow'}).model;
       model2.component.selection = {four: selCmpts['four']};
       signals = assembleUnitSelectionSignals(model2, []);
       expect(signals.filter(s => s.name === 'four_x')[0].on).toContainEqual({
@@ -186,35 +206,94 @@ describe('Translate Selection Transform', () => {
       });
     });
 
-    it('builds panLinear exprs for scale-bound intervals', () => {
-      const {model, selCmpts} = getModel();
-      model.component.selection = {six: selCmpts['six']};
-      const signals = assembleUnitSelectionSignals(model, []);
+    describe('scale-bound intervals', () => {
+      it('builds panLinear exprs', () => {
+        const {model, selCmpts} = getModel();
+        model.component.selection = {six: selCmpts['six']};
+        const signals = assembleUnitSelectionSignals(model, []);
 
-      expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
-        events: {signal: 'six_translate_delta'},
-        update: 'panLinear(six_translate_anchor.extent_x, -six_translate_delta.x / width)'
+        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+          events: {signal: 'six_translate_delta'},
+          update: 'panLinear(six_translate_anchor.extent_x, -six_translate_delta.x / width)'
+        });
+
+        expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+          events: {signal: 'six_translate_delta'},
+          update: 'panLinear(six_translate_anchor.extent_y, six_translate_delta.y / height)'
+        });
       });
 
-      expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
-        events: {signal: 'six_translate_delta'},
-        update: 'panLinear(six_translate_anchor.extent_y, six_translate_delta.y / height)'
-      });
-    });
+      it('builds panLog exprs', () => {
+        const {model, selCmpts} = getModel({type: 'log'});
+        model.component.selection = {six: selCmpts['six']};
+        const signals = assembleUnitSelectionSignals(model, []);
 
-    it('builds panLog/panPow exprs for scale-bound intervals', () => {
-      const {model, selCmpts} = getModel('log', 'pow');
-      model.component.selection = {six: selCmpts['six']};
-      const signals = assembleUnitSelectionSignals(model, []);
-
-      expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
-        events: {signal: 'six_translate_delta'},
-        update: 'panLog(six_translate_anchor.extent_x, -six_translate_delta.x / width)'
+        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+          events: {signal: 'six_translate_delta'},
+          update: 'panLog(six_translate_anchor.extent_x, -six_translate_delta.x / width)'
+        });
       });
 
-      expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
-        events: {signal: 'six_translate_delta'},
-        update: 'panPow(six_translate_anchor.extent_y, six_translate_delta.y / height, 1)'
+      it('builds panSymlog exprs', () => {
+        const {model, selCmpts} = getModel({type: 'symlog'}, {type: 'symlog', constant: 0.5});
+        model.component.selection = {six: selCmpts['six']};
+        const signals = assembleUnitSelectionSignals(model, []);
+
+        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+          events: {signal: 'six_translate_delta'},
+          update: 'panSymlog(six_translate_anchor.extent_x, -six_translate_delta.x / width, 1)'
+        });
+
+        expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+          events: {signal: 'six_translate_delta'},
+          update: 'panSymlog(six_translate_anchor.extent_y, six_translate_delta.y / height, 0.5)'
+        });
+      });
+
+      it('builds panPow exprs', () => {
+        const {model, selCmpts} = getModel({type: 'pow'}, {type: 'pow', exponent: 2});
+        model.component.selection = {six: selCmpts['six']};
+        const signals = assembleUnitSelectionSignals(model, []);
+
+        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+          events: {signal: 'six_translate_delta'},
+          update: 'panPow(six_translate_anchor.extent_x, -six_translate_delta.x / width, 1)'
+        });
+
+        expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+          events: {signal: 'six_translate_delta'},
+          update: 'panPow(six_translate_anchor.extent_y, six_translate_delta.y / height, 2)'
+        });
+      });
+
+      it('respects reversals', () => {
+        let {model, selCmpts} = getModel({type: 'linear', reverse: true}, {type: 'linear', reverse: true});
+        model.component.selection = {six: selCmpts['six']};
+        let signals = assembleUnitSelectionSignals(model, []);
+
+        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+          events: {signal: 'six_translate_delta'},
+          update: 'panLinear(six_translate_anchor.extent_x, six_translate_delta.x / width)'
+        });
+
+        expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+          events: {signal: 'six_translate_delta'},
+          update: 'panLinear(six_translate_anchor.extent_y, -six_translate_delta.y / height)'
+        });
+
+        ({model, selCmpts} = getModel({type: 'linear'}, {type: 'linear'}, 'descending', 'descending'));
+        model.component.selection = {six: selCmpts['six']};
+        signals = assembleUnitSelectionSignals(model, []);
+
+        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+          events: {signal: 'six_translate_delta'},
+          update: 'panLinear(six_translate_anchor.extent_x, six_translate_delta.x / width)'
+        });
+
+        expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+          events: {signal: 'six_translate_delta'},
+          update: 'panLinear(six_translate_anchor.extent_y, -six_translate_delta.y / height)'
+        });
       });
     });
   });

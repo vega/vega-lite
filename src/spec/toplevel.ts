@@ -5,7 +5,8 @@ import {signalRefOrValue} from '../compile/common';
 import {Config} from '../config';
 import {InlineDataset} from '../data';
 import {ExprRef} from '../expr';
-import {Parameter} from '../parameter';
+import {VariableParameter} from '../parameter';
+import {TopLevelSelectionParameter} from '../selection';
 import {Dict} from '../util';
 
 /**
@@ -69,9 +70,9 @@ export interface TopLevelProperties<ES extends ExprRef | SignalRef = ExprRef | S
   autosize?: AutosizeType | AutoSizeParams; // Vega actually supports signal for autosize. However, we need to check autosize at compile time to infer the rest of the spec. Thus VL's autosize won't support SignalRef for now.
 
   /**
-   * Dynamic variables that parameterize a visualization.
+   * Dynamic variables or selections that parameterize a visualization.
    */
-  params?: Parameter[];
+  params?: (VariableParameter | TopLevelSelectionParameter)[];
 }
 
 export type FitType = 'fit' | 'fit-x' | 'fit-y';

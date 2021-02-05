@@ -10,7 +10,7 @@ const generate = process.env.VL_GENERATE_TESTS;
 const output = 'test-runtime/resources';
 
 export type ComposeType = 'unit' | 'repeat' | 'facet';
-export const selectionTypes: SelectionType[] = ['single', 'multi', 'interval'];
+export const selectionTypes: SelectionType[] = ['point', 'interval'];
 export const compositeTypes: ComposeType[] = ['repeat', 'facet'];
 export const resolutions: SelectionResolution[] = ['union', 'intersect'];
 
@@ -107,26 +107,27 @@ export const hits = {
   }
 };
 
-function base(iter: number, sel: any, opts: any = {}): NormalizedUnitSpec | NormalizedLayerSpec {
+function base(iter: number, selDef: any, opts: any = {}): NormalizedUnitSpec | NormalizedLayerSpec {
   const data = {values: opts.values ?? tuples};
   const x = {field: 'a', type: 'quantitative', ...opts.x};
   const y = {field: 'b', type: 'quantitative', ...opts.y};
   const color = {field: 'c', type: 'nominal', ...opts.color};
   const size = {value: 100, ...opts.size};
-  const selection = {sel};
+  const {bind, ...select} = selDef;
+  const params = [{name: 'sel', select, bind}];
   const mark = 'circle';
 
   if (iter % 2 === 0) {
     return {
       data,
-      selection,
+      params,
       mark,
       encoding: {
         x,
         y,
         size,
         color: {
-          condition: {selection: 'sel', ...color},
+          condition: {param: 'sel', ...color},
           value: 'grey'
         }
       }
@@ -136,7 +137,7 @@ function base(iter: number, sel: any, opts: any = {}): NormalizedUnitSpec | Norm
       data,
       layer: [
         {
-          selection,
+          params,
           mark,
           encoding: {
             x,
@@ -147,7 +148,7 @@ function base(iter: number, sel: any, opts: any = {}): NormalizedUnitSpec | Norm
           }
         },
         {
-          transform: [{filter: {selection: 'sel'}}],
+          transform: [{filter: {param: 'sel'}}],
           mark,
           encoding: {x, y, size, color}
         }

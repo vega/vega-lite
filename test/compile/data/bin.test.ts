@@ -35,7 +35,7 @@ function makeMovieExample(t: BinTransform) {
 function makeMovieExampleWithSelection(t: BinTransform) {
   return parseUnitModelWithScaleAndSelection({
     data: {url: 'data/movies.json'},
-    selection: {foo: {type: 'interval'}},
+    params: [{name: 'foo', select: {type: 'interval'}}],
     mark: 'circle',
     transform: [t],
     encoding: {
@@ -109,16 +109,16 @@ describe('compile/data/bin', () => {
 
     it('should add bin transform and correctly apply bin for binned field with selection extent', () => {
       const model = parseUnitModelWithScaleAndSelection({
-        selection: {foo: {type: 'interval', fields: ['Acceleration']}},
+        params: [{name: 'foo', select: {type: 'interval', fields: ['Acceleration']}}],
         mark: 'point',
         encoding: {
           x: {
-            bin: {extent: {selection: 'foo'}},
+            bin: {extent: {param: 'foo'}},
             field: 'Acceleration',
             type: 'quantitative'
           },
           y: {
-            bin: {extent: {selection: 'foo'}},
+            bin: {extent: {param: 'foo'}},
             field: 'mpg',
             type: 'quantitative'
           }
@@ -129,34 +129,31 @@ describe('compile/data/bin', () => {
       expect(transform[0]).toEqual({
         type: 'extent',
         field: 'Acceleration',
-        signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_extent'
+        signal: 'bin_extent_param_foo_maxbins_10_Acceleration_extent'
       });
       expect(transform[1]).toEqual({
         type: 'bin',
         field: 'Acceleration',
-        as: [
-          'bin_extent_selection_foo_maxbins_10_Acceleration',
-          'bin_extent_selection_foo_maxbins_10_Acceleration_end'
-        ],
+        as: ['bin_extent_param_foo_maxbins_10_Acceleration', 'bin_extent_param_foo_maxbins_10_Acceleration_end'],
         maxbins: 10,
-        signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_bins',
-        extent: {signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_extent'},
+        signal: 'bin_extent_param_foo_maxbins_10_Acceleration_bins',
+        extent: {signal: 'bin_extent_param_foo_maxbins_10_Acceleration_extent'},
         span: {signal: 'span(foo["Acceleration"])'}
       });
     });
 
     it('should add bin transform and correctly apply bin for binned field with selection with field extent', () => {
       const model = parseUnitModelWithScaleAndSelection({
-        selection: {foo: {type: 'interval', fields: ['Acceleration']}},
+        params: [{name: 'foo', select: {type: 'interval', fields: ['Acceleration']}}],
         mark: 'point',
         encoding: {
           y: {
-            bin: {extent: {selection: 'foo', field: 'bar'}},
+            bin: {extent: {param: 'foo', field: 'bar'}},
             field: 'Acceleration',
             type: 'quantitative'
           },
           x: {
-            bin: {extent: {selection: 'foo', field: 'bar'}},
+            bin: {extent: {param: 'foo', field: 'bar'}},
             field: 'Acceleration',
             type: 'quantitative'
           }
@@ -167,18 +164,18 @@ describe('compile/data/bin', () => {
       expect(transform[0]).toEqual({
         type: 'extent',
         field: 'Acceleration',
-        signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_extent'
+        signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_extent'
       });
       expect(transform[1]).toEqual({
         type: 'bin',
         field: 'Acceleration',
         as: [
-          'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration',
-          'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_end'
+          'bin_extent_param_foo_field_bar_maxbins_10_Acceleration',
+          'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_end'
         ],
         maxbins: 10,
-        signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_bins',
-        extent: {signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_extent'},
+        signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_bins',
+        extent: {signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_extent'},
         span: {signal: 'span(foo["bar"])'}
       });
     });
@@ -262,7 +259,7 @@ describe('compile/data/bin', () => {
 
     it('should add bin transform from transform array and correctly apply bin with selection extent', () => {
       const t: BinTransform = {
-        bin: {extent: {selection: 'foo'}},
+        bin: {extent: {param: 'foo'}},
         field: 'Acceleration',
         as: 'binned_acceleration'
       };
@@ -272,22 +269,22 @@ describe('compile/data/bin', () => {
       expect(transform[0]).toEqual({
         type: 'extent',
         field: 'Acceleration',
-        signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_extent'
+        signal: 'bin_extent_param_foo_maxbins_10_Acceleration_extent'
       });
       expect(transform[1]).toEqual({
         type: 'bin',
         field: 'Acceleration',
         as: ['binned_acceleration', 'binned_acceleration_end'],
         maxbins: 10,
-        signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_bins',
-        extent: {signal: 'bin_extent_selection_foo_maxbins_10_Acceleration_extent'},
+        signal: 'bin_extent_param_foo_maxbins_10_Acceleration_bins',
+        extent: {signal: 'bin_extent_param_foo_maxbins_10_Acceleration_extent'},
         span: {signal: 'span(foo["Rotten_Tomatoes_Rating"])'}
       });
     });
 
     it('should add bin transform from transform array and correctly apply bin with selection with field extent', () => {
       const t: BinTransform = {
-        bin: {extent: {selection: 'foo', field: 'bar'}},
+        bin: {extent: {param: 'foo', field: 'bar'}},
         field: 'Acceleration',
         as: 'binned_acceleration'
       };
@@ -297,15 +294,15 @@ describe('compile/data/bin', () => {
       expect(transform[0]).toEqual({
         type: 'extent',
         field: 'Acceleration',
-        signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_extent'
+        signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_extent'
       });
       expect(transform[1]).toEqual({
         type: 'bin',
         field: 'Acceleration',
         as: ['binned_acceleration', 'binned_acceleration_end'],
         maxbins: 10,
-        signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_bins',
-        extent: {signal: 'bin_extent_selection_foo_field_bar_maxbins_10_Acceleration_extent'},
+        signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_bins',
+        extent: {signal: 'bin_extent_param_foo_field_bar_maxbins_10_Acceleration_extent'},
         span: {signal: 'span(foo["bar"])'}
       });
     });

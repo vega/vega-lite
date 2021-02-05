@@ -6,16 +6,14 @@
       "y": {"aggregate": "sum", "field": "count"}
   },
   "layer": [{
-    "selection": {
-      "brush": {
-        "type": "interval",
-        "encodings": ["x"]
-      }
-    },
+    "params": [{
+      "name": "brush",
+      "select": {"type": "interval", "encodings": ["x"]}
+    }],
     "mark": "area"
   }, {
     "transform": [
-      {"filter": {"selection": "brush"}}
+      {"filter": {"param": "brush"}}
     ],
     "mark": {"type": "area", "color": "goldenrod"}
   }]

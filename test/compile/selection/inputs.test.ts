@@ -1,7 +1,7 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import inputs from '../../../src/compile/selection/transforms/inputs';
+import inputs from '../../../src/compile/selection/inputs';
 import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
 
@@ -16,74 +16,93 @@ describe('Inputs Selection Transform', () => {
   });
 
   model.parseScale();
-  const selCmpts = parseUnitSelection(model, {
-    one: {
-      type: 'single',
+  const selCmpts = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: 'point',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    two: {
-      type: 'single',
-      fields: ['Cylinders', 'Horsepower'],
+    {
+      name: 'two',
+      select: {
+        type: 'point',
+        fields: ['Cylinders', 'Horsepower']
+      },
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    three: {
-      type: 'single',
-      nearest: true,
-      fields: ['Cylinders', 'Origin'],
+    {
+      name: 'three',
+      select: {
+        type: 'point',
+        fields: ['Cylinders', 'Origin'],
+        nearest: true
+      },
       bind: {
         Horsepower: {input: 'range', min: 0, max: 10, step: 1},
         Origin: {input: 'select', options: ['Japan', 'USA', 'Europe']}
       }
     },
-    four: {
-      type: 'single',
+    {
+      name: 'four',
+      select: 'point',
       bind: null
     },
-    six: {
-      type: 'interval',
+    {
+      name: 'six',
+      select: 'interval',
       bind: 'scales'
     },
-    seven: {
-      type: 'single',
-      fields: ['Year'],
+    {
+      name: 'seven',
+      value: [
+        {
+          Year: {year: 1970, month: 3, date: 9}
+        }
+      ],
+      select: {type: 'point', fields: ['Year']},
       bind: {
         Year: {input: 'range', min: 1970, max: 1980, step: 1}
-      },
-      init: {
-        Year: {year: 1970, month: 3, date: 9}
       }
     },
-    eight: {
-      type: 'single',
-      on: 'dblclick',
+    {
+      name: 'eight',
+      select: {type: 'point', on: 'dblclick'},
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    nine: {
-      type: 'single',
-      on: 'click',
-      clear: 'dblclick',
+    {
+      name: 'nine',
+      select: {
+        type: 'point',
+        on: 'click',
+        clear: 'dblclick'
+      },
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    ten: {
-      type: 'single',
-      fields: ['nested.a'],
+    {
+      name: 'ten',
+      select: {type: 'point', fields: ['nested.a']},
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    eleven: {
-      type: 'single',
-      fields: ['nested.a'],
-      on: 'click',
+    {
+      name: 'eleven',
+      select: {
+        type: 'point',
+        fields: ['nested.a'],
+        on: 'click'
+      },
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    'space separated': {
-      type: 'single',
+    {
+      name: 'space separated',
+      select: 'point',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     },
-    'dash-separated': {
-      type: 'single',
+    {
+      name: 'dash-separated',
+      select: 'point',
       bind: {input: 'range', min: 0, max: 10, step: 1}
     }
-  });
+  ]);
 
   it(
     'drop invalid selection',
@@ -98,29 +117,33 @@ describe('Inputs Selection Transform', () => {
       });
 
       model1.parseScale();
-      const invalidBindLegendSelCmpts = parseUnitSelection(model1, {
-        twelve: {type: 'single', bind: 'legend'}
-      });
+      const invalidBindLegendSelCmpts = parseUnitSelection(model1, [
+        {
+          name: 'twelve',
+          select: 'point',
+          bind: 'legend'
+        }
+      ]);
 
-      expect(inputs.has(invalidBindLegendSelCmpts['twelve'])).toBeFalsy();
+      expect(inputs.defined(invalidBindLegendSelCmpts['twelve'])).toBeFalsy();
       expect(localLogger.warns[0]).toEqual(log.message.LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
     })
   );
 
   it('identifies transform invocation', () => {
-    expect(inputs.has(selCmpts['one'])).toBeTruthy();
-    expect(inputs.has(selCmpts['two'])).toBeTruthy();
-    expect(inputs.has(selCmpts['three'])).toBeTruthy();
-    expect(inputs.has(selCmpts['four'])).toBeFalsy();
-    expect(inputs.has(selCmpts['six'])).toBeFalsy();
-    expect(inputs.has(selCmpts['seven'])).toBeTruthy();
-    expect(inputs.has(selCmpts['eight'])).toBeTruthy();
-    expect(inputs.has(selCmpts['nine'])).toBeTruthy();
-    expect(inputs.has(selCmpts['ten'])).toBeTruthy();
-    expect(inputs.has(selCmpts['eleven'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['one'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['two'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['three'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['four'])).toBeFalsy();
+    expect(inputs.defined(selCmpts['six'])).toBeFalsy();
+    expect(inputs.defined(selCmpts['seven'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['eight'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['nine'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['ten'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['eleven'])).toBeTruthy();
 
-    expect(inputs.has(selCmpts['space_separated'])).toBeTruthy();
-    expect(inputs.has(selCmpts['dash_separated'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['space_separated'])).toBeTruthy();
+    expect(inputs.defined(selCmpts['dash_separated'])).toBeTruthy();
   });
 
   it('adds widget binding for default projection', () => {
@@ -272,7 +295,7 @@ describe('Inputs Selection Transform', () => {
               events: [{source: 'scope', type: 'click'}],
               update: 'datum && item().mark.marktype !== \'group\' ? datum["_vgsid_"] : null'
             },
-            {events: parseSelector('dblclick', 'scope'), update: 'null'}
+            {events: parseSelector('dblclick', 'view'), update: 'null'}
           ],
           bind: {input: 'range', min: 0, max: 10, step: 1}
         }

@@ -4,7 +4,6 @@
   "width": 400,
   "height": 300,
   "data": {"url": "data/weather.csv"},
-  "transform": [{"filter": "datum.location == \"Seattle\""}],
   "layer": [
     {
       "mark": {"opacity": 0.3, "type": "area", "color": "#85C5A6"},
@@ -41,5 +40,6 @@
       }
     }
   ],
-  "resolve": {"scale": {"y": "independent"}}
+  "resolve": {"scale": {"y": "independent"}},
+  "transform": [{"filter": "datum.location == \"Seattle\""}]
 }

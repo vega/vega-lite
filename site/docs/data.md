@@ -98,7 +98,7 @@ The format object describes the data format and additional parsing instructions.
 
 ### json
 
-Loads a JavaScript Object Notation (JSON) file. Assumes row-oriented data, where each row is an object with named attributes. This is the default file format, and so will be used if no format parameter is provided. If specified, the `format` parameter should have a type property of `"json"`, and can also accept the following:
+Loads a JavaScript Object Notation (JSON) file. Assumes row-oriented data, where each row is an object with named attributes. This is the default file format, and so will be used if no format property is provided. If specified, the `format` property should have a type property of `"json"`, and can also accept the following:
 
 {% include table.html props="property" source="JsonDataFormat" %}
 
@@ -128,7 +128,7 @@ Load a JavaScript Object Notation (JSON) file using the TopoJSON format. The inp
 
 ### Sequence Generator
 
-The sequence generator creates a set of numeric values based on given start, stop, and (optional) step parameters. By default, new objects with a single field named `data` are generated; use the `as` parameter to change the field name.
+The sequence generator creates a set of numeric values based on given start, stop, and (optional) step properties. By default, new objects with a single field named `data` are generated; use the `as` property to change the field name.
 
 {% include table.html props="start,stop,step,as" source="SequenceParams" %}
 
@@ -140,7 +140,7 @@ For example, the following specification generates a domain of number values and
 
 ### Graticule Generator
 
-A graticule is a grid formed by lines of latitude and longitude. The graticule generator creates a geographic grid (as [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) data) to serve as a guiding element to include in maps. The graticule generator can be specified with either a boolean `true` value (indicating the default graticule) or a graticule parameter object:
+A graticule is a grid formed by lines of latitude and longitude. The graticule generator creates a geographic grid (as [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) data) to serve as a guiding element to include in maps. The graticule generator can be specified with either a boolean `true` value (indicating the default graticule) or a graticule property object:
 
 {% include table.html props="extent,extentMajor,extentMinor,precision,step,stepMajor,stepMinor" source="GraticuleParams" %}
 
@@ -152,7 +152,7 @@ The following example generates a custom graticule and visualizes it using an or
 
 ### Sphere Generator
 
-A [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) sphere represents the full globe. The sphere generator injects a dataset whose contents are simply `[{"type": "Sphere"}]`. The resulting sphere can be used as a background layer within a map to represent the extent of the Earth. The sphere generator requires either a boolean `true` value or an empty object `{}` as its sole parameter.
+A [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) sphere represents the full globe. The sphere generator injects a dataset whose contents are simply `[{"type": "Sphere"}]`. The resulting sphere can be used as a background layer within a map to represent the extent of the Earth. The sphere generator requires either a boolean `true` value or an empty object `{}` as its sole property.
 
 The following example generates a layered base map containing a sphere (light blue fill) and a default graticule (black strokes):
 

@@ -15,66 +15,84 @@ describe('Interval Selections', () => {
   });
   model.parseScale();
 
-  const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'interval', encodings: ['x'], clear: false, translate: false, zoom: false},
-    two: {
-      type: 'interval',
-      encodings: ['y'],
-      bind: 'scales',
-      clear: false,
-      translate: false,
-      zoom: false
+  const selCmpts = (model.component.selection = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: {type: 'interval', encodings: ['x'], clear: false, translate: false, zoom: false}
     },
-    'thr-ee': {
-      type: 'interval',
-      on: '[mousedown, mouseup] > mousemove, [keydown, keyup] > keypress',
-      clear: false,
-      translate: false,
-      zoom: false,
-      resolve: 'intersect',
-      mark: {
-        fill: 'red',
-        fillOpacity: 0.75,
-        stroke: 'black',
-        strokeWidth: 4,
-        strokeDash: [10, 5],
-        strokeDashOffset: 3,
-        strokeOpacity: 0.25
+    {
+      name: 'two',
+      select: {
+        type: 'interval',
+        encodings: ['y'],
+        clear: false,
+        translate: false,
+        zoom: false
+      },
+      bind: 'scales'
+    },
+    {
+      name: 'thr-ee',
+      select: {
+        type: 'interval',
+        on: '[mousedown, mouseup] > mousemove, [keydown, keyup] > keypress',
+        clear: false,
+        translate: false,
+        zoom: false,
+        resolve: 'intersect',
+        mark: {
+          fill: 'red',
+          fillOpacity: 0.75,
+          stroke: 'black',
+          strokeWidth: 4,
+          strokeDash: [10, 5],
+          strokeDashOffset: 3,
+          strokeOpacity: 0.25
+        }
       }
     },
-    four: {
-      type: 'interval',
-      clear: false,
-      translate: false,
-      zoom: false,
-      encodings: ['x'],
-      init: {x: [50, 70]}
+    {
+      name: 'four',
+      value: {x: [50, 70]},
+      select: {
+        type: 'interval',
+        encodings: ['x'],
+        clear: false,
+        translate: false,
+        zoom: false
+      }
     },
-    five: {
-      type: 'interval',
-      clear: false,
-      translate: false,
-      zoom: false,
-      init: {x: [50, 60], y: [23, 54]}
+    {
+      name: 'five',
+      value: {x: [50, 60], y: [23, 54]},
+      select: {
+        type: 'interval',
+        clear: false,
+        translate: false,
+        zoom: false
+      }
     },
-    six: {
-      type: 'interval',
-      clear: false,
-      translate: false,
-      zoom: false,
-      encodings: ['x'],
-      init: {
+    {
+      name: 'six',
+      value: {
         x: [
           {year: 2000, month: 10, date: 5},
           {year: 2001, month: 1, date: 13}
         ]
+      },
+      select: {
+        type: 'interval',
+        clear: false,
+        translate: false,
+        zoom: false,
+        encodings: ['x']
       }
     }
-  }));
+  ]));
 
   describe('Tuple Signals', () => {
     it('builds projection signals', () => {
-      const oneSg = interval.signals(model, selCmpts['one']);
+      const oneSg = interval.signals(model, selCmpts['one'], []);
       expect(oneSg).toEqual(
         expect.arrayContaining([
           {
@@ -118,13 +136,13 @@ describe('Interval Selections', () => {
         ])
       );
 
-      const twoSg = interval.signals(model, selCmpts['two']);
+      const twoSg = interval.signals(model, selCmpts['two'], []);
       expect(twoSg).toContainEqual({
         name: 'two_Miles_per_Gallon',
         on: []
       });
 
-      const threeSg = interval.signals(model, selCmpts['thr_ee']);
+      const threeSg = interval.signals(model, selCmpts['thr_ee'], []);
       expect(threeSg).toEqual(
         expect.arrayContaining([
           {
@@ -211,7 +229,7 @@ describe('Interval Selections', () => {
         ])
       );
 
-      const fourSg = interval.signals(model, selCmpts['four']);
+      const fourSg = interval.signals(model, selCmpts['four'], []);
       expect(fourSg).toEqual(
         expect.arrayContaining([
           {
@@ -256,7 +274,7 @@ describe('Interval Selections', () => {
         ])
       );
 
-      const fiveSg = interval.signals(model, selCmpts['five']);
+      const fiveSg = interval.signals(model, selCmpts['five'], []);
       expect(fiveSg).toEqual(
         expect.arrayContaining([
           {
@@ -329,7 +347,7 @@ describe('Interval Selections', () => {
         ])
       );
 
-      const sixSg = interval.signals(model, selCmpts['six']);
+      const sixSg = interval.signals(model, selCmpts['six'], []);
       expect(sixSg).toEqual(
         expect.arrayContaining([
           {
@@ -376,7 +394,7 @@ describe('Interval Selections', () => {
     });
 
     it('builds trigger signals', () => {
-      const oneSg = interval.signals(model, selCmpts['one']);
+      const oneSg = interval.signals(model, selCmpts['one'], []);
       expect(oneSg).toContainEqual({
         name: 'one_tuple',
         on: [
@@ -387,7 +405,7 @@ describe('Interval Selections', () => {
         ]
       });
 
-      const twoSg = interval.signals(model, selCmpts['two']);
+      const twoSg = interval.signals(model, selCmpts['two'], []);
       expect(twoSg).toContainEqual({
         name: 'two_tuple',
         on: [
@@ -398,7 +416,7 @@ describe('Interval Selections', () => {
         ]
       });
 
-      const threeSg = interval.signals(model, selCmpts['thr_ee']);
+      const threeSg = interval.signals(model, selCmpts['thr_ee'], []);
       expect(threeSg).toContainEqual({
         name: 'thr_ee_tuple',
         on: [
@@ -410,7 +428,7 @@ describe('Interval Selections', () => {
         ]
       });
 
-      const fourSg = interval.signals(model, selCmpts['four']);
+      const fourSg = interval.signals(model, selCmpts['four'], []);
       expect(fourSg).toContainEqual({
         name: 'four_tuple',
         init: '{unit: "", fields: four_tuple_fields, values: [[50, 70]]}',
@@ -422,7 +440,7 @@ describe('Interval Selections', () => {
         ]
       });
 
-      const fiveSg = interval.signals(model, selCmpts['five']);
+      const fiveSg = interval.signals(model, selCmpts['five'], []);
       expect(fiveSg).toContainEqual({
         name: 'five_tuple',
         init: '{unit: "", fields: five_tuple_fields, values: [[50, 60], [23, 54]]}',
@@ -447,31 +465,25 @@ describe('Interval Selections', () => {
 
       model2.parseScale();
 
-      const selCmpts2 = (model2.component.selection = parseUnitSelection(model2, {
-        one: {
-          type: 'interval',
-          encodings: ['x'],
-          translate: false,
-          zoom: false
+      const selCmpts2 = (model2.component.selection = parseUnitSelection(model2, [
+        {
+          name: 'one',
+          select: {
+            type: 'interval',
+            encodings: ['x'],
+            translate: false,
+            zoom: false
+          }
         }
-      }));
+      ]));
 
-      const sg = interval.signals(model, selCmpts2['one']);
+      const sg = interval.signals(model, selCmpts2['one'], []);
       expect(sg[0].name).toBe('one_x_1');
       expect(sg[1].name).toBe('one_x');
     });
   });
 
   it('builds modify signals', () => {
-    const oneExpr = interval.modifyExpr(model, selCmpts['one']);
-    expect(oneExpr).toBe('one_tuple, true');
-
-    const twoExpr = interval.modifyExpr(model, selCmpts['two']);
-    expect(twoExpr).toBe('two_tuple, true');
-
-    const threeExpr = interval.modifyExpr(model, selCmpts['thr_ee']);
-    expect(threeExpr).toBe('thr_ee_tuple, {unit: ""}');
-
     const signals = assembleUnitSelectionSignals(model, []);
     expect(signals).toEqual(
       expect.arrayContaining([
@@ -480,7 +492,7 @@ describe('Interval Selections', () => {
           on: [
             {
               events: {signal: 'one_tuple'},
-              update: `modify("one_store", ${oneExpr})`
+              update: `modify("one_store", one_tuple, true)`
             }
           ]
         },
@@ -489,7 +501,7 @@ describe('Interval Selections', () => {
           on: [
             {
               events: {signal: 'two_tuple'},
-              update: `modify("two_store", ${twoExpr})`
+              update: `modify("two_store", two_tuple, true)`
             }
           ]
         },
@@ -498,7 +510,7 @@ describe('Interval Selections', () => {
           on: [
             {
               events: {signal: 'thr_ee_tuple'},
-              update: `modify("thr_ee_store", ${threeExpr})`
+              update: `modify("thr_ee_store", thr_ee_tuple, {unit: ""})`
             }
           ]
         }
@@ -724,11 +736,14 @@ describe('Interval Selections', () => {
     });
     nameModel.parseScale();
 
-    const nameSelCmpts = (nameModel.component.selection = parseUnitSelection(nameModel, {
-      brush: {type: 'interval'}
-    }));
+    const nameSelCmpts = (nameModel.component.selection = parseUnitSelection(nameModel, [
+      {
+        name: 'brush',
+        select: 'interval'
+      }
+    ]));
 
-    const signals = interval.signals(nameModel, nameSelCmpts['brush']);
+    const signals = interval.signals(nameModel, nameSelCmpts['brush'], []);
     const names = signals.map(s => s.name);
     expect(names).toEqual(expect.arrayContaining(['brush_x_1', 'brush_x', 'brush_y_1', 'brush_y']));
 

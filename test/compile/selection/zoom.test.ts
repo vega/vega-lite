@@ -1,48 +1,63 @@
 import {selector as parseSelector} from 'vega-event-selector';
 import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import zoom from '../../../src/compile/selection/transforms/zoom';
-import {ScaleType} from '../../../src/scale';
+import zoom from '../../../src/compile/selection/zoom';
+import {Scale} from '../../../src/scale';
 import {parseUnitModel} from '../../util';
 
-function getModel(xscale?: ScaleType, yscale?: ScaleType) {
+function getModel(xscale: Scale = {type: 'linear'}, yscale: Scale = {type: 'linear'}) {
   const model = parseUnitModel({
     mark: 'circle',
     encoding: {
-      x: {field: 'Horsepower', type: 'quantitative', scale: {type: xscale ?? 'linear'}},
-      y: {field: 'Miles_per_Gallon', type: 'quantitative', scale: {type: yscale ?? 'linear'}},
+      x: {field: 'Horsepower', type: 'quantitative', scale: xscale},
+      y: {field: 'Miles_per_Gallon', type: 'quantitative', scale: yscale},
       color: {field: 'Origin', type: 'nominal'}
     }
   });
 
   model.parseScale();
-  const selCmpts = parseUnitSelection(model, {
-    one: {
-      type: 'single'
+  const selCmpts = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: {
+        type: 'point'
+      }
     },
-    two: {
-      type: 'multi'
+    {
+      name: 'three',
+      select: {
+        type: 'interval',
+        zoom: false
+      }
     },
-    three: {
-      type: 'interval',
-      zoom: false
+    {
+      name: 'four',
+      select: {
+        type: 'interval'
+      }
     },
-    four: {
-      type: 'interval'
+    {
+      name: 'five',
+      select: {
+        type: 'interval',
+        zoom: 'wheel, pinch'
+      }
     },
-    five: {
-      type: 'interval',
-      zoom: 'wheel, pinch'
-    },
-    six: {
-      type: 'interval',
+    {
+      name: 'six',
+      select: {
+        type: 'interval'
+      },
       bind: 'scales'
     },
-    seven: {
-      type: 'interval',
-      zoom: null
+    {
+      name: 'seven',
+      select: {
+        type: 'interval',
+        zoom: null
+      }
     }
-  });
+  ]);
 
   return {model, selCmpts};
 }
@@ -50,13 +65,12 @@ function getModel(xscale?: ScaleType, yscale?: ScaleType) {
 describe('Zoom Selection Transform', () => {
   it('identifies transform invocation', () => {
     const {selCmpts} = getModel();
-    expect(zoom.has(selCmpts['one'])).not.toBe(true);
-    expect(zoom.has(selCmpts['two'])).not.toBe(true);
-    expect(zoom.has(selCmpts['three'])).not.toBe(true);
-    expect(zoom.has(selCmpts['four'])).not.toBe(false);
-    expect(zoom.has(selCmpts['five'])).not.toBe(false);
-    expect(zoom.has(selCmpts['six'])).not.toBe(false);
-    expect(zoom.has(selCmpts['seven'])).not.toBe(true);
+    expect(zoom.defined(selCmpts['one'])).not.toBe(true);
+    expect(zoom.defined(selCmpts['three'])).not.toBe(true);
+    expect(zoom.defined(selCmpts['four'])).not.toBe(false);
+    expect(zoom.defined(selCmpts['five'])).not.toBe(false);
+    expect(zoom.defined(selCmpts['six'])).not.toBe(false);
+    expect(zoom.defined(selCmpts['seven'])).not.toBe(true);
   });
 
   describe('Anchor/Delta signals', () => {
@@ -164,7 +178,7 @@ describe('Zoom Selection Transform', () => {
         update: 'clampRange(zoomLinear(four_y, four_zoom_anchor.y, four_zoom_delta), 0, height)'
       });
 
-      const model2 = getModel('log', 'pow').model;
+      const model2 = getModel({type: 'log'}, {type: 'pow'}).model;
       model2.component.selection = {four: selCmpts['four']};
       signals = assembleUnitSelectionSignals(model2, []);
       expect(signals.filter(s => s.name === 'four_x')[0].on).toContainEqual({
@@ -178,35 +192,64 @@ describe('Zoom Selection Transform', () => {
       });
     });
 
-    it('builds zoomLinear exprs for scale-bound zoom', () => {
-      const {model, selCmpts} = getModel();
-      model.component.selection = {six: selCmpts['six']};
-      const signals = assembleUnitSelectionSignals(model, []);
+    describe('scale-bound intervals', () => {
+      it('builds zoomLinear exprs', () => {
+        const {model, selCmpts} = getModel();
+        model.component.selection = {six: selCmpts['six']};
+        const signals = assembleUnitSelectionSignals(model, []);
 
-      expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
-        events: {signal: 'six_zoom_delta'},
-        update: 'zoomLinear(domain("x"), six_zoom_anchor.x, six_zoom_delta)'
+        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+          events: {signal: 'six_zoom_delta'},
+          update: 'zoomLinear(domain("x"), six_zoom_anchor.x, six_zoom_delta)'
+        });
+
+        expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+          events: {signal: 'six_zoom_delta'},
+          update: 'zoomLinear(domain("y"), six_zoom_anchor.y, six_zoom_delta)'
+        });
       });
 
-      expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
-        events: {signal: 'six_zoom_delta'},
-        update: 'zoomLinear(domain("y"), six_zoom_anchor.y, six_zoom_delta)'
-      });
-    });
+      it('builds zoomLog exprs', () => {
+        const {model, selCmpts} = getModel({type: 'log'});
+        model.component.selection = {six: selCmpts['six']};
+        const signals = assembleUnitSelectionSignals(model, []);
 
-    it('builds zoomLog/Pow exprs for scale-bound zoom', () => {
-      const {model, selCmpts} = getModel('log', 'pow');
-      model.component.selection = {six: selCmpts['six']};
-      const signals = assembleUnitSelectionSignals(model, []);
-
-      expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
-        events: {signal: 'six_zoom_delta'},
-        update: 'zoomLog(domain("x"), six_zoom_anchor.x, six_zoom_delta)'
+        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+          events: {signal: 'six_zoom_delta'},
+          update: 'zoomLog(domain("x"), six_zoom_anchor.x, six_zoom_delta)'
+        });
       });
 
-      expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
-        events: {signal: 'six_zoom_delta'},
-        update: 'zoomPow(domain("y"), six_zoom_anchor.y, six_zoom_delta, 1)'
+      it('builds zoomSymlog exprs', () => {
+        const {model, selCmpts} = getModel({type: 'symlog'}, {type: 'symlog', constant: 0.5});
+        model.component.selection = {six: selCmpts['six']};
+        const signals = assembleUnitSelectionSignals(model, []);
+
+        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+          events: {signal: 'six_zoom_delta'},
+          update: 'zoomSymlog(domain("x"), six_zoom_anchor.x, six_zoom_delta, 1)'
+        });
+
+        expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+          events: {signal: 'six_zoom_delta'},
+          update: 'zoomSymlog(domain("y"), six_zoom_anchor.y, six_zoom_delta, 0.5)'
+        });
+      });
+
+      it('builds zoomPow exprs', () => {
+        const {model, selCmpts} = getModel({type: 'pow'}, {type: 'pow', exponent: 2});
+        model.component.selection = {six: selCmpts['six']};
+        const signals = assembleUnitSelectionSignals(model, []);
+
+        expect(signals.filter(s => s.name === 'six_Horsepower')[0].on).toContainEqual({
+          events: {signal: 'six_zoom_delta'},
+          update: 'zoomPow(domain("x"), six_zoom_anchor.x, six_zoom_delta, 1)'
+        });
+
+        expect(signals.filter(s => s.name === 'six_Miles_per_Gallon')[0].on).toContainEqual({
+          events: {signal: 'six_zoom_delta'},
+          update: 'zoomPow(domain("y"), six_zoom_anchor.y, six_zoom_delta, 2)'
+        });
       });
     });
   });

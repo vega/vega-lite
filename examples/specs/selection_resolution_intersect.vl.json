@@ -6,16 +6,17 @@
     "column": ["Miles_per_Gallon", "Acceleration", "Horsepower"]
   },
   "spec": {
-    "selection": {
-      "brush": {"type": "interval", "resolve": "intersect"}
-    },
+    "params": [{
+      "name": "brush",
+      "select": {"type": "interval", "resolve": "intersect"}
+    }],
     "mark": "point",
     "encoding": {
       "x": {"field": {"repeat": "column"}, "type": "quantitative"},
       "y": {"field": {"repeat": "row"}, "type": "quantitative"},
       "color": {
         "condition": {
-          "selection": "brush",
+          "param": "brush",
           "field": "Origin", "type": "nominal"
         },
         "value": "grey"

@@ -51,7 +51,7 @@
     },
     {
       "name": "hover",
-      "update": "vlSelectionResolve(\"hover_store\", \"union\")"
+      "update": "vlSelectionResolve(\"hover_store\", \"union\", true, true)"
     },
     {
       "name": "hover_tuple",
@@ -61,16 +61,27 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"symbol\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {"name": "hover_tuple_fields", "value": [{"type": "E", "field": "symbol"}]},
+    {
+      "name": "hover_toggle",
+      "value": false,
+      "on": [
+        {
+          "events": [{"source": "scope", "type": "mouseover"}],
+          "update": "event.shiftKey"
+        },
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
+      ]
+    },
     {
       "name": "hover_modify",
       "on": [
         {
           "events": {"signal": "hover_tuple"},
-          "update": "modify(\"hover_store\", hover_tuple, true)"
+          "update": "modify(\"hover_store\", hover_toggle ? null : hover_tuple, hover_toggle ? null : true, hover_toggle ? hover_tuple : null)"
         }
       ]
     }
@@ -106,7 +117,7 @@
               "strokeWidth": {"value": 8},
               "opacity": [
                 {
-                  "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+                  "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
                   "value": 1
                 },
                 {"value": 0.2}
@@ -152,7 +163,7 @@
             "update": {
               "stroke": [
                 {
-                  "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+                  "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
                   "scale": "color",
                   "field": "symbol"
                 },
@@ -160,7 +171,7 @@
               ],
               "opacity": [
                 {
-                  "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+                  "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
                   "value": 1
                 },
                 {"value": 0.2}
@@ -188,7 +199,7 @@
         "update": {
           "fill": [
             {
-              "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+              "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
               "scale": "color",
               "field": "symbol"
             },
@@ -196,7 +207,7 @@
           ],
           "opacity": [
             {
-              "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+              "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
               "value": 1
             },
             {"value": 0.2}
@@ -223,7 +234,7 @@
           "dx": {"value": 4},
           "fill": [
             {
-              "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+              "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
               "scale": "color",
               "field": "symbol"
             },
@@ -231,7 +242,7 @@
           ],
           "opacity": [
             {
-              "test": "!(length(data(\"hover_store\"))) || (vlSelectionTest(\"hover_store\", datum))",
+              "test": "!length(data(\"hover_store\")) || vlSelectionTest(\"hover_store\", datum)",
               "value": 1
             },
             {"value": 0.2}

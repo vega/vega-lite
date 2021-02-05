@@ -1,14 +1,14 @@
 import {BinTransform as VgBinTransform, Transforms as VgTransform} from 'vega';
 import {isString} from 'vega-util';
-import {BinParams, binToString, isBinning, isSelectionExtent} from '../../bin';
+import {BinParams, binToString, isBinning, isParameterExtent} from '../../bin';
 import {Channel} from '../../channel';
 import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';
 import {Config} from '../../config';
 import {BinTransform} from '../../transform';
-import {Dict, duplicate, hash, isEmpty, keys, replacePathInField, unique, vals, varName} from '../../util';
+import {Dict, duplicate, hash, isEmpty, keys, replacePathInField, unique, vals} from '../../util';
 import {binFormatExpression} from '../format';
 import {isUnitModel, Model, ModelWithField} from '../model';
-import {parseSelectionBinExtent} from '../selection/parse';
+import {parseSelectionExtent} from '../selection/parse';
 import {NonPositionScaleChannel, PositionChannel} from './../../channel';
 import {DataFlowNode} from './dataflow';
 
@@ -66,10 +66,9 @@ function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolea
   const key = binKey(normalizedBin, t.field);
   const {signal, extentSignal} = getSignalsFromModel(model, key);
 
-  if (isSelectionExtent(normalizedBin.extent)) {
+  if (isParameterExtent(normalizedBin.extent)) {
     const ext = normalizedBin.extent;
-    const selName = ext.selection;
-    span = parseSelectionBinExtent(model.getSelectionComponent(varName(selName), selName), ext);
+    span = parseSelectionExtent(model, ext.param, ext);
     delete normalizedBin.extent; // Vega-Lite selection extent map to Vega's span property.
   }
 
@@ -190,7 +189,7 @@ export class BinNode extends DataFlowNode {
         field: replacePathInField(bin.field),
         as: binAs,
         signal: bin.signal,
-        ...(!isSelectionExtent(extent) ? {extent} : {extent: null}),
+        ...(!isParameterExtent(extent) ? {extent} : {extent: null}),
         ...(bin.span ? {span: {signal: `span(${bin.span})`}} : {}),
         ...params
       };

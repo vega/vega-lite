@@ -5,15 +5,18 @@
   "height": 300,
   "layer": [
     {
-      "selection": {
-        "index": {
-          "type": "single",
-          "on": "mouseover",
-          "encodings": ["x"],
-          "nearest": true,
-          "init": {"x": {"year": 2005, "month": 1, "date": 1}}
+      "params": [
+        {
+          "name": "index",
+          "value": [{"x": {"year": 2005, "month": 1, "date": 1}}],
+          "select": {
+            "type": "point",
+            "encodings": ["x"],
+            "on": "mouseover",
+            "nearest": true
+          }
         }
-      },
+      ],
       "mark": "point",
       "encoding": {
         "x": {"field": "date", "type": "temporal", "axis": null},
@@ -21,13 +24,6 @@
       }
     },
     {
-      "transform": [
-        {"lookup": "symbol", "from": {"selection": "index", "key": "symbol"}},
-        {
-          "calculate": "datum.index && datum.index.price > 0 ? (datum.price - datum.index.price)/datum.index.price : 0",
-          "as": "indexed_price"
-        }
-      ],
       "mark": "line",
       "encoding": {
         "x": {"field": "date", "type": "temporal", "axis": null},
@@ -37,10 +33,16 @@
           "axis": {"format": "%"}
         },
         "color": {"field": "symbol", "type": "nominal"}
-      }
+      },
+      "transform": [
+        {"lookup": "symbol", "from": {"param": "index", "key": "symbol"}},
+        {
+          "calculate": "datum.index && datum.index.price > 0 ? (datum.price - datum.index.price)/datum.index.price : 0",
+          "as": "indexed_price"
+        }
+      ]
     },
     {
-      "transform": [{"filter": {"selection": "index"}}],
       "layer": [
         {
           "mark": {"type": "rule", "strokeWidth": 0.5},
@@ -58,7 +60,8 @@
             "y": {"value": 310}
           }
         }
-      ]
+      ],
+      "transform": [{"filter": {"param": "index"}}]
     }
   ]
 }

@@ -13,7 +13,7 @@ describe('Selection Predicate', () => {
         field: 'Cylinders',
         type: 'ordinal',
         condition: {
-          selection: 'one',
+          param: 'one',
           value: 'grey'
         }
       },
@@ -21,8 +21,17 @@ describe('Selection Predicate', () => {
         field: 'Acceleration',
         type: 'quantitative',
         condition: {
-          selection: {or: ['one', {and: ['two', {not: 'thr-ee'}]}]},
+          param: 'one',
+          empty: false,
           value: 0.5
+        }
+      },
+      size: {
+        value: 50,
+        condition: {
+          param: 'varHelloWorld',
+          field: 'Displacement',
+          type: 'quantitative'
         }
       }
     }
@@ -30,53 +39,38 @@ describe('Selection Predicate', () => {
 
   model.parseScale();
 
-  model.component.selection = parseUnitSelection(model, {
-    one: {type: 'single'},
-    two: {type: 'multi', resolve: 'union'},
-    'thr-ee': {type: 'interval', resolve: 'intersect'},
-    four: {type: 'single', empty: 'none'}
-  });
+  model.component.selection = parseUnitSelection(model, [
+    {name: 'one', select: 'point'},
+    {name: 'two', select: {type: 'point', resolve: 'union'}},
+    {name: 'thr-ee', select: {type: 'interval', resolve: 'intersect'}}
+  ]);
 
   it('generates the predicate expression', () => {
-    expect(predicate(model, 'one')).toBe('!(length(data("one_store"))) || (vlSelectionTest("one_store", datum))');
-
-    expect(predicate(model, 'four')).toBe('(vlSelectionTest("four_store", datum))');
-
-    expect(predicate(model, {not: 'one'})).toEqual(
-      '!(length(data("one_store"))) || (!(vlSelectionTest("one_store", datum)))'
+    // Different resolutions
+    expect(predicate(model, {param: 'one'})).toBe('!length(data("one_store")) || vlSelectionTest("one_store", datum)');
+    expect(predicate(model, {param: 'two'})).toBe(
+      '!length(data("two_store")) || vlSelectionTest("two_store", datum, "union")'
+    );
+    expect(predicate(model, {param: 'thr-ee'})).toBe(
+      '!length(data("thr_ee_store")) || vlSelectionTest("thr_ee_store", datum, "intersect")'
     );
 
-    expect(predicate(model, {not: {and: ['one', 'two']}})).toEqual(
-      '!(length(data("one_store")) || length(data("two_store"))) || ' +
-        '(!((vlSelectionTest("one_store", datum)) && ' +
-        '(vlSelectionTest("two_store", datum, "union"))))'
+    // Different emptiness
+    expect(predicate(model, {param: 'one', empty: true})).toBe(
+      '!length(data("one_store")) || vlSelectionTest("one_store", datum)'
+    );
+    expect(predicate(model, {param: 'one', empty: false})).toBe(
+      'length(data("one_store")) && vlSelectionTest("one_store", datum)'
     );
 
-    expect(predicate(model, {not: {and: ['one', 'four']}})).toEqual(
-      '!(length(data("one_store"))) || ' +
-        '(!((vlSelectionTest("one_store", datum)) && ' +
-        '(vlSelectionTest("four_store", datum))))'
-    );
-
-    expect(predicate(model, {and: ['one', 'two', {not: 'thr-ee'}]})).toEqual(
-      '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
-        '((vlSelectionTest("one_store", datum)) && ' +
-        '(vlSelectionTest("two_store", datum, "union")) && ' +
-        '(!(vlSelectionTest("thr_ee_store", datum, "intersect"))))'
-    );
-
-    expect(predicate(model, {or: ['one', {and: ['two', {not: 'thr-ee'}]}]})).toEqual(
-      '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
-        '((vlSelectionTest("one_store", datum)) || ' +
-        '((vlSelectionTest("two_store", datum, "union")) && ' +
-        '(!(vlSelectionTest("thr_ee_store", datum, "intersect")))))'
-    );
+    // Variable parameters
+    expect(predicate(model, {param: 'helloworld'})).toEqual('!!helloworld');
   });
 
   it('generates Vega production rules', () => {
     expect(nonPosition('color', model, {vgChannel: 'fill'})).toEqual({
       fill: [
-        {test: '!(length(data("one_store"))) || (vlSelectionTest("one_store", datum))', value: 'grey'},
+        {test: '!length(data("one_store")) || vlSelectionTest("one_store", datum)', value: 'grey'},
         {scale: 'color', field: 'Cylinders'}
       ]
     });
@@ -84,49 +78,34 @@ describe('Selection Predicate', () => {
     expect(nonPosition('opacity', model)).toEqual({
       opacity: [
         {
-          test:
-            '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
-            '((vlSelectionTest("one_store", datum)) || ' +
-            '((vlSelectionTest("two_store", datum, "union")) && ' +
-            '(!(vlSelectionTest("thr_ee_store", datum, "intersect")))))',
+          test: 'length(data("one_store")) && vlSelectionTest("one_store", datum)',
           value: 0.5
         },
         {scale: 'opacity', field: 'Acceleration'}
       ]
     });
+
+    expect(nonPosition('size', model)).toEqual({
+      size: [
+        {
+          test: '!!varHelloWorld',
+          scale: 'size',
+          field: 'Displacement'
+        },
+        {value: 50}
+      ]
+    });
   });
 
   it('generates a selection filter', () => {
-    expect(expression(model, {selection: 'one'})).toEqual(
-      '!(length(data("one_store"))) || (vlSelectionTest("one_store", datum))'
+    expect(expression(model, {param: 'one'})).toEqual(
+      '!length(data("one_store")) || vlSelectionTest("one_store", datum)'
     );
 
-    expect(expression(model, {selection: {not: 'one'}})).toEqual(
-      '!(length(data("one_store"))) || (!(vlSelectionTest("one_store", datum)))'
+    expect(expression(model, {not: {param: 'one', empty: false}})).toEqual(
+      '!(length(data("one_store")) && vlSelectionTest("one_store", datum))'
     );
 
-    expect(expression(model, {selection: {not: {and: ['one', 'two']}}})).toEqual(
-      '!(length(data("one_store")) || length(data("two_store"))) || ' +
-        '(!((vlSelectionTest("one_store", datum)) && ' +
-        '(vlSelectionTest("two_store", datum, "union"))))'
-    );
-
-    expect(expression(model, {selection: {and: ['one', 'two', {not: 'thr-ee'}]}})).toEqual(
-      '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
-        '((vlSelectionTest("one_store", datum)) && ' +
-        '(vlSelectionTest("two_store", datum, "union")) && ' +
-        '(!(vlSelectionTest("thr_ee_store", datum, "intersect"))))'
-    );
-
-    expect(expression(model, {selection: {or: ['one', {and: ['two', {not: 'thr-ee'}]}]}})).toEqual(
-      '!(length(data("one_store")) || length(data("two_store")) || length(data("thr_ee_store"))) || ' +
-        '((vlSelectionTest("one_store", datum)) || ' +
-        '((vlSelectionTest("two_store", datum, "union")) && ' +
-        '(!(vlSelectionTest("thr_ee_store", datum, "intersect")))))'
-    );
-  });
-
-  it('throws an error for unknown selections', () => {
-    expect(() => predicate(model, 'helloworld')).toThrow();
+    expect(expression(model, {not: {param: 'varHelloWorld'}})).toEqual('!(!!varHelloWorld)');
   });
 });

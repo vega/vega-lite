@@ -63,12 +63,12 @@
       }
     },
     {
-      "transform": [{"flatten": ["outliers"]}],
       "mark": {"type": "point", "style": "boxplot-outliers"},
       "encoding": {
         "y": {"field": "Species", "type": "nominal", "title": null},
         "x": {"field": "outliers", "type": "quantitative"}
-      }
+      },
+      "transform": [{"flatten": ["outliers"]}]
     }
   ]
 }

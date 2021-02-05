@@ -3,10 +3,11 @@ import {isObject} from 'vega-util';
 import {SingleDefUnitChannel} from './channel';
 import {FieldName, PrimitiveValue} from './channeldef';
 import {DateTime} from './datetime';
+import {ParameterName} from './parameter';
 import {Dict} from './util';
 
 export const SELECTION_ID = '_vgsid_';
-export type SelectionType = 'single' | 'multi' | 'interval';
+export type SelectionType = 'point' | 'interval';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
 
 export type SelectionInit = PrimitiveValue | DateTime;
@@ -18,7 +19,15 @@ export type SelectionInitIntervalMapping = Dict<SelectionInitInterval>;
 export type LegendStreamBinding = {legend: string | Stream};
 export type LegendBinding = 'legend' | LegendStreamBinding;
 
-export interface BaseSelectionConfig {
+export interface BaseSelectionConfig<T extends SelectionType = SelectionType> {
+  /**
+   * Determines the default event processing and data query for the selection. Vega-Lite currently supports two selection types:
+   *
+   * - `"point"` -- to select multiple discrete data values; the first value is selected on `click` and additional values toggled on shift-click.
+   * - `"interval"` -- to select a continuous range of data values on `drag`.
+   */
+  type: T;
+
   /**
    * Clears the selection, emptying it of all values. Can be a
    * [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
@@ -62,46 +71,9 @@ export interface BaseSelectionConfig {
    * __See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.
    */
   fields?: FieldName[];
-
-  /**
-   * By default, `all` data values are considered to lie within an empty selection.
-   * When set to `none`, empty selections contain no data values.
-   */
-  empty?: 'all' | 'none';
 }
 
-export interface SingleSelectionConfig extends BaseSelectionConfig {
-  /**
-   * When set, a selection is populated by input elements (also known as dynamic query widgets)
-   * or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;
-   * to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.
-   *
-   * Legend bindings are restricted to selections that only specify a single field or encoding.
-   *
-   * Query widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)
-   * or can be a mapping between projected field/encodings and binding definitions.
-   *
-   * __See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.
-   */
-  bind?: Binding | Record<string, Binding> | LegendBinding;
-
-  /**
-   * When true, an invisible voronoi diagram is computed to accelerate discrete
-   * selection. The data value _nearest_ the mouse cursor is added to the selection.
-   *
-   * __See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.
-   */
-  nearest?: boolean;
-
-  /**
-   * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.
-   *
-   * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
-   */
-  init?: SelectionInitMapping;
-}
-
-export interface MultiSelectionConfig extends BaseSelectionConfig {
+export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
   /**
    * Controls whether data values should be toggled or only ever inserted into
    * multi selections. Can be `true`, `false` (for insertion only), or a
@@ -124,22 +96,6 @@ export interface MultiSelectionConfig extends BaseSelectionConfig {
    * __See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.
    */
   nearest?: boolean;
-
-  /**
-   * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and an initial
-   * value (or array of values).
-   *
-   * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
-   */
-  init?: SelectionInitMapping[];
-
-  /**
-   * When set, a selection is populated by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;
-   * to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.
-   *
-   * Legend bindings are restricted to selections that only specify a single field or encoding.
-   */
-  bind?: LegendBinding;
 }
 
 // Similar to BaseMarkConfig but the field documentations are specificly for an interval mark.
@@ -185,7 +141,7 @@ export interface BrushConfig {
   cursor?: Cursor;
 }
 
-export interface IntervalSelectionConfig extends BaseSelectionConfig {
+export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'> {
   /**
    * When truthy, allows a user to interactively move an interval selection
    * back-and-forth. Can be `true`, `false` (to disable panning), or a
@@ -213,15 +169,6 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
   zoom?: string | boolean;
 
   /**
-   * Establishes a two-way binding between the interval selection and the scales
-   * used within the same view. This allows a user to interactively pan and
-   * zoom the view.
-   *
-   * __See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.
-   */
-  bind?: 'scales';
-
-  /**
    * An interval selection also adds a rectangle mark to depict the
    * extents of the interval. The `mark` property can be used to customize the
    * appearance of the mark.
@@ -229,99 +176,108 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig {
    * __See also:__ [`mark`](https://vega.github.io/vega-lite/docs/selection-mark.html) documentation.
    */
   mark?: BrushConfig;
+}
+
+export interface SelectionParameter<T extends SelectionType = SelectionType> {
+  /**
+   * Required. A unique name for the selection parameter. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
+   */
+  name: ParameterName;
 
   /**
-   * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and arrays of
-   * initial values.
+   * Determines the default event processing and data query for the selection. Vega-Lite currently supports two selection types:
+   *
+   * - `"point"` -- to select multiple discrete data values; the first value is selected on `click` and additional values toggled on shift-click.
+   * - `"interval"` -- to select a continuous range of data values on `drag`.
+   */
+  select: T | (T extends 'point' ? PointSelectionConfig : T extends 'interval' ? IntervalSelectionConfig : never);
+
+  /**
+   * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.
    *
    * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
    */
-  init?: SelectionInitIntervalMapping;
-}
+  value?: T extends 'point'
+    ? SelectionInit | SelectionInitMapping[]
+    : T extends 'interval'
+    ? SelectionInitIntervalMapping
+    : never;
 
-export interface BaseSelectionDef<T extends 'single' | 'multi' | 'interval'> {
   /**
-   * Determines the default event processing and data query for the selection. Vega-Lite currently supports three selection types:
+   * When set, a selection is populated by input elements (also known as dynamic query widgets)
+   * or by interacting with the corresponding legend. Direct manipulation interaction is disabled by default;
+   * to re-enable it, set the selection's [`on`](https://vega.github.io/vega-lite/docs/selection.html#common-selection-properties) property.
    *
-   * - `"single"` -- to select a single discrete data value on `click`.
-   * - `"multi"` -- to select multiple discrete data value; the first value is selected on `click` and additional values toggled on shift-`click`.
-   * - `"interval"` -- to select a continuous range of data values on `drag`.
+   * Legend bindings are restricted to selections that only specify a single field or encoding.
+   *
+   * Query widget binding takes the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind)
+   * or can be a mapping between projected field/encodings and binding definitions.
+   *
+   * __See also:__ [`bind`](https://vega.github.io/vega-lite/docs/bind.html) documentation.
    */
-  type: T;
+  bind?: T extends 'point'
+    ? Binding | Record<string, Binding> | LegendBinding
+    : T extends 'interval'
+    ? 'scales'
+    : never;
 }
 
-export interface SingleSelection extends BaseSelectionDef<'single'>, SingleSelectionConfig {}
+export type TopLevelSelectionParameter = SelectionParameter & {
+  /**
+   * By default, top-level selections are applied to every view in the visualization.
+   * If this property is specified, selections will only be applied to views with the given names.
+   */
+  views?: (string | string[])[];
+};
 
-export interface MultiSelection extends BaseSelectionDef<'multi'>, MultiSelectionConfig {}
-
-export interface IntervalSelection extends BaseSelectionDef<'interval'>, IntervalSelectionConfig {}
-
-export type SelectionDef = SingleSelection | MultiSelection | IntervalSelection;
-
-export type SelectionExtent =
+export type ParameterExtent =
   | {
       /**
-       * The name of a selection.
+       * The name of a parameter.
        */
-      selection: string;
+      param: ParameterName;
       /**
-       * The field name to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
-       * over multiple fields or encodings.
+       * If a selection parameter is specified, the field name to extract selected values for
+       * when the selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings.
        */
       field?: FieldName;
     }
   | {
       /**
-       * The name of a selection.
+       * The name of a parameter.
        */
-      selection: string;
+      param: ParameterName;
       /**
-       * The encoding channel to extract selected values for, when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html)
-       * over multiple fields or encodings.
+       * If a selection parameter is specified, the encoding channel to extract selected values for
+       * when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings.
        */
       encoding?: SingleDefUnitChannel;
     };
 
 export interface SelectionConfig {
   /**
-   * The default definition for a [`single`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations
-   *  for a single selection definition (except `type`) may be specified here.
+   * The default definition for a [`point`](https://vega.github.io/vega-lite/docs/parameter.html#select) selection. All properties and transformations
+   *  for a point selection definition (except `type`) may be specified here.
    *
-   * For instance, setting `single` to `{"on": "dblclick"}` populates single selections on double-click by default.
+   * For instance, setting `point` to `{"on": "dblclick"}` populates point selections on double-click by default.
    */
-  single?: SingleSelectionConfig;
+  point?: Omit<PointSelectionConfig, 'type'>;
   /**
-   * The default definition for a [`multi`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations
-   * for a multi selection definition (except `type`) may be specified here.
-   *
-   * For instance, setting `multi` to `{"toggle": "event.altKey"}` adds additional values to
-   * multi selections when clicking with the alt-key pressed by default.
-   */
-  multi?: MultiSelectionConfig;
-  /**
-   * The default definition for an [`interval`](https://vega.github.io/vega-lite/docs/selection.html#type) selection. All properties and transformations
+   * The default definition for an [`interval`](https://vega.github.io/vega-lite/docs/parameter.html#select) selection. All properties and transformations
    * for an interval selection definition (except `type`) may be specified here.
    *
    * For instance, setting `interval` to `{"translate": false}` disables the ability to move
    * interval selections by default.
    */
-  interval?: IntervalSelectionConfig;
+  interval?: Omit<IntervalSelectionConfig, 'type'>;
 }
 
 export const defaultConfig: SelectionConfig = {
-  single: {
-    on: 'click',
-    fields: [SELECTION_ID],
-    resolve: 'global',
-    empty: 'all',
-    clear: 'dblclick'
-  },
-  multi: {
+  point: {
     on: 'click',
     fields: [SELECTION_ID],
     toggle: 'event.shiftKey',
     resolve: 'global',
-    empty: 'all',
     clear: 'dblclick'
   },
   interval: {
@@ -341,4 +297,8 @@ export function isLegendBinding(bind: any): bind is LegendBinding {
 
 export function isLegendStreamBinding(bind: any): bind is LegendStreamBinding {
   return isLegendBinding(bind) && isObject(bind);
+}
+
+export function isSelectionParameter(param: any): param is SelectionParameter {
+  return !!param['select'];
 }

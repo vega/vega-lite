@@ -33,7 +33,10 @@
       "name": "data_1",
       "source": "source_0",
       "transform": [
-        {"type": "filter", "expr": "(vlSelectionTest(\"hover_store\", datum))"},
+        {
+          "type": "filter",
+          "expr": "length(data(\"hover_store\")) && vlSelectionTest(\"hover_store\", datum)"
+        },
         {
           "type": "filter",
           "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
@@ -51,7 +54,7 @@
     },
     {
       "name": "hover",
-      "update": "vlSelectionResolve(\"hover_store\", \"union\")"
+      "update": "vlSelectionResolve(\"hover_store\", \"union\", true, true)"
     },
     {
       "name": "hover_tuple",
@@ -67,16 +70,33 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "mouseout"}], "update": "null"}
+        {"events": [{"source": "view", "type": "mouseout"}], "update": "null"}
       ]
     },
     {"name": "hover_tuple_fields", "value": [{"type": "E", "field": "date"}]},
+    {
+      "name": "hover_toggle",
+      "value": false,
+      "on": [
+        {
+          "events": [
+            {
+              "source": "scope",
+              "type": "mouseover",
+              "markname": "layer_1_voronoi"
+            }
+          ],
+          "update": "event.shiftKey"
+        },
+        {"events": [{"source": "view", "type": "mouseout"}], "update": "false"}
+      ]
+    },
     {
       "name": "hover_modify",
       "on": [
         {
           "events": {"signal": "hover_tuple"},
-          "update": "modify(\"hover_store\", hover_tuple, true)"
+          "update": "modify(\"hover_store\", hover_toggle ? null : hover_tuple, hover_toggle ? null : true, hover_toggle ? hover_tuple : null)"
         }
       ]
     }
@@ -152,7 +172,10 @@
         "update": {
           "stroke": {"value": "black"},
           "opacity": [
-            {"test": "(vlSelectionTest(\"hover_store\", datum))", "value": 0.3},
+            {
+              "test": "length(data(\"hover_store\")) && vlSelectionTest(\"hover_store\", datum)",
+              "value": 0.3
+            },
             {"value": 0}
           ],
           "tooltip": {

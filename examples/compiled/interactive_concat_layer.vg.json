@@ -54,7 +54,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))"
+          "expr": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)"
         },
         {
           "type": "aggregate",
@@ -122,7 +122,10 @@
         {"events": "mousemove", "update": "isTuple(group()) ? group() : unit"}
       ]
     },
-    {"name": "pts", "update": "vlSelectionResolve(\"pts_store\", \"union\")"}
+    {
+      "name": "pts",
+      "update": "vlSelectionResolve(\"pts_store\", \"union\", true, true)"
+    }
   ],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
   "marks": [
@@ -296,7 +299,7 @@
               "force": true
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "null"
             }
           ]
@@ -306,11 +309,25 @@
           "value": [{"field": "Major Genre", "channel": "x", "type": "E"}]
         },
         {
+          "name": "pts_toggle",
+          "value": false,
+          "on": [
+            {
+              "events": [{"source": "scope", "type": "click"}],
+              "update": "event.shiftKey"
+            },
+            {
+              "events": [{"source": "view", "type": "dblclick"}],
+              "update": "false"
+            }
+          ]
+        },
+        {
           "name": "pts_modify",
           "on": [
             {
               "events": {"signal": "pts_tuple"},
-              "update": "modify(\"pts_store\", pts_tuple, true)"
+              "update": "modify(\"pts_store\", pts_toggle ? null : pts_tuple, pts_toggle ? null : true, pts_toggle ? pts_tuple : null)"
             }
           ]
         }
@@ -326,7 +343,7 @@
             "update": {
               "fill": [
                 {
-                  "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
+                  "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
                   "value": "steelblue"
                 },
                 {"value": "grey"}

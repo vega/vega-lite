@@ -3,8 +3,9 @@ import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark';
 import {Encoding} from '../encoding';
 import {ExprRef} from '../expr';
 import {AnyMark, Mark, MarkDef} from '../mark';
+import {VariableParameter} from '../parameter';
 import {Projection} from '../projection';
-import {SelectionDef} from '../selection';
+import {SelectionParameter} from '../selection';
 import {Field} from './../channeldef';
 import {BaseSpec, DataMixins, FrameMixins, GenericCompositionLayout, ResolveMixins} from './base';
 import {TopLevel} from './toplevel';
@@ -30,9 +31,9 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
   projection?: Projection<ExprRef>;
 
   /**
-   * A key-value mapping between selection names and definitions.
+   * An array of parameters that may either be simple variables, or more complex selections that map user input to data queries.
    */
-  selection?: Record<string, SelectionDef>;
+  params?: (VariableParameter | SelectionParameter)[];
 }
 
 /**

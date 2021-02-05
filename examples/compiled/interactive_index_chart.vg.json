@@ -37,7 +37,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"index_store\"))) || (vlSelectionTest(\"index_store\", datum))"
+          "expr": "!length(data(\"index_store\")) || vlSelectionTest(\"index_store\", datum)"
         }
       ]
     },
@@ -65,7 +65,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"index_store\"))) || (vlSelectionTest(\"index_store\", datum))"
+          "expr": "!length(data(\"index_store\")) || vlSelectionTest(\"index_store\", datum)"
         }
       ]
     },
@@ -106,7 +106,7 @@
     },
     {
       "name": "index",
-      "update": "vlSelectionResolve(\"index_store\", \"union\")"
+      "update": "vlSelectionResolve(\"index_store\", \"union\", true, true)"
     },
     {
       "name": "index_tuple",
@@ -122,7 +122,7 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0\", fields: index_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -130,11 +130,28 @@
       "value": [{"field": "date", "channel": "x", "type": "E"}]
     },
     {
+      "name": "index_toggle",
+      "value": false,
+      "on": [
+        {
+          "events": [
+            {
+              "source": "scope",
+              "type": "mouseover",
+              "markname": "layer_0_voronoi"
+            }
+          ],
+          "update": "event.shiftKey"
+        },
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
+      ]
+    },
+    {
       "name": "index_modify",
       "on": [
         {
           "events": {"signal": "index_tuple"},
-          "update": "modify(\"index_store\", index_tuple, true)"
+          "update": "modify(\"index_store\", index_toggle ? null : index_tuple, index_toggle ? null : true, index_toggle ? index_tuple : null)"
         }
       ]
     }

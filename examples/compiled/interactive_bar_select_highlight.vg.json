@@ -57,11 +57,11 @@
     },
     {
       "name": "highlight",
-      "update": "vlSelectionResolve(\"highlight_store\", \"union\")"
+      "update": "vlSelectionResolve(\"highlight_store\", \"union\", true, true)"
     },
     {
       "name": "select",
-      "update": "vlSelectionResolve(\"select_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"select_store\", \"union\", true, true)"
     },
     {
       "name": "highlight_tuple",
@@ -71,7 +71,7 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: highlight_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -79,11 +79,22 @@
       "value": [{"type": "E", "field": "_vgsid_"}]
     },
     {
+      "name": "highlight_toggle",
+      "value": false,
+      "on": [
+        {
+          "events": [{"source": "scope", "type": "mouseover"}],
+          "update": "event.shiftKey"
+        },
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
+      ]
+    },
+    {
       "name": "highlight_modify",
       "on": [
         {
           "events": {"signal": "highlight_tuple"},
-          "update": "modify(\"highlight_store\", highlight_tuple, true)"
+          "update": "modify(\"highlight_store\", highlight_toggle ? null : highlight_tuple, highlight_toggle ? null : true, highlight_toggle ? highlight_tuple : null)"
         }
       ]
     },
@@ -95,7 +106,7 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: select_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -110,7 +121,7 @@
           "events": [{"source": "scope", "type": "click"}],
           "update": "event.shiftKey"
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
       ]
     },
     {
@@ -137,18 +148,18 @@
           "cursor": {"value": "pointer"},
           "fillOpacity": [
             {
-              "test": "!(length(data(\"select_store\"))) || (vlSelectionTest(\"select_store\", datum))",
+              "test": "!length(data(\"select_store\")) || vlSelectionTest(\"select_store\", datum)",
               "value": 1
             },
             {"value": 0.3}
           ],
           "strokeWidth": [
             {
-              "test": "(!(length(data(\"select_store\"))) || (vlSelectionTest(\"select_store\", datum))) && (length(data(\"select_store\")))",
+              "test": "length(data(\"select_store\")) && vlSelectionTest(\"select_store\", datum)",
               "value": 2
             },
             {
-              "test": "(vlSelectionTest(\"highlight_store\", datum))",
+              "test": "length(data(\"highlight_store\")) && vlSelectionTest(\"highlight_store\", datum)",
               "value": 1
             },
             {"value": 0}

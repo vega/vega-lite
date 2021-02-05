@@ -2,7 +2,7 @@ import {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {ScaleChannel} from '../../channel';
 import {Scale, ScaleType} from '../../scale';
-import {SelectionExtent} from '../../selection';
+import {ParameterExtent} from '../../selection';
 import {some} from '../../util';
 import {VgNonUnionDomain, VgScale} from '../../vega.schema';
 import {Explicit, Split} from '../split';
@@ -13,7 +13,7 @@ import {Explicit, Split} from '../split';
  */
 export type ScaleComponentProps = Omit<VgScale, 'domain' | 'domainRaw' | 'reverse'> & {
   domains: VgNonUnionDomain[];
-  selectionExtent?: SelectionExtent;
+  selectionExtent?: ParameterExtent;
   reverse?: boolean | SignalRef; // Need override since Vega doesn't official support scale reverse yet (though it does in practice)
 };
 

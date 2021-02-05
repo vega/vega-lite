@@ -1,6 +1,6 @@
 import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import toggle from '../../../src/compile/selection/transforms/toggle';
+import toggle from '../../../src/compile/selection/toggle';
 import {parseUnitModel} from '../../util';
 
 describe('Toggle Selection Transform', () => {
@@ -14,29 +14,36 @@ describe('Toggle Selection Transform', () => {
   });
 
   model.parseScale();
-  const selCmpts = (model.component.selection = parseUnitSelection(model, {
-    one: {type: 'multi', clear: false},
-    two: {
-      type: 'multi',
-      resolve: 'union',
-      on: 'mouseover',
-      clear: false,
-      toggle: 'event.ctrlKey',
-      encodings: ['y', 'color']
+  const selCmpts = (model.component.selection = parseUnitSelection(model, [
+    {
+      name: 'one',
+      select: {type: 'point', clear: false}
     },
-    three: {type: 'multi', clear: false, toggle: false},
-    four: {type: 'multi', clear: false, toggle: null},
-    five: {type: 'single', clear: false},
-    six: {type: 'interval', clear: false}
-  }));
+    {
+      name: 'two',
+      select: {
+        type: 'point',
+        encodings: ['y', 'color'],
+        resolve: 'union',
+        on: 'mouseover',
+        clear: false,
+        toggle: 'event.ctrlKey'
+      }
+    },
+    {
+      name: 'three',
+      select: {type: 'point', clear: false, toggle: false}
+    },
+    {name: 'four', select: {type: 'point', clear: false, toggle: null}},
+    {name: 'five', select: {type: 'interval', clear: false}}
+  ]));
 
   it('identifies transform invocation', () => {
-    expect(toggle.has(selCmpts['one'])).toBeTruthy();
-    expect(toggle.has(selCmpts['two'])).toBeTruthy();
-    expect(toggle.has(selCmpts['three'])).toBeFalsy();
-    expect(toggle.has(selCmpts['four'])).toBeFalsy();
-    expect(toggle.has(selCmpts['five'])).toBeFalsy();
-    expect(toggle.has(selCmpts['six'])).toBeFalsy();
+    expect(toggle.defined(selCmpts['one'])).toBeTruthy();
+    expect(toggle.defined(selCmpts['two'])).toBeTruthy();
+    expect(toggle.defined(selCmpts['three'])).toBeFalsy();
+    expect(toggle.defined(selCmpts['four'])).toBeFalsy();
+    expect(toggle.defined(selCmpts['five'])).toBeFalsy();
   });
 
   it('builds toggle signals', () => {

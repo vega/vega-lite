@@ -223,11 +223,6 @@
     {
       "mark": "circle",
       "data": {"name": "values"},
-      "transform": [
-        {"filter": "datum.name != 'Toolbar_First'"},
-        {"filter": "datum.name != 'Tablet_First'"},
-        {"filter": "datum.name != 'Participant ID'"}
-      ],
       "encoding": {
         "y": {
           "field": "name",
@@ -255,7 +250,12 @@
           "legend": {"offset": 75}
         },
         "color": {"value": "#6EB4FD"}
-      }
+      },
+      "transform": [
+        {"filter": "datum.name != 'Toolbar_First'"},
+        {"filter": "datum.name != 'Tablet_First'"},
+        {"filter": "datum.name != 'Participant ID'"}
+      ]
     },
     {
       "mark": "tick",

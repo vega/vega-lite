@@ -24,7 +24,7 @@ Vega-Lite specifications are JSON objects that describe a diverse range of inter
 
 All view specifications in Vega-Lite can contain the following properties:
 
-{% include table.html props="name,description,title,data,transform" source="TopLevelUnitSpec" %}
+{% include table.html props="name,description,title,data,transform,params" source="TopLevelUnitSpec" %}
 
 In addition, all view composition specifications ([`layer`](layer.html), [`facet`](facet.html), [`concat`](concat.html), and [`repeat`](repeat.html)) can have the [`resolve` property for scale, axes, and legend resolution](resolve.html):
 
@@ -86,7 +86,7 @@ As it is designed for analysis, Vega-Lite also supports data transformation such
 
 To summarize, a single-view specification in Vega-Lite can have the following properties (in addition to [common properties of a specification](#common)):
 
-{% include table.html props="mark,encoding,width,height,view,selection,projection" source="TopLevelUnitSpec" %}
+{% include table.html props="mark,encoding,width,height,view,projection" source="TopLevelUnitSpec" %}
 
 {:#view-background}
 

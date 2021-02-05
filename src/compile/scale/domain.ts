@@ -8,7 +8,7 @@ import {
   NonArgAggregateOp,
   SHARED_DOMAIN_OP_INDEX
 } from '../../aggregate';
-import {isBinning, isBinParams, isSelectionExtent} from '../../bin';
+import {isBinning, isBinParams, isParameterExtent} from '../../bin';
 import {getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
 import {
   binRequiresRange,
@@ -26,8 +26,8 @@ import {DataSourceType} from '../../data';
 import {DateTime} from '../../datetime';
 import {ExprRef} from '../../expr';
 import * as log from '../../log';
-import {Domain, hasDiscreteDomain, isDomainUnionWith, isSelectionDomain, ScaleConfig, ScaleType} from '../../scale';
-import {SelectionExtent} from '../../selection';
+import {Domain, hasDiscreteDomain, isDomainUnionWith, isParameterDomain, ScaleConfig, ScaleType} from '../../scale';
+import {ParameterExtent} from '../../selection';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortArray, isSortByEncoding, isSortField} from '../../sort';
 import {normalizeTimeUnit, TimeUnit, TimeUnitParams} from '../../timeunit';
 import {Type} from '../../type';
@@ -101,7 +101,7 @@ function parseNonUnitScaleDomain(model: Model) {
 
   for (const channel of util.keys(localScaleComponents)) {
     let domains: Explicit<VgNonUnionDomain[]>;
-    let selectionExtent: SelectionExtent = null;
+    let selectionExtent: ParameterExtent = null;
 
     for (const child of model.children) {
       const childComponent = child.component.scales[channel];
@@ -119,7 +119,7 @@ function parseNonUnitScaleDomain(model: Model) {
         }
 
         const se = childComponent.get('selectionExtent');
-        if (selectionExtent && se && selectionExtent.selection !== se.selection) {
+        if (selectionExtent && se && selectionExtent.param !== se.param) {
           log.warn(log.message.NEEDS_SAME_SELECTION);
         }
         selectionExtent = se;
@@ -252,7 +252,7 @@ function parseSingleChannelDomain(
     return makeExplicit([...defaultDomain.value, ...unionWith]);
   } else if (isSignalRef(domain)) {
     return makeExplicit([domain]);
-  } else if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
+  } else if (domain && domain !== 'unaggregated' && !isParameterDomain(domain)) {
     return makeExplicit(convertDomainIfItIsDateTime(domain, type, timeUnit));
   }
 
@@ -406,8 +406,8 @@ function parseSelectionDomain(model: UnitModel, channel: ScaleChannel) {
   const scale = model.component.scales[channel];
   const spec = model.specifiedScales[channel].domain;
   const bin = model.fieldDef(channel)?.bin;
-  const domain = isSelectionDomain(spec) && spec;
-  const extent = isBinParams(bin) && isSelectionExtent(bin.extent) && bin.extent;
+  const domain = isParameterDomain(spec) && spec;
+  const extent = isBinParams(bin) && isParameterExtent(bin.extent) && bin.extent;
 
   if (domain || extent) {
     // As scale parsing occurs before selection parsing, we cannot set

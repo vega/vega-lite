@@ -44,7 +44,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"CylYr_store\"))) || (vlSelectionTest(\"CylYr_store\", datum))"
+          "expr": "!length(data(\"CylYr_store\")) || vlSelectionTest(\"CylYr_store\", datum)"
         },
         {
           "type": "filter",
@@ -73,7 +73,7 @@
     },
     {
       "name": "CylYr",
-      "update": "vlSelectionResolve(\"CylYr_store\", \"union\")"
+      "update": "vlSelectionResolve(\"CylYr_store\", \"union\", true, true)"
     },
     {
       "name": "CylYr_tuple",
@@ -108,7 +108,7 @@
           "opacity": {"value": 0.7},
           "fill": [
             {
-              "test": "!(length(data(\"CylYr_store\"))) || (vlSelectionTest(\"CylYr_store\", datum))",
+              "test": "!length(data(\"CylYr_store\")) || vlSelectionTest(\"CylYr_store\", datum)",
               "scale": "color",
               "field": "Origin"
             },

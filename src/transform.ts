@@ -4,6 +4,7 @@ import {FieldName} from './channeldef';
 import {Data} from './data';
 import {ImputeParams} from './impute';
 import {LogicalComposition, normalizeLogicalComposition} from './logical';
+import {ParameterName} from './parameter';
 import {normalizePredicate, Predicate} from './predicate';
 import {SortField} from './sort';
 import {TimeUnit, TimeUnitParams} from './timeunit';
@@ -327,9 +328,9 @@ export interface LookupData extends LookupBase {
 
 export interface LookupSelection extends LookupBase {
   /**
-   * Selection name to look up.
+   * Selection parameter name to look up.
    */
-  selection: string;
+  param: ParameterName;
 }
 
 export interface LookupTransform {
@@ -372,8 +373,8 @@ export function isLookupData(from: LookupData | LookupSelection): from is Lookup
   return 'data' in from;
 }
 
-export function isLookupSelection(from: LookupData | LookupSelection): from is LookupData {
-  return 'selection' in from;
+export function isLookupSelection(from: LookupData | LookupSelection): from is LookupSelection {
+  return 'param' in from;
 }
 
 export interface FoldTransform {

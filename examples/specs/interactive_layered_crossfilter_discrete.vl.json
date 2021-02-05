@@ -8,9 +8,10 @@
   "repeat": {"column": ["distance", "delay", "time"]},
   "spec": {
     "layer": [{
-      "selection": {
-        "brush": {"type": "multi", "encodings": ["x"]}
-      },
+      "params": [{
+        "name": "brush",
+        "select": {"type": "point", "encodings": ["x"]}
+      }],
       "mark": "bar",
       "encoding": {
         "x": {
@@ -21,7 +22,7 @@
         "color": {"value": "#ddd"}
       }
     }, {
-      "transform": [{"filter": {"selection": "brush"}}],
+      "transform": [{"filter": {"param": "brush"}}],
       "mark": "bar",
       "encoding": {
         "x": {

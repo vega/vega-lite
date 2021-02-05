@@ -104,7 +104,7 @@ While binning in `transform` is more verbose than in `encoding`, it can be usefu
 
 ## Bin Parameters
 
-If `bin` is `true`, default binning parameters are used. To customize binning parameters, you can set `bin` to a bin definition object, which can have the following properties:
+If `bin` is `true`, default binning properties are used. To customize binning properties, you can set `bin` to a bin definition object, which can have the following properties:
 
 {% include table.html props="anchor,base,divide,extent,maxbins,minstep,nice,step,steps" source="BinParams" %}
 

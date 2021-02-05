@@ -7,7 +7,7 @@
   "height": 500,
   "style": "cell",
   "data": [
-    {"name": "single_store"},
+    {"name": "org_store"},
     {
       "name": "source_0",
       "url": "data/us-10m.json",
@@ -25,7 +25,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(vlSelectionTest(\"single_store\", datum))"
+          "expr": "length(data(\"org_store\")) && vlSelectionTest(\"org_store\", datum)"
         },
         {
           "type": "lookup",
@@ -125,11 +125,11 @@
       ]
     },
     {
-      "name": "single",
-      "update": "vlSelectionResolve(\"single_store\", \"union\")"
+      "name": "org",
+      "update": "vlSelectionResolve(\"org_store\", \"union\", true, true)"
     },
     {
-      "name": "single_tuple",
+      "name": "org_tuple",
       "on": [
         {
           "events": [
@@ -139,22 +139,36 @@
               "markname": "layer_2_voronoi"
             }
           ],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_2\", fields: single_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"origin\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_2\", fields: org_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"origin\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
+      ]
+    },
+    {"name": "org_tuple_fields", "value": [{"type": "E", "field": "origin"}]},
+    {
+      "name": "org_toggle",
+      "value": false,
+      "on": [
+        {
+          "events": [
+            {
+              "source": "scope",
+              "type": "mouseover",
+              "markname": "layer_2_voronoi"
+            }
+          ],
+          "update": "event.shiftKey"
+        },
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
       ]
     },
     {
-      "name": "single_tuple_fields",
-      "value": [{"type": "E", "field": "origin"}]
-    },
-    {
-      "name": "single_modify",
+      "name": "org_modify",
       "on": [
         {
-          "events": {"signal": "single_tuple"},
-          "update": "modify(\"single_store\", single_tuple, true)"
+          "events": {"signal": "org_tuple"},
+          "update": "modify(\"org_store\", org_toggle ? null : org_tuple, org_toggle ? null : true, org_toggle ? org_tuple : null)"
         }
       ]
     }

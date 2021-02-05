@@ -32,11 +32,11 @@ import {LegendInternal} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
 import {Domain, Scale} from '../scale';
-import {SelectionDef} from '../selection';
+import {isSelectionParameter, SelectionParameter} from '../selection';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {isFrameMixins} from '../spec/base';
 import {stack, StackProperties} from '../stack';
-import {Dict, keys} from '../util';
+import {keys} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
 import {AxisInternalIndex} from './axis/component';
@@ -76,7 +76,7 @@ export class UnitModel extends ModelWithField {
 
   public specifiedProjection: Projection<ExprRef | SignalRef> = {};
 
-  public readonly selection: Dict<SelectionDef> = {};
+  public readonly selection: SelectionParameter[] = [];
   public children: Model[] = [];
 
   constructor(
@@ -121,7 +121,7 @@ export class UnitModel extends ModelWithField {
     this.specifiedProjection = spec.projection;
 
     // Selections will be initialized upon parse.
-    this.selection = spec.selection;
+    this.selection = (spec.params ?? []).filter(p => isSelectionParameter(p)) as SelectionParameter[];
   }
 
   public get hasProjection(): boolean {

@@ -343,11 +343,11 @@ export function errorBarParams<
   tooltipEncoding: ErrorEncoding<string>;
 } {
   // TODO: use selection
-  const {mark, encoding, selection, projection: _p, ...outerSpec} = spec;
+  const {mark, encoding, params, projection: _p, ...outerSpec} = spec;
   const markDef: MD = isMarkDef(mark) ? mark : ({type: mark} as MD);
 
   // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
-  if (selection) {
+  if (params) {
     log.warn(log.message.selectionNotSupported(compositeMark));
   }
 

@@ -18,8 +18,14 @@
     {
       "mark": {"type": "rule", "color": "#000", "opacity": 0.35},
       "data": {"url": "data/flights-airport.csv"},
+      "encoding": {
+        "latitude": {"field": "latitude"},
+        "longitude": {"field": "longitude"},
+        "latitude2": {"field": "lat2"},
+        "longitude2": {"field": "lon2"}
+      },
       "transform": [
-        {"filter": {"selection": "single"}},
+        {"filter": {"param": "org", "empty": false}},
         {
           "lookup": "origin",
           "from": {
@@ -38,17 +44,33 @@
           "as": ["lat2", "lon2"]
         }
       ],
-      "encoding": {
-        "latitude": {"field": "latitude"},
-        "longitude": {"field": "longitude"},
-        "latitude2": {"field": "lat2"},
-        "longitude2": {"field": "lon2"}
-      },
       "projection": {"type": "albersUsa"}
     },
     {
       "mark": {"type": "circle"},
       "data": {"url": "data/flights-airport.csv"},
+      "params": [
+        {
+          "name": "org",
+          "select": {
+            "type": "point",
+            "on": "mouseover",
+            "nearest": true,
+            "fields": ["origin"]
+          }
+        }
+      ],
+      "encoding": {
+        "latitude": {"field": "latitude"},
+        "longitude": {"field": "longitude"},
+        "size": {
+          "field": "routes",
+          "type": "quantitative",
+          "scale": {"rangeMax": 1000},
+          "legend": null
+        },
+        "order": {"field": "routes", "sort": "descending"}
+      },
       "transform": [
         {"aggregate": [{"op": "count", "as": "routes"}], "groupby": ["origin"]},
         {
@@ -61,26 +83,6 @@
         },
         {"filter": "datum.state !== 'PR' && datum.state !== 'VI'"}
       ],
-      "selection": {
-        "single": {
-          "type": "single",
-          "on": "mouseover",
-          "nearest": true,
-          "fields": ["origin"],
-          "empty": "none"
-        }
-      },
-      "encoding": {
-        "latitude": {"field": "latitude"},
-        "longitude": {"field": "longitude"},
-        "size": {
-          "field": "routes",
-          "type": "quantitative",
-          "scale": {"rangeMax": 1000},
-          "legend": null
-        },
-        "order": {"field": "routes", "sort": "descending"}
-      },
       "projection": {"type": "albersUsa"}
     }
   ],

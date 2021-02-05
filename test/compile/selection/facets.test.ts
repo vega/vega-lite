@@ -18,11 +18,10 @@ describe('Faceted Selections', () => {
           encoding: {y: {value: 10}}
         },
         {
-          selection: {
-            one: {type: 'single'},
-            twp: {type: 'multi'},
-            three: {type: 'interval'}
-          },
+          params: [
+            {name: 'one', select: 'point'},
+            {name: 'two', select: 'interval'}
+          ],
           mark: 'rule',
           encoding: {
             x: {field: 'a'},

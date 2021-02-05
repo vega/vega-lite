@@ -6,10 +6,6 @@
   "height": 500,
   "layer": [
     {
-      "transform": [
-        {"filter": {"field": "country", "equal": "Afghanistan"}},
-        {"filter": {"selection": "year"}}
-      ],
       "mark": {
         "type": "text",
         "fontSize": 100,
@@ -17,28 +13,13 @@
         "y": 250,
         "opacity": 0.06
       },
-      "encoding": {"text": {"field": "year"}}
+      "encoding": {"text": {"field": "year"}},
+      "transform": [
+        {"filter": {"field": "country", "equal": "Afghanistan"}},
+        {"filter": {"param": "year"}}
+      ]
     },
     {
-      "transform": [
-        {
-          "lookup": "cluster",
-          "from": {
-            "key": "id",
-            "fields": ["name"],
-            "data": {
-              "values": [
-                {"id": 0, "name": "South Asia"},
-                {"id": 1, "name": "Europe & Central Asia"},
-                {"id": 2, "name": "Sub-Saharan Africa"},
-                {"id": 3, "name": "America"},
-                {"id": 4, "name": "East Asia & Pacific"},
-                {"id": 5, "name": "Middle East & North Africa"}
-              ]
-            }
-          }
-        }
-      ],
       "layer": [
         {
           "mark": {
@@ -64,38 +45,46 @@
             "order": {"field": "year"},
             "opacity": {
               "condition": {
+                "value": 0.8,
                 "test": {
-                  "or": [{"selection": "hovered"}, {"selection": "clicked"}]
-                },
-                "value": 0.8
+                  "or": [
+                    {"param": "hovered", "empty": false},
+                    {"param": "clicked", "empty": false}
+                  ]
+                }
               },
               "value": 0
             }
           }
         },
         {
-          "selection": {
-            "year": {
-              "type": "single",
-              "fields": ["year"],
+          "params": [
+            {
+              "name": "year",
+              "value": [{"year": 1955}],
+              "select": {"type": "point", "fields": ["year"]},
               "bind": {
+                "name": "Year",
                 "input": "range",
                 "min": 1955,
                 "max": 2005,
-                "step": 5,
-                "name": "Year"
-              },
-              "init": {"year": 1955}
+                "step": 5
+              }
             },
-            "hovered": {
-              "type": "single",
-              "fields": ["country"],
-              "on": "mouseover",
-              "empty": "none"
+            {
+              "name": "hovered",
+              "select": {
+                "type": "point",
+                "fields": ["country"],
+                "toggle": false,
+                "on": "mouseover"
+              }
             },
-            "clicked": {"type": "multi", "fields": ["country"], "empty": "none"}
-          },
-          "transform": [{"filter": {"selection": "year"}}],
+            {
+              "name": "clicked",
+              "select": {"type": "point", "fields": ["country"]}
+            }
+          ],
           "mark": {"type": "circle", "size": 100, "opacity": 0.9},
           "encoding": {
             "x": {
@@ -111,19 +100,10 @@
               "axis": {"tickCount": 5, "title": "Life Expectancy"}
             },
             "color": {"field": "name", "title": "Region"}
-          }
+          },
+          "transform": [{"filter": {"param": "year"}}]
         },
         {
-          "transform": [
-            {
-              "filter": {
-                "and": [
-                  {"selection": "year"},
-                  {"or": [{"selection": "clicked"}, {"selection": "hovered"}]}
-                ]
-              }
-            }
-          ],
           "mark": {
             "type": "text",
             "yOffset": -12,
@@ -145,13 +125,24 @@
             },
             "text": {"field": "country"},
             "color": {"field": "name", "title": "Region"}
-          }
+          },
+          "transform": [
+            {
+              "filter": {
+                "and": [
+                  {"param": "year"},
+                  {
+                    "or": [
+                      {"param": "clicked", "empty": false},
+                      {"param": "hovered", "empty": false}
+                    ]
+                  }
+                ]
+              }
+            }
+          ]
         },
         {
-          "transform": [
-            {"filter": {"selection": "hovered"}},
-            {"filter": {"not": {"selection": "year"}}}
-          ],
           "layer": [
             {
               "mark": {
@@ -193,7 +184,30 @@
                 }
               }
             }
+          ],
+          "transform": [
+            {"filter": {"param": "hovered", "empty": false}},
+            {"filter": {"not": {"param": "year"}}}
           ]
+        }
+      ],
+      "transform": [
+        {
+          "lookup": "cluster",
+          "from": {
+            "key": "id",
+            "fields": ["name"],
+            "data": {
+              "values": [
+                {"id": 0, "name": "South Asia"},
+                {"id": 1, "name": "Europe & Central Asia"},
+                {"id": 2, "name": "Sub-Saharan Africa"},
+                {"id": 3, "name": "America"},
+                {"id": 4, "name": "East Asia & Pacific"},
+                {"id": 5, "name": "Middle East & North Africa"}
+              ]
+            }
+          }
         }
       ]
     }

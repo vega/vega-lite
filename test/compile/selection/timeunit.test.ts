@@ -27,9 +27,12 @@ function getConcatModel(unit2: NormalizedUnitSpec, config?: Config) {
     hconcat: [
       {
         mark: 'point',
-        selection: {
-          two: {type: 'single', encodings: ['x', 'y']}
-        },
+        params: [
+          {
+            name: 'two',
+            select: {type: 'point', encodings: ['x', 'y']}
+          }
+        ],
         encoding: {
           x: {
             field: 'date',
@@ -56,10 +59,10 @@ describe('Selection time unit', () => {
         y: {field: 'date', type: 'temporal', timeUnit: 'minutes'}
       }
     });
-    const selCmpts = (model.component.selection = parseUnitSelection(model, {
-      one: {type: 'single'},
-      two: {type: 'single', encodings: ['x', 'y']}
-    }));
+    const selCmpts = (model.component.selection = parseUnitSelection(model, [
+      {name: 'one', select: 'point'},
+      {name: 'two', select: {type: 'point', encodings: ['x', 'y']}}
+    ]));
 
     expect(selCmpts['one'].project.timeUnit).not.toBeDefined();
     expect(selCmpts['two'].project.timeUnit).toBeInstanceOf(TimeUnitNode);
@@ -82,7 +85,7 @@ describe('Selection time unit', () => {
         },
         y: {field: 'price', type: 'quantitative'},
         color: {
-          condition: {selection: 'two', value: 'goldenrod'},
+          condition: {param: 'two', value: 'goldenrod'},
           value: 'steelblue'
         }
       }
@@ -96,7 +99,7 @@ describe('Selection time unit', () => {
   it('is added before selection filters', () => {
     const model = getConcatModel(
       {
-        transform: [{filter: {selection: 'two'}}],
+        transform: [{filter: {param: 'two'}}],
         mark: 'point',
         encoding: {
           x: {
@@ -131,7 +134,7 @@ describe('Selection time unit', () => {
 
   it('removes duplicate time unit formulae', () => {
     const model = getConcatModel({
-      transform: [{filter: {selection: 'two'}}],
+      transform: [{filter: {param: 'two'}}],
       mark: 'point',
       encoding: {
         x: {

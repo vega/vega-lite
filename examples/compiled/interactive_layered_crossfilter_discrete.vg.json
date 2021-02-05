@@ -69,7 +69,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
+          "expr": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum)"
         },
         {
           "type": "aggregate",
@@ -107,7 +107,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
+          "expr": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum)"
         }
       ]
     },
@@ -192,7 +192,7 @@
     },
     {
       "name": "brush",
-      "update": "vlSelectionResolve(\"brush_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"brush_store\", \"union\", true, true)"
     }
   ],
   "layout": {"padding": 20, "columns": 3, "bounds": "full", "align": "all"},
@@ -217,7 +217,7 @@
               "force": true
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "null"
             }
           ]
@@ -235,7 +235,7 @@
               "update": "event.shiftKey"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "false"
             }
           ]
@@ -386,7 +386,7 @@
               "force": true
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "null"
             }
           ]
@@ -404,7 +404,7 @@
               "update": "event.shiftKey"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "false"
             }
           ]
@@ -555,7 +555,7 @@
               "force": true
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "null"
             }
           ]
@@ -573,7 +573,7 @@
               "update": "event.shiftKey"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "false"
             }
           ]

@@ -4,30 +4,6 @@
   "data": {"url": "data/penguins.json"},
   "width": 600,
   "height": 300,
-  "transform": [
-    {"filter": "datum['Beak Length (mm)']"},
-    {"window": [{"op": "count", "as": "index"}]},
-    {
-      "fold": [
-        "Beak Length (mm)",
-        "Beak Depth (mm)",
-        "Flipper Length (mm)",
-        "Body Mass (g)"
-      ]
-    },
-    {
-      "joinaggregate": [
-        {"op": "min", "field": "value", "as": "min"},
-        {"op": "max", "field": "value", "as": "max"}
-      ],
-      "groupby": ["key"]
-    },
-    {
-      "calculate": "(datum.value - datum.min) / (datum.max-datum.min)",
-      "as": "norm_val"
-    },
-    {"calculate": "(datum.min + datum.max) / 2", "as": "mid"}
-  ],
   "layer": [
     {
       "mark": {"type": "rule", "color": "#ccc"},
@@ -119,5 +95,29 @@
       "label": {"baseline": "middle", "align": "right", "dx": -5},
       "tick": {"orient": "horizontal"}
     }
-  }
+  },
+  "transform": [
+    {"filter": "datum['Beak Length (mm)']"},
+    {"window": [{"op": "count", "as": "index"}]},
+    {
+      "fold": [
+        "Beak Length (mm)",
+        "Beak Depth (mm)",
+        "Flipper Length (mm)",
+        "Body Mass (g)"
+      ]
+    },
+    {
+      "joinaggregate": [
+        {"op": "min", "field": "value", "as": "min"},
+        {"op": "max", "field": "value", "as": "max"}
+      ],
+      "groupby": ["key"]
+    },
+    {
+      "calculate": "(datum.value - datum.min) / (datum.max-datum.min)",
+      "as": "norm_val"
+    },
+    {"calculate": "(datum.min + datum.max) / 2", "as": "mid"}
+  ]
 }

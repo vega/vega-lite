@@ -447,12 +447,12 @@ describe('compile/mark/init', () => {
     it('should return pointer cursor when href channel present', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: 'bar',
-        selection: {test: {type: 'single'}},
+        params: [{name: 'test', select: 'point'}],
         encoding: {
           x: {field: 'a', type: 'ordinal'},
           y: {field: 'b', type: 'quantitative'},
           href: {
-            condition: {selection: 'test', value: 'https://vega.github.io/schema/vega-lite/v4.json'},
+            condition: {param: 'test', value: 'https://vega.github.io/schema/vega-lite/v4.json'},
             field: 'a',
             type: 'ordinal'
           }
@@ -464,12 +464,12 @@ describe('compile/mark/init', () => {
     it('should return specified cursor when href channel present but cursor specified', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
         mark: {type: 'bar', cursor: 'auto'},
-        selection: {test: {type: 'single'}},
+        params: [{name: 'test', select: 'point'}],
         encoding: {
           x: {field: 'a', type: 'ordinal'},
           y: {field: 'b', type: 'quantitative'},
           href: {
-            condition: {selection: 'test', value: 'http://www.google.com'},
+            condition: {param: 'test', value: 'http://www.google.com'},
             field: 'a',
             type: 'ordinal'
           }

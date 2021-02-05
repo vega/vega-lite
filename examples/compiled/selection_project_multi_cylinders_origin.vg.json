@@ -29,7 +29,7 @@
     },
     {
       "name": "pts",
-      "update": "vlSelectionResolve(\"pts_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"pts_store\", \"union\", true, true)"
     },
     {
       "name": "pts_tuple",
@@ -39,7 +39,7 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Cylinders\"], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -57,7 +57,7 @@
           "events": [{"source": "scope", "type": "click"}],
           "update": "event.shiftKey"
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
       ]
     },
     {
@@ -83,7 +83,7 @@
           "fill": {"value": "transparent"},
           "stroke": [
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
+              "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
               "scale": "color",
               "field": "Cylinders"
             },
@@ -97,14 +97,14 @@
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": [
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
+              "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
               "value": 200
             },
             {"value": 50}
           ],
           "shape": [
             {
-              "test": "!(length(data(\"pts_store\"))) || (vlSelectionTest(\"pts_store\", datum))",
+              "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
               "scale": "shape",
               "field": "Origin"
             },

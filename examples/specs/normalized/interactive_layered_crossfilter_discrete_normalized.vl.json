@@ -11,7 +11,9 @@
     {
       "layer": [
         {
-          "selection": {"brush": {"type": "multi", "encodings": ["x"]}},
+          "params": [
+            {"name": "brush", "select": {"type": "point", "encodings": ["x"]}}
+          ],
           "mark": "bar",
           "encoding": {
             "x": {"field": "distance", "bin": {"maxbins": 20}},
@@ -20,12 +22,12 @@
           }
         },
         {
-          "transform": [{"filter": {"selection": "brush"}}],
           "mark": "bar",
           "encoding": {
             "x": {"field": "distance", "bin": {"maxbins": 20}},
             "y": {"aggregate": "count"}
-          }
+          },
+          "transform": [{"filter": {"param": "brush"}}]
         }
       ],
       "name": "child__column_distance"
@@ -33,7 +35,9 @@
     {
       "layer": [
         {
-          "selection": {"brush": {"type": "multi", "encodings": ["x"]}},
+          "params": [
+            {"name": "brush", "select": {"type": "point", "encodings": ["x"]}}
+          ],
           "mark": "bar",
           "encoding": {
             "x": {"field": "delay", "bin": {"maxbins": 20}},
@@ -42,12 +46,12 @@
           }
         },
         {
-          "transform": [{"filter": {"selection": "brush"}}],
           "mark": "bar",
           "encoding": {
             "x": {"field": "delay", "bin": {"maxbins": 20}},
             "y": {"aggregate": "count"}
-          }
+          },
+          "transform": [{"filter": {"param": "brush"}}]
         }
       ],
       "name": "child__column_delay"
@@ -55,7 +59,9 @@
     {
       "layer": [
         {
-          "selection": {"brush": {"type": "multi", "encodings": ["x"]}},
+          "params": [
+            {"name": "brush", "select": {"type": "point", "encodings": ["x"]}}
+          ],
           "mark": "bar",
           "encoding": {
             "x": {"field": "time", "bin": {"maxbins": 20}},
@@ -64,12 +70,12 @@
           }
         },
         {
-          "transform": [{"filter": {"selection": "brush"}}],
           "mark": "bar",
           "encoding": {
             "x": {"field": "time", "bin": {"maxbins": 20}},
             "y": {"aggregate": "count"}
-          }
+          },
+          "transform": [{"filter": {"param": "brush"}}]
         }
       ],
       "name": "child__column_time"

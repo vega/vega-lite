@@ -4,6 +4,7 @@ import {FieldName, valueExpr, vgField} from './channeldef';
 import {DateTime} from './datetime';
 import {ExprRef} from './expr';
 import {LogicalComposition} from './logical';
+import {ParameterName} from './parameter';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit, TimeUnitParams} from './timeunit';
 import {stringify} from './util';
 import {isSignalRef} from './vega.schema';
@@ -20,7 +21,7 @@ export type Predicate =
   | FieldGTEPredicate
   | FieldValidPredicate
   // b) Selection Predicate
-  | SelectionPredicate
+  | ParameterPredicate
   // c) Vega Expression string
   | string;
 
@@ -34,15 +35,20 @@ export type FieldPredicate =
   | FieldOneOfPredicate
   | FieldValidPredicate;
 
-export interface SelectionPredicate {
+export interface ParameterPredicate {
   /**
-   * Filter using a selection name or a logical composition of selection names.
+   * Filter using a parameter name.
    */
-  selection: LogicalComposition<string>;
+  param: ParameterName;
+  /**
+   * For selection parameters, the predicate of empty selections returns true by default.
+   * Override this behavior, by setting this property `empty: false`.
+   */
+  empty?: boolean;
 }
 
-export function isSelectionPredicate(predicate: LogicalComposition<Predicate>): predicate is SelectionPredicate {
-  return predicate?.['selection'];
+export function isSelectionPredicate(predicate: LogicalComposition<Predicate>): predicate is ParameterPredicate {
+  return predicate?.['param'];
 }
 
 export interface FieldPredicateBase {

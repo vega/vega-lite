@@ -21,14 +21,18 @@
     }
   }, {
     "mark": "rule",
-    "selection": {
-      "hover": {"type": "single", "on": "mouseover", "empty": "none"}
-    },
+    "params": [{
+      "name": "hover",
+      "select": {"type": "point", "on": "mouseover"}
+    }],
     "encoding": {
       "color": {
-        "condition":{
-          "selection": {"not": "hover"}, "value": "transparent"
-        }
+        "condition": {
+          "param": "hover",
+          "empty": false,
+          "value": "black"
+        },
+        "value": "transparent"
       }
     }
   }],

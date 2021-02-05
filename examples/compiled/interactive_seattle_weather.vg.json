@@ -24,7 +24,7 @@
         },
         {
           "type": "filter",
-          "expr": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))"
+          "expr": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum)"
         },
         {
           "type": "aggregate",
@@ -41,7 +41,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"click_store\"))) || (vlSelectionTest(\"click_store\", datum))"
+          "expr": "!length(data(\"click_store\")) || vlSelectionTest(\"click_store\", datum)"
         },
         {
           "field": "date",
@@ -76,7 +76,7 @@
     },
     {
       "name": "click",
-      "update": "vlSelectionResolve(\"click_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"click_store\", \"union\", true, true)"
     }
   ],
   "layout": {"padding": 20, "columns": 1, "bounds": "full", "align": "each"},
@@ -129,16 +129,16 @@
               "update": "[scale(\"concat_0_x\", brush_monthdate_date[0]), scale(\"concat_0_x\", brush_monthdate_date[1])]"
             },
             {
+              "events": [{"source": "view", "type": "dblclick"}],
+              "update": "[0, 0]"
+            },
+            {
               "events": {"signal": "brush_translate_delta"},
               "update": "clampRange(panLinear(brush_translate_anchor.extent_x, brush_translate_delta.x / span(brush_translate_anchor.extent_x)), 0, width)"
             },
             {
               "events": {"signal": "brush_zoom_delta"},
               "update": "clampRange(zoomLinear(brush_x, brush_zoom_anchor.x, brush_zoom_delta), 0, width)"
-            },
-            {
-              "events": [{"source": "scope", "type": "dblclick"}],
-              "update": "[0, 0]"
             }
           ]
         },
@@ -311,7 +311,7 @@
               "fill": {"value": "transparent"},
               "stroke": [
                 {
-                  "test": "!(length(data(\"brush_store\"))) || (vlSelectionTest(\"brush_store\", datum))",
+                  "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum)",
                   "scale": "color",
                   "field": "weather"
                 },
@@ -441,7 +441,7 @@
               "force": true
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "null"
             }
           ]
@@ -459,7 +459,7 @@
               "update": "event.shiftKey"
             },
             {
-              "events": [{"source": "scope", "type": "dblclick"}],
+              "events": [{"source": "view", "type": "dblclick"}],
               "update": "false"
             }
           ]
@@ -485,7 +485,7 @@
             "update": {
               "fill": [
                 {
-                  "test": "!(length(data(\"click_store\"))) || (vlSelectionTest(\"click_store\", datum))",
+                  "test": "!length(data(\"click_store\")) || vlSelectionTest(\"click_store\", datum)",
                   "scale": "color",
                   "field": "weather"
                 },

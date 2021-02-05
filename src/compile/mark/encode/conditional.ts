@@ -1,11 +1,5 @@
 import {array} from 'vega-util';
-import {
-  ChannelDef,
-  ConditionalPredicate,
-  ConditionalSelection,
-  isConditionalDef,
-  isConditionalSelection
-} from '../../../channeldef';
+import {ChannelDef, ConditionalPredicate, isConditionalDef, isConditionalParameter} from '../../../channeldef';
 import {GuideEncodingConditionalValueDef} from '../../../guide';
 import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {expression} from '../../predicate';
@@ -28,13 +22,14 @@ export function wrapCondition<CD extends ChannelDef | GuideEncodingConditionalVa
     const conditions = array(condition);
     const vgConditions = conditions.map(c => {
       const conditionValueRef = refFn(c);
-      const test = isConditionalSelection<any>(c)
-        ? parseSelectionPredicate(model, (c as ConditionalSelection<any>).selection) // FIXME: remove casting once TS is no longer dumb about it
-        : expression(model, (c as ConditionalPredicate<any>).test); // FIXME: remove casting once TS is no longer dumb about it
-      return {
-        test,
-        ...conditionValueRef
-      };
+      if (isConditionalParameter<any>(c)) {
+        const {param, empty} = c;
+        const test = parseSelectionPredicate(model, {param, empty});
+        return {test, ...conditionValueRef};
+      } else {
+        const test = expression(model, (c as ConditionalPredicate<any>).test); // FIXME: remove casting once TS is no longer dumb about it
+        return {test, ...conditionValueRef};
+      }
     });
     return {
       [vgChannel]: [...vgConditions, ...(valueRef !== undefined ? [valueRef] : [])]

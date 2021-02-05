@@ -6,7 +6,7 @@ import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../sr
 import {UnitModel} from '../../../src/compile/unit';
 import * as log from '../../../src/log';
 import {Domain} from '../../../src/scale';
-import {parseConcatModel, parseModel, parseUnitModelWithScale} from '../../util';
+import {parseConcatModel, parseModel, parseUnitModelWithScaleAndSelection} from '../../util';
 
 describe('Selection + Scales', () => {
   describe('selectionExtent', () => {
@@ -15,40 +15,39 @@ describe('Selection + Scales', () => {
         vconcat: [
           {
             mark: 'area',
-            selection: {
-              brush: {type: 'interval', encodings: ['x']},
-              brush2: {type: 'multi', fields: ['price'], resolve: 'intersect'}
-            },
+            params: [
+              {name: 'brush', select: {type: 'interval', encodings: ['x']}},
+              {name: 'brush2', select: {type: 'point', fields: ['price'], resolve: 'intersect'}},
+              {name: 'var'}
+            ],
             encoding: {
               x: {field: 'date', type: 'temporal'},
               y: {field: 'price', type: 'quantitative'}
             }
           },
           {
-            selection: {
-              brush3: {type: 'interval', fields: ['symbol']}
-            },
+            params: [{name: 'brush3', select: {type: 'interval', fields: ['symbol']}}],
             mark: 'area',
             encoding: {
               x: {
                 field: 'date',
                 type: 'temporal',
-                scale: {domain: {selection: 'brush', encoding: 'x'}}
+                scale: {domain: {param: 'brush', encoding: 'x'}}
               },
               y: {
                 field: 'price',
                 type: 'quantitative',
-                scale: {domain: {selection: 'brush2', field: 'price'}}
+                scale: {domain: {param: 'brush2', field: 'price'}}
               },
               color: {
                 field: 'symbol',
                 type: 'nominal',
-                scale: {domain: {selection: 'brush3'} as Domain}
+                scale: {domain: {param: 'brush3'} as Domain}
               },
               opacity: {
                 field: 'symbol',
                 type: 'ordinal',
-                scale: {domain: {selection: 'brush3'} as Domain}
+                scale: {domain: {param: 'var'} as Domain}
               }
             }
           }
@@ -84,7 +83,7 @@ describe('Selection + Scales', () => {
 
       expect(typeof oscale.domain).toBe('object');
       expect(oscale).toHaveProperty('domainRaw');
-      expect(oscale.domainRaw).toEqual({signal: 'brush3["symbol"]'});
+      expect(oscale.domainRaw).toEqual({signal: 'var'});
     });
 
     it('should be merged for layered views', () => {
@@ -99,7 +98,7 @@ describe('Selection + Scales', () => {
                   x: {
                     field: 'date',
                     type: 'temporal',
-                    scale: {domain: {selection: 'brush'}}
+                    scale: {domain: {param: 'brush'}}
                   },
                   y: {field: 'price', type: 'quantitative'}
                 }
@@ -108,9 +107,12 @@ describe('Selection + Scales', () => {
           },
           {
             mark: 'area',
-            selection: {
-              brush: {type: 'interval', encodings: ['x']}
-            },
+            params: [
+              {
+                name: 'brush',
+                select: {type: 'interval', encodings: ['x']}
+              }
+            ],
             encoding: {
               x: {field: 'date', type: 'temporal'},
               y: {field: 'price', type: 'quantitative'}
@@ -127,13 +129,14 @@ describe('Selection + Scales', () => {
     });
 
     it('should handle nested field references', () => {
-      let model: Model = parseUnitModelWithScale({
-        selection: {
-          grid: {
-            type: 'interval',
+      let model: Model = parseUnitModelWithScaleAndSelection({
+        params: [
+          {
+            name: 'grid',
+            select: 'interval',
             bind: 'scales'
           }
-        },
+        ],
         data: {
           values: [{nested: {a: '1', b: 28}}, {nested: {a: '2', b: 55}}, {nested: {a: '3', b: 43}}]
         },
@@ -149,21 +152,23 @@ describe('Selection + Scales', () => {
           }
         }
       });
-      model.parseSelections();
 
       let scales = assembleScalesForModel(model);
       expect(scales[0]).toHaveProperty('domainRaw');
-      expect(scales[0].domainRaw).toEqual({signal: 'grid["nested.b"]'});
+      expect(scales[0].domainRaw).toEqual({signal: 'grid["nested\\\\.b"]'});
       expect(scales[1]).toHaveProperty('domainRaw');
-      expect(scales[1].domainRaw).toEqual({signal: 'grid["nested.a"]'});
+      expect(scales[1].domainRaw).toEqual({signal: 'grid["nested\\\\.a"]'});
 
       model = parseConcatModel({
         vconcat: [
           {
             mark: 'area',
-            selection: {
-              brush: {type: 'interval', encodings: ['x']}
-            },
+            params: [
+              {
+                name: 'brush',
+                select: {type: 'interval', encodings: ['x']}
+              }
+            ],
             encoding: {
               x: {field: 'nested.a', type: 'temporal'},
               y: {field: 'price', type: 'quantitative'}
@@ -175,7 +180,7 @@ describe('Selection + Scales', () => {
               x: {
                 field: 'date',
                 type: 'temporal',
-                scale: {domain: {selection: 'brush', encoding: 'x'}}
+                scale: {domain: {param: 'brush', encoding: 'x'}}
               },
               y: {
                 field: 'price',
@@ -189,7 +194,7 @@ describe('Selection + Scales', () => {
               x: {
                 field: 'date',
                 type: 'temporal',
-                scale: {domain: {selection: 'brush', field: 'nested.a'}}
+                scale: {domain: {param: 'brush', field: 'nested.a'}}
               },
               y: {
                 field: 'price',
@@ -211,11 +216,36 @@ describe('Selection + Scales', () => {
 
       scales = assembleScalesForModel(model.children[1]);
       expect(scales[0]).toHaveProperty('domainRaw');
-      expect(scales[0].domainRaw).toEqual({signal: 'brush["nested.a"]'});
+      expect(scales[0].domainRaw).toEqual({signal: 'brush["nested\\\\.a"]'});
 
       scales = assembleScalesForModel(model.children[2]);
       expect(scales[0]).toHaveProperty('domainRaw');
-      expect(scales[0].domainRaw).toEqual({signal: 'brush["nested.a"]'});
+      expect(scales[0].domainRaw).toEqual({signal: 'brush["nested\\\\.a"]'});
+    });
+
+    it('should respect ordering of explicit scale domains', () => {
+      const model = parseUnitModelWithScaleAndSelection({
+        mark: 'point',
+        encoding: {
+          x: {
+            type: 'quantitative',
+            field: 'Horsepower',
+            scale: {domain: [250, 0]}
+          },
+          y: {type: 'quantitative', field: 'Miles_per_Gallon'}
+        },
+        params: [
+          {
+            name: 'pan',
+            select: 'interval',
+            bind: 'scales'
+          }
+        ]
+      });
+
+      const scales = assembleScalesForModel(model);
+      expect(scales[0]).toHaveProperty('domainRaw');
+      expect(scales[0].domainRaw).toEqual({signal: 'isValid(pan["Horsepower"]) && reverse(pan["Horsepower"])'});
     });
   });
 
@@ -228,13 +258,16 @@ describe('Selection + Scales', () => {
       spec: {
         data: {url: 'data/cars.json'},
         mark: 'point',
-        selection: {
-          grid: {
-            type: 'interval',
-            resolve: 'global',
+        params: [
+          {
+            name: 'grid',
+            select: {
+              type: 'interval',
+              resolve: 'global'
+            },
             bind: 'scales'
           }
-        },
+        ],
         encoding: {
           x: {field: {repeat: 'column'}, type: 'quantitative'},
           y: {field: {repeat: 'row'}, type: 'quantitative'},
@@ -252,7 +285,7 @@ describe('Selection + Scales', () => {
             x: {type: 'quantitative', field: 'Miles_per_Gallon'},
             y: {type: 'quantitative', field: 'Weight_in_lbs'}
           },
-          selection: {selector001: {type: 'interval', bind: 'scales'}}
+          params: [{name: 'selector001', select: 'interval', bind: 'scales'}]
         },
         {
           mark: 'point',
@@ -260,7 +293,7 @@ describe('Selection + Scales', () => {
             x: {type: 'quantitative', field: 'Acceleration'},
             y: {type: 'quantitative', field: 'Horsepower'}
           },
-          selection: {selector001: {type: 'interval', bind: 'scales'}}
+          params: [{name: 'selector001', select: {type: 'interval'}, bind: 'scales'}]
         }
       ]
     });
@@ -317,36 +350,76 @@ describe('Selection + Scales', () => {
         '{"Miles_per_Gallon": selector001_Miles_per_Gallon, "Weight_in_lbs": selector001_Weight_in_lbs, "Acceleration": selector001_Acceleration, "Horsepower": selector001_Horsepower}'
       );
     });
+
+    it('should correctly nest fields for top-level signals', () => {
+      const model = parseModel({
+        repeat: {
+          row: ['p.x', 'p.y'],
+          column: ['p.x', 'p.y']
+        },
+        spec: {
+          mark: 'point',
+          params: [
+            {
+              name: 'sel11',
+              select: 'interval',
+              bind: 'scales'
+            }
+          ],
+          encoding: {
+            x: {field: {repeat: 'column'}, type: 'quantitative'},
+            y: {field: {repeat: 'row'}, type: 'quantitative'}
+          },
+          data: {
+            values: [{p: {x: 1, y: 1}}, {p: {x: 2, y: 1}}, {p: {x: 1, y: 2}}, {p: {x: 3, y: 3}}, {p: {x: 3, y: 2}}]
+          }
+        }
+      });
+
+      model.parseScale();
+      model.parseSelections();
+
+      const signals = assembleTopLevelSignals(model.children[2] as UnitModel, []);
+      const named = signals.filter(s => s.name === 'sel11') as NewSignal[];
+      expect(named).toHaveLength(1);
+      expect(named[0].update).toEqual('{"p\\\\.x": sel11_p_x, "p\\\\.y": sel11_p_y}');
+    });
   });
 
   it(
     'should not bind for unavailable/unsupported scales',
     log.wrap(localLogger => {
-      let model = parseUnitModelWithScale({
+      parseUnitModelWithScaleAndSelection({
         data: {url: 'data/cars.json'},
-        selection: {
-          grid: {type: 'interval', bind: 'scales'}
-        },
+        params: [
+          {
+            name: 'grid',
+            select: 'interval',
+            bind: 'scales'
+          }
+        ],
         mark: 'circle',
         encoding: {
           y: {field: 'Miles_per_Gallon', type: 'quantitative'}
         }
       });
-      model.parseSelections();
       expect(localLogger.warns[0]).toEqual(log.message.cannotProjectOnChannelWithoutField(X));
 
-      model = parseUnitModelWithScale({
+      parseUnitModelWithScaleAndSelection({
         data: {url: 'data/cars.json'},
-        selection: {
-          grid: {type: 'interval', bind: 'scales'}
-        },
+        params: [
+          {
+            name: 'grid',
+            select: {type: 'interval'},
+            bind: 'scales'
+          }
+        ],
         mark: 'circle',
         encoding: {
           x: {field: 'Origin', type: 'nominal'},
           y: {field: 'Miles_per_Gallon', type: 'quantitative'}
         }
       });
-      model.parseSelections();
       expect(localLogger.warns[1]).toEqual(log.message.SCALE_BINDINGS_CONTINUOUS);
     })
   );

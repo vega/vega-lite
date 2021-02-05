@@ -13,7 +13,7 @@ import {Channel, isColorChannel} from './channel';
 import {DateTime} from './datetime';
 import {ExprRef} from './expr';
 import * as log from './log';
-import {SelectionExtent} from './selection';
+import {ParameterExtent} from './selection';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL, Type} from './type';
 import {contains, Flag, keys} from './util';
 
@@ -413,7 +413,7 @@ export interface SchemeParams {
 export type Domain =
   | (null | string | number | boolean | DateTime | SignalRef)[]
   | 'unaggregated'
-  | SelectionExtent
+  | ParameterExtent
   | SignalRef
   | DomainUnionWith;
 
@@ -423,8 +423,8 @@ export function isExtendedScheme(scheme: Scheme | SignalRef): scheme is SchemePa
   return !isString(scheme) && !!scheme['name'];
 }
 
-export function isSelectionDomain(domain: Domain): domain is SelectionExtent {
-  return domain?.['selection'];
+export function isParameterDomain(domain: Domain): domain is ParameterExtent {
+  return domain?.['param'];
 }
 
 export interface DomainUnionWith {
@@ -454,7 +454,7 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
   type?: ScaleType;
 
   /**
-   * Customized domain values in the form of constant values or dynamic values driven by a selection.
+   * Customized domain values in the form of constant values or dynamic values driven by a parameter.
    *
    * 1) Constant `domain` for _quantitative_ fields can take one of the following forms:
    *
@@ -468,12 +468,12 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
    *
    * 4) To combine (union) specified constant domain with the field's values, `domain` can be an object with a `unionWith` property that specify constant domain to be combined. For example, `domain: {unionWith: [0, 100]}` for a quantitative scale means that the scale domain always includes `[0, 100]`, but will include other values in the fields beyond `[0, 100]`.
    *
-   * 5) Domain can also takes an object defining a field or encoding of a selection that [interactively determines](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain.
+   * 5) Domain can also takes an object defining a field or encoding of a parameter that [interactively determines](https://vega.github.io/vega-lite/docs/selection.html#scale-domains) the scale domain.
    */
   domain?:
     | (null | string | number | boolean | DateTime | ES)[]
     | 'unaggregated'
-    | SelectionExtent
+    | ParameterExtent
     | DomainUnionWith
     | ES;
 

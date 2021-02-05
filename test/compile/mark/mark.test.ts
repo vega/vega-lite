@@ -269,7 +269,7 @@ describe('Mark', () => {
         const model = parseConcatModel({
           vconcat: [
             {
-              selection: {brush: {type: 'interval'}},
+              params: [{name: 'brush', select: 'interval'}],
               mark: 'point',
               encoding: {
                 x: {type: 'quantitative', field: 'foo'},
@@ -297,7 +297,7 @@ describe('Mark', () => {
         const model = parseConcatModel({
           vconcat: [
             {
-              selection: {brush: {type: 'interval'}},
+              params: [{name: 'brush', select: {type: 'interval'}}],
               mark: 'point',
               encoding: {
                 x: {type: 'quantitative', field: 'foo'},

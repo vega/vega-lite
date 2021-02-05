@@ -42,7 +42,7 @@
         {"type": "filter", "expr": "datum[\"country\"]===\"Afghanistan\""},
         {
           "type": "filter",
-          "expr": "!(length(data(\"year_store\"))) || (vlSelectionTest(\"year_store\", datum))"
+          "expr": "!length(data(\"year_store\")) || vlSelectionTest(\"year_store\", datum)"
         }
       ]
     },
@@ -65,7 +65,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "!(length(data(\"year_store\"))) || (vlSelectionTest(\"year_store\", datum))"
+          "expr": "!length(data(\"year_store\")) || vlSelectionTest(\"year_store\", datum)"
         },
         {
           "type": "filter",
@@ -79,7 +79,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(!(length(data(\"year_store\"))) || (vlSelectionTest(\"year_store\", datum))) && (((vlSelectionTest(\"clicked_store\", datum))) || ((vlSelectionTest(\"hovered_store\", datum))))"
+          "expr": "(!length(data(\"year_store\")) || vlSelectionTest(\"year_store\", datum)) && ((length(data(\"clicked_store\")) && vlSelectionTest(\"clicked_store\", datum)) || (length(data(\"hovered_store\")) && vlSelectionTest(\"hovered_store\", datum)))"
         },
         {
           "type": "filter",
@@ -93,11 +93,11 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(vlSelectionTest(\"hovered_store\", datum))"
+          "expr": "length(data(\"hovered_store\")) && vlSelectionTest(\"hovered_store\", datum)"
         },
         {
           "type": "filter",
-          "expr": "!(!(length(data(\"year_store\"))) || (vlSelectionTest(\"year_store\", datum)))"
+          "expr": "!(!length(data(\"year_store\")) || vlSelectionTest(\"year_store\", datum))"
         },
         {
           "type": "filter",
@@ -118,21 +118,24 @@
       "name": "year_year",
       "init": "1955",
       "bind": {
+        "name": "Year",
         "input": "range",
         "min": 1955,
         "max": 2005,
-        "step": 5,
-        "name": "Year"
+        "step": 5
       }
     },
-    {"name": "year", "update": "vlSelectionResolve(\"year_store\", \"union\")"},
+    {
+      "name": "year",
+      "update": "vlSelectionResolve(\"year_store\", \"union\", true, true)"
+    },
     {
       "name": "hovered",
-      "update": "vlSelectionResolve(\"hovered_store\", \"union\")"
+      "update": "vlSelectionResolve(\"hovered_store\", \"union\", true, true)"
     },
     {
       "name": "clicked",
-      "update": "vlSelectionResolve(\"clicked_store\", \"union\", true)"
+      "update": "vlSelectionResolve(\"clicked_store\", \"union\", true, true)"
     },
     {
       "name": "year_tuple",
@@ -156,7 +159,7 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1_layer_1\", fields: hovered_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"country\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -180,7 +183,7 @@
           "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1_layer_1\", fields: clicked_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"country\"]]} : null",
           "force": true
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "null"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
     {
@@ -195,7 +198,7 @@
           "events": [{"source": "scope", "type": "click"}],
           "update": "event.shiftKey"
         },
-        {"events": [{"source": "scope", "type": "dblclick"}], "update": "false"}
+        {"events": [{"source": "view", "type": "dblclick"}], "update": "false"}
       ]
     },
     {
@@ -263,7 +266,7 @@
               "stroke": {"value": "lightgray"},
               "opacity": [
                 {
-                  "test": "((vlSelectionTest(\"hovered_store\", datum))) || ((vlSelectionTest(\"clicked_store\", datum)))",
+                  "test": "(length(data(\"hovered_store\")) && vlSelectionTest(\"hovered_store\", datum)) || (length(data(\"clicked_store\")) && vlSelectionTest(\"clicked_store\", datum))",
                   "value": 0.8
                 },
                 {"value": 0}

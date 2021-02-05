@@ -4,12 +4,6 @@
   "width": 400,
   "height": 300,
   "data": {"url": "data/seattle-weather.csv"},
-  "transform": [
-    {
-      "window": [{"field": "temp_max", "op": "mean", "as": "rolling_mean"}],
-      "frame": [-15, 15]
-    }
-  ],
   "layer": [
     {
       "mark": {"type": "point", "opacity": 0.3},
@@ -34,6 +28,12 @@
           "title": "Rolling Mean of Max Temperature"
         }
       }
+    }
+  ],
+  "transform": [
+    {
+      "window": [{"field": "temp_max", "op": "mean", "as": "rolling_mean"}],
+      "frame": [-15, 15]
     }
   ]
 }

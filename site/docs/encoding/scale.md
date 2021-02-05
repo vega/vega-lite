@@ -373,7 +373,7 @@ In addition, `bins` property can be used to specify bin boundaries over the scal
 
 #### Bins Parameter
 
-The bin specification object for the scale `bins` properties support the following parameters:
+The bin specification object for the scale `bins` properties support the following properties:
 
 {% include table.html props="bins" source="ScaleBinParams" %}
 
