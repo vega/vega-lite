@@ -1045,7 +1045,7 @@
         "bandPosition": {
           "anyOf": [
             {
-              "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
+              "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n __Default value:__ `0.5`",
               "type": "number"
             },
             {
@@ -1998,7 +1998,7 @@
         "bandPosition": {
           "anyOf": [
             {
-              "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n  __Default value:__ `0.5`",
+              "description": "An interpolation fraction indicating where, for `band` scales, axis ticks should be positioned. A value of `0` places ticks at the left edge of their bands. A value of `0.5` places ticks in the middle of their bands.\n\n __Default value:__ `0.5`",
               "type": "number"
             },
             {
@@ -4901,7 +4901,7 @@
         },
         "shape": {
           "$ref": "#/definitions/ShapeDef",
-          "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:    - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.    - the line symbol `\"stroke\"`    - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`    - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
+          "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.   - the line symbol `\"stroke\"`   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
         },
         "size": {
           "$ref": "#/definitions/NumericMarkPropDef",
@@ -8922,7 +8922,7 @@
         },
         "shape": {
           "$ref": "#/definitions/ShapeDef",
-          "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:    - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.    - the line symbol `\"stroke\"`    - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`    - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
+          "description": "Shape of the mark.\n\n1. For `point` marks the supported values include:   - plotting shapes: `\"circle\"`, `\"square\"`, `\"cross\"`, `\"diamond\"`, `\"triangle-up\"`, `\"triangle-down\"`, `\"triangle-right\"`, or `\"triangle-left\"`.   - the line symbol `\"stroke\"`   - centered directional shapes `\"arrow\"`, `\"wedge\"`, or `\"triangle\"`   - a custom [SVG path string](https://developer.mozilla.org/en-US/docs/Web/SVG/Tutorial/Paths) (For correct sizing, custom shape paths should be defined within a square bounding box with coordinates ranging from -1 to 1 along both the x and y dimensions.)\n\n2. For `geoshape` marks it should be a field definition of the geojson data\n\n__Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`\"circle\"` if unset.)"
         },
         "size": {
           "$ref": "#/definitions/NumericMarkPropDef",
@@ -9488,7 +9488,7 @@
     },
     "FieldOrDatumDefWithCondition<DatumDef,(Gradient|string|null)>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "band": {
           "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
@@ -9536,7 +9536,7 @@
     },
     "FieldOrDatumDefWithCondition<DatumDef,(string|null)>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "band": {
           "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
@@ -9584,7 +9584,7 @@
     },
     "FieldOrDatumDefWithCondition<DatumDef,number>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "band": {
           "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
@@ -9632,7 +9632,7 @@
     },
     "FieldOrDatumDefWithCondition<DatumDef,number[]>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "band": {
           "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
@@ -9680,7 +9680,7 @@
     },
     "FieldOrDatumDefWithCondition<MarkPropFieldDef,(Gradient|string|null)>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
@@ -9781,7 +9781,7 @@
     },
     "FieldOrDatumDefWithCondition<MarkPropFieldDef,number>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
@@ -9882,7 +9882,7 @@
     },
     "FieldOrDatumDefWithCondition<MarkPropFieldDef,number[]>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
@@ -9983,7 +9983,7 @@
     },
     "FieldOrDatumDefWithCondition<MarkPropFieldDef<TypeForShape>,(string|null)>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
@@ -10084,7 +10084,7 @@
     },
     "FieldOrDatumDefWithCondition<StringDatumDef,Text>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "band": {
           "description": "For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.\n\nFor other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.",
@@ -10147,7 +10147,7 @@
     },
     "FieldOrDatumDefWithCondition<StringFieldDef,Text>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
@@ -10241,7 +10241,7 @@
     },
     "FieldOrDatumDefWithCondition<StringFieldDef,string>": {
       "additionalProperties": false,
-      "description": "A FieldDef with Condition<ValueDef> {    condition: {value: ...},    field: ...,    ... }",
+      "description": "A FieldDef with Condition<ValueDef> {   condition: {value: ...},   field: ...,   ... }",
       "properties": {
         "aggregate": {
           "$ref": "#/definitions/Aggregate",
@@ -11923,8 +11923,6 @@
         "step-before",
         "step-after"
       ],
-      "maximum": 900,
-      "minimum": 100,
       "type": "string"
     },
     "IntervalSelectionConfig": {
@@ -21424,7 +21422,7 @@
         },
         "point": {
           "additionalProperties": false,
-          "description": "The default definition for a [`point`](https://vega.github.io/vega-lite/docs/parameter.html#select) selection. All properties and transformations   for a point selection definition (except `type`) may be specified here.\n\nFor instance, setting `point` to `{\"on\": \"dblclick\"}` populates point selections on double-click by default.",
+          "description": "The default definition for a [`point`](https://vega.github.io/vega-lite/docs/parameter.html#select) selection. All properties and transformations  for a point selection definition (except `type`) may be specified here.\n\nFor instance, setting `point` to `{\"on\": \"dblclick\"}` populates point selections on double-click by default.",
           "properties": {
             "clear": {
               "anyOf": [
@@ -29065,7 +29063,7 @@
           "type": "string"
         },
         "mesh": {
-          "description": "The name of the TopoJSON object set to convert to mesh. Similar to the `feature` option, `mesh` extracts a named TopoJSON object set.   Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features. Extracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
+          "description": "The name of the TopoJSON object set to convert to mesh. Similar to the `feature` option, `mesh` extracts a named TopoJSON object set.  Unlike the `feature` option, the corresponding geo data is returned as a single, unified mesh instance, not as individual GeoJSON features. Extracting a mesh is useful for more efficiently drawing borders or other geographic elements that you do not need to associate with specific regions such as individual countries, states or counties.",
           "type": "string"
         },
         "parse": {
