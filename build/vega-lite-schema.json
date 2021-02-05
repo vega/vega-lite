@@ -22538,6 +22538,9 @@
         "value": {
           "anyOf": [
             {
+              "$ref": "#/definitions/SelectionInit"
+            },
+            {
               "items": {
                 "$ref": "#/definitions/SelectionInitMapping"
               },
@@ -29895,6 +29898,9 @@
         },
         "value": {
           "anyOf": [
+            {
+              "$ref": "#/definitions/SelectionInit"
+            },
             {
               "items": {
                 "$ref": "#/definitions/SelectionInitMapping"
