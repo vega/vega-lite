@@ -47,7 +47,7 @@ const project: SelectionCompiler = {
 
   parse: (model, selCmpt, selDef) => {
     const name = selCmpt.name;
-    const proj = selCmpt.project ?? (selCmpt.project = new SelectionProjectionComponent());
+    const proj = (selCmpt.project ??= new SelectionProjectionComponent());
     const parsed: Dict<SelectionProjection> = {};
     const timeUnits: Dict<TimeUnitComponent> = {};
 

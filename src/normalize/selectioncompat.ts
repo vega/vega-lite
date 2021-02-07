@@ -18,8 +18,8 @@ export class SelectionCompatibilityNormalizer extends SpecMapper<
     spec: GenericSpec<FacetedUnitSpec<Field>, LayerSpec<Field>, RepeatSpec, Field>,
     normParams: NormalizerParams
   ) {
-    normParams.emptySelections = normParams.emptySelections ?? {};
-    normParams.selectionPredicates = normParams.selectionPredicates ?? {};
+    normParams.emptySelections ??= {};
+    normParams.selectionPredicates ??= {};
     spec = normalizeTransforms(spec, normParams);
     return super.map(spec, normParams);
   }
@@ -145,7 +145,7 @@ function normalizePredicate(op: any, normParams: NormalizerParams) {
     return normalizeLogicalComposition(o, param => {
       const empty = normParams.emptySelections[param] ?? true;
       const pred = {param, empty};
-      normParams.selectionPredicates[param] = normParams.selectionPredicates[param] ?? [];
+      normParams.selectionPredicates[param] ??= [];
       normParams.selectionPredicates[param].push(pred);
       return pred as any;
     });
