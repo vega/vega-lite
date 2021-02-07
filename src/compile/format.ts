@@ -119,7 +119,7 @@ export function formatCustomType({
   config: Config;
   field?: string; // axis/legend "use datum.value"
 }) {
-  field = field ?? fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
+  field ??= fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
 
   if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
     const endField = vgField(fieldOrDatumDef, {expr, binSuffix: 'end'});

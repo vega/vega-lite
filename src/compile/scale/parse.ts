@@ -55,7 +55,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
     let specifiedScale = fieldOrDatumDef && fieldOrDatumDef['scale'];
 
     if (fieldOrDatumDef && specifiedScale !== null && specifiedScale !== false) {
-      specifiedScale = specifiedScale ?? {};
+      specifiedScale ??= {};
 
       const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, mark);
       scaleComponents[channel] = new ScaleComponent(model.scaleName(`${channel}`, true), {
@@ -85,7 +85,7 @@ function parseNonUnitScaleCore(model: Model) {
     // Instead of always merging right away -- check if it is compatible to merge first!
     for (const channel of keys(child.component.scales)) {
       // if resolve is undefined, set default first
-      resolve.scale[channel] = resolve.scale[channel] ?? defaultScaleResolve(channel, model);
+      resolve.scale[channel] ??= defaultScaleResolve(channel, model);
 
       if (resolve.scale[channel] === 'shared') {
         const explicitScaleType = scaleTypeWithExplicitIndex[channel];

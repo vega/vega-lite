@@ -244,17 +244,15 @@ export function midPoint({
 
     if (isFieldOrDatumDef(channelDef)) {
       if (isTypedFieldDef(channelDef)) {
-        band =
-          band ??
-          getBand({
-            channel,
-            fieldDef: channelDef,
-            fieldDef2: channel2Def,
-            markDef,
-            stack,
-            config,
-            isMidPoint: true
-          });
+        band ??= getBand({
+          channel,
+          fieldDef: channelDef,
+          fieldDef2: channel2Def,
+          markDef,
+          stack,
+          config,
+          isMidPoint: true
+        });
         const {bin, timeUnit, type} = channelDef;
 
         if (isBinning(bin) || (band && timeUnit && type === TEMPORAL)) {

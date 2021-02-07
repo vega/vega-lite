@@ -25,7 +25,7 @@ export function nonPosition(
 
   if (defaultRef === undefined) {
     // prettier-ignore
-    defaultValue = defaultValue ?? getMarkPropOrConfig(channel, markDef, config, {vgChannel, ignoreVgConfig: true});
+    defaultValue ??= getMarkPropOrConfig(channel, markDef, config, {vgChannel, ignoreVgConfig: true});
 
     if (defaultValue !== undefined) {
       defaultRef = signalOrValueRef(defaultValue);
