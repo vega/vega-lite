@@ -1,7 +1,6 @@
 /* eslint-disable jest/expect-expect */
 
 import {assert} from 'chai';
-import {Page} from 'puppeteer';
 import {
   bound,
   brush,
@@ -14,20 +13,28 @@ import {
   tuples,
   unbound
 } from './util';
-
-declare const page: Page;
-// declare const jestPuppeteer: any;
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
+import {TopLevelSpec} from '../src';
 
 for (const bind of [bound, unbound]) {
   describe(`Translate ${bind} interval selections at runtime`, () => {
+    let page: Page;
+    let embed: (specification: TopLevelSpec) => Promise<void>;
+    let testRender: (filename: string) => Promise<void>;
+
     beforeAll(async () => {
+      page = await (global as any).__BROWSER__.newPage();
+      embed = embedFn(page);
+      testRender = testRenderFn(page, `interval/translate/${bind}`);
       await page.goto('http://0.0.0.0:8000/test-runtime/');
+    });
+
+    afterAll(async () => {
+      await page.close();
     });
 
     const type = 'interval';
     const hits = hitsMaster.interval;
-    const embed = embedFn(page);
-    const testRender = testRenderFn(page, `interval/translate/${bind}`);
     const binding = bind === bound ? {bind: 'scales'} : {};
 
     const assertExtent = {

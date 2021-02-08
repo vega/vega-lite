@@ -1,4 +1,3 @@
-import {Page} from 'puppeteer';
 import {
   brush,
   compositeTypes,
@@ -12,22 +11,35 @@ import {
   testRenderFn,
   unitNameRegex
 } from './util';
-
-declare const page: Page;
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
+import {TopLevelSpec} from '../src';
 
 for (const type of selectionTypes) {
-  const embed = embedFn(page);
   const isInterval = type === 'interval';
   const hits = isInterval ? hitsMaster.interval : hitsMaster.discrete;
   const fn = isInterval ? brush : pt;
 
   describe(`${type} selections at runtime`, () => {
+    let page: Page;
+    let embed: (specification: TopLevelSpec) => Promise<void>;
+
     beforeAll(async () => {
+      page = await (global as any).__BROWSER__.newPage();
+      embed = embedFn(page);
       await page.goto('http://0.0.0.0:8000/test-runtime/');
     });
 
+    afterAll(async () => {
+      await page.close();
+    });
+
     compositeTypes.forEach(specType => {
-      const testRender = testRenderFn(page, `${type}/${specType}`);
+      let testRender: (filename: string) => Promise<void>;
+
+      beforeAll(async () => {
+        testRender = testRenderFn(page, `${type}/${specType}`);
+      });
+
       describe(`in ${specType} views`, () => {
         /**
          * Loop through the views, click to add a selection instance.

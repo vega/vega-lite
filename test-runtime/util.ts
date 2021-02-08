@@ -1,6 +1,6 @@
 import * as fs from 'fs';
 import {sync as mkdirp} from 'mkdirp';
-import {Page} from 'puppeteer';
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
 import {promisify} from 'util';
 import {stringValue} from 'vega-util';
 import {SelectionResolution, SelectionType} from '../src/selection';

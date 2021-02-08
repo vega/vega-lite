@@ -31,50 +31,53 @@ export function debugImports() {
 const extensions = ['.js', '.ts'];
 
 const globals = {
-  'vega-util': 'vega'
-}
+  'vega-util': 'vega',
+  vega: 'vega'
+};
 
-const outputs = [{
-  input: 'src/index.ts',
-  output: [
-    {
-      file: pkg.main,
-      format: 'umd',
-      sourcemap: true,
-      name: 'vegaLite',
-      globals
-    },
-    {
-      file: pkg.unpkg,
-      format: 'umd',
-      sourcemap: true,
-      name: 'vegaLite',
-      plugins: [terser()],
-      globals
-    }
-  ],
-  plugins: [
-    disallowedImports(),
-    debugImports(),
-    resolve({browser: true, extensions}),
-    commonjs(),
-    json(),
-    babel({
-      extensions,
-      babelHelpers: 'bundled',
-      presets: [
-        [
-          '@babel/env',
-          {
-            targets: 'defaults and not IE 11'
-          }
-        ],
-        '@babel/typescript'
-      ]
-    }),
-    bundleSize()
-  ],
-  external: ['vega', 'vega-util']
-}];
+const outputs = [
+  {
+    input: 'src/index.ts',
+    output: [
+      {
+        file: pkg.main,
+        format: 'umd',
+        sourcemap: true,
+        name: 'vegaLite',
+        globals
+      },
+      {
+        file: pkg.unpkg,
+        format: 'umd',
+        sourcemap: true,
+        name: 'vegaLite',
+        plugins: [terser()],
+        globals
+      }
+    ],
+    plugins: [
+      disallowedImports(),
+      debugImports(),
+      resolve({browser: true, extensions}),
+      commonjs(),
+      json(),
+      babel({
+        extensions,
+        babelHelpers: 'bundled',
+        presets: [
+          [
+            '@babel/env',
+            {
+              targets: 'defaults and not IE 11'
+            }
+          ],
+          '@babel/typescript'
+        ]
+      }),
+      bundleSize()
+    ],
+    external: ['vega', 'vega-util']
+  }
+];
 
 export default outputs;
