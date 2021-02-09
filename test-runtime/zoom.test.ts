@@ -1,15 +1,13 @@
 /* eslint-disable jest/expect-expect */
 
 import {assert} from 'chai';
-import {Page} from 'puppeteer';
 import {bound, brush, compositeTypes, embedFn, parentSelector, spec, testRenderFn, tuples, unbound} from './util';
-
-declare const page: Page;
-
 const hits = {
   zoom: [9, 23],
   bins: [8, 2]
 };
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
+import {TopLevelSpec} from '../src';
 
 type InOut = 'in' | 'out';
 
@@ -22,13 +20,22 @@ const cmp = (a: number, b: number) => a - b;
 
 for (const bind of [bound, unbound]) {
   describe(`Zoom ${bind} interval selections at runtime`, () => {
+    let page: Page;
+    let embed: (specification: TopLevelSpec) => Promise<void>;
+    let testRender: (filename: string) => Promise<void>;
+
     beforeAll(async () => {
+      page = await (global as any).__BROWSER__.newPage();
+      embed = embedFn(page);
+      testRender = testRenderFn(page, `interval/zoom/${bind}`);
       await page.goto('http://0.0.0.0:8000/test-runtime/');
     });
 
+    afterAll(async () => {
+      await page.close();
+    });
+
     const type = 'interval';
-    const embed = embedFn(page);
-    const testRender = testRenderFn(page, `interval/zoom/${bind}`);
     const binding = bind === bound ? {bind: 'scales'} : {};
 
     const assertExtent = {

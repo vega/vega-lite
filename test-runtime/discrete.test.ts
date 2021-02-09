@@ -1,17 +1,26 @@
-import {Page} from 'puppeteer';
 import {SelectionType, SELECTION_ID} from '../src/selection';
 import {embedFn, fill, hits as hitsMaster, pt, spec, testRenderFn} from './util';
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
+import {TopLevelSpec} from '../src';
 
-declare const page: Page;
 describe(`point selections at runtime in unit views`, () => {
+  let page: Page;
+  let embed: (specification: TopLevelSpec) => Promise<void>;
+  let testRender: (filename: string) => Promise<void>;
+
   beforeAll(async () => {
+    page = await (global as any).__BROWSER__.newPage();
+    embed = embedFn(page);
+    testRender = testRenderFn(page, `${type}/unit`);
     await page.goto('http://0.0.0.0:8000/test-runtime/');
+  });
+
+  afterAll(async () => {
+    await page.close();
   });
 
   const type: SelectionType = 'point';
   const hits = hitsMaster.discrete;
-  const embed = embedFn(page);
-  const testRender = testRenderFn(page, `${type}/unit`);
 
   it('should add values to the store', async () => {
     for (let i = 0; i < hits.qq.length; i++) {

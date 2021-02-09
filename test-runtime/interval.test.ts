@@ -1,18 +1,26 @@
-import {Page} from 'puppeteer';
+import {TopLevelSpec} from '../src';
 import {SelectionType} from '../src/selection';
 import {brush, embedFn, hits as hitsMaster, spec, testRenderFn, tuples} from './util';
-
-declare const page: Page;
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
 
 describe('interval selections at runtime in unit views', () => {
+  let page: Page;
+  let embed: (specification: TopLevelSpec) => Promise<void>;
+  let testRender: (filename: string) => Promise<void>;
+
   beforeAll(async () => {
+    page = await (global as any).__BROWSER__.newPage();
+    embed = embedFn(page);
+    testRender = testRenderFn(page, `${type}/unit`);
     await page.goto('http://0.0.0.0:8000/test-runtime/');
+  });
+
+  afterAll(async () => {
+    await page.close();
   });
 
   const type: SelectionType = 'interval';
   const hits = hitsMaster.interval;
-  const embed = embedFn(page);
-  const testRender = testRenderFn(page, `${type}/unit`);
 
   it('should add extents to the store', async () => {
     for (let i = 0; i < hits.drag.length; i++) {

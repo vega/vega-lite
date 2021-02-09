@@ -1,9 +1,8 @@
-import {Page} from 'puppeteer';
 import {stringValue} from 'vega-util';
+import {TopLevelSpec} from '../src';
 import {SelectionType} from '../src/selection';
 import {compositeTypes, embedFn, parentSelector, spec, testRenderFn} from './util';
-
-declare const page: Page;
+import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
 
 const hits = {
   qq: [8, 19, 13, 21],
@@ -19,13 +18,22 @@ function toggle(key: string, idx: number, shiftKey: boolean, parent?: string) {
 }
 
 describe('Toggle point selections at runtime', () => {
+  let page: Page;
+  let embed: (specification: TopLevelSpec) => Promise<void>;
+  let testRender: (filename: string) => Promise<void>;
+
   beforeAll(async () => {
+    page = await (global as any).__BROWSER__.newPage();
+    embed = embedFn(page);
+    testRender = testRenderFn(page, 'point/toggle');
     await page.goto('http://0.0.0.0:8000/test-runtime/');
   });
 
+  afterAll(async () => {
+    await page.close();
+  });
+
   const type: SelectionType = 'point';
-  const embed = embedFn(page);
-  const testRender = testRenderFn(page, 'point/toggle');
 
   it('should toggle values into/out of the store', async () => {
     await embed(spec('unit', 0, {type}));
