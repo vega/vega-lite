@@ -1,6 +1,6 @@
-Welcome to the Vega community. Everyone is welcome to contribute. We value all forms of contributions including code reviews, patches, examples, community participation, tutorial, and blog posts. In this document, we outline the guidelines for contributing to the various aspects of the project.
-
 # Contributing
+
+Welcome to the Vega community. Everyone is welcome to contribute. We value all forms of contributions including code reviews, patches, examples, community participation, tutorial, and blog posts. In this document, we outline the guidelines for contributing to the various aspects of the project.
 
 If you find a bug in the code or a mistake in the [documentation](https://vega.github.io/vega-lite/docs/) or want a new feature, you can help us by creating an issue to [our repository](https://github.com/vega/vega-lite), or even submit a pull request (PR).
 
@@ -14,13 +14,19 @@ If you find a bug in the code or a mistake in the [documentation](https://vega.g
 
 See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUEST_TEMPLATE.md) templates for more information.
 
-### Looking for a Task to Contribute
+## Design principles
+
+Vega-Lite is a compiler and a declarative language to describing interactive multi view graphics. As a compiler, Vega-Lite compiles to the lower-level [Vega](https://vega.github.io/vega/) specifications. The Vega-Lite project inherits many of the design principles of Vega, especially the declarative design. In addition, the development of Vega-Lite follows these principles that we have established over the years.
+
+- **Remain backwards compatible when possible.** Even if we change a major feature, we aim to support the old syntax. However, the old syntax may not be supported by the JSON schema.
+- **Backwards compatibility concerns the input, not the output.** Just like Vega, we may change how a declarative specification is interpreted.
+- **Vega-Lite never needs to see the data.** All decisions about how to compile to Vega have to be made without access to the data that will be used in the chart. This principle enables the compiled Vega charts to work with any dataset that follows the same schema (field names and types).
+- **Generate readable Vega.** We aim to generate readable Vega specifications that do not contain unnecessary properties (e.g. Vega's defaults).
+- **Fail gracefully.** If there is a invalid property in the Vega-Lite specification, show a warning and subsequently ignore it.
+
+## Looking for a Task to Contribute
 
 You can find [tasks with the "Good first issue" label in the issue tracker :pray:](https://github.com/vega/vega-lite/labels/Good%20first%20issue%20%3Ababy%3A). Please add a comment in issues if you are planning to work on a major task.
-
-### Help Create New Examples
-
-To submit a new example, fork our [example Block](https://bl.ocks.org/domoritz/455e1c7872c4b38a58b90df0c3d7b1b9) and send us a [pull request to add a link](https://github.com/vega/vega-lite/edit/master/site/examples/index.md) to it to our [example gallery](https://vega.github.io/vega-lite/examples/).
 
 ## Documentation and Website
 
@@ -141,8 +147,8 @@ pushd site && bundle install && popd
 - `src/` - Main source code directory.
 
   - All interfaces for Vega-Lite syntax should be declared at the top-level of the `src/` folder.
-    - `src/index.ts` is the root file for Vega-Lite codebase that exports the global `vl` object.
-    - Other files under `src/` reflect namespace structure. All methods for `vegaLite.xxx` will be in either `src/xxx.ts` or `src/xxx/xxx.ts`. For example, `vegaLite.channel.*` methods are in `src/channel.ts` while `vegaLite.compile` is in `src/compile/compile.ts`.
+    - `src/index.ts` is the root file for Vega-Lite that exports the global `vegaLite` object.
+    - Other files under `src/` reflect the namespace structure. All methods for `vegaLite.xxx` will be in either `src/xxx.ts` or `src/xxx/xxx.ts`. For example, `vegaLite.channel.*` methods are in `src/channel.ts` while `vegaLite.compile` is in `src/compile/compile.ts`.
 
 - `test/` - Code for unit testing. `test`'s structure reflects `src`'s directory structure. For example, `test/compile/` tests files inside `src/compile/`.
 - `test-runtime/` - Code for runtime tests.
@@ -150,7 +156,7 @@ pushd site && bundle install && popd
 
 ## Understanding How Vega-Lite Works
 
-- The main compiler code is in `src/compile/compile.ts`. To try to understand how Vega-Lite works, first start by reading the `compile` method in the file and try to understand different phases in the compilation process. You can [browse the code online with Sourcegraph](https://sourcegraph.com/github.com/vega/vega-lite/-/blob/src/compile/compile.ts).
+- The main compiler code is in `src/compile/compile.ts`. To try to understand how Vega-Lite works, first start by reading the `compile` method in the file and try to understand different phases in the compilation process. You can [browse the code online with Sourcegraph](https://sourcegraph.com/github.com/vega/vega-lite/-/blob/src/compile/compile.ts) or [GitHub1s](https://github1s.com/vega/vega-lite/).
 
 ## Commands
 
