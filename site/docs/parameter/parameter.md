@@ -37,9 +37,17 @@ Both variable and selection parameters support the following properties:
 
 ### Variable Parameters
 
-Variables are the simplest form a parameter can take. Variable parameters allow for a value to be defined once and then reused throughout the rest of the specification. As the name suggests, variable values can be modified dynamically either by [binding the variable](bind.html) to input widgets (e.g., sliders or drop down menus) or by specifying its `expr` property:
+Variables are the simplest form a parameter can take. Variable parameters allow for a value to be defined once and then reused throughout the rest of the specification. As the name suggests, variable values can be modified dynamically either by [binding the variable](bind.html) to input widgets (e.g., sliders or drop down menus), by specifying its `expr` property, or externally as a signal through the [Vega view API](https://vega.github.io/vega/docs/api/view/#signals):
 
 {% include table.html props="expr" source="VariableParameter" %}
+
+For example, here we define a `cornerRadius` parameter:
+
+<div class="vl-example" data-name="bar_params"></div>
+
+We can also bind a parameter to input elements to create dynamic query widgets. For example, here we include widgets to customize bar mark's corner radius:
+
+<div class="vl-example" data-name="bar_params_bound"></div>
 
 {:#select}
 
