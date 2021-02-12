@@ -10,11 +10,6 @@ export interface VariableParameter {
   name: ParameterName;
 
   /**
-   * A text description of the parameter, useful for inline documentation.
-   */
-  description?: string;
-
-  /**
    * The [initial value](http://vega.github.io/vega-lite/docs/init.html) of the parameter.
    *
    * __Default value:__ `undefined`
