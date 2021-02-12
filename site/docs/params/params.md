@@ -2,7 +2,7 @@
 layout: docs
 menu: docs
 title: Parameter / Interaction
-permalink: /docs/parameter.html
+permalink: /docs/params.html
 ---
 
 Parameters (`params`) are dynamic variables that can parameterize a visualization, for example to define a mark property.
@@ -11,7 +11,7 @@ Parameters (`params`) are dynamic variables that can parameterize a visualizatio
 
 Parameters can have the following properties:
 
-{% include table.html props="name,description,value,expr,bind" source="Parameter" %}
+{% include table.html props="name,description,value,expr,bind" source="VariableParameter" %}
 
 ### Example: Constant Parameter
 
