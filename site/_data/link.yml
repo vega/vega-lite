@@ -377,7 +377,6 @@ Vector3:
 PredicateComposition:
   name: 'Predicate'
   link: 'predicate.html'
-
 FontWeight:
   name: 'String | Number'
 RepeatMapping:
@@ -386,3 +385,7 @@ Padding:
   name: 'Number | Object'
 TextBaseline:
   name: String # we need to cast his as TextBaseline unions "alphabetic" with Baseline
+Dict:
+  name: Object
+InlineDataset:
+  name: Array
