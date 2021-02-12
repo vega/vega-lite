@@ -28,7 +28,7 @@ There are two ways to define binning in Vega-Lite: [the `bin` property in encodi
   "mark/layer": ...,
   "encoding": {
     "x": {
-      "bin": ...,               // bin
+      "bin": ..., // bin
       "field": ...,
       "type": "quantitative",
       ...
