@@ -41,7 +41,7 @@ function validateVL(spec: TopLevelSpec) {
   expect(errors?.map((err: ErrorObject) => err.message).join(', ')).toBeUndefined();
   expect(valid).toBe(true);
 
-  expect(spec.$schema.substr(0, 42)).toBe('https://vega.github.io/schema/vega-lite/v4');
+  expect(spec.$schema.substr(0, 42)).toBe('https://vega.github.io/schema/vega-lite/v5');
 }
 
 function validateVega(vegaSpec: VgSpec) {
