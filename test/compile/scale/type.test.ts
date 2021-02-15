@@ -1,8 +1,8 @@
-import {Channel, rangeType, SCALE_CHANNELS, X, Y} from '../../../src/channel';
+import {Channel, RADIUS, rangeType, SCALE_CHANNELS, THETA, X, Y} from '../../../src/channel';
 import {DatumDef, TypedFieldDef} from '../../../src/channeldef';
 import {scaleType as _scaleType} from '../../../src/compile/scale/type';
 import * as log from '../../../src/log';
-import {BAR, Mark, PRIMITIVE_MARKS, RECT, RULE} from '../../../src/mark';
+import {ARC, BAR, Mark, PRIMITIVE_MARKS, RECT, RULE} from '../../../src/mark';
 import {Scale, ScaleType} from '../../../src/scale';
 import {
   isUTCTimeUnit,
@@ -111,6 +111,16 @@ describe('compile/scale', () => {
           [ORDINAL, NOMINAL].forEach(t => {
             [X, Y].forEach(channel => {
               [BAR, RULE, RECT].forEach(mark => {
+                expect(scaleType({}, channel, {type: t}, mark)).toEqual(ScaleType.BAND);
+              });
+            });
+          });
+        });
+
+        it('should return band scale for ordinal theta, radius when mark is arc', () => {
+          [ORDINAL, NOMINAL].forEach(t => {
+            [RADIUS, THETA].forEach(channel => {
+              [ARC].forEach(mark => {
                 expect(scaleType({}, channel, {type: t}, mark)).toEqual(ScaleType.BAND);
               });
             });

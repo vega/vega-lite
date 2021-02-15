@@ -118,6 +118,26 @@ describe('Mark: Rect', () => {
     });
   });
 
+  describe('simple vertical with signal-based band size', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: {type: 'rect', width: {expr: 'a'}},
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
+      }
+    });
+    const props = rect.encodeEntry(model);
+
+    it('should draw bar, with y from zero to field value and x band', () => {
+      expect(props.xc).toEqual({scale: 'x', field: 'Origin', band: 0.5});
+      expect(props.width).toEqual({signal: 'a'});
+      expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
+      expect(props.y2).toEqual({scale: 'y', value: 0});
+      expect(props.height).toBeUndefined();
+    });
+  });
+
   describe('simple vertical 1D', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       data: {url: 'data/cars.json'},
