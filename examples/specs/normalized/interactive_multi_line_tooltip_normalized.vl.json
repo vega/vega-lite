@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/seattle-weather.csv"},
   "layer": [
     {
@@ -28,9 +28,7 @@
     },
     {
       "mark": "rule",
-      "params": [
-        {"name": "hover", "select": {"type": "point", "on": "mouseover"}}
-      ],
+      "params": [{"name": "hover", "select": {"type": "point", "on": "mouseover"}}],
       "encoding": {
         "x": {"timeUnit": "yearmonthdate", "field": "date"},
         "tooltip": [

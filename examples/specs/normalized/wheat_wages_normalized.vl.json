@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 900,
   "height": 400,
   "data": {"url": "data/wheat.json"},
@@ -18,13 +18,7 @@
     },
     {
       "data": {
-        "values": [
-          {"year": "1600"},
-          {"year": "1650"},
-          {"year": "1700"},
-          {"year": "1750"},
-          {"year": "1800"}
-        ]
+        "values": [{"year": "1600"}, {"year": "1650"}, {"year": "1700"}, {"year": "1750"}, {"year": "1800"}]
       },
       "mark": {
         "type": "rule",

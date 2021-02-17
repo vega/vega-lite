@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Though Vega-Lite supports only one scale per axes, one can create a parallel coordinate plot by folding variables, using `joinaggregate` to normalize their values and using ticks and rules to manually create axes.",
   "data": {"url": "data/penguins.json"},
   "width": 600,
@@ -100,12 +100,7 @@
     {"filter": "datum['Beak Length (mm)']"},
     {"window": [{"op": "count", "as": "index"}]},
     {
-      "fold": [
-        "Beak Length (mm)",
-        "Beak Depth (mm)",
-        "Flipper Length (mm)",
-        "Body Mass (g)"
-      ]
+      "fold": ["Beak Length (mm)", "Beak Depth (mm)", "Flipper Length (mm)", "Body Mass (g)"]
     },
     {
       "joinaggregate": [

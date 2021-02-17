@@ -1,14 +1,12 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Drag out a rectangular brush to highlight points.",
   "data": {"url": "data/cars.json"},
   "hconcat": [
     {
       "layer": [
         {
-          "params": [
-            {"name": "hover", "select": {"type": "point", "on": "mouseover"}}
-          ],
+          "params": [{"name": "hover", "select": {"type": "point", "on": "mouseover"}}],
           "mark": "point",
           "encoding": {
             "x": {"field": "Horsepower", "type": "quantitative"},
@@ -28,9 +26,7 @@
     {
       "layer": [
         {
-          "params": [
-            {"name": "hover", "select": {"type": "point", "on": "mouseover"}}
-          ],
+          "params": [{"name": "hover", "select": {"type": "point", "on": "mouseover"}}],
           "mark": "point",
           "encoding": {
             "x": {"field": "Horsepower", "type": "quantitative"},

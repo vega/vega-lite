@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/barley.json"},
   "title": "Barley Yield comparison between 1932 and 1931",
   "config": {"legend": {"orient": "bottom", "direction": "horizontal"}},
@@ -23,10 +23,7 @@
         "legend": {"values": [20, 60]},
         "title": "Barley Yield (bushels/acre)"
       },
-      "tooltip": [
-        {"field": "year", "type": "quantitative"},
-        {"field": "yield"}
-      ],
+      "tooltip": [{"field": "year", "type": "quantitative"}, {"field": "yield"}],
       "color": {
         "field": "delta",
         "type": "quantitative",

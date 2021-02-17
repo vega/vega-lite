@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "An interactive scatter plot of global health statistics by country and year.",
   "data": {"url": "data/gapminder.json"},
   "width": 800,
@@ -14,10 +14,7 @@
         "opacity": 0.06
       },
       "encoding": {"text": {"field": "year"}},
-      "transform": [
-        {"filter": {"field": "country", "equal": "Afghanistan"}},
-        {"filter": {"param": "year"}}
-      ]
+      "transform": [{"filter": {"field": "country", "equal": "Afghanistan"}}, {"filter": {"param": "year"}}]
     },
     {
       "layer": [
@@ -185,10 +182,7 @@
               }
             }
           ],
-          "transform": [
-            {"filter": {"param": "hovered", "empty": false}},
-            {"filter": {"not": {"param": "year"}}}
-          ]
+          "transform": [{"filter": {"param": "hovered", "empty": false}}, {"filter": {"not": {"param": "year"}}}]
         }
       ],
       "transform": [
