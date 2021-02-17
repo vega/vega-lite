@@ -28,7 +28,9 @@
     },
     {
       "mark": "rule",
-      "params": [{"name": "hover", "select": {"type": "point", "on": "mouseover"}}],
+      "params": [
+        {"name": "hover", "select": {"type": "point", "on": "mouseover"}}
+      ],
       "encoding": {
         "x": {"timeUnit": "yearmonthdate", "field": "date"},
         "tooltip": [

@@ -23,7 +23,10 @@
         "legend": {"values": [20, 60]},
         "title": "Barley Yield (bushels/acre)"
       },
-      "tooltip": [{"field": "year", "type": "quantitative"}, {"field": "yield"}],
+      "tooltip": [
+        {"field": "year", "type": "quantitative"},
+        {"field": "yield"}
+      ],
       "color": {
         "field": "delta",
         "type": "quantitative",

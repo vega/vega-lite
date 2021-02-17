@@ -42,7 +42,10 @@
             "y2": {"field": "Value"},
             "color": {"value": "#e45755"}
           },
-          "transform": [{"filter": "datum.Value >= 300"}, {"calculate": "300", "as": "baseline"}]
+          "transform": [
+            {"filter": "datum.Value >= 300"},
+            {"calculate": "300", "as": "baseline"}
+          ]
         }
       ]
     },

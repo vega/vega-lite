@@ -100,7 +100,12 @@
     {"filter": "datum['Beak Length (mm)']"},
     {"window": [{"op": "count", "as": "index"}]},
     {
-      "fold": ["Beak Length (mm)", "Beak Depth (mm)", "Flipper Length (mm)", "Body Mass (g)"]
+      "fold": [
+        "Beak Length (mm)",
+        "Beak Depth (mm)",
+        "Flipper Length (mm)",
+        "Body Mass (g)"
+      ]
     },
     {
       "joinaggregate": [

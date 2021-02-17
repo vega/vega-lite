@@ -70,7 +70,12 @@
         "legend": null,
         "scale": {
           "domain": ["person", "cattle", "pigs", "sheep"],
-          "range": ["rgb(162,160,152)", "rgb(194,81,64)", "rgb(93,93,93)", "rgb(91,131,149)"]
+          "range": [
+            "rgb(162,160,152)",
+            "rgb(194,81,64)",
+            "rgb(93,93,93)",
+            "rgb(91,131,149)"
+          ]
         }
       },
       "opacity": {"value": 1},
