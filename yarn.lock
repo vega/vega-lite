@@ -7479,10 +7479,10 @@ trim-repeated@^1.0.0:
   dependencies:
     escape-string-regexp "^1.0.2"
 
-ts-json-schema-generator@^0.85.0:
-  version "0.85.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.85.0.tgz#fa17433cbd40889cba42d5545aef1ca54388155f"
-  integrity sha512-uatTN99wJ1G5MmhFf8t8o35CrhBtthGm5TjXWyFWqRnU87dlMSlLBBNVkX/GgbgxhbDz/efHqbz0psbPtB6SvQ==
+ts-json-schema-generator@^0.86.1:
+  version "0.86.1"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.86.1.tgz#f3eedfd246ee08af385f9e70e649118c478244ed"
+  integrity sha512-DWapm+mShf3+YS76VPvd/FSa9i4R/rBkJYmCiGDKRnvDgrwNFOXms0jc8HFjDG168wWmhU+wPTQf/PN+/mw9Cg==
   dependencies:
     "@types/json-schema" "^7.0.7"
     commander "^7.1.0"
