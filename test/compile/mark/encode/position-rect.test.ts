@@ -11,7 +11,7 @@ describe('compile/mark/encode/position-rect', () => {
       const props = rectBinPosition({
         fieldDef,
         channel: 'x',
-        band: 1,
+        bandSize: 1,
         scaleName: undefined,
         reverse: {signal: 'r'},
         axisTranslate: 0.5, // Vega default
@@ -32,7 +32,7 @@ describe('compile/mark/encode/position-rect', () => {
       const props = rectBinPosition({
         fieldDef,
         channel: 'x',
-        band: 1,
+        bandSize: 1,
         scaleName: 'x',
         reverse: false,
         axisTranslate: 0.5, // Vega default
@@ -51,7 +51,7 @@ describe('compile/mark/encode/position-rect', () => {
       const props = rectBinPosition({
         fieldDef,
         channel: 'y',
-        band: 1,
+        bandSize: 1,
         scaleName: undefined,
         axisTranslate: 0.5, // Vega default
         reverse: {signal: 'r'},
@@ -72,7 +72,7 @@ describe('compile/mark/encode/position-rect', () => {
       const props = rectBinPosition({
         fieldDef,
         channel: 'x',
-        band: 1,
+        bandSize: 1,
         scaleName: undefined,
         axisTranslate: 0.5, // Vega default
         reverse: {signal: 'r'},
@@ -93,7 +93,7 @@ describe('compile/mark/encode/position-rect', () => {
       const props = rectBinPosition({
         fieldDef,
         channel: 'y',
-        band: 1,
+        bandSize: 1,
         scaleName: undefined,
         axisTranslate: 0.5, // Vega default
         reverse: {signal: 'r'},
@@ -116,7 +116,7 @@ describe('compile/mark/encode/position-rect', () => {
         const props = rectBinPosition({
           fieldDef,
           channel: 'x',
-          band: 1,
+          bandSize: 1,
           scaleName: undefined,
           axisTranslate: 0.5, // Vega default
           reverse: false,
@@ -135,7 +135,7 @@ describe('compile/mark/encode/position-rect', () => {
         const props = rectBinPosition({
           fieldDef,
           channel: 'y',
-          band: 1,
+          bandSize: 1,
           scaleName: undefined,
           axisTranslate: 0.5, // Vega default
           reverse: false,
@@ -152,7 +152,7 @@ describe('compile/mark/encode/position-rect', () => {
       const props = rectBinPosition({
         fieldDef,
         channel: 'x',
-        band: 1,
+        bandSize: 1,
         scaleName: undefined,
         axisTranslate: {signal: 't'}, // Vega default
         reverse: false,
@@ -173,7 +173,7 @@ describe('compile/mark/encode/position-rect', () => {
       const props = rectBinPosition({
         fieldDef,
         channel: 'x',
-        band: 1,
+        bandSize: 1,
         scaleName: undefined,
         axisTranslate: {signal: 't'}, // Vega default
         reverse: {signal: 'r'},

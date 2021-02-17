@@ -7,7 +7,7 @@ import {
   isGeoPositionChannel,
   isScaleChannel
 } from '../../channel';
-import {binRequiresRange, FieldDef, hasBand, isTypedFieldDef, vgField} from '../../channeldef';
+import {binRequiresRange, FieldDef, hasBandEnd, isTypedFieldDef, vgField} from '../../channeldef';
 import * as log from '../../log';
 import {AggregateTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util';
@@ -23,7 +23,7 @@ function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<st
   if (
     isTypedFieldDef(fieldDef) &&
     isUnitModel(model) &&
-    hasBand(channel, fieldDef, channelDef2, model.stack, model.markDef, model.config)
+    hasBandEnd(fieldDef, channelDef2, model.markDef, model.config)
   ) {
     dims.add(vgField(fieldDef, {}));
     dims.add(vgField(fieldDef, {suffix: 'end'}));

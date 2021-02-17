@@ -1,4 +1,4 @@
-import {Gradient, SignalRef, Text} from 'vega';
+import {Gradient, ScaleType, SignalRef, Text} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -14,6 +14,7 @@ import {
   FACET,
   FILL,
   FILLOPACITY,
+  getSizeChannel,
   HREF,
   isScaleChannel,
   isSecondaryRangeChannel,
@@ -25,6 +26,8 @@ import {
   LONGITUDE2,
   OPACITY,
   ORDER,
+  PolarPositionScaleChannel,
+  PositionScaleChannel,
   RADIUS,
   RADIUS2,
   ROW,
@@ -44,7 +47,7 @@ import {
   Y,
   Y2
 } from './channel';
-import {getMarkConfig} from './compile/common';
+import {getMarkConfig, getMarkPropOrConfig} from './compile/common';
 import {isCustomFormatType} from './compile/format';
 import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
@@ -56,12 +59,12 @@ import {ImputeParams} from './impute';
 import {Legend} from './legend';
 import * as log from './log';
 import {LogicalComposition} from './logical';
-import {isRectBasedMark, Mark, MarkDef} from './mark';
-import {Predicate, ParameterPredicate} from './predicate';
-import {isContinuousToDiscrete, Scale, SCALE_CATEGORY_INDEX} from './scale';
+import {isRectBasedMark, Mark, MarkDef, RelativeBandSize} from './mark';
+import {ParameterPredicate, Predicate} from './predicate';
+import {hasDiscreteDomain, isContinuousToDiscrete, Scale, SCALE_CATEGORY_INDEX} from './scale';
 import {isSortByChannel, Sort, SortOrder} from './sort';
 import {isFacetFieldDef} from './spec/facet';
-import {StackOffset, StackProperties} from './stack';
+import {StackOffset} from './stack';
 import {
   getTimeUnitParts,
   isLocalSingleTimeUnit,
@@ -469,14 +472,12 @@ export interface PositionBaseMixins {
 
 export interface BandMixins {
   /**
-   * For rect-based marks (`rect`, `bar`, and `image`), mark size relative to bandwidth of [band scales](https://vega.github.io/vega-lite/docs/scale.html#band), bins or time units. If set to `1`, the mark size is set to the bandwidth, the bin interval, or the time unit interval. If set to `0.5`, the mark size is half of the bandwidth or the time unit interval.
-   *
-   * For other marks, relative position on a band of a stacked, binned, time unit or band scale. If set to `0`, the marks will be positioned at the beginning of the band. If set to `0.5`, the marks will be positioned in the middle of the band.
+   * Relative position on a band of a stacked, binned, time unit, or band scale. For example, the marks will be positioned at the beginning of the band if set to `0`, and at the middle of the band if set to `0.5`.
    *
    * @minimum 0
    * @maximum 1
    */
-  band?: number;
+  bandPosition?: number;
 }
 
 export type PositionFieldDef<F extends Field> = PositionFieldDefBase<F> & PositionMixins;
@@ -508,55 +509,92 @@ export interface PositionMixins {
 
 export type PolarDef<F extends Field> = PositionFieldDefBase<F> | PositionDatumDefBase<F> | PositionValueDef;
 
-export function getBand({
+export function getBandPosition({
+  fieldDef,
+  fieldDef2,
+  markDef: mark,
+  config
+}: {
+  fieldDef: FieldDef<string> | DatumDef;
+  fieldDef2?: SecondaryChannelDef<string>;
+  markDef: MarkDef<Mark, SignalRef>;
+  config: Config<SignalRef>;
+}): number {
+  if (isFieldOrDatumDef(fieldDef) && fieldDef.bandPosition !== undefined) {
+    return fieldDef.bandPosition;
+  }
+  if (isFieldDef(fieldDef)) {
+    const {timeUnit, bin} = fieldDef;
+    if (timeUnit && !fieldDef2) {
+      return isRectBasedMark(mark.type) ? 0 : getMarkConfig('timeUnitBandPosition', mark, config);
+    } else if (isBinning(bin)) {
+      return 0.5;
+    }
+  }
+
+  return undefined;
+}
+
+export function getBandSize({
   channel,
   fieldDef,
   fieldDef2,
   markDef: mark,
-  stack,
   config,
-  isMidPoint
+  scaleType,
+  useVlSizeChannel
 }: {
-  isMidPoint?: boolean;
-  channel: Channel;
-  fieldDef: FieldDef<string> | DatumDef;
+  channel: PositionScaleChannel | PolarPositionScaleChannel;
+  fieldDef: ChannelDef<string>;
   fieldDef2?: SecondaryChannelDef<string>;
-  stack: StackProperties;
   markDef: MarkDef<Mark, SignalRef>;
   config: Config<SignalRef>;
-}): number {
-  if (isFieldOrDatumDef(fieldDef) && fieldDef.band !== undefined) {
-    return fieldDef.band;
+  scaleType: ScaleType;
+  useVlSizeChannel?: boolean;
+}): number | RelativeBandSize | SignalRef {
+  const sizeChannel = getSizeChannel(channel);
+  const size = getMarkPropOrConfig(useVlSizeChannel ? 'size' : sizeChannel, mark, config, {
+    vgChannel: sizeChannel
+  });
+
+  if (size !== undefined) {
+    return size;
   }
+
   if (isFieldDef(fieldDef)) {
     const {timeUnit, bin} = fieldDef;
 
     if (timeUnit && !fieldDef2) {
-      if (isMidPoint) {
-        return getMarkConfig('timeUnitBandPosition', mark, config);
-      } else {
-        return isRectBasedMark(mark.type) ? getMarkConfig('timeUnitBand', mark, config) : 0;
-      }
-    } else if (isBinning(bin)) {
-      return isRectBasedMark(mark.type) && !isMidPoint ? 1 : 0.5;
+      return {band: getMarkConfig('timeUnitBandSize', mark, config)};
+    } else if (isBinning(bin) && !hasDiscreteDomain(scaleType)) {
+      return {band: 1};
     }
   }
-  if (stack?.fieldChannel === channel && isMidPoint) {
-    return 0.5;
+
+  if (isRectBasedMark(mark.type)) {
+    if (scaleType) {
+      if (hasDiscreteDomain(scaleType)) {
+        return config[mark.type]?.discreteBandSize || {band: 1};
+      } else {
+        return config[mark.type]?.continuousBandSize;
+      }
+    }
+    return config[mark.type]?.discreteBandSize;
   }
+
   return undefined;
 }
 
-export function hasBand(
-  channel: Channel,
+export function hasBandEnd(
   fieldDef: FieldDef<string>,
   fieldDef2: SecondaryChannelDef<string>,
-  stack: StackProperties,
   markDef: MarkDef<Mark, SignalRef>,
   config: Config<SignalRef>
 ): boolean {
   if (isBinning(fieldDef.bin) || (fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal')) {
-    return !!getBand({channel, fieldDef, fieldDef2, stack, markDef, config});
+    // Need to check bandPosition because non-rect marks (e.g., point) with timeUnit
+    // doesn't have to use bandEnd if there is no bandPosition.
+    return getBandPosition({fieldDef, fieldDef2, markDef, config}) !== undefined;
   }
   return false;
 }

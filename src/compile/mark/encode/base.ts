@@ -25,7 +25,7 @@ export {tooltip} from './tooltip';
 
 export type Ignore = Record<'color' | 'size' | 'orient' | 'align' | 'baseline' | 'theta', 'ignore' | 'include'>;
 
-const ALWAYS_IGNORE = new Set(['aria']);
+const ALWAYS_IGNORE = new Set(['aria', 'width', 'height']);
 
 export function baseEncodeEntry(model: UnitModel, ignore: Ignore) {
   const {fill = undefined, stroke = undefined} = ignore.color === 'include' ? color(model) : {};

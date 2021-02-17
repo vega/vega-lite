@@ -1,16 +1,12 @@
 import {TimeUnitTransform as VgTimeUnitTransform} from 'vega';
-import {getSecondaryRangeChannel} from '../../channel';
-import {hasBand, vgField} from '../../channeldef';
+import {vgField} from '../../channeldef';
 import {getTimeUnitParts, normalizeTimeUnit} from '../../timeunit';
 import {TimeUnitTransform} from '../../transform';
-import {Dict, duplicate, hash, isEmpty, replacePathInField, vals, entries} from '../../util';
-import {isUnitModel, ModelWithField} from '../model';
+import {Dict, duplicate, entries, hash, isEmpty, replacePathInField, vals} from '../../util';
+import {ModelWithField} from '../model';
 import {DataFlowNode} from './dataflow';
 
-export type TimeUnitComponent = TimeUnitTransform & {
-  /** whether to output time unit as a band (generate two formula including start and end) */
-  band?: boolean;
-};
+export type TimeUnitComponent = TimeUnitTransform;
 
 export class TimeUnitNode extends DataFlowNode {
   public clone() {
@@ -22,13 +18,8 @@ export class TimeUnitNode extends DataFlowNode {
   }
 
   public static makeFromEncoding(parent: DataFlowNode, model: ModelWithField) {
-    const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef, channel) => {
+    const formula = model.reduceFieldDef((timeUnitComponent: TimeUnitComponent, fieldDef) => {
       const {field, timeUnit} = fieldDef;
-
-      const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;
-
-      const band =
-        isUnitModel(model) && hasBand(channel, fieldDef, channelDef2, model.stack, model.markDef, model.config);
 
       if (timeUnit) {
         const as = vgField(fieldDef, {forAs: true});
@@ -41,8 +32,7 @@ export class TimeUnitNode extends DataFlowNode {
         ] = {
           as,
           field,
-          timeUnit,
-          ...(band ? {band: true} : {})
+          timeUnit
         };
       }
       return timeUnitComponent;
@@ -77,10 +67,10 @@ export class TimeUnitNode extends DataFlowNode {
   public merge(other: TimeUnitNode) {
     this.formula = {...this.formula};
 
-    // if the same hash happen twice, merge "band"
+    // if the same hash happen twice, merge
     for (const key in other.formula) {
-      if (!this.formula[key] || other.formula[key].band) {
-        // copy if it's not a duplicate or if we need to copy band over
+      if (!this.formula[key]) {
+        // copy if it's not a duplicate
         this.formula[key] = other.formula[key];
       }
     }

@@ -31,8 +31,8 @@ export const text: MarkCompiler = {
       ...encode.nonPosition('angle', model),
       ...encode.valueIfDefined('align', align(model.markDef, encoding, config)),
       ...encode.valueIfDefined('baseline', baseline(model.markDef, encoding, config)),
-      ...encode.pointPosition('radius', model, {defaultPos: null, isMidPoint: true}),
-      ...encode.pointPosition('theta', model, {defaultPos: null, isMidPoint: true})
+      ...encode.pointPosition('radius', model, {defaultPos: null}),
+      ...encode.pointPosition('theta', model, {defaultPos: null})
     };
   }
 };

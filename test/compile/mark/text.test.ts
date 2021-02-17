@@ -25,6 +25,22 @@ describe('Mark: Text', () => {
     });
   });
 
+  it('should use stack_mid on theta for stacked theta', () => {
+    // This is a simplified example for stacked text.
+    // In reality this will be used as stacked's overlayed marker
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'text',
+      encoding: {
+        theta: {field: 'value', type: 'quantitative', stack: true},
+        color: {field: 'b', type: 'ordinal'}
+      },
+      data: {url: 'data/barley.json'}
+    });
+
+    const props = text.encodeEntry(model);
+    expect(props.theta).toEqual({signal: 'scale("theta", 0.5 * datum["value_start"] + 0.5 * datum["value_end"])'});
+  });
+
   describe('with stacked y', () => {
     // This is a simplified example for stacked text.
     // In reality this will be used as stacked's overlayed marker

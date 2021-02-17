@@ -43,7 +43,7 @@ export function parseScaleCore(model: Model) {
  * Parse scales for all channels of a model.
  */
 function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
-  const {encoding, mark} = model;
+  const {encoding, mark, markDef} = model;
 
   return SCALE_CHANNELS.reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
     const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as TypedFieldDef<string> | ScaleDatumDef; // must be typed def to have scale
@@ -57,7 +57,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
     if (fieldOrDatumDef && specifiedScale !== null && specifiedScale !== false) {
       specifiedScale ??= {};
 
-      const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, mark);
+      const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, markDef);
       scaleComponents[channel] = new ScaleComponent(model.scaleName(`${channel}`, true), {
         value: sType,
         explicit: specifiedScale.type === sType

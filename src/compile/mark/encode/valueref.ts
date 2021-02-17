@@ -14,7 +14,7 @@ import {
   FieldDefBase,
   FieldName,
   FieldRefOption,
-  getBand,
+  getBandPosition,
   isDatumDef,
   isFieldDef,
   isFieldOrDatumDef,
@@ -125,7 +125,7 @@ export function valueRefForFieldOrDatumDef(
   fieldDef: FieldDefBase<string> | DatumDef<string>,
   scaleName: string,
   opt: FieldRefOption,
-  encode: {offset?: number | VgValueRef; band?: number | boolean}
+  encode: {offset?: number | VgValueRef; band?: number | boolean | SignalRef}
 ): VgValueRef {
   const ref: VgValueRef = {};
 
@@ -169,16 +169,16 @@ export function interpolatedSignalRef({
   fieldOrDatumDef2,
   offset,
   startSuffix,
-  band = 0.5
+  bandPosition = 0.5
 }: {
   scaleName: string;
   fieldOrDatumDef: TypedFieldDef<string>;
   fieldOrDatumDef2?: SecondaryFieldDef<string>;
   startSuffix?: string;
   offset: number | SignalRef;
-  band: number;
+  bandPosition: number | SignalRef;
 }): VgValueRef {
-  const expr = 0 < band && band < 1 ? 'datum' : undefined;
+  const expr = 0 < bandPosition && bandPosition < 1 ? 'datum' : undefined;
   const start = vgField(fieldOrDatumDef, {expr, suffix: startSuffix});
   const end =
     fieldOrDatumDef2 !== undefined
@@ -187,12 +187,14 @@ export function interpolatedSignalRef({
 
   const ref: VgValueRef = {};
 
-  if (band === 0 || band === 1) {
+  if (bandPosition === 0 || bandPosition === 1) {
     ref.scale = scaleName;
-    const val = band === 0 ? start : end;
+    const val = bandPosition === 0 ? start : end;
     ref.field = val;
   } else {
-    const datum = `${band} * ${start} + ${1 - band} * ${end}`;
+    const datum = isSignalRef(bandPosition)
+      ? `${bandPosition.signal} * ${start} + (1-${bandPosition.signal}) * ${end}`
+      : `${bandPosition} * ${start} + ${1 - bandPosition} * ${end}`;
     ref.signal = `scale("${scaleName}", ${datum})`;
   }
 
@@ -216,10 +218,7 @@ export interface MidPointParams {
   offset?: number | SignalRef;
   defaultRef: VgValueRef | (() => VgValueRef);
 
-  /**
-   * Allow overriding band instead of reading to field def since band is applied to size (width/height) instead of the position for x/y-position with band scales.
-   */
-  band?: number;
+  bandPosition?: number | SignalRef;
 }
 
 /**
@@ -236,7 +235,7 @@ export function midPoint({
   stack,
   offset,
   defaultRef,
-  band
+  bandPosition
 }: MidPointParams): VgValueRef {
   // TODO: datum support
   if (channelDef) {
@@ -244,28 +243,26 @@ export function midPoint({
 
     if (isFieldOrDatumDef(channelDef)) {
       if (isTypedFieldDef(channelDef)) {
-        band ??= getBand({
-          channel,
+        bandPosition ??= getBandPosition({
           fieldDef: channelDef,
           fieldDef2: channel2Def,
           markDef,
-          stack,
-          config,
-          isMidPoint: true
+          config
         });
         const {bin, timeUnit, type} = channelDef;
 
-        if (isBinning(bin) || (band && timeUnit && type === TEMPORAL)) {
+        if (isBinning(bin) || (bandPosition && timeUnit && type === TEMPORAL)) {
           // Use middle only for x an y to place marks in the center between start and end of the bin range.
           // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
           if (stack && stack.impute) {
             // For stack, we computed bin_mid so we can impute.
             return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
           }
-          if (band) {
+
+          if (bandPosition) {
             // if band = 0, no need to call interpolation
             // For non-stack, we can just calculate bin mid on the fly using signal.
-            return interpolatedSignalRef({scaleName, fieldOrDatumDef: channelDef, band, offset});
+            return interpolatedSignalRef({scaleName, fieldOrDatumDef: channelDef, bandPosition, offset});
           }
           return valueRefForFieldOrDatumDef(
             channelDef,
@@ -281,7 +278,7 @@ export function midPoint({
               scaleName,
               fieldOrDatumDef: channelDef,
               fieldOrDatumDef2: channel2Def,
-              band,
+              bandPosition,
               offset
             });
           } else {
@@ -299,7 +296,7 @@ export function midPoint({
         {
           offset,
           // For band, to get mid point, need to offset by half of the band
-          band: scaleType === 'band' ? band ?? channelDef.band ?? 0.5 : undefined
+          band: scaleType === 'band' ? bandPosition ?? channelDef.bandPosition ?? 0.5 : undefined
         }
       );
     } else if (isValueDef(channelDef)) {

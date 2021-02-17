@@ -7,7 +7,7 @@ import {
   PolarPositionChannel,
   PositionChannel
 } from '../../../channel';
-import {getBand, isFieldDef, isFieldOrDatumDef, TypedFieldDef} from '../../../channeldef';
+import {isFieldDef, isFieldOrDatumDef, TypedFieldDef} from '../../../channeldef';
 import {ScaleType} from '../../../scale';
 import {contains} from '../../../util';
 import {VgValueRef} from '../../../vega.schema';
@@ -25,12 +25,10 @@ export function pointPosition(
   model: UnitModel,
   {
     defaultPos,
-    vgChannel,
-    isMidPoint
+    vgChannel
   }: {
     defaultPos: 'mid' | 'zeroOrMin' | 'zeroOrMax' | null;
     vgChannel?: 'x' | 'y' | 'xc' | 'yc';
-    isMidPoint?: boolean;
   }
 ) {
   const {encoding, markDef, config, stack} = model;
@@ -61,7 +59,6 @@ export function pointPosition(
           channel2Def,
           markDef,
           config,
-          isMidPoint,
           scaleName,
           scale,
           stack,
@@ -81,28 +78,27 @@ export function pointPosition(
 export function positionRef(
   params: ref.MidPointParams & {
     channel: 'x' | 'y' | 'radius' | 'theta';
-    isMidPoint?: boolean;
   }
 ): VgValueRef | VgValueRef[] {
-  const {channel, channelDef, isMidPoint, scaleName, stack, offset, markDef, config} = params;
+  const {channel, channelDef, scaleName, stack, offset, markDef} = params;
 
   // This isn't a part of midPoint because we use midPoint for non-position too
   if (isFieldOrDatumDef(channelDef) && stack && channel === stack.fieldChannel) {
     if (isFieldDef(channelDef)) {
-      const band = getBand({
-        channel,
-        fieldDef: channelDef,
-        isMidPoint,
-        markDef,
-        stack,
-        config
-      });
-      if (band !== undefined) {
+      let bandPosition = channelDef.bandPosition;
+
+      if (bandPosition === undefined && markDef.type === 'text' && (channel === 'radius' || channel === 'theta')) {
+        // theta and radius of text mark should use bandPosition = 0.5 by default
+        // so that labels for arc marks are centered automatically
+        bandPosition = 0.5;
+      }
+
+      if (bandPosition !== undefined) {
         return ref.interpolatedSignalRef({
           scaleName,
           fieldOrDatumDef: channelDef as TypedFieldDef<string>, // positionRef always have type
           startSuffix: 'start',
-          band,
+          bandPosition,
           offset
         });
       }
