@@ -452,7 +452,7 @@ describe('compile/mark/init', () => {
           x: {field: 'a', type: 'ordinal'},
           y: {field: 'b', type: 'quantitative'},
           href: {
-            condition: {param: 'test', value: 'https://vega.github.io/schema/vega-lite/v4.json'},
+            condition: {param: 'test', value: 'https://vega.github.io/schema/vega-lite/v5.json'},
             field: 'a',
             type: 'ordinal'
           }
