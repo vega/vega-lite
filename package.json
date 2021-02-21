@@ -28,7 +28,8 @@
     "bin",
     "build",
     "src",
-    "vega-lite*"
+    "vega-lite*",
+    "tsconfig.json"
   ],
   "scripts": {
     "changelog": "conventional-changelog -p angular -r 2",
