@@ -372,12 +372,17 @@ Vector2:
   name: Array
 Vector3:
   name: Array
+Dict:
+  name: Object
+InlineDataset:
+  name: Array
+Expr:
+  link: 'types.html#expression'
 
 # Others
 PredicateComposition:
   name: 'Predicate'
   link: 'predicate.html'
-
 FontWeight:
   name: 'String | Number'
 RepeatMapping:

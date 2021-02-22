@@ -19,6 +19,8 @@ The formula transform extends data objects with new fields (columns) according t
 }
 ```
 
+## Calculate Transform Definition
+
 {% include table.html props="calculate,as" source="CalculateTransform" %}
 
 ## Example

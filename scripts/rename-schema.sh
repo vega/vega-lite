@@ -28,3 +28,5 @@ perl -pi -e s,'TopLevel<(.*)>','TopLevel\1',g build/vega-lite-schema.json
 
 perl -pi -e s,'BaseAxis<(.*)>','BaseAxisConfig',g build/vega-lite-schema.json
 perl -pi -e s,'BaseTitle<(.*)>','BaseTitleConfig',g build/vega-lite-schema.json
+
+perl -pi -e s,'Dict<unknown>','Dict',g build/vega-lite-schema.json

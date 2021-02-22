@@ -19,8 +19,6 @@ To aggregate data in Vega-Lite, users can either use the `aggregate` property of
 
 ## Aggregate in Encoding Field Definition
 
-<!-- TODO why aggregation -->
-
 ```js
 // A Single View or a Layer Specification
 {
@@ -28,7 +26,7 @@ To aggregate data in Vega-Lite, users can either use the `aggregate` property of
   "mark/layer": ...,
   "encoding": {
     "x": {
-      "aggregate": ...,               // aggregate
+      "aggregate": ..., // aggregate
       "field": ...,
       "type": "quantitative",
       ...

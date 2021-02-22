@@ -1,0 +1,331 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 20,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {
+          "title": "Revenue",
+          "subtitle": "US$, in thousands",
+          "ranges": [150, 225, 300],
+          "measures": [220, 270],
+          "markers": [250]
+        }
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum[\"ranges\"] && datum[\"ranges\"][\"2\"]",
+          "as": "ranges.2"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"ranges\"] && datum[\"ranges\"][\"1\"]",
+          "as": "ranges.1"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"ranges\"] && datum[\"ranges\"][\"0\"]",
+          "as": "ranges.0"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"measures\"] && datum[\"measures\"][\"1\"]",
+          "as": "measures.1"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"measures\"] && datum[\"measures\"][\"0\"]",
+          "as": "measures.0"
+        },
+        {
+          "type": "formula",
+          "expr": "datum[\"markers\"] && datum[\"markers\"][\"0\"]",
+          "as": "markers.0"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": [],
+          "field": "ranges\\.2",
+          "sort": {"field": [], "order": []},
+          "as": ["ranges.2._start", "ranges.2._end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"ranges.2\"]) && isFinite(+datum[\"ranges.2\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": [],
+          "field": "ranges\\.1",
+          "sort": {"field": [], "order": []},
+          "as": ["ranges.1._start", "ranges.1._end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"ranges.1\"]) && isFinite(+datum[\"ranges.1\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": [],
+          "field": "ranges\\.0",
+          "sort": {"field": [], "order": []},
+          "as": ["ranges.0._start", "ranges.0._end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"ranges.0\"]) && isFinite(+datum[\"ranges.0\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_4",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": [],
+          "field": "measures\\.1",
+          "sort": {"field": [], "order": []},
+          "as": ["measures.1._start", "measures.1._end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"measures.1\"]) && isFinite(+datum[\"measures.1\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_5",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": [],
+          "field": "measures\\.0",
+          "sort": {"field": [], "order": []},
+          "as": ["measures.0._start", "measures.0._end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"measures.0\"]) && isFinite(+datum[\"measures.0\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_6",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"markers.0\"]) && isFinite(+datum[\"markers.0\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "height",
+      "value": 20,
+      "bind": {"input": "range", "min": 1, "max": 100, "step": 1}
+    },
+    {"name": "innerBarSize", "update": "height/2"}
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#eee"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"ranges[2]: \" + (format(datum[\"ranges.2\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "ranges\\.2\\._end"},
+          "x2": {"scale": "x", "field": "ranges\\.2\\._start"},
+          "yc": {"signal": "height", "mult": 0.5},
+          "height": {"signal": "height"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#ddd"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"ranges[1]: \" + (format(datum[\"ranges.1\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "ranges\\.1\\._end"},
+          "x2": {"scale": "x", "field": "ranges\\.1\\._start"},
+          "yc": {"signal": "height", "mult": 0.5},
+          "height": {"signal": "height"}
+        }
+      }
+    },
+    {
+      "name": "layer_2_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_3"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#ccc"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"ranges[0]: \" + (format(datum[\"ranges.0\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "ranges\\.0\\._end"},
+          "x2": {"scale": "x", "field": "ranges\\.0\\._start"},
+          "yc": {"signal": "height", "mult": 0.5},
+          "height": {"signal": "height"}
+        }
+      }
+    },
+    {
+      "name": "layer_3_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_4"},
+      "encode": {
+        "update": {
+          "fill": {"value": "lightsteelblue"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"measures[1]: \" + (format(datum[\"measures.1\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "measures\\.1\\._end"},
+          "x2": {"scale": "x", "field": "measures\\.1\\._start"},
+          "yc": {"signal": "height", "mult": 0.5},
+          "height": {"signal": "innerBarSize"}
+        }
+      }
+    },
+    {
+      "name": "layer_4_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_5"},
+      "encode": {
+        "update": {
+          "fill": {"value": "steelblue"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"measures[0]: \" + (format(datum[\"measures.0\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "measures\\.0\\._end"},
+          "x2": {"scale": "x", "field": "measures\\.0\\._start"},
+          "yc": {"signal": "height", "mult": 0.5},
+          "height": {"signal": "innerBarSize"}
+        }
+      }
+    },
+    {
+      "name": "layer_5_marks",
+      "type": "rect",
+      "style": ["tick"],
+      "from": {"data": "data_6"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "black"},
+          "ariaRoleDescription": {"value": "tick"},
+          "description": {
+            "signal": "\"markers[0]: \" + (format(datum[\"markers.0\"], \"\"))"
+          },
+          "xc": {"scale": "x", "field": "markers\\.0"},
+          "yc": {"signal": "height", "mult": 0.5},
+          "height": {"signal": "height"},
+          "width": {"value": 2}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "ranges\\.2\\._start"},
+          {"data": "data_1", "field": "ranges\\.2\\._end"},
+          {"data": "data_2", "field": "ranges\\.1\\._start"},
+          {"data": "data_2", "field": "ranges\\.1\\._end"},
+          {"data": "data_3", "field": "ranges\\.0\\._start"},
+          {"data": "data_3", "field": "ranges\\.0\\._end"},
+          {"data": "data_4", "field": "measures\\.1\\._start"},
+          {"data": "data_4", "field": "measures\\.1\\._end"},
+          {"data": "data_5", "field": "measures\\.0\\._start"},
+          {"data": "data_5", "field": "measures\\.0\\._end"},
+          {"data": "data_6", "field": "markers\\.0"}
+        ]
+      },
+      "range": [0, {"signal": "width"}],
+      "nice": false,
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    }
+  ]
+}
