@@ -37,17 +37,31 @@ Both variable and selection parameters support the following properties:
 
 ### Variable Parameters
 
-Variables are the simplest form a parameter can take. Variable parameters allow for a value to be defined once and then reused throughout the rest of the specification. As the name suggests, variable values can be modified dynamically either by [binding the variable](bind.html) to input widgets (e.g., sliders or drop down menus), by specifying its `expr` property, or externally as a signal through the [Vega view API](https://vega.github.io/vega/docs/api/view/#signals):
-
-{% include table.html props="expr" source="VariableParameter" %}
-
-For example, here we define a `cornerRadius` parameter:
+Variables are the simplest form a parameter can take. Variable parameters allow for a value to be defined once and then reused throughout the rest of the specification. For example, here we define a `cornerRadius` parameter:
 
 <div class="vl-example" data-name="bar_params"></div>
 
-We can also bind a parameter to input elements to create dynamic query widgets. For example, here we include widgets to customize bar mark's corner radius:
+As the name suggests, variable values can be modified dynamically, either by [binding the variable](bind.html) to input widgets (e.g., sliders or drop down menus), or by modifying the underlying signal in a [Vega view API](https://vega.github.io/vega/docs/api/view/#signals). For example, here we include widgets to customize bar mark's corner radius:
 
 <div class="vl-example" data-name="bar_params_bound"></div>
+
+Besides setting the initial `value`, you can also create make a parameter using an expression (`expr`).
+
+{% include table.html props="expr" source="VariableParameter" %}
+
+For example, here we make the inner bars in a bullet chart depends on the chart height.
+
+<div class="vl-example" data-name="bar_bullet_expr_bind"></div>
+
+**Note:** Height is a built-in parameter, as described in the next section.
+
+### Built-In Variable Parameters
+
+A few parameter names are automatically processed and/or reserved:
+
+- Parameters for the specification `width`, `height`, `padding`, `autosize`, and `background` properties are automatically defined. Specifications may include definitions for these parameters in the top-level parameters array, in which case the definitions will be merged with any top-level specification property values, with precedence given to properties defined in the parameters array.
+- The parameters names `datum`, `item`, `event`, `parent` are reserved for top-level variables within expressions. Specifications may not define parameters named `datum`, `item`, `event`, or `parent`.
+- If you define a parameter named `cursor`, its value will automatically drive the CSS mouse cursor for the Vega-Lite view. For more details about `cursor` parameter, see the Vega documentation for [the underlying `cursor` signal](https://vega.github.io/vega/docs/signals/#the-cursor-signal).
 
 {:#select}
 
