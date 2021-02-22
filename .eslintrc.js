@@ -6,8 +6,6 @@ module.exports = {
     'plugin:jest/recommended',
     'plugin:jest/style',
     'plugin:@typescript-eslint/recommended',
-    'prettier',
-    'prettier/@typescript-eslint',
     'plugin:prettier/recommended'
   ],
   env: {

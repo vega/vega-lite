@@ -76,9 +76,9 @@
     "url": "https://github.com/vega/vega-lite/issues"
   },
   "devDependencies": {
-    "@babel/core": "^7.12.16",
-    "@babel/preset-env": "^7.12.16",
-    "@babel/preset-typescript": "^7.12.16",
+    "@babel/core": "^7.12.17",
+    "@babel/preset-env": "^7.12.17",
+    "@babel/preset-typescript": "^7.12.17",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-commonjs": "^17.1.0",
     "@rollup/plugin-json": "^4.1.0",
@@ -97,7 +97,7 @@
     "conventional-changelog-cli": "^2.1.1",
     "d3": "^6.5.0",
     "eslint": "^7.20.0",
-    "eslint-config-prettier": "^7.2.0",
+    "eslint-config-prettier": "^8.0.0",
     "eslint-plugin-jest": "^24.1.5",
     "eslint-plugin-prettier": "^3.3.1",
     "gh-pages": "^3.1.0",
@@ -137,7 +137,7 @@
     "yargs": "~16.2.0"
   },
   "peerDependencies": {
-    "vega": "^5.18.0"
+    "vega": "^5.19.1"
   },
   "jest": {
     "testPathIgnorePatterns": [
