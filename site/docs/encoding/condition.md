@@ -38,7 +38,7 @@ There are two ways to specify the condition:
 
 (1) Specifying `param` name:
 
-{% include table.html props="param" source="ConditionalParameter<StringFieldDef>" %}
+{% include table.html props="param,empty" source="ConditionalParameter<StringFieldDef>" %}
 
 (2) Specifying a `test` predicate:
 
