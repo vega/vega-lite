@@ -18,7 +18,7 @@
       "value": "grey"
     },
     "size": {
-      "condition": {"param": "pts", "value": 200},
+      "condition": {"param": "pts", "empty": false, "value": 200},
       "value": 50
     }
   }
