@@ -203,8 +203,13 @@
         {
           "name": "brush_tuple_fields",
           "value": [
-            {"field": "Miles_per_Gallon", "channel": "x", "type": "R"},
-            {"field": "Horsepower", "channel": "y", "type": "R"}
+            {
+              "field": "Miles_per_Gallon",
+              "channel": "x",
+              "type": "R",
+              "index": 0
+            },
+            {"field": "Horsepower", "channel": "y", "type": "R", "index": 1}
           ]
         },
         {
@@ -507,8 +512,8 @@
         {
           "name": "grid_tuple_fields",
           "value": [
-            {"field": "Displacement", "channel": "x", "type": "R"},
-            {"field": "Acceleration", "channel": "y", "type": "R"}
+            {"field": "Displacement", "channel": "x", "type": "R", "index": 0},
+            {"field": "Acceleration", "channel": "y", "type": "R", "index": 1}
           ]
         },
         {

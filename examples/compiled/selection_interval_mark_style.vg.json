@@ -177,8 +177,8 @@
     {
       "name": "alex_tuple_fields",
       "value": [
-        {"field": "Cylinders", "channel": "x", "type": "E"},
-        {"field": "Origin", "channel": "y", "type": "E"}
+        {"field": "Cylinders", "channel": "x", "type": "E", "index": 0},
+        {"field": "Origin", "channel": "y", "type": "E", "index": 1}
       ]
     },
     {
@@ -400,8 +400,8 @@
     {
       "name": "morgan_tuple_fields",
       "value": [
-        {"field": "Cylinders", "channel": "x", "type": "E"},
-        {"field": "Origin", "channel": "y", "type": "E"}
+        {"field": "Cylinders", "channel": "x", "type": "E", "index": 0},
+        {"field": "Origin", "channel": "y", "type": "E", "index": 1}
       ]
     },
     {

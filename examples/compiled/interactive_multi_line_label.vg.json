@@ -91,7 +91,7 @@
     },
     {
       "name": "label_tuple_fields",
-      "value": [{"field": "date", "channel": "x", "type": "E"}]
+      "value": [{"field": "date", "channel": "x", "type": "E", "index": 0}]
     },
     {
       "name": "label_toggle",

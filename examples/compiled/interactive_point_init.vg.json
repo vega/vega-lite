@@ -12,16 +12,16 @@
         {
           "unit": "",
           "fields": [
-            {"type": "E", "field": "Cylinders"},
-            {"type": "E", "field": "Year"}
+            {"type": "E", "field": "Cylinders", "index": 0},
+            {"type": "E", "field": "Year", "index": 1}
           ],
           "values": [4, 1981]
         },
         {
           "unit": "",
           "fields": [
-            {"type": "E", "field": "Cylinders"},
-            {"type": "E", "field": "Year"}
+            {"type": "E", "field": "Cylinders", "index": 0},
+            {"type": "E", "field": "Year", "index": 1}
           ],
           "values": [8, 1972]
         }
@@ -66,8 +66,8 @@
     {
       "name": "CylYr_tuple_fields",
       "value": [
-        {"type": "E", "field": "Cylinders"},
-        {"type": "E", "field": "Year"}
+        {"type": "E", "field": "Cylinders", "index": 0},
+        {"type": "E", "field": "Year", "index": 1}
       ]
     },
     {

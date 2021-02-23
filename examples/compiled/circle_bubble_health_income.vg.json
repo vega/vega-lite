@@ -69,8 +69,8 @@
     {
       "name": "view_tuple_fields",
       "value": [
-        {"field": "income", "channel": "x", "type": "R"},
-        {"field": "health", "channel": "y", "type": "R"}
+        {"field": "income", "channel": "x", "type": "R", "index": 0},
+        {"field": "health", "channel": "y", "type": "R", "index": 1}
       ]
     },
     {

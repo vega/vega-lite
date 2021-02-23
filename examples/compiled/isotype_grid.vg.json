@@ -267,8 +267,8 @@
     {
       "name": "highlight_tuple_fields",
       "value": [
-        {"field": "col", "channel": "x", "type": "E"},
-        {"field": "row", "channel": "y", "type": "E"}
+        {"field": "col", "channel": "x", "type": "E", "index": 0},
+        {"field": "row", "channel": "y", "type": "E", "index": 1}
       ]
     },
     {

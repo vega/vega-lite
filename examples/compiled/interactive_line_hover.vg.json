@@ -12,7 +12,7 @@
       "values": [
         {
           "unit": "layer_0",
-          "fields": [{"type": "E", "field": "symbol"}],
+          "fields": [{"type": "E", "field": "symbol", "index": 0}],
           "values": ["AAPL"]
         }
       ]
@@ -64,7 +64,10 @@
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
-    {"name": "hover_tuple_fields", "value": [{"type": "E", "field": "symbol"}]},
+    {
+      "name": "hover_tuple_fields",
+      "value": [{"type": "E", "field": "symbol", "index": 0}]
+    },
     {
       "name": "hover_toggle",
       "value": false,

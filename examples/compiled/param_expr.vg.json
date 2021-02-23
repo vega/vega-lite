@@ -49,7 +49,7 @@
     },
     {
       "name": "sel_tuple_fields",
-      "value": [{"type": "E", "field": "Miles_per_Gallon"}]
+      "value": [{"type": "E", "field": "Miles_per_Gallon", "index": 0}]
     },
     {
       "name": "sel_modify",

@@ -177,8 +177,13 @@
         {
           "name": "grid_tuple_fields",
           "value": [
-            {"field": "Miles_per_Gallon", "channel": "x", "type": "R"},
-            {"field": "Horsepower", "channel": "y", "type": "R"}
+            {
+              "field": "Miles_per_Gallon",
+              "channel": "x",
+              "type": "R",
+              "index": 0
+            },
+            {"field": "Horsepower", "channel": "y", "type": "R", "index": 1}
           ]
         },
         {
@@ -379,8 +384,8 @@
         {
           "name": "grid_tuple_fields",
           "value": [
-            {"field": "Acceleration", "channel": "x", "type": "R"},
-            {"field": "Horsepower", "channel": "y", "type": "R"}
+            {"field": "Acceleration", "channel": "x", "type": "R", "index": 0},
+            {"field": "Horsepower", "channel": "y", "type": "R", "index": 1}
           ]
         },
         {
@@ -562,7 +567,9 @@
         },
         {
           "name": "grid_tuple_fields",
-          "value": [{"field": "Horsepower", "channel": "x", "type": "R"}]
+          "value": [
+            {"field": "Horsepower", "channel": "x", "type": "R", "index": 0}
+          ]
         },
         {
           "name": "grid_translate_anchor",
@@ -764,8 +771,13 @@
         {
           "name": "grid_tuple_fields",
           "value": [
-            {"field": "Miles_per_Gallon", "channel": "x", "type": "R"},
-            {"field": "Acceleration", "channel": "y", "type": "R"}
+            {
+              "field": "Miles_per_Gallon",
+              "channel": "x",
+              "type": "R",
+              "index": 0
+            },
+            {"field": "Acceleration", "channel": "y", "type": "R", "index": 1}
           ]
         },
         {
@@ -947,7 +959,9 @@
         },
         {
           "name": "grid_tuple_fields",
-          "value": [{"field": "Acceleration", "channel": "x", "type": "R"}]
+          "value": [
+            {"field": "Acceleration", "channel": "x", "type": "R", "index": 0}
+          ]
         },
         {
           "name": "grid_translate_anchor",
@@ -1147,8 +1161,8 @@
         {
           "name": "grid_tuple_fields",
           "value": [
-            {"field": "Horsepower", "channel": "x", "type": "R"},
-            {"field": "Acceleration", "channel": "y", "type": "R"}
+            {"field": "Horsepower", "channel": "x", "type": "R", "index": 0},
+            {"field": "Acceleration", "channel": "y", "type": "R", "index": 1}
           ]
         },
         {
@@ -1330,7 +1344,14 @@
         },
         {
           "name": "grid_tuple_fields",
-          "value": [{"field": "Miles_per_Gallon", "channel": "x", "type": "R"}]
+          "value": [
+            {
+              "field": "Miles_per_Gallon",
+              "channel": "x",
+              "type": "R",
+              "index": 0
+            }
+          ]
         },
         {
           "name": "grid_translate_anchor",
@@ -1532,8 +1553,13 @@
         {
           "name": "grid_tuple_fields",
           "value": [
-            {"field": "Acceleration", "channel": "x", "type": "R"},
-            {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+            {"field": "Acceleration", "channel": "x", "type": "R", "index": 0},
+            {
+              "field": "Miles_per_Gallon",
+              "channel": "y",
+              "type": "R",
+              "index": 1
+            }
           ]
         },
         {
@@ -1736,8 +1762,13 @@
         {
           "name": "grid_tuple_fields",
           "value": [
-            {"field": "Horsepower", "channel": "x", "type": "R"},
-            {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+            {"field": "Horsepower", "channel": "x", "type": "R", "index": 0},
+            {
+              "field": "Miles_per_Gallon",
+              "channel": "y",
+              "type": "R",
+              "index": 1
+            }
           ]
         },
         {

@@ -73,7 +73,10 @@
         {"events": [{"source": "view", "type": "mouseout"}], "update": "null"}
       ]
     },
-    {"name": "hover_tuple_fields", "value": [{"type": "E", "field": "date"}]},
+    {
+      "name": "hover_tuple_fields",
+      "value": [{"type": "E", "field": "date", "index": 0}]
+    },
     {
       "name": "hover_toggle",
       "value": false,

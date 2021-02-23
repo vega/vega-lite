@@ -8,7 +8,13 @@
   "style": "cell",
   "data": [
     {"name": "brush_store"},
-    {"name": "hoverbrush_store"},
+    {
+      "name": "hoverbrush_store",
+      "transform": [
+        {"type": "formula", "expr": "datum.values[0]", "as": "_vgsid_"},
+        {"type": "collect", "sort": {"field": "_vgsid_"}}
+      ]
+    },
     {
       "name": "source_0",
       "url": "data/cars.json",
@@ -178,8 +184,8 @@
     {
       "name": "brush_tuple_fields",
       "value": [
-        {"field": "Horsepower", "channel": "x", "type": "R"},
-        {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+        {"field": "Horsepower", "channel": "x", "type": "R", "index": 0},
+        {"field": "Miles_per_Gallon", "channel": "y", "type": "R", "index": 1}
       ]
     },
     {
@@ -275,7 +281,7 @@
     },
     {
       "name": "hoverbrush_tuple_fields",
-      "value": [{"type": "E", "field": "_vgsid_"}]
+      "value": [{"type": "E", "field": "_vgsid_", "index": 0}]
     },
     {
       "name": "hoverbrush_toggle",
@@ -351,7 +357,7 @@
           "fill": {"value": "transparent"},
           "stroke": [
             {
-              "test": "!length(data(\"hoverbrush_store\")) || vlSelectionTest(\"hoverbrush_store\", datum)",
+              "test": "!length(data(\"hoverbrush_store\")) || vlSelectionIdTest(\"hoverbrush_store\", datum)",
               "value": "teal"
             },
             {

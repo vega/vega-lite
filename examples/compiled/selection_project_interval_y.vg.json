@@ -111,7 +111,7 @@
     },
     {
       "name": "pts_tuple_fields",
-      "value": [{"field": "Origin", "channel": "y", "type": "E"}]
+      "value": [{"field": "Origin", "channel": "y", "type": "E", "index": 0}]
     },
     {
       "name": "pts_translate_anchor",

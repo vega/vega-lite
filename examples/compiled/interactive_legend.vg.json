@@ -94,7 +94,7 @@
     },
     {
       "name": "industry_tuple_fields",
-      "value": [{"type": "E", "field": "series"}]
+      "value": [{"type": "E", "field": "series", "index": 0}]
     },
     {
       "name": "industry_toggle",

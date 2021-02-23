@@ -471,7 +471,9 @@
         },
         {
           "name": "brush_tuple_fields",
-          "value": [{"field": "Country", "channel": "y", "type": "E"}]
+          "value": [
+            {"field": "Country", "channel": "y", "type": "E", "index": 0}
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -795,7 +797,9 @@
         },
         {
           "name": "brush_tuple_fields",
-          "value": [{"field": "Country", "channel": "y", "type": "E"}]
+          "value": [
+            {"field": "Country", "channel": "y", "type": "E", "index": 0}
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -1189,12 +1193,14 @@
             {
               "field": "Population_ages_65_and_above_of_total",
               "channel": "x",
-              "type": "R"
+              "type": "R",
+              "index": 0
             },
             {
               "field": "Population_ages_15_64_of_total",
               "channel": "y",
-              "type": "R"
+              "type": "R",
+              "index": 1
             }
           ]
         },

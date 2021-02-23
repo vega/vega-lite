@@ -1,21 +1,13 @@
 import {Binding, isString, NewSignal, Signal, Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel';
-import {
-  BrushConfig,
-  LegendBinding,
-  SelectionInit,
-  SelectionInitInterval,
-  SelectionResolution,
-  SelectionType,
-  SELECTION_ID
-} from '../../selection';
+import {LegendBinding, SelectionInit, SelectionInitInterval, SelectionResolution, SelectionType} from '../../selection';
 import {Dict, vals} from '../../util';
 import {OutputNode} from '../data/dataflow';
 import {FacetModel} from '../facet';
 import {isFacetModel, Model} from '../model';
 import {UnitModel} from '../unit';
-import interval from './interval';
+import interval, {IntervalSelectionComponent} from './interval';
 import point from './point';
 import {SelectionProjection, SelectionProjectionComponent} from './project';
 import {SelectionParameter} from '../../selection';
@@ -45,10 +37,8 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
   materialized: OutputNode;
   bind?: 'scales' | Binding | Dict<Binding> | LegendBinding;
   resolve: SelectionResolution;
-  mark?: BrushConfig;
-
-  // Transforms
   project: SelectionProjectionComponent;
+  interval?: IntervalSelectionComponent;
   scales?: SelectionProjection[];
   toggle?: string;
   translate?: any;
@@ -109,9 +99,10 @@ export function unitName(model: Model, {escape} = {escape: true}) {
 }
 
 export function requiresSelectionId(model: Model) {
-  return vals(model.component.selection ?? {}).reduce((identifier, selCmpt) => {
-    return identifier || selCmpt.project.items.some(proj => proj.field === SELECTION_ID);
-  }, false);
+  return vals(model.component.selection ?? {}).reduce(
+    (identifier, selCmpt) => identifier || selCmpt.project.hasSelectionId(),
+    false
+  );
 }
 
 // Binding a point selection to query widgets or legends disables default direct manipulation interaction.

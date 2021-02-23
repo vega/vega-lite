@@ -29,12 +29,8 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
     // a property (e.g., "nearest": true). Project transform applies its defaults.
     const {fields, encodings, ...cfg} = selectionConfig[type];
     for (const key in cfg) {
-      if (key === 'mark') {
-        defaults[key] = {...cfg[key], ...defaults[key]};
-      }
-
       if (defaults[key] === undefined || defaults[key] === true) {
-        defaults[key] = cfg[key] ?? defaults[key];
+        defaults[key] = duplicate(cfg[key] ?? defaults[key]);
       }
     }
 
@@ -85,8 +81,8 @@ export function parseSelectionPredicate(
     }
   }
 
-  const test =
-    `vlSelectionTest(${store}, ${datum}` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`);
+  const fn = selCmpt.project.hasSelectionId() ? 'vlSelectionIdTest' : 'vlSelectionTest';
+  const test = `${fn}(${store}, ${datum}` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`);
   const length = `length(data(${store}))`;
 
   return pred.empty === false ? `${length} && ${test}` : `!${length} || ${test}`;

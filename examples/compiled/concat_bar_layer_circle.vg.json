@@ -292,7 +292,9 @@
         },
         {
           "name": "pts_tuple_fields",
-          "value": [{"field": "Major Genre", "channel": "x", "type": "E"}]
+          "value": [
+            {"field": "Major Genre", "channel": "x", "type": "E", "index": 0}
+          ]
         },
         {
           "name": "pts_toggle",

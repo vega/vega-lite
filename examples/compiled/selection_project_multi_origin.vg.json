@@ -42,7 +42,10 @@
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
-    {"name": "pts_tuple_fields", "value": [{"type": "E", "field": "Origin"}]},
+    {
+      "name": "pts_tuple_fields",
+      "value": [{"type": "E", "field": "Origin", "index": 0}]
+    },
     {
       "name": "pts_toggle",
       "value": false,

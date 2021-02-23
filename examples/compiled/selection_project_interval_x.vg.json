@@ -111,7 +111,7 @@
     },
     {
       "name": "pts_tuple_fields",
-      "value": [{"field": "Cylinders", "channel": "x", "type": "E"}]
+      "value": [{"field": "Cylinders", "channel": "x", "type": "E", "index": 0}]
     },
     {
       "name": "pts_translate_anchor",

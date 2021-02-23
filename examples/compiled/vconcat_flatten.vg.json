@@ -116,7 +116,10 @@
             }
           ]
         },
-        {"name": "pts_tuple_fields", "value": [{"type": "E", "field": "id"}]},
+        {
+          "name": "pts_tuple_fields",
+          "value": [{"type": "E", "field": "id", "index": 0}]
+        },
         {
           "name": "pts_toggle",
           "value": false,

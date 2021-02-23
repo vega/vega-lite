@@ -13,8 +13,8 @@
         {
           "unit": "layer_0",
           "fields": [
-            {"type": "E", "field": "Cylinders"},
-            {"type": "E", "field": "Year"}
+            {"type": "E", "field": "Cylinders", "index": 0},
+            {"type": "E", "field": "Year", "index": 1}
           ],
           "values": [4, 1977]
         }
@@ -82,8 +82,8 @@
     {
       "name": "CylYr_tuple_fields",
       "value": [
-        {"type": "E", "field": "Cylinders"},
-        {"type": "E", "field": "Year"}
+        {"type": "E", "field": "Cylinders", "index": 0},
+        {"type": "E", "field": "Year", "index": 1}
       ]
     },
     {

@@ -166,7 +166,9 @@
         },
         {
           "name": "brush_tuple_fields",
-          "value": [{"field": "seconds_date", "channel": "x", "type": "R"}]
+          "value": [
+            {"field": "seconds_date", "channel": "x", "type": "R", "index": 0}
+          ]
         },
         {
           "name": "brush_translate_anchor",

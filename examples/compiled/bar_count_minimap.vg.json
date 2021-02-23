@@ -219,7 +219,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "value": [{"field": "Name", "channel": "y", "type": "E"}]
+          "value": [{"field": "Name", "channel": "y", "type": "E", "index": 0}]
         },
         {
           "name": "brush_translate_anchor",

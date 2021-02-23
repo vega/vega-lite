@@ -172,7 +172,9 @@
         },
         {
           "name": "brush_tuple_fields",
-          "value": [{"field": "monthdate_date", "channel": "x", "type": "R"}]
+          "value": [
+            {"field": "monthdate_date", "channel": "x", "type": "R", "index": 0}
+          ]
         },
         {
           "name": "brush_translate_anchor",
@@ -448,7 +450,9 @@
         },
         {
           "name": "click_tuple_fields",
-          "value": [{"field": "weather", "channel": "color", "type": "E"}]
+          "value": [
+            {"field": "weather", "channel": "color", "type": "E", "index": 0}
+          ]
         },
         {
           "name": "click_toggle",

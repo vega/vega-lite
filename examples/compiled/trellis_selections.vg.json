@@ -236,7 +236,7 @@
         },
         {
           "name": "brush_tuple_fields",
-          "value": [{"field": "X", "channel": "x", "type": "R"}]
+          "value": [{"field": "X", "channel": "x", "type": "R", "index": 0}]
         },
         {
           "name": "brush_translate_anchor",
@@ -369,8 +369,8 @@
         {
           "name": "grid_tuple_fields",
           "value": [
-            {"field": "X", "channel": "x", "type": "R"},
-            {"field": "Y", "channel": "y", "type": "R"}
+            {"field": "X", "channel": "x", "type": "R", "index": 0},
+            {"field": "Y", "channel": "y", "type": "R", "index": 1}
           ]
         },
         {
@@ -444,7 +444,10 @@
           "name": "xenc_tuple",
           "update": "xenc_X !== null ? {fields: xenc_tuple_fields, values: [xenc_X]} : null"
         },
-        {"name": "xenc_tuple_fields", "value": [{"type": "E", "field": "X"}]},
+        {
+          "name": "xenc_tuple_fields",
+          "value": [{"type": "E", "field": "X", "index": 0}]
+        },
         {
           "name": "xenc_modify",
           "on": [

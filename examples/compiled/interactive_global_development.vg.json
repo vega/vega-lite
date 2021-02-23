@@ -12,7 +12,7 @@
       "values": [
         {
           "unit": "layer_1_layer_1",
-          "fields": [{"type": "E", "field": "year"}],
+          "fields": [{"type": "E", "field": "year", "index": 0}],
           "values": [1955]
         }
       ]
@@ -141,7 +141,10 @@
       "name": "year_tuple",
       "update": "year_year !== null ? {fields: year_tuple_fields, values: [year_year]} : null"
     },
-    {"name": "year_tuple_fields", "value": [{"type": "E", "field": "year"}]},
+    {
+      "name": "year_tuple_fields",
+      "value": [{"type": "E", "field": "year", "index": 0}]
+    },
     {
       "name": "year_modify",
       "on": [
@@ -164,7 +167,7 @@
     },
     {
       "name": "hovered_tuple_fields",
-      "value": [{"type": "E", "field": "country"}]
+      "value": [{"type": "E", "field": "country", "index": 0}]
     },
     {
       "name": "hovered_modify",
@@ -188,7 +191,7 @@
     },
     {
       "name": "clicked_tuple_fields",
-      "value": [{"type": "E", "field": "country"}]
+      "value": [{"type": "E", "field": "country", "index": 0}]
     },
     {
       "name": "clicked_toggle",

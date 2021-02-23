@@ -152,7 +152,9 @@
     },
     {
       "name": "brush_tuple_fields",
-      "value": [{"field": "month_date", "channel": "x", "type": "E"}]
+      "value": [
+        {"field": "month_date", "channel": "x", "type": "E", "index": 0}
+      ]
     },
     {
       "name": "brush_translate_anchor",

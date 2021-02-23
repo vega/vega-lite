@@ -171,8 +171,8 @@
     {
       "name": "brush_tuple_fields",
       "value": [
-        {"field": "Horsepower", "channel": "x", "type": "R"},
-        {"field": "Miles_per_Gallon", "channel": "y", "type": "R"}
+        {"field": "Horsepower", "channel": "x", "type": "R", "index": 0},
+        {"field": "Miles_per_Gallon", "channel": "y", "type": "R", "index": 1}
       ]
     },
     {

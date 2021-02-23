@@ -40,7 +40,10 @@
       "name": "org_tuple",
       "update": "org_Origin !== null ? {fields: org_tuple_fields, values: [org_Origin]} : null"
     },
-    {"name": "org_tuple_fields", "value": [{"type": "E", "field": "Origin"}]},
+    {
+      "name": "org_tuple_fields",
+      "value": [{"type": "E", "field": "Origin", "index": 0}]
+    },
     {
       "name": "org_modify",
       "on": [

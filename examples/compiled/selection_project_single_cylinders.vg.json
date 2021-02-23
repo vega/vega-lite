@@ -44,7 +44,7 @@
     },
     {
       "name": "pts_tuple_fields",
-      "value": [{"type": "E", "field": "Cylinders"}]
+      "value": [{"type": "E", "field": "Cylinders", "index": 0}]
     },
     {
       "name": "pts_modify",
