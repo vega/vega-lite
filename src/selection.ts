@@ -120,34 +120,41 @@ export interface BrushConfig {
    *
    */
   fill?: Color;
+
   /**
    * The fill opacity of the interval mark (a value between `0` and `1`).
    *
    * __Default value:__ `0.125`
    */
   fillOpacity?: number;
+
   /**
    * The stroke color of the interval mark.
    *
    * __Default value:__ `"#ffffff"`
    */
   stroke?: Color;
+
   /**
    * The stroke opacity of the interval mark (a value between `0` and `1`).
    */
   strokeOpacity?: number;
+
   /**
    * The stroke width of the interval mark.
    */
   strokeWidth?: number;
+
   /**
    * An array of alternating stroke and space lengths, for creating dashed or dotted lines.
    */
   strokeDash?: number[];
+
   /**
    * The offset (in pixels) with which to begin drawing the stroke dash array.
    */
   strokeDashOffset?: number;
+
   /**
    * The mouse cursor used over the interval mark. Any valid [CSS cursor type](https://developer.mozilla.org/en-US/docs/Web/CSS/cursor#Values) can be used.
    */
@@ -251,6 +258,7 @@ export type ParameterExtent =
        * The name of a parameter.
        */
       param: ParameterName;
+
       /**
        * If a selection parameter is specified, the field name to extract selected values for
        * when the selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings.
@@ -262,12 +270,17 @@ export type ParameterExtent =
        * The name of a parameter.
        */
       param: ParameterName;
+
       /**
        * If a selection parameter is specified, the encoding channel to extract selected values for
        * when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings.
        */
       encoding?: SingleDefUnitChannel;
     };
+
+export type PointSelectionConfigWithoutType = Omit<PointSelectionConfig, 'type'>;
+
+export type IntervalSelectionConfigWithoutType = Omit<IntervalSelectionConfig, 'type'>;
 
 export interface SelectionConfig {
   /**
@@ -276,7 +289,8 @@ export interface SelectionConfig {
    *
    * For instance, setting `point` to `{"on": "dblclick"}` populates point selections on double-click by default.
    */
-  point?: Omit<PointSelectionConfig, 'type'>;
+  point?: PointSelectionConfigWithoutType;
+
   /**
    * The default definition for an [`interval`](https://vega.github.io/vega-lite/docs/parameter.html#select) selection. All properties and transformations
    * for an interval selection definition (except `type`) may be specified here.
@@ -284,7 +298,7 @@ export interface SelectionConfig {
    * For instance, setting `interval` to `{"translate": false}` disables the ability to move
    * interval selections by default.
    */
-  interval?: Omit<IntervalSelectionConfig, 'type'>;
+  interval?: IntervalSelectionConfigWithoutType;
 }
 
 export const defaultConfig: SelectionConfig = {

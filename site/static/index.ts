@@ -45,7 +45,7 @@ const editorURL = 'https://vega.github.io/editor/';
 selectAll('h2, h3, h4, h5, h6').each(function (this: d3.BaseType) {
   const sel = select(this);
   const name = sel.attr('id');
-  const title = sel.text();
+  const title = sel.html();
   sel.html(`<a href="#${name}" class="anchor"><span class="octicon octicon-link"></span></a>${title.trim()}`);
 });
 
