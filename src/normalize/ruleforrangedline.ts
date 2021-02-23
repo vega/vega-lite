@@ -1,4 +1,4 @@
-import {isObject} from 'vega';
+import {isObject} from 'vega-util';
 import {isBinned} from '../bin';
 import {getMainRangeChannel, SECONDARY_RANGE_CHANNEL} from '../channel';
 import {Field, isDatumDef, isFieldDef} from '../channeldef';
