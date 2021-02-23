@@ -45,6 +45,10 @@ As the name suggests, variable values can be modified dynamically, either by [bi
 
 <div class="vl-example" data-name="bar_params_bound"></div>
 
+{:#expr}
+
+#### Expression
+
 Besides setting the initial `value`, you can also create make a parameter using an expression (`expr`).
 
 {% include table.html props="expr" source="VariableParameter" %}
@@ -55,7 +59,7 @@ For example, here we make the inner bars in a bullet chart depends on the chart 
 
 **Note:** Height is a built-in parameter, as described in the next section.
 
-### Built-In Variable Parameters
+#### Built-In Variable Parameters
 
 A few parameter names are automatically processed and/or reserved:
 
@@ -67,7 +71,7 @@ A few parameter names are automatically processed and/or reserved:
 
 ### Selection Parameters
 
-Selection parameters, on the other hand, define _data queries_ that are driven by direct manipulation user input (e.g., mouse clicks or drags). A parameter becomes a selection when the `select` property is specified. This property identifies the selection _type_ (`point` or `interval`), which determines the default events that trigger a selection and the resultant data query.
+Selection parameters, on the other hand, define _data queries_ that are driven by direct manipulation user input (e.g., mouse clicks or drags). A parameter becomes a selection when the `select` property is specified. This property identifies properties of a selection including its _type_ (`point` or `interval`), which determines the default events that trigger a selection and the resultant data query.
 
 {% include table.html props="select" source="SelectionParameter" %}
 
@@ -75,37 +79,7 @@ For example, try the two types against the example selection (named `pts`) below
 
 <div id="selection_type" class="vl-example" data-name="selection_type_point"></div>
 
-While selection types provide useful defaults, it can often be useful to override these properties to customize the interaction design. To do so, the `select` property can be expanded to an object with the following properties.
-
-{:#selection-props}
-
-#### Common Selection Properties
-
-{:#selection-on}
-
-For both selection types, the `select` object can take the following properties:
-
-{% include table.html props="type,encodings,fields,on,clear,resolve" source="PointSelectionConfig" %}
-
-For instance, with the `on` property, a single rectangle in the heatmap below can now be selected on mouse hover instead.
-
-<div class="vl-example" data-name="selection_type_single_mouseover"></div>
-
-{:#point-props}
-
-#### Point Selection Properties
-
-In addition to all [common selection properties](#selection-props), point selections support the following properties:
-
-{% include table.html props="toggle,nearest" source="PointSelectionConfig" %}
-
-{:#interval-props}
-
-#### Interval Selection Properties
-
-In addition to all [common selection properties](#selection-props), interval selections support the following properties:
-
-{% include table.html props="mark,translate,zoom" source="IntervalSelectionConfig" %}
+While selection types provide useful defaults, you can set `select` to be a [selection definion](selection.html) to override default selection behaviors abd customize the interaction design. See the [selection](selection.html) documentation for more information about the selection definition.
 
 ## Using Parameters
 

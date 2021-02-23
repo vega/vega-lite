@@ -29,26 +29,36 @@ export interface BaseSelectionConfig<T extends SelectionType = SelectionType> {
   type: T;
 
   /**
-   * Clears the selection, emptying it of all values. Can be a
-   * [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable.
+   * Clears the selection, emptying it of all values. This property can be a
+   * [Event Stream](https://vega.github.io/vega/docs/event-streams/) or `false` to disable clear.
    *
    * __Default value:__ `dblclick`.
    *
-   * __See also:__ [`clear`](https://vega.github.io/vega-lite/docs/clear.html) documentation.
+   * __See also:__ [`clear` examples ](https://vega.github.io/vega-lite/docs/selection.html#clear) in the documentation.
    */
   clear?: Stream | string | boolean;
 
   /**
    * A [Vega event stream](https://vega.github.io/vega/docs/event-streams/) (object or selector) that triggers the selection.
    * For interval selections, the event stream must specify a [start and end](https://vega.github.io/vega/docs/event-streams/#between-filters).
+   *
+   * __See also:__ [`on` examples](https://vega.github.io/vega-lite/docs/selection.html#on) in the documentation.
    */
   on?: Stream | string;
+
   /**
    * With layered and multi-view displays, a strategy that determines how
    * selections' data queries are resolved when applied in a filter transform,
    * conditional encoding rule, or scale domain.
    *
-   * __See also:__ [`resolve`](https://vega.github.io/vega-lite/docs/selection-resolve.html) documentation.
+   * One of:
+   * - `"global"` -- only one brush exists for the entire SPLOM. When the user begins to drag, any previous brushes are cleared, and a new one is constructed.
+   * - `"union"` -- each cell contains its own brush, and points are highlighted if they lie within _any_ of these individual brushes.
+   * - `"intersect"` -- each cell contains its own brush, and points are highlighted only if they fall within _all_ of these individual brushes.
+   *
+   * __Default value:__ `global`.
+   *
+   * __See also:__ [`resolve` examples](https://vega.github.io/vega-lite/docs/selection.html#resolve) in the documentation.
    */
   resolve?: SelectionResolution;
 
@@ -60,7 +70,7 @@ export interface BaseSelectionConfig<T extends SelectionType = SelectionType> {
    * An array of encoding channels. The corresponding data field values
    * must match for a data tuple to fall within the selection.
    *
-   * __See also:__ [`encodings`](https://vega.github.io/vega-lite/docs/project.html) documentation.
+   * __See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.
    */
   encodings?: SingleDefUnitChannel[];
 
@@ -68,24 +78,25 @@ export interface BaseSelectionConfig<T extends SelectionType = SelectionType> {
    * An array of field names whose values must match for a data tuple to
    * fall within the selection.
    *
-   * __See also:__ [`fields`](https://vega.github.io/vega-lite/docs/project.html) documentation.
+   * __See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.
    */
   fields?: FieldName[];
 }
 
 export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
   /**
-   * Controls whether data values should be toggled or only ever inserted into
-   * multi selections. Can be `true`, `false` (for insertion only), or a
-   * [Vega expression](https://vega.github.io/vega/docs/expressions/).
+   * Controls whether data values should be toggled (inserted or removed from a point selection)
+   * or only ever inserted into multi selections.
    *
-   * __Default value:__ `true`, which corresponds to `event.shiftKey` (i.e.,
-   * data values are toggled when a user interacts with the shift-key pressed).
-   *
-   * Setting the value to the Vega expression `"true"` will toggle data values
+   * One of:
+   * - `true` -- the default behavior, which corresponds to `"event.shiftKey"`.  As a result, data values are toggled when the user interacts with the shift-key pressed.
+   * - `false` -- disables toggling behaviour; as the user interacts, data values are only inserted into the multi selection and never removed.
+   * - A [Vega expression](https://vega.github.io/vega/docs/expressions/) which is re-evaluated as the user interacts. If the expression evaluates to `true`, the data value is toggled into or out of the multi selection. If the expression evaluates to `false`, the multi selection is first clear, and the data value is then inserted. For example, setting the value to the Vega expression `"true"` will toggle data values
    * without the user pressing the shift-key.
    *
-   * __See also:__ [`toggle`](https://vega.github.io/vega-lite/docs/toggle.html) documentation.
+   * __Default value:__ `true`
+   *
+   * __See also:__ [`toggle` examples](https://vega.github.io/vega-lite/docs/selection.html#toggle) in the documentation.
    */
   toggle?: string | boolean;
 
@@ -93,7 +104,9 @@ export interface PointSelectionConfig extends BaseSelectionConfig<'point'> {
    * When true, an invisible voronoi diagram is computed to accelerate discrete
    * selection. The data value _nearest_ the mouse cursor is added to the selection.
    *
-   * __See also:__ [`nearest`](https://vega.github.io/vega-lite/docs/nearest.html) documentation.
+   * __Default value:__ `false`, which means that data values must be interacted with directly (e.g., clicked on) to be added to the selection.
+   *
+   * __See also:__ [`nearest` examples](https://vega.github.io/vega-lite/docs/selection.html#nearest) documentation.
    */
   nearest?: boolean;
 }
@@ -147,12 +160,12 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'>
    * back-and-forth. Can be `true`, `false` (to disable panning), or a
    * [Vega event stream definition](https://vega.github.io/vega/docs/event-streams/)
    * which must include a start and end event to trigger continuous panning.
+   * Discrete panning (e.g., pressing the left/right arrow keys) will be supported in future versions.
    *
-   * __Default value:__ `true`, which corresponds to
-   * `[mousedown, window:mouseup] > window:mousemove!` which corresponds to
-   * clicks and dragging within an interval selection to reposition it.
+   * __Default value:__ `true`, which corresponds to `[mousedown, window:mouseup] > window:mousemove!`.
+   * This default allows users to clicks and drags within an interval selection to reposition it.
    *
-   * __See also:__ [`translate`](https://vega.github.io/vega-lite/docs/translate.html) documentation.
+   * __See also:__ [`translate` examples](https://vega.github.io/vega-lite/docs/selection.html#translate) in the documentation.
    */
   translate?: string | boolean;
 
@@ -160,11 +173,13 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'>
    * When truthy, allows a user to interactively resize an interval selection.
    * Can be `true`, `false` (to disable zooming), or a [Vega event stream
    * definition](https://vega.github.io/vega/docs/event-streams/). Currently,
-   * only `wheel` events are supported.
+   * only `wheel` events are supported,
+   * but custom event streams can still be used to specify filters, debouncing, and throttling.
+   * Future versions will expand the set of events that can trigger this transformation.
    *
-   * __Default value:__ `true`, which corresponds to `wheel!`.
+   * __Default value:__ `true`, which corresponds to `wheel!`. This default allows users to use the mouse wheel to resize an interval selection.
    *
-   * __See also:__ [`zoom`](https://vega.github.io/vega-lite/docs/zoom.html) documentation.
+   * __See also:__ [`zoom` examples](https://vega.github.io/vega-lite/docs/selection.html#zoom) in the documentation.
    */
   zoom?: string | boolean;
 
@@ -173,7 +188,7 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'>
    * extents of the interval. The `mark` property can be used to customize the
    * appearance of the mark.
    *
-   * __See also:__ [`mark`](https://vega.github.io/vega-lite/docs/selection-mark.html) documentation.
+   * __See also:__ [`mark` examples](https://vega.github.io/vega-lite/docs/selection.html#mark) in the documentation.
    */
   mark?: BrushConfig;
 }
