@@ -321,11 +321,17 @@ SelectionDef:
 SelectionComposition:
   name: 'String | Object'
 PointSelectionConfig:
-  name: Selection
-  link: 'parameter.html#definition'
+  name: PointSelection
+  link: 'selection.html#point'
+PointSelectionConfigWithoutType:
+  name: PointSelection
+  link: 'selection.html#point'
 IntervalSelectionConfig:
-  name: Selection
-  link: 'parameter.html#definition'
+  name: IntervalSelection
+  link: 'selection.html#interval'
+IntervalSelectionConfigWithoutType:
+  name: IntervalSelection
+  link: 'selection.html#interval'
 VariableParameter:
   name: Parameter
   link: 'parameter.html'
