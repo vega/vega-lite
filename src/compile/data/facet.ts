@@ -152,13 +152,13 @@ export class FacetNode extends DataFlowNode {
     crossedDataName: string,
     childIndependentFieldsWithStep: ChildIndependentFieldsWithStep
   ): VgData {
-    const childChannel = {row: 'y', column: 'x'}[channel];
+    const childChannel = {row: 'y', column: 'x', facet: undefined}[channel];
 
     const fields: string[] = [];
     const ops: AggregateOp[] = [];
     const as: string[] = [];
 
-    if (childIndependentFieldsWithStep && childIndependentFieldsWithStep[childChannel]) {
+    if (childChannel && childIndependentFieldsWithStep && childIndependentFieldsWithStep[childChannel]) {
       if (crossedDataName) {
         // If there is a crossed data, calculate max
         fields.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
