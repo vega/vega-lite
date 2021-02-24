@@ -249,7 +249,7 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align x-axis labels for labelAngle and orient signals', () => {
-      return new Promise(done => {
+      return new Promise<void>(done => {
         const ast = parse(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
         let a: number;
         let o: AxisOrient;
@@ -270,7 +270,7 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align y-axis labels for orient signal', () => {
-      return new Promise(done => {
+      return new Promise<void>(done => {
         let a: number;
         let o: AxisOrient;
         // test all angles
@@ -288,7 +288,7 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align x-axis labels for orient signal', () => {
-      return new Promise(done => {
+      return new Promise<void>(done => {
         let a: number;
         let o: AxisOrient;
         // test all angles
@@ -342,7 +342,7 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align y-axis labels for labelAngle and orient signals', () => {
-      return new Promise(done => {
+      return new Promise<void>(done => {
         const ast = parse(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
         let a: number;
         let o: AxisOrient;
@@ -363,7 +363,7 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align x-axis labels for labelAngle and orient signals', () => {
-      return new Promise(done => {
+      return new Promise<void>(done => {
         const ast = parse(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
         let a: number;
         let o: AxisOrient;
@@ -384,7 +384,7 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align y-axis labels for orient signal', () => {
-      return new Promise(done => {
+      return new Promise<void>(done => {
         let a: number;
         let o: AxisOrient;
         // test all angles
@@ -404,7 +404,7 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align x-axis labels for orient signal', () => {
-      return new Promise(done => {
+      return new Promise<void>(done => {
         let a: number;
         let o: AxisOrient;
         // test all angles

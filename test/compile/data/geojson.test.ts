@@ -70,8 +70,10 @@ describe('compile/data/geojson', () => {
       expr: 'isValid(datum["geo"])'
     });
 
-    expect(transforms[1].type).toBe('geojson');
-    expect(transforms[1].geojson).toBe('geo');
+    const geoJSONTransform = transforms[1] as GeoJSONTransform;
+
+    expect(geoJSONTransform.type).toBe('geojson');
+    expect(geoJSONTransform.geojson).toBe('geo');
   });
 
   it('should skip geojson when there is a custom projection', () => {
