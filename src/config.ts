@@ -1,5 +1,15 @@
-import {Color, InitSignal, Locale, NewSignal, RangeConfig, RangeScheme, SignalRef, writeConfig} from 'vega';
-import {isObject, mergeConfig} from 'vega-util';
+import {
+  Color,
+  InitSignal,
+  isObject,
+  Locale,
+  mergeConfig,
+  NewSignal,
+  RangeConfig,
+  RangeScheme,
+  SignalRef,
+  writeConfig
+} from 'vega';
 import {Axis, AxisConfig, AxisConfigMixins, AXIS_CONFIGS, isConditionalAxisValue} from './axis';
 import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common';
 import {CompositeMarkConfigMixins, getAllCompositeMarks} from './compositemark';

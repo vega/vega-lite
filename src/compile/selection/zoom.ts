@@ -1,13 +1,10 @@
-import {NewSignal} from 'vega';
-import {parseSelector} from 'vega-event-selector';
-import {stringValue} from 'vega-util';
-import {SelectionComponent} from '.';
+import {NewSignal, parseSelector, stringValue} from 'vega';
+import {SelectionCompiler, SelectionComponent} from '.';
 import {ScaleChannel, X, Y} from '../../channel';
 import {UnitModel} from '../unit';
 import {BRUSH as INTERVAL_BRUSH} from './interval';
 import {SelectionProjection} from './project';
 import {default as scalesCompiler, domain} from './scales';
-import {SelectionCompiler} from '.';
 
 const ANCHOR = '_zoom_anchor';
 const DELTA = '_zoom_delta';

@@ -3,7 +3,7 @@
  */
 
 import {SignalRef, TitleAnchor, TitleConfig} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {FacetChannel, FACET_CHANNELS} from '../../channel';
 import {vgField} from '../../channeldef';
 import {Config} from '../../config';

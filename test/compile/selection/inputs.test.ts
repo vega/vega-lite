@@ -1,7 +1,7 @@
-import {parseSelector} from 'vega-event-selector';
+import {parseSelector} from 'vega';
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import inputs from '../../../src/compile/selection/inputs';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import * as log from '../../../src/log';
 import {parseUnitModel} from '../../util';
 

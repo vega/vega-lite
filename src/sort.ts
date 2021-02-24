@@ -1,4 +1,4 @@
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {NonArgAggregateOp} from './aggregate';
 import {FieldName} from './channeldef';
 import {DateTime} from './datetime';

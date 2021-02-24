@@ -1,5 +1,5 @@
 import {SignalRef} from 'vega';
-import {hasOwnProperty} from 'vega-util';
+import {hasOwnProperty} from 'vega';
 import {LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {getFieldOrDatumDef} from '../../channeldef';
 import {DataSourceType} from '../../data';

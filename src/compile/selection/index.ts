@@ -1,5 +1,5 @@
 import {Binding, isString, NewSignal, Signal, Stream} from 'vega';
-import {stringValue} from 'vega-util';
+import {stringValue} from 'vega';
 import {FACET_CHANNELS} from '../../channel';
 import {
   BrushConfig,

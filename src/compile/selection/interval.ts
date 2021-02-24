@@ -1,5 +1,5 @@
 import {NewSignal, OnEvent, Stream} from 'vega';
-import {array, stringValue} from 'vega-util';
+import {array, stringValue} from 'vega';
 import {SelectionCompiler, SelectionComponent, STORE, TUPLE, unitName} from '.';
 import {ScaleChannel, X, Y} from '../../channel';
 import {warn} from '../../log';

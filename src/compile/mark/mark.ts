@@ -1,4 +1,4 @@
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef';
 import {DataSourceType} from '../../data';
 import {isAggregate, pathGroupingFields} from '../../encoding';

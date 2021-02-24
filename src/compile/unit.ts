@@ -1,5 +1,5 @@
 import {NewSignal, SignalRef} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {Axis, AxisInternal, isConditionalAxisValue} from '../axis';
 import {
   Channel,

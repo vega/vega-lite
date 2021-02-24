@@ -1,5 +1,5 @@
 import {LookupTransform as VgLookupTransform} from 'vega';
-import {array, isString} from 'vega-util';
+import {array, isString} from 'vega';
 import * as log from '../../log';
 import {isLookupData, isLookupSelection, LookupTransform} from '../../transform';
 import {duplicate, hash, varName} from '../../util';

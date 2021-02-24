@@ -1,5 +1,5 @@
 import {GeoPointTransform as VgGeoPointTransform, Vector2} from 'vega';
-import {isString} from 'vega-util';
+import {isString} from 'vega';
 import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2} from '../../channel';
 import {getFieldOrDatumDef, isDatumDef, isFieldDef, isValueDef} from '../../channeldef';
 import {duplicate, hash} from '../../util';

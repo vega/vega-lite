@@ -1,5 +1,5 @@
 import {Orientation} from 'vega';
-import {isNumber, isObject} from 'vega-util';
+import {isNumber, isObject} from 'vega';
 import {getMarkPropOrConfig} from '../compile/common';
 import {Config} from '../config';
 import {Encoding, extractTransformsFromEncoding, normalizeEncoding} from '../encoding';

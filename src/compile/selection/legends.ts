@@ -1,7 +1,5 @@
-import {isObject, MergedStream, Stream} from 'vega';
-import {parseSelector} from 'vega-event-selector';
-import {array, isString} from 'vega-util';
-import {disableDirectManipulation, TUPLE} from '.';
+import {array, isObject, isString, MergedStream, parseSelector, Stream} from 'vega';
+import {disableDirectManipulation, SelectionCompiler, TUPLE} from '.';
 import {NonPositionScaleChannel} from '../../channel';
 import * as log from '../../log';
 import {isLegendBinding, isLegendStreamBinding, SELECTION_ID} from '../../selection';
@@ -10,7 +8,6 @@ import {LegendComponent} from '../legend/component';
 import {UnitModel} from '../unit';
 import {TUPLE_FIELDS} from './project';
 import {TOGGLE} from './toggle';
-import {SelectionCompiler} from '.';
 
 const legendBindings: SelectionCompiler<'point'> = {
   defined: selCmpt => {

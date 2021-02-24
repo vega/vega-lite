@@ -1,4 +1,4 @@
-import {stringValue} from 'vega-util';
+import {stringValue} from 'vega';
 import {disableDirectManipulation, TUPLE} from '.';
 import {varName} from '../../util';
 import {assembleInit} from './assemble';

@@ -1,5 +1,5 @@
 import {RangeScheme, SignalRef} from 'vega';
-import {isArray, isNumber, isObject} from 'vega-util';
+import {isArray, isNumber, isObject} from 'vega';
 import {isBinning} from '../../bin';
 import {
   ANGLE,

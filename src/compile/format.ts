@@ -1,5 +1,5 @@
 import {SignalRef} from 'vega';
-import {isString} from 'vega-util';
+import {isString} from 'vega';
 import {isBinning} from '../bin';
 import {
   channelDefType,

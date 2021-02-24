@@ -1,4 +1,4 @@
-import {hasOwnProperty, isArray} from 'vega-util';
+import {hasOwnProperty, isArray} from 'vega';
 import {
   ChannelDef,
   DatumDef,

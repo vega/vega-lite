@@ -1,4 +1,4 @@
-import {toSet} from 'vega-util';
+import {toSet} from 'vega';
 import {parseScaleCore, parseScales} from '../../../src/compile/scale/parse';
 import * as log from '../../../src/log';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale';

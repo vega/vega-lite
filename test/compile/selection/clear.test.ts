@@ -1,9 +1,9 @@
-import {parseSelector} from 'vega-event-selector';
+import {parseSelector} from 'vega';
 import {assembleTopLevelSignals} from '../../../src/compile/selection/assemble';
-import interval from '../../../src/compile/selection/interval';
-import point from '../../../src/compile/selection/point';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import clear from '../../../src/compile/selection/clear';
+import interval from '../../../src/compile/selection/interval';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
+import point from '../../../src/compile/selection/point';
 import {parseUnitModel} from '../../util';
 
 describe('Clear selection transform, point types', () => {

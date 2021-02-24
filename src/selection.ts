@@ -1,5 +1,5 @@
 import {Binding, Color, Cursor, Stream, Vector2} from 'vega';
-import {isObject} from 'vega-util';
+import {isObject} from 'vega';
 import {SingleDefUnitChannel} from './channel';
 import {FieldName, PrimitiveValue} from './channeldef';
 import {DateTime} from './datetime';

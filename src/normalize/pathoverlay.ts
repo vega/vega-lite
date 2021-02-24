@@ -1,5 +1,5 @@
 import {SignalRef} from 'vega';
-import {isObject} from 'vega-util';
+import {isObject} from 'vega';
 import {Config} from '../config';
 import {Encoding, normalizeEncoding} from '../encoding';
 import {ExprRef} from '../expr';

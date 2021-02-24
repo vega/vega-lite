@@ -1,4 +1,4 @@
-import {splitAccessPath} from 'vega-util';
+import {splitAccessPath} from 'vega';
 import {FilterNode} from '../src/compile/data/filter';
 import {PivotTransformNode} from '../src/compile/data/pivot';
 import {

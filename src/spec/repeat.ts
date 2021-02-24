@@ -1,4 +1,4 @@
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {LayerSpec, NonNormalizedSpec} from '.';
 import {Field} from '../channeldef';
 import {BaseSpec, GenericCompositionLayoutWithColumns, ResolveMixins} from './base';

@@ -1,5 +1,5 @@
 import {Transforms as VgTransform, Vector2} from 'vega';
-import {isString} from 'vega-util';
+import {isString} from 'vega';
 import {GeoPositionChannel, LATITUDE, LATITUDE2, LONGITUDE, LONGITUDE2, SHAPE} from '../../channel';
 import {getFieldOrDatumDef, isDatumDef, isFieldDef, isValueDef} from '../../channeldef';
 import {GEOJSON} from '../../type';

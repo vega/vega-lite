@@ -1,5 +1,5 @@
 import {LabelOverlap, LegendOrient, LegendType, Orientation, SignalRef, SymbolShape} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {isColorChannel} from '../../channel';
 import {DatumDef, MarkPropFieldOrDatumDef, title as fieldDefTitle, TypedFieldDef, valueArray} from '../../channeldef';
 import {Config} from '../../config';

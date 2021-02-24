@@ -1,5 +1,5 @@
 import {SignalRef} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {ScaleChannel} from '../../channel';
 import {Scale, ScaleType} from '../../scale';
 import {ParameterExtent} from '../../selection';

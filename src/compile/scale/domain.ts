@@ -1,5 +1,5 @@
 import {SignalRef} from 'vega';
-import {isObject, isString} from 'vega-util';
+import {isObject, isString} from 'vega';
 import {
   isAggregateOp,
   isArgmaxDef,

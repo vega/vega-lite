@@ -1,4 +1,4 @@
-import {isString} from 'vega-util';
+import {isString} from 'vega';
 import {LogicalComposition} from '../logical';
 import {fieldFilterExpression, isSelectionPredicate, Predicate} from '../predicate';
 import {logicalExpr} from '../util';

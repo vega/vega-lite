@@ -1,10 +1,8 @@
-import {Signal, SignalRef} from 'vega';
-import {parseSelector} from 'vega-event-selector';
-import {identity, isArray, stringValue} from 'vega-util';
-import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers} from '.';
-import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime';
+import {identity, isArray, parseSelector, Signal, SignalRef, stringValue} from 'vega';
+import {MODIFY, selectionCompilers, STORE, TUPLE, unitName, VL_SELECTION_RESOLVE} from '.';
+import {dateTimeToExpr, dateTimeToTimestamp, isDateTime} from '../../datetime';
 import {hasContinuousDomain} from '../../scale';
-import {SelectionInit, SelectionInitInterval, ParameterExtent} from '../../selection';
+import {ParameterExtent, SelectionInit, SelectionInitInterval} from '../../selection';
 import {keys, stringify, vals} from '../../util';
 import {VgData, VgDomain} from '../../vega.schema';
 import {FacetModel} from '../facet';

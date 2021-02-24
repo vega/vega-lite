@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import {sync as mkdirp} from 'mkdirp';
 import {Page} from 'puppeteer/lib/cjs/puppeteer/common/Page';
 import {promisify} from 'util';
-import {stringValue} from 'vega-util';
+import {stringValue} from 'vega';
 import {SelectionResolution, SelectionType} from '../src/selection';
 import {NormalizedLayerSpec, NormalizedUnitSpec, TopLevelSpec} from '../src/spec';
 

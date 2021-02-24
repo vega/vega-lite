@@ -1,6 +1,6 @@
 // DateTime definition object
 
-import {isNumber, isObject} from 'vega-util';
+import {isNumber, isObject} from 'vega';
 import * as log from './log';
 import {TIMEUNIT_PARTS} from './timeunit';
 import {duplicate, isNumeric, keys} from './util';

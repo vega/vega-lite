@@ -1,5 +1,5 @@
 import {FormulaTransform as VgFormulaTransform, SignalRef} from 'vega';
-import {isNumber, isString} from 'vega-util';
+import {isNumber, isString} from 'vega';
 import {AncestorParse} from '.';
 import {isMinMaxOp} from '../../aggregate';
 import {getMainRangeChannel, SingleDefChannel} from '../../channel';

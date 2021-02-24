@@ -1,10 +1,10 @@
-import {parseSelector} from 'vega-event-selector';
-import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import {keys} from '../../../src/util';
-import {parseUnitModel, parseModelWithScale, parseUnitModelWithScale} from '../../util';
-import project from '../../../src/compile/selection/project';
+import {parseSelector} from 'vega';
 import {assembleRootData} from '../../../src/compile/data/assemble';
 import {optimizeDataflow} from '../../../src/compile/data/optimize';
+import {parseUnitSelection} from '../../../src/compile/selection/parse';
+import project from '../../../src/compile/selection/project';
+import {keys} from '../../../src/util';
+import {parseModelWithScale, parseUnitModel, parseUnitModelWithScale} from '../../util';
 
 describe('Selection', () => {
   const model = parseUnitModel({

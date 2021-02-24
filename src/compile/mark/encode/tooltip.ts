@@ -1,4 +1,4 @@
-import {array, isArray, isObject, isString} from 'vega-util';
+import {array, isArray, isObject, isString} from 'vega';
 import {isBinned} from '../../../bin';
 import {getMainRangeChannel, isXorY, Channel} from '../../../channel';
 import {

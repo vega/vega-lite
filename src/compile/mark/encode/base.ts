@@ -1,4 +1,4 @@
-import {array} from 'vega-util';
+import {array} from 'vega';
 import {Channel, ScaleChannel, SCALE_CHANNELS} from '../../../channel';
 import {isPathMark, MarkDef} from '../../../mark';
 import {hasContinuousDomain} from '../../../scale';

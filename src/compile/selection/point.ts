@@ -1,5 +1,5 @@
 import {Stream} from 'vega';
-import {stringValue} from 'vega-util';
+import {stringValue} from 'vega';
 import {SelectionCompiler, TUPLE, unitName} from '.';
 import {vals} from '../../util';
 import {BRUSH} from './interval';

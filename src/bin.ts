@@ -1,4 +1,4 @@
-import {isBoolean, isObject} from 'vega-util';
+import {isBoolean, isObject} from 'vega';
 import {
   COLOR,
   COLUMN,

@@ -1,5 +1,5 @@
 import {Color, Cursor, SignalRef, Text} from 'vega';
-import {isNumber, isObject} from 'vega-util';
+import {isNumber, isObject} from 'vega';
 import {NormalizedSpec} from '.';
 import {Data} from '../data';
 import {ExprRef} from '../expr';

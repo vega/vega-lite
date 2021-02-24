@@ -1,5 +1,5 @@
 import {SignalRef} from 'vega';
-import {isArray, isNumber} from 'vega-util';
+import {isArray, isNumber} from 'vega';
 import {isBinned, isBinning, isBinParams} from '../../../bin';
 import {
   getSecondaryRangeChannel,
