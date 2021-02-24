@@ -1,10 +1,10 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/cars.json"},
   "hconcat": [{
     "mark": "bar",
     "transform": [{
-      "filter": {"selection": "brush"}
+      "filter": {"param": "brush"}
     }],
     "encoding": {
       "y": {
@@ -22,12 +22,13 @@
   }, {
     "height": 200,
     "width": 50,
-    "selection": {
-      "brush": {
+    "params": [{
+      "name": "brush",
+      "select": {
         "type": "interval",
         "encodings": ["y"]
       }
-    },
+    }],
     "mark": "bar",
     "encoding": {
       "y": {

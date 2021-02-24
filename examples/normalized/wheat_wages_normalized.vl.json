@@ -1,9 +1,8 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 900,
   "height": 400,
   "data": {"url": "data/wheat.json"},
-  "transform": [{"calculate": "+datum.year + 5", "as": "year_end"}],
   "layer": [
     {
       "mark": {"type": "bar", "fill": "#aaa", "stroke": "#999"},
@@ -76,13 +75,6 @@
     },
     {
       "data": {"url": "data/monarchs.json"},
-      "transform": [
-        {
-          "calculate": "((!datum.commonwealth && datum.index % 2) ? -1: 1) * 2 + 95",
-          "as": "offset"
-        },
-        {"calculate": "95", "as": "y"}
-      ],
       "mark": {"type": "bar", "stroke": "#000"},
       "encoding": {
         "y": {"type": "quantitative", "axis": {"zindex": 1}, "field": "y"},
@@ -98,17 +90,17 @@
           "scale": {"range": ["black", "white"]},
           "legend": null
         }
-      }
+      },
+      "transform": [
+        {
+          "calculate": "((!datum.commonwealth && datum.index % 2) ? -1: 1) * 2 + 95",
+          "as": "offset"
+        },
+        {"calculate": "95", "as": "y"}
+      ]
     },
     {
       "data": {"url": "data/monarchs.json"},
-      "transform": [
-        {
-          "calculate": "((!datum.commonwealth && datum.index % 2) ? -1: 1) + 95",
-          "as": "off2"
-        },
-        {"calculate": "+datum.start + (+datum.end - +datum.start)/2", "as": "x"}
-      ],
       "mark": {
         "type": "text",
         "yOffset": 16,
@@ -124,7 +116,14 @@
           "field": "x"
         },
         "text": {"field": "name"}
-      }
+      },
+      "transform": [
+        {
+          "calculate": "((!datum.commonwealth && datum.index % 2) ? -1: 1) + 95",
+          "as": "off2"
+        },
+        {"calculate": "+datum.start + (+datum.end - +datum.start)/2", "as": "x"}
+      ]
     }
   ],
   "config": {
@@ -135,5 +134,6 @@
       "domain": false
     },
     "view": {"stroke": "transparent"}
-  }
+  },
+  "transform": [{"calculate": "+datum.year + 5", "as": "year_end"}]
 }

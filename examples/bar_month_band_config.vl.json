@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/seattle-weather.csv"},
   "mark": "bar",
   "encoding": {
@@ -14,7 +14,7 @@
   },
   "config": {
     "mark": {
-      "timeUnitBand": 0.7
+      "timeUnitBandSize": 0.7
     }
   }
 }

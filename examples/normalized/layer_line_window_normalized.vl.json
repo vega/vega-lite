@@ -1,16 +1,16 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 400,
   "height": 200,
   "layer": [
     {
       "data": {"name": "falcon"},
+      "mark": "line",
       "transform": [
         {"window": [{"op": "row_number", "as": "row"}]},
         {"calculate": "1000/datum.data", "as": "fps"},
         {"calculate": "'Falcon'", "as": "system"}
       ],
-      "mark": "line",
       "encoding": {
         "x": {
           "field": "row",
@@ -36,12 +36,12 @@
     },
     {
       "data": {"name": "square"},
+      "mark": "line",
       "transform": [
         {"window": [{"op": "row_number", "as": "row"}]},
         {"calculate": "1000/datum.data", "as": "fps"},
         {"calculate": "'Square Crossfilter (3M)'", "as": "system"}
       ],
-      "mark": "line",
       "encoding": {
         "x": {
           "field": "row",

@@ -1,0 +1,9 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"values": [28, 55, 28, 91, 81, 55, 19, 81, 52]},
+  "mark": "tick",
+  "encoding": {
+    "y": {"field": "data", "aggregate": "mean"},
+    "tooltip": {"field": "data"}
+  }
+}

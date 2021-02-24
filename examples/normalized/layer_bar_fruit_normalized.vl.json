@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Vega-Lite version of bar chart from https://observablehq.com/@d3/learn-d3-scales.",
   "width": 400,
   "data": {
@@ -34,7 +34,7 @@
         "x": {"field": "count", "type": "quantitative", "title": null},
         "text": {"field": "count", "type": "quantitative"},
         "color": {
-          "condition": {"test": {"field": "count", "gt": 10}, "value": "white"},
+          "condition": {"value": "white", "test": {"field": "count", "gt": 10}},
           "value": "black"
         }
       }

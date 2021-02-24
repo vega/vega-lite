@@ -1,7 +1,7 @@
 ---
 layout: page
 description: "A bar chart with negative values. We can hide the axis domain line, and instead use a conditional grid color to draw a zero baseline."
-title: Bar Chart with negative values and a zero-baseline
+title: Bar Chart with Negative Values and a Zero-Baseline
 menu: examples
 permalink: /examples/bar_negative.html
 image: /examples/bar_negative.png

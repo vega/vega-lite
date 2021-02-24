@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Multi-series line chart with labels and interactive highlight on hover.  We also set the selection's initial value to provide a better screenshot",
   "data": {"url": "data/stocks.csv"},
   "transform": [{"filter": "datum.symbol!=='IBM'"}],
@@ -8,7 +8,7 @@
     "y": {"field": "price", "type": "quantitative", "title": "price"},
     "color": {
       "condition": {
-        "selection": "hover",
+        "param": "hover",
         "field":"symbol",
         "type":"nominal",
         "legend": null
@@ -17,7 +17,7 @@
     },
     "opacity": {
       "condition": {
-        "selection": "hover",
+        "param": "hover",
         "value": 1
       },
       "value": 0.2
@@ -25,15 +25,15 @@
   },
   "layer": [{
     "description": "transparent layer to make it easier to trigger selection",
-    "selection": {
-      "hover": {
-        "type": "single",
-        "on": "mouseover",
-        "empty": "all",
+    "params": [{
+      "name": "hover",
+      "value": [{"symbol": "AAPL"}],
+      "select": {
+        "type": "point",
         "fields": ["symbol"],
-        "init": {"symbol": "AAPL"}
+        "on": "mouseover"
       }
-    },
+    }],
     "mark": {"type": "line", "strokeWidth": 8, "stroke": "transparent"}
   }, {
     "mark": "line"

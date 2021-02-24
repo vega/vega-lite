@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
     "url": "data/flights-2k.json",
     "format": {"parse": {"date": "date"}}
@@ -8,9 +8,10 @@
   "repeat": {"column": ["distance", "delay", "time"]},
   "spec": {
     "layer": [{
-      "selection": {
-        "brush": {"type": "multi", "encodings": ["x"]}
-      },
+      "params": [{
+        "name": "brush",
+        "select": {"type": "point", "encodings": ["x"]}
+      }],
       "mark": "bar",
       "encoding": {
         "x": {
@@ -21,7 +22,7 @@
         "color": {"value": "#ddd"}
       }
     }, {
-      "transform": [{"filter": {"selection": "brush"}}],
+      "transform": [{"filter": {"param": "brush"}}],
       "mark": "bar",
       "encoding": {
         "x": {

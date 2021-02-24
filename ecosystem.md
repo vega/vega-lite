@@ -18,6 +18,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - <span class="octicon octicon-star"></span> [Vega Viewer](https://github.com/RandomFractals/vscode-vega-viewer), a VSCode extension for interactive preview of Vega and Vega-Lite maps and graphs.
 - <span class="octicon octicon-star"></span> [vega-desktop](https://github.com/kristw/vega-desktop), a desktop app that lets you open `.vg.json` and `.vl.json` to see visualizations just like you open image files with an image viewer. This is useful for [creating visualizations with Vega/Vega-Lite locally](https://medium.com/@kristw/create-visualizations-with-vega-on-your-machine-using-your-preferred-editor-529e1be875c0).
 - <span class="octicon octicon-star"></span> [Voyager (2)](https://github.com/vega/voyager), visualization tool for exploratory data analysis that blends a Tableau-style specification interface (formerly [Polestar](https://github.com/vega/polestar)) with chart recommendations (formerly the Voyager visualization browser) and generates Vega-Lite visualizations.
+- <span class="octicon octicon-star"></span>[Bayes](https://bayes.com) - A creative data exploration and storytelling tool. Easily create and publish Vega-Lite visualizations.
 - [data.world Chart Builder](https://data.world/integrations/chart-builder), a chart builder that imports data from queries in data.world. The generated specs can be saved locally or uploaded back to data.world. Project is [open source](https://github.com/datadotworld/chart-builder).
 - [ColorBrewer-Lite](https://github.com/vis-au/colorbrewer), a fork of the ColorBrewer project that allows importing Vega-Lite specifications into the ColorBrewer interface to pick effective color schemes "in situ" for any color encoding.
 - [Emacs Vega View](https://github.com/applied-science/emacs-vega-view), a tool that allows one to view Vega visualizations directly within emacs, currently supporting specs written in JSON, elisp or clojure.
@@ -31,6 +32,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 ## Bindings for Programming Languages
 
 - <span class="octicon octicon-star"></span> [Altair](https://altair-viz.github.io) exposes a Python API for building statistical visualizations that follows Vega-Lite syntax.
+- <span class="octicon octicon-star"></span> [Vega-Lite API](https://github.com/vega/vega-lite-api) is a JavaScript API for creating Vega-Lite JSON specifications.
 - <span class="octicon octicon-star"></span> [Elm-Vega](https://package.elm-lang.org/packages/gicentre/elm-vega/latest) generates Vega-Lite specifications in the pure functional language [Elm](https://elm-lang.org).
 - [Altair wrapper in R](https://vegawidget.github.io/altair/)
 - [ipyvega](https://github.com/vega/ipyvega) supports Vega and Vega-Lite charts in Jupyter Notebooks.
@@ -59,6 +61,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [data.world](https://data.world), upload `.vg.json` and `.vl.json` files along side your raw data, or [embed Vega](https://docs.data.world/tutorials/markdown/#vega-and-vega-lite) directly into comments and summary markdown.
 - [nextjournal](https://nextjournal.com/), scientific computing environment with support for data visualizations including [Vega-Lite](https://nextjournal.com/blog/plotting-with-vega-lite-in-nextjournal)
 - [Liminoid](https://liminoid.io/), toolkit for building interactive analytics applications with Python and WebAssembly. Can pass Python data to JavaScript callbacks which render Vega/Vega-Lite specifications.
+- [Neptune.ai](https://neptune.ai), machine learning experiment tracking tool with Vega-Lite and Altair visualizations.
 
 ## Tools that use Vega-Lite
 
@@ -70,6 +73,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Django Chartflo](https://github.com/synw/django-chartflo), charts for the lazy ones in Django
 - [Vega-Lite for PowerBI](https://github.com/Microsoft/vegalite-for-powerbi/) is an example of a PowerBI custom visual built with Vega-Lite.
 - [Sci-Hub stats browser](https://github.com/greenelab/scihub) provides coverage and usage statistics for Sci-Hub.
+- [github-repo-stats](https://github.com/jgehrcke/github-repo-stats), a GitHub Action for advanced repository traffic analysis and reporting.
 - [Iris](https://hackernoon.com/a-conversational-agent-for-data-science-4ae300cdc220), a conversational agent for data science.
 - [dashcard](https://github.com/scottcame/dashcard): a simple [Bootstrap](https://getbootstrap.com/)-based UI for dynamic dashboarding using Vega-Lite and [Mondrian](https://community.hds.com/docs/DOC-1009853) via a [REST API](https://github.com/ojbc/mondrian-rest).
 - [histbook](https://github.com/diana-hep/histbook), a versatile, high-performance histogram toolkit for Numpy.
@@ -77,6 +81,8 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Lens.org](https://www.lens.org/): Provides free search and analysis for millions of patents and scholarly works. Simplified interface for creating Vega-Lite data visualisations.
 - [DataVoyager.jl](https://github.com/queryverse/DataVoyager.jl), a Julia package that exposes the [Voyager (2)](https://github.com/vega/voyager) UI to the Julia programming language.
 - [ProfileVega.jl](https://github.com/davidanthoff/ProfileVega.jl), a Julia profile visualization tool that uses Vega-Lite.
+- [Voyager clone](https://matyunya-simple-voyager-clone.ellx.app), a basic Voyager clone with step-by-step tutorial made with [Ellx](https://ellx.io).
+- [NL4DV](https://nl4dv.github.io/nl4dv/), a Python toolkit that generates analytic specifications (attributes + tasks + Vega-Lite visualizations) from natural language (NL) queries, helping people prototype NL systems for data visualization.
 
 ## Tools for Embedding Vega-Lite Visualizations
 

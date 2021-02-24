@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "An interactive visualization of connections among major U.S. airports in 2008. Based on a U.S. airports example by Mike Bostock.",
   "layer": [
     {
@@ -18,7 +18,7 @@
       "mark": {"type": "rule", "color": "#000", "opacity": 0.35},
       "data": {"url": "data/flights-airport.csv"},
       "transform": [
-        {"filter": {"selection": "single"}},
+        {"filter": {"param": "org", "empty": false}},
         {
           "lookup": "origin",
           "from": {
@@ -59,15 +59,15 @@
         },
         {"filter": "datum.state !== 'PR' && datum.state !== 'VI'"}
       ],
-      "selection": {
-        "single": {
-          "type": "single",
+      "params": [{
+        "name": "org",
+        "select": {
+          "type": "point",
           "on": "mouseover",
           "nearest": true,
-          "fields": ["origin"],
-          "empty": "none"
+          "fields": ["origin"]
         }
-      },
+      }],
       "encoding": {
         "latitude": {"field": "latitude"},
         "longitude": {"field": "longitude"},

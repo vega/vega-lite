@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/stocks.csv"},
   "width": 400,
   "height": 300,
@@ -12,7 +12,7 @@
       },
       "layer": [
         {"mark": "line"},
-        {"transform": [{"filter": {"selection": "hover"}}], "mark": "point"}
+        {"transform": [{"filter": {"param": "hover", "empty": false}}], "mark": "point"}
       ]
     },
     {
@@ -20,7 +20,7 @@
       "mark": "rule",
       "encoding": {
         "opacity": {
-          "condition": {"value": 0.3, "selection": "hover"},
+          "condition": {"value": 0.3, "param": "hover", "empty": false},
           "value": 0
         },
         "tooltip": [
@@ -31,16 +31,16 @@
           {"field": "MSFT", "type": "quantitative"}
         ]
       },
-      "selection": {
-        "hover": {
-          "type": "single",
+      "params": [{
+        "name": "hover",
+        "select": {
+          "type": "point",
           "fields": ["date"],
           "nearest": true,
           "on": "mouseover",
-          "empty": "none",
           "clear": "mouseout"
         }
-      }
+      }]
     }
   ]
 }

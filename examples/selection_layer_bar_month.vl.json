@@ -1,13 +1,11 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/seattle-weather.csv"},
   "layer": [{
-    "selection": {
-      "brush": {
-        "type": "interval",
-        "encodings": ["x"]
-      }
-    },
+    "params": [{
+      "name": "brush",
+      "select": {"type": "interval", "encodings": ["x"]}
+    }],
     "mark": "bar",
     "encoding": {
       "x": {
@@ -22,14 +20,14 @@
       },
       "opacity": {
         "condition": {
-          "selection": "brush", "value": 1
+          "param": "brush", "value": 1
         },
         "value": 0.7
       }
     }
   }, {
     "transform": [{
-      "filter": {"selection": "brush"}
+      "filter": {"param": "brush"}
     }],
     "mark": "rule",
     "encoding": {

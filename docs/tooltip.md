@@ -54,6 +54,16 @@ To give the fields in the tooltip a label that is different from the field name,
 
 <div class="vl-example" data-name="bar_tooltip_title"></div>
 
+Note that encoding a field without an [aggregate](aggregate.html) as a tooltip means that the field will be used to group aggregates by.
+
+In the example below, adding the tooltip for b means that b becomes part of the fields to group by. Therefore, there is one tick per unique date value.
+
+<div class="vl-example" data-name="bar_tooltip_groupby"></div>
+
+To avoid that the tooltips groups the data, add an aggregate to the tooltip encoding.
+
+<div class="vl-example" data-name="bar_tooltip_aggregate"></div>
+
 ## Disable tooltips
 
 To disable tooltips for a particular single view specification, you can set the `"tooltip"` property of a mark definition block to `null`.

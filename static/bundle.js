@@ -844,15 +844,11 @@
     this._parents = parents;
   }
 
-  function selection() {
-    return new Selection([[document.documentElement]], root);
-  }
-
   function selection_selection() {
     return this;
   }
 
-  Selection.prototype = selection.prototype = {
+  Selection.prototype = {
     constructor: Selection,
     select: selection_select,
     selectAll: selection_selectAll,
@@ -899,21 +895,32 @@
     return typeof selector === "string" ? new Selection([document.querySelectorAll(selector)], [document.documentElement]) : new Selection([selector == null ? [] : array(selector)], root);
   }
 
-  // https://github.com/substack/deep-freeze/blob/master/index.js
-
-  /** @param {any} obj */
   function deepFreeze(obj) {
+    if (obj instanceof Map) {
+      obj.clear = obj.delete = obj.set = function () {
+        throw new Error('map is read-only');
+      };
+    } else if (obj instanceof Set) {
+      obj.add = obj.clear = obj.delete = function () {
+        throw new Error('set is read-only');
+      };
+    } // Freeze self
+
+
     Object.freeze(obj);
-    var objIsFunction = typeof obj === 'function';
-    Object.getOwnPropertyNames(obj).forEach(function (prop) {
-      if (Object.hasOwnProperty.call(obj, prop) && obj[prop] !== null && (typeof obj[prop] === "object" || typeof obj[prop] === "function") // IE11 fix: https://github.com/highlightjs/highlight.js/issues/2318
-      // TODO: remove in the future
-      && (objIsFunction ? prop !== 'caller' && prop !== 'callee' && prop !== 'arguments' : true) && !Object.isFrozen(obj[prop])) {
-        deepFreeze(obj[prop]);
+    Object.getOwnPropertyNames(obj).forEach(function (name) {
+      var prop = obj[name]; // Freeze prop if it is an object
+
+      if (typeof prop == 'object' && !Object.isFrozen(prop)) {
+        deepFreeze(prop);
       }
     });
     return obj;
   }
+
+  var deepFreezeEs6 = deepFreeze;
+  var _default = deepFreeze;
+  deepFreezeEs6.default = _default;
 
   class Response {
     /**
@@ -951,7 +958,7 @@
 
   function inherit(original, ...objects) {
     /** @type Record<string,any> */
-    var result = {};
+    const result = Object.create(null);
 
     for (const key in original) {
       result[key] = original[key];
@@ -967,170 +974,6 @@
       result
     );
   }
-  /* Stream merging */
-
-  /**
-   * @typedef Event
-   * @property {'start'|'stop'} event
-   * @property {number} offset
-   * @property {Node} node
-   */
-
-  /**
-   * @param {Node} node
-   */
-
-
-  function tag(node) {
-    return node.nodeName.toLowerCase();
-  }
-  /**
-   * @param {Node} node
-   */
-
-
-  function nodeStream(node) {
-    /** @type Event[] */
-    var result = [];
-
-    (function _nodeStream(node, offset) {
-      for (var child = node.firstChild; child; child = child.nextSibling) {
-        if (child.nodeType === 3) {
-          offset += child.nodeValue.length;
-        } else if (child.nodeType === 1) {
-          result.push({
-            event: 'start',
-            offset: offset,
-            node: child
-          });
-          offset = _nodeStream(child, offset); // Prevent void elements from having an end tag that would actually
-          // double them in the output. There are more void elements in HTML
-          // but we list only those realistically expected in code display.
-
-          if (!tag(child).match(/br|hr|img|input/)) {
-            result.push({
-              event: 'stop',
-              offset: offset,
-              node: child
-            });
-          }
-        }
-      }
-
-      return offset;
-    })(node, 0);
-
-    return result;
-  }
-  /**
-   * @param {any} original - the original stream
-   * @param {any} highlighted - stream of the highlighted source
-   * @param {string} value - the original source itself
-   */
-
-
-  function mergeStreams(original, highlighted, value) {
-    var processed = 0;
-    var result = '';
-    var nodeStack = [];
-
-    function selectStream() {
-      if (!original.length || !highlighted.length) {
-        return original.length ? original : highlighted;
-      }
-
-      if (original[0].offset !== highlighted[0].offset) {
-        return original[0].offset < highlighted[0].offset ? original : highlighted;
-      }
-      /*
-      To avoid starting the stream just before it should stop the order is
-      ensured that original always starts first and closes last:
-       if (event1 == 'start' && event2 == 'start')
-        return original;
-      if (event1 == 'start' && event2 == 'stop')
-        return highlighted;
-      if (event1 == 'stop' && event2 == 'start')
-        return original;
-      if (event1 == 'stop' && event2 == 'stop')
-        return highlighted;
-       ... which is collapsed to:
-      */
-
-
-      return highlighted[0].event === 'start' ? original : highlighted;
-    }
-    /**
-     * @param {Node} node
-     */
-
-
-    function open(node) {
-      /** @param {Attr} attr */
-      function attr_str(attr) {
-        return ' ' + attr.nodeName + '="' + escapeHTML(attr.value) + '"';
-      } // @ts-ignore
-
-
-      result += '<' + tag(node) + [].map.call(node.attributes, attr_str).join('') + '>';
-    }
-    /**
-     * @param {Node} node
-     */
-
-
-    function close(node) {
-      result += '</' + tag(node) + '>';
-    }
-    /**
-     * @param {Event} event
-     */
-
-
-    function render(event) {
-      (event.event === 'start' ? open : close)(event.node);
-    }
-
-    while (original.length || highlighted.length) {
-      var stream = selectStream();
-      result += escapeHTML(value.substring(processed, stream[0].offset));
-      processed = stream[0].offset;
-
-      if (stream === original) {
-        /*
-        On any opening or closing tag of the original markup we first close
-        the entire highlighted node stack, then render the original tag along
-        with all the following original tags at the same offset and then
-        reopen all the tags on the highlighted stack.
-        */
-        nodeStack.reverse().forEach(close);
-
-        do {
-          render(stream.splice(0, 1)[0]);
-          stream = selectStream();
-        } while (stream === original && stream.length && stream[0].offset === processed);
-
-        nodeStack.reverse().forEach(open);
-      } else {
-        if (stream[0].event === 'start') {
-          nodeStack.push(stream[0].node);
-        } else {
-          nodeStack.pop();
-        }
-
-        render(stream.splice(0, 1)[0]);
-      }
-    }
-
-    return result + escapeHTML(value.substr(processed));
-  }
-
-  var utils = /*#__PURE__*/Object.freeze({
-    __proto__: null,
-    escapeHTML: escapeHTML,
-    inherit: inherit,
-    nodeStream: nodeStream,
-    mergeStreams: mergeStreams
-  });
   /**
    * @typedef {object} Renderer
    * @property {(text: string) => void} addText
@@ -1144,6 +987,7 @@
   /** @typedef {{walk: (r: Renderer) => void}} Tree */
 
   /** */
+
 
   const SPAN_CLOSE = '</span>';
   /**
@@ -1443,6 +1287,19 @@
     return joined;
   }
   /**
+   * Any of the passed expresssions may match
+   *
+   * Creates a huge this | this | that | that match
+   * @param {(RegExp | string)[] } args
+   * @returns {string}
+   */
+
+
+  function either(...args) {
+    const joined = '(' + args.map(x => source(x)).join("|") + ")";
+    return joined;
+  }
+  /**
    * @param {RegExp} re
    * @returns {number}
    */
@@ -1459,7 +1316,7 @@
 
 
   function startsWith(re, lexeme) {
-    var match = re && re.exec(lexeme);
+    const match = re && re.exec(lexeme);
     return match && match.index === 0;
   } // join logically computes regexps.join(separator), but fixes the
   // backreferences so they continue to match.
@@ -1482,14 +1339,14 @@
     //   interesting elements
     // - non-matching or lookahead parentheses, which do not capture. These
     //   follow the '(' with a '?'.
-    var backreferenceRe = /\[(?:[^\\\]]|\\.)*\]|\(\??|\\([1-9][0-9]*)|\\./;
-    var numCaptures = 0;
-    var ret = '';
+    const backreferenceRe = /\[(?:[^\\\]]|\\.)*\]|\(\??|\\([1-9][0-9]*)|\\./;
+    let numCaptures = 0;
+    let ret = '';
 
-    for (var i = 0; i < regexps.length; i++) {
+    for (let i = 0; i < regexps.length; i++) {
       numCaptures += 1;
-      var offset = numCaptures;
-      var re = source(regexps[i]);
+      const offset = numCaptures;
+      let re = source(regexps[i]);
 
       if (i > 0) {
         ret += separator;
@@ -1498,7 +1355,7 @@
       ret += "(";
 
       while (re.length > 0) {
-        var match = backreferenceRe.exec(re);
+        const match = backreferenceRe.exec(re);
 
         if (match == null) {
           ret += re;
@@ -1527,6 +1384,7 @@
   } // Common regexps
 
 
+  const MATCH_NOTHING_RE = /\b\B/;
   const IDENT_RE = '[a-zA-Z]\\w*';
   const UNDERSCORE_IDENT_RE = '[a-zA-Z_]\\w*';
   const NUMBER_RE = '\\b\\d+(\\.\\d+)?';
@@ -1591,7 +1449,7 @@
    */
 
   const COMMENT = function (begin, end, modeOptions = {}) {
-    var mode = inherit({
+    const mode = inherit({
       className: 'comment',
       begin,
       end,
@@ -1689,6 +1547,7 @@
 
   var MODES = /*#__PURE__*/Object.freeze({
     __proto__: null,
+    MATCH_NOTHING_RE: MATCH_NOTHING_RE,
     IDENT_RE: IDENT_RE,
     UNDERSCORE_IDENT_RE: UNDERSCORE_IDENT_RE,
     NUMBER_RE: NUMBER_RE,
@@ -1713,9 +1572,170 @@
     UNDERSCORE_TITLE_MODE: UNDERSCORE_TITLE_MODE,
     METHOD_GUARD: METHOD_GUARD,
     END_SAME_AS_BEGIN: END_SAME_AS_BEGIN
-  }); // keywords that should have no default relevance value
+  }); // Grammar extensions / plugins
+  // See: https://github.com/highlightjs/highlight.js/issues/2833
+  // Grammar extensions allow "syntactic sugar" to be added to the grammar modes
+  // without requiring any underlying changes to the compiler internals.
+  // `compileMatch` being the perfect small example of now allowing a grammar
+  // author to write `match` when they desire to match a single expression rather
+  // than being forced to use `begin`.  The extension then just moves `match` into
+  // `begin` when it runs.  Ie, no features have been added, but we've just made
+  // the experience of writing (and reading grammars) a little bit nicer.
+  // ------
+  // TODO: We need negative look-behind support to do this properly
 
-  var COMMON_KEYWORDS = 'of and for in not or if then'.split(' '); // compilation
+  /**
+   * Skip a match if it has a preceding dot
+   *
+   * This is used for `beginKeywords` to prevent matching expressions such as
+   * `bob.keyword.do()`. The mode compiler automatically wires this up as a
+   * special _internal_ 'on:begin' callback for modes with `beginKeywords`
+   * @param {RegExpMatchArray} match
+   * @param {CallbackResponse} response
+   */
+
+  function skipIfhasPrecedingDot(match, response) {
+    const before = match.input[match.index - 1];
+
+    if (before === ".") {
+      response.ignoreMatch();
+    }
+  }
+  /**
+   * `beginKeywords` syntactic sugar
+   * @type {CompilerExt}
+   */
+
+
+  function beginKeywords(mode, parent) {
+    if (!parent) return;
+    if (!mode.beginKeywords) return; // for languages with keywords that include non-word characters checking for
+    // a word boundary is not sufficient, so instead we check for a word boundary
+    // or whitespace - this does no harm in any case since our keyword engine
+    // doesn't allow spaces in keywords anyways and we still check for the boundary
+    // first
+
+    mode.begin = '\\b(' + mode.beginKeywords.split(' ').join('|') + ')(?!\\.)(?=\\b|\\s)';
+    mode.__beforeBegin = skipIfhasPrecedingDot;
+    mode.keywords = mode.keywords || mode.beginKeywords;
+    delete mode.beginKeywords; // prevents double relevance, the keywords themselves provide
+    // relevance, the mode doesn't need to double it
+    // eslint-disable-next-line no-undefined
+
+    if (mode.relevance === undefined) mode.relevance = 0;
+  }
+  /**
+   * Allow `illegal` to contain an array of illegal values
+   * @type {CompilerExt}
+   */
+
+
+  function compileIllegal(mode, _parent) {
+    if (!Array.isArray(mode.illegal)) return;
+    mode.illegal = either(...mode.illegal);
+  }
+  /**
+   * `match` to match a single expression for readability
+   * @type {CompilerExt}
+   */
+
+
+  function compileMatch(mode, _parent) {
+    if (!mode.match) return;
+    if (mode.begin || mode.end) throw new Error("begin & end are not supported with match");
+    mode.begin = mode.match;
+    delete mode.match;
+  }
+  /**
+   * provides the default 1 relevance to all modes
+   * @type {CompilerExt}
+   */
+
+
+  function compileRelevance(mode, _parent) {
+    // eslint-disable-next-line no-undefined
+    if (mode.relevance === undefined) mode.relevance = 1;
+  } // keywords that should have no default relevance value
+
+
+  const COMMON_KEYWORDS = ['of', 'and', 'for', 'in', 'not', 'or', 'if', 'then', 'parent', // common variable name
+  'list', // common variable name
+  'value' // common variable name
+  ];
+  const DEFAULT_KEYWORD_CLASSNAME = "keyword";
+  /**
+   * Given raw keywords from a language definition, compile them.
+   *
+   * @param {string | Record<string,string|string[]> | Array<string>} rawKeywords
+   * @param {boolean} caseInsensitive
+   */
+
+  function compileKeywords(rawKeywords, caseInsensitive, className = DEFAULT_KEYWORD_CLASSNAME) {
+    /** @type KeywordDict */
+    const compiledKeywords = {}; // input can be a string of keywords, an array of keywords, or a object with
+    // named keys representing className (which can then point to a string or array)
+
+    if (typeof rawKeywords === 'string') {
+      compileList(className, rawKeywords.split(" "));
+    } else if (Array.isArray(rawKeywords)) {
+      compileList(className, rawKeywords);
+    } else {
+      Object.keys(rawKeywords).forEach(function (className) {
+        // collapse all our objects back into the parent object
+        Object.assign(compiledKeywords, compileKeywords(rawKeywords[className], caseInsensitive, className));
+      });
+    }
+
+    return compiledKeywords; // ---
+
+    /**
+     * Compiles an individual list of keywords
+     *
+     * Ex: "for if when while|5"
+     *
+     * @param {string} className
+     * @param {Array<string>} keywordList
+     */
+
+    function compileList(className, keywordList) {
+      if (caseInsensitive) {
+        keywordList = keywordList.map(x => x.toLowerCase());
+      }
+
+      keywordList.forEach(function (keyword) {
+        const pair = keyword.split('|');
+        compiledKeywords[pair[0]] = [className, scoreForKeyword(pair[0], pair[1])];
+      });
+    }
+  }
+  /**
+   * Returns the proper score for a given keyword
+   *
+   * Also takes into account comment keywords, which will be scored 0 UNLESS
+   * another score has been manually assigned.
+   * @param {string} keyword
+   * @param {string} [providedScore]
+   */
+
+
+  function scoreForKeyword(keyword, providedScore) {
+    // manual scores always win over common keywords
+    // so you can force a score of 1 if you really insist
+    if (providedScore) {
+      return Number(providedScore);
+    }
+
+    return commonKeyword(keyword) ? 0 : 1;
+  }
+  /**
+   * Determines if a given keyword is common or not
+   *
+   * @param {string} keyword */
+
+
+  function commonKeyword(keyword) {
+    return COMMON_KEYWORDS.includes(keyword.toLowerCase());
+  } // compilation
 
   /**
    * Compiles a language definition result
@@ -1723,10 +1743,14 @@
    * Given the raw result of a language definition (Language), compiles this so
    * that it is ready for highlighting code.
    * @param {Language} language
+   * @param {{plugins: HLJSPlugin[]}} opts
    * @returns {CompiledLanguage}
    */
 
-  function compileLanguage(language) {
+
+  function compileLanguage(language, {
+    plugins
+  }) {
     /**
      * Builds a regex with the case sensativility of the current language
      *
@@ -1931,8 +1955,8 @@
         type: "begin"
       }));
 
-      if (mode.terminator_end) {
-        mm.addRule(mode.terminator_end, {
+      if (mode.terminatorEnd) {
+        mm.addRule(mode.terminatorEnd, {
           type: "end"
         });
       }
@@ -1944,26 +1968,6 @@
       }
 
       return mm;
-    } // TODO: We need negative look-behind support to do this properly
-
-    /**
-     * Skip a match if it has a preceding or trailing dot
-     *
-     * This is used for `beginKeywords` to prevent matching expressions such as
-     * `bob.keyword.do()`. The mode compiler automatically wires this up as a
-     * special _internal_ 'on:begin' callback for modes with `beginKeywords`
-     * @param {RegExpMatchArray} match
-     * @param {CallbackResponse} response
-     */
-
-
-    function skipIfhasPrecedingOrTrailingDot(match, response) {
-      const before = match.input[match.index - 1];
-      const after = match.input[match.index + match[0].length];
-
-      if (before === "." || after === ".") {
-        response.ignoreMatch();
-      }
     }
     /** skip vs abort vs ignore
      *
@@ -2011,14 +2015,21 @@
       /** @type CompiledMode */
       mode;
       if (mode.compiled) return cmode;
-      mode.compiled = true; // __beforeBegin is considered private API, internal use only
+      [// do this early so compiler extensions generally don't have to worry about
+      // the distinction between match/begin
+      compileMatch].forEach(ext => ext(mode, parent));
+      language.compilerExtensions.forEach(ext => ext(mode, parent)); // __beforeBegin is considered private API, internal use only
 
       mode.__beforeBegin = null;
-      mode.keywords = mode.keywords || mode.beginKeywords;
-      let kw_pattern = null;
+      [beginKeywords, // do this later so compiler extensions that come earlier have access to the
+      // raw array if they wanted to perhaps manipulate it, etc.
+      compileIllegal, // default to 1 relevance if not specified
+      compileRelevance].forEach(ext => ext(mode, parent));
+      mode.compiled = true;
+      let keywordPattern = null;
 
       if (typeof mode.keywords === "object") {
-        kw_pattern = mode.keywords.$pattern;
+        keywordPattern = mode.keywords.$pattern;
         delete mode.keywords.$pattern;
       }
 
@@ -2027,43 +2038,34 @@
       } // both are not allowed
 
 
-      if (mode.lexemes && kw_pattern) {
+      if (mode.lexemes && keywordPattern) {
         throw new Error("ERR: Prefer `keywords.$pattern` to `mode.lexemes`, BOTH are not allowed. (see mode reference) ");
       } // `mode.lexemes` was the old standard before we added and now recommend
       // using `keywords.$pattern` to pass the keyword pattern
 
 
-      cmode.keywordPatternRe = langRe(mode.lexemes || kw_pattern || /\w+/, true);
+      keywordPattern = keywordPattern || mode.lexemes || /\w+/;
+      cmode.keywordPatternRe = langRe(keywordPattern, true);
 
       if (parent) {
-        if (mode.beginKeywords) {
-          // for languages with keywords that include non-word characters checking for
-          // a word boundary is not sufficient, so instead we check for a word boundary
-          // or whitespace - this does no harm in any case since our keyword engine
-          // doesn't allow spaces in keywords anyways and we still check for the boundary
-          // first
-          mode.begin = '\\b(' + mode.beginKeywords.split(' ').join('|') + ')(?=\\b|\\s)';
-          mode.__beforeBegin = skipIfhasPrecedingOrTrailingDot;
-        }
-
         if (!mode.begin) mode.begin = /\B|\b/;
         cmode.beginRe = langRe(mode.begin);
         if (mode.endSameAsBegin) mode.end = mode.begin;
         if (!mode.end && !mode.endsWithParent) mode.end = /\B|\b/;
         if (mode.end) cmode.endRe = langRe(mode.end);
-        cmode.terminator_end = source(mode.end) || '';
+        cmode.terminatorEnd = source(mode.end) || '';
 
-        if (mode.endsWithParent && parent.terminator_end) {
-          cmode.terminator_end += (mode.end ? '|' : '') + parent.terminator_end;
+        if (mode.endsWithParent && parent.terminatorEnd) {
+          cmode.terminatorEnd += (mode.end ? '|' : '') + parent.terminatorEnd;
         }
       }
 
-      if (mode.illegal) cmode.illegalRe = langRe(mode.illegal); // eslint-disable-next-line no-undefined
-
-      if (mode.relevance === undefined) mode.relevance = 1;
+      if (mode.illegal) cmode.illegalRe = langRe(
+      /** @type {RegExp | string} */
+      mode.illegal);
       if (!mode.contains) mode.contains = [];
       mode.contains = [].concat(...mode.contains.map(function (c) {
-        return expand_or_clone_mode(c === 'self' ? mode : c);
+        return expandOrCloneMode(c === 'self' ? mode : c);
       }));
       mode.contains.forEach(function (c) {
         compileMode(
@@ -2077,13 +2079,16 @@
 
       cmode.matcher = buildModeRegex(cmode);
       return cmode;
-    } // self is not valid at the top-level
+    }
 
+    if (!language.compilerExtensions) language.compilerExtensions = []; // self is not valid at the top-level
 
     if (language.contains && language.contains.includes('self')) {
       throw new Error("ERR: contains `self` is not supported at the top-level of a language.  See documentation.");
-    }
+    } // we need a null object, which inherit will guarantee
 
+
+    language.classNameAliases = inherit(language.classNameAliases || {});
     return compileMode(
     /** @type Mode */
     language);
@@ -2117,9 +2122,9 @@
    * */
 
 
-  function expand_or_clone_mode(mode) {
-    if (mode.variants && !mode.cached_variants) {
-      mode.cached_variants = mode.variants.map(function (variant) {
+  function expandOrCloneMode(mode) {
+    if (mode.variants && !mode.cachedVariants) {
+      mode.cachedVariants = mode.variants.map(function (variant) {
         return inherit(mode, {
           variants: null
         }, variant);
@@ -2129,8 +2134,8 @@
     // this happens in compileMode, where this function is called from
 
 
-    if (mode.cached_variants) {
-      return mode.cached_variants;
+    if (mode.cachedVariants) {
+      return mode.cachedVariants;
     } // CLONE
     // if we have dependencies on parents then we need a unique
     // instance of ourselves, so we can be reused with many
@@ -2150,163 +2155,297 @@
 
     return mode;
   }
-  /***********************************************
-    Keywords
-  ***********************************************/
 
-  /**
-   * Given raw keywords from a language definition, compile them.
-   *
-   * @param {string | Record<string,string>} rawKeywords
-   * @param {boolean} case_insensitive
-   */
-
-
-  function compileKeywords(rawKeywords, case_insensitive) {
-    /** @type KeywordDict */
-    var compiled_keywords = {};
-
-    if (typeof rawKeywords === 'string') {
-      // string
-      splitAndCompile('keyword', rawKeywords);
-    } else {
-      Object.keys(rawKeywords).forEach(function (className) {
-        splitAndCompile(className, rawKeywords[className]);
-      });
-    }
-
-    return compiled_keywords; // ---
-
-    /**
-     * Compiles an individual list of keywords
-     *
-     * Ex: "for if when while|5"
-     *
-     * @param {string} className
-     * @param {string} keywordList
-     */
-
-    function splitAndCompile(className, keywordList) {
-      if (case_insensitive) {
-        keywordList = keywordList.toLowerCase();
-      }
-
-      keywordList.split(' ').forEach(function (keyword) {
-        var pair = keyword.split('|');
-        compiled_keywords[pair[0]] = [className, scoreForKeyword(pair[0], pair[1])];
-      });
-    }
-  }
-  /**
-   * Returns the proper score for a given keyword
-   *
-   * Also takes into account comment keywords, which will be scored 0 UNLESS
-   * another score has been manually assigned.
-   * @param {string} keyword
-   * @param {string} [providedScore]
-   */
-
-
-  function scoreForKeyword(keyword, providedScore) {
-    // manual scores always win over common keywords
-    // so you can force a score of 1 if you really insist
-    if (providedScore) {
-      return Number(providedScore);
-    }
-
-    return commonKeyword(keyword) ? 0 : 1;
-  }
-  /**
-   * Determines if a given keyword is common or not
-   *
-   * @param {string} keyword */
-
-
-  function commonKeyword(keyword) {
-    return COMMON_KEYWORDS.includes(keyword.toLowerCase());
-  }
-
-  var version = "10.2.1"; // @ts-nocheck
+  var version = "10.6.0"; // @ts-nocheck
 
   function hasValueOrEmptyAttribute(value) {
     return Boolean(value || value === "");
   }
 
-  const Component = {
-    props: ["language", "code", "autodetect"],
-    data: function () {
-      return {
-        detectedLanguage: "",
-        unknownLanguage: false
-      };
-    },
-    computed: {
-      className() {
-        if (this.unknownLanguage) return "";
-        return "hljs " + this.detectedLanguage;
+  function BuildVuePlugin(hljs) {
+    const Component = {
+      props: ["language", "code", "autodetect"],
+      data: function () {
+        return {
+          detectedLanguage: "",
+          unknownLanguage: false
+        };
       },
+      computed: {
+        className() {
+          if (this.unknownLanguage) return "";
+          return "hljs " + this.detectedLanguage;
+        },
 
-      highlighted() {
-        // no idea what language to use, return raw code
-        if (!this.autoDetect && !hljs.getLanguage(this.language)) {
-          console.warn("The language \"".concat(this.language, "\" you specified could not be found."));
-          this.unknownLanguage = true;
-          return escapeHTML(this.code);
+        highlighted() {
+          // no idea what language to use, return raw code
+          if (!this.autoDetect && !hljs.getLanguage(this.language)) {
+            console.warn("The language \"".concat(this.language, "\" you specified could not be found."));
+            this.unknownLanguage = true;
+            return escapeHTML(this.code);
+          }
+
+          let result = {};
+
+          if (this.autoDetect) {
+            result = hljs.highlightAuto(this.code);
+            this.detectedLanguage = result.language;
+          } else {
+            result = hljs.highlight(this.language, this.code, this.ignoreIllegals);
+            this.detectedLanguage = this.language;
+          }
+
+          return result.value;
+        },
+
+        autoDetect() {
+          return !this.language || hasValueOrEmptyAttribute(this.autodetect);
+        },
+
+        ignoreIllegals() {
+          return true;
         }
 
-        let result;
-
-        if (this.autoDetect) {
-          result = hljs.highlightAuto(this.code);
-          this.detectedLanguage = result.language;
-        } else {
-          result = hljs.highlight(this.language, this.code, this.ignoreIllegals);
-          this.detectectLanguage = this.language;
-        }
-
-        return result.value;
       },
 
-      autoDetect() {
-        return !this.language || hasValueOrEmptyAttribute(this.autodetect);
-      },
+      // this avoids needing to use a whole Vue compilation pipeline just
+      // to build Highlight.js
+      render(createElement) {
+        return createElement("pre", {}, [createElement("code", {
+          class: this.className,
+          domProps: {
+            innerHTML: this.highlighted
+          }
+        })]);
+      } // template: `<pre><code :class="className" v-html="highlighted"></code></pre>`
 
-      ignoreIllegals() {
-        return true;
+
+    };
+    const VuePlugin = {
+      install(Vue) {
+        Vue.component('highlightjs', Component);
       }
 
-    },
+    };
+    return {
+      Component,
+      VuePlugin
+    };
+  }
+  /* plugin itself */
 
-    // this avoids needing to use a whole Vue compilation pipeline just
-    // to build Highlight.js
-    render(createElement) {
-      return createElement("pre", {}, [createElement("code", {
-        class: this.className,
-        domProps: {
-          innerHTML: this.highlighted
-        }
-      })]);
-    } // template: `<pre><code :class="className" v-html="highlighted"></code></pre>`
+  /** @type {HLJSPlugin} */
 
 
+  const mergeHTMLPlugin = {
+    "after:highlightBlock": ({
+      block,
+      result,
+      text
+    }) => {
+      const originalStream = nodeStream(block);
+      if (!originalStream.length) return;
+      const resultNode = document.createElement('div');
+      resultNode.innerHTML = result.value;
+      result.value = mergeStreams(originalStream, nodeStream(resultNode), text);
+    }
   };
-  const VuePlugin = {
-    install(Vue) {
-      Vue.component('highlightjs', Component);
+  /* Stream merging support functions */
+
+  /**
+   * @typedef Event
+   * @property {'start'|'stop'} event
+   * @property {number} offset
+   * @property {Node} node
+   */
+
+  /**
+   * @param {Node} node
+   */
+
+  function tag(node) {
+    return node.nodeName.toLowerCase();
+  }
+  /**
+   * @param {Node} node
+   */
+
+
+  function nodeStream(node) {
+    /** @type Event[] */
+    const result = [];
+
+    (function _nodeStream(node, offset) {
+      for (let child = node.firstChild; child; child = child.nextSibling) {
+        if (child.nodeType === 3) {
+          offset += child.nodeValue.length;
+        } else if (child.nodeType === 1) {
+          result.push({
+            event: 'start',
+            offset: offset,
+            node: child
+          });
+          offset = _nodeStream(child, offset); // Prevent void elements from having an end tag that would actually
+          // double them in the output. There are more void elements in HTML
+          // but we list only those realistically expected in code display.
+
+          if (!tag(child).match(/br|hr|img|input/)) {
+            result.push({
+              event: 'stop',
+              offset: offset,
+              node: child
+            });
+          }
+        }
+      }
+
+      return offset;
+    })(node, 0);
+
+    return result;
+  }
+  /**
+   * @param {any} original - the original stream
+   * @param {any} highlighted - stream of the highlighted source
+   * @param {string} value - the original source itself
+   */
+
+
+  function mergeStreams(original, highlighted, value) {
+    let processed = 0;
+    let result = '';
+    const nodeStack = [];
+
+    function selectStream() {
+      if (!original.length || !highlighted.length) {
+        return original.length ? original : highlighted;
+      }
+
+      if (original[0].offset !== highlighted[0].offset) {
+        return original[0].offset < highlighted[0].offset ? original : highlighted;
+      }
+      /*
+      To avoid starting the stream just before it should stop the order is
+      ensured that original always starts first and closes last:
+       if (event1 == 'start' && event2 == 'start')
+        return original;
+      if (event1 == 'start' && event2 == 'stop')
+        return highlighted;
+      if (event1 == 'stop' && event2 == 'start')
+        return original;
+      if (event1 == 'stop' && event2 == 'stop')
+        return highlighted;
+       ... which is collapsed to:
+      */
+
+
+      return highlighted[0].event === 'start' ? original : highlighted;
+    }
+    /**
+     * @param {Node} node
+     */
+
+
+    function open(node) {
+      /** @param {Attr} attr */
+      function attributeString(attr) {
+        return ' ' + attr.nodeName + '="' + escapeHTML(attr.value) + '"';
+      } // @ts-ignore
+
+
+      result += '<' + tag(node) + [].map.call(node.attributes, attributeString).join('') + '>';
+    }
+    /**
+     * @param {Node} node
+     */
+
+
+    function close(node) {
+      result += '</' + tag(node) + '>';
+    }
+    /**
+     * @param {Event} event
+     */
+
+
+    function render(event) {
+      (event.event === 'start' ? open : close)(event.node);
     }
 
+    while (original.length || highlighted.length) {
+      let stream = selectStream();
+      result += escapeHTML(value.substring(processed, stream[0].offset));
+      processed = stream[0].offset;
+
+      if (stream === original) {
+        /*
+        On any opening or closing tag of the original markup we first close
+        the entire highlighted node stack, then render the original tag along
+        with all the following original tags at the same offset and then
+        reopen all the tags on the highlighted stack.
+        */
+        nodeStack.reverse().forEach(close);
+
+        do {
+          render(stream.splice(0, 1)[0]);
+          stream = selectStream();
+        } while (stream === original && stream.length && stream[0].offset === processed);
+
+        nodeStack.reverse().forEach(open);
+      } else {
+        if (stream[0].event === 'start') {
+          nodeStack.push(stream[0].node);
+        } else {
+          nodeStack.pop();
+        }
+
+        render(stream.splice(0, 1)[0]);
+      }
+    }
+
+    return result + escapeHTML(value.substr(processed));
+  }
+  /*
+
+  For the reasoning behind this please see:
+  https://github.com/highlightjs/highlight.js/issues/2880#issuecomment-747275419
+
+  */
+
+  /**
+   * @param {string} message
+   */
+
+
+  const error = message => {
+    console.error(message);
+  };
+  /**
+   * @param {string} message
+   * @param {any} args
+   */
+
+
+  const warn = (message, ...args) => {
+    console.log("WARN: ".concat(message), ...args);
+  };
+  /**
+   * @param {string} version
+   * @param {string} message
+   */
+
+
+  const deprecated = (version, message) => {
+    console.log("Deprecated as of ".concat(version, ". ").concat(message));
   };
   /*
   Syntax highlighting with language autodetection.
   https://highlightjs.org/
   */
 
+
   const escape$1$1 = escapeHTML;
   const inherit$1 = inherit;
-  const {
-    nodeStream: nodeStream$1,
-    mergeStreams: mergeStreams$1
-  } = utils;
   const NO_MATCH = Symbol("nomatch");
   /**
    * @param {any} hljs - object that is extended (legacy)
@@ -2314,25 +2453,21 @@
    */
 
   const HLJS = function (hljs) {
-    // Convenience variables for build-in objects
-
-    /** @type {unknown[]} */
-    var ArrayProto = []; // Global internal variables used within the highlight.js library.
+    // Global internal variables used within the highlight.js library.
 
     /** @type {Record<string, Language>} */
-
-    var languages = Object.create(null);
+    const languages = Object.create(null);
     /** @type {Record<string, string>} */
 
-    var aliases = Object.create(null);
+    const aliases = Object.create(null);
     /** @type {HLJSPlugin[]} */
 
-    var plugins = []; // safe/production mode - swallows more errors, tries to keep running
+    const plugins = []; // safe/production mode - swallows more errors, tries to keep running
     // even if a single syntax or parse hits a fatal error
 
-    var SAFE_MODE = true;
-    var fixMarkupRe = /(^(<[^>]+>|\t|)+|\n)/gm;
-    var LANGUAGE_NOT_FOUND = "Could not find the language '{}', did you forget to load/include a language module?";
+    let SAFE_MODE = true;
+    const fixMarkupRe = /(^(<[^>]+>|\t|)+|\n)/gm;
+    const LANGUAGE_NOT_FOUND = "Could not find the language '{}', did you forget to load/include a language module?";
     /** @type {Language} */
 
     const PLAINTEXT_LANGUAGE = {
@@ -2344,7 +2479,7 @@
 
     /** @type HLJSOptions */
 
-    var options = {
+    let options = {
       noHighlightRe: /^(no-?highlight)$/i,
       languageDetectRe: /\blang(?:uage)?-([\w-]+)\b/i,
       classPrefix: 'hljs-',
@@ -2371,17 +2506,17 @@
 
 
     function blockLanguage(block) {
-      var classes = block.className + ' ';
+      let classes = block.className + ' ';
       classes += block.parentNode ? block.parentNode.className : ''; // language-* takes precedence over non-prefixed class names.
 
       const match = options.languageDetectRe.exec(classes);
 
       if (match) {
-        var language = getLanguage(match[1]);
+        const language = getLanguage(match[1]);
 
         if (!language) {
-          console.warn(LANGUAGE_NOT_FOUND.replace("{}", match[1]));
-          console.warn("Falling back to no-highlight mode for this block.", block);
+          warn(LANGUAGE_NOT_FOUND.replace("{}", match[1]));
+          warn("Falling back to no-highlight mode for this block.", block);
         }
 
         return language ? match[1] : 'no-highlight';
@@ -2395,21 +2530,21 @@
      * @param {string} languageName - the language to use for highlighting
      * @param {string} code - the code to highlight
      * @param {boolean} [ignoreIllegals] - whether to ignore illegal matches, default is to bail
-     * @param {Mode} [continuation] - current continuation mode, if any
+     * @param {CompiledMode} [continuation] - current continuation mode, if any
      *
      * @returns {HighlightResult} Result - an object that represents the result
      * @property {string} language - the language name
      * @property {number} relevance - the relevance score
      * @property {string} value - the highlighted HTML code
      * @property {string} code - the original raw code
-     * @property {Mode} top - top of the current mode stack
+     * @property {CompiledMode} top - top of the current mode stack
      * @property {boolean} illegal - indicates whether any illegal matches were found
     */
 
 
     function highlight(languageName, code, ignoreIllegals, continuation) {
-      /** @type {{ code: string, language: string, result?: any }} */
-      var context = {
+      /** @type {BeforeHighlightContext} */
+      const context = {
         code,
         language: languageName
       }; // the plugin can change the desired language or the code to be highlighted
@@ -2418,7 +2553,7 @@
       fire("before:highlight", context); // a before plugin can usurp the result completely by providing it's own
       // in which case we don't even need to call highlight
 
-      var result = context.result ? context.result : _highlight(context.language, context.code, ignoreIllegals, continuation);
+      const result = context.result ? context.result : _highlight(context.language, context.code, ignoreIllegals, continuation);
       result.code = context.code; // the plugin can change anything in result to suite it
 
       fire("after:highlight", result);
@@ -2430,12 +2565,13 @@
      * @param {string} languageName - the language to use for highlighting
      * @param {string} code - the code to highlight
      * @param {boolean} [ignoreIllegals] - whether to ignore illegal matches, default is to bail
-     * @param {Mode} [continuation] - current continuation mode, if any
+     * @param {CompiledMode} [continuation] - current continuation mode, if any
+     * @returns {HighlightResult} - result of the highlight operation
     */
 
 
     function _highlight(languageName, code, ignoreIllegals, continuation) {
-      var codeToHighlight = code;
+      const codeToHighlight = code;
       /**
        * Return keyword data if a match is a keyword
        * @param {CompiledMode} mode - current mode
@@ -2444,23 +2580,23 @@
        */
 
       function keywordData(mode, match) {
-        var matchText = language.case_insensitive ? match[0].toLowerCase() : match[0];
+        const matchText = language.case_insensitive ? match[0].toLowerCase() : match[0];
         return Object.prototype.hasOwnProperty.call(mode.keywords, matchText) && mode.keywords[matchText];
       }
 
       function processKeywords() {
         if (!top.keywords) {
-          emitter.addText(mode_buffer);
+          emitter.addText(modeBuffer);
           return;
         }
 
-        let last_index = 0;
+        let lastIndex = 0;
         top.keywordPatternRe.lastIndex = 0;
-        let match = top.keywordPatternRe.exec(mode_buffer);
+        let match = top.keywordPatternRe.exec(modeBuffer);
         let buf = "";
 
         while (match) {
-          buf += mode_buffer.substring(last_index, match.index);
+          buf += modeBuffer.substring(lastIndex, match.index);
           const data = keywordData(top, match);
 
           if (data) {
@@ -2468,35 +2604,38 @@
             emitter.addText(buf);
             buf = "";
             relevance += keywordRelevance;
-            emitter.addKeyword(match[0], kind);
+            const cssClass = language.classNameAliases[kind] || kind;
+            emitter.addKeyword(match[0], cssClass);
           } else {
             buf += match[0];
           }
 
-          last_index = top.keywordPatternRe.lastIndex;
-          match = top.keywordPatternRe.exec(mode_buffer);
+          lastIndex = top.keywordPatternRe.lastIndex;
+          match = top.keywordPatternRe.exec(modeBuffer);
         }
 
-        buf += mode_buffer.substr(last_index);
+        buf += modeBuffer.substr(lastIndex);
         emitter.addText(buf);
       }
 
       function processSubLanguage() {
-        if (mode_buffer === "") return;
+        if (modeBuffer === "") return;
         /** @type HighlightResult */
 
-        var result = null;
+        let result = null;
 
         if (typeof top.subLanguage === 'string') {
           if (!languages[top.subLanguage]) {
-            emitter.addText(mode_buffer);
+            emitter.addText(modeBuffer);
             return;
           }
 
-          result = _highlight(top.subLanguage, mode_buffer, true, continuations[top.subLanguage]);
-          continuations[top.subLanguage] = result.top;
+          result = _highlight(top.subLanguage, modeBuffer, true, continuations[top.subLanguage]);
+          continuations[top.subLanguage] =
+          /** @type {CompiledMode} */
+          result.top;
         } else {
-          result = highlightAuto(mode_buffer, top.subLanguage.length ? top.subLanguage : null);
+          result = highlightAuto(modeBuffer, top.subLanguage.length ? top.subLanguage : null);
         } // Counting embedded language score towards the host language may be disabled
         // with zeroing the containing mode relevance. Use case in point is Markdown that
         // allows XML everywhere and makes every XML snippet to have a much larger Markdown
@@ -2517,7 +2656,7 @@
           processKeywords();
         }
 
-        mode_buffer = '';
+        modeBuffer = '';
       }
       /**
        * @param {Mode} mode - new mode to start
@@ -2526,7 +2665,7 @@
 
       function startNewMode(mode) {
         if (mode.className) {
-          emitter.openNode(mode.className);
+          emitter.openNode(language.classNameAliases[mode.className] || mode.className);
         }
 
         top = Object.create(mode, {
@@ -2580,7 +2719,7 @@
         if (top.matcher.regexIndex === 0) {
           // no more regexs to potentially match here, so we move the cursor forward one
           // space
-          mode_buffer += lexeme[0];
+          modeBuffer += lexeme[0];
           return 1;
         } else {
           // no need to move the cursor, we still have additional regexes to try and
@@ -2598,11 +2737,11 @@
 
 
       function doBeginMatch(match) {
-        var lexeme = match[0];
-        var new_mode = match.rule;
-        const resp = new Response(new_mode); // first internal before callbacks, then the public ones
+        const lexeme = match[0];
+        const newMode = match.rule;
+        const resp = new Response(newMode); // first internal before callbacks, then the public ones
 
-        const beforeCallbacks = [new_mode.__beforeBegin, new_mode["on:begin"]];
+        const beforeCallbacks = [newMode.__beforeBegin, newMode["on:begin"]];
 
         for (const cb of beforeCallbacks) {
           if (!cb) continue;
@@ -2610,30 +2749,30 @@
           if (resp.ignore) return doIgnore(lexeme);
         }
 
-        if (new_mode && new_mode.endSameAsBegin) {
-          new_mode.endRe = escape$1(lexeme);
+        if (newMode && newMode.endSameAsBegin) {
+          newMode.endRe = escape$1(lexeme);
         }
 
-        if (new_mode.skip) {
-          mode_buffer += lexeme;
+        if (newMode.skip) {
+          modeBuffer += lexeme;
         } else {
-          if (new_mode.excludeBegin) {
-            mode_buffer += lexeme;
+          if (newMode.excludeBegin) {
+            modeBuffer += lexeme;
           }
 
           processBuffer();
 
-          if (!new_mode.returnBegin && !new_mode.excludeBegin) {
-            mode_buffer = lexeme;
+          if (!newMode.returnBegin && !newMode.excludeBegin) {
+            modeBuffer = lexeme;
           }
         }
 
-        startNewMode(new_mode); // if (mode["after:begin"]) {
+        startNewMode(newMode); // if (mode["after:begin"]) {
         //   let resp = new Response(mode);
         //   mode["after:begin"](match, resp);
         // }
 
-        return new_mode.returnBegin ? 0 : lexeme.length;
+        return newMode.returnBegin ? 0 : lexeme.length;
       }
       /**
        * Handle the potential end of mode
@@ -2643,27 +2782,27 @@
 
 
       function doEndMatch(match) {
-        var lexeme = match[0];
-        var matchPlusRemainder = codeToHighlight.substr(match.index);
-        var end_mode = endOfMode(top, match, matchPlusRemainder);
+        const lexeme = match[0];
+        const matchPlusRemainder = codeToHighlight.substr(match.index);
+        const endMode = endOfMode(top, match, matchPlusRemainder);
 
-        if (!end_mode) {
+        if (!endMode) {
           return NO_MATCH;
         }
 
-        var origin = top;
+        const origin = top;
 
         if (origin.skip) {
-          mode_buffer += lexeme;
+          modeBuffer += lexeme;
         } else {
           if (!(origin.returnEnd || origin.excludeEnd)) {
-            mode_buffer += lexeme;
+            modeBuffer += lexeme;
           }
 
           processBuffer();
 
           if (origin.excludeEnd) {
-            mode_buffer = lexeme;
+            modeBuffer = lexeme;
           }
         }
 
@@ -2677,23 +2816,23 @@
           }
 
           top = top.parent;
-        } while (top !== end_mode.parent);
+        } while (top !== endMode.parent);
 
-        if (end_mode.starts) {
-          if (end_mode.endSameAsBegin) {
-            end_mode.starts.endRe = end_mode.endRe;
+        if (endMode.starts) {
+          if (endMode.endSameAsBegin) {
+            endMode.starts.endRe = endMode.endRe;
           }
 
-          startNewMode(end_mode.starts);
+          startNewMode(endMode.starts);
         }
 
         return origin.returnEnd ? 0 : lexeme.length;
       }
 
       function processContinuations() {
-        var list = [];
+        const list = [];
 
-        for (var current = top; current !== language; current = current.parent) {
+        for (let current = top; current !== language; current = current.parent) {
           if (current.className) {
             list.unshift(current.className);
           }
@@ -2704,7 +2843,7 @@
       /** @type {{type?: MatchType, index?: number, rule?: Mode}}} */
 
 
-      var lastMatch = {};
+      let lastMatch = {};
       /**
        *  Process an individual match
        *
@@ -2713,9 +2852,9 @@
        */
 
       function processLexeme(textBeforeMatch, match) {
-        var lexeme = match && match[0]; // add non-matched text to the current mode buffer
+        const lexeme = match && match[0]; // add non-matched text to the current mode buffer
 
-        mode_buffer += textBeforeMatch;
+        modeBuffer += textBeforeMatch;
 
         if (lexeme == null) {
           processBuffer();
@@ -2728,7 +2867,7 @@
 
         if (lastMatch.type === "begin" && match.type === "end" && lastMatch.index === match.index && lexeme === "") {
           // spit the "skipped" character that our regex choked on back into the output sequence
-          mode_buffer += codeToHighlight.slice(match.index, match.index + 1);
+          modeBuffer += codeToHighlight.slice(match.index, match.index + 1);
 
           if (!SAFE_MODE) {
             /** @type {AnnotatedError} */
@@ -2753,7 +2892,7 @@
           err.mode = top;
           throw err;
         } else if (match.type === "end") {
-          var processed = doEndMatch(match);
+          const processed = doEndMatch(match);
 
           if (processed !== NO_MATCH) {
             return processed;
@@ -2788,33 +2927,35 @@
         */
 
 
-        mode_buffer += lexeme;
+        modeBuffer += lexeme;
         return lexeme.length;
       }
 
-      var language = getLanguage(languageName);
+      const language = getLanguage(languageName);
 
       if (!language) {
-        console.error(LANGUAGE_NOT_FOUND.replace("{}", languageName));
+        error(LANGUAGE_NOT_FOUND.replace("{}", languageName));
         throw new Error('Unknown language: "' + languageName + '"');
       }
 
-      var md = compileLanguage(language);
-      var result = '';
+      const md = compileLanguage(language, {
+        plugins
+      });
+      let result = '';
       /** @type {CompiledMode} */
 
-      var top = continuation || md;
-      /** @type Record<string,Mode> */
+      let top = continuation || md;
+      /** @type Record<string,CompiledMode> */
 
-      var continuations = {}; // keep continuations for sub-languages
+      const continuations = {}; // keep continuations for sub-languages
 
-      var emitter = new options.__emitter(options);
+      const emitter = new options.__emitter(options);
       processContinuations();
-      var mode_buffer = '';
-      var relevance = 0;
-      var index = 0;
-      var iterations = 0;
-      var resumeScanAtSamePosition = false;
+      let modeBuffer = '';
+      let relevance = 0;
+      let index = 0;
+      let iterations = 0;
+      let resumeScanAtSamePosition = false;
 
       try {
         top.matcher.considerAll();
@@ -2844,7 +2985,9 @@
         emitter.finalize();
         result = emitter.toHTML();
         return {
-          relevance: relevance,
+          // avoid possible breakage with v10 clients expecting
+          // this to always be an integer
+          relevance: Math.floor(relevance),
           value: result,
           language: languageName,
           illegal: false,
@@ -2916,28 +3059,34 @@
 
     function highlightAuto(code, languageSubset) {
       languageSubset = languageSubset || options.languages || Object.keys(languages);
-      var result = justTextHighlightResult(code);
-      var secondBest = result;
-      languageSubset.filter(getLanguage).filter(autoDetection).forEach(function (name) {
-        var current = _highlight(name, code, false);
+      const plaintext = justTextHighlightResult(code);
+      const results = languageSubset.filter(getLanguage).filter(autoDetection).map(name => _highlight(name, code, false));
+      results.unshift(plaintext); // plaintext is always an option
 
-        current.language = name;
+      const sorted = results.sort((a, b) => {
+        // sort base on relevance
+        if (a.relevance !== b.relevance) return b.relevance - a.relevance; // always award the tie to the base language
+        // ie if C++ and Arduino are tied, it's more likely to be C++
 
-        if (current.relevance > secondBest.relevance) {
-          secondBest = current;
-        }
+        if (a.language && b.language) {
+          if (getLanguage(a.language).supersetOf === b.language) {
+            return 1;
+          } else if (getLanguage(b.language).supersetOf === a.language) {
+            return -1;
+          }
+        } // otherwise say they are equal, which has the effect of sorting on
+        // relevance while preserving the original ordering - which is how ties
+        // have historically been settled, ie the language that comes first always
+        // wins in the case of a tie
 
-        if (current.relevance > result.relevance) {
-          secondBest = result;
-          result = current;
-        }
+
+        return 0;
       });
+      const [best, secondBest] = sorted;
+      /** @type {AutoHighlightResult} */
 
-      if (secondBest.language) {
-        // second_best (with underscore) is the expected API
-        result.second_best = secondBest;
-      }
-
+      const result = best;
+      result.second_best = secondBest;
       return result;
     }
     /**
@@ -2967,33 +3116,54 @@
     /**
      * Builds new class name for block given the language name
      *
-     * @param {string} prevClassName
+     * @param {HTMLElement} element
      * @param {string} [currentLang]
      * @param {string} [resultLang]
      */
 
 
-    function buildClassName(prevClassName, currentLang, resultLang) {
-      var language = currentLang ? aliases[currentLang] : resultLang;
-      var result = [prevClassName.trim()];
-
-      if (!prevClassName.match(/\bhljs\b/)) {
-        result.push('hljs');
-      }
-
-      if (!prevClassName.includes(language)) {
-        result.push(language);
-      }
-
-      return result.join(' ').trim();
+    function updateClassName(element, currentLang, resultLang) {
+      const language = currentLang ? aliases[currentLang] : resultLang;
+      element.classList.add("hljs");
+      if (language) element.classList.add(language);
     }
+    /** @type {HLJSPlugin} */
+
+
+    const brPlugin = {
+      "before:highlightBlock": ({
+        block
+      }) => {
+        if (options.useBR) {
+          block.innerHTML = block.innerHTML.replace(/\n/g, '').replace(/<br[ /]*>/g, '\n');
+        }
+      },
+      "after:highlightBlock": ({
+        result
+      }) => {
+        if (options.useBR) {
+          result.value = result.value.replace(/\n/g, "<br>");
+        }
+      }
+    };
+    const TAB_REPLACE_RE = /^(<[^>]+>|\t)+/gm;
+    /** @type {HLJSPlugin} */
+
+    const tabReplacePlugin = {
+      "after:highlightBlock": ({
+        result
+      }) => {
+        if (options.tabReplace) {
+          result.value = result.value.replace(TAB_REPLACE_RE, m => m.replace(/\t/g, options.tabReplace));
+        }
+      }
+    };
     /**
      * Applies highlighting to a DOM node containing code. Accepts a DOM node and
      * two optional parameters for fixMarkup.
      *
      * @param {HighlightedHTMLElement} element - the HTML element to highlight
     */
-
 
     function highlightBlock(element) {
       /** @type HTMLElement */
@@ -3004,31 +3174,16 @@
         block: element,
         language: language
       });
-
-      if (options.useBR) {
-        node = document.createElement('div');
-        node.innerHTML = element.innerHTML.replace(/\n/g, '').replace(/<br[ /]*>/g, '\n');
-      } else {
-        node = element;
-      }
-
+      node = element;
       const text = node.textContent;
       const result = language ? highlight(language, text, true) : highlightAuto(text);
-      const originalStream = nodeStream$1(node);
-
-      if (originalStream.length) {
-        const resultNode = document.createElement('div');
-        resultNode.innerHTML = result.value;
-        result.value = mergeStreams$1(originalStream, nodeStream$1(resultNode), text);
-      }
-
-      result.value = fixMarkup(result.value);
       fire("after:highlightBlock", {
         block: element,
-        result: result
+        result,
+        text
       });
       element.innerHTML = result.value;
-      element.className = buildClassName(element.className, language, result.language);
+      updateClassName(element, language, result.language);
       element.result = {
         language: result.language,
         // TODO: remove with version 11.0
@@ -3048,11 +3203,16 @@
     /**
      * Updates highlight.js global options with the passed options
      *
-     * @param {{}} userOptions
+     * @param {Partial<HLJSOptions>} userOptions
      */
 
 
     function configure(userOptions) {
+      if (userOptions.useBR) {
+        deprecated("10.3.0", "'useBR' will be removed entirely in v11.0");
+        deprecated("10.3.0", "Please see https://github.com/highlightjs/highlight.js/issues/2559");
+      }
+
       options = inherit$1(options, userOptions);
     }
     /**
@@ -3060,19 +3220,50 @@
      *
      * @type {Function & {called?: boolean}}
      */
+    // TODO: remove v12, deprecated
 
 
     const initHighlighting = () => {
       if (initHighlighting.called) return;
       initHighlighting.called = true;
-      var blocks = document.querySelectorAll('pre code');
-      ArrayProto.forEach.call(blocks, highlightBlock);
+      deprecated("10.6.0", "initHighlighting() is deprecated.  Use highlightAll() instead.");
+      const blocks = document.querySelectorAll('pre code');
+      blocks.forEach(highlightBlock);
     }; // Higlights all when DOMContentLoaded fires
+    // TODO: remove v12, deprecated
 
 
     function initHighlightingOnLoad() {
-      // @ts-ignore
-      window.addEventListener('DOMContentLoaded', initHighlighting, false);
+      deprecated("10.6.0", "initHighlightingOnLoad() is deprecated.  Use highlightAll() instead.");
+      wantsHighlight = true;
+    }
+
+    let wantsHighlight = false;
+    let domLoaded = false;
+    /**
+     * auto-highlights all pre>code elements on the page
+     */
+
+    function highlightAll() {
+      // if we are called too early in the loading process
+      if (!domLoaded) {
+        wantsHighlight = true;
+        return;
+      }
+
+      const blocks = document.querySelectorAll('pre code');
+      blocks.forEach(highlightBlock);
+    }
+
+    function boot() {
+      domLoaded = true; // if a highlight was requested before DOM was loaded, do now
+
+      if (wantsHighlight) highlightAll();
+    } // make sure we are in the browser environment
+
+
+    if (typeof window !== 'undefined' && window.addEventListener) {
+      window.addEventListener('DOMContentLoaded', boot, false);
     }
     /**
      * Register a language grammar module
@@ -3083,17 +3274,17 @@
 
 
     function registerLanguage(languageName, languageDefinition) {
-      var lang = null;
+      let lang = null;
 
       try {
         lang = languageDefinition(hljs);
-      } catch (error) {
-        console.error("Language definition for '{}' could not be registered.".replace("{}", languageName)); // hard or soft error
+      } catch (error$1) {
+        error("Language definition for '{}' could not be registered.".replace("{}", languageName)); // hard or soft error
 
         if (!SAFE_MODE) {
-          throw error;
+          throw error$1;
         } else {
-          console.error(error);
+          error(error$1);
         } // languages that have serious errors are replaced with essentially a
         // "plaintext" stand-in so that the code blocks will still get normal
         // css classes applied to them - and one bad language won't break the
@@ -3132,13 +3323,15 @@
 
 
     function requireLanguage(name) {
-      var lang = getLanguage(name);
+      deprecated("10.4.0", "requireLanguage will be removed entirely in v11.");
+      deprecated("10.4.0", "Please see https://github.com/highlightjs/highlight.js/pull/2844");
+      const lang = getLanguage(name);
 
       if (lang) {
         return lang;
       }
 
-      var err = new Error('The \'{}\' language is required, but not loaded.'.replace('{}', name));
+      const err = new Error('The \'{}\' language is required, but not loaded.'.replace('{}', name));
       throw err;
     }
     /**
@@ -3176,7 +3369,7 @@
 
 
     function autoDetection(name) {
-      var lang = getLanguage(name);
+      const lang = getLanguage(name);
       return lang && !lang.disableAutodetect;
     }
     /**
@@ -3195,19 +3388,23 @@
 
 
     function fire(event, args) {
-      var cb = event;
+      const cb = event;
       plugins.forEach(function (plugin) {
         if (plugin[cb]) {
           plugin[cb](args);
         }
       });
     }
-    /* fixMarkup is deprecated and will be removed entirely in v11 */
+    /**
+    Note: fixMarkup is deprecated and will be removed entirely in v11
+     @param {string} arg
+    @returns {string}
+    */
 
 
-    function deprecate_fixMarkup(arg) {
-      console.warn("fixMarkup is deprecated and will be removed entirely in v11.0");
-      console.warn("Please see https://github.com/highlightjs/highlight.js/issues/2534");
+    function deprecateFixMarkup(arg) {
+      deprecated("10.2.0", "fixMarkup will be removed entirely in v11.0");
+      deprecated("10.2.0", "Please see https://github.com/highlightjs/highlight.js/issues/2534");
       return fixMarkup(arg);
     }
     /* Interface definition */
@@ -3216,7 +3413,8 @@
     Object.assign(hljs, {
       highlight,
       highlightAuto,
-      fixMarkup: deprecate_fixMarkup,
+      highlightAll,
+      fixMarkup: deprecateFixMarkup,
       highlightBlock,
       configure,
       initHighlighting,
@@ -3230,7 +3428,7 @@
       inherit: inherit$1,
       addPlugin,
       // plugins for frameworks
-      vuePlugin: VuePlugin
+      vuePlugin: BuildVuePlugin(hljs).VuePlugin
     });
 
     hljs.debugMode = function () {
@@ -3247,12 +3445,17 @@
       // @ts-ignore
       if (typeof MODES[key] === "object") {
         // @ts-ignore
-        deepFreeze(MODES[key]);
+        deepFreezeEs6(MODES[key]);
       }
     } // merge all the modes/regexs into our main object
 
 
-    Object.assign(hljs, MODES);
+    Object.assign(hljs, MODES); // built-in plugins, likely to be moved out of core in the future
+
+    hljs.addPlugin(brPlugin); // slated to be removed in v11
+
+    hljs.addPlugin(mergeHTMLPlugin);
+    hljs.addPlugin(tabReplacePlugin);
     return hljs;
   }; // export an "instance" of the highlighter
 
@@ -3260,195 +3463,51 @@
   var highlight = HLJS({});
   var core = highlight;
 
-  /*
-  Language: CSS
-  Category: common, css
-  Website: https://developer.mozilla.org/en-US/docs/Web/CSS
-  */
-
-  /** @type LanguageFn */
-  function css(hljs) {
-    var FUNCTION_LIKE = {
-      begin: /[\w-]+\(/,
-      returnBegin: true,
-      contains: [{
-        className: 'built_in',
-        begin: /[\w-]+/
-      }, {
-        begin: /\(/,
-        end: /\)/,
-        contains: [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, hljs.CSS_NUMBER_MODE]
-      }]
-    };
-    var ATTRIBUTE = {
-      className: 'attribute',
-      begin: /\S/,
-      end: ':',
-      excludeEnd: true,
-      starts: {
-        endsWithParent: true,
-        excludeEnd: true,
-        contains: [FUNCTION_LIKE, hljs.CSS_NUMBER_MODE, hljs.QUOTE_STRING_MODE, hljs.APOS_STRING_MODE, hljs.C_BLOCK_COMMENT_MODE, {
-          className: 'number',
-          begin: '#[0-9A-Fa-f]+'
-        }, {
-          className: 'meta',
-          begin: '!important'
-        }]
-      }
-    };
-    var AT_IDENTIFIER = '@[a-z-]+'; // @font-face
-
-    var AT_MODIFIERS = "and or not only";
-    var AT_PROPERTY_RE = /@\-?\w[\w]*(\-\w+)*/; // @-webkit-keyframes
-
-    var IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
-    var RULE = {
-      begin: /(?:[A-Z\_\.\-]+|--[a-zA-Z0-9_-]+)\s*:/,
-      returnBegin: true,
-      end: ';',
-      endsWithParent: true,
-      contains: [ATTRIBUTE]
-    };
+  const MODES$1 = hljs => {
     return {
-      name: 'CSS',
-      case_insensitive: true,
-      illegal: /[=\/|'\$]/,
-      contains: [hljs.C_BLOCK_COMMENT_MODE, {
-        className: 'selector-id',
-        begin: /#[A-Za-z0-9_-]+/
-      }, {
-        className: 'selector-class',
-        begin: /\.[A-Za-z0-9_-]+/
-      }, {
+      IMPORTANT: {
+        className: 'meta',
+        begin: '!important'
+      },
+      HEXCOLOR: {
+        className: 'number',
+        begin: '#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})'
+      },
+      ATTRIBUTE_SELECTOR_MODE: {
         className: 'selector-attr',
         begin: /\[/,
         end: /\]/,
         illegal: '$',
         contains: [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE]
-      }, {
-        className: 'selector-pseudo',
-        begin: /:(:)?[a-zA-Z0-9\_\-\+\(\)"'.]+/
-      }, // matching these here allows us to treat them more like regular CSS
-      // rules so everything between the {} gets regular rule highlighting,
-      // which is what we want for page and font-face
-      {
-        begin: '@(page|font-face)',
-        lexemes: AT_IDENTIFIER,
-        keywords: '@page @font-face'
-      }, {
-        begin: '@',
-        end: '[{;]',
-        // at_rule eating first "{" is a good thing
-        // because it doesn’t let it to be parsed as
-        // a rule set but instead drops parser into
-        // the default mode which is how it should be.
-        illegal: /:/,
-        // break on Less variables @var: ...
-        returnBegin: true,
-        contains: [{
-          className: 'keyword',
-          begin: AT_PROPERTY_RE
-        }, {
-          begin: /\s/,
-          endsWithParent: true,
-          excludeEnd: true,
-          relevance: 0,
-          keywords: AT_MODIFIERS,
-          contains: [{
-            begin: /[a-z-]+:/,
-            className: "attribute"
-          }, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, hljs.CSS_NUMBER_MODE]
-        }]
-      }, {
-        className: 'selector-tag',
-        begin: IDENT_RE,
-        relevance: 0
-      }, {
-        begin: '{',
-        end: '}',
-        illegal: /\S/,
-        contains: [hljs.C_BLOCK_COMMENT_MODE, RULE]
-      }]
+      }
     };
-  }
+  };
 
-  var css_1 = css;
+  const TAGS = ['a', 'abbr', 'address', 'article', 'aside', 'audio', 'b', 'blockquote', 'body', 'button', 'canvas', 'caption', 'cite', 'code', 'dd', 'del', 'details', 'dfn', 'div', 'dl', 'dt', 'em', 'fieldset', 'figcaption', 'figure', 'footer', 'form', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header', 'hgroup', 'html', 'i', 'iframe', 'img', 'input', 'ins', 'kbd', 'label', 'legend', 'li', 'main', 'mark', 'menu', 'nav', 'object', 'ol', 'p', 'q', 'quote', 'samp', 'section', 'span', 'strong', 'summary', 'sup', 'table', 'tbody', 'td', 'textarea', 'tfoot', 'th', 'thead', 'time', 'tr', 'ul', 'var', 'video'];
+  const MEDIA_FEATURES = ['any-hover', 'any-pointer', 'aspect-ratio', 'color', 'color-gamut', 'color-index', 'device-aspect-ratio', 'device-height', 'device-width', 'display-mode', 'forced-colors', 'grid', 'height', 'hover', 'inverted-colors', 'monochrome', 'orientation', 'overflow-block', 'overflow-inline', 'pointer', 'prefers-color-scheme', 'prefers-contrast', 'prefers-reduced-motion', 'prefers-reduced-transparency', 'resolution', 'scan', 'scripting', 'update', 'width', // TODO: find a better solution?
+  'min-width', 'max-width', 'min-height', 'max-height']; // https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-classes
 
-  /*
-  Language: Diff
-  Description: Unified and context diff
-  Author: Vasily Polovnyov <vast@whiteants.net>
-  Website: https://www.gnu.org/software/diffutils/
-  Category: common
-  */
+  const PSEUDO_CLASSES = ['active', 'any-link', 'blank', 'checked', 'current', 'default', 'defined', 'dir', // dir()
+  'disabled', 'drop', 'empty', 'enabled', 'first', 'first-child', 'first-of-type', 'fullscreen', 'future', 'focus', 'focus-visible', 'focus-within', 'has', // has()
+  'host', // host or host()
+  'host-context', // host-context()
+  'hover', 'indeterminate', 'in-range', 'invalid', 'is', // is()
+  'lang', // lang()
+  'last-child', 'last-of-type', 'left', 'link', 'local-link', 'not', // not()
+  'nth-child', // nth-child()
+  'nth-col', // nth-col()
+  'nth-last-child', // nth-last-child()
+  'nth-last-col', // nth-last-col()
+  'nth-last-of-type', //nth-last-of-type()
+  'nth-of-type', //nth-of-type()
+  'only-child', 'only-of-type', 'optional', 'out-of-range', 'past', 'placeholder-shown', 'read-only', 'read-write', 'required', 'right', 'root', 'scope', 'target', 'target-within', 'user-invalid', 'valid', 'visited', 'where' // where()
+  ]; // https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements
 
-  /** @type LanguageFn */
-  function diff(hljs) {
-    return {
-      name: 'Diff',
-      aliases: ['patch'],
-      contains: [{
-        className: 'meta',
-        relevance: 10,
-        variants: [{
-          begin: /^@@ +\-\d+,\d+ +\+\d+,\d+ +@@$/
-        }, {
-          begin: /^\*\*\* +\d+,\d+ +\*\*\*\*$/
-        }, {
-          begin: /^\-\-\- +\d+,\d+ +\-\-\-\-$/
-        }]
-      }, {
-        className: 'comment',
-        variants: [{
-          begin: /Index: /,
-          end: /$/
-        }, {
-          begin: /={3,}/,
-          end: /$/
-        }, {
-          begin: /^\-{3}/,
-          end: /$/
-        }, {
-          begin: /^\*{3} /,
-          end: /$/
-        }, {
-          begin: /^\+{3}/,
-          end: /$/
-        }, {
-          begin: /^\*{15}$/
-        }]
-      }, {
-        className: 'addition',
-        begin: '^\\+',
-        end: '$'
-      }, {
-        className: 'deletion',
-        begin: '^\\-',
-        end: '$'
-      }, {
-        className: 'addition',
-        begin: '^\\!',
-        end: '$'
-      }]
-    };
-  }
-
-  var diff_1 = diff;
-
-  const IDENT_RE$1 = '[A-Za-z$_][0-9A-Za-z$_]*';
-  const KEYWORDS = ["as", // for exports
-  "in", "of", "if", "for", "while", "finally", "var", "new", "function", "do", "return", "void", "else", "break", "catch", "instanceof", "with", "throw", "case", "default", "try", "switch", "continue", "typeof", "delete", "let", "yield", "const", "class", // JS handles these with a special rule
-  // "get",
-  // "set",
-  "debugger", "async", "await", "static", "import", "from", "export", "extends"];
-  const LITERALS = ["true", "false", "null", "undefined", "NaN", "Infinity"];
-  const TYPES = ["Intl", "DataView", "Number", "Math", "Date", "String", "RegExp", "Object", "Function", "Boolean", "Error", "Symbol", "Set", "Map", "WeakSet", "WeakMap", "Proxy", "Reflect", "JSON", "Promise", "Float64Array", "Int16Array", "Int32Array", "Int8Array", "Uint16Array", "Uint32Array", "Float32Array", "Array", "Uint8Array", "Uint8ClampedArray", "ArrayBuffer"];
-  const ERROR_TYPES = ["EvalError", "InternalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError"];
-  const BUILT_IN_GLOBALS = ["setInterval", "setTimeout", "clearInterval", "clearTimeout", "require", "exports", "eval", "isFinite", "isNaN", "parseFloat", "parseInt", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "escape", "unescape"];
-  const BUILT_IN_VARIABLES = ["arguments", "this", "super", "console", "window", "document", "localStorage", "module", "global" // Node.js
-  ];
-  const BUILT_INS = [].concat(BUILT_IN_GLOBALS, BUILT_IN_VARIABLES, TYPES, ERROR_TYPES);
+  const PSEUDO_ELEMENTS = ['after', 'backdrop', 'before', 'cue', 'cue-region', 'first-letter', 'first-line', 'grammar-error', 'marker', 'part', 'placeholder', 'selection', 'slotted', 'spelling-error'];
+  const ATTRIBUTES = ['align-content', 'align-items', 'align-self', 'animation', 'animation-delay', 'animation-direction', 'animation-duration', 'animation-fill-mode', 'animation-iteration-count', 'animation-name', 'animation-play-state', 'animation-timing-function', 'auto', 'backface-visibility', 'background', 'background-attachment', 'background-clip', 'background-color', 'background-image', 'background-origin', 'background-position', 'background-repeat', 'background-size', 'border', 'border-bottom', 'border-bottom-color', 'border-bottom-left-radius', 'border-bottom-right-radius', 'border-bottom-style', 'border-bottom-width', 'border-collapse', 'border-color', 'border-image', 'border-image-outset', 'border-image-repeat', 'border-image-slice', 'border-image-source', 'border-image-width', 'border-left', 'border-left-color', 'border-left-style', 'border-left-width', 'border-radius', 'border-right', 'border-right-color', 'border-right-style', 'border-right-width', 'border-spacing', 'border-style', 'border-top', 'border-top-color', 'border-top-left-radius', 'border-top-right-radius', 'border-top-style', 'border-top-width', 'border-width', 'bottom', 'box-decoration-break', 'box-shadow', 'box-sizing', 'break-after', 'break-before', 'break-inside', 'caption-side', 'clear', 'clip', 'clip-path', 'color', 'column-count', 'column-fill', 'column-gap', 'column-rule', 'column-rule-color', 'column-rule-style', 'column-rule-width', 'column-span', 'column-width', 'columns', 'content', 'counter-increment', 'counter-reset', 'cursor', 'direction', 'display', 'empty-cells', 'filter', 'flex', 'flex-basis', 'flex-direction', 'flex-flow', 'flex-grow', 'flex-shrink', 'flex-wrap', 'float', 'font', 'font-display', 'font-family', 'font-feature-settings', 'font-kerning', 'font-language-override', 'font-size', 'font-size-adjust', 'font-stretch', 'font-style', 'font-variant', 'font-variant-ligatures', 'font-variation-settings', 'font-weight', 'height', 'hyphens', 'icon', 'image-orientation', 'image-rendering', 'image-resolution', 'ime-mode', 'inherit', 'initial', 'justify-content', 'left', 'letter-spacing', 'line-height', 'list-style', 'list-style-image', 'list-style-position', 'list-style-type', 'margin', 'margin-bottom', 'margin-left', 'margin-right', 'margin-top', 'marks', 'mask', 'max-height', 'max-width', 'min-height', 'min-width', 'nav-down', 'nav-index', 'nav-left', 'nav-right', 'nav-up', 'none', 'normal', 'object-fit', 'object-position', 'opacity', 'order', 'orphans', 'outline', 'outline-color', 'outline-offset', 'outline-style', 'outline-width', 'overflow', 'overflow-wrap', 'overflow-x', 'overflow-y', 'padding', 'padding-bottom', 'padding-left', 'padding-right', 'padding-top', 'page-break-after', 'page-break-before', 'page-break-inside', 'perspective', 'perspective-origin', 'pointer-events', 'position', 'quotes', 'resize', 'right', 'src', // @font-face
+  'tab-size', 'table-layout', 'text-align', 'text-align-last', 'text-decoration', 'text-decoration-color', 'text-decoration-line', 'text-decoration-style', 'text-indent', 'text-overflow', 'text-rendering', 'text-shadow', 'text-transform', 'text-underline-position', 'top', 'transform', 'transform-origin', 'transform-style', 'transition', 'transition-delay', 'transition-duration', 'transition-property', 'transition-timing-function', 'unicode-bidi', 'vertical-align', 'visibility', 'white-space', 'widows', 'width', 'word-break', 'word-spacing', 'word-wrap', 'z-index' // reverse makes sure longer attributes `font-weight` are matched fully
+  // instead of getting false positives on say `font`
+  ].reverse();
   /**
    * @param {string} value
    * @returns {RegExp}
@@ -3484,41 +3543,337 @@
     return joined;
   }
   /*
+  Language: CSS
+  Category: common, css
+  Website: https://developer.mozilla.org/en-US/docs/Web/CSS
+  */
+
+  /** @type LanguageFn */
+
+
+  function css(hljs) {
+    const modes = MODES$1(hljs);
+    const FUNCTION_DISPATCH = {
+      className: "built_in",
+      begin: /[\w-]+(?=\()/
+    };
+    const VENDOR_PREFIX = {
+      begin: /-(webkit|moz|ms|o)-(?=[a-z])/
+    };
+    const AT_MODIFIERS = "and or not only";
+    const AT_PROPERTY_RE = /@-?\w[\w]*(-\w+)*/; // @-webkit-keyframes
+
+    const IDENT_RE = '[a-zA-Z-][a-zA-Z0-9_-]*';
+    const STRINGS = [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE];
+    return {
+      name: 'CSS',
+      case_insensitive: true,
+      illegal: /[=|'\$]/,
+      keywords: {
+        keyframePosition: "from to"
+      },
+      classNameAliases: {
+        // for visual continuity with `tag {}` and because we
+        // don't have a great class for this?
+        keyframePosition: "selector-tag"
+      },
+      contains: [hljs.C_BLOCK_COMMENT_MODE, VENDOR_PREFIX, // to recognize keyframe 40% etc which are outside the scope of our
+      // attribute value mode
+      hljs.CSS_NUMBER_MODE, {
+        className: 'selector-id',
+        begin: /#[A-Za-z0-9_-]+/,
+        relevance: 0
+      }, {
+        className: 'selector-class',
+        begin: '\\.' + IDENT_RE,
+        relevance: 0
+      }, modes.ATTRIBUTE_SELECTOR_MODE, {
+        className: 'selector-pseudo',
+        variants: [{
+          begin: ':(' + PSEUDO_CLASSES.join('|') + ')'
+        }, {
+          begin: '::(' + PSEUDO_ELEMENTS.join('|') + ')'
+        }]
+      }, // we may actually need this (12/2020)
+      // { // pseudo-selector params
+      //   begin: /\(/,
+      //   end: /\)/,
+      //   contains: [ hljs.CSS_NUMBER_MODE ]
+      // },
+      {
+        className: 'attribute',
+        begin: '\\b(' + ATTRIBUTES.join('|') + ')\\b'
+      }, // attribute values
+      {
+        begin: ':',
+        end: '[;}]',
+        contains: [modes.HEXCOLOR, modes.IMPORTANT, hljs.CSS_NUMBER_MODE, ...STRINGS, // needed to highlight these as strings and to avoid issues with
+        // illegal characters that might be inside urls that would tigger the
+        // languages illegal stack
+        {
+          begin: /(url|data-uri)\(/,
+          end: /\)/,
+          relevance: 0,
+          // from keywords
+          keywords: {
+            built_in: "url data-uri"
+          },
+          contains: [{
+            className: "string",
+            // any character other than `)` as in `url()` will be the start
+            // of a string, which ends with `)` (from the parent mode)
+            begin: /[^)]/,
+            endsWithParent: true,
+            excludeEnd: true
+          }]
+        }, FUNCTION_DISPATCH]
+      }, {
+        begin: lookahead(/@/),
+        end: '[{;]',
+        relevance: 0,
+        illegal: /:/,
+        // break on Less variables @var: ...
+        contains: [{
+          className: 'keyword',
+          begin: AT_PROPERTY_RE
+        }, {
+          begin: /\s/,
+          endsWithParent: true,
+          excludeEnd: true,
+          relevance: 0,
+          keywords: {
+            $pattern: /[a-z-]+/,
+            keyword: AT_MODIFIERS,
+            attribute: MEDIA_FEATURES.join(" ")
+          },
+          contains: [{
+            begin: /[a-z-]+(?=:)/,
+            className: "attribute"
+          }, ...STRINGS, hljs.CSS_NUMBER_MODE]
+        }]
+      }, {
+        className: 'selector-tag',
+        begin: '\\b(' + TAGS.join('|') + ')\\b'
+      }]
+    };
+  }
+
+  var css_1 = css;
+
+  /*
+  Language: Diff
+  Description: Unified and context diff
+  Author: Vasily Polovnyov <vast@whiteants.net>
+  Website: https://www.gnu.org/software/diffutils/
+  Category: common
+  */
+
+  /** @type LanguageFn */
+  function diff(hljs) {
+    return {
+      name: 'Diff',
+      aliases: ['patch'],
+      contains: [{
+        className: 'meta',
+        relevance: 10,
+        variants: [{
+          begin: /^@@ +-\d+,\d+ +\+\d+,\d+ +@@/
+        }, {
+          begin: /^\*\*\* +\d+,\d+ +\*\*\*\*$/
+        }, {
+          begin: /^--- +\d+,\d+ +----$/
+        }]
+      }, {
+        className: 'comment',
+        variants: [{
+          begin: /Index: /,
+          end: /$/
+        }, {
+          begin: /^index/,
+          end: /$/
+        }, {
+          begin: /={3,}/,
+          end: /$/
+        }, {
+          begin: /^-{3}/,
+          end: /$/
+        }, {
+          begin: /^\*{3} /,
+          end: /$/
+        }, {
+          begin: /^\+{3}/,
+          end: /$/
+        }, {
+          begin: /^\*{15}$/
+        }, {
+          begin: /^diff --git/,
+          end: /$/
+        }]
+      }, {
+        className: 'addition',
+        begin: /^\+/,
+        end: /$/
+      }, {
+        className: 'deletion',
+        begin: /^-/,
+        end: /$/
+      }, {
+        className: 'addition',
+        begin: /^!/,
+        end: /$/
+      }]
+    };
+  }
+
+  var diff_1 = diff;
+
+  const IDENT_RE$1 = '[A-Za-z$_][0-9A-Za-z$_]*';
+  const KEYWORDS = ["as", // for exports
+  "in", "of", "if", "for", "while", "finally", "var", "new", "function", "do", "return", "void", "else", "break", "catch", "instanceof", "with", "throw", "case", "default", "try", "switch", "continue", "typeof", "delete", "let", "yield", "const", "class", // JS handles these with a special rule
+  // "get",
+  // "set",
+  "debugger", "async", "await", "static", "import", "from", "export", "extends"];
+  const LITERALS = ["true", "false", "null", "undefined", "NaN", "Infinity"];
+  const TYPES = ["Intl", "DataView", "Number", "Math", "Date", "String", "RegExp", "Object", "Function", "Boolean", "Error", "Symbol", "Set", "Map", "WeakSet", "WeakMap", "Proxy", "Reflect", "JSON", "Promise", "Float64Array", "Int16Array", "Int32Array", "Int8Array", "Uint16Array", "Uint32Array", "Float32Array", "Array", "Uint8Array", "Uint8ClampedArray", "ArrayBuffer"];
+  const ERROR_TYPES = ["EvalError", "InternalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError"];
+  const BUILT_IN_GLOBALS = ["setInterval", "setTimeout", "clearInterval", "clearTimeout", "require", "exports", "eval", "isFinite", "isNaN", "parseFloat", "parseInt", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "escape", "unescape"];
+  const BUILT_IN_VARIABLES = ["arguments", "this", "super", "console", "window", "document", "localStorage", "module", "global" // Node.js
+  ];
+  const BUILT_INS = [].concat(BUILT_IN_GLOBALS, BUILT_IN_VARIABLES, TYPES, ERROR_TYPES);
+  /**
+   * @param {string} value
+   * @returns {RegExp}
+   * */
+
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+
+  function source$2(re) {
+    if (!re) return null;
+    if (typeof re === "string") return re;
+    return re.source;
+  }
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+
+
+  function lookahead$1(re) {
+    return concat$2('(?=', re, ')');
+  }
+  /**
+   * @param {...(RegExp | string) } args
+   * @returns {string}
+   */
+
+
+  function concat$2(...args) {
+    const joined = args.map(x => source$2(x)).join("");
+    return joined;
+  }
+  /*
   Language: JavaScript
   Description: JavaScript (JS) is a lightweight, interpreted, or just-in-time compiled programming language with first-class functions.
   Category: common, scripting
   Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
   */
 
+  /** @type LanguageFn */
+
 
   function javascript(hljs) {
-    var IDENT_RE$1$1 = IDENT_RE$1;
-    var FRAGMENT = {
+    /**
+     * Takes a string like "<Booger" and checks to see
+     * if we can find a matching "</Booger" later in the
+     * content.
+     * @param {RegExpMatchArray} match
+     * @param {{after:number}} param1
+     */
+    const hasClosingTag = (match, {
+      after
+    }) => {
+      const tag = "</" + match[0].slice(1);
+      const pos = match.input.indexOf(tag, after);
+      return pos !== -1;
+    };
+
+    const IDENT_RE$1$1 = IDENT_RE$1;
+    const FRAGMENT = {
       begin: '<>',
       end: '</>'
     };
-    var XML_TAG = {
+    const XML_TAG = {
       begin: /<[A-Za-z0-9\\._:-]+/,
-      end: /\/[A-Za-z0-9\\._:-]+>|\/>/
+      end: /\/[A-Za-z0-9\\._:-]+>|\/>/,
+
+      /**
+       * @param {RegExpMatchArray} match
+       * @param {CallbackResponse} response
+       */
+      isTrulyOpeningTag: (match, response) => {
+        const afterMatchIndex = match[0].length + match.index;
+        const nextChar = match.input[afterMatchIndex]; // nested type?
+        // HTML should not include another raw `<` inside a tag
+        // But a type might: `<Array<Array<number>>`, etc.
+
+        if (nextChar === "<") {
+          response.ignoreMatch();
+          return;
+        } // <something>
+        // This is now either a tag or a type.
+
+
+        if (nextChar === ">") {
+          // if we cannot find a matching closing tag, then we
+          // will ignore it
+          if (!hasClosingTag(match, {
+            after: afterMatchIndex
+          })) {
+            response.ignoreMatch();
+          }
+        }
+      }
     };
-    var KEYWORDS$1 = {
+    const KEYWORDS$1 = {
       $pattern: IDENT_RE$1,
-      keyword: KEYWORDS.join(" "),
-      literal: LITERALS.join(" "),
-      built_in: BUILT_INS.join(" ")
-    };
-    var NUMBER = {
+      keyword: KEYWORDS,
+      literal: LITERALS,
+      built_in: BUILT_INS
+    }; // https://tc39.es/ecma262/#sec-literals-numeric-literals
+
+    const decimalDigits = '[0-9](_?[0-9])*';
+    const frac = "\\.(".concat(decimalDigits, ")"); // DecimalIntegerLiteral, including Annex B NonOctalDecimalIntegerLiteral
+    // https://tc39.es/ecma262/#sec-additional-syntax-numeric-literals
+
+    const decimalInteger = "0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*";
+    const NUMBER = {
       className: 'number',
-      variants: [{
-        begin: '\\b(0[bB][01]+)n?'
+      variants: [// DecimalLiteral
+      {
+        begin: "(\\b(".concat(decimalInteger, ")((").concat(frac, ")|\\.)?|(").concat(frac, "))") + "[eE][+-]?(".concat(decimalDigits, ")\\b")
       }, {
-        begin: '\\b(0[oO][0-7]+)n?'
+        begin: "\\b(".concat(decimalInteger, ")\\b((").concat(frac, ")\\b|\\.)?|(").concat(frac, ")\\b")
+      }, // DecimalBigIntegerLiteral
+      {
+        begin: "\\b(0|[1-9](_?[0-9])*)n\\b"
+      }, // NonDecimalIntegerLiteral
+      {
+        begin: "\\b0[xX][0-9a-fA-F](_?[0-9a-fA-F])*n?\\b"
       }, {
-        begin: hljs.C_NUMBER_RE + 'n?'
+        begin: "\\b0[bB][0-1](_?[0-1])*n?\\b"
+      }, {
+        begin: "\\b0[oO][0-7](_?[0-7])*n?\\b"
+      }, // LegacyOctalIntegerLiteral (does not include underscore separators)
+      // https://tc39.es/ecma262/#sec-additional-syntax-numeric-literals
+      {
+        begin: "\\b0[0-7]+n?\\b"
       }],
       relevance: 0
     };
-    var SUBST = {
+    const SUBST = {
       className: 'subst',
       begin: '\\$\\{',
       end: '\\}',
@@ -3526,7 +3881,7 @@
       contains: [] // defined later
 
     };
-    var HTML_TEMPLATE = {
+    const HTML_TEMPLATE = {
       begin: 'html`',
       end: '',
       starts: {
@@ -3536,7 +3891,7 @@
         subLanguage: 'xml'
       }
     };
-    var CSS_TEMPLATE = {
+    const CSS_TEMPLATE = {
       begin: 'css`',
       end: '',
       starts: {
@@ -3546,63 +3901,86 @@
         subLanguage: 'css'
       }
     };
-    var TEMPLATE_STRING = {
+    const TEMPLATE_STRING = {
       className: 'string',
       begin: '`',
       end: '`',
       contains: [hljs.BACKSLASH_ESCAPE, SUBST]
     };
-    SUBST.contains = [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, NUMBER, hljs.REGEXP_MODE];
-    var PARAMS_CONTAINS = SUBST.contains.concat([// eat recursive parens in sub expressions
+    const JSDOC_COMMENT = hljs.COMMENT(/\/\*\*(?!\/)/, '\\*/', {
+      relevance: 0,
+      contains: [{
+        className: 'doctag',
+        begin: '@[A-Za-z]+',
+        contains: [{
+          className: 'type',
+          begin: '\\{',
+          end: '\\}',
+          relevance: 0
+        }, {
+          className: 'variable',
+          begin: IDENT_RE$1$1 + '(?=\\s*(-)|$)',
+          endsParent: true,
+          relevance: 0
+        }, // eat spaces (not newlines) so we can find
+        // types or variables
+        {
+          begin: /(?=[^\n])\s/,
+          relevance: 0
+        }]
+      }]
+    });
+    const COMMENT = {
+      className: "comment",
+      variants: [JSDOC_COMMENT, hljs.C_BLOCK_COMMENT_MODE, hljs.C_LINE_COMMENT_MODE]
+    };
+    const SUBST_INTERNALS = [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, NUMBER, hljs.REGEXP_MODE];
+    SUBST.contains = SUBST_INTERNALS.concat({
+      // we need to pair up {} inside our subst to prevent
+      // it from ending too early by matching another }
+      begin: /\{/,
+      end: /\}/,
+      keywords: KEYWORDS$1,
+      contains: ["self"].concat(SUBST_INTERNALS)
+    });
+    const SUBST_AND_COMMENTS = [].concat(COMMENT, SUBST.contains);
+    const PARAMS_CONTAINS = SUBST_AND_COMMENTS.concat([// eat recursive parens in sub expressions
     {
       begin: /\(/,
       end: /\)/,
-      contains: ["self"].concat(SUBST.contains, [hljs.C_BLOCK_COMMENT_MODE, hljs.C_LINE_COMMENT_MODE])
-    }, hljs.C_BLOCK_COMMENT_MODE, hljs.C_LINE_COMMENT_MODE]);
-    var PARAMS = {
+      keywords: KEYWORDS$1,
+      contains: ["self"].concat(SUBST_AND_COMMENTS)
+    }]);
+    const PARAMS = {
       className: 'params',
       begin: /\(/,
       end: /\)/,
       excludeBegin: true,
       excludeEnd: true,
+      keywords: KEYWORDS$1,
       contains: PARAMS_CONTAINS
     };
     return {
-      name: 'JavaScript',
+      name: 'Javascript',
       aliases: ['js', 'jsx', 'mjs', 'cjs'],
       keywords: KEYWORDS$1,
+      // this will be extended by TypeScript
+      exports: {
+        PARAMS_CONTAINS
+      },
+      illegal: /#(?![$_A-z])/,
       contains: [hljs.SHEBANG({
+        label: "shebang",
         binary: "node",
         relevance: 5
       }), {
+        label: "use_strict",
         className: 'meta',
         relevance: 10,
         begin: /^\s*['"]use (strict|asm)['"]/
-      }, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, hljs.C_LINE_COMMENT_MODE, hljs.COMMENT('/\\*\\*', '\\*/', {
-        relevance: 0,
-        contains: [{
-          className: 'doctag',
-          begin: '@[A-Za-z]+',
-          contains: [{
-            className: 'type',
-            begin: '\\{',
-            end: '\\}',
-            relevance: 0
-          }, {
-            className: 'variable',
-            begin: IDENT_RE$1$1 + '(?=\\s*(-)|$)',
-            endsParent: true,
-            relevance: 0
-          }, // eat spaces (not newlines) so we can find
-          // types or variables
-          {
-            begin: /(?=[^\n])\s/,
-            relevance: 0
-          }]
-        }]
-      }), hljs.C_BLOCK_COMMENT_MODE, NUMBER, {
+      }, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, COMMENT, NUMBER, {
         // object attr container
-        begin: concat$1(/[{,\n]\s*/, // we need to look ahead to make sure that we actually have an
+        begin: concat$2(/[{,\n]\s*/, // we need to look ahead to make sure that we actually have an
         // attribute coming up so we don't steal a comma from a potential
         // "value" container
         //
@@ -3612,31 +3990,32 @@
         // fails to find any actual attrs. But this still does the job because
         // it prevents the value contain rule from grabbing this instead and
         // prevening this rule from firing when we actually DO have keys.
-        lookahead(concat$1( // we also need to allow for multiple possible comments inbetween
+        lookahead$1(concat$2( // we also need to allow for multiple possible comments inbetween
         // the first key:value pairing
-        /(((\/\/.*$)|(\/\*(.|\n)*\*\/))\s*)*/, IDENT_RE$1$1 + '\\s*:'))),
+        /(((\/\/.*$)|(\/\*(\*[^/]|[^*])*\*\/))\s*)*/, IDENT_RE$1$1 + '\\s*:'))),
         relevance: 0,
         contains: [{
           className: 'attr',
-          begin: IDENT_RE$1$1 + lookahead('\\s*:'),
+          begin: IDENT_RE$1$1 + lookahead$1('\\s*:'),
           relevance: 0
         }]
       }, {
         // "value" container
         begin: '(' + hljs.RE_STARTERS_RE + '|\\b(case|return|throw)\\b)\\s*',
         keywords: 'return throw case',
-        contains: [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE, hljs.REGEXP_MODE, {
+        contains: [COMMENT, hljs.REGEXP_MODE, {
           className: 'function',
           // we have to count the parens to make sure we actually have the
           // correct bounding ( ) before the =>.  There could be any number of
           // sub-expressions inside also surrounded by parens.
-          begin: '(\\([^(]*' + '(\\([^(]*' + '(\\([^(]*' + '\\))?' + '\\))?' + '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>',
+          begin: '(\\(' + '[^()]*(\\(' + '[^()]*(\\(' + '[^()]*' + '\\)[^()]*)*' + '\\)[^()]*)*' + '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>',
           returnBegin: true,
           end: '\\s*=>',
           contains: [{
             className: 'params',
             variants: [{
-              begin: hljs.UNDERSCORE_IDENT_RE
+              begin: hljs.UNDERSCORE_IDENT_RE,
+              relevance: 0
             }, {
               className: null,
               begin: /\(\s*\)/,
@@ -3666,6 +4045,9 @@
             end: FRAGMENT.end
           }, {
             begin: XML_TAG.begin,
+            // we carefully check the opening tag to see if it truly
+            // is a tag and not a false positive
+            'on:begin': XML_TAG.isTrulyOpeningTag,
             end: XML_TAG.end
           }],
           subLanguage: 'xml',
@@ -3680,32 +4062,59 @@
       }, {
         className: 'function',
         beginKeywords: 'function',
-        end: /\{/,
+        end: /[{;]/,
         excludeEnd: true,
-        contains: [hljs.inherit(hljs.TITLE_MODE, {
+        keywords: KEYWORDS$1,
+        contains: ['self', hljs.inherit(hljs.TITLE_MODE, {
           begin: IDENT_RE$1$1
         }), PARAMS],
-        illegal: /\[|%/
+        illegal: /%/
       }, {
-        begin: /\$[(.]/ // relevance booster for a pattern common to JS libs: `$(something)` and `$.something`
-
-      }, hljs.METHOD_GUARD, {
+        // prevent this from getting swallowed up by function
+        // since they appear "function like"
+        beginKeywords: "while if switch catch for"
+      }, {
+        className: 'function',
+        // we have to count the parens to make sure we actually have the correct
+        // bounding ( ).  There could be any number of sub-expressions inside
+        // also surrounded by parens.
+        begin: hljs.UNDERSCORE_IDENT_RE + '\\(' + // first parens
+        '[^()]*(\\(' + '[^()]*(\\(' + '[^()]*' + '\\)[^()]*)*' + '\\)[^()]*)*' + '\\)\\s*\\{',
+        // end parens
+        returnBegin: true,
+        contains: [PARAMS, hljs.inherit(hljs.TITLE_MODE, {
+          begin: IDENT_RE$1$1
+        })]
+      }, // hack: prevents detection of keywords in some circumstances
+      // .keyword()
+      // $keyword = x
+      {
+        variants: [{
+          begin: '\\.' + IDENT_RE$1$1
+        }, {
+          begin: '\\$' + IDENT_RE$1$1
+        }],
+        relevance: 0
+      }, {
         // ES6 class
         className: 'class',
         beginKeywords: 'class',
         end: /[{;=]/,
         excludeEnd: true,
-        illegal: /[:"\[\]]/,
+        illegal: /[:"[\]]/,
         contains: [{
           beginKeywords: 'extends'
         }, hljs.UNDERSCORE_TITLE_MODE]
       }, {
-        beginKeywords: 'constructor',
-        end: /\{/,
-        excludeEnd: true
+        begin: /\b(?=constructor)/,
+        end: /[{;]/,
+        excludeEnd: true,
+        contains: [hljs.inherit(hljs.TITLE_MODE, {
+          begin: IDENT_RE$1$1
+        }), 'self', PARAMS]
       }, {
         begin: '(get|set)\\s+(?=' + IDENT_RE$1$1 + '\\()',
-        end: /{/,
+        end: /\{/,
         keywords: "get set",
         contains: [hljs.inherit(hljs.TITLE_MODE, {
           begin: IDENT_RE$1$1
@@ -3713,8 +4122,10 @@
           begin: /\(\)/
         }, // eat to avoid empty params
         PARAMS]
-      }],
-      illegal: /#(?!!)/
+      }, {
+        begin: /\$[(.]/ // relevance booster for a pattern common to JS libs: `$(something)` and `$.something`
+
+      }]
     };
   }
 
@@ -3728,21 +4139,21 @@
   Category: common, protocols
   */
   function json(hljs) {
-    var LITERALS = {
+    const LITERALS = {
       literal: 'true false null'
     };
-    var ALLOWED_COMMENTS = [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE];
-    var TYPES = [hljs.QUOTE_STRING_MODE, hljs.C_NUMBER_MODE];
-    var VALUE_CONTAINER = {
+    const ALLOWED_COMMENTS = [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE];
+    const TYPES = [hljs.QUOTE_STRING_MODE, hljs.C_NUMBER_MODE];
+    const VALUE_CONTAINER = {
       end: ',',
       endsWithParent: true,
       excludeEnd: true,
       contains: TYPES,
       keywords: LITERALS
     };
-    var OBJECT = {
-      begin: '{',
-      end: '}',
+    const OBJECT = {
+      begin: /\{/,
+      end: /\}/,
       contains: [{
         className: 'attr',
         begin: /"/,
@@ -3754,7 +4165,7 @@
       })].concat(ALLOWED_COMMENTS),
       illegal: '\\S'
     };
-    var ARRAY = {
+    const ARRAY = {
       begin: '\\[',
       end: '\\]',
       contains: [hljs.inherit(VALUE_CONTAINER)],
@@ -3788,41 +4199,140 @@
   const BUILT_IN_VARIABLES$1 = ["arguments", "this", "super", "console", "window", "document", "localStorage", "module", "global" // Node.js
   ];
   const BUILT_INS$1 = [].concat(BUILT_IN_GLOBALS$1, BUILT_IN_VARIABLES$1, TYPES$1, ERROR_TYPES$1);
+  /**
+   * @param {string} value
+   * @returns {RegExp}
+   * */
+
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+
+  function source$3(re) {
+    if (!re) return null;
+    if (typeof re === "string") return re;
+    return re.source;
+  }
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+
+
+  function lookahead$2(re) {
+    return concat$3('(?=', re, ')');
+  }
+  /**
+   * @param {...(RegExp | string) } args
+   * @returns {string}
+   */
+
+
+  function concat$3(...args) {
+    const joined = args.map(x => source$3(x)).join("");
+    return joined;
+  }
   /*
-  Language: TypeScript
-  Author: Panu Horsmalahti <panu.horsmalahti@iki.fi>
-  Contributors: Ike Ku <dempfi@yahoo.com>
-  Description: TypeScript is a strict superset of JavaScript
-  Website: https://www.typescriptlang.org
+  Language: JavaScript
+  Description: JavaScript (JS) is a lightweight, interpreted, or just-in-time compiled programming language with first-class functions.
   Category: common, scripting
+  Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
   */
 
-  function typescript(hljs) {
-    var IDENT_RE$1 = IDENT_RE$2;
-    var TYPES = ["any", "void", "number", "boolean", "string", "object", "never", "enum"];
-    var TS_SPECIFIC_KEYWORDS = ["type", "namespace", "typedef", "interface", "public", "private", "protected", "implements", "declare", "abstract", "readonly"];
-    var KEYWORDS$1$1 = {
+  /** @type LanguageFn */
+
+
+  function javascript$1(hljs) {
+    /**
+     * Takes a string like "<Booger" and checks to see
+     * if we can find a matching "</Booger" later in the
+     * content.
+     * @param {RegExpMatchArray} match
+     * @param {{after:number}} param1
+     */
+    const hasClosingTag = (match, {
+      after
+    }) => {
+      const tag = "</" + match[0].slice(1);
+      const pos = match.input.indexOf(tag, after);
+      return pos !== -1;
+    };
+
+    const IDENT_RE$1 = IDENT_RE$2;
+    const FRAGMENT = {
+      begin: '<>',
+      end: '</>'
+    };
+    const XML_TAG = {
+      begin: /<[A-Za-z0-9\\._:-]+/,
+      end: /\/[A-Za-z0-9\\._:-]+>|\/>/,
+
+      /**
+       * @param {RegExpMatchArray} match
+       * @param {CallbackResponse} response
+       */
+      isTrulyOpeningTag: (match, response) => {
+        const afterMatchIndex = match[0].length + match.index;
+        const nextChar = match.input[afterMatchIndex]; // nested type?
+        // HTML should not include another raw `<` inside a tag
+        // But a type might: `<Array<Array<number>>`, etc.
+
+        if (nextChar === "<") {
+          response.ignoreMatch();
+          return;
+        } // <something>
+        // This is now either a tag or a type.
+
+
+        if (nextChar === ">") {
+          // if we cannot find a matching closing tag, then we
+          // will ignore it
+          if (!hasClosingTag(match, {
+            after: afterMatchIndex
+          })) {
+            response.ignoreMatch();
+          }
+        }
+      }
+    };
+    const KEYWORDS$1$1 = {
       $pattern: IDENT_RE$2,
-      keyword: KEYWORDS$1.concat(TS_SPECIFIC_KEYWORDS).join(" "),
-      literal: LITERALS$1.join(" "),
-      built_in: BUILT_INS$1.concat(TYPES).join(" ")
-    };
-    var DECORATOR = {
-      className: 'meta',
-      begin: '@' + IDENT_RE$1
-    };
-    var NUMBER = {
+      keyword: KEYWORDS$1,
+      literal: LITERALS$1,
+      built_in: BUILT_INS$1
+    }; // https://tc39.es/ecma262/#sec-literals-numeric-literals
+
+    const decimalDigits = '[0-9](_?[0-9])*';
+    const frac = "\\.(".concat(decimalDigits, ")"); // DecimalIntegerLiteral, including Annex B NonOctalDecimalIntegerLiteral
+    // https://tc39.es/ecma262/#sec-additional-syntax-numeric-literals
+
+    const decimalInteger = "0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*";
+    const NUMBER = {
       className: 'number',
-      variants: [{
-        begin: '\\b(0[bB][01]+)n?'
+      variants: [// DecimalLiteral
+      {
+        begin: "(\\b(".concat(decimalInteger, ")((").concat(frac, ")|\\.)?|(").concat(frac, "))") + "[eE][+-]?(".concat(decimalDigits, ")\\b")
       }, {
-        begin: '\\b(0[oO][0-7]+)n?'
+        begin: "\\b(".concat(decimalInteger, ")\\b((").concat(frac, ")\\b|\\.)?|(").concat(frac, ")\\b")
+      }, // DecimalBigIntegerLiteral
+      {
+        begin: "\\b(0|[1-9](_?[0-9])*)n\\b"
+      }, // NonDecimalIntegerLiteral
+      {
+        begin: "\\b0[xX][0-9a-fA-F](_?[0-9a-fA-F])*n?\\b"
       }, {
-        begin: hljs.C_NUMBER_RE + 'n?'
+        begin: "\\b0[bB][0-1](_?[0-1])*n?\\b"
+      }, {
+        begin: "\\b0[oO][0-7](_?[0-7])*n?\\b"
+      }, // LegacyOctalIntegerLiteral (does not include underscore separators)
+      // https://tc39.es/ecma262/#sec-additional-syntax-numeric-literals
+      {
+        begin: "\\b0[0-7]+n?\\b"
       }],
       relevance: 0
     };
-    var SUBST = {
+    const SUBST = {
       className: 'subst',
       begin: '\\$\\{',
       end: '\\}',
@@ -3830,7 +4340,7 @@
       contains: [] // defined later
 
     };
-    var HTML_TEMPLATE = {
+    const HTML_TEMPLATE = {
       begin: 'html`',
       end: '',
       starts: {
@@ -3840,7 +4350,7 @@
         subLanguage: 'xml'
       }
     };
-    var CSS_TEMPLATE = {
+    const CSS_TEMPLATE = {
       begin: 'css`',
       end: '',
       starts: {
@@ -3850,51 +4360,121 @@
         subLanguage: 'css'
       }
     };
-    var TEMPLATE_STRING = {
+    const TEMPLATE_STRING = {
       className: 'string',
       begin: '`',
       end: '`',
       contains: [hljs.BACKSLASH_ESCAPE, SUBST]
     };
-    SUBST.contains = [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, NUMBER, hljs.REGEXP_MODE];
-    var ARGUMENTS = {
-      begin: '\\(',
+    const JSDOC_COMMENT = hljs.COMMENT(/\/\*\*(?!\/)/, '\\*/', {
+      relevance: 0,
+      contains: [{
+        className: 'doctag',
+        begin: '@[A-Za-z]+',
+        contains: [{
+          className: 'type',
+          begin: '\\{',
+          end: '\\}',
+          relevance: 0
+        }, {
+          className: 'variable',
+          begin: IDENT_RE$1 + '(?=\\s*(-)|$)',
+          endsParent: true,
+          relevance: 0
+        }, // eat spaces (not newlines) so we can find
+        // types or variables
+        {
+          begin: /(?=[^\n])\s/,
+          relevance: 0
+        }]
+      }]
+    });
+    const COMMENT = {
+      className: "comment",
+      variants: [JSDOC_COMMENT, hljs.C_BLOCK_COMMENT_MODE, hljs.C_LINE_COMMENT_MODE]
+    };
+    const SUBST_INTERNALS = [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, NUMBER, hljs.REGEXP_MODE];
+    SUBST.contains = SUBST_INTERNALS.concat({
+      // we need to pair up {} inside our subst to prevent
+      // it from ending too early by matching another }
+      begin: /\{/,
+      end: /\}/,
+      keywords: KEYWORDS$1$1,
+      contains: ["self"].concat(SUBST_INTERNALS)
+    });
+    const SUBST_AND_COMMENTS = [].concat(COMMENT, SUBST.contains);
+    const PARAMS_CONTAINS = SUBST_AND_COMMENTS.concat([// eat recursive parens in sub expressions
+    {
+      begin: /\(/,
       end: /\)/,
       keywords: KEYWORDS$1$1,
-      contains: ['self', hljs.QUOTE_STRING_MODE, hljs.APOS_STRING_MODE, hljs.NUMBER_MODE]
-    };
-    var PARAMS = {
+      contains: ["self"].concat(SUBST_AND_COMMENTS)
+    }]);
+    const PARAMS = {
       className: 'params',
       begin: /\(/,
       end: /\)/,
       excludeBegin: true,
       excludeEnd: true,
       keywords: KEYWORDS$1$1,
-      contains: [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE, DECORATOR, ARGUMENTS]
+      contains: PARAMS_CONTAINS
     };
     return {
-      name: 'TypeScript',
-      aliases: ['ts'],
+      name: 'Javascript',
+      aliases: ['js', 'jsx', 'mjs', 'cjs'],
       keywords: KEYWORDS$1$1,
-      contains: [hljs.SHEBANG(), {
+      // this will be extended by TypeScript
+      exports: {
+        PARAMS_CONTAINS
+      },
+      illegal: /#(?![$_A-z])/,
+      contains: [hljs.SHEBANG({
+        label: "shebang",
+        binary: "node",
+        relevance: 5
+      }), {
+        label: "use_strict",
         className: 'meta',
-        begin: /^\s*['"]use strict['"]/
-      }, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE, NUMBER, {
+        relevance: 10,
+        begin: /^\s*['"]use (strict|asm)['"]/
+      }, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, COMMENT, NUMBER, {
+        // object attr container
+        begin: concat$3(/[{,\n]\s*/, // we need to look ahead to make sure that we actually have an
+        // attribute coming up so we don't steal a comma from a potential
+        // "value" container
+        //
+        // NOTE: this might not work how you think.  We don't actually always
+        // enter this mode and stay.  Instead it might merely match `,
+        // <comments up next>` and then immediately end after the , because it
+        // fails to find any actual attrs. But this still does the job because
+        // it prevents the value contain rule from grabbing this instead and
+        // prevening this rule from firing when we actually DO have keys.
+        lookahead$2(concat$3( // we also need to allow for multiple possible comments inbetween
+        // the first key:value pairing
+        /(((\/\/.*$)|(\/\*(\*[^/]|[^*])*\*\/))\s*)*/, IDENT_RE$1 + '\\s*:'))),
+        relevance: 0,
+        contains: [{
+          className: 'attr',
+          begin: IDENT_RE$1 + lookahead$2('\\s*:'),
+          relevance: 0
+        }]
+      }, {
         // "value" container
         begin: '(' + hljs.RE_STARTERS_RE + '|\\b(case|return|throw)\\b)\\s*',
         keywords: 'return throw case',
-        contains: [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE, hljs.REGEXP_MODE, {
+        contains: [COMMENT, hljs.REGEXP_MODE, {
           className: 'function',
           // we have to count the parens to make sure we actually have the
           // correct bounding ( ) before the =>.  There could be any number of
           // sub-expressions inside also surrounded by parens.
-          begin: '(\\([^(]*' + '(\\([^(]*' + '(\\([^(]*' + '\\))?' + '\\))?' + '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>',
+          begin: '(\\(' + '[^()]*(\\(' + '[^()]*(\\(' + '[^()]*' + '\\)[^()]*)*' + '\\)[^()]*)*' + '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>',
           returnBegin: true,
           end: '\\s*=>',
           contains: [{
             className: 'params',
             variants: [{
-              begin: hljs.UNDERSCORE_IDENT_RE
+              begin: hljs.UNDERSCORE_IDENT_RE,
+              relevance: 0
             }, {
               className: null,
               begin: /\(\s*\)/,
@@ -3905,87 +4485,275 @@
               excludeBegin: true,
               excludeEnd: true,
               keywords: KEYWORDS$1$1,
-              contains: ARGUMENTS.contains
+              contains: PARAMS_CONTAINS
             }]
+          }]
+        }, {
+          // could be a comma delimited list of params to a function call
+          begin: /,/,
+          relevance: 0
+        }, {
+          className: '',
+          begin: /\s/,
+          end: /\s*/,
+          skip: true
+        }, {
+          // JSX
+          variants: [{
+            begin: FRAGMENT.begin,
+            end: FRAGMENT.end
+          }, {
+            begin: XML_TAG.begin,
+            // we carefully check the opening tag to see if it truly
+            // is a tag and not a false positive
+            'on:begin': XML_TAG.isTrulyOpeningTag,
+            end: XML_TAG.end
+          }],
+          subLanguage: 'xml',
+          contains: [{
+            begin: XML_TAG.begin,
+            end: XML_TAG.end,
+            skip: true,
+            contains: ['self']
           }]
         }],
         relevance: 0
       }, {
         className: 'function',
         beginKeywords: 'function',
-        end: /[\{;]/,
+        end: /[{;]/,
         excludeEnd: true,
         keywords: KEYWORDS$1$1,
         contains: ['self', hljs.inherit(hljs.TITLE_MODE, {
           begin: IDENT_RE$1
         }), PARAMS],
-        illegal: /%/,
-        relevance: 0 // () => {} is more typical in TypeScript
-
+        illegal: /%/
       }, {
-        beginKeywords: 'constructor',
-        end: /[\{;]/,
-        excludeEnd: true,
-        contains: ['self', PARAMS]
+        // prevent this from getting swallowed up by function
+        // since they appear "function like"
+        beginKeywords: "while if switch catch for"
       }, {
-        // prevent references like module.id from being highlighted as module definitions
-        begin: /module\./,
-        keywords: {
-          built_in: 'module'
-        },
+        className: 'function',
+        // we have to count the parens to make sure we actually have the correct
+        // bounding ( ).  There could be any number of sub-expressions inside
+        // also surrounded by parens.
+        begin: hljs.UNDERSCORE_IDENT_RE + '\\(' + // first parens
+        '[^()]*(\\(' + '[^()]*(\\(' + '[^()]*' + '\\)[^()]*)*' + '\\)[^()]*)*' + '\\)\\s*\\{',
+        // end parens
+        returnBegin: true,
+        contains: [PARAMS, hljs.inherit(hljs.TITLE_MODE, {
+          begin: IDENT_RE$1
+        })]
+      }, // hack: prevents detection of keywords in some circumstances
+      // .keyword()
+      // $keyword = x
+      {
+        variants: [{
+          begin: '\\.' + IDENT_RE$1
+        }, {
+          begin: '\\$' + IDENT_RE$1
+        }],
         relevance: 0
       }, {
-        beginKeywords: 'module',
-        end: /\{/,
-        excludeEnd: true
-      }, {
-        beginKeywords: 'interface',
-        end: /\{/,
+        // ES6 class
+        className: 'class',
+        beginKeywords: 'class',
+        end: /[{;=]/,
         excludeEnd: true,
-        keywords: 'interface extends'
+        illegal: /[:"[\]]/,
+        contains: [{
+          beginKeywords: 'extends'
+        }, hljs.UNDERSCORE_TITLE_MODE]
+      }, {
+        begin: /\b(?=constructor)/,
+        end: /[{;]/,
+        excludeEnd: true,
+        contains: [hljs.inherit(hljs.TITLE_MODE, {
+          begin: IDENT_RE$1
+        }), 'self', PARAMS]
+      }, {
+        begin: '(get|set)\\s+(?=' + IDENT_RE$1 + '\\()',
+        end: /\{/,
+        keywords: "get set",
+        contains: [hljs.inherit(hljs.TITLE_MODE, {
+          begin: IDENT_RE$1
+        }), {
+          begin: /\(\)/
+        }, // eat to avoid empty params
+        PARAMS]
       }, {
         begin: /\$[(.]/ // relevance booster for a pattern common to JS libs: `$(something)` and `$.something`
 
-      }, {
-        begin: '\\.' + hljs.IDENT_RE,
-        relevance: 0 // hack: prevents detection of keywords after dots
-
-      }, DECORATOR, ARGUMENTS]
+      }]
     };
+  }
+  /*
+  Language: TypeScript
+  Author: Panu Horsmalahti <panu.horsmalahti@iki.fi>
+  Contributors: Ike Ku <dempfi@yahoo.com>
+  Description: TypeScript is a strict superset of JavaScript
+  Website: https://www.typescriptlang.org
+  Category: common, scripting
+  */
+
+  /** @type LanguageFn */
+
+
+  function typescript(hljs) {
+    const IDENT_RE$1 = IDENT_RE$2;
+    const NAMESPACE = {
+      beginKeywords: 'namespace',
+      end: /\{/,
+      excludeEnd: true
+    };
+    const INTERFACE = {
+      beginKeywords: 'interface',
+      end: /\{/,
+      excludeEnd: true,
+      keywords: 'interface extends'
+    };
+    const USE_STRICT = {
+      className: 'meta',
+      relevance: 10,
+      begin: /^\s*['"]use strict['"]/
+    };
+    const TYPES = ["any", "void", "number", "boolean", "string", "object", "never", "enum"];
+    const TS_SPECIFIC_KEYWORDS = ["type", "namespace", "typedef", "interface", "public", "private", "protected", "implements", "declare", "abstract", "readonly"];
+    const KEYWORDS$1$1 = {
+      $pattern: IDENT_RE$2,
+      keyword: KEYWORDS$1.concat(TS_SPECIFIC_KEYWORDS),
+      literal: LITERALS$1,
+      built_in: BUILT_INS$1.concat(TYPES)
+    };
+    const DECORATOR = {
+      className: 'meta',
+      begin: '@' + IDENT_RE$1
+    };
+
+    const swapMode = (mode, label, replacement) => {
+      const indx = mode.contains.findIndex(m => m.label === label);
+
+      if (indx === -1) {
+        throw new Error("can not find mode to replace");
+      }
+
+      mode.contains.splice(indx, 1, replacement);
+    };
+
+    const tsLanguage = javascript$1(hljs); // this should update anywhere keywords is used since
+    // it will be the same actual JS object
+
+    Object.assign(tsLanguage.keywords, KEYWORDS$1$1);
+    tsLanguage.exports.PARAMS_CONTAINS.push(DECORATOR);
+    tsLanguage.contains = tsLanguage.contains.concat([DECORATOR, NAMESPACE, INTERFACE]); // TS gets a simpler shebang rule than JS
+
+    swapMode(tsLanguage, "shebang", hljs.SHEBANG()); // JS use strict rule purposely excludes `asm` which makes no sense
+
+    swapMode(tsLanguage, "use_strict", USE_STRICT);
+    const functionDeclaration = tsLanguage.contains.find(m => m.className === "function");
+    functionDeclaration.relevance = 0; // () => {} is more typical in TypeScript
+
+    Object.assign(tsLanguage, {
+      name: 'TypeScript',
+      aliases: ['ts']
+    });
+    return tsLanguage;
   }
 
   var typescript_1 = typescript;
 
+  /**
+   * @param {string} value
+   * @returns {RegExp}
+   * */
+
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+  function source$4(re) {
+    if (!re) return null;
+    if (typeof re === "string") return re;
+    return re.source;
+  }
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+
+
+  function lookahead$3(re) {
+    return concat$4('(?=', re, ')');
+  }
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+
+
+  function optional(re) {
+    return concat$4('(', re, ')?');
+  }
+  /**
+   * @param {...(RegExp | string) } args
+   * @returns {string}
+   */
+
+
+  function concat$4(...args) {
+    const joined = args.map(x => source$4(x)).join("");
+    return joined;
+  }
+  /**
+   * Any of the passed expresssions may match
+   *
+   * Creates a huge this | this | that | that match
+   * @param {(RegExp | string)[] } args
+   * @returns {string}
+   */
+
+
+  function either$1(...args) {
+    const joined = '(' + args.map(x => source$4(x)).join("|") + ")";
+    return joined;
+  }
   /*
   Language: HTML, XML
   Website: https://www.w3.org/XML/
   Category: common
+  Audit: 2020
   */
+
+  /** @type LanguageFn */
+
+
   function xml(hljs) {
-    var XML_IDENT_RE = '[A-Za-z0-9\\._:-]+';
-    var XML_ENTITIES = {
+    // Element names can contain letters, digits, hyphens, underscores, and periods
+    const TAG_NAME_RE = concat$4(/[A-Z_]/, optional(/[A-Z0-9_.-]*:/), /[A-Z0-9_.-]*/);
+    const XML_IDENT_RE = /[A-Za-z0-9._:-]+/;
+    const XML_ENTITIES = {
       className: 'symbol',
-      begin: '&[a-z]+;|&#[0-9]+;|&#x[a-f0-9]+;'
+      begin: /&[a-z]+;|&#[0-9]+;|&#x[a-f0-9]+;/
     };
-    var XML_META_KEYWORDS = {
-      begin: '\\s',
+    const XML_META_KEYWORDS = {
+      begin: /\s/,
       contains: [{
         className: 'meta-keyword',
-        begin: '#?[a-z_][a-z1-9_-]+',
-        illegal: '\\n'
+        begin: /#?[a-z_][a-z1-9_-]+/,
+        illegal: /\n/
       }]
     };
-    var XML_META_PAR_KEYWORDS = hljs.inherit(XML_META_KEYWORDS, {
-      begin: '\\(',
-      end: '\\)'
+    const XML_META_PAR_KEYWORDS = hljs.inherit(XML_META_KEYWORDS, {
+      begin: /\(/,
+      end: /\)/
     });
-    var APOS_META_STRING_MODE = hljs.inherit(hljs.APOS_STRING_MODE, {
+    const APOS_META_STRING_MODE = hljs.inherit(hljs.APOS_STRING_MODE, {
       className: 'meta-string'
     });
-    var QUOTE_META_STRING_MODE = hljs.inherit(hljs.QUOTE_STRING_MODE, {
+    const QUOTE_META_STRING_MODE = hljs.inherit(hljs.QUOTE_STRING_MODE, {
       className: 'meta-string'
     });
-    var TAG_INTERNALS = {
+    const TAG_INTERNALS = {
       endsWithParent: true,
       illegal: /</,
       relevance: 0,
@@ -4019,24 +4787,24 @@
       case_insensitive: true,
       contains: [{
         className: 'meta',
-        begin: '<![a-z]',
-        end: '>',
+        begin: /<![a-z]/,
+        end: />/,
         relevance: 10,
         contains: [XML_META_KEYWORDS, QUOTE_META_STRING_MODE, APOS_META_STRING_MODE, XML_META_PAR_KEYWORDS, {
-          begin: '\\[',
-          end: '\\]',
+          begin: /\[/,
+          end: /\]/,
           contains: [{
             className: 'meta',
-            begin: '<![a-z]',
-            end: '>',
+            begin: /<![a-z]/,
+            end: />/,
             contains: [XML_META_KEYWORDS, XML_META_PAR_KEYWORDS, QUOTE_META_STRING_MODE, APOS_META_STRING_MODE]
           }]
         }]
-      }, hljs.COMMENT('<!--', '-->', {
+      }, hljs.COMMENT(/<!--/, /-->/, {
         relevance: 10
       }), {
-        begin: '<\\!\\[CDATA\\[',
-        end: '\\]\\]>',
+        begin: /<!\[CDATA\[/,
+        end: /\]\]>/,
         relevance: 10
       }, XML_ENTITIES, {
         className: 'meta',
@@ -4052,40 +4820,61 @@
         ending braket. The '$' is needed for the lexeme to be recognized
         by hljs.subMode() that tests lexemes outside the stream.
         */
-        begin: '<style(?=\\s|>)',
-        end: '>',
+        begin: /<style(?=\s|>)/,
+        end: />/,
         keywords: {
           name: 'style'
         },
         contains: [TAG_INTERNALS],
         starts: {
-          end: '</style>',
+          end: /<\/style>/,
           returnEnd: true,
           subLanguage: ['css', 'xml']
         }
       }, {
         className: 'tag',
         // See the comment in the <style tag about the lookahead pattern
-        begin: '<script(?=\\s|>)',
-        end: '>',
+        begin: /<script(?=\s|>)/,
+        end: />/,
         keywords: {
           name: 'script'
         },
         contains: [TAG_INTERNALS],
         starts: {
-          end: '\<\/script\>',
+          end: /<\/script>/,
           returnEnd: true,
           subLanguage: ['javascript', 'handlebars', 'xml']
         }
-      }, {
+      }, // we need this for now for jSX
+      {
         className: 'tag',
-        begin: '</?',
-        end: '/?>',
+        begin: /<>|<\/>/
+      }, // open tag
+      {
+        className: 'tag',
+        begin: concat$4(/</, lookahead$3(concat$4(TAG_NAME_RE, // <tag/>
+        // <tag>
+        // <tag ...
+        either$1(/\/>/, />/, /\s/)))),
+        end: /\/?>/,
         contains: [{
           className: 'name',
-          begin: /[^\/><\s]+/,
+          begin: TAG_NAME_RE,
+          relevance: 0,
+          starts: TAG_INTERNALS
+        }]
+      }, // close tag
+      {
+        className: 'tag',
+        begin: concat$4(/<\//, lookahead$3(concat$4(TAG_NAME_RE, />/))),
+        contains: [{
+          className: 'name',
+          begin: TAG_NAME_RE,
           relevance: 0
-        }, TAG_INTERNALS]
+        }, {
+          begin: />/,
+          relevance: 0
+        }]
       }]
     };
   }
@@ -4207,7 +4996,7 @@
     };
   };
 
-  function error(message) {
+  function error$1(message) {
     throw Error(message);
   }
 
@@ -4257,15 +5046,15 @@
         if (j > i) push();
         b = i = j + 1;
       } else if (c === ']') {
-        if (!b) error('Access path missing open bracket: ' + p);
+        if (!b) error$1('Access path missing open bracket: ' + p);
         if (b > 0) push();
         b = 0;
         i = j + 1;
       }
     }
 
-    if (b) error('Access path missing closing bracket: ' + p);
-    if (q) error('Access path missing closing quote: ' + p);
+    if (b) error$1('Access path missing closing bracket: ' + p);
+    if (q) error$1('Access path missing closing quote: ' + p);
 
     if (j > i) {
       j++;
@@ -5095,7 +5884,7 @@
     const isAllowed = allowed_re.test(uri.replace(whitespace_re, ''));
 
     if (uri == null || typeof uri !== 'string' || !isAllowed) {
-      error('Sanitize failure, invalid URI: ' + $(uri));
+      error$1('Sanitize failure, invalid URI: ' + $(uri));
     }
 
     const hasProtocol = protocol_re.test(uri); // if relative url (no protocol/host), prepend baseURL
@@ -5174,7 +5963,7 @@
 
 
   async function fileReject() {
-    error('No file system access.');
+    error$1('No file system access.');
   }
   /**
    * HTTP request handler factory.
@@ -5191,7 +5980,7 @@
       const opt = extend({}, this.options.http, options),
             type = options && options.response,
             response = await fetch(url, opt);
-      return !response.ok ? error(response.status + '' + response.statusText) : isFunction(response[type]) ? response[type]() : response.text();
+      return !response.ok ? error$1(response.status + '' + response.statusText) : isFunction(response[type]) ? response[type]() : response.text();
     } : httpReject;
   }
   /**
@@ -5200,7 +5989,7 @@
 
 
   async function httpReject() {
-    error('No HTTP fetch method available.');
+    error$1('No HTTP fetch method available.');
   }
 
   const isValid = _ => _ != null && _ === _;
@@ -5778,10 +6567,10 @@
       property = format.mesh;
       filter = filters[format.filter];
     } else {
-      error('Missing TopoJSON feature or mesh parameter.');
+      error$1('Missing TopoJSON feature or mesh parameter.');
     }
 
-    object = (object = data.objects[property]) ? method(data, object, filter) : error('Invalid TopoJSON object: ' + property);
+    object = (object = data.objects[property]) ? method(data, object, filter) : error$1('Invalid TopoJSON object: ' + property);
     return object && object.features || [object];
   }
   topojson.responseType = 'json';
@@ -5886,7 +6675,7 @@
   const ascendingBisect = bisector(ascending$2);
   const bisectRight = ascendingBisect.right;
   const bisectLeft = ascendingBisect.left;
-  const bisectCenter = bisector(number).center;
+  bisector(number).center;
 
   function variance(values, valueof) {
     let count = 0;
@@ -5975,6 +6764,10 @@
       return hi;
     }
 
+  }
+
+  function permute (source, keys) {
+    return Array.from(keys, key => source[key]);
   }
 
   var e10 = Math.sqrt(50),
@@ -6169,10 +6962,6 @@
 
   function merge$1(arrays) {
     return Array.from(flatten(arrays));
-  }
-
-  function permute (source, keys) {
-    return Array.from(keys, key => source[key]);
   }
 
   function range$1 (start, stop, step) {
@@ -6662,11 +7451,11 @@
 
   var sunday = weekday(0);
   var monday = weekday(1);
-  var tuesday = weekday(2);
-  var wednesday = weekday(3);
+  weekday(2);
+  weekday(3);
   var thursday = weekday(4);
-  var friday = weekday(5);
-  var saturday = weekday(6);
+  weekday(5);
+  weekday(6);
 
   var month = newInterval(function (date) {
     date.setDate(1);
@@ -6743,11 +7532,11 @@
 
   var utcSunday = utcWeekday(0);
   var utcMonday = utcWeekday(1);
-  var utcTuesday = utcWeekday(2);
-  var utcWednesday = utcWeekday(3);
+  utcWeekday(2);
+  utcWeekday(3);
   var utcThursday = utcWeekday(4);
-  var utcFriday = utcWeekday(5);
-  var utcSaturday = utcWeekday(6);
+  utcWeekday(5);
+  utcWeekday(6);
 
   var utcMonth = newInterval(function (date) {
     date.setUTCDate(1);
@@ -6799,18 +7588,18 @@
     const u = array$1(units).slice(),
           m = {}; // check validity
 
-    if (!u.length) error('Missing time unit.');
+    if (!u.length) error$1('Missing time unit.');
     u.forEach(unit => {
       if (has(UNITS, unit)) {
         m[unit] = 1;
       } else {
-        error("Invalid time unit: ".concat(unit, "."));
+        error$1("Invalid time unit: ".concat(unit, "."));
       }
     });
     const numTypes = (m[WEEK] || m[DAY] ? 1 : 0) + (m[QUARTER] || m[MONTH] || m[DATE] ? 1 : 0) + (m[DAYOFYEAR] ? 1 : 0);
 
     if (numTypes > 1) {
-      error("Incompatible time units: ".concat(units));
+      error$1("Incompatible time units: ".concat(units));
     } // ensure proper sort order
 
 
@@ -7978,7 +8767,7 @@
     spec = spec || {};
 
     if (!isObject(spec)) {
-      error("Invalid time multi-format specifier: ".concat(spec));
+      error$1("Invalid time multi-format specifier: ".concat(spec));
     }
 
     const second = interval(SECONDS),
@@ -8044,7 +8833,7 @@
     const args = arguments.length;
 
     if (args && args !== 2) {
-      error('defaultLocale expects either zero or two arguments.');
+      error$1('defaultLocale expects either zero or two arguments.');
     }
 
     return args ? createLocale(numberFormatDefaultLocale(numberSpec), timeFormatDefaultLocale(timeSpec)) : createLocale(numberFormatDefaultLocale(), timeFormatDefaultLocale());
@@ -8053,7 +8842,7 @@
   function read (data, schema, timeParser, utcParser) {
     schema = schema || {};
     const reader = formats(schema.type || 'json');
-    if (!reader) error('Unknown data format type: ' + schema.type);
+    if (!reader) error$1('Unknown data format type: ' + schema.type);
     data = reader(data, schema);
     if (schema.parse) parse(data, schema.parse, timeParser, utcParser);
     if (has(data, 'columns')) delete data.columns;
@@ -8656,7 +9445,7 @@
         if (name === PULSE) {
           array$1(value).forEach(op => {
             if (!(op instanceof Operator)) {
-              error('Pulse parameters must be operator instances.');
+              error$1('Pulse parameters must be operator instances.');
             } else if (op !== this) {
               op.targets().add(this);
               deps.push(op);
@@ -9223,7 +10012,7 @@
       if (list = cur._targets) {
         for (i = list.length; --i >= 0;) {
           queue.push(cur = list[i]);
-          if (cur === op) error('Cycle detected in dataflow graph.');
+          if (cur === op) error$1('Cycle detected in dataflow graph.');
         }
       }
     }
@@ -9723,11 +10512,11 @@
     },
 
     filter() {
-      error('MultiPulse does not support filtering.');
+      error$1('MultiPulse does not support filtering.');
     },
 
     materialize() {
-      error('MultiPulse does not support materialization.');
+      error$1('MultiPulse does not support materialization.');
     },
 
     visit(flags, visitor) {
@@ -12233,7 +13022,7 @@
       let field, op, m, mname, outname, i;
 
       if (n !== ops.length) {
-        error('Unmatched number of fields and aggregate ops.');
+        error$1('Unmatched number of fields and aggregate ops.');
       }
 
       for (i = 0; i < n; ++i) {
@@ -12241,7 +13030,7 @@
         op = ops[i];
 
         if (field == null && op !== 'count') {
-          error('Null aggregate field specified.');
+          error$1('Null aggregate field specified.');
         }
 
         mname = accessorName(field);
@@ -12902,7 +13691,7 @@
     const func = def[FUNCTION];
 
     if (!has(Distributions, func)) {
-      error('Unknown distribution function: ' + func);
+      error$1('Unknown distribution function: ' + func);
     }
 
     const d = Distributions[func]();
@@ -13065,17 +13854,17 @@
       const out = pulse.fork(pulse.NO_SOURCE | pulse.NO_FIELDS);
 
       if (!this.value || pulse.changed() || _.modified()) {
-        const dist = parse$2(_.distribution, source$2(pulse)),
+        const dist = parse$2(_.distribution, source$5(pulse)),
               minsteps = _.steps || _.minsteps || 25,
               maxsteps = _.steps || _.maxsteps || 200;
         let method = _.method || 'pdf';
 
         if (method !== 'pdf' && method !== 'cdf') {
-          error('Invalid density method: ' + method);
+          error$1('Invalid density method: ' + method);
         }
 
         if (!_.extent && !dist.data) {
-          error('Missing density extent parameter.');
+          error$1('Missing density extent parameter.');
         }
 
         method = dist[method];
@@ -13096,7 +13885,7 @@
 
   });
 
-  function source$2(pulse) {
+  function source$5(pulse) {
     return () => pulse.materialize(pulse.SOURCE).source;
   }
 
@@ -13903,7 +14692,7 @@
         v;
 
     if (Methods[m] == null) {
-      error('Unrecognized imputation method: ' + m);
+      error$1('Unrecognized imputation method: ' + m);
     } else if (m === Methods.value) {
       v = _.value !== undefined ? _.value : 0;
       return () => v;
@@ -14194,7 +14983,7 @@
             maxsteps = _.steps || _.maxsteps || 200;
 
         if (method !== 'pdf' && method !== 'cdf') {
-          error('Invalid density method: ' + method);
+          error$1('Invalid density method: ' + method);
         }
 
         if (_.resolve === 'shared') {
@@ -14374,11 +15163,11 @@
         m = values.length;
 
         if (n > 1 && !as) {
-          error('Multi-field lookup requires explicit "as" parameter.');
+          error$1('Multi-field lookup requires explicit "as" parameter.');
         }
 
         if (as && as.length !== n * m) {
-          error('The "as" parameter has too few output field names.');
+          error$1('The "as" parameter has too few output field names.');
         }
 
         as = as || values.map(accessorName);
@@ -14391,7 +15180,7 @@
         };
       } else {
         if (!as) {
-          error('Missing output field names.');
+          error$1('Missing output field names.');
         }
 
         set = function (t) {
@@ -14610,7 +15399,7 @@
             subflow = t => this.subflow(tupleid(t), flow, pulse, t);
 
       if (_.modified('field') || field && pulse.modified(accessorFields(field))) {
-        error('PreFacet does not support field modification.');
+        error$1('PreFacet does not support field modification.');
       }
 
       this.initTargets(); // reset list of active subflows
@@ -15318,7 +16107,7 @@
     },
     ntile: function (field, num) {
       num = +num;
-      if (!(num > 0)) error('ntile num must be greater than zero.');
+      if (!(num > 0)) error$1('ntile num must be greater than zero.');
       const cume = WindowOps.cume_dist(),
             next = cume.next;
       return {
@@ -15357,7 +16146,7 @@
     },
     nth_value: function (field, nth) {
       nth = +nth;
-      if (!(nth > 0)) error('nth_value nth must be greater than zero.');
+      if (!(nth > 0)) error$1('nth_value nth must be greater than zero.');
       return {
         next: w => {
           const i = w.i0 + (nth - 1);
@@ -15428,7 +16217,7 @@
       } // Aggregate operation
       else {
           if (field == null && op !== 'count') {
-            error('Null aggregate field specified.');
+            error$1('Null aggregate field specified.');
           }
 
           if (op === 'count') {
@@ -20106,7 +20895,7 @@
     }
 
     if (isString(count)) {
-      count = scale.type === Time ? timeInterval(count) : scale.type == UTC ? utcInterval(count) : error('Only time and utc scales accept interval strings.');
+      count = scale.type === Time ? timeInterval(count) : scale.type == UTC ? utcInterval(count) : error$1('Only time and utc scales accept interval strings.');
       if (step) count = count.every(step);
     }
 
@@ -22791,7 +23580,7 @@
 
   function useCanvas(use) {
     textMetrics.width = use && context$1 ? measureWidth : estimateWidth;
-  } // make dumb, simple estimate if no canvas is available
+  } // make simple estimate if no canvas is available
 
 
   function estimateWidth(item, text) {
@@ -24007,7 +24796,7 @@
       } else {
         // external context needs to be scaled and positioned to origin
         const ctx = this._options.externalContext;
-        if (!ctx) error('CanvasRenderer is missing a valid canvas or context');
+        if (!ctx) error$1('CanvasRenderer is missing a valid canvas or context');
         ctx.scale(this._scale, this._scale);
         ctx.translate(this._origin[0], this._origin[1]);
       }
@@ -24395,7 +25184,8 @@
     'stroke-miterlimit': 10
   };
   const RootIndex = 0,
-        ns = metadata.xmlns;
+        xmlns = 'http://www.w3.org/2000/xmlns/',
+        svgns = metadata.xmlns;
 
   function SVGRenderer(loader) {
     Renderer.call(this, loader);
@@ -24426,14 +25216,19 @@
       this._clearDefs();
 
       if (el) {
-        this._svg = domChild(el, 0, 'svg', ns);
-        setAttributes(this._svg, metadata);
+        this._svg = domChild(el, 0, 'svg', svgns);
+
+        this._svg.setAttributeNS(xmlns, 'xmlns', svgns);
+
+        this._svg.setAttributeNS(xmlns, 'xmlns:xlink', metadata['xmlns:xlink']);
+
+        this._svg.setAttribute('version', metadata['version']);
 
         this._svg.setAttribute('class', 'marks');
 
         domClear(el, 1); // set the svg root group
 
-        this._root = domChild(this._svg, RootIndex, 'g', ns);
+        this._root = domChild(this._svg, RootIndex, 'g', svgns);
         setAttributes(this._root, rootAttributes); // ensure no additional child elements
 
         domClear(this._svg, RootIndex + 1);
@@ -24502,7 +25297,7 @@
 
       if (bg) {
         svg.removeAttribute('style');
-        node = domChild(svg, RootIndex, 'rect', ns);
+        node = domChild(svg, RootIndex, 'rect', svgns);
         setAttributes(node, {
           width: this._width,
           height: this._height,
@@ -24741,12 +25536,12 @@
           index = 0;
 
       for (const id in defs.gradient) {
-        if (!el) defs.el = el = domChild(svg, RootIndex + 1, 'defs', ns);
+        if (!el) defs.el = el = domChild(svg, RootIndex + 1, 'defs', svgns);
         index = updateGradient(el, defs.gradient[id], index);
       }
 
       for (const id in defs.clipping) {
-        if (!el) defs.el = el = domChild(svg, RootIndex + 1, 'defs', ns);
+        if (!el) defs.el = el = domChild(svg, RootIndex + 1, 'defs', svgns);
         index = updateClipping(el, defs.clipping[id], index);
       } // clean-up
 
@@ -24786,7 +25581,7 @@
       // coordinates, in a way that is cumbersome to replicate in canvas.
       // We wrap the radial gradient in a pattern element, allowing us to
       // maintain a circular gradient that matches what canvas provides.
-      let pt = domChild(el, index++, 'pattern', ns);
+      let pt = domChild(el, index++, 'pattern', svgns);
       setAttributes(pt, {
         id: patternPrefix + grad.id,
         viewBox: '0,0,1,1',
@@ -24794,13 +25589,13 @@
         height: '100%',
         preserveAspectRatio: 'xMidYMid slice'
       });
-      pt = domChild(pt, 0, 'rect', ns);
+      pt = domChild(pt, 0, 'rect', svgns);
       setAttributes(pt, {
         width: 1,
         height: 1,
         fill: "url(".concat(href(), "#").concat(grad.id, ")")
       });
-      el = domChild(el, index++, 'radialGradient', ns);
+      el = domChild(el, index++, 'radialGradient', svgns);
       setAttributes(el, {
         id: grad.id,
         fx: grad.x1,
@@ -24811,7 +25606,7 @@
         r: grad.r2
       });
     } else {
-      el = domChild(el, index++, 'linearGradient', ns);
+      el = domChild(el, index++, 'linearGradient', svgns);
       setAttributes(el, {
         id: grad.id,
         x1: grad.x1,
@@ -24822,7 +25617,7 @@
     }
 
     for (i = 0, n = grad.stops.length; i < n; ++i) {
-      stop = domChild(el, i, 'stop', ns);
+      stop = domChild(el, i, 'stop', svgns);
       stop.setAttribute('offset', grad.stops[i].offset);
       stop.setAttribute('stop-color', grad.stops[i].color);
     }
@@ -24834,14 +25629,14 @@
 
   function updateClipping(el, clip, index) {
     let mask;
-    el = domChild(el, index, 'clipPath', ns);
+    el = domChild(el, index, 'clipPath', svgns);
     el.setAttribute('id', clip.id);
 
     if (clip.path) {
-      mask = domChild(el, 0, 'path', ns);
+      mask = domChild(el, 0, 'path', svgns);
       mask.setAttribute('d', clip.path);
     } else {
-      mask = domChild(el, 0, 'rect', ns);
+      mask = domChild(el, 0, 'rect', svgns);
       setAttributes(mask, {
         x: 0,
         y: 0,
@@ -24875,7 +25670,7 @@
 
     if (!node) {
       doc = el.ownerDocument;
-      node = domCreate(doc, tag, ns);
+      node = domCreate(doc, tag, svgns);
       item._svg = node;
 
       if (item.mark) {
@@ -24885,13 +25680,13 @@
         }; // if group, create background, content, and foreground elements
 
         if (tag === 'g') {
-          const bg = domCreate(doc, 'path', ns);
+          const bg = domCreate(doc, 'path', svgns);
           node.appendChild(bg);
           bg.__data__ = item;
-          const cg = domCreate(doc, 'g', ns);
+          const cg = domCreate(doc, 'g', svgns);
           node.appendChild(cg);
           cg.__data__ = item;
-          const fg = domCreate(doc, 'path', ns);
+          const fg = domCreate(doc, 'path', svgns);
           node.appendChild(fg);
           fg.__data__ = item;
           fg.__values__ = {
@@ -24981,7 +25776,7 @@
           doc = el.ownerDocument;
           lh = lineHeight(item);
           value.forEach((t, i) => {
-            const ts = domCreate(doc, 'tspan', ns);
+            const ts = domCreate(doc, 'tspan', svgns);
             ts.__data__ = item; // data binding
 
             ts.textContent = t;
@@ -25434,7 +26229,7 @@
     box = new Bounds().union(bounds),
           // defensive copy
     type = scene.marktype;
-    return type ? intersectMark(scene, box, filter, hits) : type === 'group' ? intersectGroup(scene, box, filter, hits) : error('Intersect scene must be mark node or group item.');
+    return type ? intersectMark(scene, box, filter, hits) : type === 'group' ? intersectGroup(scene, box, filter, hits) : error$1('Intersect scene must be mark node or group item.');
   }
 
   function intersectMark(mark, box, filter, hits) {
@@ -27036,7 +27831,7 @@
       }
 
       if (map && (_.modified('key') || pulse.modified(key))) {
-        error('DataJoin does not support modified key function or fields.');
+        error$1('DataJoin does not support modified key function or fields.');
       }
 
       if (!map) {
@@ -27369,7 +28164,7 @@
           path = Paths.get(shape + '-' + orient) || Paths.get(shape);
 
       if (!path) {
-        error('LinkPath unsupported type: ' + _.shape + (_.orient ? '-' + _.orient : ''));
+        error$1('LinkPath unsupported type: ' + _.shape + (_.orient ? '-' + _.orient : ''));
       }
 
       pulse.visit(pulse.SOURCE, t => {
@@ -27688,7 +28483,7 @@
             step = bins.step;
       let start = bins.start == null ? lo : bins.start,
           stop = bins.stop == null ? hi : bins.stop;
-      if (!step) error('Scale bins parameter missing step property.');
+      if (!step) error$1('Scale bins parameter missing step property.');
       if (start < lo) start = step * Math.ceil(lo / step);
       if (stop > hi) stop = step * Math.floor(hi / step);
       bins = range$1(start, stop + step / 2, step);
@@ -27733,7 +28528,7 @@
           if (scale.interpolator) {
             return scale.interpolator(range);
           } else {
-            error("Scale type ".concat(type, " does not support interpolating color schemes."));
+            error$1("Scale type ".concat(type, " does not support interpolating color schemes."));
           }
         }
       } // given a range array for an interpolating scale, convert to interpolator
@@ -27757,7 +28552,7 @@
 
   function configureRangeStep(type, _, count) {
     if (type !== Band && type !== Point) {
-      error('Only band and point scales support rangeStep.');
+      error$1('Only band and point scales support rangeStep.');
     } // calculate full range based on requested step size and padding
 
 
@@ -27776,7 +28571,7 @@
     } else {
       name = _.scheme.toLowerCase();
       scheme$1 = scheme(name);
-      if (!scheme$1) error("Unrecognized scheme name: ".concat(_.scheme));
+      if (!scheme$1) error$1("Unrecognized scheme name: ".concat(_.scheme));
     } // determine size for potential discrete range
 
 
@@ -31163,7 +31958,7 @@
       var _0 = Math.floor(_[0]),
           _1 = Math.floor(_[1]);
 
-      if (!(_0 >= 0 && _1 >= 0)) error('invalid size');
+      if (!(_0 >= 0 && _1 >= 0)) error$1('invalid size');
       return dx = _0, dy = _1, contours;
     };
 
@@ -31233,7 +32028,7 @@
           stop = ex[1],
           span = stop - start,
           step = nice ? tickStep(start, stop, k) : span / (k + 1);
-      return range$1(step, stop, step);
+      return range$1(start + step, stop, step);
     };
   }
   /**
@@ -31495,13 +32290,13 @@
       var _0 = +_[0],
           _1 = +_[1];
 
-      if (!(_0 >= 0 && _1 >= 0)) error('invalid size');
+      if (!(_0 >= 0 && _1 >= 0)) error$1('invalid size');
       return dx = _0, dy = _1, density;
     };
 
     density.cellSize = function (_) {
       if (!arguments.length) return 1 << k;
-      if (!((_ = +_) >= 1)) error('invalid cell size');
+      if (!((_ = +_) >= 1)) error$1('invalid cell size');
       k = Math.floor(Math.log(_) / Math.LN2);
       return density;
     };
@@ -31510,7 +32305,7 @@
       if (!arguments.length) return bandwidth;
       _ = array$1(_);
       if (_.length === 1) _ = [+_[0], +_[0]];
-      if (_.length !== 2) error('invalid bandwidth');
+      if (_.length !== 2) error$1('invalid bandwidth');
       return bandwidth = _, density;
     };
 
@@ -32405,7 +33200,7 @@
 
   function create$2(type) {
     const constructor = projection$1((type || 'mercator').toLowerCase());
-    if (!constructor) error('Unrecognized projection type: ' + type);
+    if (!constructor) error$1('Unrecognized projection type: ' + type);
     return constructor();
   }
 
@@ -34021,7 +34816,7 @@
     var f, p;
 
     if (!has(ForceMap, _.force)) {
-      error('Unrecognized force: ' + _.force);
+      error$1('Unrecognized force: ' + _.force);
     }
 
     f = ForceMap[_.force]();
@@ -34678,7 +35473,7 @@
     return c.r;
   }
 
-  function optional(f) {
+  function optional$1(f) {
     return f == null ? null : required(f);
   }
   function required(f) {
@@ -34718,7 +35513,7 @@
     }
 
     pack.radius = function (x) {
-      return arguments.length ? (radius = optional(x), pack) : radius;
+      return arguments.length ? (radius = optional$1(x), pack) : radius;
     };
 
     pack.size = function (x) {
@@ -35467,7 +36262,7 @@
   inherits(Nest, Transform, {
     transform(_, pulse) {
       if (!pulse.source) {
-        error('Nest transform requires an upstream data source.');
+        error$1('Nest transform requires an upstream data source.');
       }
 
       var gen = _.generate,
@@ -35583,7 +36378,7 @@
   inherits(HierarchyLayout, Transform, {
     transform(_, pulse) {
       if (!pulse.source || !pulse.source.root) {
-        error(this.constructor.name + ' transform requires a backing tree data source.');
+        error$1(this.constructor.name + ' transform requires a backing tree data source.');
       }
 
       const layout = this.layout(_.method),
@@ -35601,7 +36396,7 @@
       try {
         this.value = layout(root);
       } catch (err) {
-        error(err);
+        error$1(err);
       }
 
       root.each(node => setFields(node, fields, as));
@@ -35759,7 +36554,7 @@
   inherits(Stratify, Transform, {
     transform(_, pulse) {
       if (!pulse.source) {
-        error('Stratify transform requires an upstream data source.');
+        error$1('Stratify transform requires an upstream data source.');
       }
 
       let tree = this.value;
@@ -35841,7 +36636,7 @@
      */
     layout(method) {
       const m = method || 'tidy';
-      if (has(Layouts, m)) return Layouts[m]();else error('Unrecognized Tree layout method: ' + m);
+      if (has(Layouts, m)) return Layouts[m]();else error$1('Unrecognized Tree layout method: ' + m);
     },
 
     params: ['size', 'nodeSize'],
@@ -35874,7 +36669,7 @@
             tree = pulse.source && pulse.source.root,
             out = pulse.fork(pulse.NO_SOURCE),
             lut = {};
-      if (!tree) error('TreeLinks transform requires a tree data source.');
+      if (!tree) error$1('TreeLinks transform requires a tree data source.');
 
       if (pulse.changed(pulse.ADD_REM)) {
         // remove previous links
@@ -36009,7 +36804,7 @@
       };
 
       x.method = _ => {
-        if (has(Tiles, _)) x.tile(Tiles[_]);else error('Unrecognized Treemap layout method: ' + _);
+        if (has(Tiles, _)) x.tile(Tiles[_]);else error$1('Unrecognized Treemap layout method: ' + _);
       };
 
       return x;
@@ -36922,7 +37717,7 @@
       if (!(mod || pulse.changed(pulse.ADD_REM) || modp('sort'))) return;
 
       if (!_.size || _.size.length !== 2) {
-        error('Size parameter should be specified as a [width, height] array.');
+        error$1('Size parameter should be specified as a [width, height] array.');
       }
 
       const as = _.as || Output$4; // run label layout
@@ -37138,7 +37933,7 @@
         let domain = _.extent;
 
         if (!has(Methods$1, method)) {
-          error('Invalid regression method: ' + method);
+          error$1('Invalid regression method: ' + method);
         }
 
         if (domain != null) {
@@ -39143,7 +39938,7 @@
   inherits(Wordcloud, Transform, {
     transform(_, pulse) {
       if (_.size && !(_.size[0] && _.size[1])) {
-        error('Wordcloud size dimensions must be non-zero.');
+        error$1('Wordcloud size dimensions must be non-zero.');
       }
 
       function modp(param) {
@@ -40043,7 +40838,7 @@
   */
 
 
-  var TokenName, source$3, index$1, length, lookahead$1;
+  var TokenName, source$6, index$1, length, lookahead$4;
   var TokenBooleanLiteral = 1,
       TokenEOF = 2,
       TokenIdentifier = 3,
@@ -40190,7 +40985,7 @@
 
   function skipComment() {
     while (index$1 < length) {
-      const ch = source$3.charCodeAt(index$1);
+      const ch = source$6.charCodeAt(index$1);
 
       if (isWhiteSpace(ch) || isLineTerminator(ch)) {
         ++index$1;
@@ -40208,8 +41003,8 @@
     len = prefix === 'u' ? 4 : 2;
 
     for (i = 0; i < len; ++i) {
-      if (index$1 < length && isHexDigit(source$3[index$1])) {
-        ch = source$3[index$1++];
+      if (index$1 < length && isHexDigit(source$6[index$1])) {
+        ch = source$6[index$1++];
         code = code * 16 + '0123456789abcdef'.indexOf(ch.toLowerCase());
       } else {
         throwError({}, MessageUnexpectedToken, ILLEGAL);
@@ -40221,7 +41016,7 @@
 
   function scanUnicodeCodePointEscape() {
     var ch, code, cu1, cu2;
-    ch = source$3[index$1];
+    ch = source$6[index$1];
     code = 0; // At least, one hex digit is required.
 
     if (ch === '}') {
@@ -40229,7 +41024,7 @@
     }
 
     while (index$1 < length) {
-      ch = source$3[index$1++];
+      ch = source$6[index$1++];
 
       if (!isHexDigit(ch)) {
         break;
@@ -40254,11 +41049,11 @@
 
   function getEscapedIdentifier() {
     var ch, id;
-    ch = source$3.charCodeAt(index$1++);
+    ch = source$6.charCodeAt(index$1++);
     id = String.fromCharCode(ch); // '\u' (U+005C, U+0075) denotes an escaped character.
 
     if (ch === 0x5C) {
-      if (source$3.charCodeAt(index$1) !== 0x75) {
+      if (source$6.charCodeAt(index$1) !== 0x75) {
         throwError({}, MessageUnexpectedToken, ILLEGAL);
       }
 
@@ -40273,7 +41068,7 @@
     }
 
     while (index$1 < length) {
-      ch = source$3.charCodeAt(index$1);
+      ch = source$6.charCodeAt(index$1);
 
       if (!isIdentifierPart(ch)) {
         break;
@@ -40285,7 +41080,7 @@
       if (ch === 0x5C) {
         id = id.substr(0, id.length - 1);
 
-        if (source$3.charCodeAt(index$1) !== 0x75) {
+        if (source$6.charCodeAt(index$1) !== 0x75) {
           throwError({}, MessageUnexpectedToken, ILLEGAL);
         }
 
@@ -40308,7 +41103,7 @@
     start = index$1++;
 
     while (index$1 < length) {
-      ch = source$3.charCodeAt(index$1);
+      ch = source$6.charCodeAt(index$1);
 
       if (ch === 0x5C) {
         // Blackslash (U+005C) marks Unicode escape sequence.
@@ -40323,14 +41118,14 @@
       }
     }
 
-    return source$3.slice(start, index$1);
+    return source$6.slice(start, index$1);
   }
 
   function scanIdentifier() {
     var start, id, type;
     start = index$1; // Backslash (U+005C) starts an escaped character.
 
-    id = source$3.charCodeAt(index$1) === 0x5C ? getEscapedIdentifier() : getIdentifier(); // There is no keyword or literal with only one character.
+    id = source$6.charCodeAt(index$1) === 0x5C ? getEscapedIdentifier() : getIdentifier(); // There is no keyword or literal with only one character.
     // Thus, it must be an identifier.
 
     if (id.length === 1) {
@@ -40357,9 +41152,9 @@
 
   function scanPunctuator() {
     var start = index$1,
-        code = source$3.charCodeAt(index$1),
+        code = source$6.charCodeAt(index$1),
         code2,
-        ch1 = source$3[index$1],
+        ch1 = source$6[index$1],
         ch2,
         ch3,
         ch4;
@@ -40399,7 +41194,7 @@
         };
 
       default:
-        code2 = source$3.charCodeAt(index$1 + 1); // '=' (U+003D) marks an assignment or comparison operator.
+        code2 = source$6.charCodeAt(index$1 + 1); // '=' (U+003D) marks an assignment or comparison operator.
 
         if (code2 === 0x3D) {
           switch (code) {
@@ -40437,13 +41232,13 @@
               // =
               index$1 += 2; // !== and ===
 
-              if (source$3.charCodeAt(index$1) === 0x3D) {
+              if (source$6.charCodeAt(index$1) === 0x3D) {
                 ++index$1;
               }
 
               return {
                 type: TokenPunctuator,
-                value: source$3.slice(start, index$1),
+                value: source$6.slice(start, index$1),
                 start: start,
                 end: index$1
               };
@@ -40453,7 +41248,7 @@
     } // 4-character punctuator: >>>=
 
 
-    ch4 = source$3.substr(index$1, 4);
+    ch4 = source$6.substr(index$1, 4);
 
     if (ch4 === '>>>=') {
       index$1 += 4;
@@ -40489,6 +41284,10 @@
         start: start,
         end: index$1
       };
+    }
+
+    if (ch2 === '//') {
+      throwError({}, MessageUnexpectedToken, ILLEGAL);
     } // 1-character punctuators: < > = ! + - * % & | ^ /
 
 
@@ -40510,18 +41309,18 @@
     let number = '';
 
     while (index$1 < length) {
-      if (!isHexDigit(source$3[index$1])) {
+      if (!isHexDigit(source$6[index$1])) {
         break;
       }
 
-      number += source$3[index$1++];
+      number += source$6[index$1++];
     }
 
     if (number.length === 0) {
       throwError({}, MessageUnexpectedToken, ILLEGAL);
     }
 
-    if (isIdentifierStart(source$3.charCodeAt(index$1))) {
+    if (isIdentifierStart(source$6.charCodeAt(index$1))) {
       throwError({}, MessageUnexpectedToken, ILLEGAL);
     }
 
@@ -40534,17 +41333,17 @@
   }
 
   function scanOctalLiteral(start) {
-    let number = '0' + source$3[index$1++];
+    let number = '0' + source$6[index$1++];
 
     while (index$1 < length) {
-      if (!isOctalDigit(source$3[index$1])) {
+      if (!isOctalDigit(source$6[index$1])) {
         break;
       }
 
-      number += source$3[index$1++];
+      number += source$6[index$1++];
     }
 
-    if (isIdentifierStart(source$3.charCodeAt(index$1)) || isDecimalDigit(source$3.charCodeAt(index$1))) {
+    if (isIdentifierStart(source$6.charCodeAt(index$1)) || isDecimalDigit(source$6.charCodeAt(index$1))) {
       throwError({}, MessageUnexpectedToken, ILLEGAL);
     }
 
@@ -40559,14 +41358,14 @@
 
   function scanNumericLiteral() {
     var number, start, ch;
-    ch = source$3[index$1];
+    ch = source$6[index$1];
     assert(isDecimalDigit(ch.charCodeAt(0)) || ch === '.', 'Numeric literal must start with a decimal digit or a decimal point');
     start = index$1;
     number = '';
 
     if (ch !== '.') {
-      number = source$3[index$1++];
-      ch = source$3[index$1]; // Hex number starts with '0x'.
+      number = source$6[index$1++];
+      ch = source$6[index$1]; // Hex number starts with '0x'.
       // Octal number starts with '0'.
 
       if (number === '0') {
@@ -40585,41 +41384,41 @@
         }
       }
 
-      while (isDecimalDigit(source$3.charCodeAt(index$1))) {
-        number += source$3[index$1++];
+      while (isDecimalDigit(source$6.charCodeAt(index$1))) {
+        number += source$6[index$1++];
       }
 
-      ch = source$3[index$1];
+      ch = source$6[index$1];
     }
 
     if (ch === '.') {
-      number += source$3[index$1++];
+      number += source$6[index$1++];
 
-      while (isDecimalDigit(source$3.charCodeAt(index$1))) {
-        number += source$3[index$1++];
+      while (isDecimalDigit(source$6.charCodeAt(index$1))) {
+        number += source$6[index$1++];
       }
 
-      ch = source$3[index$1];
+      ch = source$6[index$1];
     }
 
     if (ch === 'e' || ch === 'E') {
-      number += source$3[index$1++];
-      ch = source$3[index$1];
+      number += source$6[index$1++];
+      ch = source$6[index$1];
 
       if (ch === '+' || ch === '-') {
-        number += source$3[index$1++];
+        number += source$6[index$1++];
       }
 
-      if (isDecimalDigit(source$3.charCodeAt(index$1))) {
-        while (isDecimalDigit(source$3.charCodeAt(index$1))) {
-          number += source$3[index$1++];
+      if (isDecimalDigit(source$6.charCodeAt(index$1))) {
+        while (isDecimalDigit(source$6.charCodeAt(index$1))) {
+          number += source$6[index$1++];
         }
       } else {
         throwError({}, MessageUnexpectedToken, ILLEGAL);
       }
     }
 
-    if (isIdentifierStart(source$3.charCodeAt(index$1))) {
+    if (isIdentifierStart(source$6.charCodeAt(index$1))) {
       throwError({}, MessageUnexpectedToken, ILLEGAL);
     }
 
@@ -40639,25 +41438,25 @@
         ch,
         code,
         octal = false;
-    quote = source$3[index$1];
+    quote = source$6[index$1];
     assert(quote === '\'' || quote === '"', 'String literal must starts with a quote');
     start = index$1;
     ++index$1;
 
     while (index$1 < length) {
-      ch = source$3[index$1++];
+      ch = source$6[index$1++];
 
       if (ch === quote) {
         quote = '';
         break;
       } else if (ch === '\\') {
-        ch = source$3[index$1++];
+        ch = source$6[index$1++];
 
         if (!ch || !isLineTerminator(ch.charCodeAt(0))) {
           switch (ch) {
             case 'u':
             case 'x':
-              if (source$3[index$1] === '{') {
+              if (source$6[index$1] === '{') {
                 ++index$1;
                 str += scanUnicodeCodePointEscape();
               } else {
@@ -40698,13 +41497,13 @@
                   octal = true;
                 }
 
-                if (index$1 < length && isOctalDigit(source$3[index$1])) {
+                if (index$1 < length && isOctalDigit(source$6[index$1])) {
                   octal = true;
-                  code = code * 8 + '01234567'.indexOf(source$3[index$1++]); // 3 digits are only allowed when string starts
+                  code = code * 8 + '01234567'.indexOf(source$6[index$1++]); // 3 digits are only allowed when string starts
                   // with 0, 1, 2, 3
 
-                  if ('0123'.indexOf(ch) >= 0 && index$1 < length && isOctalDigit(source$3[index$1])) {
-                    code = code * 8 + '01234567'.indexOf(source$3[index$1++]);
+                  if ('0123'.indexOf(ch) >= 0 && index$1 < length && isOctalDigit(source$6[index$1])) {
+                    code = code * 8 + '01234567'.indexOf(source$6[index$1++]);
                   }
                 }
 
@@ -40716,7 +41515,7 @@
               break;
           }
         } else {
-          if (ch === '\r' && source$3[index$1] === '\n') {
+          if (ch === '\r' && source$6[index$1] === '\n') {
             ++index$1;
           }
         }
@@ -40780,18 +41579,18 @@
 
   function scanRegExpBody() {
     var ch, str, classMarker, terminated, body;
-    ch = source$3[index$1];
+    ch = source$6[index$1];
     assert(ch === '/', 'Regular expression literal must start with a slash');
-    str = source$3[index$1++];
+    str = source$6[index$1++];
     classMarker = false;
     terminated = false;
 
     while (index$1 < length) {
-      ch = source$3[index$1++];
+      ch = source$6[index$1++];
       str += ch;
 
       if (ch === '\\') {
-        ch = source$3[index$1++]; // ECMA-262 7.8.5
+        ch = source$6[index$1++]; // ECMA-262 7.8.5
 
         if (isLineTerminator(ch.charCodeAt(0))) {
           throwError({}, MessageUnterminatedRegExp);
@@ -40832,7 +41631,7 @@
     flags = '';
 
     while (index$1 < length) {
-      ch = source$3[index$1];
+      ch = source$6[index$1];
 
       if (!isIdentifierPart(ch.charCodeAt(0))) {
         break;
@@ -40860,7 +41659,7 @@
 
   function scanRegExp() {
     var start, body, flags, value;
-    lookahead$1 = null;
+    lookahead$4 = null;
     skipComment();
     start = index$1;
     body = scanRegExpBody();
@@ -40893,7 +41692,7 @@
       };
     }
 
-    const ch = source$3.charCodeAt(index$1);
+    const ch = source$6.charCodeAt(index$1);
 
     if (isIdentifierStart(ch)) {
       return scanIdentifier();
@@ -40912,7 +41711,7 @@
 
 
     if (ch === 0x2E) {
-      if (isDecimalDigit(source$3.charCodeAt(index$1 + 1))) {
+      if (isDecimalDigit(source$6.charCodeAt(index$1 + 1))) {
         return scanNumericLiteral();
       }
 
@@ -40927,16 +41726,16 @@
   }
 
   function lex() {
-    const token = lookahead$1;
+    const token = lookahead$4;
     index$1 = token.end;
-    lookahead$1 = advance();
+    lookahead$4 = advance();
     index$1 = token.end;
     return token;
   }
 
   function peek$1() {
     const pos = index$1;
-    lookahead$1 = advance();
+    lookahead$4 = advance();
     index$1 = pos;
   }
 
@@ -40978,7 +41777,7 @@
   function finishLiteral(token) {
     const node = new ASTNode(SyntaxLiteral);
     node.value = token.value;
-    node.raw = source$3.slice(token.start, token.end);
+    node.raw = source$6.slice(token.start, token.end);
 
     if (token.regex) {
       if (node.raw === '//') {
@@ -41074,18 +41873,18 @@
 
 
   function match(value) {
-    return lookahead$1.type === TokenPunctuator && lookahead$1.value === value;
+    return lookahead$4.type === TokenPunctuator && lookahead$4.value === value;
   } // Return true if the next token matches the specified keyword
 
 
   function matchKeyword(keyword) {
-    return lookahead$1.type === TokenKeyword && lookahead$1.value === keyword;
+    return lookahead$4.type === TokenKeyword && lookahead$4.value === keyword;
   } // 11.1.4 Array Initialiser
 
 
   function parseArrayInitialiser() {
     const elements = [];
-    index$1 = lookahead$1.start;
+    index$1 = lookahead$4.start;
     expect('[');
 
     while (!match(']')) {
@@ -41107,7 +41906,7 @@
 
 
   function parseObjectPropertyKey() {
-    index$1 = lookahead$1.start;
+    index$1 = lookahead$4.start;
     const token = lex(); // Note: This function is called only from parseObjectProperty(), where
     // EOF and Punctuator tokens are already filtered out.
 
@@ -41124,8 +41923,8 @@
 
   function parseObjectProperty() {
     var token, key, id, value;
-    index$1 = lookahead$1.start;
-    token = lookahead$1;
+    index$1 = lookahead$4.start;
+    token = lookahead$4;
 
     if (token.type === TokenIdentifier) {
       id = parseObjectPropertyKey();
@@ -41151,7 +41950,7 @@
         key,
         map = {},
         toString = String;
-    index$1 = lookahead$1.start;
+    index$1 = lookahead$4.start;
     expect('{');
 
     while (!match('}')) {
@@ -41210,14 +42009,14 @@
       return parseObjectInitialiser();
     }
 
-    type = lookahead$1.type;
-    index$1 = lookahead$1.start;
+    type = lookahead$4.type;
+    index$1 = lookahead$4.start;
 
-    if (type === TokenIdentifier || legalKeywords[lookahead$1.value]) {
+    if (type === TokenIdentifier || legalKeywords[lookahead$4.value]) {
       expr = finishIdentifier(lex().value);
     } else if (type === TokenStringLiteral || type === TokenNumericLiteral) {
-      if (lookahead$1.octal) {
-        throwError(lookahead$1, MessageStrictOctalLiteral);
+      if (lookahead$4.octal) {
+        throwError(lookahead$4, MessageStrictOctalLiteral);
       }
 
       expr = finishLiteral(lex());
@@ -41263,7 +42062,7 @@
   }
 
   function parseNonComputedProperty() {
-    index$1 = lookahead$1.start;
+    index$1 = lookahead$4.start;
     const token = lex();
 
     if (!isIdentifierName(token)) {
@@ -41311,7 +42110,7 @@
   function parsePostfixExpression() {
     const expr = parseLeftHandSideExpressionAllowCall();
 
-    if (lookahead$1.type === TokenPunctuator) {
+    if (lookahead$4.type === TokenPunctuator) {
       if (match('++') || match('--')) {
         throw new Error(DISABLED);
       }
@@ -41324,7 +42123,7 @@
   function parseUnaryExpression() {
     var token, expr;
 
-    if (lookahead$1.type !== TokenPunctuator && lookahead$1.type !== TokenKeyword) {
+    if (lookahead$4.type !== TokenPunctuator && lookahead$4.type !== TokenKeyword) {
       expr = parsePostfixExpression();
     } else if (match('++') || match('--')) {
       throw new Error(DISABLED);
@@ -41415,9 +42214,9 @@
 
   function parseBinaryExpression() {
     var marker, markers, expr, token, prec, stack, right, operator, left, i;
-    marker = lookahead$1;
+    marker = lookahead$4;
     left = parseUnaryExpression();
-    token = lookahead$1;
+    token = lookahead$4;
     prec = binaryPrecedence(token);
 
     if (prec === 0) {
@@ -41426,11 +42225,11 @@
 
     token.prec = prec;
     lex();
-    markers = [marker, lookahead$1];
+    markers = [marker, lookahead$4];
     right = parseUnaryExpression();
     stack = [left, token, right];
 
-    while ((prec = binaryPrecedence(lookahead$1)) > 0) {
+    while ((prec = binaryPrecedence(lookahead$4)) > 0) {
       // Reduce: make a binary expression from the three topmost entries.
       while (stack.length > 2 && prec <= stack[stack.length - 2].prec) {
         right = stack.pop();
@@ -41445,7 +42244,7 @@
       token = lex();
       token.prec = prec;
       stack.push(token);
-      markers.push(lookahead$1);
+      markers.push(lookahead$4);
       expr = parseUnaryExpression();
       stack.push(expr);
     } // Final reduce to clean-up the stack.
@@ -41492,14 +42291,14 @@
   }
 
   function parser(code) {
-    source$3 = code;
+    source$6 = code;
     index$1 = 0;
-    length = source$3.length;
-    lookahead$1 = null;
+    length = source$6.length;
+    lookahead$4 = null;
     peek$1();
     const expr = parseExpression();
 
-    if (lookahead$1.type !== TokenEOF) {
+    if (lookahead$4.type !== TokenEOF) {
       throw new Error('Unexpect token after expression.');
     }
 
@@ -41562,8 +42361,8 @@
       sqrt: 'Math.sqrt',
       tan: 'Math.tan',
       clamp: function (args) {
-        if (args.length < 3) error('Missing arguments to clamp function.');
-        if (args.length > 3) error('Too many arguments to clamp function.');
+        if (args.length < 3) error$1('Missing arguments to clamp function.');
+        if (args.length > 3) error$1('Too many arguments to clamp function.');
         const a = args.map(codegen);
         return 'Math.max(' + a[1] + ', Math.min(' + a[2] + ',' + a[0] + '))';
       },
@@ -41591,13 +42390,6 @@
       utcmilliseconds: fn('getUTCMilliseconds', DATE, 0),
       // sequence functions
       length: fn('length', null, -1),
-      join: fn('join', null),
-      indexof: fn('indexOf', null),
-      lastindexof: fn('lastIndexOf', null),
-      slice: fn('slice', null),
-      reverse: function (args) {
-        return '(' + codegen(args[0]) + ').slice().reverse()';
-      },
       // STRING functions
       parseFloat: 'parseFloat',
       parseInt: 'parseInt',
@@ -41605,15 +42397,14 @@
       lower: fn('toLowerCase', STRING, 0),
       substring: fn('substring', STRING),
       split: fn('split', STRING),
-      replace: fn('replace', STRING),
       trim: fn('trim', STRING, 0),
       // REGEXP functions
       regexp: REGEXP,
       test: fn('test', REGEXP),
       // Control Flow functions
       if: function (args) {
-        if (args.length < 3) error('Missing arguments to if function.');
-        if (args.length > 3) error('Too many arguments to if function.');
+        if (args.length < 3) error$1('Missing arguments to if function.');
+        if (args.length > 3) error$1('Too many arguments to if function.');
         const a = args.map(codegen);
         return '(' + a[0] + '?' + a[1] + ':' + a[2] + ')';
       }
@@ -41641,7 +42432,7 @@
     function visit(ast) {
       if (isString(ast)) return ast;
       const generator = Generators[ast.type];
-      if (generator == null) error('Unsupported type: ' + ast.type);
+      if (generator == null) error$1('Unsupported type: ' + ast.type);
       return generator(ast);
     }
 
@@ -41653,7 +42444,7 @@
         if (memberDepth > 0) {
           return id;
         } else if (has(forbidden, id)) {
-          return error('Illegal identifier: ' + id);
+          return error$1('Illegal identifier: ' + id);
         } else if (has(constants, id)) {
           return constants[id];
         } else if (has(allowed, id)) {
@@ -41679,17 +42470,17 @@
       },
       CallExpression: n => {
         if (n.callee.type !== 'Identifier') {
-          error('Illegal callee type: ' + n.callee.type);
+          error$1('Illegal callee type: ' + n.callee.type);
         }
 
         const callee = n.callee.name,
               args = n.arguments,
               fn = has(functions, callee) && functions[callee];
-        if (!fn) error('Unrecognized function: ' + callee);
+        if (!fn) error$1('Unrecognized function: ' + callee);
         return isFunction(fn) ? fn(args) : fn + '(' + args.map(visit).join(',') + ')';
       },
       ArrayExpression: n => '[' + n.elements.map(visit).join(',') + ']',
-      BinaryExpression: n => '(' + visit(n.left) + n.operator + visit(n.right) + ')',
+      BinaryExpression: n => '(' + visit(n.left) + ' ' + n.operator + ' ' + visit(n.right) + ')',
       UnaryExpression: n => '(' + n.operator + visit(n.argument) + ')',
       ConditionalExpression: n => '(' + visit(n.test) + '?' + visit(n.consequent) + ':' + visit(n.alternate) + ')',
       LogicalExpression: n => '(' + visit(n.left) + n.operator + visit(n.right) + ')',
@@ -41718,17 +42509,75 @@
     return codegen;
   }
 
+  function ascending$4(a, b) {
+    return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
+  }
+
+  function bisector$1(f) {
+    let delta = f;
+    let compare = f;
+
+    if (f.length === 1) {
+      delta = (d, x) => f(d) - x;
+
+      compare = ascendingComparator$1(f);
+    }
+
+    function left(a, x, lo, hi) {
+      if (lo == null) lo = 0;
+      if (hi == null) hi = a.length;
+
+      while (lo < hi) {
+        const mid = lo + hi >>> 1;
+        if (compare(a[mid], x) < 0) lo = mid + 1;else hi = mid;
+      }
+
+      return lo;
+    }
+
+    function right(a, x, lo, hi) {
+      if (lo == null) lo = 0;
+      if (hi == null) hi = a.length;
+
+      while (lo < hi) {
+        const mid = lo + hi >>> 1;
+        if (compare(a[mid], x) > 0) hi = mid;else lo = mid + 1;
+      }
+
+      return lo;
+    }
+
+    function center(a, x, lo, hi) {
+      if (lo == null) lo = 0;
+      if (hi == null) hi = a.length;
+      const i = left(a, x, lo, hi - 1);
+      return i > lo && delta(a[i - 1], x) > -delta(a[i], x) ? i - 1 : i;
+    }
+
+    return {
+      left,
+      center,
+      right
+    };
+  }
+
+  function ascendingComparator$1(f) {
+    return (d, x) => ascending$4(f(d), x);
+  }
+
   const Intersect = 'intersect';
   const Union = 'union';
   const VlMulti = 'vlMulti';
+  const VlPoint = 'vlPoint';
   const Or = 'or';
   const And = 'and';
-  var TYPE_ENUM = 'E',
-      TYPE_RANGE_INC = 'R',
-      TYPE_RANGE_EXC = 'R-E',
-      TYPE_RANGE_LE = 'R-LE',
-      TYPE_RANGE_RE = 'R-RE',
-      UNIT_INDEX = 'index:unit'; // TODO: revisit date coercion?
+  const SELECTION_ID = '_vgsid_',
+        TYPE_ENUM = 'E',
+        TYPE_RANGE_INC = 'R',
+        TYPE_RANGE_EXC = 'R-E',
+        TYPE_RANGE_LE = 'R-LE',
+        TYPE_RANGE_RE = 'R-RE',
+        UNIT_INDEX = 'index:unit'; // TODO: revisit date coercion?
 
   function testPoint(datum, entry) {
     var fields = entry.fields,
@@ -41826,16 +42675,59 @@
 
     return n && intersect;
   }
+
+  const selectionId = field(SELECTION_ID),
+        bisect = bisector$1(selectionId),
+        bisectLeft$1 = bisect.left,
+        bisectRight$1 = bisect.right;
+
+  function selectionIdTest(name, datum, op) {
+    const data = this.context.data[name],
+          entries = data ? data.values.value : [],
+          unitIdx = data ? data[UNIT_INDEX] && data[UNIT_INDEX].value : undefined,
+          intersect = op === Intersect,
+          value = selectionId(datum),
+          index = bisectLeft$1(entries, value);
+    if (index === entries.length) return false;
+    if (selectionId(entries[index]) !== value) return false;
+
+    if (unitIdx && intersect) {
+      if (unitIdx.size === 1) return true;
+      if (bisectRight$1(entries, value) - index < unitIdx.size) return false;
+    }
+
+    return true;
+  }
+  /**
+   * Maps an array of scene graph items to an array of selection tuples.
+   * @param {string} name  - The name of the dataset representing the selection.
+   * @param {string} unit  - The name of the unit view.
+   *
+   * @returns {array} An array of selection entries for the given unit.
+   */
+
+
+  function selectionTuples(array, base) {
+    return array.map(x => extend({
+      values: base.fields.map(f => (f.getter || (f.getter = field(f.field)))(x.datum))
+    }, base));
+  }
   /**
    * Resolves selection for use as a scale domain or reads via the API.
    * @param {string} name - The name of the dataset representing the selection
    * @param {string} [op='union'] - The set operation for combining selections.
    *                 One of 'intersect' or 'union' (default).
+   * @param {boolean} isMulti - Identifies a "multi" selection to perform more
+   *                 expensive resolution computation.
+   * @param {boolean} vl5 - With Vega-Lite v5, "multi" selections are now called "point"
+   *                 selections, and thus the resolved tuple should reflect this name.
+   *                 This parameter allows us to reflect this change without triggering
+   *                 a major version bump for Vega.
    * @returns {object} An object of selected fields and values.
    */
 
 
-  function selectionResolve(name, op, isMulti) {
+  function selectionResolve(name, op, isMulti, vl5) {
     var data = this.context.data[name],
         entries = data ? data.values.value : [],
         resolved = {},
@@ -41890,7 +42782,8 @@
     entries = Object.keys(multiRes);
 
     if (isMulti && entries.length) {
-      resolved[VlMulti] = op === Union ? {
+      const key = vl5 ? VlPoint : VlMulti;
+      resolved[key] = op === Union ? {
         [Or]: entries.reduce((acc, k) => (acc.push(...multiRes[k]), acc), [])
       } : {
         [And]: entries.map(k => ({
@@ -41954,7 +42847,7 @@
         IndexPrefix = '@';
 
   function selectionVisitor(name, args, scope, params) {
-    if (args[0].type !== Literal) error('First argument to selection functions must be a string literal.');
+    if (args[0].type !== Literal) error$1('First argument to selection functions must be a string literal.');
     const data = args[0].value,
           op = args.length >= 2 && peek(args).value,
           field = 'unit',
@@ -42043,7 +42936,7 @@
 
   function dataVisitor(name, args, scope, params) {
     if (args[0].type !== Literal) {
-      error('First argument to data functions must be a string literal.');
+      error$1('First argument to data functions must be a string literal.');
     }
 
     const data = args[0].value,
@@ -42058,8 +42951,8 @@
   }
 
   function indataVisitor(name, args, scope, params) {
-    if (args[0].type !== Literal) error('First argument to indata must be a string literal.');
-    if (args[1].type !== Literal) error('Second argument to indata must be a string literal.');
+    if (args[0].type !== Literal) error$1('First argument to indata must be a string literal.');
+    if (args[1].type !== Literal) error$1('Second argument to indata must be a string literal.');
     const data = args[0].value,
           field = args[1].value,
           indexName = IndexPrefix$1 + field;
@@ -42158,7 +43051,7 @@
     return args[args.length - 1];
   }
 
-  function warn() {
+  function warn$1() {
     return log$5(this.context.dataflow, 'warn', arguments);
   }
 
@@ -42288,6 +43181,46 @@
   function pinchAngle(event) {
     const t = event.touches;
     return Math.atan2(t[0].clientY - t[1].clientY, t[0].clientX - t[1].clientX);
+  }
+
+  const accessors = {};
+
+  function pluck(data, name) {
+    const accessor = accessors[name] || (accessors[name] = field(name));
+    return isArray(data) ? data.map(accessor) : accessor(data);
+  }
+
+  function array$6(seq) {
+    return isArray(seq) || ArrayBuffer.isView(seq) ? seq : null;
+  }
+
+  function sequence$1(seq) {
+    return array$6(seq) || (isString(seq) ? seq : null);
+  }
+
+  function join$2(seq, ...args) {
+    return array$6(seq).join(...args);
+  }
+
+  function indexof(seq, ...args) {
+    return sequence$1(seq).indexOf(...args);
+  }
+
+  function lastindexof(seq, ...args) {
+    return sequence$1(seq).lastIndexOf(...args);
+  }
+
+  function slice$1(seq, ...args) {
+    return sequence$1(seq).slice(...args);
+  }
+
+  function replace$1(str, pattern, repl) {
+    if (isFunction(repl)) error$1('Function argument passed to replace.');
+    return String(str).replace(pattern, repl);
+  }
+
+  function reverse$1(seq) {
+    return array$6(seq).slice().reverse();
   }
 
   function bandspace(count, paddingInner, paddingOuter) {
@@ -42463,11 +43396,18 @@
     toDate,
     toNumber,
     toString,
+    indexof,
+    join: join$2,
+    lastindexof,
+    replace: replace$1,
+    reverse: reverse$1,
+    slice: slice$1,
     flush,
     lerp,
     merge: merge$3,
     pad,
     peek,
+    pluck,
     span,
     inrange,
     truncate,
@@ -42498,7 +43438,7 @@
     utcweek,
     dayofyear,
     utcdayofyear,
-    warn,
+    warn: warn$1,
     info,
     debug,
     extent,
@@ -42591,7 +43531,9 @@
   expressionFunction('treeAncestors', treeAncestors, dataVisitor); // register Vega-Lite selection functions
 
   expressionFunction('vlSelectionTest', selectionTest, selectionVisitor);
+  expressionFunction('vlSelectionIdTest', selectionIdTest, selectionVisitor);
   expressionFunction('vlSelectionResolve', selectionResolve, selectionVisitor);
+  expressionFunction('vlSelectionTuples', selectionTuples);
 
   function parser$1(expr, scope) {
     const params = {}; // parse the expression to an abstract syntax tree (ast)
@@ -42602,7 +43544,7 @@
       expr = isString(expr) ? expr : $(expr) + '';
       ast = parser(expr);
     } catch (err) {
-      error('Expression parse error: ' + expr);
+      error$1('Expression parse error: ' + expr);
     } // analyze ast function calls for dependencies
 
 
@@ -42839,7 +43781,7 @@
 
     if (spec.params) {
       const op = ctx.get(spec.id);
-      if (!op) error('Invalid operator id: ' + spec.id);
+      if (!op) error$1('Invalid operator id: ' + spec.id);
       ctx.dataflow.connect(op, op.parameters(ctx.parseParameters(spec.params), spec.react, spec.initonly));
     }
   }
@@ -42913,7 +43855,7 @@
    */
 
   function getOperator(_, ctx) {
-    return ctx.get(_.$ref) || error('Operator not defined: ' + _.$ref);
+    return ctx.get(_.$ref) || error$1('Operator not defined: ' + _.$ref);
   }
   /**
    * Resolve an expression reference.
@@ -43047,7 +43989,7 @@
     }
 
     if (stream == null) {
-      error('Invalid stream definition: ' + JSON.stringify(spec));
+      error$1('Invalid stream definition: ' + JSON.stringify(spec));
     }
 
     if (spec.consume) stream.consume(true);
@@ -43065,7 +44007,7 @@
         target = null,
         update = spec.update,
         params = undefined;
-    if (!source) error('Source not defined: ' + spec.source);
+    if (!source) error$1('Source not defined: ' + spec.source);
     target = spec.target && spec.target.$expr ? ctx.eventExpression(spec.target.$expr) : ctx.get(spec.target);
 
     if (update && update.$expr) {
@@ -43383,7 +44325,7 @@
     var data = view._runtime.data;
 
     if (!has(data, name)) {
-      error('Unrecognized data set: ' + name);
+      error$1('Unrecognized data set: ' + name);
     }
 
     return data[name];
@@ -43395,7 +44337,7 @@
 
   function change(name, changes) {
     if (!isChangeSet(changes)) {
-      error('Second argument to changes must be a changeset.');
+      error$1('Second argument to changes must be a changeset.');
     }
 
     const dataset = dataref(this, name);
@@ -43529,12 +44471,8 @@
       item: constant$1(item || {}),
       group: group,
       xy: xy,
-      x: function (item) {
-        return xy(item)[0];
-      },
-      y: function (item) {
-        return xy(item)[1];
-      }
+      x: item => xy(item)[0],
+      y: item => xy(item)[1]
     };
   }
 
@@ -44074,7 +45012,7 @@
   async function renderHeadless(view, type, scaleFactor, opt) {
     const module = renderModule(type),
           ctr = module && module.headless;
-    if (!ctr) error('Unrecognized renderer type: ' + type);
+    if (!ctr) error$1('Unrecognized renderer type: ' + type);
     await view.runAsync();
     return initializeRenderer(view, null, null, ctr, scaleFactor, opt).renderAsync(view._scenegraph.root);
   }
@@ -44091,7 +45029,7 @@
 
   async function renderToImageURL(type, scaleFactor) {
     if (type !== RenderType.Canvas && type !== RenderType.SVG && type !== RenderType.PNG) {
-      error('Unrecognized image type: ' + type);
+      error$1('Unrecognized image type: ' + type);
     }
 
     const r = await renderHeadless(this, type, scaleFactor);
@@ -44135,7 +45073,7 @@
     var scales = this._runtime.scales;
 
     if (!has(scales, name)) {
-      error('Unrecognized scale or projection: ' + name);
+      error$1('Unrecognized scale or projection: ' + name);
     }
 
     return scales[name].value;
@@ -44404,7 +45342,7 @@
   }
 
   function lookupSignal(view, name) {
-    return has(view._signals, name) ? view._signals[name] : error('Unrecognized signal name: ' + $(name));
+    return has(view._signals, name) ? view._signals[name] : error$1('Unrecognized signal name: ' + $(name));
   }
 
   function findOperatorHandler(op, handler) {
@@ -44513,7 +45451,7 @@
 
     renderer(type) {
       if (!arguments.length) return this._renderType;
-      if (!renderModule(type)) error('Unrecognized renderer type: ' + type);
+      if (!renderModule(type)) error$1('Unrecognized renderer type: ' + type);
 
       if (type !== this._renderType) {
         this._renderType = type;
@@ -45138,7 +46076,7 @@
       object = 'datum';
       field = ref.datum;
     } else {
-      error('Invalid field reference: ' + $(ref));
+      error$1('Invalid field reference: ' + $(ref));
     }
 
     if (!ref.signal) {
@@ -45238,7 +46176,7 @@
         OUTER_INVALID = ['value', 'update', 'init', 'react', 'bind'];
 
   function outerError(prefix, name) {
-    error(prefix + ' for "outer" push: ' + $(name));
+    error$1(prefix + ' for "outer" push: ' + $(name));
   }
 
   function parseSignal(signal, scope) {
@@ -45354,7 +46292,7 @@
   const Timer$1 = 'timer';
 
   function parseStream$2(stream, scope) {
-    const method = stream.merge ? mergeStream : stream.stream ? nestedStream : stream.type ? eventStream : error('Invalid stream specification: ' + $(stream));
+    const method = stream.merge ? mergeStream : stream.stream ? nestedStream : stream.type ? eventStream : error$1('Invalid stream specification: ' + $(stream));
     return method(stream, scope);
   }
 
@@ -45402,7 +46340,7 @@
 
     if (param) {
       if (param.length !== 2) {
-        error('Stream "between" parameter must have 2 entries: ' + $(stream));
+        error$1('Stream "between" parameter must have 2 entries: ' + $(stream));
       }
 
       entry.between = [parseStream$2(param[0], scope), parseStream$2(param[1], scope)];
@@ -45462,7 +46400,7 @@
         sources = [];
 
     if (!events) {
-      error('Signal update missing events specification.');
+      error$1('Signal update missing events specification.');
     } // interpret as an event selector string
 
 
@@ -45485,7 +46423,7 @@
     }
 
     if (encode != null) {
-      if (update) error('Signal encode and update are mutually exclusive.');
+      if (update) error$1('Signal encode and update are mutually exclusive.');
       update = 'encode(item(),' + $(encode) + ')';
     } // resolve update value
 
@@ -45495,7 +46433,7 @@
       $params: {
         $value: scope.signalRef(update.signal)
       }
-    } : error('Invalid signal update specification.');
+    } : error$1('Invalid signal update specification.');
 
     if (spec.force) {
       entry.options = {
@@ -45524,7 +46462,7 @@
 
     if (signal.init) {
       if (expr) {
-        error('Signals can not include both init and update expressions.');
+        error$1('Signals can not include both init and update expressions.');
       } else {
         expr = signal.init;
         op.initonly = true;
@@ -45583,7 +46521,7 @@
     const type = spec.type || 'linear';
 
     if (!isValidScaleType(type)) {
-      error('Unrecognized scale type: ' + $(type));
+      error$1('Unrecognized scale type: ' + $(type));
     }
 
     scope.addScale(spec.name, {
@@ -45620,7 +46558,7 @@
   }
 
   function parseLiteral(v, scope) {
-    return !isObject(v) ? v : v.signal ? scope.signalRef(v.signal) : error('Unsupported object: ' + $(v));
+    return !isObject(v) ? v : v.signal ? scope.signalRef(v.signal) : error$1('Unsupported object: ' + $(v));
   }
 
   function parseArray(v, scope) {
@@ -45628,14 +46566,14 @@
   }
 
   function dataLookupError(name) {
-    error('Can not find data set: ' + $(name));
+    error$1('Can not find data set: ' + $(name));
   } // -- SCALE DOMAIN ----
 
 
   function parseScaleDomain(domain, spec, scope) {
     if (!domain) {
       if (spec.domainMin != null || spec.domainMax != null) {
-        error('No scale domain defined for domainMin/domainMax to override.');
+        error$1('No scale domain defined for domainMin/domainMax to override.');
       }
 
       return; // default domain
@@ -45731,10 +46669,10 @@
           field: 'key'
         };
       } else if (!sort.field && sort.op !== 'count') {
-        error('No field provided for sort aggregate op: ' + sort.op);
+        error$1('No field provided for sort aggregate op: ' + sort.op);
       } else if (multidomain && sort.field) {
         if (sort.op && !MULTIDOMAIN_SORT_OPS[sort.op]) {
-          error('Multiple domain scales can not be sorted using ' + sort.op);
+          error$1('Multiple domain scales can not be sorted using ' + sort.op);
         }
       }
     }
@@ -45814,7 +46752,7 @@
           signal: 'height'
         }, 0];
       } else {
-        error('Unrecognized scale range value: ' + $(range));
+        error$1('Unrecognized scale range value: ' + $(range));
       }
     } else if (range.scheme) {
       params.scheme = isArray(range.scheme) ? parseArray(range.scheme, scope) : parseLiteral(range.scheme, scope);
@@ -45827,7 +46765,7 @@
     } else if (isDiscrete(spec.type) && !isArray(range)) {
       return parseScaleDomain(range, spec, scope);
     } else if (!isArray(range)) {
-      error('Unsupported range type: ' + $(range));
+      error$1('Unsupported range type: ' + $(range));
     }
 
     return range.map(v => (isArray(v) ? parseArray : parseLiteral)(v, scope));
@@ -45853,7 +46791,7 @@
   }
 
   function parseParameter$1(_, name, scope) {
-    return isArray(_) ? _.map(_ => parseParameter$1(_, name, scope)) : !isObject(_) ? _ : _.signal ? scope.signalRef(_.signal) : name === 'fit' ? _ : error('Unsupported parameter object: ' + $(_));
+    return isArray(_) ? _.map(_ => parseParameter$1(_, name, scope)) : !isObject(_) ? _ : _.signal ? scope.signalRef(_.signal) : name === 'fit' ? _ : error$1('Unsupported parameter object: ' + $(_));
   }
 
   const Top$1 = 'top';
@@ -46513,7 +47451,7 @@
 
   function parseTransform(spec, scope) {
     const def = definition(spec.type);
-    if (!def) error('Unrecognized transform type: ' + $(spec.type));
+    if (!def) error$1('Unrecognized transform type: ' + $(spec.type));
     const t = entry$1(def.type.toLowerCase(), null, parseParameters$1(def, spec, scope));
     if (spec.signal) scope.addSignal(spec.signal, scope.proxy(t));
     t.metadata = def.metadata || {};
@@ -46548,7 +47486,7 @@
       return parseIndexParameter(def, spec, scope);
     } else if (value === undefined) {
       if (def.required) {
-        error('Missing required ' + $(spec.type) + ' parameter: ' + $(def.name));
+        error$1('Missing required ' + $(spec.type) + ' parameter: ' + $(def.name));
       }
 
       return;
@@ -46569,7 +47507,7 @@
     const type = def.type;
 
     if (isSignal(value)) {
-      return isExpr$1(type) ? error('Expression references can not be signals.') : isField(type) ? scope.fieldRef(value) : isCompare(type) ? scope.compareRef(value) : scope.signalRef(value.signal);
+      return isExpr$1(type) ? error$1('Expression references can not be signals.') : isField(type) ? scope.fieldRef(value) : isCompare(type) ? scope.compareRef(value) : scope.signalRef(value.signal);
     } else {
       const expr = def.expr || isField(type);
       return expr && outerExpr(value) ? scope.exprRef(value.expr, value.as) : expr && outerField(value) ? fieldRef(value.field, value.as) : isExpr$1(type) ? parser$1(value, scope) : isData(type) ? ref(scope.getData(value).values) : isField(type) ? fieldRef(value) : isCompare(type) ? scope.compareRef(value) : value;
@@ -46582,7 +47520,7 @@
 
   function parseIndexParameter(def, spec, scope) {
     if (!isString(spec.from)) {
-      error('Lookup "from" parameter must be a string literal.');
+      error$1('Lookup "from" parameter must be a string literal.');
     }
 
     return scope.getData(spec.from).lookupRef(scope, spec.key);
@@ -46598,7 +47536,7 @@
     if (def.array) {
       if (!isArray(value)) {
         // signals not allowed!
-        error('Expected an array of sub-parameters. Instead: ' + $(value));
+        error$1('Expected an array of sub-parameters. Instead: ' + $(value));
       }
 
       return value.map(v => parseSubParameter(def, v, scope));
@@ -46629,7 +47567,7 @@
     } // raise error if matching key not found
 
 
-    if (!pdef) error('Unsupported parameter: ' + $(value)); // parse params, create Params transform, return ref
+    if (!pdef) error$1('Unsupported parameter: ' + $(value)); // parse params, create Params transform, return ref
 
     const params = extend(parseParameters$1(pdef, value, scope), pdef.key);
     return ref(scope.add(Params$2(params)));
@@ -46655,7 +47593,7 @@
       dataRef = ref(scope.add(Collect$1(null, [{}])));
     } // if faceted, process facet specification
     else if (facet = from.facet) {
-        if (!group) error('Only group marks can be faceted.'); // use pre-faceted source data, if available
+        if (!group) error$1('Only group marks can be faceted.'); // use pre-faceted source data, if available
 
         if (facet.field != null) {
           dataRef = parent = getDataRef(facet, scope);
@@ -46855,11 +47793,11 @@
     let op;
 
     if (!facet.name) {
-      error('Facet must have a name: ' + $(facet));
+      error$1('Facet must have a name: ' + $(facet));
     }
 
     if (!facet.data) {
-      error('Facet must reference a data set: ' + $(facet));
+      error$1('Facet must reference a data set: ' + $(facet));
     }
 
     if (facet.field) {
@@ -46874,7 +47812,7 @@
         pulse: data
       }));
     } else {
-      error('Facet must specify groupby or field: ' + $(facet));
+      error$1('Facet must specify groupby or field: ' + $(facet));
     } // initialize facet subscope
 
 
@@ -46972,7 +47910,7 @@
               md = tx.metadata;
 
         if (md.generates || md.changes) {
-          error('Mark transforms should not generate new data.');
+          error$1('Mark transforms should not generate new data.');
         }
 
         if (!md.nomod) enc.params.mod = true; // update encode mod handling
@@ -47049,7 +47987,7 @@
       scope.addData(name, new DataScope(scope, store, render, sieve));
       if (spec.on) spec.on.forEach(on => {
         if (on.insert || on.remove || on.toggle) {
-          error('Marks only support modify triggers.');
+          error$1('Marks only support modify triggers.');
         }
 
         parseTrigger(on, scope, name);
@@ -47099,7 +48037,7 @@
         children; // resolve scales and 'canonical' scale name
 
     LegendScales.forEach(s => spec[s] ? (scales[s] = spec[s], scale = scale || spec[s]) : 0);
-    if (!scale) error('Missing valid scale for legend.'); // resolve legend type (symbol, gradient, or discrete gradient)
+    if (!scale) error$1('Missing valid scale for legend.'); // resolve legend type (symbol, gradient, or discrete gradient)
 
     const type = legendType(spec, scope.scaleType(scale)); // single-element data source for legend group
 
@@ -47445,8 +48383,8 @@
 
     if (data.values) {
       // hard-wired input data set
-      if (hasSignal(data.values) || hasSignal(data.format)) {
-        // if either values or format has signal, use dynamic loader
+      if (isSignal(data.values) || hasSignal(data.format)) {
+        // if either values is signal or format has signal, use dynamic loader
         output.push(load$1(scope, data));
         output.push(source = collect());
       } else {
@@ -48498,7 +49436,7 @@
       if (isString(field)) return fieldRef(field, name);
 
       if (!field.signal) {
-        error('Unsupported field reference: ' + $(field));
+        error$1('Unsupported field reference: ' + $(field));
       }
 
       const s = field.signal;
@@ -48576,7 +49514,7 @@
 
     addSignal(name, value) {
       if (this.hasOwnSignal(name)) {
-        error('Duplicate signal name: ' + $(name));
+        error$1('Duplicate signal name: ' + $(name));
       }
 
       const op = value instanceof Entry ? value : this.add(operator(value));
@@ -48585,7 +49523,7 @@
 
     getSignal(name) {
       if (!this.signals[name]) {
-        error('Unrecognized signal name: ' + $(name));
+        error$1('Unrecognized signal name: ' + $(name));
       }
 
       return this.signals[name];
@@ -48631,7 +49569,7 @@
 
     addBinding(name, bind) {
       if (!this.bindings) {
-        error('Nested signals do not support binding: ' + $(name));
+        error$1('Nested signals do not support binding: ' + $(name));
       }
 
       this.bindings.push(extend({
@@ -48642,7 +49580,7 @@
     // ----
     addScaleProj(name, transform) {
       if (has(this.scales, name)) {
-        error('Duplicate scale or projection name: ' + $(name));
+        error$1('Duplicate scale or projection name: ' + $(name));
       }
 
       this.scales[name] = this.add(transform);
@@ -48658,7 +49596,7 @@
 
     getScale(name) {
       if (!this.scales[name]) {
-        error('Unrecognized scale name: ' + $(name));
+        error$1('Unrecognized scale name: ' + $(name));
       }
 
       return this.scales[name];
@@ -48683,7 +49621,7 @@
     // ----
     addData(name, dataScope) {
       if (has(this.data, name)) {
-        error('Duplicate data set name: ' + $(name));
+        error$1('Duplicate data set name: ' + $(name));
       }
 
       return this.data[name] = dataScope;
@@ -48691,7 +49629,7 @@
 
     getData(name) {
       if (!this.data[name]) {
-        error('Undefined data set name: ' + $(name));
+        error$1('Undefined data set name: ' + $(name));
       }
 
       return this.data[name];
@@ -48699,7 +49637,7 @@
 
     addDataPipeline(name, entries) {
       if (has(this.data, name)) {
-        error('Duplicate data set name: ' + $(name));
+        error$1('Duplicate data set name: ' + $(name));
       }
 
       return this.addData(name, DataScope.fromEntries(this, entries));
@@ -48965,7 +49903,7 @@
 
   function parse$1$1(spec, config, options) {
     if (!isObject(spec)) {
-      error('Input Vega specification must be an object.');
+      error$1('Input Vega specification must be an object.');
     }
 
     config = mergeConfig(defaults(), config, spec.config);
@@ -49195,7 +50133,8 @@
      */
     constructor(options) {
       this.options = Object.assign(Object.assign({}, DEFAULT_OPTIONS), options);
-      const elementId = this.options.id; // bind this to call
+      const elementId = this.options.id;
+      this.el = null; // bind this to call
 
       this.call = this.tooltipHandler.bind(this); // prepend a default stylesheet for tooltips to the head
 
@@ -49210,17 +50149,6 @@
         } else {
           head.appendChild(style);
         }
-      } // append a div element that we use as a tooltip unless it already exists
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-
-
-      this.el = document.getElementById(elementId);
-
-      if (!this.el) {
-        this.el = document.createElement('div');
-        this.el.setAttribute('id', elementId);
-        this.el.classList.add('vg-tooltip');
-        document.body.appendChild(this.el);
       }
     }
     /**
@@ -49230,7 +50158,19 @@
 
     tooltipHandler(handler, event, item, value) {
       // console.log(handler, event, item, value);
-      // hide tooltip for null, undefined, or empty string values
+      // append a div element that we use as a tooltip unless it already exists
+      this.el = document.getElementById(this.options.id);
+
+      if (!this.el) {
+        this.el = document.createElement('div');
+        this.el.setAttribute('id', this.options.id);
+        this.el.classList.add('vg-tooltip');
+        document.body.appendChild(this.el);
+      }
+
+      const tooltipContainer = document.fullscreenElement != null ? document.fullscreenElement : document.body;
+      tooltipContainer.appendChild(this.el); // hide tooltip for null, undefined, or empty string values
+
       if (value == null || value === '') {
         this.el.classList.remove('visible', "".concat(this.options.theme, "-theme"));
         return;
@@ -49251,18 +50191,9 @@
 
   Array.prototype.flat||Object.defineProperty(Array.prototype,"flat",{configurable:!0,value:function r(){var t=isNaN(arguments[0])?1:Number(arguments[0]);return t?Array.prototype.reduce.call(this,function(a,e){return Array.isArray(e)?a.push.apply(a,r.call(e,t-1)):a.push(e),a},[]):Array.prototype.slice.call(this)},writable:!0}),Array.prototype.flatMap||Object.defineProperty(Array.prototype,"flatMap",{configurable:!0,value:function(r){return Array.prototype.map.apply(this,arguments).flat()},writable:!0});
 
-  function createCommonjsModule(fn, basedir, module) {
-  	return module = {
-  		path: basedir,
-  		exports: {},
-  		require: function (path, base) {
-  			return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
-  		}
-  	}, fn(module, module.exports), module.exports;
-  }
-
-  function commonjsRequire () {
-  	throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
+  function createCommonjsModule(fn) {
+    var module = { exports: {} };
+  	return fn(module, module.exports), module.exports;
   }
 
   var clone_1 = createCommonjsModule(function (module) {
@@ -49533,7 +50464,7 @@
       return clone;
     }();
 
-    if ( module.exports) {
+    if (module.exports) {
       module.exports = clone;
     }
   });
@@ -49767,7 +50698,7 @@
     return x === false || x === null;
   }
   function contains$1(array, item) {
-    return array.indexOf(item) > -1;
+    return array.includes(item);
   }
   /**
    * Returns true if any item returns true.
@@ -49913,11 +50844,11 @@
   }
   function logicalExpr(op, cb) {
     if (isLogicalNot(op)) {
-      return '!(' + logicalExpr(op.not, cb) + ')';
+      return "!(".concat(logicalExpr(op.not, cb), ")");
     } else if (isLogicalAnd(op)) {
-      return '(' + op.and.map(and => logicalExpr(and, cb)).join(') && (') + ')';
+      return "(".concat(op.and.map(and => logicalExpr(and, cb)).join(') && ('), ")");
     } else if (isLogicalOr(op)) {
-      return '(' + op.or.map(or => logicalExpr(or, cb)).join(') || (') + ')';
+      return "(".concat(op.or.map(or => logicalExpr(or, cb)).join(') || ('), ")");
     } else {
       return cb(op);
     }
@@ -50041,7 +50972,7 @@
     return isInternalField(name) ? name : "__".concat(name);
   }
   function isInternalField(name) {
-    return name.indexOf('__') === 0;
+    return name.startsWith('__');
   }
   /**
    * Normalize angle to be within [0,360).
@@ -50065,348 +50996,6 @@
 
     return !isNaN(value) && !isNaN(parseFloat(value));
   }
-
-  const CONDITIONAL_AXIS_PROP_INDEX = {
-    labelAlign: {
-      part: 'labels',
-      vgProp: 'align'
-    },
-    labelBaseline: {
-      part: 'labels',
-      vgProp: 'baseline'
-    },
-    labelColor: {
-      part: 'labels',
-      vgProp: 'fill'
-    },
-    labelFont: {
-      part: 'labels',
-      vgProp: 'font'
-    },
-    labelFontSize: {
-      part: 'labels',
-      vgProp: 'fontSize'
-    },
-    labelFontStyle: {
-      part: 'labels',
-      vgProp: 'fontStyle'
-    },
-    labelFontWeight: {
-      part: 'labels',
-      vgProp: 'fontWeight'
-    },
-    labelOpacity: {
-      part: 'labels',
-      vgProp: 'opacity'
-    },
-    labelOffset: null,
-    labelPadding: null,
-    // There is no fixed vgProp for tickSize, need to use signal.
-    gridColor: {
-      part: 'grid',
-      vgProp: 'stroke'
-    },
-    gridDash: {
-      part: 'grid',
-      vgProp: 'strokeDash'
-    },
-    gridDashOffset: {
-      part: 'grid',
-      vgProp: 'strokeDashOffset'
-    },
-    gridOpacity: {
-      part: 'grid',
-      vgProp: 'opacity'
-    },
-    gridWidth: {
-      part: 'grid',
-      vgProp: 'strokeWidth'
-    },
-    tickColor: {
-      part: 'ticks',
-      vgProp: 'stroke'
-    },
-    tickDash: {
-      part: 'ticks',
-      vgProp: 'strokeDash'
-    },
-    tickDashOffset: {
-      part: 'ticks',
-      vgProp: 'strokeDashOffset'
-    },
-    tickOpacity: {
-      part: 'ticks',
-      vgProp: 'opacity'
-    },
-    tickSize: null,
-    // There is no fixed vgProp for tickSize, need to use signal.
-    tickWidth: {
-      part: 'ticks',
-      vgProp: 'strokeWidth'
-    }
-  };
-  function isConditionalAxisValue(v) {
-    return v && v['condition'];
-  }
-  const AXIS_PARTS = ['domain', 'grid', 'labels', 'ticks', 'title'];
-  /**
-   * A dictionary listing whether a certain axis property is applicable for only main axes or only grid axes.
-   */
-
-  const AXIS_PROPERTY_TYPE = {
-    grid: 'grid',
-    gridCap: 'grid',
-    gridColor: 'grid',
-    gridDash: 'grid',
-    gridDashOffset: 'grid',
-    gridOpacity: 'grid',
-    gridScale: 'grid',
-    gridWidth: 'grid',
-    orient: 'main',
-    bandPosition: 'both',
-    // Need to be applied to grid axis too, so the grid will align with ticks.
-    aria: 'main',
-    description: 'main',
-    domain: 'main',
-    domainCap: 'main',
-    domainColor: 'main',
-    domainDash: 'main',
-    domainDashOffset: 'main',
-    domainOpacity: 'main',
-    domainWidth: 'main',
-    format: 'main',
-    formatType: 'main',
-    labelAlign: 'main',
-    labelAngle: 'main',
-    labelBaseline: 'main',
-    labelBound: 'main',
-    labelColor: 'main',
-    labelFlush: 'main',
-    labelFlushOffset: 'main',
-    labelFont: 'main',
-    labelFontSize: 'main',
-    labelFontStyle: 'main',
-    labelFontWeight: 'main',
-    labelLimit: 'main',
-    labelLineHeight: 'main',
-    labelOffset: 'main',
-    labelOpacity: 'main',
-    labelOverlap: 'main',
-    labelPadding: 'main',
-    labels: 'main',
-    labelSeparation: 'main',
-    maxExtent: 'main',
-    minExtent: 'main',
-    offset: 'both',
-    position: 'main',
-    tickCap: 'main',
-    tickColor: 'main',
-    tickDash: 'main',
-    tickDashOffset: 'main',
-    tickMinStep: 'main',
-    tickOffset: 'both',
-    // Need to be applied to grid axis too, so the grid will align with ticks.
-    tickOpacity: 'main',
-    tickRound: 'both',
-    // Apply rounding to grid and ticks so they are aligned.
-    ticks: 'main',
-    tickSize: 'main',
-    tickWidth: 'both',
-    title: 'main',
-    titleAlign: 'main',
-    titleAnchor: 'main',
-    titleAngle: 'main',
-    titleBaseline: 'main',
-    titleColor: 'main',
-    titleFont: 'main',
-    titleFontSize: 'main',
-    titleFontStyle: 'main',
-    titleFontWeight: 'main',
-    titleLimit: 'main',
-    titleLineHeight: 'main',
-    titleOpacity: 'main',
-    titlePadding: 'main',
-    titleX: 'main',
-    titleY: 'main',
-    encode: 'both',
-    // we hide this in Vega-Lite
-    scale: 'both',
-    tickBand: 'both',
-    tickCount: 'both',
-    tickExtra: 'both',
-    translate: 'both',
-    values: 'both',
-    zindex: 'both' // this is actually set afterward, so it doesn't matter
-
-  };
-  const COMMON_AXIS_PROPERTIES_INDEX = {
-    orient: 1,
-    // other things can depend on orient
-    aria: 1,
-    bandPosition: 1,
-    description: 1,
-    domain: 1,
-    domainCap: 1,
-    domainColor: 1,
-    domainDash: 1,
-    domainDashOffset: 1,
-    domainOpacity: 1,
-    domainWidth: 1,
-    format: 1,
-    formatType: 1,
-    grid: 1,
-    gridCap: 1,
-    gridColor: 1,
-    gridDash: 1,
-    gridDashOffset: 1,
-    gridOpacity: 1,
-    gridWidth: 1,
-    labelAlign: 1,
-    labelAngle: 1,
-    labelBaseline: 1,
-    labelBound: 1,
-    labelColor: 1,
-    labelFlush: 1,
-    labelFlushOffset: 1,
-    labelFont: 1,
-    labelFontSize: 1,
-    labelFontStyle: 1,
-    labelFontWeight: 1,
-    labelLimit: 1,
-    labelLineHeight: 1,
-    labelOffset: 1,
-    labelOpacity: 1,
-    labelOverlap: 1,
-    labelPadding: 1,
-    labels: 1,
-    labelSeparation: 1,
-    maxExtent: 1,
-    minExtent: 1,
-    offset: 1,
-    position: 1,
-    tickBand: 1,
-    tickCap: 1,
-    tickColor: 1,
-    tickCount: 1,
-    tickDash: 1,
-    tickDashOffset: 1,
-    tickExtra: 1,
-    tickMinStep: 1,
-    tickOffset: 1,
-    tickOpacity: 1,
-    tickRound: 1,
-    ticks: 1,
-    tickSize: 1,
-    tickWidth: 1,
-    title: 1,
-    titleAlign: 1,
-    titleAnchor: 1,
-    titleAngle: 1,
-    titleBaseline: 1,
-    titleColor: 1,
-    titleFont: 1,
-    titleFontSize: 1,
-    titleFontStyle: 1,
-    titleFontWeight: 1,
-    titleLimit: 1,
-    titleLineHeight: 1,
-    titleOpacity: 1,
-    titlePadding: 1,
-    titleX: 1,
-    titleY: 1,
-    translate: 1,
-    values: 1,
-    zindex: 1
-  };
-  const AXIS_PROPERTIES_INDEX = { ...COMMON_AXIS_PROPERTIES_INDEX,
-    style: 1,
-    labelExpr: 1,
-    encoding: 1
-  };
-  function isAxisProperty(prop) {
-    return !!AXIS_PROPERTIES_INDEX[prop];
-  } // Export for dependent projects
-  const AXIS_CONFIGS_INDEX = {
-    axis: 1,
-    axisBand: 1,
-    axisBottom: 1,
-    axisDiscrete: 1,
-    axisLeft: 1,
-    axisPoint: 1,
-    axisQuantitative: 1,
-    axisRight: 1,
-    axisTemporal: 1,
-    axisTop: 1,
-    axisX: 1,
-    axisXBand: 1,
-    axisXDiscrete: 1,
-    axisXPoint: 1,
-    axisXQuantitative: 1,
-    axisXTemporal: 1,
-    axisY: 1,
-    axisYBand: 1,
-    axisYDiscrete: 1,
-    axisYPoint: 1,
-    axisYQuantitative: 1,
-    axisYTemporal: 1
-  };
-  const AXIS_CONFIGS = keys$2(AXIS_CONFIGS_INDEX);
-
-  const AGGREGATE_OP_INDEX = {
-    argmax: 1,
-    argmin: 1,
-    average: 1,
-    count: 1,
-    distinct: 1,
-    product: 1,
-    max: 1,
-    mean: 1,
-    median: 1,
-    min: 1,
-    missing: 1,
-    q1: 1,
-    q3: 1,
-    ci0: 1,
-    ci1: 1,
-    stderr: 1,
-    stdev: 1,
-    stdevp: 1,
-    sum: 1,
-    valid: 1,
-    values: 1,
-    variance: 1,
-    variancep: 1
-  };
-  const MULTIDOMAIN_SORT_OP_INDEX = {
-    count: 1,
-    min: 1,
-    max: 1
-  };
-  function isArgminDef(a) {
-    return !!a && !!a['argmin'];
-  }
-  function isArgmaxDef(a) {
-    return !!a && !!a['argmax'];
-  }
-  function isAggregateOp(a) {
-    return isString(a) && !!AGGREGATE_OP_INDEX[a];
-  }
-  const COUNTING_OPS = ['count', 'valid', 'missing', 'distinct'];
-  function isCountingAggregateOp(aggregate) {
-    return isString(aggregate) && contains$1(COUNTING_OPS, aggregate);
-  }
-  function isMinMaxOp(aggregate) {
-    return isString(aggregate) && contains$1(['min', 'max'], aggregate);
-  }
-  /** Additive-based aggregation operations. These can be applied to stack. */
-
-  const SUM_OPS = ['count', 'sum', 'distinct', 'valid', 'missing'];
-  /**
-   * Aggregation operators that always produce values within the range [domainMin, domainMax].
-   */
-
-  const SHARED_DOMAIN_OPS = ['mean', 'average', 'median', 'q1', 'q3', 'min', 'max'];
-  const SHARED_DOMAIN_OP_INDEX = toSet(SHARED_DOMAIN_OPS);
 
   /*
    * Constants and utilities for encoding channels (Visual variables)
@@ -50965,6 +51554,62 @@
     }
   }
 
+  const AGGREGATE_OP_INDEX = {
+    argmax: 1,
+    argmin: 1,
+    average: 1,
+    count: 1,
+    distinct: 1,
+    product: 1,
+    max: 1,
+    mean: 1,
+    median: 1,
+    min: 1,
+    missing: 1,
+    q1: 1,
+    q3: 1,
+    ci0: 1,
+    ci1: 1,
+    stderr: 1,
+    stdev: 1,
+    stdevp: 1,
+    sum: 1,
+    valid: 1,
+    values: 1,
+    variance: 1,
+    variancep: 1
+  };
+  const MULTIDOMAIN_SORT_OP_INDEX = {
+    count: 1,
+    min: 1,
+    max: 1
+  };
+  function isArgminDef(a) {
+    return !!a && !!a['argmin'];
+  }
+  function isArgmaxDef(a) {
+    return !!a && !!a['argmax'];
+  }
+  function isAggregateOp(a) {
+    return isString(a) && !!AGGREGATE_OP_INDEX[a];
+  }
+  const COUNTING_OPS = ['count', 'valid', 'missing', 'distinct'];
+  function isCountingAggregateOp(aggregate) {
+    return isString(aggregate) && contains$1(COUNTING_OPS, aggregate);
+  }
+  function isMinMaxOp(aggregate) {
+    return isString(aggregate) && contains$1(['min', 'max'], aggregate);
+  }
+  /** Additive-based aggregation operations. These can be applied to stack. */
+
+  const SUM_OPS = ['count', 'sum', 'distinct', 'valid', 'missing'];
+  /**
+   * Aggregation operators that always produce values within the range [domainMin, domainMax].
+   */
+
+  const SHARED_DOMAIN_OPS = ['mean', 'average', 'median', 'q1', 'q3', 'min', 'max'];
+  const SHARED_DOMAIN_OP_INDEX = toSet(SHARED_DOMAIN_OPS);
+
   /**
    * Create a key for the bin configuration. Not for prebinned bin.
    */
@@ -50973,7 +51618,7 @@
       bin = normalizeBin(bin, undefined);
     }
 
-    return 'bin' + keys$2(bin).map(p => isSelectionExtent(bin[p]) ? varName("_".concat(p, "_").concat(entries(bin[p]))) : varName("_".concat(p, "_").concat(bin[p]))).join('');
+    return 'bin' + keys$2(bin).map(p => isParameterExtent(bin[p]) ? varName("_".concat(p, "_").concat(entries(bin[p]))) : varName("_".concat(p, "_").concat(bin[p]))).join('');
   }
   /**
    * Vega-Lite should bin the data.
@@ -50992,8 +51637,8 @@
   function isBinParams(bin) {
     return isObject(bin);
   }
-  function isSelectionExtent(extent) {
-    return extent === null || extent === void 0 ? void 0 : extent['selection'];
+  function isParameterExtent(extent) {
+    return extent === null || extent === void 0 ? void 0 : extent['param'];
   }
   function autoMaxBins(channel) {
     switch (channel) {
@@ -51022,666 +51667,92 @@
     }
   }
 
-  function _defineProperty(obj, key, value) {
-    if (key in obj) {
-      Object.defineProperty(obj, key, {
-        value: value,
-        enumerable: true,
-        configurable: true,
-        writable: true
-      });
-    } else {
-      obj[key] = value;
+  function isExprRef(o) {
+    return o && !!o['expr'];
+  }
+  function replaceExprRef(index) {
+    const props = keys$2(index || {});
+    const newIndex = {};
+
+    for (const prop of props) {
+      newIndex[prop] = signalRefOrValue(index[prop]);
     }
 
-    return obj;
+    return newIndex;
   }
 
-  function _classPrivateFieldGet(receiver, privateMap) {
-    var descriptor = privateMap.get(receiver);
-
-    if (!descriptor) {
-      throw new TypeError("attempted to get private field on non-instance");
-    }
-
-    if (descriptor.get) {
-      return descriptor.get.call(receiver);
-    }
-
-    return descriptor.value;
-  }
-
-  function _classPrivateFieldSet(receiver, privateMap, value) {
-    var descriptor = privateMap.get(receiver);
-
-    if (!descriptor) {
-      throw new TypeError("attempted to set private field on non-instance");
-    }
-
-    if (descriptor.set) {
-      descriptor.set.call(receiver, value);
-    } else {
-      if (!descriptor.writable) {
-        throw new TypeError("attempted to set read only private field");
-      }
-
-      descriptor.value = value;
-    }
-
-    return value;
-  }
-
-  /**
-   * Collection of all Vega-Lite Error Messages
-   */
-  function invalidSpec(spec) {
-    return "Invalid specification ".concat(JSON.stringify(spec), ". Make sure the specification includes at least one of the following properties: \"mark\", \"layer\", \"facet\", \"hconcat\", \"vconcat\", \"concat\", or \"repeat\".");
-  } // FIT
-
-  const FIT_NON_SINGLE = 'Autosize "fit" only works for single views and layered views.';
-  function containerSizeNonSingle(name) {
-    const uName = name == 'width' ? 'Width' : 'Height';
-    return "".concat(uName, " \"container\" only works for single views and layered views.");
-  }
-  function containerSizeNotCompatibleWithAutosize(name) {
-    const uName = name == 'width' ? 'Width' : 'Height';
-    const fitDirection = name == 'width' ? 'x' : 'y';
-    return "".concat(uName, " \"container\" only works well with autosize \"fit\" or \"fit-").concat(fitDirection, "\".");
-  }
-  function droppingFit(channel) {
-    return channel ? "Dropping \"fit-".concat(channel, "\" because spec has discrete ").concat(getSizeChannel(channel), ".") : "Dropping \"fit\" because spec has discrete size.";
-  } // VIEW SIZE
-
-  function unknownField(channel) {
-    return "Unknown field for ".concat(channel, ". Cannot calculate view size.");
-  } // SELECTION
-
-  function cannotProjectOnChannelWithoutField(channel) {
-    return "Cannot project a selection on encoding channel \"".concat(channel, "\", which has no field.");
-  }
-  function cannotProjectAggregate(channel, aggregate) {
-    return "Cannot project a selection on encoding channel \"".concat(channel, "\" as it uses an aggregate function (\"").concat(aggregate, "\").");
-  }
-  function nearestNotSupportForContinuous(mark) {
-    return "The \"nearest\" transform is not supported for ".concat(mark, " marks.");
-  }
-  function selectionNotSupported(mark) {
-    return "Selection not supported for ".concat(mark, " yet.");
-  }
-  function selectionNotFound(name) {
-    return "Cannot find a selection named \"".concat(name, "\".");
-  }
-  const SCALE_BINDINGS_CONTINUOUS = 'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
-  const LEGEND_BINDINGS_MUST_HAVE_PROJECTION = 'Legend bindings are only supported for selections over an individual field or encoding channel.';
-  function noSameUnitLookup(name) {
-    return "Cannot define and lookup the \"".concat(name, "\" selection in the same view. ") + "Try moving the lookup into a second, layered view?";
-  }
-  const NEEDS_SAME_SELECTION = 'The same selection must be used to override scale domains in a layered view.';
-  const INTERVAL_INITIALIZED_WITH_X_Y = 'Interval selections should be initialized using "x" and/or "y" keys.'; // REPEAT
-
-  function noSuchRepeatedValue(field) {
-    return "Unknown repeated value \"".concat(field, "\".");
-  }
-  function columnsNotSupportByRowCol(type) {
-    return "The \"columns\" property cannot be used when \"".concat(type, "\" has nested row/column.");
-  } // CONCAT / REPEAT
-
-  const CONCAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in concatenated or repeated views yet (https://github.com/vega/vega-lite/issues/2415).'; // DATA
-
-  function unrecognizedParse(p) {
-    return "Unrecognized parse \"".concat(p, "\".");
-  }
-  function differentParse(field, local, ancestor) {
-    return "An ancestor parsed field \"".concat(field, "\" as ").concat(ancestor, " but a child wants to parse the field as ").concat(local, ".");
-  }
-  const ADD_SAME_CHILD_TWICE = 'Attempt to add the same child twice.'; // TRANSFORMS
-
-  function invalidTransformIgnored(transform) {
-    return "Ignoring an invalid transform: ".concat(stringify$1(transform), ".");
-  }
-  const NO_FIELDS_NEEDS_AS = 'If "from.fields" is not specified, "as" has to be a string that specifies the key to be used for the data from the secondary source.'; // ENCODING & FACET
-
-  function customFormatTypeNotAllowed(channel) {
-    return "Config.customFormatTypes is not true, thus custom format type and format for channel ".concat(channel, " are dropped.");
-  }
-  function projectionOverridden(opt) {
+  function extractTitleConfig(titleConfig) {
     const {
-      parentProjection,
-      projection
-    } = opt;
-    return "Layer's shared projection ".concat(stringify$1(parentProjection), " is overridden by a child projection ").concat(stringify$1(projection), ".");
-  }
-  const REPLACE_ANGLE_WITH_THETA = 'Arc marks uses theta channel rather than angle, replacing angle with theta.';
-  function primitiveChannelDef(channel, type, value) {
-    return "Channel ".concat(channel, " is a ").concat(type, ". Converted to {value: ").concat(stringify$1(value), "}.");
-  }
-  function invalidFieldType(type) {
-    return "Invalid field type \"".concat(type, "\".");
-  }
-  function invalidFieldTypeForCountAggregate(type, aggregate) {
-    return "Invalid field type \"".concat(type, "\" for aggregate: \"").concat(aggregate, "\", using \"quantitative\" instead.");
-  }
-  function invalidAggregate(aggregate) {
-    return "Invalid aggregation operator \"".concat(aggregate, "\".");
-  }
-  function droppingColor(type, opt) {
-    const {
-      fill,
-      stroke
-    } = opt;
-    return "Dropping color ".concat(type, " as the plot also has ").concat(fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke', ".");
-  }
-  function emptyFieldDef(fieldDef, channel) {
-    return "Dropping ".concat(stringify$1(fieldDef), " from channel \"").concat(channel, "\" since it does not contain any data field, datum, value, or signal.");
-  }
-  const LINE_WITH_VARYING_SIZE = 'Line marks cannot encode size with a non-groupby field. You may want to use trail marks instead.';
-  function incompatibleChannel(channel, markOrFacet, when) {
-    return "".concat(channel, " dropped as it is incompatible with \"").concat(markOrFacet, "\"").concat(when ? " when ".concat(when) : '', ".");
-  }
-  function invalidEncodingChannel(channel) {
-    return "".concat(channel, "-encoding is dropped as ").concat(channel, " is not a valid encoding channel.");
-  }
-  function facetChannelShouldBeDiscrete(channel) {
-    return "".concat(channel, " encoding should be discrete (ordinal / nominal / binned).");
-  }
-  function facetChannelDropped(channels) {
-    return "Facet encoding dropped as ".concat(channels.join(' and '), " ").concat(channels.length > 1 ? 'are' : 'is', " also specified.");
-  }
-  function discreteChannelCannotEncode(channel, type) {
-    return "Using discrete channel \"".concat(channel, "\" to encode \"").concat(type, "\" field can be misleading as it does not encode ").concat(type === 'ordinal' ? 'order' : 'magnitude', ".");
-  } // MARK
-
-  function rangeMarkAlignmentCannotBeExpression(align) {
-    return "The ".concat(align, " for range marks cannot be an expression");
-  }
-  function lineWithRange(hasX2, hasY2) {
-    const channels = hasX2 && hasY2 ? 'x2 and y2' : hasX2 ? 'x2' : 'y2';
-    return "Line mark is for continuous lines and thus cannot be used with ".concat(channels, ". We will use the rule mark (line segments) instead.");
-  }
-  function orientOverridden(original, actual) {
-    return "Specified orient \"".concat(original, "\" overridden with \"").concat(actual, "\".");
-  } // SCALE
-  const RANGE_STEP_DEPRECATED = "Scale's \"rangeStep\" is deprecated and will be removed in Vega-Lite 5.0. Please use \"width\"/\"height\": {\"step\": ...} instead. See https://vega.github.io/vega-lite/docs/size.html.";
-  function cannotUseScalePropertyWithNonColor(prop) {
-    return "Cannot use the scale property \"".concat(prop, "\" with non-color channel.");
-  }
-  function unaggregateDomainHasNoEffectForRawField(fieldDef) {
-    return "Using unaggregated domain with raw field has no effect (".concat(stringify$1(fieldDef), ").");
-  }
-  function unaggregateDomainWithNonSharedDomainOp(aggregate) {
-    return "Unaggregated domain not applicable for \"".concat(aggregate, "\" since it produces values outside the origin domain of the source data.");
-  }
-  function unaggregatedDomainWithLogScale(fieldDef) {
-    return "Unaggregated domain is currently unsupported for log scale (".concat(stringify$1(fieldDef), ").");
-  }
-  function cannotApplySizeToNonOrientedMark(mark) {
-    return "Cannot apply size to non-oriented mark \"".concat(mark, "\".");
-  }
-  function scaleTypeNotWorkWithChannel(channel, scaleType, defaultScaleType) {
-    return "Channel \"".concat(channel, "\" does not work with \"").concat(scaleType, "\" scale. We are using \"").concat(defaultScaleType, "\" scale instead.");
-  }
-  function scaleTypeNotWorkWithFieldDef(scaleType, defaultScaleType) {
-    return "FieldDef does not work with \"".concat(scaleType, "\" scale. We are using \"").concat(defaultScaleType, "\" scale instead.");
-  }
-  function scalePropertyNotWorkWithScaleType(scaleType, propName, channel) {
-    return "".concat(channel, "-scale's \"").concat(propName, "\" is dropped as it does not work with ").concat(scaleType, " scale.");
-  }
-  function stepDropped(channel) {
-    return "The step for \"".concat(channel, "\" is dropped because the ").concat(channel === 'width' ? 'x' : 'y', " is continuous.");
-  }
-  function mergeConflictingProperty(property, propertyOf, v1, v2) {
-    return "Conflicting ".concat(propertyOf.toString(), " property \"").concat(property.toString(), "\" (").concat(stringify$1(v1), " and ").concat(stringify$1(v2), "). Using ").concat(stringify$1(v1), ".");
-  }
-  function mergeConflictingDomainProperty(property, propertyOf, v1, v2) {
-    return "Conflicting ".concat(propertyOf.toString(), " property \"").concat(property.toString(), "\" (").concat(stringify$1(v1), " and ").concat(stringify$1(v2), "). Using the union of the two domains.");
-  }
-  function independentScaleMeansIndependentGuide(channel) {
-    return "Setting the scale to be independent for \"".concat(channel, "\" means we also have to set the guide (axis or legend) to be independent.");
-  }
-  function domainSortDropped(sort) {
-    return "Dropping sort property ".concat(stringify$1(sort), " as unioned domains only support boolean or op \"count\", \"min\", and \"max\".");
-  }
-  const MORE_THAN_ONE_SORT = 'Domains that should be unioned has conflicting sort properties. Sort will be set to true.';
-  const FACETED_INDEPENDENT_DIFFERENT_SOURCES = 'Detected faceted independent scales that union domain of multiple fields from different data sources. We will use the first field. The result view size may be incorrect.';
-  const FACETED_INDEPENDENT_SAME_FIELDS_DIFFERENT_SOURCES = 'Detected faceted independent scales that union domain of the same fields from different source. We will assume that this is the same field from a different fork of the same data source. However, if this is not the case, the result view size may be incorrect.';
-  const FACETED_INDEPENDENT_SAME_SOURCE = 'Detected faceted independent scales that union domain of multiple fields from the same data source. We will use the first field. The result view size may be incorrect.'; // AXIS
-
-  function cannotStackRangedMark(channel) {
-    return "Cannot stack \"".concat(channel, "\" if there is already \"").concat(channel, "2\".");
-  }
-  function cannotStackNonLinearScale(scaleType) {
-    return "Cannot stack non-linear scale (".concat(scaleType, ").");
-  }
-  function stackNonSummativeAggregate(aggregate) {
-    return "Stacking is applied even though the aggregate function is non-summative (\"".concat(aggregate, "\").");
-  } // TIMEUNIT
-
-  function invalidTimeUnit(unitName, value) {
-    return "Invalid ".concat(unitName, ": ").concat(stringify$1(value), ".");
-  }
-  function droppedDay(d) {
-    return "Dropping day from datetime ".concat(stringify$1(d), " as day cannot be combined with other units.");
-  }
-  function errorBarCenterAndExtentAreNotNeeded(center, extent) {
-    return "".concat(extent ? 'extent ' : '').concat(extent && center ? 'and ' : '').concat(center ? 'center ' : '').concat(extent && center ? 'are ' : 'is ', "not needed when data are aggregated.");
-  }
-  function errorBarCenterIsUsedWithWrongExtent(center, extent, mark) {
-    return "".concat(center, " is not usually used with ").concat(extent, " for ").concat(mark, ".");
-  }
-  function errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark) {
-    return "Continuous axis should not have customized aggregation function ".concat(aggregate, "; ").concat(compositeMark, " already agregates the axis.");
-  }
-  function errorBand1DNotSupport(property) {
-    return "1D error band does not support ".concat(property, ".");
-  } // CHANNEL
-
-  function channelRequiredForBinned(channel) {
-    return "Channel ".concat(channel, " is required for \"binned\" bin.");
-  }
-  function channelShouldNotBeUsedForBinned(channel) {
-    return "Channel ".concat(channel, " should not be used with \"binned\" bin.");
-  }
-  function domainRequiredForThresholdScale(channel) {
-    return "Domain for ".concat(channel, " is required for threshold scale.");
-  }
-
-  /**
-   * Main (default) Vega Logger instance for Vega-Lite.
-   */
-
-  const main = logger(Warn);
-  let current = main;
-  /**
-   * Set the singleton logger to be a custom logger.
-   */
-
-  function set$4(newLogger) {
-    current = newLogger;
-    return current;
-  }
-  /**
-   * Reset the main logger to use the default Vega Logger.
-   */
-
-  function reset$1() {
-    current = main;
-    return current;
-  }
-  function warn$1(...args) {
-    current.warn(...args);
-  }
-  function debug$1(...args) {
-    current.debug(...args);
-  }
-
-  // DateTime definition object
-  /**
-   * @minimum 1
-   * @maximum 12
-   * @TJS-type integer
-   */
-
-  function isDateTime(o) {
-    if (o && isObject(o)) {
-      for (const part of TIMEUNIT_PARTS) {
-        if (part in o) {
-          return true;
-        }
-      }
-    }
-
-    return false;
-  }
-  const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
-  const SHORT_MONTHS = MONTHS.map(m => m.substr(0, 3));
-  const DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-  const SHORT_DAYS = DAYS.map(d => d.substr(0, 3));
-
-  function normalizeQuarter(q) {
-    if (isNumeric(q)) {
-      q = +q;
-    }
-
-    if (isNumber(q)) {
-      if (q > 4) {
-        warn$1(invalidTimeUnit('quarter', q));
-      } // We accept 1-based quarter, so need to readjust to 0-based quarter
-
-
-      return q - 1;
-    } else {
-      // Invalid quarter
-      throw new Error(invalidTimeUnit('quarter', q));
-    }
-  }
-
-  function normalizeMonth(m) {
-    if (isNumeric(m)) {
-      m = +m;
-    }
-
-    if (isNumber(m)) {
-      // We accept 1-based month, so need to readjust to 0-based month
-      return m - 1;
-    } else {
-      const lowerM = m.toLowerCase();
-      const monthIndex = MONTHS.indexOf(lowerM);
-
-      if (monthIndex !== -1) {
-        return monthIndex; // 0 for january, ...
-      }
-
-      const shortM = lowerM.substr(0, 3);
-      const shortMonthIndex = SHORT_MONTHS.indexOf(shortM);
-
-      if (shortMonthIndex !== -1) {
-        return shortMonthIndex;
-      } // Invalid month
-
-
-      throw new Error(invalidTimeUnit('month', m));
-    }
-  }
-
-  function normalizeDay(d) {
-    if (isNumeric(d)) {
-      d = +d;
-    }
-
-    if (isNumber(d)) {
-      // mod so that this can be both 0-based where 0 = sunday
-      // and 1-based where 7=sunday
-      return d % 7;
-    } else {
-      const lowerD = d.toLowerCase();
-      const dayIndex = DAYS.indexOf(lowerD);
-
-      if (dayIndex !== -1) {
-        return dayIndex; // 0 for january, ...
-      }
-
-      const shortD = lowerD.substr(0, 3);
-      const shortDayIndex = SHORT_DAYS.indexOf(shortD);
-
-      if (shortDayIndex !== -1) {
-        return shortDayIndex;
-      } // Invalid day
-
-
-      throw new Error(invalidTimeUnit('day', d));
-    }
-  }
-  /**
-   * @param d the date.
-   * @param normalize whether to normalize quarter, month, day. This should probably be true if d is a DateTime.
-   * @returns array of date time parts [year, month, day, hours, minutes, seconds, milliseconds]
-   */
-
-
-  function dateTimeParts(d, normalize) {
-    const parts = [];
-
-    if (normalize && d.day !== undefined) {
-      if (keys$2(d).length > 1) {
-        warn$1(droppedDay(d));
-        d = duplicate(d);
-        delete d.day;
-      }
-    }
-
-    if (d.year !== undefined) {
-      parts.push(d.year);
-    } else {
-      // Just like Vega's timeunit transform, set default year to 2012, so domain conversion will be compatible with Vega
-      // Note: 2012 is a leap year (and so the date February 29 is respected) that begins on a Sunday (and so days of the week will order properly at the beginning of the year).
-      parts.push(2012);
-    }
-
-    if (d.month !== undefined) {
-      const month = normalize ? normalizeMonth(d.month) : d.month;
-      parts.push(month);
-    } else if (d.quarter !== undefined) {
-      const quarter = normalize ? normalizeQuarter(d.quarter) : d.quarter;
-      parts.push(isNumber(quarter) ? quarter * 3 : quarter + '*3');
-    } else {
-      parts.push(0); // months start at zero in JS
-    }
-
-    if (d.date !== undefined) {
-      parts.push(d.date);
-    } else if (d.day !== undefined) {
-      // HACK: Day only works as a standalone unit
-      // This is only correct because we always set year to 2006 for day
-      const day = normalize ? normalizeDay(d.day) : d.day;
-      parts.push(isNumber(day) ? day + 1 : day + '+1');
-    } else {
-      parts.push(1); // Date starts at 1 in JS
-    } // Note: can't use TimeUnit enum here as importing it will create
-    // circular dependency problem!
-
-
-    for (const timeUnit of ['hours', 'minutes', 'seconds', 'milliseconds']) {
-      const unit = d[timeUnit];
-      parts.push(typeof unit === 'undefined' ? 0 : unit);
-    }
-
-    return parts;
-  }
-  /**
-   * Return Vega expression for a date time.
-   *
-   * @param d the date time.
-   * @returns the Vega expression.
-   */
-
-
-  function dateTimeToExpr(d) {
-    const parts = dateTimeParts(d, true);
-    const string = parts.join(', ');
-
-    if (d.utc) {
-      return "utc(".concat(string, ")");
-    } else {
-      return "datetime(".concat(string, ")");
-    }
-  }
-  /**
-   * Return Vega expression for a date time expression.
-   *
-   * @param d the internal date time object with expression.
-   * @returns the Vega expression.
-   */
-
-  function dateTimeExprToExpr(d) {
-    const parts = dateTimeParts(d, false);
-    const string = parts.join(', ');
-
-    if (d.utc) {
-      return "utc(".concat(string, ")");
-    } else {
-      return "datetime(".concat(string, ")");
-    }
-  }
-  /**
-   * @param d the date time.
-   * @returns the timestamp.
-   */
-
-  function dateTimeToTimestamp(d) {
-    const parts = dateTimeParts(d, true);
-
-    if (d.utc) {
-      return +new Date(Date.UTC(...parts));
-    } else {
-      return +new Date(...parts);
-    }
-  }
-
-  /** Time Unit that only corresponds to only one part of Date objects. */
-
-  const LOCAL_SINGLE_TIMEUNIT_INDEX = {
-    year: 1,
-    quarter: 1,
-    month: 1,
-    week: 1,
-    day: 1,
-    dayofyear: 1,
-    date: 1,
-    hours: 1,
-    minutes: 1,
-    seconds: 1,
-    milliseconds: 1
-  };
-  const TIMEUNIT_PARTS = keys$2(LOCAL_SINGLE_TIMEUNIT_INDEX);
-  function isLocalSingleTimeUnit(timeUnit) {
-    return !!LOCAL_SINGLE_TIMEUNIT_INDEX[timeUnit];
-  }
-  function isUTCTimeUnit(t) {
-    return t.startsWith('utc');
-  }
-  function getLocalTimeUnit(t) {
-    return t.substr(3);
-  }
-  // In order of increasing specificity
-  const VEGALITE_TIMEFORMAT = {
-    'year-month': '%b %Y ',
-    'year-month-date': '%b %d, %Y '
-  };
-  function getTimeUnitParts(timeUnit) {
-    const parts = [];
-
-    for (const part of TIMEUNIT_PARTS) {
-      if (containsTimeUnit(timeUnit, part)) {
-        parts.push(part);
-      }
-    }
-
-    return parts;
-  }
-  /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
-
-  function containsTimeUnit(fullTimeUnit, timeUnit) {
-    const index = fullTimeUnit.indexOf(timeUnit);
-
-    if (index < 0) {
-      return false;
-    } // exclude milliseconds
-
-
-    if (index > 0 && timeUnit === 'seconds' && fullTimeUnit.charAt(index - 1) === 'i') {
-      return false;
-    } // exclude dayofyear
-
-
-    if (fullTimeUnit.length > index + 3 && timeUnit === 'day' && fullTimeUnit.charAt(index + 3) === 'o') {
-      return false;
-    }
-
-    if (index > 0 && timeUnit === 'year' && fullTimeUnit.charAt(index - 1) === 'f') {
-      return false;
-    }
-
-    return true;
-  }
-  /**
-   * Returns Vega expression for a given timeUnit and fieldRef
-   */
-
-  function fieldExpr(fullTimeUnit, field, {
-    end
-  } = {
-    end: false
-  }) {
-    const fieldRef = accessPathWithDatum(field);
-    const utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
-
-    function func(timeUnit) {
-      if (timeUnit === 'quarter') {
-        // quarter starting at 0 (0,3,6,9).
-        return "(".concat(utc, "quarter(").concat(fieldRef, ")-1)");
-      } else {
-        return "".concat(utc).concat(timeUnit, "(").concat(fieldRef, ")");
-      }
-    }
-
-    let lastTimeUnit;
-    const dateExpr = {};
-
-    for (const part of TIMEUNIT_PARTS) {
-      if (containsTimeUnit(fullTimeUnit, part)) {
-        dateExpr[part] = func(part);
-        lastTimeUnit = part;
-      }
-    }
-
-    if (end) {
-      dateExpr[lastTimeUnit] += '+1';
-    }
-
-    return dateTimeExprToExpr(dateExpr);
-  }
-  function timeUnitSpecifierExpression(timeUnit) {
-    if (!timeUnit) {
-      return undefined;
-    }
-
-    const timeUnitParts = getTimeUnitParts(timeUnit);
-    return "timeUnitSpecifier(".concat(fastJsonStableStringify(timeUnitParts), ", ").concat(fastJsonStableStringify(VEGALITE_TIMEFORMAT), ")");
-  }
-  /**
-   * Returns the signal expression used for axis labels for a time unit.
-   */
-
-  function formatExpression(timeUnit, field, isUTCScale) {
-    if (!timeUnit) {
-      return undefined;
-    }
-
-    const expr = timeUnitSpecifierExpression(timeUnit); // We only use utcFormat for utc scale
-    // For utc time units, the data is already converted as a part of timeUnit transform.
-    // Thus, utc time units should use timeFormat to avoid shifting the time twice.
-
-    const utc = isUTCScale || isUTCTimeUnit(timeUnit);
-    return "".concat(utc ? 'utc' : 'time', "Format(").concat(field, ", ").concat(expr, ")");
-  }
-  function normalizeTimeUnit(timeUnit) {
-    if (!timeUnit) {
-      return undefined;
-    }
-
-    let params;
-
-    if (isString(timeUnit)) {
-      params = {
-        unit: timeUnit
-      };
-    } else if (isObject(timeUnit)) {
-      params = { ...timeUnit,
-        ...(timeUnit.unit ? {
-          unit: timeUnit.unit
-        } : {})
-      };
-    }
-
-    if (isUTCTimeUnit(params.unit)) {
-      params.utc = true;
-      params.unit = getLocalTimeUnit(params.unit);
-    }
-
-    return params;
-  }
-  function timeUnitToString(tu) {
-    const {
-      utc,
+      // These are non-mark title config that need to be hardcoded
+      anchor,
+      frame,
+      offset,
+      orient,
+      // color needs to be redirect to fill
+      color,
+      // subtitle properties
+      subtitleColor,
+      subtitleFont,
+      subtitleFontSize,
+      subtitleFontStyle,
+      subtitleFontWeight,
+      subtitleLineHeight,
+      subtitlePadding,
+      // The rest are mark config.
       ...rest
-    } = normalizeTimeUnit(tu);
+    } = titleConfig;
+    const titleMarkConfig = { ...rest,
+      ...(color ? {
+        fill: color
+      } : {})
+    }; // These are non-mark title config that need to be hardcoded
 
-    if (rest.unit) {
-      return (utc ? 'utc' : '') + keys$2(rest).map(p => varName("".concat(p === 'unit' ? '' : "_".concat(p, "_")).concat(rest[p]))).join('');
-    } else {
-      // when maxbins is specified instead of units
-      return (utc ? 'utc' : '') + 'timeunit' + keys$2(rest).map(p => varName("_".concat(p, "_").concat(rest[p]))).join('');
-    }
+    const nonMark = { ...(anchor ? {
+        anchor
+      } : {}),
+      ...(frame ? {
+        frame
+      } : {}),
+      ...(offset ? {
+        offset
+      } : {}),
+      ...(orient ? {
+        orient
+      } : {})
+    }; // subtitle part can stay in config.title since header titles do not use subtitle
+
+    const subtitle = { ...(subtitleColor ? {
+        subtitleColor
+      } : {}),
+      ...(subtitleFont ? {
+        subtitleFont
+      } : {}),
+      ...(subtitleFontSize ? {
+        subtitleFontSize
+      } : {}),
+      ...(subtitleFontStyle ? {
+        subtitleFontStyle
+      } : {}),
+      ...(subtitleFontWeight ? {
+        subtitleFontWeight
+      } : {}),
+      ...(subtitleLineHeight ? {
+        subtitleLineHeight
+      } : {}),
+      ...(subtitlePadding ? {
+        subtitlePadding
+      } : {})
+    };
+    const subtitleMarkConfig = pick$2(titleMarkConfig, ['align', 'baseline', 'dx', 'dy', 'limit']);
+    return {
+      titleMarkConfig,
+      subtitleMarkConfig,
+      nonMark,
+      subtitle
+    };
+  }
+  function isText(v) {
+    return isString(v) || isArray(v) && isString(v[0]);
   }
 
   function isSignalRef(o) {
@@ -51797,2151 +51868,6 @@
   }; // Vega's cornerRadius channels.
 
   const VG_CORNERRADIUS_CHANNELS = ['cornerRadius', 'cornerRadiusTopLeft', 'cornerRadiusTopRight', 'cornerRadiusBottomLeft', 'cornerRadiusBottomRight'];
-
-  function isSelectionPredicate(predicate) {
-    return predicate === null || predicate === void 0 ? void 0 : predicate['selection'];
-  }
-  function isFieldEqualPredicate(predicate) {
-    return predicate && !!predicate.field && predicate.equal !== undefined;
-  }
-  function isFieldLTPredicate(predicate) {
-    return predicate && !!predicate.field && predicate.lt !== undefined;
-  }
-  function isFieldLTEPredicate(predicate) {
-    return predicate && !!predicate.field && predicate.lte !== undefined;
-  }
-  function isFieldGTPredicate(predicate) {
-    return predicate && !!predicate.field && predicate.gt !== undefined;
-  }
-  function isFieldGTEPredicate(predicate) {
-    return predicate && !!predicate.field && predicate.gte !== undefined;
-  }
-  function isFieldRangePredicate(predicate) {
-    if (predicate && predicate.field) {
-      if (isArray(predicate.range) && predicate.range.length === 2) {
-        return true;
-      } else if (isSignalRef(predicate.range)) {
-        return true;
-      }
-    }
-
-    return false;
-  }
-  function isFieldOneOfPredicate(predicate) {
-    return predicate && !!predicate.field && (isArray(predicate.oneOf) || isArray(predicate.in)) // backward compatibility
-    ;
-  }
-  function isFieldValidPredicate(predicate) {
-    return predicate && !!predicate.field && predicate.valid !== undefined;
-  }
-  function isFieldPredicate(predicate) {
-    return isFieldOneOfPredicate(predicate) || isFieldEqualPredicate(predicate) || isFieldRangePredicate(predicate) || isFieldLTPredicate(predicate) || isFieldGTPredicate(predicate) || isFieldLTEPredicate(predicate) || isFieldGTEPredicate(predicate);
-  }
-
-  function predicateValueExpr(v, timeUnit) {
-    return valueExpr(v, {
-      timeUnit,
-      wrapTime: true
-    });
-  }
-
-  function predicateValuesExpr(vals, timeUnit) {
-    return vals.map(v => predicateValueExpr(v, timeUnit));
-  } // This method is used by Voyager. Do not change its behavior without changing Voyager.
-
-
-  function fieldFilterExpression(predicate, useInRange = true) {
-    var _normalizeTimeUnit;
-
-    const {
-      field
-    } = predicate;
-    const timeUnit = (_normalizeTimeUnit = normalizeTimeUnit(predicate.timeUnit)) === null || _normalizeTimeUnit === void 0 ? void 0 : _normalizeTimeUnit.unit;
-    const fieldExpr$1 = timeUnit ? // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
-    // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
-    // TODO: support utc
-    'time(' + fieldExpr(timeUnit, field) + ')' : vgField(predicate, {
-      expr: 'datum'
-    });
-
-    if (isFieldEqualPredicate(predicate)) {
-      return fieldExpr$1 + '===' + predicateValueExpr(predicate.equal, timeUnit);
-    } else if (isFieldLTPredicate(predicate)) {
-      const upper = predicate.lt;
-      return "".concat(fieldExpr$1, "<").concat(predicateValueExpr(upper, timeUnit));
-    } else if (isFieldGTPredicate(predicate)) {
-      const lower = predicate.gt;
-      return "".concat(fieldExpr$1, ">").concat(predicateValueExpr(lower, timeUnit));
-    } else if (isFieldLTEPredicate(predicate)) {
-      const upper = predicate.lte;
-      return "".concat(fieldExpr$1, "<=").concat(predicateValueExpr(upper, timeUnit));
-    } else if (isFieldGTEPredicate(predicate)) {
-      const lower = predicate.gte;
-      return "".concat(fieldExpr$1, ">=").concat(predicateValueExpr(lower, timeUnit));
-    } else if (isFieldOneOfPredicate(predicate)) {
-      return "indexof([".concat(predicateValuesExpr(predicate.oneOf, timeUnit).join(','), "], ").concat(fieldExpr$1, ") !== -1");
-    } else if (isFieldValidPredicate(predicate)) {
-      return fieldValidPredicate(fieldExpr$1, predicate.valid);
-    } else if (isFieldRangePredicate(predicate)) {
-      const {
-        range
-      } = predicate;
-      const lower = isSignalRef(range) ? {
-        signal: "".concat(range.signal, "[0]")
-      } : range[0];
-      const upper = isSignalRef(range) ? {
-        signal: "".concat(range.signal, "[1]")
-      } : range[1];
-
-      if (lower !== null && upper !== null && useInRange) {
-        return 'inrange(' + fieldExpr$1 + ', [' + predicateValueExpr(lower, timeUnit) + ', ' + predicateValueExpr(upper, timeUnit) + '])';
-      }
-
-      const exprs = [];
-
-      if (lower !== null) {
-        exprs.push("".concat(fieldExpr$1, " >= ").concat(predicateValueExpr(lower, timeUnit)));
-      }
-
-      if (upper !== null) {
-        exprs.push("".concat(fieldExpr$1, " <= ").concat(predicateValueExpr(upper, timeUnit)));
-      }
-
-      return exprs.length > 0 ? exprs.join(' && ') : 'true';
-    }
-    /* istanbul ignore next: it should never reach here */
-
-
-    throw new Error("Invalid field predicate: ".concat(JSON.stringify(predicate)));
-  }
-  function fieldValidPredicate(fieldExpr, valid = true) {
-    if (valid) {
-      return "isValid(".concat(fieldExpr, ") && isFinite(+").concat(fieldExpr, ")");
-    } else {
-      return "!isValid(".concat(fieldExpr, ") || !isFinite(+").concat(fieldExpr, ")");
-    }
-  }
-  function normalizePredicate(f) {
-    if (isFieldPredicate(f) && f.timeUnit) {
-      var _normalizeTimeUnit2;
-
-      return { ...f,
-        timeUnit: (_normalizeTimeUnit2 = normalizeTimeUnit(f.timeUnit)) === null || _normalizeTimeUnit2 === void 0 ? void 0 : _normalizeTimeUnit2.unit
-      };
-    }
-
-    return f;
-  }
-
-  /**
-   * Data type based on level of measurement
-   */
-
-  const Type = {
-    quantitative: 'quantitative',
-    ordinal: 'ordinal',
-    temporal: 'temporal',
-    nominal: 'nominal',
-    geojson: 'geojson'
-  };
-  const QUANTITATIVE = Type.quantitative;
-  const ORDINAL = Type.ordinal;
-  const TEMPORAL = Type.temporal;
-  const NOMINAL = Type.nominal;
-  const GEOJSON = Type.geojson;
-  /**
-   * Get full, lowercase type name for a given type.
-   * @param  type
-   * @return Full type name.
-   */
-
-  function getFullName(type) {
-    if (type) {
-      type = type.toLowerCase();
-
-      switch (type) {
-        case 'q':
-        case QUANTITATIVE:
-          return 'quantitative';
-
-        case 't':
-        case TEMPORAL:
-          return 'temporal';
-
-        case 'o':
-        case ORDINAL:
-          return 'ordinal';
-
-        case 'n':
-        case NOMINAL:
-          return 'nominal';
-
-        case GEOJSON:
-          return 'geojson';
-      }
-    } // If we get invalid input, return undefined type.
-
-
-    return undefined;
-  }
-
-  const ScaleType = {
-    // Continuous - Quantitative
-    LINEAR: 'linear',
-    LOG: 'log',
-    POW: 'pow',
-    SQRT: 'sqrt',
-    SYMLOG: 'symlog',
-    IDENTITY: 'identity',
-    SEQUENTIAL: 'sequential',
-    // Continuous - Time
-    TIME: 'time',
-    UTC: 'utc',
-    // Discretizing scales
-    QUANTILE: 'quantile',
-    QUANTIZE: 'quantize',
-    THRESHOLD: 'threshold',
-    BIN_ORDINAL: 'bin-ordinal',
-    // Discrete scales
-    ORDINAL: 'ordinal',
-    POINT: 'point',
-    BAND: 'band'
-  };
-
-  /**
-   * Index for scale categories -- only scale of the same categories can be merged together.
-   * Current implementation is trying to be conservative and avoid merging scale type that might not work together
-   */
-  const SCALE_CATEGORY_INDEX = {
-    linear: 'numeric',
-    log: 'numeric',
-    pow: 'numeric',
-    sqrt: 'numeric',
-    symlog: 'numeric',
-    identity: 'numeric',
-    sequential: 'numeric',
-    time: 'time',
-    utc: 'time',
-    ordinal: 'ordinal',
-    'bin-ordinal': 'bin-ordinal',
-    // TODO: should bin-ordinal support merging with other
-    point: 'ordinal-position',
-    band: 'ordinal-position',
-    quantile: 'discretizing',
-    quantize: 'discretizing',
-    threshold: 'discretizing'
-  };
-  /**
-   * Whether the two given scale types can be merged together.
-   */
-
-  function scaleCompatible(scaleType1, scaleType2) {
-    const scaleCategory1 = SCALE_CATEGORY_INDEX[scaleType1];
-    const scaleCategory2 = SCALE_CATEGORY_INDEX[scaleType2];
-    return scaleCategory1 === scaleCategory2 || scaleCategory1 === 'ordinal-position' && scaleCategory2 === 'time' || scaleCategory2 === 'ordinal-position' && scaleCategory1 === 'time';
-  }
-  /**
-   * Index for scale precedence -- high score = higher priority for merging.
-   */
-
-  const SCALE_PRECEDENCE_INDEX = {
-    // numeric
-    linear: 0,
-    log: 1,
-    pow: 1,
-    sqrt: 1,
-    symlog: 1,
-    identity: 1,
-    sequential: 1,
-    // time
-    time: 0,
-    utc: 0,
-    // ordinal-position -- these have higher precedence than continuous scales as they support more types of data
-    point: 10,
-    band: 11,
-    // band has higher precedence as it is better for interaction
-    // non grouped types
-    ordinal: 0,
-    'bin-ordinal': 0,
-    quantile: 0,
-    quantize: 0,
-    threshold: 0
-  };
-  /**
-   * Return scale categories -- only scale of the same categories can be merged together.
-   */
-
-  function scaleTypePrecedence(scaleType) {
-    return SCALE_PRECEDENCE_INDEX[scaleType];
-  }
-  const CONTINUOUS_TO_CONTINUOUS_SCALES = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'time', 'utc'];
-  const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
-  const QUANTITATIVE_SCALES = ['linear', 'log', 'pow', 'sqrt', 'symlog'];
-  const QUANTITATIVE_SCALES_INDEX = toSet(QUANTITATIVE_SCALES);
-  function isQuantitative(type) {
-    return type in QUANTITATIVE_SCALES_INDEX;
-  }
-  const CONTINUOUS_TO_DISCRETE_SCALES = ['quantile', 'quantize', 'threshold'];
-  const CONTINUOUS_TO_DISCRETE_INDEX = toSet(CONTINUOUS_TO_DISCRETE_SCALES);
-  const CONTINUOUS_DOMAIN_SCALES = CONTINUOUS_TO_CONTINUOUS_SCALES.concat(['quantile', 'quantize', 'threshold', 'sequential', 'identity']);
-  const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
-  const DISCRETE_DOMAIN_SCALES = ['ordinal', 'bin-ordinal', 'point', 'band'];
-  const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
-  function hasDiscreteDomain(type) {
-    return type in DISCRETE_DOMAIN_INDEX;
-  }
-  function hasContinuousDomain(type) {
-    return type in CONTINUOUS_DOMAIN_INDEX;
-  }
-  function isContinuousToContinuous(type) {
-    return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
-  }
-  function isContinuousToDiscrete(type) {
-    return type in CONTINUOUS_TO_DISCRETE_INDEX;
-  }
-  const defaultScaleConfig = {
-    pointPadding: 0.5,
-    barBandPaddingInner: 0.1,
-    rectBandPaddingInner: 0,
-    minBandSize: 2,
-    minFontSize: 8,
-    maxFontSize: 40,
-    minOpacity: 0.3,
-    maxOpacity: 0.8,
-    // FIXME: revise if these *can* become ratios of width/height step
-    minSize: 9,
-    // Point size is area. For square point, 9 = 3 pixel ^ 2, not too small!
-    minStrokeWidth: 1,
-    maxStrokeWidth: 4,
-    quantileCount: 4,
-    quantizeCount: 4
-  };
-  function isExtendedScheme(scheme) {
-    return !isString(scheme) && !!scheme['name'];
-  }
-  function isSelectionDomain(domain) {
-    return domain === null || domain === void 0 ? void 0 : domain['selection'];
-  }
-  function isDomainUnionWith(domain) {
-    return domain && domain['unionWith'];
-  }
-  const SCALE_PROPERTY_INDEX = {
-    type: 1,
-    domain: 1,
-    domainMax: 1,
-    domainMin: 1,
-    domainMid: 1,
-    align: 1,
-    range: 1,
-    rangeMax: 1,
-    rangeMin: 1,
-    scheme: 1,
-    bins: 1,
-    // Other properties
-    reverse: 1,
-    round: 1,
-    // quantitative / time
-    clamp: 1,
-    nice: 1,
-    // quantitative
-    base: 1,
-    exponent: 1,
-    constant: 1,
-    interpolate: 1,
-    zero: 1,
-    // zero depends on domain
-    // band/point
-    padding: 1,
-    paddingInner: 1,
-    paddingOuter: 1
-  };
-  const {
-    type: type$1,
-    domain: domain$1,
-    range: range$4,
-    rangeMax,
-    rangeMin,
-    scheme: scheme$1,
-    ...NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX
-  } = SCALE_PROPERTY_INDEX;
-  const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = keys$2(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
-  function scaleTypeSupportProperty(scaleType, propName) {
-    switch (propName) {
-      case 'type':
-      case 'domain':
-      case 'reverse':
-      case 'range':
-        return true;
-
-      case 'scheme':
-      case 'interpolate':
-        return !contains$1(['point', 'band', 'identity'], scaleType);
-
-      case 'bins':
-        return !contains$1(['point', 'band', 'identity', 'ordinal'], scaleType);
-
-      case 'round':
-        return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
-
-      case 'padding':
-      case 'rangeMin':
-      case 'rangeMax':
-        return isContinuousToContinuous(scaleType) || contains$1(['point', 'band'], scaleType);
-
-      case 'paddingOuter':
-      case 'align':
-        return contains$1(['point', 'band'], scaleType);
-
-      case 'paddingInner':
-        return scaleType === 'band';
-
-      case 'domainMax':
-      case 'domainMid':
-      case 'domainMin':
-      case 'clamp':
-        return isContinuousToContinuous(scaleType);
-
-      case 'nice':
-        return isContinuousToContinuous(scaleType) || scaleType === 'quantize' || scaleType === 'threshold';
-
-      case 'exponent':
-        return scaleType === 'pow';
-
-      case 'base':
-        return scaleType === 'log';
-
-      case 'constant':
-        return scaleType === 'symlog';
-
-      case 'zero':
-        return hasContinuousDomain(scaleType) && !contains$1(['log', // log scale cannot have zero value
-        'time', 'utc', // zero is not meaningful for time
-        'threshold', // threshold requires custom domain so zero does not matter
-        'quantile' // quantile depends on distribution so zero does not matter
-        ], scaleType);
-    }
-  }
-  /**
-   * Returns undefined if the input channel supports the input scale property name
-   */
-
-  function channelScalePropertyIncompatability(channel, propName) {
-    switch (propName) {
-      case 'interpolate':
-      case 'scheme':
-      case 'domainMid':
-        if (!isColorChannel(channel)) {
-          return cannotUseScalePropertyWithNonColor(channel);
-        }
-
-        return undefined;
-
-      case 'align':
-      case 'type':
-      case 'bins':
-      case 'domain':
-      case 'domainMax':
-      case 'domainMin':
-      case 'range':
-      case 'base':
-      case 'exponent':
-      case 'constant':
-      case 'nice':
-      case 'padding':
-      case 'paddingInner':
-      case 'paddingOuter':
-      case 'rangeMax':
-      case 'rangeMin':
-      case 'reverse':
-      case 'round':
-      case 'clamp':
-      case 'zero':
-        return undefined;
-      // GOOD!
-    }
-  }
-  function scaleTypeSupportDataType(specifiedType, fieldDefType) {
-    if (contains$1([ORDINAL, NOMINAL], fieldDefType)) {
-      return specifiedType === undefined || hasDiscreteDomain(specifiedType);
-    } else if (fieldDefType === TEMPORAL) {
-      return contains$1([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
-    } else if (fieldDefType === QUANTITATIVE) {
-      return contains$1([ScaleType.LOG, ScaleType.POW, ScaleType.SQRT, ScaleType.SYMLOG, ScaleType.QUANTILE, ScaleType.QUANTIZE, ScaleType.THRESHOLD, ScaleType.LINEAR, undefined], specifiedType);
-    }
-
-    return true;
-  }
-  function channelSupportScaleType(channel, scaleType) {
-    if (!isScaleChannel(channel)) {
-      return false;
-    }
-
-    switch (channel) {
-      case X$1:
-      case Y$1:
-      case THETA:
-      case RADIUS:
-        return isContinuousToContinuous(scaleType) || contains$1(['band', 'point'], scaleType);
-
-      case SIZE$1: // TODO: size and opacity can support ordinal with more modification
-
-      case STROKEWIDTH:
-      case OPACITY:
-      case FILLOPACITY:
-      case STROKEOPACITY:
-      case ANGLE:
-        // Although it generally doesn't make sense to use band with size and opacity,
-        // it can also work since we use band: 0.5 to get midpoint.
-        return isContinuousToContinuous(scaleType) || isContinuousToDiscrete(scaleType) || contains$1(['band', 'point', 'ordinal'], scaleType);
-
-      case COLOR:
-      case FILL:
-      case STROKE:
-        return scaleType !== 'band';
-      // band does not make sense with color
-
-      case STROKEDASH:
-        return scaleType === 'ordinal' || isContinuousToDiscrete(scaleType);
-
-      case SHAPE:
-        return scaleType === 'ordinal';
-      // shape = lookup only
-    }
-  }
-
-  function isExprRef(o) {
-    return o && !!o['expr'];
-  }
-  function replaceExprRefInIndex(index) {
-    const props = keys$2(index || {});
-    const newIndex = {};
-
-    for (const prop of props) {
-      newIndex[prop] = signalRefOrValue(index[prop]);
-    }
-
-    return newIndex;
-  }
-
-  /**
-   * All types of primitive marks.
-   */
-  const Mark$2 = {
-    arc: 'arc',
-    area: 'area',
-    bar: 'bar',
-    image: 'image',
-    line: 'line',
-    point: 'point',
-    rect: 'rect',
-    rule: 'rule',
-    text: 'text',
-    tick: 'tick',
-    trail: 'trail',
-    circle: 'circle',
-    square: 'square',
-    geoshape: 'geoshape'
-  };
-  const ARC = Mark$2.arc;
-  const AREA = Mark$2.area;
-  const BAR = Mark$2.bar;
-  const IMAGE = Mark$2.image;
-  const LINE = Mark$2.line;
-  const POINT = Mark$2.point;
-  const RECT = Mark$2.rect;
-  const RULE = Mark$2.rule;
-  const TEXT$1 = Mark$2.text;
-  const TICK = Mark$2.tick;
-  const TRAIL = Mark$2.trail;
-  const CIRCLE = Mark$2.circle;
-  const SQUARE = Mark$2.square;
-  const GEOSHAPE = Mark$2.geoshape;
-  function isPathMark(m) {
-    return contains$1(['line', 'area', 'trail'], m);
-  }
-  function isRectBasedMark(m) {
-    return contains$1(['rect', 'bar', 'image', 'arc'
-    /* arc is rect/interval in polar coordinate */
-    ], m);
-  }
-  const PRIMITIVE_MARKS = keys$2(Mark$2);
-  function isMarkDef(mark) {
-    return mark['type'];
-  }
-  const PRIMITIVE_MARK_INDEX = toSet(PRIMITIVE_MARKS);
-  const STROKE_CONFIG = ['stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'strokeJoin', 'strokeMiterLimit'];
-  const FILL_CONFIG = ['fill', 'fillOpacity'];
-  const FILL_STROKE_CONFIG = [...STROKE_CONFIG, ...FILL_CONFIG];
-  const VL_ONLY_MARK_CONFIG_INDEX = {
-    color: 1,
-    filled: 1,
-    invalid: 1,
-    order: 1,
-    radius2: 1,
-    theta2: 1,
-    timeUnitBand: 1,
-    timeUnitBandPosition: 1
-  };
-  const VL_ONLY_MARK_CONFIG_PROPERTIES = keys$2(VL_ONLY_MARK_CONFIG_INDEX);
-  const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
-    area: ['line', 'point'],
-    bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
-    rect: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
-    line: ['point'],
-    tick: ['bandSize', 'thickness']
-  };
-  const defaultMarkConfig = {
-    color: '#4c78a8',
-    invalid: 'filter',
-    timeUnitBand: 1
-  }; // TODO: replace with MarkConfigMixins[Mark] once https://github.com/vega/ts-json-schema-generator/issues/344 is fixed
-
-  const MARK_CONFIG_INDEX = {
-    mark: 1,
-    arc: 1,
-    area: 1,
-    bar: 1,
-    circle: 1,
-    image: 1,
-    line: 1,
-    point: 1,
-    rect: 1,
-    rule: 1,
-    square: 1,
-    text: 1,
-    tick: 1,
-    trail: 1,
-    geoshape: 1
-  };
-  const MARK_CONFIGS = keys$2(MARK_CONFIG_INDEX);
-  const BAR_CORNER_RADIUS_INDEX = {
-    horizontal: ['cornerRadiusTopRight', 'cornerRadiusBottomRight'],
-    vertical: ['cornerRadiusTopLeft', 'cornerRadiusTopRight']
-  };
-  const DEFAULT_RECT_BAND_SIZE = 5;
-  const defaultBarConfig = {
-    binSpacing: 1,
-    continuousBandSize: DEFAULT_RECT_BAND_SIZE,
-    timeUnitBandPosition: 0.5
-  };
-  const defaultRectConfig = {
-    binSpacing: 0,
-    continuousBandSize: DEFAULT_RECT_BAND_SIZE,
-    timeUnitBandPosition: 0.5
-  };
-  const defaultTickConfig = {
-    thickness: 1
-  };
-  function getMarkType(m) {
-    return isMarkDef(m) ? m.type : m;
-  }
-
-  /**
-   * Utility files for producing Vega ValueRef for marks
-   */
-  function midPointRefWithPositionInvalidTest(params) {
-    const {
-      channel,
-      channelDef,
-      markDef,
-      scale,
-      config
-    } = params;
-    const ref = midPoint(params); // Wrap to check if the positional value is invalid, if so, plot the point on the min value
-
-    if ( // Only this for field def without counting aggregate (as count wouldn't be null)
-    isFieldDef(channelDef) && !isCountingAggregateOp(channelDef.aggregate) && // and only for continuous scale without zero (otherwise, null / invalid will be interpreted as zero, which doesn't cause layout problem)
-    scale && isContinuousToContinuous(scale.get('type')) && scale.get('zero') === false) {
-      return wrapPositionInvalidTest({
-        fieldDef: channelDef,
-        channel,
-        markDef,
-        ref,
-        config
-      });
-    }
-
-    return ref;
-  }
-  function wrapPositionInvalidTest({
-    fieldDef,
-    channel,
-    markDef,
-    ref,
-    config
-  }) {
-    if (isPathMark(markDef.type)) {
-      // path mark already use defined to skip points, no need to do it here.
-      return ref;
-    }
-
-    const invalid = getMarkPropOrConfig('invalid', markDef, config);
-
-    if (invalid === null) {
-      // if there is no invalid filter, don't do the invalid test
-      return ref;
-    }
-
-    return [fieldInvalidTestValueRef(fieldDef, channel), ref];
-  }
-  function fieldInvalidTestValueRef(fieldDef, channel) {
-    const test = fieldInvalidPredicate(fieldDef, true);
-    const mainChannel = getMainRangeChannel(channel); // we can cast here as the output can't be other things.
-
-    const zeroValueRef = mainChannel === 'y' ? {
-      field: {
-        group: 'height'
-      }
-    } : // x / angle / radius can all use 0
-    {
-      value: 0
-    };
-    return {
-      test,
-      ...zeroValueRef
-    };
-  }
-  function fieldInvalidPredicate(field, invalid = true) {
-    return fieldValidPredicate(isString(field) ? field : vgField(field, {
-      expr: 'datum'
-    }), !invalid);
-  }
-  function datumDefToExpr(datumDef) {
-    const {
-      datum
-    } = datumDef;
-
-    if (isDateTime(datum)) {
-      return dateTimeToExpr(datum);
-    }
-
-    return "".concat(JSON.stringify(datum));
-  }
-  function valueRefForFieldOrDatumDef(fieldDef, scaleName, opt, encode) {
-    const ref = {};
-
-    if (scaleName) {
-      ref.scale = scaleName;
-    }
-
-    if (isDatumDef(fieldDef)) {
-      const {
-        datum
-      } = fieldDef;
-
-      if (isDateTime(datum)) {
-        ref.signal = dateTimeToExpr(datum);
-      } else if (isSignalRef(datum)) {
-        ref.signal = datum.signal;
-      } else if (isExprRef(datum)) {
-        ref.signal = datum.expr;
-      } else {
-        ref.value = datum;
-      }
-    } else {
-      ref.field = vgField(fieldDef, opt);
-    }
-
-    if (encode) {
-      const {
-        offset,
-        band
-      } = encode;
-
-      if (offset) {
-        ref.offset = offset;
-      }
-
-      if (band) {
-        ref.band = band;
-      }
-    }
-
-    return ref;
-  }
-  /**
-   * Signal that returns the middle of a bin from start and end field. Should only be used with x and y.
-   */
-
-  function interpolatedSignalRef({
-    scaleName,
-    fieldOrDatumDef,
-    fieldOrDatumDef2,
-    offset,
-    startSuffix,
-    band = 0.5
-  }) {
-    const expr = 0 < band && band < 1 ? 'datum' : undefined;
-    const start = vgField(fieldOrDatumDef, {
-      expr,
-      suffix: startSuffix
-    });
-    const end = fieldOrDatumDef2 !== undefined ? vgField(fieldOrDatumDef2, {
-      expr
-    }) : vgField(fieldOrDatumDef, {
-      suffix: 'end',
-      expr
-    });
-    const ref = {};
-
-    if (band === 0 || band === 1) {
-      ref.scale = scaleName;
-      const val = band === 0 ? start : end;
-      ref.field = val;
-    } else {
-      const datum = "".concat(band, " * ").concat(start, " + ").concat(1 - band, " * ").concat(end);
-      ref.signal = "scale(\"".concat(scaleName, "\", ").concat(datum, ")");
-    }
-
-    if (offset) {
-      ref.offset = offset;
-    }
-
-    return ref;
-  }
-
-  /**
-   * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
-   */
-  function midPoint({
-    channel,
-    channelDef,
-    channel2Def,
-    markDef,
-    config,
-    scaleName,
-    scale,
-    stack,
-    offset,
-    defaultRef,
-    band
-  }) {
-    // TODO: datum support
-    if (channelDef) {
-      /* istanbul ignore else */
-      if (isFieldOrDatumDef(channelDef)) {
-        var _ref, _band2;
-
-        if (isTypedFieldDef(channelDef)) {
-          var _band;
-
-          band = (_band = band) !== null && _band !== void 0 ? _band : getBand({
-            channel,
-            fieldDef: channelDef,
-            fieldDef2: channel2Def,
-            markDef,
-            stack,
-            config,
-            isMidPoint: true
-          });
-          const {
-            bin,
-            timeUnit,
-            type
-          } = channelDef;
-
-          if (isBinning(bin) || band && timeUnit && type === TEMPORAL) {
-            // Use middle only for x an y to place marks in the center between start and end of the bin range.
-            // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
-            if (stack && stack.impute) {
-              // For stack, we computed bin_mid so we can impute.
-              return valueRefForFieldOrDatumDef(channelDef, scaleName, {
-                binSuffix: 'mid'
-              }, {
-                offset
-              });
-            }
-
-            if (band) {
-              // if band = 0, no need to call interpolation
-              // For non-stack, we can just calculate bin mid on the fly using signal.
-              return interpolatedSignalRef({
-                scaleName,
-                fieldOrDatumDef: channelDef,
-                band,
-                offset
-              });
-            }
-
-            return valueRefForFieldOrDatumDef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {
-              binSuffix: 'range'
-            } : {}, {
-              offset
-            });
-          } else if (isBinned(bin)) {
-            if (isFieldDef(channel2Def)) {
-              return interpolatedSignalRef({
-                scaleName,
-                fieldOrDatumDef: channelDef,
-                fieldOrDatumDef2: channel2Def,
-                band,
-                offset
-              });
-            } else {
-              const channel2 = channel === X$1 ? X2$2 : Y2$2;
-              warn$1(channelRequiredForBinned(channel2));
-            }
-          }
-        }
-
-        const scaleType = scale === null || scale === void 0 ? void 0 : scale.get('type');
-        return valueRefForFieldOrDatumDef(channelDef, scaleName, hasDiscreteDomain(scaleType) ? {
-          binSuffix: 'range'
-        } : {}, // no need for bin suffix if there is no scale
-        {
-          offset,
-          // For band, to get mid point, need to offset by half of the band
-          band: scaleType === 'band' ? (_ref = (_band2 = band) !== null && _band2 !== void 0 ? _band2 : channelDef.band) !== null && _ref !== void 0 ? _ref : 0.5 : undefined
-        });
-      } else if (isValueDef(channelDef)) {
-        const value = channelDef.value;
-        const offsetMixins = offset ? {
-          offset
-        } : {};
-        return { ...widthHeightValueOrSignalRef(channel, value),
-          ...offsetMixins
-        };
-      } // If channelDef is neither field def or value def, it's a condition-only def.
-      // In such case, we will use default ref.
-
-    }
-
-    if (isFunction(defaultRef)) {
-      defaultRef = defaultRef();
-    }
-
-    if (defaultRef) {
-      // for non-position, ref could be undefined.
-      return { ...defaultRef,
-        // only include offset when it is non-zero (zero = no offset)
-        ...(offset ? {
-          offset
-        } : {})
-      };
-    }
-
-    return defaultRef;
-  }
-  /**
-   * Convert special "width" and "height" values in Vega-Lite into Vega value ref.
-   */
-
-  function widthHeightValueOrSignalRef(channel, value) {
-    if (contains$1(['x', 'x2'], channel) && value === 'width') {
-      return {
-        field: {
-          group: 'width'
-        }
-      };
-    } else if (contains$1(['y', 'y2'], channel) && value === 'height') {
-      return {
-        field: {
-          group: 'height'
-        }
-      };
-    }
-
-    return signalOrValueRef(value);
-  }
-
-  function isCustomFormatType(formatType) {
-    return formatType && formatType !== 'number' && formatType !== 'time';
-  }
-
-  function customFormatExpr(formatType, field, format) {
-    return "".concat(formatType, "(").concat(field).concat(format ? ", ".concat(JSON.stringify(format)) : '', ")");
-  }
-
-  const BIN_RANGE_DELIMITER = ' \u2013 ';
-  function formatSignalRef({
-    fieldOrDatumDef,
-    format,
-    formatType,
-    expr,
-    normalizeStack,
-    config
-  }) {
-    if (isCustomFormatType(formatType)) {
-      return formatCustomType({
-        fieldOrDatumDef,
-        format,
-        formatType,
-        expr,
-        config
-      });
-    }
-
-    const field = fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
-
-    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
-      var _normalizeTimeUnit, _fieldOrDatumDef$scal;
-
-      const signal = timeFormatExpression(field, isFieldDef(fieldOrDatumDef) ? (_normalizeTimeUnit = normalizeTimeUnit(fieldOrDatumDef.timeUnit)) === null || _normalizeTimeUnit === void 0 ? void 0 : _normalizeTimeUnit.unit : undefined, format, config.timeFormat, isScaleFieldDef(fieldOrDatumDef) && ((_fieldOrDatumDef$scal = fieldOrDatumDef.scale) === null || _fieldOrDatumDef$scal === void 0 ? void 0 : _fieldOrDatumDef$scal.type) === ScaleType.UTC);
-      return signal ? {
-        signal
-      } : undefined;
-    }
-
-    format = numberFormat(channelDefType(fieldOrDatumDef), format, config);
-
-    if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
-      const endField = vgField(fieldOrDatumDef, {
-        expr,
-        binSuffix: 'end'
-      });
-      return {
-        signal: binFormatExpression(field, endField, format, formatType, config)
-      };
-    } else if (format || channelDefType(fieldOrDatumDef) === 'quantitative') {
-      return {
-        signal: "".concat(formatExpr(field, format))
-      };
-    } else {
-      return {
-        signal: "isValid(".concat(field, ") ? ").concat(field, " : \"\"+").concat(field)
-      };
-    }
-  }
-
-  function fieldToFormat(fieldOrDatumDef, expr, normalizeStack) {
-    if (isFieldDef(fieldOrDatumDef)) {
-      if (normalizeStack) {
-        return "".concat(vgField(fieldOrDatumDef, {
-          expr,
-          suffix: 'end'
-        }), "-").concat(vgField(fieldOrDatumDef, {
-          expr,
-          suffix: 'start'
-        }));
-      } else {
-        return vgField(fieldOrDatumDef, {
-          expr
-        });
-      }
-    } else {
-      return datumDefToExpr(fieldOrDatumDef);
-    }
-  }
-
-  function formatCustomType({
-    fieldOrDatumDef,
-    format,
-    formatType,
-    expr,
-    normalizeStack,
-    config,
-    field
-  }) {
-    var _field;
-
-    field = (_field = field) !== null && _field !== void 0 ? _field : fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
-
-    if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
-      const endField = vgField(fieldOrDatumDef, {
-        expr,
-        binSuffix: 'end'
-      });
-      return {
-        signal: binFormatExpression(field, endField, format, formatType, config)
-      };
-    }
-
-    return {
-      signal: customFormatExpr(formatType, field, format)
-    };
-  }
-  function guideFormat(fieldOrDatumDef, type, format, formatType, config, omitTimeFormatConfig) // axis doesn't use config.timeFormat
-  {
-    if (isCustomFormatType(formatType)) {
-      return undefined; // handled in encode block
-    }
-
-    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
-      var _normalizeTimeUnit2;
-
-      const timeUnit = isFieldDef(fieldOrDatumDef) ? (_normalizeTimeUnit2 = normalizeTimeUnit(fieldOrDatumDef.timeUnit)) === null || _normalizeTimeUnit2 === void 0 ? void 0 : _normalizeTimeUnit2.unit : undefined;
-      return timeFormat$2(format, timeUnit, config, omitTimeFormatConfig);
-    }
-
-    return numberFormat(type, format, config);
-  }
-  function guideFormatType(formatType, fieldOrDatumDef, scaleType) {
-    if (formatType && (isSignalRef(formatType) || formatType === 'number' || formatType === 'time')) {
-      return formatType;
-    }
-
-    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) && scaleType !== 'time' && scaleType !== 'utc') {
-      return 'time';
-    }
-
-    return undefined;
-  }
-  /**
-   * Returns number format for a fieldDef.
-   */
-
-  function numberFormat(type, specifiedFormat, config) {
-    // Specified format in axis/legend has higher precedence than fieldDef.format
-    if (isString(specifiedFormat)) {
-      return specifiedFormat;
-    }
-
-    if (type === QUANTITATIVE) {
-      // we only apply the default if the field is quantitative
-      return config.numberFormat;
-    }
-
-    return undefined;
-  }
-  /**
-   * Returns time format for a fieldDef for use in guides.
-   */
-
-  function timeFormat$2(specifiedFormat, timeUnit, config, omitTimeFormatConfig) {
-    if (specifiedFormat) {
-      return specifiedFormat;
-    }
-
-    if (timeUnit) {
-      return {
-        signal: timeUnitSpecifierExpression(timeUnit)
-      };
-    }
-
-    return omitTimeFormatConfig ? undefined : config.timeFormat;
-  }
-
-  function formatExpr(field, format) {
-    return "format(".concat(field, ", \"").concat(format || '', "\")");
-  }
-
-  function binNumberFormatExpr(field, format, formatType, config) {
-    var _ref;
-
-    if (isCustomFormatType(formatType)) {
-      return customFormatExpr(formatType, field, format);
-    }
-
-    return formatExpr(field, (_ref = isString(format) ? format : undefined) !== null && _ref !== void 0 ? _ref : config.numberFormat);
-  }
-
-  function binFormatExpression(startField, endField, format, formatType, config) {
-    const start = binNumberFormatExpr(startField, format, formatType, config);
-    const end = binNumberFormatExpr(endField, format, formatType, config);
-    return "".concat(fieldValidPredicate(startField, false), " ? \"null\" : ").concat(start, " + \"").concat(BIN_RANGE_DELIMITER, "\" + ").concat(end);
-  }
-  /**
-   * Returns the time expression used for axis/legend labels or text mark for a temporal field
-   */
-
-  function timeFormatExpression(field, timeUnit, format, rawTimeFormat, // should be provided only for actual text and headers, not axis/legend labels
-  isUTCScale) {
-    if (!timeUnit || format) {
-      // If there is no time unit, or if user explicitly specifies format for axis/legend/text.
-      format = isString(format) ? format : rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
-
-      return "".concat(isUTCScale ? 'utc' : 'time', "Format(").concat(field, ", '").concat(format, "')");
-    } else {
-      return formatExpression(timeUnit, field, isUTCScale);
-    }
-  }
-
-  const DEFAULT_SORT_OP = 'min';
-  /**
-   * A sort definition for sorting a discrete scale in an encoding field definition.
-   */
-
-  const SORT_BY_CHANNEL_INDEX = {
-    x: 1,
-    y: 1,
-    color: 1,
-    fill: 1,
-    stroke: 1,
-    strokeWidth: 1,
-    size: 1,
-    shape: 1,
-    fillOpacity: 1,
-    strokeOpacity: 1,
-    opacity: 1,
-    text: 1
-  };
-  function isSortByChannel(c) {
-    return c in SORT_BY_CHANNEL_INDEX;
-  }
-  function isSortByEncoding(sort) {
-    return !!sort && !!sort['encoding'];
-  }
-  function isSortField(sort) {
-    return !!sort && (sort['op'] === 'count' || !!sort['field']);
-  }
-  function isSortArray(sort) {
-    return !!sort && isArray(sort);
-  }
-
-  function isFacetMapping(f) {
-    return 'row' in f || 'column' in f;
-  }
-  /**
-   * Facet mapping for encoding macro
-   */
-
-  function isFacetFieldDef(channelDef) {
-    return !!channelDef && 'header' in channelDef;
-  }
-  /**
-   * Base interface for a facet specification.
-   */
-
-  function isFacetSpec(spec) {
-    return 'facet' in spec;
-  }
-
-  function isConditionalSelection(c) {
-    return c['selection'];
-  }
-  function isRepeatRef(field) {
-    return field && !isString(field) && 'repeat' in field;
-  }
-  /** @@hidden */
-
-  function toFieldDefBase(fieldDef) {
-    const {
-      field,
-      timeUnit,
-      bin,
-      aggregate
-    } = fieldDef;
-    return { ...(timeUnit ? {
-        timeUnit
-      } : {}),
-      ...(bin ? {
-        bin
-      } : {}),
-      ...(aggregate ? {
-        aggregate
-      } : {}),
-      field
-    };
-  }
-  function isSortableFieldDef(fieldDef) {
-    return 'sort' in fieldDef;
-  }
-  function getBand({
-    channel,
-    fieldDef,
-    fieldDef2,
-    markDef: mark,
-    stack,
-    config,
-    isMidPoint
-  }) {
-    if (isFieldOrDatumDef(fieldDef) && fieldDef.band !== undefined) {
-      return fieldDef.band;
-    }
-
-    if (isFieldDef(fieldDef)) {
-      const {
-        timeUnit,
-        bin
-      } = fieldDef;
-
-      if (timeUnit && !fieldDef2) {
-        if (isMidPoint) {
-          return getMarkConfig('timeUnitBandPosition', mark, config);
-        } else {
-          return isRectBasedMark(mark.type) ? getMarkConfig('timeUnitBand', mark, config) : 0;
-        }
-      } else if (isBinning(bin)) {
-        return isRectBasedMark(mark.type) && !isMidPoint ? 1 : 0.5;
-      }
-    }
-
-    if ((stack === null || stack === void 0 ? void 0 : stack.fieldChannel) === channel && isMidPoint) {
-      return 0.5;
-    }
-
-    return undefined;
-  }
-  function hasBand(channel, fieldDef, fieldDef2, stack, markDef, config) {
-    if (isBinning(fieldDef.bin) || fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal') {
-      return !!getBand({
-        channel,
-        fieldDef,
-        fieldDef2,
-        stack,
-        markDef,
-        config
-      });
-    }
-
-    return false;
-  }
-  /**
-   * Field definition of a mark property, which can contain a legend.
-   */
-
-  function isConditionalDef(channelDef) {
-    return !!channelDef && 'condition' in channelDef;
-  }
-  /**
-   * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
-   */
-
-  function hasConditionalFieldDef(channelDef) {
-    const condition = channelDef && channelDef['condition'];
-    return !!condition && !isArray(condition) && isFieldDef(condition);
-  }
-  function hasConditionalFieldOrDatumDef(channelDef) {
-    const condition = channelDef && channelDef['condition'];
-    return !!condition && !isArray(condition) && isFieldOrDatumDef(condition);
-  }
-  function hasConditionalValueDef(channelDef) {
-    const condition = channelDef && channelDef['condition'];
-    return !!condition && (isArray(condition) || isValueDef(condition));
-  }
-  function isFieldDef(channelDef) {
-    // TODO: we can't use field in channelDef here as it's somehow failing runtime test
-    return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
-  }
-  function channelDefType(channelDef) {
-    return channelDef && channelDef['type'];
-  }
-  function isDatumDef(channelDef) {
-    return !!channelDef && 'datum' in channelDef;
-  }
-  function isContinuousFieldOrDatumDef(cd) {
-    // TODO: make datum support DateTime object
-    return isTypedFieldDef(cd) && isContinuous$1(cd) || isNumericDataDef(cd);
-  }
-  function isNumericDataDef(cd) {
-    return isDatumDef(cd) && isNumber(cd.datum);
-  }
-  function isFieldOrDatumDef(channelDef) {
-    return isFieldDef(channelDef) || isDatumDef(channelDef);
-  }
-  function isTypedFieldDef(channelDef) {
-    return !!channelDef && ('field' in channelDef || channelDef['aggregate'] === 'count') && 'type' in channelDef;
-  }
-  function isValueDef(channelDef) {
-    return channelDef && 'value' in channelDef && 'value' in channelDef;
-  }
-  function isScaleFieldDef(channelDef) {
-    return !!channelDef && ('scale' in channelDef || 'sort' in channelDef);
-  }
-  function isPositionFieldOrDatumDef(channelDef) {
-    return channelDef && ('axis' in channelDef || 'stack' in channelDef || 'impute' in channelDef);
-  }
-  function isMarkPropFieldOrDatumDef(channelDef) {
-    return !!channelDef && 'legend' in channelDef;
-  }
-  function isStringFieldOrDatumDef(channelDef) {
-    return !!channelDef && ('format' in channelDef || 'formatType' in channelDef);
-  }
-  function toStringFieldDef(fieldDef) {
-    // omit properties that don't exist in string field defs
-    return omit(fieldDef, ['legend', 'axis', 'header', 'scale']);
-  }
-
-  function isOpFieldDef(fieldDef) {
-    return 'op' in fieldDef;
-  }
-  /**
-   * Get a Vega field reference from a Vega-Lite field def.
-   */
-
-
-  function vgField(fieldDef, opt = {}) {
-    let field = fieldDef.field;
-    const prefix = opt.prefix;
-    let suffix = opt.suffix;
-    let argAccessor = ''; // for accessing argmin/argmax field at the end without getting escaped
-
-    if (isCount(fieldDef)) {
-      field = internalField('count');
-    } else {
-      let fn;
-
-      if (!opt.nofn) {
-        if (isOpFieldDef(fieldDef)) {
-          fn = fieldDef.op;
-        } else {
-          const {
-            bin,
-            aggregate,
-            timeUnit
-          } = fieldDef;
-
-          if (isBinning(bin)) {
-            var _opt$binSuffix, _opt$suffix;
-
-            fn = binToString(bin);
-            suffix = ((_opt$binSuffix = opt.binSuffix) !== null && _opt$binSuffix !== void 0 ? _opt$binSuffix : '') + ((_opt$suffix = opt.suffix) !== null && _opt$suffix !== void 0 ? _opt$suffix : '');
-          } else if (aggregate) {
-            if (isArgmaxDef(aggregate)) {
-              argAccessor = "[\"".concat(field, "\"]");
-              field = "argmax_".concat(aggregate.argmax);
-            } else if (isArgminDef(aggregate)) {
-              argAccessor = "[\"".concat(field, "\"]");
-              field = "argmin_".concat(aggregate.argmin);
-            } else {
-              fn = String(aggregate);
-            }
-          } else if (timeUnit) {
-            var _opt$suffix2;
-
-            fn = timeUnitToString(timeUnit);
-            suffix = (!contains$1(['range', 'mid'], opt.binSuffix) && opt.binSuffix || '') + ((_opt$suffix2 = opt.suffix) !== null && _opt$suffix2 !== void 0 ? _opt$suffix2 : '');
-          }
-        }
-      }
-
-      if (fn) {
-        field = field ? "".concat(fn, "_").concat(field) : fn;
-      }
-    }
-
-    if (suffix) {
-      field = "".concat(field, "_").concat(suffix);
-    }
-
-    if (prefix) {
-      field = "".concat(prefix, "_").concat(field);
-    }
-
-    if (opt.forAs) {
-      return removePathFromField(field);
-    } else if (opt.expr) {
-      // Expression to access flattened field. No need to escape dots.
-      return flatAccessWithDatum(field, opt.expr) + argAccessor;
-    } else {
-      // We flattened all fields so paths should have become dot.
-      return replacePathInField(field) + argAccessor;
-    }
-  }
-  function isDiscrete$1(def) {
-    switch (def.type) {
-      case 'nominal':
-      case 'ordinal':
-      case 'geojson':
-        return true;
-
-      case 'quantitative':
-        return isFieldDef(def) && !!def.bin;
-
-      case 'temporal':
-        return false;
-    }
-
-    throw new Error(invalidFieldType(def.type));
-  }
-  function isContinuous$1(fieldDef) {
-    return !isDiscrete$1(fieldDef);
-  }
-  function isCount(fieldDef) {
-    return fieldDef.aggregate === 'count';
-  }
-  function verbalTitleFormatter(fieldDef, config) {
-    const {
-      field,
-      bin,
-      timeUnit,
-      aggregate
-    } = fieldDef;
-
-    if (aggregate === 'count') {
-      return config.countTitle;
-    } else if (isBinning(bin)) {
-      return "".concat(field, " (binned)");
-    } else if (timeUnit) {
-      var _normalizeTimeUnit;
-
-      const unit = (_normalizeTimeUnit = normalizeTimeUnit(timeUnit)) === null || _normalizeTimeUnit === void 0 ? void 0 : _normalizeTimeUnit.unit;
-
-      if (unit) {
-        return "".concat(field, " (").concat(getTimeUnitParts(unit).join('-'), ")");
-      }
-    } else if (aggregate) {
-      if (isArgmaxDef(aggregate)) {
-        return "".concat(field, " for max ").concat(aggregate.argmax);
-      } else if (isArgminDef(aggregate)) {
-        return "".concat(field, " for min ").concat(aggregate.argmin);
-      } else {
-        return "".concat(titleCase(aggregate), " of ").concat(field);
-      }
-    }
-
-    return field;
-  }
-  function functionalTitleFormatter(fieldDef) {
-    const {
-      aggregate,
-      bin,
-      timeUnit,
-      field
-    } = fieldDef;
-
-    if (isArgmaxDef(aggregate)) {
-      return "".concat(field, " for argmax(").concat(aggregate.argmax, ")");
-    } else if (isArgminDef(aggregate)) {
-      return "".concat(field, " for argmin(").concat(aggregate.argmin, ")");
-    }
-
-    const timeUnitParams = normalizeTimeUnit(timeUnit);
-    const fn = aggregate || (timeUnitParams === null || timeUnitParams === void 0 ? void 0 : timeUnitParams.unit) || (timeUnitParams === null || timeUnitParams === void 0 ? void 0 : timeUnitParams.maxbins) && 'timeunit' || isBinning(bin) && 'bin';
-
-    if (fn) {
-      return fn.toUpperCase() + '(' + field + ')';
-    } else {
-      return field;
-    }
-  }
-  const defaultTitleFormatter = (fieldDef, config) => {
-    switch (config.fieldTitle) {
-      case 'plain':
-        return fieldDef.field;
-
-      case 'functional':
-        return functionalTitleFormatter(fieldDef);
-
-      default:
-        return verbalTitleFormatter(fieldDef, config);
-    }
-  };
-  let titleFormatter = defaultTitleFormatter;
-  function setTitleFormatter(formatter) {
-    titleFormatter = formatter;
-  }
-  function resetTitleFormatter() {
-    setTitleFormatter(defaultTitleFormatter);
-  }
-  function title(fieldOrDatumDef, config, {
-    allowDisabling,
-    includeDefault = true
-  }) {
-    var _getGuide;
-
-    const guideTitle = (_getGuide = getGuide(fieldOrDatumDef)) === null || _getGuide === void 0 ? void 0 : _getGuide.title;
-
-    if (!isFieldDef(fieldOrDatumDef)) {
-      return guideTitle;
-    }
-
-    const fieldDef = fieldOrDatumDef;
-    const def = includeDefault ? defaultTitle(fieldDef, config) : undefined;
-
-    if (allowDisabling) {
-      return getFirstDefined(guideTitle, fieldDef.title, def);
-    } else {
-      var _ref;
-
-      return (_ref = guideTitle !== null && guideTitle !== void 0 ? guideTitle : fieldDef.title) !== null && _ref !== void 0 ? _ref : def;
-    }
-  }
-  function getGuide(fieldDef) {
-    if (isPositionFieldOrDatumDef(fieldDef) && fieldDef.axis) {
-      return fieldDef.axis;
-    } else if (isMarkPropFieldOrDatumDef(fieldDef) && fieldDef.legend) {
-      return fieldDef.legend;
-    } else if (isFacetFieldDef(fieldDef) && fieldDef.header) {
-      return fieldDef.header;
-    }
-
-    return undefined;
-  }
-  function defaultTitle(fieldDef, config) {
-    return titleFormatter(fieldDef, config);
-  }
-  function getFormatMixins(fieldDef) {
-    if (isStringFieldOrDatumDef(fieldDef)) {
-      const {
-        format,
-        formatType
-      } = fieldDef;
-      return {
-        format,
-        formatType
-      };
-    } else {
-      var _getGuide2;
-
-      const guide = (_getGuide2 = getGuide(fieldDef)) !== null && _getGuide2 !== void 0 ? _getGuide2 : {};
-      const {
-        format,
-        formatType
-      } = guide;
-      return {
-        format,
-        formatType
-      };
-    }
-  }
-  function defaultType(fieldDef, channel) {
-    var _fieldDef$scale;
-
-    switch (channel) {
-      case 'latitude':
-      case 'longitude':
-        return 'quantitative';
-
-      case 'row':
-      case 'column':
-      case 'facet':
-      case 'shape':
-      case 'strokeDash':
-        return 'nominal';
-
-      case 'order':
-        return 'ordinal';
-    }
-
-    if (isSortableFieldDef(fieldDef) && isArray(fieldDef.sort)) {
-      return 'ordinal';
-    }
-
-    const {
-      aggregate,
-      bin,
-      timeUnit
-    } = fieldDef;
-
-    if (timeUnit) {
-      return 'temporal';
-    }
-
-    if (bin || aggregate && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
-      return 'quantitative';
-    }
-
-    if (isScaleFieldDef(fieldDef) && ((_fieldDef$scale = fieldDef.scale) === null || _fieldDef$scale === void 0 ? void 0 : _fieldDef$scale.type)) {
-      switch (SCALE_CATEGORY_INDEX[fieldDef.scale.type]) {
-        case 'numeric':
-        case 'discretizing':
-          return 'quantitative';
-
-        case 'time':
-          return 'temporal';
-      }
-    }
-
-    return 'nominal';
-  }
-  /**
-   * Returns the fieldDef -- either from the outer channelDef or from the condition of channelDef.
-   * @param channelDef
-   */
-
-  function getFieldDef(channelDef) {
-    if (isFieldDef(channelDef)) {
-      return channelDef;
-    } else if (hasConditionalFieldDef(channelDef)) {
-      return channelDef.condition;
-    }
-
-    return undefined;
-  }
-  function getFieldOrDatumDef(channelDef) {
-    if (isFieldOrDatumDef(channelDef)) {
-      return channelDef;
-    } else if (hasConditionalFieldOrDatumDef(channelDef)) {
-      return channelDef.condition;
-    }
-
-    return undefined;
-  }
-  /**
-   * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
-   */
-
-  function initChannelDef(channelDef, channel, config, opt = {}) {
-    if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
-      const primitiveType = isString(channelDef) ? 'string' : isNumber(channelDef) ? 'number' : 'boolean';
-      warn$1(primitiveChannelDef(channel, primitiveType, channelDef));
-      return {
-        value: channelDef
-      };
-    } // If a fieldDef contains a field, we need type.
-
-
-    if (isFieldOrDatumDef(channelDef)) {
-      return initFieldOrDatumDef(channelDef, channel, config, opt);
-    } else if (hasConditionalFieldOrDatumDef(channelDef)) {
-      return { ...channelDef,
-        // Need to cast as normalizeFieldDef normally return FieldDef, but here we know that it is definitely Condition<FieldDef>
-        condition: initFieldOrDatumDef(channelDef.condition, channel, config, opt)
-      };
-    }
-
-    return channelDef;
-  }
-  function initFieldOrDatumDef(fd, channel, config, opt) {
-    if (isStringFieldOrDatumDef(fd)) {
-      const {
-        format,
-        formatType,
-        ...rest
-      } = fd;
-
-      if (isCustomFormatType(formatType) && !config.customFormatTypes) {
-        warn$1(customFormatTypeNotAllowed(channel));
-        return initFieldOrDatumDef(rest, channel, config, opt);
-      }
-    } else {
-      const guideType = isPositionFieldOrDatumDef(fd) ? 'axis' : isMarkPropFieldOrDatumDef(fd) ? 'legend' : isFacetFieldDef(fd) ? 'header' : null;
-
-      if (guideType && fd[guideType]) {
-        const {
-          format,
-          formatType,
-          ...newGuide
-        } = fd[guideType];
-
-        if (isCustomFormatType(formatType) && !config.customFormatTypes) {
-          warn$1(customFormatTypeNotAllowed(channel));
-          return initFieldOrDatumDef({ ...fd,
-            [guideType]: newGuide
-          }, channel, config, opt);
-        }
-      }
-    }
-
-    if (isFieldDef(fd)) {
-      return initFieldDef(fd, channel, opt);
-    }
-
-    return initDatumDef(fd);
-  }
-
-  function initDatumDef(datumDef) {
-    let type = datumDef['type'];
-
-    if (type) {
-      return datumDef;
-    }
-
-    const {
-      datum
-    } = datumDef;
-    type = isNumber(datum) ? 'quantitative' : isString(datum) ? 'nominal' : isDateTime(datum) ? 'temporal' : undefined;
-    return { ...datumDef,
-      type
-    };
-  }
-
-  function initFieldDef(fd, channel, {
-    compositeMark = false
-  } = {}) {
-    const {
-      aggregate,
-      timeUnit,
-      bin,
-      field
-    } = fd;
-    const fieldDef = { ...fd
-    }; // Drop invalid aggregate
-
-    if (!compositeMark && aggregate && !isAggregateOp(aggregate) && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
-      warn$1(invalidAggregate(aggregate));
-      delete fieldDef.aggregate;
-    } // Normalize Time Unit
-
-
-    if (timeUnit) {
-      fieldDef.timeUnit = normalizeTimeUnit(timeUnit);
-    }
-
-    if (field) {
-      fieldDef.field = "".concat(field);
-    } // Normalize bin
-
-
-    if (isBinning(bin)) {
-      fieldDef.bin = normalizeBin(bin, channel);
-    }
-
-    if (isBinned(bin) && !isXorY(channel)) {
-      warn$1(channelShouldNotBeUsedForBinned(channel));
-    } // Normalize Type
-
-
-    if (isTypedFieldDef(fieldDef)) {
-      const {
-        type
-      } = fieldDef;
-      const fullType = getFullName(type);
-
-      if (type !== fullType) {
-        // convert short type to full type
-        fieldDef.type = fullType;
-      }
-
-      if (type !== 'quantitative') {
-        if (isCountingAggregateOp(aggregate)) {
-          warn$1(invalidFieldTypeForCountAggregate(type, aggregate));
-          fieldDef.type = 'quantitative';
-        }
-      }
-    } else if (!isSecondaryRangeChannel(channel)) {
-      // If type is empty / invalid, then augment with default type
-      const newType = defaultType(fieldDef, channel);
-      fieldDef['type'] = newType;
-    }
-
-    if (isTypedFieldDef(fieldDef)) {
-      const {
-        compatible,
-        warning
-      } = channelCompatibility(fieldDef, channel) || {};
-
-      if (compatible === false) {
-        warn$1(warning);
-      }
-    }
-
-    if (isSortableFieldDef(fieldDef) && isString(fieldDef.sort)) {
-      const {
-        sort
-      } = fieldDef;
-
-      if (isSortByChannel(sort)) {
-        return { ...fieldDef,
-          sort: {
-            encoding: sort
-          }
-        };
-      }
-
-      const sub = sort.substr(1);
-
-      if (sort.charAt(0) === '-' && isSortByChannel(sub)) {
-        return { ...fieldDef,
-          sort: {
-            encoding: sub,
-            order: 'descending'
-          }
-        };
-      }
-    }
-
-    if (isFacetFieldDef(fieldDef)) {
-      const {
-        header
-      } = fieldDef;
-      const {
-        orient,
-        ...rest
-      } = header;
-
-      if (orient) {
-        return { ...fieldDef,
-          header: { ...rest,
-            labelOrient: header.labelOrient || orient,
-            titleOrient: header.titleOrient || orient
-          }
-        };
-      }
-    }
-
-    return fieldDef;
-  }
-  function normalizeBin(bin, channel) {
-    if (isBoolean(bin)) {
-      return {
-        maxbins: autoMaxBins(channel)
-      };
-    } else if (bin === 'binned') {
-      return {
-        binned: true
-      };
-    } else if (!bin.maxbins && !bin.step) {
-      return { ...bin,
-        maxbins: autoMaxBins(channel)
-      };
-    } else {
-      return bin;
-    }
-  }
-  const COMPATIBLE = {
-    compatible: true
-  };
-  function channelCompatibility(fieldDef, channel) {
-    const type = fieldDef.type;
-
-    if (type === 'geojson' && channel !== 'shape') {
-      return {
-        compatible: false,
-        warning: "Channel ".concat(channel, " should not be used with a geojson data.")
-      };
-    }
-
-    switch (channel) {
-      case ROW:
-      case COLUMN:
-      case FACET:
-        if (isContinuous$1(fieldDef)) {
-          return {
-            compatible: false,
-            warning: facetChannelShouldBeDiscrete(channel)
-          };
-        }
-
-        return COMPATIBLE;
-
-      case X$1:
-      case Y$1:
-      case COLOR:
-      case FILL:
-      case STROKE:
-      case TEXT:
-      case DETAIL:
-      case KEY:
-      case TOOLTIP:
-      case HREF:
-      case URL:
-      case ANGLE:
-      case THETA:
-      case RADIUS:
-      case DESCRIPTION:
-        return COMPATIBLE;
-
-      case LONGITUDE:
-      case LONGITUDE2:
-      case LATITUDE:
-      case LATITUDE2:
-        if (type !== QUANTITATIVE) {
-          return {
-            compatible: false,
-            warning: "Channel ".concat(channel, " should be used with a quantitative field only, not ").concat(fieldDef.type, " field.")
-          };
-        }
-
-        return COMPATIBLE;
-
-      case OPACITY:
-      case FILLOPACITY:
-      case STROKEOPACITY:
-      case STROKEWIDTH:
-      case SIZE$1:
-      case THETA2:
-      case RADIUS2:
-      case X2$2:
-      case Y2$2:
-        if (type === 'nominal' && !fieldDef['sort']) {
-          return {
-            compatible: false,
-            warning: "Channel ".concat(channel, " should not be used with an unsorted discrete field.")
-          };
-        }
-
-        return COMPATIBLE;
-
-      case STROKEDASH:
-        if (!contains$1(['ordinal', 'nominal'], fieldDef.type)) {
-          return {
-            compatible: false,
-            warning: 'StrokeDash channel should be used with only discrete data.'
-          };
-        }
-
-        return COMPATIBLE;
-
-      case SHAPE:
-        if (!contains$1(['ordinal', 'nominal', 'geojson'], fieldDef.type)) {
-          return {
-            compatible: false,
-            warning: 'Shape channel should be used with only either discrete or geojson data.'
-          };
-        }
-
-        return COMPATIBLE;
-
-      case ORDER:
-        if (fieldDef.type === 'nominal' && !('sort' in fieldDef)) {
-          return {
-            compatible: false,
-            warning: "Channel order is inappropriate for nominal field, which has no inherent order."
-          };
-        }
-
-        return COMPATIBLE;
-    }
-  }
-  /**
-   * Check if the field def uses a time format or does not use any format but is temporal
-   * (this does not cover field defs that are temporal but use a number format).
-   */
-
-  function isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) {
-    const {
-      formatType
-    } = getFormatMixins(fieldOrDatumDef);
-    return formatType === 'time' || !formatType && isTimeFieldDef(fieldOrDatumDef);
-  }
-  /**
-   * Check if field def has type `temporal`. If you want to also cover field defs that use a time format, use `isTimeFormatFieldDef`.
-   */
-
-  function isTimeFieldDef(def) {
-    return def && (def['type'] === 'temporal' || isFieldDef(def) && !!def.timeUnit);
-  }
-  /**
-   * Getting a value associated with a fielddef.
-   * Convert the value to Vega expression if applicable (for datetime object, or string if the field def is temporal or has timeUnit)
-   */
-
-  function valueExpr(v, {
-    timeUnit,
-    type,
-    wrapTime,
-    undefinedIfExprNotRequired
-  }) {
-    var _normalizeTimeUnit2;
-
-    const unit = timeUnit && ((_normalizeTimeUnit2 = normalizeTimeUnit(timeUnit)) === null || _normalizeTimeUnit2 === void 0 ? void 0 : _normalizeTimeUnit2.unit);
-    let isTime = unit || type === 'temporal';
-    let expr;
-
-    if (isExprRef(v)) {
-      expr = v.expr;
-    } else if (isSignalRef(v)) {
-      expr = v.signal;
-    } else if (isDateTime(v)) {
-      isTime = true;
-      expr = dateTimeToExpr(v);
-    } else if (isString(v) || isNumber(v)) {
-      if (isTime) {
-        expr = "datetime(".concat(JSON.stringify(v), ")");
-
-        if (isLocalSingleTimeUnit(unit)) {
-          // for single timeUnit, we will use dateTimeToExpr to convert number/string to match the timeUnit
-          if (isNumber(v) && v < 10000 || isString(v) && isNaN(Date.parse(v))) {
-            expr = dateTimeToExpr({
-              [unit]: v
-            });
-          }
-        }
-      }
-    }
-
-    if (expr) {
-      return wrapTime && isTime ? "time(".concat(expr, ")") : expr;
-    } // number or boolean or normal string
-
-
-    return undefinedIfExprNotRequired ? undefined : JSON.stringify(v);
-  }
-  /**
-   * Standardize value array -- convert each value to Vega expression if applicable
-   */
-
-  function valueArray(fieldOrDatumDef, values) {
-    const {
-      type
-    } = fieldOrDatumDef;
-    return values.map(v => {
-      const expr = valueExpr(v, {
-        timeUnit: isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.timeUnit : undefined,
-        type,
-        undefinedIfExprNotRequired: true
-      }); // return signal for the expression if we need an expression
-
-      if (expr !== undefined) {
-        return {
-          signal: expr
-        };
-      } // otherwise just return the original value
-
-
-      return v;
-    });
-  }
-  /**
-   * Checks whether a fieldDef for a particular channel requires a computed bin range.
-   */
-
-  function binRequiresRange(fieldDef, channel) {
-    if (!isBinning(fieldDef.bin)) {
-      console.warn('Only call this method for binned field defs.');
-      return false;
-    } // We need the range only when the user explicitly forces a binned field to be use discrete scale. In this case, bin range is used in axis and legend labels.
-    // We could check whether the axis or legend exists (not disabled) but that seems overkill.
-
-
-    return isScaleChannel(channel) && contains$1(['ordinal', 'nominal'], fieldDef.type);
-  }
-
-  function extractTitleConfig(titleConfig) {
-    const {
-      // These are non-mark title config that need to be hardcoded
-      anchor,
-      frame,
-      offset,
-      orient,
-      // color needs to be redirect to fill
-      color,
-      // subtitle properties
-      subtitleColor,
-      subtitleFont,
-      subtitleFontSize,
-      subtitleFontStyle,
-      subtitleFontWeight,
-      subtitleLineHeight,
-      subtitlePadding,
-      // The rest are mark config.
-      ...rest
-    } = titleConfig;
-    const titleMarkConfig = { ...rest,
-      ...(color ? {
-        fill: color
-      } : {})
-    }; // These are non-mark title config that need to be hardcoded
-
-    const nonMark = { ...(anchor ? {
-        anchor
-      } : {}),
-      ...(frame ? {
-        frame
-      } : {}),
-      ...(offset ? {
-        offset
-      } : {}),
-      ...(orient ? {
-        orient
-      } : {})
-    }; // subtitle part can stay in config.title since header titles do not use subtitle
-
-    const subtitle = { ...(subtitleColor ? {
-        subtitleColor
-      } : {}),
-      ...(subtitleFont ? {
-        subtitleFont
-      } : {}),
-      ...(subtitleFontSize ? {
-        subtitleFontSize
-      } : {}),
-      ...(subtitleFontStyle ? {
-        subtitleFontStyle
-      } : {}),
-      ...(subtitleFontWeight ? {
-        subtitleFontWeight
-      } : {}),
-      ...(subtitleLineHeight ? {
-        subtitleLineHeight
-      } : {}),
-      ...(subtitlePadding ? {
-        subtitlePadding
-      } : {})
-    };
-    const subtitleMarkConfig = pick$2(titleMarkConfig, ['align', 'baseline', 'dx', 'dy', 'limit']);
-    return {
-      titleMarkConfig,
-      subtitleMarkConfig,
-      nonMark,
-      subtitle
-    };
-  }
-  function isText(v) {
-    return isString(v) || isArray(v) && isString(v[0]);
-  }
 
   function signalOrValueRefWithCondition(val) {
     const condition = isArray(val.condition) ? val.condition.map(conditionalSignalRefOrValue) : conditionalSignalRefOrValue(val.condition);
@@ -54153,6 +52079,3053 @@
     throw new Error('It should never reach here');
   }
 
+  function _defineProperty(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  function _classPrivateFieldGet(receiver, privateMap) {
+    var descriptor = privateMap.get(receiver);
+
+    if (!descriptor) {
+      throw new TypeError("attempted to get private field on non-instance");
+    }
+
+    if (descriptor.get) {
+      return descriptor.get.call(receiver);
+    }
+
+    return descriptor.value;
+  }
+
+  function _classPrivateFieldSet(receiver, privateMap, value) {
+    var descriptor = privateMap.get(receiver);
+
+    if (!descriptor) {
+      throw new TypeError("attempted to set private field on non-instance");
+    }
+
+    if (descriptor.set) {
+      descriptor.set.call(receiver, value);
+    } else {
+      if (!descriptor.writable) {
+        throw new TypeError("attempted to set read only private field");
+      }
+
+      descriptor.value = value;
+    }
+
+    return value;
+  }
+
+  /**
+   * Collection of all Vega-Lite Error Messages
+   */
+  function invalidSpec(spec) {
+    return "Invalid specification ".concat(stringify$1(spec), ". Make sure the specification includes at least one of the following properties: \"mark\", \"layer\", \"facet\", \"hconcat\", \"vconcat\", \"concat\", or \"repeat\".");
+  } // FIT
+
+  const FIT_NON_SINGLE = 'Autosize "fit" only works for single views and layered views.';
+  function containerSizeNonSingle(name) {
+    const uName = name == 'width' ? 'Width' : 'Height';
+    return "".concat(uName, " \"container\" only works for single views and layered views.");
+  }
+  function containerSizeNotCompatibleWithAutosize(name) {
+    const uName = name == 'width' ? 'Width' : 'Height';
+    const fitDirection = name == 'width' ? 'x' : 'y';
+    return "".concat(uName, " \"container\" only works well with autosize \"fit\" or \"fit-").concat(fitDirection, "\".");
+  }
+  function droppingFit(channel) {
+    return channel ? "Dropping \"fit-".concat(channel, "\" because spec has discrete ").concat(getSizeChannel(channel), ".") : "Dropping \"fit\" because spec has discrete size.";
+  } // VIEW SIZE
+
+  function unknownField(channel) {
+    return "Unknown field for ".concat(channel, ". Cannot calculate view size.");
+  } // SELECTION
+
+  function cannotProjectOnChannelWithoutField(channel) {
+    return "Cannot project a selection on encoding channel \"".concat(channel, "\", which has no field.");
+  }
+  function cannotProjectAggregate(channel, aggregate) {
+    return "Cannot project a selection on encoding channel \"".concat(channel, "\" as it uses an aggregate function (\"").concat(aggregate, "\").");
+  }
+  function nearestNotSupportForContinuous(mark) {
+    return "The \"nearest\" transform is not supported for ".concat(mark, " marks.");
+  }
+  function selectionNotSupported(mark) {
+    return "Selection not supported for ".concat(mark, " yet.");
+  }
+  function selectionNotFound(name) {
+    return "Cannot find a selection named \"".concat(name, "\".");
+  }
+  const SCALE_BINDINGS_CONTINUOUS = 'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
+  const LEGEND_BINDINGS_MUST_HAVE_PROJECTION = 'Legend bindings are only supported for selections over an individual field or encoding channel.';
+  function cannotLookupVariableParameter(name) {
+    return "Lookups can only be performed on selection parameters. \"".concat(name, "\" is a variable parameter.");
+  }
+  function noSameUnitLookup(name) {
+    return "Cannot define and lookup the \"".concat(name, "\" selection in the same view. ") + "Try moving the lookup into a second, layered view?";
+  }
+  const NEEDS_SAME_SELECTION = 'The same selection must be used to override scale domains in a layered view.';
+  const INTERVAL_INITIALIZED_WITH_X_Y = 'Interval selections should be initialized using "x" and/or "y" keys.'; // REPEAT
+
+  function noSuchRepeatedValue(field) {
+    return "Unknown repeated value \"".concat(field, "\".");
+  }
+  function columnsNotSupportByRowCol(type) {
+    return "The \"columns\" property cannot be used when \"".concat(type, "\" has nested row/column.");
+  } // CONCAT / REPEAT
+
+  const CONCAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in concatenated or repeated views yet (https://github.com/vega/vega-lite/issues/2415).'; // DATA
+
+  function unrecognizedParse(p) {
+    return "Unrecognized parse \"".concat(p, "\".");
+  }
+  function differentParse(field, local, ancestor) {
+    return "An ancestor parsed field \"".concat(field, "\" as ").concat(ancestor, " but a child wants to parse the field as ").concat(local, ".");
+  }
+  const ADD_SAME_CHILD_TWICE = 'Attempt to add the same child twice.'; // TRANSFORMS
+
+  function invalidTransformIgnored(transform) {
+    return "Ignoring an invalid transform: ".concat(stringify$1(transform), ".");
+  }
+  const NO_FIELDS_NEEDS_AS = 'If "from.fields" is not specified, "as" has to be a string that specifies the key to be used for the data from the secondary source.'; // ENCODING & FACET
+
+  function customFormatTypeNotAllowed(channel) {
+    return "Config.customFormatTypes is not true, thus custom format type and format for channel ".concat(channel, " are dropped.");
+  }
+  function projectionOverridden(opt) {
+    const {
+      parentProjection,
+      projection
+    } = opt;
+    return "Layer's shared projection ".concat(stringify$1(parentProjection), " is overridden by a child projection ").concat(stringify$1(projection), ".");
+  }
+  const REPLACE_ANGLE_WITH_THETA = 'Arc marks uses theta channel rather than angle, replacing angle with theta.';
+  function primitiveChannelDef(channel, type, value) {
+    return "Channel ".concat(channel, " is a ").concat(type, ". Converted to {value: ").concat(stringify$1(value), "}.");
+  }
+  function invalidFieldType(type) {
+    return "Invalid field type \"".concat(type, "\".");
+  }
+  function invalidFieldTypeForCountAggregate(type, aggregate) {
+    return "Invalid field type \"".concat(type, "\" for aggregate: \"").concat(aggregate, "\", using \"quantitative\" instead.");
+  }
+  function invalidAggregate(aggregate) {
+    return "Invalid aggregation operator \"".concat(aggregate, "\".");
+  }
+  function droppingColor(type, opt) {
+    const {
+      fill,
+      stroke
+    } = opt;
+    return "Dropping color ".concat(type, " as the plot also has ").concat(fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke', ".");
+  }
+  function relativeBandSizeNotSupported(sizeChannel) {
+    return "Position range does not support relative band size for ".concat(sizeChannel, ".");
+  }
+  function emptyFieldDef(fieldDef, channel) {
+    return "Dropping ".concat(stringify$1(fieldDef), " from channel \"").concat(channel, "\" since it does not contain any data field, datum, value, or signal.");
+  }
+  const LINE_WITH_VARYING_SIZE = 'Line marks cannot encode size with a non-groupby field. You may want to use trail marks instead.';
+  function incompatibleChannel(channel, markOrFacet, when) {
+    return "".concat(channel, " dropped as it is incompatible with \"").concat(markOrFacet, "\"").concat(when ? " when ".concat(when) : '', ".");
+  }
+  function invalidEncodingChannel(channel) {
+    return "".concat(channel, "-encoding is dropped as ").concat(channel, " is not a valid encoding channel.");
+  }
+  function channelShouldBeDiscrete(channel) {
+    return "".concat(channel, " encoding should be discrete (ordinal / nominal / binned).");
+  }
+  function channelShouldBeDiscreteOrDiscretizing(channel) {
+    return "".concat(channel, " encoding should be discrete (ordinal / nominal / binned) or use a discretizing scale (e.g. threshold).");
+  }
+  function facetChannelDropped(channels) {
+    return "Facet encoding dropped as ".concat(channels.join(' and '), " ").concat(channels.length > 1 ? 'are' : 'is', " also specified.");
+  }
+  function discreteChannelCannotEncode(channel, type) {
+    return "Using discrete channel \"".concat(channel, "\" to encode \"").concat(type, "\" field can be misleading as it does not encode ").concat(type === 'ordinal' ? 'order' : 'magnitude', ".");
+  } // MARK
+
+  function rangeMarkAlignmentCannotBeExpression(align) {
+    return "The ".concat(align, " for range marks cannot be an expression");
+  }
+  function lineWithRange(hasX2, hasY2) {
+    const channels = hasX2 && hasY2 ? 'x2 and y2' : hasX2 ? 'x2' : 'y2';
+    return "Line mark is for continuous lines and thus cannot be used with ".concat(channels, ". We will use the rule mark (line segments) instead.");
+  }
+  function orientOverridden(original, actual) {
+    return "Specified orient \"".concat(original, "\" overridden with \"").concat(actual, "\".");
+  } // SCALE
+  function cannotUseScalePropertyWithNonColor(prop) {
+    return "Cannot use the scale property \"".concat(prop, "\" with non-color channel.");
+  }
+  function cannotUseRelativeBandSizeWithNonBandScale(scaleType) {
+    return "Cannot use the relative band size with ".concat(scaleType, " scale.");
+  }
+  function unaggregateDomainHasNoEffectForRawField(fieldDef) {
+    return "Using unaggregated domain with raw field has no effect (".concat(stringify$1(fieldDef), ").");
+  }
+  function unaggregateDomainWithNonSharedDomainOp(aggregate) {
+    return "Unaggregated domain not applicable for \"".concat(aggregate, "\" since it produces values outside the origin domain of the source data.");
+  }
+  function unaggregatedDomainWithLogScale(fieldDef) {
+    return "Unaggregated domain is currently unsupported for log scale (".concat(stringify$1(fieldDef), ").");
+  }
+  function cannotApplySizeToNonOrientedMark(mark) {
+    return "Cannot apply size to non-oriented mark \"".concat(mark, "\".");
+  }
+  function scaleTypeNotWorkWithChannel(channel, scaleType, defaultScaleType) {
+    return "Channel \"".concat(channel, "\" does not work with \"").concat(scaleType, "\" scale. We are using \"").concat(defaultScaleType, "\" scale instead.");
+  }
+  function scaleTypeNotWorkWithFieldDef(scaleType, defaultScaleType) {
+    return "FieldDef does not work with \"".concat(scaleType, "\" scale. We are using \"").concat(defaultScaleType, "\" scale instead.");
+  }
+  function scalePropertyNotWorkWithScaleType(scaleType, propName, channel) {
+    return "".concat(channel, "-scale's \"").concat(propName, "\" is dropped as it does not work with ").concat(scaleType, " scale.");
+  }
+  function stepDropped(channel) {
+    return "The step for \"".concat(channel, "\" is dropped because the ").concat(channel === 'width' ? 'x' : 'y', " is continuous.");
+  }
+  function mergeConflictingProperty(property, propertyOf, v1, v2) {
+    return "Conflicting ".concat(propertyOf.toString(), " property \"").concat(property.toString(), "\" (").concat(stringify$1(v1), " and ").concat(stringify$1(v2), "). Using ").concat(stringify$1(v1), ".");
+  }
+  function mergeConflictingDomainProperty(property, propertyOf, v1, v2) {
+    return "Conflicting ".concat(propertyOf.toString(), " property \"").concat(property.toString(), "\" (").concat(stringify$1(v1), " and ").concat(stringify$1(v2), "). Using the union of the two domains.");
+  }
+  function independentScaleMeansIndependentGuide(channel) {
+    return "Setting the scale to be independent for \"".concat(channel, "\" means we also have to set the guide (axis or legend) to be independent.");
+  }
+  function domainSortDropped(sort) {
+    return "Dropping sort property ".concat(stringify$1(sort), " as unioned domains only support boolean or op \"count\", \"min\", and \"max\".");
+  }
+  const MORE_THAN_ONE_SORT = 'Domains that should be unioned has conflicting sort properties. Sort will be set to true.';
+  const FACETED_INDEPENDENT_DIFFERENT_SOURCES = 'Detected faceted independent scales that union domain of multiple fields from different data sources. We will use the first field. The result view size may be incorrect.';
+  const FACETED_INDEPENDENT_SAME_FIELDS_DIFFERENT_SOURCES = 'Detected faceted independent scales that union domain of the same fields from different source. We will assume that this is the same field from a different fork of the same data source. However, if this is not the case, the result view size may be incorrect.';
+  const FACETED_INDEPENDENT_SAME_SOURCE = 'Detected faceted independent scales that union domain of multiple fields from the same data source. We will use the first field. The result view size may be incorrect.'; // AXIS
+
+  function cannotStackRangedMark(channel) {
+    return "Cannot stack \"".concat(channel, "\" if there is already \"").concat(channel, "2\".");
+  }
+  function cannotStackNonLinearScale(scaleType) {
+    return "Cannot stack non-linear scale (".concat(scaleType, ").");
+  }
+  function stackNonSummativeAggregate(aggregate) {
+    return "Stacking is applied even though the aggregate function is non-summative (\"".concat(aggregate, "\").");
+  } // TIMEUNIT
+
+  function invalidTimeUnit(unitName, value) {
+    return "Invalid ".concat(unitName, ": ").concat(stringify$1(value), ".");
+  }
+  function droppedDay(d) {
+    return "Dropping day from datetime ".concat(stringify$1(d), " as day cannot be combined with other units.");
+  }
+  function errorBarCenterAndExtentAreNotNeeded(center, extent) {
+    return "".concat(extent ? 'extent ' : '').concat(extent && center ? 'and ' : '').concat(center ? 'center ' : '').concat(extent && center ? 'are ' : 'is ', "not needed when data are aggregated.");
+  }
+  function errorBarCenterIsUsedWithWrongExtent(center, extent, mark) {
+    return "".concat(center, " is not usually used with ").concat(extent, " for ").concat(mark, ".");
+  }
+  function errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark) {
+    return "Continuous axis should not have customized aggregation function ".concat(aggregate, "; ").concat(compositeMark, " already agregates the axis.");
+  }
+  function errorBand1DNotSupport(property) {
+    return "1D error band does not support ".concat(property, ".");
+  } // CHANNEL
+
+  function channelRequiredForBinned(channel) {
+    return "Channel ".concat(channel, " is required for \"binned\" bin.");
+  }
+  function channelShouldNotBeUsedForBinned(channel) {
+    return "Channel ".concat(channel, " should not be used with \"binned\" bin.");
+  }
+  function domainRequiredForThresholdScale(channel) {
+    return "Domain for ".concat(channel, " is required for threshold scale.");
+  }
+
+  /**
+   * Main (default) Vega Logger instance for Vega-Lite.
+   */
+
+  const main = logger(Warn);
+  let current = main;
+  /**
+   * Set the singleton logger to be a custom logger.
+   */
+
+  function set$4(newLogger) {
+    current = newLogger;
+    return current;
+  }
+  /**
+   * Reset the main logger to use the default Vega Logger.
+   */
+
+  function reset$1() {
+    current = main;
+    return current;
+  }
+  function warn$2(...args) {
+    current.warn(...args);
+  }
+  function debug$1(...args) {
+    current.debug(...args);
+  }
+
+  // DateTime definition object
+  /**
+   * @minimum 1
+   * @maximum 12
+   * @TJS-type integer
+   */
+
+  function isDateTime(o) {
+    if (o && isObject(o)) {
+      for (const part of TIMEUNIT_PARTS) {
+        if (part in o) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+  const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+  const SHORT_MONTHS = MONTHS.map(m => m.substr(0, 3));
+  const DAYS = ['sunday', 'monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
+  const SHORT_DAYS = DAYS.map(d => d.substr(0, 3));
+
+  function normalizeQuarter(q) {
+    if (isNumeric(q)) {
+      q = +q;
+    }
+
+    if (isNumber(q)) {
+      if (q > 4) {
+        warn$2(invalidTimeUnit('quarter', q));
+      } // We accept 1-based quarter, so need to readjust to 0-based quarter
+
+
+      return q - 1;
+    } else {
+      // Invalid quarter
+      throw new Error(invalidTimeUnit('quarter', q));
+    }
+  }
+
+  function normalizeMonth(m) {
+    if (isNumeric(m)) {
+      m = +m;
+    }
+
+    if (isNumber(m)) {
+      // We accept 1-based month, so need to readjust to 0-based month
+      return m - 1;
+    } else {
+      const lowerM = m.toLowerCase();
+      const monthIndex = MONTHS.indexOf(lowerM);
+
+      if (monthIndex !== -1) {
+        return monthIndex; // 0 for january, ...
+      }
+
+      const shortM = lowerM.substr(0, 3);
+      const shortMonthIndex = SHORT_MONTHS.indexOf(shortM);
+
+      if (shortMonthIndex !== -1) {
+        return shortMonthIndex;
+      } // Invalid month
+
+
+      throw new Error(invalidTimeUnit('month', m));
+    }
+  }
+
+  function normalizeDay(d) {
+    if (isNumeric(d)) {
+      d = +d;
+    }
+
+    if (isNumber(d)) {
+      // mod so that this can be both 0-based where 0 = sunday
+      // and 1-based where 7=sunday
+      return d % 7;
+    } else {
+      const lowerD = d.toLowerCase();
+      const dayIndex = DAYS.indexOf(lowerD);
+
+      if (dayIndex !== -1) {
+        return dayIndex; // 0 for january, ...
+      }
+
+      const shortD = lowerD.substr(0, 3);
+      const shortDayIndex = SHORT_DAYS.indexOf(shortD);
+
+      if (shortDayIndex !== -1) {
+        return shortDayIndex;
+      } // Invalid day
+
+
+      throw new Error(invalidTimeUnit('day', d));
+    }
+  }
+  /**
+   * @param d the date.
+   * @param normalize whether to normalize quarter, month, day. This should probably be true if d is a DateTime.
+   * @returns array of date time parts [year, month, day, hours, minutes, seconds, milliseconds]
+   */
+
+
+  function dateTimeParts(d, normalize) {
+    const parts = [];
+
+    if (normalize && d.day !== undefined) {
+      if (keys$2(d).length > 1) {
+        warn$2(droppedDay(d));
+        d = duplicate(d);
+        delete d.day;
+      }
+    }
+
+    if (d.year !== undefined) {
+      parts.push(d.year);
+    } else {
+      // Just like Vega's timeunit transform, set default year to 2012, so domain conversion will be compatible with Vega
+      // Note: 2012 is a leap year (and so the date February 29 is respected) that begins on a Sunday (and so days of the week will order properly at the beginning of the year).
+      parts.push(2012);
+    }
+
+    if (d.month !== undefined) {
+      const month = normalize ? normalizeMonth(d.month) : d.month;
+      parts.push(month);
+    } else if (d.quarter !== undefined) {
+      const quarter = normalize ? normalizeQuarter(d.quarter) : d.quarter;
+      parts.push(isNumber(quarter) ? quarter * 3 : "".concat(quarter, "*3"));
+    } else {
+      parts.push(0); // months start at zero in JS
+    }
+
+    if (d.date !== undefined) {
+      parts.push(d.date);
+    } else if (d.day !== undefined) {
+      // HACK: Day only works as a standalone unit
+      // This is only correct because we always set year to 2006 for day
+      const day = normalize ? normalizeDay(d.day) : d.day;
+      parts.push(isNumber(day) ? day + 1 : "".concat(day, "+1"));
+    } else {
+      parts.push(1); // Date starts at 1 in JS
+    } // Note: can't use TimeUnit enum here as importing it will create
+    // circular dependency problem!
+
+
+    for (const timeUnit of ['hours', 'minutes', 'seconds', 'milliseconds']) {
+      const unit = d[timeUnit];
+      parts.push(typeof unit === 'undefined' ? 0 : unit);
+    }
+
+    return parts;
+  }
+  /**
+   * Return Vega expression for a date time.
+   *
+   * @param d the date time.
+   * @returns the Vega expression.
+   */
+
+
+  function dateTimeToExpr(d) {
+    const parts = dateTimeParts(d, true);
+    const string = parts.join(', ');
+
+    if (d.utc) {
+      return "utc(".concat(string, ")");
+    } else {
+      return "datetime(".concat(string, ")");
+    }
+  }
+  /**
+   * Return Vega expression for a date time expression.
+   *
+   * @param d the internal date time object with expression.
+   * @returns the Vega expression.
+   */
+
+  function dateTimeExprToExpr(d) {
+    const parts = dateTimeParts(d, false);
+    const string = parts.join(', ');
+
+    if (d.utc) {
+      return "utc(".concat(string, ")");
+    } else {
+      return "datetime(".concat(string, ")");
+    }
+  }
+  /**
+   * @param d the date time.
+   * @returns the timestamp.
+   */
+
+  function dateTimeToTimestamp(d) {
+    const parts = dateTimeParts(d, true);
+
+    if (d.utc) {
+      return +new Date(Date.UTC(...parts));
+    } else {
+      return +new Date(...parts);
+    }
+  }
+
+  /** Time Unit that only corresponds to only one part of Date objects. */
+
+  const LOCAL_SINGLE_TIMEUNIT_INDEX = {
+    year: 1,
+    quarter: 1,
+    month: 1,
+    week: 1,
+    day: 1,
+    dayofyear: 1,
+    date: 1,
+    hours: 1,
+    minutes: 1,
+    seconds: 1,
+    milliseconds: 1
+  };
+  const TIMEUNIT_PARTS = keys$2(LOCAL_SINGLE_TIMEUNIT_INDEX);
+  function isLocalSingleTimeUnit(timeUnit) {
+    return !!LOCAL_SINGLE_TIMEUNIT_INDEX[timeUnit];
+  }
+  function isUTCTimeUnit(t) {
+    return t.startsWith('utc');
+  }
+  function getLocalTimeUnit(t) {
+    return t.substr(3);
+  }
+  // In order of increasing specificity
+  const VEGALITE_TIMEFORMAT = {
+    'year-month': '%b %Y ',
+    'year-month-date': '%b %d, %Y '
+  };
+  function getTimeUnitParts(timeUnit) {
+    return TIMEUNIT_PARTS.filter(part => containsTimeUnit(timeUnit, part));
+  }
+  /** Returns true if fullTimeUnit contains the timeUnit, false otherwise. */
+
+  function containsTimeUnit(fullTimeUnit, timeUnit) {
+    const index = fullTimeUnit.indexOf(timeUnit);
+
+    if (index < 0) {
+      return false;
+    } // exclude milliseconds
+
+
+    if (index > 0 && timeUnit === 'seconds' && fullTimeUnit.charAt(index - 1) === 'i') {
+      return false;
+    } // exclude dayofyear
+
+
+    if (fullTimeUnit.length > index + 3 && timeUnit === 'day' && fullTimeUnit.charAt(index + 3) === 'o') {
+      return false;
+    }
+
+    if (index > 0 && timeUnit === 'year' && fullTimeUnit.charAt(index - 1) === 'f') {
+      return false;
+    }
+
+    return true;
+  }
+  /**
+   * Returns Vega expression for a given timeUnit and fieldRef
+   */
+
+  function fieldExpr(fullTimeUnit, field, {
+    end
+  } = {
+    end: false
+  }) {
+    const fieldRef = accessPathWithDatum(field);
+    const utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
+
+    function func(timeUnit) {
+      if (timeUnit === 'quarter') {
+        // quarter starting at 0 (0,3,6,9).
+        return "(".concat(utc, "quarter(").concat(fieldRef, ")-1)");
+      } else {
+        return "".concat(utc).concat(timeUnit, "(").concat(fieldRef, ")");
+      }
+    }
+
+    let lastTimeUnit;
+    const dateExpr = {};
+
+    for (const part of TIMEUNIT_PARTS) {
+      if (containsTimeUnit(fullTimeUnit, part)) {
+        dateExpr[part] = func(part);
+        lastTimeUnit = part;
+      }
+    }
+
+    if (end) {
+      dateExpr[lastTimeUnit] += '+1';
+    }
+
+    return dateTimeExprToExpr(dateExpr);
+  }
+  function timeUnitSpecifierExpression(timeUnit) {
+    if (!timeUnit) {
+      return undefined;
+    }
+
+    const timeUnitParts = getTimeUnitParts(timeUnit);
+    return "timeUnitSpecifier(".concat(stringify$1(timeUnitParts), ", ").concat(stringify$1(VEGALITE_TIMEFORMAT), ")");
+  }
+  /**
+   * Returns the signal expression used for axis labels for a time unit.
+   */
+
+  function formatExpression(timeUnit, field, isUTCScale) {
+    if (!timeUnit) {
+      return undefined;
+    }
+
+    const expr = timeUnitSpecifierExpression(timeUnit); // We only use utcFormat for utc scale
+    // For utc time units, the data is already converted as a part of timeUnit transform.
+    // Thus, utc time units should use timeFormat to avoid shifting the time twice.
+
+    const utc = isUTCScale || isUTCTimeUnit(timeUnit);
+    return "".concat(utc ? 'utc' : 'time', "Format(").concat(field, ", ").concat(expr, ")");
+  }
+  function normalizeTimeUnit(timeUnit) {
+    if (!timeUnit) {
+      return undefined;
+    }
+
+    let params;
+
+    if (isString(timeUnit)) {
+      params = {
+        unit: timeUnit
+      };
+    } else if (isObject(timeUnit)) {
+      params = { ...timeUnit,
+        ...(timeUnit.unit ? {
+          unit: timeUnit.unit
+        } : {})
+      };
+    }
+
+    if (isUTCTimeUnit(params.unit)) {
+      params.utc = true;
+      params.unit = getLocalTimeUnit(params.unit);
+    }
+
+    return params;
+  }
+  function timeUnitToString(tu) {
+    const {
+      utc,
+      ...rest
+    } = normalizeTimeUnit(tu);
+
+    if (rest.unit) {
+      return (utc ? 'utc' : '') + keys$2(rest).map(p => varName("".concat(p === 'unit' ? '' : "_".concat(p, "_")).concat(rest[p]))).join('');
+    } else {
+      // when maxbins is specified instead of units
+      return (utc ? 'utc' : '') + 'timeunit' + keys$2(rest).map(p => varName("_".concat(p, "_").concat(rest[p]))).join('');
+    }
+  }
+
+  function isSelectionPredicate(predicate) {
+    return predicate === null || predicate === void 0 ? void 0 : predicate['param'];
+  }
+  function isFieldEqualPredicate(predicate) {
+    return predicate && !!predicate.field && predicate.equal !== undefined;
+  }
+  function isFieldLTPredicate(predicate) {
+    return predicate && !!predicate.field && predicate.lt !== undefined;
+  }
+  function isFieldLTEPredicate(predicate) {
+    return predicate && !!predicate.field && predicate.lte !== undefined;
+  }
+  function isFieldGTPredicate(predicate) {
+    return predicate && !!predicate.field && predicate.gt !== undefined;
+  }
+  function isFieldGTEPredicate(predicate) {
+    return predicate && !!predicate.field && predicate.gte !== undefined;
+  }
+  function isFieldRangePredicate(predicate) {
+    if (predicate && predicate.field) {
+      if (isArray(predicate.range) && predicate.range.length === 2) {
+        return true;
+      } else if (isSignalRef(predicate.range)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+  function isFieldOneOfPredicate(predicate) {
+    return predicate && !!predicate.field && (isArray(predicate.oneOf) || isArray(predicate.in)) // backward compatibility
+    ;
+  }
+  function isFieldValidPredicate(predicate) {
+    return predicate && !!predicate.field && predicate.valid !== undefined;
+  }
+  function isFieldPredicate(predicate) {
+    return isFieldOneOfPredicate(predicate) || isFieldEqualPredicate(predicate) || isFieldRangePredicate(predicate) || isFieldLTPredicate(predicate) || isFieldGTPredicate(predicate) || isFieldLTEPredicate(predicate) || isFieldGTEPredicate(predicate);
+  }
+
+  function predicateValueExpr(v, timeUnit) {
+    return valueExpr(v, {
+      timeUnit,
+      wrapTime: true
+    });
+  }
+
+  function predicateValuesExpr(vals, timeUnit) {
+    return vals.map(v => predicateValueExpr(v, timeUnit));
+  } // This method is used by Voyager. Do not change its behavior without changing Voyager.
+
+
+  function fieldFilterExpression(predicate, useInRange = true) {
+    var _normalizeTimeUnit;
+
+    const {
+      field
+    } = predicate;
+    const timeUnit = (_normalizeTimeUnit = normalizeTimeUnit(predicate.timeUnit)) === null || _normalizeTimeUnit === void 0 ? void 0 : _normalizeTimeUnit.unit;
+    const fieldExpr$1 = timeUnit ? // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
+    // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
+    // TODO: support utc
+    "time(".concat(fieldExpr(timeUnit, field), ")") : vgField(predicate, {
+      expr: 'datum'
+    });
+
+    if (isFieldEqualPredicate(predicate)) {
+      return "".concat(fieldExpr$1, "===").concat(predicateValueExpr(predicate.equal, timeUnit));
+    } else if (isFieldLTPredicate(predicate)) {
+      const upper = predicate.lt;
+      return "".concat(fieldExpr$1, "<").concat(predicateValueExpr(upper, timeUnit));
+    } else if (isFieldGTPredicate(predicate)) {
+      const lower = predicate.gt;
+      return "".concat(fieldExpr$1, ">").concat(predicateValueExpr(lower, timeUnit));
+    } else if (isFieldLTEPredicate(predicate)) {
+      const upper = predicate.lte;
+      return "".concat(fieldExpr$1, "<=").concat(predicateValueExpr(upper, timeUnit));
+    } else if (isFieldGTEPredicate(predicate)) {
+      const lower = predicate.gte;
+      return "".concat(fieldExpr$1, ">=").concat(predicateValueExpr(lower, timeUnit));
+    } else if (isFieldOneOfPredicate(predicate)) {
+      return "indexof([".concat(predicateValuesExpr(predicate.oneOf, timeUnit).join(','), "], ").concat(fieldExpr$1, ") !== -1");
+    } else if (isFieldValidPredicate(predicate)) {
+      return fieldValidPredicate(fieldExpr$1, predicate.valid);
+    } else if (isFieldRangePredicate(predicate)) {
+      const {
+        range
+      } = predicate;
+      const lower = isSignalRef(range) ? {
+        signal: "".concat(range.signal, "[0]")
+      } : range[0];
+      const upper = isSignalRef(range) ? {
+        signal: "".concat(range.signal, "[1]")
+      } : range[1];
+
+      if (lower !== null && upper !== null && useInRange) {
+        return 'inrange(' + fieldExpr$1 + ', [' + predicateValueExpr(lower, timeUnit) + ', ' + predicateValueExpr(upper, timeUnit) + '])';
+      }
+
+      const exprs = [];
+
+      if (lower !== null) {
+        exprs.push("".concat(fieldExpr$1, " >= ").concat(predicateValueExpr(lower, timeUnit)));
+      }
+
+      if (upper !== null) {
+        exprs.push("".concat(fieldExpr$1, " <= ").concat(predicateValueExpr(upper, timeUnit)));
+      }
+
+      return exprs.length > 0 ? exprs.join(' && ') : 'true';
+    }
+    /* istanbul ignore next: it should never reach here */
+
+
+    throw new Error("Invalid field predicate: ".concat(stringify$1(predicate)));
+  }
+  function fieldValidPredicate(fieldExpr, valid = true) {
+    if (valid) {
+      return "isValid(".concat(fieldExpr, ") && isFinite(+").concat(fieldExpr, ")");
+    } else {
+      return "!isValid(".concat(fieldExpr, ") || !isFinite(+").concat(fieldExpr, ")");
+    }
+  }
+  function normalizePredicate(f) {
+    if (isFieldPredicate(f) && f.timeUnit) {
+      var _normalizeTimeUnit2;
+
+      return { ...f,
+        timeUnit: (_normalizeTimeUnit2 = normalizeTimeUnit(f.timeUnit)) === null || _normalizeTimeUnit2 === void 0 ? void 0 : _normalizeTimeUnit2.unit
+      };
+    }
+
+    return f;
+  }
+
+  /**
+   * Data type based on level of measurement
+   */
+
+  const Type = {
+    quantitative: 'quantitative',
+    ordinal: 'ordinal',
+    temporal: 'temporal',
+    nominal: 'nominal',
+    geojson: 'geojson'
+  };
+  const QUANTITATIVE = Type.quantitative;
+  const ORDINAL = Type.ordinal;
+  const TEMPORAL = Type.temporal;
+  const NOMINAL = Type.nominal;
+  const GEOJSON = Type.geojson;
+  /**
+   * Get full, lowercase type name for a given type.
+   * @param  type
+   * @return Full type name.
+   */
+
+  function getFullName(type) {
+    if (type) {
+      type = type.toLowerCase();
+
+      switch (type) {
+        case 'q':
+        case QUANTITATIVE:
+          return 'quantitative';
+
+        case 't':
+        case TEMPORAL:
+          return 'temporal';
+
+        case 'o':
+        case ORDINAL:
+          return 'ordinal';
+
+        case 'n':
+        case NOMINAL:
+          return 'nominal';
+
+        case GEOJSON:
+          return 'geojson';
+      }
+    } // If we get invalid input, return undefined type.
+
+
+    return undefined;
+  }
+
+  const ScaleType = {
+    // Continuous - Quantitative
+    LINEAR: 'linear',
+    LOG: 'log',
+    POW: 'pow',
+    SQRT: 'sqrt',
+    SYMLOG: 'symlog',
+    IDENTITY: 'identity',
+    SEQUENTIAL: 'sequential',
+    // Continuous - Time
+    TIME: 'time',
+    UTC: 'utc',
+    // Discretizing scales
+    QUANTILE: 'quantile',
+    QUANTIZE: 'quantize',
+    THRESHOLD: 'threshold',
+    BIN_ORDINAL: 'bin-ordinal',
+    // Discrete scales
+    ORDINAL: 'ordinal',
+    POINT: 'point',
+    BAND: 'band'
+  };
+
+  /**
+   * Index for scale categories -- only scale of the same categories can be merged together.
+   * Current implementation is trying to be conservative and avoid merging scale type that might not work together
+   */
+  const SCALE_CATEGORY_INDEX = {
+    linear: 'numeric',
+    log: 'numeric',
+    pow: 'numeric',
+    sqrt: 'numeric',
+    symlog: 'numeric',
+    identity: 'numeric',
+    sequential: 'numeric',
+    time: 'time',
+    utc: 'time',
+    ordinal: 'ordinal',
+    'bin-ordinal': 'bin-ordinal',
+    // TODO: should bin-ordinal support merging with other
+    point: 'ordinal-position',
+    band: 'ordinal-position',
+    quantile: 'discretizing',
+    quantize: 'discretizing',
+    threshold: 'discretizing'
+  };
+  /**
+   * Whether the two given scale types can be merged together.
+   */
+
+  function scaleCompatible(scaleType1, scaleType2) {
+    const scaleCategory1 = SCALE_CATEGORY_INDEX[scaleType1];
+    const scaleCategory2 = SCALE_CATEGORY_INDEX[scaleType2];
+    return scaleCategory1 === scaleCategory2 || scaleCategory1 === 'ordinal-position' && scaleCategory2 === 'time' || scaleCategory2 === 'ordinal-position' && scaleCategory1 === 'time';
+  }
+  /**
+   * Index for scale precedence -- high score = higher priority for merging.
+   */
+
+  const SCALE_PRECEDENCE_INDEX = {
+    // numeric
+    linear: 0,
+    log: 1,
+    pow: 1,
+    sqrt: 1,
+    symlog: 1,
+    identity: 1,
+    sequential: 1,
+    // time
+    time: 0,
+    utc: 0,
+    // ordinal-position -- these have higher precedence than continuous scales as they support more types of data
+    point: 10,
+    band: 11,
+    // band has higher precedence as it is better for interaction
+    // non grouped types
+    ordinal: 0,
+    'bin-ordinal': 0,
+    quantile: 0,
+    quantize: 0,
+    threshold: 0
+  };
+  /**
+   * Return scale categories -- only scale of the same categories can be merged together.
+   */
+
+  function scaleTypePrecedence(scaleType) {
+    return SCALE_PRECEDENCE_INDEX[scaleType];
+  }
+  const CONTINUOUS_TO_CONTINUOUS_SCALES = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'time', 'utc'];
+  const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
+  const QUANTITATIVE_SCALES = ['linear', 'log', 'pow', 'sqrt', 'symlog'];
+  const QUANTITATIVE_SCALES_INDEX = toSet(QUANTITATIVE_SCALES);
+  function isQuantitative(type) {
+    return type in QUANTITATIVE_SCALES_INDEX;
+  }
+  const CONTINUOUS_TO_DISCRETE_SCALES = ['quantile', 'quantize', 'threshold'];
+  const CONTINUOUS_TO_DISCRETE_INDEX = toSet(CONTINUOUS_TO_DISCRETE_SCALES);
+  const CONTINUOUS_DOMAIN_SCALES = CONTINUOUS_TO_CONTINUOUS_SCALES.concat(['quantile', 'quantize', 'threshold', 'sequential', 'identity']);
+  const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
+  const DISCRETE_DOMAIN_SCALES = ['ordinal', 'bin-ordinal', 'point', 'band'];
+  const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
+  function hasDiscreteDomain(type) {
+    return type in DISCRETE_DOMAIN_INDEX;
+  }
+  function hasContinuousDomain(type) {
+    return type in CONTINUOUS_DOMAIN_INDEX;
+  }
+  function isContinuousToContinuous(type) {
+    return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
+  }
+  function isContinuousToDiscrete(type) {
+    return type in CONTINUOUS_TO_DISCRETE_INDEX;
+  }
+  const defaultScaleConfig = {
+    pointPadding: 0.5,
+    barBandPaddingInner: 0.1,
+    rectBandPaddingInner: 0,
+    minBandSize: 2,
+    minFontSize: 8,
+    maxFontSize: 40,
+    minOpacity: 0.3,
+    maxOpacity: 0.8,
+    // FIXME: revise if these *can* become ratios of width/height step
+    minSize: 9,
+    // Point size is area. For square point, 9 = 3 pixel ^ 2, not too small!
+    minStrokeWidth: 1,
+    maxStrokeWidth: 4,
+    quantileCount: 4,
+    quantizeCount: 4
+  };
+  function isExtendedScheme(scheme) {
+    return !isString(scheme) && !!scheme['name'];
+  }
+  function isParameterDomain(domain) {
+    return domain === null || domain === void 0 ? void 0 : domain['param'];
+  }
+  function isDomainUnionWith(domain) {
+    return domain && domain['unionWith'];
+  }
+  const SCALE_PROPERTY_INDEX = {
+    type: 1,
+    domain: 1,
+    domainMax: 1,
+    domainMin: 1,
+    domainMid: 1,
+    align: 1,
+    range: 1,
+    rangeMax: 1,
+    rangeMin: 1,
+    scheme: 1,
+    bins: 1,
+    // Other properties
+    reverse: 1,
+    round: 1,
+    // quantitative / time
+    clamp: 1,
+    nice: 1,
+    // quantitative
+    base: 1,
+    exponent: 1,
+    constant: 1,
+    interpolate: 1,
+    zero: 1,
+    // zero depends on domain
+    // band/point
+    padding: 1,
+    paddingInner: 1,
+    paddingOuter: 1
+  };
+  const {
+    type: type$1,
+    domain: domain$1,
+    range: range$4,
+    rangeMax,
+    rangeMin,
+    scheme: scheme$1,
+    ...NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX
+  } = SCALE_PROPERTY_INDEX;
+  const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = keys$2(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
+  function scaleTypeSupportProperty(scaleType, propName) {
+    switch (propName) {
+      case 'type':
+      case 'domain':
+      case 'reverse':
+      case 'range':
+        return true;
+
+      case 'scheme':
+      case 'interpolate':
+        return !['point', 'band', 'identity'].includes(scaleType);
+
+      case 'bins':
+        return !['point', 'band', 'identity', 'ordinal'].includes(scaleType);
+
+      case 'round':
+        return isContinuousToContinuous(scaleType) || scaleType === 'band' || scaleType === 'point';
+
+      case 'padding':
+      case 'rangeMin':
+      case 'rangeMax':
+        return isContinuousToContinuous(scaleType) || ['point', 'band'].includes(scaleType);
+
+      case 'paddingOuter':
+      case 'align':
+        return ['point', 'band'].includes(scaleType);
+
+      case 'paddingInner':
+        return scaleType === 'band';
+
+      case 'domainMax':
+      case 'domainMid':
+      case 'domainMin':
+      case 'clamp':
+        return isContinuousToContinuous(scaleType);
+
+      case 'nice':
+        return isContinuousToContinuous(scaleType) || scaleType === 'quantize' || scaleType === 'threshold';
+
+      case 'exponent':
+        return scaleType === 'pow';
+
+      case 'base':
+        return scaleType === 'log';
+
+      case 'constant':
+        return scaleType === 'symlog';
+
+      case 'zero':
+        return hasContinuousDomain(scaleType) && !contains$1(['log', // log scale cannot have zero value
+        'time', 'utc', // zero is not meaningful for time
+        'threshold', // threshold requires custom domain so zero does not matter
+        'quantile' // quantile depends on distribution so zero does not matter
+        ], scaleType);
+    }
+  }
+  /**
+   * Returns undefined if the input channel supports the input scale property name
+   */
+
+  function channelScalePropertyIncompatability(channel, propName) {
+    switch (propName) {
+      case 'interpolate':
+      case 'scheme':
+      case 'domainMid':
+        if (!isColorChannel(channel)) {
+          return cannotUseScalePropertyWithNonColor(channel);
+        }
+
+        return undefined;
+
+      case 'align':
+      case 'type':
+      case 'bins':
+      case 'domain':
+      case 'domainMax':
+      case 'domainMin':
+      case 'range':
+      case 'base':
+      case 'exponent':
+      case 'constant':
+      case 'nice':
+      case 'padding':
+      case 'paddingInner':
+      case 'paddingOuter':
+      case 'rangeMax':
+      case 'rangeMin':
+      case 'reverse':
+      case 'round':
+      case 'clamp':
+      case 'zero':
+        return undefined;
+      // GOOD!
+    }
+  }
+  function scaleTypeSupportDataType(specifiedType, fieldDefType) {
+    if (contains$1([ORDINAL, NOMINAL], fieldDefType)) {
+      return specifiedType === undefined || hasDiscreteDomain(specifiedType);
+    } else if (fieldDefType === TEMPORAL) {
+      return contains$1([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
+    } else if (fieldDefType === QUANTITATIVE) {
+      return contains$1([ScaleType.LOG, ScaleType.POW, ScaleType.SQRT, ScaleType.SYMLOG, ScaleType.QUANTILE, ScaleType.QUANTIZE, ScaleType.THRESHOLD, ScaleType.LINEAR, undefined], specifiedType);
+    }
+
+    return true;
+  }
+  function channelSupportScaleType(channel, scaleType) {
+    if (!isScaleChannel(channel)) {
+      return false;
+    }
+
+    switch (channel) {
+      case X$1:
+      case Y$1:
+      case THETA:
+      case RADIUS:
+        return isContinuousToContinuous(scaleType) || contains$1(['band', 'point'], scaleType);
+
+      case SIZE$1: // TODO: size and opacity can support ordinal with more modification
+
+      case STROKEWIDTH:
+      case OPACITY:
+      case FILLOPACITY:
+      case STROKEOPACITY:
+      case ANGLE:
+        // Although it generally doesn't make sense to use band with size and opacity,
+        // it can also work since we use band: 0.5 to get midpoint.
+        return isContinuousToContinuous(scaleType) || isContinuousToDiscrete(scaleType) || contains$1(['band', 'point', 'ordinal'], scaleType);
+
+      case COLOR:
+      case FILL:
+      case STROKE:
+        return scaleType !== 'band';
+      // band does not make sense with color
+
+      case STROKEDASH:
+      case SHAPE:
+        return scaleType === 'ordinal' || isContinuousToDiscrete(scaleType);
+    }
+  }
+
+  /**
+   * All types of primitive marks.
+   */
+  const Mark$2 = {
+    arc: 'arc',
+    area: 'area',
+    bar: 'bar',
+    image: 'image',
+    line: 'line',
+    point: 'point',
+    rect: 'rect',
+    rule: 'rule',
+    text: 'text',
+    tick: 'tick',
+    trail: 'trail',
+    circle: 'circle',
+    square: 'square',
+    geoshape: 'geoshape'
+  };
+  const ARC = Mark$2.arc;
+  const AREA = Mark$2.area;
+  const BAR = Mark$2.bar;
+  const IMAGE = Mark$2.image;
+  const LINE = Mark$2.line;
+  const POINT = Mark$2.point;
+  const RECT = Mark$2.rect;
+  const RULE = Mark$2.rule;
+  const TEXT$1 = Mark$2.text;
+  const TICK = Mark$2.tick;
+  const TRAIL = Mark$2.trail;
+  const CIRCLE = Mark$2.circle;
+  const SQUARE = Mark$2.square;
+  const GEOSHAPE = Mark$2.geoshape;
+  function isPathMark(m) {
+    return ['line', 'area', 'trail'].includes(m);
+  }
+  function isRectBasedMark(m) {
+    return ['rect', 'bar', 'image', 'arc'
+    /* arc is rect/interval in polar coordinate */
+    ].includes(m);
+  }
+  const PRIMITIVE_MARKS = keys$2(Mark$2);
+  function isMarkDef(mark) {
+    return mark['type'];
+  }
+  toSet(PRIMITIVE_MARKS);
+  const STROKE_CONFIG = ['stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'strokeJoin', 'strokeMiterLimit'];
+  const FILL_CONFIG = ['fill', 'fillOpacity'];
+  const FILL_STROKE_CONFIG = [...STROKE_CONFIG, ...FILL_CONFIG];
+  const VL_ONLY_MARK_CONFIG_INDEX = {
+    color: 1,
+    filled: 1,
+    invalid: 1,
+    order: 1,
+    radius2: 1,
+    theta2: 1,
+    timeUnitBandSize: 1,
+    timeUnitBandPosition: 1
+  };
+  const VL_ONLY_MARK_CONFIG_PROPERTIES = keys$2(VL_ONLY_MARK_CONFIG_INDEX);
+  const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX = {
+    area: ['line', 'point'],
+    bar: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
+    rect: ['binSpacing', 'continuousBandSize', 'discreteBandSize'],
+    line: ['point'],
+    tick: ['bandSize', 'thickness']
+  };
+  const defaultMarkConfig = {
+    color: '#4c78a8',
+    invalid: 'filter',
+    timeUnitBandSize: 1
+  }; // TODO: replace with MarkConfigMixins[Mark] once https://github.com/vega/ts-json-schema-generator/issues/344 is fixed
+
+  const MARK_CONFIG_INDEX = {
+    mark: 1,
+    arc: 1,
+    area: 1,
+    bar: 1,
+    circle: 1,
+    image: 1,
+    line: 1,
+    point: 1,
+    rect: 1,
+    rule: 1,
+    square: 1,
+    text: 1,
+    tick: 1,
+    trail: 1,
+    geoshape: 1
+  };
+  const MARK_CONFIGS = keys$2(MARK_CONFIG_INDEX);
+  function isRelativeBandSize(o) {
+    return o && o['band'] != undefined;
+  }
+  const BAR_CORNER_RADIUS_INDEX = {
+    horizontal: ['cornerRadiusTopRight', 'cornerRadiusBottomRight'],
+    vertical: ['cornerRadiusTopLeft', 'cornerRadiusTopRight']
+  };
+  const DEFAULT_RECT_BAND_SIZE = 5;
+  const defaultBarConfig = {
+    binSpacing: 1,
+    continuousBandSize: DEFAULT_RECT_BAND_SIZE,
+    timeUnitBandPosition: 0.5
+  };
+  const defaultRectConfig = {
+    binSpacing: 0,
+    continuousBandSize: DEFAULT_RECT_BAND_SIZE,
+    timeUnitBandPosition: 0.5
+  };
+  const defaultTickConfig = {
+    thickness: 1
+  };
+  function getMarkType(m) {
+    return isMarkDef(m) ? m.type : m;
+  }
+
+  /**
+   * Utility files for producing Vega ValueRef for marks
+   */
+  function midPointRefWithPositionInvalidTest(params) {
+    const {
+      channel,
+      channelDef,
+      markDef,
+      scale,
+      config
+    } = params;
+    const ref = midPoint(params); // Wrap to check if the positional value is invalid, if so, plot the point on the min value
+
+    if ( // Only this for field def without counting aggregate (as count wouldn't be null)
+    isFieldDef(channelDef) && !isCountingAggregateOp(channelDef.aggregate) && // and only for continuous scale without zero (otherwise, null / invalid will be interpreted as zero, which doesn't cause layout problem)
+    scale && isContinuousToContinuous(scale.get('type')) && scale.get('zero') === false) {
+      return wrapPositionInvalidTest({
+        fieldDef: channelDef,
+        channel,
+        markDef,
+        ref,
+        config
+      });
+    }
+
+    return ref;
+  }
+  function wrapPositionInvalidTest({
+    fieldDef,
+    channel,
+    markDef,
+    ref,
+    config
+  }) {
+    if (isPathMark(markDef.type)) {
+      // path mark already use defined to skip points, no need to do it here.
+      return ref;
+    }
+
+    const invalid = getMarkPropOrConfig('invalid', markDef, config);
+
+    if (invalid === null) {
+      // if there is no invalid filter, don't do the invalid test
+      return ref;
+    }
+
+    return [fieldInvalidTestValueRef(fieldDef, channel), ref];
+  }
+  function fieldInvalidTestValueRef(fieldDef, channel) {
+    const test = fieldInvalidPredicate(fieldDef, true);
+    const mainChannel = getMainRangeChannel(channel); // we can cast here as the output can't be other things.
+
+    const zeroValueRef = mainChannel === 'y' ? {
+      field: {
+        group: 'height'
+      }
+    } : // x / angle / radius can all use 0
+    {
+      value: 0
+    };
+    return {
+      test,
+      ...zeroValueRef
+    };
+  }
+  function fieldInvalidPredicate(field, invalid = true) {
+    return fieldValidPredicate(isString(field) ? field : vgField(field, {
+      expr: 'datum'
+    }), !invalid);
+  }
+  function datumDefToExpr(datumDef) {
+    const {
+      datum
+    } = datumDef;
+
+    if (isDateTime(datum)) {
+      return dateTimeToExpr(datum);
+    }
+
+    return "".concat(stringify$1(datum));
+  }
+  function valueRefForFieldOrDatumDef(fieldDef, scaleName, opt, encode) {
+    const ref = {};
+
+    if (scaleName) {
+      ref.scale = scaleName;
+    }
+
+    if (isDatumDef(fieldDef)) {
+      const {
+        datum
+      } = fieldDef;
+
+      if (isDateTime(datum)) {
+        ref.signal = dateTimeToExpr(datum);
+      } else if (isSignalRef(datum)) {
+        ref.signal = datum.signal;
+      } else if (isExprRef(datum)) {
+        ref.signal = datum.expr;
+      } else {
+        ref.value = datum;
+      }
+    } else {
+      ref.field = vgField(fieldDef, opt);
+    }
+
+    if (encode) {
+      const {
+        offset,
+        band
+      } = encode;
+
+      if (offset) {
+        ref.offset = offset;
+      }
+
+      if (band) {
+        ref.band = band;
+      }
+    }
+
+    return ref;
+  }
+  /**
+   * Signal that returns the middle of a bin from start and end field. Should only be used with x and y.
+   */
+
+  function interpolatedSignalRef({
+    scaleName,
+    fieldOrDatumDef,
+    fieldOrDatumDef2,
+    offset,
+    startSuffix,
+    bandPosition = 0.5
+  }) {
+    const expr = 0 < bandPosition && bandPosition < 1 ? 'datum' : undefined;
+    const start = vgField(fieldOrDatumDef, {
+      expr,
+      suffix: startSuffix
+    });
+    const end = fieldOrDatumDef2 !== undefined ? vgField(fieldOrDatumDef2, {
+      expr
+    }) : vgField(fieldOrDatumDef, {
+      suffix: 'end',
+      expr
+    });
+    const ref = {};
+
+    if (bandPosition === 0 || bandPosition === 1) {
+      ref.scale = scaleName;
+      const val = bandPosition === 0 ? start : end;
+      ref.field = val;
+    } else {
+      const datum = isSignalRef(bandPosition) ? "".concat(bandPosition.signal, " * ").concat(start, " + (1-").concat(bandPosition.signal, ") * ").concat(end) : "".concat(bandPosition, " * ").concat(start, " + ").concat(1 - bandPosition, " * ").concat(end);
+      ref.signal = "scale(\"".concat(scaleName, "\", ").concat(datum, ")");
+    }
+
+    if (offset) {
+      ref.offset = offset;
+    }
+
+    return ref;
+  }
+
+  /**
+   * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
+   */
+  function midPoint({
+    channel,
+    channelDef,
+    channel2Def,
+    markDef,
+    config,
+    scaleName,
+    scale,
+    stack,
+    offset,
+    defaultRef,
+    bandPosition
+  }) {
+    // TODO: datum support
+    if (channelDef) {
+      /* istanbul ignore else */
+      if (isFieldOrDatumDef(channelDef)) {
+        var _ref, _bandPosition2;
+
+        if (isTypedFieldDef(channelDef)) {
+          var _bandPosition;
+
+          (_bandPosition = bandPosition) !== null && _bandPosition !== void 0 ? _bandPosition : bandPosition = getBandPosition({
+            fieldDef: channelDef,
+            fieldDef2: channel2Def,
+            markDef,
+            config
+          });
+          const {
+            bin,
+            timeUnit,
+            type
+          } = channelDef;
+
+          if (isBinning(bin) || bandPosition && timeUnit && type === TEMPORAL) {
+            // Use middle only for x an y to place marks in the center between start and end of the bin range.
+            // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
+            if (stack && stack.impute) {
+              // For stack, we computed bin_mid so we can impute.
+              return valueRefForFieldOrDatumDef(channelDef, scaleName, {
+                binSuffix: 'mid'
+              }, {
+                offset
+              });
+            }
+
+            if (bandPosition) {
+              // if band = 0, no need to call interpolation
+              // For non-stack, we can just calculate bin mid on the fly using signal.
+              return interpolatedSignalRef({
+                scaleName,
+                fieldOrDatumDef: channelDef,
+                bandPosition,
+                offset
+              });
+            }
+
+            return valueRefForFieldOrDatumDef(channelDef, scaleName, binRequiresRange(channelDef, channel) ? {
+              binSuffix: 'range'
+            } : {}, {
+              offset
+            });
+          } else if (isBinned(bin)) {
+            if (isFieldDef(channel2Def)) {
+              return interpolatedSignalRef({
+                scaleName,
+                fieldOrDatumDef: channelDef,
+                fieldOrDatumDef2: channel2Def,
+                bandPosition,
+                offset
+              });
+            } else {
+              const channel2 = channel === X$1 ? X2$2 : Y2$2;
+              warn$2(channelRequiredForBinned(channel2));
+            }
+          }
+        }
+
+        const scaleType = scale === null || scale === void 0 ? void 0 : scale.get('type');
+        return valueRefForFieldOrDatumDef(channelDef, scaleName, hasDiscreteDomain(scaleType) ? {
+          binSuffix: 'range'
+        } : {}, // no need for bin suffix if there is no scale
+        {
+          offset,
+          // For band, to get mid point, need to offset by half of the band
+          band: scaleType === 'band' ? (_ref = (_bandPosition2 = bandPosition) !== null && _bandPosition2 !== void 0 ? _bandPosition2 : channelDef.bandPosition) !== null && _ref !== void 0 ? _ref : 0.5 : undefined
+        });
+      } else if (isValueDef(channelDef)) {
+        const value = channelDef.value;
+        const offsetMixins = offset ? {
+          offset
+        } : {};
+        return { ...widthHeightValueOrSignalRef(channel, value),
+          ...offsetMixins
+        };
+      } // If channelDef is neither field def or value def, it's a condition-only def.
+      // In such case, we will use default ref.
+
+    }
+
+    if (isFunction(defaultRef)) {
+      defaultRef = defaultRef();
+    }
+
+    if (defaultRef) {
+      // for non-position, ref could be undefined.
+      return { ...defaultRef,
+        // only include offset when it is non-zero (zero = no offset)
+        ...(offset ? {
+          offset
+        } : {})
+      };
+    }
+
+    return defaultRef;
+  }
+  /**
+   * Convert special "width" and "height" values in Vega-Lite into Vega value ref.
+   */
+
+  function widthHeightValueOrSignalRef(channel, value) {
+    if (contains$1(['x', 'x2'], channel) && value === 'width') {
+      return {
+        field: {
+          group: 'width'
+        }
+      };
+    } else if (contains$1(['y', 'y2'], channel) && value === 'height') {
+      return {
+        field: {
+          group: 'height'
+        }
+      };
+    }
+
+    return signalOrValueRef(value);
+  }
+
+  function isCustomFormatType(formatType) {
+    return formatType && formatType !== 'number' && formatType !== 'time';
+  }
+
+  function customFormatExpr(formatType, field, format) {
+    return "".concat(formatType, "(").concat(field).concat(format ? ", ".concat(stringify$1(format)) : '', ")");
+  }
+
+  const BIN_RANGE_DELIMITER = ' \u2013 ';
+  function formatSignalRef({
+    fieldOrDatumDef,
+    format,
+    formatType,
+    expr,
+    normalizeStack,
+    config
+  }) {
+    if (isCustomFormatType(formatType)) {
+      return formatCustomType({
+        fieldOrDatumDef,
+        format,
+        formatType,
+        expr,
+        config
+      });
+    }
+
+    const field = fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
+
+    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
+      var _normalizeTimeUnit, _fieldOrDatumDef$scal;
+
+      const signal = timeFormatExpression(field, isFieldDef(fieldOrDatumDef) ? (_normalizeTimeUnit = normalizeTimeUnit(fieldOrDatumDef.timeUnit)) === null || _normalizeTimeUnit === void 0 ? void 0 : _normalizeTimeUnit.unit : undefined, format, config.timeFormat, isScaleFieldDef(fieldOrDatumDef) && ((_fieldOrDatumDef$scal = fieldOrDatumDef.scale) === null || _fieldOrDatumDef$scal === void 0 ? void 0 : _fieldOrDatumDef$scal.type) === ScaleType.UTC);
+      return signal ? {
+        signal
+      } : undefined;
+    }
+
+    format = numberFormat(channelDefType(fieldOrDatumDef), format, config);
+
+    if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
+      const endField = vgField(fieldOrDatumDef, {
+        expr,
+        binSuffix: 'end'
+      });
+      return {
+        signal: binFormatExpression(field, endField, format, formatType, config)
+      };
+    } else if (format || channelDefType(fieldOrDatumDef) === 'quantitative') {
+      return {
+        signal: "".concat(formatExpr(field, format))
+      };
+    } else {
+      return {
+        signal: "isValid(".concat(field, ") ? ").concat(field, " : \"\"+").concat(field)
+      };
+    }
+  }
+
+  function fieldToFormat(fieldOrDatumDef, expr, normalizeStack) {
+    if (isFieldDef(fieldOrDatumDef)) {
+      if (normalizeStack) {
+        return "".concat(vgField(fieldOrDatumDef, {
+          expr,
+          suffix: 'end'
+        }), "-").concat(vgField(fieldOrDatumDef, {
+          expr,
+          suffix: 'start'
+        }));
+      } else {
+        return vgField(fieldOrDatumDef, {
+          expr
+        });
+      }
+    } else {
+      return datumDefToExpr(fieldOrDatumDef);
+    }
+  }
+
+  function formatCustomType({
+    fieldOrDatumDef,
+    format,
+    formatType,
+    expr,
+    normalizeStack,
+    config,
+    field
+  }) {
+    var _field;
+
+    (_field = field) !== null && _field !== void 0 ? _field : field = fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
+
+    if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
+      const endField = vgField(fieldOrDatumDef, {
+        expr,
+        binSuffix: 'end'
+      });
+      return {
+        signal: binFormatExpression(field, endField, format, formatType, config)
+      };
+    }
+
+    return {
+      signal: customFormatExpr(formatType, field, format)
+    };
+  }
+  function guideFormat(fieldOrDatumDef, type, format, formatType, config, omitTimeFormatConfig) // axis doesn't use config.timeFormat
+  {
+    if (isCustomFormatType(formatType)) {
+      return undefined; // handled in encode block
+    }
+
+    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
+      var _normalizeTimeUnit2;
+
+      const timeUnit = isFieldDef(fieldOrDatumDef) ? (_normalizeTimeUnit2 = normalizeTimeUnit(fieldOrDatumDef.timeUnit)) === null || _normalizeTimeUnit2 === void 0 ? void 0 : _normalizeTimeUnit2.unit : undefined;
+      return timeFormat$2(format, timeUnit, config, omitTimeFormatConfig);
+    }
+
+    return numberFormat(type, format, config);
+  }
+  function guideFormatType(formatType, fieldOrDatumDef, scaleType) {
+    if (formatType && (isSignalRef(formatType) || formatType === 'number' || formatType === 'time')) {
+      return formatType;
+    }
+
+    if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) && scaleType !== 'time' && scaleType !== 'utc') {
+      return 'time';
+    }
+
+    return undefined;
+  }
+  /**
+   * Returns number format for a fieldDef.
+   */
+
+  function numberFormat(type, specifiedFormat, config) {
+    // Specified format in axis/legend has higher precedence than fieldDef.format
+    if (isString(specifiedFormat)) {
+      return specifiedFormat;
+    }
+
+    if (type === QUANTITATIVE) {
+      // we only apply the default if the field is quantitative
+      return config.numberFormat;
+    }
+
+    return undefined;
+  }
+  /**
+   * Returns time format for a fieldDef for use in guides.
+   */
+
+  function timeFormat$2(specifiedFormat, timeUnit, config, omitTimeFormatConfig) {
+    if (specifiedFormat) {
+      return specifiedFormat;
+    }
+
+    if (timeUnit) {
+      return {
+        signal: timeUnitSpecifierExpression(timeUnit)
+      };
+    }
+
+    return omitTimeFormatConfig ? undefined : config.timeFormat;
+  }
+
+  function formatExpr(field, format) {
+    return "format(".concat(field, ", \"").concat(format || '', "\")");
+  }
+
+  function binNumberFormatExpr(field, format, formatType, config) {
+    var _ref;
+
+    if (isCustomFormatType(formatType)) {
+      return customFormatExpr(formatType, field, format);
+    }
+
+    return formatExpr(field, (_ref = isString(format) ? format : undefined) !== null && _ref !== void 0 ? _ref : config.numberFormat);
+  }
+
+  function binFormatExpression(startField, endField, format, formatType, config) {
+    const start = binNumberFormatExpr(startField, format, formatType, config);
+    const end = binNumberFormatExpr(endField, format, formatType, config);
+    return "".concat(fieldValidPredicate(startField, false), " ? \"null\" : ").concat(start, " + \"").concat(BIN_RANGE_DELIMITER, "\" + ").concat(end);
+  }
+  /**
+   * Returns the time expression used for axis/legend labels or text mark for a temporal field
+   */
+
+  function timeFormatExpression(field, timeUnit, format, rawTimeFormat, // should be provided only for actual text and headers, not axis/legend labels
+  isUTCScale) {
+    if (!timeUnit || format) {
+      // If there is no time unit, or if user explicitly specifies format for axis/legend/text.
+      format = isString(format) ? format : rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
+
+      return "".concat(isUTCScale ? 'utc' : 'time', "Format(").concat(field, ", '").concat(format, "')");
+    } else {
+      return formatExpression(timeUnit, field, isUTCScale);
+    }
+  }
+
+  const DEFAULT_SORT_OP = 'min';
+  /**
+   * A sort definition for sorting a discrete scale in an encoding field definition.
+   */
+
+  const SORT_BY_CHANNEL_INDEX = {
+    x: 1,
+    y: 1,
+    color: 1,
+    fill: 1,
+    stroke: 1,
+    strokeWidth: 1,
+    size: 1,
+    shape: 1,
+    fillOpacity: 1,
+    strokeOpacity: 1,
+    opacity: 1,
+    text: 1
+  };
+  function isSortByChannel(c) {
+    return c in SORT_BY_CHANNEL_INDEX;
+  }
+  function isSortByEncoding(sort) {
+    return !!sort && !!sort['encoding'];
+  }
+  function isSortField(sort) {
+    return !!sort && (sort['op'] === 'count' || !!sort['field']);
+  }
+  function isSortArray(sort) {
+    return !!sort && isArray(sort);
+  }
+
+  function isFacetMapping(f) {
+    return 'row' in f || 'column' in f;
+  }
+  /**
+   * Facet mapping for encoding macro
+   */
+
+  function isFacetFieldDef(channelDef) {
+    return !!channelDef && 'header' in channelDef;
+  }
+  /**
+   * Base interface for a facet specification.
+   */
+
+  function isFacetSpec(spec) {
+    return 'facet' in spec;
+  }
+
+  function isConditionalParameter(c) {
+    return c['param'];
+  }
+  function isRepeatRef(field) {
+    return field && !isString(field) && 'repeat' in field;
+  }
+  /** @@hidden */
+
+  function toFieldDefBase(fieldDef) {
+    const {
+      field,
+      timeUnit,
+      bin,
+      aggregate
+    } = fieldDef;
+    return { ...(timeUnit ? {
+        timeUnit
+      } : {}),
+      ...(bin ? {
+        bin
+      } : {}),
+      ...(aggregate ? {
+        aggregate
+      } : {}),
+      field
+    };
+  }
+  function isSortableFieldDef(fieldDef) {
+    return 'sort' in fieldDef;
+  }
+  function getBandPosition({
+    fieldDef,
+    fieldDef2,
+    markDef: mark,
+    config
+  }) {
+    if (isFieldOrDatumDef(fieldDef) && fieldDef.bandPosition !== undefined) {
+      return fieldDef.bandPosition;
+    }
+
+    if (isFieldDef(fieldDef)) {
+      const {
+        timeUnit,
+        bin
+      } = fieldDef;
+
+      if (timeUnit && !fieldDef2) {
+        return isRectBasedMark(mark.type) ? 0 : getMarkConfig('timeUnitBandPosition', mark, config);
+      } else if (isBinning(bin)) {
+        return 0.5;
+      }
+    }
+
+    return undefined;
+  }
+  function getBandSize({
+    channel,
+    fieldDef,
+    fieldDef2,
+    markDef: mark,
+    config,
+    scaleType,
+    useVlSizeChannel
+  }) {
+    const sizeChannel = getSizeChannel(channel);
+    const size = getMarkPropOrConfig(useVlSizeChannel ? 'size' : sizeChannel, mark, config, {
+      vgChannel: sizeChannel
+    });
+
+    if (size !== undefined) {
+      return size;
+    }
+
+    if (isFieldDef(fieldDef)) {
+      const {
+        timeUnit,
+        bin
+      } = fieldDef;
+
+      if (timeUnit && !fieldDef2) {
+        return {
+          band: getMarkConfig('timeUnitBandSize', mark, config)
+        };
+      } else if (isBinning(bin) && !hasDiscreteDomain(scaleType)) {
+        return {
+          band: 1
+        };
+      }
+    }
+
+    if (isRectBasedMark(mark.type)) {
+      var _config$mark$type3;
+
+      if (scaleType) {
+        if (hasDiscreteDomain(scaleType)) {
+          var _config$mark$type;
+
+          return ((_config$mark$type = config[mark.type]) === null || _config$mark$type === void 0 ? void 0 : _config$mark$type.discreteBandSize) || {
+            band: 1
+          };
+        } else {
+          var _config$mark$type2;
+
+          return (_config$mark$type2 = config[mark.type]) === null || _config$mark$type2 === void 0 ? void 0 : _config$mark$type2.continuousBandSize;
+        }
+      }
+
+      return (_config$mark$type3 = config[mark.type]) === null || _config$mark$type3 === void 0 ? void 0 : _config$mark$type3.discreteBandSize;
+    }
+
+    return undefined;
+  }
+  function hasBandEnd(fieldDef, fieldDef2, markDef, config) {
+    if (isBinning(fieldDef.bin) || fieldDef.timeUnit && isTypedFieldDef(fieldDef) && fieldDef.type === 'temporal') {
+      // Need to check bandPosition because non-rect marks (e.g., point) with timeUnit
+      // doesn't have to use bandEnd if there is no bandPosition.
+      return getBandPosition({
+        fieldDef,
+        fieldDef2,
+        markDef,
+        config
+      }) !== undefined;
+    }
+
+    return false;
+  }
+  /**
+   * Field definition of a mark property, which can contain a legend.
+   */
+
+  function isConditionalDef(channelDef) {
+    return !!channelDef && 'condition' in channelDef;
+  }
+  /**
+   * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
+   */
+
+  function hasConditionalFieldDef(channelDef) {
+    const condition = channelDef && channelDef['condition'];
+    return !!condition && !isArray(condition) && isFieldDef(condition);
+  }
+  function hasConditionalFieldOrDatumDef(channelDef) {
+    const condition = channelDef && channelDef['condition'];
+    return !!condition && !isArray(condition) && isFieldOrDatumDef(condition);
+  }
+  function hasConditionalValueDef(channelDef) {
+    const condition = channelDef && channelDef['condition'];
+    return !!condition && (isArray(condition) || isValueDef(condition));
+  }
+  function isFieldDef(channelDef) {
+    // TODO: we can't use field in channelDef here as it's somehow failing runtime test
+    return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
+  }
+  function channelDefType(channelDef) {
+    return channelDef && channelDef['type'];
+  }
+  function isDatumDef(channelDef) {
+    return !!channelDef && 'datum' in channelDef;
+  }
+  function isContinuousFieldOrDatumDef(cd) {
+    // TODO: make datum support DateTime object
+    return isTypedFieldDef(cd) && !isDiscrete$1(cd) || isNumericDataDef(cd);
+  }
+  function isNumericDataDef(cd) {
+    return isDatumDef(cd) && isNumber(cd.datum);
+  }
+  function isFieldOrDatumDef(channelDef) {
+    return isFieldDef(channelDef) || isDatumDef(channelDef);
+  }
+  function isTypedFieldDef(channelDef) {
+    return !!channelDef && ('field' in channelDef || channelDef['aggregate'] === 'count') && 'type' in channelDef;
+  }
+  function isValueDef(channelDef) {
+    return channelDef && 'value' in channelDef && 'value' in channelDef;
+  }
+  function isScaleFieldDef(channelDef) {
+    return !!channelDef && ('scale' in channelDef || 'sort' in channelDef);
+  }
+  function isPositionFieldOrDatumDef(channelDef) {
+    return channelDef && ('axis' in channelDef || 'stack' in channelDef || 'impute' in channelDef);
+  }
+  function isMarkPropFieldOrDatumDef(channelDef) {
+    return !!channelDef && 'legend' in channelDef;
+  }
+  function isStringFieldOrDatumDef(channelDef) {
+    return !!channelDef && ('format' in channelDef || 'formatType' in channelDef);
+  }
+  function toStringFieldDef(fieldDef) {
+    // omit properties that don't exist in string field defs
+    return omit(fieldDef, ['legend', 'axis', 'header', 'scale']);
+  }
+
+  function isOpFieldDef(fieldDef) {
+    return 'op' in fieldDef;
+  }
+  /**
+   * Get a Vega field reference from a Vega-Lite field def.
+   */
+
+
+  function vgField(fieldDef, opt = {}) {
+    let field = fieldDef.field;
+    const prefix = opt.prefix;
+    let suffix = opt.suffix;
+    let argAccessor = ''; // for accessing argmin/argmax field at the end without getting escaped
+
+    if (isCount(fieldDef)) {
+      field = internalField('count');
+    } else {
+      let fn;
+
+      if (!opt.nofn) {
+        if (isOpFieldDef(fieldDef)) {
+          fn = fieldDef.op;
+        } else {
+          const {
+            bin,
+            aggregate,
+            timeUnit
+          } = fieldDef;
+
+          if (isBinning(bin)) {
+            var _opt$binSuffix, _opt$suffix;
+
+            fn = binToString(bin);
+            suffix = ((_opt$binSuffix = opt.binSuffix) !== null && _opt$binSuffix !== void 0 ? _opt$binSuffix : '') + ((_opt$suffix = opt.suffix) !== null && _opt$suffix !== void 0 ? _opt$suffix : '');
+          } else if (aggregate) {
+            if (isArgmaxDef(aggregate)) {
+              argAccessor = "[\"".concat(field, "\"]");
+              field = "argmax_".concat(aggregate.argmax);
+            } else if (isArgminDef(aggregate)) {
+              argAccessor = "[\"".concat(field, "\"]");
+              field = "argmin_".concat(aggregate.argmin);
+            } else {
+              fn = String(aggregate);
+            }
+          } else if (timeUnit) {
+            var _opt$suffix2;
+
+            fn = timeUnitToString(timeUnit);
+            suffix = (!['range', 'mid'].includes(opt.binSuffix) && opt.binSuffix || '') + ((_opt$suffix2 = opt.suffix) !== null && _opt$suffix2 !== void 0 ? _opt$suffix2 : '');
+          }
+        }
+      }
+
+      if (fn) {
+        field = field ? "".concat(fn, "_").concat(field) : fn;
+      }
+    }
+
+    if (suffix) {
+      field = "".concat(field, "_").concat(suffix);
+    }
+
+    if (prefix) {
+      field = "".concat(prefix, "_").concat(field);
+    }
+
+    if (opt.forAs) {
+      return removePathFromField(field);
+    } else if (opt.expr) {
+      // Expression to access flattened field. No need to escape dots.
+      return flatAccessWithDatum(field, opt.expr) + argAccessor;
+    } else {
+      // We flattened all fields so paths should have become dot.
+      return replacePathInField(field) + argAccessor;
+    }
+  }
+  function isDiscrete$1(def) {
+    switch (def.type) {
+      case 'nominal':
+      case 'ordinal':
+      case 'geojson':
+        return true;
+
+      case 'quantitative':
+        return isFieldDef(def) && !!def.bin;
+
+      case 'temporal':
+        return false;
+    }
+
+    throw new Error(invalidFieldType(def.type));
+  }
+  function isDiscretizing$1(def) {
+    var _def$scale;
+
+    return isScaleFieldDef(def) && isContinuousToDiscrete((_def$scale = def.scale) === null || _def$scale === void 0 ? void 0 : _def$scale.type);
+  }
+  function isCount(fieldDef) {
+    return fieldDef.aggregate === 'count';
+  }
+  function verbalTitleFormatter(fieldDef, config) {
+    const {
+      field,
+      bin,
+      timeUnit,
+      aggregate
+    } = fieldDef;
+
+    if (aggregate === 'count') {
+      return config.countTitle;
+    } else if (isBinning(bin)) {
+      return "".concat(field, " (binned)");
+    } else if (timeUnit) {
+      var _normalizeTimeUnit;
+
+      const unit = (_normalizeTimeUnit = normalizeTimeUnit(timeUnit)) === null || _normalizeTimeUnit === void 0 ? void 0 : _normalizeTimeUnit.unit;
+
+      if (unit) {
+        return "".concat(field, " (").concat(getTimeUnitParts(unit).join('-'), ")");
+      }
+    } else if (aggregate) {
+      if (isArgmaxDef(aggregate)) {
+        return "".concat(field, " for max ").concat(aggregate.argmax);
+      } else if (isArgminDef(aggregate)) {
+        return "".concat(field, " for min ").concat(aggregate.argmin);
+      } else {
+        return "".concat(titleCase(aggregate), " of ").concat(field);
+      }
+    }
+
+    return field;
+  }
+  function functionalTitleFormatter(fieldDef) {
+    const {
+      aggregate,
+      bin,
+      timeUnit,
+      field
+    } = fieldDef;
+
+    if (isArgmaxDef(aggregate)) {
+      return "".concat(field, " for argmax(").concat(aggregate.argmax, ")");
+    } else if (isArgminDef(aggregate)) {
+      return "".concat(field, " for argmin(").concat(aggregate.argmin, ")");
+    }
+
+    const timeUnitParams = normalizeTimeUnit(timeUnit);
+    const fn = aggregate || (timeUnitParams === null || timeUnitParams === void 0 ? void 0 : timeUnitParams.unit) || (timeUnitParams === null || timeUnitParams === void 0 ? void 0 : timeUnitParams.maxbins) && 'timeunit' || isBinning(bin) && 'bin';
+
+    if (fn) {
+      return "".concat(fn.toUpperCase(), "(").concat(field, ")");
+    } else {
+      return field;
+    }
+  }
+  const defaultTitleFormatter = (fieldDef, config) => {
+    switch (config.fieldTitle) {
+      case 'plain':
+        return fieldDef.field;
+
+      case 'functional':
+        return functionalTitleFormatter(fieldDef);
+
+      default:
+        return verbalTitleFormatter(fieldDef, config);
+    }
+  };
+  let titleFormatter = defaultTitleFormatter;
+  function setTitleFormatter(formatter) {
+    titleFormatter = formatter;
+  }
+  function resetTitleFormatter() {
+    setTitleFormatter(defaultTitleFormatter);
+  }
+  function title(fieldOrDatumDef, config, {
+    allowDisabling,
+    includeDefault = true
+  }) {
+    var _getGuide;
+
+    const guideTitle = (_getGuide = getGuide(fieldOrDatumDef)) === null || _getGuide === void 0 ? void 0 : _getGuide.title;
+
+    if (!isFieldDef(fieldOrDatumDef)) {
+      return guideTitle;
+    }
+
+    const fieldDef = fieldOrDatumDef;
+    const def = includeDefault ? defaultTitle(fieldDef, config) : undefined;
+
+    if (allowDisabling) {
+      return getFirstDefined(guideTitle, fieldDef.title, def);
+    } else {
+      var _ref;
+
+      return (_ref = guideTitle !== null && guideTitle !== void 0 ? guideTitle : fieldDef.title) !== null && _ref !== void 0 ? _ref : def;
+    }
+  }
+  function getGuide(fieldDef) {
+    if (isPositionFieldOrDatumDef(fieldDef) && fieldDef.axis) {
+      return fieldDef.axis;
+    } else if (isMarkPropFieldOrDatumDef(fieldDef) && fieldDef.legend) {
+      return fieldDef.legend;
+    } else if (isFacetFieldDef(fieldDef) && fieldDef.header) {
+      return fieldDef.header;
+    }
+
+    return undefined;
+  }
+  function defaultTitle(fieldDef, config) {
+    return titleFormatter(fieldDef, config);
+  }
+  function getFormatMixins(fieldDef) {
+    if (isStringFieldOrDatumDef(fieldDef)) {
+      const {
+        format,
+        formatType
+      } = fieldDef;
+      return {
+        format,
+        formatType
+      };
+    } else {
+      var _getGuide2;
+
+      const guide = (_getGuide2 = getGuide(fieldDef)) !== null && _getGuide2 !== void 0 ? _getGuide2 : {};
+      const {
+        format,
+        formatType
+      } = guide;
+      return {
+        format,
+        formatType
+      };
+    }
+  }
+  function defaultType(fieldDef, channel) {
+    var _fieldDef$scale;
+
+    switch (channel) {
+      case 'latitude':
+      case 'longitude':
+        return 'quantitative';
+
+      case 'row':
+      case 'column':
+      case 'facet':
+      case 'shape':
+      case 'strokeDash':
+        return 'nominal';
+
+      case 'order':
+        return 'ordinal';
+    }
+
+    if (isSortableFieldDef(fieldDef) && isArray(fieldDef.sort)) {
+      return 'ordinal';
+    }
+
+    const {
+      aggregate,
+      bin,
+      timeUnit
+    } = fieldDef;
+
+    if (timeUnit) {
+      return 'temporal';
+    }
+
+    if (bin || aggregate && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
+      return 'quantitative';
+    }
+
+    if (isScaleFieldDef(fieldDef) && (_fieldDef$scale = fieldDef.scale) !== null && _fieldDef$scale !== void 0 && _fieldDef$scale.type) {
+      switch (SCALE_CATEGORY_INDEX[fieldDef.scale.type]) {
+        case 'numeric':
+        case 'discretizing':
+          return 'quantitative';
+
+        case 'time':
+          return 'temporal';
+      }
+    }
+
+    return 'nominal';
+  }
+  /**
+   * Returns the fieldDef -- either from the outer channelDef or from the condition of channelDef.
+   * @param channelDef
+   */
+
+  function getFieldDef(channelDef) {
+    if (isFieldDef(channelDef)) {
+      return channelDef;
+    } else if (hasConditionalFieldDef(channelDef)) {
+      return channelDef.condition;
+    }
+
+    return undefined;
+  }
+  function getFieldOrDatumDef(channelDef) {
+    if (isFieldOrDatumDef(channelDef)) {
+      return channelDef;
+    } else if (hasConditionalFieldOrDatumDef(channelDef)) {
+      return channelDef.condition;
+    }
+
+    return undefined;
+  }
+  /**
+   * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
+   */
+
+  function initChannelDef(channelDef, channel, config, opt = {}) {
+    if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
+      const primitiveType = isString(channelDef) ? 'string' : isNumber(channelDef) ? 'number' : 'boolean';
+      warn$2(primitiveChannelDef(channel, primitiveType, channelDef));
+      return {
+        value: channelDef
+      };
+    } // If a fieldDef contains a field, we need type.
+
+
+    if (isFieldOrDatumDef(channelDef)) {
+      return initFieldOrDatumDef(channelDef, channel, config, opt);
+    } else if (hasConditionalFieldOrDatumDef(channelDef)) {
+      return { ...channelDef,
+        // Need to cast as normalizeFieldDef normally return FieldDef, but here we know that it is definitely Condition<FieldDef>
+        condition: initFieldOrDatumDef(channelDef.condition, channel, config, opt)
+      };
+    }
+
+    return channelDef;
+  }
+  function initFieldOrDatumDef(fd, channel, config, opt) {
+    if (isStringFieldOrDatumDef(fd)) {
+      const {
+        format,
+        formatType,
+        ...rest
+      } = fd;
+
+      if (isCustomFormatType(formatType) && !config.customFormatTypes) {
+        warn$2(customFormatTypeNotAllowed(channel));
+        return initFieldOrDatumDef(rest, channel, config, opt);
+      }
+    } else {
+      const guideType = isPositionFieldOrDatumDef(fd) ? 'axis' : isMarkPropFieldOrDatumDef(fd) ? 'legend' : isFacetFieldDef(fd) ? 'header' : null;
+
+      if (guideType && fd[guideType]) {
+        const {
+          format,
+          formatType,
+          ...newGuide
+        } = fd[guideType];
+
+        if (isCustomFormatType(formatType) && !config.customFormatTypes) {
+          warn$2(customFormatTypeNotAllowed(channel));
+          return initFieldOrDatumDef({ ...fd,
+            [guideType]: newGuide
+          }, channel, config, opt);
+        }
+      }
+    }
+
+    if (isFieldDef(fd)) {
+      return initFieldDef(fd, channel, opt);
+    }
+
+    return initDatumDef(fd);
+  }
+
+  function initDatumDef(datumDef) {
+    let type = datumDef['type'];
+
+    if (type) {
+      return datumDef;
+    }
+
+    const {
+      datum
+    } = datumDef;
+    type = isNumber(datum) ? 'quantitative' : isString(datum) ? 'nominal' : isDateTime(datum) ? 'temporal' : undefined;
+    return { ...datumDef,
+      type
+    };
+  }
+
+  function initFieldDef(fd, channel, {
+    compositeMark = false
+  } = {}) {
+    const {
+      aggregate,
+      timeUnit,
+      bin,
+      field
+    } = fd;
+    const fieldDef = { ...fd
+    }; // Drop invalid aggregate
+
+    if (!compositeMark && aggregate && !isAggregateOp(aggregate) && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
+      warn$2(invalidAggregate(aggregate));
+      delete fieldDef.aggregate;
+    } // Normalize Time Unit
+
+
+    if (timeUnit) {
+      fieldDef.timeUnit = normalizeTimeUnit(timeUnit);
+    }
+
+    if (field) {
+      fieldDef.field = "".concat(field);
+    } // Normalize bin
+
+
+    if (isBinning(bin)) {
+      fieldDef.bin = normalizeBin(bin, channel);
+    }
+
+    if (isBinned(bin) && !isXorY(channel)) {
+      warn$2(channelShouldNotBeUsedForBinned(channel));
+    } // Normalize Type
+
+
+    if (isTypedFieldDef(fieldDef)) {
+      const {
+        type
+      } = fieldDef;
+      const fullType = getFullName(type);
+
+      if (type !== fullType) {
+        // convert short type to full type
+        fieldDef.type = fullType;
+      }
+
+      if (type !== 'quantitative') {
+        if (isCountingAggregateOp(aggregate)) {
+          warn$2(invalidFieldTypeForCountAggregate(type, aggregate));
+          fieldDef.type = 'quantitative';
+        }
+      }
+    } else if (!isSecondaryRangeChannel(channel)) {
+      // If type is empty / invalid, then augment with default type
+      const newType = defaultType(fieldDef, channel);
+      fieldDef['type'] = newType;
+    }
+
+    if (isTypedFieldDef(fieldDef)) {
+      const {
+        compatible,
+        warning
+      } = channelCompatibility(fieldDef, channel) || {};
+
+      if (compatible === false) {
+        warn$2(warning);
+      }
+    }
+
+    if (isSortableFieldDef(fieldDef) && isString(fieldDef.sort)) {
+      const {
+        sort
+      } = fieldDef;
+
+      if (isSortByChannel(sort)) {
+        return { ...fieldDef,
+          sort: {
+            encoding: sort
+          }
+        };
+      }
+
+      const sub = sort.substr(1);
+
+      if (sort.charAt(0) === '-' && isSortByChannel(sub)) {
+        return { ...fieldDef,
+          sort: {
+            encoding: sub,
+            order: 'descending'
+          }
+        };
+      }
+    }
+
+    if (isFacetFieldDef(fieldDef)) {
+      const {
+        header
+      } = fieldDef;
+
+      if (header) {
+        const {
+          orient,
+          ...rest
+        } = header;
+
+        if (orient) {
+          return { ...fieldDef,
+            header: { ...rest,
+              labelOrient: header.labelOrient || orient,
+              titleOrient: header.titleOrient || orient
+            }
+          };
+        }
+      }
+    }
+
+    return fieldDef;
+  }
+  function normalizeBin(bin, channel) {
+    if (isBoolean(bin)) {
+      return {
+        maxbins: autoMaxBins(channel)
+      };
+    } else if (bin === 'binned') {
+      return {
+        binned: true
+      };
+    } else if (!bin.maxbins && !bin.step) {
+      return { ...bin,
+        maxbins: autoMaxBins(channel)
+      };
+    } else {
+      return bin;
+    }
+  }
+  const COMPATIBLE = {
+    compatible: true
+  };
+  function channelCompatibility(fieldDef, channel) {
+    const type = fieldDef.type;
+
+    if (type === 'geojson' && channel !== 'shape') {
+      return {
+        compatible: false,
+        warning: "Channel ".concat(channel, " should not be used with a geojson data.")
+      };
+    }
+
+    switch (channel) {
+      case ROW:
+      case COLUMN:
+      case FACET:
+        if (!isDiscrete$1(fieldDef)) {
+          return {
+            compatible: false,
+            warning: channelShouldBeDiscrete(channel)
+          };
+        }
+
+        return COMPATIBLE;
+
+      case X$1:
+      case Y$1:
+      case COLOR:
+      case FILL:
+      case STROKE:
+      case TEXT:
+      case DETAIL:
+      case KEY:
+      case TOOLTIP:
+      case HREF:
+      case URL:
+      case ANGLE:
+      case THETA:
+      case RADIUS:
+      case DESCRIPTION:
+        return COMPATIBLE;
+
+      case LONGITUDE:
+      case LONGITUDE2:
+      case LATITUDE:
+      case LATITUDE2:
+        if (type !== QUANTITATIVE) {
+          return {
+            compatible: false,
+            warning: "Channel ".concat(channel, " should be used with a quantitative field only, not ").concat(fieldDef.type, " field.")
+          };
+        }
+
+        return COMPATIBLE;
+
+      case OPACITY:
+      case FILLOPACITY:
+      case STROKEOPACITY:
+      case STROKEWIDTH:
+      case SIZE$1:
+      case THETA2:
+      case RADIUS2:
+      case X2$2:
+      case Y2$2:
+        if (type === 'nominal' && !fieldDef['sort']) {
+          return {
+            compatible: false,
+            warning: "Channel ".concat(channel, " should not be used with an unsorted discrete field.")
+          };
+        }
+
+        return COMPATIBLE;
+
+      case SHAPE:
+      case STROKEDASH:
+        if (!isDiscrete$1(fieldDef) && !isDiscretizing$1(fieldDef)) {
+          return {
+            compatible: false,
+            warning: channelShouldBeDiscreteOrDiscretizing(channel)
+          };
+        }
+
+        return COMPATIBLE;
+
+      case ORDER:
+        if (fieldDef.type === 'nominal' && !('sort' in fieldDef)) {
+          return {
+            compatible: false,
+            warning: "Channel order is inappropriate for nominal field, which has no inherent order."
+          };
+        }
+
+        return COMPATIBLE;
+    }
+  }
+  /**
+   * Check if the field def uses a time format or does not use any format but is temporal
+   * (this does not cover field defs that are temporal but use a number format).
+   */
+
+  function isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) {
+    const {
+      formatType
+    } = getFormatMixins(fieldOrDatumDef);
+    return formatType === 'time' || !formatType && isTimeFieldDef(fieldOrDatumDef);
+  }
+  /**
+   * Check if field def has type `temporal`. If you want to also cover field defs that use a time format, use `isTimeFormatFieldDef`.
+   */
+
+  function isTimeFieldDef(def) {
+    return def && (def['type'] === 'temporal' || isFieldDef(def) && !!def.timeUnit);
+  }
+  /**
+   * Getting a value associated with a fielddef.
+   * Convert the value to Vega expression if applicable (for datetime object, or string if the field def is temporal or has timeUnit)
+   */
+
+  function valueExpr(v, {
+    timeUnit,
+    type,
+    wrapTime,
+    undefinedIfExprNotRequired
+  }) {
+    var _normalizeTimeUnit2;
+
+    const unit = timeUnit && ((_normalizeTimeUnit2 = normalizeTimeUnit(timeUnit)) === null || _normalizeTimeUnit2 === void 0 ? void 0 : _normalizeTimeUnit2.unit);
+    let isTime = unit || type === 'temporal';
+    let expr;
+
+    if (isExprRef(v)) {
+      expr = v.expr;
+    } else if (isSignalRef(v)) {
+      expr = v.signal;
+    } else if (isDateTime(v)) {
+      isTime = true;
+      expr = dateTimeToExpr(v);
+    } else if (isString(v) || isNumber(v)) {
+      if (isTime) {
+        expr = "datetime(".concat(stringify$1(v), ")");
+
+        if (isLocalSingleTimeUnit(unit)) {
+          // for single timeUnit, we will use dateTimeToExpr to convert number/string to match the timeUnit
+          if (isNumber(v) && v < 10000 || isString(v) && isNaN(Date.parse(v))) {
+            expr = dateTimeToExpr({
+              [unit]: v
+            });
+          }
+        }
+      }
+    }
+
+    if (expr) {
+      return wrapTime && isTime ? "time(".concat(expr, ")") : expr;
+    } // number or boolean or normal string
+
+
+    return undefinedIfExprNotRequired ? undefined : stringify$1(v);
+  }
+  /**
+   * Standardize value array -- convert each value to Vega expression if applicable
+   */
+
+  function valueArray(fieldOrDatumDef, values) {
+    const {
+      type
+    } = fieldOrDatumDef;
+    return values.map(v => {
+      const expr = valueExpr(v, {
+        timeUnit: isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.timeUnit : undefined,
+        type,
+        undefinedIfExprNotRequired: true
+      }); // return signal for the expression if we need an expression
+
+      if (expr !== undefined) {
+        return {
+          signal: expr
+        };
+      } // otherwise just return the original value
+
+
+      return v;
+    });
+  }
+  /**
+   * Checks whether a fieldDef for a particular channel requires a computed bin range.
+   */
+
+  function binRequiresRange(fieldDef, channel) {
+    if (!isBinning(fieldDef.bin)) {
+      console.warn('Only call this method for binned field defs.');
+      return false;
+    } // We need the range only when the user explicitly forces a binned field to be use discrete scale. In this case, bin range is used in axis and legend labels.
+    // We could check whether the axis or legend exists (not disabled) but that seems overkill.
+
+
+    return isScaleChannel(channel) && ['ordinal', 'nominal'].includes(fieldDef.type);
+  }
+
+  const CONDITIONAL_AXIS_PROP_INDEX = {
+    labelAlign: {
+      part: 'labels',
+      vgProp: 'align'
+    },
+    labelBaseline: {
+      part: 'labels',
+      vgProp: 'baseline'
+    },
+    labelColor: {
+      part: 'labels',
+      vgProp: 'fill'
+    },
+    labelFont: {
+      part: 'labels',
+      vgProp: 'font'
+    },
+    labelFontSize: {
+      part: 'labels',
+      vgProp: 'fontSize'
+    },
+    labelFontStyle: {
+      part: 'labels',
+      vgProp: 'fontStyle'
+    },
+    labelFontWeight: {
+      part: 'labels',
+      vgProp: 'fontWeight'
+    },
+    labelOpacity: {
+      part: 'labels',
+      vgProp: 'opacity'
+    },
+    labelOffset: null,
+    labelPadding: null,
+    // There is no fixed vgProp for tickSize, need to use signal.
+    gridColor: {
+      part: 'grid',
+      vgProp: 'stroke'
+    },
+    gridDash: {
+      part: 'grid',
+      vgProp: 'strokeDash'
+    },
+    gridDashOffset: {
+      part: 'grid',
+      vgProp: 'strokeDashOffset'
+    },
+    gridOpacity: {
+      part: 'grid',
+      vgProp: 'opacity'
+    },
+    gridWidth: {
+      part: 'grid',
+      vgProp: 'strokeWidth'
+    },
+    tickColor: {
+      part: 'ticks',
+      vgProp: 'stroke'
+    },
+    tickDash: {
+      part: 'ticks',
+      vgProp: 'strokeDash'
+    },
+    tickDashOffset: {
+      part: 'ticks',
+      vgProp: 'strokeDashOffset'
+    },
+    tickOpacity: {
+      part: 'ticks',
+      vgProp: 'opacity'
+    },
+    tickSize: null,
+    // There is no fixed vgProp for tickSize, need to use signal.
+    tickWidth: {
+      part: 'ticks',
+      vgProp: 'strokeWidth'
+    }
+  };
+  function isConditionalAxisValue(v) {
+    return v && v['condition'];
+  }
+  const AXIS_PARTS = ['domain', 'grid', 'labels', 'ticks', 'title'];
+  /**
+   * A dictionary listing whether a certain axis property is applicable for only main axes or only grid axes.
+   */
+
+  const AXIS_PROPERTY_TYPE = {
+    grid: 'grid',
+    gridCap: 'grid',
+    gridColor: 'grid',
+    gridDash: 'grid',
+    gridDashOffset: 'grid',
+    gridOpacity: 'grid',
+    gridScale: 'grid',
+    gridWidth: 'grid',
+    orient: 'main',
+    bandPosition: 'both',
+    // Need to be applied to grid axis too, so the grid will align with ticks.
+    aria: 'main',
+    description: 'main',
+    domain: 'main',
+    domainCap: 'main',
+    domainColor: 'main',
+    domainDash: 'main',
+    domainDashOffset: 'main',
+    domainOpacity: 'main',
+    domainWidth: 'main',
+    format: 'main',
+    formatType: 'main',
+    labelAlign: 'main',
+    labelAngle: 'main',
+    labelBaseline: 'main',
+    labelBound: 'main',
+    labelColor: 'main',
+    labelFlush: 'main',
+    labelFlushOffset: 'main',
+    labelFont: 'main',
+    labelFontSize: 'main',
+    labelFontStyle: 'main',
+    labelFontWeight: 'main',
+    labelLimit: 'main',
+    labelLineHeight: 'main',
+    labelOffset: 'main',
+    labelOpacity: 'main',
+    labelOverlap: 'main',
+    labelPadding: 'main',
+    labels: 'main',
+    labelSeparation: 'main',
+    maxExtent: 'main',
+    minExtent: 'main',
+    offset: 'both',
+    position: 'main',
+    tickCap: 'main',
+    tickColor: 'main',
+    tickDash: 'main',
+    tickDashOffset: 'main',
+    tickMinStep: 'both',
+    tickOffset: 'both',
+    // Need to be applied to grid axis too, so the grid will align with ticks.
+    tickOpacity: 'main',
+    tickRound: 'both',
+    // Apply rounding to grid and ticks so they are aligned.
+    ticks: 'main',
+    tickSize: 'main',
+    tickWidth: 'both',
+    title: 'main',
+    titleAlign: 'main',
+    titleAnchor: 'main',
+    titleAngle: 'main',
+    titleBaseline: 'main',
+    titleColor: 'main',
+    titleFont: 'main',
+    titleFontSize: 'main',
+    titleFontStyle: 'main',
+    titleFontWeight: 'main',
+    titleLimit: 'main',
+    titleLineHeight: 'main',
+    titleOpacity: 'main',
+    titlePadding: 'main',
+    titleX: 'main',
+    titleY: 'main',
+    encode: 'both',
+    // we hide this in Vega-Lite
+    scale: 'both',
+    tickBand: 'both',
+    tickCount: 'both',
+    tickExtra: 'both',
+    translate: 'both',
+    values: 'both',
+    zindex: 'both' // this is actually set afterward, so it doesn't matter
+
+  };
+  const COMMON_AXIS_PROPERTIES_INDEX = {
+    orient: 1,
+    // other things can depend on orient
+    aria: 1,
+    bandPosition: 1,
+    description: 1,
+    domain: 1,
+    domainCap: 1,
+    domainColor: 1,
+    domainDash: 1,
+    domainDashOffset: 1,
+    domainOpacity: 1,
+    domainWidth: 1,
+    format: 1,
+    formatType: 1,
+    grid: 1,
+    gridCap: 1,
+    gridColor: 1,
+    gridDash: 1,
+    gridDashOffset: 1,
+    gridOpacity: 1,
+    gridWidth: 1,
+    labelAlign: 1,
+    labelAngle: 1,
+    labelBaseline: 1,
+    labelBound: 1,
+    labelColor: 1,
+    labelFlush: 1,
+    labelFlushOffset: 1,
+    labelFont: 1,
+    labelFontSize: 1,
+    labelFontStyle: 1,
+    labelFontWeight: 1,
+    labelLimit: 1,
+    labelLineHeight: 1,
+    labelOffset: 1,
+    labelOpacity: 1,
+    labelOverlap: 1,
+    labelPadding: 1,
+    labels: 1,
+    labelSeparation: 1,
+    maxExtent: 1,
+    minExtent: 1,
+    offset: 1,
+    position: 1,
+    tickBand: 1,
+    tickCap: 1,
+    tickColor: 1,
+    tickCount: 1,
+    tickDash: 1,
+    tickDashOffset: 1,
+    tickExtra: 1,
+    tickMinStep: 1,
+    tickOffset: 1,
+    tickOpacity: 1,
+    tickRound: 1,
+    ticks: 1,
+    tickSize: 1,
+    tickWidth: 1,
+    title: 1,
+    titleAlign: 1,
+    titleAnchor: 1,
+    titleAngle: 1,
+    titleBaseline: 1,
+    titleColor: 1,
+    titleFont: 1,
+    titleFontSize: 1,
+    titleFontStyle: 1,
+    titleFontWeight: 1,
+    titleLimit: 1,
+    titleLineHeight: 1,
+    titleOpacity: 1,
+    titlePadding: 1,
+    titleX: 1,
+    titleY: 1,
+    translate: 1,
+    values: 1,
+    zindex: 1
+  };
+  const AXIS_PROPERTIES_INDEX = { ...COMMON_AXIS_PROPERTIES_INDEX,
+    style: 1,
+    labelExpr: 1,
+    encoding: 1
+  };
+  function isAxisProperty(prop) {
+    return !!AXIS_PROPERTIES_INDEX[prop];
+  } // Export for dependent projects
+  const AXIS_CONFIGS_INDEX = {
+    axis: 1,
+    axisBand: 1,
+    axisBottom: 1,
+    axisDiscrete: 1,
+    axisLeft: 1,
+    axisPoint: 1,
+    axisQuantitative: 1,
+    axisRight: 1,
+    axisTemporal: 1,
+    axisTop: 1,
+    axisX: 1,
+    axisXBand: 1,
+    axisXDiscrete: 1,
+    axisXPoint: 1,
+    axisXQuantitative: 1,
+    axisXTemporal: 1,
+    axisY: 1,
+    axisYBand: 1,
+    axisYDiscrete: 1,
+    axisYPoint: 1,
+    axisYQuantitative: 1,
+    axisYTemporal: 1
+  };
+  const AXIS_CONFIGS = keys$2(AXIS_CONFIGS_INDEX);
+
   /**
    * Base interface for a unit (single-view) specification.
    */
@@ -54311,9 +55284,9 @@
 
               if (isXorY(channel)) {
                 const secondaryChannel = {
-                  field: newField + '_end'
+                  field: "".concat(newField, "_end")
                 };
-                encoding[channel + '2'] = secondaryChannel;
+                encoding["".concat(channel, "2")] = secondaryChannel;
               }
 
               newFieldDef.bin = 'binned';
@@ -54389,20 +55362,20 @@
     return keys$2(encoding).reduce((normalizedEncoding, channel) => {
       if (!isChannel(channel)) {
         // Drop invalid channel
-        warn$1(invalidEncodingChannel(channel));
+        warn$2(invalidEncodingChannel(channel));
         return normalizedEncoding;
       }
 
       const channelDef = encoding[channel];
 
       if (channel === 'angle' && mark === 'arc' && !encoding.theta) {
-        warn$1(REPLACE_ANGLE_WITH_THETA);
+        warn$2(REPLACE_ANGLE_WITH_THETA);
         channel = THETA;
       }
 
       if (!markChannelCompatible(encoding, channel, mark)) {
         // Drop unsupported channel
-        warn$1(incompatibleChannel(channel, mark));
+        warn$2(incompatibleChannel(channel, mark));
         return normalizedEncoding;
       } // Drop line's size if the field is aggregated.
 
@@ -54410,15 +55383,15 @@
       if (channel === SIZE$1 && mark === 'line') {
         const fieldDef = getFieldDef(encoding[channel]);
 
-        if (fieldDef === null || fieldDef === void 0 ? void 0 : fieldDef.aggregate) {
-          warn$1(LINE_WITH_VARYING_SIZE);
+        if (fieldDef !== null && fieldDef !== void 0 && fieldDef.aggregate) {
+          warn$2(LINE_WITH_VARYING_SIZE);
           return normalizedEncoding;
         }
       } // Drop color if either fill or stroke is specified
 
 
       if (channel === COLOR && (filled ? 'fill' in encoding : 'stroke' in encoding)) {
-        warn$1(droppingColor('encoding', {
+        warn$2(droppingColor('encoding', {
           fill: 'fill' in encoding,
           stroke: 'stroke' in encoding
         }));
@@ -54430,7 +55403,7 @@
           // Array of fieldDefs for detail channel (or production rule)
           normalizedEncoding[channel] = array$1(channelDef).reduce((defs, fieldDef) => {
             if (!isFieldDef(fieldDef)) {
-              warn$1(emptyFieldDef(fieldDef, channel));
+              warn$2(emptyFieldDef(fieldDef, channel));
             } else {
               defs.push(initFieldDef(fieldDef, channel));
             }
@@ -54443,7 +55416,7 @@
           // Preserve null so we can use it to disable tooltip
           normalizedEncoding[channel] = null;
         } else if (!isFieldDef(channelDef) && !isDatumDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef) && !isSignalRef(channelDef)) {
-          warn$1(emptyFieldDef(channelDef, channel));
+          warn$2(emptyFieldDef(channelDef, channel));
           return normalizedEncoding;
         }
 
@@ -54681,7 +55654,7 @@
         field: fieldPrefix + continuousAxisChannelDef.field,
         type: continuousAxisChannelDef.type,
         title: isSignalRef(titlePrefix) ? {
-          signal: titlePrefix + "\"".concat(escape(mainTitle), "\"")
+          signal: "".concat(titlePrefix, "\"").concat(escape(mainTitle), "\"")
         } : titlePrefix + mainTitle
       };
     });
@@ -54716,7 +55689,7 @@
         // TODO better remove this method and just have mark as a parameter of the method
         encoding: {
           [continuousAxis]: {
-            field: positionPrefix + '_' + continuousAxisChannelDef.field,
+            field: "".concat(positionPrefix, "_").concat(continuousAxisChannelDef.field),
             type: continuousAxisChannelDef.type,
             ...(title !== undefined ? {
               title
@@ -54729,8 +55702,8 @@
             } : {})
           },
           ...(isString(endPositionPrefix) ? {
-            [continuousAxis + '2']: {
-              field: endPositionPrefix + '_' + continuousAxisChannelDef.field
+            ["".concat(continuousAxis, "2")]: {
+              field: "".concat(endPositionPrefix, "_").concat(continuousAxisChannelDef.field)
             }
           } : {}),
           ...sharedEncoding,
@@ -54777,9 +55750,9 @@
     const continuousAxis = orient === 'vertical' ? 'y' : 'x';
     const continuousAxisChannelDef = encoding[continuousAxis]; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
 
-    const continuousAxisChannelDef2 = encoding[continuousAxis + '2'];
-    const continuousAxisChannelDefError = encoding[continuousAxis + 'Error'];
-    const continuousAxisChannelDefError2 = encoding[continuousAxis + 'Error2'];
+    const continuousAxisChannelDef2 = encoding["".concat(continuousAxis, "2")];
+    const continuousAxisChannelDefError = encoding["".concat(continuousAxis, "Error")];
+    const continuousAxisChannelDefError2 = encoding["".concat(continuousAxis, "Error2")];
     return {
       continuousAxisChannelDef: filterAggregateFromChannelDef(continuousAxisChannelDef, compositeMark),
       continuousAxisChannelDef2: filterAggregateFromChannelDef(continuousAxisChannelDef2, compositeMark),
@@ -54797,7 +55770,7 @@
       } = continuousAxisChannelDef;
 
       if (aggregate !== compositeMark) {
-        warn$1(errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark));
+        warn$2(errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark));
       }
 
       return continuousAxisWithoutAggregate;
@@ -54877,7 +55850,7 @@
     const {
       mark,
       encoding: _encoding,
-      selection,
+      params,
       projection: _p,
       ...outerSpec
     } = spec;
@@ -54885,8 +55858,8 @@
       type: mark
     }; // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
 
-    if (selection) {
-      warn$1(selectionNotSupported('boxplot'));
+    if (params) {
+      warn$2(selectionNotSupported('boxplot'));
     }
 
     const extent = (_markDef$extent = markDef.extent) !== null && _markDef$extent !== void 0 ? _markDef$extent : config.boxplot.extent;
@@ -55049,20 +56022,20 @@
         aggregate: [{
           op: 'min',
           field: continuousAxisChannelDef.field,
-          as: 'lower_whisker_' + continuousAxisChannelDef.field
+          as: "lower_whisker_".concat(continuousAxisChannelDef.field)
         }, {
           op: 'max',
           field: continuousAxisChannelDef.field,
-          as: 'upper_whisker_' + continuousAxisChannelDef.field
+          as: "upper_whisker_".concat(continuousAxisChannelDef.field)
         }, // preserve lower_box / upper_box
         {
           op: 'min',
-          field: 'lower_box_' + continuousAxisChannelDef.field,
-          as: 'lower_box_' + continuousAxisChannelDef.field
+          field: "lower_box_".concat(continuousAxisChannelDef.field),
+          as: "lower_box_".concat(continuousAxisChannelDef.field)
         }, {
           op: 'max',
-          field: 'upper_box_' + continuousAxisChannelDef.field,
-          as: 'upper_box_' + continuousAxisChannelDef.field
+          field: "upper_box_".concat(continuousAxisChannelDef.field),
+          as: "upper_box_".concat(continuousAxisChannelDef.field)
         }, ...aggregate],
         groupby
       }],
@@ -55133,11 +56106,11 @@
     return [{
       op: 'q1',
       field: continousAxisField,
-      as: 'lower_box_' + continousAxisField
+      as: "lower_box_".concat(continousAxisField)
     }, {
       op: 'q3',
       field: continousAxisField,
-      as: 'upper_box_' + continousAxisField
+      as: "upper_box_".concat(continousAxisField)
     }];
   }
 
@@ -55152,7 +56125,7 @@
     const boxplotSpecificAggregate = [...boxParamsQuartiles(continuousFieldName), {
       op: 'median',
       field: continuousFieldName,
-      as: 'mid_box_' + continuousFieldName
+      as: "mid_box_".concat(continuousFieldName)
     }, {
       op: 'min',
       field: continuousFieldName,
@@ -55165,13 +56138,13 @@
     const postAggregateCalculates = boxPlotType === 'min-max' || boxPlotType === 'tukey' ? [] : [// This is for the  original k-IQR, which we do not expose
     {
       calculate: "datum[\"upper_box_".concat(continuousFieldName, "\"] - datum[\"lower_box_").concat(continuousFieldName, "\"]"),
-      as: 'iqr_' + continuousFieldName
+      as: "iqr_".concat(continuousFieldName)
     }, {
       calculate: "min(datum[\"upper_box_".concat(continuousFieldName, "\"] + datum[\"iqr_").concat(continuousFieldName, "\"] * ").concat(extent, ", datum[\"max_").concat(continuousFieldName, "\"])"),
-      as: 'upper_whisker_' + continuousFieldName
+      as: "upper_whisker_".concat(continuousFieldName)
     }, {
       calculate: "max(datum[\"lower_box_".concat(continuousFieldName, "\"] - datum[\"iqr_").concat(continuousFieldName, "\"] * ").concat(extent, ", datum[\"min_").concat(continuousFieldName, "\"])"),
-      as: 'lower_whisker_' + continuousFieldName
+      as: "lower_whisker_".concat(continuousFieldName)
     }];
     const {
       [continuousAxis]: oldContinuousAxisChannelDef,
@@ -55398,7 +56371,7 @@
     const {
       mark,
       encoding,
-      selection,
+      params,
       projection: _p,
       ...outerSpec
     } = spec;
@@ -55406,8 +56379,8 @@
       type: mark
     }; // TODO(https://github.com/vega/vega-lite/issues/3702): add selection support
 
-    if (selection) {
-      warn$1(selectionNotSupported(compositeMark));
+    if (params) {
+      warn$2(selectionNotSupported(compositeMark));
     }
 
     const {
@@ -55472,25 +56445,25 @@
       const extent = markDef.extent ? markDef.extent : center === 'mean' ? 'stderr' : 'iqr';
 
       if (center === 'median' !== (extent === 'iqr')) {
-        warn$1(errorBarCenterIsUsedWithWrongExtent(center, extent, compositeMark));
+        warn$2(errorBarCenterIsUsedWithWrongExtent(center, extent, compositeMark));
       }
 
       if (extent === 'stderr' || extent === 'stdev') {
         errorBarSpecificAggregate = [{
           op: extent,
           field: continuousFieldName,
-          as: 'extent_' + continuousFieldName
+          as: "extent_".concat(continuousFieldName)
         }, {
           op: center,
           field: continuousFieldName,
-          as: 'center_' + continuousFieldName
+          as: "center_".concat(continuousFieldName)
         }];
         postAggregateCalculates = [{
           calculate: "datum[\"center_".concat(continuousFieldName, "\"] + datum[\"extent_").concat(continuousFieldName, "\"]"),
-          as: 'upper_' + continuousFieldName
+          as: "upper_".concat(continuousFieldName)
         }, {
           calculate: "datum[\"center_".concat(continuousFieldName, "\"] - datum[\"extent_").concat(continuousFieldName, "\"]"),
-          as: 'lower_' + continuousFieldName
+          as: "lower_".concat(continuousFieldName)
         }];
         tooltipSummary = [{
           fieldPrefix: 'center_',
@@ -55521,15 +56494,15 @@
         errorBarSpecificAggregate = [{
           op: lowerExtentOp,
           field: continuousFieldName,
-          as: 'lower_' + continuousFieldName
+          as: "lower_".concat(continuousFieldName)
         }, {
           op: upperExtentOp,
           field: continuousFieldName,
-          as: 'upper_' + continuousFieldName
+          as: "upper_".concat(continuousFieldName)
         }, {
           op: centerOp,
           field: continuousFieldName,
-          as: 'center_' + continuousFieldName
+          as: "center_".concat(continuousFieldName)
         }];
         tooltipSummary = [{
           fieldPrefix: 'upper_',
@@ -55562,17 +56535,17 @@
       }
     } else {
       if (markDef.center || markDef.extent) {
-        warn$1(errorBarCenterAndExtentAreNotNeeded(markDef.center, markDef.extent));
+        warn$2(errorBarCenterAndExtentAreNotNeeded(markDef.center, markDef.extent));
       }
 
       if (inputType === 'aggregated-upper-lower') {
         tooltipSummary = [];
         postAggregateCalculates = [{
           calculate: "datum[\"".concat(continuousAxisChannelDef2.field, "\"]"),
-          as: 'upper_' + continuousFieldName
+          as: "upper_".concat(continuousFieldName)
         }, {
           calculate: "datum[\"".concat(continuousFieldName, "\"]"),
-          as: 'lower_' + continuousFieldName
+          as: "lower_".concat(continuousFieldName)
         }];
       } else if (inputType === 'aggregated-error') {
         tooltipSummary = [{
@@ -55581,18 +56554,18 @@
         }];
         postAggregateCalculates = [{
           calculate: "datum[\"".concat(continuousFieldName, "\"] + datum[\"").concat(continuousAxisChannelDefError.field, "\"]"),
-          as: 'upper_' + continuousFieldName
+          as: "upper_".concat(continuousFieldName)
         }];
 
         if (continuousAxisChannelDefError2) {
           postAggregateCalculates.push({
             calculate: "datum[\"".concat(continuousFieldName, "\"] + datum[\"").concat(continuousAxisChannelDefError2.field, "\"]"),
-            as: 'lower_' + continuousFieldName
+            as: "lower_".concat(continuousFieldName)
           });
         } else {
           postAggregateCalculates.push({
             calculate: "datum[\"".concat(continuousFieldName, "\"] - datum[\"").concat(continuousAxisChannelDefError.field, "\"]"),
-            as: 'lower_' + continuousFieldName
+            as: "lower_".concat(continuousFieldName)
           });
         }
       }
@@ -55614,7 +56587,7 @@
   }
 
   function getTitlePrefix(center, extent, operation) {
-    return titleCase(center) + ' ' + operation + ' ' + extent;
+    return "".concat(titleCase(center), " ").concat(operation, " ").concat(extent);
   }
 
   const ERRORBAND = 'errorband';
@@ -55663,9 +56636,9 @@
         aria: false
       };
     } else if (errorBandDef.interpolate) {
-      warn$1(errorBand1DNotSupport('interpolate'));
+      warn$2(errorBand1DNotSupport('interpolate'));
     } else if (errorBandDef.tension) {
-      warn$1(errorBand1DNotSupport('tension'));
+      warn$2(errorBand1DNotSupport('tension'));
     }
 
     return { ...outerSpec,
@@ -55827,10 +56800,46 @@
     zindex: 1
   };
 
+  const SELECTION_ID$1 = '_vgsid_';
+  const defaultConfig = {
+    point: {
+      on: 'click',
+      fields: [SELECTION_ID$1],
+      toggle: 'event.shiftKey',
+      resolve: 'global',
+      clear: 'dblclick'
+    },
+    interval: {
+      on: '[mousedown, window:mouseup] > window:mousemove!',
+      encodings: ['x', 'y'],
+      translate: '[mousedown, window:mouseup] > window:mousemove!',
+      zoom: 'wheel!',
+      mark: {
+        fill: '#333',
+        fillOpacity: 0.125,
+        stroke: 'white'
+      },
+      resolve: 'global',
+      clear: 'dblclick'
+    }
+  };
+  function isLegendBinding(bind) {
+    return !!bind && (bind === 'legend' || !!bind.legend);
+  }
+  function isLegendStreamBinding(bind) {
+    return isLegendBinding(bind) && isObject(bind);
+  }
+  function isSelectionParameter(param) {
+    return !!param['select'];
+  }
+
   function assembleParameterSignals(params) {
     const signals = [];
 
     for (const param of params || []) {
+      // Selection parameters are handled separately via assembleSelectionTopLevelSignals
+      // and assembleSignals methods registered on the Model.
+      if (isSelectionParameter(param)) continue;
       const {
         expr,
         bind,
@@ -55858,44 +56867,6 @@
     }
 
     return signals;
-  }
-
-  const SELECTION_ID = '_vgsid_';
-  const defaultConfig = {
-    single: {
-      on: 'click',
-      fields: [SELECTION_ID],
-      resolve: 'global',
-      empty: 'all',
-      clear: 'dblclick'
-    },
-    multi: {
-      on: 'click',
-      fields: [SELECTION_ID],
-      toggle: 'event.shiftKey',
-      resolve: 'global',
-      empty: 'all',
-      clear: 'dblclick'
-    },
-    interval: {
-      on: '[mousedown, window:mouseup] > window:mousemove!',
-      encodings: ['x', 'y'],
-      translate: '[mousedown, window:mouseup] > window:mousemove!',
-      zoom: 'wheel!',
-      mark: {
-        fill: '#333',
-        fillOpacity: 0.125,
-        stroke: 'white'
-      },
-      resolve: 'global',
-      clear: 'dblclick'
-    }
-  };
-  function isLegendBinding(bind) {
-    return !!bind && (bind === 'legend' || !!bind.legend);
-  }
-  function isLegendStreamBinding(bind) {
-    return isLegendBinding(bind) && isObject(bind);
   }
 
   /**
@@ -56341,7 +57312,8 @@
 
     for (const markConfigType of MARK_CONFIGS) {
       if (mergedConfig[markConfigType]) {
-        outputConfig[markConfigType] = replaceExprRefInIndex(mergedConfig[markConfigType]);
+        // FIXME: outputConfig[markConfigType] expects that types are replaced recursively but replaceExprRef only replaces one level deep
+        outputConfig[markConfigType] = replaceExprRef(mergedConfig[markConfigType]);
       }
     }
 
@@ -56353,16 +57325,16 @@
 
     for (const headerConfigType of HEADER_CONFIGS) {
       if (mergedConfig[headerConfigType]) {
-        outputConfig[headerConfigType] = replaceExprRefInIndex(mergedConfig[headerConfigType]);
+        outputConfig[headerConfigType] = replaceExprRef(mergedConfig[headerConfigType]);
       }
     }
 
     if (mergedConfig.legend) {
-      outputConfig.legend = replaceExprRefInIndex(mergedConfig.legend);
+      outputConfig.legend = replaceExprRef(mergedConfig.legend);
     }
 
     if (mergedConfig.scale) {
-      outputConfig.scale = replaceExprRefInIndex(mergedConfig.scale);
+      outputConfig.scale = replaceExprRef(mergedConfig.scale);
     }
 
     if (mergedConfig.style) {
@@ -56370,11 +57342,11 @@
     }
 
     if (mergedConfig.title) {
-      outputConfig.title = replaceExprRefInIndex(mergedConfig.title);
+      outputConfig.title = replaceExprRef(mergedConfig.title);
     }
 
     if (mergedConfig.view) {
-      outputConfig.view = replaceExprRefInIndex(mergedConfig.view);
+      outputConfig.view = replaceExprRef(mergedConfig.view);
     }
 
     return outputConfig;
@@ -56691,6 +57663,8 @@
 
 
   function stack(m, encoding, opt = {}) {
+    var _stackedFieldDef$scal, _stackedFieldDef$scal2;
+
     const mark = isMarkDef(m) ? m.type : m; // Should have stackable mark
 
     if (!STACKABLE_MARKS.has(mark)) {
@@ -56757,8 +57731,7 @@
       } else {
         offset = stackedFieldDef.stack;
       }
-    } else if (stackBy.length > 0 && STACK_BY_DEFAULT_MARKS.has(mark)) {
-      // Bar and Area with sum ops are automatically stacked by default
+    } else if (STACK_BY_DEFAULT_MARKS.has(mark)) {
       offset = 'zero';
     }
 
@@ -56771,18 +57744,18 @@
     } // warn when stacking non-linear
 
 
-    if (stackedFieldDef.scale && stackedFieldDef.scale.type && stackedFieldDef.scale.type !== ScaleType.LINEAR) {
+    if (stackedFieldDef !== null && stackedFieldDef !== void 0 && (_stackedFieldDef$scal = stackedFieldDef.scale) !== null && _stackedFieldDef$scal !== void 0 && _stackedFieldDef$scal.type && (stackedFieldDef === null || stackedFieldDef === void 0 ? void 0 : (_stackedFieldDef$scal2 = stackedFieldDef.scale) === null || _stackedFieldDef$scal2 === void 0 ? void 0 : _stackedFieldDef$scal2.type) !== ScaleType.LINEAR) {
       if (opt.disallowNonLinearStack) {
         return null;
       } else {
-        warn$1(cannotStackNonLinearScale(stackedFieldDef.scale.type));
+        warn$2(cannotStackNonLinearScale(stackedFieldDef.scale.type));
       }
     } // Check if it is a ranged mark
 
 
     if (isFieldOrDatumDef(encoding[getSecondaryRangeChannel(fieldChannel)])) {
       if (stackedFieldDef.stack !== undefined) {
-        warn$1(cannotStackRangedMark(fieldChannel));
+        warn$2(cannotStackRangedMark(fieldChannel));
       }
 
       return null;
@@ -56790,7 +57763,7 @@
 
 
     if (isFieldDef(stackedFieldDef) && stackedFieldDef.aggregate && !contains$1(SUM_OPS, stackedFieldDef.aggregate)) {
-      warn$1(stackNonSummativeAggregate(stackedFieldDef.aggregate));
+      warn$2(stackNonSummativeAggregate(stackedFieldDef.aggregate));
     }
 
     return {
@@ -56898,12 +57871,12 @@
       return false;
     }
 
-    run(spec, params, normalize) {
+    run(spec, normParams, normalize) {
       const {
         config
-      } = params;
+      } = normParams;
       const {
-        selection,
+        params,
         projection,
         mark,
         encoding: e,
@@ -56916,8 +57889,8 @@
       };
       const pointOverlay = getPointOverlay(markDef, config[markDef.type], encoding);
       const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);
-      const layer = [{ ...(selection ? {
-          selection
+      const layer = [{ ...(params ? {
+          params
         } : {}),
         mark: dropLineAndPoint({ // TODO: extract this 0.7 to be shared with default opacity for point/tick/...
           ...(markDef.type === 'area' && markDef.opacity === undefined && markDef.fillOpacity === undefined ? {
@@ -56977,77 +57950,9 @@
 
       return normalize({ ...outerSpec,
         layer
-      }, { ...params,
+      }, { ...normParams,
         config: dropLineAndPointFromConfig(config)
       });
-    }
-
-  }
-
-  // this is not accurate, but it's not worth making it accurate
-  class RangeStepNormalizer {
-    constructor() {
-      _defineProperty(this, "name", 'RangeStep');
-    }
-
-    hasMatchingType(spec) {
-      if (isUnitSpec(spec) && spec.encoding) {
-        for (const channel of POSITION_SCALE_CHANNELS) {
-          const def = spec.encoding[channel];
-
-          if (def && isFieldOrDatumDef(def)) {
-            var _def$scale;
-
-            if (def === null || def === void 0 ? void 0 : (_def$scale = def.scale) === null || _def$scale === void 0 ? void 0 : _def$scale['rangeStep']) {
-              return true;
-            }
-          }
-        }
-      }
-
-      return false;
-    }
-
-    run(spec) {
-      const sizeMixins = {};
-      let encoding = { ...spec.encoding
-      };
-
-      for (const channel of POSITION_SCALE_CHANNELS) {
-        const sizeType = getSizeChannel(channel);
-        const def = encoding[channel];
-
-        if (def && isFieldOrDatumDef(def)) {
-          var _def$scale2;
-
-          if (def === null || def === void 0 ? void 0 : (_def$scale2 = def.scale) === null || _def$scale2 === void 0 ? void 0 : _def$scale2['rangeStep']) {
-            const {
-              scale,
-              ...defWithoutScale
-            } = def;
-            const {
-              rangeStep,
-              ...scaleWithoutRangeStep
-            } = scale;
-            sizeMixins[sizeType] = {
-              step: scale['rangeStep']
-            };
-            warn$1(RANGE_STEP_DEPRECATED);
-            encoding = { ...encoding,
-              [channel]: { ...defWithoutScale,
-                ...(isEmpty(scaleWithoutRangeStep) ? {} : {
-                  scale: scaleWithoutRangeStep
-                })
-              }
-            };
-          }
-        }
-      }
-
-      return { ...sizeMixins,
-        ...spec,
-        encoding
-      };
     }
 
   }
@@ -57083,7 +57988,7 @@
           [prop]: repeater[val.repeat]
         };
       } else {
-        warn$1(noSuchRepeatedValue(val.repeat));
+        warn$2(noSuchRepeatedValue(val.repeat));
         return undefined;
       }
     }
@@ -57201,7 +58106,7 @@
           mark
         } = spec;
 
-        if (mark === 'line') {
+        if (mark === 'line' || isMarkDef(mark) && mark.type === 'line') {
           for (const channel of SECONDARY_RANGE_CHANNEL) {
             const mainChannel = getMainRangeChannel(channel);
             const mainChannelDef = encoding[mainChannel];
@@ -57220,11 +58125,15 @@
 
     run(spec, params, normalize) {
       const {
-        encoding
+        encoding,
+        mark
       } = spec;
-      warn$1(lineWithRange(!!encoding.x2, !!encoding.y2));
+      warn$2(lineWithRange(!!encoding.x2, !!encoding.y2));
+      console.log(mark);
       return normalize({ ...spec,
-        mark: 'rule'
+        mark: isObject(mark) ? { ...mark,
+          type: 'rule'
+        } : 'rule'
       }, params);
     }
 
@@ -57234,7 +58143,7 @@
     constructor(...args) {
       super(...args);
 
-      _defineProperty(this, "nonFacetUnitNormalizers", [boxPlotNormalizer, errorBarNormalizer, errorBandNormalizer, new PathOverlayNormalizer(), new RuleForRangedLineNormalizer(), new RangeStepNormalizer()]);
+      _defineProperty(this, "nonFacetUnitNormalizers", [boxPlotNormalizer, errorBarNormalizer, errorBandNormalizer, new PathOverlayNormalizer(), new RuleForRangedLineNormalizer()]);
     }
 
     map(spec, params) {
@@ -57326,7 +58235,7 @@
             const childRepeater = { ...repeater,
               layer: layerValue
             };
-            const childName = (childSpec.name || '') + repeaterPrefix + "child__layer_".concat(varName(layerValue));
+            const childName = "".concat((childSpec.name || '') + repeaterPrefix, "child__layer_").concat(varName(layerValue));
             const child = this.mapLayerOrUnit(childSpec, { ...params,
               repeater: childRepeater,
               repeaterPrefix: childName
@@ -57351,7 +58260,7 @@
       if (!isArray(repeat) && spec.columns) {
         // is repeat with row/column
         spec = omit(spec, ['columns']);
-        warn$1(columnsNotSupportByRowCol('repeat'));
+        warn$2(columnsNotSupportByRowCol('repeat'));
       }
 
       const concat = [];
@@ -57403,7 +58312,7 @@
       if (isFacetMapping(facet) && spec.columns) {
         // is facet with row/column
         spec = omit(spec, ['columns']);
-        warn$1(columnsNotSupportByRowCol('facet'));
+        warn$2(columnsNotSupportByRowCol('facet'));
       }
 
       return super.mapFacet(spec, params);
@@ -57439,7 +58348,7 @@
       });
     }
 
-    mapFacetedUnit(spec, params) {
+    mapFacetedUnit(spec, normParams) {
       // New encoding in the inside spec should not contain row / column
       // as row/column should be moved to facet
       const {
@@ -57455,7 +58364,7 @@
         projection,
         height,
         view,
-        selection,
+        params,
         encoding: _,
         ...outerSpec
       } = spec;
@@ -57466,8 +58375,8 @@
         row,
         column,
         facet
-      }, params);
-      const newEncoding = replaceRepeaterInEncoding(encoding, params.repeater);
+      }, normParams);
+      const newEncoding = replaceRepeaterInEncoding(encoding, normParams.repeater);
       return this.mapFacet({ ...outerSpec,
         ...layout,
         // row / column has higher precedence than facet
@@ -57486,11 +58395,11 @@
           } : {}),
           mark,
           encoding: newEncoding,
-          ...(selection ? {
-            selection
+          ...(params ? {
+            params
           } : {})
         }
-      }, params);
+      }, normParams);
     }
 
     getFacetMappingAndLayout(facets, params) {
@@ -57502,7 +58411,7 @@
 
       if (row || column) {
         if (facet) {
-          warn$1(facetChannelDropped([...(row ? [ROW] : []), ...(column ? [COLUMN] : [])]));
+          warn$2(facetChannelDropped([...(row ? [ROW] : []), ...(column ? [COLUMN] : [])]));
         }
 
         const facetMapping = {};
@@ -57525,7 +58434,7 @@
               if (def[prop] !== undefined) {
                 var _layout$prop;
 
-                layout[prop] = (_layout$prop = layout[prop]) !== null && _layout$prop !== void 0 ? _layout$prop : {};
+                (_layout$prop = layout[prop]) !== null && _layout$prop !== void 0 ? _layout$prop : layout[prop] = {};
                 layout[prop][channel] = def[prop];
               }
             }
@@ -57637,13 +58546,358 @@
     } = opt;
 
     if (parentProjection && projection) {
-      warn$1(projectionOverridden({
+      warn$2(projectionOverridden({
         parentProjection,
         projection
       }));
     }
 
     return projection !== null && projection !== void 0 ? projection : parentProjection;
+  }
+
+  function isFilter(t) {
+    return 'filter' in t;
+  }
+  function isImputeSequence(t) {
+    return (t === null || t === void 0 ? void 0 : t['stop']) !== undefined;
+  }
+  function isLookup(t) {
+    return 'lookup' in t;
+  }
+  function isLookupData(from) {
+    return 'data' in from;
+  }
+  function isLookupSelection(from) {
+    return 'param' in from;
+  }
+  function isPivot(t) {
+    return 'pivot' in t;
+  }
+  function isDensity(t) {
+    return 'density' in t;
+  }
+  function isQuantile$1(t) {
+    return 'quantile' in t;
+  }
+  function isRegression(t) {
+    return 'regression' in t;
+  }
+  function isLoess(t) {
+    return 'loess' in t;
+  }
+  function isSample(t) {
+    return 'sample' in t;
+  }
+  function isWindow(t) {
+    return 'window' in t;
+  }
+  function isJoinAggregate(t) {
+    return 'joinaggregate' in t;
+  }
+  function isFlatten(t) {
+    return 'flatten' in t;
+  }
+  function isCalculate(t) {
+    return 'calculate' in t;
+  }
+  function isBin(t) {
+    return 'bin' in t;
+  }
+  function isImpute(t) {
+    return 'impute' in t;
+  }
+  function isTimeUnit(t) {
+    return 'timeUnit' in t;
+  }
+  function isAggregate$1(t) {
+    return 'aggregate' in t;
+  }
+  function isStack(t) {
+    return 'stack' in t;
+  }
+  function isFold(t) {
+    return 'fold' in t;
+  }
+  function normalizeTransform(transform) {
+    return transform.map(t => {
+      if (isFilter(t)) {
+        return {
+          filter: normalizeLogicalComposition(t.filter, normalizePredicate)
+        };
+      }
+
+      return t;
+    });
+  }
+
+  class SelectionCompatibilityNormalizer extends SpecMapper {
+    map(spec, normParams) {
+      var _normParams$emptySele, _normParams$selection;
+
+      (_normParams$emptySele = normParams.emptySelections) !== null && _normParams$emptySele !== void 0 ? _normParams$emptySele : normParams.emptySelections = {};
+      (_normParams$selection = normParams.selectionPredicates) !== null && _normParams$selection !== void 0 ? _normParams$selection : normParams.selectionPredicates = {};
+      spec = normalizeTransforms(spec, normParams);
+      return super.map(spec, normParams);
+    }
+
+    mapLayerOrUnit(spec, normParams) {
+      spec = normalizeTransforms(spec, normParams);
+
+      if (spec.encoding) {
+        const encoding = {};
+
+        for (const [channel, enc] of entries(spec.encoding)) {
+          encoding[channel] = normalizeChannelDef(enc, normParams);
+        }
+
+        spec = { ...spec,
+          encoding
+        };
+      }
+
+      return super.mapLayerOrUnit(spec, normParams);
+    }
+
+    mapUnit(spec, normParams) {
+      const {
+        selection,
+        ...rest
+      } = spec;
+
+      if (selection) {
+        return { ...rest,
+          params: entries(selection).map(([name, selDef]) => {
+            const {
+              init: value,
+              bind,
+              empty,
+              ...select
+            } = selDef;
+
+            if (select.type === 'single') {
+              select.type = 'point';
+              select.toggle = false;
+            } else if (select.type === 'multi') {
+              select.type = 'point';
+            } // Propagate emptiness forwards and backwards
+
+
+            normParams.emptySelections[name] = empty !== 'none';
+
+            for (const pred of vals((_normParams$selection2 = normParams.selectionPredicates[name]) !== null && _normParams$selection2 !== void 0 ? _normParams$selection2 : {})) {
+              var _normParams$selection2;
+
+              pred.empty = empty !== 'none';
+            }
+
+            return {
+              name,
+              value,
+              select,
+              bind
+            };
+          })
+        };
+      }
+
+      return spec;
+    }
+
+  }
+
+  function normalizeTransforms(spec, normParams) {
+    const {
+      transform: tx,
+      ...rest
+    } = spec;
+
+    if (tx) {
+      const transform = tx.map(t => {
+        if (isFilter(t)) {
+          return {
+            filter: normalizePredicate$1(t, normParams)
+          };
+        } else if (isBin(t) && isBinParams(t.bin)) {
+          return { ...t,
+            bin: normalizeBinExtent(t.bin)
+          };
+        } else if (isLookup(t)) {
+          const {
+            selection: param,
+            ...from
+          } = t.from;
+          return param ? { ...t,
+            from: {
+              param,
+              ...from
+            }
+          } : t;
+        }
+
+        return t;
+      });
+      return { ...rest,
+        transform
+      };
+    }
+
+    return spec;
+  }
+
+  function normalizeChannelDef(obj, normParams) {
+    var _enc$scale, _enc$scale$domain;
+
+    const enc = duplicate(obj);
+
+    if (isFieldDef(enc) && isBinParams(enc.bin)) {
+      enc.bin = normalizeBinExtent(enc.bin);
+    }
+
+    if (isScaleFieldDef(enc) && (_enc$scale = enc.scale) !== null && _enc$scale !== void 0 && (_enc$scale$domain = _enc$scale.domain) !== null && _enc$scale$domain !== void 0 && _enc$scale$domain.selection) {
+      const {
+        selection: param,
+        ...domain
+      } = enc.scale.domain;
+      enc.scale.domain = { ...domain,
+        ...(param ? {
+          param
+        } : {})
+      };
+    }
+
+    if (isConditionalDef(enc)) {
+      if (isArray(enc.condition)) {
+        enc.condition = enc.condition.map(c => {
+          const {
+            selection,
+            param,
+            test,
+            ...cond
+          } = c;
+          return param ? c : { ...cond,
+            test: normalizePredicate$1(c, normParams)
+          };
+        });
+      } else {
+        const {
+          selection,
+          param,
+          test,
+          ...cond
+        } = normalizeChannelDef(enc.condition, normParams);
+        enc.condition = param ? enc.condition : { ...cond,
+          test: normalizePredicate$1(enc.condition, normParams)
+        };
+      }
+    }
+
+    return enc;
+  }
+
+  function normalizeBinExtent(bin) {
+    const ext = bin.extent;
+
+    if (ext !== null && ext !== void 0 && ext.selection) {
+      const {
+        selection: param,
+        ...rest
+      } = ext;
+      return { ...bin,
+        extent: { ...rest,
+          param
+        }
+      };
+    }
+
+    return bin;
+  }
+
+  function normalizePredicate$1(op, normParams) {
+    // Normalize old compositions of selection names (e.g., selection: {and: ["one", "two"]})
+    const normalizeSelectionComposition = o => {
+      return normalizeLogicalComposition(o, param => {
+        var _normParams$emptySele2, _normParams$selection3, _normParams$selection4;
+
+        const empty = (_normParams$emptySele2 = normParams.emptySelections[param]) !== null && _normParams$emptySele2 !== void 0 ? _normParams$emptySele2 : true;
+        const pred = {
+          param,
+          empty
+        };
+        (_normParams$selection4 = (_normParams$selection3 = normParams.selectionPredicates)[param]) !== null && _normParams$selection4 !== void 0 ? _normParams$selection4 : _normParams$selection3[param] = [];
+        normParams.selectionPredicates[param].push(pred);
+        return pred;
+      });
+    };
+
+    return op.selection ? normalizeSelectionComposition(op.selection) : normalizeLogicalComposition(op.test || op.filter, o => o.selection ? normalizeSelectionComposition(o.selection) : o);
+  }
+
+  class TopLevelSelectionsNormalizer extends SpecMapper {
+    map(spec, normParams) {
+      var _normParams$selection;
+
+      const selections = (_normParams$selection = normParams.selections) !== null && _normParams$selection !== void 0 ? _normParams$selection : [];
+
+      if (spec.params && !isUnitSpec(spec)) {
+        const params = [];
+
+        for (const param of spec.params) {
+          if (isSelectionParameter(param)) {
+            selections.push(param);
+          } else {
+            params.push(param);
+          }
+        }
+
+        spec.params = params;
+      }
+
+      normParams.selections = selections;
+      return super.map(spec, addSpecNameToParams(spec, normParams));
+    }
+
+    mapUnit(spec, normParams) {
+      var _normParams$path;
+
+      const selections = normParams.selections;
+      if (!selections || !selections.length) return spec;
+      const path = ((_normParams$path = normParams.path) !== null && _normParams$path !== void 0 ? _normParams$path : []).concat(spec.name);
+      const params = [];
+
+      for (const selection of selections) {
+        // By default, apply selections to all unit views.
+        if (!selection.views || !selection.views.length) {
+          params.push(selection);
+        } else {
+          for (const view of selection.views) {
+            // view is either a specific unit name, or a partial path through the spec tree.
+            if (isString(view) && (view === spec.name || path.indexOf(view) >= 0) || isArray(view) && view.map(v => path.indexOf(v)).every((v, i, arr) => v !== -1 && (i === 0 || v > arr[i - 1]))) {
+              params.push(selection);
+            }
+          }
+        }
+      }
+
+      if (params.length) spec.params = params;
+      return spec;
+    }
+
+  }
+
+  for (const method of ['mapFacet', 'mapRepeat', 'mapHConcat', 'mapVConcat', 'mapLayer']) {
+    const proto = TopLevelSelectionsNormalizer.prototype[method];
+
+    TopLevelSelectionsNormalizer.prototype[method] = function (spec, params) {
+      return proto.call(this, spec, addSpecNameToParams(spec, params));
+    };
+  }
+
+  function addSpecNameToParams(spec, params) {
+    var _params$path;
+
+    return spec.name ? { ...params,
+      path: ((_params$path = params.path) !== null && _params$path !== void 0 ? _params$path : []).concat(spec.name)
+    } : params;
   }
 
   function normalize$1(spec, config) {
@@ -57667,15 +58921,19 @@
       } : {})
     };
   }
-  const normalizer = new CoreNormalizer();
+  const coreNormalizer = new CoreNormalizer();
+  const selectionCompatNormalizer = new SelectionCompatibilityNormalizer();
+  const topLevelSelectionNormalizer = new TopLevelSelectionsNormalizer();
   /**
    * Decompose extended unit specs into composition of pure unit specs.
+   * And push top-level selection definitions down to unit specs.
    */
 
   function normalizeGenericSpec(spec, config = {}) {
-    return normalizer.map(spec, {
+    const normParams = {
       config
-    });
+    };
+    return topLevelSelectionNormalizer.map(coreNormalizer.map(selectionCompatNormalizer.map(spec, normParams), normParams), normParams);
   }
 
   function _normalizeAutoSize(autosize) {
@@ -57699,12 +58957,12 @@
     if (!isFitCompatible) {
       // If spec is not compatible with autosize == "fit", discard width/height == container
       if (width == 'container') {
-        warn$1(containerSizeNonSingle('width'));
+        warn$2(containerSizeNonSingle('width'));
         width = undefined;
       }
 
       if (height == 'container') {
-        warn$1(containerSizeNonSingle('height'));
+        warn$2(containerSizeNonSingle('height'));
         height = undefined;
       }
     } else {
@@ -57729,16 +58987,16 @@
     };
 
     if (autosize.type === 'fit' && !isFitCompatible) {
-      warn$1(FIT_NON_SINGLE);
+      warn$2(FIT_NON_SINGLE);
       autosize.type = 'pad';
     }
 
     if (width == 'container' && !(autosize.type == 'fit' || autosize.type == 'fit-x')) {
-      warn$1(containerSizeNotCompatibleWithAutosize('width'));
+      warn$2(containerSizeNotCompatibleWithAutosize('width'));
     }
 
     if (height == 'container' && !(autosize.type == 'fit' || autosize.type == 'fit-y')) {
-      warn$1(containerSizeNotCompatibleWithAutosize('height'));
+      warn$2(containerSizeNotCompatibleWithAutosize('height'));
     } // Delete autosize property if it's Vega's default
 
 
@@ -57770,8 +59028,6 @@
     }
 
     combine() {
-      // FIXME remove "as any".
-      // Add "as any" to avoid an error "Spread types may only be created from object types".
       return { ...this.explicit,
         // Explicit properties comes first
         ...this.implicit
@@ -57803,9 +59059,12 @@
       };
     }
 
-    setWithExplicit(key, value) {
-      if (value.value !== undefined) {
-        this.set(key, value.value, value.explicit);
+    setWithExplicit(key, {
+      value,
+      explicit
+    }) {
+      if (value !== undefined) {
+        this.set(key, value, explicit);
       }
     }
 
@@ -57815,12 +59074,15 @@
       return this;
     }
 
-    copyKeyFromSplit(key, s) {
+    copyKeyFromSplit(key, {
+      explicit,
+      implicit
+    }) {
       // Explicit has higher precedence
-      if (s.explicit[key] !== undefined) {
-        this.set(key, s.explicit[key], true);
-      } else if (s.implicit[key] !== undefined) {
-        this.set(key, s.implicit[key], false);
+      if (explicit[key] !== undefined) {
+        this.set(key, explicit[key], true);
+      } else if (implicit[key] !== undefined) {
+        this.set(key, implicit[key], false);
       }
     }
 
@@ -57871,7 +59133,7 @@
   }
   function defaultTieBreaker(v1, v2, property, propertyOf) {
     if (v1.explicit && v2.explicit) {
-      warn$1(mergeConflictingProperty(property, propertyOf, v1.value, v2.value));
+      warn$2(mergeConflictingProperty(property, propertyOf, v1.value, v2.value));
     } // If equal score, prefer v1.
 
 
@@ -57950,80 +59212,1101 @@
     DataSourceType[DataSourceType["Lookup"] = 4] = "Lookup";
   })(DataSourceType || (DataSourceType = {}));
 
-  function isFilter(t) {
-    return 'filter' in t;
+  function assembleInit(init, isExpr = true, wrap = identity) {
+    if (isArray(init)) {
+      const assembled = init.map(v => assembleInit(v, isExpr, wrap));
+      return isExpr ? "[".concat(assembled.join(', '), "]") : assembled;
+    } else if (isDateTime(init)) {
+      if (isExpr) {
+        return wrap(dateTimeToExpr(init));
+      } else {
+        return wrap(dateTimeToTimestamp(init));
+      }
+    }
+
+    return isExpr ? wrap(stringify$1(init)) : init;
   }
-  function isImputeSequence(t) {
-    return (t === null || t === void 0 ? void 0 : t['stop']) !== undefined;
-  }
-  function isLookup(t) {
-    return 'lookup' in t;
-  }
-  function isLookupData(from) {
-    return 'data' in from;
-  }
-  function isLookupSelection(from) {
-    return 'selection' in from;
-  }
-  function isPivot(t) {
-    return 'pivot' in t;
-  }
-  function isDensity(t) {
-    return 'density' in t;
-  }
-  function isQuantile$1(t) {
-    return 'quantile' in t;
-  }
-  function isRegression(t) {
-    return 'regression' in t;
-  }
-  function isLoess(t) {
-    return 'loess' in t;
-  }
-  function isSample(t) {
-    return 'sample' in t;
-  }
-  function isWindow(t) {
-    return 'window' in t;
-  }
-  function isJoinAggregate(t) {
-    return 'joinaggregate' in t;
-  }
-  function isFlatten(t) {
-    return 'flatten' in t;
-  }
-  function isCalculate(t) {
-    return 'calculate' in t;
-  }
-  function isBin(t) {
-    return 'bin' in t;
-  }
-  function isImpute(t) {
-    return 'impute' in t;
-  }
-  function isTimeUnit(t) {
-    return 'timeUnit' in t;
-  }
-  function isAggregate$1(t) {
-    return 'aggregate' in t;
-  }
-  function isStack(t) {
-    return 'stack' in t;
-  }
-  function isFold(t) {
-    return 'fold' in t;
-  }
-  function normalizeTransform(transform) {
-    return transform.map(t => {
-      if (isFilter(t)) {
-        return {
-          filter: normalizeLogicalComposition(t.filter, normalizePredicate)
-        };
+  function assembleUnitSelectionSignals(model, signals) {
+    for (const selCmpt of vals((_model$component$sele = model.component.selection) !== null && _model$component$sele !== void 0 ? _model$component$sele : {})) {
+      var _model$component$sele;
+
+      const name = selCmpt.name;
+      let modifyExpr = "".concat(name).concat(TUPLE, ", ") + (selCmpt.resolve === 'global' ? 'true' : "{unit: ".concat(unitName(model), "}"));
+
+      for (const c of selectionCompilers) {
+        if (!c.defined(selCmpt)) continue;
+        if (c.signals) signals = c.signals(model, selCmpt, signals);
+        if (c.modifyExpr) modifyExpr = c.modifyExpr(model, selCmpt, modifyExpr);
       }
 
-      return t;
+      signals.push({
+        name: name + MODIFY,
+        on: [{
+          events: {
+            signal: selCmpt.name + TUPLE
+          },
+          update: "modify(".concat($(selCmpt.name + STORE), ", ").concat(modifyExpr, ")")
+        }]
+      });
+    }
+
+    return cleanupEmptyOnArray(signals);
+  }
+  function assembleFacetSignals(model, signals) {
+    if (model.component.selection && keys$2(model.component.selection).length) {
+      const name = $(model.getName('cell'));
+      signals.unshift({
+        name: 'facet',
+        value: {},
+        on: [{
+          events: eventSelector('mousemove', 'scope'),
+          update: "isTuple(facet) ? facet : group(".concat(name, ").datum")
+        }]
+      });
+    }
+
+    return cleanupEmptyOnArray(signals);
+  }
+  function assembleTopLevelSignals(model, signals) {
+    let hasSelections = false;
+
+    for (const selCmpt of vals((_model$component$sele2 = model.component.selection) !== null && _model$component$sele2 !== void 0 ? _model$component$sele2 : {})) {
+      var _model$component$sele2;
+
+      const name = selCmpt.name;
+      const store = $(name + STORE);
+      const hasSg = signals.filter(s => s.name === name);
+
+      if (hasSg.length === 0) {
+        const resolve = selCmpt.resolve === 'global' ? 'union' : selCmpt.resolve;
+        const isPoint = selCmpt.type === 'point' ? ', true, true)' : ')';
+        signals.push({
+          name: selCmpt.name,
+          update: "".concat(VL_SELECTION_RESOLVE, "(").concat(store, ", ").concat($(resolve)).concat(isPoint)
+        });
+      }
+
+      hasSelections = true;
+
+      for (const c of selectionCompilers) {
+        if (c.defined(selCmpt) && c.topLevelSignals) {
+          signals = c.topLevelSignals(model, selCmpt, signals);
+        }
+      }
+    }
+
+    if (hasSelections) {
+      const hasUnit = signals.filter(s => s.name === 'unit');
+
+      if (hasUnit.length === 0) {
+        signals.unshift({
+          name: 'unit',
+          value: {},
+          on: [{
+            events: 'mousemove',
+            update: 'isTuple(group()) ? group() : unit'
+          }]
+        });
+      }
+    }
+
+    return cleanupEmptyOnArray(signals);
+  }
+  function assembleUnitSelectionData(model, data) {
+    const dataCopy = [...data];
+
+    for (const selCmpt of vals((_model$component$sele3 = model.component.selection) !== null && _model$component$sele3 !== void 0 ? _model$component$sele3 : {})) {
+      var _model$component$sele3;
+
+      const init = {
+        name: selCmpt.name + STORE
+      };
+
+      if (selCmpt.init) {
+        const fields = selCmpt.project.items.map(proj => {
+          const {
+            signals,
+            ...rest
+          } = proj;
+          return rest;
+        });
+        init.values = selCmpt.init.map(i => ({
+          unit: unitName(model, {
+            escape: false
+          }),
+          fields,
+          values: assembleInit(i, false)
+        }));
+      }
+
+      const contains = dataCopy.filter(d => d.name === selCmpt.name + STORE);
+
+      if (!contains.length) {
+        dataCopy.push(init);
+      }
+    }
+
+    return dataCopy;
+  }
+  function assembleUnitSelectionMarks(model, marks) {
+    for (const selCmpt of vals((_model$component$sele4 = model.component.selection) !== null && _model$component$sele4 !== void 0 ? _model$component$sele4 : {})) {
+      var _model$component$sele4;
+
+      for (const c of selectionCompilers) {
+        if (c.defined(selCmpt) && c.marks) {
+          marks = c.marks(model, selCmpt, marks);
+        }
+      }
+    }
+
+    return marks;
+  }
+  function assembleLayerSelectionMarks(model, marks) {
+    for (const child of model.children) {
+      if (isUnitModel(child)) {
+        marks = assembleUnitSelectionMarks(child, marks);
+      }
+    }
+
+    return marks;
+  }
+  function assembleSelectionScaleDomain(model, extent, scaleCmpt, domain) {
+    const parsedExtent = parseSelectionExtent(model, extent.param, extent);
+    return {
+      signal: hasContinuousDomain(scaleCmpt.get('type')) && isArray(domain) && domain[0] > domain[1] ? "isValid(".concat(parsedExtent, ") && reverse(").concat(parsedExtent, ")") : parsedExtent
+    };
+  }
+
+  function cleanupEmptyOnArray(signals) {
+    return signals.map(s => {
+      if (s.on && !s.on.length) delete s.on;
+      return s;
     });
   }
+
+  /**
+   * A node in the dataflow tree.
+   */
+
+  class DataFlowNode {
+    constructor(parent, debugName) {
+      this.debugName = debugName;
+
+      _defineProperty(this, "_children", []);
+
+      _defineProperty(this, "_parent", null);
+
+      _defineProperty(this, "_hash", void 0);
+
+      if (parent) {
+        this.parent = parent;
+      }
+    }
+    /**
+     * Clone this node with a deep copy but don't clone links to children or parents.
+     */
+
+
+    clone() {
+      throw new Error('Cannot clone node');
+    }
+    /**
+     * Return a hash of the node.
+     */
+
+
+    get parent() {
+      return this._parent;
+    }
+    /**
+     * Set the parent of the node and also add this node to the parent's children.
+     */
+
+
+    set parent(parent) {
+      this._parent = parent;
+
+      if (parent) {
+        parent.addChild(this);
+      }
+    }
+
+    get children() {
+      return this._children;
+    }
+
+    numChildren() {
+      return this._children.length;
+    }
+
+    addChild(child, loc) {
+      // do not add the same child twice
+      if (this._children.includes(child)) {
+        warn$2(ADD_SAME_CHILD_TWICE);
+        return;
+      }
+
+      if (loc !== undefined) {
+        this._children.splice(loc, 0, child);
+      } else {
+        this._children.push(child);
+      }
+    }
+
+    removeChild(oldChild) {
+      const loc = this._children.indexOf(oldChild);
+
+      this._children.splice(loc, 1);
+
+      return loc;
+    }
+    /**
+     * Remove node from the dataflow.
+     */
+
+
+    remove() {
+      let loc = this._parent.removeChild(this);
+
+      for (const child of this._children) {
+        // do not use the set method because we want to insert at a particular location
+        child._parent = this._parent;
+
+        this._parent.addChild(child, loc++);
+      }
+    }
+    /**
+     * Insert another node as a parent of this node.
+     */
+
+
+    insertAsParentOf(other) {
+      const parent = other.parent;
+      parent.removeChild(this);
+      this.parent = parent;
+      other.parent = this;
+    }
+
+    swapWithParent() {
+      const parent = this._parent;
+      const newParent = parent.parent; // reconnect the children
+
+      for (const child of this._children) {
+        child.parent = parent;
+      } // remove old links
+
+
+      this._children = []; // equivalent to removing every child link one by one
+
+      parent.removeChild(this);
+      parent.parent.removeChild(parent); // swap two nodes
+
+      this.parent = newParent;
+      parent.parent = this;
+    }
+
+  }
+  class OutputNode extends DataFlowNode {
+    clone() {
+      const cloneObj = new this.constructor();
+      cloneObj.debugName = "clone_".concat(this.debugName);
+      cloneObj._source = this._source;
+      cloneObj._name = "clone_".concat(this._name);
+      cloneObj.type = this.type;
+      cloneObj.refCounts = this.refCounts;
+      cloneObj.refCounts[cloneObj._name] = 0;
+      return cloneObj;
+    }
+    /**
+     * @param source The name of the source. Will change in assemble.
+     * @param type The type of the output node.
+     * @param refCounts A global ref counter map.
+     */
+
+
+    constructor(parent, source, type, refCounts) {
+      super(parent, source);
+      this.type = type;
+      this.refCounts = refCounts;
+
+      _defineProperty(this, "_source", void 0);
+
+      _defineProperty(this, "_name", void 0);
+
+      this._source = this._name = source;
+
+      if (this.refCounts && !(this._name in this.refCounts)) {
+        this.refCounts[this._name] = 0;
+      }
+    }
+
+    dependentFields() {
+      return new Set();
+    }
+
+    producedFields() {
+      return new Set();
+    }
+
+    hash() {
+      if (this._hash === undefined) {
+        this._hash = "Output ".concat(uniqueId());
+      }
+
+      return this._hash;
+    }
+    /**
+     * Request the datasource name and increase the ref counter.
+     *
+     * During the parsing phase, this will return the simple name such as 'main' or 'raw'.
+     * It is crucial to request the name from an output node to mark it as a required node.
+     * If nobody ever requests the name, this datasource will not be instantiated in the assemble phase.
+     *
+     * In the assemble phase, this will return the correct name.
+     */
+
+
+    getSource() {
+      this.refCounts[this._name]++;
+      return this._source;
+    }
+
+    isRequired() {
+      return !!this.refCounts[this._name];
+    }
+
+    setSource(source) {
+      this._source = source;
+    }
+
+  }
+
+  class TimeUnitNode extends DataFlowNode {
+    clone() {
+      return new TimeUnitNode(null, duplicate(this.formula));
+    }
+
+    constructor(parent, formula) {
+      super(parent);
+      this.formula = formula;
+    }
+
+    static makeFromEncoding(parent, model) {
+      const formula = model.reduceFieldDef((timeUnitComponent, fieldDef) => {
+        const {
+          field,
+          timeUnit
+        } = fieldDef;
+
+        if (timeUnit) {
+          const as = vgField(fieldDef, {
+            forAs: true
+          });
+          timeUnitComponent[hash({
+            as,
+            field,
+            timeUnit
+          })] = {
+            as,
+            field,
+            timeUnit
+          };
+        }
+
+        return timeUnitComponent;
+      }, {});
+
+      if (isEmpty(formula)) {
+        return null;
+      }
+
+      return new TimeUnitNode(parent, formula);
+    }
+
+    static makeFromTransform(parent, t) {
+      const {
+        timeUnit,
+        ...other
+      } = { ...t
+      };
+      const normalizedTimeUnit = normalizeTimeUnit(timeUnit);
+      const component = { ...other,
+        timeUnit: normalizedTimeUnit
+      };
+      return new TimeUnitNode(parent, {
+        [hash(component)]: component
+      });
+    }
+    /**
+     * Merge together TimeUnitNodes assigning the children of `other` to `this`
+     * and removing `other`.
+     */
+
+
+    merge(other) {
+      this.formula = { ...this.formula
+      }; // if the same hash happen twice, merge
+
+      for (const key in other.formula) {
+        if (!this.formula[key]) {
+          // copy if it's not a duplicate
+          this.formula[key] = other.formula[key];
+        }
+      }
+
+      for (const child of other.children) {
+        other.removeChild(child);
+        child.parent = this;
+      }
+
+      other.remove();
+    }
+    /**
+     * Remove time units coming from the other node.
+     */
+
+
+    removeFormulas(fields) {
+      const newFormula = {};
+
+      for (const [key, timeUnit] of entries(this.formula)) {
+        if (!fields.has(timeUnit.as)) {
+          newFormula[key] = timeUnit;
+        }
+      }
+
+      this.formula = newFormula;
+    }
+
+    producedFields() {
+      return new Set(vals(this.formula).map(f => f.as));
+    }
+
+    dependentFields() {
+      return new Set(vals(this.formula).map(f => f.field));
+    }
+
+    hash() {
+      return "TimeUnit ".concat(hash(this.formula));
+    }
+
+    assemble() {
+      const transforms = [];
+
+      for (const f of vals(this.formula)) {
+        const {
+          field,
+          as,
+          timeUnit
+        } = f;
+        const {
+          unit,
+          utc,
+          ...params
+        } = normalizeTimeUnit(timeUnit);
+        transforms.push({
+          field: replacePathInField(field),
+          type: 'timeunit',
+          ...(unit ? {
+            units: getTimeUnitParts(unit)
+          } : {}),
+          ...(utc ? {
+            timezone: 'utc'
+          } : {}),
+          ...params,
+          as: [as, "".concat(as, "_end")]
+        });
+      }
+
+      return transforms;
+    }
+
+  }
+
+  const TUPLE_FIELDS = '_tuple_fields';
+  /**
+   * Whether the selection tuples hold enumerated or ranged values for a field.
+   */
+
+  class SelectionProjectionComponent {
+    constructor(...items) {
+      _defineProperty(this, "hasChannel", void 0);
+
+      _defineProperty(this, "hasField", void 0);
+
+      _defineProperty(this, "timeUnit", void 0);
+
+      _defineProperty(this, "items", void 0);
+
+      this.items = items;
+      this.hasChannel = {};
+      this.hasField = {};
+    }
+
+  }
+  const project$1 = {
+    defined: () => {
+      return true; // This transform handles its own defaults, so always run parse.
+    },
+    parse: (model, selCmpt, selDef) => {
+      var _selCmpt$project;
+
+      const name = selCmpt.name;
+      const proj = (_selCmpt$project = selCmpt.project) !== null && _selCmpt$project !== void 0 ? _selCmpt$project : selCmpt.project = new SelectionProjectionComponent();
+      const parsed = {};
+      const timeUnits = {};
+      const signals = new Set();
+
+      const signalName = (p, range) => {
+        const suffix = range === 'visual' ? p.channel : p.field;
+        let sg = varName("".concat(name, "_").concat(suffix));
+
+        for (let counter = 1; signals.has(sg); counter++) {
+          sg = varName("".concat(name, "_").concat(suffix, "_").concat(counter));
+        }
+
+        signals.add(sg);
+        return {
+          [range]: sg
+        };
+      };
+
+      const type = selCmpt.type;
+      const cfg = model.config.selection[type];
+      const init = selDef.value !== undefined ? array$1(selDef.value) : null; // If no explicit projection (either fields or encodings) is specified, set some defaults.
+      // If an initial value is set, try to infer projections.
+
+      let {
+        fields,
+        encodings
+      } = isObject(selDef.select) ? selDef.select : {};
+
+      if (!fields && !encodings && init) {
+        for (const initVal of init) {
+          // initVal may be a scalar value to smoothen varParam -> pointSelection gradient.
+          if (!isObject(initVal)) {
+            continue;
+          }
+
+          for (const key of keys$2(initVal)) {
+            if (isSingleDefUnitChannel(key)) {
+              (encodings || (encodings = [])).push(key);
+            } else {
+              if (type === 'interval') {
+                warn$2(INTERVAL_INITIALIZED_WITH_X_Y);
+                encodings = cfg.encodings;
+              } else {
+                (fields || (fields = [])).push(key);
+              }
+            }
+          }
+        }
+      } // If no initial value is specified, use the default configuration.
+      // We break this out as a separate if block (instead of an else condition)
+      // to account for unprojected point selections that have scalar initial values
+
+
+      if (!fields && !encodings) {
+        encodings = cfg.encodings;
+        fields = cfg.fields;
+      }
+
+      for (const channel of (_encodings = encodings) !== null && _encodings !== void 0 ? _encodings : []) {
+        var _encodings;
+
+        const fieldDef = model.fieldDef(channel);
+
+        if (fieldDef) {
+          let field = fieldDef.field;
+
+          if (fieldDef.aggregate) {
+            warn$2(cannotProjectAggregate(channel, fieldDef.aggregate));
+            continue;
+          } else if (!field) {
+            warn$2(cannotProjectOnChannelWithoutField(channel));
+            continue;
+          }
+
+          if (fieldDef.timeUnit) {
+            field = model.vgField(channel); // Construct TimeUnitComponents which will be combined into a
+            // TimeUnitNode. This node may need to be inserted into the
+            // dataflow if the selection is used across views that do not
+            // have these time units defined.
+
+            const component = {
+              timeUnit: fieldDef.timeUnit,
+              as: field,
+              field: fieldDef.field
+            };
+            timeUnits[hash(component)] = component;
+          } // Prevent duplicate projections on the same field.
+          // TODO: what if the same field is bound to multiple channels (e.g., SPLOM diag).
+
+
+          if (!parsed[field]) {
+            // Determine whether the tuple will store enumerated or ranged values.
+            // Interval selections store ranges for continuous scales, and enumerations otherwise.
+            // Single/multi selections store ranges for binned fields, and enumerations otherwise.
+            let tplType = 'E';
+
+            if (type === 'interval') {
+              const scaleType = model.getScaleComponent(channel).get('type');
+
+              if (hasContinuousDomain(scaleType)) {
+                tplType = 'R';
+              }
+            } else if (fieldDef.bin) {
+              tplType = 'R-RE';
+            }
+
+            const p = {
+              field,
+              channel,
+              type: tplType
+            };
+            p.signals = { ...signalName(p, 'data'),
+              ...signalName(p, 'visual')
+            };
+            proj.items.push(parsed[field] = p);
+            proj.hasField[field] = proj.hasChannel[channel] = parsed[field];
+          }
+        } else {
+          warn$2(cannotProjectOnChannelWithoutField(channel));
+        }
+      } // TODO: find a possible channel mapping for these fields.
+
+
+      for (const field of (_fields = fields) !== null && _fields !== void 0 ? _fields : []) {
+        var _fields;
+
+        if (proj.hasField[field]) continue;
+        const p = {
+          type: 'E',
+          field
+        };
+        p.signals = { ...signalName(p, 'data')
+        };
+        proj.items.push(p);
+        proj.hasField[field] = p;
+      }
+
+      if (init) {
+        selCmpt.init = init.map(v => {
+          // Selections can be initialized either with a full object that maps projections to values
+          // or scalar values to smoothen the abstraction gradient from variable params to point selections.
+          return proj.items.map(p => isObject(v) ? v[p.channel] !== undefined ? v[p.channel] : v[p.field] : v);
+        });
+      }
+
+      if (!isEmpty(timeUnits)) {
+        proj.timeUnit = new TimeUnitNode(null, timeUnits);
+      }
+    },
+    signals: (model, selCmpt, allSignals) => {
+      const name = selCmpt.name + TUPLE_FIELDS;
+      const hasSignal = allSignals.filter(s => s.name === name);
+      return hasSignal.length > 0 ? allSignals : allSignals.concat({
+        name,
+        value: selCmpt.project.items.map(proj => {
+          const {
+            signals,
+            hasLegend,
+            ...rest
+          } = proj;
+          rest.field = replacePathInField(rest.field);
+          return rest;
+        })
+      });
+    }
+  };
+
+  const scaleBindings = {
+    defined: selCmpt => {
+      return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
+    },
+    parse: (model, selCmpt) => {
+      const bound = selCmpt.scales = [];
+
+      for (const proj of selCmpt.project.items) {
+        const channel = proj.channel;
+
+        if (!isScaleChannel(channel)) {
+          continue;
+        }
+
+        const scale = model.getScaleComponent(channel);
+        const scaleType = scale ? scale.get('type') : undefined;
+
+        if (!scale || !hasContinuousDomain(scaleType)) {
+          warn$2(SCALE_BINDINGS_CONTINUOUS);
+          continue;
+        }
+
+        scale.set('selectionExtent', {
+          param: selCmpt.name,
+          field: proj.field
+        }, true);
+        bound.push(proj);
+      }
+    },
+    topLevelSignals: (model, selCmpt, signals) => {
+      const bound = selCmpt.scales.filter(proj => signals.filter(s => s.name === proj.signals.data).length === 0); // Top-level signals are only needed for multiview displays and if this
+      // view's top-level signals haven't already been generated.
+
+      if (!model.parent || isTopLevelLayer(model) || bound.length === 0) {
+        return signals;
+      } // vlSelectionResolve does not account for the behavior of bound scales in
+      // multiview displays. Each unit view adds a tuple to the store, but the
+      // state of the selection is the unit selection most recently updated. This
+      // state is captured by the top-level signals that we insert and "push
+      // outer" to from within the units. We need to reassemble this state into
+      // the top-level named signal, except no single selCmpt has a global view.
+
+
+      const namedSg = signals.filter(s => s.name === selCmpt.name)[0];
+      let update = namedSg.update;
+
+      if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
+        namedSg.update = "{".concat(bound.map(proj => "".concat($(replacePathInField(proj.field)), ": ").concat(proj.signals.data)).join(', '), "}");
+      } else {
+        for (const proj of bound) {
+          const mapping = "".concat($(replacePathInField(proj.field)), ": ").concat(proj.signals.data);
+
+          if (!update.includes(mapping)) {
+            update = "".concat(update.substring(0, update.length - 1), ", ").concat(mapping, "}");
+          }
+        }
+
+        namedSg.update = update;
+      }
+
+      return signals.concat(bound.map(proj => ({
+        name: proj.signals.data
+      })));
+    },
+    signals: (model, selCmpt, signals) => {
+      // Nested signals need only push to top-level signals with multiview displays.
+      if (model.parent && !isTopLevelLayer(model)) {
+        for (const proj of selCmpt.scales) {
+          const signal = signals.filter(s => s.name === proj.signals.data)[0];
+          signal.push = 'outer';
+          delete signal.value;
+          delete signal.update;
+        }
+      }
+
+      return signals;
+    }
+  };
+  function domain$2(model, channel) {
+    const scale = $(model.scaleName(channel));
+    return "domain(".concat(scale, ")");
+  }
+
+  function isTopLevelLayer(model) {
+    var _model$parent$parent;
+
+    return model.parent && isLayerModel(model.parent) && ((_model$parent$parent = !model.parent.parent) !== null && _model$parent$parent !== void 0 ? _model$parent$parent : isTopLevelLayer(model.parent.parent));
+  }
+
+  const BRUSH = '_brush';
+  const SCALE_TRIGGER = '_scale_trigger';
+  const interval$2 = {
+    defined: selCmpt => selCmpt.type === 'interval',
+    signals: (model, selCmpt, signals) => {
+      const name = selCmpt.name;
+      const fieldsSg = name + TUPLE_FIELDS;
+      const hasScales = scaleBindings.defined(selCmpt);
+      const init = selCmpt.init ? selCmpt.init[0] : null;
+      const dataSignals = [];
+      const scaleTriggers = [];
+
+      if (selCmpt.translate && !hasScales) {
+        const filterExpr = "!event.item || event.item.mark.name !== ".concat($(name + BRUSH));
+        events$2(selCmpt, (on, evt) => {
+          var _evt$between$, _evt$between$$filter;
+
+          const filters = array$1((_evt$between$$filter = (_evt$between$ = evt.between[0]).filter) !== null && _evt$between$$filter !== void 0 ? _evt$between$$filter : _evt$between$.filter = []);
+
+          if (!filters.includes(filterExpr)) {
+            filters.push(filterExpr);
+          }
+
+          return on;
+        });
+      }
+
+      selCmpt.project.items.forEach((proj, i) => {
+        const channel = proj.channel;
+
+        if (channel !== X$1 && channel !== Y$1) {
+          warn$2('Interval selections only support x and y encoding channels.');
+          return;
+        }
+
+        const val = init ? init[i] : null;
+        const cs = channelSignals(model, selCmpt, proj, val);
+        const dname = proj.signals.data;
+        const vname = proj.signals.visual;
+        const scaleName = $(model.scaleName(channel));
+        const scaleType = model.getScaleComponent(channel).get('type');
+        const toNum = hasContinuousDomain(scaleType) ? '+' : '';
+        signals.push(...cs);
+        dataSignals.push(dname);
+        scaleTriggers.push({
+          scaleName: model.scaleName(channel),
+          expr: "(!isArray(".concat(dname, ") || ") + "(".concat(toNum, "invert(").concat(scaleName, ", ").concat(vname, ")[0] === ").concat(toNum).concat(dname, "[0] && ") + "".concat(toNum, "invert(").concat(scaleName, ", ").concat(vname, ")[1] === ").concat(toNum).concat(dname, "[1]))")
+        });
+      }); // Proxy scale reactions to ensure that an infinite loop doesn't occur
+      // when an interval selection filter touches the scale.
+
+      if (!hasScales) {
+        signals.push({
+          name: name + SCALE_TRIGGER,
+          value: {},
+          on: [{
+            events: scaleTriggers.map(t => ({
+              scale: t.scaleName
+            })),
+            update: "".concat(scaleTriggers.map(t => t.expr).join(' && '), " ? ").concat(name + SCALE_TRIGGER, " : {}")
+          }]
+        });
+      } // Only add an interval to the store if it has valid data extents. Data extents
+      // are set to null if pixel extents are equal to account for intervals over
+      // ordinal/nominal domains which, when inverted, will still produce a valid datum.
+
+
+      const update = "unit: ".concat(unitName(model), ", fields: ").concat(fieldsSg, ", values");
+      return signals.concat({
+        name: name + TUPLE,
+        ...(init ? {
+          init: "{".concat(update, ": ").concat(assembleInit(init), "}")
+        } : {}),
+        on: [{
+          events: [{
+            signal: dataSignals.join(' || ')
+          }],
+          // Prevents double invocation, see https://github.com/vega/vega#1672.
+          update: "".concat(dataSignals.join(' && '), " ? {").concat(update, ": [").concat(dataSignals, "]} : null")
+        }]
+      });
+    },
+    marks: (model, selCmpt, marks) => {
+      const name = selCmpt.name;
+      const {
+        x,
+        y
+      } = selCmpt.project.hasChannel;
+      const xvname = x && x.signals.visual;
+      const yvname = y && y.signals.visual;
+      const store = "data(".concat($(selCmpt.name + STORE), ")"); // Do not add a brush if we're binding to scales.
+
+      if (scaleBindings.defined(selCmpt)) {
+        return marks;
+      }
+
+      const update = {
+        x: x !== undefined ? {
+          signal: "".concat(xvname, "[0]")
+        } : {
+          value: 0
+        },
+        y: y !== undefined ? {
+          signal: "".concat(yvname, "[0]")
+        } : {
+          value: 0
+        },
+        x2: x !== undefined ? {
+          signal: "".concat(xvname, "[1]")
+        } : {
+          field: {
+            group: 'width'
+          }
+        },
+        y2: y !== undefined ? {
+          signal: "".concat(yvname, "[1]")
+        } : {
+          field: {
+            group: 'height'
+          }
+        }
+      }; // If the selection is resolved to global, only a single interval is in
+      // the store. Wrap brush mark's encodings with a production rule to test
+      // this based on the `unit` property. Hide the brush mark if it corresponds
+      // to a unit different from the one in the store.
+
+      if (selCmpt.resolve === 'global') {
+        for (const key of keys$2(update)) {
+          update[key] = [{
+            test: "".concat(store, ".length && ").concat(store, "[0].unit === ").concat(unitName(model)),
+            ...update[key]
+          }, {
+            value: 0
+          }];
+        }
+      } // Two brush marks ensure that fill colors and other aesthetic choices do
+      // not interefere with the core marks, but that the brushed region can still
+      // be interacted with (e.g., dragging it around).
+
+
+      const {
+        fill,
+        fillOpacity,
+        cursor,
+        ...stroke
+      } = selCmpt.mark;
+      const vgStroke = keys$2(stroke).reduce((def, k) => {
+        def[k] = [{
+          test: [x !== undefined && "".concat(xvname, "[0] !== ").concat(xvname, "[1]"), y !== undefined && "".concat(yvname, "[0] !== ").concat(yvname, "[1]")].filter(t => t).join(' && '),
+          value: stroke[k]
+        }, {
+          value: null
+        }];
+        return def;
+      }, {});
+      return [{
+        name: "".concat(name + BRUSH, "_bg"),
+        type: 'rect',
+        clip: true,
+        encode: {
+          enter: {
+            fill: {
+              value: fill
+            },
+            fillOpacity: {
+              value: fillOpacity
+            }
+          },
+          update: update
+        }
+      }, ...marks, {
+        name: name + BRUSH,
+        type: 'rect',
+        clip: true,
+        encode: {
+          enter: { ...(cursor ? {
+              cursor: {
+                value: cursor
+              }
+            } : {}),
+            fill: {
+              value: 'transparent'
+            }
+          },
+          update: { ...update,
+            ...vgStroke
+          }
+        }
+      }];
+    }
+  };
+  /**
+   * Returns the visual and data signals for an interval selection.
+   */
+
+  function channelSignals(model, selCmpt, proj, init) {
+    const channel = proj.channel;
+    const vname = proj.signals.visual;
+    const dname = proj.signals.data;
+    const hasScales = scaleBindings.defined(selCmpt);
+    const scaleName = $(model.scaleName(channel));
+    const scale = model.getScaleComponent(channel);
+    const scaleType = scale ? scale.get('type') : undefined;
+
+    const scaled = str => "scale(".concat(scaleName, ", ").concat(str, ")");
+
+    const size = model.getSizeSignalRef(channel === X$1 ? 'width' : 'height').signal;
+    const coord = "".concat(channel, "(unit)");
+    const on = events$2(selCmpt, (def, evt) => {
+      return [...def, {
+        events: evt.between[0],
+        update: "[".concat(coord, ", ").concat(coord, "]")
+      }, // Brush Start
+      {
+        events: evt,
+        update: "[".concat(vname, "[0], clamp(").concat(coord, ", 0, ").concat(size, ")]")
+      } // Brush End
+      ];
+    }); // React to pan/zooms of continuous scales. Non-continuous scales
+    // (band, point) cannot be pan/zoomed and any other changes
+    // to their domains (e.g., filtering) should clear the brushes.
+
+    on.push({
+      events: {
+        signal: selCmpt.name + SCALE_TRIGGER
+      },
+      update: hasContinuousDomain(scaleType) ? "[".concat(scaled("".concat(dname, "[0]")), ", ").concat(scaled("".concat(dname, "[1]")), "]") : "[0, 0]"
+    });
+    return hasScales ? [{
+      name: dname,
+      on: []
+    }] : [{
+      name: vname,
+      ...(init ? {
+        init: assembleInit(init, true, scaled)
+      } : {
+        value: []
+      }),
+      on: on
+    }, {
+      name: dname,
+      ...(init ? {
+        init: assembleInit(init)
+      } : {}),
+      // Cannot be `value` as `init` may require datetime exprs.
+      on: [{
+        events: {
+          signal: vname
+        },
+        update: "".concat(vname, "[0] === ").concat(vname, "[1] ? null : invert(").concat(scaleName, ", ").concat(vname, ")")
+      }]
+    }];
+  }
+
+  function events$2(selCmpt, cb) {
+    return selCmpt.events.reduce((on, evt) => {
+      if (!evt.between) {
+        warn$2("".concat(evt, " is not an ordered event stream for interval selections."));
+        return on;
+      }
+
+      return cb(on, evt);
+    }, []);
+  }
+
+  const point$6 = {
+    defined: selCmpt => selCmpt.type === 'point',
+    signals: (model, selCmpt, signals) => {
+      const name = selCmpt.name;
+      const fieldsSg = name + TUPLE_FIELDS;
+      const project = selCmpt.project;
+      const datum = '(item().isVoronoi ? datum.datum : datum)';
+      const values = project.items.map(p => {
+        const fieldDef = model.fieldDef(p.channel); // Binned fields should capture extents, for a range test against the raw field.
+
+        return fieldDef && fieldDef.bin ? "[".concat(datum, "[").concat($(model.vgField(p.channel, {})), "], ") + "".concat(datum, "[").concat($(model.vgField(p.channel, {
+          binSuffix: 'end'
+        })), "]]") : "".concat(datum, "[").concat($(p.field), "]");
+      }).join(', '); // Only add a discrete selection to the store if a datum is present _and_
+      // the interaction isn't occurring on a group mark. This guards against
+      // polluting interactive state with invalid values in faceted displays
+      // as the group marks are also data-driven. We force the update to account
+      // for constant null states but varying toggles (e.g., shift-click in
+      // whitespace followed by a click in whitespace; the store should only
+      // be cleared on the second click).
+
+      const update = "unit: ".concat(unitName(model), ", fields: ").concat(fieldsSg, ", values");
+      const events = selCmpt.events;
+      return signals.concat([{
+        name: name + TUPLE,
+        on: events ? [{
+          events,
+          update: "datum && item().mark.marktype !== 'group' ? {".concat(update, ": [").concat(values, "]} : null"),
+          force: true
+        }] : []
+      }]);
+    }
+  };
 
   /**
    * Return a mixin that includes a Vega production rule for a Vega-Lite conditional channel definition
@@ -58037,13 +60320,28 @@
       const conditions = array$1(condition);
       const vgConditions = conditions.map(c => {
         const conditionValueRef = refFn(c);
-        const test = isConditionalSelection(c) ? parseSelectionPredicate(model, c.selection) // FIXME: remove casting once TS is no longer dumb about it
-        : expression$1(model, c.test); // FIXME: remove casting once TS is no longer dumb about it
 
-        return {
-          test,
-          ...conditionValueRef
-        };
+        if (isConditionalParameter(c)) {
+          const {
+            param,
+            empty
+          } = c;
+          const test = parseSelectionPredicate(model, {
+            param,
+            empty
+          });
+          return {
+            test,
+            ...conditionValueRef
+          };
+        } else {
+          const test = expression$1(model, c.test); // FIXME: remove casting once TS is no longer dumb about it
+
+          return {
+            test,
+            ...conditionValueRef
+          };
+        }
       });
       return {
         [vgChannel]: [...vgConditions, ...(valueRef !== undefined ? [valueRef] : [])]
@@ -58195,7 +60493,7 @@
         }
       }
 
-      value = (_value = value) !== null && _value !== void 0 ? _value : textRef(fieldDef, config, expr).signal;
+      (_value = value) !== null && _value !== void 0 ? _value : value = textRef(fieldDef, config, expr).signal;
       tuples.push({
         channel,
         key,
@@ -58346,7 +60644,7 @@
       var _defaultValue;
 
       // prettier-ignore
-      defaultValue = (_defaultValue = defaultValue) !== null && _defaultValue !== void 0 ? _defaultValue : getMarkPropOrConfig(channel, markDef, config, {
+      (_defaultValue = defaultValue) !== null && _defaultValue !== void 0 ? _defaultValue : defaultValue = getMarkPropOrConfig(channel, markDef, config, {
         vgChannel,
         ignoreVgConfig: true
       });
@@ -58408,7 +60706,7 @@
     };
 
     if (markDef.color && (filled ? markDef.fill : markDef.stroke)) {
-      warn$1(droppingColor('property', {
+      warn$2(droppingColor('property', {
         fill: 'fill' in markDef,
         stroke: 'stroke' in markDef
       }));
@@ -58465,8 +60763,7 @@
 
   function pointPosition(channel, model, {
     defaultPos,
-    vgChannel,
-    isMidPoint
+    vgChannel
   }) {
     const {
       encoding,
@@ -58496,7 +60793,6 @@
       channel2Def,
       markDef,
       config,
-      isMidPoint,
       scaleName,
       scale,
       stack,
@@ -58517,32 +60813,29 @@
     const {
       channel,
       channelDef,
-      isMidPoint,
       scaleName,
       stack,
       offset,
-      markDef,
-      config
+      markDef
     } = params; // This isn't a part of midPoint because we use midPoint for non-position too
 
     if (isFieldOrDatumDef(channelDef) && stack && channel === stack.fieldChannel) {
       if (isFieldDef(channelDef)) {
-        const band = getBand({
-          channel,
-          fieldDef: channelDef,
-          isMidPoint,
-          markDef,
-          stack,
-          config
-        });
+        let bandPosition = channelDef.bandPosition;
 
-        if (band !== undefined) {
+        if (bandPosition === undefined && markDef.type === 'text' && (channel === 'radius' || channel === 'theta')) {
+          // theta and radius of text mark should use bandPosition = 0.5 by default
+          // so that labels for arc marks are centered automatically
+          bandPosition = 0.5;
+        }
+
+        if (bandPosition !== undefined) {
           return interpolatedSignalRef({
             scaleName,
             fieldOrDatumDef: channelDef,
             // positionRef always have type
             startSuffix: 'start',
-            band,
+            bandPosition,
             offset
           });
         }
@@ -58668,7 +60961,7 @@
     let alignExcludingSignal;
 
     if (isSignalRef(align)) {
-      warn$1(rangeMarkAlignmentCannotBeExpression(alignChannel));
+      warn$2(rangeMarkAlignmentCannotBeExpression(alignChannel));
       alignExcludingSignal = undefined;
     } else {
       alignExcludingSignal = align;
@@ -58835,9 +61128,15 @@
         [vgChannel]: widthHeightValueOrSignalRef(channel, markDef[channel])
       };
     } else if (markDef[sizeChannel]) {
-      return {
-        [sizeChannel]: widthHeightValueOrSignalRef(channel, markDef[sizeChannel])
-      };
+      const dimensionSize = markDef[sizeChannel];
+
+      if (isRelativeBandSize(dimensionSize)) {
+        warn$2(relativeBandSizeNotSupported(sizeChannel));
+      } else {
+        return {
+          [sizeChannel]: widthHeightValueOrSignalRef(channel, dimensionSize)
+        };
+      }
     }
 
     return undefined;
@@ -58849,8 +61148,7 @@
     const {
       config,
       encoding,
-      markDef,
-      stack
+      markDef
     } = model;
     const channel2 = getSecondaryRangeChannel(channel);
     const sizeChannel = getSizeChannel(channel);
@@ -58865,15 +61163,15 @@
     });
     const isBarBand = mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal'); // x, x2, and width -- we must specify two of these in all conditions
 
-    if (isFieldDef(channelDef) && (isBinning(channelDef.bin) || isBinned(channelDef.bin) || channelDef.timeUnit && !channelDef2) && !hasSizeDef && !hasDiscreteDomain(scaleType)) {
+    if (isFieldDef(channelDef) && (isBinning(channelDef.bin) || isBinned(channelDef.bin) || channelDef.timeUnit && !channelDef2) && !(hasSizeDef && !isRelativeBandSize(hasSizeDef)) && !hasDiscreteDomain(scaleType)) {
       var _model$component$axes, _axis$get;
 
-      const band = getBand({
+      const bandSize = getBandSize({
         channel,
         fieldDef: channelDef,
-        stack,
         markDef,
-        config
+        config,
+        scaleType
       });
       const axis = (_model$component$axes = model.component.axes[channel]) === null || _model$component$axes === void 0 ? void 0 : _model$component$axes[0];
       const axisTranslate = (_axis$get = axis === null || axis === void 0 ? void 0 : axis.get('translate')) !== null && _axis$get !== void 0 ? _axis$get : 0.5; // vega default is 0.5
@@ -58884,7 +61182,7 @@
         channel,
         markDef,
         scaleName,
-        band,
+        bandSize,
         axisTranslate,
         spacing: isXorY(channel) ? getMarkPropOrConfig('binSpacing', markDef, config) : undefined,
         reverse: scale.get('reverse'),
@@ -58900,51 +61198,51 @@
     }
   }
 
-  function defaultSizeRef(mark, sizeChannel, scaleName, scale, config, band) {
-    if (scale) {
-      const scaleType = scale.get('type');
+  function defaultSizeRef(sizeChannel, scaleName, scale, config, bandSize) {
+    if (isRelativeBandSize(bandSize)) {
+      if (scale) {
+        const scaleType = scale.get('type');
 
-      if (scaleType === 'point' || scaleType === 'band') {
-        if (config[mark].discreteBandSize !== undefined) {
-          return {
-            value: config[mark].discreteBandSize
-          };
-        }
-
-        if (scaleType === ScaleType.POINT) {
-          const scaleRange = scale.get('range');
-
-          if (isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
-            return {
-              value: scaleRange.step - 2
-            };
-          }
-
-          return {
-            value: DEFAULT_STEP - 2
-          };
-        } else {
-          // BAND
+        if (scaleType === 'band') {
           return {
             scale: scaleName,
-            band
+            band: bandSize.band
           };
+        } else if (bandSize.band !== 1) {
+          warn$2(cannotUseRelativeBandSizeWithNonBandScale(scaleType));
+          bandSize = undefined;
         }
       } else {
-        // continuous scale
         return {
-          value: config[mark].continuousBandSize
+          mult: bandSize.band,
+          field: {
+            group: sizeChannel
+          }
         };
       }
-    } // No Scale
+    } else if (isSignalRef(bandSize)) {
+      return bandSize;
+    } else if (bandSize) {
+      return {
+        value: bandSize
+      };
+    } // no valid band size
 
 
-    const step = getViewConfigDiscreteStep(config.view, sizeChannel);
-    const value = getFirstDefined( // No scale is like discrete bar (with one item)
-    config[mark].discreteBandSize, step - 2);
-    return value !== undefined ? {
-      value
-    } : undefined;
+    if (scale) {
+      const scaleRange = scale.get('range');
+
+      if (isVgRangeStep(scaleRange) && isNumber(scaleRange.step)) {
+        return {
+          value: scaleRange.step - 2
+        };
+      }
+    }
+
+    const defaultStep = getViewConfigDiscreteStep(config.view, sizeChannel);
+    return {
+      value: defaultStep - 2
+    };
   }
   /**
    * Output position encoding and its size encoding for continuous, point, and band scales.
@@ -58952,8 +61250,6 @@
 
 
   function positionAndSize(mark, fieldDef, channel, model) {
-    var _ref2;
-
     const {
       markDef,
       encoding,
@@ -58966,34 +61262,32 @@
     const vgSizeChannel = getSizeChannel(channel);
     const channel2 = getSecondaryRangeChannel(channel); // use "size" channel for bars, if there is orient and the channel matches the right orientation
 
-    const useVlSizeChannel = orient === 'horizontal' && channel === 'y' || orient === 'vertical' && channel === 'x';
-    const sizeFromMarkOrConfig = getMarkPropOrConfig(useVlSizeChannel ? 'size' : vgSizeChannel, markDef, config, {
-      vgChannel: vgSizeChannel
-    }); // Use size encoding / mark property / config if it exists
+    const useVlSizeChannel = orient === 'horizontal' && channel === 'y' || orient === 'vertical' && channel === 'x'; // Use size encoding / mark property / config if it exists
 
     let sizeMixins;
 
-    if (encoding.size || sizeFromMarkOrConfig !== undefined) {
+    if (encoding.size || markDef.size) {
       if (useVlSizeChannel) {
         sizeMixins = nonPosition('size', model, {
           vgChannel: vgSizeChannel,
-          defaultValue: sizeFromMarkOrConfig
+          defaultRef: signalOrValueRef(markDef.size)
         });
       } else {
-        warn$1(cannotApplySizeToNonOrientedMark(markDef.type));
+        warn$2(cannotApplySizeToNonOrientedMark(markDef.type));
       }
     } // Otherwise, apply default value
 
 
-    const band = (_ref2 = isFieldOrDatumDef(fieldDef) ? getBand({
+    const bandSize = getBandSize({
       channel,
       fieldDef,
       markDef,
-      stack,
-      config
-    }) : undefined) !== null && _ref2 !== void 0 ? _ref2 : 1;
+      config,
+      scaleType: scale === null || scale === void 0 ? void 0 : scale.get('type'),
+      useVlSizeChannel
+    });
     sizeMixins = sizeMixins || {
-      [vgSizeChannel]: defaultSizeRef(mark, vgSizeChannel, scaleName, scale, config, band)
+      [vgSizeChannel]: defaultSizeRef(vgSizeChannel, scaleName, scale, config, bandSize)
     };
     /*
       Band scales with size value and all point scales, use xc/yc + band=0.5
@@ -59003,8 +61297,9 @@
       If band is 0.6, the the x/y position in such case should be `(1 - band) / 2` = 0.2
      */
 
-    const center = (scale === null || scale === void 0 ? void 0 : scale.get('type')) !== 'band' || !('band' in sizeMixins[vgSizeChannel]);
-    const vgChannel = vgAlignedPositionChannel(channel, markDef, config, center ? 'middle' : 'top');
+    const defaultBandAlign = (scale === null || scale === void 0 ? void 0 : scale.get('type')) !== 'band' || !('band' in sizeMixins[vgSizeChannel]) ? 'middle' : 'top';
+    const vgChannel = vgAlignedPositionChannel(channel, markDef, config, defaultBandAlign);
+    const center = vgChannel === 'xc' || vgChannel === 'yc';
     const offset = getOffset(channel, markDef);
     const posRef = midPointRefWithPositionInvalidTest({
       channel,
@@ -59022,7 +61317,9 @@
         scaleName,
         scale
       }),
-      band: center ? 0.5 : (1 - band) / 2
+      bandPosition: center ? 0.5 : isSignalRef(bandSize) ? {
+        signal: "(1-".concat(bandSize, ")/2")
+      } : isRelativeBandSize(bandSize) ? (1 - bandSize.band) / 2 : 0
     });
 
     if (vgSizeChannel) {
@@ -59077,7 +61374,7 @@
     fieldDef,
     fieldDef2,
     channel,
-    band,
+    bandSize,
     scaleName,
     markDef,
     spacing = 0,
@@ -59089,6 +61386,9 @@
     const vgChannel = getVgPositionChannel(channel);
     const vgChannel2 = getVgPositionChannel(channel2);
     const offset = getOffset(channel, markDef);
+    const bandPosition = isSignalRef(bandSize) ? {
+      signal: "(1-".concat(bandSize.signal, ")/2")
+    } : isRelativeBandSize(bandSize) ? (1 - bandSize.band) / 2 : 0.5;
 
     if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
       return {
@@ -59097,7 +61397,7 @@
           fieldDef,
           scaleName,
           markDef,
-          band: (1 - band) / 2,
+          bandPosition,
           offset: getBinSpacing(channel2, spacing, reverse, axisTranslate, offset),
           config
         }),
@@ -59106,7 +61406,9 @@
           fieldDef,
           scaleName,
           markDef,
-          band: 1 - (1 - band) / 2,
+          bandPosition: isSignalRef(bandPosition) ? {
+            signal: "1-".concat(bandPosition.signal)
+          } : 1 - bandPosition,
           offset: getBinSpacing(channel, spacing, reverse, axisTranslate, offset),
           config
         })
@@ -59136,7 +61438,7 @@
       }
     }
 
-    warn$1(channelRequiredForBinned(channel2));
+    warn$2(channelRequiredForBinned(channel2));
     return undefined;
   }
   /**
@@ -59148,14 +61450,14 @@
     fieldDef,
     scaleName,
     markDef,
-    band,
+    bandPosition,
     offset,
     config
   }) {
     const r = interpolatedSignalRef({
       scaleName,
       fieldOrDatumDef: fieldDef,
-      band,
+      bandPosition,
       offset
     });
     return wrapPositionInvalidTest({
@@ -59167,7 +61469,7 @@
     });
   }
 
-  const ALWAYS_IGNORE = new Set(['aria']);
+  const ALWAYS_IGNORE = new Set(['aria', 'width', 'height']);
   function baseEncodeEntry(model, ignore) {
     const {
       fill = undefined,
@@ -59327,8 +61629,8 @@
 
   const VORONOI = 'voronoi';
   const nearest = {
-    has: selCmpt => {
-      return selCmpt.type !== 'interval' && selCmpt.nearest;
+    defined: selCmpt => {
+      return selCmpt.type === 'point' && selCmpt.nearest;
     },
     parse: (model, selCmpt) => {
       // Scope selection events to the voronoi mark to prevent capturing
@@ -59347,7 +61649,7 @@
       const markType = model.mark;
 
       if (isPathMark(markType)) {
-        warn$1(nearestNotSupportForContinuous(markType));
+        warn$2(nearestNotSupportForContinuous(markType));
         return marks;
       }
 
@@ -59410,555 +61712,18 @@
     }
   };
 
-  /**
-   * A node in the dataflow tree.
-   */
-
-  class DataFlowNode {
-    constructor(parent, debugName) {
-      this.debugName = debugName;
-
-      _defineProperty(this, "_children", []);
-
-      _defineProperty(this, "_parent", null);
-
-      _defineProperty(this, "_hash", void 0);
-
-      if (parent) {
-        this.parent = parent;
-      }
-    }
-    /**
-     * Clone this node with a deep copy but don't clone links to children or parents.
-     */
-
-
-    clone() {
-      throw new Error('Cannot clone node');
-    }
-    /**
-     * Return a hash of the node.
-     */
-
-
-    get parent() {
-      return this._parent;
-    }
-    /**
-     * Set the parent of the node and also add this node to the parent's children.
-     */
-
-
-    set parent(parent) {
-      this._parent = parent;
-
-      if (parent) {
-        parent.addChild(this);
-      }
-    }
-
-    get children() {
-      return this._children;
-    }
-
-    numChildren() {
-      return this._children.length;
-    }
-
-    addChild(child, loc) {
-      // do not add the same child twice
-      if (this._children.indexOf(child) > -1) {
-        warn$1(ADD_SAME_CHILD_TWICE);
-        return;
-      }
-
-      if (loc !== undefined) {
-        this._children.splice(loc, 0, child);
-      } else {
-        this._children.push(child);
-      }
-    }
-
-    removeChild(oldChild) {
-      const loc = this._children.indexOf(oldChild);
-
-      this._children.splice(loc, 1);
-
-      return loc;
-    }
-    /**
-     * Remove node from the dataflow.
-     */
-
-
-    remove() {
-      let loc = this._parent.removeChild(this);
-
-      for (const child of this._children) {
-        // do not use the set method because we want to insert at a particular location
-        child._parent = this._parent;
-
-        this._parent.addChild(child, loc++);
-      }
-    }
-    /**
-     * Insert another node as a parent of this node.
-     */
-
-
-    insertAsParentOf(other) {
-      const parent = other.parent;
-      parent.removeChild(this);
-      this.parent = parent;
-      other.parent = this;
-    }
-
-    swapWithParent() {
-      const parent = this._parent;
-      const newParent = parent.parent; // reconnect the children
-
-      for (const child of this._children) {
-        child.parent = parent;
-      } // remove old links
-
-
-      this._children = []; // equivalent to removing every child link one by one
-
-      parent.removeChild(this);
-      parent.parent.removeChild(parent); // swap two nodes
-
-      this.parent = newParent;
-      parent.parent = this;
-    }
-
-  }
-  class OutputNode extends DataFlowNode {
-    clone() {
-      const cloneObj = new this.constructor();
-      cloneObj.debugName = 'clone_' + this.debugName;
-      cloneObj._source = this._source;
-      cloneObj._name = 'clone_' + this._name;
-      cloneObj.type = this.type;
-      cloneObj.refCounts = this.refCounts;
-      cloneObj.refCounts[cloneObj._name] = 0;
-      return cloneObj;
-    }
-    /**
-     * @param source The name of the source. Will change in assemble.
-     * @param type The type of the output node.
-     * @param refCounts A global ref counter map.
-     */
-
-
-    constructor(parent, source, type, refCounts) {
-      super(parent, source);
-      this.type = type;
-      this.refCounts = refCounts;
-
-      _defineProperty(this, "_source", void 0);
-
-      _defineProperty(this, "_name", void 0);
-
-      this._source = this._name = source;
-
-      if (this.refCounts && !(this._name in this.refCounts)) {
-        this.refCounts[this._name] = 0;
-      }
-    }
-
-    dependentFields() {
-      return new Set();
-    }
-
-    producedFields() {
-      return new Set();
-    }
-
-    hash() {
-      if (this._hash === undefined) {
-        this._hash = "Output ".concat(uniqueId());
-      }
-
-      return this._hash;
-    }
-    /**
-     * Request the datasource name and increase the ref counter.
-     *
-     * During the parsing phase, this will return the simple name such as 'main' or 'raw'.
-     * It is crucial to request the name from an output node to mark it as a required node.
-     * If nobody ever requests the name, this datasource will not be instantiated in the assemble phase.
-     *
-     * In the assemble phase, this will return the correct name.
-     */
-
-
-    getSource() {
-      this.refCounts[this._name]++;
-      return this._source;
-    }
-
-    isRequired() {
-      return !!this.refCounts[this._name];
-    }
-
-    setSource(source) {
-      this._source = source;
-    }
-
-  }
-
-  class TimeUnitNode extends DataFlowNode {
-    clone() {
-      return new TimeUnitNode(null, duplicate(this.formula));
-    }
-
-    constructor(parent, formula) {
-      super(parent);
-      this.formula = formula;
-    }
-
-    static makeFromEncoding(parent, model) {
-      const formula = model.reduceFieldDef((timeUnitComponent, fieldDef, channel) => {
-        const {
-          field,
-          timeUnit
-        } = fieldDef;
-        const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;
-        const band = isUnitModel(model) && hasBand(channel, fieldDef, channelDef2, model.stack, model.markDef, model.config);
-
-        if (timeUnit) {
-          const as = vgField(fieldDef, {
-            forAs: true
-          });
-          timeUnitComponent[hash({
-            as,
-            field,
-            timeUnit
-          })] = {
-            as,
-            field,
-            timeUnit,
-            ...(band ? {
-              band: true
-            } : {})
-          };
-        }
-
-        return timeUnitComponent;
-      }, {});
-
-      if (isEmpty(formula)) {
-        return null;
-      }
-
-      return new TimeUnitNode(parent, formula);
-    }
-
-    static makeFromTransform(parent, t) {
-      const {
-        timeUnit,
-        ...other
-      } = { ...t
-      };
-      const normalizedTimeUnit = normalizeTimeUnit(timeUnit);
-      const component = { ...other,
-        timeUnit: normalizedTimeUnit
-      };
-      return new TimeUnitNode(parent, {
-        [hash(component)]: component
-      });
-    }
-    /**
-     * Merge together TimeUnitNodes assigning the children of `other` to `this`
-     * and removing `other`.
-     */
-
-
-    merge(other) {
-      this.formula = { ...this.formula
-      }; // if the same hash happen twice, merge "band"
-
-      for (const key in other.formula) {
-        if (!this.formula[key] || other.formula[key].band) {
-          // copy if it's not a duplicate or if we need to copy band over
-          this.formula[key] = other.formula[key];
-        }
-      }
-
-      for (const child of other.children) {
-        other.removeChild(child);
-        child.parent = this;
-      }
-
-      other.remove();
-    }
-    /**
-     * Remove time units coming from the other node.
-     */
-
-
-    removeFormulas(fields) {
-      const newFormula = {};
-
-      for (const [key, timeUnit] of entries(this.formula)) {
-        if (!fields.has(timeUnit.as)) {
-          newFormula[key] = timeUnit;
-        }
-      }
-
-      this.formula = newFormula;
-    }
-
-    producedFields() {
-      return new Set(vals(this.formula).map(f => f.as));
-    }
-
-    dependentFields() {
-      return new Set(vals(this.formula).map(f => f.field));
-    }
-
-    hash() {
-      return "TimeUnit ".concat(hash(this.formula));
-    }
-
-    assemble() {
-      const transforms = [];
-
-      for (const f of vals(this.formula)) {
-        const {
-          field,
-          as,
-          timeUnit
-        } = f;
-        const {
-          unit,
-          utc,
-          ...params
-        } = normalizeTimeUnit(timeUnit);
-        transforms.push({
-          field: replacePathInField(field),
-          type: 'timeunit',
-          ...(unit ? {
-            units: getTimeUnitParts(unit)
-          } : {}),
-          ...(utc ? {
-            timezone: 'utc'
-          } : {}),
-          ...params,
-          as: [as, "".concat(as, "_end")]
-        });
-      }
-
-      return transforms;
-    }
-
-  }
-
-  const TUPLE_FIELDS = '_tuple_fields';
-  /**
-   * Whether the selection tuples hold enumerated or ranged values for a field.
-   */
-
-  class SelectionProjectionComponent {
-    constructor(...items) {
-      _defineProperty(this, "hasChannel", void 0);
-
-      _defineProperty(this, "hasField", void 0);
-
-      _defineProperty(this, "timeUnit", void 0);
-
-      _defineProperty(this, "items", void 0);
-
-      this.items = items;
-      this.hasChannel = {};
-      this.hasField = {};
-    }
-
-  }
-  const project$1 = {
-    has: () => {
-      return true; // This transform handles its own defaults, so always run parse.
-    },
-    parse: (model, selCmpt, selDef) => {
-      var _selCmpt$project;
-
-      const name = selCmpt.name;
-      const proj = (_selCmpt$project = selCmpt.project) !== null && _selCmpt$project !== void 0 ? _selCmpt$project : selCmpt.project = new SelectionProjectionComponent();
-      const parsed = {};
-      const timeUnits = {};
-      const signals = new Set();
-
-      const signalName = (p, range) => {
-        const suffix = range === 'visual' ? p.channel : p.field;
-        let sg = varName("".concat(name, "_").concat(suffix));
-
-        for (let counter = 1; signals.has(sg); counter++) {
-          sg = varName("".concat(name, "_").concat(suffix, "_").concat(counter));
-        }
-
-        signals.add(sg);
-        return {
-          [range]: sg
-        };
-      }; // If no explicit projection (either fields or encodings) is specified, set some defaults.
-      // If an initial value is set, try to infer projections.
-      // Otherwise, use the default configuration.
-
-
-      if (!selDef.fields && !selDef.encodings) {
-        const cfg = model.config.selection[selDef.type];
-
-        if (selDef.init) {
-          for (const init of array$1(selDef.init)) {
-            for (const key of keys$2(init)) {
-              if (isSingleDefUnitChannel(key)) {
-                (selDef.encodings || (selDef.encodings = [])).push(key);
-              } else {
-                if (selDef.type === 'interval') {
-                  warn$1(INTERVAL_INITIALIZED_WITH_X_Y);
-                  selDef.encodings = cfg.encodings;
-                } else {
-                  (selDef.fields || (selDef.fields = [])).push(key);
-                }
-              }
-            }
-          }
-        } else {
-          selDef.encodings = cfg.encodings;
-          selDef.fields = cfg.fields;
-        }
-      } // TODO: find a possible channel mapping for these fields.
-
-
-      for (const field of (_selDef$fields = selDef.fields) !== null && _selDef$fields !== void 0 ? _selDef$fields : []) {
-        var _selDef$fields;
-
-        const p = {
-          type: 'E',
-          field
-        };
-        p.signals = { ...signalName(p, 'data')
-        };
-        proj.items.push(p);
-        proj.hasField[field] = p;
-      }
-
-      for (const channel of (_selDef$encodings = selDef.encodings) !== null && _selDef$encodings !== void 0 ? _selDef$encodings : []) {
-        var _selDef$encodings;
-
-        const fieldDef = model.fieldDef(channel);
-
-        if (fieldDef) {
-          let field = fieldDef.field;
-
-          if (fieldDef.aggregate) {
-            warn$1(cannotProjectAggregate(channel, fieldDef.aggregate));
-            continue;
-          } else if (!field) {
-            warn$1(cannotProjectOnChannelWithoutField(channel));
-            continue;
-          }
-
-          if (fieldDef.timeUnit) {
-            field = model.vgField(channel); // Construct TimeUnitComponents which will be combined into a
-            // TimeUnitNode. This node may need to be inserted into the
-            // dataflow if the selection is used across views that do not
-            // have these time units defined.
-
-            const component = {
-              timeUnit: fieldDef.timeUnit,
-              as: field,
-              field: fieldDef.field
-            };
-            timeUnits[hash(component)] = component;
-          } // Prevent duplicate projections on the same field.
-          // TODO: what if the same field is bound to multiple channels (e.g., SPLOM diag).
-
-
-          if (!parsed[field]) {
-            // Determine whether the tuple will store enumerated or ranged values.
-            // Interval selections store ranges for continuous scales, and enumerations otherwise.
-            // Single/multi selections store ranges for binned fields, and enumerations otherwise.
-            let type = 'E';
-
-            if (selCmpt.type === 'interval') {
-              const scaleType = model.getScaleComponent(channel).get('type');
-
-              if (hasContinuousDomain(scaleType)) {
-                type = 'R';
-              }
-            } else if (fieldDef.bin) {
-              type = 'R-RE';
-            }
-
-            const p = {
-              field,
-              channel,
-              type
-            };
-            p.signals = { ...signalName(p, 'data'),
-              ...signalName(p, 'visual')
-            };
-            proj.items.push(parsed[field] = p);
-            proj.hasField[field] = proj.hasChannel[channel] = parsed[field];
-          }
-        } else {
-          warn$1(cannotProjectOnChannelWithoutField(channel));
-        }
-      }
-
-      if (selDef.init) {
-        const parseInit = i => {
-          return proj.items.map(p => i[p.channel] !== undefined ? i[p.channel] : i[p.field]);
-        };
-
-        if (selDef.type === 'interval') {
-          selCmpt.init = parseInit(selDef.init);
-        } else {
-          const init = array$1(selDef.init);
-          selCmpt.init = init.map(parseInit);
-        }
-      }
-
-      if (!isEmpty(timeUnits)) {
-        proj.timeUnit = new TimeUnitNode(null, timeUnits);
-      }
-    },
-    signals: (model, selCmpt, allSignals) => {
-      const name = selCmpt.name + TUPLE_FIELDS;
-      const hasSignal = allSignals.filter(s => s.name === name);
-      return hasSignal.length > 0 ? allSignals : allSignals.concat({
-        name,
-        value: selCmpt.project.items.map(proj => {
-          const {
-            signals,
-            hasLegend,
-            ...rest
-          } = proj;
-          rest.field = replacePathInField(rest.field);
-          return rest;
-        })
-      });
-    }
-  };
-
   const inputBindings = {
-    has: selCmpt => {
-      return selCmpt.type === 'single' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind !== 'scales' && !isLegendBinding(selCmpt.bind);
+    defined: selCmpt => {
+      return selCmpt.type === 'point' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind !== 'scales' && !isLegendBinding(selCmpt.bind);
     },
-    parse: (model, selCmpt, selDef, origDef) => {
-      // Binding a selection to input widgets disables default direct manipulation interaction.
-      // A user can choose to re-enable it by explicitly specifying triggering input events.
-      if (!origDef.on) delete selCmpt.events;
-      if (!origDef.clear) delete selCmpt.clear;
-    },
+    parse: (model, selCmpt, selDef) => disableDirectManipulation(selCmpt, selDef),
     topLevelSignals: (model, selCmpt, signals) => {
       const name = selCmpt.name;
       const proj = selCmpt.project;
       const bind = selCmpt.bind;
       const init = selCmpt.init && selCmpt.init[0]; // Can only exist on single selections (one initial value).
 
-      const datum = nearest.has(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
+      const datum = nearest.defined(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
       proj.items.forEach((p, i) => {
         const sgname = varName("".concat(name, "_").concat(p.field));
         const hasSignal = signals.filter(s => s.name === sgname);
@@ -60003,8 +61768,8 @@
 
   const TOGGLE = '_toggle';
   const toggle = {
-    has: selCmpt => {
-      return selCmpt.type === 'multi' && !!selCmpt.toggle;
+    defined: selCmpt => {
+      return selCmpt.type === 'point' && !!selCmpt.toggle;
     },
     signals: (model, selCmpt, signals) => {
       return signals.concat({
@@ -60024,16 +61789,16 @@
   };
 
   const clear = {
-    has: selCmpt => {
+    defined: selCmpt => {
       return selCmpt.clear !== undefined && selCmpt.clear !== false;
     },
-    parse: (model, selCmpt, selDef) => {
-      if (selDef.clear) {
-        selCmpt.clear = isString(selDef.clear) ? eventSelector(selDef.clear, 'scope') : selDef.clear;
+    parse: (model, selCmpt) => {
+      if (selCmpt.clear) {
+        selCmpt.clear = isString(selCmpt.clear) ? eventSelector(selCmpt.clear, 'view') : selCmpt.clear;
       }
     },
     topLevelSignals: (model, selCmpt, signals) => {
-      if (inputBindings.has(selCmpt)) {
+      if (inputBindings.defined(selCmpt)) {
         for (const proj of selCmpt.project.items) {
           const idx = signals.findIndex(n => n.name === varName("".concat(selCmpt.name, "_").concat(proj.field)));
 
@@ -60073,7 +61838,7 @@
         let tIdx = signals.findIndex(n => n.name === selCmpt.name + TUPLE);
         addClear(tIdx, 'null');
 
-        if (toggle.has(selCmpt)) {
+        if (toggle.defined(selCmpt)) {
           tIdx = signals.findIndex(n => n.name === selCmpt.name + TOGGLE);
           addClear(tIdx, 'false');
         }
@@ -60083,114 +61848,29 @@
     }
   };
 
-  const scaleBindings = {
-    has: selCmpt => {
-      return selCmpt.type === 'interval' && selCmpt.resolve === 'global' && selCmpt.bind && selCmpt.bind === 'scales';
-    },
-    parse: (model, selCmpt) => {
-      const bound = selCmpt.scales = [];
-
-      for (const proj of selCmpt.project.items) {
-        const channel = proj.channel;
-
-        if (!isScaleChannel(channel)) {
-          continue;
-        }
-
-        const scale = model.getScaleComponent(channel);
-        const scaleType = scale ? scale.get('type') : undefined;
-
-        if (!scale || !hasContinuousDomain(scaleType)) {
-          warn$1(SCALE_BINDINGS_CONTINUOUS);
-          continue;
-        }
-
-        const extent = {
-          selection: selCmpt.name,
-          field: proj.field
-        };
-        scale.set('selectionExtent', extent, true);
-        bound.push(proj);
-      }
-    },
-    topLevelSignals: (model, selCmpt, signals) => {
-      const bound = selCmpt.scales.filter(proj => signals.filter(s => s.name === proj.signals.data).length === 0); // Top-level signals are only needed for multiview displays and if this
-      // view's top-level signals haven't already been generated.
-
-      if (!model.parent || isTopLevelLayer(model) || bound.length === 0) {
-        return signals;
-      } // vlSelectionResolve does not account for the behavior of bound scales in
-      // multiview displays. Each unit view adds a tuple to the store, but the
-      // state of the selection is the unit selection most recently updated. This
-      // state is captured by the top-level signals that we insert and "push
-      // outer" to from within the units. We need to reassemble this state into
-      // the top-level named signal, except no single selCmpt has a global view.
-
-
-      const namedSg = signals.filter(s => s.name === selCmpt.name)[0];
-      let update = namedSg.update;
-
-      if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
-        namedSg.update = "{".concat(bound.map(proj => "".concat($(proj.field), ": ").concat(proj.signals.data)).join(', '), "}");
-      } else {
-        for (const proj of bound) {
-          const mapping = "".concat($(proj.field), ": ").concat(proj.signals.data);
-
-          if (update.indexOf(mapping) < 0) {
-            update = "".concat(update.substring(0, update.length - 1), ", ").concat(mapping, "}");
-          }
-        }
-
-        namedSg.update = update;
-      }
-
-      return signals.concat(bound.map(proj => ({
-        name: proj.signals.data
-      })));
-    },
-    signals: (model, selCmpt, signals) => {
-      // Nested signals need only push to top-level signals with multiview displays.
-      if (model.parent && !isTopLevelLayer(model)) {
-        for (const proj of selCmpt.scales) {
-          const signal = signals.filter(s => s.name === proj.signals.data)[0];
-          signal.push = 'outer';
-          delete signal.value;
-          delete signal.update;
-        }
-      }
-
-      return signals;
-    }
-  };
-  function domain$2(model, channel) {
-    const scale = $(model.scaleName(channel));
-    return "domain(".concat(scale, ")");
-  }
-
-  function isTopLevelLayer(model) {
-    var _model$parent$parent;
-
-    return model.parent && isLayerModel(model.parent) && ((_model$parent$parent = !model.parent.parent) !== null && _model$parent$parent !== void 0 ? _model$parent$parent : isTopLevelLayer(model.parent.parent));
-  }
-
   const legendBindings = {
-    has: selCmpt => {
+    defined: selCmpt => {
       const spec = selCmpt.resolve === 'global' && selCmpt.bind && isLegendBinding(selCmpt.bind);
-      const projLen = selCmpt.project.items.length === 1 && selCmpt.project.items[0].field !== SELECTION_ID;
+      const projLen = selCmpt.project.items.length === 1 && selCmpt.project.items[0].field !== SELECTION_ID$1;
 
       if (spec && !projLen) {
-        warn$1(LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
+        warn$2(LEGEND_BINDINGS_MUST_HAVE_PROJECTION);
       }
 
       return spec && projLen;
     },
-    parse: (model, selCmpt, selDef, origDef) => {
-      // Binding a selection to a legend disables default direct manipulation interaction.
-      // A user can choose to re-enable it by explicitly specifying triggering input events.
-      if (!origDef.on) delete selCmpt.events;
-      if (!origDef.clear) delete selCmpt.clear;
+    parse: (model, selCmpt, selDef) => {
+      // Allow legend items to be toggleable by default even though direct manipulation is disabled.
+      const selDef_ = duplicate(selDef);
+      selDef_.select = isString(selDef_.select) ? {
+        type: selDef_.select,
+        toggle: selCmpt.toggle
+      } : { ...selDef_.select,
+        toggle: selCmpt.toggle
+      };
+      disableDirectManipulation(selCmpt, selDef_);
 
-      if (origDef.on || origDef.clear) {
+      if (isObject(selDef.select) && (selDef.select.on || selDef.select.clear)) {
         const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
 
         for (const evt of selCmpt.events) {
@@ -60198,7 +61878,7 @@
 
           evt.filter = array$1((_evt$filter = evt.filter) !== null && _evt$filter !== void 0 ? _evt$filter : []);
 
-          if (evt.filter.indexOf(legendFilter) < 0) {
+          if (!evt.filter.includes(legendFilter)) {
             evt.filter.push(legendFilter);
           }
         }
@@ -60289,12 +61969,13 @@
     var _model$fieldDef;
 
     const field = (_model$fieldDef = model.fieldDef(channel)) === null || _model$fieldDef === void 0 ? void 0 : _model$fieldDef.field;
-    forEachSelection(model, selCmpt => {
-      var _selCmpt$project$hasF;
+
+    for (const selCmpt of vals((_model$component$sele = model.component.selection) !== null && _model$component$sele !== void 0 ? _model$component$sele : {})) {
+      var _model$component$sele, _selCmpt$project$hasF;
 
       const proj = (_selCmpt$project$hasF = selCmpt.project.hasField[field]) !== null && _selCmpt$project$hasF !== void 0 ? _selCmpt$project$hasF : selCmpt.project.hasChannel[channel];
 
-      if (proj && legendBindings.has(selCmpt)) {
+      if (proj && legendBindings.defined(selCmpt)) {
         var _legendCmpt$get;
 
         const legendSelections = (_legendCmpt$get = legendCmpt.get('selections')) !== null && _legendCmpt$get !== void 0 ? _legendCmpt$get : [];
@@ -60302,18 +61983,18 @@
         legendCmpt.set('selections', legendSelections, false);
         proj.hasLegend = true;
       }
-    });
+    }
   }
 
   const ANCHOR = '_translate_anchor';
   const DELTA = '_translate_delta';
   const translate$2 = {
-    has: selCmpt => {
+    defined: selCmpt => {
       return selCmpt.type === 'interval' && selCmpt.translate;
     },
     signals: (model, selCmpt, signals) => {
       const name = selCmpt.name;
-      const hasScales = scaleBindings.has(selCmpt);
+      const hasScales = scaleBindings.defined(selCmpt);
       const anchor = name + ANCHOR;
       const {
         x,
@@ -60330,7 +62011,7 @@
         value: {},
         on: [{
           events: events.map(e => e.between[0]),
-          update: '{x: x(unit), y: y(unit)' + (x !== undefined ? ', extent_x: ' + (hasScales ? domain$2(model, X$1) : "slice(".concat(x.signals.visual, ")")) : '') + (y !== undefined ? ', extent_y: ' + (hasScales ? domain$2(model, Y$1) : "slice(".concat(y.signals.visual, ")")) : '') + '}'
+          update: '{x: x(unit), y: y(unit)' + (x !== undefined ? ", extent_x: ".concat(hasScales ? domain$2(model, X$1) : "slice(".concat(x.signals.visual, ")")) : '') + (y !== undefined ? ", extent_y: ".concat(hasScales ? domain$2(model, Y$1) : "slice(".concat(y.signals.visual, ")")) : '') + '}'
         }]
       }, {
         name: name + DELTA,
@@ -60354,23 +62035,25 @@
   };
 
   function onDelta(model, selCmpt, proj, size, signals) {
-    var _scaleCmpt$get;
+    var _scaleCmpt$get, _scaleCmpt$get2;
 
     const name = selCmpt.name;
     const anchor = name + ANCHOR;
     const delta = name + DELTA;
     const channel = proj.channel;
-    const hasScales = scaleBindings.has(selCmpt);
+    const hasScales = scaleBindings.defined(selCmpt);
     const signal = signals.filter(s => s.name === proj.signals[hasScales ? 'data' : 'visual'])[0];
     const sizeSg = model.getSizeSignalRef(size).signal;
     const scaleCmpt = model.getScaleComponent(channel);
     const scaleType = scaleCmpt.get('type');
-    const sign = hasScales && channel === X$1 ? '-' : ''; // Invert delta when panning x-scales.
+    const reversed = scaleCmpt.get('reverse'); // scale parsing sets this flag for fieldDef.sort
 
+    const sign = !hasScales ? '' : channel === X$1 ? reversed ? '' : '-' : reversed ? '-' : '';
     const extent = "".concat(anchor, ".extent_").concat(channel);
-    const offset = "".concat(sign).concat(delta, ".").concat(channel, " / ") + (hasScales ? "".concat(sizeSg) : "span(".concat(extent, ")"));
-    const panFn = !hasScales ? 'panLinear' : scaleType === 'log' ? 'panLog' : scaleType === 'pow' ? 'panPow' : 'panLinear';
-    const update = "".concat(panFn, "(").concat(extent, ", ").concat(offset) + (hasScales && scaleType === 'pow' ? ", ".concat((_scaleCmpt$get = scaleCmpt.get('exponent')) !== null && _scaleCmpt$get !== void 0 ? _scaleCmpt$get : 1) : '') + ')';
+    const offset = "".concat(sign).concat(delta, ".").concat(channel, " / ").concat(hasScales ? "".concat(sizeSg) : "span(".concat(extent, ")"));
+    const panFn = !hasScales ? 'panLinear' : scaleType === 'log' ? 'panLog' : scaleType === 'symlog' ? 'panSymlog' : scaleType === 'pow' ? 'panPow' : 'panLinear';
+    const arg = !hasScales ? '' : scaleType === 'pow' ? ", ".concat((_scaleCmpt$get = scaleCmpt.get('exponent')) !== null && _scaleCmpt$get !== void 0 ? _scaleCmpt$get : 1) : scaleType === 'symlog' ? ", ".concat((_scaleCmpt$get2 = scaleCmpt.get('constant')) !== null && _scaleCmpt$get2 !== void 0 ? _scaleCmpt$get2 : 1) : '';
+    const update = "".concat(panFn, "(").concat(extent, ", ").concat(offset).concat(arg, ")");
     signal.on.push({
       events: {
         signal: delta
@@ -60382,12 +62065,12 @@
   const ANCHOR$1 = '_zoom_anchor';
   const DELTA$1 = '_zoom_delta';
   const zoom$2 = {
-    has: selCmpt => {
+    defined: selCmpt => {
       return selCmpt.type === 'interval' && selCmpt.zoom;
     },
     signals: (model, selCmpt, signals) => {
       const name = selCmpt.name;
-      const hasScales = scaleBindings.has(selCmpt);
+      const hasScales = scaleBindings.defined(selCmpt);
       const delta = name + DELTA$1;
       const {
         x,
@@ -60429,11 +62112,11 @@
   };
 
   function onDelta$1(model, selCmpt, proj, size, signals) {
-    var _scaleCmpt$get;
+    var _scaleCmpt$get, _scaleCmpt$get2;
 
     const name = selCmpt.name;
     const channel = proj.channel;
-    const hasScales = scaleBindings.has(selCmpt);
+    const hasScales = scaleBindings.defined(selCmpt);
     const signal = signals.filter(s => s.name === proj.signals[hasScales ? 'data' : 'visual'])[0];
     const sizeSg = model.getSizeSignalRef(size).signal;
     const scaleCmpt = model.getScaleComponent(channel);
@@ -60441,8 +62124,9 @@
     const base = hasScales ? domain$2(model, channel) : signal.name;
     const delta = name + DELTA$1;
     const anchor = "".concat(name).concat(ANCHOR$1, ".").concat(channel);
-    const zoomFn = !hasScales ? 'zoomLinear' : scaleType === 'log' ? 'zoomLog' : scaleType === 'pow' ? 'zoomPow' : 'zoomLinear';
-    const update = "".concat(zoomFn, "(").concat(base, ", ").concat(anchor, ", ").concat(delta) + (hasScales && scaleType === 'pow' ? ", ".concat((_scaleCmpt$get = scaleCmpt.get('exponent')) !== null && _scaleCmpt$get !== void 0 ? _scaleCmpt$get : 1) : '') + ')';
+    const zoomFn = !hasScales ? 'zoomLinear' : scaleType === 'log' ? 'zoomLog' : scaleType === 'symlog' ? 'zoomSymlog' : scaleType === 'pow' ? 'zoomPow' : 'zoomLinear';
+    const arg = !hasScales ? '' : scaleType === 'pow' ? ", ".concat((_scaleCmpt$get = scaleCmpt.get('exponent')) !== null && _scaleCmpt$get !== void 0 ? _scaleCmpt$get : 1) : scaleType === 'symlog' ? ", ".concat((_scaleCmpt$get2 = scaleCmpt.get('constant')) !== null && _scaleCmpt$get2 !== void 0 ? _scaleCmpt$get2 : 1) : '';
+    const update = "".concat(zoomFn, "(").concat(base, ", ").concat(anchor, ", ").concat(delta).concat(arg, ")");
     signal.on.push({
       events: {
         signal: delta
@@ -60451,533 +62135,19 @@
     });
   }
 
-  const compilers = [project$1, toggle, scaleBindings, legendBindings, translate$2, zoom$2, inputBindings, nearest, clear];
-  function forEachTransform(selCmpt, cb) {
-    for (const t of compilers) {
-      if (t.has(selCmpt)) {
-        cb(t);
-      }
-    }
-  }
-
-  function assembleInit(init, isExpr = true, wrap = identity) {
-    if (isArray(init)) {
-      const assembled = init.map(v => assembleInit(v, isExpr, wrap));
-      return isExpr ? "[".concat(assembled.join(', '), "]") : assembled;
-    } else if (isDateTime(init)) {
-      if (isExpr) {
-        return wrap(dateTimeToExpr(init));
-      } else {
-        return wrap(dateTimeToTimestamp(init));
-      }
-    }
-
-    return isExpr ? wrap(JSON.stringify(init)) : init;
-  }
-  function assembleUnitSelectionSignals(model, signals) {
-    forEachSelection(model, (selCmpt, selCompiler) => {
-      const name = selCmpt.name;
-      let modifyExpr = selCompiler.modifyExpr(model, selCmpt);
-      signals.push(...selCompiler.signals(model, selCmpt));
-      forEachTransform(selCmpt, txCompiler => {
-        if (txCompiler.signals) {
-          signals = txCompiler.signals(model, selCmpt, signals);
-        }
-
-        if (txCompiler.modifyExpr) {
-          modifyExpr = txCompiler.modifyExpr(model, selCmpt, modifyExpr);
-        }
-      });
-      signals.push({
-        name: name + MODIFY,
-        on: [{
-          events: {
-            signal: selCmpt.name + TUPLE
-          },
-          update: "modify(".concat($(selCmpt.name + STORE), ", ").concat(modifyExpr, ")")
-        }]
-      });
-    });
-    return cleanupEmptyOnArray(signals);
-  }
-  function assembleFacetSignals(model, signals) {
-    if (model.component.selection && keys$2(model.component.selection).length) {
-      const name = $(model.getName('cell'));
-      signals.unshift({
-        name: 'facet',
-        value: {},
-        on: [{
-          events: eventSelector('mousemove', 'scope'),
-          update: "isTuple(facet) ? facet : group(".concat(name, ").datum")
-        }]
-      });
-    }
-
-    return cleanupEmptyOnArray(signals);
-  }
-  function assembleTopLevelSignals(model, signals) {
-    let hasSelections = false;
-    forEachSelection(model, (selCmpt, selCompiler) => {
-      const name = selCmpt.name;
-      const store = $(name + STORE);
-      const hasSg = signals.filter(s => s.name === name);
-
-      if (hasSg.length === 0) {
-        const resolve = selCmpt.resolve === 'global' ? 'union' : selCmpt.resolve;
-        const isMulti = selCmpt.type === 'multi' ? ', true)' : ')';
-        signals.push({
-          name: selCmpt.name,
-          update: "".concat(VL_SELECTION_RESOLVE, "(").concat(store, ", ").concat($(resolve)).concat(isMulti)
-        });
-      }
-
-      hasSelections = true;
-
-      if (selCompiler.topLevelSignals) {
-        signals = selCompiler.topLevelSignals(model, selCmpt, signals);
-      }
-
-      forEachTransform(selCmpt, txCompiler => {
-        if (txCompiler.topLevelSignals) {
-          signals = txCompiler.topLevelSignals(model, selCmpt, signals);
-        }
-      });
-    });
-
-    if (hasSelections) {
-      const hasUnit = signals.filter(s => s.name === 'unit');
-
-      if (hasUnit.length === 0) {
-        signals.unshift({
-          name: 'unit',
-          value: {},
-          on: [{
-            events: 'mousemove',
-            update: 'isTuple(group()) ? group() : unit'
-          }]
-        });
-      }
-    }
-
-    return cleanupEmptyOnArray(signals);
-  }
-  function assembleUnitSelectionData(model, data) {
-    const dataCopy = [...data];
-    forEachSelection(model, selCmpt => {
-      const init = {
-        name: selCmpt.name + STORE
-      };
-
-      if (selCmpt.init) {
-        const fields = selCmpt.project.items.map(proj => {
-          const {
-            signals,
-            ...rest
-          } = proj;
-          return rest;
-        });
-        const insert = selCmpt.init.map(i => assembleInit(i, false));
-        init.values = selCmpt.type === 'interval' ? [{
-          unit: unitName(model, {
-            escape: false
-          }),
-          fields,
-          values: insert
-        }] : insert.map(i => ({
-          unit: unitName(model, {
-            escape: false
-          }),
-          fields,
-          values: i
-        }));
-      }
-
-      const contains = dataCopy.filter(d => d.name === selCmpt.name + STORE);
-
-      if (!contains.length) {
-        dataCopy.push(init);
-      }
-    });
-    return dataCopy;
-  }
-  function assembleUnitSelectionMarks(model, marks) {
-    forEachSelection(model, (selCmpt, selCompiler) => {
-      marks = selCompiler.marks ? selCompiler.marks(model, selCmpt, marks) : marks;
-      forEachTransform(selCmpt, txCompiler => {
-        if (txCompiler.marks) {
-          marks = txCompiler.marks(model, selCmpt, marks);
-        }
-      });
-    });
-    return marks;
-  }
-  function assembleLayerSelectionMarks(model, marks) {
-    for (const child of model.children) {
-      if (isUnitModel(child)) {
-        marks = assembleUnitSelectionMarks(child, marks);
-      }
-    }
-
-    return marks;
-  }
-  function assembleSelectionScaleDomain(model, extent) {
-    const name = extent.selection;
-    const selCmpt = model.getSelectionComponent(name, varName(name));
-    return {
-      signal: parseSelectionBinExtent(selCmpt, extent)
-    };
-  }
-
-  function cleanupEmptyOnArray(signals) {
-    return signals.map(s => {
-      if (s.on && !s.on.length) delete s.on;
-      return s;
-    });
-  }
-
-  const BRUSH = '_brush';
-  const SCALE_TRIGGER = '_scale_trigger';
-  const interval$2 = {
-    signals: (model, selCmpt) => {
-      const name = selCmpt.name;
-      const fieldsSg = name + TUPLE_FIELDS;
-      const hasScales = scaleBindings.has(selCmpt);
-      const signals = [];
-      const dataSignals = [];
-      const scaleTriggers = [];
-
-      if (selCmpt.translate && !hasScales) {
-        const filterExpr = "!event.item || event.item.mark.name !== ".concat($(name + BRUSH));
-        events$2(selCmpt, (on, evt) => {
-          var _evt$between$0$filter;
-
-          const filters = array$1((_evt$between$0$filter = evt.between[0].filter) !== null && _evt$between$0$filter !== void 0 ? _evt$between$0$filter : evt.between[0].filter = []);
-
-          if (filters.indexOf(filterExpr) < 0) {
-            filters.push(filterExpr);
-          }
-
-          return on;
-        });
-      }
-
-      selCmpt.project.items.forEach((proj, i) => {
-        const channel = proj.channel;
-
-        if (channel !== X$1 && channel !== Y$1) {
-          warn$1('Interval selections only support x and y encoding channels.');
-          return;
-        }
-
-        const init = selCmpt.init ? selCmpt.init[i] : null;
-        const cs = channelSignals(model, selCmpt, proj, init);
-        const dname = proj.signals.data;
-        const vname = proj.signals.visual;
-        const scaleName = $(model.scaleName(channel));
-        const scaleType = model.getScaleComponent(channel).get('type');
-        const toNum = hasContinuousDomain(scaleType) ? '+' : '';
-        signals.push(...cs);
-        dataSignals.push(dname);
-        scaleTriggers.push({
-          scaleName: model.scaleName(channel),
-          expr: "(!isArray(".concat(dname, ") || ") + "(".concat(toNum, "invert(").concat(scaleName, ", ").concat(vname, ")[0] === ").concat(toNum).concat(dname, "[0] && ") + "".concat(toNum, "invert(").concat(scaleName, ", ").concat(vname, ")[1] === ").concat(toNum).concat(dname, "[1]))")
-        });
-      }); // Proxy scale reactions to ensure that an infinite loop doesn't occur
-      // when an interval selection filter touches the scale.
-
-      if (!hasScales) {
-        signals.push({
-          name: name + SCALE_TRIGGER,
-          value: {},
-          on: [{
-            events: scaleTriggers.map(t => ({
-              scale: t.scaleName
-            })),
-            update: scaleTriggers.map(t => t.expr).join(' && ') + " ? ".concat(name + SCALE_TRIGGER, " : {}")
-          }]
-        });
-      } // Only add an interval to the store if it has valid data extents. Data extents
-      // are set to null if pixel extents are equal to account for intervals over
-      // ordinal/nominal domains which, when inverted, will still produce a valid datum.
-
-
-      const init = selCmpt.init;
-      const update = "unit: ".concat(unitName(model), ", fields: ").concat(fieldsSg, ", values");
-      return signals.concat({
-        name: name + TUPLE,
-        ...(init ? {
-          init: "{".concat(update, ": ").concat(assembleInit(init), "}")
-        } : {}),
-        on: [{
-          events: [{
-            signal: dataSignals.join(' || ')
-          }],
-          // Prevents double invocation, see https://github.com/vega/vega#1672.
-          update: dataSignals.join(' && ') + " ? {".concat(update, ": [").concat(dataSignals, "]} : null")
-        }]
-      });
-    },
-    modifyExpr: (model, selCmpt) => {
-      const tpl = selCmpt.name + TUPLE;
-      return tpl + ', ' + (selCmpt.resolve === 'global' ? 'true' : "{unit: ".concat(unitName(model), "}"));
-    },
-    marks: (model, selCmpt, marks) => {
-      const name = selCmpt.name;
-      const {
-        x,
-        y
-      } = selCmpt.project.hasChannel;
-      const xvname = x && x.signals.visual;
-      const yvname = y && y.signals.visual;
-      const store = "data(".concat($(selCmpt.name + STORE), ")"); // Do not add a brush if we're binding to scales.
-
-      if (scaleBindings.has(selCmpt)) {
-        return marks;
-      }
-
-      const update = {
-        x: x !== undefined ? {
-          signal: "".concat(xvname, "[0]")
-        } : {
-          value: 0
-        },
-        y: y !== undefined ? {
-          signal: "".concat(yvname, "[0]")
-        } : {
-          value: 0
-        },
-        x2: x !== undefined ? {
-          signal: "".concat(xvname, "[1]")
-        } : {
-          field: {
-            group: 'width'
-          }
-        },
-        y2: y !== undefined ? {
-          signal: "".concat(yvname, "[1]")
-        } : {
-          field: {
-            group: 'height'
-          }
-        }
-      }; // If the selection is resolved to global, only a single interval is in
-      // the store. Wrap brush mark's encodings with a production rule to test
-      // this based on the `unit` property. Hide the brush mark if it corresponds
-      // to a unit different from the one in the store.
-
-      if (selCmpt.resolve === 'global') {
-        for (const key of keys$2(update)) {
-          update[key] = [{
-            test: "".concat(store, ".length && ").concat(store, "[0].unit === ").concat(unitName(model)),
-            ...update[key]
-          }, {
-            value: 0
-          }];
-        }
-      } // Two brush marks ensure that fill colors and other aesthetic choices do
-      // not interefere with the core marks, but that the brushed region can still
-      // be interacted with (e.g., dragging it around).
-
-
-      const {
-        fill,
-        fillOpacity,
-        cursor,
-        ...stroke
-      } = selCmpt.mark;
-      const vgStroke = keys$2(stroke).reduce((def, k) => {
-        def[k] = [{
-          test: [x !== undefined && "".concat(xvname, "[0] !== ").concat(xvname, "[1]"), y !== undefined && "".concat(yvname, "[0] !== ").concat(yvname, "[1]")].filter(t => t).join(' && '),
-          value: stroke[k]
-        }, {
-          value: null
-        }];
-        return def;
-      }, {});
-      return [{
-        name: name + BRUSH + '_bg',
-        type: 'rect',
-        clip: true,
-        encode: {
-          enter: {
-            fill: {
-              value: fill
-            },
-            fillOpacity: {
-              value: fillOpacity
-            }
-          },
-          update: update
-        }
-      }, ...marks, {
-        name: name + BRUSH,
-        type: 'rect',
-        clip: true,
-        encode: {
-          enter: { ...(cursor ? {
-              cursor: {
-                value: cursor
-              }
-            } : {}),
-            fill: {
-              value: 'transparent'
-            }
-          },
-          update: { ...update,
-            ...vgStroke
-          }
-        }
-      }];
-    }
-  };
-  /**
-   * Returns the visual and data signals for an interval selection.
-   */
-
-  function channelSignals(model, selCmpt, proj, init) {
-    const channel = proj.channel;
-    const vname = proj.signals.visual;
-    const dname = proj.signals.data;
-    const hasScales = scaleBindings.has(selCmpt);
-    const scaleName = $(model.scaleName(channel));
-    const scale = model.getScaleComponent(channel);
-    const scaleType = scale ? scale.get('type') : undefined;
-
-    const scaled = str => "scale(".concat(scaleName, ", ").concat(str, ")");
-
-    const size = model.getSizeSignalRef(channel === X$1 ? 'width' : 'height').signal;
-    const coord = "".concat(channel, "(unit)");
-    const on = events$2(selCmpt, (def, evt) => {
-      return [...def, {
-        events: evt.between[0],
-        update: "[".concat(coord, ", ").concat(coord, "]")
-      }, // Brush Start
-      {
-        events: evt,
-        update: "[".concat(vname, "[0], clamp(").concat(coord, ", 0, ").concat(size, ")]")
-      } // Brush End
-      ];
-    }); // React to pan/zooms of continuous scales. Non-continuous scales
-    // (band, point) cannot be pan/zoomed and any other changes
-    // to their domains (e.g., filtering) should clear the brushes.
-
-    on.push({
-      events: {
-        signal: selCmpt.name + SCALE_TRIGGER
-      },
-      update: hasContinuousDomain(scaleType) ? "[".concat(scaled("".concat(dname, "[0]")), ", ").concat(scaled("".concat(dname, "[1]")), "]") : "[0, 0]"
-    });
-    return hasScales ? [{
-      name: dname,
-      on: []
-    }] : [{
-      name: vname,
-      ...(init ? {
-        init: assembleInit(init, true, scaled)
-      } : {
-        value: []
-      }),
-      on: on
-    }, {
-      name: dname,
-      ...(init ? {
-        init: assembleInit(init)
-      } : {}),
-      // Cannot be `value` as `init` may require datetime exprs.
-      on: [{
-        events: {
-          signal: vname
-        },
-        update: "".concat(vname, "[0] === ").concat(vname, "[1] ? null : invert(").concat(scaleName, ", ").concat(vname, ")")
-      }]
-    }];
-  }
-
-  function events$2(selCmpt, cb) {
-    return selCmpt.events.reduce((on, evt) => {
-      if (!evt.between) {
-        warn$1("".concat(evt, " is not an ordered event stream for interval selections."));
-        return on;
-      }
-
-      return cb(on, evt);
-    }, []);
-  }
-
-  function singleOrMultiSignals(model, selCmpt) {
-    const name = selCmpt.name;
-    const fieldsSg = name + TUPLE_FIELDS;
-    const project = selCmpt.project;
-    const datum = '(item().isVoronoi ? datum.datum : datum)';
-    const values = project.items.map(p => {
-      const fieldDef = model.fieldDef(p.channel); // Binned fields should capture extents, for a range test against the raw field.
-
-      return fieldDef && fieldDef.bin ? "[".concat(datum, "[").concat($(model.vgField(p.channel, {})), "], ") + "".concat(datum, "[").concat($(model.vgField(p.channel, {
-        binSuffix: 'end'
-      })), "]]") : "".concat(datum, "[").concat($(p.field), "]");
-    }).join(', '); // Only add a discrete selection to the store if a datum is present _and_
-    // the interaction isn't occurring on a group mark. This guards against
-    // polluting interactive state with invalid values in faceted displays
-    // as the group marks are also data-driven. We force the update to account
-    // for constant null states but varying toggles (e.g., shift-click in
-    // whitespace followed by a click in whitespace; the store should only
-    // be cleared on the second click).
-
-    const update = "unit: ".concat(unitName(model), ", fields: ").concat(fieldsSg, ", values");
-    const events = selCmpt.events;
-    return [{
-      name: name + TUPLE,
-      on: events ? [{
-        events,
-        update: "datum && item().mark.marktype !== 'group' ? {".concat(update, ": [").concat(values, "]} : null"),
-        force: true
-      }] : []
-    }];
-  }
-  const multi = {
-    signals: singleOrMultiSignals,
-    modifyExpr: (model, selCmpt) => {
-      const tpl = selCmpt.name + TUPLE;
-      return tpl + ', ' + (selCmpt.resolve === 'global' ? 'null' : "{unit: ".concat(unitName(model), "}"));
-    }
-  };
-
-  const single = {
-    signals: singleOrMultiSignals,
-    modifyExpr: (model, selCmpt) => {
-      const tpl = selCmpt.name + TUPLE;
-      return tpl + ', ' + (selCmpt.resolve === 'global' ? 'true' : "{unit: ".concat(unitName(model), "}"));
-    }
-  };
-
   const STORE = '_store';
   const TUPLE = '_tuple';
   const MODIFY = '_modify';
   const VL_SELECTION_RESOLVE = 'vlSelectionResolve';
-  const compilers$1 = {
-    single,
-    multi,
-    interval: interval$2
-  };
-  function forEachSelection(model, cb) {
-    const selections = model.component.selection;
-
-    if (selections) {
-      for (const sel of vals(selections)) {
-        const success = cb(sel, compilers$1[sel.type]);
-        if (success === true) break;
-      }
-    }
-  }
+  // Order matters for parsing and assembly.
+  const selectionCompilers = [point$6, interval$2, project$1, toggle, // Bindings may disable direct manipulation.
+  inputBindings, scaleBindings, legendBindings, clear, translate$2, zoom$2, nearest];
 
   function getFacetModel(model) {
     let parent = model.parent;
 
     while (parent) {
-      if (isFacetModel(parent)) {
-        break;
-      }
-
+      if (isFacetModel(parent)) break;
       parent = parent.parent;
     }
 
@@ -61007,11 +62177,18 @@
     return name;
   }
   function requiresSelectionId(model) {
-    let identifier = false;
-    forEachSelection(model, selCmpt => {
-      identifier = identifier || selCmpt.project.items.some(proj => proj.field === SELECTION_ID);
-    });
-    return identifier;
+    var _model$component$sele;
+
+    return vals((_model$component$sele = model.component.selection) !== null && _model$component$sele !== void 0 ? _model$component$sele : {}).reduce((identifier, selCmpt) => {
+      return identifier || selCmpt.project.items.some(proj => proj.field === SELECTION_ID$1);
+    }, false);
+  } // Binding a point selection to query widgets or legends disables default direct manipulation interaction.
+  // A user can choose to re-enable it by explicitly specifying triggering input events.
+
+  function disableDirectManipulation(selCmpt, selDef) {
+    if (isString(selDef.select) || !selDef.select.on) delete selCmpt.events;
+    if (isString(selDef.select) || !selDef.select.clear) delete selCmpt.clear;
+    if (isString(selDef.select) || !selDef.select.toggle) delete selCmpt.toggle;
   }
 
   function getName(node) {
@@ -61096,113 +62273,125 @@
   function parseUnitSelection(model, selDefs) {
     const selCmpts = {};
     const selectionConfig = model.config.selection;
+    if (!selDefs || !selDefs.length) return selCmpts;
 
-    for (const name of keys$2(selDefs !== null && selDefs !== void 0 ? selDefs : {})) {
-      const selDef = duplicate(selDefs[name]);
+    for (const def of selDefs) {
+      const name = varName(def.name);
+      const selDef = def.select;
+      const type = isString(selDef) ? selDef : selDef.type;
+      const defaults = isObject(selDef) ? duplicate(selDef) : {
+        type
+      }; // Set default values from config if a property hasn't been specified,
+      // or if it is true. E.g., "translate": true should use the default
+      // event handlers for translate. However, true may be a valid value for
+      // a property (e.g., "nearest": true). Project transform applies its defaults.
+
       const {
         fields,
         encodings,
         ...cfg
-      } = selectionConfig[selDef.type]; // Project transform applies its defaults.
-      // Set default values from config if a property hasn't been specified,
-      // or if it is true. E.g., "translate": true should use the default
-      // event handlers for translate. However, true may be a valid value for
-      // a property (e.g., "nearest": true).
+      } = selectionConfig[type];
 
       for (const key in cfg) {
-        // A selection should contain either `encodings` or `fields`, only use
-        // default values for these two values if neither of them is specified.
-        if (key === 'encodings' && selDef.fields || key === 'fields' && selDef.encodings) {
-          continue;
-        }
-
         if (key === 'mark') {
-          selDef[key] = { ...cfg[key],
-            ...selDef[key]
+          defaults[key] = { ...cfg[key],
+            ...defaults[key]
           };
         }
 
-        if (selDef[key] === undefined || selDef[key] === true) {
+        if (defaults[key] === undefined || defaults[key] === true) {
           var _cfg$key;
 
-          selDef[key] = (_cfg$key = cfg[key]) !== null && _cfg$key !== void 0 ? _cfg$key : selDef[key];
+          defaults[key] = (_cfg$key = cfg[key]) !== null && _cfg$key !== void 0 ? _cfg$key : defaults[key];
         }
       }
 
-      const safeName = varName(name);
-      const selCmpt = selCmpts[safeName] = { ...selDef,
-        name: safeName,
-        events: isString(selDef.on) ? eventSelector(selDef.on, 'scope') : duplicate(selDef.on)
+      const selCmpt = selCmpts[name] = { ...defaults,
+        name,
+        type,
+        init: def.value,
+        bind: def.bind,
+        events: isString(defaults.on) ? eventSelector(defaults.on, 'scope') : array$1(duplicate(defaults.on))
       };
-      forEachTransform(selCmpt, txCompiler => {
-        if (txCompiler.has(selCmpt) && txCompiler.parse) {
-          txCompiler.parse(model, selCmpt, selDef, selDefs[name]);
+
+      for (const c of selectionCompilers) {
+        if (c.defined(selCmpt) && c.parse) {
+          c.parse(model, selCmpt, def);
         }
-      });
+      }
     }
 
     return selCmpts;
   }
-  function parseSelectionPredicate(model, selections, dfnode, datum = 'datum') {
-    const stores = [];
+  function parseSelectionPredicate(model, pred, dfnode, datum = 'datum') {
+    const name = isString(pred) ? pred : pred.param;
+    const vname = varName(name);
+    const store = $(vname + STORE);
+    let selCmpt;
 
-    function expr(name) {
-      const vname = varName(name);
-      const selCmpt = model.getSelectionComponent(vname, name);
-      const store = $(vname + STORE);
-
-      if (selCmpt.project.timeUnit) {
-        const child = dfnode !== null && dfnode !== void 0 ? dfnode : model.component.data.raw;
-        const tunode = selCmpt.project.timeUnit.clone();
-
-        if (child.parent) {
-          tunode.insertAsParentOf(child);
-        } else {
-          child.parent = tunode;
-        }
-      }
-
-      if (selCmpt.empty !== 'none') {
-        stores.push(store);
-      }
-
-      return "vlSelectionTest(".concat(store, ", ").concat(datum) + (selCmpt.resolve === 'global' ? ')' : ", ".concat($(selCmpt.resolve), ")"));
+    try {
+      selCmpt = model.getSelectionComponent(vname, name);
+    } catch (e) {
+      // If a selection isn't found, treat as a variable parameter and coerce to boolean.
+      return "!!".concat(vname);
     }
 
-    const predicateStr = logicalExpr(selections, expr);
-    return (stores.length ? '!(' + stores.map(s => "length(data(".concat(s, "))")).join(' || ') + ') || ' : '') + "(".concat(predicateStr, ")");
+    if (selCmpt.project.timeUnit) {
+      const child = dfnode !== null && dfnode !== void 0 ? dfnode : model.component.data.raw;
+      const tunode = selCmpt.project.timeUnit.clone();
+
+      if (child.parent) {
+        tunode.insertAsParentOf(child);
+      } else {
+        child.parent = tunode;
+      }
+    }
+
+    const test = "vlSelectionTest(".concat(store, ", ").concat(datum) + (selCmpt.resolve === 'global' ? ')' : ", ".concat($(selCmpt.resolve), ")"));
+    const length = "length(data(".concat(store, "))");
+    return pred.empty === false ? "".concat(length, " && ").concat(test) : "!".concat(length, " || ").concat(test);
   }
-  function parseSelectionBinExtent(selCmpt, extent) {
+  function parseSelectionExtent(model, name, extent) {
+    const vname = varName(name);
     const encoding = extent['encoding'];
     let field = extent['field'];
+    let selCmpt;
+
+    try {
+      selCmpt = model.getSelectionComponent(vname, name);
+    } catch (e) {
+      // If a selection isn't found, treat it as a variable parameter.
+      return vname;
+    }
 
     if (!encoding && !field) {
       field = selCmpt.project.items[0].field;
 
       if (selCmpt.project.items.length > 1) {
-        warn$1('A "field" or "encoding" must be specified when using a selection as a scale domain. ' + "Using \"field\": ".concat($(field), "."));
+        warn$2('A "field" or "encoding" must be specified when using a selection as a scale domain. ' + "Using \"field\": ".concat($(field), "."));
       }
     } else if (encoding && !field) {
       const encodings = selCmpt.project.items.filter(p => p.channel === encoding);
 
       if (!encodings.length || encodings.length > 1) {
         field = selCmpt.project.items[0].field;
-        warn$1((!encodings.length ? 'No ' : 'Multiple ') + "matching ".concat($(encoding), " encoding found for selection ").concat($(extent.selection), ". ") + "Using \"field\": ".concat($(field), "."));
+        warn$2((!encodings.length ? 'No ' : 'Multiple ') + "matching ".concat($(encoding), " encoding found for selection ").concat($(extent.param), ". ") + "Using \"field\": ".concat($(field), "."));
       } else {
         field = encodings[0].field;
       }
     }
 
-    return "".concat(selCmpt.name, "[").concat($(field), "]");
+    return "".concat(selCmpt.name, "[").concat($(replacePathInField(field)), "]");
   }
   function materializeSelections(model, main) {
-    forEachSelection(model, selCmpt => {
-      const selection = selCmpt.name;
+    for (const [selection, selCmpt] of entries((_model$component$sele = model.component.selection) !== null && _model$component$sele !== void 0 ? _model$component$sele : {})) {
+      var _model$component$sele;
+
       const lookupName = model.getName("lookup_".concat(selection));
       model.component.data.outputNodes[lookupName] = selCmpt.materialized = new OutputNode(new FilterNode(main, model, {
-        selection
+        param: selection
       }), lookupName, DataSourceType.Lookup, model.component.data.outputNodeRefCounts);
-    });
+    }
   }
 
   /**
@@ -61215,7 +62404,7 @@
       if (isString(predicate)) {
         return predicate;
       } else if (isSelectionPredicate(predicate)) {
-        return parseSelectionPredicate(model, predicate.selection, node);
+        return parseSelectionPredicate(model, predicate, node);
       } else {
         // Filter Object
         return fieldFilterExpression(predicate);
@@ -61236,11 +62425,11 @@
   }
 
   function setAxisEncode(axis, part, vgProp, vgRef) {
-    var _axis$encode, _axis$encode$part, _axis$encode$part$upd;
+    var _axis$encode, _axis$encode2, _axis$encode2$part, _axis$encode$part, _axis$encode$part$upd;
 
-    axis.encode = (_axis$encode = axis.encode) !== null && _axis$encode !== void 0 ? _axis$encode : {};
-    axis.encode[part] = (_axis$encode$part = axis.encode[part]) !== null && _axis$encode$part !== void 0 ? _axis$encode$part : {};
-    axis.encode[part].update = (_axis$encode$part$upd = axis.encode[part].update) !== null && _axis$encode$part$upd !== void 0 ? _axis$encode$part$upd : {}; // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
+    (_axis$encode = axis.encode) !== null && _axis$encode !== void 0 ? _axis$encode : axis.encode = {};
+    (_axis$encode2$part = (_axis$encode2 = axis.encode)[part]) !== null && _axis$encode2$part !== void 0 ? _axis$encode2$part : _axis$encode2[part] = {};
+    (_axis$encode$part$upd = (_axis$encode$part = axis.encode[part]).update) !== null && _axis$encode$part$upd !== void 0 ? _axis$encode$part$upd : _axis$encode$part.update = {}; // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
 
     axis.encode[part].update[vgProp] = vgRef;
   }
@@ -61322,6 +62511,12 @@
           delete axis[prop];
         } // else do nothing since the property already supports signal
 
+      } // Do not pass labelAlign/Baseline = null to Vega since it won't pass the schema
+      // Note that we need to use null so the default labelAlign is preserved.
+
+
+      if (contains$1(['labelAlign', 'labelBaseline'], prop) && axis[prop] === null) {
+        delete axis[prop];
       }
     }
 
@@ -61370,11 +62565,11 @@
       }
 
       if (labelExpr !== undefined) {
-        var _axis$encode2, _axis$encode2$labels;
+        var _axis$encode3, _axis$encode3$labels;
 
         let expr = labelExpr;
 
-        if (((_axis$encode2 = axis.encode) === null || _axis$encode2 === void 0 ? void 0 : (_axis$encode2$labels = _axis$encode2.labels) === null || _axis$encode2$labels === void 0 ? void 0 : _axis$encode2$labels.update) && isSignalRef(axis.encode.labels.update.text)) {
+        if ((_axis$encode3 = axis.encode) !== null && _axis$encode3 !== void 0 && (_axis$encode3$labels = _axis$encode3.labels) !== null && _axis$encode3$labels !== void 0 && _axis$encode3$labels.update && isSignalRef(axis.encode.labels.update.text)) {
           expr = replaceAll(labelExpr, 'datum.label', axis.encode.labels.update.text.signal);
         }
 
@@ -61484,7 +62679,7 @@
   function getAxisConfigs(channel, scaleType, orient, config) {
     const typeBasedConfigTypes = scaleType === 'band' ? ['axisDiscrete', 'axisBand'] : scaleType === 'point' ? ['axisDiscrete', 'axisPoint'] : isQuantitative(scaleType) ? ['axisQuantitative'] : scaleType === 'time' || scaleType === 'utc' ? ['axisTemporal'] : [];
     const axisChannel = channel === 'x' ? 'axisX' : 'axisY';
-    const axisOrient = isSignalRef(orient) ? 'axisOrient' : 'axis' + titleCase(orient); // axisTop, axisBottom, ...
+    const axisOrient = isSignalRef(orient) ? 'axisOrient' : "axis".concat(titleCase(orient)); // axisTop, axisBottom, ...
 
     const vlOnlyConfigTypes = [// technically Vega does have axisBand, but if we make another separation here,
     // it will further introduce complexity in the code
@@ -61571,13 +62766,9 @@
       axis,
       scaleType
     }) => {
-      if (isFieldDef(fieldOrDatumDef) && isBinned(fieldOrDatumDef.bin)) {
-        return false;
-      } else {
-        var _axis$grid;
+      var _axis$grid;
 
-        return (_axis$grid = axis.grid) !== null && _axis$grid !== void 0 ? _axis$grid : defaultGrid(scaleType, fieldOrDatumDef);
-      }
+      return (_axis$grid = axis.grid) !== null && _axis$grid !== void 0 ? _axis$grid : defaultGrid(scaleType, fieldOrDatumDef);
     },
     gridScale: ({
       model,
@@ -61682,7 +62873,7 @@
    */
 
   function defaultGrid(scaleType, fieldDef) {
-    return !hasDiscreteDomain(scaleType) && isFieldDef(fieldDef) && !isBinning(fieldDef === null || fieldDef === void 0 ? void 0 : fieldDef.bin);
+    return !hasDiscreteDomain(scaleType) && isFieldDef(fieldDef) && !isBinning(fieldDef === null || fieldDef === void 0 ? void 0 : fieldDef.bin) && !isBinned(fieldDef === null || fieldDef === void 0 ? void 0 : fieldDef.bin);
   }
   function gridScale(model, channel) {
     const gridChannel = channel === 'x' ? 'y' : 'x';
@@ -61783,7 +62974,7 @@
       const a = normalizeAngleExpr(angle);
       const orientIsMain = isSignalRef(orient) ? "(".concat(orient.signal, " === \"").concat(mainOrient, "\")") : orient === mainOrient;
       return {
-        signal: "(".concat(startAngle ? '(' + a + ' + 90)' : a, " % 180 === 0) ? ").concat(isX ? null : '"center"', " :") + "(".concat(startAngle, " < ").concat(a, " && ").concat(a, " < ").concat(180 + startAngle, ") === ").concat(orientIsMain, " ? \"left\" : \"right\"")
+        signal: "(".concat(startAngle ? "(".concat(a, " + 90)") : a, " % 180 === 0) ? ").concat(isX ? null : '"center"', " :") + "(".concat(startAngle, " < ").concat(a, " && ").concat(a, " < ").concat(180 + startAngle, ") === ").concat(orientIsMain, " ? \"left\" : \"right\"")
       };
     }
 
@@ -62178,7 +63369,7 @@
           role: "".concat(channel, "-").concat(headerType),
           ...(layoutHeader.facetFieldDef ? {
             from: {
-              data: model.getName(channel + '_domain')
+              data: model.getName("".concat(channel, "_domain"))
             },
             sort: getSort(facetFieldDef, channel)
           } : {}),
@@ -62225,7 +63416,7 @@
     for (const channel of FACET_CHANNELS) {
       const headerComponent = headerComponentIndex[channel];
 
-      if (headerComponent === null || headerComponent === void 0 ? void 0 : headerComponent.facetFieldDef) {
+      if (headerComponent !== null && headerComponent !== void 0 && headerComponent.facetFieldDef) {
         const {
           titleAnchor,
           titleOrient
@@ -62327,7 +63518,7 @@
 
   function stepSignal(scaleName, range) {
     return {
-      name: scaleName + '_step',
+      name: "".concat(scaleName, "_step"),
       value: range.step
     };
   }
@@ -62374,7 +63565,7 @@
 
     if (channelScaleResolve === 'independent') {
       if (resolve[guide][channel] === 'shared') {
-        warn$1(independentScaleMeansIndependentGuide(channel));
+        warn$2(independentScaleMeansIndependentGuide(channel));
       }
 
       return 'independent';
@@ -62572,7 +63763,7 @@
     legendCmpt
   }) {
     const selections = legendCmpt.get('selections');
-    return (selections === null || selections === void 0 ? void 0 : selections.length) ? { ...entriesSpec,
+    return selections !== null && selections !== void 0 && selections.length ? { ...entriesSpec,
       fill: {
         value: 'transparent'
       }
@@ -62601,7 +63792,7 @@
 
   function selectedCondition(model, legendCmpt, fieldDef) {
     const selections = legendCmpt.get('selections');
-    if (!(selections === null || selections === void 0 ? void 0 : selections.length)) return undefined;
+    if (!(selections !== null && selections !== void 0 && selections.length)) return undefined;
     const field = $(fieldDef.field);
     return selections.map(name => {
       const store = $(varName(name) + STORE);
@@ -62896,11 +64087,11 @@
     switch (property) {
       case 'disable':
         return legend !== undefined;
-      // if axis is specified or null/false, then it's enable/disable state is explicit
+      // if axis is specified or null/false, then its enable/disable state is explicit
 
       case 'values':
         // specified legend.values is already respected, but may get transformed.
-        return !!(legend === null || legend === void 0 ? void 0 : legend.values);
+        return !!(legend !== null && legend !== void 0 && legend.values);
 
       case 'title':
         // title can be explicit if fieldDef.title is set
@@ -63000,10 +64191,10 @@
       : legendEncodingPart; // no rule -- just default values
 
       if (value !== undefined && !isEmpty(value)) {
-        legendEncode[part] = { ...((selections === null || selections === void 0 ? void 0 : selections.length) && isFieldDef(fieldOrDatumDef) ? {
+        legendEncode[part] = { ...(selections !== null && selections !== void 0 && selections.length && isFieldDef(fieldOrDatumDef) ? {
             name: "".concat(varName(fieldOrDatumDef.field), "_legend_").concat(part)
           } : {}),
-          ...((selections === null || selections === void 0 ? void 0 : selections.length) ? {
+          ...(selections !== null && selections !== void 0 && selections.length ? {
             interactive: !!selections
           } : {}),
           update: value
@@ -63014,7 +64205,7 @@
     if (!isEmpty(legendEncode)) {
       var _legend2;
 
-      legendCmpt.set('encode', legendEncode, !!((_legend2 = legend) === null || _legend2 === void 0 ? void 0 : _legend2.encoding));
+      legendCmpt.set('encode', legendEncode, !!((_legend2 = legend) !== null && _legend2 !== void 0 && _legend2.encoding));
     }
 
     return legendCmpt;
@@ -63104,11 +64295,11 @@
     if (typeMerged) {
       var _mergedLegend$implici, _mergedLegend$implici2, _mergedLegend$explici, _mergedLegend$explici2;
 
-      if ((_mergedLegend$implici = mergedLegend.implicit) === null || _mergedLegend$implici === void 0 ? void 0 : (_mergedLegend$implici2 = _mergedLegend$implici.encode) === null || _mergedLegend$implici2 === void 0 ? void 0 : _mergedLegend$implici2.gradient) {
+      if ((_mergedLegend$implici = mergedLegend.implicit) !== null && _mergedLegend$implici !== void 0 && (_mergedLegend$implici2 = _mergedLegend$implici.encode) !== null && _mergedLegend$implici2 !== void 0 && _mergedLegend$implici2.gradient) {
         deleteNestedProperty(mergedLegend.implicit, ['encode', 'gradient']);
       }
 
-      if ((_mergedLegend$explici = mergedLegend.explicit) === null || _mergedLegend$explici === void 0 ? void 0 : (_mergedLegend$explici2 = _mergedLegend$explici.encode) === null || _mergedLegend$explici2 === void 0 ? void 0 : _mergedLegend$explici2.gradient) {
+      if ((_mergedLegend$explici = mergedLegend.explicit) !== null && _mergedLegend$explici !== void 0 && (_mergedLegend$explici2 = _mergedLegend$explici.encode) !== null && _mergedLegend$explici2 !== void 0 && _mergedLegend$explici2.gradient) {
         deleteNestedProperty(mergedLegend.explicit, ['encode', 'gradient']);
       }
     }
@@ -63126,11 +64317,11 @@
   }
 
   function setLegendEncode(legend, part, vgProp, vgRef) {
-    var _legend$encode, _legend$encode$part, _legend$encode$part$u;
+    var _legend$encode, _legend$encode2, _legend$encode2$part, _legend$encode$part, _legend$encode$part$u;
 
-    legend.encode = (_legend$encode = legend.encode) !== null && _legend$encode !== void 0 ? _legend$encode : {};
-    legend.encode[part] = (_legend$encode$part = legend.encode[part]) !== null && _legend$encode$part !== void 0 ? _legend$encode$part : {};
-    legend.encode[part].update = (_legend$encode$part$u = legend.encode[part].update) !== null && _legend$encode$part$u !== void 0 ? _legend$encode$part$u : {}; // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
+    (_legend$encode = legend.encode) !== null && _legend$encode !== void 0 ? _legend$encode : legend.encode = {};
+    (_legend$encode2$part = (_legend$encode2 = legend.encode)[part]) !== null && _legend$encode2$part !== void 0 ? _legend$encode2$part : _legend$encode2[part] = {};
+    (_legend$encode$part$u = (_legend$encode$part = legend.encode[part]).update) !== null && _legend$encode$part$u !== void 0 ? _legend$encode$part$u : _legend$encode$part.update = {}; // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
 
     legend.encode[part].update[vgProp] = vgRef;
   }
@@ -63161,7 +64352,7 @@
     return legends;
   }
   function assembleLegend(legendCmpt, config) {
-    var _legend$encode2;
+    var _legend$encode3;
 
     const {
       disable,
@@ -63178,7 +64369,7 @@
       legend.aria = false;
     }
 
-    if ((_legend$encode2 = legend.encode) === null || _legend$encode2 === void 0 ? void 0 : _legend$encode2.symbols) {
+    if ((_legend$encode3 = legend.encode) !== null && _legend$encode3 !== void 0 && _legend$encode3.symbols) {
       const out = legend.encode.symbols.update;
 
       if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
@@ -63202,11 +64393,11 @@
     }
 
     if (labelExpr !== undefined) {
-      var _legend$encode3, _legend$encode3$label;
+      var _legend$encode4, _legend$encode4$label;
 
       let expr = labelExpr;
 
-      if (((_legend$encode3 = legend.encode) === null || _legend$encode3 === void 0 ? void 0 : (_legend$encode3$label = _legend$encode3.labels) === null || _legend$encode3$label === void 0 ? void 0 : _legend$encode3$label.update) && isSignalRef(legend.encode.labels.update.text)) {
+      if ((_legend$encode4 = legend.encode) !== null && _legend$encode4 !== void 0 && (_legend$encode4$label = _legend$encode4.labels) !== null && _legend$encode4$label !== void 0 && _legend$encode4$label.update && isSignalRef(legend.encode.labels.update.text)) {
         expr = replaceAll(labelExpr, 'datum.label', legend.encode.labels.update.text.signal);
       }
 
@@ -63322,15 +64513,21 @@
 
   function parseUnitProjection(model) {
     if (model.hasProjection) {
-      var _model$config$project;
+      var _replaceExprRef;
 
-      const proj = model.specifiedProjection;
+      const proj = replaceExprRef(model.specifiedProjection);
       const fit = !(proj && (proj.scale != null || proj.translate != null));
       const size = fit ? [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')] : undefined;
       const data = fit ? gatherFitData(model) : undefined;
-      return new ProjectionComponent(model.projectionName(true), { ...((_model$config$project = model.config.projection) !== null && _model$config$project !== void 0 ? _model$config$project : {}),
+      const projComp = new ProjectionComponent(model.projectionName(true), { ...((_replaceExprRef = replaceExprRef(model.config.projection)) !== null && _replaceExprRef !== void 0 ? _replaceExprRef : {}),
         ...(proj !== null && proj !== void 0 ? proj : {})
       }, size, data);
+
+      if (!projComp.get('type')) {
+        projComp.set('type', 'equalEarth', false);
+      }
+
+      return projComp;
     }
 
     return undefined;
@@ -63373,20 +64570,20 @@
 
 
       if (has(first.explicit, prop) && has(second.explicit, prop) && // some properties might be signals or objects and require hashing for comparison
-      stringify$1(first.get(prop)) === stringify$1(second.get(prop))) {
+      deepEqual(first.get(prop), second.get(prop))) {
         return true;
       }
 
       return false;
     });
-    const size = stringify$1(first.size) === stringify$1(second.size);
+    const size = deepEqual(first.size, second.size);
 
     if (size) {
       if (allPropertiesShared) {
         return first;
-      } else if (stringify$1(first.explicit) === stringify$1({})) {
+      } else if (deepEqual(first.explicit, {})) {
         return second;
-      } else if (stringify$1(second.explicit) === stringify$1({})) {
+      } else if (deepEqual(second.explicit, {})) {
         return first;
       }
     } // if all properties don't match, let each unit spec have its own projection
@@ -63523,10 +64720,9 @@
       extentSignal
     } = getSignalsFromModel(model, key);
 
-    if (isSelectionExtent(normalizedBin.extent)) {
+    if (isParameterExtent(normalizedBin.extent)) {
       const ext = normalizedBin.extent;
-      const selName = ext.selection;
-      span = parseSelectionBinExtent(model.getSelectionComponent(varName(selName), selName), ext);
+      span = parseSelectionExtent(model, ext.param, ext);
       delete normalizedBin.extent; // Vega-Lite selection extent map to Vega's span property.
     }
 
@@ -63647,7 +64843,7 @@
           field: replacePathInField(bin.field),
           as: binAs,
           signal: bin.signal,
-          ...(!isSelectionExtent(extent) ? {
+          ...(!isParameterExtent(extent) ? {
             extent
           } : {
             extent: null
@@ -63704,7 +64900,7 @@
   function addDimension(dims, channel, fieldDef, model) {
     const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;
 
-    if (isTypedFieldDef(fieldDef) && isUnitModel(model) && hasBand(channel, fieldDef, channelDef2, model.stack, model.markDef, model.config)) {
+    if (isTypedFieldDef(fieldDef) && isUnitModel(model) && hasBandEnd(fieldDef, channelDef2, model.markDef, model.config)) {
       dims.add(vgField(fieldDef, {}));
       dims.add(vgField(fieldDef, {
         suffix: 'end'
@@ -63788,9 +64984,9 @@
 
         if (aggregate) {
           if (aggregate === 'count') {
-            var _meas$;
+            var _, _meas$_;
 
-            meas['*'] = (_meas$ = meas['*']) !== null && _meas$ !== void 0 ? _meas$ : {};
+            (_meas$_ = meas[_ = '*']) !== null && _meas$_ !== void 0 ? _meas$_ : meas[_] = {};
             meas['*']['count'] = new Set([vgField(fieldDef, {
               forAs: true
             })]);
@@ -63800,7 +64996,7 @@
 
               const op = isArgminDef(aggregate) ? 'argmin' : 'argmax';
               const argField = aggregate[op];
-              meas[argField] = (_meas$argField = meas[argField]) !== null && _meas$argField !== void 0 ? _meas$argField : {};
+              (_meas$argField = meas[argField]) !== null && _meas$argField !== void 0 ? _meas$argField : meas[argField] = {};
               meas[argField][op] = new Set([vgField({
                 op,
                 field: argField
@@ -63810,7 +65006,7 @@
             } else {
               var _meas$field;
 
-              meas[field] = (_meas$field = meas[field]) !== null && _meas$field !== void 0 ? _meas$field : {};
+              (_meas$field = meas[field]) !== null && _meas$field !== void 0 ? _meas$field : meas[field] = {};
               meas[field][aggregate] = new Set([vgField(fieldDef, {
                 forAs: true
               })]);
@@ -63820,7 +65016,7 @@
             if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
               var _meas$field2;
 
-              meas[field] = (_meas$field2 = meas[field]) !== null && _meas$field2 !== void 0 ? _meas$field2 : {};
+              (_meas$field2 = meas[field]) !== null && _meas$field2 !== void 0 ? _meas$field2 : meas[field] = {};
               meas[field]['min'] = new Set([vgField({
                 field,
                 aggregate: 'min'
@@ -63860,16 +65056,16 @@
 
         if (op) {
           if (op === 'count') {
-            var _meas$2;
+            var _2, _meas$_2;
 
-            meas['*'] = (_meas$2 = meas['*']) !== null && _meas$2 !== void 0 ? _meas$2 : {};
+            (_meas$_2 = meas[_2 = '*']) !== null && _meas$_2 !== void 0 ? _meas$_2 : meas[_2] = {};
             meas['*']['count'] = new Set([as ? as : vgField(s, {
               forAs: true
             })]);
           } else {
             var _meas$field3;
 
-            meas[field] = (_meas$field3 = meas[field]) !== null && _meas$field3 !== void 0 ? _meas$field3 : {};
+            (_meas$field3 = meas[field]) !== null && _meas$field3 !== void 0 ? _meas$field3 : meas[field] = {};
             meas[field][op] = new Set([as ? as : vgField(s, {
               forAs: true
             })]);
@@ -64026,7 +65222,7 @@
       for (const channel of FACET_CHANNELS) {
         var _this$channel;
 
-        if ((_this$channel = this[channel]) === null || _this$channel === void 0 ? void 0 : _this$channel.fields) {
+        if ((_this$channel = this[channel]) !== null && _this$channel !== void 0 && _this$channel.fields) {
           f.push(...this[channel].fields);
         }
       }
@@ -64082,7 +65278,7 @@
             if (field) {
               childIndependentFieldsWithStep[channel] = field;
             } else {
-              warn$1(unknownField(channel));
+              warn$2(unknownField(channel));
             }
           }
         }
@@ -64094,13 +65290,14 @@
     assembleRowColumnHeaderData(channel, crossedDataName, childIndependentFieldsWithStep) {
       const childChannel = {
         row: 'y',
-        column: 'x'
+        column: 'x',
+        facet: undefined
       }[channel];
       const fields = [];
       const ops = [];
       const as = [];
 
-      if (childIndependentFieldsWithStep && childIndependentFieldsWithStep[childChannel]) {
+      if (childChannel && childIndependentFieldsWithStep && childIndependentFieldsWithStep[childChannel]) {
         if (crossedDataName) {
           // If there is a crossed data, calculate max
           fields.push("distinct_".concat(childIndependentFieldsWithStep[childChannel]));
@@ -64288,14 +65485,14 @@
       return "toDate(".concat(f, ")");
     } else if (parse === 'flatten') {
       return f;
-    } else if (parse.indexOf('date:') === 0) {
+    } else if (parse.startsWith('date:')) {
       const specifier = unquote(parse.slice(5, parse.length));
       return "timeParse(".concat(f, ",'").concat(specifier, "')");
-    } else if (parse.indexOf('utc:') === 0) {
+    } else if (parse.startsWith('utc:')) {
       const specifier = unquote(parse.slice(4, parse.length));
       return "utcParse(".concat(f, ",'").concat(specifier, "')");
     } else {
-      warn$1(unrecognizedParse(parse));
+      warn$2(unrecognizedParse(parse));
       return null;
     }
   }
@@ -64476,7 +65673,7 @@
           if (parsedAs.explicit || parsedAs.value === implicit[field] || parsedAs.value === 'derived' || implicit[field] === 'flatten') {
             delete implicit[field];
           } else {
-            warn$1(differentParse(field, implicit[field], parsedAs.value));
+            warn$2(differentParse(field, implicit[field], parsedAs.value));
           }
         }
       }
@@ -64489,7 +65686,7 @@
           if (parsedAs === explicit[field]) {
             delete explicit[field];
           } else {
-            warn$1(differentParse(field, explicit[field], parsedAs));
+            warn$2(differentParse(field, explicit[field], parsedAs));
           }
         }
       }
@@ -64587,7 +65784,7 @@
     }
 
     producedFields() {
-      return new Set([SELECTION_ID]);
+      return new Set([SELECTION_ID$1]);
     }
 
     hash() {
@@ -64597,7 +65794,7 @@
     assemble() {
       return {
         type: 'identifier',
-        as: SELECTION_ID
+        as: SELECTION_ID$1
       };
     }
 
@@ -64679,7 +65876,7 @@
 
       _defineProperty(this, "_generator", void 0);
 
-      data = (_data = data) !== null && _data !== void 0 ? _data : {
+      (_data = data) !== null && _data !== void 0 ? _data : data = {
         name: 'source'
       };
       let format;
@@ -65404,9 +66601,9 @@
       if (isValidAsArray(as)) {
         normalizedAs = as;
       } else if (isString(as)) {
-        normalizedAs = [as, as + '_end'];
+        normalizedAs = [as, "".concat(as, "_end")];
       } else {
-        normalizedAs = [stackTransform.stack + '_start', stackTransform.stack + '_end'];
+        normalizedAs = ["".concat(stackTransform.stack, "_start"), "".concat(stackTransform.stack, "_end")];
       }
 
       return new StackNode(parent, {
@@ -65551,7 +66748,7 @@
 
       if (impute && dimensionFieldDef) {
         const {
-          band = 0.5,
+          bandPosition = 0.5,
           bin
         } = dimensionFieldDef;
 
@@ -65560,9 +66757,9 @@
           // mid point for a binned field
           transform.push({
             type: 'formula',
-            expr: "".concat(band, "*") + vgField(dimensionFieldDef, {
+            expr: "".concat(bandPosition, "*") + vgField(dimensionFieldDef, {
               expr: 'datum'
-            }) + "+".concat(1 - band, "*") + vgField(dimensionFieldDef, {
+            }) + "+".concat(1 - bandPosition, "*") + vgField(dimensionFieldDef, {
               expr: 'datum',
               binSuffix: 'end'
             }),
@@ -65884,7 +67081,7 @@
     checkLinks(data.sources);
 
     if (Math.max(firstPassCounter, secondPassCounter) === MAX_OPTIMIZATION_RUNS) {
-      warn$1("Maximum optimization runs(".concat(MAX_OPTIMIZATION_RUNS, ") reached."));
+      warn$2("Maximum optimization runs(".concat(MAX_OPTIMIZATION_RUNS, ") reached."));
     }
   }
 
@@ -65972,8 +67169,8 @@
 
           const se = childComponent.get('selectionExtent');
 
-          if (selectionExtent && se && selectionExtent.selection !== se.selection) {
-            warn$1(NEEDS_SAME_SELECTION);
+          if (selectionExtent && se && selectionExtent.param !== se.param) {
+            warn$2(NEEDS_SAME_SELECTION);
           }
 
           selectionExtent = se;
@@ -66001,7 +67198,7 @@
       } = canUseUnaggregatedDomain(fieldDef, scaleType);
 
       if (!valid) {
-        warn$1(reason);
+        warn$2(reason);
         return undefined;
       }
     } else if (domain === undefined && scaleConfig.useUnaggregatedDomain) {
@@ -66090,7 +67287,7 @@
       return makeExplicit([...defaultDomain.value, ...unionWith]);
     } else if (isSignalRef(domain)) {
       return makeExplicit([domain]);
-    } else if (domain && domain !== 'unaggregated' && !isSelectionDomain(domain)) {
+    } else if (domain && domain !== 'unaggregated' && !isParameterDomain(domain)) {
       return makeExplicit(convertDomainIfItIsDateTime(domain, type, timeUnit));
     }
 
@@ -66185,7 +67382,7 @@
           }]);
         }
       }
-    } else if (fieldDef.timeUnit && contains$1(['time', 'utc'], scaleType) && hasBand(channel, fieldDef, isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined, model.stack, model.markDef, model.config)) {
+    } else if (fieldDef.timeUnit && contains$1(['time', 'utc'], scaleType) && hasBandEnd(fieldDef, isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined, model.markDef, model.config)) {
       const data = model.requestDataName(DataSourceType.Main);
       return makeImplicit([{
         data,
@@ -66237,8 +67434,8 @@
     const scale = model.component.scales[channel];
     const spec = model.specifiedScales[channel].domain;
     const bin = (_model$fieldDef = model.fieldDef(channel)) === null || _model$fieldDef === void 0 ? void 0 : _model$fieldDef.bin;
-    const domain = isSelectionDomain(spec) && spec;
-    const extent = isBinParams(bin) && isSelectionExtent(bin.extent) && bin.extent;
+    const domain = isParameterDomain(spec) && spec;
+    const extent = isBinParams(bin) && isParameterExtent(bin.extent) && bin.extent;
 
     if (domain || extent) {
       // As scale parsing occurs before selection parsing, we cannot set
@@ -66360,7 +67557,7 @@
 
   function domainsTieBreaker(v1, v2, property, propertyOf) {
     if (v1.explicit && v2.explicit) {
-      warn$1(mergeConflictingDomainProperty(property, propertyOf, v1.value, v2.value));
+      warn$2(mergeConflictingDomainProperty(property, propertyOf, v1.value, v2.value));
     } // If equal score, concat the domains so that we union them later.
 
 
@@ -66418,7 +67615,7 @@
         let sort = sorts[0];
 
         if (sorts.length > 1) {
-          warn$1(MORE_THAN_ONE_SORT);
+          warn$2(MORE_THAN_ONE_SORT);
           sort = true;
         } else {
           // Simplify domain sort by removing field and op when the field is the same as the domain field.
@@ -66447,7 +67644,7 @@
         return s;
       }
 
-      warn$1(domainSortDropped(s));
+      warn$2(domainSortDropped(s));
       return true;
     }), hash);
     let sort;
@@ -66455,7 +67652,7 @@
     if (unionDomainSorts.length === 1) {
       sort = unionDomainSorts[0];
     } else if (unionDomainSorts.length > 1) {
-      warn$1(MORE_THAN_ONE_SORT);
+      warn$2(MORE_THAN_ONE_SORT);
       sort = true;
     }
 
@@ -66502,16 +67699,16 @@
           if (!field) {
             field = nonUnionDomain.field;
           } else if (field !== nonUnionDomain.field) {
-            warn$1(FACETED_INDEPENDENT_DIFFERENT_SOURCES);
+            warn$2(FACETED_INDEPENDENT_DIFFERENT_SOURCES);
             return field;
           }
         }
       }
 
-      warn$1(FACETED_INDEPENDENT_SAME_FIELDS_DIFFERENT_SOURCES);
+      warn$2(FACETED_INDEPENDENT_SAME_FIELDS_DIFFERENT_SOURCES);
       return field;
     } else if (isFieldRefUnionDomain(domain)) {
-      warn$1(FACETED_INDEPENDENT_SAME_SOURCE);
+      warn$2(FACETED_INDEPENDENT_SAME_SOURCE);
       const field = domain.fields[0];
       return isString(field) ? field : undefined;
     }
@@ -66566,13 +67763,8 @@
         ...otherScaleProps
       } = scale;
       const range = assembleScaleRange(scale.range, name, channel, model);
-      let domainRaw;
-
-      if (selectionExtent) {
-        domainRaw = assembleSelectionScaleDomain(model, selectionExtent);
-      }
-
       const domain = assembleDomain(model, channel);
+      const domainRaw = selectionExtent ? assembleSelectionScaleDomain(model, selectionExtent, scaleComponent, domain) : null;
       scales.push({
         name,
         type,
@@ -66598,7 +67790,7 @@
         // For width/height step, use a signal created in layout assemble instead of a constant step.
         return {
           step: {
-            signal: scaleName + '_step'
+            signal: "".concat(scaleName, "_step")
           }
         };
       }
@@ -66667,16 +67859,29 @@
   function getBinStepSignal(model, channel) {
     const fieldDef = model.fieldDef(channel);
 
-    if (fieldDef && fieldDef.bin && isBinning(fieldDef.bin)) {
-      const binSignal = getBinSignalName(model, fieldDef.field, fieldDef.bin); // TODO: extract this to be range step signal
-
+    if (fieldDef !== null && fieldDef !== void 0 && fieldDef.bin) {
+      const {
+        bin,
+        field
+      } = fieldDef;
       const sizeType = getSizeChannel$1(channel);
       const sizeSignal = model.getName(sizeType);
-      return new SignalRefWrapper(() => {
-        const updatedName = model.getSignalName(binSignal);
-        const binCount = "(".concat(updatedName, ".stop - ").concat(updatedName, ".start) / ").concat(updatedName, ".step");
-        return "".concat(model.getSignalName(sizeSignal), " / (").concat(binCount, ")");
-      });
+
+      if (isObject(bin) && bin.binned && bin.step !== undefined) {
+        return new SignalRefWrapper(() => {
+          const scaleName = model.scaleName(channel);
+          const binCount = "(domain(\"".concat(scaleName, "\")[1] - domain(\"").concat(scaleName, "\")[0]) / ").concat(bin.step);
+          return "".concat(model.getSignalName(sizeSignal), " / (").concat(binCount, ")");
+        });
+      } else if (isBinning(bin)) {
+        const binSignal = getBinSignalName(model, field, bin); // TODO: extract this to be range step signal
+
+        return new SignalRefWrapper(() => {
+          const updatedName = model.getSignalName(binSignal);
+          const binCount = "(".concat(updatedName, ".stop - ").concat(updatedName, ".start) / ").concat(updatedName, ".step");
+          return "".concat(model.getSignalName(sizeSignal), " / (").concat(binCount, ")");
+        });
+      }
     }
 
     return undefined;
@@ -66701,10 +67906,10 @@
         const channelIncompatability = channelScalePropertyIncompatability(channel, property);
 
         if (!supportedByScaleType) {
-          warn$1(scalePropertyNotWorkWithScaleType(scaleType, property, channel));
+          warn$2(scalePropertyNotWorkWithScaleType(scaleType, property, channel));
         } else if (channelIncompatability) {
           // channel
-          warn$1(channelIncompatability);
+          warn$2(channelIncompatability);
         } else {
           switch (property) {
             case 'range':
@@ -66756,7 +67961,7 @@
             step: sizeValue.step
           });
         } else {
-          warn$1(stepDropped(sizeChannel));
+          warn$2(stepDropped(sizeChannel));
         }
       }
     }
@@ -66921,7 +68126,7 @@
         if (domain !== undefined && isArray(domain)) {
           return domain.length + 1;
         } else {
-          warn$1(domainRequiredForThresholdScale(channel)); // default threshold boundaries for threshold scale since domain has cardinality of 2
+          warn$2(domainRequiredForThresholdScale(channel)); // default threshold boundaries for threshold scale since domain has cardinality of 2
 
           return 3;
         }
@@ -67097,10 +68302,10 @@
       if (specifiedValue !== undefined) {
         // If there is a specified value, check if it is compatible with scale type and channel
         if (!supportedByScaleType) {
-          warn$1(scalePropertyNotWorkWithScaleType(scaleType, property, channel));
+          warn$2(scalePropertyNotWorkWithScaleType(scaleType, property, channel));
         } else if (channelIncompatability) {
           // channel
-          warn$1(channelIncompatability);
+          warn$2(channelIncompatability);
         }
       }
 
@@ -67162,8 +68367,9 @@
     nice: ({
       scaleType,
       channel,
+      domain,
       fieldOrDatumDef
-    }) => nice$1(scaleType, channel, fieldOrDatumDef),
+    }) => nice$1(scaleType, channel, domain, fieldOrDatumDef),
     padding: ({
       channel,
       scaleType,
@@ -67192,7 +68398,7 @@
       config
     }) => {
       const sort = isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined;
-      return reverse$1(scaleType, sort, channel, config.scale);
+      return reverse$2(scaleType, sort, channel, config.scale);
     },
     zero: ({
       channel,
@@ -67273,10 +68479,10 @@
 
     return undefined;
   }
-  function nice$1(scaleType, channel, fieldOrDatumDef) {
+  function nice$1(scaleType, channel, specifiedDomain, fieldOrDatumDef) {
     var _getFieldDef;
 
-    if (((_getFieldDef = getFieldDef(fieldOrDatumDef)) === null || _getFieldDef === void 0 ? void 0 : _getFieldDef.bin) || contains$1([ScaleType.TIME, ScaleType.UTC], scaleType)) {
+    if ((_getFieldDef = getFieldDef(fieldOrDatumDef)) !== null && _getFieldDef !== void 0 && _getFieldDef.bin || isArray(specifiedDomain) || contains$1([ScaleType.TIME, ScaleType.UTC], scaleType)) {
       return undefined;
     }
 
@@ -67354,7 +68560,7 @@
 
     return undefined;
   }
-  function reverse$1(scaleType, sort, channel, scaleConfig) {
+  function reverse$2(scaleType, sort, channel, scaleConfig) {
     if (channel === 'x' && scaleConfig.xReverse !== undefined) {
       if (hasContinuousDomain(scaleType) && sort === 'descending') {
         if (isSignalRef(scaleConfig.xReverse)) {
@@ -67378,7 +68584,7 @@
     return undefined;
   }
   function zero$3(channel, fieldDef, specifiedDomain, markDef, scaleType) {
-    // If users explicitly provide a domain range, we should not augment zero as that will be unexpected.
+    // If users explicitly provide a domain, we should not augment zero as that will be unexpected.
     const hasCustomDomain = !!specifiedDomain && specifiedDomain !== 'unaggregated';
 
     if (hasCustomDomain) {
@@ -67445,13 +68651,13 @@
     if (type !== undefined) {
       // Check if explicitly specified scale type is supported by the channel
       if (!channelSupportScaleType(channel, type)) {
-        warn$1(scaleTypeNotWorkWithChannel(channel, type, defaultScaleType));
+        warn$2(scaleTypeNotWorkWithChannel(channel, type, defaultScaleType));
         return defaultScaleType;
       } // Check if explicitly specified scale type is supported by the data type
 
 
       if (isFieldDef(fieldDef) && !scaleTypeSupportDataType(type, fieldDef.type)) {
-        warn$1(scaleTypeNotWorkWithFieldDef(type, defaultScaleType));
+        warn$2(scaleTypeNotWorkWithFieldDef(type, defaultScaleType));
         return defaultScaleType;
       }
 
@@ -67466,41 +68672,49 @@
   // NOTE: Voyager uses this method.
 
   function defaultType$2(channel, fieldDef, mark) {
-    var _fieldDef$axis;
-
     switch (fieldDef.type) {
       case 'nominal':
       case 'ordinal':
-        if (isColorChannel(channel) || rangeType(channel) === 'discrete') {
-          if (channel === 'shape' && fieldDef.type === 'ordinal') {
-            warn$1(discreteChannelCannotEncode(channel, 'ordinal'));
+        {
+          var _fieldDef$axis;
+
+          if (isColorChannel(channel) || rangeType(channel) === 'discrete') {
+            if (channel === 'shape' && fieldDef.type === 'ordinal') {
+              warn$2(discreteChannelCannotEncode(channel, 'ordinal'));
+            }
+
+            return 'ordinal';
           }
 
-          return 'ordinal';
-        }
-
-        if (channel in POSITION_SCALE_CHANNEL_INDEX) {
-          if (contains$1(['rect', 'bar', 'image', 'rule'], mark)) {
-            // The rect/bar mark should fit into a band.
-            // For rule, using band scale to make rule align with axis ticks better https://github.com/vega/vega-lite/issues/3429
+          if (channel in POSITION_SCALE_CHANNEL_INDEX) {
+            if (contains$1(['rect', 'bar', 'image', 'rule'], mark.type)) {
+              // The rect/bar mark should fit into a band.
+              // For rule, using band scale to make rule align with axis ticks better https://github.com/vega/vega-lite/issues/3429
+              return 'band';
+            }
+          } else if (mark.type === 'arc' && channel in POLAR_POSITION_SCALE_CHANNEL_INDEX) {
             return 'band';
           }
-        } else if (mark === 'arc' && channel in POLAR_POSITION_SCALE_CHANNEL_INDEX) {
-          return 'band';
+
+          const dimensionSize = mark[getSizeChannel(channel)];
+
+          if (isRelativeBandSize(dimensionSize)) {
+            return 'band';
+          }
+
+          if (isPositionFieldOrDatumDef(fieldDef) && (_fieldDef$axis = fieldDef.axis) !== null && _fieldDef$axis !== void 0 && _fieldDef$axis.tickBand) {
+            return 'band';
+          } // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
+
+
+          return 'point';
         }
-
-        if (fieldDef.band !== undefined || isPositionFieldOrDatumDef(fieldDef) && ((_fieldDef$axis = fieldDef.axis) === null || _fieldDef$axis === void 0 ? void 0 : _fieldDef$axis.tickBand)) {
-          return 'band';
-        } // Otherwise, use ordinal point scale so we can easily get center positions of the marks.
-
-
-        return 'point';
 
       case 'temporal':
         if (isColorChannel(channel)) {
           return 'time';
         } else if (rangeType(channel) === 'discrete') {
-          warn$1(discreteChannelCannotEncode(channel, 'temporal')); // TODO: consider using quantize (equivalent to binning) once we have it
+          warn$2(discreteChannelCannotEncode(channel, 'temporal')); // TODO: consider using quantize (equivalent to binning) once we have it
 
           return 'ordinal';
         } else if (isFieldDef(fieldDef) && fieldDef.timeUnit && normalizeTimeUnit(fieldDef.timeUnit).utc) {
@@ -67517,7 +68731,7 @@
 
           return 'linear';
         } else if (rangeType(channel) === 'discrete') {
-          warn$1(discreteChannelCannotEncode(channel, 'quantitative')); // TODO: consider using quantize (equivalent to binning) once we have it
+          warn$2(discreteChannelCannotEncode(channel, 'quantitative')); // TODO: consider using quantize (equivalent to binning) once we have it
 
           return 'ordinal';
         }
@@ -67562,7 +68776,8 @@
   function parseUnitScaleCore(model) {
     const {
       encoding,
-      mark
+      mark,
+      markDef
     } = model;
     return SCALE_CHANNELS.reduce((scaleComponents, channel) => {
       const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]); // must be typed def to have scale
@@ -67577,9 +68792,9 @@
       if (fieldOrDatumDef && specifiedScale !== null && specifiedScale !== false) {
         var _specifiedScale;
 
-        specifiedScale = (_specifiedScale = specifiedScale) !== null && _specifiedScale !== void 0 ? _specifiedScale : {};
-        const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, mark);
-        scaleComponents[channel] = new ScaleComponent(model.scaleName(channel + '', true), {
+        (_specifiedScale = specifiedScale) !== null && _specifiedScale !== void 0 ? _specifiedScale : specifiedScale = {};
+        const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, markDef);
+        scaleComponents[channel] = new ScaleComponent(model.scaleName("".concat(channel), true), {
           value: sType,
           explicit: specifiedScale.type === sType
         });
@@ -67600,10 +68815,10 @@
       parseScaleCore(child); // Instead of always merging right away -- check if it is compatible to merge first!
 
       for (const channel of keys$2(child.component.scales)) {
-        var _resolve$scale$channe;
+        var _resolve$scale, _resolve$scale$channe;
 
         // if resolve is undefined, set default first
-        resolve.scale[channel] = (_resolve$scale$channe = resolve.scale[channel]) !== null && _resolve$scale$channe !== void 0 ? _resolve$scale$channe : defaultScaleResolve(channel, model);
+        (_resolve$scale$channe = (_resolve$scale = resolve.scale)[channel]) !== null && _resolve$scale$channe !== void 0 ? _resolve$scale$channe : _resolve$scale[channel] = defaultScaleResolve(channel, model);
 
         if (resolve.scale[channel] === 'shared') {
           const explicitScaleType = scaleTypeWithExplicitIndex[channel];
@@ -67750,12 +68965,12 @@
 
       this.parent = parent;
       this.config = config;
-      this.view = replaceExprRefInIndex(view); // If name is not provided, always use parent's givenName to avoid name conflicts.
+      this.view = replaceExprRef(view); // If name is not provided, always use parent's givenName to avoid name conflicts.
 
       this.name = (_spec$name = spec.name) !== null && _spec$name !== void 0 ? _spec$name : parentGivenName;
       this.title = isText(spec.title) ? {
         text: spec.title
-      } : spec.title ? this.initTitle(spec.title) : undefined; // Shared name maps
+      } : spec.title ? replaceExprRef(spec.title) : undefined; // Shared name maps
 
       this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();
       this.projectionNameMap = parent ? parent.projectionNameMap : new NameMap();
@@ -67791,19 +69006,6 @@
         axes: {},
         legends: {}
       };
-    }
-
-    initTitle(title) {
-      const props = keys$2(title);
-      const titleInternal = {
-        text: signalRefOrValue(title.text)
-      };
-
-      for (const prop of props) {
-        titleInternal[prop] = signalRefOrValue(title[prop]);
-      }
-
-      return titleInternal;
     }
 
     get width() {
@@ -67996,7 +69198,7 @@
           if (contains$1(['middle', undefined], title.anchor)) {
             var _title$frame;
 
-            title.frame = (_title$frame = title.frame) !== null && _title$frame !== void 0 ? _title$frame : 'group';
+            (_title$frame = title.frame) !== null && _title$frame !== void 0 ? _title$frame : title.frame = 'group';
           }
         } else {
           var _title$anchor;
@@ -68004,7 +69206,7 @@
           // composition with Vega layout
           // Set title = "start" by default for composition as "middle" does not look nice
           // https://github.com/vega/vega/issues/960#issuecomment-471360328
-          title.anchor = (_title$anchor = title.anchor) !== null && _title$anchor !== void 0 ? _title$anchor : 'start';
+          (_title$anchor = title.anchor) !== null && _title$anchor !== void 0 ? _title$anchor : title.anchor = 'start';
         }
 
         return isEmpty(title) ? undefined : title;
@@ -68056,7 +69258,7 @@
     }
 
     getName(text) {
-      return varName((this.name ? this.name + '_' : '') + text);
+      return varName((this.name ? "".concat(this.name, "_") : '') + text);
     }
 
     getDataName(type) {
@@ -68105,7 +69307,7 @@
                 signal: sizeExpr(scaleName, scaleComponent, fieldRef)
               };
             } else {
-              warn$1(unknownField(channel));
+              warn$2(unknownField(channel));
               return null;
             }
           }
@@ -68577,7 +69779,10 @@
     }
 
     assemble() {
-      return {
+      return [...(this.geojson ? [{
+        type: 'filter',
+        expr: "isValid(datum[\"".concat(this.geojson, "\"])")
+      }] : []), {
         type: 'geojson',
         ...(this.fields ? {
           fields: this.fields
@@ -68586,7 +69791,7 @@
           geojson: this.geojson
         } : {}),
         signal: this.signal
-      };
+      }];
     }
 
   }
@@ -68620,7 +69825,7 @@
         const suffix = coordinates[0] === LONGITUDE2 ? '2' : '';
 
         if (pair[0] || pair[1]) {
-          parent = new GeoPointNode(parent, model.projectionName(), pair, [model.getName('x' + suffix), model.getName('y' + suffix)]);
+          parent = new GeoPointNode(parent, model.projectionName(), pair, [model.getName("x".concat(suffix)), model.getName("y".concat(suffix))]);
         }
       }
 
@@ -68864,12 +70069,20 @@
         fromOutputNode = new OutputNode(fromSource, fromOutputName, DataSourceType.Lookup, model.component.data.outputNodeRefCounts);
         model.component.data.outputNodes[fromOutputName] = fromOutputNode;
       } else if (isLookupSelection(from)) {
-        const selName = from.selection;
+        const selName = from.param;
         transform = {
           as: selName,
           ...transform
         };
-        fromOutputNode = model.getSelectionComponent(varName(selName), selName).materialized;
+        let selCmpt;
+
+        try {
+          selCmpt = model.getSelectionComponent(varName(selName), selName);
+        } catch (e) {
+          throw new Error(cannotLookupVariableParameter(selName));
+        }
+
+        fromOutputNode = selCmpt.materialized;
 
         if (!fromOutputNode) {
           throw new Error(noSameUnitLookup(selName));
@@ -68910,7 +70123,7 @@
         let asName = this.transform.as;
 
         if (!isString(asName)) {
-          warn$1(NO_FIELDS_NEEDS_AS);
+          warn$2(NO_FIELDS_NEEDS_AS);
           asName = '_lookup';
         }
 
@@ -69178,19 +70391,16 @@
           node.data = dataSource.source;
         }
 
-        for (const d of node.assemble()) {
-          data.push(d);
-        } // break here because the rest of the tree has to be taken care of by the facet.
-
+        data.push(...node.assemble()); // break here because the rest of the tree has to be taken care of by the facet.
 
         return;
       }
 
-      if (node instanceof GraticuleNode || node instanceof SequenceNode || node instanceof FilterInvalidNode || node instanceof FilterNode || node instanceof CalculateNode || node instanceof GeoPointNode || node instanceof GeoJSONNode || node instanceof AggregateNode || node instanceof LookupNode || node instanceof WindowTransformNode || node instanceof JoinAggregateTransformNode || node instanceof FoldTransformNode || node instanceof FlattenTransformNode || node instanceof DensityTransformNode || node instanceof LoessTransformNode || node instanceof QuantileTransformNode || node instanceof RegressionTransformNode || node instanceof IdentifierNode || node instanceof SampleTransformNode || node instanceof PivotTransformNode) {
+      if (node instanceof GraticuleNode || node instanceof SequenceNode || node instanceof FilterInvalidNode || node instanceof FilterNode || node instanceof CalculateNode || node instanceof GeoPointNode || node instanceof AggregateNode || node instanceof LookupNode || node instanceof WindowTransformNode || node instanceof JoinAggregateTransformNode || node instanceof FoldTransformNode || node instanceof FlattenTransformNode || node instanceof DensityTransformNode || node instanceof LoessTransformNode || node instanceof QuantileTransformNode || node instanceof RegressionTransformNode || node instanceof IdentifierNode || node instanceof SampleTransformNode || node instanceof PivotTransformNode) {
         dataSource.transform.push(node.assemble());
       }
 
-      if (node instanceof BinNode || node instanceof TimeUnitNode || node instanceof ImputeNode || node instanceof StackNode) {
+      if (node instanceof BinNode || node instanceof TimeUnitNode || node instanceof ImputeNode || node instanceof StackNode || node instanceof GeoJSONNode) {
         dataSource.transform.push(...node.assemble());
       }
 
@@ -69388,16 +70598,15 @@
         // TODO: better handle multiline titles
         title$1 = isArray(title$1) ? title$1.join(', ') : title$1; // merge title with child to produce "Title / Subtitle / Sub-subtitle"
 
-        title$1 += ' / ' + child.component.layoutHeaders[channel].title;
+        title$1 += " / ".concat(child.component.layoutHeaders[channel].title);
         child.component.layoutHeaders[channel].title = null;
       }
 
-      const labelOrient = getHeaderProperty('labelOrient', fieldDef, config, channel);
-      const header = (_fieldDef$header = fieldDef.header) !== null && _fieldDef$header !== void 0 ? _fieldDef$header : {};
-      const labels = getFirstDefined(header.labels, config.header.labels, true);
+      const labelOrient = getHeaderProperty('labelOrient', fieldDef.header, config, channel);
+      const labels = fieldDef.header !== null ? getFirstDefined((_fieldDef$header = fieldDef.header) === null || _fieldDef$header === void 0 ? void 0 : _fieldDef$header.labels, config.header.labels, true) : false;
       const headerType = contains$1(['bottom', 'right'], labelOrient) ? 'footer' : 'header';
       component.layoutHeaders[channel] = {
-        title: title$1,
+        title: fieldDef.header !== null ? title$1 : null,
         facetFieldDef: fieldDef,
         [headerType]: channel === 'facet' ? [] : [makeHeaderComponent(model, channel, labels)]
       };
@@ -69434,7 +70643,7 @@
           var _layoutHeader$headerT;
 
           const headerType = getHeaderType(axisComponent.get('orient'));
-          layoutHeader[headerType] = (_layoutHeader$headerT = layoutHeader[headerType]) !== null && _layoutHeader$headerT !== void 0 ? _layoutHeader$headerT : [makeHeaderComponent(model, headerChannel, false)]; // FIXME: assemble shouldn't be called here, but we do it this way so we only extract the main part of the axes
+          (_layoutHeader$headerT = layoutHeader[headerType]) !== null && _layoutHeader$headerT !== void 0 ? _layoutHeader$headerT : layoutHeader[headerType] = [makeHeaderComponent(model, headerChannel, false)]; // FIXME: assemble shouldn't be called here, but we do it this way so we only extract the main part of the axes
 
           const mainAxis = assembleAxis(axisComponent, 'main', model.config, {
             header: true
@@ -69489,8 +70698,10 @@
     let mergedSize; // Try to merge layout size
 
     for (const child of model.children) {
+      var _resolve$scale$channe;
+
       const childSize = child.component.layoutSize.getWithExplicit(sizeType);
-      const scaleResolve = resolve.scale[channel];
+      const scaleResolve = (_resolve$scale$channe = resolve.scale[channel]) !== null && _resolve$scale$channe !== void 0 ? _resolve$scale$channe : defaultScaleResolve(channel, model);
 
       if (scaleResolve === 'independent' && childSize.value === 'step') {
         // Do not merge independent scales with range-step as their size depends
@@ -69611,16 +70822,16 @@
       const normalizedFacet = {};
 
       for (const channel of channels) {
-        if (!contains$1([ROW, COLUMN], channel)) {
+        if (![ROW, COLUMN].includes(channel)) {
           // Drop unsupported channel
-          warn$1(incompatibleChannel(channel, 'facet'));
+          warn$2(incompatibleChannel(channel, 'facet'));
           break;
         }
 
         const fieldDef = facet[channel];
 
         if (fieldDef.field === undefined) {
-          warn$1(emptyFieldDef(fieldDef, channel));
+          warn$2(emptyFieldDef(fieldDef, channel));
           break;
         }
 
@@ -69631,16 +70842,14 @@
     }
 
     initFacetFieldDef(fieldDef, channel) {
-      const {
-        header,
-        ...rest
-      } = fieldDef; // Cast because we call initFieldDef, which assumes general FieldDef.
+      // Cast because we call initFieldDef, which assumes general FieldDef.
       // However, FacetFieldDef is a bit more constrained than the general FieldDef
+      const facetFieldDef = initFieldDef(fieldDef, channel);
 
-      const facetFieldDef = initFieldDef(rest, channel);
-
-      if (header) {
-        facetFieldDef.header = replaceExprRefInIndex(header);
+      if (facetFieldDef.header) {
+        facetFieldDef.header = replaceExprRef(facetFieldDef.header);
+      } else if (facetFieldDef.header === null) {
+        facetFieldDef.header = null;
       }
 
       return facetFieldDef;
@@ -69707,16 +70916,16 @@
           if (facetFieldDef) {
             const titleOrient = getHeaderProperty('titleOrient', facetFieldDef.header, this.config, channel);
 
-            if (contains$1(['right', 'bottom'], titleOrient)) {
+            if (['right', 'bottom'].includes(titleOrient)) {
               var _layoutMixins$titleAn;
 
               const headerChannel = getHeaderChannel(channel, titleOrient);
-              layoutMixins.titleAnchor = (_layoutMixins$titleAn = layoutMixins.titleAnchor) !== null && _layoutMixins$titleAn !== void 0 ? _layoutMixins$titleAn : {};
+              (_layoutMixins$titleAn = layoutMixins.titleAnchor) !== null && _layoutMixins$titleAn !== void 0 ? _layoutMixins$titleAn : layoutMixins.titleAnchor = {};
               layoutMixins.titleAnchor[headerChannel] = 'end';
             }
           }
 
-          if (headerComponent === null || headerComponent === void 0 ? void 0 : headerComponent[0]) {
+          if (headerComponent !== null && headerComponent !== void 0 && headerComponent[0]) {
             // set header/footerBand
             const sizeType = channel === 'row' ? 'height' : 'width';
             const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
@@ -69725,14 +70934,14 @@
               var _layoutMixins$bandTyp;
 
               // If facet child does not have size signal, then apply headerBand
-              layoutMixins[bandType] = (_layoutMixins$bandTyp = layoutMixins[bandType]) !== null && _layoutMixins$bandTyp !== void 0 ? _layoutMixins$bandTyp : {};
+              (_layoutMixins$bandTyp = layoutMixins[bandType]) !== null && _layoutMixins$bandTyp !== void 0 ? _layoutMixins$bandTyp : layoutMixins[bandType] = {};
               layoutMixins[bandType][channel] = 0.5;
             }
 
             if (layoutHeaderComponent.title) {
               var _layoutMixins$offset;
 
-              layoutMixins.offset = (_layoutMixins$offset = layoutMixins.offset) !== null && _layoutMixins$offset !== void 0 ? _layoutMixins$offset : {};
+              (_layoutMixins$offset = layoutMixins.offset) !== null && _layoutMixins$offset !== void 0 ? _layoutMixins$offset : layoutMixins.offset = {};
               layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
             }
           }
@@ -69844,7 +71053,7 @@
                 ops.push('distinct');
                 as.push("distinct_".concat(field));
               } else {
-                warn$1(unknownField(channel));
+                warn$2(unknownField(channel));
               }
             }
           }
@@ -70001,7 +71210,7 @@
 
           const labelOrient = getHeaderProperty('labelOrient', (_facet$channel = facet[channel]) === null || _facet$channel === void 0 ? void 0 : _facet$channel.header, config, channel);
 
-          if (contains$1(ORTHOGONAL_ORIENT[channel], labelOrient)) {
+          if (ORTHOGONAL_ORIENT[channel].includes(labelOrient)) {
             // Row/Column with orthogonal labelOrient must use title to display labels
             return assembleLabelTitle(facet[channel], channel, config);
           }
@@ -70257,7 +71466,7 @@
         transformNode = head = new LoessTransformNode(head, t);
         derivedType = 'derived';
       } else {
-        warn$1(invalidTransformIgnored(t));
+        warn$2(invalidTransformIgnored(t));
         continue;
       }
 
@@ -70475,11 +71684,11 @@
       _defineProperty(this, "children", void 0);
 
       if (((_spec$resolve = spec.resolve) === null || _spec$resolve === void 0 ? void 0 : (_spec$resolve$axis = _spec$resolve.axis) === null || _spec$resolve$axis === void 0 ? void 0 : _spec$resolve$axis.x) === 'shared' || ((_spec$resolve2 = spec.resolve) === null || _spec$resolve2 === void 0 ? void 0 : (_spec$resolve2$axis = _spec$resolve2.axis) === null || _spec$resolve2$axis === void 0 ? void 0 : _spec$resolve2$axis.y) === 'shared') {
-        warn$1(CONCAT_CANNOT_SHARE_AXIS);
+        warn$2(CONCAT_CANNOT_SHARE_AXIS);
       }
 
       this.children = this.getChildren(spec).map((child, i) => {
-        return buildModel(child, this, this.getName('concat_' + i), undefined, config);
+        return buildModel(child, this, this.getName("concat_".concat(i)), undefined, config);
       });
     }
 
@@ -70837,7 +72046,7 @@
 
   function isExplicit$1(value, property, axis, model, channel) {
     if (property === 'disable') {
-      return axis !== undefined; // if axis is specified or null/false, then it's enable/disable state is explicit
+      return axis !== undefined; // if axis is specified or null/false, then its enable/disable state is explicit
     }
 
     axis = axis || {};
@@ -70977,7 +72186,7 @@
       if (isStep(size[sizeType])) {
         if (isContinuousFieldOrDatumDef(encoding[channel])) {
           delete size[sizeType];
-          warn$1(stepDropped(sizeType));
+          warn$2(stepDropped(sizeType));
         }
       }
     }
@@ -70986,13 +72195,14 @@
   }
 
   function initMarkdef(originalMarkDef, encoding, config) {
-    const markDef = replaceExprRefInIndex(originalMarkDef); // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
+    // FIXME: markDef expects that exprRefs are replaced recursively but replaceExprRef only replaces the top level
+    const markDef = replaceExprRef(originalMarkDef); // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
 
     const specifiedOrient = getMarkPropOrConfig('orient', markDef, config);
     markDef.orient = orient$1(markDef.type, encoding, specifiedOrient);
 
     if (specifiedOrient !== undefined && specifiedOrient !== markDef.orient) {
-      warn$1(orientOverridden(markDef.orient, specifiedOrient));
+      warn$2(orientOverridden(markDef.orient, specifiedOrient));
     }
 
     if (markDef.type === 'bar' && markDef.orient) {
@@ -71151,7 +72361,9 @@
           const xIsContinuous = isContinuousFieldOrDatumDef(x);
           const yIsContinuous = isContinuousFieldOrDatumDef(y);
 
-          if (xIsContinuous && !yIsContinuous) {
+          if (specifiedOrient) {
+            return specifiedOrient;
+          } else if (xIsContinuous && !yIsContinuous) {
             return mark !== 'tick' ? 'horizontal' : 'vertical';
           } else if (!xIsContinuous && yIsContinuous) {
             return mark !== 'tick' ? 'vertical' : 'horizontal';
@@ -71174,19 +72386,8 @@
               return mark !== 'tick' ? 'horizontal' : 'vertical';
             }
 
-            if (specifiedOrient) {
-              // When ambiguous, use user specified one.
-              return specifiedOrient;
-            }
-
             return 'vertical';
           } else {
-            // Discrete x Discrete case
-            if (specifiedOrient) {
-              // When ambiguous, use user specified one.
-              return specifiedOrient;
-            }
-
             return undefined;
           }
         }
@@ -71395,7 +72596,7 @@
 
     return nonPosition('shape', model);
   }
-  const point$6 = {
+  const point$7 = {
     vgMark: 'symbol',
     encodeEntry: model => {
       return encodeEntry(model);
@@ -71502,12 +72703,10 @@
         ...valueIfDefined('align', align(model.markDef, encoding, config)),
         ...valueIfDefined('baseline', baseline$1(model.markDef, encoding, config)),
         ...pointPosition('radius', model, {
-          defaultPos: null,
-          isMidPoint: true
+          defaultPos: null
         }),
         ...pointPosition('theta', model, {
-          defaultPos: null,
-          isMidPoint: true
+          defaultPos: null
         })
       };
     }
@@ -71609,7 +72808,7 @@
     geoshape,
     image: image$1,
     line: line$4,
-    point: point$6,
+    point: point$7,
     rect: rect$1,
     rule: rule$2,
     square,
@@ -71625,7 +72824,7 @@
         return getPathGroups(model, details);
       } // otherwise use standard mark groups
 
-    } else if (contains$1([BAR], model.mark)) {
+    } else if (model.mark === BAR) {
       const hasCornerRadius = VG_CORNERRADIUS_CHANNELS.some(prop => getMarkPropOrConfig(prop, model.markDef, model.config));
 
       if (model.stack && !model.fieldDef('size') && hasCornerRadius) {
@@ -71800,16 +72999,24 @@
           value: 0
         };
       }
-    } // For bin and time unit, we have to add bin/timeunit -end channels.
+    }
 
+    const groupby = [];
 
-    const groupByField = model.fieldDef(model.stack.groupbyChannel);
-    const groupby = vgField(groupByField) ? [vgField(groupByField)] : [];
+    if (model.stack.groupbyChannel) {
+      // For bin and time unit, we have to add bin/timeunit -end channels.
+      const groupByField = model.fieldDef(model.stack.groupbyChannel);
+      const field = vgField(groupByField);
 
-    if ((groupByField === null || groupByField === void 0 ? void 0 : groupByField.bin) || (groupByField === null || groupByField === void 0 ? void 0 : groupByField.timeUnit)) {
-      groupby.push(vgField(groupByField, {
-        binSuffix: 'end'
-      }));
+      if (field) {
+        groupby.push(field);
+      }
+
+      if (groupByField !== null && groupByField !== void 0 && groupByField.bin || groupByField !== null && groupByField !== void 0 && groupByField.timeUnit) {
+        groupby.push(vgField(groupByField, {
+          binSuffix: 'end'
+        }));
+      }
     }
 
     const strokeProperties = ['stroke', 'strokeWidth', 'strokeJoin', 'strokeCap', 'strokeDash', 'strokeDashOffset', 'strokeMiterLimit', 'strokeOpacity']; // Generate stroke properties for the group
@@ -72041,6 +73248,8 @@
 
   class UnitModel extends ModelWithField {
     constructor(spec, parent, parentGivenName, parentGivenSize = {}, config) {
+      var _spec$params;
+
       super(spec, 'unit', parent, parentGivenName, config, undefined, isFrameMixins(spec) ? spec.view : undefined);
 
       _defineProperty(this, "markDef", void 0);
@@ -72057,7 +73266,7 @@
 
       _defineProperty(this, "specifiedProjection", {});
 
-      _defineProperty(this, "selection", {});
+      _defineProperty(this, "selection", []);
 
       _defineProperty(this, "children", []);
 
@@ -72093,7 +73302,7 @@
       this.specifiedLegends = this.initLegends(encoding);
       this.specifiedProjection = spec.projection; // Selections will be initialized upon parse.
 
-      this.selection = spec.selection;
+      this.selection = ((_spec$params = spec.params) !== null && _spec$params !== void 0 ? _spec$params : []).filter(p => isSelectionParameter(p));
     }
 
     get hasProjection() {
@@ -72141,8 +73350,9 @@
       const {
         domain,
         range
-      } = scale;
-      const scaleInternal = replaceExprRefInIndex(scale);
+      } = scale; // TODO: we could simplify this function if we had a recursive replace function
+
+      const scaleInternal = replaceExprRef(scale);
 
       if (isArray(domain)) {
         scaleInternal.domain = domain.map(signalRefOrValue);
@@ -72190,7 +73400,7 @@
 
         if (fieldOrDatumDef && supportLegend(channel)) {
           const legend = fieldOrDatumDef.legend;
-          _legend[channel] = legend ? replaceExprRefInIndex(legend) // convert truthy value to object
+          _legend[channel] = legend ? replaceExprRef(legend) // convert truthy value to object
           : legend;
         }
 
@@ -72299,9 +73509,9 @@
       };
       this.children = spec.layer.map((layer, i) => {
         if (isLayerSpec(layer)) {
-          return new LayerModel(layer, this, this.getName('layer_' + i), layoutSize, config);
+          return new LayerModel(layer, this, this.getName("layer_".concat(i)), layoutSize, config);
         } else if (isUnitSpec(layer)) {
-          return new UnitModel(layer, this, this.getName('layer_' + i), layoutSize, config);
+          return new UnitModel(layer, this, this.getName("layer_".concat(i)), layoutSize, config);
         }
 
         throw new Error(invalidSpec(layer));
@@ -72525,14 +73735,14 @@
 
     if (width && height && isFitType(autosize.type)) {
       if (width === 'step' && height === 'step') {
-        warn$1(droppingFit());
+        warn$2(droppingFit());
         autosize.type = 'pad';
       } else if (width === 'step' || height === 'step') {
         // effectively XOR, because else if
         // get step dimension
         const sizeType = width === 'step' ? 'width' : 'height'; // log that we're dropping fit for respective channel
 
-        warn$1(droppingFit(getPositionScaleChannel(sizeType))); // setting type to inverse fit (so if we dropped fit-x, type is now fit-y)
+        warn$2(droppingFit(getPositionScaleChannel(sizeType))); // setting type to inverse fit (so if we dropped fit-x, type is now fit-y)
 
         const inverseSizeType = sizeType === 'width' ? 'height' : 'width';
         autosize.type = getFitType(inverseSizeType);
@@ -72646,7 +73856,7 @@
 
   function runStreamingExample(eleId) {
     const vlSpec = {
-      $schema: 'https://vega.github.io/schema/vega-lite/v4.json',
+      $schema: 'https://vega.github.io/schema/vega-lite/v5.json',
       data: {
         name: 'table'
       },
@@ -72721,7 +73931,7 @@
   selectAll('h2, h3, h4, h5, h6').each(function () {
     const sel = select(this);
     const name = sel.attr('id');
-    const title = sel.text();
+    const title = sel.html();
     sel.html("<a href=\"#".concat(name, "\" class=\"anchor\"><span class=\"octicon octicon-link\"></span></a>").concat(title.trim()));
   });
   /* Documentation */
@@ -72780,7 +73990,7 @@
 
     if (name) {
       const dir = sel.attr('data-dir');
-      const fullUrl = BASEURL + '/examples/' + (dir ? dir + '/' : '') + name + '.vl.json';
+      const fullUrl = "".concat(BASEURL, "/examples/").concat(dir ? "".concat(dir, "/") : '').concat(name, ".vl.json");
       fetch(fullUrl).then(response => {
         response.text().then(spec => {
           renderExample(sel, spec, figureOnly);
@@ -72798,12 +74008,12 @@
   };
 
   window['buildSpecOpts'] = (id, baseName) => {
-    const oldName = select('#' + id).attr('data-name');
-    const prefixSel = select('select[name=' + id + ']');
-    const inputsSel = selectAll('input[name=' + id + ']:checked');
+    const oldName = select("#".concat(id)).attr('data-name');
+    const prefixSel = select("select[name=".concat(id, "]"));
+    const inputsSel = selectAll("input[name=".concat(id, "]:checked"));
     const prefix = prefixSel.empty() ? id : prefixSel.property('value');
     const values = inputsSel.nodes().map(n => n.value).sort().join('_');
-    const newName = baseName + prefix + (values ? '_' + values : '');
+    const newName = baseName + prefix + (values ? "_".concat(values) : '');
 
     if (oldName !== newName) {
       window['changeSpec'](id, newName);
@@ -72901,6 +74111,8 @@
   }
 
   exports.embedExample = embedExample;
+
+  Object.defineProperty(exports, '__esModule', { value: true });
 
   return exports;
 

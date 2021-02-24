@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/seattle-weather.csv"},
   "encoding": {
     "x": {"timeUnit": "yearmonthdate", "field": "date"},
@@ -21,14 +21,18 @@
     }
   }, {
     "mark": "rule",
-    "selection": {
-      "hover": {"type": "single", "on": "mouseover", "empty": "none"}
-    },
+    "params": [{
+      "name": "hover",
+      "select": {"type": "point", "on": "mouseover"}
+    }],
     "encoding": {
       "color": {
-        "condition":{
-          "selection": {"not": "hover"}, "value": "transparent"
-        }
+        "condition": {
+          "param": "hover",
+          "empty": false,
+          "value": "black"
+        },
+        "value": "transparent"
       }
     }
   }],

@@ -1,13 +1,13 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/cars.json"},
   "vconcat": [
     {
-      "selection": {
-        "region": {
-          "type": "interval", "bind": "scales"
-        }
-      },
+      "params": [{
+        "name": "region",
+        "select": "interval",
+        "bind": "scales"
+      }],
       "mark": "point",
       "encoding": {
         "x": {"field": "Horsepower", "type": "quantitative"},

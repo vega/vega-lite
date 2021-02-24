@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
     "values": [
       {"actual": "A", "predicted": "A", "count": 13},
@@ -13,9 +13,7 @@
       {"actual": "C", "predicted": "C", "count": 9}
     ]
   },
-  "selection": {
-    "highlight": {"type": "single"}
-  },
+  "params": [{"name": "highlight", "select": "point"}],
   "mark": {"type": "rect", "strokeWidth": 2},
   "encoding": {
     "y": {
@@ -31,14 +29,18 @@
       "type": "quantitative"
     },
     "stroke": {
-      "condition": {"test": {"and": [{"selection": "highlight"}, "length(data(\"highlight_store\"))"]}, "value": "black"},
+      "condition": {
+        "param": "highlight",
+        "empty": false,
+        "value": "black"
+      },
       "value": null
     },
     "opacity": {
-      "condition": {"selection": "highlight", "value": 1},
+      "condition": {"param": "highlight", "value": 1},
       "value": 0.5
     },
-    "order": {"condition": {"selection": "highlight", "value": 1}, "value": 0}
+    "order": {"condition": {"param": "highlight", "value": 1}, "value": 0}
   },
   "config": {
     "scale": {

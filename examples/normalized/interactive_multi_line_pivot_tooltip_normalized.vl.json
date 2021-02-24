@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/stocks.csv"},
   "width": 400,
   "height": 300,
@@ -15,8 +15,8 @@
           }
         },
         {
-          "transform": [{"filter": {"selection": "hover"}}],
           "mark": "point",
+          "transform": [{"filter": {"param": "hover", "empty": false}}],
           "encoding": {
             "x": {"field": "date", "type": "temporal"},
             "color": {"field": "symbol", "type": "nominal"},
@@ -26,12 +26,11 @@
       ]
     },
     {
-      "transform": [{"pivot": "symbol", "value": "price", "groupby": ["date"]}],
       "mark": "rule",
       "encoding": {
         "x": {"field": "date", "type": "temporal"},
         "opacity": {
-          "condition": {"value": 0.3, "selection": "hover"},
+          "condition": {"value": 0.3, "param": "hover", "empty": false},
           "value": 0
         },
         "tooltip": [
@@ -42,16 +41,19 @@
           {"field": "MSFT", "type": "quantitative"}
         ]
       },
-      "selection": {
-        "hover": {
-          "type": "single",
-          "fields": ["date"],
-          "nearest": true,
-          "on": "mouseover",
-          "empty": "none",
-          "clear": "mouseout"
+      "params": [
+        {
+          "name": "hover",
+          "select": {
+            "type": "point",
+            "fields": ["date"],
+            "nearest": true,
+            "on": "mouseover",
+            "clear": "mouseout"
+          }
         }
-      }
+      ],
+      "transform": [{"pivot": "symbol", "value": "price", "groupby": ["date"]}]
     }
   ]
 }

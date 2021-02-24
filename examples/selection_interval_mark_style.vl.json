@@ -1,19 +1,25 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/cars.json"},
-  "selection": {
-    "alex": {
-      "type": "interval",
-      "on": "[mousedown[!event.shiftKey], mouseup] > mousemove",
-      "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
+  "params": [
+    {
+      "name": "alex",
+      "select": {
+        "type": "interval",
+        "on": "[mousedown[!event.shiftKey], mouseup] > mousemove",
+        "translate": "[mousedown[!event.shiftKey], mouseup] > mousemove"
+      }
     },
-    "morgan": {
-      "type": "interval",
-      "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
-      "translate": "[mousedown[event.shiftKey], mouseup] > mousemove",
-      "mark": {"fill": "#fdbb84", "fillOpacity": 0.5, "stroke": "#e34a33"}
+    {
+      "name": "morgan",
+      "select": {
+        "type": "interval",
+        "on": "[mousedown[event.shiftKey], mouseup] > mousemove",
+        "translate": "[mousedown[event.shiftKey], mouseup] > mousemove",
+        "mark": {"fill": "#fdbb84", "fillOpacity": 0.5, "stroke": "#e34a33"}
+      }
     }
-  },
+  ],
   "mark": "rect",
   "encoding": {
     "y": {"field": "Origin"},

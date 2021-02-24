@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Drag out a rectangular brush to highlight points.",
   "data": {"url": "data/cars.json"},
   "hconcat": [{
@@ -9,18 +9,17 @@
     },
     "layer": [
       {
-        "selection": {
-          "hover": {
-            "type": "single",
-            "on": "mouseover",
-            "empty": "none"
-          }
-        },
+        "params": [{
+          "name": "hover",
+          "select": {"type": "point", "on": "mouseover"}
+        }],
         "mark": "point"
       },
       {
         "mark": {"type": "point", "color": "goldenrod"},
-        "transform": [{"filter": {"selection": "hover"}}]
+        "transform": [
+          {"filter": {"param": "hover", "empty": false}}
+        ]
       }
     ]
   }, {
@@ -31,18 +30,17 @@
     "layer": [
       {
 
-        "selection": {
-          "hover": {
-            "type": "single",
-            "on": "mouseover",
-            "empty": "none"
-          }
-        },
+        "params": [{
+          "name": "hover",
+          "select": {"type": "point", "on": "mouseover"}
+        }],
         "mark": "point"
       },
       {
         "mark": {"type": "point", "color": "goldenrod"},
-        "transform": [{"filter": {"selection": "hover"}}]
+        "transform": [
+          {"filter": {"param": "hover", "empty": false}}
+        ]
       }
     ]
   }]

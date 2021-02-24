@@ -52,6 +52,10 @@ A trail mark definition can contain any [standard mark properties](mark.html#mar
 
 <span class="vl-example" data-name="trail_color"></span>
 
+### A Comet Chart showing changes between two states
+
+<span class="vl-example" data-name="trail_comet"></span>
+
 {:#config}
 
 ## Trail Config

@@ -1,14 +1,13 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "width": 300, "height": 200,
   "data": {"url": "data/unemployment-across-industries.json"},
   "mark": "area",
-  "selection": {
-    "industry": {
-      "type": "multi", "fields": ["series"],
-      "bind": {"legend": "dblclick"}
-    }
-  },
+  "params": [{
+    "name": "industry",
+    "select": {"type": "point", "fields": ["series"]},
+    "bind": {"legend": "dblclick"}
+  }],
   "encoding": {
     "x": {
       "timeUnit": "yearmonth", "field": "date",
@@ -23,7 +22,7 @@
       "scale": {"scheme": "category20b"}
     },
     "opacity": {
-      "condition": {"selection": "industry", "value": 1},
+      "condition": {"param": "industry", "value": 1},
       "value": 0.2
     }
   }

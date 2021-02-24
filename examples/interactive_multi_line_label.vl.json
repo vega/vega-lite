@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
     "url": "data/stocks.csv"
   },
@@ -15,19 +15,23 @@
       "layer": [
         {"mark": "line"},
         {
-          "selection": {
-            "label": {
-              "type": "single",
-              "nearest": true,
-              "on": "mouseover",
+          "params": [{
+            "name": "label",
+            "select": {
+              "type": "point",
               "encodings": ["x"],
-              "empty": "none"
+              "nearest": true,
+              "on": "mouseover"
             }
-          },
+          }],
           "mark": "point",
           "encoding": {
             "opacity": {
-              "condition": {"selection": "label", "value": 1},
+              "condition": {
+                "param": "label",
+                "empty": false,
+                "value": 1
+              },
               "value": 0
             }
           }
@@ -35,7 +39,7 @@
       ]
     },
     {
-      "transform": [{"filter": {"selection": "label"}}],
+      "transform": [{"filter": {"param": "label", "empty": false}}],
       "layer": [
         {
           "mark": {"type": "rule", "color": "gray"},

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/cars.json"},
+  "params": [{"name": "pts", "select": "point"}],
+  "mark": "rect",
+  "encoding": {
+    "y": {"field": "Origin"},
+    "x": {"field": "Cylinders"},
+    "color": {
+      "condition": {
+        "param": "pts",
+        "aggregate": "count"
+      },
+      "value": "grey"
+    }
+  }
+}

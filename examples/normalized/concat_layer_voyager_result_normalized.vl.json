@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
     "values": [
       {
@@ -139,7 +139,7 @@
               "field": "to"
             },
             "shape": {
-              "condition": {"test": "datum.to > 0", "value": "triangle-right"},
+              "condition": {"value": "triangle-right", "test": "datum.to > 0"},
               "value": "triangle-left"
             }
           }
@@ -151,7 +151,6 @@
             "style": "arrow-label",
             "text": ["Polestar", "More Valuable"]
           },
-          "transform": [{"filter": "datum.label === 'PoleStar'"}],
           "encoding": {
             "x": {
               "type": "quantitative",
@@ -159,7 +158,8 @@
               "axis": null,
               "field": "from"
             }
-          }
+          },
+          "transform": [{"filter": "datum.label === 'PoleStar'"}]
         },
         {
           "mark": {
@@ -168,7 +168,6 @@
             "style": "arrow-label",
             "text": ["Voyager / Voyager 2", "More Valuable"]
           },
-          "transform": [{"filter": "datum.label !== 'PoleStar'"}],
           "encoding": {
             "x": {
               "type": "quantitative",
@@ -176,7 +175,8 @@
               "axis": null,
               "field": "from"
             }
-          }
+          },
+          "transform": [{"filter": "datum.label !== 'PoleStar'"}]
         }
       ]
     }

@@ -1,6 +1,7 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "A layered bar chart with floating bars representing weekly weather data",
+  "config": {"style": {"hilo": {"size": 20}}},
   "title": {
     "text": ["Weekly Weather", "Observations and Predictions"],
     "frame": "group"
@@ -10,7 +11,7 @@
   "height": 200,
   "layer": [
     {
-      "mark": {"type": "bar", "style": "box"},
+      "mark": {"type": "bar", "size": 20, "color": "#ccc"},
       "encoding": {
         "x": {
           "field": "id",
@@ -30,13 +31,11 @@
           "axis": {"title": "Temperature (F)"},
           "field": "record.low"
         },
-        "y2": {"field": "record.high"},
-        "size": {"value": 20},
-        "color": {"value": "#ccc"}
+        "y2": {"field": "record.high"}
       }
     },
     {
-      "mark": {"type": "bar", "style": "box"},
+      "mark": {"type": "bar", "size": 20, "color": "#999"},
       "encoding": {
         "x": {
           "field": "id",
@@ -56,13 +55,11 @@
           "axis": {"title": "Temperature (F)"},
           "field": "normal.low"
         },
-        "y2": {"field": "normal.high"},
-        "size": {"value": 20},
-        "color": {"value": "#999"}
+        "y2": {"field": "normal.high"}
       }
     },
     {
-      "mark": {"type": "bar", "style": "box"},
+      "mark": {"type": "bar", "size": 12, "color": "#000"},
       "encoding": {
         "x": {
           "field": "id",
@@ -82,13 +79,11 @@
           "axis": {"title": "Temperature (F)"},
           "field": "actual.low"
         },
-        "y2": {"field": "actual.high"},
-        "size": {"value": 12},
-        "color": {"value": "#000"}
+        "y2": {"field": "actual.high"}
       }
     },
     {
-      "mark": {"type": "bar", "style": "box"},
+      "mark": {"type": "bar", "size": 12, "color": "#000"},
       "encoding": {
         "x": {
           "field": "id",
@@ -108,13 +103,11 @@
           "axis": {"title": "Temperature (F)"},
           "field": "forecast.low.low"
         },
-        "y2": {"field": "forecast.low.high"},
-        "size": {"value": 12},
-        "color": {"value": "#000"}
+        "y2": {"field": "forecast.low.high"}
       }
     },
     {
-      "mark": {"type": "bar", "style": "box"},
+      "mark": {"type": "bar", "size": 3, "color": "#000"},
       "encoding": {
         "x": {
           "field": "id",
@@ -134,13 +127,11 @@
           "axis": {"title": "Temperature (F)"},
           "field": "forecast.low.high"
         },
-        "y2": {"field": "forecast.high.low"},
-        "size": {"value": 3},
-        "color": {"value": "#000"}
+        "y2": {"field": "forecast.high.low"}
       }
     },
     {
-      "mark": {"type": "bar", "style": "box"},
+      "mark": {"type": "bar", "size": 12, "color": "#000"},
       "encoding": {
         "x": {
           "field": "id",
@@ -160,9 +151,7 @@
           "axis": {"title": "Temperature (F)"},
           "field": "forecast.high.low"
         },
-        "y2": {"field": "forecast.high.high"},
-        "size": {"value": 12},
-        "color": {"value": "#000"}
+        "y2": {"field": "forecast.high.high"}
       }
     },
     {

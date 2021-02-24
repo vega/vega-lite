@@ -1,11 +1,8 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "A simple bar chart with embedded data.",
   "params": [
-    { "name": "cornerRadius", "value": 0,
-      "bind": {"input": "range", "min": 0, "max": 50, "step": 1} },
-    { "name": "cornerRadiusEnd", "value": 0,
-      "bind": {"input": "range", "min": 0, "max": 50, "step": 1} }
+    { "name": "cornerRadius", "value": 5}
   ],
   "data": {
     "values": [
@@ -16,8 +13,7 @@
   },
   "mark": {
     "type": "bar",
-    "cornerRadius": {"expr": "cornerRadius"},
-    "cornerRadiusEnd": {"expr": "cornerRadiusEnd"}
+    "cornerRadius": {"expr": "cornerRadius"}
   },
   "encoding": {
     "x": {"field": "a", "type": "nominal", "axis": {"labelAngle": 0}},

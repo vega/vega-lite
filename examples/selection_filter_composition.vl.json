@@ -1,10 +1,8 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/cars.json"},
   "vconcat": [{
-    "selection": {
-      "brush": {"type": "interval"}
-    },
+    "params": [{"name": "brush", "select": "interval"}],
     "mark": "point",
     "encoding": {
       "x": {"field": "Horsepower", "type": "quantitative"},
@@ -15,7 +13,7 @@
       "filter": {
         "and": [
           "datum.Weight_in_lbs > 3000",
-          {"selection": "brush"}
+          {"param": "brush"}
         ]
       }
     }],

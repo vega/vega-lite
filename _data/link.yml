@@ -165,7 +165,7 @@ RectConfig:
 ScaleConfig:
   link: 'scale.html#config'
 SelectionConfig:
-  link: 'selection.html#config'
+  link: 'parameter.html#config'
 StyleConfigIndex:
   name: Object
 TextConfig:
@@ -195,7 +195,7 @@ SingleDefUnitChannel:
   name: 'Channel'
   link: 'encoding.html#channels'
 AllSortString:
-  name: 'String'
+  name: String
 
 # Channel Definitions
 NumericMarkPropDef:
@@ -302,7 +302,7 @@ ProjectionType:
 SchemeParams:
   link: 'scale.html#scheme-params'
 SelectionDomain:
-  link: 'selection.html#scale-domains'
+  link: 'parameter.html#scale-domains'
 InterpolateParams:
   name: Object
 Scheme:
@@ -314,39 +314,50 @@ Resolve:
   name: Resolve
   link: 'resolve.html'
 
-# Selections
+# Parameters/Selections
 SelectionDef:
   name: Selection
-  link: 'selection.html'
+  link: 'parameter.html'
 SelectionComposition:
   name: 'String | Object'
-SingleSelectionConfig:
-  name: Selection
-  link: 'selection.html#definition'
-MultiSelectionConfig:
-  name: Selection
-  link: 'selection.html#definition'
+PointSelectionConfig:
+  name: PointSelection
+  link: 'selection.html#point'
+PointSelectionConfigWithoutType:
+  name: PointSelection
+  link: 'selection.html#point'
 IntervalSelectionConfig:
-  name: Selection
-  link: 'selection.html#definition'
+  name: IntervalSelection
+  link: 'selection.html#interval'
+IntervalSelectionConfigWithoutType:
+  name: IntervalSelection
+  link: 'selection.html#interval'
+VariableParameter:
+  name: Parameter
+  link: 'parameter.html'
+SelectionParameter:
+  name: Parameter
+  link: 'parameter.html'
 Binding:
   link: 'bind.html'
 LegendBinding:
   link: 'https://vega.github.io/vega-lite/docs/bind.html#legend-binding'
 BrushConfig:
   name: Mark
-  link: 'selection.html#interval-mark'
+  link: 'parameter.html#interval-mark'
 Stream:
   name: 'VegaEventStream'
   link: 'https://vega.github.io/vega/docs/event-streams/'
 SelectionResolution:
-  link: 'selection.html#resolve'
+  link: 'selection-resolve.html'
 SelectionInitMapping:
   name: 'Object'
   link: 'init.html'
 SelectionInitIntervalMapping:
   name: 'Object'
   link: 'init.html'
+ParameterName:
+  name: String
 
 # Types
 Any:
@@ -367,12 +378,17 @@ Vector2:
   name: Array
 Vector3:
   name: Array
+Dict:
+  name: Object
+InlineDataset:
+  name: Array
+Expr:
+  link: 'types.html#expression'
 
 # Others
 PredicateComposition:
   name: 'Predicate'
   link: 'predicate.html'
-
 FontWeight:
   name: 'String | Number'
 RepeatMapping:

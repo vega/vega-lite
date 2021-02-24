@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "An interactive scatter plot of global health statistics by country and year.",
   "data": {"url": "data/gapminder.json"},
   "width": 800,
@@ -8,7 +8,7 @@
     {
       "transform": [
         {"filter": {"field": "country", "equal": "Afghanistan"}},
-        {"filter": {"selection": "year"}}
+        {"filter": {"param": "year"}}
       ],
       "mark": {
         "type": "text",
@@ -66,9 +66,10 @@
             "order": {"field": "year"},
             "opacity": {
               "condition": {
-                "test": {
-                  "or": [{"selection": "hovered"}, {"selection": "clicked"}]
-                },
+                "test": {"or": [
+                  {"param": "hovered", "empty": false},
+                  {"param": "clicked", "empty": false}
+                ]},
                 "value": 0.8
               },
               "value": 0
@@ -76,28 +77,35 @@
           }
         },
         {
-          "selection": {
-            "year": {
-              "type": "single",
-              "fields": ["year"],
-              "bind": {
-                "input": "range",
-                "min": 1955,
-                "max": 2005,
-                "step": 5,
-                "name": "Year"
+          "params": [
+            {
+              "name": "year",
+              "value": [{"year": 1955}],
+              "select": {
+                "type": "point",
+                "fields": ["year"]
               },
-              "init": {"year": 1955}
+              "bind": {
+                "name": "Year",
+                "input": "range",
+                "min": 1955, "max": 2005, "step": 5
+              }
             },
-            "hovered": {
-              "type": "single",
-              "fields": ["country"],
-              "on": "mouseover",
-              "empty": "none"
+            {
+              "name": "hovered",
+              "select": {
+                "type": "point",
+                "fields": ["country"],
+                "toggle": false,
+                "on": "mouseover"
+              }
             },
-            "clicked": {"type": "multi", "fields": ["country"], "empty": "none"}
-          },
-          "transform": [{"filter": {"selection": "year"}}],
+            {
+              "name": "clicked",
+              "select": {"type": "point", "fields": ["country"]}
+            }
+          ],
+          "transform": [{"filter": {"param": "year"}}],
           "mark": {"type": "circle", "size": 100, "opacity": 0.9},
           "encoding": {"color": {"field": "name", "title": "Region"}}
         },
@@ -106,8 +114,11 @@
             {
               "filter": {
                 "and": [
-                  {"selection": "year"},
-                  {"or": [{"selection": "clicked"}, {"selection": "hovered"}]}
+                  {"param": "year"},
+                  {"or": [
+                    {"param": "clicked", "empty": false},
+                    {"param": "hovered", "empty": false}
+                  ]}
                 ]
               }
             }
@@ -125,8 +136,8 @@
         },
         {
           "transform": [
-            {"filter": {"selection": "hovered"}},
-            {"filter": {"not": {"selection": "year"}}}
+            {"filter": {"param": "hovered", "empty": false}},
+            {"filter": {"not": {"param": "year"}}}
           ],
           "layer": [
             {

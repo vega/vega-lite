@@ -1,16 +1,17 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/cars.json"},
-  "selection": {
-    "pts": {"type": "interval", "encodings": ["x"]}
-  },
+  "params": [{
+    "name": "pts",
+    "select": {"type": "interval", "encodings": ["x"]}
+  }],
   "mark": "rect",
   "encoding": {
     "y": {"field": "Origin"},
     "x": {"field": "Cylinders"},
     "color": {
       "condition": {
-        "selection": "pts",
+        "param": "pts",
         "aggregate": "count"
       },
       "value": "grey"

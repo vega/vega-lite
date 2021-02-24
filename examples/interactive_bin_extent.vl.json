@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
     "url": "data/flights-5k.json",
     "format": {"parse": {"date": "date"}}
@@ -8,9 +8,10 @@
   "vconcat": [{
     "width": 963,
     "height": 100,
-    "selection": {
-      "brush": {"type": "interval", "encodings": ["x"]}
-    },
+    "params": [{
+      "name": "brush",
+      "select": {"type": "interval", "encodings": ["x"]}
+    }],
     "mark": "bar",
     "encoding": {
       "x": {"field": "time", "bin": {"maxbins": 30}},
@@ -23,7 +24,7 @@
     "encoding": {
       "x": {
         "field": "time",
-        "bin": {"maxbins": 30, "extent": {"selection": "brush"}}
+        "bin": {"maxbins": 30, "extent": {"param": "brush"}}
       },
       "y": {"aggregate": "count"}
     }

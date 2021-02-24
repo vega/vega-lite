@@ -1,12 +1,6 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/cars.json"},
-  "transform": [
-    {
-      "aggregate": [{"op": "count", "as": "num_cars"}],
-      "groupby": ["Origin", "Cylinders"]
-    }
-  ],
   "layer": [
     {
       "mark": "rect",
@@ -28,11 +22,17 @@
         "x": {"field": "Cylinders", "type": "ordinal"},
         "text": {"field": "num_cars", "type": "quantitative"},
         "color": {
-          "condition": {"test": "datum['num_cars'] < 40", "value": "black"},
+          "condition": {"value": "black", "test": "datum['num_cars'] < 40"},
           "value": "white"
         }
       }
     }
   ],
-  "config": {"axis": {"grid": true, "tickBand": "extent"}}
+  "config": {"axis": {"grid": true, "tickBand": "extent"}},
+  "transform": [
+    {
+      "aggregate": [{"op": "count", "as": "num_cars"}],
+      "groupby": ["Origin", "Cylinders"]
+    }
+  ]
 }

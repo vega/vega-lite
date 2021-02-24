@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
     "values": [
       {"date": "Sun, 01 Jan 2012 23:00:01", "price": 150},
@@ -11,19 +11,20 @@
   },
   "hconcat": [{
     "mark": "point",
-    "selection": {
-      "brush": {"type": "interval", "encodings": ["x"]}
-    },
+    "params": [{
+      "name": "brush",
+      "select": {"type": "interval", "encodings": ["x"]}
+    }],
     "encoding": {
       "x": {"field": "date", "timeUnit": "seconds"},
       "y": {"field": "price", "type": "quantitative"},
       "color": {
-        "condition": {"selection": "brush", "value": "goldenrod"},
+        "condition": {"param": "brush", "value": "goldenrod"},
         "value": "steelblue"
       }
     }
   }, {
-    "transform": [{"filter": {"selection": "brush"}}],
+    "transform": [{"filter": {"param": "brush"}}],
     "mark": "point",
     "encoding": {
       "x": {"field": "date", "timeUnit": "minutes"},

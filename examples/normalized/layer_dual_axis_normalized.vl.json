@@ -1,10 +1,9 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "A dual axis chart, created by setting y's scale resolution to `\"independent\"`",
   "width": 400,
   "height": 300,
   "data": {"url": "data/weather.csv"},
-  "transform": [{"filter": "datum.location == \"Seattle\""}],
   "layer": [
     {
       "mark": {"opacity": 0.3, "type": "area", "color": "#85C5A6"},
@@ -41,5 +40,6 @@
       }
     }
   ],
-  "resolve": {"scale": {"y": "independent"}}
+  "resolve": {"scale": {"y": "independent"}},
+  "transform": [{"filter": "datum.location == \"Seattle\""}]
 }

@@ -1,12 +1,14 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {"url": "data/cars.json"},
-  "selection": {
-    "grid": {
-      "type": "interval", "bind": "scales",
+  "params": [{
+    "name": "grid",
+    "select": {
+      "type": "interval",
       "translate": "[mousedown[event.shiftKey], window:mouseup] > window:mousemove!"
-    }
-  },
+    },
+    "bind": "scales"
+  }],
   "mark": "circle",
   "encoding": {
     "x": {

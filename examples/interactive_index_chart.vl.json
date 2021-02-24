@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
     "url": "data/stocks.csv",
     "format": {"parse": {"date": "date"}}
@@ -8,13 +8,16 @@
   "height": 300,
   "layer": [
     {
-      "selection": {
-        "index": {
-          "type": "single", "on": "mouseover",
-          "encodings": ["x"], "nearest": true,
-          "init": {"x": {"year": 2005, "month": 1, "date": 1}}
+      "params": [{
+        "name": "index",
+        "value": [{"x": {"year": 2005, "month": 1, "date": 1}}],
+        "select": {
+          "type": "point",
+          "encodings": ["x"],
+          "on": "mouseover",
+          "nearest": true
         }
-      },
+      }],
       "mark": "point",
       "encoding": {
         "x": {"field": "date", "type": "temporal", "axis": null},
@@ -25,7 +28,7 @@
       "transform": [
         {
           "lookup": "symbol",
-          "from": {"selection": "index", "key": "symbol"}
+          "from": {"param": "index", "key": "symbol"}
         },
         {
           "calculate": "datum.index && datum.index.price > 0 ? (datum.price - datum.index.price)/datum.index.price : 0",
@@ -43,7 +46,7 @@
       }
     },
     {
-      "transform": [{"filter": {"selection": "index"}}],
+      "transform": [{"filter": {"param": "index"}}],
       "encoding": {
         "x": {"field": "date", "type": "temporal", "axis": null},
         "color": {"value": "firebrick"}

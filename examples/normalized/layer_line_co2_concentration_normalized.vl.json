@@ -1,23 +1,11 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "data": {
     "url": "data/co2-concentration.csv",
     "format": {"parse": {"Date": "utc:'%Y-%m-%d'"}}
   },
   "width": 800,
   "height": 500,
-  "transform": [
-    {"calculate": "year(datum.Date)", "as": "year"},
-    {"calculate": "floor(datum.year / 10)", "as": "decade"},
-    {
-      "calculate": "(datum.year % 10) + (month(datum.Date)/12)",
-      "as": "scaled_date"
-    },
-    {
-      "calculate": "datum.first_date === datum.scaled_date ? 'first' : datum.last_date === datum.scaled_date ? 'last' : null",
-      "as": "end"
-    }
-  ],
   "layer": [
     {
       "mark": "line",
@@ -95,5 +83,17 @@
       }
     }
   ],
-  "config": {"text": {"align": "left", "dx": 3, "dy": 1}}
+  "config": {"text": {"align": "left", "dx": 3, "dy": 1}},
+  "transform": [
+    {"calculate": "year(datum.Date)", "as": "year"},
+    {"calculate": "floor(datum.year / 10)", "as": "decade"},
+    {
+      "calculate": "(datum.year % 10) + (month(datum.Date)/12)",
+      "as": "scaled_date"
+    },
+    {
+      "calculate": "datum.first_date === datum.scaled_date ? 'first' : datum.last_date === datum.scaled_date ? 'last' : null",
+      "as": "end"
+    }
+  ]
 }

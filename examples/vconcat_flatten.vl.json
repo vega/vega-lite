@@ -1,5 +1,5 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Show a line chart corresponding to selected points.",
   "data": {
     "values": [
@@ -30,14 +30,15 @@
       "title": "Sky position",
       "transform": [{"aggregate": [], "groupby": ["ra", "dec", "id"]}],
       "mark": "circle",
-      "selection": {
-        "pts": {"type": "multi", "fields": ["id"], "empty": "all"}
-      },
+      "params": [{
+        "name": "pts",
+        "select": {"type": "point", "fields": ["id"]}
+      }],
       "encoding": {
         "x": {"field": "ra", "type": "quantitative", "scale": {"zero": false}},
         "y": {"field": "dec", "type": "quantitative"},
         "color": {
-          "condition": {"selection": "pts", "value": "steelblue"},
+          "condition": {"param": "pts", "value": "steelblue"},
           "value": "grey"
         },
         "size": {"value": 100}
@@ -47,7 +48,7 @@
       "width": 300,
       "height": 200,
       "title": "Light curve",
-      "transform": [{"filter": {"selection": "pts"}}],
+      "transform": [{"filter": {"param": "pts"}}],
       "mark": "line",
       "encoding": {
         "x": {
