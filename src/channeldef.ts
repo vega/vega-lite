@@ -53,7 +53,7 @@ import {CompositeAggregate} from './compositemark';
 import {Config} from './config';
 import {DateTime, dateTimeToExpr, isDateTime} from './datetime';
 import {Encoding} from './encoding';
-import {ExprRef, isExprRef} from './expr';
+import {ExprRef, isExprRef, replaceExprRef} from './expr';
 import {Guide, GuideEncodingConditionalValueDef, TitleMixins} from './guide';
 import {ImputeParams} from './impute';
 import {Legend} from './legend';
@@ -943,11 +943,11 @@ export function title(
   }
 }
 
-export function getGuide(fieldDef: TypedFieldDef<string> | SecondaryFieldDef<string> | DatumDef): Guide {
+export function getGuide(fieldDef: TypedFieldDef<string> | SecondaryFieldDef<string> | DatumDef): Guide<SignalRef> {
   if (isPositionFieldOrDatumDef(fieldDef) && fieldDef.axis) {
-    return fieldDef.axis;
+    return replaceExprRef(fieldDef.axis);
   } else if (isMarkPropFieldOrDatumDef(fieldDef) && fieldDef.legend) {
-    return fieldDef.legend;
+    return replaceExprRef(fieldDef.legend);
   } else if (isFacetFieldDef(fieldDef) && fieldDef.header) {
     return fieldDef.header;
   }

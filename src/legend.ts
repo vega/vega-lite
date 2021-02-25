@@ -88,7 +88,7 @@ export type LegendConfig<ES extends ExprRef | SignalRef> = LegendMixins<ES> &
 export interface Legend<ES extends ExprRef | SignalRef>
   extends Omit<BaseLegendNoValueRefs<ES>, 'orient'>,
     LegendMixins<ES>,
-    Guide {
+    Guide<ES> {
   /**
    * Mark definitions for custom legend encoding.
    *

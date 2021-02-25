@@ -335,10 +335,10 @@ export interface AxisPropsWithCondition<ES extends ExprRef | SignalRef> {
   tickOpacity?: BaseAxisNoValueRefs<ES>['tickOpacity'] | ConditionalAxisNumber<ES>;
   tickSize?: BaseAxisNoValueRefs<ES>['tickSize'] | ConditionalAxisNumber<ES>;
   tickWidth?: BaseAxisNoValueRefs<ES>['tickWidth'] | ConditionalAxisNumber<ES>;
-  title?: TitleMixins['title'];
+  title?: TitleMixins<ES>['title'];
 }
 
-export type AxisConfig<ES extends ExprRef | SignalRef> = Guide &
+export type AxisConfig<ES extends ExprRef | SignalRef> = Guide<ES> &
   VlOnlyGuideConfig &
   AxisConfigBaseWithConditionalAndSignal<ES> & {
     /**
@@ -349,7 +349,7 @@ export type AxisConfig<ES extends ExprRef | SignalRef> = Guide &
 
 export interface Axis<ES extends ExprRef | SignalRef = ExprRef | SignalRef>
   extends AxisConfigBaseWithConditionalAndSignal<ES>,
-    Guide {
+    Guide<ES> {
   /**
    * Mark definitions for custom axis encoding.
    *
