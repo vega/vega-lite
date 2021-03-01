@@ -7522,17 +7522,17 @@ trim-repeated@^1.0.0:
   dependencies:
     escape-string-regexp "^1.0.2"
 
-ts-json-schema-generator@^0.86.1:
-  version "0.86.1"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.86.1.tgz#f3eedfd246ee08af385f9e70e649118c478244ed"
-  integrity sha512-DWapm+mShf3+YS76VPvd/FSa9i4R/rBkJYmCiGDKRnvDgrwNFOXms0jc8HFjDG168wWmhU+wPTQf/PN+/mw9Cg==
+ts-json-schema-generator@^0.88.0:
+  version "0.88.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.88.0.tgz#9e2c0a1d1e40b3c7125c6aa170b6e500112aa7cf"
+  integrity sha512-MJbQ4ATFVZSrxAmnPMUWXkgMdQvDDKvzY70KhJ9M+xVg7q1Ng2OGN4Nmq7pbf2WHuZb/Ewns4mdZj+5DH/6wNQ==
   dependencies:
     "@types/json-schema" "^7.0.7"
     commander "^7.1.0"
     fast-json-stable-stringify "^2.1.0"
     glob "^7.1.6"
     json-stable-stringify "^1.0.1"
-    typescript "~4.1.5"
+    typescript "~4.2.2"
 
 tslib@^1.8.1:
   version "1.14.1"
@@ -7608,11 +7608,6 @@ typedarray-to-buffer@^3.1.5:
   integrity sha512-zdu8XMNEDepKKR+XYOXAVPtWui0ly0NtohUscw+UmaHiAWT8hrV1rr//H6V+0DvJ3OQ19S979M0laLfX8rm82Q==
   dependencies:
     is-typedarray "^1.0.0"
-
-typescript@~4.1.5:
-  version "4.1.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.1.5.tgz#123a3b214aaff3be32926f0d8f1f6e704eb89a72"
-  integrity sha512-6OSu9PTIzmn9TCDiovULTnET6BgXtDYL4Gg4szY+cGsc3JP1dQL8qvE8kShTRx1NIw4Q9IBHlwODjkjWEtMUyA==
 
 typescript@~4.2.2:
   version "4.2.2"
