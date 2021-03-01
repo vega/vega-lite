@@ -7999,11 +7999,11 @@ vega-time@^2.0.3, vega-time@^2.0.4, vega-time@~2.0.4:
     vega-util "^1.15.2"
 
 vega-tooltip@^0.25.0:
-  version "0.25.0"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.25.0.tgz#c5dcae1b2bd36e1c2e61e69f6ee7a0d0d27a3026"
-  integrity sha512-S48d/eP6WfieLmUvFEjd+raHWKKeK/RfTlwLa3zGcBULDHJY2NU2vRfjC1x33G6Y7eKeAfqGpM6ER5Qt1nf8tA==
+  version "0.25.1"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.25.1.tgz#cb7e438438649eb46896e7bee6f54e25d25b3c09"
+  integrity sha512-ugGwGi2/p3OpB8N15xieuzP8DyV5DreqMWcmJ9zpWT8GlkyKtef4dGRXnvHeHQ+iJFmWrq4oZJ+kLTrdiECjAg==
   dependencies:
-    vega-util "^1.15.2"
+    vega-util "^1.16.0"
 
 vega-transforms@~4.9.3:
   version "4.9.3"
