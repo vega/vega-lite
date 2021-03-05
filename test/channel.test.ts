@@ -23,7 +23,7 @@ describe('channel', () => {
   });
 
   describe('SCALE_CHANNELS', () => {
-    it('should be UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, LABEL, TOOLTIP', () => {
+    it('should be UNIT_CHANNELS without X2, Y2, ORDER, DETAIL, TEXT, TOOLTIP', () => {
       expect(SCALE_CHANNELS).toEqual(
         without(UNIT_CHANNELS, [
           'x2',
@@ -42,7 +42,6 @@ describe('channel', () => {
           'detail',
           'key',
           'text',
-          'label',
           'tooltip',
           'href',
           'url',
