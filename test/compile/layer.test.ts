@@ -1,3 +1,5 @@
+import {LayerModel} from '../../src/compile/layer';
+import {UnitModel} from '../../src/compile/unit';
 import {parseLayerModel} from '../util';
 
 describe('Layer', () => {
@@ -109,6 +111,85 @@ describe('Layer', () => {
 
       expect(model.component.axes['x']).toHaveLength(2);
       expect(model.component.axes['x'][1].implicit.orient).toBe('top');
+    });
+  });
+
+  describe("label's avoidMarks", () => {
+    const model = parseLayerModel({
+      layer: [
+        {
+          mark: 'point',
+          encoding: {
+            label: {field: 'b', type: 'quantitative'}
+          }
+        },
+        {
+          layer: [
+            {
+              mark: 'point',
+              encoding: {
+                label: {field: 'b', type: 'quantitative', avoidParentLayer: 'all'}
+              }
+            },
+            {
+              mark: 'point',
+              encoding: {
+                label: {field: 'b', type: 'quantitative', avoidParentLayer: 2}
+              }
+            },
+            {
+              mark: 'point',
+              encoding: {
+                label: {field: 'b', type: 'quantitative', avoidParentLayer: 1}
+              }
+            }
+          ]
+        },
+        {
+          mark: 'point',
+          encoding: {
+            x: {field: 'b', type: 'quantitative'}
+          }
+        }
+      ]
+    });
+
+    model.parse();
+
+    it('should have five children', () => {
+      expect(model.children).toHaveLength(3);
+    });
+
+    it('should avoid correct marks and labels', () => {
+      expect((model.children[0] as UnitModel).label[0].mark.transform[0].avoidMarks).toEqual([]);
+      expect(
+        ((model.children[1] as LayerModel).children[0] as UnitModel).label[0].mark.transform[0].avoidMarks
+      ).toEqual([
+        'layer_1_layer_1_marks',
+        'layer_1_layer_2_marks',
+        'layer_0_marks',
+        'layer_2_marks',
+        'layer_0_marks_label'
+      ]);
+      expect(
+        ((model.children[1] as LayerModel).children[1] as UnitModel).label[0].mark.transform[0].avoidMarks
+      ).toEqual([
+        'layer_1_layer_0_marks',
+        'layer_1_layer_2_marks',
+        'layer_1_layer_0_marks_label',
+        'layer_0_marks',
+        'layer_2_marks',
+        'layer_0_marks_label'
+      ]);
+      expect(
+        ((model.children[1] as LayerModel).children[2] as UnitModel).label[0].mark.transform[0].avoidMarks
+      ).toEqual([
+        'layer_1_layer_0_marks',
+        'layer_1_layer_1_marks',
+        'layer_1_layer_0_marks_label',
+        'layer_1_layer_1_marks_label',
+        'layer_0_marks_label'
+      ]);
     });
   });
 });

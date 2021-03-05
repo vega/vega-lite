@@ -20,6 +20,7 @@ import {
   isSecondaryRangeChannel,
   isXorY,
   KEY,
+  LABEL,
   LATITUDE,
   LATITUDE2,
   LONGITUDE,
@@ -197,6 +198,33 @@ export type TextDef<F extends Field> =
   | FieldOrDatumDefWithCondition<StringFieldDef<F>, Text>
   | FieldOrDatumDefWithCondition<StringDatumDef<F>, Text>
   | ValueDefWithCondition<StringFieldDef<F>, Text>;
+
+export type LabelAnchor =
+  | 'left'
+  | 'right'
+  | 'top'
+  | 'bottom'
+  | 'top-left'
+  | 'top-right'
+  | 'bottom-left'
+  | 'bottom-right'
+  | 'middle';
+
+export type LabelPosition = {
+  offset: number;
+  anchor: LabelAnchor;
+};
+
+export type LabelDefMixins = {
+  position?: LabelPosition[];
+  avoidParentLayer?: 'all' | number;
+  mark?: Omit<MarkDef<'text'>, 'type'>;
+  padding?: number;
+  method?: 'floodfill' | 'reduced-search' | 'naive';
+  lineAnchor?: 'begin' | 'end';
+};
+
+export type LabelDef<F extends Field> = TextDef<F> & LabelDefMixins;
 
 /**
  * A ValueDef with optional Condition<ValueDef | FieldDef>
@@ -1253,6 +1281,7 @@ export function channelCompatibility(
     case FILL:
     case STROKE:
     case TEXT:
+    case LABEL:
     case DETAIL:
     case KEY:
     case TOOLTIP:

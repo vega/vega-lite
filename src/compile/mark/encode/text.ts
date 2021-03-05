@@ -7,9 +7,13 @@ import {formatSignalRef} from '../../format';
 import {UnitModel} from '../../unit';
 import {wrapCondition} from './conditional';
 
-export function text(model: UnitModel, channel: 'text' | 'href' | 'url' | 'description' = 'text') {
+export function text(
+  model: UnitModel,
+  channel: 'text' | 'href' | 'url' | 'description' = 'text',
+  expr: 'datum' | 'datum.datum' = 'datum'
+) {
   const channelDef = model.encoding[channel];
-  return wrapCondition(model, channelDef, channel, cDef => textRef(cDef, model.config));
+  return wrapCondition(model, channelDef, channel, cDef => textRef(cDef, model.config, expr));
 }
 
 export function textRef(

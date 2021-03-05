@@ -18,6 +18,9 @@ import {Type} from '../type';
 import {stringify} from '../util';
 import {VgSortField} from '../vega.schema';
 
+export const ROUNDED_CORNER_STACKED_BAR_WITH_AVOID =
+  'Labels on stacked bar chart can only avoid the base mark (stacked bars)';
+
 export function invalidSpec(spec: GenericSpec<any, any, any, any>) {
   return `Invalid specification ${stringify(
     spec

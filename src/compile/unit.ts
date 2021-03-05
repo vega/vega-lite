@@ -48,7 +48,7 @@ import {initLayoutSize} from './layoutsize/init';
 import {parseUnitLayoutSize} from './layoutsize/parse';
 import {LegendInternalIndex} from './legend/component';
 import {defaultFilled, initMarkdef} from './mark/init';
-import {parseMarkGroups} from './mark/mark';
+import {isLabelMark, LabelMark, parseMarkGroupsAndLabels} from './mark/mark';
 import {isLayerModel, Model, ModelWithField} from './model';
 import {ScaleIndex} from './scale/component';
 import {
@@ -78,6 +78,8 @@ export class UnitModel extends ModelWithField {
 
   public readonly selection: SelectionParameter[] = [];
   public children: Model[] = [];
+
+  public label: {mark: LabelMark; level: number}[] = [];
 
   constructor(
     spec: NormalizedUnitSpec,
@@ -234,7 +236,12 @@ export class UnitModel extends ModelWithField {
   }
 
   public parseMarkGroup() {
-    this.component.mark = parseMarkGroups(this);
+    const {mark, label} = parseMarkGroupsAndLabels(this);
+    this.component.mark = mark;
+
+    const labelDef = this.encoding.label;
+    const level = labelDef ? labelDef.avoidParentLayer : -1;
+    this.label = label.map(l => ({mark: l, level: level === 'all' ? Infinity : ~~level}));
   }
 
   public parseAxesAndHeaders() {
@@ -262,7 +269,9 @@ export class UnitModel extends ModelWithField {
   }
 
   public assembleMarks() {
-    let marks = this.component.mark ?? [];
+    const labels = this.label ?? [];
+    labels.forEach(({mark}) => (mark.transform[0].avoidMarks = [...new Set(mark.transform[0].avoidMarks)]));
+    let marks = [...(this.component.mark ?? []), ...(this.label ?? []).map(({mark}) => mark)];
 
     // If this unit is part of a layer, selections should augment
     // all in concert rather than each unit individually. This
@@ -271,11 +280,30 @@ export class UnitModel extends ModelWithField {
       marks = assembleUnitSelectionMarks(this, marks);
     }
 
-    return marks.map(this.correctDataNames);
+    marks = marks.map(this.correctDataNames);
+    return [...marks.filter(mark => !isLabelMark(mark)), ...marks.filter(isLabelMark)];
   }
 
   protected getMapping() {
     return this.encoding;
+  }
+
+  public getMarkNames(): string[] {
+    return (this.component.mark ?? []).map(m => m.name).filter(name => name);
+  }
+
+  public getLabelNames(): string[] {
+    return (this.label ?? []).map(({mark}) => mark.name).filter(name => name);
+  }
+
+  public avoidMarks(names: string[], level = 0) {
+    this.label
+      .filter(label => label.level > level)
+      .forEach(({mark}) => {
+        const [labelTransform] = mark.transform;
+        labelTransform.avoidMarks ??= [];
+        labelTransform.avoidMarks.push(...names.filter(name => !labelTransform.avoidMarks.includes(name)));
+      });
   }
 
   public get mark(): Mark {
