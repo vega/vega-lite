@@ -1,5 +1,4 @@
 import {
-  ExtendedChannel,
   CHANNELS,
   isScaleChannel,
   NONPOSITION_SCALE_CHANNELS,
