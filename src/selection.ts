@@ -215,9 +215,9 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
   select: T | (T extends 'point' ? PointSelectionConfig : T extends 'interval' ? IntervalSelectionConfig : never);
 
   /**
-   * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.
+   * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/selection.html#project) and initial values.
    *
-   * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation.
+   * __See also:__ [`init`](https://vega.github.io/vega-lite/docs/value.html) documentation.
    */
   value?: T extends 'point'
     ? SelectionInit | SelectionInitMapping[]
@@ -261,7 +261,7 @@ export type ParameterExtent =
 
       /**
        * If a selection parameter is specified, the field name to extract selected values for
-       * when the selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings.
+       * when the selection is [projected](https://vega.github.io/vega-lite/docs/selection.html#project) over multiple fields or encodings.
        */
       field?: FieldName;
     }
@@ -273,7 +273,7 @@ export type ParameterExtent =
 
       /**
        * If a selection parameter is specified, the encoding channel to extract selected values for
-       * when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings.
+       * when a selection is [projected](https://vega.github.io/vega-lite/docs/selection.html#project) over multiple fields or encodings.
        */
       encoding?: SingleDefUnitChannel;
     };

@@ -2,7 +2,7 @@
 layout: docs
 menu: docs
 title: Initializing a Parameter
-permalink: /docs/selection-value.html
+permalink: /docs/value.html
 ---
 
 Parameters can be initialized using the `value` property.

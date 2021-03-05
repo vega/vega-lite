@@ -8,9 +8,9 @@ var fs = require('fs'),
 var URL = '{{site.baseurl}}/docs/';
 
 var DIR = __dirname + '/../site/';
-var DOCS_LAYOUT = DIR + '/_layouts/docs.html';
-var COMPILED_DOCS = DIR + '/_site/docs';
-var TOC = DIR + '/_includes/docs_toc.md';
+var DOCS_LAYOUT = DIR + '_layouts/docs.html';
+var COMPILED_DOCS = DIR + '_site/docs';
+var TOC = DIR + '_includes/docs_toc.md';
 
 var CONTENT_TAG = '.page-content';
 var INNER_LINK_TAG = 'h2';
@@ -34,7 +34,7 @@ function generateLink(title, page, local) {
 }
 
 // parse Docs layout
-fs.readFile(DOCS_LAYOUT, function(err, contents) {
+fs.readFile(DOCS_LAYOUT, function (err, contents) {
   if (err) {
     throw err;
   }
@@ -57,7 +57,7 @@ fs.readFile(DOCS_LAYOUT, function(err, contents) {
         var $ = cheerio.load(fs.readFileSync(page).toString());
 
         // iterate through links in DOM tree
-        $(CONTENT_TAG + ' ' + INNER_LINK_TAG).each(function() {
+        $(CONTENT_TAG + ' ' + INNER_LINK_TAG).each(function () {
           // generate markdown for in-page navigation
           var hash = '#' + $(this).attr('id');
           var link = generateLink($(this).text(), el.url, hash);

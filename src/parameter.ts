@@ -10,7 +10,7 @@ export interface VariableParameter {
   name: ParameterName;
 
   /**
-   * The [initial value](http://vega.github.io/vega-lite/docs/init.html) of the parameter.
+   * The [initial value](http://vega.github.io/vega-lite/docs/value.html) of the parameter.
    *
    * __Default value:__ `undefined`
    */
