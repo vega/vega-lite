@@ -73,6 +73,23 @@ describe('FacetModel', () => {
         row: {field: 'a', type: 'nominal', header: null}
       });
     });
+
+    it('honors overall dimensions', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {type: 'ordinal', field: 'a'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {}
+        },
+        width: 500,
+        height: 300
+      });
+      expect(model.width).toEqual({signal: 'width'});
+      expect(model.height).toEqual({signal: 'height'});
+      expect(model.size).toEqual({width: 500, height: 300});
+    });
   });
 
   describe('parseAxisAndHeader', () => {
