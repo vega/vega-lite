@@ -73,7 +73,7 @@ export function rectPosition(
       config
     });
   } else if (((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType)) || isBarBand) && !channelDef2) {
-    return positionAndSize(mark, channelDef, channel, model);
+    return positionAndSize(channelDef, channel, model);
   } else {
     return rangePosition(channel, model, {defaultPos: 'zeroOrMax', defaultPos2: 'zeroOrMin'});
   }
@@ -121,7 +121,6 @@ function defaultSizeRef(
  * Output position encoding and its size encoding for continuous, point, and band scales.
  */
 function positionAndSize(
-  mark: 'bar' | 'rect' | 'image' | 'arc',
   fieldDef: Encoding<string>['x' | 'y' | 'theta' | 'radius'],
   channel: 'x' | 'y' | 'theta' | 'radius',
   model: UnitModel

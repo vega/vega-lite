@@ -12,7 +12,8 @@ import {pointPosition, pointPositionDefaultRef} from './position-point';
 import * as ref from './valueref';
 
 /**
- * Utility for area/rule position, which can be either point or range. (One of the axes should be point and the other should be range.)
+ * Utility for area/rule position, which can be either point or range.
+ * (One of the axes should be point and the other should be range.)
  */
 export function pointOrRangePosition(
   channel: 'x' | 'y',
@@ -88,7 +89,18 @@ function pointPosition2OrSize(
 
   if (!channelDef && (channel === 'x2' || channel === 'y2') && (encoding.latitude || encoding.longitude)) {
     // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
-    return {[vgChannel]: {field: model.getName(channel)}};
+    const vgSizeChannel = getSizeChannel(channel);
+
+    const size = model.markDef[vgSizeChannel];
+    if (size != null) {
+      return {
+        [vgSizeChannel]: {value: size}
+      };
+    } else {
+      return {
+        [vgChannel]: {field: model.getName(channel)}
+      };
+    }
   }
 
   const valueRef = position2Ref({
