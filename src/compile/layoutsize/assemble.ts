@@ -4,12 +4,12 @@ import {hasDiscreteDomain} from '../../scale';
 import {getFirstDefined} from '../../util';
 import {isVgRangeStep, VgRangeStep} from '../../vega.schema';
 import {signalOrStringValue} from '../common';
-import {isFacetModel, Model} from '../model';
+import {Model} from '../model';
 import {ScaleComponent} from '../scale/component';
 import {getSizeTypeFromLayoutSizeType, LayoutSizeType} from './component';
 import {isFacetMapping} from '../../spec/facet';
 import {FacetModel} from '../facet';
-import {getFacetModel} from '../selection';
+import {getFacetParentModel} from '../selection';
 
 export function assembleLayoutSignals(model: Model): NewSignal[] {
   return [
@@ -23,22 +23,15 @@ export function assembleLayoutSignals(model: Model): NewSignal[] {
 export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal | InitSignal)[] {
   const channel = sizeType === 'width' ? 'x' : 'y';
   const size = model.component.layoutSize.get(sizeType);
-  if (!size || size === 'merged') {
+  const facetParent = getFacetParentModel(model);
+  if (!size || (size === 'merged' && !facetParent)) {
     return [];
   }
 
   // Read size signal name from name map, just in case it is the top-level size signal that got renamed.
   const name = model.getSizeSignalRef(sizeType).signal;
-  const facetModel = getFacetModel(model);
 
-  if (isFacetModel(facetModel) && facetModel.hasStaticOuterDimension(getSizeTypeFromLayoutSizeType(sizeType))) {
-    return [
-      {
-        name,
-        update: autosizedFacetExpr(facetModel, sizeType)
-      }
-    ];
-  } else if (size === 'step') {
+  if (size === 'step') {
     const scaleComponent = model.getScaleComponent(channel);
 
     if (scaleComponent) {
@@ -48,7 +41,7 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
       if (hasDiscreteDomain(type) && isVgRangeStep(range)) {
         const scaleName = model.scaleName(channel);
 
-        if (isFacetModel(facetModel)) {
+        if (facetParent) {
           // If parent is facet and this is an independent scale, return only signal signal
           // as the width/height will be calculated using the cardinality from
           // facet's aggregate rather than reading from scale domain
@@ -75,6 +68,14 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
     const defaultValue = getViewConfigContinuousSize(model.config.view, isWidth ? 'width' : 'height');
     const safeExpr = `isFinite(${expr}) ? ${expr} : ${defaultValue}`;
     return [{name, init: safeExpr, on: [{update: safeExpr, events: 'window:resize'}]}];
+  } else if (facetParent?.hasStaticOuterDimension(getSizeTypeFromLayoutSizeType(sizeType))) {
+    // this disregards any sizing directly set for the facet child which has already been set on the facet parent
+    return [
+      {
+        name,
+        update: autosizedFacetExpr(facetParent, sizeType)
+      }
+    ];
   } else {
     return [
       {
@@ -120,6 +121,7 @@ export function autosizedFacetExpr(model: FacetModel, sizeType: LayoutSizeType) 
   }
   // if the facet operator defines an explicit row or column channel, the compiled vega spec includes the '(row|column)_domain' data
   // otherwise the facet operator is itself is a facet field definition, the compiled vega spec instead includes the 'facet_domain_(row|column)' data
-  const domain = !isFacetMapping(model.facet) ? `facet_domain_${channel}` : `${channel}_domain`;
+  const name = model.name ? `${model.name}_` : '';
+  const domain = !isFacetMapping(model.facet) ? `facet_domain_${channel}` : `${name}${channel}_domain`;
   return `${sizeType} / length(data('${domain}'))`;
 }

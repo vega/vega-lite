@@ -77,7 +77,7 @@ export interface LayoutSizeMixins {
    * __Default value:__
    * Based on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.
    *
-   * __Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view and the `"container"` option cannot be used.
+   * __Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view and the `"container"` option cannot be used. However, if the [`facet`](facet.html#facet-operator) operator is used directly this represents the width of all facets combined. As such, `"container"` can be used and the behavior specified by the [`autosize`](size.html#autosize) property is honored.
    *
    * __See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation.
    */
@@ -92,14 +92,20 @@ export interface LayoutSizeMixins {
    *
    * __Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.
    *
-   * __Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view and the `"container"` option cannot be used.
+   * __Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view and the `"container"` option cannot be used. However, if the [`facet`](facet.html#facet-operator) operator is used directly this represents the height of all facets combined. As such, `"container"` can be used and honors the behavior specified by the [`autosize`](size.html#autosize) property is honored.
    *
    * __See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation.
    */
   height?: number | 'container' | Step; // Vega also supports SignalRef for width and height. However, we need to know if width is a step or not in VL and it's very difficult to check this at runtime, so we intentionally do not support SignalRef here.
 }
 
+export interface LayoutSizeNoStepMixins extends LayoutSizeMixins {
+  width?: number | 'container';
+  height?: number | 'container';
+}
+
 export type LayoutSizeField = keyof LayoutSizeMixins;
+export type LayoutSizeNoStepField = keyof LayoutSizeNoStepMixins;
 
 export function isFrameMixins(o: any): o is FrameMixins<any> {
   return o['view'] || o['width'] || o['height'];

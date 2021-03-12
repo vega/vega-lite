@@ -84,19 +84,13 @@ export const selectionCompilers: SelectionCompiler[] = [
   nearest
 ];
 
-export function getFacetModel(model: Model): FacetModel {
-  let parent = model.parent;
-  while (parent) {
-    if (isFacetModel(parent)) break;
-    parent = parent.parent;
-  }
-
-  return parent as FacetModel;
+export function getFacetParentModel(model: Model): FacetModel | null {
+  return isFacetModel(model.parent) ? model.parent : null;
 }
 
 export function unitName(model: Model, {escape} = {escape: true}) {
   let name = escape ? stringValue(model.name) : model.name;
-  const facetModel = getFacetModel(model);
+  const facetModel = getFacetParentModel(model);
   if (facetModel) {
     const {facet} = facetModel;
     for (const channel of FACET_CHANNELS) {

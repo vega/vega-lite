@@ -19,7 +19,7 @@ import {Dict, keys} from '../util';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
 import {optimizeDataflow} from './data/optimize';
-import {isFacetModel, Model} from './model';
+import {Model} from './model';
 
 export interface CompileOptions {
   /**
@@ -182,7 +182,6 @@ function getTopLevelProperties(
         ? {}
         : {autosize: autosize.type}
       : {autosize}),
-    ...(isFacetModel(model) && typeof width == 'number' && typeof height == 'number' ? {width, height} : {}),
     ...extractTopLevelProperties(config, false),
     ...extractTopLevelProperties(inputSpec, true)
   };
@@ -218,7 +217,7 @@ function assembleTopLevelModel(
 
   // move width and height signals with values to top level
   layoutSignals = layoutSignals.filter(signal => {
-    if ((signal.name === 'width' || signal.name === 'height') && signal.value !== undefined) {
+    if ((signal.name === 'width' || signal.name === 'height') && signal.value != null) {
       topLevelProperties[signal.name] = +signal.value;
       return false;
     }

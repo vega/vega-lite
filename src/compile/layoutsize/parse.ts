@@ -12,18 +12,14 @@ import {getSizeTypeFromLayoutSizeType, LayoutSize, LayoutSizeIndex, LayoutSizeTy
 import {FacetModel} from '../facet';
 
 export function parseFacetLayoutSize(model: FacetModel) {
-  const {size, component} = model;
-  // parse top level facet size
-  if (size.width) {
-    component.layoutSize.set('width', isStep(size.width) ? 'step' : size.width, true);
-  }
-
-  if (size.height) {
-    component.layoutSize.set('height', isStep(size.height) ? 'step' : size.height, true);
-  }
-
-  // parse children
   parseChildrenLayoutSize(model);
+
+  const {size, component} = model;
+  for (const dimension of ['width', 'height']) {
+    if (size[dimension] && !isStep(size[dimension])) {
+      component.layoutSize.set(dimension as LayoutSizeType, size[dimension], true);
+    }
+  }
 }
 
 export function parseLayerLayoutSize(model: Model) {
