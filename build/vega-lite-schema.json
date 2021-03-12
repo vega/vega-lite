@@ -7576,6 +7576,10 @@
           ],
           "description": "A delimiter, such as a newline character, upon which to break text strings into multiple lines. This property provides a global default for text marks, which is overridden by mark or style config settings, and by the lineBreak mark encoding channel. If signal-valued, either string or regular expression (regexp) values are valid."
         },
+        "locale": {
+          "$ref": "#/definitions/Locale",
+          "description": "Locale definitions for string parsing and formatting of number and date values. The locale object should contain `number` and/or `time` properties with [locale definitions](https://vega.github.io/vega/docs/api/locale/). Locale definitions provided in the config block may be overridden by the View constructor locale option."
+        },
         "mark": {
           "$ref": "#/definitions/MarkConfig",
           "description": "Mark Config"
@@ -15077,6 +15081,18 @@
       ],
       "type": "string"
     },
+    "Locale": {
+      "additionalProperties": false,
+      "properties": {
+        "number": {
+          "$ref": "#/definitions/NumberLocale"
+        },
+        "time": {
+          "$ref": "#/definitions/TimeLocale"
+        }
+      },
+      "type": "object"
+    },
     "LoessTransform": {
       "additionalProperties": false,
       "properties": {
@@ -17342,6 +17358,54 @@
     },
     "NonNormalizedSpec": {
       "$ref": "#/definitions/Spec"
+    },
+    "NumberLocale": {
+      "additionalProperties": false,
+      "description": "Locale definition for formatting numbers.",
+      "properties": {
+        "currency": {
+          "$ref": "#/definitions/Vector2<string>",
+          "description": "The currency prefix and suffix (e.g., [\"$\", \"\"])."
+        },
+        "decimal": {
+          "description": "The decimal point (e.g., \".\").",
+          "type": "string"
+        },
+        "grouping": {
+          "description": "The array of group sizes (e.g., [3]), cycled as needed.",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        },
+        "minus": {
+          "description": "The minus sign (defaults to hyphen-minus, \"-\").",
+          "type": "string"
+        },
+        "nan": {
+          "description": "The not-a-number value (defaults to \"NaN\").",
+          "type": "string"
+        },
+        "numerals": {
+          "$ref": "#/definitions/Vector10<string>",
+          "description": "An array of ten strings to replace the numerals 0-9."
+        },
+        "percent": {
+          "description": "The percent sign (defaults to \"%\").",
+          "type": "string"
+        },
+        "thousands": {
+          "description": "The group separator (e.g., \",\").",
+          "type": "string"
+        }
+      },
+      "required": [
+        "decimal",
+        "thousands",
+        "grouping",
+        "currency"
+      ],
+      "type": "object"
     },
     "NumericArrayMarkPropDef": {
       "$ref": "#/definitions/MarkPropDef<number[]>"
@@ -27206,6 +27270,55 @@
       ],
       "type": "object"
     },
+    "TimeLocale": {
+      "additionalProperties": false,
+      "description": "Locale definition for formatting dates and times.",
+      "properties": {
+        "date": {
+          "description": "The date (%x) format specifier (e.g., \"%m/%d/%Y\").",
+          "type": "string"
+        },
+        "dateTime": {
+          "description": "The date and time (%c) format specifier (e.g., \"%a %b %e %X %Y\").",
+          "type": "string"
+        },
+        "days": {
+          "$ref": "#/definitions/Vector7<string>",
+          "description": "The full names of the weekdays, starting with Sunday."
+        },
+        "months": {
+          "$ref": "#/definitions/Vector12<string>",
+          "description": "The full names of the months (starting with January)."
+        },
+        "periods": {
+          "$ref": "#/definitions/Vector2<string>",
+          "description": "The A.M. and P.M. equivalents (e.g., [\"AM\", \"PM\"])."
+        },
+        "shortDays": {
+          "$ref": "#/definitions/Vector7<string>",
+          "description": "The abbreviated names of the weekdays, starting with Sunday."
+        },
+        "shortMonths": {
+          "$ref": "#/definitions/Vector12<string>",
+          "description": "The abbreviated names of the months (starting with January)."
+        },
+        "time": {
+          "description": "The time (%X) format specifier (e.g., \"%H:%M:%S\").",
+          "type": "string"
+        }
+      },
+      "required": [
+        "dateTime",
+        "date",
+        "time",
+        "periods",
+        "days",
+        "shortDays",
+        "months",
+        "shortMonths"
+      ],
+      "type": "object"
+    },
     "TimeUnit": {
       "anyOf": [
         {
@@ -29736,6 +29849,22 @@
       ],
       "type": "object"
     },
+    "Vector10<string>": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 10,
+      "minItems": 10,
+      "type": "array"
+    },
+    "Vector12<string>": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 12,
+      "minItems": 12,
+      "type": "array"
+    },
     "Vector2<DateTime>": {
       "items": {
         "$ref": "#/definitions/DateTime"
@@ -29782,6 +29911,14 @@
       },
       "maxItems": 3,
       "minItems": 3,
+      "type": "array"
+    },
+    "Vector7<string>": {
+      "items": {
+        "type": "string"
+      },
+      "maxItems": 7,
+      "minItems": 7,
       "type": "array"
     },
     "ViewBackground": {
