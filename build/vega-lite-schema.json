@@ -18365,7 +18365,7 @@
           "properties": {
             "field": {
               "$ref": "#/definitions/FieldName",
-              "description": "If a selection parameter is specified, the field name to extract selected values for when the selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings."
+              "description": "If a selection parameter is specified, the field name to extract selected values for when the selection is [projected](https://vega.github.io/vega-lite/docs/selection.html#project) over multiple fields or encodings."
             },
             "param": {
               "$ref": "#/definitions/ParameterName",
@@ -18382,7 +18382,7 @@
           "properties": {
             "encoding": {
               "$ref": "#/definitions/SingleDefUnitChannel",
-              "description": "If a selection parameter is specified, the encoding channel to extract selected values for when a selection is [projected](https://vega.github.io/vega-lite/docs/project.html) over multiple fields or encodings."
+              "description": "If a selection parameter is specified, the encoding channel to extract selected values for when a selection is [projected](https://vega.github.io/vega-lite/docs/selection.html#project) over multiple fields or encodings."
             },
             "param": {
               "$ref": "#/definitions/ParameterName",
@@ -21558,7 +21558,7 @@
               "$ref": "#/definitions/SelectionInitIntervalMapping"
             }
           ],
-          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/selection.html#project) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/value.html) documentation."
         }
       },
       "required": [
@@ -28781,7 +28781,7 @@
               "$ref": "#/definitions/SelectionInitIntervalMapping"
             }
           ],
-          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/project.html) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/init.html) documentation."
+          "description": "Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/selection.html#project) and initial values.\n\n__See also:__ [`init`](https://vega.github.io/vega-lite/docs/value.html) documentation."
         },
         "views": {
           "description": "By default, top-level selections are applied to every view in the visualization. If this property is specified, selections will only be applied to views with the given names.",
@@ -29676,7 +29676,7 @@
           "description": "A unique name for the variable parameter. Parameter names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or \"$\", or \"_\") and may not start with a digit. Reserved keywords that may not be used as parameter names are \"datum\", \"event\", \"item\", and \"parent\"."
         },
         "value": {
-          "description": "The [initial value](http://vega.github.io/vega-lite/docs/init.html) of the parameter.\n\n__Default value:__ `undefined`"
+          "description": "The [initial value](http://vega.github.io/vega-lite/docs/value.html) of the parameter.\n\n__Default value:__ `undefined`"
         }
       },
       "required": [

@@ -341,7 +341,7 @@ SelectionParameter:
 Binding:
   link: 'bind.html'
 LegendBinding:
-  link: 'https://vega.github.io/vega-lite/docs/bind.html#legend-binding'
+  link: 'bind.html#legend-binding'
 BrushConfig:
   name: Mark
   link: 'parameter.html#interval-mark'
@@ -352,10 +352,10 @@ SelectionResolution:
   link: 'selection-resolve.html'
 SelectionInitMapping:
   name: 'Object'
-  link: 'init.html'
+  link: 'value.html'
 SelectionInitIntervalMapping:
   name: 'Object'
-  link: 'init.html'
+  link: 'value.html'
 ParameterName:
   name: String
 
