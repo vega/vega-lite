@@ -76,7 +76,7 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
         update: autosizedFacetExpr(facetParent, sizeType)
       }
     ];
-  } else {
+  } else if (size !== 'merged') {
     return [
       {
         name,
@@ -84,6 +84,7 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
       }
     ];
   }
+  return [];
 }
 
 function stepSignal(scaleName: string, range: VgRangeStep): NewSignal {

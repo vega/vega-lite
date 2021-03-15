@@ -212,7 +212,12 @@ export class FacetModel extends ModelWithField {
     const layoutSignals = assembleLayoutSignals(this);
 
     for (const child of this.children) {
-      layoutSignals.push(...child.assembleLayoutSignals());
+      for (const signal of child.assembleLayoutSignals()) {
+        const currentSignals = layoutSignals.map(s => s.name);
+        if (!currentSignals.includes(signal.name)) {
+          layoutSignals.push(signal);
+        }
+      }
     }
 
     return layoutSignals;
