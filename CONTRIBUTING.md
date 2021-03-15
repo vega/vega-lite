@@ -14,11 +14,12 @@ If you find a bug in the code or a mistake in the [documentation](https://vega.g
 
 See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUEST_TEMPLATE.md) templates for more information.
 
-## Design principles
+## Design and Development Principles
 
 Vega-Lite is a compiler and a declarative language to describing interactive multi view graphics. As a compiler, Vega-Lite compiles to the lower-level [Vega](https://vega.github.io/vega/) specifications. The Vega-Lite project inherits many of the design principles of Vega, especially the declarative design. In addition, the development of Vega-Lite follows these principles that we have established over the years.
 
-- **Sensible defaults.** Any property that is not specified should have a (somewhat obvious) default value, which users can override. For example, Vega-Lite automatically synthesizes scales and guides (axes and legends).
+- **Provide sensible defaults, but allow customization.** Any property that is not specified should have a (somewhat obvious) default value, which users can override. For example, Vega-Lite automatically synthesizes scales and guides (axes and legends).
+- **Favor composition over templates.** While chart templates (as found in spreadsheet programs) can be convenient, they limit the visualization types that can be created. Instead, Vega-Lite uses a compositional approach, describing a visualization based on the properties of graphical marks. Any new building block should be compatible with the existing building blocks.
 - **Remain backwards compatible when possible.** Even if we change a major feature, we aim to support the old syntax. However, the old syntax may not be supported by the JSON schema.
 - **Backwards compatibility concerns the input, not the output.** Just like Vega, we may change how a declarative specification is interpreted.
 - **Vega-Lite never needs to see the data.** All decisions about how to compile to Vega have to be made without access to the data that will be used in the chart. This principle enables the compiled Vega charts to work with any dataset that follows the same schema (field names and types).
