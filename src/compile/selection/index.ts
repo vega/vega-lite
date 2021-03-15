@@ -85,7 +85,15 @@ export const selectionCompilers: SelectionCompiler[] = [
 ];
 
 export function getFacetParentModel(model: Model): FacetModel | null {
-  return isFacetModel(model.parent) ? model.parent : null;
+  let parent = model.parent;
+  while (parent) {
+    if (isFacetModel(parent)) {
+      return parent;
+    }
+    parent = parent.parent;
+  }
+
+  return null;
 }
 
 export function unitName(model: Model, {escape} = {escape: true}) {

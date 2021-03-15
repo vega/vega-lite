@@ -7,14 +7,7 @@ import {VariableParameter} from '../parameter';
 import {Projection} from '../projection';
 import {SelectionParameter} from '../selection';
 import {Field} from './../channeldef';
-import {
-  BaseSpec,
-  DataMixins,
-  FrameMixins,
-  GenericCompositionLayout,
-  LayoutSizeMixins,
-  ResolveMixins
-} from './base';
+import {BaseSpec, DataMixins, FrameMixins, GenericCompositionLayout, LayoutSizeMixins, ResolveMixins} from './base';
 import {TopLevel} from './toplevel';
 /**
  * Base interface for a unit (single-view) specification.
