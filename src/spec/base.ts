@@ -100,7 +100,28 @@ export interface LayoutSizeMixins {
 }
 
 export interface LayoutSizeNoStepMixins extends LayoutSizeMixins {
+  /**
+   * The combined width of all children of this visualization.
+   *
+   * - For all plots, width should be a number.
+   * - To enable responsive sizing on width, it should be set to `"container"`.
+   *
+   * __Default value:__ The sum of all child plot widths.
+   *
+   * __See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation.
+   */
   width?: number | 'container';
+
+  /**
+   * The combined height of all children of this visualization.
+   *
+   * - For all plots, height should be a number.
+   * - To enable responsive sizing on height, it should be set to `"container"`.
+   *
+   * __Default value:__ THe sum of all child plot heights.
+   *
+   * __See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation.
+   */
   height?: number | 'container';
 }
 

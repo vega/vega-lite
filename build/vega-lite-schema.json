@@ -10723,7 +10723,7 @@
               "type": "string"
             }
           ],
-          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number. - For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.) - To enable responsive sizing on height, it should be set to `\"container\"`.\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view and the `\"container\"` option cannot be used. However, if the [`facet`](facet.html#facet-operator) operator is used directly this represents the height of all facets combined. As such, `\"container\"` can be used and honors the behavior specified by the [`autosize`](size.html#autosize) property is honored.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The combined height of all children of this visualization.\n\n- For all plots, height should be a number. - To enable responsive sizing on height, it should be set to `\"container\"`.\n\n__Default value:__ THe sum of all child plot heights.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -10783,7 +10783,7 @@
               "type": "string"
             }
           ],
-          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number. - For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.) - To enable responsive sizing on width, it should be set to `\"container\"`.\n\n__Default value:__ Based on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view and the `\"container\"` option cannot be used. However, if the [`facet`](facet.html#facet-operator) operator is used directly this represents the width of all facets combined. As such, `\"container\"` can be used and the behavior specified by the [`autosize`](size.html#autosize) property is honored.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The combined width of all children of this visualization.\n\n- For all plots, width should be a number. - To enable responsive sizing on width, it should be set to `\"container\"`.\n\n__Default value:__ The sum of all child plot widths.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         }
       },
       "required": [
@@ -28702,7 +28702,7 @@
               "type": "string"
             }
           ],
-          "description": "The height of a visualization.\n\n- For a plot with a continuous y-field, height should be a number. - For a plot with either a discrete y-field or no y-field, height can be either a number indicating a fixed height or an object in the form of `{step: number}` defining the height per discrete step. (No y-field is equivalent to having one discrete step.) - To enable responsive sizing on height, it should be set to `\"container\"`.\n\n__Default value:__ Based on `config.view.continuousHeight` for a plot with a continuous y-field and `config.view.discreteHeight` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the height of a single view and the `\"container\"` option cannot be used. However, if the [`facet`](facet.html#facet-operator) operator is used directly this represents the height of all facets combined. As such, `\"container\"` can be used and honors the behavior specified by the [`autosize`](size.html#autosize) property is honored.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The combined height of all children of this visualization.\n\n- For all plots, height should be a number. - To enable responsive sizing on height, it should be set to `\"container\"`.\n\n__Default value:__ THe sum of all child plot heights.\n\n__See also:__ [`height`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         },
         "name": {
           "description": "Name of the visualization for later reference.",
@@ -28791,7 +28791,7 @@
               "type": "string"
             }
           ],
-          "description": "The width of a visualization.\n\n- For a plot with a continuous x-field, width should be a number. - For a plot with either a discrete x-field or no x-field, width can be either a number indicating a fixed width or an object in the form of `{step: number}` defining the width per discrete step. (No x-field is equivalent to having one discrete step.) - To enable responsive sizing on width, it should be set to `\"container\"`.\n\n__Default value:__ Based on `config.view.continuousWidth` for a plot with a continuous x-field and `config.view.discreteWidth` otherwise.\n\n__Note:__ For plots with [`row` and `column` channels](https://vega.github.io/vega-lite/docs/encoding.html#facet), this represents the width of a single view and the `\"container\"` option cannot be used. However, if the [`facet`](facet.html#facet-operator) operator is used directly this represents the width of all facets combined. As such, `\"container\"` can be used and the behavior specified by the [`autosize`](size.html#autosize) property is honored.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
+          "description": "The combined width of all children of this visualization.\n\n- For all plots, width should be a number. - To enable responsive sizing on width, it should be set to `\"container\"`.\n\n__Default value:__ The sum of all child plot widths.\n\n__See also:__ [`width`](https://vega.github.io/vega-lite/docs/size.html) documentation."
         }
       },
       "required": [
