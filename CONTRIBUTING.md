@@ -20,7 +20,7 @@ Vega-Lite is a compiler and a declarative language to describing interactive mul
 
 - **Provide sensible defaults, but allow customization.** Any property that is not specified should have a (somewhat obvious) default value, which users can override. For example, Vega-Lite automatically synthesizes scales and guides (axes and legends).
 - **Favor composition over templates.** While chart templates (as found in spreadsheet programs) can be convenient, they limit the visualization types that can be created. Instead, Vega-Lite uses a compositional approach, describing a visualization based on the properties of graphical marks. Any new building block should be compatible with the existing building blocks.
-- **Support gradual specification.** Most people write specifications incrementally, making one atomic change at a time such as changing a property. Any intermediate step should be valid and produce some visualization.
+- **Support gradual specification.** Most people write specifications incrementally, making one atomic change at a time such as changing a single property. Any intermediate step should be valid and produce some visualization.
 
 ## Development Principles
 
