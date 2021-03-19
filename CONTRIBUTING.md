@@ -14,17 +14,22 @@ If you find a bug in the code or a mistake in the [documentation](https://vega.g
 
 See our [issue](.github/ISSUE_TEMPLATE.md) and [pull request](.github/PULL_REQUEST_TEMPLATE.md) templates for more information.
 
-## Design and Development Principles
+## Design Principles
 
-Vega-Lite is a compiler and a declarative language to describing interactive multi view graphics. As a compiler, Vega-Lite compiles to the lower-level [Vega](https://vega.github.io/vega/) specifications. The Vega-Lite project inherits many of the design principles of Vega, especially the declarative design. In addition, the development of Vega-Lite follows these principles that we have established over the years.
+Vega-Lite is a compiler and a declarative language to describing interactive multi view graphics. As a compiler, Vega-Lite compiles to the lower-level [Vega](https://vega.github.io/vega/) specifications. The Vega-Lite project inherits many of the design principles of Vega, especially the declarative design.
 
 - **Provide sensible defaults, but allow customization.** Any property that is not specified should have a (somewhat obvious) default value, which users can override. For example, Vega-Lite automatically synthesizes scales and guides (axes and legends).
 - **Favor composition over templates.** While chart templates (as found in spreadsheet programs) can be convenient, they limit the visualization types that can be created. Instead, Vega-Lite uses a compositional approach, describing a visualization based on the properties of graphical marks. Any new building block should be compatible with the existing building blocks.
-- **Support gradual specification.** Most people write specifications incrementally, making one atom change at a time such as changing a property. Any intermediate step should be valid and produce some visualization.
-- **Remain backwards compatible when possible.** Even if we change a major feature, we aim to support the old syntax. However, the old syntax may not be supported by the JSON schema.
+- **Support gradual specification.** Most people write specifications incrementally, making one atomic change at a time such as changing a property. Any intermediate step should be valid and produce some visualization.
+
+## Development Principles
+
+In the development of Vega-Lite follows, we follow these principles that we have established over the years.
+
+- **Strive to remain backwards compatible.** Even if we change a major feature, we aim to support the old syntax. However, the old syntax may not be supported by the JSON schema.
 - **Backwards compatibility concerns the input, not the output.** Just like Vega, we may change how a declarative specification is interpreted.
-- **Vega-Lite never needs to see the data.** All decisions about how to compile to Vega have to be made without access to the data that will be used in the chart. This principle enables the compiled Vega charts to work with any dataset that follows the same schema (field names and types).
-- **Generate readable Vega.** We aim to generate readable Vega specifications that do not contain unnecessary properties (e.g. Vega's defaults).
+- **Generate generic Vega specifications.** All decisions about how to compile to Vega have to be made without access to the data that will be used in the chart. This principle enables the compiled Vega charts to work with any dataset that follows the same schema (field names and types).
+- **Enable transition to Vega.** We aim to generate readable Vega specifications that do not contain unnecessary properties (e.g. Vega's defaults). When specifications are clean, it is easier to handoff specifications to other tools.
 - **Fail gracefully.** If there is a invalid property in the Vega-Lite specification, show a warning and subsequently ignore it.
 
 ## Looking for a Task to Contribute
