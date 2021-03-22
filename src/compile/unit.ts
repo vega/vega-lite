@@ -281,6 +281,7 @@ export class UnitModel extends ModelWithField {
     }
 
     marks = marks.map(this.correctDataNames);
+    // move label marks to the top
     return [...marks.filter(mark => !isLabelMark(mark)), ...marks.filter(isLabelMark)];
   }
 
