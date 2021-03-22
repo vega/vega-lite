@@ -136,6 +136,7 @@ export class LayerModel extends Model {
       })
     );
 
+    // move label marks to the top
     return [...marks.filter(mark => !isLabelMark(mark)), ...marks.filter(isLabelMark)];
   }
 
