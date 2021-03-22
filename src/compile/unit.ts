@@ -241,7 +241,7 @@ export class UnitModel extends ModelWithField {
 
     const labelDef = this.encoding.label;
     const level = labelDef ? labelDef.avoidParentLayer : -1;
-    this.label = label.map(l => ({mark: l, level: level === 'all' ? Infinity : ~~level}));
+    this.label = label.map(l => ({mark: l, level: level === 'all' ? Infinity : Math.floor(level)}));
   }
 
   public parseAxesAndHeaders() {
