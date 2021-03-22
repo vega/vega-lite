@@ -41,7 +41,7 @@ import type {
   Transforms as VgTransform,
   UnionSortField as VgUnionSortField
 } from 'vega';
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {Value} from './channeldef';
 import {ExprRef} from './expr';
 import {SortOrder} from './sort';

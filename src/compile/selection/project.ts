@@ -1,4 +1,4 @@
-import {array, isObject} from 'vega-util';
+import {array, isObject} from 'vega';
 import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../channel';
 import * as log from '../../log';
 import {hasContinuousDomain} from '../../scale';

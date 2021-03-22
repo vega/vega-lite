@@ -1,5 +1,5 @@
 import {BaseTitle, SignalRef, Text, TextEncodeEntry, TitleAnchor} from 'vega';
-import {isArray, isString} from 'vega-util';
+import {isArray, isString} from 'vega';
 import {ExprRef} from './expr';
 import {MarkConfig} from './mark';
 import {pick} from './util';

@@ -1,4 +1,4 @@
-import {array, isBoolean} from 'vega-util';
+import {array, isBoolean} from 'vega';
 import {SUM_OPS} from './aggregate';
 import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel';
 import {

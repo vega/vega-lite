@@ -132,9 +132,6 @@
     "fast-json-stable-stringify": "~2.1.0",
     "json-stringify-pretty-compact": "~3.0.0",
     "tslib": "~2.1.0",
-    "vega-event-selector": "~2.0.6",
-    "vega-expression": "~4.0.1",
-    "vega-util": "~1.16.0",
     "yargs": "~16.2.0"
   },
   "peerDependencies": {

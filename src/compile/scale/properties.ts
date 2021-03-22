@@ -1,5 +1,5 @@
 import {SignalRef, TimeInterval} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {isBinned, isBinning, isBinParams} from '../../bin';
 import {
   COLOR,

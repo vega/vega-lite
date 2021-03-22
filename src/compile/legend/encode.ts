@@ -1,5 +1,5 @@
 import {ColorValueRef, EncodeEntry, Gradient, LegendEncode, LegendType, SignalRef, SymbolEncodeEntry} from 'vega';
-import {array, isArray, stringValue} from 'vega-util';
+import {array, isArray, stringValue} from 'vega';
 import {COLOR, NonPositionScaleChannel, OPACITY} from '../../channel';
 import {
   Conditional,

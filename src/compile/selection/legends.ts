@@ -1,6 +1,6 @@
 import {isObject, MergedStream, Stream} from 'vega';
-import {selector as parseSelector} from 'vega-event-selector';
-import {array, isString} from 'vega-util';
+import {parseSelector} from 'vega';
+import {array, isString} from 'vega';
 import {disableDirectManipulation, TUPLE} from '.';
 import {NonPositionScaleChannel} from '../../channel';
 import * as log from '../../log';

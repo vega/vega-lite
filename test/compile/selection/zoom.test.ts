@@ -1,4 +1,4 @@
-import {selector as parseSelector} from 'vega-event-selector';
+import {parseSelector} from 'vega';
 import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import zoom from '../../../src/compile/selection/zoom';

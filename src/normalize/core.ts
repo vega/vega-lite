@@ -1,5 +1,5 @@
 import {SignalRef} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {COLUMN, FACET, ROW} from '../channel';
 import {Field, FieldName, hasConditionalFieldOrDatumDef, isFieldOrDatumDef, isValueDef} from '../channeldef';
 import {SharedCompositeEncoding} from '../compositemark';

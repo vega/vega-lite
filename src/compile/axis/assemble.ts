@@ -1,5 +1,5 @@
 import {Axis as VgAxis, AxisEncode, NewSignal, SignalRef, Text} from 'vega';
-import {array, isArray} from 'vega-util';
+import {array, isArray} from 'vega';
 import {AXIS_PARTS, AXIS_PROPERTY_TYPE, CONDITIONAL_AXIS_PROP_INDEX, isConditionalAxisValue} from '../../axis';
 import {POSITION_SCALE_CHANNELS} from '../../channel';
 import {defaultTitle, FieldDefBase} from '../../channeldef';

@@ -1,5 +1,5 @@
 import {AggregateOp, LayoutAlign, NewSignal, SignalRef} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {isBinning} from '../bin';
 import {COLUMN, ExtendedChannel, FacetChannel, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../channel';
 import {FieldName, FieldRefOption, initFieldDef, TypedFieldDef, vgField} from '../channeldef';

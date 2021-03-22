@@ -1,5 +1,5 @@
 import {AutoSizeType, LoggerInterface, Spec as VgSpec} from 'vega';
-import {isString, mergeConfig} from 'vega-util';
+import {isString, mergeConfig} from 'vega';
 import {getPositionScaleChannel} from '../channel';
 import * as vlFieldDef from '../channeldef';
 import {Config, initConfig, stripAndRedirectConfig} from '../config';

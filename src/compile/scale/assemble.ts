@@ -1,4 +1,4 @@
-import {isObject} from 'vega-util';
+import {isObject} from 'vega';
 import {isXorY, ScaleChannel} from '../../channel';
 import {keys} from '../../util';
 import {isDataRefDomain, isVgRangeStep, VgRange, VgScale} from '../../vega.schema';

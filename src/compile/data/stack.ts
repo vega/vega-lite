@@ -1,5 +1,5 @@
 import {Transforms as VgTransform} from 'vega';
-import {isArray, isString} from 'vega-util';
+import {isArray, isString} from 'vega';
 import {FieldName, getFieldDef, isFieldDef, PositionFieldDef, vgField} from '../../channeldef';
 import {SortFields, SortOrder} from '../../sort';
 import {StackOffset} from '../../stack';

@@ -1,5 +1,5 @@
 import {AxisOrient, SignalRef} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {FacetChannel, FACET_CHANNELS} from '../../channel';
 import {title as fieldDefTitle} from '../../channeldef';
 import {contains, getFirstDefined} from '../../util';

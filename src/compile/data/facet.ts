@@ -1,5 +1,5 @@
 import {AggregateOp} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {isBinning} from '../../bin';
 import {COLUMN, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../../channel';
 import {vgField} from '../../channeldef';

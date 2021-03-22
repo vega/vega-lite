@@ -1,5 +1,5 @@
 import {SignalRef} from 'vega';
-import {isNumber} from 'vega-util';
+import {isNumber} from 'vega';
 import {getViewConfigDiscreteStep} from '../../config';
 import {isVgRangeStep} from '../../vega.schema';
 import {getMarkPropOrConfig, signalOrValueRef} from '../common';

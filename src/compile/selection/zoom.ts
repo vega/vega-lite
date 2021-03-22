@@ -1,6 +1,6 @@
 import {NewSignal} from 'vega';
-import {selector as parseSelector} from 'vega-event-selector';
-import {stringValue} from 'vega-util';
+import {parseSelector} from 'vega';
+import {stringValue} from 'vega';
 import {SelectionComponent} from '.';
 import {ScaleChannel, X, Y} from '../../channel';
 import {UnitModel} from '../unit';

@@ -1,5 +1,5 @@
 import {ScaleType, SignalRef} from 'vega';
-import {array} from 'vega-util';
+import {array} from 'vega';
 import {AxisConfig} from '../../axis';
 import {PositionScaleChannel} from '../../channel';
 import {Config, StyleConfigIndex} from '../../config';

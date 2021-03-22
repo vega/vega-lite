@@ -1,6 +1,6 @@
 import {Signal, SignalRef} from 'vega';
-import {selector as parseSelector} from 'vega-event-selector';
-import {identity, isArray, stringValue} from 'vega-util';
+import {parseSelector} from 'vega';
+import {identity, isArray, stringValue} from 'vega';
 import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers} from '.';
 import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime';
 import {hasContinuousDomain} from '../../scale';

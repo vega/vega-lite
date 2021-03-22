@@ -2,7 +2,7 @@ import 'array-flat-polyfill';
 import {default as clone_} from 'clone';
 import deepEqual_ from 'fast-deep-equal';
 import stableStringify from 'fast-json-stable-stringify';
-import {hasOwnProperty, isNumber, isString, splitAccessPath, stringValue, writeConfig} from 'vega-util';
+import {hasOwnProperty, isNumber, isString, splitAccessPath, stringValue, writeConfig} from 'vega';
 import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalComposition} from './logical';
 
 export const deepEqual = deepEqual_;

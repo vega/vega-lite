@@ -1,4 +1,4 @@
-import {isObject, isString} from 'vega-util';
+import {isObject, isString} from 'vega';
 import {DateTimeExpr, dateTimeExprToExpr} from './datetime';
 import {accessPathWithDatum, keys, stringify, varName} from './util';
 

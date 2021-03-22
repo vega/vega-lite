@@ -1,4 +1,4 @@
-import {array} from 'vega-util';
+import {array} from 'vega';
 import * as log from '../../src/log';
 import {normalize} from '../../src/normalize';
 import {Transform} from '../../src/transform';

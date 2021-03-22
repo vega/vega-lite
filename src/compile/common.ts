@@ -1,5 +1,5 @@
 import {ExprRef, SignalRef, Text} from 'vega';
-import {array, isArray, stringValue} from 'vega-util';
+import {array, isArray, stringValue} from 'vega';
 import {AxisConfig, ConditionalAxisProperty} from '../axis';
 import {
   ConditionalPredicate,

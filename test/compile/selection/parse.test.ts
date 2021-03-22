@@ -1,4 +1,4 @@
-import {selector as parseSelector} from 'vega-event-selector';
+import {parseSelector} from 'vega';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {keys} from '../../../src/util';
 import {parseUnitModel, parseModelWithScale, parseUnitModelWithScale} from '../../util';

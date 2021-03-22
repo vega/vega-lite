@@ -1,5 +1,4 @@
-import {Gradient, ScaleType, SignalRef, Text} from 'vega';
-import {isArray, isBoolean, isNumber, isString} from 'vega-util';
+import {Gradient, isArray, isBoolean, isNumber, isString, ScaleType, SignalRef, Text} from 'vega';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
 import {autoMaxBins, Bin, BinParams, binToString, isBinned, isBinning} from './bin';

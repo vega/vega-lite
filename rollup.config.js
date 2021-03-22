@@ -9,8 +9,8 @@ import pkg from './package.json';
 export function disallowedImports() {
   return {
     resolveId: module => {
-      if (module === 'vega' || module === 'util' || module === 'd3') {
-        throw new Error('Cannot import from Vega, Node Util, or D3 in Vega-Lite.');
+      if (module.startsWith('vega-') || module === 'util' || module === 'd3') {
+        throw new Error('Cannot import from Vega packages, Node Util, or D3 in Vega-Lite.');
       }
       return null;
     }
@@ -31,7 +31,6 @@ export function debugImports() {
 const extensions = ['.js', '.ts'];
 
 const globals = {
-  'vega-util': 'vega',
   vega: 'vega'
 };
 

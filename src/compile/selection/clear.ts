@@ -1,6 +1,6 @@
 import {Update} from 'vega';
-import {selector as parseSelector} from 'vega-event-selector';
-import {isString} from 'vega-util';
+import {parseSelector} from 'vega';
+import {isString} from 'vega';
 import {TUPLE} from '.';
 import {varName} from '../../util';
 import inputBindings from './inputs';

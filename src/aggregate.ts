@@ -1,5 +1,4 @@
-import {AggregateOp} from 'vega';
-import {isString, toSet} from 'vega-util';
+import {AggregateOp, isString, toSet} from 'vega';
 import {FieldName} from './channeldef';
 import {contains, Flag, keys} from './util';
 

@@ -1,5 +1,5 @@
 import {Stream} from 'vega';
-import {stringValue} from 'vega-util';
+import {stringValue} from 'vega';
 import {SelectionCompiler, TUPLE, unitName} from '.';
 import {TUPLE_FIELDS} from './project';
 

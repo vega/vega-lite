@@ -1,4 +1,4 @@
-import {array} from 'vega-util';
+import {array} from 'vega';
 import {ChannelDef, ConditionalPredicate, isConditionalDef, isConditionalParameter} from '../../../channeldef';
 import {GuideEncodingConditionalValueDef} from '../../../guide';
 import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';

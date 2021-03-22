@@ -1,5 +1,5 @@
 import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
-import {toSet} from 'vega-util';
+import {toSet} from 'vega';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {ExprRef} from './expr';
 import {Flag, keys} from './util';

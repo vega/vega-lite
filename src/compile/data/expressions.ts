@@ -1,4 +1,4 @@
-import {parse} from 'vega-expression';
+import {expressionParse} from 'vega';
 
 function getName(node: any) {
   const name: string[] = [];
@@ -27,7 +27,7 @@ function startsWithDatum(node: any): boolean {
 }
 
 export function getDependentFields(expression: string) {
-  const ast = parse(expression);
+  const ast = expressionParse(expression);
   const dependents = new Set<string>();
   ast.visit((node: any) => {
     if (node.type === 'MemberExpression' && startsWithDatum(node)) {

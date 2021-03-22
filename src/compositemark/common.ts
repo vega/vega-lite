@@ -1,5 +1,5 @@
 import {Orientation, SignalRef, Text} from 'vega';
-import {isArray, isBoolean, isString} from 'vega-util';
+import {isArray, isBoolean, isString} from 'vega';
 import {CompositeMark, CompositeMarkDef} from '.';
 import {
   Field,

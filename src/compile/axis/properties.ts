@@ -1,5 +1,5 @@
 import {Align, AxisOrient, Orient, SignalRef} from 'vega';
-import {isArray, isObject} from 'vega-util';
+import {isArray, isObject} from 'vega';
 import {AxisInternal} from '../../axis';
 import {isBinned, isBinning} from '../../bin';
 import {PositionScaleChannel, X} from '../../channel';

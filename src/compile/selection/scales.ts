@@ -1,4 +1,4 @@
-import {stringValue} from 'vega-util';
+import {stringValue} from 'vega';
 import {VL_SELECTION_RESOLVE} from '.';
 import {isScaleChannel, ScaleChannel} from '../../channel';
 import * as log from '../../log';

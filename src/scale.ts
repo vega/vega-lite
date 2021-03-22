@@ -7,7 +7,7 @@ import {
   TimeInterval,
   TimeIntervalStep
 } from 'vega';
-import {isString, toSet} from 'vega-util';
+import {isString, toSet} from 'vega';
 import * as CHANNEL from './channel';
 import {Channel, isColorChannel} from './channel';
 import {DateTime} from './datetime';

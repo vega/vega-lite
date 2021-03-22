@@ -1,5 +1,5 @@
 import {AggregateOp} from 'vega';
-import {array, isArray} from 'vega-util';
+import {array, isArray} from 'vega';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
 import {

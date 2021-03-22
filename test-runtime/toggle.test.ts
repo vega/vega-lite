@@ -1,4 +1,4 @@
-import {stringValue} from 'vega-util';
+import {stringValue} from 'vega';
 import {TopLevelSpec} from '../src';
 import {SelectionType} from '../src/selection';
 import {compositeTypes, embedFn, parentSelector, spec, testRenderFn} from './util';

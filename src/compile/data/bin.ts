@@ -1,5 +1,5 @@
 import {BinTransform as VgBinTransform, Transforms as VgTransform} from 'vega';
-import {isString} from 'vega-util';
+import {isString} from 'vega';
 import {BinParams, binToString, isBinning, isParameterExtent} from '../../bin';
 import {Channel} from '../../channel';
 import {binRequiresRange, FieldName, isTypedFieldDef, normalizeBin, TypedFieldDef, vgField} from '../../channeldef';

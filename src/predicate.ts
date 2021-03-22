@@ -1,5 +1,5 @@
 import {SignalRef} from 'vega';
-import {isArray} from 'vega-util';
+import {isArray} from 'vega';
 import {FieldName, valueExpr, vgField} from './channeldef';
 import {DateTime} from './datetime';
 import {ExprRef} from './expr';

@@ -2,7 +2,7 @@
  * Utility files for producing Vega ValueRef for marks
  */
 import {SignalRef} from 'vega';
-import {isFunction, isString} from 'vega-util';
+import {isFunction, isString} from 'vega';
 import {isCountingAggregateOp} from '../../../aggregate';
 import {isBinned, isBinning} from '../../../bin';
 import {Channel, getMainRangeChannel, PolarPositionChannel, PositionChannel, X, X2, Y2} from '../../../channel';
