@@ -1,4 +1,4 @@
-import {LabelTransform, TextMark, TextEncodeEntry, Mark as VGMark, LabelAnchor} from 'vega';
+import {LabelTransform, TextMark, TextEncodeEntry, Mark as VGMark, LabelAnchor, Orientation} from 'vega';
 import {isArray} from 'vega-util';
 import {FieldRefOption, isFieldDef, isValueDef, LabelDef, vgField} from '../../channeldef';
 import {DataSourceType} from '../../data';
@@ -24,6 +24,8 @@ import {tick} from './tick';
 import {baseEncodeEntry as encodeBaseEncodeEntry, text as encodeText, nonPosition as encodeNonPosition} from './encode';
 import {NormalizedUnitSpec} from '../../spec';
 import * as log from '../../log';
+import {LabelSupportingMark, supportLabel} from '../../channel';
+import {StackProperties} from '../../stack';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,
@@ -370,12 +372,18 @@ function getLabel(model: UnitModel, data: string): LabelMark[] {
     return [] as LabelMark[];
   }
 
+  const {mark} = model;
+  if (!supportLabel(mark)) {
+    log.warn(log.message.dropChannelOnMark(mark, 'label'));
+    return [] as LabelMark[];
+  }
+
   const {label} = model.encoding;
-  const {position, avoidParentLayer, mark, method, lineAnchor, ...textEncoding} = label;
+  const {position, avoidParentLayer, mark: _mark, method, lineAnchor, ...textEncoding} = label;
 
   const textSpec: NormalizedUnitSpec = {
     data: null,
-    mark: {type: 'text', ...(mark ?? {})},
+    mark: {type: 'text', ...(_mark ?? {})},
     encoding: {text: textEncoding}
   };
   const textModel = new UnitModel(textSpec, null, '', undefined, model.config);
@@ -417,14 +425,16 @@ function getLabel(model: UnitModel, data: string): LabelMark[] {
           ...(encodeNonPosition('size', textModel, {vgChannel: 'fontSize'}) as TextEncodeEntry)
         }
       },
-      transform: [getLabelTransform(label, model)]
+      transform: [getLabelTransform(label, mark, model.stack, model.markDef.orient)]
     }
   ];
 }
 
 function getLabelTransform(
   {position, method, padding, lineAnchor}: LabelDef<string>,
-  model: UnitModel
+  mark: LabelSupportingMark,
+  stack: StackProperties,
+  orient: Orientation
 ): LabelTransform {
   const anchor = position && position.map(p => p.anchor);
   const offset = position && position.map(p => p.offset);
@@ -438,7 +448,7 @@ function getLabelTransform(
     ...(padding === undefined ? {} : {padding})
   };
 
-  switch (model.mark) {
+  switch (mark) {
     case 'area':
       return {...common, method};
     case 'bar':
@@ -446,10 +456,10 @@ function getLabelTransform(
         ...common,
         ...(position
           ? {anchor, offset}
-          : model.stack?.stackBy?.length > 0
+          : stack?.stackBy?.length > 0
           ? {anchod: ['middle'], offset: [0]}
           : {
-              anchor: model.markDef.orient === 'horizontal' ? ['right', 'right'] : ['top', 'top'],
+              anchor: orient === 'horizontal' ? ['right', 'right'] : ['top', 'top'],
               offset: [2, -2]
             })
       };
@@ -479,8 +489,6 @@ function getLabelTransform(
       };
     case 'rect':
       return {...common, anchor: anchor ?? ['middle'], offset: offset ?? [0]};
-    default:
-      throw new Error('label encoding does not support ' + model.mark);
   }
 }
 

@@ -271,7 +271,11 @@ export class UnitModel extends ModelWithField {
   public assembleMarks() {
     const labels = this.label ?? [];
     for (const {mark} of labels) {
-      mark.transform[0].avoidMarks = unique(mark.transform[0].avoidMarks, m => m);
+      const {transform} = mark;
+      const [l] = transform;
+      if ('avoidMarks' in l) {
+        l.avoidMarks = unique(l.avoidMarks, m => m);
+      }
     }
 
     let marks = [...(this.component.mark ?? []), ...(this.label ?? []).map(({mark}) => mark)];
