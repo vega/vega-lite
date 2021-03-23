@@ -476,12 +476,12 @@ function getLabelTransform(
     case 'square':
       return {
         ...common,
-        anchor: ['top-right', 'top', 'top-left', 'left', 'bottom-left', 'bottom', 'bottom-right', 'middle'],
+        anchor: anchor ?? ['top-right', 'top', 'top-left', 'left', 'bottom-left', 'bottom', 'bottom-right', 'middle'],
         // TODO: offset should depends on the size of mark
-        offset: [2, 2, 2, 2, 2, 2, 2, 2, 2]
+        offset: offset ?? [2, 2, 2, 2, 2, 2, 2, 2, 2]
       };
     case 'rect':
-      return {...common, anchor: ['middle'], offset: [0]};
+      return {...common, anchor: anchor ?? ['middle'], offset: offset ?? [0]};
     default:
       throw new Error('label encoding does not support ' + model.mark);
   }
