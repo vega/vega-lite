@@ -36,7 +36,7 @@ import {isSelectionParameter, SelectionParameter} from '../selection';
 import {LayoutSizeMixins, NormalizedUnitSpec} from '../spec';
 import {isFrameMixins} from '../spec/base';
 import {stack, StackProperties} from '../stack';
-import {keys} from '../util';
+import {keys, unique} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
 import {AxisInternalIndex} from './axis/component';
@@ -270,7 +270,10 @@ export class UnitModel extends ModelWithField {
 
   public assembleMarks() {
     const labels = this.label ?? [];
-    labels.forEach(({mark}) => (mark.transform[0].avoidMarks = [...new Set(mark.transform[0].avoidMarks)]));
+    for (const {mark} of labels) {
+      mark.transform[0].avoidMarks = unique(mark.transform[0].avoidMarks, m => m);
+    }
+
     let marks = [...(this.component.mark ?? []), ...(this.label ?? []).map(({mark}) => mark)];
 
     // If this unit is part of a layer, selections should augment
@@ -298,13 +301,13 @@ export class UnitModel extends ModelWithField {
   }
 
   public avoidMarks(names: string[], level = 0) {
-    this.label
-      .filter(label => label.level > level)
-      .forEach(({mark}) => {
-        const [labelTransform] = mark.transform;
+    for (const l of this.label) {
+      if (l.level > level) {
+        const [labelTransform] = l.mark.transform;
         labelTransform.avoidMarks ??= [];
-        labelTransform.avoidMarks.push(...names.filter(name => !labelTransform.avoidMarks.includes(name)));
-      });
+        labelTransform.avoidMarks.push(...names);
+      }
+    }
   }
 
   public get mark(): Mark {

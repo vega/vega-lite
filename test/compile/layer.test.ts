@@ -161,7 +161,7 @@ describe('Layer', () => {
     });
 
     it('should avoid correct marks and labels', () => {
-      expect((model.children[0] as UnitModel).label[0].mark.transform[0].avoidMarks).toEqual([]);
+      expect((model.children[0] as UnitModel).label[0].mark.transform[0].avoidMarks).toBeUndefined();
       expect(
         ((model.children[1] as LayerModel).children[0] as UnitModel).label[0].mark.transform[0].avoidMarks
       ).toEqual([
