@@ -4316,6 +4316,9 @@
         },
         {
           "$ref": "#/definitions/InputBinding"
+        },
+        {
+          "$ref": "#/definitions/DirectBinding"
         }
       ]
     },
@@ -7960,6 +7963,32 @@
     "Dict": {
       "additionalProperties": {
       },
+      "type": "object"
+    },
+    "DirectBinding": {
+      "additionalProperties": false,
+      "properties": {
+        "debounce": {
+          "type": "number"
+        },
+        "element": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Element"
+            },
+            {
+              "additionalProperties": false,
+              "type": "object"
+            }
+          ]
+        },
+        "event": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "element"
+      ],
       "type": "object"
     },
     "Diverging": {
