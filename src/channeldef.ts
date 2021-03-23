@@ -1,4 +1,4 @@
-import {Gradient, ScaleType, SignalRef, Text} from 'vega';
+import {AreaLabelMethod, Gradient, LabelAnchor, LineLabelAnchor, ScaleType, SignalRef, Text} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -199,17 +199,6 @@ export type TextDef<F extends Field> =
   | FieldOrDatumDefWithCondition<StringDatumDef<F>, Text>
   | ValueDefWithCondition<StringFieldDef<F>, Text>;
 
-export type LabelAnchor =
-  | 'left'
-  | 'right'
-  | 'top'
-  | 'bottom'
-  | 'top-left'
-  | 'top-right'
-  | 'bottom-left'
-  | 'bottom-right'
-  | 'middle';
-
 export type LabelPosition = {
   offset: number;
   anchor: LabelAnchor;
@@ -220,8 +209,8 @@ export type LabelDefMixins = {
   avoidParentLayer?: 'all' | number;
   mark?: Omit<MarkDef<'text'>, 'type'>;
   padding?: number;
-  method?: 'floodfill' | 'reduced-search' | 'naive';
-  lineAnchor?: 'begin' | 'end';
+  method?: AreaLabelMethod;
+  lineAnchor?: LineLabelAnchor;
 };
 
 export type LabelDef<F extends Field> = TextDef<F> & LabelDefMixins;

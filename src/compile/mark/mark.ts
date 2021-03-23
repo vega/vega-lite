@@ -1,4 +1,4 @@
-import {LabelTransform, TextMark, TextEncodeEntry, Mark as VGMark} from 'vega';
+import {LabelTransform, TextMark, TextEncodeEntry, Mark as VGMark, LabelAnchor} from 'vega';
 import {isArray} from 'vega-util';
 import {FieldRefOption, isFieldDef, isValueDef, LabelDef, vgField} from '../../channeldef';
 import {DataSourceType} from '../../data';
@@ -429,8 +429,8 @@ function getLabelTransform(
   const anchor = position && position.map(p => p.anchor);
   const offset = position && position.map(p => p.offset);
 
-  lineAnchor = lineAnchor ?? 'end';
-  method = method ?? 'reduced-search';
+  lineAnchor ??= 'end';
+  method ??= 'reduced-search';
 
   const common: LabelTransform = {
     type: 'label',
@@ -440,9 +440,6 @@ function getLabelTransform(
 
   switch (model.mark) {
     case 'area':
-      // TODO: should we set avoidBaseMark to false?
-      // TODO: remove this ts-ignore after vega-typings in vega is fixed
-      // @ts-ignore
       return {...common, method};
     case 'bar':
       return {
@@ -465,7 +462,7 @@ function getLabelTransform(
         ...(position
           ? {anchor, offset}
           : {
-              anchor: ['top-', '', 'bottom-'].map(a => a + anchorDirection),
+              anchor: ['top-', '', 'bottom-'].map(a => a + anchorDirection) as LabelAnchor[],
               offset: [2, 2, 2]
             }),
         ...(padding === undefined ? {padding: 50} : {})
