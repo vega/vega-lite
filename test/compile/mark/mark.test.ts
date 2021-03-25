@@ -1,4 +1,4 @@
-import {getSort, parseMarkGroupsAndLabels} from '../../../src/compile/mark/mark';
+import {getSort, parseMarkGroupsAndLabels, getLabel} from '../../../src/compile/mark/mark';
 import {UnitModel} from '../../../src/compile/unit';
 import {GEOSHAPE} from '../../../src/mark';
 import {
@@ -576,6 +576,261 @@ describe('Mark', () => {
       model.parse();
       const mark = parseMarkGroupsAndLabels(model).mark;
       expect(mark[0].clip).toBe(true);
+    });
+  });
+
+  describe('getLabel', () => {
+    it('should return empty array when a model does not encode label', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {x: {type: 'nominal', field: 'col'}}
+      });
+      const label = getLabel(model, 'anything');
+      expect(label).toHaveLength(0);
+    });
+
+    it(
+      'should warn when getLabel on a mark that does not support label',
+      log.wrap(localLogger => {
+        const model = parseUnitModel({
+          mark: 'arc',
+          encoding: {x: {type: 'nominal', field: 'col'}}
+        });
+        model.encoding.label = {type: 'nominal', field: 'col'};
+        const label = getLabel(model, 'anything');
+        expect(label).toHaveLength(0);
+        expect(localLogger.warns[0]).toEqual(log.message.dropChannelOnMark('arc', 'label'));
+      })
+    );
+
+    describe('default label-transform config', () => {
+      it('should have correct default label-transform config for area', () => {
+        const model = parseUnitModelWithScale({
+          mark: 'area',
+          encoding: {label: {type: 'nominal', field: 'col'}}
+        });
+
+        const label = getLabel(model, 'anything');
+        expect(label).toHaveLength(1);
+        expect(label[0].transform[0]).toStrictEqual({
+          type: 'label',
+          size: {signal: '[width, height]'},
+          method: 'reduced-search'
+        });
+      });
+
+      it('should have correct default label-transform config for bar (horizontal)', () => {
+        const model = parseUnitModelWithScale({
+          mark: 'bar',
+          encoding: {
+            x: {type: 'nominal', field: 'col1'},
+            y: {type: 'quantitative', field: 'col2'},
+            label: {type: 'nominal', field: 'col'}
+          }
+        });
+
+        const label = getLabel(model, 'anything');
+        expect(label).toHaveLength(1);
+        expect(label[0].transform[0]).toStrictEqual({
+          type: 'label',
+          size: {signal: '[width, height]'},
+          anchor: ['top', 'top'],
+          offset: [2, -2]
+        });
+      });
+
+      it('should have correct default label-transform config for bar (vertical)', () => {
+        const model = parseUnitModelWithScale({
+          mark: 'bar',
+          encoding: {
+            y: {type: 'nominal', field: 'col1'},
+            x: {type: 'quantitative', field: 'col2'},
+            label: {type: 'nominal', field: 'col'}
+          }
+        });
+
+        const label = getLabel(model, 'anything');
+        expect(label).toHaveLength(1);
+        expect(label[0].transform[0]).toStrictEqual({
+          type: 'label',
+          size: {signal: '[width, height]'},
+          anchor: ['right', 'right'],
+          offset: [2, -2]
+        });
+      });
+
+      it('should have correct default label-transform config for bar (stacked)', () => {
+        const model = parseUnitModelWithScale({
+          mark: 'bar',
+          encoding: {
+            y: {type: 'nominal', field: 'col1'},
+            x: {type: 'quantitative', field: 'col2'},
+            color: {type: 'quantitative', field: 'col3'},
+            label: {type: 'nominal', field: 'col'}
+          }
+        });
+
+        const label = getLabel(model, 'anything');
+        expect(label).toHaveLength(1);
+        expect(label[0].transform[0]).toStrictEqual({
+          type: 'label',
+          size: {signal: '[width, height]'},
+          anchor: ['middle'],
+          offset: [0]
+        });
+      });
+
+      (['line', 'trail'] as const).forEach(mark => {
+        it(`should have correct default lineAnchor for ${mark}`, () => {
+          const model = parseUnitModelWithScale({
+            mark,
+            encoding: {
+              x: {type: 'nominal', field: 'col1'},
+              y: {type: 'quantitative', field: 'col2'},
+              color: {type: 'quantitative', field: 'col3'},
+              label: {type: 'nominal', field: 'col'}
+            }
+          });
+
+          const label = getLabel(model, 'anything');
+          expect(label).toHaveLength(1);
+          expect(label[0].transform[0].lineAnchor).toBe('end');
+        });
+
+        it(`should have correct default label-transform config for ${mark} (begin - vertical)`, () => {
+          const model = parseUnitModelWithScale({
+            mark,
+            encoding: {
+              x: {type: 'nominal', field: 'col1'},
+              y: {type: 'quantitative', field: 'col2'},
+              color: {type: 'quantitative', field: 'col3'},
+              label: {type: 'nominal', field: 'col', lineAnchor: 'begin'}
+            }
+          });
+
+          const label = getLabel(model, 'anything');
+          expect(model.markDef.orient).toBe('vertical');
+          expect(label).toHaveLength(1);
+          expect(label[0].transform[0]).toStrictEqual({
+            type: 'label',
+            size: {signal: '[width, height]'},
+            padding: 50,
+            lineAnchor: 'begin',
+            anchor: ['top-left', 'left', 'bottom-left'],
+            offset: [2, 2, 2]
+          });
+        });
+
+        it(`should have correct default label-transform config for ${mark} (end - vertical)`, () => {
+          const model = parseUnitModelWithScale({
+            mark,
+            encoding: {
+              x: {type: 'nominal', field: 'col1'},
+              y: {type: 'quantitative', field: 'col2'},
+              color: {type: 'quantitative', field: 'col3'},
+              label: {type: 'nominal', field: 'col', lineAnchor: 'end'}
+            }
+          });
+
+          const label = getLabel(model, 'anything');
+          expect(model.markDef.orient).toBe('vertical');
+          expect(label).toHaveLength(1);
+          expect(label[0].transform[0]).toStrictEqual({
+            type: 'label',
+            size: {signal: '[width, height]'},
+            padding: 50,
+            lineAnchor: 'end',
+            anchor: ['top-right', 'right', 'bottom-right'],
+            offset: [2, 2, 2]
+          });
+        });
+      });
+
+      it(`should have correct default label-transform config for line (begin - horizontal)`, () => {
+        const model = parseUnitModelWithScale({
+          mark: 'line',
+          encoding: {
+            y: {type: 'nominal', field: 'col1'},
+            x: {type: 'quantitative', field: 'col2'},
+            color: {type: 'quantitative', field: 'col3'},
+            label: {type: 'nominal', field: 'col', lineAnchor: 'begin'}
+          }
+        });
+
+        const label = getLabel(model, 'anything');
+        expect(model.markDef.orient).toBe('horizontal');
+        expect(label).toHaveLength(1);
+        expect(label[0].transform[0]).toStrictEqual({
+          type: 'label',
+          size: {signal: '[width, height]'},
+          padding: 50,
+          lineAnchor: 'begin',
+          anchor: ['bottom-left', 'bottom', 'bottom-right'],
+          offset: [2, 2, 2]
+        });
+      });
+
+      it(`should have correct default label-transform config for line (end - horizontal)`, () => {
+        const model = parseUnitModelWithScale({
+          mark: 'line',
+          encoding: {
+            y: {type: 'nominal', field: 'col1'},
+            x: {type: 'quantitative', field: 'col2'},
+            color: {type: 'quantitative', field: 'col3'},
+            label: {type: 'nominal', field: 'col', lineAnchor: 'end'}
+          }
+        });
+
+        const label = getLabel(model, 'anything');
+        expect(model.markDef.orient).toBe('horizontal');
+        expect(label).toHaveLength(1);
+        expect(label[0].transform[0]).toStrictEqual({
+          type: 'label',
+          size: {signal: '[width, height]'},
+          padding: 50,
+          lineAnchor: 'end',
+          anchor: ['top-left', 'top', 'top-right'],
+          offset: [2, 2, 2]
+        });
+      });
+
+      (['circle', 'point', 'square'] as const).forEach(mark => {
+        it(`should have correct default label-transform config for ${mark}`, () => {
+          const model = parseUnitModelWithScale({
+            mark,
+            encoding: {
+              label: {type: 'nominal', field: 'col'}
+            }
+          });
+
+          const label = getLabel(model, 'anything');
+          expect(label).toHaveLength(1);
+          expect(label[0].transform[0]).toStrictEqual({
+            type: 'label',
+            size: {signal: '[width, height]'},
+            anchor: ['top-right', 'top', 'top-left', 'left', 'bottom-left', 'bottom', 'bottom-right', 'middle'],
+            offset: [2, 2, 2, 2, 2, 2, 2, 2, 2]
+          });
+        });
+      });
+
+      it('should have correct default label-transform config for rect', () => {
+        const model = parseUnitModelWithScale({
+          mark: 'rect',
+          encoding: {
+            label: {type: 'nominal', field: 'col'}
+          }
+        });
+
+        const label = getLabel(model, 'anything');
+        expect(label).toHaveLength(1);
+        expect(label[0].transform[0]).toStrictEqual({
+          type: 'label',
+          size: {signal: '[width, height]'},
+          anchor: ['middle'],
+          offset: [0]
+        });
+      });
     });
   });
 });

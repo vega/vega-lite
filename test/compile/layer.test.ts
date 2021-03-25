@@ -191,5 +191,70 @@ describe('Layer', () => {
         'layer_0_marks_label'
       ]);
     });
+
+    it('should assemble label to the end', () => {
+      const marks = model.assembleMarks();
+      console.log(JSON.stringify(marks));
+      expect(true).toBe(true);
+      expect(marks.map(mark => mark.type)).toEqual([
+        'symbol',
+        'symbol',
+        'symbol',
+        'symbol',
+        'symbol',
+        'text',
+        'text',
+        'text',
+        'text'
+      ]);
+      expect(marks.slice(5).map(mark => mark.transform[0])).toStrictEqual([
+        {
+          type: 'label',
+          size: {signal: '[width, height]'},
+          anchor: ['top-right', 'top', 'top-left', 'left', 'bottom-left', 'bottom', 'bottom-right', 'middle'],
+          offset: [2, 2, 2, 2, 2, 2, 2, 2, 2]
+        },
+        {
+          type: 'label',
+          size: {signal: '[width, height]'},
+          anchor: ['top-right', 'top', 'top-left', 'left', 'bottom-left', 'bottom', 'bottom-right', 'middle'],
+          offset: [2, 2, 2, 2, 2, 2, 2, 2, 2],
+          avoidMarks: [
+            'layer_1_layer_1_marks',
+            'layer_1_layer_2_marks',
+            'layer_0_marks',
+            'layer_2_marks',
+            'layer_0_marks_label'
+          ]
+        },
+        {
+          type: 'label',
+          size: {signal: '[width, height]'},
+          anchor: ['top-right', 'top', 'top-left', 'left', 'bottom-left', 'bottom', 'bottom-right', 'middle'],
+          offset: [2, 2, 2, 2, 2, 2, 2, 2, 2],
+          avoidMarks: [
+            'layer_1_layer_0_marks',
+            'layer_1_layer_2_marks',
+            'layer_1_layer_0_marks_label',
+            'layer_0_marks',
+            'layer_2_marks',
+            'layer_0_marks_label'
+          ]
+        },
+        {
+          type: 'label',
+          size: {signal: '[width, height]'},
+          anchor: ['top-right', 'top', 'top-left', 'left', 'bottom-left', 'bottom', 'bottom-right', 'middle'],
+          offset: [2, 2, 2, 2, 2, 2, 2, 2, 2],
+          avoidMarks: [
+            'layer_1_layer_0_marks',
+            'layer_1_layer_1_marks',
+            'layer_1_layer_0_marks_label',
+            'layer_1_layer_1_marks_label',
+            'layer_0_marks_label'
+          ]
+        }
+      ]);
+    });
   });
 });

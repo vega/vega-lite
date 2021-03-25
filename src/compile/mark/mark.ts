@@ -367,7 +367,7 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
   ];
 }
 
-function getLabel(model: UnitModel, data: string): LabelMark[] {
+export function getLabel(model: UnitModel, data: string): LabelMark[] {
   if (!model.encoding.label) {
     return [] as LabelMark[];
   }
@@ -430,6 +430,23 @@ function getLabel(model: UnitModel, data: string): LabelMark[] {
   ];
 }
 
+const DEFAULT_LINE_ANCHOR = {
+  horizontal: {
+    direction: {
+      begin: 'bottom',
+      end: 'top'
+    },
+    anchor: (direction: string) => ['-left', '', '-right'].map(a => direction + a)
+  },
+  vertical: {
+    direction: {
+      begin: 'left',
+      end: 'right'
+    },
+    anchor: (direction: string) => ['top-', '', 'bottom-'].map(a => a + direction)
+  }
+} as const;
+
 function getLabelTransform(
   {position, method, padding, lineAnchor}: LabelDef<string>,
   mark: LabelSupportingMark,
@@ -457,7 +474,7 @@ function getLabelTransform(
         ...(position
           ? {anchor, offset}
           : stack?.stackBy?.length > 0
-          ? {anchod: ['middle'], offset: [0]}
+          ? {anchor: ['middle'], offset: [0]}
           : {
               anchor: orient === 'horizontal' ? ['right', 'right'] : ['top', 'top'],
               offset: [2, -2]
@@ -465,14 +482,15 @@ function getLabelTransform(
       };
     case 'line':
     case 'trail': {
-      const anchorDirection = lineAnchor === 'begin' ? 'left' : 'right';
+      const defaultLineAnchor = DEFAULT_LINE_ANCHOR[orient];
+      const anchorDirection = defaultLineAnchor.direction[lineAnchor];
       return {
         ...common,
         lineAnchor,
         ...(position
           ? {anchor, offset}
           : {
-              anchor: ['top-', '', 'bottom-'].map(a => a + anchorDirection) as LabelAnchor[],
+              anchor: defaultLineAnchor.anchor(anchorDirection) as LabelAnchor[],
               offset: [2, 2, 2]
             }),
         ...(padding === undefined ? {padding: 50} : {})
@@ -484,7 +502,6 @@ function getLabelTransform(
       return {
         ...common,
         anchor: anchor ?? ['top-right', 'top', 'top-left', 'left', 'bottom-left', 'bottom', 'bottom-right', 'middle'],
-        // TODO: offset should depends on the size of mark
         offset: offset ?? [2, 2, 2, 2, 2, 2, 2, 2, 2]
       };
     case 'rect':
