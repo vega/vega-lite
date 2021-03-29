@@ -92,7 +92,7 @@
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "ajv": "^8.0.1",
-    "ajv-formats": "^1.5.1",
+    "ajv-formats": "^2.0.1",
     "chai": "^4.3.4",
     "cheerio": "^1.0.0-rc.5",
     "conventional-changelog-cli": "^2.1.1",
