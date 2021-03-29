@@ -1790,12 +1790,10 @@ agent-base@6:
   dependencies:
     debug "4"
 
-ajv-formats@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/ajv-formats/-/ajv-formats-1.5.1.tgz#0f301b1b3846182f224cc563fc0a032daafb7dab"
-  integrity sha512-s1RBVF4HZd2UjGkb6t6uWoXjf6o7j7dXPQIL7vprcIT/67bTD6+5ocsU0UKShS2qWxueGDWuGfKHfOxHWrlTQg==
-  dependencies:
-    ajv "^7.0.0"
+ajv-formats@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/ajv-formats/-/ajv-formats-2.0.1.tgz#16ae6250c8c51bd53a4fa4885ff29ac9a63d04cb"
+  integrity sha512-WOCTxWY8Q+JLBJxJ8fjizSuk72qaAlL3v+XtJakEger28WcevS5tBEH2eND9e7U42thp2Uc/DNDYw9riD+kTAA==
 
 ajv@6.5.3:
   version "6.5.3"
@@ -1817,7 +1815,7 @@ ajv@^6.10.0, ajv@^6.12.3, ajv@^6.12.4:
     json-schema-traverse "^0.4.1"
     uri-js "^4.2.2"
 
-ajv@^7.0.0, ajv@^7.0.2:
+ajv@^7.0.2:
   version "7.2.3"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-7.2.3.tgz#ca78d1cf458d7d36d1c3fa0794dd143406db5772"
   integrity sha512-idv5WZvKVXDqKralOImQgPM9v6WOdLNa0IY3B3doOjw/YxRGT8I+allIJ6kd7Uaj+SF1xZUSU+nPM5aDNBVtnw==
