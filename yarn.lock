@@ -2600,7 +2600,7 @@ commander@^6.2.0:
   resolved "https://registry.yarnpkg.com/commander/-/commander-6.2.1.tgz#0792eb682dfbc325999bb2b84fddddba110ac73c"
   integrity sha512-U7VdrJFnJgo4xjrHpTzu0yrHPGImdsmD95ZlgYSEajAn2JKzDhDTPG9kBTefmObL2w/ngeZnilk+OV9CG3d7UA==
 
-commander@^7.1.0:
+commander@^7.2.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-7.2.0.tgz#a36cb57d0b501ce108e4d20559a150a391d97ab7"
   integrity sha512-QrWXB+ZQSVPmIWIhtEO9H+gwHaMGYiF5ChvoJ+K9ZGHG/sVsa6yiesAD1GC/x46sET00Xlwo1u49RVVVzvcSkw==
@@ -7603,16 +7603,16 @@ trim-repeated@^1.0.0:
     escape-string-regexp "^1.0.2"
 
 ts-json-schema-generator@^0.89.0:
-  version "0.89.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.89.0.tgz#3335c9a9b337427f7354dcee1e0ffcfad2d9e90e"
-  integrity sha512-1jmG5toW9CeswDbcYUwg9Z0bi9ZQtO/Dg9eJd7TxJgZWgj0bPxGZahkyoqomDrN0CruVNgquB2Y2wNDcVUO7qQ==
+  version "0.89.1"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.89.1.tgz#c844760539bbb94019cd5c02acb1f08a9e9b71ea"
+  integrity sha512-RjdA8r/hh6lFCnhkFXVzVKB2LhciLrTXO+IuVMmA1CtY/wA4hrjUVfQl7HwJq5UxCwaXAUma6v+SqTuhy3rcQg==
   dependencies:
     "@types/json-schema" "^7.0.7"
-    commander "^7.1.0"
+    commander "^7.2.0"
     fast-json-stable-stringify "^2.1.0"
     glob "^7.1.6"
     json-stable-stringify "^1.0.1"
-    typescript "~4.2.2"
+    typescript "~4.2.3"
 
 tslib@^1.8.1:
   version "1.14.1"
@@ -7694,7 +7694,7 @@ typedarray-to-buffer@^3.1.5:
   dependencies:
     is-typedarray "^1.0.0"
 
-typescript@~4.2.2, typescript@~4.2.3:
+typescript@~4.2.3:
   version "4.2.3"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.2.3.tgz#39062d8019912d43726298f09493d598048c1ce3"
   integrity sha512-qOcYwxaByStAWrBf4x0fibwZvMRG+r4cQoTjbPtUlrWjBHbmCAww1i448U0GJ+3cNNEtebDteo/cHOR3xJ4wEw==
