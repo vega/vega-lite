@@ -433,6 +433,34 @@ describe('FacetModel', () => {
       const layout = model.assembleLayout();
       expect(layout.titleAnchor).toEqual({column: 'end'});
     });
+
+    it('returns signals that size the child facets relative to the parent', () => {
+      const model = parseFacetModelWithScale({
+        data: {url: 'data/cars.json'},
+        facet: {
+          column: {field: 'Origin', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'Horsepower', type: 'quantitative'},
+            y: {field: 'Acceleration', type: 'quantitative'}
+          }
+        },
+        width: 500,
+        height: 300
+      });
+      model.parseLayoutSize();
+      model.parseAxesAndHeaders();
+      const layoutSignals = model.assembleLayoutSignals();
+
+      expect(layoutSignals).toEqual([
+        {name: 'width', value: 500},
+        {name: 'height', value: 300},
+        {name: 'child_width', update: "width / length(data('column_domain'))"},
+        {name: 'child_height', update: 'height'}
+      ]);
+    });
   });
 
   describe('assembleMarks', () => {
