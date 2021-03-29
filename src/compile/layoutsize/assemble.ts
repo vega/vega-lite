@@ -31,7 +31,15 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
   // Read size signal name from name map, just in case it is the top-level size signal that got renamed.
   const name = model.getSizeSignalRef(sizeType).signal;
 
-  if (size === 'step') {
+  if (facetParent?.hasStaticOuterDimension(getSizeTypeFromLayoutSizeType(sizeType))) {
+    // this disregards any sizing directly set for the facet child which has already been set on the facet parent
+    return [
+      {
+        name,
+        update: autosizedFacetExpr(facetParent, sizeType)
+      }
+    ];
+  } else if (size === 'step') {
     const scaleComponent = model.getScaleComponent(channel);
 
     if (scaleComponent) {
@@ -68,14 +76,6 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
     const defaultValue = getViewConfigContinuousSize(model.config.view, isWidth ? 'width' : 'height');
     const safeExpr = `isFinite(${expr}) ? ${expr} : ${defaultValue}`;
     return [{name, init: safeExpr, on: [{update: safeExpr, events: 'window:resize'}]}];
-  } else if (facetParent?.hasStaticOuterDimension(getSizeTypeFromLayoutSizeType(sizeType))) {
-    // this disregards any sizing directly set for the facet child which has already been set on the facet parent
-    return [
-      {
-        name,
-        update: autosizedFacetExpr(facetParent, sizeType)
-      }
-    ];
   } else if (size !== 'merged') {
     return [
       {
