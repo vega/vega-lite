@@ -92,6 +92,8 @@ export function isSignalRef(o: any): o is SignalRef {
 
 // TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
 export interface VgValueRef {
+  // Alternative that removes the generic `null` to fall back to the default provided by the type itself
+  // value?: Value;
   value?: Value<null>;
   field?:
     | string
