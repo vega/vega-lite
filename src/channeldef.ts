@@ -90,7 +90,7 @@ import {isSignalRef} from './vega.schema';
 
 export type PrimitiveValue = number | string | boolean | null;
 
-export type Value<ES extends ExprRef | SignalRef | null = ExprRef | SignalRef | null> =
+export type Value<ES extends ExprRef | SignalRef = ExprRef | SignalRef> =
   | PrimitiveValue
   | number[]
   | Gradient
