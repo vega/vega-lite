@@ -4208,19 +4208,19 @@
       "additionalProperties": false,
       "properties": {
         "debounce": {
+          "description": "If defined, delays event handling until the specified milliseconds have elapsed since the last event was fired.",
           "type": "number"
         },
         "element": {
-          "$ref": "#/definitions/Element"
+          "$ref": "#/definitions/Element",
+          "description": "An optional CSS selector string indicating the parent element to which the input element should be added. By default, all input elements are added within the parent container of the Vega view."
         },
         "input": {
           "const": "checkbox",
           "type": "string"
         },
         "name": {
-          "type": "string"
-        },
-        "type": {
+          "description": "By default, the signal name is used to label input elements. This `name` property can be used instead to specify a custom label for the bound signal.",
           "type": "string"
         }
       },
@@ -4229,14 +4229,75 @@
       ],
       "type": "object"
     },
+    "BindDirect": {
+      "additionalProperties": false,
+      "properties": {
+        "debounce": {
+          "description": "If defined, delays event handling until the specified milliseconds have elapsed since the last event was fired.",
+          "type": "number"
+        },
+        "element": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Element"
+            },
+            {
+              "additionalProperties": false,
+              "type": "object"
+            }
+          ],
+          "description": "An input element that exposes a _value_ property and supports the [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) interface, or a CSS selector string to such an element. When the element updates and dispatches an event, the _value_ property will be used as the new, bound signal value. When the signal updates independent of the element, the _value_ property will be set to the signal value and a new event will be dispatched on the element."
+        },
+        "event": {
+          "description": "The event (default `\"input\"`) to listen for to track changes on the external element.",
+          "type": "string"
+        }
+      },
+      "required": [
+        "element"
+      ],
+      "type": "object"
+    },
+    "BindInput": {
+      "additionalProperties": false,
+      "properties": {
+        "autocomplete": {
+          "description": "A hint for form autofill. See the [HTML autocomplete attribute](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/autocomplete) for additional information.",
+          "type": "string"
+        },
+        "debounce": {
+          "description": "If defined, delays event handling until the specified milliseconds have elapsed since the last event was fired.",
+          "type": "number"
+        },
+        "element": {
+          "$ref": "#/definitions/Element",
+          "description": "An optional CSS selector string indicating the parent element to which the input element should be added. By default, all input elements are added within the parent container of the Vega view."
+        },
+        "input": {
+          "description": "The type of input element to use. The valid values are `\"checkbox\"`, `\"radio\"`, `\"range\"`, `\"select\"`, and any other legal [HTML form input type](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input).",
+          "type": "string"
+        },
+        "name": {
+          "description": "By default, the signal name is used to label input elements. This `name` property can be used instead to specify a custom label for the bound signal.",
+          "type": "string"
+        },
+        "placeholder": {
+          "description": "Text that appears in the form control when it has no value set.",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
     "BindRadioSelect": {
       "additionalProperties": false,
       "properties": {
         "debounce": {
+          "description": "If defined, delays event handling until the specified milliseconds have elapsed since the last event was fired.",
           "type": "number"
         },
         "element": {
-          "$ref": "#/definitions/Element"
+          "$ref": "#/definitions/Element",
+          "description": "An optional CSS selector string indicating the parent element to which the input element should be added. By default, all input elements are added within the parent container of the Vega view."
         },
         "input": {
           "enum": [
@@ -4246,21 +4307,21 @@
           "type": "string"
         },
         "labels": {
+          "description": "An array of label strings to represent the `options` values. If unspecified, the `options` value will be coerced to a string and used as the label.",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "name": {
+          "description": "By default, the signal name is used to label input elements. This `name` property can be used instead to specify a custom label for the bound signal.",
           "type": "string"
         },
         "options": {
+          "description": "An array of options to select from.",
           "items": {
           },
           "type": "array"
-        },
-        "type": {
-          "type": "string"
         }
       },
       "required": [
@@ -4273,29 +4334,32 @@
       "additionalProperties": false,
       "properties": {
         "debounce": {
+          "description": "If defined, delays event handling until the specified milliseconds have elapsed since the last event was fired.",
           "type": "number"
         },
         "element": {
-          "$ref": "#/definitions/Element"
+          "$ref": "#/definitions/Element",
+          "description": "An optional CSS selector string indicating the parent element to which the input element should be added. By default, all input elements are added within the parent container of the Vega view."
         },
         "input": {
           "const": "range",
           "type": "string"
         },
         "max": {
+          "description": "Sets the maximum slider value. Defaults to the larger of the signal value and `100`.",
           "type": "number"
         },
         "min": {
+          "description": "Sets the minimum slider value. Defaults to the smaller of the signal value and `0`.",
           "type": "number"
         },
         "name": {
+          "description": "By default, the signal name is used to label input elements. This `name` property can be used instead to specify a custom label for the bound signal.",
           "type": "string"
         },
         "step": {
+          "description": "Sets the minimum slider increment. If undefined, the step size will be automatically determined based on the `min` and `max` values.",
           "type": "number"
-        },
-        "type": {
-          "type": "string"
         }
       },
       "required": [
@@ -4315,10 +4379,10 @@
           "$ref": "#/definitions/BindRange"
         },
         {
-          "$ref": "#/definitions/InputBinding"
+          "$ref": "#/definitions/BindInput"
         },
         {
-          "$ref": "#/definitions/DirectBinding"
+          "$ref": "#/definitions/BindDirect"
         }
       ]
     },
@@ -7963,32 +8027,6 @@
     "Dict": {
       "additionalProperties": {
       },
-      "type": "object"
-    },
-    "DirectBinding": {
-      "additionalProperties": false,
-      "properties": {
-        "debounce": {
-          "type": "number"
-        },
-        "element": {
-          "anyOf": [
-            {
-              "$ref": "#/definitions/Element"
-            },
-            {
-              "additionalProperties": false,
-              "type": "object"
-            }
-          ]
-        },
-        "event": {
-          "type": "string"
-        }
-      },
-      "required": [
-        "element"
-      ],
       "type": "object"
     },
     "Diverging": {
@@ -11872,33 +11910,6 @@
           "type": "object"
         }
       ]
-    },
-    "InputBinding": {
-      "additionalProperties": false,
-      "properties": {
-        "autocomplete": {
-          "type": "string"
-        },
-        "debounce": {
-          "type": "number"
-        },
-        "element": {
-          "$ref": "#/definitions/Element"
-        },
-        "input": {
-          "type": "string"
-        },
-        "name": {
-          "type": "string"
-        },
-        "placeholder": {
-          "type": "string"
-        },
-        "type": {
-          "type": "string"
-        }
-      },
-      "type": "object"
     },
     "Interpolate": {
       "enum": [
@@ -19107,6 +19118,7 @@
         "coefficient": {
           "anyOf": [
             {
+              "description": "The coefficient parameter for the `hammer` projection.\n\n__Default value:__ `2`",
               "type": "number"
             },
             {
@@ -19117,6 +19129,7 @@
         "distance": {
           "anyOf": [
             {
+              "description": "For the `satellite` projection, the distance from the center of the sphere to the point of view, as a proportion of the sphere’s radius. The recommended maximum clip angle for a given `distance` is acos(1 / distance) converted to degrees. If tilt is also applied, then more conservative clipping may be necessary.\n\n__Default value:__ `2.0`",
               "type": "number"
             },
             {
@@ -19156,6 +19169,7 @@
         "fraction": {
           "anyOf": [
             {
+              "description": "The fraction parameter for the `bottomley` projection.\n\n__Default value:__ `0.5`, corresponding to a sin(ψ) where ψ = π/6.",
               "type": "number"
             },
             {
@@ -19166,6 +19180,7 @@
         "lobes": {
           "anyOf": [
             {
+              "description": "The number of lobes in projections that support multi-lobe views: `berghaus`, `gingery`, or `healpix`. The default value varies based on the projection type.",
               "type": "number"
             },
             {
@@ -19176,6 +19191,7 @@
         "parallel": {
           "anyOf": [
             {
+              "description": "The parallel parameter for projections that support it: `armadillo`, `bonne`, `craig`, `cylindricalEqualArea`, `cylindricalStereographic`, `hammerRetroazimuthal`, `loximuthal`, or `rectangularPolyconic`. The default value varies based on the projection type.",
               "type": "number"
             },
             {
@@ -19222,6 +19238,7 @@
         "radius": {
           "anyOf": [
             {
+              "description": "The radius parameter for the `airy` or `gingery` projection. The default value varies based on the projection type.",
               "type": "number"
             },
             {
@@ -19232,6 +19249,7 @@
         "ratio": {
           "anyOf": [
             {
+              "description": "The ratio parameter for the `hill`, `hufnagel`, or `wagner` projections. The default value varies based on the projection type.",
               "type": "number"
             },
             {
@@ -19242,6 +19260,7 @@
         "reflectX": {
           "anyOf": [
             {
+              "description": "Sets whether or not the x-dimension is reflected (negated) in the output.",
               "type": "boolean"
             },
             {
@@ -19252,6 +19271,7 @@
         "reflectY": {
           "anyOf": [
             {
+              "description": "Sets whether or not the y-dimension is reflected (negated) in the output.",
               "type": "boolean"
             },
             {
@@ -19291,7 +19311,8 @@
         "size": {
           "anyOf": [
             {
-              "$ref": "#/definitions/Vector2<number>"
+              "$ref": "#/definitions/Vector2<number>",
+              "description": "Used in conjunction with fit, provides the width and height in pixels of the area to which the projection should be automatically fit."
             },
             {
               "$ref": "#/definitions/ExprRef"
@@ -19301,6 +19322,7 @@
         "spacing": {
           "anyOf": [
             {
+              "description": "The spacing parameter for the `lagrange` projection.\n\n__Default value:__ `0.5`",
               "type": "number"
             },
             {
@@ -19311,6 +19333,7 @@
         "tilt": {
           "anyOf": [
             {
+              "description": "The tilt angle (in degrees) for the `satellite` projection.\n\n__Default value:__ `0`.",
               "type": "number"
             },
             {
