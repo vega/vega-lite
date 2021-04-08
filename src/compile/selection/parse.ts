@@ -86,7 +86,7 @@ export function parseSelectionPredicate(
   }
 
   const test =
-    `vlSelectionTest(${store}, ${datum}` + (selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`);
+    `vlSelectionTest(${store}, ${datum}${selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`}`;
   const length = `length(data(${store}))`;
 
   return pred.empty === false ? `${length} && ${test}` : `!${length} || ${test}`;

@@ -35,7 +35,7 @@ export function assembleInit(
 export function assembleUnitSelectionSignals(model: UnitModel, signals: Signal[]) {
   for (const selCmpt of vals(model.component.selection ?? {})) {
     const name = selCmpt.name;
-    let modifyExpr = `${name}${TUPLE}, ` + (selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`);
+    let modifyExpr = `${name}${TUPLE}, ${selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`}`;
 
     for (const c of selectionCompilers) {
       if (!c.defined(selCmpt)) continue;
