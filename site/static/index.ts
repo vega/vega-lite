@@ -93,7 +93,7 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
       .append('a')
       .text('Open in Vega Editor')
       .attr('href', '#')
-      .on('click', function (event) {
+      .on('click', event => {
         post(window, editorURL, {
           mode: 'vega-lite',
           spec: compactStringify(spec),
