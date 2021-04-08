@@ -40,8 +40,8 @@ do
     pushd examples/compiled
     rm -f $name.svg
     rm -f $name.png
-    npx vg2svg --seed 123456789 $name.vg.json > $name.svg -b .
-    npx vg2png --seed 123456789 $name.vg.json > $name.png -b .
+    npx vg2svg --seed 123456789 $name.vg.json > $name.svg
+    npx vg2png --seed 123456789 $name.vg.json > $name.png
     popd
   fi
 done
