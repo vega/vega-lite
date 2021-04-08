@@ -1,4 +1,4 @@
-import {Color, InitSignal, NewSignal, RangeConfig, RangeScheme, SignalRef} from 'vega';
+import {Color, InitSignal, Locale, NewSignal, RangeConfig, RangeScheme, SignalRef} from 'vega';
 import {isObject, mergeConfig} from 'vega-util';
 import {Axis, AxisConfig, AxisConfigMixins, AXIS_CONFIGS, isConditionalAxisValue} from './axis';
 import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common';
@@ -240,6 +240,11 @@ export interface Config<ES extends ExprRef | SignalRef = ExprRef | SignalRef>
    * __Default value:__ `true`.
    */
   aria?: boolean;
+
+  /**
+   * Locale definitions for string parsing and formatting of number and date values. The locale object should contain `number` and/or `time` properties with [locale definitions](https://vega.github.io/vega/docs/api/locale/). Locale definitions provided in the config block may be overridden by the View constructor locale option.
+   */
+  locale?: Locale;
 
   /**
    * @hidden
