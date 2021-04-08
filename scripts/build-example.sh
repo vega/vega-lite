@@ -39,7 +39,7 @@ do
   then
     rm -f examples/compiled/$name.svg
     rm -f examples/compiled/$name.png
-    npx vg2svg --base file://examples/compiled/ --seed 123456789 examples/compiled/$name.vg.json > examples/compiled/$name.svg -b .
-    npx vg2png --base file://examples/compiled/ --seed 123456789 examples/compiled/$name.vg.json > examples/compiled/$name.png -b .
+    npx vg2svg --base examples/compiled --seed 123456789 examples/compiled/$name.vg.json > examples/compiled/$name.svg -b .
+    npx vg2png --base examples/compiled --seed 123456789 examples/compiled/$name.vg.json > examples/compiled/$name.png -b .
   fi
 done
