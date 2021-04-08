@@ -37,9 +37,11 @@ do
 
   if (! git diff $nopatch --exit-code $dir/$name.vg.json || [ ! -f $dir/$name.svg ] ||  [ ! -f $dir/$name.png ] || $forcesvg)
   then
-    rm -f examples/compiled/$name.svg
-    rm -f examples/compiled/$name.png
-    npx vg2svg --base site --seed 123456789 examples/compiled/$name.vg.json > examples/compiled/$name.svg -b .
-    npx vg2png --base site --seed 123456789 examples/compiled/$name.vg.json > examples/compiled/$name.png -b .
+    pushd examples/compiled
+    rm -f $name.svg
+    rm -f $name.png
+    npx vg2svg --seed 123456789 $name.vg.json > $name.svg -b .
+    npx vg2png --seed 123456789 $name.vg.json > $name.png -b .
+    popd
   fi
 done
