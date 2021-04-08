@@ -18,6 +18,9 @@ jobs:
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
 
+      - name: Setup data
+        run: yarn data
+
       - name: Install Parallel
         run: |
           # Faster than "sudo apt-get install parallel"
