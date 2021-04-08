@@ -49,6 +49,7 @@
   "marks": [
     {
       "type": "group",
+      "name": "stackgroup",
       "from": {
         "facet": {
           "data": "data_0",
