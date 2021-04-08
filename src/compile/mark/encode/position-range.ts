@@ -88,7 +88,6 @@ function pointPosition2OrSize(
       : getOffset(baseChannel, model.markDef);
 
   if (!channelDef && (channel === 'x2' || channel === 'y2') && (encoding.latitude || encoding.longitude)) {
-    // use geopoint output if there are lat2/long2 and there is no point position2 overriding lat2/long2.
     const vgSizeChannel = getSizeChannel(channel);
 
     const size = model.markDef[vgSizeChannel];
