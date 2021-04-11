@@ -44,6 +44,7 @@
   "marks": [
     {
       "type": "group",
+      "name": "stackgroup",
       "from": {
         "facet": {
           "data": "source_0",
