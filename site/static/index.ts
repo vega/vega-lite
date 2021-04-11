@@ -31,7 +31,7 @@ hljs.registerLanguage('css', css);
 hljs.registerLanguage('diff', diff);
 
 // highlight jekyll code blocks
-hljs.initHighlightingOnLoad();
+hljs.highlightAll();
 
 declare const BASEURL: string;
 
