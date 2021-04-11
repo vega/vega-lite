@@ -1,8 +1,7 @@
 import {SignalRef} from 'vega';
 import {isObject} from 'vega-util';
-import {LabelDef} from '../channeldef';
 import {Config} from '../config';
-import {Encoding, normalizeEncoding, pathGroupingFields} from '../encoding';
+import {Encoding, normalizeEncoding} from '../encoding';
 import {ExprRef} from '../expr';
 import {AreaConfig, isMarkDef, LineConfig, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
@@ -37,13 +36,7 @@ function getPointOverlay(
   markConfig: LineConfig<ExprRef | SignalRef> = {},
   encoding: Encoding<string>
 ): MarkConfig<ExprRef | SignalRef> {
-  if (
-    markDef.point === 'transparent' ||
-    (markDef.type === 'line' &&
-      !markDef.point &&
-      encoding.label &&
-      pathGroupingFields(markDef.type, encoding).length <= 0)
-  ) {
+  if (markDef.point === 'transparent') {
     return {opacity: 0};
   } else if (markDef.point) {
     // truthy : true or object
@@ -83,12 +76,6 @@ function getLineOverlay(
   }
 }
 
-function incrementAvoidLevel(labelDef: LabelDef<string>): LabelDef<string> {
-  const {avoidParentLayer} = labelDef;
-  const level = avoidParentLayer === 'all' ? avoidParentLayer : ~~avoidParentLayer + 1;
-  return {...labelDef, avoidParentLayer: level};
-}
-
 export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWithPathOverlay> {
   public name = 'path-overlay';
 
@@ -118,16 +105,11 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
 
     // Need to call normalizeEncoding because we need the inferred types to correctly determine stack
     const encoding = normalizeEncoding(e, config);
-    if (encoding.label) {
-      encoding.label = incrementAvoidLevel(encoding.label);
-    }
 
     const markDef: MarkDef = isMarkDef(mark) ? mark : {type: mark};
 
     const pointOverlay = getPointOverlay(markDef, config[markDef.type], encoding);
     const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);
-
-    const labelOnMark = markDef.type === 'area' || pathGroupingFields(markDef.type, spec.encoding).length > 0;
 
     const layer: NormalizedUnitSpec[] = [
       {
@@ -140,8 +122,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...markDef
         }),
         // drop shape from encoding as this might be used to trigger point overlay
-        // drop label from encoding when not having detail (connected scatter plot)
-        encoding: omit(encoding, ['shape', ...(labelOnMark ? [] : ['label' as const])])
+        encoding: omit(encoding, ['shape'])
       }
     ];
 
@@ -170,7 +151,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...pick(markDef, ['clip', 'interpolate', 'tension', 'tooltip']),
           ...lineOverlay
         },
-        encoding: omit(overlayEncoding, ['label'])
+        encoding: overlayEncoding
       });
     }
     if (pointOverlay) {
@@ -183,8 +164,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...pick(markDef, ['clip', 'tooltip']),
           ...pointOverlay
         },
-        // drop label from encoding when having detail (grouped line chart)
-        encoding: omit(overlayEncoding, labelOnMark ? ['label'] : [])
+        encoding: overlayEncoding
       });
     }
 

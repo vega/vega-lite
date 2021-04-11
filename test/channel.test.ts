@@ -42,7 +42,6 @@ describe('channel', () => {
           'detail',
           'key',
           'text',
-          'label',
           'tooltip',
           'href',
           'url',

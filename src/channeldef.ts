@@ -1,4 +1,4 @@
-import {AreaLabelMethod, Gradient, LabelAnchor, LineLabelAnchor, ScaleType, SignalRef, Text} from 'vega';
+import {Gradient, ScaleType, SignalRef, Text} from 'vega';
 import {isArray, isBoolean, isNumber, isString} from 'vega-util';
 import {Aggregate, isAggregateOp, isArgmaxDef, isArgminDef, isCountingAggregateOp} from './aggregate';
 import {Axis} from './axis';
@@ -20,7 +20,6 @@ import {
   isSecondaryRangeChannel,
   isXorY,
   KEY,
-  LABEL,
   LATITUDE,
   LATITUDE2,
   LONGITUDE,
@@ -198,72 +197,6 @@ export type TextDef<F extends Field> =
   | FieldOrDatumDefWithCondition<StringFieldDef<F>, Text>
   | FieldOrDatumDefWithCondition<StringDatumDef<F>, Text>
   | ValueDefWithCondition<StringFieldDef<F>, Text>;
-
-/**
- * Position of a label relative to its base mark's position, which includes anchor direction (anchor) and distance (offset).
- */
-export type LabelPosition = {
-  /**
-   * distance of a label from its base mark.
-   * if negative, the label position is insize.
-   */
-  offset: number;
-
-  /**
-   * anchor direction of a label from its base mark.
-   * The value could be one of `'left '` , `'right '` , `'top '` , `'middle '` ,
-   * `'bottom '` , `'top-left '` , `'top-right '` , `'bottom-left '` , or  '`bottom-right '`
-   */
-  anchor: LabelAnchor;
-};
-
-export type LabelDefMixins = {
-  /**
-   * A list of possible positions for a label to be placed relative to its base mark.
-   */
-  position?: LabelPosition[];
-
-  /**
-   * The layers of marks that the labels will avoid.
-   * `'all'` means all the marks that are children of the root layer.
-   * number `n` means all the marks that are children of the nth ancestor layer.
-   *
-   * __Default value:__ `0` (only avoid the base mark)
-   */
-  avoidParentLayer?: 'all' | number;
-
-  /**
-   * Mark definition of the label text mark without the `'type'` property.
-   *
-   * __See also:__ [`text` mark](https://vega.github.io/vega-lite/docs/text.html#properties)
-   */
-  mark?: Omit<MarkDef<'text'>, 'type'>;
-
-  /**
-   * The padding in pixels by which a label may extend past the chart bounding box.
-   */
-  padding?: number;
-
-  /**
-   * The labeling method to use for area marks.
-   * One of `'floodfill'`, `'reduced-search'`, and `'naive'`.
-   * This property only applies when the base mark is a group mark containing area marks.
-   *
-   * __Default value:__ `'reduced-search'`
-   */
-  method?: AreaLabelMethod;
-
-  /**
-   * The anchor position of labels for line marks, where one line receives one label.
-   * One of `'start'` or `'end'` (the default).
-   * This property only applies when the base mark is a group mark containing line marks.
-   *
-   * __Default value:__ `'end'`
-   */
-  lineAnchor?: LineLabelAnchor;
-};
-
-export type LabelDef<F extends Field> = TextDef<F> & LabelDefMixins;
 
 /**
  * A ValueDef with optional Condition<ValueDef | FieldDef>
@@ -1320,7 +1253,6 @@ export function channelCompatibility(
     case FILL:
     case STROKE:
     case TEXT:
-    case LABEL:
     case DETAIL:
     case KEY:
     case TOOLTIP:
