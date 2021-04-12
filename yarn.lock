@@ -7654,9 +7654,9 @@ trim-repeated@^1.0.0:
     escape-string-regexp "^1.0.2"
 
 ts-json-schema-generator@^0.89.2:
-  version "0.89.2"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.89.2.tgz#077bd74e0846ab233acdce91b6fbf0cffd5e7954"
-  integrity sha512-fDKE80NvNgIomhuddRvuAyLKkI5RHdkvR19RckzyM2lLA/jWeFlCigZNjIqbsmw3duE1JSxuHHG3aEgJJUB/Cw==
+  version "0.89.3"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.89.3.tgz#619bbf451c7c71ef03be59232c5ac3512bcac671"
+  integrity sha512-QXS/onFnVhUCgDsH0kr5ueZJIJlAgdIuF85CsJx5YE2SrqtcJn7hvwAMajRK0Hi3iUfS+b19TI7Bc6/11ECKFw==
   dependencies:
     "@types/json-schema" "^7.0.7"
     commander "^7.2.0"
