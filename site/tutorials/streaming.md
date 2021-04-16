@@ -91,7 +91,7 @@ vegaEmbed('#chart', vlSpec).then(function (res) {
 });
 ```
 
-As a word of caution, in some cases, streaming data might cause some unexpected results when rendering. If your rendered chart overflows your container in the presence of new incoming data, for example, you may need to configure [Autosize](https://vega.github.io/vega-lite/docs/size.html#autosize) functionality or explicitly use the [view.resize](https://vega.github.io/vega/docs/api/view/#view_resize) API to explicitly resize when new data is incorporated.
+As a word of caution, in some cases, streaming data might cause unexpected results when rendering. If your rendered chart overflows your container in the presence of new incoming data, for example, you may need to configure [Autosize](https://vega.github.io/vega-lite/docs/size.html#autosize) functionality or explicitly use the [view.resize](https://vega.github.io/vega/docs/api/view/#view_resize) API to explicitly resize when new data is incorporated.
 
 This is the end of this tutorial where you learned how to stream new data into your chart. If you want to use Vega-Lite with websockets, check out the [Vega-Lite with websockets](https://bl.ocks.org/domoritz/8e1e4da185e1a32c7e54934732a8d3d5) demo. You can find more visualizations in the [gallery]({{site.baseurl}}/examples/). If you want to further customize your charts, please read the [documentation]({{site.baseurl}}/docs/).
 
