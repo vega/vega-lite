@@ -91,6 +91,8 @@ vegaEmbed('#chart', vlSpec).then(function (res) {
 });
 ```
 
+As a word of caution, in some cases it might be necessary to explicitly invoke the `view.resize` API to ensure that the view is reflowed properly in light of the newly added data. One way to do this is to execute `view.resize().runAsync()` whenever your data changes as a precaution. If your rendered chart doesn't overflows your container in the presence of new incoming data, this is likely to be the root cause.
+
 This is the end of this tutorial where you learned how to stream new data into your chart. If you want to use Vega-Lite with websockets, check out the [Vega-Lite with websockets](https://bl.ocks.org/domoritz/8e1e4da185e1a32c7e54934732a8d3d5) demo. You can find more visualizations in the [gallery]({{site.baseurl}}/examples/). If you want to further customize your charts, please read the [documentation]({{site.baseurl}}/docs/).
 
 <script>
