@@ -6,10 +6,10 @@ labels: 'Bug :bug:'
 
 Please:
 
-- [ ] Check for duplicate issues. Please file separate requests as separate issues on GitHub.
-- [ ] Describe how to reproduce the bug / the goal of the feature request.
+- [ ] Check for duplicate issues. Please file separate requests as separate issues.
+- [ ] Describe how to reproduce the bug.
 - [ ] Use the latest versions of Vega and Vega-Lite.
-- [ ] Provide an example spec in JSON, wrapped by triple backticks like this:
+- [ ] Provide an [minimal, reproducible example](https://stackoverflow.com/help/minimal-reproducible-example) spec in JSON, wrapped by triple backticks like this:
 
 ```json
 {
