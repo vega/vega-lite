@@ -24,6 +24,7 @@ permalink: /docs/config.html
     "concat"    : { ... }    // - Concat Configuration
     "facet"     : { ... }    // - Facet Configuration
     "repeat"    : { ... }    // - Repeat Configuration
+    "locale"    : { ... }    // - Locale Configuration
     "aria"      : ...        // - Aria Configuration
   }
 }
@@ -164,6 +165,10 @@ Each of the view composition configurations (`concat` and `facet`) supports the 
 Repeat uses the same configuration as concatenation.
 
 {:#aria-config}
+
+## Locale Configuration
+
+{% include table.html props="locale" source="Config" %}
 
 ## ARIA Configuration
 
