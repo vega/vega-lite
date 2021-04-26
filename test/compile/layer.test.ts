@@ -128,19 +128,19 @@ describe('Layer', () => {
             {
               mark: 'point',
               encoding: {
-                label: {field: 'b', type: 'quantitative', avoidParentLayer: 'all'}
+                label: {field: 'b', type: 'quantitative', avoidAncestorLayer: 'all'}
               }
             },
             {
               mark: 'point',
               encoding: {
-                label: {field: 'b', type: 'quantitative', avoidParentLayer: 2}
+                label: {field: 'b', type: 'quantitative', avoidAncestorLayer: 2}
               }
             },
             {
               mark: 'point',
               encoding: {
-                label: {field: 'b', type: 'quantitative', avoidParentLayer: 1}
+                label: {field: 'b', type: 'quantitative', avoidAncestorLayer: 1}
               }
             }
           ]
@@ -161,19 +161,15 @@ describe('Layer', () => {
     });
 
     it('should avoid correct marks and labels', () => {
-      expect((model.children[0] as UnitModel).label[0].mark.transform[0].avoidMarks).toBeUndefined();
-      expect(
-        ((model.children[1] as LayerModel).children[0] as UnitModel).label[0].mark.transform[0].avoidMarks
-      ).toEqual([
+      expect((model.children[0] as UnitModel).labelMark.transform[0].avoidMarks).toBeUndefined();
+      expect(((model.children[1] as LayerModel).children[0] as UnitModel).labelMark.transform[0].avoidMarks).toEqual([
         'layer_1_layer_1_marks',
         'layer_1_layer_2_marks',
         'layer_0_marks',
         'layer_2_marks',
         'layer_0_marks_label'
       ]);
-      expect(
-        ((model.children[1] as LayerModel).children[1] as UnitModel).label[0].mark.transform[0].avoidMarks
-      ).toEqual([
+      expect(((model.children[1] as LayerModel).children[1] as UnitModel).labelMark.transform[0].avoidMarks).toEqual([
         'layer_1_layer_0_marks',
         'layer_1_layer_2_marks',
         'layer_1_layer_0_marks_label',
@@ -181,9 +177,7 @@ describe('Layer', () => {
         'layer_2_marks',
         'layer_0_marks_label'
       ]);
-      expect(
-        ((model.children[1] as LayerModel).children[2] as UnitModel).label[0].mark.transform[0].avoidMarks
-      ).toEqual([
+      expect(((model.children[1] as LayerModel).children[2] as UnitModel).labelMark.transform[0].avoidMarks).toEqual([
         'layer_1_layer_0_marks',
         'layer_1_layer_1_marks',
         'layer_1_layer_0_marks_label',

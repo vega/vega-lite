@@ -275,6 +275,12 @@ export interface Encoding<F extends Field> {
    */
   text?: TextDef<F>;
 
+  /**
+   * Label as a text annotation to the mark.
+   * The position of the label is automatically configured to avoid collisions betwen labels and other marks.
+   *
+   * __Default value:__ If undefined, the mark will not be labeled.
+   */
   label?: LabelDef<F>;
 
   /**

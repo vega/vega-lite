@@ -39,10 +39,8 @@ function getPointOverlay(
 ): MarkConfig<ExprRef | SignalRef> {
   if (
     markDef.point === 'transparent' ||
-    (markDef.type === 'line' &&
-      !markDef.point &&
-      encoding.label &&
-      pathGroupingFields(markDef.type, encoding).length <= 0)
+    // if the main mark is a single line/trail/area chart, create an invisible point overlay for label.
+    (!markDef.point && encoding.label && pathGroupingFields(markDef.type, encoding).length <= 0)
   ) {
     return {opacity: 0};
   } else if (markDef.point) {
@@ -84,9 +82,9 @@ function getLineOverlay(
 }
 
 function incrementAvoidLevel(labelDef: LabelDef<string>): LabelDef<string> {
-  const {avoidParentLayer} = labelDef;
-  const level = avoidParentLayer === 'all' ? avoidParentLayer : ~~avoidParentLayer + 1;
-  return {...labelDef, avoidParentLayer: level};
+  const {avoidAncestorLayer} = labelDef;
+  const level = avoidAncestorLayer === 'all' ? avoidAncestorLayer : Math.floor(avoidAncestorLayer ?? 0) + 1;
+  return {...labelDef, avoidAncestorLayer: level};
 }
 
 export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWithPathOverlay> {
@@ -127,7 +125,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
     const pointOverlay = getPointOverlay(markDef, config[markDef.type], encoding);
     const lineOverlay = markDef.type === 'area' && getLineOverlay(markDef, config[markDef.type]);
 
-    const labelOnMark = markDef.type === 'area' || pathGroupingFields(markDef.type, spec.encoding).length > 0;
+    const isMultiSeriesPath = pathGroupingFields(markDef.type, spec.encoding).length > 0;
 
     const layer: NormalizedUnitSpec[] = [
       {
@@ -140,8 +138,8 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...markDef
         }),
         // drop shape from encoding as this might be used to trigger point overlay
-        // drop label from encoding when not having detail (connected scatter plot)
-        encoding: omit(encoding, ['shape', ...(labelOnMark ? [] : ['label' as const])])
+        // If the main mark is multi-series line/trail/area, label the main mark.
+        encoding: omit(encoding, ['shape', ...(isMultiSeriesPath ? [] : ['label' as const])])
       }
     ];
 
@@ -170,6 +168,8 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...pick(markDef, ['clip', 'interpolate', 'tension', 'tooltip']),
           ...lineOverlay
         },
+        // Drop label. Only add label to the area mark for multi-series area chart.
+        // Or, only add label to the point overlay for single area chart.
         encoding: omit(overlayEncoding, ['label'])
       });
     }
@@ -183,8 +183,8 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...pick(markDef, ['clip', 'tooltip']),
           ...pointOverlay
         },
-        // drop label from encoding when having detail (grouped line chart)
-        encoding: omit(overlayEncoding, labelOnMark ? ['label'] : [])
+        // If the main mark is a single line/trail/area chart, label the point overlay instead of the main mark.
+        encoding: omit(overlayEncoding, isMultiSeriesPath ? ['label'] : [])
       });
     }
 

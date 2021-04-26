@@ -204,18 +204,20 @@ export type TextDef<F extends Field> =
  */
 export type LabelPosition = {
   /**
-   * distance of a label from its base mark.
-   * if negative, the label position is insize.
+   * Distance of a label from its base mark.
+   * If negative, the label position is insize.
    */
   offset: number;
 
   /**
-   * anchor direction of a label from its base mark.
-   * The value could be one of `'left '` , `'right '` , `'top '` , `'middle '` ,
-   * `'bottom '` , `'top-left '` , `'top-right '` , `'bottom-left '` , or  '`bottom-right '`
+   * Anchor direction of a label from its base mark.
+   * The value could be one of `"left"`, `"right"`, `"top"`, `"middle",`
+   * `"bottom"`, `"top-left"`, `"top-right"`, `"bottom-left"`, or "`bottom-right"`.
    */
   anchor: LabelAnchor;
 };
+
+type LabelMarkDef = Omit<MarkDef<'text'>, 'type'>;
 
 export type LabelDefMixins = {
   /**
@@ -224,20 +226,19 @@ export type LabelDefMixins = {
   position?: LabelPosition[];
 
   /**
-   * The layers of marks that the labels will avoid.
+   * The level of ancestor layers of marks that the labels will avoid.
    * `'all'` means all the marks that are children of the root layer.
-   * number `n` means all the marks that are children of the nth ancestor layer.
+   * Otherwise, a number `n` means all the marks that are children of the nth ancestor layer.
    *
    * __Default value:__ `0` (only avoid the base mark)
    */
-  avoidParentLayer?: 'all' | number;
+  avoidAncestorLayer?: 'all' | number;
 
   /**
-   * Mark definition of the label text mark without the `'type'` property.
-   *
-   * __See also:__ [`text` mark](https://vega.github.io/vega-lite/docs/text.html#properties)
+   * A label mark definition for customizing the label's text mark.
+   * This definition includes all [properties of a text mark](http://vega.github.io/vega-lite/docs/text.html#properties) except `type`.
    */
-  mark?: Omit<MarkDef<'text'>, 'type'>;
+  mark?: LabelMarkDef;
 
   /**
    * The padding in pixels by which a label may extend past the chart bounding box.
@@ -246,19 +247,33 @@ export type LabelDefMixins = {
 
   /**
    * The labeling method to use for area marks.
-   * One of `'floodfill'`, `'reduced-search'`, and `'naive'`.
-   * This property only applies when the base mark is a group mark containing area marks.
+   * One of `"floodfill"`, `"reduced-search"`, and `"naive"`.
+   * This property only applies when the mark is a multi-series area.
    *
-   * __Default value:__ `'reduced-search'`
+   * If `"floodfill"`: For each area, the label is placed at the center of the largest possible rectangle that can fit into the area.
+   * This rectangle must have the same height and width proportion as of the label.
+   * The search space is every pixels in the area.
+   * This method could be slow for interactive visualizations but give the best result (each label has the largest possible surrounding empty space).
+   *
+   * If `"reduced-search"`: For each area, the label is placed at the center of the largest rectangle that can fit into the area.
+   * This rectangle must have the same height and width proportion as of the label.
+   * The search space is all the pixels along the line of each pair of points that represents the upper/lower bound of the area.
+   * This method is faster than the `"floodfill"`. It works better for interactive visualizations and give a good result (each label has a large surrounding empty space).
+   *
+   * If `"naive"`: For each area, the label is placed at the first position that can fit the label.
+   * The search space is each pixel at the middle of each pair of points that represents the upper/lower bound of the area.
+   * This method is the fastest. It works best with large area charts.
+   *
+   * __Default value:__ `"reduced-search"`
    */
   method?: AreaLabelMethod;
 
   /**
    * The anchor position of labels for line marks, where one line receives one label.
-   * One of `'start'` or `'end'` (the default).
-   * This property only applies when the base mark is a group mark containing line marks.
+   * One of `"start"` or `"end"` (the default).
+   * This property only applies when the mark is multi-series line or trail.
    *
-   * __Default value:__ `'end'`
+   * __Default value:__ `"end"`
    */
   lineAnchor?: LineLabelAnchor;
 };

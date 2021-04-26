@@ -9,6 +9,19 @@ describe('compile/compile', () => {
   });
 
   it('should return a spec with default top-level properties, size signals, data, marks, and title', () => {
+    console.log(
+      JSON.stringify(
+        compile({
+          data: {url: 'data/stocks.csv'},
+          mark: {type: 'area', line: true},
+          encoding: {
+            x: {field: 'date', type: 'temporal'},
+            y: {field: 'price', type: 'quantitative'},
+            label: {field: 'price', type: 'quantitative'}
+          }
+        }).spec
+      )
+    );
     const {spec} = compile({
       data: {
         values: [{a: 'A', b: 28}]

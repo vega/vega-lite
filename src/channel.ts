@@ -480,23 +480,6 @@ const ALL_MARKS: Record<Mark, 'always'> = {
   tick: 'always'
 };
 
-const LABEL_SUPPORTING_MARKS = {
-  circle: 'always',
-  point: 'always',
-  square: 'always',
-  area: 'always',
-  bar: 'always',
-  line: 'always',
-  trail: 'always',
-  rect: 'always'
-} as const;
-
-export type LabelSupportingMark = keyof typeof LABEL_SUPPORTING_MARKS;
-
-export function supportLabel(mark: Mark): mark is LabelSupportingMark {
-  return mark in LABEL_SUPPORTING_MARKS;
-}
-
 const {geoshape: _g, ...ALL_MARKS_EXCEPT_GEOSHAPE} = ALL_MARKS;
 
 /**
@@ -579,7 +562,16 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
     case TEXT:
       return {text: 'always'};
     case LABEL:
-      return LABEL_SUPPORTING_MARKS;
+      return {
+        circle: 'always',
+        point: 'always',
+        square: 'always',
+        area: 'always',
+        bar: 'always',
+        line: 'always',
+        trail: 'always',
+        rect: 'always'
+      };
     case ANGLE:
       return {point: 'always', square: 'always', text: 'always'};
     case URL:

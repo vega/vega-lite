@@ -115,7 +115,7 @@ describe('UnitModel', () => {
         }
       });
       model.parse();
-      expect(model.label[0].mark).toEqual({
+      expect(model.labelMark).toEqual({
         name: 'marks_label',
         type: 'text',
         style: ['text'],

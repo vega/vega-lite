@@ -79,7 +79,9 @@ export class UnitModel extends ModelWithField {
   public readonly selection: SelectionParameter[] = [];
   public children: Model[] = [];
 
-  public label: {mark: LabelMark; level: number}[] = [];
+  public labelMark: LabelMark;
+
+  public avoidAncestorLevel: number;
 
   constructor(
     spec: NormalizedUnitSpec,
@@ -240,8 +242,9 @@ export class UnitModel extends ModelWithField {
     this.component.mark = mark;
 
     const labelDef = this.encoding.label;
-    const level = labelDef ? labelDef.avoidParentLayer : -1;
-    this.label = label.map(l => ({mark: l, level: level === 'all' ? Infinity : Math.floor(level)}));
+    const level = labelDef ? labelDef.avoidAncestorLayer : -1;
+    this.labelMark = label;
+    this.avoidAncestorLevel = level === 'all' ? Infinity : Math.floor(level);
   }
 
   public parseAxesAndHeaders() {
@@ -269,16 +272,15 @@ export class UnitModel extends ModelWithField {
   }
 
   public assembleMarks() {
-    const labels = this.label ?? [];
-    for (const {mark} of labels) {
-      const {transform} = mark;
+    if (this.labelMark) {
+      const {transform} = this.labelMark;
       const [l] = transform;
       if ('avoidMarks' in l) {
         l.avoidMarks = unique(l.avoidMarks, m => m);
       }
     }
 
-    let marks = [...(this.component.mark ?? []), ...(this.label ?? []).map(({mark}) => mark)];
+    let marks = [...(this.component.mark ?? []), ...(this.labelMark ? [this.labelMark] : [])];
 
     // If this unit is part of a layer, selections should augment
     // all in concert rather than each unit individually. This
@@ -301,16 +303,14 @@ export class UnitModel extends ModelWithField {
   }
 
   public getLabelNames(): string[] {
-    return (this.label ?? []).map(({mark}) => mark.name).filter(name => name);
+    return this.labelMark ? [this.labelMark.name] : [];
   }
 
   public avoidMarks(names: string[], level = 0) {
-    for (const l of this.label) {
-      if (l.level > level) {
-        const [labelTransform] = l.mark.transform;
-        labelTransform.avoidMarks ??= [];
-        labelTransform.avoidMarks.push(...names);
-      }
+    if (this.avoidAncestorLevel > level && this.labelMark) {
+      const [labelTransform] = this.labelMark.transform;
+      labelTransform.avoidMarks ??= [];
+      labelTransform.avoidMarks.push(...names);
     }
   }
 

@@ -1,6 +1,6 @@
-import {LabelTransform, TextMark, TextEncodeEntry, Mark as VGMark, LabelAnchor, Orientation} from 'vega';
+import {LabelTransform, Mark as VGMark, BaseMark, Encodable} from 'vega';
 import {isArray} from 'vega-util';
-import {FieldRefOption, isFieldDef, isValueDef, LabelDef, vgField} from '../../channeldef';
+import {FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef';
 import {DataSourceType} from '../../data';
 import {isAggregate, pathGroupingFields} from '../../encoding';
 import {AREA, BAR, isPathMark, LINE, Mark, TRAIL} from '../../mark';
@@ -24,8 +24,7 @@ import {tick} from './tick';
 import {baseEncodeEntry as encodeBaseEncodeEntry, text as encodeText, nonPosition as encodeNonPosition} from './encode';
 import {NormalizedUnitSpec} from '../../spec';
 import * as log from '../../log';
-import {LabelSupportingMark, supportLabel} from '../../channel';
-import {StackProperties} from '../../stack';
+import {supportMark} from '../../channel';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,
@@ -44,19 +43,21 @@ const markCompiler: Record<Mark, MarkCompiler> = {
   trail
 };
 
-export interface LabelMark extends TextMark {
+export interface LabelMark extends BaseMark, Encodable<VgEncodeEntry> {
+  type: 'text';
   transform: [LabelTransform];
 }
 
-export function isLabelMark(mark: VGMark): mark is LabelMark {
+export function isLabelMark(mark: VGMark) {
   return mark.type === 'text' && mark.transform?.length === 1 && mark.transform[0].type === 'label';
 }
 
-export function parseMarkGroupsAndLabels(model: UnitModel): {mark: any[]; label: LabelMark[]} {
+export function parseMarkGroupsAndLabels(model: UnitModel): {mark: any[]; label?: LabelMark} {
   if (contains([LINE, AREA, TRAIL], model.mark)) {
     const details = pathGroupingFields(model.mark, model.encoding);
     if (details.length > 0) {
-      return getPathGroups(model, details);
+      const label = getLabelMark(model, model.getName('pathgroup'));
+      return {mark: getPathGroups(model, details), label};
     }
     // otherwise use standard mark groups
   } else if (model.mark === BAR) {
@@ -64,11 +65,11 @@ export function parseMarkGroupsAndLabels(model: UnitModel): {mark: any[]; label:
       getMarkPropOrConfig(prop, model.markDef, model.config)
     );
     if (model.stack && !model.fieldDef('size') && hasCornerRadius) {
-      return getGroupsForStackedBarWithCornerRadius(model);
+      return {mark: getGroupsForStackedBarWithCornerRadius(model)};
     }
   }
 
-  const label = getLabel(model, model.getName('marks'));
+  const label = getLabelMark(model, model.getName('marks'));
   return {mark: getMarkGroup(model), label};
 }
 
@@ -77,8 +78,7 @@ const FACETED_PATH_PREFIX = 'faceted_path_';
 function getPathGroups(model: UnitModel, details: string[]) {
   // TODO: for non-stacked plot, map order to zindex. (Maybe rename order for layer to zindex?)
 
-  const label = getLabel(model, model.getName('pathgroup'));
-  const mark = [
+  return [
     {
       name: model.getName('pathgroup'),
       type: 'group',
@@ -99,8 +99,6 @@ function getPathGroups(model: UnitModel, details: string[]) {
       marks: getMarkGroup(model, {fromPrefix: FACETED_PATH_PREFIX})
     }
   ];
-
-  return {mark, label};
 }
 
 const STACK_GROUP_PREFIX = 'stack_group_';
@@ -231,46 +229,42 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
     groupUpdate.strokeOffset = {value: 0};
   }
 
-  const labels = getLabel(model, model.getName('marks'));
-  if (model.encoding.label && model.encoding.label.avoidParentLayer > 0) {
-    log.warn(log.message.ROUNDED_CORNER_STACKED_BAR_WITH_AVOID);
+  const label = getLabelMark(model, model.getName('marks'));
+  if (model.encoding.label && model.encoding.label.avoidAncestorLayer > 0) {
+    log.warn(log.message.ROUNDED_CORNERS_STACKED_BAR_WITH_AVOID);
   }
 
-  return {
-    mark: [
-      {
-        type: 'group',
-        name: model.getName('stackgroup'),
-        from: {
-          facet: {
-            data: model.requestDataName(DataSourceType.Main),
-            name: STACK_GROUP_PREFIX + model.requestDataName(DataSourceType.Main),
-            groupby,
-            aggregate: {
-              fields: [
-                stackField({suffix: 'start'}),
-                stackField({suffix: 'start'}),
-                stackField({suffix: 'end'}),
-                stackField({suffix: 'end'})
-              ],
-              ops: ['min', 'max', 'min', 'max']
-            }
+  return [
+    {
+      type: 'group',
+      from: {
+        facet: {
+          data: model.requestDataName(DataSourceType.Main),
+          name: STACK_GROUP_PREFIX + model.requestDataName(DataSourceType.Main),
+          groupby,
+          aggregate: {
+            fields: [
+              stackField({suffix: 'start'}),
+              stackField({suffix: 'start'}),
+              stackField({suffix: 'end'}),
+              stackField({suffix: 'end'})
+            ],
+            ops: ['min', 'max', 'min', 'max']
           }
-        },
-        encode: {
-          update: groupUpdate
-        },
-        marks: [
-          {
-            type: 'group',
-            encode: {update: innerGroupUpdate},
-            marks: [mark, ...labels]
-          }
-        ]
-      }
-    ],
-    label: [] as LabelMark[]
-  };
+        }
+      },
+      encode: {
+        update: groupUpdate
+      },
+      marks: [
+        {
+          type: 'group',
+          encode: {update: innerGroupUpdate},
+          marks: [mark, ...(label ? [label] : [])]
+        }
+      ]
+    }
+  ];
 }
 
 export function getSort(model: UnitModel): VgCompare {
@@ -367,23 +361,96 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
   ];
 }
 
-export function getLabel(model: UnitModel, data: string): LabelMark[] {
+const LINE_ANCHOR_POINT = {
+  horizontal: {
+    begin: ['bottom-left', 'bottom', 'bottom-right'],
+    end: ['top-left', 'top', 'top-right']
+  },
+  vertical: {
+    begin: ['top-left', 'left', 'bottom-left'],
+    end: ['top-right', 'right', 'bottom-right']
+  }
+} as const;
+
+export function getLabelMark(model: UnitModel, data: string): LabelMark {
   if (!model.encoding.label) {
-    return [] as LabelMark[];
+    return null;
   }
 
-  const {mark} = model;
-  if (!supportLabel(mark)) {
-    log.warn(log.message.dropChannelOnMark(mark, 'label'));
-    return [] as LabelMark[];
+  const {
+    mark,
+    stack,
+    markDef: {orient}
+  } = model;
+
+  if (!supportMark('label', mark)) {
+    log.warn(log.message.incompatibleChannel('label', mark));
+    return null;
   }
 
   const {label} = model.encoding;
-  const {position, avoidParentLayer, mark: _mark, method, lineAnchor, ...textEncoding} = label;
+  const {position, avoidAncestorLayer, mark: labelMark, method, lineAnchor, padding, ...textEncoding} = label;
+
+  const anchor = position && position.map(p => p.anchor);
+  const offset = position && position.map(p => p.offset);
+
+  const common: LabelTransform = {
+    type: 'label',
+    size: {signal: '[width, height]'},
+    ...(padding === undefined ? {} : {padding})
+  };
+
+  let labelTransform: LabelTransform;
+  switch (mark) {
+    case 'area':
+      labelTransform = {...common, method: method ?? 'reduced-search'};
+      break;
+    case 'bar':
+      labelTransform = {
+        ...common,
+        ...(position
+          ? {anchor, offset}
+          : stack?.stackBy?.length > 0
+          ? {anchor: ['middle'], offset: [0]}
+          : {
+              anchor: orient === 'horizontal' ? ['right', 'right'] : ['top', 'top'],
+              offset: [2, -2]
+            })
+      };
+      break;
+    case 'line':
+    case 'trail': {
+      const _lineAnchor = lineAnchor ?? 'end';
+      labelTransform = {
+        ...common,
+        lineAnchor: _lineAnchor,
+        ...(position
+          ? {anchor, offset}
+          : {
+              anchor: [...LINE_ANCHOR_POINT[orient][_lineAnchor]],
+              offset: [2, 2, 2]
+            }),
+        ...(padding === undefined ? {padding: 50} : {})
+      };
+      break;
+    }
+    case 'rect':
+      labelTransform = {...common, anchor: anchor ?? ['middle'], offset: offset ?? [0]};
+      break;
+    case 'circle':
+    case 'point':
+    case 'square':
+    default:
+      labelTransform = {
+        ...common,
+        anchor: anchor ?? ['top-right', 'top', 'top-left', 'left', 'bottom-left', 'bottom', 'bottom-right', 'middle'],
+        offset: offset ?? [2, 2, 2, 2, 2, 2, 2, 2, 2]
+      };
+  }
 
   const textSpec: NormalizedUnitSpec = {
     data: null,
-    mark: {type: 'text', ...(_mark ?? {})},
+    mark: {type: 'text', ...(labelMark ?? {})},
     encoding: {text: textEncoding}
   };
   const textModel = new UnitModel(textSpec, null, '', undefined, model.config);
@@ -397,116 +464,37 @@ export function getLabel(model: UnitModel, data: string): LabelMark[] {
   const interactive = interactiveFlag(model);
   const aria = getMarkPropOrConfig('aria', markDef, config);
 
-  return [
-    {
-      name: model.getName('marks_label'),
-      type: markCompiler.text.vgMark as 'text',
-      ...(clip ? {clip: true} : {}),
-      ...(style ? {style} : {}),
-      ...(key ? {key: key.field} : {}),
-      ...(sort ? {sort} : {}),
-      ...(interactive ? interactive : {}),
-      ...(aria === false ? {aria} : {}),
-      from: {data},
-      encode: {
-        update: {
-          ...(omit(
-            encodeBaseEncodeEntry(textModel, {
-              align: 'ignore',
-              baseline: 'ignore',
-              color: 'include',
-              size: 'ignore',
-              orient: 'ignore',
-              theta: 'ignore'
-            }),
-            ['x', 'y', 'angle', 'radius', 'theta']
-          ) as TextEncodeEntry),
-          ...(encodeText(textModel, 'text', 'datum.datum') as TextEncodeEntry),
-          ...(encodeNonPosition('size', textModel, {vgChannel: 'fontSize'}) as TextEncodeEntry)
-        }
-      },
-      transform: [getLabelTransform(label, mark, model.stack, model.markDef.orient)]
-    }
-  ];
-}
-
-const DEFAULT_LINE_ANCHOR = {
-  horizontal: {
-    direction: {
-      begin: 'bottom',
-      end: 'top'
+  return {
+    name: model.getName('marks_label'),
+    type: markCompiler.text.vgMark as 'text',
+    ...(clip ? {clip: true} : {}),
+    ...(style ? {style} : {}),
+    ...(key ? {key: key.field} : {}),
+    ...(sort ? {sort} : {}),
+    ...(interactive ? interactive : {}),
+    ...(aria === false ? {aria} : {}),
+    from: {data},
+    encode: {
+      update: {
+        ...omit(
+          encodeBaseEncodeEntry(textModel, {
+            align: 'ignore',
+            baseline: 'ignore',
+            color: 'include',
+            size: 'ignore',
+            orient: 'ignore',
+            theta: 'ignore'
+          }),
+          // Drop 'x', 'y', 'radius', 'theta' because the position will be overriden by label-transform.
+          // Drop 'angle' because label-transform does not work with angled text.
+          ['x', 'y', 'angle', 'radius', 'theta']
+        ),
+        ...encodeText(textModel, 'text', 'datum.datum'),
+        ...encodeNonPosition('size', textModel, {vgChannel: 'fontSize'})
+      }
     },
-    anchor: (direction: string) => ['-left', '', '-right'].map(a => direction + a)
-  },
-  vertical: {
-    direction: {
-      begin: 'left',
-      end: 'right'
-    },
-    anchor: (direction: string) => ['top-', '', 'bottom-'].map(a => a + direction)
-  }
-} as const;
-
-function getLabelTransform(
-  {position, method, padding, lineAnchor}: LabelDef<string>,
-  mark: LabelSupportingMark,
-  stack: StackProperties,
-  orient: Orientation
-): LabelTransform {
-  const anchor = position && position.map(p => p.anchor);
-  const offset = position && position.map(p => p.offset);
-
-  lineAnchor ??= 'end';
-  method ??= 'reduced-search';
-
-  const common: LabelTransform = {
-    type: 'label',
-    size: {signal: '[width, height]'},
-    ...(padding === undefined ? {} : {padding})
+    transform: [labelTransform]
   };
-
-  switch (mark) {
-    case 'area':
-      return {...common, method};
-    case 'bar':
-      return {
-        ...common,
-        ...(position
-          ? {anchor, offset}
-          : stack?.stackBy?.length > 0
-          ? {anchor: ['middle'], offset: [0]}
-          : {
-              anchor: orient === 'horizontal' ? ['right', 'right'] : ['top', 'top'],
-              offset: [2, -2]
-            })
-      };
-    case 'line':
-    case 'trail': {
-      const defaultLineAnchor = DEFAULT_LINE_ANCHOR[orient];
-      const anchorDirection = defaultLineAnchor.direction[lineAnchor];
-      return {
-        ...common,
-        lineAnchor,
-        ...(position
-          ? {anchor, offset}
-          : {
-              anchor: defaultLineAnchor.anchor(anchorDirection) as LabelAnchor[],
-              offset: [2, 2, 2]
-            }),
-        ...(padding === undefined ? {padding: 50} : {})
-      };
-    }
-    case 'circle':
-    case 'point':
-    case 'square':
-      return {
-        ...common,
-        anchor: anchor ?? ['top-right', 'top', 'top-left', 'left', 'bottom-left', 'bottom', 'bottom-right', 'middle'],
-        offset: offset ?? [2, 2, 2, 2, 2, 2, 2, 2, 2]
-      };
-    case 'rect':
-      return {...common, anchor: anchor ?? ['middle'], offset: offset ?? [0]};
-  }
 }
 
 /**
@@ -514,7 +502,7 @@ function getLabelTransform(
  * marks to account for panning/zooming interactions. We identify bound scales
  * by the selectionExtent property, which gets added during scale parsing.
  */
-export function scaleClip(model: UnitModel) {
+function scaleClip(model: UnitModel) {
   const xScale = model.getScaleComponent('x');
   const yScale = model.getScaleComponent('y');
   return (xScale && xScale.get('selectionExtent')) || (yScale && yScale.get('selectionExtent')) ? true : undefined;
@@ -524,7 +512,7 @@ export function scaleClip(model: UnitModel) {
  * If we use a custom projection with auto-fitting to the geodata extent,
  * we need to clip to ensure the chart size doesn't explode.
  */
-export function projectionClip(model: UnitModel) {
+function projectionClip(model: UnitModel) {
   const projection = model.component.projection;
   return projection && !projection.isFit ? true : undefined;
 }
@@ -532,7 +520,7 @@ export function projectionClip(model: UnitModel) {
 /**
  * Only output interactive flags if we have selections defined somewhere in our model hierarchy.
  */
-export function interactiveFlag(model: UnitModel) {
+function interactiveFlag(model: UnitModel) {
   if (!model.component.selection) return null;
   const unitCount = keys(model.component.selection).length;
   let parentCount = unitCount;
