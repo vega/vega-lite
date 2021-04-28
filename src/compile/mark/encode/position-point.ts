@@ -52,19 +52,19 @@ export function pointPosition(
   const valueRef =
     !channelDef && isXorY(channel) && (encoding.latitude || encoding.longitude)
       ? // use geopoint output if there are lat/long and there is no point position overriding lat/long.
-        {field: model.getName(channel)}
+      {field: model.getName(channel)}
       : positionRef({
-          channel,
-          channelDef,
-          channel2Def,
-          markDef,
-          config,
-          scaleName,
-          scale,
-          stack,
-          offset,
-          defaultRef
-        });
+        channel,
+        channelDef,
+        channel2Def,
+        markDef,
+        config,
+        scaleName,
+        scale,
+        stack,
+        offset,
+        defaultRef
+      });
 
   return valueRef ? {[vgChannel || channel]: valueRef} : undefined;
 }
@@ -154,7 +154,7 @@ export function pointPositionDefaultRef({
         }
 
         if (defaultPos === 'zeroOrMin') {
-          return mainChannel === 'y' ? {field: {group: 'height'}} : {value: 0};
+          return mainChannel === 'y' ? {field: {group: 'height'}} : {scale: scaleName, value: 0};
         } else {
           // zeroOrMax
           switch (mainChannel) {
