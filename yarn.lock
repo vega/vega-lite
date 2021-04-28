@@ -2363,7 +2363,7 @@ chalk@^2.0.0, chalk@^2.0.1, chalk@^2.4.2:
     escape-string-regexp "^1.0.5"
     supports-color "^5.3.0"
 
-chalk@^4.0.0, chalk@^4.1.0:
+chalk@^4.0.0, chalk@^4.1.1:
   version "4.1.1"
   resolved "https://registry.yarnpkg.com/chalk/-/chalk-4.1.1.tgz#c80b3fab28bf6371e6863325eee67e618b77e6ad"
   integrity sha512-diHzdDKxcU+bAsUboHLPEDQiw0qEe0qd7SYUn3HgcFlWgbDcfLGswOHYeGrHKzG9z6UYf01d9VFMfZxPM1xZSg==
@@ -4866,11 +4866,11 @@ jest-config@^26.6.3:
     pretty-format "^26.6.2"
 
 jest-dev-server@^5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/jest-dev-server/-/jest-dev-server-5.0.0.tgz#904ff0525715b8268d817a07d6ce942ce70d06b2"
-  integrity sha512-PUgOwr/XT+KUJG+bMjifSWwswQXhh92wMPGnkFZiHtWkc2IcdCCykRLkoFSKCKWPveuGDOa7ZKVoUgn0+S4wew==
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/jest-dev-server/-/jest-dev-server-5.0.3.tgz#324bf6426477450ec3dae349ee9223d43f8be368"
+  integrity sha512-aJR3a5KdY18Lsz+VbREKwx2HM3iukiui+J9rlv9o6iYTwZCSsJazSTStcD9K1q0AIF3oA+FqLOKDyo/sc7+fJw==
   dependencies:
-    chalk "^4.1.0"
+    chalk "^4.1.1"
     cwd "^0.10.0"
     find-process "^1.4.4"
     prompts "^2.4.1"
