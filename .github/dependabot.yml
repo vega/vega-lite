@@ -1,0 +1,40 @@
+version: 2
+updates:
+- package-ecosystem: npm
+  directory: "/"
+  schedule:
+    interval: weekly
+    day: sunday
+    time: "23:00"
+    timezone: PST8PDT
+  open-pull-requests-limit: 10
+  reviewers:
+  - domoritz
+  ignore:
+  - dependency-name: ajv-formats
+    versions:
+    - 1.6.0
+  - dependency-name: vega-cli
+    versions:
+    - 5.20.0
+  - dependency-name: eslint-config-prettier
+    versions:
+    - 8.0.0
+  - dependency-name: puppeteer
+    versions:
+    - 7.0.1
+- package-ecosystem: bundler
+  directory: "/site"
+  schedule:
+    interval: daily
+    time: "23:00"
+    timezone: PST8PDT
+  open-pull-requests-limit: 10
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: weekly
+    day: sunday
+    time: "23:00"
+    timezone: PST8PDT
+  open-pull-requests-limit: 10
