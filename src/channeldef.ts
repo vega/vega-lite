@@ -219,6 +219,25 @@ export type LabelPosition = {
 
 type LabelMarkDef = Omit<MarkDef<'text'>, 'type'>;
 
+type AncestorLevel = {
+  /**
+   * A number `n` means `n`th ancestor layer.
+   */
+  ancestor: number;
+};
+
+type LabelAvoid = 'all-marks' | 'base-mark' | AncestorLevel;
+
+export function getAncestorLevel(avoid: LabelAvoid): number {
+  if (!avoid || avoid === 'base-mark') {
+    return 0;
+  } else if (avoid === 'all-marks') {
+    return Infinity;
+  } else {
+    return avoid.ancestor;
+  }
+}
+
 export type LabelDefMixins = {
   /**
    * A list of possible positions for a label to be placed relative to its base mark.
@@ -226,13 +245,14 @@ export type LabelDefMixins = {
   position?: LabelPosition[];
 
   /**
-   * The level of ancestor layers of marks that the labels will avoid.
-   * `'all'` means all the marks that are children of the root layer.
-   * Otherwise, a number `n` means all the marks that are children of the nth ancestor layer.
+   * Indicates the mark or group of marks that each label will avoid.
+   * - `"base-mark"`: Avoid only the mark that encodes this label.
+   * - `"all-marks"`: Avoid all the marks that are children of the root layer.
+   * - `{ancestor: number}`: Avoid all the marks that are children of the `ancestor`th ancestor layer. `{ancestor: 0}` is the same as `"base-mark"`.
    *
-   * __Default value:__ `0` (only avoid the base mark)
+   * __Default value:__ `"base-mark"`
    */
-  avoidAncestorLayer?: 'all' | number;
+  avoid?: LabelAvoid;
 
   /**
    * A label mark definition for customizing the label's text mark.

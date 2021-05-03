@@ -383,7 +383,7 @@ describe('PathOverlayNormalizer', () => {
           encoding: {
             x: {field: 'date', type: 'temporal'},
             y: {field: 'price', type: 'quantitative'},
-            label: {field: 'price', type: 'quantitative', avoidAncestorLayer: 1}
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}}
           }
         }
       ]
@@ -420,7 +420,7 @@ describe('PathOverlayNormalizer', () => {
           encoding: {
             x: {field: 'date', type: 'temporal'},
             y: {field: 'price', type: 'quantitative'},
-            label: {field: 'price', type: 'quantitative', avoidAncestorLayer: 1}
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}}
           }
         }
       ]
@@ -451,7 +451,7 @@ describe('PathOverlayNormalizer', () => {
           encoding: {
             x: {field: 'date', type: 'temporal'},
             y: {field: 'price', type: 'quantitative'},
-            label: {field: 'price', type: 'quantitative', avoidAncestorLayer: 1},
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}},
             detail: {field: 'a', type: 'nominal'}
           }
         },
@@ -494,7 +494,7 @@ describe('PathOverlayNormalizer', () => {
           encoding: {
             x: {field: 'date', type: 'temporal'},
             y: {field: 'price', type: 'quantitative'},
-            label: {field: 'price', type: 'quantitative', avoidAncestorLayer: 1}
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}}
           }
         }
       ]
@@ -551,7 +551,7 @@ describe('PathOverlayNormalizer', () => {
           encoding: {
             x: {field: 'date', type: 'temporal'},
             y: {field: 'price', type: 'quantitative', stack: 'zero'},
-            label: {field: 'price', type: 'quantitative', avoidAncestorLayer: 1}
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}}
           }
         }
       ]
@@ -585,7 +585,7 @@ describe('PathOverlayNormalizer', () => {
           encoding: {
             x: {field: 'date', type: 'temporal'},
             y: {field: 'price', type: 'quantitative', stack: 'zero'},
-            label: {field: 'price', type: 'quantitative', avoidAncestorLayer: 1}
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}}
           }
         }
       ]
@@ -614,7 +614,7 @@ describe('PathOverlayNormalizer', () => {
             x: {field: 'date', type: 'temporal'},
             y: {field: 'price', type: 'quantitative'},
             color: {field: 'color', type: 'nominal'},
-            label: {field: 'price', type: 'quantitative', avoidAncestorLayer: 1}
+            label: {field: 'price', type: 'quantitative', avoid: {ancestor: 1}}
           }
         },
         {

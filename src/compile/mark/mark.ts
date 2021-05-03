@@ -1,6 +1,6 @@
 import {LabelTransform, Mark as VGMark, BaseMark, Encodable} from 'vega';
 import {isArray} from 'vega-util';
-import {FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef';
+import {getAncestorLevel, FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef';
 import {DataSourceType} from '../../data';
 import {isAggregate, pathGroupingFields} from '../../encoding';
 import {AREA, BAR, isPathMark, LINE, Mark, TRAIL} from '../../mark';
@@ -230,7 +230,7 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
   }
 
   const label = getLabelMark(model, model.getName('marks'));
-  if (model.encoding.label && model.encoding.label.avoidAncestorLayer > 0) {
+  if (model.encoding.label && getAncestorLevel(model.encoding.label.avoid) > 0) {
     log.warn(log.message.ROUNDED_CORNERS_STACKED_BAR_WITH_AVOID);
   }
 
@@ -389,7 +389,7 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
   }
 
   const {label} = model.encoding;
-  const {position, avoidAncestorLayer, mark: labelMark, method, lineAnchor, padding, ...textEncoding} = label;
+  const {position, avoid, mark: labelMark, method, lineAnchor, padding, ...textEncoding} = label;
 
   const anchor = position && position.map(p => p.anchor);
   const offset = position && position.map(p => p.offset);

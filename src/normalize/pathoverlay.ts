@@ -1,6 +1,6 @@
 import {SignalRef} from 'vega';
 import {isObject} from 'vega-util';
-import {LabelDef} from '../channeldef';
+import {getAncestorLevel, LabelDef} from '../channeldef';
 import {Config} from '../config';
 import {Encoding, normalizeEncoding, pathGroupingFields} from '../encoding';
 import {ExprRef} from '../expr';
@@ -82,9 +82,8 @@ function getLineOverlay(
 }
 
 function incrementAvoidLevel(labelDef: LabelDef<string>): LabelDef<string> {
-  const {avoidAncestorLayer} = labelDef;
-  const level = avoidAncestorLayer === 'all' ? avoidAncestorLayer : Math.floor(avoidAncestorLayer ?? 0) + 1;
-  return {...labelDef, avoidAncestorLayer: level};
+  const ancestorLevel = getAncestorLevel(labelDef.avoid);
+  return {...labelDef, avoid: {ancestor: ancestorLevel + 1}};
 }
 
 export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWithPathOverlay> {

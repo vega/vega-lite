@@ -331,7 +331,7 @@ describe('Mark', () => {
           encoding: {
             x: {type: 'quantitative', field: 'foo'},
             y: {type: 'nominal', field: 'bar'},
-            label: {type: 'nominal', field: 'bar2', avoidAncestorLayer: 1}
+            label: {type: 'nominal', field: 'bar2', avoid: {ancestor: 1}}
           }
         });
         const {label} = parseMarkGroupsAndLabels(model);
@@ -352,7 +352,7 @@ describe('Mark', () => {
       });
 
       it(
-        'should parse mark with label when the mark is stacked bar with rounded corner',
+        'should parse mark with label when the mark is stacked bar with rounded corner with a warning',
         log.wrap(localLogger => {
           const model = parseUnitModelWithScale({
             mark: {
@@ -362,7 +362,7 @@ describe('Mark', () => {
             encoding: {
               x: {type: 'quantitative', field: 'foo'},
               y: {type: 'nominal', field: 'bar'},
-              label: {type: 'nominal', field: 'bar2', avoidAncestorLayer: 1}
+              label: {type: 'nominal', field: 'bar2', avoid: {ancestor: 1}}
             }
           });
           const {mark, label} = parseMarkGroupsAndLabels(model);

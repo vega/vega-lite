@@ -12187,17 +12187,31 @@
               "$ref": "#/definitions/Aggregate",
               "description": "Aggregation function for the field (e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
             },
-            "avoidAncestorLayer": {
+            "avoid": {
               "anyOf": [
                 {
-                  "const": "all",
+                  "const": "all-marks",
                   "type": "string"
                 },
                 {
-                  "type": "number"
+                  "const": "base-mark",
+                  "type": "string"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "ancestor": {
+                      "description": "A number `n` means `n`th ancestor layer.",
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "ancestor"
+                  ],
+                  "type": "object"
                 }
               ],
-              "description": "The level of ancestor layers of marks that the labels will avoid. `'all'` means all the marks that are children of the root layer. Otherwise, a number `n` means all the marks that are children of the nth ancestor layer.\n\n__Default value:__ `0` (only avoid the base mark)"
+              "description": "Indicates the mark or group of marks that each label will avoid.\n- `\"base-mark\"`: Avoid only the mark that encodes this label.\n- `\"all-marks\"`: Avoid all the marks that are children of the root layer.\n- `{ancestor: number}`: Avoid all the marks that are children of the `ancestor`th ancestor layer. `{ancestor: 0}` is the same as `\"base-mark\"`.\n\n__Default value:__ `\"base-mark\"`"
             },
             "bandPosition": {
               "description": "Relative position on a band of a stacked, binned, time unit, or band scale. For example, the marks will be positioned at the beginning of the band if set to `0`, and at the middle of the band if set to `0.5`.",
@@ -13266,17 +13280,31 @@
         {
           "additionalProperties": false,
           "properties": {
-            "avoidAncestorLayer": {
+            "avoid": {
               "anyOf": [
                 {
-                  "const": "all",
+                  "const": "all-marks",
                   "type": "string"
                 },
                 {
-                  "type": "number"
+                  "const": "base-mark",
+                  "type": "string"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "ancestor": {
+                      "description": "A number `n` means `n`th ancestor layer.",
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "ancestor"
+                  ],
+                  "type": "object"
                 }
               ],
-              "description": "The level of ancestor layers of marks that the labels will avoid. `'all'` means all the marks that are children of the root layer. Otherwise, a number `n` means all the marks that are children of the nth ancestor layer.\n\n__Default value:__ `0` (only avoid the base mark)"
+              "description": "Indicates the mark or group of marks that each label will avoid.\n- `\"base-mark\"`: Avoid only the mark that encodes this label.\n- `\"all-marks\"`: Avoid all the marks that are children of the root layer.\n- `{ancestor: number}`: Avoid all the marks that are children of the `ancestor`th ancestor layer. `{ancestor: 0}` is the same as `\"base-mark\"`.\n\n__Default value:__ `\"base-mark\"`"
             },
             "bandPosition": {
               "description": "Relative position on a band of a stacked, binned, time unit, or band scale. For example, the marks will be positioned at the beginning of the band if set to `0`, and at the middle of the band if set to `0.5`.",
@@ -14318,17 +14346,31 @@
         {
           "additionalProperties": false,
           "properties": {
-            "avoidAncestorLayer": {
+            "avoid": {
               "anyOf": [
                 {
-                  "const": "all",
+                  "const": "all-marks",
                   "type": "string"
                 },
                 {
-                  "type": "number"
+                  "const": "base-mark",
+                  "type": "string"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "ancestor": {
+                      "description": "A number `n` means `n`th ancestor layer.",
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "ancestor"
+                  ],
+                  "type": "object"
                 }
               ],
-              "description": "The level of ancestor layers of marks that the labels will avoid. `'all'` means all the marks that are children of the root layer. Otherwise, a number `n` means all the marks that are children of the nth ancestor layer.\n\n__Default value:__ `0` (only avoid the base mark)"
+              "description": "Indicates the mark or group of marks that each label will avoid.\n- `\"base-mark\"`: Avoid only the mark that encodes this label.\n- `\"all-marks\"`: Avoid all the marks that are children of the root layer.\n- `{ancestor: number}`: Avoid all the marks that are children of the `ancestor`th ancestor layer. `{ancestor: 0}` is the same as `\"base-mark\"`.\n\n__Default value:__ `\"base-mark\"`"
             },
             "condition": {
               "anyOf": [
@@ -26183,17 +26225,31 @@
               "$ref": "#/definitions/Aggregate",
               "description": "Aggregation function for the field (e.g., `\"mean\"`, `\"sum\"`, `\"median\"`, `\"min\"`, `\"max\"`, `\"count\"`).\n\n__Default value:__ `undefined` (None)\n\n__See also:__ [`aggregate`](https://vega.github.io/vega-lite/docs/aggregate.html) documentation."
             },
-            "avoidAncestorLayer": {
+            "avoid": {
               "anyOf": [
                 {
-                  "const": "all",
+                  "const": "all-marks",
                   "type": "string"
                 },
                 {
-                  "type": "number"
+                  "const": "base-mark",
+                  "type": "string"
+                },
+                {
+                  "additionalProperties": false,
+                  "properties": {
+                    "ancestor": {
+                      "description": "A number `n` means `n`th ancestor layer.",
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "ancestor"
+                  ],
+                  "type": "object"
                 }
               ],
-              "description": "The level of ancestor layers of marks that the labels will avoid. `'all'` means all the marks that are children of the root layer. Otherwise, a number `n` means all the marks that are children of the nth ancestor layer.\n\n__Default value:__ `0` (only avoid the base mark)"
+              "description": "Indicates the mark or group of marks that each label will avoid.\n- `\"base-mark\"`: Avoid only the mark that encodes this label.\n- `\"all-marks\"`: Avoid all the marks that are children of the root layer.\n- `{ancestor: number}`: Avoid all the marks that are children of the `ancestor`th ancestor layer. `{ancestor: 0}` is the same as `\"base-mark\"`.\n\n__Default value:__ `\"base-mark\"`"
             },
             "bandPosition": {
               "description": "Relative position on a band of a stacked, binned, time unit, or band scale. For example, the marks will be positioned at the beginning of the band if set to `0`, and at the middle of the band if set to `0.5`.",

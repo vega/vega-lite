@@ -16,6 +16,7 @@ import {
   Y
 } from '../channel';
 import {
+  getAncestorLevel,
   getFieldDef,
   getFieldOrDatumDef,
   isFieldOrDatumDef,
@@ -241,10 +242,8 @@ export class UnitModel extends ModelWithField {
     const {mark, label} = parseMarkGroupsAndLabels(this);
     this.component.mark = mark;
 
-    const labelDef = this.encoding.label;
-    const level = labelDef ? labelDef.avoidAncestorLayer : -1;
     this.labelMark = label;
-    this.avoidAncestorLevel = level === 'all' ? Infinity : Math.floor(level);
+    this.avoidAncestorLevel = getAncestorLevel(this.encoding.label?.avoid);
   }
 
   public parseAxesAndHeaders() {
@@ -307,7 +306,7 @@ export class UnitModel extends ModelWithField {
   }
 
   public avoidMarks(names: string[], level = 0) {
-    if (this.avoidAncestorLevel > level && this.labelMark) {
+    if (this.avoidAncestorLevel > level && this.labelMark && names.length) {
       const [labelTransform] = this.labelMark.transform;
       labelTransform.avoidMarks ??= [];
       labelTransform.avoidMarks.push(...names);
