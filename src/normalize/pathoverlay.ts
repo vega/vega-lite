@@ -137,7 +137,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...markDef
         }),
         // drop shape from encoding as this might be used to trigger point overlay
-        // If the main mark is multi-series line/trail/area, label the main mark.
+        // If the main mark is multi-series line/trail or stacked area, label the main mark.
         encoding: omit(encoding, ['shape', ...(isMultiSeriesPath ? [] : ['label' as const])])
       }
     ];
@@ -167,7 +167,7 @@ export class PathOverlayNormalizer implements NonFacetUnitNormalizer<UnitSpecWit
           ...pick(markDef, ['clip', 'interpolate', 'tension', 'tooltip']),
           ...lineOverlay
         },
-        // Drop label. Only add label to the area mark for multi-series area chart.
+        // Drop label. Only add label to the area mark for stacked area chart.
         // Or, only add label to the point overlay for single area chart.
         encoding: omit(overlayEncoding, ['label'])
       });

@@ -136,7 +136,10 @@ export class LayerModel extends Model {
       })
     );
 
-    // move label marks to the top
+    // Move label marks to the top
+    // In Vega, a text mark with label transform can only avoid the marks that comes
+    // before itself. To be able to avoid the marks that comes after itself, we need
+    // to push the text mark to the top.
     return [...marks.filter(mark => !isLabelMark(mark)), ...marks.filter(isLabelMark)];
   }
 

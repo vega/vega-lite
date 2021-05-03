@@ -427,7 +427,7 @@ describe('PathOverlayNormalizer', () => {
     });
   });
 
-  it('correctly normalizes line with label, detail, and overlay point', () => {
+  it('correctly normalizes multi-series line with label, and overlay point', () => {
     const spec: TopLevelSpec = {
       data: {url: 'data/stocks.csv'},
       mark: {
@@ -501,7 +501,7 @@ describe('PathOverlayNormalizer', () => {
     });
   });
 
-  it('does not normalize line with label, detail, and without overlay point', () => {
+  it('does not normalize multi-series line with label, and without overlay point', () => {
     const spec: TopLevelSpec = {
       data: {url: 'data/stocks.csv'},
       mark: {type: 'line'},
@@ -592,7 +592,7 @@ describe('PathOverlayNormalizer', () => {
     });
   });
 
-  it('correctly normalizes multi-series area with label and overlay line', () => {
+  it('correctly normalizes stacked area with label and overlay line', () => {
     const spec: TopLevelSpec = {
       data: {url: 'data/stocks.csv'},
       mark: {type: 'area', line: true},
@@ -629,7 +629,7 @@ describe('PathOverlayNormalizer', () => {
     });
   });
 
-  it('correctly normalizes multi-series area with label and without overlay line', () => {
+  it('correctly normalizes stacked area with label and without overlay line', () => {
     const spec: TopLevelSpec = {
       data: {url: 'data/stocks.csv'},
       mark: {type: 'area'},

@@ -266,21 +266,19 @@ export type LabelDefMixins = {
   padding?: number;
 
   /**
-   * The labeling method to use for area marks.
-   * One of `"floodfill"`, `"reduced-search"`, and `"naive"`.
-   * This property only applies when the mark is a multi-series area.
+   * The labeling method to use for stacked area marks. One of:
    *
-   * If `"floodfill"`: For each area, the label is placed at the center of the largest possible rectangle that can fit into the area.
-   * This rectangle must have the same height and width proportion as of the label.
-   * The search space is every pixels in the area.
-   * This method could be slow for interactive visualizations but give the best result (each label has the largest possible surrounding empty space).
-   *
-   * If `"reduced-search"`: For each area, the label is placed at the center of the largest rectangle that can fit into the area.
+   * - `"reduced-search"`: For each area, the label is placed at the center of the largest rectangle that can fit into the area.
    * This rectangle must have the same height and width proportion as of the label.
    * The search space is all the pixels along the line of each pair of points that represents the upper/lower bound of the area.
    * This method is faster than the `"floodfill"`. It works better for interactive visualizations and give a good result (each label has a large surrounding empty space).
    *
-   * If `"naive"`: For each area, the label is placed at the first position that can fit the label.
+   * - `"floodfill"`: For each area, the label is placed at the center of the largest possible rectangle that can fit into the area.
+   * This rectangle must have the same height and width proportion as of the label.
+   * The search space is every pixels in the area.
+   * This method could be slow for interactive visualizations but give the best result (each label has the largest possible surrounding empty space).
+   *
+   * - `"naive"`: For each area, the label is placed at the first position that can fit the label.
    * The search space is each pixel at the middle of each pair of points that represents the upper/lower bound of the area.
    * This method is the fastest. It works best with large area charts.
    *
