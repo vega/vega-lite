@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import {AggregateOp, ExprRef, SignalRef} from 'vega';
 import {array, isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
@@ -86,7 +86,7 @@ import {QUANTITATIVE, TEMPORAL} from './type';
 import {keys, some} from './util';
 import {isSignalRef} from './vega.schema';
 
-export interface Encoding<F extends Field> {
+export interface Encoding<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
   /**
    * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without specified `x2` or `width`.
    *
@@ -306,7 +306,7 @@ export interface Encoding<F extends Field> {
   order?: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef;
 }
 
-export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
+export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F, SignalRef> {}
 
 export function channelHasField<F extends Field>(
   encoding: EncodingWithFacet<F>,

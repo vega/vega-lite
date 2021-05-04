@@ -3,7 +3,7 @@ import {ConditionValueDefMixins, FormatMixins, ValueDef} from './channeldef';
 import {LegendConfig} from './legend';
 import {VgEncodeChannel} from './vega.schema';
 
-export interface TitleMixins<ES extends ExprRef | SignalRef = SignalRef> {
+export interface TitleMixins<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
   /**
    * A title for the field. If `null`, the title will be removed.
    *

@@ -107,7 +107,7 @@ export interface ValueDef<V extends Value = Value> {
   value: V;
 }
 
-export type PositionValueDef = ValueDef<number | 'width' | 'height' | ExprRef | SignalRef>;
+export type PositionValueDef<ES extends ExprRef | SignalRef> = ValueDef<number | 'width' | 'height' | ES>;
 export type NumericValueDef = ValueDef<number | ExprRef | SignalRef>;
 
 /**
@@ -133,10 +133,11 @@ export type ValueDefWithCondition<F extends FieldDef<any> | DatumDef<any>, V ext
     | Conditional<ValueDef<V | ExprRef | SignalRef>>[];
 };
 
-export type StringValueDefWithCondition<F extends Field, T extends Type = StandardType> = ValueDefWithCondition<
-  MarkPropFieldOrDatumDef<F, T>,
-  string | null
->;
+export type StringValueDefWithCondition<
+  F extends Field,
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef,
+  T extends Type = StandardType
+> = ValueDefWithCondition<MarkPropFieldOrDatumDef<F, ES, T>, string | null>;
 export type TypeForShape = 'nominal' | 'ordinal' | 'geojson';
 
 export type Conditional<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> =
@@ -181,9 +182,9 @@ export type FieldOrDatumDefWithCondition<F extends FieldDef<any, any> | DatumDef
   ConditionValueDefMixins<V | ExprRef | SignalRef>;
 
 export type MarkPropDef<F extends Field, V extends Value, T extends Type = StandardType> =
-  | FieldOrDatumDefWithCondition<MarkPropFieldDef<F, T>, V>
-  | FieldOrDatumDefWithCondition<DatumDef<F>, V>
-  | ValueDefWithCondition<MarkPropFieldOrDatumDef<F, T>, V>;
+  | FieldOrDatumDefWithCondition<MarkPropFieldDef<F, ExprRef | SignalRef, T>, V>
+  | FieldOrDatumDefWithCondition<DatumDef<F, V>, V>
+  | ValueDefWithCondition<MarkPropFieldOrDatumDef<F, ExprRef | SignalRef, T>, V>;
 
 export type ColorDef<F extends Field> = MarkPropDef<F, Gradient | string | null>;
 export type NumericMarkPropDef<F extends Field> = MarkPropDef<F, number>;
@@ -323,15 +324,17 @@ export interface TypeMixins<T extends Type> {
  */
 export type TypedFieldDef<
   F extends Field,
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef,
   T extends Type = any,
-  B extends Bin = boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
-> = FieldDefBase<F, B> & TitleMixins & TypeMixins<T>;
+  B extends Bin = boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs have detailed types
+> = FieldDefBase<F, B> & TitleMixins<ES> & TypeMixins<T>;
 
 export interface SortableFieldDef<
   F extends Field,
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef,
   T extends Type = StandardType,
   B extends Bin = boolean | BinParams | null
-> extends TypedFieldDef<F, T, B> {
+> extends TypedFieldDef<F, ES, T, B> {
   /**
    * Sort order for the encoded field.
    *
@@ -359,9 +362,10 @@ export function isSortableFieldDef<F extends Field>(fieldDef: FieldDef<F>): fiel
 
 export type ScaleFieldDef<
   F extends Field,
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef,
   T extends Type = StandardType,
   B extends Bin = boolean | BinParams | null
-> = SortableFieldDef<F, T, B> & ScaleMixins;
+> = SortableFieldDef<F, ES, T, B> & ScaleMixins;
 
 export interface ScaleMixins {
   /**
@@ -378,7 +382,7 @@ export interface ScaleMixins {
 
 export interface DatumDef<
   F extends Field = string,
-  V extends PrimitiveValue | DateTime | ExprRef | SignalRef = PrimitiveValue | DateTime | ExprRef | SignalRef
+  V extends Value | DateTime = PrimitiveValue | DateTime | ExprRef | SignalRef
 > extends Partial<TypeMixins<Type>>,
     BandMixins {
   /**
@@ -417,21 +421,31 @@ export interface FormatMixins {
 
 export type StringDatumDef<F extends Field = string> = DatumDef<F> & FormatMixins;
 
-export type ScaleDatumDef<F extends Field = string> = ScaleMixins & DatumDef<F>;
+export type ScaleDatumDef<
+  F extends Field = string,
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef
+> = ScaleMixins & DatumDef<F, ES>;
 
 /**
  * A field definition of a secondary channel that shares a scale with another primary channel. For example, `x2`, `xError` and `xError2` share the same scale with `x`.
  */
 export type SecondaryFieldDef<F extends Field> = FieldDefBase<F, null> & TitleMixins; // x2/y2 shouldn't have bin, but we keep bin property for simplicity of the codebase.
 
-export type Position2Def<F extends Field> = SecondaryFieldDef<F> | DatumDef<F> | PositionValueDef;
+export type Position2Def<F extends Field, ES extends ExprRef | SignalRef> =
+  | SecondaryFieldDef<F, ES>
+  | DatumDef<F, ES>
+  | PositionValueDef<ES>;
 
 export type SecondaryChannelDef<F extends Field> = Encoding<F>['x2' | 'y2'];
 
 /**
  * Field Def without scale (and without bin: "binned" support).
  */
-export type FieldDefWithoutScale<F extends Field, T extends Type = StandardType> = TypedFieldDef<F, T>;
+export type FieldDefWithoutScale<
+  F extends Field,
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef,
+  T extends Type = StandardType
+> = TypedFieldDef<F, ES, T>;
 
 export type LatLongFieldDef<F extends Field> = FieldDefBase<F, null> &
   TitleMixins &
@@ -439,14 +453,19 @@ export type LatLongFieldDef<F extends Field> = FieldDefBase<F, null> &
 
 export type LatLongDef<F extends Field> = LatLongFieldDef<F> | DatumDef<F>;
 
-export type PositionFieldDefBase<F extends Field> = ScaleFieldDef<
+export type PositionFieldDefBase<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef> = ScaleFieldDef<
   F,
+  ES,
   StandardType,
   boolean | BinParams | 'binned' | null // This is equivalent to Bin but we use the full form so the docs has detailed types
 > &
   PositionBaseMixins;
 
-export type PositionDatumDefBase<F extends Field> = ScaleDatumDef<F> & PositionBaseMixins;
+export type PositionDatumDefBase<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef> = ScaleDatumDef<
+  F,
+  ES
+> &
+  PositionBaseMixins;
 
 export interface PositionBaseMixins {
   /**
@@ -480,13 +499,22 @@ export interface BandMixins {
   bandPosition?: number;
 }
 
-export type PositionFieldDef<F extends Field> = PositionFieldDefBase<F> & PositionMixins;
+export type PositionFieldDef<
+  F extends Field,
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef
+> = PositionFieldDefBase<F, ES> & PositionMixins<ES>;
 
-export type PositionDatumDef<F extends Field> = PositionDatumDefBase<F> & PositionMixins;
+export type PositionDatumDef<
+  F extends Field,
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef
+> = PositionDatumDefBase<F, ES> & PositionMixins<ES>;
 
-export type PositionDef<F extends Field> = PositionFieldDef<F> | PositionDatumDef<F> | PositionValueDef;
+export type PositionDef<F extends Field, ES extends ExprRef | SignalRef> =
+  | PositionFieldDef<F, ES>
+  | PositionDatumDef<F, ES>
+  | PositionValueDef<ES>;
 
-export interface PositionMixins {
+export interface PositionMixins<ES extends ExprRef | SignalRef> {
   /**
    * An object defining properties of axis's gridlines, ticks and labels.
    * If `null`, the axis for the encoding channel will be removed.
@@ -495,7 +523,7 @@ export interface PositionMixins {
    *
    * __See also:__ [`axis`](https://vega.github.io/vega-lite/docs/axis.html) documentation.
    */
-  axis?: Axis<ExprRef | SignalRef> | null;
+  axis?: Axis<ES> | null;
 
   /**
    * An object defining the properties of the Impute Operation to be applied.
@@ -507,7 +535,10 @@ export interface PositionMixins {
   impute?: ImputeParams | null;
 }
 
-export type PolarDef<F extends Field> = PositionFieldDefBase<F> | PositionDatumDefBase<F> | PositionValueDef;
+export type PolarDef<F extends Field, ES extends ExprRef | SignalRef> =
+  | PositionFieldDefBase<F, ES>
+  | PositionDatumDefBase<F, ES>
+  | PositionValueDef<ES>;
 
 export function getBandPosition({
   fieldDef,
@@ -602,16 +633,22 @@ export function hasBandEnd(
 /**
  * Field definition of a mark property, which can contain a legend.
  */
-export type MarkPropFieldDef<F extends Field, T extends Type = Type> = ScaleFieldDef<F, T, boolean | BinParams | null> &
-  LegendMixins;
+export type MarkPropFieldDef<
+  F extends Field,
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef,
+  T extends Type = Type
+> = ScaleFieldDef<F, ES, T, boolean | BinParams | null> & LegendMixins<ES>;
 
-export type MarkPropDatumDef<F extends Field> = LegendMixins & ScaleDatumDef<F>;
+export type MarkPropDatumDef<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef> = LegendMixins<ES> &
+  ScaleDatumDef<F>;
 
-export type MarkPropFieldOrDatumDef<F extends Field, T extends Type = Type> =
-  | MarkPropFieldDef<F, T>
-  | MarkPropDatumDef<F>;
+export type MarkPropFieldOrDatumDef<
+  F extends Field,
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef,
+  T extends Type = Type
+> = MarkPropFieldDef<F, ES, T> | MarkPropDatumDef<F>;
 
-export interface LegendMixins {
+export interface LegendMixins<ES extends ExprRef | SignalRef> {
   /**
    * An object defining properties of the legend.
    * If `null`, the legend for the encoding channel will be removed.
@@ -620,7 +657,7 @@ export interface LegendMixins {
    *
    * __See also:__ [`legend`](https://vega.github.io/vega-lite/docs/legend.html) documentation.
    */
-  legend?: Legend<ExprRef | SignalRef> | null;
+  legend?: Legend<ES> | null;
 }
 
 // Detail
@@ -636,9 +673,13 @@ export interface OrderFieldDef<F extends Field> extends FieldDefWithoutScale<F> 
 
 export type OrderValueDef = ConditionValueDefMixins<number> & NumericValueDef;
 
-export interface StringFieldDef<F extends Field> extends FieldDefWithoutScale<F, StandardType>, FormatMixins {}
+export interface StringFieldDef<F extends Field>
+  extends FieldDefWithoutScale<F, ExprRef | SignalRef, StandardType>,
+    FormatMixins {}
 
-export type FieldDef<F extends Field, T extends Type = any> = SecondaryFieldDef<F> | TypedFieldDef<F, T>;
+export type FieldDef<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef, T extends Type = any> =
+  | SecondaryFieldDef<F>
+  | TypedFieldDef<F, ES, T>;
 export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>];
 
 export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingConditionalValueDef | ExprRef | SignalRef>(
@@ -722,15 +763,15 @@ export function isScaleFieldDef<F extends Field>(channelDef: ChannelDef<F>): cha
   return !!channelDef && ('scale' in channelDef || 'sort' in channelDef);
 }
 
-export function isPositionFieldOrDatumDef<F extends Field>(
+export function isPositionFieldOrDatumDef<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef>(
   channelDef: ChannelDef<F>
-): channelDef is PositionFieldDef<F> | PositionDatumDef<F> {
+): channelDef is PositionFieldDef<F, ES> | PositionDatumDef<F, ES> {
   return channelDef && ('axis' in channelDef || 'stack' in channelDef || 'impute' in channelDef);
 }
 
-export function isMarkPropFieldOrDatumDef<F extends Field>(
+export function isMarkPropFieldOrDatumDef<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef>(
   channelDef: ChannelDef<F>
-): channelDef is MarkPropFieldDef<F, any> | MarkPropDatumDef<F> {
+): channelDef is MarkPropFieldDef<F, ES, any> | MarkPropDatumDef<F, ES> {
   return !!channelDef && 'legend' in channelDef;
 }
 
@@ -923,7 +964,7 @@ export function resetTitleFormatter() {
 }
 
 export function title(
-  fieldOrDatumDef: TypedFieldDef<string> | SecondaryFieldDef<string> | DatumDef,
+  fieldOrDatumDef: TypedFieldDef<string, SignalRef> | SecondaryFieldDef<string> | DatumDef,
   config: Config,
   {allowDisabling, includeDefault = true}: {allowDisabling: boolean; includeDefault?: boolean}
 ) {
@@ -943,11 +984,13 @@ export function title(
   }
 }
 
-export function getGuide(fieldDef: TypedFieldDef<string> | SecondaryFieldDef<string> | DatumDef): Guide<SignalRef> {
-  if (isPositionFieldOrDatumDef(fieldDef) && fieldDef.axis) {
-    return replaceExprRef(fieldDef.axis);
-  } else if (isMarkPropFieldOrDatumDef(fieldDef) && fieldDef.legend) {
-    return replaceExprRef(fieldDef.legend);
+export function getGuide(
+  fieldDef: TypedFieldDef<string, SignalRef> | SecondaryFieldDef<string> | DatumDef
+): Guide<SignalRef> {
+  if (isPositionFieldOrDatumDef<string, SignalRef>(fieldDef) && fieldDef.axis) {
+    return fieldDef.axis;
+  } else if (isMarkPropFieldOrDatumDef<string, SignalRef>(fieldDef) && fieldDef.legend) {
+    return fieldDef.legend;
   } else if (isFacetFieldDef(fieldDef) && fieldDef.header) {
     return fieldDef.header;
   }
@@ -1117,7 +1160,7 @@ export function initFieldDef(
   {compositeMark = false}: {compositeMark?: boolean} = {}
 ) {
   const {aggregate, timeUnit, bin, field} = fd;
-  const fieldDef = {...fd};
+  const fieldDef = replaceExprRef(fd);
 
   // Drop invalid aggregate
   if (!compositeMark && aggregate && !isAggregateOp(aggregate) && !isArgmaxDef(aggregate) && !isArgminDef(aggregate)) {
@@ -1203,6 +1246,8 @@ export function initFieldDef(
       }
     }
   }
+
+  console.log('fieldDef', fieldDef);
 
   return fieldDef;
 }
