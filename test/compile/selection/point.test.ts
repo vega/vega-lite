@@ -188,7 +188,7 @@ describe('Multi Selection', () => {
     expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg, ...fiveSg, ...sixSg]));
 
     // Ensure that interval brushes are accounted for.
-    // (We do this separately so as not to pollute other test cases.)
+    // (We define selections separately so as not to pollute other test cases.)
     const selCmpts2 = parseUnitSelection(model, [
       {name: 'one', select: 'point'},
       {name: 'two', select: 'interval'},
