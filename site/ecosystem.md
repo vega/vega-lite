@@ -24,6 +24,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Emacs Vega View](https://github.com/applied-science/emacs-vega-view), a tool that allows one to view Vega visualizations directly within emacs, currently supporting specs written in JSON, elisp or clojure.
 - [Codimd](https://github.com/hackmdio/codimd), realtime collaborative markdown notes editor with support of various diagram syntaxes including [Vega-Lite](https://hackmd.io/c/codimd-documentation/%2F%40codimd%2Fextra-supported-syntax#Vega-Lite).
 - [Ivy](http://ivy-vis.netlify.app/), an Integrated Visualization Editing environment that wraps Vega-Lite (among other declarative visualization grammars) as templates to facilitate reuse, exploration, and opportunistic creation. Includes an in-app reproduction of [Polestar](https://github.com/vega/polestar).
+- [Deneb](https://deneb-viz.github.io), a Power BI custom visual with an editor for Vega-Lite or Vega specifications.
 
 ## Plug-ins for Vega-Lite
 
