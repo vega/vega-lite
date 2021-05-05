@@ -1,4 +1,4 @@
-import {Color, InitSignal, Locale, NewSignal, RangeConfig, RangeScheme, SignalRef} from 'vega';
+import {Color, InitSignal, Locale, NewSignal, RangeConfig, RangeScheme, SignalRef, writeConfig} from 'vega';
 import {isObject, mergeConfig} from 'vega-util';
 import {Axis, AxisConfig, AxisConfigMixins, AXIS_CONFIGS, isConditionalAxisValue} from './axis';
 import {signalOrValueRefWithCondition, signalRefOrValue} from './compile/common';
@@ -504,15 +504,21 @@ const configPropsWithExpr = [
  * then replace all expressions with signals
  */
 export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
-  const {color, font, fontSize, ...restConfig} = specifiedConfig;
+  const {color, font, fontSize, selection, ...restConfig} = specifiedConfig;
   const mergedConfig = mergeConfig(
     {},
-    defaultConfig,
+    duplicate(defaultConfig),
     font ? fontConfig(font) : {},
     color ? colorSignalConfig(color) : {},
     fontSize ? fontSizeSignalConfig(fontSize) : {},
     restConfig || {}
   );
+
+  // mergeConfig doesn't recurse and overrides object values.
+  if (selection) {
+    writeConfig(mergedConfig, 'selection', selection, true);
+  }
+
   const outputConfig: Config<SignalRef> = omit(mergedConfig, configPropsWithExpr);
 
   for (const prop of ['background', 'lineBreak', 'padding']) {
