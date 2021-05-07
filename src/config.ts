@@ -65,7 +65,7 @@ export interface ViewConfig<ES extends ExprRef | SignalRef> extends BaseViewBack
   /**
    * Whether the view should be clipped.
    */
-  clip?: boolean;
+  clip?: boolean | ES;
 }
 
 export function getViewConfigContinuousSize<ES extends ExprRef | SignalRef>(
