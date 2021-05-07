@@ -63,7 +63,7 @@ const project: SelectionCompiler = {
     };
 
     const type = selCmpt.type;
-    const cfg = model.config.selection[type] as PointSelectionConfig;
+    const cfg = model.config.selection[type];
     const init =
       selDef.value !== undefined
         ? (array(selDef.value as any) as SelectionInitMapping[] | SelectionInitIntervalMapping[])
@@ -99,7 +99,9 @@ const project: SelectionCompiler = {
     // to account for unprojected point selections that have scalar initial values
     if (!fields && !encodings) {
       encodings = cfg.encodings;
-      fields = cfg.fields;
+      if ('fields' in cfg) {
+        fields = cfg.fields;
+      }
     }
 
     for (const channel of encodings ?? []) {
