@@ -263,11 +263,14 @@ export const CONDITIONAL_AXIS_PROP_INDEX: Record<
   }
 };
 
-export type ConditionalAxisProperty<V extends Value | number[], ES extends ExprRef | SignalRef> = (ValueDef<V> | ES) & {
+export type ConditionalAxisProperty<V extends Value<ES> | number[], ES extends ExprRef | SignalRef> = (
+  | ValueDef<V>
+  | ES
+) & {
   condition: ConditionalPredicate<ValueDef<V> | ES> | ConditionalPredicate<ValueDef<V> | ES>[];
 };
 
-export function isConditionalAxisValue<V extends Value | number[], ES extends ExprRef | SignalRef>(
+export function isConditionalAxisValue<V extends Value<ES> | number[], ES extends ExprRef | SignalRef>(
   v: any
 ): v is ConditionalAxisProperty<V, ES> {
   return v && v['condition'];
@@ -335,10 +338,10 @@ export interface AxisPropsWithCondition<ES extends ExprRef | SignalRef> {
   tickOpacity?: BaseAxisNoValueRefs<ES>['tickOpacity'] | ConditionalAxisNumber<ES>;
   tickSize?: BaseAxisNoValueRefs<ES>['tickSize'] | ConditionalAxisNumber<ES>;
   tickWidth?: BaseAxisNoValueRefs<ES>['tickWidth'] | ConditionalAxisNumber<ES>;
-  title?: TitleMixins['title'];
+  title?: TitleMixins<ES>['title'];
 }
 
-export type AxisConfig<ES extends ExprRef | SignalRef> = Guide &
+export type AxisConfig<ES extends ExprRef | SignalRef> = Guide<ES> &
   VlOnlyGuideConfig &
   AxisConfigBaseWithConditionalAndSignal<ES> & {
     /**
@@ -349,18 +352,18 @@ export type AxisConfig<ES extends ExprRef | SignalRef> = Guide &
 
 export interface Axis<ES extends ExprRef | SignalRef = ExprRef | SignalRef>
   extends AxisConfigBaseWithConditionalAndSignal<ES>,
-    Guide {
+    Guide<ES> {
   /**
    * Mark definitions for custom axis encoding.
    *
    * @hidden
    */
-  encoding?: AxisEncoding;
+  encoding?: AxisEncoding<ES>;
 }
 
 export type AxisInternal = Axis<SignalRef>;
 
-export type AxisPart = keyof AxisEncoding;
+export type AxisPart = keyof AxisEncoding<any>;
 export const AXIS_PARTS: AxisPart[] = ['domain', 'grid', 'labels', 'ticks', 'title'];
 
 /**
@@ -452,36 +455,36 @@ export const AXIS_PROPERTY_TYPE: Record<keyof VgAxis, 'main' | 'grid' | 'both'> 
   zindex: 'both' // this is actually set afterward, so it doesn't matter
 };
 
-export interface AxisEncoding {
+export interface AxisEncoding<ES extends ExprRef | SignalRef> {
   /**
    * Custom encoding for the axis container.
    */
-  axis?: GuideEncodingEntry;
+  axis?: GuideEncodingEntry<ES>;
 
   /**
    * Custom encoding for the axis domain rule mark.
    */
-  domain?: GuideEncodingEntry;
+  domain?: GuideEncodingEntry<ES>;
 
   /**
    * Custom encoding for axis gridline rule marks.
    */
-  grid?: GuideEncodingEntry;
+  grid?: GuideEncodingEntry<ES>;
 
   /**
    * Custom encoding for axis label text marks.
    */
-  labels?: GuideEncodingEntry;
+  labels?: GuideEncodingEntry<ES>;
 
   /**
    * Custom encoding for axis tick rule marks.
    */
-  ticks?: GuideEncodingEntry;
+  ticks?: GuideEncodingEntry<ES>;
 
   /**
    * Custom encoding for the axis title text mark.
    */
-  title?: GuideEncodingEntry;
+  title?: GuideEncodingEntry<ES>;
 }
 
 export const COMMON_AXIS_PROPERTIES_INDEX: Flag<keyof (VgAxis | Axis<any>)> = {

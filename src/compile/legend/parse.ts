@@ -1,4 +1,4 @@
-import {Legend as VgLegend, LegendEncode} from 'vega';
+import {Legend as VgLegend, LegendEncode, SignalRef} from 'vega';
 import {COLOR, NonPositionScaleChannel, SHAPE} from '../../channel';
 import {DatumDef, FieldDef, getFieldOrDatumDef, isFieldDef, MarkPropDatumDef, MarkPropFieldDef} from '../../channeldef';
 import {LegendInternal, LEGEND_SCALE_CHANNELS} from '../../legend';
@@ -28,7 +28,9 @@ function parseUnitLegend(model: UnitModel): LegendComponentIndex {
   const legendComponent: LegendComponentIndex = {};
 
   for (const channel of [COLOR, ...LEGEND_SCALE_CHANNELS]) {
-    const def = getFieldOrDatumDef(encoding[channel]) as MarkPropFieldDef<string> | MarkPropDatumDef<string>;
+    const def = getFieldOrDatumDef(encoding[channel]) as
+      | MarkPropFieldDef<string, SignalRef>
+      | MarkPropDatumDef<string, SignalRef>;
 
     if (!def || !model.getScaleComponent(channel)) {
       continue;
@@ -66,7 +68,7 @@ function isExplicit<T extends string | number | object | boolean>(
   value: T,
   property: keyof LegendComponentProps,
   legend: LegendInternal,
-  fieldDef: FieldDef<string>
+  fieldDef: FieldDef<string, SignalRef>
 ) {
   switch (property) {
     case 'disable':
@@ -101,7 +103,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   legend = legend || {};
 
   const scaleType = model.getScaleComponent(channel).get('type');
-  const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as MarkPropFieldDef<string> | DatumDef;
+  const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as MarkPropFieldDef<string, SignalRef> | DatumDef;
   const timeUnit = isFieldDef(fieldOrDatumDef) ? normalizeTimeUnit(fieldOrDatumDef.timeUnit)?.unit : undefined;
 
   const orient = legend.orient || config.legend.orient || 'right';

@@ -38,7 +38,7 @@ export function formatSignalRef({
   normalizeStack,
   config
 }: {
-  fieldOrDatumDef: FieldDef<string> | DatumDef<string>;
+  fieldOrDatumDef: FieldDef<string, SignalRef> | DatumDef<string>;
   format: string | Dict<unknown>;
   formatType: string;
   expr?: 'datum' | 'parent' | 'datum.datum';
@@ -84,7 +84,7 @@ export function formatSignalRef({
 }
 
 function fieldToFormat(
-  fieldOrDatumDef: FieldDef<string> | DatumDef<string>,
+  fieldOrDatumDef: FieldDef<string, SignalRef> | DatumDef<string>,
   expr: 'datum' | 'parent' | 'datum.datum',
   normalizeStack: boolean
 ) {
@@ -111,7 +111,7 @@ export function formatCustomType({
   config,
   field
 }: {
-  fieldOrDatumDef: FieldDef<string> | DatumDef<string>;
+  fieldOrDatumDef: FieldDef<string, SignalRef> | DatumDef<string>;
   format: string | Dict<unknown>;
   formatType: string;
   expr?: 'datum' | 'parent' | 'datum.datum';
@@ -131,7 +131,7 @@ export function formatCustomType({
 }
 
 export function guideFormat(
-  fieldOrDatumDef: FieldDef<string> | DatumDef<string>,
+  fieldOrDatumDef: FieldDef<string, SignalRef> | DatumDef<string>,
   type: Type,
   format: string | Dict<unknown>,
   formatType: string,
@@ -153,7 +153,7 @@ export function guideFormat(
 
 export function guideFormatType(
   formatType: string | SignalRef,
-  fieldOrDatumDef: FieldDef<string> | DatumDef<string>,
+  fieldOrDatumDef: FieldDef<string, SignalRef> | DatumDef<string>,
   scaleType: ScaleType
 ) {
   if (formatType && (isSignalRef(formatType) || formatType === 'number' || formatType === 'time')) {

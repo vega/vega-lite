@@ -1752,6 +1752,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -2709,6 +2712,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -5163,6 +5169,16 @@
         }
       ]
     },
+    "ConditionalValueDef<(Gradient|string|null)>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(Gradient|string|null)>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalParameter<ValueDef<(Gradient|string|null)>>"
+        }
+      ]
+    },
     "ConditionalValueDef<(Gradient|string|null|ExprRef)>": {
       "anyOf": [
         {
@@ -5203,13 +5219,13 @@
         }
       ]
     },
-    "ConditionalValueDef<(string|ExprRef)>": {
+    "ConditionalValueDef<(string|null)>": {
       "anyOf": [
         {
-          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|ExprRef)>>"
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<(string|null)>>"
         },
         {
-          "$ref": "#/definitions/ConditionalParameter<ValueDef<(string|ExprRef)>>"
+          "$ref": "#/definitions/ConditionalParameter<ValueDef<(string|null)>>"
         }
       ]
     },
@@ -5223,6 +5239,16 @@
         }
       ]
     },
+    "ConditionalValueDef<Text>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<Text>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalParameter<ValueDef<Text>>"
+        }
+      ]
+    },
     "ConditionalValueDef<number>": {
       "anyOf": [
         {
@@ -5230,6 +5256,26 @@
         },
         {
           "$ref": "#/definitions/ConditionalParameter<ValueDef<number>>"
+        }
+      ]
+    },
+    "ConditionalValueDef<number[]>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<number[]>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalParameter<ValueDef<number[]>>"
+        }
+      ]
+    },
+    "ConditionalValueDef<string>": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/ConditionalPredicate<ValueDef<string>>"
+        },
+        {
+          "$ref": "#/definitions/ConditionalParameter<ValueDef<string>>"
         }
       ]
     },
@@ -5857,6 +5903,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -6024,6 +6073,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -6182,6 +6234,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -6193,6 +6248,38 @@
       },
       "required": [
         "param"
+      ],
+      "type": "object"
+    },
+    "ConditionalParameter<ValueDef<(Gradient|string|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "empty": {
+          "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+          "type": "boolean"
+        },
+        "param": {
+          "$ref": "#/definitions/ParameterName",
+          "description": "Filter using a parameter name."
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "param",
+        "value"
       ],
       "type": "object"
     },
@@ -6321,7 +6408,7 @@
       ],
       "type": "object"
     },
-    "ConditionalParameter<ValueDef<(string|ExprRef)>>": {
+    "ConditionalParameter<ValueDef<(string|null)>>": {
       "additionalProperties": false,
       "properties": {
         "empty": {
@@ -6333,15 +6420,11 @@
           "description": "Filter using a parameter name."
         },
         "value": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "required": [
@@ -6382,6 +6465,28 @@
       ],
       "type": "object"
     },
+    "ConditionalParameter<ValueDef<Text>>": {
+      "additionalProperties": false,
+      "properties": {
+        "empty": {
+          "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+          "type": "boolean"
+        },
+        "param": {
+          "$ref": "#/definitions/ParameterName",
+          "description": "Filter using a parameter name."
+        },
+        "value": {
+          "$ref": "#/definitions/Text",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "param",
+        "value"
+      ],
+      "type": "object"
+    },
     "ConditionalParameter<ValueDef<number>>": {
       "additionalProperties": false,
       "properties": {
@@ -6396,6 +6501,53 @@
         "value": {
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": "number"
+        }
+      },
+      "required": [
+        "param",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalParameter<ValueDef<number[]>>": {
+      "additionalProperties": false,
+      "properties": {
+        "empty": {
+          "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+          "type": "boolean"
+        },
+        "param": {
+          "$ref": "#/definitions/ParameterName",
+          "description": "Filter using a parameter name."
+        },
+        "value": {
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "param",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalParameter<ValueDef<string>>": {
+      "additionalProperties": false,
+      "properties": {
+        "empty": {
+          "description": "For selection parameters, the predicate of empty selections returns true by default. Override this behavior, by setting this property `empty: false`.",
+          "type": "boolean"
+        },
+        "param": {
+          "$ref": "#/definitions/ParameterName",
+          "description": "Filter using a parameter name."
+        },
+        "value": {
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "type": "string"
         }
       },
       "required": [
@@ -6856,6 +7008,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -7015,6 +7170,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -7165,6 +7323,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -7176,6 +7337,34 @@
       },
       "required": [
         "test"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<(Gradient|string|null)>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/PredicateComposition",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Gradient"
+            },
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test",
+        "value"
       ],
       "type": "object"
     },
@@ -7288,7 +7477,7 @@
       ],
       "type": "object"
     },
-    "ConditionalPredicate<ValueDef<(string|ExprRef)>>": {
+    "ConditionalPredicate<ValueDef<(string|null)>>": {
       "additionalProperties": false,
       "properties": {
         "test": {
@@ -7296,15 +7485,11 @@
           "description": "Predicate for triggering the condition"
         },
         "value": {
-          "anyOf": [
-            {
-              "type": "string"
-            },
-            {
-              "$ref": "#/definitions/ExprRef"
-            }
-          ],
-          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "type": [
+            "string",
+            "null"
+          ]
         }
       },
       "required": [
@@ -7341,6 +7526,24 @@
       ],
       "type": "object"
     },
+    "ConditionalPredicate<ValueDef<Text>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/PredicateComposition",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "$ref": "#/definitions/Text",
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity)."
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
     "ConditionalPredicate<ValueDef<number>>": {
       "additionalProperties": false,
       "properties": {
@@ -7351,6 +7554,45 @@
         "value": {
           "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
           "type": "number"
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<number[]>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/PredicateComposition",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "items": {
+            "type": "number"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "test",
+        "value"
+      ],
+      "type": "object"
+    },
+    "ConditionalPredicate<ValueDef<string>>": {
+      "additionalProperties": false,
+      "properties": {
+        "test": {
+          "$ref": "#/definitions/PredicateComposition",
+          "description": "Predicate for triggering the condition"
+        },
+        "value": {
+          "description": "A constant value in visual domain (e.g., `\"red\"` / `\"#0099ff\"` / [gradient definition](https://vega.github.io/vega-lite/docs/types.html#gradient) for color, values between `0` to `1` for opacity).",
+          "type": "string"
         }
       },
       "required": [
@@ -8749,6 +8991,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -8837,6 +9082,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -9557,11 +9805,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
               },
               "type": "array"
             }
@@ -9605,11 +9853,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
+              "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
+                "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
               },
               "type": "array"
             }
@@ -9653,11 +9901,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+              "$ref": "#/definitions/ConditionalValueDef<number>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                "$ref": "#/definitions/ConditionalValueDef<number>"
               },
               "type": "array"
             }
@@ -9701,11 +9949,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
+              "$ref": "#/definitions/ConditionalValueDef<number[]>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
+                "$ref": "#/definitions/ConditionalValueDef<number[]>"
               },
               "type": "array"
             }
@@ -9767,11 +10015,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
+              "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
+                "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
               },
               "type": "array"
             }
@@ -9826,6 +10074,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -9868,11 +10119,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+              "$ref": "#/definitions/ConditionalValueDef<number>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                "$ref": "#/definitions/ConditionalValueDef<number>"
               },
               "type": "array"
             }
@@ -9927,6 +10178,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -9969,11 +10223,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
+              "$ref": "#/definitions/ConditionalValueDef<number[]>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
+                "$ref": "#/definitions/ConditionalValueDef<number[]>"
               },
               "type": "array"
             }
@@ -10028,6 +10282,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -10070,11 +10327,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
+              "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
+                "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
               },
               "type": "array"
             }
@@ -10129,6 +10386,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -10153,11 +10413,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
+              "$ref": "#/definitions/ConditionalValueDef<Text>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
+                "$ref": "#/definitions/ConditionalValueDef<Text>"
               },
               "type": "array"
             }
@@ -10238,11 +10498,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
+              "$ref": "#/definitions/ConditionalValueDef<Text>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
+                "$ref": "#/definitions/ConditionalValueDef<Text>"
               },
               "type": "array"
             }
@@ -10286,6 +10546,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -10332,11 +10595,11 @@
         "condition": {
           "anyOf": [
             {
-              "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
+              "$ref": "#/definitions/ConditionalValueDef<string>"
             },
             {
               "items": {
-                "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
+                "$ref": "#/definitions/ConditionalValueDef<string>"
               },
               "type": "array"
             }
@@ -10380,6 +10643,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -11311,6 +11577,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -12212,6 +12481,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -13053,6 +13325,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -17470,6 +17745,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -18994,6 +19272,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -19087,6 +19368,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -20815,6 +21099,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -21564,6 +21851,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -22005,11 +22295,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<number>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<number>"
                       },
                       "type": "array"
                     }
@@ -22101,6 +22391,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -22164,11 +22457,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
                       },
                       "type": "array"
                     }
@@ -22260,6 +22553,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -22333,11 +22629,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<string>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<string>"
                       },
                       "type": "array"
                     }
@@ -22401,6 +22697,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -22472,11 +22771,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
                       },
                       "type": "array"
                     }
@@ -22568,6 +22867,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -22637,11 +22939,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<number>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<number>"
                       },
                       "type": "array"
                     }
@@ -22733,6 +23035,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -22800,11 +23105,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<string>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<string>"
                       },
                       "type": "array"
                     }
@@ -22868,6 +23173,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -22946,6 +23254,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -23013,6 +23324,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -23090,6 +23404,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -23176,6 +23493,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -23253,6 +23573,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -23315,11 +23638,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<number>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<number>"
                       },
                       "type": "array"
                     }
@@ -23411,6 +23734,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -23558,6 +23884,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -23653,6 +23982,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -23715,11 +24047,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(string|null|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(string|null)>"
                       },
                       "type": "array"
                     }
@@ -23811,6 +24143,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -23877,11 +24212,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<number>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<number>"
                       },
                       "type": "array"
                     }
@@ -23973,6 +24308,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -24036,11 +24374,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<(Gradient|string|null)>"
                       },
                       "type": "array"
                     }
@@ -24132,6 +24470,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -24201,11 +24542,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<number[]>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(number[]|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<number[]>"
                       },
                       "type": "array"
                     }
@@ -24297,6 +24638,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -24363,11 +24707,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<number>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<number>"
                       },
                       "type": "array"
                     }
@@ -24459,6 +24803,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -24522,11 +24869,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<number>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(number|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<number>"
                       },
                       "type": "array"
                     }
@@ -24618,6 +24965,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -24685,11 +25035,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<Text>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(Text|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<Text>"
                       },
                       "type": "array"
                     }
@@ -24770,6 +25120,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -24900,6 +25253,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -24995,6 +25351,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -25081,11 +25440,11 @@
                 {
                   "anyOf": [
                     {
-                      "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
+                      "$ref": "#/definitions/ConditionalValueDef<string>"
                     },
                     {
                       "items": {
-                        "$ref": "#/definitions/ConditionalValueDef<(string|ExprRef)>"
+                        "$ref": "#/definitions/ConditionalValueDef<string>"
                       },
                       "type": "array"
                     }
@@ -25149,6 +25508,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -25295,6 +25657,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -25390,6 +25755,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -25459,6 +25827,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -25509,6 +25880,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -25641,6 +26015,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -25736,6 +26113,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -25805,6 +26185,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -25855,6 +26238,9 @@
                 },
                 {
                   "type": "null"
+                },
+                {
+                  "$ref": "#/definitions/ExprRef"
                 }
               ],
               "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -26240,6 +26626,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."
@@ -29361,6 +29750,9 @@
             },
             {
               "type": "null"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
             }
           ],
           "description": "A title for the field. If `null`, the title will be removed.\n\n__Default value:__  derived from the field's name and transformation function (`aggregate`, `bin` and `timeUnit`). If the field has an aggregate function, the function is displayed as part of the title (e.g., `\"Sum of Profit\"`). If the field is binned or has a time unit applied, the applied function is shown in parentheses (e.g., `\"Profit (binned)\"`, `\"Transaction Date (year-month)\"`). Otherwise, the title is simply the field name.\n\n__Notes__:\n\n1) You can customize the default field title format by providing the [`fieldTitle`](https://vega.github.io/vega-lite/docs/config.html#top-level-config) property in the [config](https://vega.github.io/vega-lite/docs/config.html) or [`fieldTitle` function via the `compile` function's options](https://vega.github.io/vega-lite/usage/compile.html#field-title).\n\n2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used."

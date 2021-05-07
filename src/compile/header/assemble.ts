@@ -98,7 +98,7 @@ export function assembleHeaderGroups(model: Model, channel: HeaderChannel): VgMa
   return groups;
 }
 
-function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): VgComparator {
+function getSort(facetFieldDef: FacetFieldDef<string, SignalRef>, channel: HeaderChannel): VgComparator {
   const {sort} = facetFieldDef;
   if (isSortField(sort)) {
     return {

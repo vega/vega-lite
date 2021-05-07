@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {array, isBoolean} from 'vega-util';
 import {SUM_OPS} from './aggregate';
 import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel';
@@ -13,6 +14,7 @@ import {
   vgField
 } from './channeldef';
 import {channelHasField, Encoding, isAggregate} from './encoding';
+import {ExprRef} from './expr';
 import * as log from './log';
 import {
   ARC,
@@ -45,7 +47,7 @@ export function isStackOffset(s: string): s is StackOffset {
   return s in STACK_OFFSET_INDEX;
 }
 
-export interface StackProperties {
+export interface StackProperties<ES extends ExprRef | SignalRef> {
   /** Dimension axis of the stack. */
   groupbyChannel?: 'x' | 'y' | 'theta' | 'radius';
 
@@ -57,7 +59,7 @@ export interface StackProperties {
 
   /** Stack-by fields e.g., color, detail */
   stackBy: {
-    fieldDef: TypedFieldDef<string>;
+    fieldDef: TypedFieldDef<string, ES>;
     channel: NonPositionChannel;
   }[];
 
@@ -76,7 +78,7 @@ export const STACKABLE_MARKS = new Set<Mark>([ARC, BAR, AREA, RULE, POINT, CIRCL
 export const STACK_BY_DEFAULT_MARKS = new Set<Mark>([BAR, AREA, ARC]);
 
 function potentialStackedChannel(
-  encoding: Encoding<string>,
+  encoding: Encoding<string, any>,
   x: 'x' | 'theta'
 ): 'x' | 'y' | 'theta' | 'radius' | undefined {
   const y = x === 'x' ? 'y' : 'radius';
@@ -134,13 +136,13 @@ function getDimensionChannel(channel: 'x' | 'y' | 'theta' | 'radius') {
 
 // Note: CompassQL uses this method and only pass in required properties of each argument object.
 // If required properties change, make sure to update CompassQL.
-export function stack(
+export function stack<ES extends ExprRef | SignalRef>(
   m: Mark | MarkDef,
-  encoding: Encoding<string>,
+  encoding: Encoding<string, ES>,
   opt: {
     disallowNonLinearStack?: boolean; // This option is for CompassQL
   } = {}
-): StackProperties {
+): StackProperties<ES> {
   const mark = isMarkDef(m) ? m.type : m;
   // Should have stackable mark
   if (!STACKABLE_MARKS.has(mark)) {
@@ -158,7 +160,9 @@ export function stack(
     return null;
   }
 
-  const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string> | PositionDatumDef<string>;
+  const stackedFieldDef = encoding[fieldChannel] as
+    | PositionFieldDef<string, SignalRef>
+    | PositionDatumDef<string, SignalRef>;
   const stackedField = isFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
 
   let dimensionChannel: 'x' | 'y' | 'theta' | 'radius' = getDimensionChannel(fieldChannel);

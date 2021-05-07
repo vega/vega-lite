@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {vgField} from '../../channeldef';
 import {DEFAULT_SORT_OP, isSortField} from '../../sort';
 import {FacetMapping} from '../../spec/facet';
@@ -7,7 +8,7 @@ import {JoinAggregateTransformNode} from './joinaggregate';
 
 export function makeJoinAggregateFromFacet(
   parent: DataFlowNode,
-  facet: FacetMapping<string>
+  facet: FacetMapping<string, SignalRef>
 ): JoinAggregateTransformNode {
   const {row, column} = facet;
   if (row && column) {

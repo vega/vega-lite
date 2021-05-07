@@ -10,7 +10,7 @@ import {GenericLayerSpec, NormalizedLayerSpec} from './layer';
 import {GenericUnitSpec, NormalizedUnitSpec} from './unit';
 
 export interface FacetFieldDef<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef>
-  extends TypedFieldDef<F, StandardType, boolean | BinParams | null> {
+  extends TypedFieldDef<F, ES, StandardType, boolean | BinParams | null> {
   /**
    * An object defining properties of a facet's header.
    */
@@ -74,7 +74,8 @@ export interface RowColumnEncodingFieldDef<F extends Field, ES extends ExprRef |
 
 export interface FacetMapping<
   F extends Field,
-  FD extends FacetFieldDef<F, ExprRef | SignalRef> = FacetFieldDef<F, ExprRef | SignalRef>
+  ES extends ExprRef | SignalRef,
+  FD extends FacetFieldDef<F, ES> = FacetFieldDef<F, ES>
 > {
   /**
    * A field definition for the vertical facet of trellis plots.
@@ -88,8 +89,8 @@ export interface FacetMapping<
 }
 
 export function isFacetMapping<F extends Field, ES extends ExprRef | SignalRef>(
-  f: FacetFieldDef<F, ES> | FacetMapping<F>
-): f is FacetMapping<F> {
+  f: FacetFieldDef<F, ES> | FacetMapping<F, ES>
+): f is FacetMapping<F, ES> {
   return 'row' in f || 'column' in f;
 }
 
@@ -97,7 +98,7 @@ export function isFacetMapping<F extends Field, ES extends ExprRef | SignalRef>(
  * Facet mapping for encoding macro
  */
 export interface EncodingFacetMapping<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef>
-  extends FacetMapping<F, RowColumnEncodingFieldDef<F, ES>> {
+  extends FacetMapping<F, ES, RowColumnEncodingFieldDef<F, ES>> {
   /**
    * A field definition for the (flexible) facet of trellis plots.
    *
@@ -122,7 +123,7 @@ export interface GenericFacetSpec<U extends GenericUnitSpec<any, any>, L extends
    * 1) [a field definition for faceting the plot by one field](https://vega.github.io/vega-lite/docs/facet.html#field-def)
    * 2) [An object that maps `row` and `column` channels to their field definitions](https://vega.github.io/vega-lite/docs/facet.html#mapping)
    */
-  facet: FacetFieldDef<F, ExprRef | SignalRef> | FacetMapping<F>;
+  facet: FacetFieldDef<F, ExprRef> | FacetMapping<F, ExprRef>;
 
   /**
    * A specification of the view that gets faceted.

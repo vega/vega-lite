@@ -8,7 +8,10 @@ import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
 /**
  * Base interface for a layer specification.
  */
-export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, FrameMixins, ResolveMixins {
+export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>>
+  extends BaseSpec,
+    FrameMixins<ExprRef>,
+    ResolveMixins {
   /**
    * Layer or single view specifications to be layered.
    *
@@ -20,7 +23,7 @@ export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends B
 /**
  * A full layered plot specification, which may contains `encoding` and `projection` properties that will be applied to underlying unit (single-view) specifications.
  */
-export interface LayerSpec<F extends Field> extends BaseSpec, FrameMixins, ResolveMixins {
+export interface LayerSpec<F extends Field> extends BaseSpec, FrameMixins<ExprRef>, ResolveMixins {
   /**
    * Layer or single view specifications to be layered.
    *
@@ -31,7 +34,7 @@ export interface LayerSpec<F extends Field> extends BaseSpec, FrameMixins, Resol
   /**
    * A shared key-value mapping between encoding channels and definition of fields in the underlying layers.
    */
-  encoding?: SharedCompositeEncoding<F>;
+  encoding?: SharedCompositeEncoding<F, ExprRef>;
 
   /**
    * An object defining properties of the geographic projection shared by underlying layers.

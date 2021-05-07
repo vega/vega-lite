@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {isBinning} from '../../bin';
 import {Channel, getSizeChannel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
 import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
@@ -18,7 +19,7 @@ export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 export function scaleType(
   specifiedScale: Scale,
   channel: Channel,
-  fieldDef: TypedFieldDef<string> | DatumDef,
+  fieldDef: TypedFieldDef<string, SignalRef> | DatumDef,
   mark: MarkDef
 ): ScaleType {
   const defaultScaleType = defaultType(channel, fieldDef, mark);
@@ -51,7 +52,11 @@ export function scaleType(
  * Determine appropriate default scale type.
  */
 // NOTE: Voyager uses this method.
-function defaultType(channel: Channel, fieldDef: TypedFieldDef<string> | ScaleDatumDef, mark: MarkDef): ScaleType {
+function defaultType(
+  channel: Channel,
+  fieldDef: TypedFieldDef<string, SignalRef> | ScaleDatumDef,
+  mark: MarkDef
+): ScaleType {
   switch (fieldDef.type) {
     case 'nominal':
     case 'ordinal': {

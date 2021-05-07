@@ -121,7 +121,7 @@ function defaultSizeRef(
  * Output position encoding and its size encoding for continuous, point, and band scales.
  */
 function positionAndSize(
-  fieldDef: Encoding<string>['x' | 'y' | 'theta' | 'radius'],
+  fieldDef: Encoding<string, SignalRef>['x' | 'y' | 'theta' | 'radius'],
   channel: 'x' | 'y' | 'theta' | 'radius',
   model: UnitModel
 ) {
@@ -253,8 +253,8 @@ export function rectBinPosition({
   reverse,
   config
 }: {
-  fieldDef: TypedFieldDef<string>;
-  fieldDef2?: Encoding<string>['x2' | 'y2'];
+  fieldDef: TypedFieldDef<string, SignalRef>;
+  fieldDef2?: Encoding<string, SignalRef>['x2' | 'y2'];
   channel: 'x' | 'y' | 'theta' | 'radius';
   bandSize: number | RelativeBandSize | SignalRef | undefined;
   scaleName: string;
@@ -343,7 +343,7 @@ export function rectBinRef({
   config
 }: {
   channel: PositionChannel | PolarPositionChannel;
-  fieldDef: TypedFieldDef<string>;
+  fieldDef: TypedFieldDef<string, SignalRef>;
   scaleName: string;
   markDef: MarkDef<Mark>;
   bandPosition: number | SignalRef;

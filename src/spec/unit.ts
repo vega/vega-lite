@@ -12,7 +12,7 @@ import {TopLevel} from './toplevel';
 /**
  * Base interface for a unit (single-view) specification.
  */
-export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
+export interface GenericUnitSpec<E extends Encoding<any, any>, M> extends BaseSpec {
   /**
    * A string describing the mark type (one of `"bar"`, `"circle"`, `"square"`, `"tick"`, `"line"`,
    * `"area"`, `"point"`, `"rule"`, `"geoshape"`, and `"text"`) or a [mark definition object](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
@@ -39,22 +39,23 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
 /**
  * A unit specification without any shortcut/expansion syntax.
  */
-export type NormalizedUnitSpec = GenericUnitSpec<Encoding<FieldName>, Mark | MarkDef>;
+export type NormalizedUnitSpec = GenericUnitSpec<Encoding<FieldName, ExprRef>, Mark | MarkDef>;
 
 /**
  * A unit specification, which can contain either [primitive marks or composite marks](https://vega.github.io/vega-lite/docs/mark.html#types).
  */
-export type UnitSpec<F extends Field> = GenericUnitSpec<CompositeEncoding<F>, AnyMark>;
+export type UnitSpec<F extends Field> = GenericUnitSpec<CompositeEncoding<F, ExprRef>, AnyMark>;
 
-export type UnitSpecWithFrame<F extends Field> = GenericUnitSpec<CompositeEncoding<F>, AnyMark> & FrameMixins;
+export type UnitSpecWithFrame<F extends Field> = GenericUnitSpec<CompositeEncoding<F, ExprRef>, AnyMark> &
+  FrameMixins<ExprRef>;
 
 /**
  * Unit spec that can have a composite mark and row or column channels (shorthand for a facet spec).
  */
-export type FacetedUnitSpec<F extends Field> = GenericUnitSpec<FacetedCompositeEncoding<F>, AnyMark> &
+export type FacetedUnitSpec<F extends Field> = GenericUnitSpec<FacetedCompositeEncoding<F, ExprRef>, AnyMark> &
   ResolveMixins &
   GenericCompositionLayout &
-  FrameMixins;
+  FrameMixins<ExprRef>;
 
 export type TopLevelUnitSpec<F extends Field> = TopLevel<FacetedUnitSpec<F>> & DataMixins;
 

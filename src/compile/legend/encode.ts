@@ -22,7 +22,7 @@ import {UnitModel} from '../unit';
 import {LegendComponent} from './component';
 
 export interface LegendEncodeParams {
-  fieldOrDatumDef: TypedFieldDef<string> | DatumDef;
+  fieldOrDatumDef: TypedFieldDef<string, SignalRef> | DatumDef;
   model: UnitModel;
   channel: NonPositionScaleChannel;
   legendCmpt: LegendComponent;
@@ -92,7 +92,7 @@ export function symbols(
         delete out.stroke;
       } else if (isArray(out.stroke)) {
         const stroke = getFirstDefined<string | Gradient | SignalRef>(
-          getFirstConditionValue<string | Gradient>(encoding.stroke || encoding.color),
+          getFirstConditionValue(encoding.stroke || encoding.color),
           markDef.stroke,
           filled ? markDef.color : undefined
         );
@@ -141,7 +141,7 @@ export function gradient(gradientSpec: any, {model, legendType, legendCmpt}: Leg
   return isEmpty(out) ? undefined : out;
 }
 
-export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channel, legendCmpt}: LegendEncodeParams) {
+export function labels(specifiedLabelsSpec: any, {fieldOrDatumDef, model, channel, legendCmpt}: LegendEncodeParams) {
   const legend = model.legend(channel) || {};
   const config = model.config;
 
@@ -163,7 +163,7 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
   const labelsSpec = {
     ...(opacity ? {opacity} : {}),
     ...(text ? {text} : {}),
-    ...specifiedlabelsSpec
+    ...specifiedLabelsSpec
   };
 
   return isEmpty(labelsSpec) ? undefined : labelsSpec;
@@ -174,31 +174,31 @@ export function entries(entriesSpec: any, {legendCmpt}: LegendEncodeParams) {
   return selections?.length ? {...entriesSpec, fill: {value: 'transparent'}} : entriesSpec;
 }
 
-function getMaxValue(channelDef: Encoding<string>['opacity']) {
-  return getConditionValue<number>(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value as any));
+function getMaxValue(channelDef: Encoding<string, SignalRef>['opacity']) {
+  return getConditionValue<number>(channelDef, (v: number, conditionalDef) => Math.max(v, conditionalDef.value));
 }
 
-export function getFirstConditionValue<V extends Value | Gradient>(
-  channelDef: Encoding<string>['fill' | 'stroke' | 'shape']
+export function getFirstConditionValue<V extends Value<SignalRef>>(
+  channelDef: Encoding<string, SignalRef>['fill' | 'stroke' | 'shape']
 ): V {
-  return getConditionValue<V>(channelDef, (v: V, conditionalDef: Conditional<ValueDef<V>>) => {
-    return getFirstDefined<V>(v, conditionalDef.value);
-  });
+  return getConditionValue<V>(channelDef, (v: V, conditionalDef: Conditional<ValueDef<V>>) =>
+    getFirstDefined<V>(v, conditionalDef.value)
+  );
 }
 
-function getConditionValue<V extends Value | Gradient>(
-  channelDef: Encoding<string>['fill' | 'stroke' | 'shape' | 'opacity'],
+function getConditionValue<V extends Value<SignalRef>>(
+  channelDef: Encoding<string, SignalRef>['fill' | 'stroke' | 'shape' | 'opacity'],
   reducer: (val: V, conditionalDef: Conditional<ValueDef<V>>) => V
 ): V {
   if (hasConditionalValueDef(channelDef)) {
-    return array(channelDef.condition).reduce(reducer, channelDef.value as any);
+    return array(channelDef.condition).reduce(reducer, channelDef.value);
   } else if (isValueDef(channelDef)) {
     return channelDef.value as any;
   }
   return undefined;
 }
 
-function selectedCondition(model: UnitModel, legendCmpt: LegendComponent, fieldDef: TypedFieldDef<string>) {
+function selectedCondition(model: UnitModel, legendCmpt: LegendComponent, fieldDef: TypedFieldDef<string, SignalRef>) {
   const selections = legendCmpt.get('selections');
   if (!selections?.length) return undefined;
 

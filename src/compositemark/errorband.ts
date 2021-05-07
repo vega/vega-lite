@@ -1,6 +1,7 @@
 import {Interpolate, Orientation} from 'vega';
 import {Field} from '../channeldef';
 import {Encoding, normalizeEncoding} from '../encoding';
+import {ExprRef} from '../expr';
 import * as log from '../log';
 import {MarkDef} from '../mark';
 import {NormalizerParams} from '../normalize';
@@ -11,7 +12,7 @@ import {ErrorBarCenter, ErrorBarExtent, errorBarParams, ErrorEncoding} from './e
 
 export type ErrorBandUnitSpec<
   EE = undefined // extra encoding parameter (for faceted composite unit spec)
-> = GenericUnitSpec<ErrorEncoding<Field> & EE, ErrorBand | ErrorBandDef>;
+> = GenericUnitSpec<ErrorEncoding<Field, ExprRef> & EE, ErrorBand | ErrorBandDef>;
 
 export const ERRORBAND = 'errorband' as const;
 export type ErrorBand = typeof ERRORBAND;
@@ -91,7 +92,7 @@ export interface ErrorBandConfigMixins {
 export const errorBandNormalizer = new CompositeMarkNormalizer(ERRORBAND, normalizeErrorBand);
 
 export function normalizeErrorBand(
-  spec: GenericUnitSpec<Encoding<string>, ErrorBand | ErrorBandDef>,
+  spec: GenericUnitSpec<Encoding<string, ExprRef>, ErrorBand | ErrorBandDef>,
   {config}: NormalizerParams
 ): NormalizedLayerSpec {
   // Need to initEncoding first so we can infer type

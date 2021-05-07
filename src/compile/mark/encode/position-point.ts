@@ -7,7 +7,7 @@ import {
   PolarPositionChannel,
   PositionChannel
 } from '../../../channel';
-import {isFieldDef, isFieldOrDatumDef, TypedFieldDef} from '../../../channeldef';
+import {isFieldDef, isFieldOrDatumDef} from '../../../channeldef';
 import {ScaleType} from '../../../scale';
 import {contains} from '../../../util';
 import {VgValueRef} from '../../../vega.schema';
@@ -96,7 +96,7 @@ export function positionRef(
       if (bandPosition !== undefined) {
         return ref.interpolatedSignalRef({
           scaleName,
-          fieldOrDatumDef: channelDef as TypedFieldDef<string>, // positionRef always have type
+          fieldOrDatumDef: channelDef,
           startSuffix: 'start',
           bandPosition,
           offset

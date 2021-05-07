@@ -1,4 +1,4 @@
-import {SignalRef} from 'vega';
+import {ExprRef, SignalRef} from 'vega';
 import {isString} from 'vega-util';
 import {Field} from '../channeldef';
 import {Config, initConfig} from '../config';
@@ -49,7 +49,7 @@ const topLevelSelectionNormalizer = new TopLevelSelectionsNormalizer();
  */
 function normalizeGenericSpec(
   spec: NonNormalizedSpec | FacetedUnitSpec<Field> | RepeatSpec,
-  config: Config<SignalRef> = {}
+  config: Config<ExprRef | SignalRef> = {}
 ) {
   const normParams = {config};
   return topLevelSelectionNormalizer.map(

@@ -199,7 +199,7 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
 
   const getSignalName = model.getSignalName.bind(model);
 
-  const {type} = getFieldOrDatumDef(encoding[channel]) as ScaleFieldDef<string> | ScaleDatumDef;
+  const {type} = getFieldOrDatumDef(encoding[channel]) as ScaleFieldDef<string, SignalRef> | ScaleDatumDef;
 
   const mergedScaleCmpt = model.getScaleComponent(channel);
   const scaleType = mergedScaleCmpt.get('type');
