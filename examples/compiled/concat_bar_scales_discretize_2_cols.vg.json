@@ -167,7 +167,6 @@
       ],
       "legends": [
         {
-          "format": "d",
           "title": "Quantile",
           "fill": "concat_1_color",
           "labelOverlap": "greedy",

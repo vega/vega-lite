@@ -549,7 +549,7 @@ export function initEncoding(
         return normalizedEncoding;
       }
 
-      normalizedEncoding[channel as any] = initChannelDef(channelDef as ChannelDef, channel, config);
+      normalizedEncoding[channel as any] = initChannelDef(channelDef, channel, config);
     }
     return normalizedEncoding;
   }, {});

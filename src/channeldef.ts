@@ -988,7 +988,10 @@ export function resetTitleFormatter() {
 }
 
 export function title(
-  fieldOrDatumDef: TypedFieldDef<string, SignalRef> | SecondaryFieldDef<string, SignalRef> | DatumDef,
+  fieldOrDatumDef:
+    | TypedFieldDef<string, SignalRef>
+    | SecondaryFieldDef<string, SignalRef>
+    | DatumDef<string, SignalRef>,
   config: Config,
   {allowDisabling, includeDefault = true}: {allowDisabling: boolean; includeDefault?: boolean}
 ) {
@@ -1114,12 +1117,12 @@ export function getFieldOrDatumDef<
 /**
  * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
  */
-export function initChannelDef<ES extends ExprRef | SignalRef>(
-  channelDef: ChannelDef<string, ES>,
+export function initChannelDef(
+  channelDef: ChannelDef<string, ExprRef>,
   channel: ExtendedChannel,
   config: Config,
   opt: {compositeMark?: boolean} = {}
-): ChannelDef<string, ES> {
+): ChannelDef<string, SignalRef> {
   if (isString(channelDef) || isNumber(channelDef) || isBoolean(channelDef)) {
     const primitiveType = isString(channelDef) ? 'string' : isNumber(channelDef) ? 'number' : 'boolean';
     log.warn(log.message.primitiveChannelDef(channel, primitiveType, channelDef));
@@ -1138,15 +1141,17 @@ export function initChannelDef<ES extends ExprRef | SignalRef>(
       >
     };
   }
-  return channelDef;
+
+  // FIXME: remove as any
+  return channelDef as any;
 }
 
 export function initFieldOrDatumDef(
-  fd: FieldDef<string, ExprRef, any> | DatumDef,
+  fd: FieldDef<string, ExprRef, any> | DatumDef<string, ExprRef>,
   channel: ExtendedChannel,
   config: Config,
   opt: {compositeMark?: boolean}
-): FieldDef<string, SignalRef, any> | DatumDef {
+): FieldDef<string, SignalRef, any> | DatumDef<string, SignalRef> {
   if (isStringFieldOrDatumDef(fd)) {
     const {format, formatType, ...rest} = fd;
     if (isCustomFormatType(formatType) && !config.customFormatTypes) {
@@ -1167,6 +1172,8 @@ export function initFieldOrDatumDef(
         log.warn(log.message.customFormatTypeNotAllowed(channel));
         return initFieldOrDatumDef({...fd, [guideType]: newGuide}, channel, config, opt);
       }
+      // replace ExprRef with SignalRef in guides
+      fd = {...fd, [guideType]: replaceExprRef(newGuide)};
     }
   }
 
@@ -1176,15 +1183,15 @@ export function initFieldOrDatumDef(
   return initDatumDef(fd);
 }
 
-function initDatumDef(datumDef: DatumDef): DatumDef {
+function initDatumDef(datumDef: DatumDef<string, ExprRef>): DatumDef<string, SignalRef> {
   let type = datumDef['type'];
   if (type) {
-    return datumDef;
+    return replaceExprRef(datumDef);
   }
   const {datum} = datumDef;
   type = isNumber(datum) ? 'quantitative' : isString(datum) ? 'nominal' : isDateTime(datum) ? 'temporal' : undefined;
 
-  return {...datumDef, type};
+  return replaceExprRef({...datumDef, type});
 }
 
 export function initFieldDef(
