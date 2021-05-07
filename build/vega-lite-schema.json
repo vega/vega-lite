@@ -30475,8 +30475,15 @@
       "additionalProperties": false,
       "properties": {
         "clip": {
-          "description": "Whether the view should be clipped.",
-          "type": "boolean"
+          "anyOf": [
+            {
+              "type": "boolean"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Whether the view should be clipped."
         },
         "continuousHeight": {
           "description": "The default height when the plot has a continuous y-field for x or latitude, or has arc marks.\n\n__Default value:__ `200`",
