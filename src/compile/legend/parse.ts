@@ -1,6 +1,6 @@
 import {Legend as VgLegend, LegendEncode, SignalRef} from 'vega';
 import {COLOR, NonPositionScaleChannel, SHAPE} from '../../channel';
-import {DatumDef, FieldDef, getFieldOrDatumDef, isFieldDef, MarkPropDatumDef, MarkPropFieldDef} from '../../channeldef';
+import {FieldDef, getFieldOrDatumDef, isFieldDef, MarkPropDatumDef, MarkPropFieldDef} from '../../channeldef';
 import {LegendInternal, LEGEND_SCALE_CHANNELS} from '../../legend';
 import {normalizeTimeUnit} from '../../timeunit';
 import {GEOJSON} from '../../type';
@@ -103,7 +103,7 @@ export function parseLegendForChannel(model: UnitModel, channel: NonPositionScal
   legend = legend || {};
 
   const scaleType = model.getScaleComponent(channel).get('type');
-  const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as MarkPropFieldDef<string, SignalRef> | DatumDef;
+  const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]);
   const timeUnit = isFieldDef(fieldOrDatumDef) ? normalizeTimeUnit(fieldOrDatumDef.timeUnit)?.unit : undefined;
 
   const orient = legend.orient || config.legend.orient || 'right';
