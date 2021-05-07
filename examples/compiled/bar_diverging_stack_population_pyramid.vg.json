@@ -62,7 +62,7 @@
           "fill": {"scale": "color", "field": "gender"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_signed_people\"], \"s\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+            "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_signed_people\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
           },
           "x": {"scale": "x", "field": "sum_signed_people_end"},
           "x2": {"scale": "x", "field": "sum_signed_people_start"},
@@ -109,7 +109,6 @@
       "orient": "bottom",
       "grid": false,
       "title": "population",
-      "format": "s",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},

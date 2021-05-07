@@ -227,7 +227,7 @@
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
-                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; indexed_price: \" + (format(datum[\"indexed_price\"], \"%\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; indexed_price: \" + (format(datum[\"indexed_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
               },
               "x": {"scale": "x", "field": "date"},
               "y": {"scale": "y", "field": "indexed_price"},
@@ -331,7 +331,6 @@
       "orient": "left",
       "grid": false,
       "title": "indexed_price",
-      "format": "%",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0

@@ -42,7 +42,7 @@
         "update": {
           "fill": {"scale": "color", "field": "sum_price"},
           "description": {
-            "signal": "\"Time: \" + (timeFormat(datum[\"yearmonthdate_date\"], '%Y')) + \"; Price: \" + (format(datum[\"sum_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+            "signal": "\"Time: \" + (timeFormat(datum[\"yearmonthdate_date\"], timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Price: \" + (format(datum[\"sum_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
           },
           "x": {"scale": "x", "field": "yearmonthdate_date"},
           "width": {"scale": "x", "band": 1},
@@ -88,9 +88,11 @@
       "orient": "bottom",
       "grid": false,
       "title": "Time",
-      "format": "%Y",
       "labelAngle": 0,
       "labelOverlap": false,
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\",\"month\",\"date\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
       "formatType": "time",
       "labelBaseline": "top",
       "encode": {
