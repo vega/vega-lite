@@ -26,9 +26,14 @@ export function parseUnitSelection(model: UnitModel, selDefs: SelectionParameter
     // Set default values from config if a property hasn't been specified,
     // or if it is true. E.g., "translate": true should use the default
     // event handlers for translate. However, true may be a valid value for
-    // a property (e.g., "nearest": true). Project transform applies its defaults.
-    const {fields, encodings, ...cfg} = selectionConfig[type];
+    // a property (e.g., "nearest": true).
+    const cfg = selectionConfig[type];
     for (const key in cfg) {
+      // Project transform applies its defaults.
+      if (key === 'fields' || key === 'encodings') {
+        continue;
+      }
+
       if (key === 'mark') {
         defaults[key] = {...cfg[key], ...defaults[key]};
       }
