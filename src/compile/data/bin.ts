@@ -1,4 +1,4 @@
-import {BinTransform as VgBinTransform, Transforms as VgTransform} from 'vega';
+import {BinTransform as VgBinTransform, SignalRef, Transforms as VgTransform} from 'vega';
 import {isString} from 'vega-util';
 import {BinParams, binToString, isBinning, isParameterExtent} from '../../bin';
 import {Channel} from '../../channel';
@@ -12,7 +12,12 @@ import {parseSelectionExtent} from '../selection/parse';
 import {NonPositionScaleChannel, PositionChannel} from './../../channel';
 import {DataFlowNode} from './dataflow';
 
-function rangeFormula(model: ModelWithField, fieldDef: TypedFieldDef<string>, channel: Channel, config: Config) {
+function rangeFormula(
+  model: ModelWithField,
+  fieldDef: TypedFieldDef<string, SignalRef>,
+  channel: Channel,
+  config: Config
+) {
   if (binRequiresRange(fieldDef, channel)) {
     // read format from axis or legend, if there is no format then use config.numberFormat
 
@@ -48,11 +53,15 @@ export function getBinSignalName(model: Model, field: string, bin: boolean | Bin
   return model.getName(`${key}_bins`);
 }
 
-function isBinTransform(t: TypedFieldDef<string> | BinTransform): t is BinTransform {
+function isBinTransform(t: TypedFieldDef<string, SignalRef> | BinTransform): t is BinTransform {
   return 'as' in t;
 }
 
-function createBinComponent(t: TypedFieldDef<string> | BinTransform, bin: boolean | BinParams, model: Model) {
+function createBinComponent(
+  t: TypedFieldDef<string, SignalRef> | BinTransform,
+  bin: boolean | BinParams,
+  model: Model
+) {
   let as: [string, string];
   let span: string;
 

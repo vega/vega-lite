@@ -1,4 +1,4 @@
-import {AggregateOp, AggregateTransform as VgAggregateTransform} from 'vega';
+import {AggregateOp, AggregateTransform as VgAggregateTransform, SignalRef} from 'vega';
 import {isArgmaxDef, isArgminDef} from '../../aggregate';
 import {
   Channel,
@@ -17,7 +17,12 @@ import {DataFlowNode} from './dataflow';
 
 type Measures = Dict<Partial<Record<AggregateOp, Set<string>>>>;
 
-function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<string>, model: ModelWithField) {
+function addDimension(
+  dims: Set<string>,
+  channel: Channel,
+  fieldDef: FieldDef<string, SignalRef>,
+  model: ModelWithField
+) {
   const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;
 
   if (

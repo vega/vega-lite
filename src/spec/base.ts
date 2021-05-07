@@ -103,7 +103,7 @@ export function isFrameMixins(o: any): o is FrameMixins<any> {
   return o['view'] || o['width'] || o['height'];
 }
 
-export interface FrameMixins<ES extends ExprRef | SignalRef = ExprRef | SignalRef> extends LayoutSizeMixins {
+export interface FrameMixins<ES extends ExprRef | SignalRef> extends LayoutSizeMixins {
   /**
    * An object defining the view background's fill and stroke.
    *

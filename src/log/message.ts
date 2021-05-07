@@ -241,7 +241,7 @@ export function cannotUseRelativeBandSizeWithNonBandScale(scaleType: ScaleType) 
   return `Cannot use the relative band size with ${scaleType} scale.`;
 }
 
-export function unaggregateDomainHasNoEffectForRawField(fieldDef: TypedFieldDef<string>) {
+export function unaggregateDomainHasNoEffectForRawField(fieldDef: TypedFieldDef<string, SignalRef>) {
   return `Using unaggregated domain with raw field has no effect (${stringify(fieldDef)}).`;
 }
 
@@ -249,7 +249,7 @@ export function unaggregateDomainWithNonSharedDomainOp(aggregate: Aggregate | st
   return `Unaggregated domain not applicable for "${aggregate}" since it produces values outside the origin domain of the source data.`;
 }
 
-export function unaggregatedDomainWithLogScale(fieldDef: TypedFieldDef<string>) {
+export function unaggregatedDomainWithLogScale(fieldDef: TypedFieldDef<string, SignalRef>) {
   return `Unaggregated domain is currently unsupported for log scale (${stringify(fieldDef)}).`;
 }
 

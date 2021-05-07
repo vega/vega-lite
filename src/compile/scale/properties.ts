@@ -63,7 +63,9 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
     const specifiedScale = specifiedScales[channel];
     const localScaleCmpt = localScaleComponents[channel];
     const mergedScaleCmpt = model.getScaleComponent(channel);
-    const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as ScaleFieldDef<string, Type> | ScaleDatumDef;
+    const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as
+      | ScaleFieldDef<string, SignalRef, Type>
+      | ScaleDatumDef;
 
     const specifiedValue = specifiedScale[property];
     const scaleType = mergedScaleCmpt.get('type');
@@ -129,7 +131,7 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
 export interface ScaleRuleParams {
   model: Model;
   channel: ScaleChannel;
-  fieldOrDatumDef: ScaleFieldDef<string, Type> | ScaleDatumDef;
+  fieldOrDatumDef: ScaleFieldDef<string, SignalRef, Type> | ScaleDatumDef;
   scaleType: ScaleType;
   scalePadding: number | SignalRef;
   scalePaddingInner: number | SignalRef;
@@ -215,7 +217,7 @@ export function parseNonUnitScaleProperty(model: Model, property: keyof (Scale |
   }
 }
 
-export function bins(model: Model, fieldDef: TypedFieldDef<string>) {
+export function bins(model: Model, fieldDef: TypedFieldDef<string, SignalRef>) {
   const bin = fieldDef.bin;
   if (isBinning(bin)) {
     const binSignal = getBinSignalName(model, fieldDef.field, bin);
@@ -242,7 +244,7 @@ export function nice(
   scaleType: ScaleType,
   channel: ScaleChannel,
   specifiedDomain: Domain,
-  fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef
+  fieldOrDatumDef: TypedFieldDef<string, SignalRef> | ScaleDatumDef
 ): boolean | TimeInterval {
   if (
     getFieldDef(fieldOrDatumDef)?.bin ||
@@ -258,7 +260,7 @@ export function padding(
   channel: ScaleChannel,
   scaleType: ScaleType,
   scaleConfig: ScaleConfig<SignalRef>,
-  fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef,
+  fieldOrDatumDef: TypedFieldDef<string, SignalRef> | ScaleDatumDef,
   markDef: MarkDef,
   barConfig: RectConfig<SignalRef>
 ) {
@@ -366,7 +368,7 @@ export function reverse(
 
 export function zero(
   channel: ScaleChannel,
-  fieldDef: TypedFieldDef<string> | ScaleDatumDef,
+  fieldDef: TypedFieldDef<string, SignalRef> | ScaleDatumDef,
   specifiedDomain: Domain,
   markDef: MarkDef,
   scaleType: ScaleType

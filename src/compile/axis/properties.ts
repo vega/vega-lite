@@ -29,7 +29,7 @@ import {AxisComponentProps} from './component';
 import {AxisConfigs, getAxisConfig} from './config';
 
 export interface AxisRuleParams {
-  fieldOrDatumDef: PositionFieldDef<string> | PositionDatumDef<string>;
+  fieldOrDatumDef: PositionFieldDef<string, SignalRef> | PositionDatumDef<string, SignalRef>;
   axis: AxisInternal;
   channel: PositionScaleChannel;
   model: UnitModel;
@@ -118,7 +118,7 @@ export const axisRules: {
  * If `grid` is unspecified, the default value is `true` for ordinal scales that are not binned
  */
 
-export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string> | DatumDef) {
+export function defaultGrid(scaleType: ScaleType, fieldDef: TypedFieldDef<string, SignalRef> | DatumDef) {
   return !hasDiscreteDomain(scaleType) && isFieldDef(fieldDef) && !isBinning(fieldDef?.bin) && !isBinned(fieldDef?.bin);
 }
 
@@ -131,7 +131,7 @@ export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
 }
 
 export function getLabelAngle(
-  fieldOrDatumDef: PositionFieldDef<string> | PositionDatumDef<string>,
+  fieldOrDatumDef: PositionFieldDef<string, SignalRef> | PositionDatumDef<string, SignalRef>,
   axis: AxisInternal,
   channel: PositionScaleChannel,
   styleConfig: StyleConfigIndex<SignalRef>,
@@ -289,7 +289,7 @@ export function defaultTickCount({
   size,
   values: vals
 }: {
-  fieldOrDatumDef: TypedFieldDef<string> | DatumDef;
+  fieldOrDatumDef: TypedFieldDef<string, SignalRef> | DatumDef;
   scaleType: ScaleType;
   size?: SignalRef;
   values?: AxisInternal['values'];
@@ -340,7 +340,7 @@ export function getFieldDefTitle(model: UnitModel, channel: 'x' | 'y') {
   return undefined;
 }
 
-export function values(axis: AxisInternal, fieldOrDatumDef: TypedFieldDef<string> | DatumDef) {
+export function values(axis: AxisInternal, fieldOrDatumDef: TypedFieldDef<string, SignalRef> | DatumDef) {
   const vals = axis.values;
 
   if (isArray(vals)) {
@@ -352,7 +352,7 @@ export function values(axis: AxisInternal, fieldOrDatumDef: TypedFieldDef<string
   return undefined;
 }
 
-export function defaultZindex(mark: Mark, fieldDef: TypedFieldDef<string> | DatumDef) {
+export function defaultZindex(mark: Mark, fieldDef: TypedFieldDef<string, SignalRef> | DatumDef) {
   if (mark === 'rect' && isDiscrete(fieldDef)) {
     return 1;
   }

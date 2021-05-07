@@ -9,7 +9,7 @@ import {Mark} from './mark';
 import {EncodingFacetMapping} from './spec/facet';
 import {Flag, keys} from './util';
 
-export type Channel = keyof Encoding<any>;
+export type Channel = keyof Encoding<any, any>;
 export type ExtendedChannel = Channel | FacetChannel;
 
 // Facet

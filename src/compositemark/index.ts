@@ -1,5 +1,7 @@
+import {SignalRef} from 'vega';
 import {Field} from '../channeldef';
 import {Encoding} from '../encoding';
+import {ExprRef} from '../expr';
 import {NormalizerParams} from '../normalize';
 import {GenericUnitSpec, NormalizedLayerSpec} from '../spec';
 import {EncodingFacetMapping} from '../spec/facet';
@@ -53,18 +55,21 @@ export function remove(mark: string) {
   delete compositeMarkRegistry[mark];
 }
 
-export type CompositeEncoding<F extends Field> = Encoding<F> & ErrorExtraEncoding<F>;
+export type CompositeEncoding<F extends Field, ES extends ExprRef | SignalRef> = Encoding<F, ES> &
+  ErrorExtraEncoding<F, ES>;
 
-export type PartialIndex<T extends Encoding<any>> = {
+export type PartialIndex<T extends Encoding<any, any>> = {
   [t in keyof T]?: Partial<T[t]>;
 };
 
-export type SharedCompositeEncoding<F extends Field> = PartialIndex<
-  Omit<CompositeEncoding<F>, 'detail' | 'order' | 'tooltip'> // need to omit and cherry pick detail / order / tooltip since they allow array
+export type SharedCompositeEncoding<F extends Field, ES extends ExprRef | SignalRef> = PartialIndex<
+  Omit<CompositeEncoding<F, ES>, 'detail' | 'order' | 'tooltip'> // need to omit and cherry pick detail / order / tooltip since they allow array
 > &
-  Pick<Encoding<F>, 'detail' | 'order' | 'tooltip'>;
+  Pick<Encoding<F, ES>, 'detail' | 'order' | 'tooltip'>;
 
-export type FacetedCompositeEncoding<F extends Field> = Encoding<F> & ErrorExtraEncoding<F> & EncodingFacetMapping<F>;
+export type FacetedCompositeEncoding<F extends Field, ES extends ExprRef | SignalRef> = Encoding<F, ES> &
+  ErrorExtraEncoding<F, ES> &
+  EncodingFacetMapping<F, ES>;
 
 export type CompositeMark = BoxPlot | ErrorBar | ErrorBand;
 

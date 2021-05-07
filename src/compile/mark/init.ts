@@ -1,4 +1,4 @@
-import {Orientation, SignalRef} from 'vega';
+import {ExprRef, Orientation, SignalRef} from 'vega';
 import {isBinned, isBinning} from '../../bin';
 import {isContinuousFieldOrDatumDef, isFieldDef, isNumericDataDef, TypedFieldDef} from '../../channeldef';
 import {Config} from '../../config';
@@ -23,9 +23,13 @@ import {
 } from '../../mark';
 import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, getFirstDefined} from '../../util';
-import {getMarkConfig, getMarkPropOrConfig} from '../common';
+import {getMarkConfig, getMarkPropOrConfig, signalRefOrValue} from '../common';
 
-export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>, config: Config<SignalRef>) {
+export function initMarkdef(
+  originalMarkDef: MarkDef,
+  encoding: Encoding<string, ExprRef | SignalRef>,
+  config: Config<SignalRef>
+) {
   // FIXME: markDef expects that exprRefs are replaced recursively but replaceExprRef only replaces the top level
   const markDef: MarkDef<Mark, SignalRef> = replaceExprRef(originalMarkDef) as any;
 
@@ -69,14 +73,18 @@ export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>
   return markDef;
 }
 
-function cursor(markDef: MarkDef<Mark, SignalRef>, encoding: Encoding<string>, config: Config<SignalRef>) {
+function cursor(
+  markDef: MarkDef<Mark, ExprRef | SignalRef>,
+  encoding: Encoding<string, ExprRef | SignalRef>,
+  config: Config<SignalRef>
+) {
   if (encoding.href || markDef.href || getMarkPropOrConfig('href', markDef, config)) {
     return 'pointer';
   }
-  return markDef.cursor;
+  return signalRefOrValue(markDef.cursor);
 }
 
-function opacity(mark: Mark, encoding: Encoding<string>) {
+function opacity(mark: Mark, encoding: Encoding<string, ExprRef | SignalRef>) {
   if (contains([POINT, TICK, CIRCLE, SQUARE], mark)) {
     // point-based marks
     if (!isAggregate(encoding)) {
@@ -95,7 +103,11 @@ export function defaultFilled(markDef: MarkDef, config: Config<SignalRef>, {grat
   return getFirstDefined(filledConfig, mark !== POINT && mark !== LINE && mark !== RULE);
 }
 
-function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orientation): Orientation {
+function orient(
+  mark: Mark,
+  encoding: Encoding<string, ExprRef | SignalRef>,
+  specifiedOrient: Orientation
+): Orientation {
   switch (mark) {
     case POINT:
     case CIRCLE:
@@ -183,8 +195,8 @@ function orient(mark: Mark, encoding: Encoding<string>, specifiedOrient: Orienta
       } else if (!xIsContinuous && yIsContinuous) {
         return mark !== 'tick' ? 'vertical' : 'horizontal';
       } else if (xIsContinuous && yIsContinuous) {
-        const xDef = x as TypedFieldDef<string>; // we can cast here since they are surely fieldDef
-        const yDef = y as TypedFieldDef<string>;
+        const xDef = x as TypedFieldDef<string, SignalRef>; // we can cast here since they are surely fieldDef
+        const yDef = y as TypedFieldDef<string, SignalRef>;
 
         const xIsTemporal = xDef.type === TEMPORAL;
         const yIsTemporal = yDef.type === TEMPORAL;

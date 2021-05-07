@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned} from '../../../bin';
 import {getMainRangeChannel, isXorY, Channel} from '../../../channel';
@@ -67,8 +68,8 @@ export function tooltip(model: UnitModel, opt: {reactiveGeom?: boolean} = {}) {
 }
 
 export function tooltipData(
-  encoding: Encoding<string>,
-  stack: StackProperties,
+  encoding: Encoding<string, SignalRef>,
+  stack: StackProperties<SignalRef>,
   config: Config,
   {reactiveGeom}: {reactiveGeom?: boolean} = {}
 ) {
@@ -76,14 +77,14 @@ export function tooltipData(
   const expr = reactiveGeom ? 'datum.datum' : 'datum';
   const tuples: {channel: Channel; key: string; value: string}[] = [];
 
-  function add(fDef: TypedFieldDef<string> | SecondaryFieldDef<string>, channel: Channel) {
+  function add(fDef: TypedFieldDef<string, SignalRef> | SecondaryFieldDef<string, SignalRef>, channel: Channel) {
     const mainChannel = getMainRangeChannel(channel);
 
-    const fieldDef: TypedFieldDef<string> = isTypedFieldDef(fDef)
+    const fieldDef: TypedFieldDef<string, SignalRef> = isTypedFieldDef(fDef)
       ? fDef
       : {
           ...fDef,
-          type: (encoding[mainChannel] as TypedFieldDef<any>).type // for secondary field def, copy type from main channel
+          type: (encoding[mainChannel] as TypedFieldDef<any, SignalRef>).type // for secondary field def, copy type from main channel
         };
 
     const title = fieldDef.title || defaultTitle(fieldDef, config);
@@ -116,7 +117,7 @@ export function tooltipData(
   forEach(encoding, (channelDef, channel) => {
     if (isFieldDef(channelDef)) {
       add(channelDef, channel);
-    } else if (hasConditionalFieldDef(channelDef)) {
+    } else if (hasConditionalFieldDef<string, SignalRef>(channelDef)) {
       add(channelDef.condition, channel);
     }
   });
@@ -132,8 +133,8 @@ export function tooltipData(
 }
 
 export function tooltipRefForEncoding(
-  encoding: Encoding<string>,
-  stack: StackProperties,
+  encoding: Encoding<string, SignalRef>,
+  stack: StackProperties<SignalRef>,
   config: Config,
   {reactiveGeom}: {reactiveGeom?: boolean} = {}
 ) {

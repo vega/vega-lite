@@ -267,12 +267,15 @@ export class CoreNormalizer extends SpecMapper<NormalizerParams, FacetedUnitSpec
 
   private getFacetMappingAndLayout(
     facets: {
-      row: FacetEncodingFieldDef<Field>;
-      column: FacetEncodingFieldDef<Field>;
-      facet: FacetEncodingFieldDef<Field>;
+      row: FacetEncodingFieldDef<Field, ExprRef>;
+      column: FacetEncodingFieldDef<Field, ExprRef>;
+      facet: FacetEncodingFieldDef<Field, ExprRef>;
     },
     params: NormalizerParams
-  ): {facetMapping: FacetMapping<FieldName> | FacetFieldDef<FieldName>; layout: GenericCompositionLayoutWithColumns} {
+  ): {
+    facetMapping: FacetMapping<FieldName, ExprRef> | FacetFieldDef<FieldName, ExprRef>;
+    layout: GenericCompositionLayoutWithColumns;
+  } {
     const {row, column, facet} = facets;
 
     if (row || column) {
@@ -334,10 +337,10 @@ function mergeEncoding({
   encoding = {},
   layer
 }: {
-  parentEncoding: SharedCompositeEncoding<any>;
-  encoding: SharedCompositeEncoding<any> | Encoding<any>;
+  parentEncoding: SharedCompositeEncoding<FieldName, ExprRef>;
+  encoding: SharedCompositeEncoding<Field, ExprRef> | Encoding<Field, ExprRef>;
   layer?: boolean;
-}): Encoding<any> {
+}): Encoding<FieldName, ExprRef> {
   let merged: any = {};
   if (parentEncoding) {
     const channels = new Set([...keys(parentEncoding), ...keys(encoding)]);

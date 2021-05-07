@@ -667,7 +667,7 @@ export abstract class Model {
 
 /** Abstract class for UnitModel and FacetModel. Both of which can contain fieldDefs as a part of its own specification. */
 export abstract class ModelWithField extends Model {
-  public abstract fieldDef(channel: SingleDefChannel): FieldDef<any>;
+  public abstract fieldDef(channel: SingleDefChannel): FieldDef<any, any>;
 
   /** Get "field" reference for Vega */
   public vgField(channel: SingleDefChannel, opt: FieldRefOption = {}) {
@@ -682,7 +682,7 @@ export abstract class ModelWithField extends Model {
 
   protected abstract getMapping(): Partial<Record<ExtendedChannel, any>>;
 
-  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string>, c: Channel) => U, init: T): T {
+  public reduceFieldDef<T, U>(f: (acc: U, fd: FieldDef<string, SignalRef>, c: Channel) => U, init: T): T {
     return reduce(
       this.getMapping(),
       (acc: U, cd: ChannelDef, c: Channel) => {
@@ -696,7 +696,7 @@ export abstract class ModelWithField extends Model {
     );
   }
 
-  public forEachFieldDef(f: (fd: FieldDef<string>, c: ExtendedChannel) => void, t?: any) {
+  public forEachFieldDef(f: (fd: FieldDef<string, SignalRef>, c: ExtendedChannel) => void, t?: any) {
     forEach(
       this.getMapping(),
       (cd, c) => {

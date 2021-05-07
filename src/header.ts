@@ -227,7 +227,7 @@ export interface HeaderConfig<ES extends ExprRef | SignalRef> extends CoreHeader
 /**
  * Headers of row / column channels for faceted plots.
  */
-export interface Header<ES extends ExprRef | SignalRef> extends CoreHeader<ES>, Guide {}
+export interface Header<ES extends ExprRef | SignalRef> extends CoreHeader<ES>, Guide<ES> {}
 
 export interface HeaderConfigMixins<ES extends ExprRef | SignalRef> {
   /**

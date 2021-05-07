@@ -1,9 +1,10 @@
 import {SignalRef, Text} from 'vega';
-import {ConditionValueDefMixins, FormatMixins, ValueDef} from './channeldef';
+import {ConditionValueDefMixins, FormatMixins, Value, ValueDef} from './channeldef';
+import {ExprRef} from './expr';
 import {LegendConfig} from './legend';
 import {VgEncodeChannel} from './vega.schema';
 
-export interface TitleMixins {
+export interface TitleMixins<ES extends ExprRef | SignalRef> {
   /**
    * A title for the field. If `null`, the title will be removed.
    *
@@ -15,10 +16,10 @@ export interface TitleMixins {
    *
    * 2) If both field definition's `title` and axis, header, or legend `title` are defined, axis/header/legend title will be used.
    */
-  title?: Text | null | SignalRef;
+  title?: Text | null | ES;
 }
 
-export interface Guide extends TitleMixins, FormatMixins {}
+export interface Guide<ES extends ExprRef | SignalRef> extends TitleMixins<ES>, FormatMixins {}
 
 export interface VlOnlyGuideConfig {
   /**
@@ -27,9 +28,12 @@ export interface VlOnlyGuideConfig {
   title?: null;
 }
 
-export type GuideEncodingConditionalValueDef = ValueDef & ConditionValueDefMixins;
+export type GuideEncodingConditionalValueDef<ES extends ExprRef | SignalRef> = ValueDef<Value<ES>> &
+  ConditionValueDefMixins<ES>;
 
-export type GuideEncodingEntry = Partial<Record<VgEncodeChannel, GuideEncodingConditionalValueDef>>;
+export type GuideEncodingEntry<ES extends ExprRef | SignalRef> = Partial<
+  Record<VgEncodeChannel, GuideEncodingConditionalValueDef<ES>>
+>;
 
 export const VL_ONLY_LEGEND_CONFIG: (keyof LegendConfig<any>)[] = [
   'gradientHorizontalMaxLength',

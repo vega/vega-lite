@@ -88,13 +88,13 @@ export type LegendConfig<ES extends ExprRef | SignalRef> = LegendMixins<ES> &
 export interface Legend<ES extends ExprRef | SignalRef>
   extends Omit<BaseLegendNoValueRefs<ES>, 'orient'>,
     LegendMixins<ES>,
-    Guide {
+    Guide<ES> {
   /**
    * Mark definitions for custom legend encoding.
    *
    * @hidden
    */
-  encoding?: LegendEncoding;
+  encoding?: LegendEncoding<ES>;
 
   /**
    * [Vega expression](https://vega.github.io/vega/docs/expressions/) for customizing labels.
@@ -162,32 +162,32 @@ interface LegendMixins<ES extends ExprRef | SignalRef> {
 
 export type LegendInternal = Legend<SignalRef>;
 
-export interface LegendEncoding {
+export interface LegendEncoding<ES extends ExprRef | SignalRef> {
   /**
    * Custom encoding for the legend container.
    * This can be useful for creating legend with custom x, y position.
    */
-  legend?: GuideEncodingEntry;
+  legend?: GuideEncodingEntry<ES>;
 
   /**
    * Custom encoding for the legend title text mark.
    */
-  title?: GuideEncodingEntry;
+  title?: GuideEncodingEntry<ES>;
 
   /**
    * Custom encoding for legend label text marks.
    */
-  labels?: GuideEncodingEntry;
+  labels?: GuideEncodingEntry<ES>;
 
   /**
    * Custom encoding for legend symbol marks.
    */
-  symbols?: GuideEncodingEntry;
+  symbols?: GuideEncodingEntry<ES>;
 
   /**
    * Custom encoding for legend gradient filled rect marks.
    */
-  gradient?: GuideEncodingEntry;
+  gradient?: GuideEncodingEntry<ES>;
 }
 
 export const defaultLegendConfig: LegendConfig<SignalRef> = {

@@ -46,32 +46,35 @@ export const ERRORBAR_PARTS = ['ticks', 'rule'] as const;
 
 export type ErrorBarPart = typeof ERRORBAR_PARTS[number];
 
-export interface ErrorExtraEncoding<F extends Field> {
+export interface ErrorExtraEncoding<F extends Field, ES extends ExprRef | SignalRef> {
   /**
    * Error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
    */
-  xError?: SecondaryFieldDef<F> | ValueDef<number>;
+  xError?: SecondaryFieldDef<F, ES> | ValueDef<number>;
 
   /**
    * Secondary error value of x coordinates for error specified `"errorbar"` and `"errorband"`.
    */
   // `xError2` cannot have type as it should have the same type as `xError`
-  xError2?: SecondaryFieldDef<F> | ValueDef<number>;
+  xError2?: SecondaryFieldDef<F, ES> | ValueDef<number>;
 
   /**
    * Error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
    */
-  yError?: SecondaryFieldDef<F> | ValueDef<number>;
+  yError?: SecondaryFieldDef<F, ES> | ValueDef<number>;
 
   /**
    * Secondary error value of y coordinates for error specified `"errorbar"` and `"errorband"`.
    */
   // `yError2` cannot have type as it should have the same type as `yError`
-  yError2?: SecondaryFieldDef<F> | ValueDef<number>;
+  yError2?: SecondaryFieldDef<F, ES> | ValueDef<number>;
 }
 
-export type ErrorEncoding<F extends Field> = Pick<Encoding<F>, PositionChannel | 'color' | 'detail' | 'opacity'> &
-  ErrorExtraEncoding<F>;
+export type ErrorEncoding<F extends Field, ES extends ExprRef | SignalRef> = Pick<
+  Encoding<F, ES>,
+  PositionChannel | 'color' | 'detail' | 'opacity'
+> &
+  ErrorExtraEncoding<F, ES>;
 
 export type ErrorBarPartsMixins = PartsMixins<ErrorBarPart>;
 
@@ -124,7 +127,7 @@ export interface ErrorBarConfigMixins {
 export const errorBarNormalizer = new CompositeMarkNormalizer(ERRORBAR, normalizeErrorBar);
 
 export function normalizeErrorBar(
-  spec: GenericUnitSpec<ErrorEncoding<string>, ErrorBar | ErrorBarDef>,
+  spec: GenericUnitSpec<ErrorEncoding<string, ExprRef>, ErrorBar | ErrorBarDef>,
   {config}: NormalizerParams
 ): NormalizedLayerSpec | NormalizedUnitSpec {
   // Need to initEncoding first so we can infer type
@@ -197,7 +200,7 @@ export function normalizeErrorBar(
 }
 
 function errorBarOrientAndInputType(
-  spec: GenericUnitSpec<ErrorEncoding<string>, ErrorBar | ErrorBand | ErrorBarDef | ErrorBandDef>,
+  spec: GenericUnitSpec<ErrorEncoding<string, ExprRef>, ErrorBar | ErrorBand | ErrorBarDef | ErrorBandDef>,
   compositeMark: ErrorBar | ErrorBand
 ): {
   orient: Orientation;
@@ -291,7 +294,7 @@ function errorBarOrientAndInputType(
   }
 }
 
-function errorBarIsInputTypeRaw(encoding: ErrorEncoding<string>): boolean {
+function errorBarIsInputTypeRaw(encoding: ErrorEncoding<string, ExprRef>): boolean {
   return (
     (isFieldOrDatumDef(encoding.x) || isFieldOrDatumDef(encoding.y)) &&
     !isFieldOrDatumDef(encoding.x2) &&
@@ -303,11 +306,11 @@ function errorBarIsInputTypeRaw(encoding: ErrorEncoding<string>): boolean {
   );
 }
 
-function errorBarIsInputTypeAggregatedUpperLower(encoding: ErrorEncoding<string>): boolean {
+function errorBarIsInputTypeAggregatedUpperLower(encoding: ErrorEncoding<string, ExprRef>): boolean {
   return isFieldOrDatumDef(encoding.x2) || isFieldOrDatumDef(encoding.y2);
 }
 
-function errorBarIsInputTypeAggregatedError(encoding: ErrorEncoding<string>): boolean {
+function errorBarIsInputTypeAggregatedError(encoding: ErrorEncoding<string, ExprRef>): boolean {
   return (
     isFieldOrDatumDef(encoding.xError) ||
     isFieldOrDatumDef(encoding.xError2) ||
@@ -320,15 +323,15 @@ export function errorBarParams<
   M extends ErrorBar | ErrorBand,
   MD extends GenericCompositeMarkDef<M> & (ErrorBarDef | ErrorBandDef)
 >(
-  spec: GenericUnitSpec<ErrorEncoding<string>, M | MD>,
+  spec: GenericUnitSpec<ErrorEncoding<string, ExprRef>, M | MD>,
   compositeMark: M,
   config: Config
 ): {
   transform: Transform[];
   groupby: string[];
-  continuousAxisChannelDef: PositionFieldDef<string>;
+  continuousAxisChannelDef: PositionFieldDef<string, ExprRef>;
   continuousAxis: 'x' | 'y';
-  encodingWithoutContinuousAxis: ErrorEncoding<string>;
+  encodingWithoutContinuousAxis: ErrorEncoding<string, ExprRef>;
   ticksOrient: Orientation;
   markDef: MD;
   outerSpec: {
@@ -340,7 +343,7 @@ export function errorBarParams<
     width?: number | 'container' | Step;
     height?: number | 'container' | Step;
   };
-  tooltipEncoding: ErrorEncoding<string>;
+  tooltipEncoding: ErrorEncoding<string, ExprRef>;
 } {
   // TODO: use selection
   const {mark, encoding, params, projection: _p, ...outerSpec} = spec;
@@ -395,7 +398,7 @@ export function errorBarParams<
   const aggregate: AggregatedFieldDef[] = [...oldAggregate, ...errorBarSpecificAggregate];
   const groupby: string[] = inputType !== 'raw' ? [] : oldGroupBy;
 
-  const tooltipEncoding: ErrorEncoding<string> = getCompositeMarkTooltip(
+  const tooltipEncoding: ErrorEncoding<string, ExprRef> = getCompositeMarkTooltip(
     tooltipSummary,
     continuousAxisChannelDef,
     encodingWithoutContinuousAxis,
@@ -426,10 +429,10 @@ function errorBarAggregationAndCalculation<
   MD extends GenericCompositeMarkDef<M> & (ErrorBarDef | ErrorBandDef)
 >(
   markDef: MD,
-  continuousAxisChannelDef: PositionFieldDef<string>,
-  continuousAxisChannelDef2: SecondaryFieldDef<string>,
-  continuousAxisChannelDefError: SecondaryFieldDef<string>,
-  continuousAxisChannelDefError2: SecondaryFieldDef<string>,
+  continuousAxisChannelDef: PositionFieldDef<string, ExprRef>,
+  continuousAxisChannelDef2: SecondaryFieldDef<string, ExprRef>,
+  continuousAxisChannelDefError: SecondaryFieldDef<string, ExprRef>,
+  continuousAxisChannelDefError2: SecondaryFieldDef<string, ExprRef>,
   inputType: ErrorInputType,
   compositeMark: M,
   config: Config

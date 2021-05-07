@@ -125,7 +125,7 @@ export function getImplicitFromFilterTransform(transform: FilterTransform) {
 export function getImplicitFromEncoding(model: Model) {
   const implicit: Dict<string> = {};
 
-  function add(fieldDef: TypedFieldDef<string>) {
+  function add(fieldDef: TypedFieldDef<string, SignalRef>) {
     if (isFieldOrDatumDefForTimeFormat(fieldDef)) {
       implicit[fieldDef.field] = 'date';
     } else if (
@@ -154,7 +154,7 @@ export function getImplicitFromEncoding(model: Model) {
         add(fieldDef);
       } else {
         const mainChannel = getMainRangeChannel(channel);
-        const mainFieldDef = model.fieldDef(mainChannel as SingleDefChannel) as TypedFieldDef<string>;
+        const mainFieldDef = model.fieldDef(mainChannel as SingleDefChannel) as TypedFieldDef<string, SignalRef>;
         add({
           ...fieldDef,
           type: mainFieldDef.type

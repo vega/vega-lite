@@ -6,6 +6,7 @@
  */
 import {Field, FieldName} from '../channeldef';
 import {Encoding} from '../encoding';
+import {ExprRef} from '../expr';
 import {DataMixins} from './base';
 import {GenericConcatSpec, GenericHConcatSpec, GenericVConcatSpec} from './concat';
 import {GenericFacetSpec} from './facet';
@@ -33,7 +34,7 @@ export {FacetedUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec, UnitSp
  * Any specification in Vega-Lite.
  */
 export type GenericSpec<
-  U extends GenericUnitSpec<Encoding<F>, any>,
+  U extends GenericUnitSpec<Encoding<F, ExprRef>, any>,
   L extends GenericLayerSpec<U>,
   R extends RepeatSpec,
   F extends Field

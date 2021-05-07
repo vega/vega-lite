@@ -1,3 +1,5 @@
+import {SignalRef} from 'vega';
+import {ExprRef} from '../expr';
 import {GuideEncodingEntry} from '../guide';
 import {keys} from '../util';
 import {VgEncodeChannel} from '../vega.schema';
@@ -5,7 +7,7 @@ import {signalOrValueRef} from './common';
 import {wrapCondition} from './mark/encode';
 import {UnitModel} from './unit';
 
-export function guideEncodeEntry(encoding: GuideEncodingEntry, model: UnitModel) {
+export function guideEncodeEntry(encoding: GuideEncodingEntry<ExprRef | SignalRef>, model: UnitModel) {
   return keys(encoding).reduce((encode, channel: VgEncodeChannel) => {
     const valueDef = encoding[channel];
     return {

@@ -64,11 +64,11 @@ import {parseUnitSelection} from './selection/parse';
  */
 export class UnitModel extends ModelWithField {
   public readonly markDef: MarkDef<Mark, SignalRef>;
-  public readonly encoding: Encoding<string>;
+  public readonly encoding: Encoding<string, SignalRef>;
 
   public readonly specifiedScales: ScaleIndex = {};
 
-  public readonly stack: StackProperties;
+  public readonly stack: StackProperties<SignalRef>;
 
   protected specifiedAxes: AxisInternalIndex = {};
 
@@ -148,11 +148,11 @@ export class UnitModel extends ModelWithField {
     return this.specifiedLegends[channel];
   }
 
-  private initScales(mark: Mark, encoding: Encoding<string>): ScaleIndex {
+  private initScales(mark: Mark, encoding: Encoding<string, SignalRef>): ScaleIndex {
     return SCALE_CHANNELS.reduce((scales, channel) => {
       const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as
-        | PositionFieldDef<string>
-        | MarkPropFieldOrDatumDef<string>;
+        | PositionFieldDef<string, SignalRef>
+        | MarkPropFieldOrDatumDef<string, SignalRef>;
       if (fieldOrDatumDef) {
         scales[channel] = this.initScale(fieldOrDatumDef.scale ?? {});
       }
@@ -173,7 +173,7 @@ export class UnitModel extends ModelWithField {
     return scaleInternal as Scale<SignalRef>;
   }
 
-  private initAxes(encoding: Encoding<string>): AxisInternalIndex {
+  private initAxes(encoding: Encoding<string, SignalRef>): AxisInternalIndex {
     return POSITION_SCALE_CHANNELS.reduce((_axis, channel) => {
       // Position Axis
 
@@ -206,9 +206,9 @@ export class UnitModel extends ModelWithField {
     return axisInternal;
   }
 
-  private initLegends(encoding: Encoding<string>): LegendInternalIndex {
+  private initLegends(encoding: Encoding<string, SignalRef>): LegendInternalIndex {
     return NONPOSITION_SCALE_CHANNELS.reduce((_legend, channel) => {
-      const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as MarkPropFieldOrDatumDef<string>;
+      const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as MarkPropFieldOrDatumDef<string, SignalRef>;
 
       if (fieldOrDatumDef && supportLegend(channel)) {
         const legend = fieldOrDatumDef.legend;
@@ -288,7 +288,7 @@ export class UnitModel extends ModelWithField {
 
   public fieldDef(channel: SingleDefChannel) {
     const channelDef = this.encoding[channel];
-    return getFieldDef<string>(channelDef);
+    return getFieldDef<string, SignalRef>(channelDef);
   }
 
   public typedFieldDef(channel: SingleDefChannel) {

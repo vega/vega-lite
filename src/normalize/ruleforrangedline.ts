@@ -1,3 +1,4 @@
+import {ExprRef} from 'vega';
 import {isObject} from 'vega-util';
 import {isBinned} from '../bin';
 import {getMainRangeChannel, SECONDARY_RANGE_CHANNEL} from '../channel';
@@ -10,14 +11,17 @@ import {GenericUnitSpec, isUnitSpec} from '../spec/unit';
 import {NonFacetUnitNormalizer, NormalizeLayerOrUnit, NormalizerParams} from './base';
 
 interface EncodingX2Mixins {
-  x2: Encoding<Field>['x2'];
+  x2: Encoding<Field, ExprRef>['x2'];
 }
 
 interface EncodingY2Mixins {
-  y2: Encoding<Field>['y2'];
+  y2: Encoding<Field, ExprRef>['y2'];
 }
 
-type RangedLineSpec = GenericUnitSpec<Encoding<Field> & (EncodingX2Mixins | EncodingY2Mixins), 'line' | {mark: 'line'}>;
+type RangedLineSpec = GenericUnitSpec<
+  Encoding<Field, ExprRef> & (EncodingX2Mixins | EncodingY2Mixins),
+  'line' | {mark: 'line'}
+>;
 
 export class RuleForRangedLineNormalizer implements NonFacetUnitNormalizer<RangedLineSpec> {
   public name = 'RuleForRangedLine';
