@@ -2,7 +2,7 @@ import {array, isObject} from 'vega-util';
 import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../channel';
 import * as log from '../../log';
 import {hasContinuousDomain} from '../../scale';
-import {BaseSelectionConfig, SelectionInitIntervalMapping, SelectionInitMapping} from '../../selection';
+import {PointSelectionConfig, SelectionInitIntervalMapping, SelectionInitMapping} from '../../selection';
 import {Dict, hash, keys, replacePathInField, varName, isEmpty} from '../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../data/timeunit';
 import {SelectionCompiler} from '.';
@@ -63,7 +63,7 @@ const project: SelectionCompiler = {
     };
 
     const type = selCmpt.type;
-    const cfg = model.config.selection[type];
+    const cfg = model.config.selection[type] as PointSelectionConfig;
     const init =
       selDef.value !== undefined
         ? (array(selDef.value as any) as SelectionInitMapping[] | SelectionInitIntervalMapping[])
@@ -71,7 +71,7 @@ const project: SelectionCompiler = {
 
     // If no explicit projection (either fields or encodings) is specified, set some defaults.
     // If an initial value is set, try to infer projections.
-    let {fields, encodings} = isObject(selDef.select) ? selDef.select : ({} as BaseSelectionConfig);
+    let {fields, encodings} = (isObject(selDef.select) ? selDef.select : {}) as PointSelectionConfig;
     if (!fields && !encodings && init) {
       for (const initVal of init) {
         // initVal may be a scalar value to smoothen varParam -> pointSelection gradient.
@@ -156,7 +156,6 @@ const project: SelectionCompiler = {
       }
     }
 
-    // TODO: find a possible channel mapping for these fields.
     for (const field of fields ?? []) {
       if (proj.hasField[field]) continue;
       const p: SelectionProjection = {type: 'E', field};
