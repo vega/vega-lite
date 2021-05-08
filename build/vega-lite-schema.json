@@ -3795,8 +3795,7 @@
       "additionalProperties": false,
       "properties": {
         "align": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment for title text. One of `\"left\"`, `\"center\"`, or `\"right\"`."
+          "$ref": "#/definitions/Align"
         },
         "anchor": {
           "anyOf": [
@@ -3832,8 +3831,7 @@
           ]
         },
         "baseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for title and subtitle text. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
+          "$ref": "#/definitions/TextBaseline"
         },
         "color": {
           "anyOf": [
@@ -27403,8 +27401,7 @@
       "additionalProperties": false,
       "properties": {
         "align": {
-          "$ref": "#/definitions/Align",
-          "description": "Horizontal text alignment for title text. One of `\"left\"`, `\"center\"`, or `\"right\"`."
+          "$ref": "#/definitions/Align"
         },
         "anchor": {
           "$ref": "#/definitions/TitleAnchor",
@@ -27433,8 +27430,7 @@
           ]
         },
         "baseline": {
-          "$ref": "#/definitions/TextBaseline",
-          "description": "Vertical text baseline for title and subtitle text. One of `\"alphabetic\"` (default), `\"top\"`, `\"middle\"`, `\"bottom\"`, `\"line-top\"`, or `\"line-bottom\"`. The `\"line-top\"` and `\"line-bottom\"` values operate similarly to `\"top\"` and `\"bottom\"`, but are calculated relative to the *lineHeight* rather than *fontSize* alone."
+          "$ref": "#/definitions/TextBaseline"
         },
         "color": {
           "anyOf": [
