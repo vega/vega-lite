@@ -47,8 +47,8 @@ module.exports = (type, callback, opt) => {
 
   // instantiate view and invoke headless render method
   function render(vlSpec) {
-    const vgSpec = vegaLite.compile(vlSpec).spec;
-    const view = new vega.View(vega.parse(vgSpec, config), {
+    const vgSpec = vegaLite.compile(vlSpec, {config}).spec;
+    const view = new vega.View(vega.parse(vgSpec), {
       locale: locale, // set locale options
       loader: vega.loader({baseURL: base}), // load files from base path
       logger: vega.logger(loglevel, 'error'), // route all logging to stderr
