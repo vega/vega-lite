@@ -4,14 +4,14 @@ import {isBinning} from '../bin';
 import {COLUMN, ExtendedChannel, FacetChannel, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../channel';
 import {FieldName, FieldRefOption, initFieldDef, TypedFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
-import {ExprRef, replaceExprRef} from '../expr';
+import {ExprRef} from '../expr';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
 import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
 import {keys} from '../util';
-import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
+import {isVgRangeStep, SubstituteType, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
 import {buildModel} from './buildmodel';
 import {assembleFacetData} from './data/assemble';
 import {sortArrayIndexField} from './data/calculate';
@@ -40,7 +40,12 @@ export class FacetModel extends ModelWithField {
 
   public readonly children: Model[];
 
-  constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, config: Config<SignalRef>) {
+  constructor(
+    spec: SubstituteType<NormalizedFacetSpec, ExprRef, SignalRef>,
+    parent: Model,
+    parentGivenName: string,
+    config: Config<SignalRef>
+  ) {
     super(spec, 'facet', parent, parentGivenName, config, spec.resolve);
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, config);
@@ -82,9 +87,7 @@ export class FacetModel extends ModelWithField {
     // Cast because we call initFieldDef, which assumes general FieldDef.
     // However, FacetFieldDef is a bit more constrained than the general FieldDef
     const facetFieldDef = initFieldDef(fieldDef, channel) as FacetFieldDef<FieldName, SignalRef>;
-    if (facetFieldDef.header) {
-      facetFieldDef.header = replaceExprRef(facetFieldDef.header);
-    } else if (facetFieldDef.header === null) {
+    if (facetFieldDef.header === null) {
       facetFieldDef.header = null;
     }
     return facetFieldDef;
