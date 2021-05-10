@@ -24,7 +24,7 @@ echo ""
 if ! git diff --exit-code ./build/vega-lite-schema.json
 then
   ## Only do this for master
-  if [ $PUSH_BRANCH=true ]; then
+  if [[ $PUSH_BRANCH=true ]]; then
     git add ./build/vega-lite-schema.json
     git commit -m "chore: update schema [CI]"
   else
@@ -37,7 +37,7 @@ echo ""
 echo "------- Checking Examples -------"
 echo ""
 
-if git log -1 | grep "\[SVG\]" && [ $PUSH_BRANCH=true ]; then
+if git log -1 | grep "\[SVG\]" && [[ $PUSH_BRANCH=true ]]; then
   echo "As the latest commit includes [SVG]. Rebuilding all SVGs."
   yarn build:examples-full
 else
@@ -49,7 +49,7 @@ fi
 # Note: we need to add all files first so that new files are included in `git diff --cached` too.
 git add examples
 
-if [ $PUSH_BRANCH=true ]; then
+if [[ $PUSH_BRANCH=true ]]; then
   if ! git diff --cached --word-diff=color --exit-code examples
   then
     git commit -m "chore: update examples [CI]"
@@ -67,7 +67,7 @@ echo ""
 echo "------- Checking Code Formatting -------"
 echo ""
 
-if [ $PUSH_BRANCH=true ]; then
+if [[ $PUSH_BRANCH=true ]]; then
   ## For non-master branch, commit eslint fix and prettier changes if outdated
   if ! git diff --exit-code site src test test-runtime
   then
