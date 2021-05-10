@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {hasOwnProperty, isArray} from 'vega-util';
 import {
   ChannelDef,
@@ -15,6 +16,7 @@ import {
   ValueDef
 } from '../channeldef';
 import {Encoding} from '../encoding';
+import {ExprRef} from '../expr';
 import * as log from '../log';
 import {isSortField} from '../sort';
 import {FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
@@ -29,28 +31,28 @@ export interface RepeaterValue {
 }
 
 export function replaceRepeaterInFacet(
-  facet: FacetFieldDef<Field> | FacetMapping<Field>,
+  facet: FacetFieldDef<Field, ExprRef> | FacetMapping<Field, ExprRef>,
   repeater: RepeaterValue
-): FacetFieldDef<FieldName> | FacetMapping<FieldName> {
+): FacetFieldDef<FieldName, ExprRef> | FacetMapping<FieldName, ExprRef> {
   if (!repeater) {
-    return facet as FacetFieldDef<FieldName>;
+    return facet as FacetFieldDef<FieldName, ExprRef>;
   }
 
   if (isFacetMapping(facet)) {
-    return replaceRepeaterInMapping(facet, repeater) as FacetMapping<FieldName>;
+    return replaceRepeaterInMapping(facet, repeater) as FacetMapping<FieldName, ExprRef>;
   }
-  return replaceRepeaterInFieldDef(facet, repeater) as FacetFieldDef<FieldName>;
+  return replaceRepeaterInFieldDef(facet, repeater) as FacetFieldDef<FieldName, ExprRef>;
 }
 
-export function replaceRepeaterInEncoding<E extends Encoding<Field>>(
+export function replaceRepeaterInEncoding<E extends Encoding<Field, ExprRef>>(
   encoding: E,
   repeater: RepeaterValue
-): Encoding<FieldName> {
+): Encoding<FieldName, ExprRef> {
   if (!repeater) {
-    return encoding as Encoding<FieldName>;
+    return encoding as Encoding<FieldName, ExprRef>;
   }
 
-  return replaceRepeaterInMapping(encoding, repeater) as Encoding<FieldName>;
+  return replaceRepeaterInMapping(encoding, repeater) as Encoding<FieldName, ExprRef>;
 }
 
 /**
@@ -73,7 +75,10 @@ function replaceRepeatInProp<T>(prop: keyof T, o: T, repeater: RepeaterValue): T
  * Replace repeater values in a field def with the concrete field name.
  */
 
-function replaceRepeaterInFieldDef(fieldDef: FieldDef<Field>, repeater: RepeaterValue) {
+function replaceRepeaterInFieldDef<ES extends ExprRef | SignalRef>(
+  fieldDef: FieldDef<Field, ES>,
+  repeater: RepeaterValue
+) {
   fieldDef = replaceRepeatInProp('field', fieldDef, repeater);
 
   if (fieldDef === undefined) {
@@ -91,10 +96,10 @@ function replaceRepeaterInFieldDef(fieldDef: FieldDef<Field>, repeater: Repeater
     };
   }
 
-  return fieldDef as ScaleFieldDef<FieldName>;
+  return fieldDef as ScaleFieldDef<FieldName, ES>;
 }
 
-function replaceRepeaterInFieldOrDatumDef(def: FieldDef<Field> | DatumDef<Field>, repeater: RepeaterValue) {
+function replaceRepeaterInFieldOrDatumDef(def: FieldDef<Field, ExprRef> | DatumDef<Field>, repeater: RepeaterValue) {
   if (isFieldDef(def)) {
     return replaceRepeaterInFieldDef(def, repeater);
   } else {
@@ -106,12 +111,12 @@ function replaceRepeaterInFieldOrDatumDef(def: FieldDef<Field> | DatumDef<Field>
   }
 }
 
-function replaceRepeaterInChannelDef(channelDef: ChannelDef<Field>, repeater: RepeaterValue) {
+function replaceRepeaterInChannelDef(channelDef: ChannelDef<Field, ExprRef>, repeater: RepeaterValue) {
   if (isFieldOrDatumDef(channelDef)) {
     const fd = replaceRepeaterInFieldOrDatumDef(channelDef, repeater);
     if (fd) {
       return fd;
-    } else if (isConditionalDef<ChannelDef<Field>>(channelDef)) {
+    } else if (isConditionalDef<ChannelDef<Field, ExprRef>, ExprRef>(channelDef)) {
       return {condition: channelDef.condition};
     }
   } else {
@@ -132,7 +137,7 @@ function replaceRepeaterInChannelDef(channelDef: ChannelDef<Field>, repeater: Re
   return undefined;
 }
 
-type EncodingOrFacet<F extends Field> = Encoding<F> | FacetMapping<F>;
+type EncodingOrFacet<F extends Field> = Encoding<F, ExprRef> | FacetMapping<F, ExprRef>;
 
 function replaceRepeaterInMapping(
   mapping: EncodingOrFacet<Field>,
@@ -141,11 +146,11 @@ function replaceRepeaterInMapping(
   const out: EncodingOrFacet<FieldName> = {};
   for (const channel in mapping) {
     if (hasOwnProperty(mapping, channel)) {
-      const channelDef: ChannelDef<Field> | ChannelDef<Field>[] = mapping[channel];
+      const channelDef: ChannelDef<Field, ExprRef> | ChannelDef<Field, ExprRef>[] = mapping[channel];
 
       if (isArray(channelDef)) {
         // array cannot have condition
-        out[channel] = (channelDef as ChannelDef<Field>[]) // somehow we need to cast it here
+        out[channel] = (channelDef as ChannelDef<Field, ExprRef>[]) // somehow we need to cast it here
           .map(cd => replaceRepeaterInChannelDef(cd, repeater))
           .filter(cd => cd);
       } else {

@@ -22,8 +22,8 @@ export interface LegendRuleParams {
   channel: NonPositionScaleChannel;
   model: UnitModel;
   markDef: MarkDef<Mark, SignalRef>;
-  encoding: Encoding<string>;
-  fieldOrDatumDef: MarkPropFieldOrDatumDef<string>;
+  encoding: Encoding<string, SignalRef>;
+  fieldOrDatumDef: MarkPropFieldOrDatumDef<string, SignalRef>;
   legendConfig: LegendConfig<SignalRef>;
   config: Config<SignalRef>;
   scaleType: ScaleType;
@@ -74,7 +74,7 @@ export const legendRules: {
   values: ({fieldOrDatumDef, legend}) => values(legend, fieldOrDatumDef)
 };
 
-export function values(legend: LegendInternal, fieldOrDatumDef: TypedFieldDef<string> | DatumDef) {
+export function values(legend: LegendInternal, fieldOrDatumDef: TypedFieldDef<string, SignalRef> | DatumDef) {
   const vals = legend.values;
 
   if (isArray(vals)) {
@@ -88,7 +88,7 @@ export function values(legend: LegendInternal, fieldOrDatumDef: TypedFieldDef<st
 export function defaultSymbolType(
   mark: Mark,
   channel: NonPositionScaleChannel,
-  shapeChannelDef: Encoding<string>['shape'],
+  shapeChannelDef: Encoding<string, SignalRef>['shape'],
   markShape: SymbolShape | SignalRef
 ): SymbolShape | SignalRef {
   if (channel !== 'shape') {

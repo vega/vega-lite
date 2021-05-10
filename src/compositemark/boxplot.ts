@@ -1,4 +1,4 @@
-import {Orientation} from 'vega';
+import {ExprRef, Orientation, SignalRef} from 'vega';
 import {isNumber, isObject} from 'vega-util';
 import {getMarkPropOrConfig} from '../compile/common';
 import {Config} from '../config';
@@ -79,7 +79,7 @@ export function getBoxPlotType(extent: number | 'min-max') {
 }
 
 export function normalizeBoxPlot(
-  spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
+  spec: GenericUnitSpec<Encoding<string, ExprRef>, BoxPlot | BoxPlotDef>,
   {config}: NormalizerParams
 ): NormalizedLayerSpec {
   // Need to initEncoding first so we can infer type
@@ -119,7 +119,7 @@ export function normalizeBoxPlot(
 
   const {color, size, ...encodingWithoutSizeColorAndContinuousAxis} = encodingWithoutContinuousAxis;
 
-  const makeBoxPlotPart = (sharedEncoding: Encoding<string>) => {
+  const makeBoxPlotPart = (sharedEncoding: Encoding<string, ExprRef>) => {
     return makeCompositeAggregatePartFactory<BoxPlotPartsMixins>(
       markDef,
       continuousAxis,
@@ -133,7 +133,7 @@ export function normalizeBoxPlot(
   const makeBoxPlotBox = makeBoxPlotPart(encodingWithoutContinuousAxis);
   const makeBoxPlotMidTick = makeBoxPlotPart({...encodingWithoutSizeColorAndContinuousAxis, ...(size ? {size} : {})});
 
-  const fiveSummaryTooltipEncoding: Encoding<string> = getCompositeMarkTooltip(
+  const fiveSummaryTooltipEncoding: Encoding<string, ExprRef> = getCompositeMarkTooltip(
     [
       {fieldPrefix: boxPlotType === 'min-max' ? 'upper_whisker_' : 'max_', titlePrefix: 'Max'},
       {fieldPrefix: 'upper_box_', titlePrefix: 'Q3'},
@@ -148,7 +148,7 @@ export function normalizeBoxPlot(
   // ## Whisker Layers
 
   const endTick: MarkDef = {type: 'tick', color: 'black', opacity: 1, orient: ticksOrient, invalid: null, aria: false};
-  const whiskerTooltipEncoding: Encoding<string> =
+  const whiskerTooltipEncoding: Encoding<string, ExprRef> =
     boxPlotType === 'min-max'
       ? fiveSummaryTooltipEncoding // for min-max, show five-summary tooltip for whisker
       : // for tukey / k-IQR, just show upper/lower-whisker
@@ -346,9 +346,9 @@ function boxParamsQuartiles(continousAxisField: string): AggregatedFieldDef[] {
 }
 
 function boxParams(
-  spec: GenericUnitSpec<Encoding<string>, BoxPlot | BoxPlotDef>,
+  spec: GenericUnitSpec<Encoding<string, ExprRef>, BoxPlot | BoxPlotDef>,
   extent: 'min-max' | number,
-  config: Config
+  config: Config<ExprRef | SignalRef>
 ) {
   const orient = compositeMarkOrient(spec, BOXPLOT);
   const {continuousAxisChannelDef, continuousAxis} = compositeMarkContinuousAxis(spec, orient, BOXPLOT);

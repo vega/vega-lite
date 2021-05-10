@@ -1,4 +1,4 @@
-import {Transforms as VgTransform} from 'vega';
+import {SignalRef, Transforms as VgTransform} from 'vega';
 import {isArray, isString} from 'vega-util';
 import {FieldName, getFieldDef, isFieldDef, PositionFieldDef, vgField} from '../../channeldef';
 import {SortFields, SortOrder} from '../../sort';
@@ -27,7 +27,7 @@ export interface StackComponent {
    */
   facetby: string[];
 
-  dimensionFieldDef?: PositionFieldDef<string>;
+  dimensionFieldDef?: PositionFieldDef<string, SignalRef>;
 
   /**
    * Stack measure's field. Used in makeFromEncoding.
@@ -126,10 +126,10 @@ export class StackNode extends DataFlowNode {
 
     const {groupbyChannel, fieldChannel, offset, impute} = stackProperties;
 
-    let dimensionFieldDef: PositionFieldDef<string>;
+    let dimensionFieldDef: PositionFieldDef<string, SignalRef>;
     if (groupbyChannel) {
       const cDef = encoding[groupbyChannel];
-      dimensionFieldDef = getFieldDef(cDef) as PositionFieldDef<string>; // Fair to cast as groupByChannel is always either x or y
+      dimensionFieldDef = getFieldDef(cDef) as PositionFieldDef<string, SignalRef>; // Fair to cast as groupByChannel is always either x or y
     }
 
     const stackby = getStackByFields(model);

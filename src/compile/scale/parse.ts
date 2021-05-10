@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {ScaleChannel, SCALE_CHANNELS, SHAPE} from '../../channel';
 import {getFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
 import {GEOSHAPE} from '../../mark';
@@ -46,7 +47,7 @@ function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
   const {encoding, mark, markDef} = model;
 
   return SCALE_CHANNELS.reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
-    const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as TypedFieldDef<string> | ScaleDatumDef; // must be typed def to have scale
+    const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as TypedFieldDef<string, SignalRef> | ScaleDatumDef; // must be typed def to have scale
 
     // Don't generate scale for shape of geoshape
     if (fieldOrDatumDef && mark === GEOSHAPE && channel === SHAPE && fieldOrDatumDef.type === GEOJSON) {

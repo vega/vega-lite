@@ -5,6 +5,7 @@ import {GenericSpec} from '../spec';
 import {GenericLayerSpec, NormalizedLayerSpec} from '../spec/layer';
 import {GenericUnitSpec, isUnitSpec, NormalizedUnitSpec} from '../spec/unit';
 import {FieldName} from '../channeldef';
+import {ExprRef} from 'vega';
 
 // TODO: replace string with Mark
 export type CompositeMarkUnitSpec<M extends string> = GenericUnitSpec<any, M | GenericMarkDef<M>>;
@@ -17,7 +18,7 @@ export class CompositeMarkNormalizer<M extends string> implements NonFacetUnitNo
       params: NormalizerParams,
       normalize: Normalize<
         // Input of the normalize method
-        GenericUnitSpec<Encoding<FieldName>, M> | GenericLayerSpec<any>,
+        GenericUnitSpec<Encoding<FieldName, ExprRef>, M> | GenericLayerSpec<any>,
         // Output of the normalize method
         NormalizedLayerSpec | NormalizedUnitSpec
       >

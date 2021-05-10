@@ -1,4 +1,4 @@
-import {AggregateOp} from 'vega';
+import {AggregateOp, SignalRef} from 'vega';
 import {array, isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
@@ -78,6 +78,7 @@ import {
   vgField
 } from './channeldef';
 import {Config} from './config';
+import {ExprRef} from './expr';
 import * as log from './log';
 import {Mark} from './mark';
 import {EncodingFacetMapping} from './spec/facet';
@@ -86,20 +87,20 @@ import {QUANTITATIVE, TEMPORAL} from './type';
 import {keys, some} from './util';
 import {isSignalRef} from './vega.schema';
 
-export interface Encoding<F extends Field> {
+export interface Encoding<F extends Field, ES extends ExprRef | SignalRef> {
   /**
    * X coordinates of the marks, or width of horizontal `"bar"` and `"area"` without specified `x2` or `width`.
    *
    * The `value` of this channel can be a number or a string `"width"` for the width of the plot.
    */
-  x?: PositionDef<F>;
+  x?: PositionDef<F, ES>;
 
   /**
    * Y coordinates of the marks, or height of vertical `"bar"` and `"area"` without specified `y2` or `height`.
    *
    * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
-  y?: PositionDef<F>;
+  y?: PositionDef<F, ES>;
 
   /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
@@ -108,7 +109,7 @@ export interface Encoding<F extends Field> {
    */
   // TODO: Ham need to add default behavior
   // `x2` cannot have type as it should have the same type as `x`
-  x2?: Position2Def<F>;
+  x2?: Position2Def<F, ES>;
 
   /**
    * Y2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
@@ -117,52 +118,52 @@ export interface Encoding<F extends Field> {
    */
   // TODO: Ham need to add default behavior
   // `y2` cannot have type as it should have the same type as `y`
-  y2?: Position2Def<F>;
+  y2?: Position2Def<F, ES>;
 
   /**
    * Longitude position of geographically projected marks.
    */
-  longitude?: LatLongDef<F>;
+  longitude?: LatLongDef<F, ES>;
 
   /**
    * Latitude position of geographically projected marks.
    */
-  latitude?: LatLongDef<F>;
+  latitude?: LatLongDef<F, ES>;
 
   /**
    * Longitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // `longitude2` cannot have type as it should have the same type as `longitude`
-  longitude2?: Position2Def<F>;
+  longitude2?: Position2Def<F, ES>;
 
   /**
    * Latitude-2 position for geographically projected ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
    */
   // `latitude2` cannot have type as it should have the same type as `latitude`
-  latitude2?: Position2Def<F>;
+  latitude2?: Position2Def<F, ES>;
 
   /**
    * - For arc marks, the arc length in radians if theta2 is not specified, otherwise the start arc angle. (A value of 0 indicates up or “north”, increasing values proceed clockwise.)
    *
    * - For text marks, polar coordinate angle in radians.
    */
-  theta?: PolarDef<F>;
+  theta?: PolarDef<F, ES>;
 
   /**
    * The end angle of arc marks in radians. A value of 0 indicates up or “north”, increasing values proceed clockwise.
    */
-  theta2?: Position2Def<F>;
+  theta2?: Position2Def<F, ES>;
 
   /**
    * The outer radius in pixels of arc marks.
    */
 
-  radius?: PolarDef<F>;
+  radius?: PolarDef<F, ES>;
 
   /**
    * The inner radius in pixels of arc marks.
    */
-  radius2?: Position2Def<F>;
+  radius2?: Position2Def<F, ES>;
 
   /**
    * Color of the marks – either fill or stroke color based on  the `filled` property of mark definition.
@@ -175,7 +176,7 @@ export interface Encoding<F extends Field> {
    * 1) For fine-grained control over both fill and stroke colors of the marks, please use the `fill` and `stroke` channels. The `fill` or `stroke` encodings have higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    * 2) See the scale documentation for more information about customizing [color scheme](https://vega.github.io/vega-lite/docs/scale.html#scheme).
    */
-  color?: ColorDef<F>;
+  color?: ColorDef<F, ES>;
 
   /**
    * Fill color of the marks.
@@ -183,7 +184,7 @@ export interface Encoding<F extends Field> {
    *
    * _Note:_ The `fill` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    */
-  fill?: ColorDef<F>;
+  fill?: ColorDef<F, ES>;
 
   /**
    * Stroke color of the marks.
@@ -192,42 +193,42 @@ export interface Encoding<F extends Field> {
    * _Note:_ The `stroke` encoding has higher precedence than `color`, thus may override the `color` encoding if conflicting encodings are specified.
    */
 
-  stroke?: ColorDef<F>;
+  stroke?: ColorDef<F, ES>;
 
   /**
    * Opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `opacity` property.
    */
-  opacity?: NumericMarkPropDef<F>;
+  opacity?: NumericMarkPropDef<F, ES>;
 
   /**
    * Fill opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `fillOpacity` property.
    */
-  fillOpacity?: NumericMarkPropDef<F>;
+  fillOpacity?: NumericMarkPropDef<F, ES>;
 
   /**
    * Stroke opacity of the marks.
    *
    * __Default value:__ If undefined, the default opacity depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeOpacity` property.
    */
-  strokeOpacity?: NumericMarkPropDef<F>;
+  strokeOpacity?: NumericMarkPropDef<F, ES>;
 
   /**
    * Stroke width of the marks.
    *
    * __Default value:__ If undefined, the default stroke width depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#mark-config)'s `strokeWidth` property.
    */
-  strokeWidth?: NumericMarkPropDef<F>;
+  strokeWidth?: NumericMarkPropDef<F, ES>;
 
   /**
    * Stroke dash of the marks.
    *
    * __Default value:__ `[1,0]` (No dash).
    */
-  strokeDash?: NumericArrayMarkPropDef<F>;
+  strokeDash?: NumericArrayMarkPropDef<F, ES>;
 
   /**
    * Size of the mark.
@@ -236,12 +237,12 @@ export interface Encoding<F extends Field> {
    * - For `"text"` – the text's font size.
    * - Size is unsupported for `"line"`, `"area"`, and `"rect"`. (Use `"trail"` instead of line with varying size)
    */
-  size?: NumericMarkPropDef<F>;
+  size?: NumericMarkPropDef<F, ES>;
 
   /**
    * Rotation angle of point and text marks.
    */
-  angle?: NumericMarkPropDef<F>;
+  angle?: NumericMarkPropDef<F, ES>;
 
   /**
    * Shape of the mark.
@@ -256,44 +257,44 @@ export interface Encoding<F extends Field> {
    *
    * __Default value:__ If undefined, the default shape depends on [mark config](https://vega.github.io/vega-lite/docs/config.html#point-config)'s `shape` property. (`"circle"` if unset.)
    */
-  shape?: ShapeDef<F>;
+  shape?: ShapeDef<F, ES>;
   /**
    * Additional levels of detail for grouping data in aggregate views and
    * in line, trail, and area marks without mapping data to a specific visual channel.
    */
-  detail?: FieldDefWithoutScale<F> | FieldDefWithoutScale<F>[];
+  detail?: FieldDefWithoutScale<F, ES> | FieldDefWithoutScale<F, ES>[];
 
   /**
    * A data field to use as a unique key for data binding. When a visualization’s data is updated, the key value will be used to match data elements to existing mark instances. Use a key channel to enable object constancy for transitions over dynamic data.
    */
-  key?: FieldDefWithoutScale<F>;
+  key?: FieldDefWithoutScale<F, ES>;
 
   /**
    * Text of the `text` mark.
    */
-  text?: TextDef<F>;
+  text?: TextDef<F, ES>;
 
   /**
    * The tooltip text to show upon mouse hover. Specifying `tooltip` encoding overrides [the `tooltip` property in the mark definition](https://vega.github.io/vega-lite/docs/mark.html#mark-def).
    *
    * See the [`tooltip`](https://vega.github.io/vega-lite/docs/tooltip.html) documentation for a detailed discussion about tooltip in Vega-Lite.
    */
-  tooltip?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F> | StringFieldDef<F>[] | null;
+  tooltip?: StringFieldDefWithCondition<F, ES> | StringValueDefWithCondition<F, ES> | StringFieldDef<F, ES>[] | null;
 
   /**
    * A URL to load upon mouse click.
    */
-  href?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  href?: StringFieldDefWithCondition<F, ES> | StringValueDefWithCondition<F, ES>;
 
   /**
    * The URL of an image mark.
    */
-  url?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  url?: StringFieldDefWithCondition<F, ES> | StringValueDefWithCondition<F, ES>;
 
   /**
    * A text description of this mark for ARIA accessibility (SVG output only). For SVG output the `"aria-label"` attribute will be set to this description.
    */
-  description?: StringFieldDefWithCondition<F> | StringValueDefWithCondition<F>;
+  description?: StringFieldDefWithCondition<F, ES> | StringValueDefWithCondition<F, ES>;
 
   /**
    * Order of the marks.
@@ -303,27 +304,29 @@ export interface Encoding<F extends Field> {
    *
    * __Note__: In aggregate plots, `order` field should be `aggregate`d to avoid creating additional aggregation grouping.
    */
-  order?: OrderFieldDef<F> | OrderFieldDef<F>[] | OrderValueDef;
+  order?: OrderFieldDef<F, ES> | OrderFieldDef<F, ES>[] | OrderValueDef<ES>;
 }
 
-export interface EncodingWithFacet<F extends Field> extends Encoding<F>, EncodingFacetMapping<F> {}
+export interface EncodingWithFacet<F extends Field, ES extends ExprRef | SignalRef>
+  extends Encoding<F, ES>,
+    EncodingFacetMapping<F, ES> {}
 
-export function channelHasField<F extends Field>(
-  encoding: EncodingWithFacet<F>,
-  channel: keyof EncodingWithFacet<F>
+export function channelHasField<F extends Field, ES extends ExprRef | SignalRef>(
+  encoding: EncodingWithFacet<F, ES>,
+  channel: keyof EncodingWithFacet<F, ES>
 ): boolean {
   const channelDef = encoding && encoding[channel];
   if (channelDef) {
     if (isArray(channelDef)) {
       return some(channelDef, fieldDef => !!fieldDef.field);
     } else {
-      return isFieldDef(channelDef) || hasConditionalFieldDef<Field>(channelDef);
+      return isFieldDef(channelDef) || hasConditionalFieldDef<Field, ES>(channelDef);
     }
   }
   return false;
 }
 
-export function isAggregate(encoding: EncodingWithFacet<any>) {
+export function isAggregate(encoding: EncodingWithFacet<any, any>) {
   return some(CHANNELS, channel => {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
@@ -338,12 +341,12 @@ export function isAggregate(encoding: EncodingWithFacet<any>) {
   });
 }
 
-export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config: Config) {
+export function extractTransformsFromEncoding(oldEncoding: Encoding<any, any>, config: Config) {
   const groupby: string[] = [];
   const bins: BinTransform[] = [];
   const timeUnits: TimeUnitTransform[] = [];
   const aggregate: AggregatedFieldDef[] = [];
-  const encoding: Encoding<string> = {};
+  const encoding: Encoding<string, ExprRef> = {};
 
   forEach(oldEncoding, (channelDef, channel) => {
     // Extract potential embedded transformations along with remaining properties
@@ -353,7 +356,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
         const guide = getGuide(channelDef);
         const isTitleDefined = guide && guide.title;
         let newField = vgField(channelDef, {forAs: true});
-        const newFieldDef: FieldDef<string> = {
+        const newFieldDef: FieldDef<string, SignalRef> = {
           // Only add title if it doesn't exist
           ...(isTitleDefined ? [] : {title: title(channelDef, config, {allowDisabling: true})}),
           ...remaining,
@@ -397,7 +400,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
             }
             // Create accompanying 'x2' or 'y2' field if channel is 'x' or 'y' respectively
             if (isXorY(channel)) {
-              const secondaryChannel: SecondaryFieldDef<string> = {
+              const secondaryChannel: SecondaryFieldDef<string, SignalRef> = {
                 field: `${newField}_end`
               };
               encoding[`${channel}2`] = secondaryChannel;
@@ -454,7 +457,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
   };
 }
 
-export function markChannelCompatible(encoding: Encoding<string>, channel: Channel, mark: Mark) {
+export function markChannelCompatible(encoding: Encoding<string, ExprRef | SignalRef>, channel: Channel, mark: Mark) {
   const markSupported = supportMark(channel, mark);
   if (!markSupported) {
     return false;
@@ -473,12 +476,12 @@ export function markChannelCompatible(encoding: Encoding<string>, channel: Chann
 }
 
 export function initEncoding(
-  encoding: Encoding<string>,
+  encoding: Encoding<string, ExprRef>,
   mark: Mark,
   filled: boolean,
   config: Config
-): Encoding<string> {
-  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
+): Encoding<string, SignalRef> {
+  return keys(encoding).reduce((normalizedEncoding: Encoding<string, SignalRef>, channel: Channel) => {
     if (!isChannel(channel)) {
       // Drop invalid channel
       log.warn(log.message.invalidEncodingChannel(channel));
@@ -520,7 +523,7 @@ export function initEncoding(
       if (channelDef) {
         // Array of fieldDefs for detail channel (or production rule)
         (normalizedEncoding[channel] as any) = array(channelDef).reduce(
-          (defs: FieldDef<string>[], fieldDef: FieldDef<string>) => {
+          (defs: FieldDef<string, ExprRef>[], fieldDef: FieldDef<string, ExprRef>) => {
             if (!isFieldDef(fieldDef)) {
               log.warn(log.message.emptyFieldDef(fieldDef, channel));
             } else {
@@ -546,7 +549,7 @@ export function initEncoding(
         return normalizedEncoding;
       }
 
-      normalizedEncoding[channel as any] = initChannelDef(channelDef as ChannelDef, channel, config);
+      normalizedEncoding[channel as any] = initChannelDef(channelDef, channel, config);
     }
     return normalizedEncoding;
   }, {});
@@ -555,8 +558,8 @@ export function initEncoding(
 /**
  * For composite marks, we have to call initChannelDef during init so we can infer types earlier.
  */
-export function normalizeEncoding(encoding: Encoding<string>, config: Config): Encoding<string> {
-  const normalizedEncoding: Encoding<string> = {};
+export function normalizeEncoding(encoding: Encoding<string, ExprRef>, config: Config): Encoding<string, ExprRef> {
+  const normalizedEncoding: Encoding<string, ExprRef> = {};
 
   for (const channel of keys(encoding)) {
     const newChannelDef = initChannelDef(encoding[channel], channel, config, {compositeMark: true});
@@ -566,8 +569,10 @@ export function normalizeEncoding(encoding: Encoding<string>, config: Config): E
   return normalizedEncoding;
 }
 
-export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): FieldDef<F>[] {
-  const arr: FieldDef<F>[] = [];
+export function fieldDefs<F extends Field, ES extends ExprRef | SignalRef>(
+  encoding: EncodingWithFacet<F, ES>
+): FieldDef<F, ES>[] {
+  const arr: FieldDef<F, ES>[] = [];
   for (const channel of keys(encoding)) {
     if (channelHasField(encoding, channel)) {
       const channelDef = encoding[channel];
@@ -575,7 +580,7 @@ export function fieldDefs<F extends Field>(encoding: EncodingWithFacet<F>): Fiel
       for (const def of channelDefArray) {
         if (isFieldDef(def)) {
           arr.push(def);
-        } else if (hasConditionalFieldDef<F>(def)) {
+        } else if (hasConditionalFieldDef<F, ES>(def)) {
           arr.push(def.condition);
         }
       }
@@ -607,7 +612,7 @@ export function forEach<U extends Record<any, any>>(
 
 export function reduce<T, U extends Record<any, any>>(
   mapping: U,
-  f: (acc: any, fd: TypedFieldDef<string>, c: keyof U) => U,
+  f: (acc: any, fd: TypedFieldDef<string, SignalRef>, c: keyof U) => U,
   init: T,
   thisArg?: any
 ) {
@@ -630,7 +635,7 @@ export function reduce<T, U extends Record<any, any>>(
 /**
  * Returns list of path grouping fields for the given encoding
  */
-export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): string[] {
+export function pathGroupingFields(mark: Mark, encoding: Encoding<string, SignalRef>): string[] {
   return keys(encoding).reduce((details, channel) => {
     switch (channel) {
       // x, y, x2, y2, lat, long, lat1, long2, order, tooltip, href, aria label, cursor should not cause lines to group
@@ -702,7 +707,7 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
         // TODO strokeDashOffset:
         // falls through
 
-        const fieldDef = getFieldDef<string>(encoding[channel]);
+        const fieldDef = getFieldDef<string, SignalRef>(encoding[channel]);
         if (fieldDef && !fieldDef.aggregate) {
           details.push(vgField(fieldDef, {}));
         }

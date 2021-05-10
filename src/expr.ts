@@ -13,6 +13,9 @@ export function isExprRef(o: any): o is ExprRef {
   return o && !!o['expr'];
 }
 
+/**
+ * Replaces expression refs with signal refs in the object. Copies the input.
+ */
 export function replaceExprRef<T extends Dict<any>>(index: T) {
   const props = keys(index || {});
   const newIndex: Dict<any> = {};

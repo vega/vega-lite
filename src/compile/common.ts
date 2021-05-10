@@ -27,7 +27,7 @@ export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
 export function signalOrValueRefWithCondition<V extends Value | number[]>(
   val: ConditionalAxisProperty<V, SignalRef | ExprRef>
-): ConditionalAxisProperty<V, SignalRef> {
+): ConditionalAxisProperty<V, SignalRef | ExprRef> {
   const condition = isArray(val.condition)
     ? (val.condition as ConditionalPredicate<ValueDef<any> | ExprRef | SignalRef>[]).map(conditionalSignalRefOrValue)
     : conditionalSignalRefOrValue(val.condition);
@@ -46,7 +46,7 @@ export function signalRefOrValue<T>(value: T | SignalRef | ExprRef): T | SignalR
   return value;
 }
 
-export function conditionalSignalRefOrValue<T extends FieldDef<any> | DatumDef | ValueDef<any>>(
+export function conditionalSignalRefOrValue<T extends FieldDef<any, any> | DatumDef | ValueDef<any>>(
   value: ConditionalPredicate<T | ExprRef | SignalRef>
 ): ConditionalPredicate<T | SignalRef> {
   if (isExprRef(value)) {
@@ -98,7 +98,7 @@ export function getStyles(mark: MarkDef): string[] {
 export function getMarkPropOrConfig<P extends keyof MarkDef, ES extends ExprRef | SignalRef>(
   channel: P,
   mark: MarkDef<Mark, ES>,
-  config: Config<SignalRef>,
+  config: Config<ES>,
   opt: {
     vgChannel?: VgEncodeChannel;
     ignoreVgConfig?: boolean;
@@ -123,7 +123,7 @@ export function getMarkPropOrConfig<P extends keyof MarkDef, ES extends ExprRef 
 export function getMarkConfig<P extends keyof MarkDef, ES extends ExprRef | SignalRef>(
   channel: P,
   mark: MarkDef<Mark, ES>,
-  config: Config<SignalRef>,
+  config: Config<ES>,
   {vgChannel}: {vgChannel?: VgEncodeChannel} = {}
 ): MarkDef<Mark, ES>[P] {
   return getFirstDefined<MarkDef<Mark, ES>[P]>(
@@ -144,15 +144,15 @@ export function getMarkConfig<P extends keyof MarkDef, ES extends ExprRef | Sign
 export function getMarkStyleConfig<P extends keyof MarkDef, ES extends ExprRef | SignalRef>(
   prop: P,
   mark: MarkDef<Mark, ES>,
-  styleConfigIndex: StyleConfigIndex<SignalRef>
+  styleConfigIndex: StyleConfigIndex<ES>
 ) {
   return getStyleConfig(prop, getStyles(mark), styleConfigIndex);
 }
 
-export function getStyleConfig<P extends keyof MarkDef | keyof AxisConfig<SignalRef>>(
+export function getStyleConfig<P extends keyof MarkDef | keyof AxisConfig<SignalRef>, ES extends ExprRef | SignalRef>(
   p: P,
   styles: string | string[],
-  styleConfigIndex: StyleConfigIndex<SignalRef>
+  styleConfigIndex: StyleConfigIndex<ES>
 ) {
   styles = array(styles);
   let value;
@@ -170,7 +170,7 @@ export function getStyleConfig<P extends keyof MarkDef | keyof AxisConfig<Signal
  * Return Vega sort parameters (tuple of field and order).
  */
 export function sortParams(
-  orderDef: OrderFieldDef<string> | OrderFieldDef<string>[],
+  orderDef: OrderFieldDef<string, SignalRef> | OrderFieldDef<string, SignalRef>[],
   fieldRefOption?: FieldRefOption
 ): SortFields {
   return array(orderDef).reduce(

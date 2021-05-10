@@ -50,7 +50,7 @@ export class FacetModel extends ModelWithField {
   }
 
   private initFacet(
-    facet: FacetFieldDef<FieldName> | FacetMapping<FieldName>
+    facet: FacetFieldDef<FieldName, ExprRef> | FacetMapping<FieldName, ExprRef>
   ): EncodingFacetMapping<FieldName, SignalRef> {
     // clone to prevent side effect to the original spec
     if (!isFacetMapping(facet)) {
@@ -78,7 +78,7 @@ export class FacetModel extends ModelWithField {
     return normalizedFacet;
   }
 
-  private initFacetFieldDef(fieldDef: FacetFieldDef<FieldName, ExprRef | SignalRef>, channel: FacetChannel) {
+  private initFacetFieldDef(fieldDef: FacetFieldDef<FieldName, ExprRef>, channel: FacetChannel) {
     // Cast because we call initFieldDef, which assumes general FieldDef.
     // However, FacetFieldDef is a bit more constrained than the general FieldDef
     const facetFieldDef = initFieldDef(fieldDef, channel) as FacetFieldDef<FieldName, SignalRef>;
@@ -94,7 +94,7 @@ export class FacetModel extends ModelWithField {
     return !!this.facet[channel];
   }
 
-  public fieldDef(channel: ExtendedChannel): TypedFieldDef<string> {
+  public fieldDef(channel: ExtendedChannel): TypedFieldDef<string, SignalRef> {
     return this.facet[channel];
   }
 

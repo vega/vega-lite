@@ -222,8 +222,8 @@ function parseAxis(channel: PositionScaleChannel, model: UnitModel): AxisCompone
   const axisComponent = new AxisComponent();
 
   const fieldOrDatumDef = getFieldOrDatumDef(model.encoding[channel]) as
-    | PositionFieldDef<string>
-    | PositionDatumDef<string>;
+    | PositionFieldDef<string, SignalRef>
+    | PositionDatumDef<string, SignalRef>;
 
   const {mark, config} = model;
 

@@ -76,7 +76,7 @@ export function wrapPositionInvalidTest({
   ref,
   config
 }: {
-  fieldDef: FieldDef<string>;
+  fieldDef: FieldDef<string, SignalRef>;
   channel: PositionChannel | PolarPositionChannel;
   markDef: MarkDef<Mark>;
   ref: VgValueRef;
@@ -96,7 +96,10 @@ export function wrapPositionInvalidTest({
   return [fieldInvalidTestValueRef(fieldDef, channel), ref];
 }
 
-export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: PositionChannel | PolarPositionChannel) {
+export function fieldInvalidTestValueRef(
+  fieldDef: FieldDef<string, SignalRef>,
+  channel: PositionChannel | PolarPositionChannel
+) {
   const test = fieldInvalidPredicate(fieldDef, true);
 
   const mainChannel = getMainRangeChannel(channel) as PositionChannel | PolarPositionChannel; // we can cast here as the output can't be other things.
@@ -109,7 +112,7 @@ export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: Po
   return {test, ...zeroValueRef};
 }
 
-export function fieldInvalidPredicate(field: FieldName | FieldDef<string>, invalid = true) {
+export function fieldInvalidPredicate(field: FieldName | FieldDef<string, SignalRef>, invalid = true) {
   return fieldValidPredicate(isString(field) ? field : vgField(field, {expr: 'datum'}), !invalid);
 }
 
@@ -133,7 +136,7 @@ export function valueRefForFieldOrDatumDef(
     ref.scale = scaleName;
   }
 
-  if (isDatumDef<string>(fieldDef)) {
+  if (isDatumDef<string, SignalRef>(fieldDef)) {
     const {datum} = fieldDef;
     if (isDateTime(datum)) {
       ref.signal = dateTimeToExpr(datum);
@@ -172,8 +175,8 @@ export function interpolatedSignalRef({
   bandPosition = 0.5
 }: {
   scaleName: string;
-  fieldOrDatumDef: TypedFieldDef<string>;
-  fieldOrDatumDef2?: SecondaryFieldDef<string>;
+  fieldOrDatumDef: TypedFieldDef<string, SignalRef>;
+  fieldOrDatumDef2?: SecondaryFieldDef<string, SignalRef>;
   startSuffix?: string;
   offset: number | SignalRef;
   bandPosition: number | SignalRef;
@@ -207,14 +210,14 @@ export function interpolatedSignalRef({
 export interface MidPointParams {
   channel: Channel;
   channelDef: ChannelDef;
-  channel2Def?: SecondaryChannelDef<string>;
+  channel2Def?: SecondaryChannelDef<string, SignalRef>;
 
   markDef: MarkDef<Mark, SignalRef>;
   config: Config<SignalRef>;
 
   scaleName: string;
   scale: ScaleComponent;
-  stack?: StackProperties;
+  stack?: StackProperties<SignalRef>;
   offset?: number | SignalRef;
   defaultRef: VgValueRef | (() => VgValueRef);
 

@@ -140,7 +140,7 @@ function parseNonUnitScaleDomain(model: Model) {
  */
 function normalizeUnaggregatedDomain(
   domain: Domain,
-  fieldDef: TypedFieldDef<string>,
+  fieldDef: TypedFieldDef<string, SignalRef>,
   scaleType: ScaleType,
   scaleConfig: ScaleConfig<SignalRef>
 ) {
@@ -239,7 +239,9 @@ function parseSingleChannelDomain(
   channel: ScaleChannel | 'x2' | 'y2'
 ): Explicit<VgNonUnionDomain[]> {
   const {encoding} = model;
-  const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as ScaleDatumDef<string> | ScaleFieldDef<string>;
+  const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as
+    | ScaleDatumDef<string>
+    | ScaleFieldDef<string, SignalRef>;
 
   const {type} = fieldOrDatumDef;
   const timeUnit = fieldOrDatumDef['timeUnit'];
@@ -425,7 +427,7 @@ export function domainSort(
   }
 
   // save to cast as the only exception is the geojson type for shape, which would not generate a scale
-  const fieldDef = model.fieldDef(channel) as ScaleFieldDef<string>;
+  const fieldDef = model.fieldDef(channel) as ScaleFieldDef<string, SignalRef>;
   const sort = fieldDef.sort;
 
   // if the sort is specified with array, use the derived sort index field
@@ -493,7 +495,7 @@ export function domainSort(
  * 3. The scale is quantitative or time scale.
  */
 export function canUseUnaggregatedDomain(
-  fieldDef: TypedFieldDef<string>,
+  fieldDef: TypedFieldDef<string, SignalRef>,
   scaleType: ScaleType
 ): {valid: boolean; reason?: string} {
   const {aggregate, type} = fieldDef;
