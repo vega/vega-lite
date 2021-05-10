@@ -23,8 +23,8 @@ then
     git commit -m "chore: update TOC [CI]"
 
     # Push all the TOC changes
-    git pull --rebase origin ${GITHUB_REF}
-    git push origin ${GITHUB_REF}
+    git pull --rebase
+    git push
   fi
 fi
 
