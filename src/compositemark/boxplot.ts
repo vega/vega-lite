@@ -399,10 +399,13 @@ function boxParams(
     oldEncodingWithoutContinuousAxis
   );
 
-  const {bins, timeUnits, aggregate, groupby, encoding: encodingWithoutContinuousAxis} = extractTransformsFromEncoding(
-    filteredEncoding,
-    config
-  );
+  const {
+    bins,
+    timeUnits,
+    aggregate,
+    groupby,
+    encoding: encodingWithoutContinuousAxis
+  } = extractTransformsFromEncoding(filteredEncoding, config);
 
   const ticksOrient: Orientation = orient === 'vertical' ? 'horizontal' : 'vertical';
   const boxOrient: Orientation = orient;

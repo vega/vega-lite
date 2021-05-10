@@ -103,8 +103,14 @@ export function tooltipData(
         toSkip[channel2] = true;
       } else if (stack && stack.fieldChannel === channel && stack.offset === 'normalize') {
         const {format, formatType} = getFormatMixins(fieldDef);
-        value = formatSignalRef({fieldOrDatumDef: fieldDef, format, formatType, expr, config, normalizeStack: true})
-          .signal;
+        value = formatSignalRef({
+          fieldOrDatumDef: fieldDef,
+          format,
+          formatType,
+          expr,
+          config,
+          normalizeStack: true
+        }).signal;
       }
     }
 
