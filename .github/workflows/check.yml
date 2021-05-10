@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          persist-credentials: false
+          token: ${{ secrets.GH_PAT }}
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
@@ -41,8 +41,6 @@ jobs:
 
       - name: Setup Git remote
         run: ./scripts/setup-git-ci.sh
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Check and Commit
         run: ./scripts/check-and-commit.sh
@@ -55,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          persist-credentials: false
+          token: ${{ secrets.GH_PAT }}
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
@@ -81,8 +79,6 @@ jobs:
 
       - name: Setup Git remote
         run: ./scripts/setup-git-ci.sh
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
       - name: Check and Commit
         run: ./scripts/check-and-commit-toc.sh

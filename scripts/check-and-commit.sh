@@ -70,8 +70,8 @@ if [[ $GIT_BRANCH != 'master' ]]; then
   git status
 
   # Then push all the changes (schema, examples, formatting)
-  git pull --rebase origin ${GITHUB_REF}
-  git push origin ${GITHUB_REF}
+  git pull --rebase
+  git push
 fi
 
 exit 0
