@@ -18,6 +18,9 @@ import {normalizeBin} from './channeldef';
 import {ParameterExtent} from './selection';
 import {entries, keys, varName} from './util';
 
+
+
+
 export interface BaseBin {
   /**
    * The number base to use for automatic bin determination (default is base 10).
