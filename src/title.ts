@@ -62,9 +62,7 @@ export interface TitleParams<ES extends ExprRef | SignalRef> extends TitleBase<E
   subtitle?: Text;
 }
 
-export function extractTitleConfig(
-  titleConfig: TitleConfig<SignalRef>
-): {
+export function extractTitleConfig(titleConfig: TitleConfig<SignalRef>): {
   titleMarkConfig: MarkConfig<SignalRef>;
   subtitleMarkConfig: MarkConfig<SignalRef>;
   nonMark: BaseTitleNoValueRefs<SignalRef>;
