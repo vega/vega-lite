@@ -241,6 +241,52 @@ export function getAncestorLevel(avoid: LabelAvoid): number {
 export type LabelDefMixins = {
   /**
    * A list of possible positions for a label to be placed relative to its base mark.
+   * The default value depends on the mark type.
+   *
+   * __Default value:__
+   * - `bar`:
+   *   - If vertical bar chart: `[
+   *       {anchor: "top", offset: 2},
+   *       {anchor: "top", offset: -2}
+   *     ]`
+   *   - If horizontal bar chart: `[
+   *       {anchor: "right", offset: 2},
+   *       {anchor: "right", offset: -2}
+   *     ]`
+   * - `line` or `trail`:
+   *   - If vertical line/trail chart:
+   *     - If `lineAnchor` is `"begin"`: `[
+   *         {anchor: "bottom-left", offset: 2},
+   *         {anchor: "bottom", offset: 2},
+   *         {anchor: "bottom-right", offset: 2},
+   *       ]`
+   *     - If `lineAnchor` is `"end"`: `[
+   *         {anchor: "top-left", offset: 2},
+   *         {anchor: "top", offset: 2},
+   *         {anchor: "top-right", offset: 2},
+   *       ]`
+   *   - If horizontal line/trail chart:
+   *     - If `lineAnchor` is `"begin"`: `[
+   *         {anchor: "top-left", offset: 2},
+   *         {anchor: "left", offset: 2},
+   *         {anchor: "bottom-left", offset: 2},
+   *       ]`
+   *     - If `lineAnchor` is `"end"`: `[
+   *         {anchor: "top-right", offset: 2},
+   *         {anchor: "right", offset: 2},
+   *         {anchor: "bottom-right", offset: 2},
+   *       ]`
+   * - `rect`: `[{anchor: "middle", offset: 0}]`
+   * - `circle` or `point` or `square`: `[
+   *     {anchor: "top-right", offset: 2},
+   *     {anchor: "top", offset: 2},
+   *     {anchor: "top-left", offset: 2},
+   *     {anchor: "left", offset: 2},
+   *     {anchor: "bottom-left", offset: 2},
+   *     {anchor: "bottom", offset: 2},
+   *     {anchor: "bottom-right", offset: 2},
+   *     {anchor: "right", offset: 2}
+   *   ]`
    */
   position?: LabelPosition[];
 
@@ -278,9 +324,9 @@ export type LabelDefMixins = {
    * The search space is every pixels in the area.
    * This method could be slow for interactive visualizations but give the best result (each label has the largest possible surrounding empty space).
    *
-   * - `"naive"`: For each area, the label is placed at the first position that can fit the label.
+   * - `"naive"`: For each area, the label is placed at the widest part of the area.
    * The search space is each pixel at the middle of each pair of points that represents the upper/lower bound of the area.
-   * This method is the fastest. It works best with large area charts.
+   * This method is the fastest, but it does **not** prevent labels from overlapping with each other. It works best with large area charts.
    *
    * __Default value:__ `"reduced-search"`
    */
