@@ -4,7 +4,7 @@ title: Binning
 permalink: /docs/bin.html
 ---
 
-Binning discretizes numeric values into a set of bins. A common use case is to [create a histogram](#example).
+Binning discretizes numeric values into a set of bins. A common use case is to [create a histogram](#histogram).
 
 There are two ways to define binning in Vega-Lite: [the `bin` property in encoding field definitions](#encoding) and [the `bin` transform](#transform).
 

@@ -36,10 +36,8 @@ export interface FacetFieldDef<F extends Field, ES extends ExprRef | SignalRef =
   sort?: SortArray | SortOrder | EncodingSortField<F> | null;
 }
 
-export type FacetEncodingFieldDef<
-  F extends Field,
-  ES extends ExprRef | SignalRef = ExprRef | SignalRef
-> = FacetFieldDef<F, ES> & GenericCompositionLayoutWithColumns;
+export type FacetEncodingFieldDef<F extends Field, ES extends ExprRef | SignalRef = ExprRef | SignalRef> =
+  FacetFieldDef<F, ES> & GenericCompositionLayoutWithColumns;
 
 export interface RowColumnEncodingFieldDef<F extends Field, ES extends ExprRef | SignalRef>
   extends FacetFieldDef<F, ES> {

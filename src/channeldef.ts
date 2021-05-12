@@ -151,9 +151,8 @@ export type ConditionalPredicate<CD extends FieldDef<any> | DatumDef | ValueDef<
   test: LogicalComposition<Predicate>;
 } & CD;
 
-export type ConditionalParameter<
-  CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef
-> = ParameterPredicate & CD;
+export type ConditionalParameter<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> =
+  ParameterPredicate & CD;
 
 export function isConditionalParameter<T>(c: Conditional<T>): c is ConditionalParameter<T> {
   return c['param'];
@@ -503,11 +502,8 @@ export function isSortableFieldDef<F extends Field>(fieldDef: FieldDef<F>): fiel
   return 'sort' in fieldDef;
 }
 
-export type ScaleFieldDef<
-  F extends Field,
-  T extends Type = StandardType,
-  B extends Bin = boolean | BinParams | null
-> = SortableFieldDef<F, T, B> & ScaleMixins;
+export type ScaleFieldDef<F extends Field, T extends Type = StandardType, B extends Bin = boolean | BinParams | null> =
+  SortableFieldDef<F, T, B> & ScaleMixins;
 
 export interface ScaleMixins {
   /**
