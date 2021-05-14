@@ -50,7 +50,7 @@
     "predeploy:site": "yarn presite",
     "deploy:site": "gh-pages -d site",
     "data": "rsync -r node_modules/vega-datasets/data/* site/data",
-    "schema": "mkdir -p build && ts-json-schema-generator -f tsconfig.json -p src/index.ts -t TopLevelSpec --no-type-check --no-ref-encode > build/vega-lite-schema.json && yarn renameschema && cp build/vega-lite-schema.json site/_data/",
+    "schema": "mkdir -p build && ts-json-schema-generator -f tsconfig.json -p src/index.ts -t TopLevelSpecWithExpr --no-type-check --no-ref-encode > build/vega-lite-schema.json && yarn renameschema && cp build/vega-lite-schema.json site/_data/",
     "renameschema": "scripts/rename-schema.sh",
     "presite": "yarn data && yarn schema && yarn build:site && yarn build:versions && scripts/create-example-pages.sh",
     "site": "yarn site:only",
