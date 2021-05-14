@@ -5,7 +5,6 @@ import {assembleScalesForModel} from '../../../src/compile/scale/assemble';
 import {assembleTopLevelSignals, assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import {UnitModel} from '../../../src/compile/unit';
 import * as log from '../../../src/log';
-import {Domain} from '../../../src/scale';
 import {parseConcatModel, parseModel, parseUnitModelWithScaleAndSelection} from '../../util';
 
 describe('Selection + Scales', () => {
@@ -26,7 +25,7 @@ describe('Selection + Scales', () => {
             }
           },
           {
-            params: [{name: 'brush3', select: {type: 'interval', fields: ['symbol']}}],
+            params: [{name: 'brush3', select: {type: 'point', fields: ['symbol']}}],
             mark: 'area',
             encoding: {
               x: {
@@ -42,12 +41,12 @@ describe('Selection + Scales', () => {
               color: {
                 field: 'symbol',
                 type: 'nominal',
-                scale: {domain: {param: 'brush3'} as Domain}
+                scale: {domain: {param: 'brush3'}}
               },
               opacity: {
                 field: 'symbol',
                 type: 'ordinal',
-                scale: {domain: {param: 'var'} as Domain}
+                scale: {domain: {param: 'var'}}
               }
             }
           }
