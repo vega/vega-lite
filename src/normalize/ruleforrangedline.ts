@@ -45,8 +45,6 @@ export class RuleForRangedLineNormalizer implements NonFacetUnitNormalizer<Range
     const {encoding, mark} = spec;
     log.warn(log.message.lineWithRange(!!encoding.x2, !!encoding.y2));
 
-    console.log(mark);
-
     return normalize(
       {
         ...spec,
