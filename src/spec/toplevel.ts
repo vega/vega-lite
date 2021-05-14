@@ -4,7 +4,6 @@ import {getPositionScaleChannel} from '../channel';
 import {signalRefOrValue} from '../compile/common';
 import {Config} from '../config';
 import {InlineDataset} from '../data';
-import {ExprRef} from '../expr';
 import {VariableParameter} from '../parameter';
 import {TopLevelSelectionParameter} from '../selection';
 import {Dict} from '../util';
@@ -45,13 +44,13 @@ export type TopLevel<S extends BaseSpec> = S &
 /**
  * Shared properties between Top-Level specs and Config
  */
-export interface TopLevelProperties<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
+export interface TopLevelProperties {
   /**
    * CSS color property to use as the background of the entire view.
    *
    * __Default value:__ `"white"`
    */
-  background?: Color | ES;
+  background?: Color | SignalRef;
 
   /**
    * The default visualization padding, in pixels, from the edge of the visualization canvas to the data rectangle. If a number, specifies padding for all sides.
@@ -59,7 +58,7 @@ export interface TopLevelProperties<ES extends ExprRef | SignalRef = ExprRef | S
    *
    * __Default value__: `5`
    */
-  padding?: Padding | ES;
+  padding?: Padding | SignalRef;
 
   /**
    * How the visualization size should be determined. If a string, should be one of `"pad"`, `"fit"` or `"none"`.
@@ -117,7 +116,7 @@ const TOP_LEVEL_PROPERTIES: (keyof TopLevelProperties)[] = [
 ];
 
 export function extractTopLevelProperties(t: TopLevelProperties, includeParams: boolean) {
-  const o: TopLevelProperties<SignalRef> = {};
+  const o: TopLevelProperties = {};
   for (const p of TOP_LEVEL_PROPERTIES) {
     if (t && t[p] !== undefined) {
       o[p as any] = signalRefOrValue(t[p]);

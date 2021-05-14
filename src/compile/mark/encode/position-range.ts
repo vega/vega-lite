@@ -1,4 +1,3 @@
-import {SignalRef} from 'vega';
 import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel';
 import {isFieldOrDatumDef} from '../../../channeldef';
 import * as log from '../../../log';
@@ -178,10 +177,7 @@ export function position2Ref({
   });
 }
 
-function position2orSize(
-  channel: 'x2' | 'y2' | 'radius2' | 'theta2',
-  markDef: MarkConfig<SignalRef> | MarkDef<Mark, SignalRef>
-) {
+function position2orSize(channel: 'x2' | 'y2' | 'radius2' | 'theta2', markDef: MarkConfig | MarkDef<Mark>) {
   const sizeChannel = getSizeChannel(channel);
   const vgChannel = getVgPositionChannel(channel);
   if (markDef[vgChannel] !== undefined) {

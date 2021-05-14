@@ -6,6 +6,7 @@
  */
 import {Field, FieldName} from '../channeldef';
 import {Encoding} from '../encoding';
+import {SubstituteSignalWithExpr} from '../expr';
 import {DataMixins} from './base';
 import {GenericConcatSpec, GenericHConcatSpec, GenericVConcatSpec} from './concat';
 import {GenericFacetSpec} from './facet';
@@ -56,11 +57,6 @@ export type TopLevelFacetSpec = TopLevel<GenericFacetSpec<UnitSpecWithFrame<Fiel
 
 export type NonNormalizedSpec = GenericSpec<FacetedUnitSpec<Field>, LayerSpec<Field>, RepeatSpec, Field>;
 
-/**
- * A Vega-Lite top-level specification.
- * This is the root class for all Vega-Lite specifications.
- * (The json schema is generated from this type.)
- */
 export type TopLevelSpec =
   | TopLevelUnitSpec<Field>
   | TopLevelFacetSpec
@@ -69,3 +65,10 @@ export type TopLevelSpec =
   | TopLevel<GenericConcatSpec<NonNormalizedSpec>>
   | TopLevel<GenericVConcatSpec<NonNormalizedSpec>>
   | TopLevel<GenericHConcatSpec<NonNormalizedSpec>>;
+
+/**
+ * A Vega-Lite top-level specification.
+ * This is the root class for all Vega-Lite specifications.
+ * (The json schema is generated from this type)
+ */
+export type TopLevelSpecWithExpr = SubstituteSignalWithExpr<TopLevelSpec>;

@@ -1,4 +1,4 @@
-import {Orient, SignalRef} from 'vega';
+import {Orient} from 'vega';
 import {FacetChannel} from '../../channel';
 import {Config} from '../../config';
 import {Header} from '../../header';
@@ -17,12 +17,12 @@ export function getHeaderChannel(channel: FacetChannel, orient: Orient): HeaderC
   return channel === 'row' ? 'row' : 'column';
 }
 
-export function getHeaderProperty<P extends keyof Header<SignalRef>>(
+export function getHeaderProperty<P extends keyof Header>(
   prop: P,
-  header: Header<SignalRef>,
-  config: Config<SignalRef>,
+  header: Header,
+  config: Config,
   channel: FacetChannel
-): Header<SignalRef>[P] {
+): Header[P] {
   const headerSpecificConfig =
     channel === 'row' ? config.headerRow : channel === 'column' ? config.headerColumn : config.headerFacet;
 
@@ -30,11 +30,11 @@ export function getHeaderProperty<P extends keyof Header<SignalRef>>(
 }
 
 export function getHeaderProperties(
-  properties: (keyof Header<SignalRef>)[],
-  header: Header<SignalRef>,
-  config: Config<SignalRef>,
+  properties: (keyof Header)[],
+  header: Header,
+  config: Config,
   channel: FacetChannel
-): Header<SignalRef> {
+): Header {
   const props = {};
   for (const prop of properties) {
     const value = getHeaderProperty(prop, header || {}, config, channel);

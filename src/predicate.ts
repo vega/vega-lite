@@ -2,7 +2,7 @@ import {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {FieldName, valueExpr, vgField} from './channeldef';
 import {DateTime} from './datetime';
-import {ExprRef} from './expr';
+
 import {LogicalComposition} from './logical';
 import {ParameterName} from './parameter';
 import {fieldExpr as timeUnitFieldExpr, normalizeTimeUnit, TimeUnit, TimeUnitParams} from './timeunit';
@@ -69,7 +69,7 @@ export interface FieldEqualPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be equal to.
    */
-  equal: string | number | boolean | DateTime | ExprRef | SignalRef;
+  equal: string | number | boolean | DateTime | SignalRef;
 }
 
 export function isFieldEqualPredicate(predicate: any): predicate is FieldEqualPredicate {
@@ -80,7 +80,7 @@ export interface FieldLTPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be less than.
    */
-  lt: string | number | DateTime | ExprRef | SignalRef;
+  lt: string | number | DateTime | SignalRef;
 }
 
 export function isFieldLTPredicate(predicate: any): predicate is FieldLTPredicate {
@@ -91,7 +91,7 @@ export interface FieldLTEPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be less than or equals to.
    */
-  lte: string | number | DateTime | ExprRef | SignalRef;
+  lte: string | number | DateTime | SignalRef;
 }
 
 export function isFieldLTEPredicate(predicate: any): predicate is FieldLTEPredicate {
@@ -102,7 +102,7 @@ export interface FieldGTPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be greater than.
    */
-  gt: string | number | DateTime | ExprRef | SignalRef;
+  gt: string | number | DateTime | SignalRef;
 }
 
 export function isFieldGTPredicate(predicate: any): predicate is FieldGTPredicate {
@@ -113,7 +113,7 @@ export interface FieldGTEPredicate extends FieldPredicateBase {
   /**
    * The value that the field should be greater than or equals to.
    */
-  gte: string | number | DateTime | ExprRef | SignalRef;
+  gte: string | number | DateTime | SignalRef;
 }
 
 export function isFieldGTEPredicate(predicate: any): predicate is FieldGTEPredicate {
@@ -127,7 +127,7 @@ export interface FieldRangePredicate extends FieldPredicateBase {
    * @maxItems 2
    * @minItems 2
    */
-  range: (number | DateTime | null | ExprRef | SignalRef)[] | ExprRef | SignalRef;
+  range: (number | DateTime | null | SignalRef)[] | SignalRef;
 }
 
 export function isFieldRangePredicate(predicate: any): predicate is FieldRangePredicate {
@@ -187,7 +187,7 @@ export function isFieldPredicate(
   );
 }
 
-function predicateValueExpr(v: number | string | boolean | DateTime | ExprRef | SignalRef, timeUnit: TimeUnit) {
+function predicateValueExpr(v: number | string | boolean | DateTime | SignalRef, timeUnit: TimeUnit) {
   return valueExpr(v, {timeUnit, wrapTime: true});
 }
 

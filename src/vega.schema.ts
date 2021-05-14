@@ -43,29 +43,44 @@ import type {
 } from 'vega';
 import {isArray} from 'vega-util';
 import {Value} from './channeldef';
-import {ExprRef} from './expr';
 import {SortOrder} from './sort';
 import {Dict, Flag, keys} from './util';
 
 export type {VgSortField, VgUnionSortField, VgCompare, VgTitle, LayoutAlign, ProjectionType, VgExprRef};
 
-// TODO: make recursive (e.g. with https://stackoverflow.com/a/64900252/214950 but needs https://github.com/vega/ts-json-schema-generator/issues/568)
-export type MappedExclude<T, E> = {
-  [P in keyof T]: Exclude<T[P], E>;
+export type DeepExclude<T, U> = T extends U
+  ? never
+  : // eslint-disable-next-line @typescript-eslint/ban-types
+  T extends object
+  ? {
+      [K in keyof T]: DeepExclude<T[K], U>;
+    }
+  : T;
+
+export type SubstituteType<T, A, B> = T extends A
+  ? B
+  : // eslint-disable-next-line @typescript-eslint/ban-types
+  T extends object
+  ? {[K in keyof T]: SubstituteType<T[K], A, B>}
+  : T;
+
+type KeepSignal<T> = T extends SignalRef ? SignalRef : never;
+
+export type ReplaceValueRefWithSignalRef<T> = {
+  [P in keyof T]: Exclude<T[P], ScaledValueRef<any> | NumericValueRef | ColorValueRef> | KeepSignal<T[P]>;
 };
 
-export type MapExcludeAndKeepSignalAs<T, E, S extends ExprRef | SignalRef> = {
-  [P in keyof T]: SignalRef extends T[P] ? Exclude<T[P], E> | S : Exclude<T[P], E>;
+export type ExcludeValueRef<T> = {
+  [P in keyof T]: Exclude<T[P], ScaledValueRef<any> | NumericValueRef | ColorValueRef>;
 };
 
-// Remove ValueRefs from mapped types
-export type MappedExcludeValueRef<T> = MappedExclude<T, ScaledValueRef<any> | NumericValueRef | ColorValueRef>;
+// export type ReplaceValueRefWithSignalRef<T> = SubstituteType<
+//   T,
+//   ScaledValueRef<any> | NumericValueRef | ColorValueRef,
+//   SignalRef
+// >;
 
-export type MapExcludeValueRefAndReplaceSignalWith<T, S extends ExprRef | SignalRef> = MapExcludeAndKeepSignalAs<
-  T,
-  ScaledValueRef<any> | NumericValueRef | ColorValueRef,
-  S
->;
+// export type ExcludeValueRef<T> = SubstituteType<T, ScaledValueRef<any> | NumericValueRef | ColorValueRef, never>;
 
 export interface VgData {
   name: string;
@@ -92,7 +107,7 @@ export function isSignalRef(o: any): o is SignalRef {
 
 // TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
 export interface VgValueRef {
-  value?: Value<never>; // value should never be a signal so we use never
+  value?: DeepExclude<Value, SignalRef>;
   field?:
     | string
     | {

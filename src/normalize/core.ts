@@ -1,4 +1,3 @@
-import {SignalRef} from 'vega';
 import {isArray} from 'vega-util';
 import {COLUMN, FACET, ROW} from '../channel';
 import {Field, FieldName, hasConditionalFieldOrDatumDef, isFieldOrDatumDef, isValueDef} from '../channeldef';
@@ -7,7 +6,6 @@ import {boxPlotNormalizer} from '../compositemark/boxplot';
 import {errorBandNormalizer} from '../compositemark/errorband';
 import {errorBarNormalizer} from '../compositemark/errorbar';
 import {channelHasField, Encoding} from '../encoding';
-import {ExprRef} from '../expr';
 import * as log from '../log';
 import {Projection} from '../projection';
 import {FacetedUnitSpec, GenericSpec, LayerSpec, UnitSpec} from '../spec';
@@ -379,10 +377,7 @@ function mergeEncoding({
   return !merged || isEmpty(merged) ? undefined : merged;
 }
 
-function mergeProjection<ES extends ExprRef | SignalRef>(opt: {
-  parentProjection: Projection<ES>;
-  projection: Projection<ES>;
-}) {
+function mergeProjection(opt: {parentProjection: Projection; projection: Projection}) {
   const {parentProjection, projection} = opt;
   if (parentProjection && projection) {
     log.warn(log.message.projectionOverridden({parentProjection, projection}));

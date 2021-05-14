@@ -3,10 +3,11 @@ import {isString, mergeConfig} from 'vega-util';
 import {getPositionScaleChannel} from '../channel';
 import * as vlFieldDef from '../channeldef';
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
+import {deepReplaceExprRef, SubstituteSignalWithExpr} from '../expr';
 import * as log from '../log';
 import {normalize} from '../normalize';
 import {assembleParameterSignals} from '../parameter';
-import {LayoutSizeMixins, TopLevel, TopLevelSpec} from '../spec';
+import {LayoutSizeMixins, TopLevel, TopLevelSpec, TopLevelSpecWithExpr} from '../spec';
 import {
   AutoSizeParams,
   Datasets,
@@ -25,7 +26,7 @@ export interface CompileOptions {
   /**
    * Sets a Vega-Lite configuration.
    */
-  config?: Config;
+  config?: SubstituteSignalWithExpr<Config>;
 
   /**
    * Sets a custom logger.
@@ -69,7 +70,7 @@ export interface CompileOptions {
  * @param opt       Optional arguments passed to the Vega-Lite compiler.
  * @returns         An object containing the compiled Vega spec and normalized Vega-Lite spec.
  */
-export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
+export function compile(inputSpec: TopLevelSpecWithExpr, opt: CompileOptions = {}) {
   // 0. Augment opt with default opts
   if (opt.logger) {
     // set the singleton logger to the provided logger
@@ -82,14 +83,18 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
   }
 
   try {
+    // 0. replace ExprRef with SignalRef
+    const specWithSignalRefs: TopLevelSpec = deepReplaceExprRef(inputSpec) as any;
+    const optConfig: Config = deepReplaceExprRef(opt.config) as any;
+
     // 1. Initialize config by deep merging default config with the config provided via option and the input spec.
-    const config = initConfig(mergeConfig(opt.config, inputSpec.config));
+    const config = initConfig(mergeConfig<Config>(optConfig, specWithSignalRefs.config));
 
     // 2. Normalize: Convert input spec -> normalized spec
 
     // - Decompose all extended unit specs into composition of unit spec. For example, a box plot get expanded into multiple layers of bars, ticks, and rules. The shorthand row/column channel is also expanded to a facet spec.
     // - Normalize autosize and width or height spec
-    const spec = normalize(inputSpec, config);
+    const spec = normalize(specWithSignalRefs, config);
 
     // 3. Build Model: normalized spec -> Model (a tree structure)
 

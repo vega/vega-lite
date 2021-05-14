@@ -1,9 +1,7 @@
-import {SignalRef} from 'vega';
 import {FieldName} from '../channeldef';
 import {Config} from '../config';
 import {Encoding} from '../encoding';
 import {ParameterPredicate} from '../predicate';
-import {ExprRef} from '../expr';
 import {Projection} from '../projection';
 import {TopLevelSelectionParameter} from '../selection';
 import {GenericSpec, NormalizedSpec} from '../spec';
@@ -40,9 +38,9 @@ export type NormalizeLayerOrUnit = Normalize<
 >;
 
 export interface NormalizerParams {
-  config: Config<SignalRef>;
+  config: Config;
   parentEncoding?: Encoding<FieldName>;
-  parentProjection?: Projection<ExprRef>;
+  parentProjection?: Projection;
   repeater?: RepeaterValue;
   repeaterPrefix?: string;
   selections?: TopLevelSelectionParameter[];

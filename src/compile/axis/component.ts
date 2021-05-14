@@ -1,11 +1,5 @@
 import {Axis as VgAxis, SignalRef, Text} from 'vega';
-import {
-  AxisInternal,
-  AxisPart,
-  AxisPropsWithCondition,
-  COMMON_AXIS_PROPERTIES_INDEX,
-  ConditionalAxisProp
-} from '../../axis';
+import {Axis, AxisPart, AxisPropsWithCondition, COMMON_AXIS_PROPERTIES_INDEX, ConditionalAxisProp} from '../../axis';
 import {FieldDefBase} from '../../channeldef';
 import {duplicate, Flag, keys} from '../../util';
 import {isSignalRef} from '../../vega.schema';
@@ -16,7 +10,7 @@ function isFalseOrNull(v: any) {
 }
 
 export type AxisComponentProps = Omit<VgAxis, 'title' | ConditionalAxisProp> &
-  Omit<AxisPropsWithCondition<SignalRef>, 'title'> & {
+  Omit<AxisPropsWithCondition, 'title'> & {
     title: Text | FieldDefBase<string>[] | SignalRef;
     labelExpr: string;
     disable: boolean;
@@ -71,7 +65,7 @@ export interface AxisComponentIndex {
   y?: AxisComponent[];
 }
 
-export interface AxisInternalIndex {
-  x?: AxisInternal;
-  y?: AxisInternal;
+export interface AxisIndex {
+  x?: Axis;
+  y?: Axis;
 }

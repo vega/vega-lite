@@ -77,7 +77,7 @@ describe('compile/data/filter', () => {
 
   describe('assemble()', () => {
     it('converts expr in predicates correctly', () => {
-      const node = new FilterNode(null, null, {field: 'foo', equal: {expr: 'bar'}});
+      const node = new FilterNode(null, null, {field: 'foo', equal: {signal: 'bar'}});
       expect(node.assemble().expr).toEqual('datum["foo"]===bar');
     });
   });

@@ -1,10 +1,10 @@
-import {AggregateOp, LayoutAlign, NewSignal, SignalRef} from 'vega';
+import {AggregateOp, LayoutAlign, NewSignal} from 'vega';
 import {isArray} from 'vega-util';
 import {isBinning} from '../bin';
 import {COLUMN, ExtendedChannel, FacetChannel, FACET_CHANNELS, POSITION_SCALE_CHANNELS, ROW} from '../channel';
 import {FieldName, FieldRefOption, initFieldDef, TypedFieldDef, vgField} from '../channeldef';
 import {Config} from '../config';
-import {ExprRef, replaceExprRef} from '../expr';
+import {replaceExprRef} from '../expr';
 import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
@@ -34,13 +34,13 @@ export function facetSortFieldName(
 }
 
 export class FacetModel extends ModelWithField {
-  public readonly facet: EncodingFacetMapping<string, SignalRef>;
+  public readonly facet: EncodingFacetMapping<string>;
 
   public readonly child: Model;
 
   public readonly children: Model[];
 
-  constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, config: Config<SignalRef>) {
+  constructor(spec: NormalizedFacetSpec, parent: Model, parentGivenName: string, config: Config) {
     super(spec, 'facet', parent, parentGivenName, config, spec.resolve);
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, config);
@@ -49,9 +49,7 @@ export class FacetModel extends ModelWithField {
     this.facet = this.initFacet(spec.facet);
   }
 
-  private initFacet(
-    facet: FacetFieldDef<FieldName> | FacetMapping<FieldName>
-  ): EncodingFacetMapping<FieldName, SignalRef> {
+  private initFacet(facet: FacetFieldDef<FieldName> | FacetMapping<FieldName>): EncodingFacetMapping<FieldName> {
     // clone to prevent side effect to the original spec
     if (!isFacetMapping(facet)) {
       return {facet: this.initFacetFieldDef(facet, 'facet')};
@@ -78,10 +76,10 @@ export class FacetModel extends ModelWithField {
     return normalizedFacet;
   }
 
-  private initFacetFieldDef(fieldDef: FacetFieldDef<FieldName, ExprRef | SignalRef>, channel: FacetChannel) {
+  private initFacetFieldDef(fieldDef: FacetFieldDef<FieldName>, channel: FacetChannel) {
     // Cast because we call initFieldDef, which assumes general FieldDef.
     // However, FacetFieldDef is a bit more constrained than the general FieldDef
-    const facetFieldDef = initFieldDef(fieldDef, channel) as FacetFieldDef<FieldName, SignalRef>;
+    const facetFieldDef = initFieldDef(fieldDef, channel) as FacetFieldDef<FieldName>;
     if (facetFieldDef.header) {
       facetFieldDef.header = replaceExprRef(facetFieldDef.header);
     } else if (facetFieldDef.header === null) {

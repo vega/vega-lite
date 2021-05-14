@@ -21,11 +21,11 @@ export interface LegendRuleParams {
   legend: LegendInternal;
   channel: NonPositionScaleChannel;
   model: UnitModel;
-  markDef: MarkDef<Mark, SignalRef>;
+  markDef: MarkDef<Mark>;
   encoding: Encoding<string>;
   fieldOrDatumDef: MarkPropFieldOrDatumDef<string>;
-  legendConfig: LegendConfig<SignalRef>;
-  config: Config<SignalRef>;
+  legendConfig: LegendConfig;
+  config: Config;
   scaleType: ScaleType;
   orient: LegendOrient;
   legendType: LegendType;
@@ -168,9 +168,9 @@ export function getDirection({
   legend
 }: {
   orient: LegendOrient;
-  legendConfig: LegendConfig<SignalRef>;
+  legendConfig: LegendConfig;
   legendType: LegendType;
-  legend: Legend<SignalRef>;
+  legend: Legend;
 }): Orientation {
   return (
     legend.direction ??
@@ -208,7 +208,7 @@ export function defaultGradientLength({
   direction: Orientation;
   orient: LegendOrient;
   model: Model;
-  legendConfig: LegendConfig<SignalRef>;
+  legendConfig: LegendConfig;
 }) {
   const {
     gradientHorizontalMaxLength,

@@ -1,4 +1,3 @@
-import {SignalRef} from 'vega';
 import {Field} from '../src/channeldef';
 import {buildModel} from '../src/compile/buildmodel';
 import {ConcatModel} from '../src/compile/concat';
@@ -8,6 +7,7 @@ import {Model} from '../src/compile/model';
 import {parseScales} from '../src/compile/scale/parse';
 import {UnitModel} from '../src/compile/unit';
 import {initConfig} from '../src/config';
+import {deepReplaceExprRef, SubstituteSignalWithExpr} from '../src/expr';
 import {normalize} from '../src/normalize';
 import {
   GenericLayerSpec,
@@ -24,7 +24,7 @@ import {BaseSpec, FrameMixins} from '../src/spec/base';
 import {FacetedUnitSpec} from '../src/spec/unit';
 import {contains} from '../src/util';
 
-export type TopLevelNormalizedUnitSpecForTest = TopLevel<NormalizedUnitSpec> & FrameMixins<SignalRef>;
+export type TopLevelNormalizedUnitSpecForTest = SubstituteSignalWithExpr<TopLevel<NormalizedUnitSpec> & FrameMixins>;
 
 export function parseModel(inputSpec: TopLevelSpec): Model {
   const config = initConfig(inputSpec.config);
@@ -39,7 +39,9 @@ export function parseModelWithScale(inputSpec: TopLevelSpec): Model {
 }
 
 export function parseUnitModel(spec: TopLevelNormalizedUnitSpecForTest) {
-  return new UnitModel(spec, null, '', undefined, initConfig(spec.config));
+  // TODO: remove as any
+  const specWithSignal = deepReplaceExprRef(spec) as any;
+  return new UnitModel(specWithSignal, null, '', undefined, initConfig(specWithSignal.config));
 }
 
 export function parseUnitModelWithScale(spec: TopLevelNormalizedUnitSpecForTest) {

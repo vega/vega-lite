@@ -1,20 +1,17 @@
 import {BaseTitle, SignalRef, Text, TextEncodeEntry, TitleAnchor} from 'vega';
 import {isArray, isString} from 'vega-util';
-import {ExprRef} from './expr';
+
 import {MarkConfig} from './mark';
 import {pick} from './util';
-import {MapExcludeValueRefAndReplaceSignalWith, MappedExcludeValueRef} from './vega.schema';
+import {ReplaceValueRefWithSignalRef, ExcludeValueRef} from './vega.schema';
 
-export type BaseTitleNoValueRefs<ES extends ExprRef | SignalRef> = MapExcludeValueRefAndReplaceSignalWith<
-  Omit<BaseTitle, 'align' | 'baseline'>,
-  ES
-> &
+export type BaseTitleNoValueRefs = ReplaceValueRefWithSignalRef<Omit<BaseTitle, 'align' | 'baseline'>> &
   // Since some logic depends on align/baseline, Vega-Lite does NOT allow signal for them.
-  MappedExcludeValueRef<Pick<BaseTitle, 'align' | 'baseline'>>;
+  ExcludeValueRef<Pick<BaseTitle, 'align' | 'baseline'>>;
 
-export type TitleConfig<ES extends ExprRef | SignalRef> = BaseTitleNoValueRefs<ES>;
+export type TitleConfig = BaseTitleNoValueRefs;
 
-export interface TitleBase<ES extends ExprRef | SignalRef> extends BaseTitleNoValueRefs<ES> {
+export interface TitleBase extends BaseTitleNoValueRefs {
   /**
    * The anchor position for placing the title. One of `"start"`, `"middle"`, or `"end"`. For example, with an orientation of top these anchor positions map to a left-, center-, or right-aligned title.
    *
@@ -50,11 +47,11 @@ export interface TitleBase<ES extends ExprRef | SignalRef> extends BaseTitleNoVa
   encoding?: TextEncodeEntry;
 }
 
-export interface TitleParams<ES extends ExprRef | SignalRef> extends TitleBase<ES> {
+export interface TitleParams extends TitleBase {
   /**
    * The title text.
    */
-  text: Text | ES;
+  text: Text | SignalRef;
 
   /**
    * The subtitle Text.
@@ -62,11 +59,11 @@ export interface TitleParams<ES extends ExprRef | SignalRef> extends TitleBase<E
   subtitle?: Text;
 }
 
-export function extractTitleConfig(titleConfig: TitleConfig<SignalRef>): {
-  titleMarkConfig: MarkConfig<SignalRef>;
-  subtitleMarkConfig: MarkConfig<SignalRef>;
-  nonMark: BaseTitleNoValueRefs<SignalRef>;
-  subtitle: BaseTitleNoValueRefs<SignalRef>;
+export function extractTitleConfig(titleConfig: TitleConfig): {
+  titleMarkConfig: MarkConfig;
+  subtitleMarkConfig: MarkConfig;
+  nonMark: BaseTitleNoValueRefs;
+  subtitle: BaseTitleNoValueRefs;
 } {
   const {
     // These are non-mark title config that need to be hardcoded
@@ -91,13 +88,13 @@ export function extractTitleConfig(titleConfig: TitleConfig<SignalRef>): {
     ...rest
   } = titleConfig;
 
-  const titleMarkConfig: MarkConfig<SignalRef> = {
+  const titleMarkConfig: MarkConfig = {
     ...rest,
     ...(color ? {fill: color} : {})
   };
 
   // These are non-mark title config that need to be hardcoded
-  const nonMark: BaseTitleNoValueRefs<SignalRef> = {
+  const nonMark: BaseTitleNoValueRefs = {
     ...(anchor ? {anchor} : {}),
     ...(frame ? {frame} : {}),
     ...(offset ? {offset} : {}),
@@ -105,7 +102,7 @@ export function extractTitleConfig(titleConfig: TitleConfig<SignalRef>): {
   };
 
   // subtitle part can stay in config.title since header titles do not use subtitle
-  const subtitle: BaseTitleNoValueRefs<SignalRef> = {
+  const subtitle: BaseTitleNoValueRefs = {
     ...(subtitleColor ? {subtitleColor} : {}),
     ...(subtitleFont ? {subtitleFont} : {}),
     ...(subtitleFontSize ? {subtitleFontSize} : {}),

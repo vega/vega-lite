@@ -1,10 +1,9 @@
-import {SignalRef} from 'vega';
 import {getOffset} from '../../../../src/compile/mark/encode/offset';
 import {Mark, MarkDef} from '../../../../src/mark';
 
 describe('compile/mark/encode/offset', () => {
   describe('getOffset', () => {
-    const markDef: MarkDef<Mark, SignalRef> = {
+    const markDef: MarkDef<Mark> = {
       type: 'point',
       x2Offset: 100
     };

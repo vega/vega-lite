@@ -1,7 +1,7 @@
 /**
  * Collection of all Vega-Lite Error Messages
  */
-import {AggregateOp, SignalRef} from 'vega';
+import {AggregateOp} from 'vega';
 import {Aggregate} from '../aggregate';
 import {Channel, ExtendedChannel, FacetChannel, getSizeChannel, PositionScaleChannel, ScaleChannel} from '../channel';
 import {HiddenCompositeAggregate, TypedFieldDef, Value} from '../channeldef';
@@ -9,7 +9,6 @@ import {SplitParentProperty} from '../compile/split';
 import {CompositeMark} from '../compositemark';
 import {ErrorBarCenter, ErrorBarExtent} from '../compositemark/errorbar';
 import {DateTime, DateTimeExpr} from '../datetime';
-import {ExprRef} from '../expr';
 import {Mark} from '../mark';
 import {Projection} from '../projection';
 import {ScaleType} from '../scale';
@@ -129,10 +128,7 @@ export function customFormatTypeNotAllowed(channel: ExtendedChannel) {
   return `Config.customFormatTypes is not true, thus custom format type and format for channel ${channel} are dropped.`;
 }
 
-export function projectionOverridden<ES extends ExprRef | SignalRef>(opt: {
-  parentProjection: Projection<ES>;
-  projection: Projection<ES>;
-}) {
+export function projectionOverridden(opt: {parentProjection: Projection; projection: Projection}) {
   const {parentProjection, projection} = opt;
   return `Layer's shared projection ${stringify(parentProjection)} is overridden by a child projection ${stringify(
     projection

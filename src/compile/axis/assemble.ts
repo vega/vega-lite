@@ -38,7 +38,7 @@ function setAxisEncode(
 export function assembleAxis(
   axisCmpt: AxisComponent,
   kind: 'main' | 'grid',
-  config: Config<SignalRef>,
+  config: Config,
   opt: {
     header: boolean; // whether this is called via a header
   } = {header: false}
@@ -56,7 +56,7 @@ export function assembleAxis(
     if (propType && propType !== kind && propType !== 'both') {
       // Remove properties that are not valid for this kind of axis
       delete axis[prop];
-    } else if (isConditionalAxisValue<any, SignalRef>(propValue)) {
+    } else if (isConditionalAxisValue<any>(propValue)) {
       // deal with conditional axis value
 
       const {condition, ...valueOrSignalRef} = propValue;
@@ -218,7 +218,7 @@ export function assembleAxisSignals(model: Model): NewSignal[] {
   return signals;
 }
 
-export function assembleAxes(axisComponents: AxisComponentIndex, config: Config<SignalRef>): VgAxis[] {
+export function assembleAxes(axisComponents: AxisComponentIndex, config: Config): VgAxis[] {
   const {x = [], y = []} = axisComponents;
   return [
     ...x.map(a => assembleAxis(a, 'grid', config)),
