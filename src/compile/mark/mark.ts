@@ -292,7 +292,7 @@ export function getSort(model: UnitModel): VgCompare {
         return {
           field: vgField(dimensionChannelDef, {
             // For stack with imputation, we only have bin_mid
-            binSuffix: model.stack && model.stack.impute ? 'mid' : undefined,
+            binSuffix: model.stack?.impute ? 'mid' : undefined,
             expr: 'datum'
           })
         };
