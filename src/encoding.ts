@@ -351,7 +351,7 @@ export function extractTransformsFromEncoding(oldEncoding: Encoding<any>, config
       const {field, aggregate: aggOp, bin, timeUnit, ...remaining} = channelDef;
       if (aggOp || timeUnit || bin) {
         const guide = getGuide(channelDef);
-        const isTitleDefined = guide && guide.title;
+        const isTitleDefined = guide?.title;
         let newField = vgField(channelDef, {forAs: true});
         const newFieldDef: FieldDef<string> = {
           // Only add title if it doesn't exist

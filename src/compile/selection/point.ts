@@ -17,7 +17,7 @@ const point: SelectionCompiler<'point'> = {
       .map(p => {
         const fieldDef = model.fieldDef(p.channel);
         // Binned fields should capture extents, for a range test against the raw field.
-        return fieldDef && fieldDef.bin
+        return fieldDef?.bin
           ? `[${datum}[${stringValue(model.vgField(p.channel, {}))}], ` +
               `${datum}[${stringValue(model.vgField(p.channel, {binSuffix: 'end'}))}]]`
           : `${datum}[${stringValue(p.field)}]`;

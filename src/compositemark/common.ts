@@ -253,7 +253,7 @@ function filterAggregateFromChannelDef<M extends CompositeMark, F extends FieldD
   continuousAxisChannelDef: F,
   compositeMark: M
 ): F {
-  if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
+  if (continuousAxisChannelDef?.aggregate) {
     const {aggregate, ...continuousAxisWithoutAggregate} = continuousAxisChannelDef;
     if (aggregate !== compositeMark) {
       log.warn(log.message.errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark));
