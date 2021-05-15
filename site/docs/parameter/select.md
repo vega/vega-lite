@@ -196,14 +196,14 @@ For example, the spec below imagines two users, Alex and Morgan, who can each dr
 
 The `translate` property allows a user to interactively move an interval selection back-and-forth.
 
-For example, try to pan the <select id="type" onchange="buildTranslate()"><option>brush</option><option>scatterplot</option></select> on <select id="event" onchange="buildTranslate()"><option>drag</option><option>shift-drag</option></select>.
+For example, try to pan the <select id="type_translate" onchange="buildTranslate()"><option>brush</option><option>scatterplot</option></select> on <select id="event_translate" onchange="buildTranslate()"><option>drag</option><option>shift-drag</option></select>.
 
 <div id="translate" class="vl-example" data-name="selection_translate_brush_drag"></div>
 
 <script type="text/javascript">
 function buildTranslate() {
-  const type = document.getElementById('type').value;
-  const event = document.getElementById('event').value;
+  const type = document.getElementById('type_translate').value;
+  const event = document.getElementById('event_translate').value;
   changeSpec('translate', 'selection_translate_' + type + '_' + event);
 }
 </script>
@@ -212,14 +212,14 @@ function buildTranslate() {
 
 The `zoom` property allows a user to interactively resize an interval selection.
 
-For example, you can zoom the <select id="type" onchange="buildTranslate()"><option>brush</option><option>scatterplot</option></select> on <select id="event" onchange="buildTranslate()"><option>wheel</option><option>shift-wheel</option></select>.
+For example, you can zoom the <select id="type_zoom" onchange="buildTranslate()"><option>brush</option><option>scatterplot</option></select> on <select id="event_zoom" onchange="buildTranslate()"><option>wheel</option><option>shift-wheel</option></select>.
 
 <div id="zoom" class="vl-example" data-name="selection_zoom_brush_wheel"></div>
 
 <script type="text/javascript">
 function buildTranslate() {
-  const type = document.getElementById('type').value;
-  const event = document.getElementById('event').value;
+  const type = document.getElementById('type_zoom').value;
+  const event = document.getElementById('event_zoom').value;
   changeSpec('zoom', 'selection_zoom_' + type + '_' + event);
 }
 </script>
