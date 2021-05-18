@@ -8,8 +8,6 @@ updates:
       time: '23:00'
       timezone: PST8PDT
     open-pull-requests-limit: 10
-    reviewers:
-      - domoritz
   - package-ecosystem: bundler
     directory: '/site'
     schedule:
