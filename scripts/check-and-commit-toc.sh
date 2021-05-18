@@ -8,9 +8,10 @@ git checkout $GIT_BRANCH
 echo "On branch $GIT_BRANCH."
 
 if [[ $GIT_BRANCH != "master" ]] && [[ $GIT_BRANCH != dependabot/* ]]; then
-  PUSH_BRANCH="true"
+  PUSH_BRANCH=true
   echo "Will try to push changes."
 else
+  PUSH_BRANCH=false
   echo "Will not push changes."
 fi
 
