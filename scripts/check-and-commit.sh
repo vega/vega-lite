@@ -15,13 +15,30 @@ else
   echo "Will not push changes."
 fi
 
+if [ "$PUSH_BRANCH"=true ]; then
+  echo "Will try to push changes."
+else
+  echo "Will not push changes."
+fi
+
+if [ "$PUSH_BRANCH"==true ]; then
+  echo "Will try to push changes."
+else
+  echo "Will not push changes."
+fi
+
+if [[ "$PUSH_BRANCH"==true ]]; then
+  echo "Will try to push changes."
+else
+  echo "Will not push changes."
+fi
+
 echo ""
 echo "------- Checking Schema -------"
 echo ""
 
 # Commit the schema if outdated
-if ! git diff --exit-code ./build/vega-lite-schema.json
-then
+if ! git diff --exit-code ./build/vega-lite-schema.json; then
   ## Only do this for master
   if [ "$PUSH_BRANCH"=true ]; then
     git add ./build/vega-lite-schema.json
@@ -49,14 +66,12 @@ fi
 git add examples
 
 if [ "$PUSH_BRANCH"=true ]; then
-  if ! git diff --cached --word-diff=color --exit-code examples
-  then
+  if ! git diff --cached --word-diff=color --exit-code examples; then
     git commit -m "chore: update examples [CI]"
   fi
 else
   # Don't diff SVG as floating point calculation is not always consistent
-  if ! git diff --cached --word-diff=color --exit-code './examples/compiled/*.vg.json' './examples/specs/normalized/*.vl.json'
-  then
+  if ! git diff --cached --word-diff=color --exit-code './examples/compiled/*.vg.json' './examples/specs/normalized/*.vl.json'; then
     echo "Outdated examples."
     exit 1
   fi
@@ -68,8 +83,7 @@ echo ""
 
 if [ "$PUSH_BRANCH"=true ]; then
   ## For non-master branch, commit eslint fix and prettier changes if outdated
-  if ! git diff --exit-code site src test test-runtime
-  then
+  if ! git diff --exit-code site src test test-runtime; then
     git add --all
     git commit -m "style: auto-formatting [CI]"
   fi
