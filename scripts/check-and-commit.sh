@@ -15,24 +15,6 @@ else
   echo "Will not push changes."
 fi
 
-if [ "$PUSH_BRANCH"=true ]; then
-  echo "Will try to push changes."
-else
-  echo "Will not push changes."
-fi
-
-if [ "$PUSH_BRANCH"==true ]; then
-  echo "Will try to push changes."
-else
-  echo "Will not push changes."
-fi
-
-if [[ "$PUSH_BRANCH"==true ]]; then
-  echo "Will try to push changes."
-else
-  echo "Will not push changes."
-fi
-
 echo ""
 echo "------- Checking Schema -------"
 echo ""
