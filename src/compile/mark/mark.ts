@@ -361,14 +361,20 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
   ];
 }
 
-const LINE_ANCHOR_POINT = {
+const LINE_ANCHOR_DEFAULTS = {
   horizontal: {
-    begin: ['bottom-left', 'bottom', 'bottom-right'],
-    end: ['top-left', 'top', 'top-right']
+    anchor: {
+      begin: ['bottom-left', 'bottom', 'bottom-right'],
+      end: ['top-left', 'top', 'top-right']
+    },
+    padding: 'height * 0.2'
   },
   vertical: {
-    begin: ['top-left', 'left', 'bottom-left'],
-    end: ['top-right', 'right', 'bottom-right']
+    anchor: {
+      begin: ['top-left', 'left', 'bottom-left'],
+      end: ['top-right', 'right', 'bottom-right']
+    },
+    padding: 'width * 0.2'
   }
 } as const;
 
@@ -427,10 +433,10 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
         ...(position
           ? {anchor, offset}
           : {
-              anchor: [...LINE_ANCHOR_POINT[orient][_lineAnchor]],
+              anchor: [...LINE_ANCHOR_DEFAULTS[orient].anchor[_lineAnchor]],
               offset: [2, 2, 2]
             }),
-        ...(padding === undefined ? {padding: 50} : {})
+        ...(padding === undefined ? {padding: {signal: LINE_ANCHOR_DEFAULTS[orient].padding}} : {})
       };
       break;
     }

@@ -307,6 +307,9 @@ export type LabelDefMixins = {
 
   /**
    * The padding in pixels by which a label may extend past the chart bounding box.
+   * The default value depends on the mark type:
+   * - multi-series line: 20% of width for vertical line chart or 20% of height for horizontal line chart.
+   * - Otherwise: 0
    */
   padding?: number;
 
