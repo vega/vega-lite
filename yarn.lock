@@ -1517,9 +1517,9 @@
     "@types/d3-selection" "*"
 
 "@types/d3@^6.5.0":
-  version "6.5.0"
-  resolved "https://registry.yarnpkg.com/@types/d3/-/d3-6.5.0.tgz#d10ab41efc0ba1f18fc57e0c6e4a737ab0e81304"
-  integrity sha512-jVKWUprtDUVybTV73X1z2aSR5/McX+gHv7duAB6RhXksB+hlvzd6MJkRz299n2xKzOgA4fdGJdXrwIaIfaFtZw==
+  version "6.6.0"
+  resolved "https://registry.yarnpkg.com/@types/d3/-/d3-6.6.0.tgz#b1f2c916d5734f7f74bd0853e06ca5e7f946c491"
+  integrity sha512-YybKWTIulg+ecSKflvMRYx+G1FJ7SFKfdknw2DU1TSDsvzO+yD8IfEaUOcvdnY/GRg5mbaRmURR7tgmiRsK1Iw==
   dependencies:
     "@types/d3-array" "*"
     "@types/d3-axis" "*"
