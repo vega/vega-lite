@@ -230,7 +230,7 @@ export class ParseNode extends DataFlowNode {
     // Custom parse
     let explicit = {};
     const data = model.data;
-    if (!isGenerator(data) && data && data.format && data.format.parse) {
+    if (!isGenerator(data) && data?.format?.parse) {
       explicit = data.format.parse;
     }
 
