@@ -66,7 +66,7 @@ function renderExample($target: Selection<any, any, any, any>, specText: string,
       .append('code')
       .attr('class', 'json')
       .text(textClean);
-    hljs.highlightBlock(code.node() as any);
+    hljs.highlightElement(code.node());
   }
 
   const spec = JSON.parse(specText);

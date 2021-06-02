@@ -103,7 +103,7 @@
     "eslint-plugin-jest": "^24.3.6",
     "eslint-plugin-prettier": "^3.4.0",
     "gh-pages": "^3.2.0",
-    "highlight.js": "^10.7.2",
+    "highlight.js": "^11.0.0",
     "jest": "^27.0.1",
     "jest-dev-server": "^5.0.3",
     "mkdirp": "^1.0.4",
