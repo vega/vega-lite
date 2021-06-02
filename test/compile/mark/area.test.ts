@@ -174,7 +174,7 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should end on axis', () => {
-      expect(props.x2).toEqual({value: 0});
+      expect(props.x2).toEqual({scale: 'x', value: 0});
     });
 
     it('should have no width', () => {
@@ -195,7 +195,7 @@ describe('Mark: Area', () => {
     const props = area.encodeEntry(model);
 
     it('should end on axis', () => {
-      expect(props.x2).toEqual({value: 0});
+      expect(props.x2).toEqual({scale: 'x', value: 0});
     });
 
     it('should have no width', () => {
