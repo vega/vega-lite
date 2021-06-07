@@ -14,3 +14,4 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           auto-merge: 'minor'
           merge-method: 'rebase'
+          debug: true
