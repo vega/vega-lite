@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: akheron/dependabot-cron-action@v2
+      - uses: akheron/dependabot-cron-action@v0.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           auto-merge: 'minor'
