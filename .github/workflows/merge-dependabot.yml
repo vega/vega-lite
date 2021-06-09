@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: domoritz/dependabot-cron-action@1a20d3abecbd31a8f5faa6bb1aced5aab13f6c54
+      - uses: akheron/dependabot-cron-action@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           auto-merge: 'minor'
