@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: domoritz/dependabot-cron-action@296bc82715f7e25e12a1f51b66b8f43a6b1d79f1
+      - uses: domoritz/dependabot-cron-action@1a20d3abecbd31a8f5faa6bb1aced5aab13f6c54
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           auto-merge: 'minor'
