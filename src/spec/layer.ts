@@ -1,6 +1,6 @@
 import {Field} from '../channeldef';
 import {SharedCompositeEncoding} from '../compositemark';
-import {ExprRef} from '../expr';
+import {SubstituteSignalWithExpr} from '../expr';
 import {Projection} from '../projection';
 import {BaseSpec, FrameMixins, ResolveMixins} from './base';
 import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
@@ -8,7 +8,10 @@ import {GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
 /**
  * Base interface for a layer specification.
  */
-export interface GenericLayerSpec<U extends GenericUnitSpec<any, any>> extends BaseSpec, FrameMixins, ResolveMixins {
+export interface GenericLayerSpec<U extends SubstituteSignalWithExpr<GenericUnitSpec<any, any>>>
+  extends BaseSpec,
+    FrameMixins,
+    ResolveMixins {
   /**
    * Layer or single view specifications to be layered.
    *
@@ -36,7 +39,7 @@ export interface LayerSpec<F extends Field> extends BaseSpec, FrameMixins, Resol
   /**
    * An object defining properties of the geographic projection shared by underlying layers.
    */
-  projection?: Projection<ExprRef>;
+  projection?: Projection;
 }
 
 /**
@@ -44,6 +47,6 @@ export interface LayerSpec<F extends Field> extends BaseSpec, FrameMixins, Resol
  */
 export type NormalizedLayerSpec = GenericLayerSpec<NormalizedUnitSpec>;
 
-export function isLayerSpec(spec: BaseSpec): spec is GenericLayerSpec<any> {
+export function isLayerSpec(spec: SubstituteSignalWithExpr<BaseSpec>): spec is GenericLayerSpec<any> {
   return 'layer' in spec;
 }

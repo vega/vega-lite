@@ -1,4 +1,3 @@
-import {SignalRef} from 'vega';
 import {Config} from '../../config';
 import {Encoding} from '../../encoding';
 import {MarkDef} from '../../mark';
@@ -37,7 +36,7 @@ export const text: MarkCompiler = {
   }
 };
 
-function align(markDef: MarkDef, encoding: Encoding<string>, config: Config<SignalRef>) {
+function align(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
   const a = getMarkPropOrConfig('align', markDef, config);
   if (a === undefined) {
     return 'center';
@@ -46,7 +45,7 @@ function align(markDef: MarkDef, encoding: Encoding<string>, config: Config<Sign
   return undefined;
 }
 
-function baseline(markDef: MarkDef, encoding: Encoding<string>, config: Config<SignalRef>) {
+function baseline(markDef: MarkDef, encoding: Encoding<string>, config: Config) {
   const b = getMarkPropOrConfig('baseline', markDef, config);
   if (b === undefined) {
     return 'middle';

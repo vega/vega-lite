@@ -1,4 +1,4 @@
-import {ExprRef, SignalRef, Text} from 'vega';
+import {SignalRef, Text} from 'vega';
 import {array, isArray, stringValue} from 'vega-util';
 import {AxisConfig, ConditionalAxisProperty} from '../axis';
 import {
@@ -26,10 +26,10 @@ import {UnitModel} from './unit';
 export const BIN_RANGE_DELIMITER = ' \u2013 ';
 
 export function signalOrValueRefWithCondition<V extends Value | number[]>(
-  val: ConditionalAxisProperty<V, SignalRef | ExprRef>
-): ConditionalAxisProperty<V, SignalRef> {
+  val: ConditionalAxisProperty<V>
+): ConditionalAxisProperty<V> {
   const condition = isArray(val.condition)
-    ? (val.condition as ConditionalPredicate<ValueDef<any> | ExprRef | SignalRef>[]).map(conditionalSignalRefOrValue)
+    ? (val.condition as ConditionalPredicate<ValueDef<any> | SignalRef>[]).map(conditionalSignalRefOrValue)
     : conditionalSignalRefOrValue(val.condition);
 
   return {
@@ -38,7 +38,7 @@ export function signalOrValueRefWithCondition<V extends Value | number[]>(
   };
 }
 
-export function signalRefOrValue<T>(value: T | SignalRef | ExprRef): T | SignalRef {
+export function signalRefOrValue<T>(value: T | SignalRef): T | SignalRef {
   if (isExprRef(value)) {
     const {expr, ...rest} = value;
     return {signal: expr, ...rest};
@@ -47,7 +47,7 @@ export function signalRefOrValue<T>(value: T | SignalRef | ExprRef): T | SignalR
 }
 
 export function conditionalSignalRefOrValue<T extends FieldDef<any> | DatumDef | ValueDef<any>>(
-  value: ConditionalPredicate<T | ExprRef | SignalRef>
+  value: ConditionalPredicate<T | SignalRef>
 ): ConditionalPredicate<T | SignalRef> {
   if (isExprRef(value)) {
     const {expr, ...rest} = value;
@@ -56,7 +56,7 @@ export function conditionalSignalRefOrValue<T extends FieldDef<any> | DatumDef |
   return value;
 }
 
-export function signalOrValueRef<T>(value: T | SignalRef | ExprRef): {value: T} | SignalRef {
+export function signalOrValueRef<T>(value: T | SignalRef): {value: T} | SignalRef {
   if (isExprRef(value)) {
     const {expr, ...rest} = value;
     return {signal: expr, ...rest};
@@ -81,7 +81,7 @@ export function signalOrStringValue(v: SignalRef | any) {
   return v == null ? null : stringValue(v);
 }
 
-export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig<any>)[]) {
+export function applyMarkConfig(e: VgEncodeEntry, model: UnitModel, propsList: (keyof MarkConfig)[]) {
   for (const property of propsList) {
     const value = getMarkConfig(property, model.markDef, model.config);
     if (value !== undefined) {
@@ -95,15 +95,15 @@ export function getStyles(mark: MarkDef): string[] {
   return [].concat(mark.type, mark.style ?? []);
 }
 
-export function getMarkPropOrConfig<P extends keyof MarkDef, ES extends ExprRef | SignalRef>(
+export function getMarkPropOrConfig<P extends keyof MarkDef>(
   channel: P,
-  mark: MarkDef<Mark, ES>,
-  config: Config<SignalRef>,
+  mark: MarkDef<Mark>,
+  config: Config,
   opt: {
     vgChannel?: VgEncodeChannel;
     ignoreVgConfig?: boolean;
   } = {}
-): MarkDef<Mark, ES>[P] {
+): MarkDef<Mark>[P] {
   const {vgChannel, ignoreVgConfig} = opt;
   if (vgChannel && mark[vgChannel] !== undefined) {
     return mark[vgChannel];
@@ -120,13 +120,13 @@ export function getMarkPropOrConfig<P extends keyof MarkDef, ES extends ExprRef 
  * Return property value from style or mark specific config property if exists.
  * Otherwise, return general mark specific config.
  */
-export function getMarkConfig<P extends keyof MarkDef, ES extends ExprRef | SignalRef>(
+export function getMarkConfig<P extends keyof MarkDef>(
   channel: P,
-  mark: MarkDef<Mark, ES>,
-  config: Config<SignalRef>,
+  mark: MarkDef<Mark>,
+  config: Config,
   {vgChannel}: {vgChannel?: VgEncodeChannel} = {}
-): MarkDef<Mark, ES>[P] {
-  return getFirstDefined<MarkDef<Mark, ES>[P]>(
+): MarkDef<Mark>[P] {
+  return getFirstDefined<MarkDef<Mark>[P]>(
     // style config has highest precedence
     vgChannel ? getMarkStyleConfig(channel, mark, config.style) : undefined,
     getMarkStyleConfig(channel, mark, config.style),
@@ -141,18 +141,18 @@ export function getMarkConfig<P extends keyof MarkDef, ES extends ExprRef | Sign
   );
 }
 
-export function getMarkStyleConfig<P extends keyof MarkDef, ES extends ExprRef | SignalRef>(
+export function getMarkStyleConfig<P extends keyof MarkDef>(
   prop: P,
-  mark: MarkDef<Mark, ES>,
-  styleConfigIndex: StyleConfigIndex<SignalRef>
+  mark: MarkDef<Mark>,
+  styleConfigIndex: StyleConfigIndex
 ) {
   return getStyleConfig(prop, getStyles(mark), styleConfigIndex);
 }
 
-export function getStyleConfig<P extends keyof MarkDef | keyof AxisConfig<SignalRef>>(
+export function getStyleConfig<P extends keyof MarkDef | keyof AxisConfig>(
   p: P,
   styles: string | string[],
-  styleConfigIndex: StyleConfigIndex<SignalRef>
+  styleConfigIndex: StyleConfigIndex
 ) {
   styles = array(styles);
   let value;

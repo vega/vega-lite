@@ -1,6 +1,6 @@
-import {NewSignal, SignalRef} from 'vega';
+import {NewSignal} from 'vega';
 import {isArray} from 'vega-util';
-import {Axis, AxisInternal, isConditionalAxisValue} from '../axis';
+import {Axis, isConditionalAxisValue} from '../axis';
 import {
   Channel,
   GEOPOSITION_CHANNELS,
@@ -27,7 +27,7 @@ import {Config} from '../config';
 import {isGraticuleGenerator} from '../data';
 import * as vlEncoding from '../encoding';
 import {Encoding, initEncoding} from '../encoding';
-import {ExprRef, replaceExprRef} from '../expr';
+import {replaceExprRef} from '../expr';
 import {LegendInternal} from '../legend';
 import {GEOSHAPE, isMarkDef, Mark, MarkDef} from '../mark';
 import {Projection} from '../projection';
@@ -39,7 +39,7 @@ import {stack, StackProperties} from '../stack';
 import {keys} from '../util';
 import {VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
-import {AxisInternalIndex} from './axis/component';
+import {AxisIndex} from './axis/component';
 import {parseUnitAxes} from './axis/parse';
 import {signalOrValueRefWithCondition, signalRefOrValue} from './common';
 import {parseData} from './data/parse';
@@ -63,18 +63,18 @@ import {parseUnitSelection} from './selection/parse';
  * Internal model of Vega-Lite specification for the compiler.
  */
 export class UnitModel extends ModelWithField {
-  public readonly markDef: MarkDef<Mark, SignalRef>;
+  public readonly markDef: MarkDef<Mark>;
   public readonly encoding: Encoding<string>;
 
   public readonly specifiedScales: ScaleIndex = {};
 
   public readonly stack: StackProperties;
 
-  protected specifiedAxes: AxisInternalIndex = {};
+  protected specifiedAxes: AxisIndex = {};
 
   protected specifiedLegends: LegendInternalIndex = {};
 
-  public specifiedProjection: Projection<ExprRef | SignalRef> = {};
+  public specifiedProjection: Projection = {};
 
   public readonly selection: SelectionParameter[] = [];
   public children: Model[] = [];
@@ -84,7 +84,7 @@ export class UnitModel extends ModelWithField {
     parent: Model,
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins = {},
-    config: Config<SignalRef>
+    config: Config
   ) {
     super(spec, 'unit', parent, parentGivenName, config, undefined, isFrameMixins(spec) ? spec.view : undefined);
 
@@ -140,7 +140,7 @@ export class UnitModel extends ModelWithField {
     return scale ? scale.domain : undefined;
   }
 
-  public axis(channel: PositionChannel): AxisInternal {
+  public axis(channel: PositionChannel): Axis {
     return this.specifiedAxes[channel];
   }
 
@@ -160,7 +160,7 @@ export class UnitModel extends ModelWithField {
     }, {} as ScaleIndex);
   }
 
-  private initScale(scale: Scale<ExprRef | SignalRef>): Scale<SignalRef> {
+  private initScale(scale: Scale): Scale {
     const {domain, range} = scale;
     // TODO: we could simplify this function if we had a recursive replace function
     const scaleInternal = replaceExprRef(scale);
@@ -170,10 +170,10 @@ export class UnitModel extends ModelWithField {
     if (isArray(range)) {
       scaleInternal.range = range.map(signalRefOrValue);
     }
-    return scaleInternal as Scale<SignalRef>;
+    return scaleInternal as Scale;
   }
 
-  private initAxes(encoding: Encoding<string>): AxisInternalIndex {
+  private initAxes(encoding: Encoding<string>): AxisIndex {
     return POSITION_SCALE_CHANNELS.reduce((_axis, channel) => {
       // Position Axis
 
@@ -194,12 +194,12 @@ export class UnitModel extends ModelWithField {
     }, {});
   }
 
-  private initAxis(axis: Axis<ExprRef | SignalRef>): Axis<SignalRef> {
+  private initAxis(axis: Axis): Axis {
     const props = keys(axis);
     const axisInternal = {};
     for (const prop of props) {
       const val = axis[prop];
-      axisInternal[prop as any] = isConditionalAxisValue<any, ExprRef | SignalRef>(val)
+      axisInternal[prop as any] = isConditionalAxisValue<any>(val)
         ? signalOrValueRefWithCondition<any>(val)
         : signalRefOrValue(val);
     }

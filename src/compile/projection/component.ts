@@ -7,7 +7,7 @@ export class ProjectionComponent extends Split<VgProjection> {
 
   constructor(
     name: string,
-    public specifiedProjection: Projection<SignalRef>,
+    public specifiedProjection: Projection,
     public size: SignalRef[],
     public data: (string | SignalRef)[]
   ) {

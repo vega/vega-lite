@@ -22,7 +22,7 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../cha
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ExprRef, replaceExprRef} from '../expr';
+import {replaceExprRef} from '../expr';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
@@ -164,7 +164,7 @@ export abstract class Model {
 
   public size: LayoutSizeMixins;
 
-  public readonly title: TitleParams<SignalRef>;
+  public readonly title: TitleParams;
   public readonly description: string;
 
   public readonly data: Data | null;
@@ -182,7 +182,7 @@ export abstract class Model {
 
   public readonly component: Component;
 
-  public readonly view?: ViewBackground<SignalRef>;
+  public readonly view?: ViewBackground;
 
   public abstract readonly children: Model[] = [];
 
@@ -191,9 +191,9 @@ export abstract class Model {
     public readonly type: SpecType,
     public readonly parent: Model,
     parentGivenName: string,
-    public readonly config: Config<SignalRef>,
+    public readonly config: Config,
     resolve: Resolve,
-    view?: ViewBackground<ExprRef | SignalRef>
+    view?: ViewBackground
   ) {
     this.parent = parent;
     this.config = config;
@@ -309,7 +309,7 @@ export abstract class Model {
     return undefined;
   }
 
-  private assembleEncodeFromView(view: ViewBackground<SignalRef>): VgEncodeEntry {
+  private assembleEncodeFromView(view: ViewBackground): VgEncodeEntry {
     // Exclude "style"
     const {style: _, ...baseView} = view;
 
@@ -405,7 +405,7 @@ export abstract class Model {
   }
 
   public assembleTitle(): VgTitle {
-    const {encoding, ...titleNoEncoding} = this.title ?? ({} as TitleParams<SignalRef>);
+    const {encoding, ...titleNoEncoding} = this.title ?? ({} as TitleParams);
 
     const title: VgTitle = {
       ...extractTitleConfig(this.config.title).nonMark,

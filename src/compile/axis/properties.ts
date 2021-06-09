@@ -1,6 +1,6 @@
 import {Align, AxisOrient, Orient, SignalRef} from 'vega';
 import {isArray, isObject} from 'vega-util';
-import {AxisInternal} from '../../axis';
+import {Axis} from '../../axis';
 import {isBinned, isBinning} from '../../bin';
 import {PositionScaleChannel, X} from '../../channel';
 import {
@@ -30,7 +30,7 @@ import {AxisConfigs, getAxisConfig} from './config';
 
 export interface AxisRuleParams {
   fieldOrDatumDef: PositionFieldDef<string> | PositionDatumDef<string>;
-  axis: AxisInternal;
+  axis: Axis;
   channel: PositionScaleChannel;
   model: UnitModel;
 
@@ -132,9 +132,9 @@ export function gridScale(model: UnitModel, channel: PositionScaleChannel) {
 
 export function getLabelAngle(
   fieldOrDatumDef: PositionFieldDef<string> | PositionDatumDef<string>,
-  axis: AxisInternal,
+  axis: Axis,
   channel: PositionScaleChannel,
-  styleConfig: StyleConfigIndex<SignalRef>,
+  styleConfig: StyleConfigIndex,
   axisConfigs?: AxisConfigs
 ) {
   const labelAngle = axis?.labelAngle;
@@ -292,7 +292,7 @@ export function defaultTickCount({
   fieldOrDatumDef: TypedFieldDef<string> | DatumDef;
   scaleType: ScaleType;
   size?: SignalRef;
-  values?: AxisInternal['values'];
+  values?: Axis['values'];
 }) {
   if (!vals && !hasDiscreteDomain(scaleType) && scaleType !== 'log') {
     if (isFieldDef(fieldOrDatumDef)) {
@@ -340,7 +340,7 @@ export function getFieldDefTitle(model: UnitModel, channel: 'x' | 'y') {
   return undefined;
 }
 
-export function values(axis: AxisInternal, fieldOrDatumDef: TypedFieldDef<string> | DatumDef) {
+export function values(axis: Axis, fieldOrDatumDef: TypedFieldDef<string> | DatumDef) {
   const vals = axis.values;
 
   if (isArray(vals)) {

@@ -258,11 +258,11 @@ export function rectBinPosition({
   channel: 'x' | 'y' | 'theta' | 'radius';
   bandSize: number | RelativeBandSize | SignalRef | undefined;
   scaleName: string;
-  markDef: MarkDef<Mark, SignalRef>;
+  markDef: MarkDef<Mark>;
   spacing?: number;
   axisTranslate: number | SignalRef;
   reverse: boolean | SignalRef;
-  config: Config<SignalRef>;
+  config: Config;
 }) {
   const channel2 = getSecondaryRangeChannel(channel);
 
@@ -348,7 +348,7 @@ export function rectBinRef({
   markDef: MarkDef<Mark>;
   bandPosition: number | SignalRef;
   offset?: number | SignalRef;
-  config?: Config<SignalRef>;
+  config?: Config;
 }) {
   const r = ref.interpolatedSignalRef({
     scaleName,

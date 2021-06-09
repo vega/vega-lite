@@ -1,4 +1,3 @@
-import {SignalRef} from 'vega';
 import {ROW} from '../../src/channel';
 import {FacetModel} from '../../src/compile/facet';
 import {assembleLabelTitle} from '../../src/compile/header/assemble';
@@ -420,7 +419,7 @@ describe('FacetModel', () => {
 
   describe('assembleMarks', () => {
     it('add label title for orthogonal orient label', () => {
-      const facet: FacetMapping<string, FacetFieldDef<string, SignalRef>> = {
+      const facet: FacetMapping<string, FacetFieldDef<string>> = {
         row: {field: 'a', type: 'ordinal', header: {labelOrient: 'top'}}
       };
       const model: FacetModel = parseFacetModelWithScale({

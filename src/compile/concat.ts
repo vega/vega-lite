@@ -1,4 +1,4 @@
-import {NewSignal, SignalRef} from 'vega';
+import {NewSignal} from 'vega';
 import {Config} from '../config';
 import * as log from '../log';
 import {isHConcatSpec, isVConcatSpec, NormalizedConcatSpec, NormalizedSpec} from '../spec';
@@ -13,7 +13,7 @@ import {Model} from './model';
 export class ConcatModel extends Model {
   public readonly children: Model[];
 
-  constructor(spec: NormalizedConcatSpec, parent: Model, parentGivenName: string, config: Config<SignalRef>) {
+  constructor(spec: NormalizedConcatSpec, parent: Model, parentGivenName: string, config: Config) {
     super(spec, 'concat', parent, parentGivenName, config, spec.resolve);
 
     if (spec.resolve?.axis?.x === 'shared' || spec.resolve?.axis?.y === 'shared') {

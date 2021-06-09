@@ -389,12 +389,7 @@ function sizeRangeMin(mark: Mark, zero: boolean | SignalRef, config: Config): nu
 
 export const MAX_SIZE_RANGE_STEP_RATIO = 0.95;
 
-function sizeRangeMax(
-  mark: Mark,
-  size: LayoutSizeMixins,
-  model: UnitModel,
-  config: Config<SignalRef>
-): number | SignalRef {
+function sizeRangeMax(mark: Mark, size: LayoutSizeMixins, model: UnitModel, config: Config): number | SignalRef {
   const xyStepSignals = {
     x: getBinStepSignal(model, 'x'),
     y: getBinStepSignal(model, 'y')
@@ -446,7 +441,7 @@ function sizeRangeMax(
 function minXYStep(
   size: LayoutSizeMixins,
   xyStepSignals: {x?: SignalRefWrapper; y?: SignalRefWrapper},
-  viewConfig: ViewConfig<SignalRef>
+  viewConfig: ViewConfig
 ): number | SignalRef {
   const widthStep = isStep(size.width) ? size.width.step : getViewConfigDiscreteStep(viewConfig, 'width');
   const heightStep = isStep(size.height) ? size.height.step : getViewConfigDiscreteStep(viewConfig, 'height');

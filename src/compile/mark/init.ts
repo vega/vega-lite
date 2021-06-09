@@ -1,4 +1,4 @@
-import {Orientation, SignalRef} from 'vega';
+import {Orientation} from 'vega';
 import {isBinned, isBinning} from '../../bin';
 import {isContinuousFieldOrDatumDef, isFieldDef, isNumericDataDef, TypedFieldDef} from '../../channeldef';
 import {Config} from '../../config';
@@ -25,9 +25,9 @@ import {QUANTITATIVE, TEMPORAL} from '../../type';
 import {contains, getFirstDefined} from '../../util';
 import {getMarkConfig, getMarkPropOrConfig} from '../common';
 
-export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>, config: Config<SignalRef>) {
+export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>, config: Config) {
   // FIXME: markDef expects that exprRefs are replaced recursively but replaceExprRef only replaces the top level
-  const markDef: MarkDef<Mark, SignalRef> = replaceExprRef(originalMarkDef) as any;
+  const markDef: MarkDef<Mark> = replaceExprRef(originalMarkDef) as any;
 
   // set orient, which can be overridden by rules as sometimes the specified orient is invalid.
   const specifiedOrient = getMarkPropOrConfig('orient', markDef, config);
@@ -69,7 +69,7 @@ export function initMarkdef(originalMarkDef: MarkDef, encoding: Encoding<string>
   return markDef;
 }
 
-function cursor(markDef: MarkDef<Mark, SignalRef>, encoding: Encoding<string>, config: Config<SignalRef>) {
+function cursor(markDef: MarkDef<Mark>, encoding: Encoding<string>, config: Config) {
   if (encoding.href || markDef.href || getMarkPropOrConfig('href', markDef, config)) {
     return 'pointer';
   }
@@ -86,7 +86,7 @@ function opacity(mark: Mark, encoding: Encoding<string>) {
   return undefined;
 }
 
-export function defaultFilled(markDef: MarkDef, config: Config<SignalRef>, {graticule}: {graticule: boolean}) {
+export function defaultFilled(markDef: MarkDef, config: Config, {graticule}: {graticule: boolean}) {
   if (graticule) {
     return false;
   }

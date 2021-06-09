@@ -1,4 +1,3 @@
-import {SignalRef} from 'vega';
 import {isString} from 'vega-util';
 import {Field} from '../channeldef';
 import {Config, initConfig} from '../config';
@@ -22,7 +21,7 @@ import {TopLevelSelectionsNormalizer} from './toplevelselection';
 
 export function normalize(
   spec: TopLevelSpec & LayoutSizeMixins,
-  config?: Config<SignalRef>
+  config?: Config
 ): TopLevel<NormalizedSpec> & LayoutSizeMixins {
   if (config === undefined) {
     config = initConfig(spec.config);
@@ -47,10 +46,7 @@ const topLevelSelectionNormalizer = new TopLevelSelectionsNormalizer();
  * Decompose extended unit specs into composition of pure unit specs.
  * And push top-level selection definitions down to unit specs.
  */
-function normalizeGenericSpec(
-  spec: NonNormalizedSpec | FacetedUnitSpec<Field> | RepeatSpec,
-  config: Config<SignalRef> = {}
-) {
+function normalizeGenericSpec(spec: NonNormalizedSpec | FacetedUnitSpec<Field> | RepeatSpec, config: Config = {}) {
   const normParams = {config};
   return topLevelSelectionNormalizer.map(
     coreNormalizer.map(selectionCompatNormalizer.map(spec, normParams), normParams),

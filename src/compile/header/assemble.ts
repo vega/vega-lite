@@ -2,7 +2,7 @@
  * Utility for generating row / column headers
  */
 
-import {SignalRef, TitleAnchor, TitleConfig} from 'vega';
+import {TitleAnchor, TitleConfig} from 'vega';
 import {isArray} from 'vega-util';
 import {FacetChannel, FACET_CHANNELS} from '../../channel';
 import {vgField} from '../../channeldef';
@@ -117,11 +117,7 @@ function getSort(facetFieldDef: FacetFieldDef<string>, channel: HeaderChannel): 
   }
 }
 
-export function assembleLabelTitle(
-  facetFieldDef: FacetFieldDef<string, SignalRef>,
-  channel: FacetChannel,
-  config: Config<SignalRef>
-) {
+export function assembleLabelTitle(facetFieldDef: FacetFieldDef<string>, channel: FacetChannel, config: Config) {
   const {format, formatType, labelAngle, labelAnchor, labelOrient, labelExpr} = getHeaderProperties(
     ['format', 'formatType', 'labelAngle', 'labelAnchor', 'labelOrient', 'labelExpr'],
     facetFieldDef.header,
@@ -239,7 +235,7 @@ export function getLayoutTitleBand(titleAnchor: TitleAnchor, headerChannel: Head
 
 export function assembleLayoutTitleBand(
   headerComponentIndex: LayoutHeaderComponentIndex,
-  config: Config<SignalRef>
+  config: Config
 ): RowCol<number> {
   const titleBand = {};
 
@@ -265,11 +261,11 @@ export function assembleLayoutTitleBand(
 }
 
 export function assembleHeaderProperties(
-  config: Config<SignalRef>,
-  facetFieldDef: FacetFieldDef<string, SignalRef>,
+  config: Config,
+  facetFieldDef: FacetFieldDef<string>,
   channel: FacetChannel,
-  properties: (keyof CoreHeader<SignalRef>)[],
-  propertiesMap: Partial<Record<keyof CoreHeader<SignalRef>, keyof TitleConfig>>
+  properties: (keyof CoreHeader)[],
+  propertiesMap: Partial<Record<keyof CoreHeader, keyof TitleConfig>>
 ): Partial<VgTitle> {
   const props = {};
   for (const prop of properties) {

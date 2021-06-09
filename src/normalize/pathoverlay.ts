@@ -1,8 +1,6 @@
-import {SignalRef} from 'vega';
 import {isObject} from 'vega-util';
 import {Config} from '../config';
 import {Encoding, normalizeEncoding} from '../encoding';
-import {ExprRef} from '../expr';
 import {AreaConfig, isMarkDef, LineConfig, Mark, MarkConfig, MarkDef} from '../mark';
 import {GenericUnitSpec, NormalizedUnitSpec} from '../spec';
 import {isUnitSpec} from '../spec/unit';
@@ -18,7 +16,7 @@ function dropLineAndPoint(markDef: MarkDef): MarkDef | Mark {
   return keys(mark).length > 1 ? mark : mark.type;
 }
 
-function dropLineAndPointFromConfig(config: Config<SignalRef>) {
+function dropLineAndPointFromConfig(config: Config) {
   for (const mark of ['line', 'area', 'rule', 'trail'] as const) {
     if (config[mark]) {
       config = {
@@ -31,11 +29,7 @@ function dropLineAndPointFromConfig(config: Config<SignalRef>) {
   return config;
 }
 
-function getPointOverlay(
-  markDef: MarkDef,
-  markConfig: LineConfig<ExprRef | SignalRef> = {},
-  encoding: Encoding<string>
-): MarkConfig<ExprRef | SignalRef> {
+function getPointOverlay(markDef: MarkDef, markConfig: LineConfig = {}, encoding: Encoding<string>): MarkConfig {
   if (markDef.point === 'transparent') {
     return {opacity: 0};
   } else if (markDef.point) {
@@ -55,10 +49,7 @@ function getPointOverlay(
   }
 }
 
-function getLineOverlay(
-  markDef: MarkDef,
-  markConfig: AreaConfig<ExprRef | SignalRef> = {}
-): MarkConfig<ExprRef | SignalRef> {
+function getLineOverlay(markDef: MarkDef, markConfig: AreaConfig = {}): MarkConfig {
   if (markDef.line) {
     // true or object
     return markDef.line === true ? {} : markDef.line;

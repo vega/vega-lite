@@ -1,7 +1,7 @@
 import {FieldName} from '../channeldef';
 import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark';
 import {Encoding} from '../encoding';
-import {ExprRef} from '../expr';
+import {SubstituteSignalWithExpr} from '../expr';
 import {AnyMark, Mark, MarkDef} from '../mark';
 import {VariableParameter} from '../parameter';
 import {Projection} from '../projection';
@@ -28,7 +28,7 @@ export interface GenericUnitSpec<E extends Encoding<any>, M> extends BaseSpec {
    * An object defining properties of geographic projection, which will be applied to `shape` path for `"geoshape"` marks
    * and to `latitude` and `"longitude"` channels for other marks.
    */
-  projection?: Projection<ExprRef>;
+  projection?: Projection;
 
   /**
    * An array of parameters that may either be simple variables, or more complex selections that map user input to data queries.
@@ -58,6 +58,8 @@ export type FacetedUnitSpec<F extends Field> = GenericUnitSpec<FacetedCompositeE
 
 export type TopLevelUnitSpec<F extends Field> = TopLevel<FacetedUnitSpec<F>> & DataMixins;
 
-export function isUnitSpec(spec: BaseSpec): spec is FacetedUnitSpec<any> | NormalizedUnitSpec {
+export function isUnitSpec(
+  spec: SubstituteSignalWithExpr<BaseSpec>
+): spec is FacetedUnitSpec<any> | NormalizedUnitSpec {
   return 'mark' in spec;
 }
