@@ -640,7 +640,7 @@ export type ChannelDef<F extends Field = string> = Encoding<F>[keyof Encoding<F>
 export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingConditionalValueDef | ExprRef | SignalRef>(
   channelDef: CD
 ): channelDef is CD & {condition: Conditional<any>} {
-  return !!channelDef && 'condition' in channelDef;
+  return channelDef && 'condition' in channelDef;
 }
 
 /**
@@ -671,7 +671,7 @@ export function isFieldDef<F extends Field>(
   channelDef: Partial<ChannelDef<F>> | FieldDefBase<F> | DatumDef<F, any>
 ): channelDef is FieldDefBase<F> | TypedFieldDef<F> | SecondaryFieldDef<F> {
   // TODO: we can't use field in channelDef here as it's somehow failing runtime test
-  return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
+  return channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
 }
 
 export function channelDefType<F extends Field>(channelDef: ChannelDef<F>): Type | undefined {
@@ -681,7 +681,7 @@ export function channelDefType<F extends Field>(channelDef: ChannelDef<F>): Type
 export function isDatumDef<F extends Field>(
   channelDef: Partial<ChannelDef<F>> | FieldDefBase<F> | DatumDef<F, any>
 ): channelDef is DatumDef<F, any> {
-  return !!channelDef && 'datum' in channelDef;
+  return channelDef && 'datum' in channelDef;
 }
 
 export function isContinuousFieldOrDatumDef<F extends Field>(
@@ -707,7 +707,7 @@ export function isFieldOrDatumDef<F extends Field>(
 }
 
 export function isTypedFieldDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is TypedFieldDef<F> {
-  return !!channelDef && ('field' in channelDef || channelDef['aggregate'] === 'count') && 'type' in channelDef;
+  return channelDef && ('field' in channelDef || channelDef['aggregate'] === 'count') && 'type' in channelDef;
 }
 
 export function isValueDef<F extends Field>(channelDef: Partial<ChannelDef<F>>): channelDef is ValueDef<any> {
@@ -715,7 +715,7 @@ export function isValueDef<F extends Field>(channelDef: Partial<ChannelDef<F>>):
 }
 
 export function isScaleFieldDef<F extends Field>(channelDef: ChannelDef<F>): channelDef is ScaleFieldDef<F> {
-  return !!channelDef && ('scale' in channelDef || 'sort' in channelDef);
+  return channelDef && ('scale' in channelDef || 'sort' in channelDef);
 }
 
 export function isPositionFieldOrDatumDef<F extends Field>(
@@ -727,13 +727,13 @@ export function isPositionFieldOrDatumDef<F extends Field>(
 export function isMarkPropFieldOrDatumDef<F extends Field>(
   channelDef: ChannelDef<F>
 ): channelDef is MarkPropFieldDef<F, any> | MarkPropDatumDef<F> {
-  return !!channelDef && 'legend' in channelDef;
+  return channelDef && 'legend' in channelDef;
 }
 
 export function isStringFieldOrDatumDef<F extends Field>(
   channelDef: ChannelDef<F>
 ): channelDef is StringFieldDef<F> | StringDatumDef<F> {
-  return !!channelDef && ('format' in channelDef || 'formatType' in channelDef);
+  return channelDef && ('format' in channelDef || 'formatType' in channelDef);
 }
 
 export function toStringFieldDef<F extends Field>(fieldDef: FieldDef<F>): StringFieldDef<F> {
