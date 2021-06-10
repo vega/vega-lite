@@ -1,4 +1,5 @@
 import {
+  isObject,
   RangeEnum,
   ScaleBins,
   ScaleInterpolateEnum,
@@ -439,6 +440,14 @@ export function isDomainUnionWith(domain: Domain): domain is DomainUnionWith {
   return domain && domain['unionWith'];
 }
 
+export interface FieldRange {
+  field: string;
+}
+
+export function isFieldRange(range: any): range is FieldRange {
+  return isObject(range) && 'field' in range;
+}
+
 export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
   /**
    * The type of scale. Vega-Lite supports the following categories of scale types:
@@ -513,7 +522,7 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
    *
    * 2) Any directly specified `range` for `x` and `y` channels will be ignored. Range can be customized via the view's corresponding [size](https://vega.github.io/vega-lite/docs/size.html) (`width` and `height`).
    */
-  range?: RangeEnum | (number | string | number[] | ES)[] | {field: string};
+  range?: RangeEnum | (number | string | number[] | ES)[] | FieldRange;
 
   /**
    * Sets the maximum value in the scale range, overriding the `range` property or the default range. This property is only intended for use with scales having continuous ranges.
