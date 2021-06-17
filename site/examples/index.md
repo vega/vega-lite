@@ -57,3 +57,4 @@ Here we list great examples of Vega-Lite visualizations that were created by the
 - [Trafford Data Lab's Vega-Lite graphics companion](https://www.trafforddatalab.io/interactive_graphics_companion/) by @trafforddatalab
 - [International Flight Map](https://observablehq.com/@alhenry/international-flight-map) by [@alhenry](https://twitter.com/maha_albert)
 - [BBC Visual and Data Journalism cookbook port to Vega-Lite](https://github.com/aezarebski/vegacookbook) by @aezarebski
+- [Car Sales in Portugal - 3 plots with cross-filtering] (https://observablehq.com/@jlmborges/vega-lite-car_sales) by @jlborges
