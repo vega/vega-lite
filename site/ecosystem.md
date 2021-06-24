@@ -87,6 +87,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Voyager clone](https://matyunya-simple-voyager-clone.ellx.app), a basic Voyager clone with step-by-step tutorial made with [Ellx](https://ellx.io).
 - [NL4DV](https://nl4dv.github.io/nl4dv/), a Python toolkit that generates analytic specifications (attributes + tasks + Vega-Lite visualizations) from natural language (NL) queries, helping people prototype NL systems for data visualization.
 - [Saite](https://github.com/jsa-aerial/saite) Interactive exploratory graphics and ad hoc visualization application for Clojure(Script). Built on top of [Hanami](https://github.com/jsa-aerial/hanami).
+- [Datablocks](https://datablocks.pro), a node-based editor for exploring, analyzing and transforming data without code.
 
 ## Tools for Embedding Vega-Lite Visualizations
 
