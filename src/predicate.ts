@@ -131,7 +131,7 @@ export interface FieldRangePredicate extends FieldPredicateBase {
 }
 
 export function isFieldRangePredicate(predicate: any): predicate is FieldRangePredicate {
-  if (predicate && predicate.field) {
+  if (predicate?.field) {
     if (isArray(predicate.range) && predicate.range.length === 2) {
       return true;
     } else if (isSignalRef(predicate.range)) {

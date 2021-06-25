@@ -1,4 +1,4 @@
-module.exports = function (type) {
+module.exports = type => {
   const helpText = `${type === 'vega' ? 'Compile' : 'Render'} a Vega-Lite specification to ${
     type === 'vega' ? 'Vega' : type.toUpperCase()
   }.

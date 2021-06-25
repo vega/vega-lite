@@ -17,7 +17,7 @@ const Levels = {
   debug: vega.Debug
 };
 
-module.exports = function (type, callback, opt) {
+module.exports = (type, callback, opt) => {
   // parse command line arguments
   const arg = args(type);
 

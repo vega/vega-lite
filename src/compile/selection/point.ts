@@ -1,6 +1,8 @@
 import {Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {SelectionCompiler, TUPLE, unitName} from '.';
+import {vals} from '../../util';
+import {BRUSH} from './interval';
 import {TUPLE_FIELDS} from './project';
 
 const point: SelectionCompiler<'point'> = {
@@ -15,7 +17,7 @@ const point: SelectionCompiler<'point'> = {
       .map(p => {
         const fieldDef = model.fieldDef(p.channel);
         // Binned fields should capture extents, for a range test against the raw field.
-        return fieldDef && fieldDef.bin
+        return fieldDef?.bin
           ? `[${datum}[${stringValue(model.vgField(p.channel, {}))}], ` +
               `${datum}[${stringValue(model.vgField(p.channel, {binSuffix: 'end'}))}]]`
           : `${datum}[${stringValue(p.field)}]`;
@@ -33,6 +35,15 @@ const point: SelectionCompiler<'point'> = {
 
     const events: Stream[] = selCmpt.events;
 
+    const brushes = vals(model.component.selection ?? {})
+      .reduce((acc, cmpt) => {
+        return cmpt.type === 'interval' ? acc.concat(cmpt.name + BRUSH) : acc;
+      }, [])
+      .map(b => `indexof(item().mark.name, '${b}') < 0`)
+      .join(' && ');
+
+    const test = `datum && item().mark.marktype !== 'group'` + (brushes ? ` && ${brushes}` : '');
+
     return signals.concat([
       {
         name: name + TUPLE,
@@ -40,7 +51,7 @@ const point: SelectionCompiler<'point'> = {
           ? [
               {
                 events,
-                update: `datum && item().mark.marktype !== 'group' ? {${update}: [${values}]} : null`,
+                update: `${test} ? {${update}: [${values}]} : null`,
                 force: true
               }
             ]

@@ -68,7 +68,7 @@ const interval: SelectionCompiler<'interval'> = {
 
     // Proxy scale reactions to ensure that an infinite loop doesn't occur
     // when an interval selection filter touches the scale.
-    if (!hasScales) {
+    if (!hasScales && scaleTriggers.length) {
       signals.push({
         name: name + SCALE_TRIGGER,
         value: {},
@@ -88,12 +88,16 @@ const interval: SelectionCompiler<'interval'> = {
     return signals.concat({
       name: name + TUPLE,
       ...(init ? {init: `{${update}: ${assembleInit(init)}}`} : {}),
-      on: [
-        {
-          events: [{signal: dataSignals.join(' || ')}], // Prevents double invocation, see https://github.com/vega/vega#1672.
-          update: `${dataSignals.join(' && ')} ? {${update}: [${dataSignals}]} : null`
-        }
-      ]
+      ...(dataSignals.length
+        ? {
+            on: [
+              {
+                events: [{signal: dataSignals.join(' || ')}], // Prevents double invocation, see https://github.com/vega/vega#1672.
+                update: `${dataSignals.join(' && ')} ? {${update}: [${dataSignals}]} : null`
+              }
+            ]
+          }
+        : {})
     });
   },
 
@@ -104,8 +108,9 @@ const interval: SelectionCompiler<'interval'> = {
     const yvname = y && y.signals.visual;
     const store = `data(${stringValue(selCmpt.name + STORE)})`;
 
-    // Do not add a brush if we're binding to scales.
-    if (scales.defined(selCmpt)) {
+    // Do not add a brush if we're binding to scales
+    // or we don't have a valid interval projection
+    if (scales.defined(selCmpt) || (!x && !y)) {
       return marks;
     }
 

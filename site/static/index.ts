@@ -31,7 +31,7 @@ hljs.registerLanguage('css', css);
 hljs.registerLanguage('diff', diff);
 
 // highlight jekyll code blocks
-hljs.initHighlightingOnLoad();
+hljs.highlightAll();
 
 declare const BASEURL: string;
 
@@ -66,7 +66,7 @@ function renderExample($target: Selection<any, any, any, any>, specText: string,
       .append('code')
       .attr('class', 'json')
       .text(textClean);
-    hljs.highlightBlock(code.node() as any);
+    hljs.highlightElement(code.node());
   }
 
   const spec = JSON.parse(specText);
@@ -93,7 +93,7 @@ export function embedExample($target: any, spec: TopLevelSpec, actions = true, t
       .append('a')
       .text('Open in Vega Editor')
       .attr('href', '#')
-      .on('click', function (event) {
+      .on('click', event => {
         post(window, editorURL, {
           mode: 'vega-lite',
           spec: compactStringify(spec),

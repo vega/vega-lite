@@ -30,9 +30,9 @@ An integral part of the data visualization process is encoding data with visual 
     "radius2": ...,
 
     // Geographic Position Channels
-    "longtitude": ...,
+    "longitude": ...,
     "latitude": ...,
-    "longtitude2": ...,
+    "longitude2": ...,
     "latitude2": ...,
 
     // Mark Properties Channels

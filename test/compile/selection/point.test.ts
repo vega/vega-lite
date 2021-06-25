@@ -186,6 +186,30 @@ describe('Multi Selection', () => {
 
     const signals = assembleUnitSelectionSignals(model, []);
     expect(signals).toEqual(expect.arrayContaining([...oneSg, ...twoSg, ...threeSg, ...fourSg, ...fiveSg, ...sixSg]));
+
+    // Ensure that interval brushes are accounted for.
+    // (We define selections separately so as not to pollute other test cases.)
+    const selCmpts2 = parseUnitSelection(model, [
+      {name: 'one', select: 'point'},
+      {name: 'two', select: 'interval'},
+      {name: 'three', select: 'interval'}
+    ]);
+    model.component.selection = selCmpts2;
+    const oneSgInterval = point.signals(model, selCmpts['one'], []);
+    expect(oneSgInterval).toEqual([
+      {
+        name: 'one_tuple',
+        on: [
+          {
+            events: selCmpts['one'].events,
+            update:
+              "datum && item().mark.marktype !== 'group' && indexof(item().mark.name, 'two_brush') < 0 && indexof(item().mark.name, 'three_brush') < 0 ? {unit: \"\", fields: one_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+            force: true
+          }
+        ]
+      }
+    ]);
+    model.component.selection = selCmpts;
   });
 
   it('builds modify signals', () => {

@@ -610,12 +610,12 @@ export abstract class Model {
     // TODO: make this correct
 
     // for normal data references
-    if (mark.from && mark.from.data) {
+    if (mark.from?.data) {
       mark.from.data = this.lookupDataSource(mark.from.data);
     }
 
     // for access to facet data
-    if (mark.from && mark.from.facet && mark.from.facet.data) {
+    if (mark.from?.facet?.data) {
       mark.from.facet.data = this.lookupDataSource(mark.from.facet.data);
     }
 

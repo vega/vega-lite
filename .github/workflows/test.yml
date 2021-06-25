@@ -12,13 +12,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node: [10, 12, 14, 15]
+        node: [12, 14, 15]
 
     steps:
       - uses: actions/checkout@v2
 
       - name: Setup Node ${{ matrix.node }}
-        uses: actions/setup-node@v1
+        uses: actions/setup-node@v2.1.5
         with:
           node-version: ${{ matrix.node }}
 
