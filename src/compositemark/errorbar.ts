@@ -360,17 +360,21 @@ export function errorBarParams<
     continuousAxis
   } = compositeMarkContinuousAxis(spec, orient, compositeMark);
 
-  const {errorBarSpecificAggregate, postAggregateCalculates, tooltipSummary, tooltipTitleWithFieldName} =
-    errorBarAggregationAndCalculation(
-      markDef,
-      continuousAxisChannelDef,
-      continuousAxisChannelDef2,
-      continuousAxisChannelDefError,
-      continuousAxisChannelDefError2,
-      inputType,
-      compositeMark,
-      config
-    );
+  const {
+    errorBarSpecificAggregate,
+    postAggregateCalculates,
+    tooltipSummary,
+    tooltipTitleWithFieldName
+  } = errorBarAggregationAndCalculation(
+    markDef,
+    continuousAxisChannelDef,
+    continuousAxisChannelDef2,
+    continuousAxisChannelDefError,
+    continuousAxisChannelDefError2,
+    inputType,
+    compositeMark,
+    config
+  );
 
   const {
     [continuousAxis]: oldContinuousAxisChannelDef,

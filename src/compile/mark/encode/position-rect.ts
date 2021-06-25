@@ -182,10 +182,10 @@ function positionAndSize(
     bandPosition: center
       ? 0.5
       : isSignalRef(bandSize)
-        ? {signal: `(1-${bandSize})/2`}
-        : isRelativeBandSize(bandSize)
-          ? (1 - bandSize.band) / 2
-          : 0
+      ? {signal: `(1-${bandSize})/2`}
+      : isRelativeBandSize(bandSize)
+      ? (1 - bandSize.band) / 2
+      : 0
   });
 
   if (vgSizeChannel) {
@@ -203,9 +203,9 @@ function positionAndSize(
       [vgChannel2]: isArray(posRef)
         ? [posRef[0], {...posRef[1], offset: sizeOffset}]
         : {
-          ...posRef,
-          offset: sizeOffset
-        }
+            ...posRef,
+            offset: sizeOffset
+          }
     };
   }
 }
@@ -274,8 +274,8 @@ export function rectBinPosition({
   const bandPosition = isSignalRef(bandSize)
     ? {signal: `(1-${bandSize.signal})/2`}
     : isRelativeBandSize(bandSize)
-      ? (1 - bandSize.band) / 2
-      : 0.5;
+    ? (1 - bandSize.band) / 2
+    : 0.5;
 
   if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {

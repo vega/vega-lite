@@ -3,7 +3,6 @@ import {pointPosition} from '../../../../src/compile/mark/encode';
 import {pointPositionDefaultRef} from '../../../../src/compile/mark/encode/position-point';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
 
-
 describe('compile/mark/encode/position-point', () => {
   it('should return correctly for lat/lng', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
@@ -32,27 +31,27 @@ describe('compile/mark/encode/position-point', () => {
     });
   });
   it('should have scale for secondary channel', () => {
-    const model = parseUnitModelWithScaleAndLayoutSize(
-      {
-        mark: {type: 'bar'},
-        encoding: {
-          x: {
-            field: 'x', type: 'quantitative',
-            scale: {
-              domain: [1, 4],
-              reverse: true,
-            },
-            stack: false
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: {type: 'bar'},
+      encoding: {
+        x: {
+          field: 'x',
+          type: 'quantitative',
+          scale: {
+            domain: [1, 4],
+            reverse: true
           },
-          y: {field: 'y', type: 'nominal'}
+          stack: false
         },
-        data: {
-          values: [
-            {"x": 2, "y": "A"},
-            {"x": 3, "y": "B"}
-          ]
-        }
-      });
+        y: {field: 'y', type: 'nominal'}
+      },
+      data: {
+        values: [
+          {x: 2, y: 'A'},
+          {x: 3, y: 'B'}
+        ]
+      }
+    });
     () => {
       const channel1 = 'x';
       const defaultPos = 'zeroOrMin';
@@ -60,7 +59,7 @@ describe('compile/mark/encode/position-point', () => {
       const scale = model.getScaleComponent(channel1);
       const channel = 'x2';
       const mixins = pointPositionDefaultRef({model, defaultPos, channel, scaleName, scale});
-      expect(mixins[channel]['scale']).toEqual(scaleName);
+      expect(mixins[channel].scale).toEqual(scaleName);
     };
-  })
+  });
 });

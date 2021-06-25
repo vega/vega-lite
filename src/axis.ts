@@ -281,8 +281,9 @@ export type ConditionalAxisLabelAlign<ES extends ExprRef | SignalRef = ExprRef |
   Align | null,
   ES
 >;
-export type ConditionalAxisLabelBaseline<ES extends ExprRef | SignalRef = ExprRef | SignalRef> =
-  ConditionalAxisProperty<TextBaseline | null, ES>;
+export type ConditionalAxisLabelBaseline<
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef
+> = ConditionalAxisProperty<TextBaseline | null, ES>;
 export type ConditionalAxisColor<ES extends ExprRef | SignalRef = ExprRef | SignalRef> = ConditionalAxisProperty<
   Color | null,
   ES
@@ -292,10 +293,12 @@ export type ConditionalAxisString<ES extends ExprRef | SignalRef = ExprRef | Sig
   ES
 >;
 
-export type ConditionalAxisLabelFontStyle<ES extends ExprRef | SignalRef = ExprRef | SignalRef> =
-  ConditionalAxisProperty<FontStyle | null, ES>;
-export type ConditionalAxisLabelFontWeight<ES extends ExprRef | SignalRef = ExprRef | SignalRef> =
-  ConditionalAxisProperty<FontWeight | null, ES>;
+export type ConditionalAxisLabelFontStyle<
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef
+> = ConditionalAxisProperty<FontStyle | null, ES>;
+export type ConditionalAxisLabelFontWeight<
+  ES extends ExprRef | SignalRef = ExprRef | SignalRef
+> = ConditionalAxisProperty<FontWeight | null, ES>;
 
 export type ConditionalAxisNumberArray<ES extends ExprRef | SignalRef = ExprRef | SignalRef> = ConditionalAxisProperty<
   number[] | null,

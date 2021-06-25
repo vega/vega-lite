@@ -87,7 +87,8 @@ describe('Layered Selections', () => {
             },
             fill: [
               {
-                test: '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
+                test:
+                  '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
                 value: null
               },
               {
@@ -135,7 +136,8 @@ describe('Layered Selections', () => {
             },
             fill: [
               {
-                test: '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
+                test:
+                  '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
                 value: null
               },
               {
@@ -178,7 +180,8 @@ describe('Layered Selections', () => {
             },
             fill: [
               {
-                test: '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
+                test:
+                  '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
                 value: null
               },
               {
@@ -187,7 +190,8 @@ describe('Layered Selections', () => {
             ],
             stroke: [
               {
-                test: '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
+                test:
+                  '!isValid(datum["Horsepower"]) || !isFinite(+datum["Horsepower"]) || !isValid(datum["Miles_per_Gallon"]) || !isFinite(+datum["Miles_per_Gallon"])',
                 value: null
               },
               {

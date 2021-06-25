@@ -685,8 +685,15 @@ const SCALE_PROPERTY_INDEX: Flag<keyof Scale<any>> = {
 
 export const SCALE_PROPERTIES = keys(SCALE_PROPERTY_INDEX);
 
-const {type, domain, range, rangeMax, rangeMin, scheme, ...NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX} =
-  SCALE_PROPERTY_INDEX;
+const {
+  type,
+  domain,
+  range,
+  rangeMax,
+  rangeMin,
+  scheme,
+  ...NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX
+} = SCALE_PROPERTY_INDEX;
 
 export const NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES = keys(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTY_INDEX);
 

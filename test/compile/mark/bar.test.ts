@@ -198,34 +198,33 @@ describe('Mark: Bar', () => {
     expect(props.x2).toEqual({scale: 'x', value: 0});
     expect(props.height).toBeUndefined();
   });
-  describe("horizontal bar with domain w/o zero and stack false", () => {
-    const model = parseUnitModelWithScaleAndLayoutSize(
-      {
-        mark: {type: 'bar'},
-        encoding: {
-          x: {
-            field: 'x', type: 'quantitative',
-            scale: {
-              domain: [1, 4],
-              reverse: true,
-            },
-            stack: false
+  describe('horizontal bar with domain w/o zero and stack false', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: {type: 'bar'},
+      encoding: {
+        x: {
+          field: 'x',
+          type: 'quantitative',
+          scale: {
+            domain: [1, 4],
+            reverse: true
           },
-          y: {field: 'y', type: 'nominal'}
+          stack: false
         },
-        data: {
-          values: [
-            {"x": 2, "y": "A"},
-            {"x": 3, "y": "B"}
-          ]
-        }
+        y: {field: 'y', type: 'nominal'}
+      },
+      data: {
+        values: [
+          {x: 2, y: 'A'},
+          {x: 3, y: 'B'}
+        ]
       }
-    );
+    });
     const props = bar.encodeEntry(model);
 
-    it("should draw bar 2 bars from zero to field value when domain that excludes zero is specified", () => {
+    it('should draw bar 2 bars from zero to field value when domain that excludes zero is specified', () => {
       expect(props.x2).toEqual({scale: 'x', value: 0});
-    })
+    });
   });
   describe('simple horizontal with point scale', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
