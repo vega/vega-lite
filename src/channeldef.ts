@@ -150,9 +150,8 @@ export type ConditionalPredicate<CD extends FieldDef<any> | DatumDef | ValueDef<
   test: LogicalComposition<Predicate>;
 } & CD;
 
-export type ConditionalParameter<
-  CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef
-> = ParameterPredicate & CD;
+export type ConditionalParameter<CD extends FieldDef<any> | DatumDef | ValueDef<any> | ExprRef | SignalRef> =
+  ParameterPredicate & CD;
 
 export function isConditionalParameter<T>(c: Conditional<T>): c is ConditionalParameter<T> {
   return c['param'];

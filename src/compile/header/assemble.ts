@@ -40,12 +40,11 @@ export function assembleTitleGroup(model: Model, channel: FacetChannel) {
     ? model.component.layoutHeaders[channel].facetFieldDef
     : undefined;
 
-  const {titleAnchor, titleAngle: ta, titleOrient} = getHeaderProperties(
-    ['titleAnchor', 'titleAngle', 'titleOrient'],
-    facetFieldDef.header,
-    config,
-    channel
-  );
+  const {
+    titleAnchor,
+    titleAngle: ta,
+    titleOrient
+  } = getHeaderProperties(['titleAnchor', 'titleAngle', 'titleOrient'], facetFieldDef.header, config, channel);
   const headerChannel = getHeaderChannel(channel, titleOrient);
 
   const titleAngle = normalizeAngle(ta);
