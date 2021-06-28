@@ -254,7 +254,7 @@ export function midPoint({
         if (isBinning(bin) || (bandPosition && timeUnit && type === TEMPORAL)) {
           // Use middle only for x an y to place marks in the center between start and end of the bin range.
           // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
-          if (stack && stack.impute) {
+          if (stack?.impute) {
             // For stack, we computed bin_mid so we can impute.
             return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
           }

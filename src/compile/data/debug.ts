@@ -24,7 +24,7 @@ export function drawDataflow(roots: readonly DataFlowNode[], size = 500) {
   const dot = dotString(roots);
   const text = new TextEncoder().encode(dot);
   const compressed = pako.deflate(text, {level: 9});
-  const result = Buffer.from(compressed).toString('base64').replace(/\+/g, '-').replace(/\//g, '_');
+  const result = btoa(String.fromCharCode.apply(null, compressed)).replace(/\+/g, '-').replace(/\//g, '_');
   const imageURL = `https://kroki.io/graphviz/png/${result}`;
   console.log('Dataflow visualization: ', imageURL);
   console.log('%c ', `font-size:${size}px; background:url(${imageURL}) no-repeat; background-size:contain`);

@@ -1,0 +1,17 @@
+name: Auto-merge Dependabot PRs
+on:
+  schedule:
+    - cron: '0 * * * *'
+jobs:
+  auto_merge:
+    name: Auto-merge Dependabot PRs
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: akheron/dependabot-cron-action@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          auto-merge: 'minor'
+          merge-method: 'rebase'
+          debug: true

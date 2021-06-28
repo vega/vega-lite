@@ -8,8 +8,8 @@ updates:
       time: '23:00'
       timezone: PST8PDT
     open-pull-requests-limit: 10
-    reviewers:
-      - domoritz
+    ignore:
+      - dependency-name: 'vega'
   - package-ecosystem: bundler
     directory: '/site'
     schedule:
