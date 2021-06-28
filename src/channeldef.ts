@@ -307,11 +307,12 @@ export type LabelDefMixins = {
 
   /**
    * The padding in pixels by which a label may extend past the chart bounding box.
+   * If the padding value if `'inf'`, the padding size is infinite number of pixels.
    * The default value depends on the mark type:
-   * - multi-series line: 20% of width for vertical line chart or 20% of height for horizontal line chart.
+   * - multi-series line: `'inf'`.
    * - Otherwise: 0
    */
-  padding?: number;
+  padding?: number | 'inf';
 
   /**
    * The labeling method to use for stacked area marks. One of:
