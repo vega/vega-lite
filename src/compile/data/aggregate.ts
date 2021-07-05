@@ -7,8 +7,9 @@ import {
   isGeoPositionChannel,
   isScaleChannel
 } from '../../channel';
-import {binRequiresRange, FieldDef, hasBandEnd, isTypedFieldDef, vgField} from '../../channeldef';
+import {binRequiresRange, FieldDef, hasBandEnd, isScaleFieldDef, isTypedFieldDef, vgField} from '../../channeldef';
 import * as log from '../../log';
+import {isFieldRange} from '../../scale';
 import {AggregateTransform} from '../../transform';
 import {Dict, duplicate, hash, keys, replacePathInField, setEqual} from '../../util';
 import {isUnitModel, ModelWithField} from '../model';
@@ -36,6 +37,9 @@ function addDimension(dims: Set<string>, channel: Channel, fieldDef: FieldDef<st
     dims.add(model.getName(posChannel));
   } else {
     dims.add(vgField(fieldDef));
+  }
+  if (isScaleFieldDef(fieldDef) && isFieldRange(fieldDef.scale?.range)) {
+    dims.add(fieldDef.scale.range.field);
   }
   return dims;
 }
@@ -148,7 +152,6 @@ export class AggregateNode extends DataFlowNode {
     if (dims.size + keys(meas).length === 0) {
       return null;
     }
-
     return new AggregateNode(parent, dims, meas);
   }
 

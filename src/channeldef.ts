@@ -356,11 +356,8 @@ export function isSortableFieldDef<F extends Field>(fieldDef: FieldDef<F>): fiel
   return 'sort' in fieldDef;
 }
 
-export type ScaleFieldDef<
-  F extends Field,
-  T extends Type = StandardType,
-  B extends Bin = boolean | BinParams | null
-> = SortableFieldDef<F, T, B> & ScaleMixins;
+export type ScaleFieldDef<F extends Field, T extends Type = StandardType, B extends Bin = boolean | BinParams | null> =
+  SortableFieldDef<F, T, B> & ScaleMixins;
 
 export interface ScaleMixins {
   /**

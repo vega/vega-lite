@@ -196,6 +196,26 @@ describe('compile/data/aggregate', () => {
       });
     });
 
+    it('should add correct dimension when field is in scale range', () => {
+      const model = parseUnitModel({
+        mark: 'point',
+        encoding: {
+          x: {timeUnit: 'year', field: 'date'},
+          y: {aggregate: 'mean', field: 'Displacement', type: 'quantitative'},
+          color: {field: 'symbol', type: 'nominal', scale: {range: {field: 'color'}}}
+        }
+      });
+
+      const agg = AggregateNode.makeFromEncoding(null, model);
+      expect(agg.assemble()).toEqual({
+        type: 'aggregate',
+        groupby: ['year_date', 'symbol', 'color'],
+        ops: ['mean'],
+        fields: ['Displacement'],
+        as: ['mean_Displacement']
+      });
+    });
+
     it('adds correct measure for argmin/max', () => {
       const model = parseUnitModel({
         mark: 'point',

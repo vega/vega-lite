@@ -1,4 +1,5 @@
 import {
+  isObject,
   RangeEnum,
   ScaleBins,
   ScaleInterpolateEnum,
@@ -437,6 +438,14 @@ export interface DomainUnionWith {
 
 export function isDomainUnionWith(domain: Domain): domain is DomainUnionWith {
   return domain && domain['unionWith'];
+}
+
+export interface FieldRange {
+  field: string;
+}
+
+export function isFieldRange(range: any): range is FieldRange {
+  return isObject(range) && 'field' in range;
 }
 
 export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
