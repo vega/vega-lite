@@ -116,7 +116,7 @@
     "rollup-plugin-terser": "^7.0.2",
     "serve": "^12.0.0",
     "terser": "^5.7.0",
-    "ts-json-schema-generator": "^0.93.0",
+    "ts-json-schema-generator": "^0.94.0",
     "typescript": "~4.3.2",
     "vega-cli": "^5.20.2",
     "vega-datasets": "~2.2.0",
