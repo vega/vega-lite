@@ -23,11 +23,10 @@ echo ""
 if ! git diff --exit-code ./site/_includes/docs_toc.md
 then
   if [ "$PUSH_BRANCH" = true ]; then
-    git add ./site/_includes/docs_toc.md
+    git add site/_includes/docs_toc.md site/Gemfile.lock
     git commit -m "chore: update TOC [CI]"
 
     # Push all the TOC changes
-    echo $(git status)
     git pull --rebase
     git push
   else
