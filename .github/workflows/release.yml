@@ -34,7 +34,7 @@ jobs:
       - name: Check NPM deployment
         run: ./scripts/check-npm.sh
 
-      - uses: actions/setup-node@v2.1.5
+      - uses: actions/setup-node@v2.2.0
         with:
           registry-url: 'https://registry.npmjs.org'
       - name: Publish to NPM registry
