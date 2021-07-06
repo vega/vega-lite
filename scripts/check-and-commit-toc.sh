@@ -22,7 +22,6 @@ echo ""
 # Commit the TOC if outdated
 if ! git diff --exit-code ./site/_includes/docs_toc.md
 then
-  ## Only do this for master
   if [ "$PUSH_BRANCH" = true ]; then
     git add ./site/_includes/docs_toc.md
     git commit -m "chore: update TOC [CI]"
