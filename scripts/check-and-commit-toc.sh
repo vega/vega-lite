@@ -27,6 +27,7 @@ then
     git commit -m "chore: update TOC [CI]"
 
     # Push all the TOC changes
+    echo $(git status)
     git pull --rebase
     git push
   else
