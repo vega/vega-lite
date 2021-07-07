@@ -18,7 +18,6 @@ import {
 import {Dict, keys} from '../util';
 import {buildModel} from './buildmodel';
 import {assembleRootData} from './data/assemble';
-//import {drawDataflow} from './data/debug';
 import {optimizeDataflow} from './data/optimize';
 import {Model} from './model';
 
