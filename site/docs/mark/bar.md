@@ -89,6 +89,10 @@ We can also adjust corner radius of the bar with various corner radius propertie
 
 <span class="vl-example" data-name="bar_corner_radius_end"></span>
 
+We can create a bar chart with rounded corners at the end of the bars with negative values.
+
+<span class="vl-example" data-name="bar_corner_radius_end_negative"></span>
+
 ### Bar Chart with Negative Values and Zero Baseline
 
 When there are negative values, you may want to hide domain the axis domain line, and instead use a conditional grid color to draw a zero baseline.
