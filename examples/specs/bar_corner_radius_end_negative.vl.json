@@ -1,0 +1,17 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A simple bar chart with rounded corners at the end of the bar.",
+  "data": {
+    "values": [
+      {"a": "A", "b": 50}, {"a": "B", "b": -50}, {"a": "C", "b": 50},
+      {"a": "D", "b": -50}, {"a": "E", "b": 85}, {"a": "F", "b": -85},
+      {"a": "G", "b": 50}, {"a": "H", "b": -50}, {"a": "I", "b": 50},
+      {"a": "J", "b": -50}
+    ]
+  },
+  "mark": {"type": "bar", "cornerRadiusEnd": 10},
+  "encoding": {
+    "x": {"field": "a", "type": "ordinal"},
+    "y": {"field": "b", "type": "quantitative"}
+  }
+}
