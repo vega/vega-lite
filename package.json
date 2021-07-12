@@ -85,7 +85,7 @@
     "@rollup/plugin-json": "^4.1.0",
     "@rollup/plugin-node-resolve": "^13.0.0",
     "@types/chai": "^4.2.18",
-    "@types/d3": "^6.7.0",
+    "@types/d3": "^7.0.0",
     "@types/jest": "^26.0.23",
     "@types/mkdirp": "^1.0.1",
     "@types/pako": "^1.0.1",
