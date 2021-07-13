@@ -83,3 +83,9 @@ You can also add a text layer to add labels to a pie chart.
 The `arc` property of the top-level [`config`](config.html) object sets the default properties for all arc marks. If [mark property encoding channels](encoding.html#mark-prop) are specified for marks, these config values will be overridden.
 
 The arc config can contain any [arc mark properties](#properties) (except `type`, `style`, and `clip`).
+
+## Faceted Pie Charts
+
+By default, the theta channel in faceted charts [resolves](resolve.html) to independent scales so that the ratios are comparable.
+
+<span class="vl-example" data-name="arc_facet"></span>

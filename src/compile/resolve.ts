@@ -4,7 +4,9 @@ import {Resolve, ResolveMode} from '../resolve';
 import {isConcatModel, isFacetModel, isLayerModel, Model} from './model';
 
 export function defaultScaleResolve(channel: ScaleChannel, model: Model): ResolveMode {
-  if (isLayerModel(model) || isFacetModel(model)) {
+  if (isFacetModel(model)) {
+    return channel === 'theta' ? 'independent' : 'shared';
+  } else if (isLayerModel(model)) {
     return 'shared';
   } else if (isConcatModel(model)) {
     return isXorY(channel) ? 'independent' : 'shared';
