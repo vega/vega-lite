@@ -63,6 +63,9 @@ jobs:
       - name: Build
         run: yarn build:only
 
+      - name: Typechecks
+        run: yarn tsc
+
       - name: Lint
         run: yarn lint
 
