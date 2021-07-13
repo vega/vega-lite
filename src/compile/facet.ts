@@ -9,6 +9,7 @@ import * as log from '../log';
 import {hasDiscreteDomain} from '../scale';
 import {DEFAULT_SORT_OP, EncodingSortField, isSortField, SortOrder} from '../sort';
 import {NormalizedFacetSpec} from '../spec';
+import {isStep} from '../spec/base';
 import {EncodingFacetMapping, FacetFieldDef, FacetMapping, isFacetMapping} from '../spec/facet';
 import {keys} from '../util';
 import {isVgRangeStep, VgData, VgLayout, VgMarkGroup} from '../vega.schema';
@@ -20,7 +21,8 @@ import {assembleLabelTitle} from './header/assemble';
 import {getHeaderChannel, getHeaderProperty} from './header/common';
 import {HEADER_CHANNELS, HEADER_TYPES} from './header/component';
 import {parseFacetHeaders} from './header/parse';
-import {parseChildrenLayoutSize} from './layoutsize/parse';
+import {assembleLayoutSignals} from './layoutsize/assemble';
+import {parseFacetLayoutSize} from './layoutsize/parse';
 import {Model, ModelWithField} from './model';
 import {assembleDomain, getFieldFromDomain} from './scale/domain';
 import {assembleFacetSignals} from './selection/assemble';
@@ -45,6 +47,11 @@ export class FacetModel extends ModelWithField {
 
     this.child = buildModel(spec.spec, this, this.getName('child'), undefined, config);
     this.children = [this.child];
+
+    this.size = {
+      ...(spec.width && !isStep(spec.width) ? {width: spec.width} : {}),
+      ...(spec.height && !isStep(spec.height) ? {height: spec.height} : {})
+    };
 
     this.facet = this.initFacet(spec.facet);
   }
@@ -104,7 +111,7 @@ export class FacetModel extends ModelWithField {
   }
 
   public parseLayoutSize() {
-    parseChildrenLayoutSize(this);
+    parseFacetLayoutSize(this);
   }
 
   public parseSelections() {
@@ -202,8 +209,18 @@ export class FacetModel extends ModelWithField {
   }
 
   public assembleLayoutSignals(): NewSignal[] {
-    // FIXME(https://github.com/vega/vega-lite/issues/1193): this can be incorrect if we have independent scales.
-    return this.child.assembleLayoutSignals();
+    const layoutSignals = assembleLayoutSignals(this);
+
+    for (const child of this.children) {
+      for (const signal of child.assembleLayoutSignals()) {
+        const currentSignals = layoutSignals.map(s => s.name);
+        if (!currentSignals.includes(signal.name)) {
+          layoutSignals.push(signal);
+        }
+      }
+    }
+
+    return layoutSignals;
   }
 
   private columnDistinctSignal() {
