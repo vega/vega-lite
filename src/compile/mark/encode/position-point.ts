@@ -154,7 +154,7 @@ export function pointPositionDefaultRef({
         }
 
         if (defaultPos === 'zeroOrMin') {
-          return mainChannel === 'y' ? {field: {group: 'height'}} : {value: 0};
+          return mainChannel === 'y' ? {field: {group: 'height'}} : {scale: scaleName, value: 0};
         } else {
           // zeroOrMax
           switch (mainChannel) {
@@ -168,7 +168,7 @@ export function pointPositionDefaultRef({
             case 'x':
               return {field: {group: 'width'}};
             case 'y':
-              return {value: 0};
+              return {scale: scaleName, value: 0};
           }
         }
         break;
