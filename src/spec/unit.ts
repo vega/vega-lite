@@ -1,3 +1,4 @@
+import {SignalRef} from 'vega';
 import {FieldName} from '../channeldef';
 import {CompositeEncoding, FacetedCompositeEncoding} from '../compositemark';
 import {Encoding} from '../encoding';
@@ -6,6 +7,7 @@ import {AnyMark, Mark, MarkDef} from '../mark';
 import {VariableParameter} from '../parameter';
 import {Projection} from '../projection';
 import {SelectionParameter} from '../selection';
+import {SubstituteType} from '../vega.schema';
 import {Field} from './../channeldef';
 import {BaseSpec, DataMixins, FrameMixins, GenericCompositionLayout, ResolveMixins} from './base';
 import {TopLevel} from './toplevel';
@@ -58,6 +60,8 @@ export type FacetedUnitSpec<F extends Field> = GenericUnitSpec<FacetedCompositeE
 
 export type TopLevelUnitSpec<F extends Field> = TopLevel<FacetedUnitSpec<F>> & DataMixins;
 
-export function isUnitSpec(spec: BaseSpec): spec is FacetedUnitSpec<any> | NormalizedUnitSpec {
+export function isUnitSpec<ES extends ExprRef | SignalRef = ExprRef>(
+  spec: BaseSpec
+): spec is SubstituteType<FacetedUnitSpec<any>, ExprRef, ES> | SubstituteType<NormalizedUnitSpec, ExprRef, ES> {
   return 'mark' in spec;
 }
