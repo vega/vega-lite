@@ -129,4 +129,28 @@ describe('compile/mark/encoding/aria', () => {
       }
     });
   });
+
+  it('should support custom description encoding', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'bar',
+      encoding: {
+        x: {
+          field: 'category',
+          type: 'ordinal'
+        },
+        description: {
+          field: 'category',
+          type: 'ordinal'
+        }
+      },
+      data: {values: []}
+    });
+
+    const ariaMixins = aria(model);
+
+    expect(ariaMixins).toEqual({
+      ariaRoleDescription: {value: 'bar'},
+      description: {signal: 'isValid(datum["category"]) ? datum["category"] : ""+datum["category"]'}
+    });
+  });
 });

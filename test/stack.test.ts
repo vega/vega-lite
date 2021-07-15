@@ -131,7 +131,7 @@ describe('stack', () => {
     }
   });
 
-  it('should not include tooltip in stackBy', () => {
+  it('should not include tooltip and label in stackBy', () => {
     const spec: TopLevel<NormalizedUnitSpec> = {
       data: {url: 'data/barley.json'},
       mark: 'bar',
@@ -139,7 +139,8 @@ describe('stack', () => {
         x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
         y: {field: 'variety', type: 'nominal'},
         detail: {field: 'site', type: 'nominal'},
-        tooltip: {field: 'total_yield', type: 'nominal'}
+        tooltip: {field: 'total_yield', type: 'nominal'},
+        label: {field: 'total_yield', type: 'nominal'}
       }
     };
 
@@ -148,6 +149,7 @@ describe('stack', () => {
 
     for (const stackBy of _stack.stackBy) {
       expect(stackBy.channel).not.toBe('tooltip');
+      expect(stackBy.channel).not.toBe('label');
     }
   });
 

@@ -33,4 +33,20 @@ describe('compile/mark/encode/text', () => {
     const textMixins = text(model);
     expect(textMixins.text).toEqual({signal: 'format(0.12342342134324, ".2f")'});
   });
+
+  it('text supports datum.datum', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'text',
+      encoding: {
+        text: {
+          field: 'a',
+          type: 'quantitative'
+        }
+      },
+      data: {url: 'data/population.json'}
+    });
+
+    const textMixins = text(model, 'text', 'datum.datum');
+    expect(textMixins.text).toEqual({signal: 'format(datum.datum["a"], "")'});
+  });
 });

@@ -219,14 +219,14 @@ describe('fieldDef', () => {
       });
     });
 
-    describe('x/y/color/text/detail', () => {
+    describe('x/y/color/label/text/detail', () => {
       it('is compatible with continuous field', () => {
-        for (const channel of ['x', 'y', 'color', 'text', 'detail'] as const) {
+        for (const channel of ['x', 'y', 'color', 'label', 'text', 'detail'] as const) {
           expect(channelCompatibility({field: 'a', type: 'quantitative'}, channel).compatible).toBeTruthy();
         }
       });
       it('is compatible with discrete field', () => {
-        for (const channel of ['x', 'y', 'color', 'text', 'detail'] as const) {
+        for (const channel of ['x', 'y', 'color', 'label', 'text', 'detail'] as const) {
           expect(channelCompatibility({field: 'a', type: 'nominal'}, channel).compatible).toBeTruthy();
         }
       });
