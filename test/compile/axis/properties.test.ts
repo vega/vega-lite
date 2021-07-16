@@ -1,4 +1,4 @@
-import {range} from 'd3';
+import {range} from 'd3-array';
 import {AxisOrient, Orient, SignalRef} from 'vega';
 import {codegen, parse} from 'vega-expression';
 import {stringValue} from 'vega-util';
