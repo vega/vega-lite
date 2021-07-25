@@ -9,7 +9,7 @@ export function defaultScaleResolve(channel: ScaleChannel, model: Model): Resolv
   } else if (isLayerModel(model)) {
     return 'shared';
   } else if (isConcatModel(model)) {
-    return isXorY(channel) ? 'independent' : 'shared';
+    return isXorY(channel) || channel === 'theta' || channel === 'radius' ? 'independent' : 'shared';
   }
   /* istanbul ignore next: should never reach here. */
   throw new Error('invalid model type for resolve');
