@@ -7338,10 +7338,10 @@ vega-tooltip@^0.25.1:
   dependencies:
     vega-util "^1.16.0"
 
-vega-tooltip@^0.26.0:
-  version "0.26.0"
-  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.26.0.tgz#f2cad2e6055fa1e0e40640123d75a9d49669fa07"
-  integrity sha512-8touiv+6ctO+Ux37wqaLOaW1rWKTkoGTZIGCxIWFsQVBfnNWWbOAYKAB0ejLAS5GjMStKTU3L3bKI+E8g8yXUA==
+vega-tooltip@^0.27.0:
+  version "0.27.0"
+  resolved "https://registry.yarnpkg.com/vega-tooltip/-/vega-tooltip-0.27.0.tgz#e03c150cdec78f68938a0dab5ef67a24e6d685da"
+  integrity sha512-FRcHNfMNo9D/7an5nZuP6JC2JGEsc85qcGjyMU7VlPpjQj9eBj1P+sZSNbb54Z20g7inVSBRyd8qgNn5EYTxJA==
   dependencies:
     vega-util "^1.16.0"
 
