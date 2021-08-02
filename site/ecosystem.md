@@ -25,7 +25,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Codimd](https://github.com/hackmdio/codimd), realtime collaborative markdown notes editor with support of various diagram syntaxes including [Vega-Lite](https://hackmd.io/c/codimd-documentation/%2F%40codimd%2Fextra-supported-syntax#Vega-Lite).
 - [Ivy](http://ivy-vis.netlify.app/), an Integrated Visualization Editing environment that wraps Vega-Lite (among other declarative visualization grammars) as templates to facilitate reuse, exploration, and opportunistic creation. Includes an in-app reproduction of [Polestar](https://github.com/vega/polestar).
 - [Deneb](https://deneb-viz.github.io), a Power BI custom visual with an editor for Vega-Lite or Vega specifications.
-- [VizLinter](https://vizlinter.idvxlab.com/), an online Vega-Lite editor with linting and fixing functions based on vega-lite-linter for Vega-Lite developers to create and validate visualizations.
+- [VizLinter](https://vizlinter.idvxlab.com/), an online editor that detects and fixes encoding issues based on vega-lite-linter.
 
 ## Plug-ins for Vega-Lite
 
