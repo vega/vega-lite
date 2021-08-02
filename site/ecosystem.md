@@ -56,7 +56,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Vega.rb](https://github.com/ankane/vega) brings Vega and Vega-Lite to Ruby.
 - [Jekyll Diagrams](https://github.com/zhustec/jekyll-diagrams) A Jekyll plugin with support for Vega & Vega-Lite and others diagramming libraries.
 - [Liquid Diagrams](https://github.com/zhustec/liquid-diagrams) A Liquid plugin with support for Vega & Vega-Lite and others diagramming libraries.
-- [Vega-Lite-Linter](https://github.com/idvxlab/vega-lite-linter) is a python package to help users detect flaws and rectify already-built but defective visualizations. 
+- [Vega-Lite-Linter](https://github.com/idvxlab/vega-lite-linter) is a python package to help users detect and fix encoding issues. 
 
 ## Programming / Data Science Environment that supports Vega-Lite
 
