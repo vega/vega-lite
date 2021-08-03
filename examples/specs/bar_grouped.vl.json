@@ -9,7 +9,8 @@
   "mark": "bar",
   "encoding": {
     "column": {
-      "field": "age", "type": "ordinal", "spacing": 10
+      "field": "age", "type": "ordinal", "spacing": 10,
+      "header": {"orient": "bottom"}
     },
     "y": {
       "aggregate": "sum", "field": "people",
@@ -18,7 +19,7 @@
     },
     "x": {
       "field": "gender",
-      "axis": {"title": ""}
+      "axis": null
     },
     "color": {
       "field": "gender",
