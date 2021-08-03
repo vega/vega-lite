@@ -95,6 +95,12 @@ When there are negative values, you may want to hide domain the axis domain line
 
 <span class="vl-example" data-name="bar_negative"></span>
 
+### Bar Chart with Baseline
+
+We can also adjust the baseline of a bar chart. For example, we can use `baseline` to shift the bar text a certain direction.
+
+<span class="vl-example" data-name="bar_baseline"></span>
+
 ### Histogram
 
 If the data is not pre-aggregated (i.e. each record in the data field represents one item), mapping a [binned](bin.html) quantitative field to `x` and aggregate `count` to `y` produces a histogram.
