@@ -1,0 +1,34 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width" : 500,
+  "height" : 100,
+  "data": {
+    "values": [
+      {"baseline options": "top", "quantity": 20},
+      {"baseline options": "bottom", "quantity": 40},
+      {"baseline options": "middle", "quantity": 60},
+      {"baseline options": "line-top", "quantity": 80},
+      {"baseline options": "line-bottom", "quantity": 100}
+    ]
+  },
+  "encoding": {
+    "y": {
+      "field": "baseline options",
+      "type": "nominal"
+    },
+    "x": {
+      "field": "quantity",
+      "type": "quantitative"
+  }},
+  "layer": [
+    {"mark": "bar"},
+    {
+      "mark": {
+        "type": "text",
+        "dx" : 20,
+        "baseline" : {"expr":"datum.a"}
+      },
+      "encoding": {"text": {"field": "quantity", "type": "quantitative"}}
+    }
+  ]
+}
