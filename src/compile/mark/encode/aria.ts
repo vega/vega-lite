@@ -1,3 +1,4 @@
+import {stringValue} from 'vega-util';
 import {entries, isEmpty} from '../../../util';
 import {getMarkPropOrConfig, signalOrValueRef} from '../../common';
 import {VG_MARK_INDEX} from './../../../vega.schema';
@@ -70,7 +71,7 @@ export function description(model: UnitModel) {
   return {
     description: {
       signal: entries(data)
-        .map(([key, value], index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`)
+        .map(([key, value], index) => `"${index > 0 ? '; ' : ''}" + ${stringValue(key)} + ": " + (${value})`)
         .join(' + ')
     }
   };
