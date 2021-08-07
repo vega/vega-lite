@@ -44,7 +44,7 @@
           "as": ["rank"],
           "ops": ["rank"],
           "fields": [null],
-          "sort": {"field": [], "order": []}
+          "sort": {"field": ["Name"], "order": ["ascending"]}
         },
         {"type": "filter", "expr": "datum[\"rank\"]<20"}
       ]
