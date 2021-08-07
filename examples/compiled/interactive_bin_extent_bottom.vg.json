@@ -127,7 +127,7 @@
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"time (binned): \" + (!isValid(datum[\"bin_maxbins_30_extent_param_brush_time\"]) || !isFinite(+datum[\"bin_maxbins_30_extent_param_brush_time\"]) ? \"null\" : format(datum[\"bin_maxbins_30_extent_param_brush_time\"], \"\") + \" – \" + format(datum[\"bin_maxbins_30_extent_param_brush_time_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+                "signal": "\"\" + \"time (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_30_extent_param_brush_time\"]) || !isFinite(+datum[\"bin_maxbins_30_extent_param_brush_time\"]) ? \"null\" : format(datum[\"bin_maxbins_30_extent_param_brush_time\"], \"\") + \" – \" + format(datum[\"bin_maxbins_30_extent_param_brush_time_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
               },
               "x2": [
                 {
@@ -421,7 +421,7 @@
               "fill": {"value": "#4c78a8"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"time (binned): \" + (!isValid(datum[\"bin_maxbins_30_time\"]) || !isFinite(+datum[\"bin_maxbins_30_time\"]) ? \"null\" : format(datum[\"bin_maxbins_30_time\"], \"\") + \" – \" + format(datum[\"bin_maxbins_30_time_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+                "signal": "\"\" + \"time (binned)\" + \": \" + (!isValid(datum[\"bin_maxbins_30_time\"]) || !isFinite(+datum[\"bin_maxbins_30_time\"]) ? \"null\" : format(datum[\"bin_maxbins_30_time\"], \"\") + \" – \" + format(datum[\"bin_maxbins_30_time_end\"], \"\")) + \"; \" + \"Count of Records\" + \": \" + (format(datum[\"__count\"], \"\"))"
               },
               "x2": [
                 {

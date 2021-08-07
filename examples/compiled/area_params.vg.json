@@ -64,7 +64,7 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"u: \" + (format(datum[\"u\"], \"\")) + \"; v: \" + (format(datum[\"v\"], \"\"))"
+            "signal": "\"\" + \"u\" + \": \" + (format(datum[\"u\"], \"\")) + \"; \" + \"v\" + \": \" + (format(datum[\"v\"], \"\"))"
           },
           "x": {"scale": "x", "field": "u"},
           "y": {"scale": "y", "field": "v"},

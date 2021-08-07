@@ -98,7 +98,7 @@
           "stroke": {"value": "#999"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"wheat: \" + (format(datum[\"wheat\"], \"\")) + \"; year: \" + (format(datum[\"year\"], \"d\")) + \"; year_end: \" + (format(datum[\"year_end\"], \"\"))"
+            "signal": "\"\" + \"wheat\" + \": \" + (format(datum[\"wheat\"], \"\")) + \"; \" + \"year\" + \": \" + (format(datum[\"year\"], \"d\")) + \"; \" + \"year_end\" + \": \" + (format(datum[\"year_end\"], \"\"))"
           },
           "x": [
             {
@@ -130,7 +130,7 @@
           "stroke": {"value": "#000"},
           "strokeWidth": {"value": 0.6},
           "description": {
-            "signal": "\"year: \" + (format(datum[\"year\"], \"d\"))"
+            "signal": "\"\" + \"year\" + \": \" + (format(datum[\"year\"], \"d\"))"
           },
           "x": [
             {
@@ -156,7 +156,7 @@
           "orient": {"value": "vertical"},
           "fill": {"value": "#a4cedb"},
           "description": {
-            "signal": "\"wages: \" + (format(datum[\"wages\"], \"\")) + \"; year: \" + (format(datum[\"year\"], \"d\"))"
+            "signal": "\"\" + \"wages\" + \": \" + (format(datum[\"wages\"], \"\")) + \"; \" + \"year\" + \": \" + (format(datum[\"year\"], \"d\"))"
           },
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages"},
@@ -178,7 +178,7 @@
           "opacity": {"value": 0.7},
           "stroke": {"value": "#000"},
           "description": {
-            "signal": "\"wages: \" + (format(datum[\"wages\"], \"\")) + \"; year: \" + (format(datum[\"year\"], \"d\"))"
+            "signal": "\"\" + \"wages\" + \": \" + (format(datum[\"wages\"], \"\")) + \"; \" + \"year\" + \": \" + (format(datum[\"year\"], \"d\"))"
           },
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages"},
@@ -198,7 +198,7 @@
         "update": {
           "stroke": {"value": "#EE8182"},
           "description": {
-            "signal": "\"wages: \" + (format(datum[\"wages\"], \"\")) + \"; year: \" + (format(datum[\"year\"], \"d\"))"
+            "signal": "\"\" + \"wages\" + \": \" + (format(datum[\"wages\"], \"\")) + \"; \" + \"year\" + \": \" + (format(datum[\"year\"], \"d\"))"
           },
           "x": {"scale": "x", "field": "year"},
           "y": {"scale": "y", "field": "wages", "offset": -2},
@@ -219,7 +219,7 @@
           "fill": {"scale": "fill", "field": "commonwealth"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"y: \" + (format(datum[\"y\"], \"\")) + \"; start: \" + (format(datum[\"start\"], \"d\")) + \"; end: \" + (format(datum[\"end\"], \"\")) + \"; offset: \" + (format(datum[\"offset\"], \"\")) + \"; commonwealth: \" + (isValid(datum[\"commonwealth\"]) ? datum[\"commonwealth\"] : \"\"+datum[\"commonwealth\"])"
+            "signal": "\"\" + \"y\" + \": \" + (format(datum[\"y\"], \"\")) + \"; \" + \"start\" + \": \" + (format(datum[\"start\"], \"d\")) + \"; \" + \"end\" + \": \" + (format(datum[\"end\"], \"\")) + \"; \" + \"offset\" + \": \" + (format(datum[\"offset\"], \"\")) + \"; \" + \"commonwealth\" + \": \" + (isValid(datum[\"commonwealth\"]) ? datum[\"commonwealth\"] : \"\"+datum[\"commonwealth\"])"
           },
           "x": [
             {
@@ -252,7 +252,7 @@
           "fontStyle": {"value": "italic"},
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"off2: \" + (format(datum[\"off2\"], \"\")) + \"; x: \" + (format(datum[\"x\"], \"d\")) + \"; name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"])"
+            "signal": "\"\" + \"off2\" + \": \" + (format(datum[\"off2\"], \"\")) + \"; \" + \"x\" + \": \" + (format(datum[\"x\"], \"d\")) + \"; \" + \"name\" + \": \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"])"
           },
           "x": [
             {
