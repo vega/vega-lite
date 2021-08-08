@@ -6,7 +6,7 @@ layout: base
   <header>
     <nav class="page-centered">
       <div class="dropdown">
-        <a class="vl-title" href="{{ site.baseurl }}/">{{ site.title }}</a>
+        <a class="vl-title" href="{{ site.baseurl }}/index.html">{{ site.title }}</a>
         <div class="dropdown-content">
           <a href="https://vega.github.io/vega/">Vega</a>
           <a href="https://altair-viz.github.io/">Altair</a>
@@ -15,9 +15,9 @@ layout: base
       </div>
       <div class="vl-links">
         <div class="primary-links">
-          <a href="{{ site.baseurl }}/examples/" {% if page.menu == 'examples' %}aria-current="page"{% endif %}>Examples</a>
+          <a href="{{ site.baseurl }}/examples/index.html" {% if page.menu == 'examples' %}aria-current="page"{% endif %}>Examples</a>
           <a href="{{ site.baseurl }}/tutorials/getting_started.html" {% if page.menu == 'tutorials' %}aria-current="page"{% endif %}>Tutorials</a>
-          <a href="{{ site.baseurl }}/docs/" {% if page.menu == 'docs' %}aria-current="page"{% endif %}>Documentation</a>
+          <a href="{{ site.baseurl }}/docs/index.html" {% if page.menu == 'docs' %}aria-current="page"{% endif %}>Documentation</a>
           <a href="{{ site.baseurl }}/usage/embed.html" {% if page.menu == 'usage' %}aria-current="page"{% endif %}>Usage</a>
           <a href="{{ site.baseurl }}/ecosystem.html" {% if page.menu == 'ecosystem' %}aria-current="page"{% endif %}>Ecosystem</a>
         </div>
