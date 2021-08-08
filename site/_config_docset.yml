@@ -1,0 +1,36 @@
+# Config for building a docset
+# Initially created by Dash, but supported by several OSS tools too
+# (Velocity, Zeal, etc)
+
+title: Vega-Lite
+description: Bare SEO for offline usage
+
+# removing baseurl b/c dash docsets don't work with absolute paths
+# end up needing the
+# if this doesn't work out, rewrite all link refs using BS4 later...
+
+# using https://ricostacruz.com/til/relative-paths-in-jekyll as workaround
+
+baseurl: '.' # the subpath of your site, e.g. /blog/
+url: 'https://vega.github.io' # the base hostname & protocol for your site
+twitter:
+  username: vega_vis
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - static/*.ts
+
+markdown: kramdown
+highlighter: none
+
+kramdown:
+  input: GFM
+  auto_id_stripping: true
+  syntax_highlighter_opts:
+    disable: true
+
+plugins:
+  # - jekyll-sitemap
+  # - jekyll-seo-tag
+  - jekyll-mentions
+  - jekyll-redirect-from
