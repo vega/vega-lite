@@ -11,8 +11,9 @@ description: Bare SEO for offline usage
 
 # using https://ricostacruz.com/til/relative-paths-in-jekyll as workaround
 
-baseurl: '.' # the subpath of your site, e.g. /blog/
+baseurl: 'DOCSET_BASE_TO_REPLACE' # the subpath of your site, e.g. /blog/
 url: 'https://vega.github.io' # the base hostname & protocol for your site
+is_docset_build: true
 twitter:
   username: vega_vis
 exclude:
