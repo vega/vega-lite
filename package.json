@@ -54,7 +54,7 @@
     "schema": "mkdir -p build && ts-json-schema-generator -f tsconfig.json -p src/index.ts -t TopLevelSpec --no-type-check --no-ref-encode > build/vega-lite-schema.json && yarn renameschema && cp build/vega-lite-schema.json site/_data/",
     "renameschema": "scripts/rename-schema.sh",
     "presite": "yarn data && yarn schema && yarn build:site && yarn build:versions && scripts/create-example-pages.sh",
-    "docset": "yarn data && yarn schema && yarn build:site && yarn build:docset && yarn build:versions && scripts/create-example-pages.sh",
+    "docset": "yarn schema && yarn build:site && yarn build:docset && yarn build:versions && scripts/create-example-pages.sh",
     "site": "yarn site:only",
     "site:only": "pushd site && bundle exec jekyll serve -I -l && popd",
     "prettierbase": "prettier '**/*.{md,css,yml}'",
