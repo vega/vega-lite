@@ -9,8 +9,8 @@
 
     {% if site.is_docset_build == true %}
     <script>
-      // This is used for data fetching in code samples, we know exactly where this lives
-      const BASEURL = '{{site.baseurl}}';
+      // Docset doesn't serve JSON from a fileserver, so it needs to load data from github
+      const BASEURL = 'https://vega.github.io/vega-lite/';
     </script>
     {% else %} {% seo %}
     <script>
