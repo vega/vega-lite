@@ -184,7 +184,7 @@ export abstract class Model {
 
   public readonly view?: ViewBackground<SignalRef>;
 
-  public abstract readonly children: Model[] = [];
+  public abstract readonly children: Model[];
 
   constructor(
     spec: NormalizedSpec,
