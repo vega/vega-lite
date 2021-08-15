@@ -22,7 +22,7 @@ import {ChannelDef, FieldDef, FieldRefOption, getFieldDef, vgField} from '../cha
 import {Config} from '../config';
 import {Data, DataSourceType} from '../data';
 import {forEach, reduce} from '../encoding';
-import {ExprRef, replaceExprRef} from '../expr';
+import {ExprRef} from '../expr';
 import * as log from '../log';
 import {Resolve} from '../resolve';
 import {hasDiscreteDomain} from '../scale';
@@ -38,7 +38,7 @@ import {NormalizedSpec} from '../spec/index';
 import {extractTitleConfig, isText, TitleParams} from '../title';
 import {normalizeTransform, Transform} from '../transform';
 import {contains, Dict, duplicate, isEmpty, keys, varName} from '../util';
-import {isVgRangeStep, VgData, VgEncodeEntry, VgLayout, VgMarkGroup} from '../vega.schema';
+import {isVgRangeStep, SubstituteType, VgData, VgEncodeEntry, VgLayout, VgMarkGroup} from '../vega.schema';
 import {assembleAxes} from './axis/assemble';
 import {AxisComponentIndex} from './axis/component';
 import {signalOrValueRef} from './common';
@@ -187,21 +187,21 @@ export abstract class Model {
   public abstract readonly children: Model[];
 
   constructor(
-    spec: NormalizedSpec,
+    spec: SubstituteType<NormalizedSpec, ExprRef, SignalRef>,
     public readonly type: SpecType,
     public readonly parent: Model,
     parentGivenName: string,
     public readonly config: Config<SignalRef>,
     resolve: Resolve,
-    view?: ViewBackground<ExprRef | SignalRef>
+    view?: ViewBackground<SignalRef>
   ) {
     this.parent = parent;
     this.config = config;
-    this.view = replaceExprRef(view);
+    this.view = view;
 
     // If name is not provided, always use parent's givenName to avoid name conflicts.
     this.name = spec.name ?? parentGivenName;
-    this.title = isText(spec.title) ? {text: spec.title} : spec.title ? replaceExprRef(spec.title) : undefined;
+    this.title = isText(spec.title) ? {text: spec.title} : spec.title;
 
     // Shared name maps
     this.scaleNameMap = parent ? parent.scaleNameMap : new NameMap();

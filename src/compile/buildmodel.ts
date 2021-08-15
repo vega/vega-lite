@@ -1,7 +1,8 @@
-import {SignalRef} from 'vega';
+import {ExprRef, SignalRef} from 'vega';
 import {Config} from '../config';
 import * as log from '../log';
 import {isAnyConcatSpec, isFacetSpec, isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedSpec} from '../spec';
+import {SubstituteType} from '../vega.schema';
 import {ConcatModel} from './concat';
 import {FacetModel} from './facet';
 import {LayerModel} from './layer';
@@ -9,7 +10,7 @@ import {Model} from './model';
 import {UnitModel} from './unit';
 
 export function buildModel(
-  spec: NormalizedSpec,
+  spec: SubstituteType<NormalizedSpec, ExprRef, SignalRef>,
   parent: Model,
   parentGivenName: string,
   unitSize: LayoutSizeMixins,
@@ -19,7 +20,7 @@ export function buildModel(
     return new FacetModel(spec, parent, parentGivenName, config);
   } else if (isLayerSpec(spec)) {
     return new LayerModel(spec, parent, parentGivenName, unitSize, config);
-  } else if (isUnitSpec(spec)) {
+  } else if (isUnitSpec<SignalRef>(spec)) {
     return new UnitModel(spec, parent, parentGivenName, unitSize, config);
   } else if (isAnyConcatSpec(spec)) {
     return new ConcatModel(spec, parent, parentGivenName, config);

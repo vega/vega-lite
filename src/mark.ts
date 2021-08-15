@@ -345,7 +345,7 @@ export const VL_ONLY_MARK_SPECIFIC_CONFIG_PROPERTY_INDEX: {
   tick: ['bandSize', 'thickness']
 };
 
-export const defaultMarkConfig: MarkConfig<SignalRef> = {
+export const defaultMarkConfig: MarkConfig<never> = {
   color: '#4c78a8',
   invalid: 'filter',
   timeUnitBandSize: 1
@@ -651,13 +651,13 @@ export interface MarkDef<
 
 const DEFAULT_RECT_BAND_SIZE = 5;
 
-export const defaultBarConfig: RectConfig<SignalRef> = {
+export const defaultBarConfig: RectConfig<never> = {
   binSpacing: 1,
   continuousBandSize: DEFAULT_RECT_BAND_SIZE,
   timeUnitBandPosition: 0.5
 };
 
-export const defaultRectConfig: RectConfig<SignalRef> = {
+export const defaultRectConfig: RectConfig<never> = {
   binSpacing: 0,
   continuousBandSize: DEFAULT_RECT_BAND_SIZE,
   timeUnitBandPosition: 0.5
@@ -673,7 +673,7 @@ export interface TickConfig<ES extends ExprRef | SignalRef> extends MarkConfig<E
   bandSize?: number;
 }
 
-export const defaultTickConfig: TickConfig<SignalRef> = {
+export const defaultTickConfig: TickConfig<never> = {
   thickness: 1
 };
 

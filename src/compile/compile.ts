@@ -3,6 +3,7 @@ import {isString, mergeConfig} from 'vega-util';
 import {getPositionScaleChannel} from '../channel';
 import * as vlFieldDef from '../channeldef';
 import {Config, initConfig, stripAndRedirectConfig} from '../config';
+import {deepReplaceExprRef} from '../expr';
 import * as log from '../log';
 import {normalize} from '../normalize';
 import {assembleParameterSignals} from '../parameter';
@@ -89,7 +90,11 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
 
     // - Decompose all extended unit specs into composition of unit spec. For example, a box plot get expanded into multiple layers of bars, ticks, and rules. The shorthand row/column channel is also expanded to a facet spec.
     // - Normalize autosize and width or height spec
-    const spec = normalize(inputSpec, config);
+    const normalized = normalize(inputSpec, config);
+
+    // replace ExprRef with SignalRef
+    // TODO: remove as any when we fix the types
+    const spec = deepReplaceExprRef(normalized) as any;
 
     // 3. Build Model: normalized spec -> Model (a tree structure)
 
@@ -128,7 +133,7 @@ export function compile(inputSpec: TopLevelSpec, opt: CompileOptions = {}) {
 
     return {
       spec: vgSpec,
-      normalized: spec
+      normalized
     };
   } finally {
     // Reset the singleton logger if a logger is provided

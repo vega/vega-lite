@@ -1,9 +1,10 @@
 import {Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
 import {Config} from '../config';
+import {ExprRef} from '../expr';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec';
 import {keys} from '../util';
-import {VgData, VgLayout} from '../vega.schema';
+import {SubstituteType, VgData, VgLayout} from '../vega.schema';
 import {assembleAxisSignals} from './axis/assemble';
 import {parseLayerAxes} from './axis/parse';
 import {parseData} from './data/parse';
@@ -20,7 +21,7 @@ export class LayerModel extends Model {
   public readonly children: Model[];
 
   constructor(
-    spec: NormalizedLayerSpec,
+    spec: SubstituteType<NormalizedLayerSpec, ExprRef, SignalRef>,
     parent: Model,
     parentGivenName: string,
     parentGivenSize: LayoutSizeMixins,
