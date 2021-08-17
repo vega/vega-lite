@@ -103,6 +103,10 @@
         "title": "Log-scaled Histogram"
       },
       {
+        "name": "histogram_nonlinear",
+        "title": "Non-linear Histogram"
+      },
+      {
         "name": "histogram_rel_freq",
         "title": "Relative Frequency Histogram"
       },
