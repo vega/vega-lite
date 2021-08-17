@@ -651,75 +651,92 @@ describe('compile/scale', () => {
           {signal: `{data: datetime("Jan 1, 2009")}`}
         ]);
       });
+    });
 
-      describe('for ordinal', () => {
-        it('should have correct domain for binned ordinal color', () => {
-          const model = parseUnitModel({
-            mark: 'bar',
-            encoding: {
-              color: {field: 'a', bin: true, type: 'ordinal'}
-            }
-          });
-
-          const xDomain = testParseDomainForChannel(model, 'color');
-          expect(xDomain).toEqual([
-            {data: 'main', field: 'bin_maxbins_6_a_range', sort: {field: 'bin_maxbins_6_a', op: 'min'}}
-          ]);
+    describe('for ordinal', () => {
+      it('should have correct domain for binned ordinal color', () => {
+        const model = parseUnitModel({
+          mark: 'bar',
+          encoding: {
+            color: {field: 'a', bin: true, type: 'ordinal'}
+          }
         });
+
+        const xDomain = testParseDomainForChannel(model, 'color');
+        expect(xDomain).toEqual([
+          {data: 'main', field: 'bin_maxbins_6_a_range', sort: {field: 'bin_maxbins_6_a', op: 'min'}}
+        ]);
       });
 
-      describe('for nominal', () => {
-        it('should return correct domain with the provided sort property', () => {
-          const sortDef: EncodingSortField<string> = {op: 'min', field: 'Acceleration'};
-          const model = parseUnitModel({
-            mark: 'point',
-            encoding: {
-              y: {field: 'origin', type: 'nominal', sort: sortDef}
-            }
-          });
-          expect(testParseDomainForChannel(model, 'y')).toEqual([
-            {
-              data: 'raw',
-              field: 'origin',
-              sort: sortDef
-            }
-          ]);
+      it.only('should return correct domain without sort if sort is not provided', () => {
+        const model = parseUnitModel({
+          mark: 'point',
+          encoding: {
+            x: {field: 'origin', type: 'ordinal'}
+          }
+        });
+        console.log(model.encoding.x);
+
+        expect(testParseDomainForChannel(model, 'x')).toEqual([
+          {
+            data: 'main',
+            field: 'origin'
+          }
+        ]);
+      });
+    });
+
+    describe('for nominal', () => {
+      it('should return correct domain with the provided sort property', () => {
+        const sortDef: EncodingSortField<string> = {op: 'min', field: 'Acceleration'};
+        const model = parseUnitModel({
+          mark: 'point',
+          encoding: {
+            y: {field: 'origin', type: 'nominal', sort: sortDef}
+          }
+        });
+        expect(testParseDomainForChannel(model, 'y')).toEqual([
+          {
+            data: 'raw',
+            field: 'origin',
+            sort: sortDef
+          }
+        ]);
+      });
+
+      it('should return correct domain with the provided sort property with order property', () => {
+        const sortDef: EncodingSortField<string> = {op: 'min', field: 'Acceleration', order: 'descending'};
+        const model = parseUnitModel({
+          mark: 'point',
+          encoding: {
+            y: {field: 'origin', type: 'nominal', sort: sortDef}
+          }
         });
 
-        it('should return correct domain with the provided sort property with order property', () => {
-          const sortDef: EncodingSortField<string> = {op: 'min', field: 'Acceleration', order: 'descending'};
-          const model = parseUnitModel({
-            mark: 'point',
-            encoding: {
-              y: {field: 'origin', type: 'nominal', sort: sortDef}
-            }
-          });
+        expect(testParseDomainForChannel(model, 'y')).toEqual([
+          {
+            data: 'raw',
+            field: 'origin',
+            sort: sortDef
+          }
+        ]);
+      });
 
-          expect(testParseDomainForChannel(model, 'y')).toEqual([
-            {
-              data: 'raw',
-              field: 'origin',
-              sort: sortDef
-            }
-          ]);
+      it('should return correct domain with sort if sort is not provided', () => {
+        const model = parseUnitModel({
+          mark: 'point',
+          encoding: {
+            y: {field: 'origin', type: 'nominal'}
+          }
         });
 
-        it('should return correct domain without sort if sort is not provided', () => {
-          const model = parseUnitModel({
-            mark: 'point',
-            encoding: {
-              y: {field: 'origin', type: 'nominal'}
-            }
-          });
-
-          expect(testParseDomainForChannel(model, 'y')).toEqual([
-            {
-              data: 'main',
-              field: 'origin',
-              sort: true
-            }
-          ]);
-        });
+        expect(testParseDomainForChannel(model, 'y')).toEqual([
+          {
+            data: 'main',
+            field: 'origin',
+            sort: true
+          }
+        ]);
       });
     });
   });

@@ -332,8 +332,7 @@ describe('src/compile', () => {
         expect(scale.get('domains')).toEqual([
           {
             data: 'main',
-            field: 'origin',
-            sort: true
+            field: 'origin'
           }
         ]);
       });

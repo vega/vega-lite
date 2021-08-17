@@ -25,13 +25,11 @@ describe('Layer', () => {
       expect(model.component.scales['x'].get('domains')).toEqual([
         {
           data: 'layer_0_main',
-          field: 'a',
-          sort: true
+          field: 'a'
         },
         {
           data: 'layer_1_main',
-          field: 'b',
-          sort: true
+          field: 'b'
         }
       ]);
     });

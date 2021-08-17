@@ -477,7 +477,12 @@ export function domainSort(
       field: model.vgField(channel),
       order: 'descending'
     };
-  } else if (util.contains(['ascending', undefined /* default =ascending*/], sort)) {
+  } else if (sort === 'ascending') {
+    return true;
+  } else if (sort === undefined) {
+    if (fieldDef.type === 'ordinal') {
+      return undefined;
+    }
     return true;
   }
 
