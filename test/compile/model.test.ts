@@ -34,6 +34,7 @@ describe('Model', () => {
 
       expect(model.assembleGroupStyle()).toBeUndefined();
     });
+
     it('returns cell by default for cartesian plots', () => {
       const model = parseModel({
         data: {values: []},
@@ -45,6 +46,55 @@ describe('Model', () => {
       });
 
       expect(model.assembleGroupStyle()).toEqual('cell');
+    });
+
+    it('returns cell by default for layered cartesian plots', () => {
+      const model = parseModel({
+        data: {values: []},
+        layer: [
+          {
+            mark: 'point',
+            encoding: {
+              x: {field: 'a'},
+              y: {field: 'b'}
+            }
+          },
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'a'},
+              y: {field: 'b'}
+            }
+          }
+        ]
+      });
+
+      expect(model.assembleGroupStyle()).toEqual('cell');
+    });
+
+    it('merged styles for layered cartesian plots', () => {
+      const model = parseModel({
+        data: {values: []},
+        layer: [
+          {
+            mark: 'point',
+            view: {style: 'a'},
+            encoding: {
+              x: {field: 'a'},
+              y: {field: 'b'}
+            }
+          },
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'a'},
+              y: {field: 'b'}
+            }
+          }
+        ]
+      });
+
+      expect(model.assembleGroupStyle()).toEqual(['a', 'cell']);
     });
 
     it('returns the specified style', () => {
