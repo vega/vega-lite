@@ -42,6 +42,20 @@ describe('stack', () => {
     }
   });
 
+  it("doesn't stacked binned field", () => {
+    for (const mark of STACKABLE_NON_POLAR_MARKS) {
+      const spec: TopLevel<NormalizedUnitSpec> = {
+        data: {url: 'data/barley.json'},
+        mark: mark,
+        encoding: {
+          x: {field: 'yield', type: 'quantitative', bin: true}
+        }
+      };
+      const stackProps = stack(spec.mark, spec.encoding, undefined);
+      expect(stackProps).toBeNull();
+    }
+  });
+
   it('should be disabled when stack is false', () => {
     for (const mark of STACKABLE_NON_POLAR_MARKS) {
       const spec: TopLevel<NormalizedUnitSpec> = {
