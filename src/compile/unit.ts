@@ -273,6 +273,17 @@ export class UnitModel extends ModelWithField {
 
     return marks.map(this.correctDataNames);
   }
+  public assembleGroupStyle(): string | string[] {
+    const {style} = this.view || {};
+    if (style !== undefined) {
+      return style;
+    }
+    if (this.encoding.x || this.encoding.y) {
+      return 'cell';
+    } else {
+      return undefined;
+    }
+  }
 
   protected getMapping() {
     return this.encoding;

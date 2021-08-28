@@ -86,6 +86,5 @@
   ],
   "projection": {"type": "albersUsa"},
   "width": 900,
-  "height": 500,
-  "config": {"view": {"stroke": null}}
+  "height": 500
 }

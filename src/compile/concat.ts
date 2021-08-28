@@ -117,6 +117,10 @@ export class ConcatModel extends Model {
     });
   }
 
+  public assembleGroupStyle(): string | string[] {
+    return undefined;
+  }
+
   protected assembleDefaultLayout(): VgLayout {
     const columns = this.layout.columns;
     return {

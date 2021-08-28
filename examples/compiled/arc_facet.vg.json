@@ -72,7 +72,6 @@
     {
       "name": "cell",
       "type": "group",
-      "style": "cell",
       "from": {
         "facet": {"name": "facet", "data": "source_0", "groupby": ["year"]}
       },
@@ -80,8 +79,7 @@
       "encode": {
         "update": {
           "width": {"signal": "child_width"},
-          "height": {"signal": "child_height"},
-          "stroke": {"value": null}
+          "height": {"signal": "child_height"}
         }
       },
       "marks": [

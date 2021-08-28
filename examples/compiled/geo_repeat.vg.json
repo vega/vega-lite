@@ -101,7 +101,6 @@
     {
       "type": "group",
       "name": "child__row_population_group",
-      "style": "cell",
       "encode": {
         "update": {
           "width": {"signal": "width"},
@@ -146,7 +145,6 @@
     {
       "type": "group",
       "name": "child__row_engineers_group",
-      "style": "cell",
       "encode": {
         "update": {
           "width": {"signal": "width"},
@@ -191,7 +189,6 @@
     {
       "type": "group",
       "name": "child__row_hurricanes_group",
-      "style": "cell",
       "encode": {
         "update": {
           "width": {"signal": "width"},

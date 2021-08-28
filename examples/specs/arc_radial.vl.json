@@ -16,6 +16,5 @@
     "theta": {"field": "data", "type": "quantitative", "stack": true},
     "radius": {"field": "data", "scale": {"type": "sqrt", "zero": true, "rangeMin": 20}},
     "color": {"field": "data", "type": "nominal", "legend": null}
-  },
-  "view": {"stroke": null}
+  }
 }

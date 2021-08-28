@@ -4,7 +4,6 @@
   "padding": 5,
   "width": 200,
   "height": 200,
-  "style": "cell",
   "data": [
     {
       "name": "source_0",
@@ -165,6 +164,5 @@
       "bins": {"signal": "layer_1_bin_maxbins_10_IMDB_Rating_bins"},
       "zero": false
     }
-  ],
-  "config": {"style": {"cell": {"stroke": null}}}
+  ]
 }

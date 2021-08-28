@@ -4,7 +4,6 @@
   "padding": 5,
   "width": 20,
   "height": 20,
-  "style": "cell",
   "data": [{"name": "source_0", "values": [{"a": 2}]}],
   "marks": [
     {

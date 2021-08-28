@@ -29,6 +29,5 @@
       "aggregate": "count",
       "scale": {"type": "sqrt"}
     }
-  },
-  "config": {"view": {"stroke": null}}
+  }
 }

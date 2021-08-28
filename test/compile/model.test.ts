@@ -1,6 +1,6 @@
 import {NameMap} from '../../src/compile/model';
-import {parseFacetModelWithScale, parseModel} from '../util';
 import {DataSourceType} from '../../src/data';
+import {parseFacetModelWithScale, parseModel} from '../util';
 
 describe('Model', () => {
   describe('NameMap', () => {
@@ -26,13 +26,75 @@ describe('Model', () => {
   });
 
   describe('assembleGroupStyle', () => {
-    it('returns cell by default', () => {
+    it('returns undefined by default for non cartesian plots', () => {
       const model = parseModel({
         data: {values: []},
         mark: 'point'
       });
 
-      expect(model.assembleGroupStyle()).toBe('cell');
+      expect(model.assembleGroupStyle()).toBeUndefined();
+    });
+
+    it('returns cell by default for cartesian plots', () => {
+      const model = parseModel({
+        data: {values: []},
+        mark: 'point',
+        encoding: {
+          x: {field: 'a'},
+          y: {field: 'b'}
+        }
+      });
+
+      expect(model.assembleGroupStyle()).toEqual('cell');
+    });
+
+    it('returns cell by default for layered cartesian plots', () => {
+      const model = parseModel({
+        data: {values: []},
+        layer: [
+          {
+            mark: 'point',
+            encoding: {
+              x: {field: 'a'},
+              y: {field: 'b'}
+            }
+          },
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'a'},
+              y: {field: 'b'}
+            }
+          }
+        ]
+      });
+
+      expect(model.assembleGroupStyle()).toEqual('cell');
+    });
+
+    it('merged styles for layered cartesian plots', () => {
+      const model = parseModel({
+        data: {values: []},
+        layer: [
+          {
+            mark: 'point',
+            view: {style: 'a'},
+            encoding: {
+              x: {field: 'a'},
+              y: {field: 'b'}
+            }
+          },
+          {
+            mark: 'line',
+            encoding: {
+              x: {field: 'a'},
+              y: {field: 'b'}
+            }
+          }
+        ]
+      });
+
+      expect(model.assembleGroupStyle()).toEqual(['a', 'cell']);
     });
 
     it('returns the specified style', () => {

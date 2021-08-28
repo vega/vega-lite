@@ -26,6 +26,5 @@
         "text": {"field": "data", "type": "quantitative"}
       }
     }
-  ],
-  "view": {"stroke": null}
+  ]
 }

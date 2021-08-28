@@ -302,12 +302,7 @@ export abstract class Model {
 
   public abstract assembleSelectionData(data: readonly VgData[]): readonly VgData[];
 
-  public assembleGroupStyle(): string | string[] {
-    if (this.type === 'unit' || this.type === 'layer') {
-      return this.view?.style ?? 'cell';
-    }
-    return undefined;
-  }
+  public abstract assembleGroupStyle(): string | string[];
 
   private assembleEncodeFromView(view: ViewBackground<SignalRef>): VgEncodeEntry {
     // Exclude "style"

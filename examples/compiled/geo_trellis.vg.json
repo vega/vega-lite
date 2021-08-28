@@ -85,7 +85,6 @@
     {
       "name": "cell",
       "type": "group",
-      "style": "cell",
       "from": {
         "facet": {"name": "facet", "data": "source_0", "groupby": ["group"]}
       },
