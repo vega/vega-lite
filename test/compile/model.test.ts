@@ -1,6 +1,6 @@
 import {NameMap} from '../../src/compile/model';
-import {parseFacetModelWithScale, parseModel} from '../util';
 import {DataSourceType} from '../../src/data';
+import {parseFacetModelWithScale, parseModel} from '../util';
 
 describe('Model', () => {
   describe('NameMap', () => {
@@ -26,13 +26,25 @@ describe('Model', () => {
   });
 
   describe('assembleGroupStyle', () => {
-    it('returns cell by default', () => {
+    it('returns undefined by default for non cartesian plots', () => {
       const model = parseModel({
         data: {values: []},
         mark: 'point'
       });
 
-      expect(model.assembleGroupStyle()).toBe('cell');
+      expect(model.assembleGroupStyle()).toBeUndefined();
+    });
+    it('returns cell by default for cartesian plots', () => {
+      const model = parseModel({
+        data: {values: []},
+        mark: 'point',
+        encoding: {
+          x: {field: 'a'},
+          y: {field: 'b'}
+        }
+      });
+
+      expect(model.assembleGroupStyle()).toEqual('cell');
     });
 
     it('returns the specified style', () => {

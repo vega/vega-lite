@@ -219,6 +219,10 @@ export class FacetModel extends ModelWithField {
     }
   }
 
+  public assembleGroupStyle(): string | string[] {
+    return undefined;
+  }
+
   public assembleGroup(signals: NewSignal[]) {
     if (this.parent && this.parent instanceof FacetModel) {
       // Provide number of columns for layout.

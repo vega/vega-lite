@@ -56,6 +56,5 @@
       "theta": {"field": "value", "type": "quantitative"},
       "color": {"field": "category", "type": "nominal"}
     }
-  }],
-  "config": {"view": {"stroke": null}}
+  }]
 }

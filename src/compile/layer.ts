@@ -1,4 +1,5 @@
 import {Legend as VgLegend, NewSignal, SignalRef, Title as VgTitle} from 'vega';
+import {array} from 'vega-util';
 import {Config} from '../config';
 import * as log from '../log';
 import {isLayerSpec, isUnitSpec, LayoutSizeMixins, NormalizedLayerSpec} from '../spec';
@@ -98,6 +99,17 @@ export class LayerModel extends Model {
 
   public assembleSelectionData(data: readonly VgData[]): readonly VgData[] {
     return this.children.reduce((db, child) => child.assembleSelectionData(db), data);
+  }
+
+  public assembleGroupStyle(): string | string[] {
+    const uniqueStyles = new Set<string>();
+    for (const child of this.children) {
+      for (const style of array(child.assembleGroupStyle())) {
+        uniqueStyles.add(style);
+      }
+    }
+    const styles = Array.from(uniqueStyles);
+    return styles.length > 1 ? styles : styles.length === 1 ? styles[0] : undefined;
   }
 
   public assembleTitle(): VgTitle {
