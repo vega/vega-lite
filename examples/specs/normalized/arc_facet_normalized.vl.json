@@ -3,7 +3,6 @@
   "data": {"url": "data/barley.json"},
   "facet": {"column": {"field": "year"}},
   "spec": {
-    "view": {"stroke": null},
     "mark": "arc",
     "encoding": {
       "theta": {"field": "yield", "type": "quantitative", "aggregate": "sum"},

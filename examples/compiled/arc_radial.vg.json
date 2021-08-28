@@ -5,8 +5,6 @@
   "padding": 5,
   "width": 200,
   "height": 200,
-  "style": "cell",
-  "encode": {"update": {"stroke": {"value": null}}},
   "data": [
     {"name": "source_0", "values": [12, 23, 47, 6, 52, 19]},
     {

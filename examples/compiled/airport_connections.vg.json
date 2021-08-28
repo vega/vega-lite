@@ -5,7 +5,6 @@
   "padding": 5,
   "width": 900,
   "height": 500,
-  "style": "cell",
   "data": [
     {"name": "org_store"},
     {
@@ -263,6 +262,5 @@
       "range": [0, 1000],
       "zero": true
     }
-  ],
-  "config": {"style": {"cell": {"stroke": null}}}
+  ]
 }
