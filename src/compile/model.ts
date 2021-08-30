@@ -403,7 +403,7 @@ export abstract class Model {
     const {encoding, ...titleNoEncoding} = this.title ?? ({} as TitleParams<SignalRef>);
 
     const title: VgTitle = {
-      ...extractTitleConfig(this.config.title).nonMark,
+      ...extractTitleConfig(this.config.title).nonMarkTitleProperties,
       ...titleNoEncoding,
       ...(encoding ? {encode: {update: encoding}} : {})
     };

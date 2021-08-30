@@ -65,7 +65,8 @@ export interface TitleParams<ES extends ExprRef | SignalRef> extends TitleBase<E
 export function extractTitleConfig(titleConfig: TitleConfig<SignalRef>): {
   titleMarkConfig: MarkConfig<SignalRef>;
   subtitleMarkConfig: MarkConfig<SignalRef>;
-  nonMark: BaseTitleNoValueRefs<SignalRef>;
+  /** These are non-mark title config that need to be hardcoded in the title directive. */
+  nonMarkTitleProperties: BaseTitleNoValueRefs<SignalRef>;
   subtitle: BaseTitleNoValueRefs<SignalRef>;
 } {
   const {
@@ -74,6 +75,8 @@ export function extractTitleConfig(titleConfig: TitleConfig<SignalRef>): {
     frame,
     offset,
     orient,
+    angle,
+    limit,
 
     // color needs to be redirect to fill
     color,
@@ -97,11 +100,13 @@ export function extractTitleConfig(titleConfig: TitleConfig<SignalRef>): {
   };
 
   // These are non-mark title config that need to be hardcoded
-  const nonMark: BaseTitleNoValueRefs<SignalRef> = {
+  const nonMarkTitleProperties: BaseTitleNoValueRefs<SignalRef> = {
     ...(anchor ? {anchor} : {}),
     ...(frame ? {frame} : {}),
     ...(offset ? {offset} : {}),
-    ...(orient ? {orient} : {})
+    ...(orient ? {orient} : {}),
+    ...(angle !== undefined ? {angle} : {}),
+    ...(limit !== undefined ? {limit} : {})
   };
 
   // subtitle part can stay in config.title since header titles do not use subtitle
@@ -115,9 +120,9 @@ export function extractTitleConfig(titleConfig: TitleConfig<SignalRef>): {
     ...(subtitlePadding ? {subtitlePadding} : {})
   };
 
-  const subtitleMarkConfig = pick(titleMarkConfig, ['align', 'baseline', 'dx', 'dy', 'limit']);
+  const subtitleMarkConfig = pick(titleConfig, ['align', 'baseline', 'dx', 'dy', 'limit']);
 
-  return {titleMarkConfig, subtitleMarkConfig, nonMark, subtitle};
+  return {titleMarkConfig, subtitleMarkConfig, nonMarkTitleProperties: nonMarkTitleProperties, subtitle};
 }
 
 export function isText(v: any): v is Text {
