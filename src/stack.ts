@@ -8,6 +8,7 @@ import {
   isFieldDef,
   isFieldOrDatumDef,
   PositionDatumDef,
+  PositionDef,
   PositionFieldDef,
   TypedFieldDef,
   vgField
@@ -75,6 +76,10 @@ export interface StackProperties {
 export const STACKABLE_MARKS = new Set<Mark>([ARC, BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK]);
 export const STACK_BY_DEFAULT_MARKS = new Set<Mark>([BAR, AREA, ARC]);
 
+function isUnbinnedQuantitative(channelDef: PositionDef<string>) {
+  return isFieldDef(channelDef) && channelDefType(channelDef) === 'quantitative' && !channelDef.bin;
+}
+
 function potentialStackedChannel(
   encoding: Encoding<string>,
   x: 'x' | 'theta'
@@ -85,7 +90,7 @@ function potentialStackedChannel(
   const yDef = encoding[y];
 
   if (isFieldDef(xDef) && isFieldDef(yDef)) {
-    if (channelDefType(xDef) === 'quantitative' && channelDefType(yDef) === 'quantitative') {
+    if (isUnbinnedQuantitative(xDef) && isUnbinnedQuantitative(yDef)) {
       if (xDef.stack) {
         return x;
       } else if (yDef.stack) {
@@ -106,14 +111,14 @@ function potentialStackedChannel(
           return x;
         }
       }
-    } else if (channelDefType(xDef) === 'quantitative') {
+    } else if (isUnbinnedQuantitative(xDef)) {
       return x;
-    } else if (channelDefType(yDef) === 'quantitative') {
+    } else if (isUnbinnedQuantitative(yDef)) {
       return y;
     }
-  } else if (channelDefType(xDef) === 'quantitative') {
+  } else if (isUnbinnedQuantitative(xDef)) {
     return x;
-  } else if (channelDefType(yDef) === 'quantitative') {
+  } else if (isUnbinnedQuantitative(yDef)) {
     return y;
   }
   return undefined;

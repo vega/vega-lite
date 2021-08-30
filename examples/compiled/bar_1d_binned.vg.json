@@ -1,0 +1,102 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "height": 50,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/flights-5k.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "extent",
+          "field": "delay",
+          "signal": "bin_maxbins_100_minstep_1_delay_extent"
+        },
+        {
+          "type": "bin",
+          "field": "delay",
+          "as": [
+            "bin_maxbins_100_minstep_1_delay",
+            "bin_maxbins_100_minstep_1_delay_end"
+          ],
+          "signal": "bin_maxbins_100_minstep_1_delay_bins",
+          "extent": {"signal": "bin_maxbins_100_minstep_1_delay_extent"},
+          "maxbins": 100,
+          "minstep": 1
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"bin_maxbins_100_minstep_1_delay\"]) && isFinite(+datum[\"bin_maxbins_100_minstep_1_delay\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"delay (binned): \" + (!isValid(datum[\"bin_maxbins_100_minstep_1_delay\"]) || !isFinite(+datum[\"bin_maxbins_100_minstep_1_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_100_minstep_1_delay\"], \"d\") + \" – \" + format(datum[\"bin_maxbins_100_minstep_1_delay_end\"], \"d\"))"
+          },
+          "x2": [
+            {
+              "test": "!isValid(datum[\"bin_maxbins_100_minstep_1_delay\"]) || !isFinite(+datum[\"bin_maxbins_100_minstep_1_delay\"])",
+              "value": 0
+            },
+            {
+              "scale": "x",
+              "field": "bin_maxbins_100_minstep_1_delay",
+              "offset": 1
+            }
+          ],
+          "x": [
+            {
+              "test": "!isValid(datum[\"bin_maxbins_100_minstep_1_delay\"]) || !isFinite(+datum[\"bin_maxbins_100_minstep_1_delay\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "bin_maxbins_100_minstep_1_delay_end"}
+          ],
+          "y": {"value": 0},
+          "y2": {"field": {"group": "height"}}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "signal": "[bin_maxbins_100_minstep_1_delay_bins.start, bin_maxbins_100_minstep_1_delay_bins.stop]"
+      },
+      "range": [0, {"signal": "width"}],
+      "bins": {"signal": "bin_maxbins_100_minstep_1_delay_bins"},
+      "zero": false
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "delay",
+      "format": "d",
+      "titleAnchor": "start",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/10)"},
+      "zindex": 0
+    }
+  ],
+  "config": {"style": {"cell": {"stroke": null}}}
+}

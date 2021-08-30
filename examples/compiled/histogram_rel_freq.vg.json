@@ -44,6 +44,14 @@
           "as": "PercentOfTotal"
         },
         {
+          "type": "stack",
+          "groupby": ["bin_Horsepwoer", "bin_Horsepwoer"],
+          "field": "PercentOfTotal",
+          "sort": {"field": [], "order": []},
+          "as": ["PercentOfTotal_start", "PercentOfTotal_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"bin_Horsepwoer\"]) && isFinite(+datum[\"bin_Horsepwoer\"]) && isValid(datum[\"PercentOfTotal\"]) && isFinite(+datum[\"PercentOfTotal\"])"
         }
@@ -68,8 +76,8 @@
           },
           "x2": {"scale": "x", "field": "bin_Horsepwoer", "offset": 1},
           "x": {"scale": "x", "field": "bin_Horsepwoer_end"},
-          "y": {"scale": "y", "field": "PercentOfTotal"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {"scale": "y", "field": "PercentOfTotal_end"},
+          "y2": {"scale": "y", "field": "PercentOfTotal_start"}
         }
       }
     }
@@ -88,7 +96,10 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "PercentOfTotal"},
+      "domain": {
+        "data": "source_0",
+        "fields": ["PercentOfTotal_start", "PercentOfTotal_end"]
+      },
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
