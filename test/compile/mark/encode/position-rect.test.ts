@@ -1,24 +1,25 @@
-import {TypedFieldDef} from '../../../../src/channeldef';
-import {rectBinPosition} from '../../../../src/compile/mark/encode';
-import {defaultConfig} from '../../../../src/config';
+import {rectPosition} from '../../../../src/compile/mark/encode/position-rect';
 import * as log from '../../../../src/log';
+import {parseUnitModelWithScaleAndLayoutSize} from '../../../util';
 
 describe('compile/mark/encode/position-rect', () => {
-  const config = defaultConfig;
-  describe('rectBinPosition', () => {
+  describe('rectPosition', () => {
     it('produces correct x-mixins for signal reverse', () => {
-      const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
-      const props = rectBinPosition({
-        fieldDef,
-        channel: 'x',
-        bandSize: 1,
-        scaleName: undefined,
-        reverse: {signal: 'r'},
-        axisTranslate: 0.5, // Vega default
-        spacing: 1,
-        markDef: {type: 'bar'},
-        config
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {
+            bin: true,
+            field: 'x',
+            type: 'quantitative',
+            scale: {reverse: {signal: 'r'}}
+          }
+        }
       });
+
+      const props = rectPosition(model, 'x');
+      expect(props.x[0]).toEqual({test: "!isValid(datum[\"bin_maxbins_10_x\"]) || !isFinite(+datum[\"bin_maxbins_10_x\"])", value: 0});
       expect(props.x[1].offset).toEqual({
         signal: '0.5 + (r ? -1 : 1) * -0.5'
       });
@@ -28,18 +29,21 @@ describe('compile/mark/encode/position-rect', () => {
     });
 
     it('produces correct x-mixins for binned data with step and start field, without end field', () => {
-      const fieldDef: TypedFieldDef<string> = {field: 'x', bin: {binned: true, step: 2}, type: 'quantitative'};
-      const props = rectBinPosition({
-        fieldDef,
-        channel: 'x',
-        bandSize: 1,
-        scaleName: 'x',
-        reverse: false,
-        axisTranslate: 0.5, // Vega default
-        spacing: 1,
-        markDef: {type: 'bar'},
-        config
+
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {
+            bin: {binned: true, step: 2},
+            field: 'x',
+            type: 'quantitative'
+          }
+        }
       });
+
+      const props = rectPosition(model, 'x');
+
       expect(props.x).toEqual({
         signal: 'scale("x", datum["x"] + 2)',
         offset: 0
@@ -47,18 +51,20 @@ describe('compile/mark/encode/position-rect', () => {
     });
 
     it('produces correct y-mixins for signal reverse', () => {
-      const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
-      const props = rectBinPosition({
-        fieldDef,
-        channel: 'y',
-        bandSize: 1,
-        scaleName: undefined,
-        axisTranslate: 0.5, // Vega default
-        reverse: {signal: 'r'},
-        spacing: 1,
-        markDef: {type: 'bar'},
-        config
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          y: {
+            bin: true,
+            field: 'x',
+            type: 'quantitative',
+            scale: {reverse: {signal: 'r'}}
+          }
+        }
       });
+
+      const props = rectPosition(model, 'y');
       expect(props.y2[1].offset).toEqual({
         signal: '0.5 + (r ? -1 : 1) * -0.5'
       });
@@ -67,19 +73,22 @@ describe('compile/mark/encode/position-rect', () => {
       });
     });
 
-    it('produces correct x-mixins for signal reverse (different values)', () => {
-      const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
-      const props = rectBinPosition({
-        fieldDef,
-        channel: 'x',
-        bandSize: 1,
-        scaleName: undefined,
-        axisTranslate: 0.5, // Vega default
-        reverse: {signal: 'r'},
-        spacing: 2,
-        markDef: {type: 'bar'},
-        config
+    it('produces correct x-mixins for signal reverse with custom spacing', () => {
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: {type: 'bar', binSpacing: 2},
+        encoding: {
+          x: {
+            bin: true,
+            field: 'x',
+            type: 'quantitative',
+            scale: {reverse: {signal: 'r'}}
+          }
+        }
       });
+
+      const props = rectPosition(model, 'x');
+
       expect(props.x[1].offset).toEqual({
         signal: '0.5 + (r ? -1 : 1) * -1'
       });
@@ -89,18 +98,21 @@ describe('compile/mark/encode/position-rect', () => {
     });
 
     it('produces correct y-mixins for signal reverse with different spacing', () => {
-      const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
-      const props = rectBinPosition({
-        fieldDef,
-        channel: 'y',
-        bandSize: 1,
-        scaleName: undefined,
-        axisTranslate: 0.5, // Vega default
-        reverse: {signal: 'r'},
-        spacing: 2,
-        markDef: {type: 'bar'},
-        config
+
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: {type: 'bar', binSpacing: 2},
+        encoding: {
+          y: {
+            bin: true,
+            field: 'x',
+            type: 'quantitative',
+            scale: {reverse: {signal: 'r'}}
+          }
+        }
       });
+
+      const props = rectPosition(model, 'y');
       expect(props.y2[1].offset).toEqual({
         signal: '0.5 + (r ? -1 : 1) * -1'
       });
@@ -112,17 +124,21 @@ describe('compile/mark/encode/position-rect', () => {
     it(
       'generates warning for invalid binned spec without x2',
       log.wrap(logger => {
-        const fieldDef: TypedFieldDef<string> = {field: 'bin_start', bin: 'binned', type: 'quantitative'};
-        const props = rectBinPosition({
-          fieldDef,
-          channel: 'x',
-          bandSize: 1,
-          scaleName: undefined,
-          axisTranslate: 0.5, // Vega default
-          reverse: false,
-          markDef: {type: 'bar'},
-          config
+
+        const model = parseUnitModelWithScaleAndLayoutSize({
+          data: {values: []},
+          mark: {type: 'bar', binSpacing: 2},
+          encoding: {
+            x: {
+              bin: 'binned',
+              field: 'x',
+              type: 'quantitative',
+              scale: {reverse: {signal: 'r'}}
+            }
+          }
         });
+
+        const props = rectPosition(model, 'x');
         expect(props).not.toBeDefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('x2'));
       })
@@ -131,35 +147,41 @@ describe('compile/mark/encode/position-rect', () => {
     it(
       'generates warning for invalid binned spec without y2',
       log.wrap(logger => {
-        const fieldDef: TypedFieldDef<string> = {field: 'bin_start', bin: 'binned', type: 'quantitative'};
-        const props = rectBinPosition({
-          fieldDef,
-          channel: 'y',
-          bandSize: 1,
-          scaleName: undefined,
-          axisTranslate: 0.5, // Vega default
-          reverse: false,
-          markDef: {type: 'bar'},
-          config
+        const model = parseUnitModelWithScaleAndLayoutSize({
+          data: {values: []},
+          mark: {type: 'bar', binSpacing: 2},
+          encoding: {
+            y: {
+              bin: 'binned',
+              field: 'y',
+              type: 'quantitative',
+              scale: {reverse: {signal: 'r'}}
+            }
+          }
         });
+
+        const props = rectPosition(model, 'y');
         expect(props).not.toBeDefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('y2'));
       })
     );
 
     it('produces correct x-mixins for signal translate', () => {
-      const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
-      const props = rectBinPosition({
-        fieldDef,
-        channel: 'x',
-        bandSize: 1,
-        scaleName: undefined,
-        axisTranslate: {signal: 't'}, // Vega default
-        reverse: false,
-        spacing: 1,
-        markDef: {type: 'bar'},
-        config
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: 'bar',
+        encoding: {
+          x: {
+            bin: true,
+            field: 'x',
+            type: 'quantitative',
+            axis: {translate: {signal: 't'}}
+          }
+        }
       });
+      model.parseAxesAndHeaders();
+
+      const props = rectPosition(model, 'x');
       expect(props.x[1].offset).toEqual({
         signal: 't + -0.5'
       });
@@ -169,18 +191,23 @@ describe('compile/mark/encode/position-rect', () => {
     });
 
     it('produces correct x-mixins for signal translate, signal reverse, signal offset', () => {
-      const fieldDef: TypedFieldDef<string> = {field: 'x', bin: true, type: 'quantitative'};
-      const props = rectBinPosition({
-        fieldDef,
-        channel: 'x',
-        bandSize: 1,
-        scaleName: undefined,
-        axisTranslate: {signal: 't'}, // Vega default
-        reverse: {signal: 'r'},
-        spacing: 1,
-        markDef: {type: 'bar', xOffset: {signal: 'o'}},
-        config
+
+      const model = parseUnitModelWithScaleAndLayoutSize({
+        data: {values: []},
+        mark: {type: 'bar', xOffset: {signal: 'o'}},
+        encoding: {
+          x: {
+            bin: true,
+            field: 'x',
+            type: 'quantitative',
+            scale: {reverse: {signal: 'r'}},
+            axis: {translate: {signal: 't'}}
+          }
+        }
       });
+      model.parseAxesAndHeaders();
+
+      const props = rectPosition(model, 'x');
       expect(props.x[1].offset).toEqual({
         signal: 't + (r ? -1 : 1) * (o + -0.5)'
       });
