@@ -13,14 +13,12 @@
       {"category":"C", "group": "z", "value":0.2}
     ]
   },
+  "width": {"step": 50, "for": "position"},
   "mark": "bar",
   "encoding": {
-    "y": {"field": "category"},
-    "x": {
-      "field": "value", "type": "quantitative",
-      "axis": {"title": "population", "grid": false}
-    },
-    "yOffset": {"field": "group"},
+    "x": {"field": "category", "scale": {"padding": 0.4}},
+    "y": {"field": "value", "type": "quantitative"},
+    "xOffset": {"field": "group"},
     "color": {"field": "group"}
   }
 }

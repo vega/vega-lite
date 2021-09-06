@@ -1,5 +1,7 @@
-import {ScaleChannel, SCALE_CHANNELS, SHAPE} from '../../channel';
+import {getMainChannelFromOffsetChannel, isXorYOffset, ScaleChannel, SCALE_CHANNELS, SHAPE} from '../../channel';
 import {getFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
+import {channelHasNestedOffsetScale} from '../../encoding';
+import * as log from '../../log';
 import {GEOSHAPE} from '../../mark';
 import {
   NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES,
@@ -44,28 +46,39 @@ export function parseScaleCore(model: Model) {
  */
 function parseUnitScaleCore(model: UnitModel): ScaleComponentIndex {
   const {encoding, mark, markDef} = model;
-
-  return SCALE_CHANNELS.reduce((scaleComponents: ScaleComponentIndex, channel: ScaleChannel) => {
+  const scaleComponents: ScaleComponentIndex = {};
+  for (const channel of SCALE_CHANNELS) {
     const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) as TypedFieldDef<string> | ScaleDatumDef; // must be typed def to have scale
 
     // Don't generate scale for shape of geoshape
     if (fieldOrDatumDef && mark === GEOSHAPE && channel === SHAPE && fieldOrDatumDef.type === GEOJSON) {
-      return scaleComponents;
+      continue;
     }
+
     let specifiedScale = fieldOrDatumDef && fieldOrDatumDef['scale'];
+    if (isXorYOffset(channel)) {
+      const mainChannel = getMainChannelFromOffsetChannel(channel);
+      if (!channelHasNestedOffsetScale(encoding, mainChannel)) {
+        // Don't generate scale when the offset encoding shouldn't yield a nested scale
+        if (specifiedScale) {
+          log.warn(log.message.offsetEncodingScaleIgnored(channel));
+        }
+        continue;
+      }
+    }
 
     if (fieldOrDatumDef && specifiedScale !== null && specifiedScale !== false) {
       specifiedScale ??= {};
+      const hasNestedOffsetScale = channelHasNestedOffsetScale(encoding, channel);
 
-      const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, markDef);
+      const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, markDef, hasNestedOffsetScale);
       scaleComponents[channel] = new ScaleComponent(model.scaleName(`${channel}`, true), {
         value: sType,
         explicit: specifiedScale.type === sType
       });
     }
-
-    return scaleComponents;
-  }, {});
+  }
+  return scaleComponents;
 }
 
 const scaleTypeTieBreaker = tieBreakByComparing(

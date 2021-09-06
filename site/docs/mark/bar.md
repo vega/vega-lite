@@ -127,13 +127,15 @@ You can also create a normalized stacked bar chart by setting [`stack`](stack.ht
 
 <span class="vl-example" data-name="stacked_bar_normalize"></span>
 
-### Grouped Bar Chart
-
-<!-- TODO: better explain this -->
-
-[Faceting](facet.html) a bar chart produces a grouped bar chart.
+### Grouped Bar Chart (with Offset)
 
 <span class="vl-example" data-name="bar_grouped"></span>
+
+### Grouped Bar Chart (with Facet)
+
+Alternatively, you can also use [faceting](facet.html) to produce a grouped bar chart.
+
+<span class="vl-example" data-name="bar_grouped_facet"></span>
 
 {:#ranged}
 

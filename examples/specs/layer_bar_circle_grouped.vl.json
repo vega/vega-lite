@@ -13,14 +13,24 @@
       {"category":"C", "group": "z", "value":0.2}
     ]
   },
-  "mark": "bar",
+  "transform": [{
+    "calculate": "datum.value/2",
+    "as": "half"
+  }],
   "encoding": {
-    "y": {"field": "category"},
-    "x": {
-      "field": "value", "type": "quantitative",
-      "axis": {"title": "population", "grid": false}
-    },
-    "yOffset": {"field": "group"},
-    "color": {"field": "group"}
-  }
+    "x": {"field": "category"},
+    "xOffset": {"field": "group"}
+  },
+  "layer": [{
+    "mark": "bar",
+    "encoding": {
+      "y": {"field": "value", "type": "quantitative"},
+      "color": {"field": "group"}
+    }
+  }, {
+    "mark": {"type": "circle", "thickness": 2, "color": "black"},
+    "encoding": {
+      "y": {"field": "half", "type": "quantitative"}
+    }
+  }]
 }

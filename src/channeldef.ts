@@ -44,8 +44,10 @@ import {
   URL,
   X,
   X2,
+  XOFFSET,
   Y,
-  Y2
+  Y2,
+  YOFFSET
 } from './channel';
 import {getMarkConfig, getMarkPropOrConfig} from './compile/common';
 import {isCustomFormatType} from './compile/format';
@@ -374,6 +376,10 @@ export interface ScaleMixins {
    */
   scale?: Scale | null;
 }
+
+export type OffsetFieldDef<F extends Field, T extends Type = StandardType> = ScaleFieldDef<F, T>;
+
+export type OffsetDef<F extends Field, T extends Type = StandardType> = OffsetFieldDef<F, T> | ValueDef<number>;
 
 export interface DatumDef<
   F extends Field = string,
@@ -1248,6 +1254,8 @@ export function channelCompatibility(
 
     case X:
     case Y:
+    case XOFFSET:
+    case YOFFSET:
     case COLOR:
     case FILL:
     case STROKE:

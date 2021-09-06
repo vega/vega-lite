@@ -178,6 +178,12 @@ export function stack(
     dimensionChannel = undefined;
   }
 
+  // If the dimension has offset, don't stack anymore
+  const dimensionOffsetChannel = dimensionChannel === 'x' ? 'xOffset' : 'yOffset';
+  if (getFieldDef(encoding[dimensionOffsetChannel])) {
+    return null;
+  }
+
   // Should have grouping level of detail that is different from the dimension field
   const stackBy = NONPOSITION_CHANNELS.reduce((sc, channel) => {
     // Ignore tooltip in stackBy (https://github.com/vega/vega-lite/issues/4001)

@@ -15,12 +15,12 @@
   },
   "mark": "bar",
   "encoding": {
-    "y": {"field": "category"},
-    "x": {
-      "field": "value", "type": "quantitative",
-      "axis": {"title": "population", "grid": false}
-    },
-    "yOffset": {"field": "group"},
+    "column": {"field": "category","header": {"orient": "bottom"}},
+    "y": {"field": "value", "type": "quantitative"},
+    "x": {"field": "group", "axis": null},
     "color": {"field": "group"}
+  },
+  "config": {
+    "view": {"stroke": "transparent"}
   }
 }

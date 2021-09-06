@@ -1,5 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "xOffset without x will be replaced as x",
   "data": {
     "values": [
       {"category":"A", "group": "x", "value":0.1},
@@ -15,12 +16,8 @@
   },
   "mark": "bar",
   "encoding": {
-    "y": {"field": "category"},
-    "x": {
-      "field": "value", "type": "quantitative",
-      "axis": {"title": "population", "grid": false}
-    },
-    "yOffset": {"field": "group"},
+    "y": {"field": "value", "type": "quantitative"},
+    "xOffset": {"field": "group"},
     "color": {"field": "group"}
   }
 }

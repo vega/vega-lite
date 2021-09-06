@@ -13,14 +13,19 @@
       {"category":"C", "group": "z", "value":0.2}
     ]
   },
-  "mark": "bar",
-  "encoding": {
-    "y": {"field": "category"},
-    "x": {
-      "field": "value", "type": "quantitative",
-      "axis": {"title": "population", "grid": false}
-    },
-    "yOffset": {"field": "group"},
-    "color": {"field": "group"}
-  }
+  "layer": [{
+    "mark": "bar",
+    "encoding": {
+      "x": {"field": "category"},
+      "xOffset": {"field": "group"},
+      "y": {"field": "value", "type": "quantitative"},
+      "color": {"field": "group"}
+    }
+  }, {
+    "mark": {"type": "line", "color": "black"},
+    "encoding": {
+      "x": {"field": "category"},
+      "y": {"aggregate": "mean", "field": "value", "type": "quantitative"}
+    }
+  }]
 }

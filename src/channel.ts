@@ -24,6 +24,10 @@ export const Y = 'y' as const;
 export const X2 = 'x2' as const;
 export const Y2 = 'y2' as const;
 
+// Position Offset
+export const XOFFSET = 'xOffset' as const;
+export const YOFFSET = 'yOffset' as const;
+
 // Arc-Position
 export const RADIUS = 'radius' as const;
 export const RADIUS2 = 'radius2' as const;
@@ -123,6 +127,8 @@ const UNIT_CHANNEL_INDEX: Flag<Channel> = {
   ...POLAR_POSITION_CHANNEL_INDEX,
 
   ...GEO_POSIITON_CHANNEL_INDEX,
+  xOffset: 1,
+  yOffset: 1,
 
   // color
   color: 1,
@@ -335,6 +341,28 @@ export function getOffsetChannel(channel: Channel) {
   return undefined;
 }
 
+/**
+ * Get the main channel for a range channel. E.g. `x` for `x2`.
+ */
+export function getOffsetScaleChannel(channel: Channel): OffsetScaleChannel {
+  switch (channel) {
+    case X:
+      return 'xOffset';
+    case Y:
+      return 'yOffset';
+  }
+  return undefined;
+}
+
+export function getMainChannelFromOffsetChannel(channel: OffsetScaleChannel): PositionScaleChannel {
+  switch (channel) {
+    case 'xOffset':
+      return 'x';
+    case 'yOffset':
+      return 'y';
+  }
+}
+
 // CHANNELS without COLUMN, ROW
 export const UNIT_CHANNELS = keys(UNIT_CHANNEL_INDEX);
 
@@ -345,6 +373,9 @@ const {
   // x2 and y2 share the same scale as x and y
   x2: _x2,
   y2: _y2,
+  //
+  xOffset: _xo,
+  yOffset: _yo,
   latitude: _latitude,
   longitude: _longitude,
   latitude2: _latitude2,
@@ -383,7 +414,17 @@ export function getPositionScaleChannel(sizeType: 'width' | 'height'): PositionS
   return sizeType === 'width' ? X : Y;
 }
 
-// NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without X, Y
+const OFFSET_SCALE_CHANNEL_INDEX: {xOffset: 1; yOffset: 1} = {xOffset: 1, yOffset: 1};
+
+export const OFFSET_SCALE_CHANNELS = keys(OFFSET_SCALE_CHANNEL_INDEX);
+
+export type OffsetScaleChannel = typeof OFFSET_SCALE_CHANNELS[0];
+
+export function isXorYOffset(channel: Channel): channel is OffsetScaleChannel {
+  return channel in OFFSET_SCALE_CHANNEL_INDEX;
+}
+
+// NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without position / offset
 const {
   // x2 and y2 share the same scale as x and y
   // text and tooltip have format instead of scale,
@@ -431,6 +472,7 @@ export function supportLegend(channel: NonPositionScaleChannel) {
 const SCALE_CHANNEL_INDEX = {
   ...POSITION_SCALE_CHANNEL_INDEX,
   ...POLAR_POSITION_SCALE_CHANNEL_INDEX,
+  ...OFFSET_SCALE_CHANNEL_INDEX,
   ...NONPOSITION_SCALE_CHANNEL_INDEX
 };
 
@@ -505,6 +547,8 @@ function getSupportedMark(channel: ExtendedChannel): SupportedMark {
       return ALL_MARKS;
     case X:
     case Y:
+    case XOFFSET:
+    case YOFFSET:
     case LATITUDE:
     case LONGITUDE:
       // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
@@ -573,6 +617,8 @@ export function rangeType(channel: ExtendedChannel): RangeType {
     case Y:
     case THETA:
     case RADIUS:
+    case XOFFSET:
+    case YOFFSET:
     case SIZE:
     case ANGLE:
     case STROKEWIDTH:

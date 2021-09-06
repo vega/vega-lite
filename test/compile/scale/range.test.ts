@@ -133,6 +133,58 @@ describe('compile/scale', () => {
       });
     });
 
+    describe('xOffset', () => {
+      it('returns [0, bandwidth] if x is band scale with fixed width', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          width: 500,
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'subx', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(makeImplicit([0, {signal: "bandwidth('x')"}]));
+      });
+      it("returns [0, bandwidth('x')] if x has a fixed step for position", () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          width: {step: 23, for: 'position'},
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'subx', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(makeImplicit([0, {signal: "bandwidth('x')"}]));
+      });
+
+      it('returns step if x is band scale with fixed step with default for', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          width: {step: 23},
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'subx', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(makeExplicit({step: 23}));
+      });
+      it('returns step if x is band scale with fixed step for offset', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          width: {step: 23, for: 'offset'},
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'subx', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(makeExplicit({step: 23}));
+      });
+    });
+
     describe('color', () => {
       it('should support custom scheme.', () => {
         const model = parseUnitModelWithScaleExceptRange({
