@@ -9,4 +9,3 @@ export {pointOrRangePosition, rangePosition} from './position-range';
 export {rectPosition} from './position-rect';
 export {text} from './text';
 export {tooltip, tooltipRefForEncoding} from './tooltip';
-

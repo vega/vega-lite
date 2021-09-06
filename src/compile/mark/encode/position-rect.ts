@@ -27,10 +27,7 @@ import {pointPositionDefaultRef} from './position-point';
 import {rangePosition} from './position-range';
 import * as ref from './valueref';
 
-export function rectPosition(
-  model: UnitModel,
-  channel: 'x' | 'y' | 'theta' | 'radius'
-): VgEncodeEntry {
+export function rectPosition(model: UnitModel, channel: 'x' | 'y' | 'theta' | 'radius'): VgEncodeEntry {
   const {config, encoding, markDef} = model;
   const mark = markDef.type;
 
@@ -55,7 +52,6 @@ export function rectPosition(
     !(hasSizeDef && !isRelativeBandSize(hasSizeDef)) &&
     !hasDiscreteDomain(scaleType)
   ) {
-
     return rectBinPosition({
       fieldDef: channelDef,
       fieldDef2: channelDef2,
@@ -173,10 +169,10 @@ function positionAndSize(
     bandPosition: center
       ? 0.5
       : isSignalRef(bandSize)
-        ? {signal: `(1-${bandSize})/2`}
-        : isRelativeBandSize(bandSize)
-          ? (1 - bandSize.band) / 2
-          : 0
+      ? {signal: `(1-${bandSize})/2`}
+      : isRelativeBandSize(bandSize)
+      ? (1 - bandSize.band) / 2
+      : 0
   });
 
   if (vgSizeChannel) {
@@ -194,9 +190,9 @@ function positionAndSize(
       [vgChannel2]: isArray(posRef)
         ? [posRef[0], {...posRef[1], offset: sizeOffset}]
         : {
-          ...posRef,
-          offset: sizeOffset
-        }
+            ...posRef,
+            offset: sizeOffset
+          }
     };
   }
 }
@@ -255,7 +251,7 @@ function rectBinPosition({
   const axis = model.component.axes[channel]?.[0];
   const axisTranslate = axis?.get('translate') ?? 0.5; // vega default is 0.5
 
-  const spacing = isXorY(channel) ? (getMarkPropOrConfig('binSpacing', markDef, config) ?? 0) : 0;
+  const spacing = isXorY(channel) ? getMarkPropOrConfig('binSpacing', markDef, config) ?? 0 : 0;
 
   const channel2 = getSecondaryRangeChannel(channel);
   const vgChannel = getVgPositionChannel(channel);
@@ -266,8 +262,8 @@ function rectBinPosition({
   const bandPosition = isSignalRef(bandSize)
     ? {signal: `(1-${bandSize.signal})/2`}
     : isRelativeBandSize(bandSize)
-      ? (1 - bandSize.band) / 2
-      : 0.5;
+    ? (1 - bandSize.band) / 2
+    : 0.5;
 
   if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {

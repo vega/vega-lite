@@ -19,7 +19,10 @@ describe('compile/mark/encode/position-rect', () => {
       });
 
       const props = rectPosition(model, 'x');
-      expect(props.x[0]).toEqual({test: "!isValid(datum[\"bin_maxbins_10_x\"]) || !isFinite(+datum[\"bin_maxbins_10_x\"])", value: 0});
+      expect(props.x[0]).toEqual({
+        test: '!isValid(datum["bin_maxbins_10_x"]) || !isFinite(+datum["bin_maxbins_10_x"])',
+        value: 0
+      });
       expect(props.x[1].offset).toEqual({
         signal: '0.5 + (r ? -1 : 1) * -0.5'
       });
@@ -29,7 +32,6 @@ describe('compile/mark/encode/position-rect', () => {
     });
 
     it('produces correct x-mixins for binned data with step and start field, without end field', () => {
-
       const model = parseUnitModelWithScaleAndLayoutSize({
         data: {values: []},
         mark: 'bar',
@@ -98,7 +100,6 @@ describe('compile/mark/encode/position-rect', () => {
     });
 
     it('produces correct y-mixins for signal reverse with different spacing', () => {
-
       const model = parseUnitModelWithScaleAndLayoutSize({
         data: {values: []},
         mark: {type: 'bar', binSpacing: 2},
@@ -124,7 +125,6 @@ describe('compile/mark/encode/position-rect', () => {
     it(
       'generates warning for invalid binned spec without x2',
       log.wrap(logger => {
-
         const model = parseUnitModelWithScaleAndLayoutSize({
           data: {values: []},
           mark: {type: 'bar', binSpacing: 2},
@@ -191,7 +191,6 @@ describe('compile/mark/encode/position-rect', () => {
     });
 
     it('produces correct x-mixins for signal translate, signal reverse, signal offset', () => {
-
       const model = parseUnitModelWithScaleAndLayoutSize({
         data: {values: []},
         mark: {type: 'bar', xOffset: {signal: 'o'}},
