@@ -3,12 +3,9 @@ import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
 import {
   COLOR,
-  FILL,
-  POLAR_POSITION_SCALE_CHANNELS,
+  FILL, isXorY, POLAR_POSITION_SCALE_CHANNELS,
   POSITION_SCALE_CHANNELS,
-  POSITION_SCALE_CHANNEL_INDEX,
-  ScaleChannel,
-  STROKE
+  ScaleChannel, STROKE
 } from '../../channel';
 import {
   getFieldDef,
@@ -134,7 +131,7 @@ export interface ScaleRuleParams {
   scalePadding: number | SignalRef;
   scalePaddingInner: number | SignalRef;
   domain: Domain;
-  markDef: MarkDef;
+  markDef: MarkDef<Mark, SignalRef>;
   config: Config<SignalRef>;
 }
 
@@ -251,7 +248,7 @@ export function nice(
   ) {
     return undefined;
   }
-  return channel in POSITION_SCALE_CHANNEL_INDEX ? true : undefined;
+  return isXorY(channel) ? true : undefined;
 }
 
 export function padding(
@@ -259,10 +256,10 @@ export function padding(
   scaleType: ScaleType,
   scaleConfig: ScaleConfig<SignalRef>,
   fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef,
-  markDef: MarkDef,
+  markDef: MarkDef<Mark, SignalRef>,
   barConfig: RectConfig<SignalRef>
 ) {
-  if (channel in POSITION_SCALE_CHANNEL_INDEX) {
+  if (isXorY(channel)) {
     if (isContinuousToContinuous(scaleType)) {
       if (scaleConfig.continuousPadding !== undefined) {
         return scaleConfig.continuousPadding;
@@ -294,7 +291,7 @@ export function paddingInner(
     return undefined;
   }
 
-  if (channel in POSITION_SCALE_CHANNEL_INDEX) {
+  if (isXorY(channel)) {
     // Padding is only set for X and Y by default.
     // Basically it doesn't make sense to add padding for color and size.
 
@@ -320,7 +317,7 @@ export function paddingOuter(
     return undefined;
   }
 
-  if (channel in POSITION_SCALE_CHANNEL_INDEX) {
+  if (isXorY(channel)) {
     // Padding is only set for X and Y by default.
     // Basically it doesn't make sense to add padding for color and size.
     if (scaleType === ScaleType.BAND) {

@@ -360,7 +360,7 @@ const {
 export const NONPOSITION_CHANNELS = keys(NONPOSITION_CHANNEL_INDEX);
 export type NonPositionChannel = typeof NONPOSITION_CHANNELS[number];
 
-export const POSITION_SCALE_CHANNEL_INDEX = {
+const POSITION_SCALE_CHANNEL_INDEX = {
   x: 1,
   y: 1
 } as const;

@@ -1,12 +1,12 @@
 import {isBinning} from '../../bin';
-import {Channel, getSizeChannel, isColorChannel, isScaleChannel, rangeType} from '../../channel';
+import {Channel, getSizeChannel, isColorChannel, isScaleChannel, isXorY, rangeType} from '../../channel';
 import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
 import * as log from '../../log';
 import {isRelativeBandSize, MarkDef} from '../../mark';
 import {channelSupportScaleType, Scale, ScaleType, scaleTypeSupportDataType} from '../../scale';
 import {normalizeTimeUnit} from '../../timeunit';
 import * as util from '../../util';
-import {POLAR_POSITION_SCALE_CHANNEL_INDEX, POSITION_SCALE_CHANNEL_INDEX} from './../../channel';
+import {POLAR_POSITION_SCALE_CHANNEL_INDEX} from './../../channel';
 
 export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 
@@ -62,7 +62,7 @@ function defaultType(channel: Channel, fieldDef: TypedFieldDef<string> | ScaleDa
         return 'ordinal';
       }
 
-      if (channel in POSITION_SCALE_CHANNEL_INDEX) {
+      if (isXorY(channel)) {
         if (util.contains(['rect', 'bar', 'image', 'rule'], mark.type)) {
           // The rect/bar mark should fit into a band.
           // For rule, using band scale to make rule align with axis ticks better https://github.com/vega/vega-lite/issues/3429
