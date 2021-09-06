@@ -1,0 +1,10 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/barley.json"},
+  "mark": "arc",
+  "encoding": {
+    "column": {"field": "year"},
+    "theta": {"field": "yield", "type": "quantitative", "aggregate": "sum"},
+    "color": {"field": "site", "type": "nominal"}
+  }
+}

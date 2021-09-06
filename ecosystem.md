@@ -24,6 +24,8 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Emacs Vega View](https://github.com/applied-science/emacs-vega-view), a tool that allows one to view Vega visualizations directly within emacs, currently supporting specs written in JSON, elisp or clojure.
 - [Codimd](https://github.com/hackmdio/codimd), realtime collaborative markdown notes editor with support of various diagram syntaxes including [Vega-Lite](https://hackmd.io/c/codimd-documentation/%2F%40codimd%2Fextra-supported-syntax#Vega-Lite).
 - [Ivy](http://ivy-vis.netlify.app/), an Integrated Visualization Editing environment that wraps Vega-Lite (among other declarative visualization grammars) as templates to facilitate reuse, exploration, and opportunistic creation. Includes an in-app reproduction of [Polestar](https://github.com/vega/polestar).
+- [Deneb](https://deneb-viz.github.io), a Power BI custom visual with an editor for Vega-Lite or Vega specifications.
+- [VizLinter](https://vizlinter.idvxlab.com/), an online editor that detects and fixes encoding issues based on vega-lite-linter.
 
 ## Plug-ins for Vega-Lite
 
@@ -37,6 +39,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - <span class="octicon octicon-star"></span> [Elm-Vega](https://package.elm-lang.org/packages/gicentre/elm-vega/latest) generates Vega-Lite specifications in the pure functional language [Elm](https://elm-lang.org).
 - [Altair wrapper in R](https://vegawidget.github.io/altair/)
 - [ipyvega](https://github.com/vega/ipyvega) supports Vega and Vega-Lite charts in Jupyter Notebooks.
+- [VegaLite (Elixir bindings)](https://github.com/elixir-nx/vega_lite).
 - <span class="octicon octicon-star"></span> [VegaLite.jl](https://github.com/queryverse/VegaLite.jl) are Julia bindings to Vega and Vega-Lite.
 - [Vega-Lite "bindings" for R](https://github.com/hrbrmstr/vegalite), create Vega-Lite visualizations in R.
 - [vegaliteR](https://github.com/timelyportfolio/vegaliteR), vega-lite htmlwidget for R.
@@ -53,6 +56,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Vega.rb](https://github.com/ankane/vega) brings Vega and Vega-Lite to Ruby.
 - [Jekyll Diagrams](https://github.com/zhustec/jekyll-diagrams) A Jekyll plugin with support for Vega & Vega-Lite and others diagramming libraries.
 - [Liquid Diagrams](https://github.com/zhustec/liquid-diagrams) A Liquid plugin with support for Vega & Vega-Lite and others diagramming libraries.
+- [Vega-Lite-Linter](https://github.com/idvxlab/vega-lite-linter) is a python package to help users detect and fix encoding issues.
 
 ## Programming / Data Science Environment that supports Vega-Lite
 
@@ -63,11 +67,11 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [nextjournal](https://nextjournal.com/), scientific computing environment with support for data visualizations including [Vega-Lite](https://nextjournal.com/blog/plotting-with-vega-lite-in-nextjournal)
 - [Liminoid](https://liminoid.io/), toolkit for building interactive analytics applications with Python and WebAssembly. Can pass Python data to JavaScript callbacks which render Vega/Vega-Lite specifications.
 - [Neptune.ai](https://neptune.ai), machine learning experiment tracking tool with Vega-Lite and Altair visualizations.
+- [Livebook](https://github.com/elixir-nx/livebook), Interactive and collaborative code notebooks with Vega-Lite visualizations.
 
 ## Tools that use Vega-Lite
 
 - [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
-- [Saite](https://github.com/jsa-aerial/saite) Interactive exploratory graphics and ad hoc visualization application for Clojure(Script). Built on top of [Hanami](https://github.com/jsa-aerial/hanami).
 - <span class="octicon octicon-star"></span> [PdVega](https://jakevdp.github.io/pdvega/), lets you create interactive Vega-Lite plots for Pandas. Uses [ipyvega](https://github.com/vega/ipyvega).
 - [Turi Create](https://github.com/apple/turicreate) Apple's tool to simplify the development of custom machine learning models.
 - [mondrian-rest-ui](https://github.com/jazzido/mondrian-rest-ui), an experimental UI for [`mondrian-rest`](https://github.com/jazzido/mondrian-rest) inspired by [Polestar](https://github.com/vega/polestar) and [CubesViewer](https://github.com/jjmontesl/cubesviewer).
@@ -84,6 +88,8 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [ProfileVega.jl](https://github.com/davidanthoff/ProfileVega.jl), a Julia profile visualization tool that uses Vega-Lite.
 - [Voyager clone](https://matyunya-simple-voyager-clone.ellx.app), a basic Voyager clone with step-by-step tutorial made with [Ellx](https://ellx.io).
 - [NL4DV](https://nl4dv.github.io/nl4dv/), a Python toolkit that generates analytic specifications (attributes + tasks + Vega-Lite visualizations) from natural language (NL) queries, helping people prototype NL systems for data visualization.
+- [Saite](https://github.com/jsa-aerial/saite) Interactive exploratory graphics and ad hoc visualization application for Clojure(Script). Built on top of [Hanami](https://github.com/jsa-aerial/hanami).
+- [Datablocks](https://datablocks.pro), a node-based editor for exploring, analyzing and transforming data without code.
 
 ## Tools for Embedding Vega-Lite Visualizations
 
@@ -96,4 +102,4 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [idyll-vega-lite](https://github.com/idyll-lang/idyll-vega-lite) is a component that allows you to embed Vega-Lite graphics inside of [Idyll markup](https://idyll-lang.org), an interactive markup language.
 - [generator-veeg](https://github.com/millette/generator-veeg) is a Vega and Vega-Lite boilerplate generator for [Yeoman](https://yeoman.io/).
 - [Kroki](https://kroki.io/) is a service to render Vega and Vega-Lite as PNG, SVG, or PDF.
-- [vega_embed_flutter](https://pub.dev/packages/vega_embed_flutter), a flutter-web widget to embed Vega-Lite specs into flutter-web apps. A page with some [demos](https://abhilash-chandran.github.io/vega_embed_flutter_demo_page/#/).
+- [vega_embed_flutter](https://pub.dev/packages/vega_embed_flutter), a flutter-web widget to embed Vega-Lite specs into flutter-web apps.

@@ -22,6 +22,5 @@
     "encoding": {
       "text": {"field": "category", "type": "nominal"}
     }
-  }],
-  "view": {"stroke": null}
+  }]
 }

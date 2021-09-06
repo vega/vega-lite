@@ -108,6 +108,7 @@
         - [Arc Mark Properties]({{site.baseurl}}/docs/arc.html#properties)
         - [Examples]({{site.baseurl}}/docs/arc.html#examples)
         - [Arc Config]({{site.baseurl}}/docs/arc.html#arc-config)
+        - [Faceted Pie Charts]({{site.baseurl}}/docs/arc.html#faceted-pie-charts)
     - [Area]({{site.baseurl}}/docs/area.html)
         - [Documentation Overview]({{site.baseurl}}/docs/area.html#documentation-overview)
         - [Area Mark Properties]({{site.baseurl}}/docs/area.html#properties)

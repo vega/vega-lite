@@ -62,9 +62,14 @@
     return new Selection(subgroups, this._parents);
   }
 
-  function array$6 (x) {
-    return typeof x === "object" && "length" in x ? x // Array, TypedArray, NodeList, array-like
-    : Array.from(x); // Map, Set, iterable, string, or anything else
+  // Given something array like (or null), returns something that is strictly an
+  // array. This is used to ensure that array-like objects passed to d3.selectAll
+  // or selection.selectAll are converted into proper arrays when creating a
+  // selection; we don’t ever want to create a selection backed by a live
+  // HTMLCollection or NodeList. However, note that selection.selectAll will use a
+  // static NodeList as a group, since it safely derived from querySelectorAll.
+  function array$6(x) {
+    return x == null ? [] : Array.isArray(x) ? x : Array.from(x);
   }
 
   function empty() {
@@ -79,8 +84,7 @@
 
   function arrayAll(select) {
     return function () {
-      var group = select.apply(this, arguments);
-      return group == null ? [] : array$6(group);
+      return array$6(select.apply(this, arguments));
     };
   }
 
@@ -129,7 +133,7 @@
   var filter$2 = Array.prototype.filter;
 
   function children$2() {
-    return this.children;
+    return Array.from(this.children);
   }
 
   function childrenFilter(match) {
@@ -186,7 +190,7 @@
     }
   };
 
-  function constant$5 (x) {
+  function constant$6 (x) {
     return function () {
       return x;
     };
@@ -271,13 +275,13 @@
     var bind = key ? bindKey : bindIndex,
         parents = this._parents,
         groups = this._groups;
-    if (typeof value !== "function") value = constant$5(value);
+    if (typeof value !== "function") value = constant$6(value);
 
     for (var m = groups.length, update = new Array(m), enter = new Array(m), exit = new Array(m), j = 0; j < m; ++j) {
       var parent = parents[j],
           group = groups[j],
           groupLength = group.length,
-          data = array$6(value.call(parent, parent && parent.__data__, j, parents)),
+          data = arraylike(value.call(parent, parent && parent.__data__, j, parents)),
           dataLength = data.length,
           enterGroup = enter[j] = new Array(dataLength),
           updateGroup = update[j] = new Array(dataLength),
@@ -301,6 +305,16 @@
     update._enter = enter;
     update._exit = exit;
     return update;
+  } // Given some data, this returns an array-like view of it: an object that
+  // exposes a length property and allows numeric indexing. Note that unlike
+  // selectAll, this isn’t worried about “live” collections because the resulting
+  // array will only be used briefly while data is being bound. (It is possible to
+  // cause the data to change while iterating by using a key function, but please
+  // don’t; we’d rather avoid a gratuitous copy.)
+
+  function arraylike(data) {
+    return typeof data === "object" && "length" in data ? data // Array, TypedArray, NodeList, array-like
+    : Array.from(data); // Map, Set, iterable, string, or anything else
   }
 
   function selection_exit () {
@@ -311,14 +325,25 @@
     var enter = this.enter(),
         update = this,
         exit = this.exit();
-    enter = typeof onenter === "function" ? onenter(enter) : enter.append(onenter + "");
-    if (onupdate != null) update = onupdate(update);
+
+    if (typeof onenter === "function") {
+      enter = onenter(enter);
+      if (enter) enter = enter.selection();
+    } else {
+      enter = enter.append(onenter + "");
+    }
+
+    if (onupdate != null) {
+      update = onupdate(update);
+      if (update) update = update.selection();
+    }
+
     if (onexit == null) exit.remove();else onexit(exit);
     return enter && update ? enter.merge(update).order() : update;
   }
 
-  function selection_merge (selection) {
-    if (!(selection instanceof Selection)) throw new Error("invalid merge");
+  function selection_merge (context) {
+    var selection = context.selection ? context.selection() : context;
 
     for (var groups0 = this._groups, groups1 = selection._groups, m0 = groups0.length, m1 = groups1.length, m = Math.min(m0, m1), merges = new Array(m0), j = 0; j < m; ++j) {
       for (var group0 = groups0[j], group1 = groups1[j], n = group0.length, merge = merges[j] = new Array(n), node, i = 0; i < n; ++i) {
@@ -467,8 +492,7 @@
   }
 
   function defaultView (node) {
-    return node.ownerDocument && node.ownerDocument.defaultView || // node is a Node
-    node.document && node // node is a Window
+    return node.ownerDocument && node.ownerDocument.defaultView || node.document && node // node is a Window
     || node.defaultView; // node is a Document
   }
 
@@ -892,8 +916,12 @@
   }
 
   function selectAll (selector) {
-    return typeof selector === "string" ? new Selection([document.querySelectorAll(selector)], [document.documentElement]) : new Selection([selector == null ? [] : array$6(selector)], root);
+    return typeof selector === "string" ? new Selection([document.querySelectorAll(selector)], [document.documentElement]) : new Selection([array$6(selector)], root);
   }
+
+  var deepFreezeEs6 = {
+    exports: {}
+  };
 
   function deepFreeze(obj) {
     if (obj instanceof Map) {
@@ -918,9 +946,13 @@
     return obj;
   }
 
-  var deepFreezeEs6 = deepFreeze;
-  var _default = deepFreeze;
-  deepFreezeEs6.default = _default;
+  deepFreezeEs6.exports = deepFreeze;
+  deepFreezeEs6.exports.default = deepFreeze;
+  var deepFreeze$1 = deepFreezeEs6.exports;
+  /** @typedef {import('highlight.js').CallbackResponse} CallbackResponse */
+
+  /** @typedef {import('highlight.js').CompiledMode} CompiledMode */
+
   /** @implements CallbackResponse */
 
   class Response {
@@ -958,7 +990,7 @@
    */
 
 
-  function inherit(original, ...objects) {
+  function inherit$1(original, ...objects) {
     /** @type Record<string,any> */
     const result = Object.create(null);
 
@@ -971,10 +1003,7 @@
         result[key] = obj[key];
       }
     });
-    return (
-      /** @type {T} */
-      result
-    );
+    return result;
   }
   /**
    * @typedef {object} Renderer
@@ -999,6 +1028,23 @@
 
   const emitsWrappingTags = node => {
     return !!node.kind;
+  };
+  /**
+   *
+   * @param {string} name
+   * @param {{prefix:string}} options
+   */
+
+
+  const expandScopeName = (name, {
+    prefix
+  }) => {
+    if (name.includes(".")) {
+      const pieces = name.split(".");
+      return [`${prefix}${pieces.shift()}`, ...pieces.map((x, i) => `${x}${"_".repeat(i + 1)}`)].join(" ");
+    }
+
+    return `${prefix}${name}`;
   };
   /** @type {Renderer} */
 
@@ -1032,13 +1078,17 @@
 
     openNode(node) {
       if (!emitsWrappingTags(node)) return;
-      let className = node.kind;
+      let scope = node.kind;
 
-      if (!node.sublanguage) {
-        className = `${this.classPrefix}${className}`;
+      if (node.sublanguage) {
+        scope = `language-${scope}`;
+      } else {
+        scope = expandScopeName(scope, {
+          prefix: this.classPrefix
+        });
       }
 
-      this.span(className);
+      this.span(scope);
     }
     /**
      * Adds a node close to the output stream (if needed)
@@ -1073,6 +1123,8 @@
   /** @typedef {{kind?: string, sublanguage?: boolean, children: Node[]} | string} Node */
 
   /** @typedef {{kind?: string, sublanguage?: boolean, children: Node[]} } DataNode */
+
+  /** @typedef {import('highlight.js').Emitter} Emitter */
 
   /**  */
 
@@ -1263,9 +1315,16 @@
    * @returns {RegExp}
    * */
 
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
 
-  function escape$1(value) {
-    return new RegExp(value.replace(/[-/\\^$*+?.()|[\]{}]/g, '\\$&'), 'm');
+
+  function source$7(re) {
+    if (!re) return null;
+    if (typeof re === "string") return re;
+    return re.source;
   }
   /**
    * @param {RegExp | string } re
@@ -1273,10 +1332,8 @@
    */
 
 
-  function source$6(re) {
-    if (!re) return null;
-    if (typeof re === "string") return re;
-    return re.source;
+  function lookahead$5(re) {
+    return concat$4('(?=', re, ')');
   }
   /**
    * @param {...(RegExp | string) } args
@@ -1285,8 +1342,19 @@
 
 
   function concat$4(...args) {
-    const joined = args.map(x => source$6(x)).join("");
+    const joined = args.map(x => source$7(x)).join("");
     return joined;
+  }
+
+  function stripOptionsFromArgs$2(args) {
+    const opts = args[args.length - 1];
+
+    if (typeof opts === 'object' && opts.constructor === Object) {
+      args.splice(args.length - 1, 1);
+      return opts;
+    } else {
+      return {};
+    }
   }
   /**
    * Any of the passed expresssions may match
@@ -1297,8 +1365,9 @@
    */
 
 
-  function either$1(...args) {
-    const joined = '(' + args.map(x => source$6(x)).join("|") + ")";
+  function either$2(...args) {
+    const opts = stripOptionsFromArgs$2(args);
+    const joined = '(' + (opts.capture ? "" : "?:") + args.map(x => source$7(x)).join("|") + ")";
     return joined;
   }
   /**
@@ -1329,7 +1398,8 @@
   //   follow the '(' with a '?'.
 
 
-  const BACKREF_RE = /\[(?:[^\\\]]|\\.)*\]|\(\??|\\([1-9][0-9]*)|\\./; // join logically computes regexps.join(separator), but fixes the
+  const BACKREF_RE = /\[(?:[^\\\]]|\\.)*\]|\(\??|\\([1-9][0-9]*)|\\./; // **INTERNAL** Not intended for outside usage
+  // join logically computes regexps.join(separator), but fixes the
   // backreferences so they continue to match.
   // it also places each individual regular expression into it's own
   // match group, keeping track of the sequencing of those match groups
@@ -1337,16 +1407,18 @@
 
   /**
    * @param {(string | RegExp)[]} regexps
-   * @param {string} separator
+   * @param {{joinWith: string}} opts
    * @returns {string}
    */
 
-  function join$2(regexps, separator = "|") {
+  function _rewriteBackreferences(regexps, {
+    joinWith
+  }) {
     let numCaptures = 0;
     return regexps.map(regex => {
       numCaptures += 1;
       const offset = numCaptures;
-      let re = source$6(regex);
+      let re = source$7(regex);
       let out = '';
 
       while (re.length > 0) {
@@ -1373,8 +1445,12 @@
       }
 
       return out;
-    }).map(re => `(${re})`).join(separator);
-  } // Common regexps
+    }).map(re => `(${re})`).join(joinWith);
+  }
+  /** @typedef {import('highlight.js').Mode} Mode */
+
+  /** @typedef {import('highlight.js').ModeCallback} ModeCallback */
+  // Common regexps
 
 
   const MATCH_NOTHING_RE = /\b\B/;
@@ -1397,8 +1473,8 @@
       opts.begin = concat$4(beginShebang, /.*\b/, opts.binary, /\b.*/);
     }
 
-    return inherit({
-      className: 'meta',
+    return inherit$1({
+      scope: 'meta',
       begin: beginShebang,
       end: /$/,
       relevance: 0,
@@ -1416,14 +1492,14 @@
     relevance: 0
   };
   const APOS_STRING_MODE = {
-    className: 'string',
+    scope: 'string',
     begin: '\'',
     end: '\'',
     illegal: '\\n',
     contains: [BACKSLASH_ESCAPE]
   };
   const QUOTE_STRING_MODE = {
-    className: 'string',
+    scope: 'string',
     begin: '"',
     end: '"',
     illegal: '\\n',
@@ -1442,17 +1518,45 @@
    */
 
   const COMMENT = function (begin, end, modeOptions = {}) {
-    const mode = inherit({
-      className: 'comment',
+    const mode = inherit$1({
+      scope: 'comment',
       begin,
       end,
       contains: []
     }, modeOptions);
-    mode.contains.push(PHRASAL_WORDS_MODE);
     mode.contains.push({
-      className: 'doctag',
-      begin: '(?:TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):',
+      scope: 'doctag',
+      // hack to avoid the space from being included. the space is necessary to
+      // match here to prevent the plain text rule below from gobbling up doctags
+      begin: '[ ]*(?=(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):)',
+      end: /(TODO|FIXME|NOTE|BUG|OPTIMIZE|HACK|XXX):/,
+      excludeBegin: true,
       relevance: 0
+    });
+    const ENGLISH_WORD = either$2( // list of common 1 and 2 letter words in English
+    "I", "a", "is", "so", "us", "to", "at", "if", "in", "it", "on", // note: this is not an exhaustive list of contractions, just popular ones
+    /[A-Za-z]+['](d|ve|re|ll|t|s|n)/, // contractions - can't we'd they're let's, etc
+    /[A-Za-z]+[-][a-z]+/, // `no-way`, etc.
+    /[A-Za-z][a-z]{2,}/ // allow capitalized words at beginning of sentences
+    ); // looking like plain text, more likely to be a comment
+
+    mode.contains.push({
+      // TODO: how to include ", (, ) without breaking grammars that use these for
+      // comment delimiters?
+      // begin: /[ ]+([()"]?([A-Za-z'-]{3,}|is|a|I|so|us|[tT][oO]|at|if|in|it|on)[.]?[()":]?([.][ ]|[ ]|\))){3}/
+      // ---
+      // this tries to find sequences of 3 english words in a row (without any
+      // "programming" type syntax) this gives us a strong signal that we've
+      // TRULY found a comment - vs perhaps scanning with the wrong language.
+      // It's possible to find something that LOOKS like the start of the
+      // comment - but then if there is no readable text - good chance it is a
+      // false match and not a comment.
+      //
+      // for a visual example please see:
+      // https://github.com/highlightjs/highlight.js/issues/2827
+      begin: concat$4(/[ ]+/, // necessary to prevent us gobbling up doctags like /* @author Bob Mcgill */
+      '(', ENGLISH_WORD, /[.]?[:]?([.][ ]|[ ])/, '){3}') // look for 3 words in a row
+
     });
     return mode;
   };
@@ -1461,23 +1565,18 @@
   const C_BLOCK_COMMENT_MODE = COMMENT('/\\*', '\\*/');
   const HASH_COMMENT_MODE = COMMENT('#', '$');
   const NUMBER_MODE = {
-    className: 'number',
+    scope: 'number',
     begin: NUMBER_RE,
     relevance: 0
   };
   const C_NUMBER_MODE = {
-    className: 'number',
+    scope: 'number',
     begin: C_NUMBER_RE,
     relevance: 0
   };
   const BINARY_NUMBER_MODE = {
-    className: 'number',
+    scope: 'number',
     begin: BINARY_NUMBER_RE,
-    relevance: 0
-  };
-  const CSS_NUMBER_MODE = {
-    className: 'number',
-    begin: NUMBER_RE + '(' + '%|em|ex|ch|rem' + '|vw|vh|vmin|vmax' + '|cm|mm|in|pt|pc|px' + '|deg|grad|rad|turn' + '|s|ms' + '|Hz|kHz' + '|dpi|dpcm|dppx' + ')?',
     relevance: 0
   };
   const REGEXP_MODE = {
@@ -1489,7 +1588,7 @@
     // (which will then blow up when regex's `illegal` sees the newline)
     begin: /(?=\/[^/\n]*\/)/,
     contains: [{
-      className: 'regexp',
+      scope: 'regexp',
       begin: /\//,
       end: /\/[gimuy]*/,
       illegal: /\n/,
@@ -1502,12 +1601,12 @@
     }]
   };
   const TITLE_MODE = {
-    className: 'title',
+    scope: 'title',
     begin: IDENT_RE$2,
     relevance: 0
   };
   const UNDERSCORE_TITLE_MODE = {
-    className: 'title',
+    scope: 'title',
     begin: UNDERSCORE_IDENT_RE,
     relevance: 0
   };
@@ -1559,13 +1658,17 @@
     NUMBER_MODE: NUMBER_MODE,
     C_NUMBER_MODE: C_NUMBER_MODE,
     BINARY_NUMBER_MODE: BINARY_NUMBER_MODE,
-    CSS_NUMBER_MODE: CSS_NUMBER_MODE,
     REGEXP_MODE: REGEXP_MODE,
     TITLE_MODE: TITLE_MODE,
     UNDERSCORE_TITLE_MODE: UNDERSCORE_TITLE_MODE,
     METHOD_GUARD: METHOD_GUARD,
     END_SAME_AS_BEGIN: END_SAME_AS_BEGIN
-  }); // Grammar extensions / plugins
+  });
+  /**
+  @typedef {import('highlight.js').CallbackResponse} CallbackResponse
+  @typedef {import('highlight.js').CompilerExt} CompilerExt
+  */
+  // Grammar extensions / plugins
   // See: https://github.com/highlightjs/highlight.js/issues/2833
   // Grammar extensions allow "syntactic sugar" to be added to the grammar modes
   // without requiring any underlying changes to the compiler internals.
@@ -1587,11 +1690,24 @@
    * @param {CallbackResponse} response
    */
 
-  function skipIfhasPrecedingDot(match, response) {
+  function skipIfHasPrecedingDot(match, response) {
     const before = match.input[match.index - 1];
 
     if (before === ".") {
       response.ignoreMatch();
+    }
+  }
+  /**
+   *
+   * @type {CompilerExt}
+   */
+
+
+  function scopeClassName(mode, _parent) {
+    // eslint-disable-next-line no-undefined
+    if (mode.className !== undefined) {
+      mode.scope = mode.className;
+      delete mode.className;
     }
   }
   /**
@@ -1609,7 +1725,7 @@
     // first
 
     mode.begin = '\\b(' + mode.beginKeywords.split(' ').join('|') + ')(?!\\.)(?=\\b|\\s)';
-    mode.__beforeBegin = skipIfhasPrecedingDot;
+    mode.__beforeBegin = skipIfHasPrecedingDot;
     mode.keywords = mode.keywords || mode.beginKeywords;
     delete mode.beginKeywords; // prevents double relevance, the keywords themselves provide
     // relevance, the mode doesn't need to double it
@@ -1625,7 +1741,7 @@
 
   function compileIllegal(mode, _parent) {
     if (!Array.isArray(mode.illegal)) return;
-    mode.illegal = either$1(...mode.illegal);
+    mode.illegal = either$2(...mode.illegal);
   }
   /**
    * `match` to match a single expression for readability
@@ -1648,14 +1764,37 @@
   function compileRelevance(mode, _parent) {
     // eslint-disable-next-line no-undefined
     if (mode.relevance === undefined) mode.relevance = 1;
-  } // keywords that should have no default relevance value
+  } // allow beforeMatch to act as a "qualifier" for the match
+  // the full match begin must be [beforeMatch][begin]
+
+
+  const beforeMatchExt = (mode, parent) => {
+    if (!mode.beforeMatch) return; // starts conflicts with endsParent which we need to make sure the child
+    // rule is not matched multiple times
+
+    if (mode.starts) throw new Error("beforeMatch cannot be used with starts");
+    const originalMode = Object.assign({}, mode);
+    Object.keys(mode).forEach(key => {
+      delete mode[key];
+    });
+    mode.keywords = originalMode.keywords;
+    mode.begin = concat$4(originalMode.beforeMatch, lookahead$5(originalMode.begin));
+    mode.starts = {
+      relevance: 0,
+      contains: [Object.assign(originalMode, {
+        endsParent: true
+      })]
+    };
+    mode.relevance = 0;
+    delete originalMode.beforeMatch;
+  }; // keywords that should have no default relevance value
 
 
   const COMMON_KEYWORDS = ['of', 'and', 'for', 'in', 'not', 'or', 'if', 'then', 'parent', // common variable name
   'list', // common variable name
   'value' // common variable name
   ];
-  const DEFAULT_KEYWORD_CLASSNAME = "keyword";
+  const DEFAULT_KEYWORD_SCOPE = "keyword";
   /**
    * Given raw keywords from a language definition, compile them.
    *
@@ -1663,19 +1802,19 @@
    * @param {boolean} caseInsensitive
    */
 
-  function compileKeywords(rawKeywords, caseInsensitive, className = DEFAULT_KEYWORD_CLASSNAME) {
+  function compileKeywords(rawKeywords, caseInsensitive, scopeName = DEFAULT_KEYWORD_SCOPE) {
     /** @type KeywordDict */
-    const compiledKeywords = {}; // input can be a string of keywords, an array of keywords, or a object with
-    // named keys representing className (which can then point to a string or array)
+    const compiledKeywords = Object.create(null); // input can be a string of keywords, an array of keywords, or a object with
+    // named keys representing scopeName (which can then point to a string or array)
 
     if (typeof rawKeywords === 'string') {
-      compileList(className, rawKeywords.split(" "));
+      compileList(scopeName, rawKeywords.split(" "));
     } else if (Array.isArray(rawKeywords)) {
-      compileList(className, rawKeywords);
+      compileList(scopeName, rawKeywords);
     } else {
-      Object.keys(rawKeywords).forEach(function (className) {
+      Object.keys(rawKeywords).forEach(function (scopeName) {
         // collapse all our objects back into the parent object
-        Object.assign(compiledKeywords, compileKeywords(rawKeywords[className], caseInsensitive, className));
+        Object.assign(compiledKeywords, compileKeywords(rawKeywords[scopeName], caseInsensitive, scopeName));
       });
     }
 
@@ -1686,18 +1825,18 @@
      *
      * Ex: "for if when while|5"
      *
-     * @param {string} className
+     * @param {string} scopeName
      * @param {Array<string>} keywordList
      */
 
-    function compileList(className, keywordList) {
+    function compileList(scopeName, keywordList) {
       if (caseInsensitive) {
         keywordList = keywordList.map(x => x.toLowerCase());
       }
 
       keywordList.forEach(function (keyword) {
         const pair = keyword.split('|');
-        compiledKeywords[pair[0]] = [className, scoreForKeyword(pair[0], pair[1])];
+        compiledKeywords[pair[0]] = [scopeName, scoreForKeyword(pair[0], pair[1])];
       });
     }
   }
@@ -1728,7 +1867,208 @@
 
   function commonKeyword(keyword) {
     return COMMON_KEYWORDS.includes(keyword.toLowerCase());
-  } // compilation
+  }
+  /*
+
+  For the reasoning behind this please see:
+  https://github.com/highlightjs/highlight.js/issues/2880#issuecomment-747275419
+
+  */
+
+  /**
+   * @type {Record<string, boolean>}
+   */
+
+
+  const seenDeprecations = {};
+  /**
+   * @param {string} message
+   */
+
+  const error$1 = message => {
+    console.error(message);
+  };
+  /**
+   * @param {string} message
+   * @param {any} args
+   */
+
+
+  const warn$2 = (message, ...args) => {
+    console.log(`WARN: ${message}`, ...args);
+  };
+  /**
+   * @param {string} version
+   * @param {string} message
+   */
+
+
+  const deprecated = (version, message) => {
+    if (seenDeprecations[`${version}/${message}`]) return;
+    console.log(`Deprecated as of ${version}. ${message}`);
+    seenDeprecations[`${version}/${message}`] = true;
+  };
+  /* eslint-disable no-throw-literal */
+
+  /**
+  @typedef {import('highlight.js').CompiledMode} CompiledMode
+  */
+
+
+  const MultiClassError = new Error();
+  /**
+   * Renumbers labeled scope names to account for additional inner match
+   * groups that otherwise would break everything.
+   *
+   * Lets say we 3 match scopes:
+   *
+   *   { 1 => ..., 2 => ..., 3 => ... }
+   *
+   * So what we need is a clean match like this:
+   *
+   *   (a)(b)(c) => [ "a", "b", "c" ]
+   *
+   * But this falls apart with inner match groups:
+   *
+   * (a)(((b)))(c) => ["a", "b", "b", "b", "c" ]
+   *
+   * Our scopes are now "out of alignment" and we're repeating `b` 3 times.
+   * What needs to happen is the numbers are remapped:
+   *
+   *   { 1 => ..., 2 => ..., 5 => ... }
+   *
+   * We also need to know that the ONLY groups that should be output
+   * are 1, 2, and 5.  This function handles this behavior.
+   *
+   * @param {CompiledMode} mode
+   * @param {Array<RegExp>} regexes
+   * @param {{key: "beginScope"|"endScope"}} opts
+   */
+
+  function remapScopeNames(mode, regexes, {
+    key
+  }) {
+    let offset = 0;
+    const scopeNames = mode[key];
+    /** @type Record<number,boolean> */
+
+    const emit = {};
+    /** @type Record<number,string> */
+
+    const positions = {};
+
+    for (let i = 1; i <= regexes.length; i++) {
+      positions[i + offset] = scopeNames[i];
+      emit[i + offset] = true;
+      offset += countMatchGroups(regexes[i - 1]);
+    } // we use _emit to keep track of which match groups are "top-level" to avoid double
+    // output from inside match groups
+
+
+    mode[key] = positions;
+    mode[key]._emit = emit;
+    mode[key]._multi = true;
+  }
+  /**
+   * @param {CompiledMode} mode
+   */
+
+
+  function beginMultiClass(mode) {
+    if (!Array.isArray(mode.begin)) return;
+
+    if (mode.skip || mode.excludeBegin || mode.returnBegin) {
+      error$1("skip, excludeBegin, returnBegin not compatible with beginScope: {}");
+      throw MultiClassError;
+    }
+
+    if (typeof mode.beginScope !== "object" || mode.beginScope === null) {
+      error$1("beginScope must be object");
+      throw MultiClassError;
+    }
+
+    remapScopeNames(mode, mode.begin, {
+      key: "beginScope"
+    });
+    mode.begin = _rewriteBackreferences(mode.begin, {
+      joinWith: ""
+    });
+  }
+  /**
+   * @param {CompiledMode} mode
+   */
+
+
+  function endMultiClass(mode) {
+    if (!Array.isArray(mode.end)) return;
+
+    if (mode.skip || mode.excludeEnd || mode.returnEnd) {
+      error$1("skip, excludeEnd, returnEnd not compatible with endScope: {}");
+      throw MultiClassError;
+    }
+
+    if (typeof mode.endScope !== "object" || mode.endScope === null) {
+      error$1("endScope must be object");
+      throw MultiClassError;
+    }
+
+    remapScopeNames(mode, mode.end, {
+      key: "endScope"
+    });
+    mode.end = _rewriteBackreferences(mode.end, {
+      joinWith: ""
+    });
+  }
+  /**
+   * this exists only to allow `scope: {}` to be used beside `match:`
+   * Otherwise `beginScope` would necessary and that would look weird
+
+    {
+      match: [ /def/, /\w+/ ]
+      scope: { 1: "keyword" , 2: "title" }
+    }
+
+   * @param {CompiledMode} mode
+   */
+
+
+  function scopeSugar(mode) {
+    if (mode.scope && typeof mode.scope === "object" && mode.scope !== null) {
+      mode.beginScope = mode.scope;
+      delete mode.scope;
+    }
+  }
+  /**
+   * @param {CompiledMode} mode
+   */
+
+
+  function MultiClass(mode) {
+    scopeSugar(mode);
+
+    if (typeof mode.beginScope === "string") {
+      mode.beginScope = {
+        _wrap: mode.beginScope
+      };
+    }
+
+    if (typeof mode.endScope === "string") {
+      mode.endScope = {
+        _wrap: mode.endScope
+      };
+    }
+
+    beginMultiClass(mode);
+    endMultiClass(mode);
+  }
+  /**
+  @typedef {import('highlight.js').Mode} Mode
+  @typedef {import('highlight.js').CompiledMode} CompiledMode
+  @typedef {import('highlight.js').Language} Language
+  @typedef {import('highlight.js').HLJSPlugin} HLJSPlugin
+  @typedef {import('highlight.js').CompiledLanguage} CompiledLanguage
+  */
+  // compilation
 
   /**
    * Compiles a language definition result
@@ -1736,22 +2076,19 @@
    * Given the raw result of a language definition (Language), compiles this so
    * that it is ready for highlighting code.
    * @param {Language} language
-   * @param {{plugins: HLJSPlugin[]}} opts
    * @returns {CompiledLanguage}
    */
 
 
-  function compileLanguage(language, {
-    plugins
-  }) {
+  function compileLanguage(language) {
     /**
-     * Builds a regex with the case sensativility of the current language
+     * Builds a regex with the case sensitivity of the current language
      *
      * @param {RegExp | string} value
      * @param {boolean} [global]
      */
     function langRe(value, global) {
-      return new RegExp(source$6(value), 'm' + (language.case_insensitive ? 'i' : '') + (global ? 'g' : ''));
+      return new RegExp(source$7(value), 'm' + (language.case_insensitive ? 'i' : '') + (global ? 'g' : ''));
     }
     /**
       Stores multiple regular expressions and allows you to quickly search for
@@ -1793,7 +2130,9 @@
         }
 
         const terminators = this.regexes.map(el => el[1]);
-        this.matcherRe = langRe(join$2(terminators), true);
+        this.matcherRe = langRe(_rewriteBackreferences(terminators, {
+          joinWith: '|'
+        }), true);
         this.lastIndex = 0;
       }
       /** @param {string} s */
@@ -2004,13 +2343,11 @@
 
 
     function compileMode(mode, parent) {
-      const cmode =
-      /** @type CompiledMode */
-      mode;
+      const cmode = mode;
       if (mode.isCompiled) return cmode;
-      [// do this early so compiler extensions generally don't have to worry about
+      [scopeClassName, // do this early so compiler extensions generally don't have to worry about
       // the distinction between match/begin
-      compileMatch].forEach(ext => ext(mode, parent));
+      compileMatch, MultiClass, beforeMatchExt].forEach(ext => ext(mode, parent));
       language.compilerExtensions.forEach(ext => ext(mode, parent)); // __beforeBegin is considered private API, internal use only
 
       mode.__beforeBegin = null;
@@ -2021,49 +2358,42 @@
       mode.isCompiled = true;
       let keywordPattern = null;
 
-      if (typeof mode.keywords === "object") {
+      if (typeof mode.keywords === "object" && mode.keywords.$pattern) {
+        // we need a copy because keywords might be compiled multiple times
+        // so we can't go deleting $pattern from the original on the first
+        // pass
+        mode.keywords = Object.assign({}, mode.keywords);
         keywordPattern = mode.keywords.$pattern;
         delete mode.keywords.$pattern;
       }
 
+      keywordPattern = keywordPattern || /\w+/;
+
       if (mode.keywords) {
         mode.keywords = compileKeywords(mode.keywords, language.case_insensitive);
-      } // both are not allowed
+      }
 
-
-      if (mode.lexemes && keywordPattern) {
-        throw new Error("ERR: Prefer `keywords.$pattern` to `mode.lexemes`, BOTH are not allowed. (see mode reference) ");
-      } // `mode.lexemes` was the old standard before we added and now recommend
-      // using `keywords.$pattern` to pass the keyword pattern
-
-
-      keywordPattern = keywordPattern || mode.lexemes || /\w+/;
       cmode.keywordPatternRe = langRe(keywordPattern, true);
 
       if (parent) {
         if (!mode.begin) mode.begin = /\B|\b/;
         cmode.beginRe = langRe(mode.begin);
-        if (mode.endSameAsBegin) mode.end = mode.begin;
         if (!mode.end && !mode.endsWithParent) mode.end = /\B|\b/;
         if (mode.end) cmode.endRe = langRe(mode.end);
-        cmode.terminatorEnd = source$6(mode.end) || '';
+        cmode.terminatorEnd = source$7(mode.end) || '';
 
         if (mode.endsWithParent && parent.terminatorEnd) {
           cmode.terminatorEnd += (mode.end ? '|' : '') + parent.terminatorEnd;
         }
       }
 
-      if (mode.illegal) cmode.illegalRe = langRe(
-      /** @type {RegExp | string} */
-      mode.illegal);
+      if (mode.illegal) cmode.illegalRe = langRe(mode.illegal);
       if (!mode.contains) mode.contains = [];
       mode.contains = [].concat(...mode.contains.map(function (c) {
         return expandOrCloneMode(c === 'self' ? mode : c);
       }));
       mode.contains.forEach(function (c) {
-        compileMode(
-        /** @type Mode */
-        c, cmode);
+        compileMode(c, cmode);
       });
 
       if (mode.starts) {
@@ -2081,10 +2411,8 @@
     } // we need a null object, which inherit will guarantee
 
 
-    language.classNameAliases = inherit(language.classNameAliases || {});
-    return compileMode(
-    /** @type Mode */
-    language);
+    language.classNameAliases = inherit$1(language.classNameAliases || {});
+    return compileMode(language);
   }
   /**
    * Determines if a mode has a dependency on it's parent or not
@@ -2118,7 +2446,7 @@
   function expandOrCloneMode(mode) {
     if (mode.variants && !mode.cachedVariants) {
       mode.cachedVariants = mode.variants.map(function (variant) {
-        return inherit(mode, {
+        return inherit$1(mode, {
           variants: null
         }, variant);
       });
@@ -2136,317 +2464,49 @@
 
 
     if (dependencyOnParent(mode)) {
-      return inherit(mode, {
-        starts: mode.starts ? inherit(mode.starts) : null
+      return inherit$1(mode, {
+        starts: mode.starts ? inherit$1(mode.starts) : null
       });
     }
 
     if (Object.isFrozen(mode)) {
-      return inherit(mode);
+      return inherit$1(mode);
     } // no special dependency issues, just return ourselves
 
 
     return mode;
   }
 
-  var version = "10.7.2"; // @ts-nocheck
-
-  function hasValueOrEmptyAttribute(value) {
-    return Boolean(value || value === "");
-  }
-
-  function BuildVuePlugin(hljs) {
-    const Component = {
-      props: ["language", "code", "autodetect"],
-      data: function () {
-        return {
-          detectedLanguage: "",
-          unknownLanguage: false
-        };
-      },
-      computed: {
-        className() {
-          if (this.unknownLanguage) return "";
-          return "hljs " + this.detectedLanguage;
-        },
-
-        highlighted() {
-          // no idea what language to use, return raw code
-          if (!this.autoDetect && !hljs.getLanguage(this.language)) {
-            console.warn(`The language "${this.language}" you specified could not be found.`);
-            this.unknownLanguage = true;
-            return escapeHTML$1(this.code);
-          }
-
-          let result = {};
-
-          if (this.autoDetect) {
-            result = hljs.highlightAuto(this.code);
-            this.detectedLanguage = result.language;
-          } else {
-            result = hljs.highlight(this.language, this.code, this.ignoreIllegals);
-            this.detectedLanguage = this.language;
-          }
-
-          return result.value;
-        },
-
-        autoDetect() {
-          return !this.language || hasValueOrEmptyAttribute(this.autodetect);
-        },
-
-        ignoreIllegals() {
-          return true;
-        }
-
-      },
-
-      // this avoids needing to use a whole Vue compilation pipeline just
-      // to build Highlight.js
-      render(createElement) {
-        return createElement("pre", {}, [createElement("code", {
-          class: this.className,
-          domProps: {
-            innerHTML: this.highlighted
-          }
-        })]);
-      } // template: `<pre><code :class="className" v-html="highlighted"></code></pre>`
-
-
-    };
-    const VuePlugin = {
-      install(Vue) {
-        Vue.component('highlightjs', Component);
-      }
-
-    };
-    return {
-      Component,
-      VuePlugin
-    };
-  }
-  /* plugin itself */
-
-  /** @type {HLJSPlugin} */
-
-
-  const mergeHTMLPlugin = {
-    "after:highlightElement": ({
-      el,
-      result,
-      text
-    }) => {
-      const originalStream = nodeStream(el);
-      if (!originalStream.length) return;
-      const resultNode = document.createElement('div');
-      resultNode.innerHTML = result.value;
-      result.value = mergeStreams(originalStream, nodeStream(resultNode), text);
-    }
-  };
-  /* Stream merging support functions */
-
-  /**
-   * @typedef Event
-   * @property {'start'|'stop'} event
-   * @property {number} offset
-   * @property {Node} node
-   */
-
-  /**
-   * @param {Node} node
-   */
-
-  function tag(node) {
-    return node.nodeName.toLowerCase();
-  }
-  /**
-   * @param {Node} node
-   */
-
-
-  function nodeStream(node) {
-    /** @type Event[] */
-    const result = [];
-
-    (function _nodeStream(node, offset) {
-      for (let child = node.firstChild; child; child = child.nextSibling) {
-        if (child.nodeType === 3) {
-          offset += child.nodeValue.length;
-        } else if (child.nodeType === 1) {
-          result.push({
-            event: 'start',
-            offset: offset,
-            node: child
-          });
-          offset = _nodeStream(child, offset); // Prevent void elements from having an end tag that would actually
-          // double them in the output. There are more void elements in HTML
-          // but we list only those realistically expected in code display.
-
-          if (!tag(child).match(/br|hr|img|input/)) {
-            result.push({
-              event: 'stop',
-              offset: offset,
-              node: child
-            });
-          }
-        }
-      }
-
-      return offset;
-    })(node, 0);
-
-    return result;
-  }
-  /**
-   * @param {any} original - the original stream
-   * @param {any} highlighted - stream of the highlighted source
-   * @param {string} value - the original source itself
-   */
-
-
-  function mergeStreams(original, highlighted, value) {
-    let processed = 0;
-    let result = '';
-    const nodeStack = [];
-
-    function selectStream() {
-      if (!original.length || !highlighted.length) {
-        return original.length ? original : highlighted;
-      }
-
-      if (original[0].offset !== highlighted[0].offset) {
-        return original[0].offset < highlighted[0].offset ? original : highlighted;
-      }
-      /*
-      To avoid starting the stream just before it should stop the order is
-      ensured that original always starts first and closes last:
-       if (event1 == 'start' && event2 == 'start')
-        return original;
-      if (event1 == 'start' && event2 == 'stop')
-        return highlighted;
-      if (event1 == 'stop' && event2 == 'start')
-        return original;
-      if (event1 == 'stop' && event2 == 'stop')
-        return highlighted;
-       ... which is collapsed to:
-      */
-
-
-      return highlighted[0].event === 'start' ? original : highlighted;
-    }
-    /**
-     * @param {Node} node
-     */
-
-
-    function open(node) {
-      /** @param {Attr} attr */
-      function attributeString(attr) {
-        return ' ' + attr.nodeName + '="' + escapeHTML$1(attr.value) + '"';
-      } // @ts-ignore
-
-
-      result += '<' + tag(node) + [].map.call(node.attributes, attributeString).join('') + '>';
-    }
-    /**
-     * @param {Node} node
-     */
-
-
-    function close(node) {
-      result += '</' + tag(node) + '>';
-    }
-    /**
-     * @param {Event} event
-     */
-
-
-    function render(event) {
-      (event.event === 'start' ? open : close)(event.node);
-    }
-
-    while (original.length || highlighted.length) {
-      let stream = selectStream();
-      result += escapeHTML$1(value.substring(processed, stream[0].offset));
-      processed = stream[0].offset;
-
-      if (stream === original) {
-        /*
-        On any opening or closing tag of the original markup we first close
-        the entire highlighted node stack, then render the original tag along
-        with all the following original tags at the same offset and then
-        reopen all the tags on the highlighted stack.
-        */
-        nodeStack.reverse().forEach(close);
-
-        do {
-          render(stream.splice(0, 1)[0]);
-          stream = selectStream();
-        } while (stream === original && stream.length && stream[0].offset === processed);
-
-        nodeStack.reverse().forEach(open);
-      } else {
-        if (stream[0].event === 'start') {
-          nodeStack.push(stream[0].node);
-        } else {
-          nodeStack.pop();
-        }
-
-        render(stream.splice(0, 1)[0]);
-      }
-    }
-
-    return result + escapeHTML$1(value.substr(processed));
-  }
-  /*
-
-  For the reasoning behind this please see:
-  https://github.com/highlightjs/highlight.js/issues/2880#issuecomment-747275419
-
-  */
-
-  /**
-   * @type {Record<string, boolean>}
-   */
-
-
-  const seenDeprecations = {};
-  /**
-   * @param {string} message
-   */
-
-  const error$1 = message => {
-    console.error(message);
-  };
-  /**
-   * @param {string} message
-   * @param {any} args
-   */
-
-
-  const warn$2 = (message, ...args) => {
-    console.log(`WARN: ${message}`, ...args);
-  };
-  /**
-   * @param {string} version
-   * @param {string} message
-   */
-
-
-  const deprecated = (version, message) => {
-    if (seenDeprecations[`${version}/${message}`]) return;
-    console.log(`Deprecated as of ${version}. ${message}`);
-    seenDeprecations[`${version}/${message}`] = true;
-  };
+  var version = "11.2.0";
   /*
   Syntax highlighting with language autodetection.
   https://highlightjs.org/
   */
 
+  /**
+  @typedef {import('highlight.js').Mode} Mode
+  @typedef {import('highlight.js').CompiledMode} CompiledMode
+  @typedef {import('highlight.js').Language} Language
+  @typedef {import('highlight.js').HLJSApi} HLJSApi
+  @typedef {import('highlight.js').HLJSPlugin} HLJSPlugin
+  @typedef {import('highlight.js').PluginEvent} PluginEvent
+  @typedef {import('highlight.js').HLJSOptions} HLJSOptions
+  @typedef {import('highlight.js').LanguageFn} LanguageFn
+  @typedef {import('highlight.js').HighlightedHTMLElement} HighlightedHTMLElement
+  @typedef {import('highlight.js').BeforeHighlightContext} BeforeHighlightContext
+  @typedef {import('highlight.js/private').MatchType} MatchType
+  @typedef {import('highlight.js/private').KeywordData} KeywordData
+  @typedef {import('highlight.js/private').EnhancedMatch} EnhancedMatch
+  @typedef {import('highlight.js/private').AnnotatedError} AnnotatedError
+  @typedef {import('highlight.js').AutoHighlightResult} AutoHighlightResult
+  @typedef {import('highlight.js').HighlightOptions} HighlightOptions
+  @typedef {import('highlight.js').HighlightResult} HighlightResult
+  */
 
-  const escape$1$1 = escapeHTML$1;
-  const inherit$1 = inherit;
+  const escape$1 = escapeHTML$1;
+  const inherit = inherit$1;
   const NO_MATCH = Symbol("nomatch");
+  const MAX_KEYWORD_HITS = 7;
   /**
    * @param {any} hljs - object that is extended (legacy)
    * @returns {HLJSApi}
@@ -2466,7 +2526,6 @@
     // even if a single syntax or parse hits a fatal error
 
     let SAFE_MODE = true;
-    const fixMarkupRe = /(^(<[^>]+>|\t|)+|\n)/gm;
     const LANGUAGE_NOT_FOUND = "Could not find the language '{}', did you forget to load/include a language module?";
     /** @type {Language} */
 
@@ -2480,11 +2539,11 @@
     /** @type HLJSOptions */
 
     let options = {
+      ignoreUnescapedHTML: false,
       noHighlightRe: /^(no-?highlight)$/i,
       languageDetectRe: /\blang(?:uage)?-([\w-]+)\b/i,
       classPrefix: 'hljs-',
-      tabReplace: null,
-      useBR: false,
+      cssSelector: 'pre code',
       languages: null,
       // beta configuration options, subject to change, welcome to discuss
       // https://github.com/highlightjs/highlight.js/issues/1086
@@ -2533,10 +2592,9 @@
      * NEW API
      * highlight(code, {lang, ignoreIllegals})
      *
-     * @param {string} codeOrlanguageName - the language to use for highlighting
+     * @param {string} codeOrLanguageName - the language to use for highlighting
      * @param {string | HighlightOptions} optionsOrCode - the code to highlight
      * @param {boolean} [ignoreIllegals] - whether to ignore illegal matches, default is to bail
-     * @param {CompiledMode} [continuation] - current continuation mode, if any
      *
      * @returns {HighlightResult} Result - an object that represents the result
      * @property {string} language - the language name
@@ -2548,23 +2606,26 @@
     */
 
 
-    function highlight(codeOrlanguageName, optionsOrCode, ignoreIllegals, continuation) {
+    function highlight(codeOrLanguageName, optionsOrCode, ignoreIllegals) {
       let code = "";
       let languageName = "";
 
       if (typeof optionsOrCode === "object") {
-        code = codeOrlanguageName;
+        code = codeOrLanguageName;
         ignoreIllegals = optionsOrCode.ignoreIllegals;
-        languageName = optionsOrCode.language; // continuation not supported at all via the new API
-        // eslint-disable-next-line no-undefined
-
-        continuation = undefined;
+        languageName = optionsOrCode.language;
       } else {
         // old API
         deprecated("10.7.0", "highlight(lang, code, ...args) has been deprecated.");
         deprecated("10.7.0", "Please use highlight(code, options) instead.\nhttps://github.com/highlightjs/highlight.js/issues/2277");
-        languageName = codeOrlanguageName;
+        languageName = codeOrLanguageName;
         code = optionsOrCode;
+      } // https://github.com/highlightjs/highlight.js/issues/3149
+      // eslint-disable-next-line no-undefined
+
+
+      if (ignoreIllegals === undefined) {
+        ignoreIllegals = true;
       }
       /** @type {BeforeHighlightContext} */
 
@@ -2578,7 +2639,7 @@
       fire("before:highlight", context); // a before plugin can usurp the result completely by providing it's own
       // in which case we don't even need to call highlight
 
-      const result = context.result ? context.result : _highlight(context.language, context.code, ignoreIllegals, continuation);
+      const result = context.result ? context.result : _highlight(context.language, context.code, ignoreIllegals);
       result.code = context.code; // the plugin can change anything in result to suite it
 
       fire("after:highlight", result);
@@ -2596,15 +2657,16 @@
 
 
     function _highlight(languageName, codeToHighlight, ignoreIllegals, continuation) {
+      const keywordHits = Object.create(null);
       /**
        * Return keyword data if a match is a keyword
        * @param {CompiledMode} mode - current mode
-       * @param {RegExpMatchArray} match - regexp match data
+       * @param {string} matchText - the textual match
        * @returns {KeywordData | false}
        */
-      function keywordData(mode, match) {
-        const matchText = language.case_insensitive ? match[0].toLowerCase() : match[0];
-        return Object.prototype.hasOwnProperty.call(mode.keywords, matchText) && mode.keywords[matchText];
+
+      function keywordData(mode, matchText) {
+        return mode.keywords[matchText];
       }
 
       function processKeywords() {
@@ -2620,13 +2682,15 @@
 
         while (match) {
           buf += modeBuffer.substring(lastIndex, match.index);
-          const data = keywordData(top, match);
+          const word = language.case_insensitive ? match[0].toLowerCase() : match[0];
+          const data = keywordData(top, word);
 
           if (data) {
             const [kind, keywordRelevance] = data;
             emitter.addText(buf);
             buf = "";
-            relevance += keywordRelevance;
+            keywordHits[word] = (keywordHits[word] || 0) + 1;
+            if (keywordHits[word] <= MAX_KEYWORD_HITS) relevance += keywordRelevance;
 
             if (kind.startsWith("_")) {
               // _ implied for relevance only, do not highlight
@@ -2661,9 +2725,7 @@
           }
 
           result = _highlight(top.subLanguage, modeBuffer, true, continuations[top.subLanguage]);
-          continuations[top.subLanguage] =
-          /** @type {CompiledMode} */
-          result.top;
+          continuations[top.subLanguage] = result._top;
         } else {
           result = highlightAuto(modeBuffer, top.subLanguage.length ? top.subLanguage : null);
         } // Counting embedded language score towards the host language may be disabled
@@ -2676,7 +2738,7 @@
           relevance += result.relevance;
         }
 
-        emitter.addSublanguage(result.emitter, result.language);
+        emitter.addSublanguage(result._emitter, result.language);
       }
 
       function processBuffer() {
@@ -2689,13 +2751,55 @@
         modeBuffer = '';
       }
       /**
-       * @param {Mode} mode - new mode to start
+       * @param {CompiledMode} mode
+       * @param {RegExpMatchArray} match
        */
 
 
-      function startNewMode(mode) {
-        if (mode.className) {
-          emitter.openNode(language.classNameAliases[mode.className] || mode.className);
+      function emitMultiClass(scope, match) {
+        let i = 1; // eslint-disable-next-line no-undefined
+
+        while (match[i] !== undefined) {
+          if (!scope._emit[i]) {
+            i++;
+            continue;
+          }
+
+          const klass = language.classNameAliases[scope[i]] || scope[i];
+          const text = match[i];
+
+          if (klass) {
+            emitter.addKeyword(text, klass);
+          } else {
+            modeBuffer = text;
+            processKeywords();
+            modeBuffer = "";
+          }
+
+          i++;
+        }
+      }
+      /**
+       * @param {CompiledMode} mode - new mode to start
+       * @param {RegExpMatchArray} match
+       */
+
+
+      function startNewMode(mode, match) {
+        if (mode.scope && typeof mode.scope === "string") {
+          emitter.openNode(language.classNameAliases[mode.scope] || mode.scope);
+        }
+
+        if (mode.beginScope) {
+          // beginScope just wraps the begin match itself in a scope
+          if (mode.beginScope._wrap) {
+            emitter.addKeyword(modeBuffer, language.classNameAliases[mode.beginScope._wrap] || mode.beginScope._wrap);
+            modeBuffer = "";
+          } else if (mode.beginScope._multi) {
+            // at this point modeBuffer should just be the match
+            emitMultiClass(mode.beginScope, match);
+            modeBuffer = "";
+          }
         }
 
         top = Object.create(mode, {
@@ -2747,7 +2851,7 @@
 
       function doIgnore(lexeme) {
         if (top.matcher.regexIndex === 0) {
-          // no more regexs to potentially match here, so we move the cursor forward one
+          // no more regexes to potentially match here, so we move the cursor forward one
           // space
           modeBuffer += lexeme[0];
           return 1;
@@ -2779,10 +2883,6 @@
           if (resp.isMatchIgnored) return doIgnore(lexeme);
         }
 
-        if (newMode && newMode.endSameAsBegin) {
-          newMode.endRe = escape$1(lexeme);
-        }
-
         if (newMode.skip) {
           modeBuffer += lexeme;
         } else {
@@ -2797,11 +2897,7 @@
           }
         }
 
-        startNewMode(newMode); // if (mode["after:begin"]) {
-        //   let resp = new Response(mode);
-        //   mode["after:begin"](match, resp);
-        // }
-
+        startNewMode(newMode, match);
         return newMode.returnBegin ? 0 : lexeme.length;
       }
       /**
@@ -2822,7 +2918,13 @@
 
         const origin = top;
 
-        if (origin.skip) {
+        if (top.endScope && top.endScope._wrap) {
+          processBuffer();
+          emitter.addKeyword(lexeme, top.endScope._wrap);
+        } else if (top.endScope && top.endScope._multi) {
+          processBuffer();
+          emitMultiClass(top.endScope, match);
+        } else if (origin.skip) {
           modeBuffer += lexeme;
         } else {
           if (!(origin.returnEnd || origin.excludeEnd)) {
@@ -2837,7 +2939,7 @@
         }
 
         do {
-          if (top.className) {
+          if (top.scope) {
             emitter.closeNode();
           }
 
@@ -2849,11 +2951,7 @@
         } while (top !== endMode.parent);
 
         if (endMode.starts) {
-          if (endMode.endSameAsBegin) {
-            endMode.starts.endRe = endMode.endRe;
-          }
-
-          startNewMode(endMode.starts);
+          startNewMode(endMode.starts, match);
         }
 
         return origin.returnEnd ? 0 : lexeme.length;
@@ -2863,8 +2961,8 @@
         const list = [];
 
         for (let current = top; current !== language; current = current.parent) {
-          if (current.className) {
-            list.unshift(current.className);
+          if (current.scope) {
+            list.unshift(current.scope);
           }
         }
 
@@ -2877,7 +2975,7 @@
       /**
        *  Process an individual match
        *
-       * @param {string} textBeforeMatch - text preceeding the match (since the last match)
+       * @param {string} textBeforeMatch - text preceding the match (since the last match)
        * @param {EnhancedMatch} [match] - the match itself
        */
 
@@ -2901,7 +2999,7 @@
 
           if (!SAFE_MODE) {
             /** @type {AnnotatedError} */
-            const err = new Error('0 width match regex');
+            const err = new Error(`0 width match regex (${languageName})`);
             err.languageName = languageName;
             err.badRule = lastMatch.rule;
             throw err;
@@ -2918,7 +3016,7 @@
           // illegal match, we do not continue processing
 
           /** @type {AnnotatedError} */
-          const err = new Error('Illegal lexeme "' + lexeme + '" for mode "' + (top.className || '<unnamed>') + '"');
+          const err = new Error('Illegal lexeme "' + lexeme + '" for mode "' + (top.scope || '<unnamed>') + '"');
           err.mode = top;
           throw err;
         } else if (match.type === "end") {
@@ -2946,13 +3044,9 @@
           throw err;
         }
         /*
-        Why might be find ourselves here?  Only one occasion now.  An end match that was
-        triggered but could not be completed.  When might this happen?  When an `endSameasBegin`
-        rule sets the end rule to a specific match.  Since the overall mode termination rule that's
-        being used to scan the text isn't recompiled that means that any match that LOOKS like
-        the end (but is not, because it is not an exact match to the beginning) will
-        end up here.  A definite end match, but when `doEndMatch` tries to "reapply"
-        the end rule and fails to match, we wind up here, and just silently ignore the end.
+        Why might be find ourselves here?  An potential end match that was
+        triggered but could not be completed.  IE, `doEndMatch` returned NO_MATCH.
+        (this could be because a callback requests the match be ignored, etc)
          This causes no real harm other than stopping a few times too many.
         */
 
@@ -2968,9 +3062,7 @@
         throw new Error('Unknown language: "' + languageName + '"');
       }
 
-      const md = compileLanguage(language, {
-        plugins
-      });
+      const md = compileLanguage(language);
       let result = '';
       /** @type {CompiledMode} */
 
@@ -3015,38 +3107,38 @@
         emitter.finalize();
         result = emitter.toHTML();
         return {
-          // avoid possible breakage with v10 clients expecting
-          // this to always be an integer
-          relevance: Math.floor(relevance),
-          value: result,
           language: languageName,
+          value: result,
+          relevance: relevance,
           illegal: false,
-          emitter: emitter,
-          top: top
+          _emitter: emitter,
+          _top: top
         };
       } catch (err) {
         if (err.message && err.message.includes('Illegal')) {
           return {
+            language: languageName,
+            value: escape$1(codeToHighlight),
             illegal: true,
-            illegalBy: {
-              msg: err.message,
-              context: codeToHighlight.slice(index - 100, index + 100),
-              mode: err.mode
-            },
-            sofar: result,
             relevance: 0,
-            value: escape$1$1(codeToHighlight),
-            emitter: emitter
+            _illegalBy: {
+              message: err.message,
+              index: index,
+              context: codeToHighlight.slice(index - 100, index + 100),
+              mode: err.mode,
+              resultSoFar: result
+            },
+            _emitter: emitter
           };
         } else if (SAFE_MODE) {
           return {
+            language: languageName,
+            value: escape$1(codeToHighlight),
             illegal: false,
             relevance: 0,
-            value: escape$1$1(codeToHighlight),
-            emitter: emitter,
-            language: languageName,
-            top: top,
-            errorRaised: err
+            errorRaised: err,
+            _emitter: emitter,
+            _top: top
           };
         } else {
           throw err;
@@ -3064,13 +3156,15 @@
 
     function justTextHighlightResult(code) {
       const result = {
-        relevance: 0,
-        emitter: new options.__emitter(options),
-        value: escape$1$1(code),
+        value: escape$1(code),
         illegal: false,
-        top: PLAINTEXT_LANGUAGE
+        relevance: 0,
+        _top: PLAINTEXT_LANGUAGE,
+        _emitter: new options.__emitter(options)
       };
-      result.emitter.addText(code);
+
+      result._emitter.addText(code);
+
       return result;
     }
     /**
@@ -3079,7 +3173,7 @@
      - language (detected language)
     - relevance (int)
     - value (an HTML string with highlighting markup)
-    - second_best (object with the same structure for second-best heuristically
+    - secondBest (object with the same structure for second-best heuristically
       detected language, may be absent)
        @param {string} code
       @param {Array<string>} [languageSubset]
@@ -3116,32 +3210,8 @@
       /** @type {AutoHighlightResult} */
 
       const result = best;
-      result.second_best = secondBest;
+      result.secondBest = secondBest;
       return result;
-    }
-    /**
-    Post-processing of the highlighted markup:
-     - replace TABs with something more useful
-    - replace real line-breaks with '<br>' for non-pre containers
-       @param {string} html
-      @returns {string}
-    */
-
-
-    function fixMarkup(html) {
-      if (!(options.tabReplace || options.useBR)) {
-        return html;
-      }
-
-      return html.replace(fixMarkupRe, match => {
-        if (match === '\n') {
-          return options.useBR ? '<br>' : match;
-        } else if (options.tabReplace) {
-          return match.replace(/\t/g, options.tabReplace);
-        }
-
-        return match;
-      });
     }
     /**
      * Builds new class name for block given the language name
@@ -3153,87 +3223,60 @@
 
 
     function updateClassName(element, currentLang, resultLang) {
-      const language = currentLang ? aliases[currentLang] : resultLang;
+      const language = currentLang && aliases[currentLang] || resultLang;
       element.classList.add("hljs");
-      if (language) element.classList.add(language);
+      element.classList.add(`language-${language}`);
     }
-    /** @type {HLJSPlugin} */
-
-
-    const brPlugin = {
-      "before:highlightElement": ({
-        el
-      }) => {
-        if (options.useBR) {
-          el.innerHTML = el.innerHTML.replace(/\n/g, '').replace(/<br[ /]*>/g, '\n');
-        }
-      },
-      "after:highlightElement": ({
-        result
-      }) => {
-        if (options.useBR) {
-          result.value = result.value.replace(/\n/g, "<br>");
-        }
-      }
-    };
-    const TAB_REPLACE_RE = /^(<[^>]+>|\t)+/gm;
-    /** @type {HLJSPlugin} */
-
-    const tabReplacePlugin = {
-      "after:highlightElement": ({
-        result
-      }) => {
-        if (options.tabReplace) {
-          result.value = result.value.replace(TAB_REPLACE_RE, m => m.replace(/\t/g, options.tabReplace));
-        }
-      }
-    };
     /**
-     * Applies highlighting to a DOM node containing code. Accepts a DOM node and
-     * two optional parameters for fixMarkup.
+     * Applies highlighting to a DOM node containing code.
      *
      * @param {HighlightedHTMLElement} element - the HTML element to highlight
     */
+
 
     function highlightElement(element) {
       /** @type HTMLElement */
       let node = null;
       const language = blockLanguage(element);
-      if (shouldNotHighlight(language)) return; // support for v10 API
-
+      if (shouldNotHighlight(language)) return;
       fire("before:highlightElement", {
         el: element,
         language: language
-      });
+      }); // we should be all text, no child nodes
+
+      if (!options.ignoreUnescapedHTML && element.children.length > 0) {
+        console.warn("One of your code blocks includes unescaped HTML. This is a potentially serious security risk.");
+        console.warn("https://github.com/highlightjs/highlight.js/issues/2886");
+        console.warn(element);
+      }
+
       node = element;
       const text = node.textContent;
       const result = language ? highlight(text, {
         language,
         ignoreIllegals: true
-      }) : highlightAuto(text); // support for v10 API
-
-      fire("after:highlightElement", {
-        el: element,
-        result,
-        text
-      });
+      }) : highlightAuto(text);
       element.innerHTML = result.value;
       updateClassName(element, language, result.language);
       element.result = {
         language: result.language,
         // TODO: remove with version 11.0
         re: result.relevance,
-        relavance: result.relevance
+        relevance: result.relevance
       };
 
-      if (result.second_best) {
-        element.second_best = {
-          language: result.second_best.language,
-          // TODO: remove with version 11.0
-          re: result.second_best.relevance,
-          relavance: result.second_best.relevance
+      if (result.secondBest) {
+        element.secondBest = {
+          language: result.secondBest.language,
+          relevance: result.secondBest.relevance
         };
       }
+
+      fire("after:highlightElement", {
+        el: element,
+        result,
+        text
+      });
     }
     /**
      * Updates highlight.js global options with the passed options
@@ -3243,34 +3286,19 @@
 
 
     function configure(userOptions) {
-      if (userOptions.useBR) {
-        deprecated("10.3.0", "'useBR' will be removed entirely in v11.0");
-        deprecated("10.3.0", "Please see https://github.com/highlightjs/highlight.js/issues/2559");
-      }
-
-      options = inherit$1(options, userOptions);
-    }
-    /**
-     * Highlights to all <pre><code> blocks on a page
-     *
-     * @type {Function & {called?: boolean}}
-     */
-    // TODO: remove v12, deprecated
+      options = inherit(options, userOptions);
+    } // TODO: remove v12, deprecated
 
 
     const initHighlighting = () => {
-      if (initHighlighting.called) return;
-      initHighlighting.called = true;
-      deprecated("10.6.0", "initHighlighting() is deprecated.  Use highlightAll() instead.");
-      const blocks = document.querySelectorAll('pre code');
-      blocks.forEach(highlightElement);
-    }; // Higlights all when DOMContentLoaded fires
-    // TODO: remove v12, deprecated
+      highlightAll();
+      deprecated("10.6.0", "initHighlighting() deprecated.  Use highlightAll() now.");
+    }; // TODO: remove v12, deprecated
 
 
     function initHighlightingOnLoad() {
-      deprecated("10.6.0", "initHighlightingOnLoad() is deprecated.  Use highlightAll() instead.");
-      wantsHighlight = true;
+      highlightAll();
+      deprecated("10.6.0", "initHighlightingOnLoad() deprecated.  Use highlightAll() now.");
     }
 
     let wantsHighlight = false;
@@ -3285,7 +3313,7 @@
         return;
       }
 
-      const blocks = document.querySelectorAll('pre code');
+      const blocks = document.querySelectorAll(options.cssSelector);
       blocks.forEach(highlightElement);
     }
 
@@ -3361,27 +3389,6 @@
 
     function listLanguages() {
       return Object.keys(languages);
-    }
-    /**
-      intended usage: When one language truly requires another
-       Unlike `getLanguage`, this will throw when the requested language
-      is not available.
-       @param {string} name - name of the language to fetch/require
-      @returns {Language | never}
-    */
-
-
-    function requireLanguage(name) {
-      deprecated("10.4.0", "requireLanguage will be removed entirely in v11.");
-      deprecated("10.4.0", "Please see https://github.com/highlightjs/highlight.js/pull/2844");
-      const lang = getLanguage(name);
-
-      if (lang) {
-        return lang;
-      }
-
-      const err = new Error('The \'{}\' language is required, but not loaded.'.replace('{}', name));
-      throw err;
     }
     /**
      * @param {string} name - name of the language to retrieve
@@ -3471,19 +3478,7 @@
       });
     }
     /**
-    Note: fixMarkup is deprecated and will be removed entirely in v11
-     @param {string} arg
-    @returns {string}
-    */
-
-
-    function deprecateFixMarkup(arg) {
-      deprecated("10.2.0", "fixMarkup will be removed entirely in v11.0");
-      deprecated("10.2.0", "Please see https://github.com/highlightjs/highlight.js/issues/2534");
-      return fixMarkup(arg);
-    }
-    /**
-     *
+     * DEPRECATED
      * @param {HighlightedHTMLElement} el
      */
 
@@ -3500,7 +3495,6 @@
       highlight,
       highlightAuto,
       highlightAll,
-      fixMarkup: deprecateFixMarkup,
       highlightElement,
       // TODO: Remove with v12 API
       highlightBlock: deprecateHighlightBlock,
@@ -3512,12 +3506,9 @@
       listLanguages,
       getLanguage,
       registerAliases,
-      requireLanguage,
       autoDetection,
-      inherit: inherit$1,
-      addPlugin,
-      // plugins for frameworks
-      vuePlugin: BuildVuePlugin(hljs).VuePlugin
+      inherit,
+      addPlugin
     });
 
     hljs.debugMode = function () {
@@ -3534,17 +3525,12 @@
       // @ts-ignore
       if (typeof MODES$1[key] === "object") {
         // @ts-ignore
-        deepFreezeEs6(MODES$1[key]);
+        deepFreeze$1(MODES$1[key]);
       }
-    } // merge all the modes/regexs into our main object
+    } // merge all the modes/regexes into our main object
 
 
-    Object.assign(hljs, MODES$1); // built-in plugins, likely to be moved out of core in the future
-
-    hljs.addPlugin(brPlugin); // slated to be removed in v11
-
-    hljs.addPlugin(mergeHTMLPlugin);
-    hljs.addPlugin(tabReplacePlugin);
+    Object.assign(hljs, MODES$1);
     return hljs;
   }; // export an "instance" of the highlighter
 
@@ -3555,19 +3541,28 @@
   const MODES = hljs => {
     return {
       IMPORTANT: {
-        className: 'meta',
+        scope: 'meta',
         begin: '!important'
       },
       HEXCOLOR: {
-        className: 'number',
+        scope: 'number',
         begin: '#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})'
       },
       ATTRIBUTE_SELECTOR_MODE: {
-        className: 'selector-attr',
+        scope: 'selector-attr',
         begin: /\[/,
         end: /\]/,
         illegal: '$',
         contains: [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE]
+      },
+      CSS_NUMBER_MODE: {
+        scope: 'number',
+        begin: hljs.NUMBER_RE + '(' + '%|em|ex|ch|rem' + '|vw|vh|vmin|vmax' + '|cm|mm|in|pt|pc|px' + '|deg|grad|rad|turn' + '|s|ms' + '|Hz|kHz' + '|dpi|dpcm|dppx' + ')?',
+        relevance: 0
+      },
+      CSS_VARIABLE: {
+        className: "attr",
+        begin: /--[A-Za-z][A-Za-z0-9_-]*/
       }
     };
   };
@@ -3607,7 +3602,7 @@
    * @returns {string}
    */
 
-  function source$5(re) {
+  function source$6(re) {
     if (!re) return null;
     if (typeof re === "string") return re;
     return re.source;
@@ -3628,12 +3623,12 @@
 
 
   function concat$3(...args) {
-    const joined = args.map(x => source$5(x)).join("");
+    const joined = args.map(x => source$6(x)).join("");
     return joined;
   }
   /*
   Language: CSS
-  Category: common, css
+  Category: common, css, web
   Website: https://developer.mozilla.org/en-US/docs/Web/CSS
   */
 
@@ -3668,7 +3663,7 @@
       },
       contains: [hljs.C_BLOCK_COMMENT_MODE, VENDOR_PREFIX, // to recognize keyframe 40% etc which are outside the scope of our
       // attribute value mode
-      hljs.CSS_NUMBER_MODE, {
+      modes.CSS_NUMBER_MODE, {
         className: 'selector-id',
         begin: /#[A-Za-z0-9_-]+/,
         relevance: 0
@@ -3689,14 +3684,14 @@
       //   end: /\)/,
       //   contains: [ hljs.CSS_NUMBER_MODE ]
       // },
-      {
+      modes.CSS_VARIABLE, {
         className: 'attribute',
         begin: '\\b(' + ATTRIBUTES.join('|') + ')\\b'
       }, // attribute values
       {
         begin: ':',
         end: '[;}]',
-        contains: [modes.HEXCOLOR, modes.IMPORTANT, hljs.CSS_NUMBER_MODE, ...STRINGS, // needed to highlight these as strings and to avoid issues with
+        contains: [modes.HEXCOLOR, modes.IMPORTANT, modes.CSS_NUMBER_MODE, ...STRINGS, // needed to highlight these as strings and to avoid issues with
         // illegal characters that might be inside urls that would tigger the
         // languages illegal stack
         {
@@ -3738,7 +3733,7 @@
           contains: [{
             begin: /[a-z-]+(?=:)/,
             className: "attribute"
-          }, ...STRINGS, hljs.CSS_NUMBER_MODE]
+          }, ...STRINGS, modes.CSS_NUMBER_MODE]
         }]
       }, {
         className: 'selector-tag',
@@ -3747,8 +3742,45 @@
     };
   }
 
-  var css_1 = css;
+  /**
+   * @param {string} value
+   * @returns {RegExp}
+   * */
 
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+  function source$5(re) {
+    if (!re) return null;
+    if (typeof re === "string") return re;
+    return re.source;
+  }
+
+  function stripOptionsFromArgs$1(args) {
+    const opts = args[args.length - 1];
+
+    if (typeof opts === 'object' && opts.constructor === Object) {
+      args.splice(args.length - 1, 1);
+      return opts;
+    } else {
+      return {};
+    }
+  }
+  /**
+   * Any of the passed expresssions may match
+   *
+   * Creates a huge this | this | that | that match
+   * @param {(RegExp | string)[] } args
+   * @returns {string}
+   */
+
+
+  function either$1(...args) {
+    const opts = stripOptionsFromArgs$1(args);
+    const joined = '(' + (opts.capture ? "" : "?:") + args.map(x => source$5(x)).join("|") + ")";
+    return joined;
+  }
   /*
   Language: Diff
   Description: Unified and context diff
@@ -3758,6 +3790,8 @@
   */
 
   /** @type LanguageFn */
+
+
   function diff(hljs) {
     return {
       name: 'Diff',
@@ -3765,38 +3799,14 @@
       contains: [{
         className: 'meta',
         relevance: 10,
-        variants: [{
-          begin: /^@@ +-\d+,\d+ +\+\d+,\d+ +@@/
-        }, {
-          begin: /^\*\*\* +\d+,\d+ +\*\*\*\*$/
-        }, {
-          begin: /^--- +\d+,\d+ +----$/
-        }]
+        match: either$1(/^@@ +-\d+,\d+ +\+\d+,\d+ +@@/, /^\*\*\* +\d+,\d+ +\*\*\*\*$/, /^--- +\d+,\d+ +----$/)
       }, {
         className: 'comment',
         variants: [{
-          begin: /Index: /,
+          begin: either$1(/Index: /, /^index/, /={3,}/, /^-{3}/, /^\*{3} /, /^\+{3}/, /^diff --git/),
           end: /$/
         }, {
-          begin: /^index/,
-          end: /$/
-        }, {
-          begin: /={3,}/,
-          end: /$/
-        }, {
-          begin: /^-{3}/,
-          end: /$/
-        }, {
-          begin: /^\*{3} /,
-          end: /$/
-        }, {
-          begin: /^\+{3}/,
-          end: /$/
-        }, {
-          begin: /^\*{15}$/
-        }, {
-          begin: /^diff --git/,
-          end: /$/
+          match: /^\*{15}$/
         }]
       }, {
         className: 'addition',
@@ -3814,8 +3824,6 @@
     };
   }
 
-  var diff_1 = diff;
-
   const IDENT_RE$1 = '[A-Za-z$_][0-9A-Za-z$_]*';
   const KEYWORDS$1 = ["as", // for exports
   "in", "of", "if", "for", "while", "finally", "var", "new", "function", "do", "return", "void", "else", "break", "catch", "instanceof", "with", "throw", "case", "default", "try", "switch", "continue", "typeof", "delete", "let", "yield", "const", "class", // JS handles these with a special rule
@@ -3828,7 +3836,7 @@
   const BUILT_IN_GLOBALS$1 = ["setInterval", "setTimeout", "clearInterval", "clearTimeout", "require", "exports", "eval", "isFinite", "isNaN", "parseFloat", "parseInt", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "escape", "unescape"];
   const BUILT_IN_VARIABLES$1 = ["arguments", "this", "super", "console", "window", "document", "localStorage", "module", "global" // Node.js
   ];
-  const BUILT_INS$1 = [].concat(BUILT_IN_GLOBALS$1, BUILT_IN_VARIABLES$1, TYPES$1, ERROR_TYPES$1);
+  const BUILT_INS$1 = [].concat(BUILT_IN_GLOBALS$1, TYPES$1, ERROR_TYPES$1);
   /**
    * @param {string} value
    * @returns {RegExp}
@@ -3866,7 +3874,7 @@
   /*
   Language: JavaScript
   Description: JavaScript (JS) is a lightweight, interpreted, or just-in-time compiled programming language with first-class functions.
-  Category: common, scripting
+  Category: common, scripting, web
   Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
   */
 
@@ -3930,7 +3938,8 @@
       $pattern: IDENT_RE$1,
       keyword: KEYWORDS$1,
       literal: LITERALS$1,
-      built_in: BUILT_INS$1
+      built_in: BUILT_INS$1,
+      "variable.language": BUILT_IN_VARIABLES$1
     }; // https://tc39.es/ecma262/#sec-literals-numeric-literals
 
     const decimalDigits = '[0-9](_?[0-9])*';
@@ -3999,12 +4008,17 @@
     const JSDOC_COMMENT = hljs.COMMENT(/\/\*\*(?!\/)/, '\\*/', {
       relevance: 0,
       contains: [{
-        className: 'doctag',
-        begin: '@[A-Za-z]+',
+        begin: '(?=@[A-Za-z]+)',
+        relevance: 0,
         contains: [{
+          className: 'doctag',
+          begin: '@[A-Za-z]+'
+        }, {
           className: 'type',
           begin: '\\{',
           end: '\\}',
+          excludeEnd: true,
+          excludeBegin: true,
           relevance: 0
         }, {
           className: 'variable',
@@ -4048,6 +4062,95 @@
       excludeEnd: true,
       keywords: KEYWORDS$1$1,
       contains: PARAMS_CONTAINS
+    }; // ES6 classes
+
+    const CLASS_OR_EXTENDS = {
+      variants: [{
+        match: [/class/, /\s+/, IDENT_RE$1$1],
+        scope: {
+          1: "keyword",
+          3: "title.class"
+        }
+      }, {
+        match: [/extends/, /\s+/, concat$2(IDENT_RE$1$1, "(", concat$2(/\./, IDENT_RE$1$1), ")*")],
+        scope: {
+          1: "keyword",
+          3: "title.class.inherited"
+        }
+      }]
+    };
+    const CLASS_REFERENCE = {
+      relevance: 0,
+      match: /\b[A-Z][a-z]+([A-Z][a-z]+)*/,
+      className: "title.class",
+      keywords: {
+        _: [// se we still get relevance credit for JS library classes
+        ...TYPES$1, ...ERROR_TYPES$1]
+      }
+    };
+    const USE_STRICT = {
+      label: "use_strict",
+      className: 'meta',
+      relevance: 10,
+      begin: /^\s*['"]use (strict|asm)['"]/
+    };
+    const FUNCTION_DEFINITION = {
+      variants: [{
+        match: [/function/, /\s+/, IDENT_RE$1$1, /(?=\s*\()/]
+      }, // anonymous function
+      {
+        match: [/function/, /\s*(?=\()/]
+      }],
+      className: {
+        1: "keyword",
+        3: "title.function"
+      },
+      label: "func.def",
+      contains: [PARAMS],
+      illegal: /%/
+    };
+    const UPPER_CASE_CONSTANT = {
+      relevance: 0,
+      match: /\b[A-Z][A-Z_0-9]+\b/,
+      className: "variable.constant"
+    };
+
+    function noneOf(list) {
+      return concat$2("(?!", list.join("|"), ")");
+    }
+
+    const FUNCTION_CALL = {
+      match: concat$2(/\b/, noneOf([...BUILT_IN_GLOBALS$1, "super"]), IDENT_RE$1$1, lookahead$3(/\(/)),
+      className: "title.function",
+      relevance: 0
+    };
+    const PROPERTY_ACCESS = {
+      begin: concat$2(/\./, lookahead$3(concat$2(IDENT_RE$1$1, /(?![0-9A-Za-z$_(])/))),
+      end: IDENT_RE$1$1,
+      excludeBegin: true,
+      keywords: "prototype",
+      className: "property",
+      relevance: 0
+    };
+    const GETTER_OR_SETTER = {
+      match: [/get|set/, /\s+/, IDENT_RE$1$1, /(?=\()/],
+      className: {
+        1: "keyword",
+        3: "title.function"
+      },
+      contains: [{
+        // eat to avoid empty params
+        begin: /\(\)/
+      }, PARAMS]
+    };
+    const FUNC_LEAD_IN_RE = '(\\(' + '[^()]*(\\(' + '[^()]*(\\(' + '[^()]*' + '\\)[^()]*)*' + '\\)[^()]*)*' + '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>';
+    const FUNCTION_VARIABLE = {
+      match: [/const|var|let/, /\s+/, IDENT_RE$1$1, /\s*/, /=\s*/, lookahead$3(FUNC_LEAD_IN_RE)],
+      className: {
+        1: "keyword",
+        3: "title.function"
+      },
+      contains: [PARAMS]
     };
     return {
       name: 'Javascript',
@@ -4062,42 +4165,21 @@
         label: "shebang",
         binary: "node",
         relevance: 5
-      }), {
-        label: "use_strict",
-        className: 'meta',
-        relevance: 10,
-        begin: /^\s*['"]use (strict|asm)['"]/
-      }, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, COMMENT, NUMBER, {
-        // object attr container
-        begin: concat$2(/[{,\n]\s*/, // we need to look ahead to make sure that we actually have an
-        // attribute coming up so we don't steal a comma from a potential
-        // "value" container
-        //
-        // NOTE: this might not work how you think.  We don't actually always
-        // enter this mode and stay.  Instead it might merely match `,
-        // <comments up next>` and then immediately end after the , because it
-        // fails to find any actual attrs. But this still does the job because
-        // it prevents the value contain rule from grabbing this instead and
-        // prevening this rule from firing when we actually DO have keys.
-        lookahead$3(concat$2( // we also need to allow for multiple possible comments inbetween
-        // the first key:value pairing
-        /(((\/\/.*$)|(\/\*(\*[^/]|[^*])*\*\/))\s*)*/, IDENT_RE$1$1 + '\\s*:'))),
-        relevance: 0,
-        contains: [{
-          className: 'attr',
-          begin: IDENT_RE$1$1 + lookahead$3('\\s*:'),
-          relevance: 0
-        }]
-      }, {
+      }), USE_STRICT, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, COMMENT, NUMBER, CLASS_REFERENCE, {
+        className: 'attr',
+        begin: IDENT_RE$1$1 + lookahead$3(':'),
+        relevance: 0
+      }, FUNCTION_VARIABLE, {
         // "value" container
         begin: '(' + hljs.RE_STARTERS_RE + '|\\b(case|return|throw)\\b)\\s*',
         keywords: 'return throw case',
+        relevance: 0,
         contains: [COMMENT, hljs.REGEXP_MODE, {
           className: 'function',
           // we have to count the parens to make sure we actually have the
           // correct bounding ( ) before the =>.  There could be any number of
           // sub-expressions inside also surrounded by parens.
-          begin: '(\\(' + '[^()]*(\\(' + '[^()]*(\\(' + '[^()]*' + '\\)[^()]*)*' + '\\)[^()]*)*' + '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>',
+          begin: FUNC_LEAD_IN_RE,
           returnBegin: true,
           end: '\\s*=>',
           contains: [{
@@ -4123,10 +4205,8 @@
           begin: /,/,
           relevance: 0
         }, {
-          className: '',
-          begin: /\s/,
-          end: /\s*/,
-          skip: true
+          match: /\s+/,
+          relevance: 0
         }, {
           // JSX
           variants: [{
@@ -4146,134 +4226,79 @@
             skip: true,
             contains: ['self']
           }]
-        }],
-        relevance: 0
-      }, {
-        className: 'function',
-        beginKeywords: 'function',
-        end: /[{;]/,
-        excludeEnd: true,
-        keywords: KEYWORDS$1$1,
-        contains: ['self', hljs.inherit(hljs.TITLE_MODE, {
-          begin: IDENT_RE$1$1
-        }), PARAMS],
-        illegal: /%/
-      }, {
+        }]
+      }, FUNCTION_DEFINITION, {
         // prevent this from getting swallowed up by function
         // since they appear "function like"
         beginKeywords: "while if switch catch for"
       }, {
-        className: 'function',
         // we have to count the parens to make sure we actually have the correct
         // bounding ( ).  There could be any number of sub-expressions inside
         // also surrounded by parens.
-        begin: hljs.UNDERSCORE_IDENT_RE + '\\(' + // first parens
+        begin: '\\b(?!function)' + hljs.UNDERSCORE_IDENT_RE + '\\(' + // first parens
         '[^()]*(\\(' + '[^()]*(\\(' + '[^()]*' + '\\)[^()]*)*' + '\\)[^()]*)*' + '\\)\\s*\\{',
         // end parens
         returnBegin: true,
+        label: "func.def",
         contains: [PARAMS, hljs.inherit(hljs.TITLE_MODE, {
-          begin: IDENT_RE$1$1
+          begin: IDENT_RE$1$1,
+          className: "title.function"
         })]
-      }, // hack: prevents detection of keywords in some circumstances
+      }, // catch ... so it won't trigger the property rule below
+      {
+        match: /\.\.\./,
+        relevance: 0
+      }, PROPERTY_ACCESS, // hack: prevents detection of keywords in some circumstances
       // .keyword()
       // $keyword = x
       {
-        variants: [{
-          begin: '\\.' + IDENT_RE$1$1
-        }, {
-          begin: '\\$' + IDENT_RE$1$1
-        }],
+        match: '\\$' + IDENT_RE$1$1,
         relevance: 0
       }, {
-        // ES6 class
-        className: 'class',
-        beginKeywords: 'class',
-        end: /[{;=]/,
-        excludeEnd: true,
-        illegal: /[:"[\]]/,
-        contains: [{
-          beginKeywords: 'extends'
-        }, hljs.UNDERSCORE_TITLE_MODE]
-      }, {
-        begin: /\b(?=constructor)/,
-        end: /[{;]/,
-        excludeEnd: true,
-        contains: [hljs.inherit(hljs.TITLE_MODE, {
-          begin: IDENT_RE$1$1
-        }), 'self', PARAMS]
-      }, {
-        begin: '(get|set)\\s+(?=' + IDENT_RE$1$1 + '\\()',
-        end: /\{/,
-        keywords: "get set",
-        contains: [hljs.inherit(hljs.TITLE_MODE, {
-          begin: IDENT_RE$1$1
-        }), {
-          begin: /\(\)/
-        }, // eat to avoid empty params
-        PARAMS]
-      }, {
-        begin: /\$[(.]/ // relevance booster for a pattern common to JS libs: `$(something)` and `$.something`
+        match: [/\bconstructor(?=\s*\()/],
+        className: {
+          1: "title.function"
+        },
+        contains: [PARAMS]
+      }, FUNCTION_CALL, UPPER_CASE_CONSTANT, CLASS_OR_EXTENDS, GETTER_OR_SETTER, {
+        match: /\$[(.]/ // relevance booster for a pattern common to JS libs: `$(something)` and `$.something`
 
       }]
     };
   }
-
-  var javascript_1 = javascript$1;
 
   /*
   Language: JSON
   Description: JSON (JavaScript Object Notation) is a lightweight data-interchange format.
   Author: Ivan Sagalaev <maniac@softwaremaniacs.org>
   Website: http://www.json.org
-  Category: common, protocols
+  Category: common, protocols, web
   */
   function json$1(hljs) {
+    const ATTRIBUTE = {
+      className: 'attr',
+      begin: /"(\\.|[^\\"\r\n])*"(?=\s*:)/,
+      relevance: 1.01
+    };
+    const PUNCTUATION = {
+      match: /[{}[\],:]/,
+      className: "punctuation",
+      relevance: 0
+    }; // normally we would rely on `keywords` for this but using a mode here allows us
+    // to use the very tight `illegal: \S` rule later to flag any other character
+    // as illegal indicating that despite looking like JSON we do not truly have
+    // JSON and thus improve false-positively greatly since JSON will try and claim
+    // all sorts of JSON looking stuff
+
     const LITERALS = {
-      literal: 'true false null'
+      beginKeywords: ["true", "false", "null"].join(" ")
     };
-    const ALLOWED_COMMENTS = [hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE];
-    const TYPES = [hljs.QUOTE_STRING_MODE, hljs.C_NUMBER_MODE];
-    const VALUE_CONTAINER = {
-      end: ',',
-      endsWithParent: true,
-      excludeEnd: true,
-      contains: TYPES,
-      keywords: LITERALS
-    };
-    const OBJECT = {
-      begin: /\{/,
-      end: /\}/,
-      contains: [{
-        className: 'attr',
-        begin: /"/,
-        end: /"/,
-        contains: [hljs.BACKSLASH_ESCAPE],
-        illegal: '\\n'
-      }, hljs.inherit(VALUE_CONTAINER, {
-        begin: /:/
-      })].concat(ALLOWED_COMMENTS),
-      illegal: '\\S'
-    };
-    const ARRAY = {
-      begin: '\\[',
-      end: '\\]',
-      contains: [hljs.inherit(VALUE_CONTAINER)],
-      // inherit is a workaround for a bug that makes shared modes with endsWithParent compile only the ending of one of the parents
-      illegal: '\\S'
-    };
-    TYPES.push(OBJECT, ARRAY);
-    ALLOWED_COMMENTS.forEach(function (rule) {
-      TYPES.push(rule);
-    });
     return {
       name: 'JSON',
-      contains: TYPES,
-      keywords: LITERALS,
+      contains: [ATTRIBUTE, PUNCTUATION, hljs.QUOTE_STRING_MODE, LITERALS, hljs.C_NUMBER_MODE, hljs.C_LINE_COMMENT_MODE, hljs.C_BLOCK_COMMENT_MODE],
       illegal: '\\S'
     };
   }
-
-  var json_1 = json$1;
 
   const IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
   const KEYWORDS = ["as", // for exports
@@ -4287,7 +4312,7 @@
   const BUILT_IN_GLOBALS = ["setInterval", "setTimeout", "clearInterval", "clearTimeout", "require", "exports", "eval", "isFinite", "isNaN", "parseFloat", "parseInt", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "escape", "unescape"];
   const BUILT_IN_VARIABLES = ["arguments", "this", "super", "console", "window", "document", "localStorage", "module", "global" // Node.js
   ];
-  const BUILT_INS = [].concat(BUILT_IN_GLOBALS, BUILT_IN_VARIABLES, TYPES, ERROR_TYPES);
+  const BUILT_INS = [].concat(BUILT_IN_GLOBALS, TYPES, ERROR_TYPES);
   /**
    * @param {string} value
    * @returns {RegExp}
@@ -4325,7 +4350,7 @@
   /*
   Language: JavaScript
   Description: JavaScript (JS) is a lightweight, interpreted, or just-in-time compiled programming language with first-class functions.
-  Category: common, scripting
+  Category: common, scripting, web
   Website: https://developer.mozilla.org/en-US/docs/Web/JavaScript
   */
 
@@ -4389,7 +4414,8 @@
       $pattern: IDENT_RE,
       keyword: KEYWORDS,
       literal: LITERALS,
-      built_in: BUILT_INS
+      built_in: BUILT_INS,
+      "variable.language": BUILT_IN_VARIABLES
     }; // https://tc39.es/ecma262/#sec-literals-numeric-literals
 
     const decimalDigits = '[0-9](_?[0-9])*';
@@ -4458,12 +4484,17 @@
     const JSDOC_COMMENT = hljs.COMMENT(/\/\*\*(?!\/)/, '\\*/', {
       relevance: 0,
       contains: [{
-        className: 'doctag',
-        begin: '@[A-Za-z]+',
+        begin: '(?=@[A-Za-z]+)',
+        relevance: 0,
         contains: [{
+          className: 'doctag',
+          begin: '@[A-Za-z]+'
+        }, {
           className: 'type',
           begin: '\\{',
           end: '\\}',
+          excludeEnd: true,
+          excludeBegin: true,
           relevance: 0
         }, {
           className: 'variable',
@@ -4507,6 +4538,95 @@
       excludeEnd: true,
       keywords: KEYWORDS$1,
       contains: PARAMS_CONTAINS
+    }; // ES6 classes
+
+    const CLASS_OR_EXTENDS = {
+      variants: [{
+        match: [/class/, /\s+/, IDENT_RE$1],
+        scope: {
+          1: "keyword",
+          3: "title.class"
+        }
+      }, {
+        match: [/extends/, /\s+/, concat$1(IDENT_RE$1, "(", concat$1(/\./, IDENT_RE$1), ")*")],
+        scope: {
+          1: "keyword",
+          3: "title.class.inherited"
+        }
+      }]
+    };
+    const CLASS_REFERENCE = {
+      relevance: 0,
+      match: /\b[A-Z][a-z]+([A-Z][a-z]+)*/,
+      className: "title.class",
+      keywords: {
+        _: [// se we still get relevance credit for JS library classes
+        ...TYPES, ...ERROR_TYPES]
+      }
+    };
+    const USE_STRICT = {
+      label: "use_strict",
+      className: 'meta',
+      relevance: 10,
+      begin: /^\s*['"]use (strict|asm)['"]/
+    };
+    const FUNCTION_DEFINITION = {
+      variants: [{
+        match: [/function/, /\s+/, IDENT_RE$1, /(?=\s*\()/]
+      }, // anonymous function
+      {
+        match: [/function/, /\s*(?=\()/]
+      }],
+      className: {
+        1: "keyword",
+        3: "title.function"
+      },
+      label: "func.def",
+      contains: [PARAMS],
+      illegal: /%/
+    };
+    const UPPER_CASE_CONSTANT = {
+      relevance: 0,
+      match: /\b[A-Z][A-Z_0-9]+\b/,
+      className: "variable.constant"
+    };
+
+    function noneOf(list) {
+      return concat$1("(?!", list.join("|"), ")");
+    }
+
+    const FUNCTION_CALL = {
+      match: concat$1(/\b/, noneOf([...BUILT_IN_GLOBALS, "super"]), IDENT_RE$1, lookahead$2(/\(/)),
+      className: "title.function",
+      relevance: 0
+    };
+    const PROPERTY_ACCESS = {
+      begin: concat$1(/\./, lookahead$2(concat$1(IDENT_RE$1, /(?![0-9A-Za-z$_(])/))),
+      end: IDENT_RE$1,
+      excludeBegin: true,
+      keywords: "prototype",
+      className: "property",
+      relevance: 0
+    };
+    const GETTER_OR_SETTER = {
+      match: [/get|set/, /\s+/, IDENT_RE$1, /(?=\()/],
+      className: {
+        1: "keyword",
+        3: "title.function"
+      },
+      contains: [{
+        // eat to avoid empty params
+        begin: /\(\)/
+      }, PARAMS]
+    };
+    const FUNC_LEAD_IN_RE = '(\\(' + '[^()]*(\\(' + '[^()]*(\\(' + '[^()]*' + '\\)[^()]*)*' + '\\)[^()]*)*' + '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>';
+    const FUNCTION_VARIABLE = {
+      match: [/const|var|let/, /\s+/, IDENT_RE$1, /\s*/, /=\s*/, lookahead$2(FUNC_LEAD_IN_RE)],
+      className: {
+        1: "keyword",
+        3: "title.function"
+      },
+      contains: [PARAMS]
     };
     return {
       name: 'Javascript',
@@ -4521,42 +4641,21 @@
         label: "shebang",
         binary: "node",
         relevance: 5
-      }), {
-        label: "use_strict",
-        className: 'meta',
-        relevance: 10,
-        begin: /^\s*['"]use (strict|asm)['"]/
-      }, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, COMMENT, NUMBER, {
-        // object attr container
-        begin: concat$1(/[{,\n]\s*/, // we need to look ahead to make sure that we actually have an
-        // attribute coming up so we don't steal a comma from a potential
-        // "value" container
-        //
-        // NOTE: this might not work how you think.  We don't actually always
-        // enter this mode and stay.  Instead it might merely match `,
-        // <comments up next>` and then immediately end after the , because it
-        // fails to find any actual attrs. But this still does the job because
-        // it prevents the value contain rule from grabbing this instead and
-        // prevening this rule from firing when we actually DO have keys.
-        lookahead$2(concat$1( // we also need to allow for multiple possible comments inbetween
-        // the first key:value pairing
-        /(((\/\/.*$)|(\/\*(\*[^/]|[^*])*\*\/))\s*)*/, IDENT_RE$1 + '\\s*:'))),
-        relevance: 0,
-        contains: [{
-          className: 'attr',
-          begin: IDENT_RE$1 + lookahead$2('\\s*:'),
-          relevance: 0
-        }]
-      }, {
+      }), USE_STRICT, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, COMMENT, NUMBER, CLASS_REFERENCE, {
+        className: 'attr',
+        begin: IDENT_RE$1 + lookahead$2(':'),
+        relevance: 0
+      }, FUNCTION_VARIABLE, {
         // "value" container
         begin: '(' + hljs.RE_STARTERS_RE + '|\\b(case|return|throw)\\b)\\s*',
         keywords: 'return throw case',
+        relevance: 0,
         contains: [COMMENT, hljs.REGEXP_MODE, {
           className: 'function',
           // we have to count the parens to make sure we actually have the
           // correct bounding ( ) before the =>.  There could be any number of
           // sub-expressions inside also surrounded by parens.
-          begin: '(\\(' + '[^()]*(\\(' + '[^()]*(\\(' + '[^()]*' + '\\)[^()]*)*' + '\\)[^()]*)*' + '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>',
+          begin: FUNC_LEAD_IN_RE,
           returnBegin: true,
           end: '\\s*=>',
           contains: [{
@@ -4582,10 +4681,8 @@
           begin: /,/,
           relevance: 0
         }, {
-          className: '',
-          begin: /\s/,
-          end: /\s*/,
-          skip: true
+          match: /\s+/,
+          relevance: 0
         }, {
           // JSX
           variants: [{
@@ -4605,73 +4702,42 @@
             skip: true,
             contains: ['self']
           }]
-        }],
-        relevance: 0
-      }, {
-        className: 'function',
-        beginKeywords: 'function',
-        end: /[{;]/,
-        excludeEnd: true,
-        keywords: KEYWORDS$1,
-        contains: ['self', hljs.inherit(hljs.TITLE_MODE, {
-          begin: IDENT_RE$1
-        }), PARAMS],
-        illegal: /%/
-      }, {
+        }]
+      }, FUNCTION_DEFINITION, {
         // prevent this from getting swallowed up by function
         // since they appear "function like"
         beginKeywords: "while if switch catch for"
       }, {
-        className: 'function',
         // we have to count the parens to make sure we actually have the correct
         // bounding ( ).  There could be any number of sub-expressions inside
         // also surrounded by parens.
-        begin: hljs.UNDERSCORE_IDENT_RE + '\\(' + // first parens
+        begin: '\\b(?!function)' + hljs.UNDERSCORE_IDENT_RE + '\\(' + // first parens
         '[^()]*(\\(' + '[^()]*(\\(' + '[^()]*' + '\\)[^()]*)*' + '\\)[^()]*)*' + '\\)\\s*\\{',
         // end parens
         returnBegin: true,
+        label: "func.def",
         contains: [PARAMS, hljs.inherit(hljs.TITLE_MODE, {
-          begin: IDENT_RE$1
+          begin: IDENT_RE$1,
+          className: "title.function"
         })]
-      }, // hack: prevents detection of keywords in some circumstances
+      }, // catch ... so it won't trigger the property rule below
+      {
+        match: /\.\.\./,
+        relevance: 0
+      }, PROPERTY_ACCESS, // hack: prevents detection of keywords in some circumstances
       // .keyword()
       // $keyword = x
       {
-        variants: [{
-          begin: '\\.' + IDENT_RE$1
-        }, {
-          begin: '\\$' + IDENT_RE$1
-        }],
+        match: '\\$' + IDENT_RE$1,
         relevance: 0
       }, {
-        // ES6 class
-        className: 'class',
-        beginKeywords: 'class',
-        end: /[{;=]/,
-        excludeEnd: true,
-        illegal: /[:"[\]]/,
-        contains: [{
-          beginKeywords: 'extends'
-        }, hljs.UNDERSCORE_TITLE_MODE]
-      }, {
-        begin: /\b(?=constructor)/,
-        end: /[{;]/,
-        excludeEnd: true,
-        contains: [hljs.inherit(hljs.TITLE_MODE, {
-          begin: IDENT_RE$1
-        }), 'self', PARAMS]
-      }, {
-        begin: '(get|set)\\s+(?=' + IDENT_RE$1 + '\\()',
-        end: /\{/,
-        keywords: "get set",
-        contains: [hljs.inherit(hljs.TITLE_MODE, {
-          begin: IDENT_RE$1
-        }), {
-          begin: /\(\)/
-        }, // eat to avoid empty params
-        PARAMS]
-      }, {
-        begin: /\$[(.]/ // relevance booster for a pattern common to JS libs: `$(something)` and `$.something`
+        match: [/\bconstructor(?=\s*\()/],
+        className: {
+          1: "title.function"
+        },
+        contains: [PARAMS]
+      }, FUNCTION_CALL, UPPER_CASE_CONSTANT, CLASS_OR_EXTENDS, GETTER_OR_SETTER, {
+        match: /\$[(.]/ // relevance booster for a pattern common to JS libs: `$(something)` and `$.something`
 
       }]
     };
@@ -4712,7 +4778,8 @@
       $pattern: IDENT_RE,
       keyword: KEYWORDS.concat(TS_SPECIFIC_KEYWORDS),
       literal: LITERALS,
-      built_in: BUILT_INS.concat(TYPES)
+      built_in: BUILT_INS.concat(TYPES),
+      "variable.language": BUILT_IN_VARIABLES
     };
     const DECORATOR = {
       className: 'meta',
@@ -4739,7 +4806,7 @@
     swapMode(tsLanguage, "shebang", hljs.SHEBANG()); // JS use strict rule purposely excludes `asm` which makes no sense
 
     swapMode(tsLanguage, "use_strict", USE_STRICT);
-    const functionDeclaration = tsLanguage.contains.find(m => m.className === "function");
+    const functionDeclaration = tsLanguage.contains.find(m => m.label === "func.def");
     functionDeclaration.relevance = 0; // () => {} is more typical in TypeScript
 
     Object.assign(tsLanguage, {
@@ -4748,8 +4815,6 @@
     });
     return tsLanguage;
   }
-
-  var typescript_1 = typescript;
 
   /**
    * @param {string} value
@@ -4781,7 +4846,7 @@
 
 
   function optional$1(re) {
-    return concat('(', re, ')?');
+    return concat('(?:', re, ')?');
   }
   /**
    * @param {...(RegExp | string) } args
@@ -4793,6 +4858,17 @@
     const joined = args.map(x => source$2(x)).join("");
     return joined;
   }
+
+  function stripOptionsFromArgs(args) {
+    const opts = args[args.length - 1];
+
+    if (typeof opts === 'object' && opts.constructor === Object) {
+      args.splice(args.length - 1, 1);
+      return opts;
+    } else {
+      return {};
+    }
+  }
   /**
    * Any of the passed expresssions may match
    *
@@ -4803,13 +4879,14 @@
 
 
   function either(...args) {
-    const joined = '(' + args.map(x => source$2(x)).join("|") + ")";
+    const opts = stripOptionsFromArgs(args);
+    const joined = '(' + (opts.capture ? "" : "?:") + args.map(x => source$2(x)).join("|") + ")";
     return joined;
   }
   /*
   Language: HTML, XML
   Website: https://www.w3.org/XML/
-  Category: common
+  Category: common, web
   Audit: 2020
   */
 
@@ -4827,7 +4904,7 @@
     const XML_META_KEYWORDS = {
       begin: /\s/,
       contains: [{
-        className: 'meta-keyword',
+        className: 'keyword',
         begin: /#?[a-z_][a-z1-9_-]+/,
         illegal: /\n/
       }]
@@ -4837,10 +4914,10 @@
       end: /\)/
     });
     const APOS_META_STRING_MODE = hljs.inherit(hljs.APOS_STRING_MODE, {
-      className: 'meta-string'
+      className: 'string'
     });
     const QUOTE_META_STRING_MODE = hljs.inherit(hljs.QUOTE_STRING_MODE, {
-      className: 'meta-string'
+      className: 'string'
     });
     const TAG_INTERNALS = {
       endsWithParent: true,
@@ -4906,8 +4983,7 @@
         /*
         The lookahead pattern (?=...) ensures that 'begin' only matches
         '<style' as a single word, followed by a whitespace or an
-        ending braket. The '$' is needed for the lexeme to be recognized
-        by hljs.subMode() that tests lexemes outside the stream.
+        ending bracket.
         */
         begin: /<style(?=\s|>)/,
         end: />/,
@@ -4969,11 +5045,10 @@
     };
   }
 
-  var xml_1 = xml;
-
   // working on the output of `JSON.stringify` we know that only valid strings
   // are present (unless the user supplied a weird `options.indent` but in
   // that case we don’t care since the output would be invalid anyway).
+
 
   var stringOrChar = /("(?:[^\\"]|\\.)*")|[:,]/g;
 
@@ -5162,8 +5237,8 @@
 
   const id = field$1('id');
   const identity$6 = accessor(_ => _, [], 'identity');
-  const zero$3 = accessor(() => 0, [], 'zero');
-  const one$2 = accessor(() => 1, [], 'one');
+  const zero$4 = accessor(() => 0, [], 'zero');
+  const one$3 = accessor(() => 1, [], 'one');
   const truthy = accessor(() => true, [], 'true');
   const falsy = accessor(() => false, [], 'false');
 
@@ -5429,7 +5504,7 @@
     };
   };
 
-  function constant$4(_) {
+  function constant$5(_) {
     return isFunction(_) ? _ : () => _;
   }
 
@@ -5441,7 +5516,7 @@
     };
   }
 
-  function extend$1(_) {
+  function extend$4(_) {
     for (let x, k, i = 1, len = arguments.length; i < len; ++i) {
       x = arguments[i];
 
@@ -5683,7 +5758,7 @@
       enumerable: true,
       configurable: true
     });
-    return extend$1(proto, members);
+    return extend$4(proto, members);
   }
   /**
    * Predicate that returns true if the value lies within the span
@@ -5970,7 +6045,7 @@
 
 
   async function sanitize(uri, options) {
-    options = extend$1({}, this.options, options);
+    options = extend$4({}, this.options, options);
     const fileAccess = this.fileAccess,
           result = {
       href: null
@@ -6072,7 +6147,7 @@
 
   function httpLoader(fetch) {
     return fetch ? async function (url, options) {
-      const opt = extend$1({}, this.options.http, options),
+      const opt = extend$4({}, this.options.http, options),
             type = options && options.response,
             response = await fetch(url, opt);
       return !response.ok ? error(response.status + '' + response.statusText) : isFunction(response[type]) ? response[type]() : response.text();
@@ -6307,7 +6382,7 @@
       const delim = {
         delimiter: delimiter
       };
-      return dsv(data, format ? extend$1(format, delim) : delim);
+      return dsv(data, format ? extend$4(format, delim) : delim);
     };
 
     parse.responseType = 'text';
@@ -6388,7 +6463,7 @@
     var id = o.id,
         bbox = o.bbox,
         properties = o.properties == null ? {} : o.properties,
-        geometry = object$1(topology, o);
+        geometry = object$2(topology, o);
     return id == null && bbox == null ? {
       type: "Feature",
       properties: properties,
@@ -6407,7 +6482,7 @@
     };
   }
 
-  function object$1(topology, o) {
+  function object$2(topology, o) {
     var transformPoint = transform$3(topology.transform),
         arcs = topology.arcs;
 
@@ -6580,7 +6655,7 @@
   }
 
   function mesh (topology) {
-    return object$1(topology, meshArcs.apply(this, arguments));
+    return object$2(topology, meshArcs.apply(this, arguments));
   }
   function meshArcs(topology, object, filter) {
     var arcs, i, n;
@@ -6746,7 +6821,7 @@
     return (d, x) => ascending$2(f(d), x);
   }
 
-  function number$6 (x) {
+  function number$7 (x) {
     return x === null ? NaN : +x;
   }
   function* numbers$2(values, valueof) {
@@ -6770,7 +6845,8 @@
   const ascendingBisect = bisector$1(ascending$2);
   const bisectRight$1 = ascendingBisect.right;
   const bisectLeft$1 = ascendingBisect.left;
-  bisector$1(number$6).center;
+  bisector$1(number$7).center;
+  var bisect$1 = bisectRight$1;
 
   function variance(values, valueof) {
     let count = 0;
@@ -7014,7 +7090,7 @@
         value1 = min$2(values.subarray(i0 + 1));
     return value0 + (value1 - value0) * (i - i0);
   }
-  function quantileSorted(values, p, valueof = number$6) {
+  function quantileSorted(values, p, valueof = number$7) {
     if (!(n = values.length)) return;
     if ((p = +p) <= 0 || n < 2) return +valueof(values[0], 0, values);
     if (p >= 1) return +valueof(values[n - 1], n - 1, values);
@@ -7406,8 +7482,8 @@
     return Math.max(0, exponent(max) - exponent(step)) + 1;
   }
 
-  var t0$2 = new Date(),
-      t1$1 = new Date();
+  var t0$3 = new Date(),
+      t1$2 = new Date();
   function newInterval(floori, offseti, count, field) {
     function interval(date) {
       return floori(date = arguments.length === 0 ? new Date() : new Date(+date)), date;
@@ -7461,9 +7537,9 @@
 
     if (count) {
       interval.count = function (start, end) {
-        t0$2.setTime(+start), t1$1.setTime(+end);
-        floori(t0$2), floori(t1$1);
-        return Math.floor(count(t0$2, t1$1));
+        t0$3.setTime(+start), t1$2.setTime(+end);
+        floori(t0$3), floori(t1$2);
+        return Math.floor(count(t0$3, t1$2));
       };
 
       interval.every = function (step) {
@@ -7499,6 +7575,8 @@
     });
   };
 
+  var utcMillisecond = millisecond;
+
   const durationSecond$1 = 1000;
   const durationMinute$1 = durationSecond$1 * 60;
   const durationHour$1 = durationMinute$1 * 60;
@@ -7516,6 +7594,7 @@
   }, function (date) {
     return date.getUTCSeconds();
   });
+  var utcSecond = second;
 
   var minute = newInterval(function (date) {
     date.setTime(date - date.getMilliseconds() - date.getSeconds() * durationSecond$1);
@@ -7526,6 +7605,7 @@
   }, function (date) {
     return date.getMinutes();
   });
+  var timeMinute = minute;
 
   var hour = newInterval(function (date) {
     date.setTime(date - date.getMilliseconds() - date.getSeconds() * durationSecond$1 - date.getMinutes() * durationMinute$1);
@@ -7536,8 +7616,10 @@
   }, function (date) {
     return date.getHours();
   });
+  var timeHour = hour;
 
   var day = newInterval(date => date.setHours(0, 0, 0, 0), (date, step) => date.setDate(date.getDate() + step), (start, end) => (end - start - (end.getTimezoneOffset() - start.getTimezoneOffset()) * durationMinute$1) / durationDay$1, date => date.getDate() - 1);
+  var timeDay = day;
 
   function weekday$1(i) {
     return newInterval(function (date) {
@@ -7568,6 +7650,7 @@
   }, function (date) {
     return date.getMonth();
   });
+  var timeMonth = month;
 
   var year = newInterval(function (date) {
     date.setMonth(0, 1);
@@ -7590,6 +7673,8 @@
     });
   };
 
+  var timeYear = year;
+
   var utcMinute = newInterval(function (date) {
     date.setUTCSeconds(0, 0);
   }, function (date, step) {
@@ -7599,6 +7684,7 @@
   }, function (date) {
     return date.getUTCMinutes();
   });
+  var utcMinute$1 = utcMinute;
 
   var utcHour = newInterval(function (date) {
     date.setUTCMinutes(0, 0, 0);
@@ -7609,6 +7695,7 @@
   }, function (date) {
     return date.getUTCHours();
   });
+  var utcHour$1 = utcHour;
 
   var utcDay = newInterval(function (date) {
     date.setUTCHours(0, 0, 0, 0);
@@ -7619,6 +7706,7 @@
   }, function (date) {
     return date.getUTCDate() - 1;
   });
+  var utcDay$1 = utcDay;
 
   function utcWeekday(i) {
     return newInterval(function (date) {
@@ -7649,6 +7737,7 @@
   }, function (date) {
     return date.getUTCMonth();
   });
+  var utcMonth$1 = utcMonth;
 
   var utcYear = newInterval(function (date) {
     date.setUTCMonth(0, 1);
@@ -7671,8 +7760,10 @@
     });
   };
 
+  var utcYear$1 = utcYear;
+
   function ticker(year, month, week, day, hour, minute) {
-    const tickIntervals = [[second, 1, durationSecond$1], [second, 5, 5 * durationSecond$1], [second, 15, 15 * durationSecond$1], [second, 30, 30 * durationSecond$1], [minute, 1, durationMinute$1], [minute, 5, 5 * durationMinute$1], [minute, 15, 15 * durationMinute$1], [minute, 30, 30 * durationMinute$1], [hour, 1, durationHour$1], [hour, 3, 3 * durationHour$1], [hour, 6, 6 * durationHour$1], [hour, 12, 12 * durationHour$1], [day, 1, durationDay$1], [day, 2, 2 * durationDay$1], [week, 1, durationWeek$1], [month, 1, durationMonth$1], [month, 3, 3 * durationMonth$1], [year, 1, durationYear$1]];
+    const tickIntervals = [[utcSecond, 1, durationSecond$1], [utcSecond, 5, 5 * durationSecond$1], [utcSecond, 15, 15 * durationSecond$1], [utcSecond, 30, 30 * durationSecond$1], [minute, 1, durationMinute$1], [minute, 5, 5 * durationMinute$1], [minute, 15, 15 * durationMinute$1], [minute, 30, 30 * durationMinute$1], [hour, 1, durationHour$1], [hour, 3, 3 * durationHour$1], [hour, 6, 6 * durationHour$1], [hour, 12, 12 * durationHour$1], [day, 1, durationDay$1], [day, 2, 2 * durationDay$1], [week, 1, durationWeek$1], [month, 1, durationMonth$1], [month, 3, 3 * durationMonth$1], [year, 1, durationYear$1]];
 
     function ticks(start, stop, count) {
       const reverse = stop < start;
@@ -7687,7 +7778,7 @@
       const target = Math.abs(stop - start) / count;
       const i = bisector$1(([,, step]) => step).right(tickIntervals, target);
       if (i === tickIntervals.length) return year.every(tickStep(start / durationYear$1, stop / durationYear$1, count));
-      if (i === 0) return millisecond.every(Math.max(tickStep(start, stop, count), 1));
+      if (i === 0) return utcMillisecond.every(Math.max(tickStep(start, stop, count), 1));
       const [t, step] = tickIntervals[target / tickIntervals[i - 1][2] < tickIntervals[i][2] / target ? i - 1 : i];
       return t.every(step);
     }
@@ -7695,8 +7786,8 @@
     return [ticks, tickInterval];
   }
 
-  const [utcTicks, utcTickInterval] = ticker(utcYear, utcMonth, utcSunday, utcDay, utcHour, utcMinute);
-  const [timeTicks, timeTickInterval] = ticker(year, month, sunday, day, hour, minute);
+  const [utcTicks, utcTickInterval] = ticker(utcYear$1, utcMonth$1, utcSunday, utcDay$1, utcHour$1, utcMinute$1);
+  const [timeTicks, timeTickInterval] = ticker(timeYear, timeMonth, sunday, timeDay, timeHour, timeMinute);
 
   const YEAR = 'year';
   const QUARTER = 'quarter';
@@ -7753,7 +7844,7 @@
   };
 
   function timeUnitSpecifier(units, specifiers) {
-    const s = extend$1({}, defaultSpecifiers, specifiers),
+    const s = extend$4({}, defaultSpecifiers, specifiers),
           u = timeUnits(units),
           n = u.length;
     let fmt = '',
@@ -7776,14 +7867,14 @@
     return fmt.trim();
   }
 
-  const t0$1 = new Date();
+  const t0$2 = new Date();
 
   function localYear(y) {
-    t0$1.setFullYear(y);
-    t0$1.setMonth(0);
-    t0$1.setDate(1);
-    t0$1.setHours(0, 0, 0, 0);
-    return t0$1;
+    t0$2.setFullYear(y);
+    t0$2.setMonth(0);
+    t0$2.setDate(1);
+    t0$2.setHours(0, 0, 0, 0);
+    return t0$2;
   }
 
   function dayofyear(d) {
@@ -7795,7 +7886,7 @@
   }
 
   function localDayOfYear(d) {
-    return day.count(localYear(d.getFullYear()) - 1, d);
+    return timeDay.count(localYear(d.getFullYear()) - 1, d);
   }
 
   function localWeekNum(d) {
@@ -7826,7 +7917,7 @@
 
   function utcDayOfYear(d) {
     const y = Date.UTC(d.getUTCFullYear(), 0, 1);
-    return utcDay.count(y - 1, d);
+    return utcDay$1.count(y - 1, d);
   }
 
   function utcWeekNum(d) {
@@ -7835,8 +7926,8 @@
   }
 
   function utcFirst(y) {
-    t0$1.setTime(Date.UTC(y, 0, 1));
-    return t0$1.getUTCDay();
+    t0$2.setTime(Date.UTC(y, 0, 1));
+    return t0$2.getUTCDay();
   }
 
   function utcDate$1(y, m, d, H, M, S, L) {
@@ -7859,13 +7950,13 @@
 
     const t = new Date(),
           u = toSet(units),
-          y = u[YEAR] ? _(YEAR) : constant$4(2012),
-          m = u[MONTH] ? _(MONTH) : u[QUARTER] ? _(QUARTER) : zero$3,
-          d = u[WEEK] && u[DAY] ? _(DAY, 1, WEEK + DAY) : u[WEEK] ? _(WEEK, 1) : u[DAY] ? _(DAY, 1) : u[DATE] ? _(DATE, 1) : u[DAYOFYEAR] ? _(DAYOFYEAR, 1) : one$2,
-          H = u[HOURS] ? _(HOURS) : zero$3,
-          M = u[MINUTES] ? _(MINUTES) : zero$3,
-          S = u[SECONDS] ? _(SECONDS) : zero$3,
-          L = u[MILLISECONDS] ? _(MILLISECONDS) : zero$3;
+          y = u[YEAR] ? _(YEAR) : constant$5(2012),
+          m = u[MONTH] ? _(MONTH) : u[QUARTER] ? _(QUARTER) : zero$4,
+          d = u[WEEK] && u[DAY] ? _(DAY, 1, WEEK + DAY) : u[WEEK] ? _(WEEK, 1) : u[DAY] ? _(DAY, 1) : u[DATE] ? _(DATE, 1) : u[DAYOFYEAR] ? _(DAYOFYEAR, 1) : one$3,
+          H = u[HOURS] ? _(HOURS) : zero$4,
+          M = u[MINUTES] ? _(MINUTES) : zero$4,
+          S = u[SECONDS] ? _(SECONDS) : zero$4,
+          L = u[MILLISECONDS] ? _(MILLISECONDS) : zero$4;
     return function (v) {
       t.setTime(+v);
       const year = y(t);
@@ -7933,30 +8024,30 @@
   }
 
   const timeIntervals = {
-    [YEAR]: year,
-    [QUARTER]: month.every(3),
-    [MONTH]: month,
+    [YEAR]: timeYear,
+    [QUARTER]: timeMonth.every(3),
+    [MONTH]: timeMonth,
     [WEEK]: sunday,
-    [DATE]: day,
-    [DAY]: day,
-    [DAYOFYEAR]: day,
-    [HOURS]: hour,
-    [MINUTES]: minute,
-    [SECONDS]: second,
-    [MILLISECONDS]: millisecond
+    [DATE]: timeDay,
+    [DAY]: timeDay,
+    [DAYOFYEAR]: timeDay,
+    [HOURS]: timeHour,
+    [MINUTES]: timeMinute,
+    [SECONDS]: utcSecond,
+    [MILLISECONDS]: utcMillisecond
   };
   const utcIntervals = {
-    [YEAR]: utcYear,
-    [QUARTER]: utcMonth.every(3),
-    [MONTH]: utcMonth,
+    [YEAR]: utcYear$1,
+    [QUARTER]: utcMonth$1.every(3),
+    [MONTH]: utcMonth$1,
     [WEEK]: utcSunday,
-    [DATE]: utcDay,
-    [DAY]: utcDay,
-    [DAYOFYEAR]: utcDay,
-    [HOURS]: utcHour,
-    [MINUTES]: utcMinute,
-    [SECONDS]: second,
-    [MILLISECONDS]: millisecond
+    [DATE]: utcDay$1,
+    [DAY]: utcDay$1,
+    [DAYOFYEAR]: utcDay$1,
+    [HOURS]: utcHour$1,
+    [MINUTES]: utcMinute$1,
+    [SECONDS]: utcSecond,
+    [MILLISECONDS]: utcMillisecond
   };
 
   function timeInterval(unit) {
@@ -8225,7 +8316,7 @@
         var d = newDate(1900, undefined, 1),
             i = parseSpecifier(d, specifier, string += "", 0),
             week,
-            day$1;
+            day;
         if (i != string.length) return null; // If a UNIX timestamp is specified, return it.
 
         if ("Q" in d) return new Date(d.Q);
@@ -8242,25 +8333,25 @@
           if (!("w" in d)) d.w = 1;
 
           if ("Z" in d) {
-            week = utcDate(newDate(d.y, 0, 1)), day$1 = week.getUTCDay();
-            week = day$1 > 4 || day$1 === 0 ? utcMonday.ceil(week) : utcMonday(week);
-            week = utcDay.offset(week, (d.V - 1) * 7);
+            week = utcDate(newDate(d.y, 0, 1)), day = week.getUTCDay();
+            week = day > 4 || day === 0 ? utcMonday.ceil(week) : utcMonday(week);
+            week = utcDay$1.offset(week, (d.V - 1) * 7);
             d.y = week.getUTCFullYear();
             d.m = week.getUTCMonth();
             d.d = week.getUTCDate() + (d.w + 6) % 7;
           } else {
-            week = localDate(newDate(d.y, 0, 1)), day$1 = week.getDay();
-            week = day$1 > 4 || day$1 === 0 ? monday.ceil(week) : monday(week);
-            week = day.offset(week, (d.V - 1) * 7);
+            week = localDate(newDate(d.y, 0, 1)), day = week.getDay();
+            week = day > 4 || day === 0 ? monday.ceil(week) : monday(week);
+            week = timeDay.offset(week, (d.V - 1) * 7);
             d.y = week.getFullYear();
             d.m = week.getMonth();
             d.d = week.getDate() + (d.w + 6) % 7;
           }
         } else if ("W" in d || "U" in d) {
           if (!("w" in d)) d.w = "u" in d ? d.u % 7 : "W" in d ? 1 : 0;
-          day$1 = "Z" in d ? utcDate(newDate(d.y, 0, 1)).getUTCDay() : localDate(newDate(d.y, 0, 1)).getDay();
+          day = "Z" in d ? utcDate(newDate(d.y, 0, 1)).getUTCDay() : localDate(newDate(d.y, 0, 1)).getDay();
           d.m = 0;
-          d.d = "W" in d ? (d.w + 6) % 7 + d.W * 7 - (day$1 + 5) % 7 : d.w + d.U * 7 - (day$1 + 6) % 7;
+          d.d = "W" in d ? (d.w + 6) % 7 + d.W * 7 - (day + 5) % 7 : d.w + d.U * 7 - (day + 6) % 7;
         } // If a time zone is specified, all fields are interpreted as UTC and then
         // offset according to the specified time zone.
 
@@ -8565,7 +8656,7 @@
   }
 
   function formatDayOfYear(d, p) {
-    return pad(1 + day.count(year(d), d), p, 3);
+    return pad(1 + timeDay.count(timeYear(d), d), p, 3);
   }
 
   function formatMilliseconds(d, p) {
@@ -8594,7 +8685,7 @@
   }
 
   function formatWeekNumberSunday(d, p) {
-    return pad(sunday.count(year(d) - 1, d), p, 2);
+    return pad(sunday.count(timeYear(d) - 1, d), p, 2);
   }
 
   function dISO(d) {
@@ -8604,7 +8695,7 @@
 
   function formatWeekNumberISO(d, p) {
     d = dISO(d);
-    return pad(thursday.count(year(d), d) + (year(d).getDay() === 4), p, 2);
+    return pad(thursday.count(timeYear(d), d) + (timeYear(d).getDay() === 4), p, 2);
   }
 
   function formatWeekdayNumberSunday(d) {
@@ -8612,7 +8703,7 @@
   }
 
   function formatWeekNumberMonday(d, p) {
-    return pad(monday.count(year(d) - 1, d), p, 2);
+    return pad(monday.count(timeYear(d) - 1, d), p, 2);
   }
 
   function formatYear(d, p) {
@@ -8652,7 +8743,7 @@
   }
 
   function formatUTCDayOfYear(d, p) {
-    return pad(1 + utcDay.count(utcYear(d), d), p, 3);
+    return pad(1 + utcDay$1.count(utcYear$1(d), d), p, 3);
   }
 
   function formatUTCMilliseconds(d, p) {
@@ -8681,7 +8772,7 @@
   }
 
   function formatUTCWeekNumberSunday(d, p) {
-    return pad(utcSunday.count(utcYear(d) - 1, d), p, 2);
+    return pad(utcSunday.count(utcYear$1(d) - 1, d), p, 2);
   }
 
   function UTCdISO(d) {
@@ -8691,7 +8782,7 @@
 
   function formatUTCWeekNumberISO(d, p) {
     d = UTCdISO(d);
-    return pad(utcThursday.count(utcYear(d), d) + (utcYear(d).getUTCDay() === 4), p, 2);
+    return pad(utcThursday.count(utcYear$1(d), d) + (utcYear$1(d).getUTCDay() === 4), p, 2);
   }
 
   function formatUTCWeekdayNumberSunday(d) {
@@ -8699,7 +8790,7 @@
   }
 
   function formatUTCWeekNumberMonday(d, p) {
-    return pad(utcMonday.count(utcYear(d) - 1, d), p, 2);
+    return pad(utcMonday.count(utcYear$1(d) - 1, d), p, 2);
   }
 
   function formatUTCYear(d, p) {
@@ -8949,7 +9040,7 @@
     return arguments.length ? defaultTimeLocale = timeFormatLocale(definition) : defaultTimeLocale;
   }
 
-  const createLocale = (number, time) => extend$1({}, number, time);
+  const createLocale = (number, time) => extend$4({}, number, time);
 
   function locale(numberSpec, timeSpec) {
     const number = numberSpec ? numberFormatLocale(numberSpec) : numberFormatDefaultLocale();
@@ -9217,7 +9308,7 @@
       modify(t, field, value) {
         const m = {
           field: field,
-          value: constant$4(value)
+          value: constant$5(value)
         };
 
         if (isFunction(t)) {
@@ -10064,9 +10155,9 @@
   }
 
   function onStream(df, stream, target, update, params, options) {
-    const opt = extend$1({}, options, SKIP$2);
+    const opt = extend$4({}, options, SKIP$2);
     let func, op;
-    if (!isFunction(target)) target = constant$4(target);
+    if (!isFunction(target)) target = constant$5(target);
 
     if (update === undefined) {
       func = e => df.touch(target(e));
@@ -10110,7 +10201,7 @@
   }
 
   function updater(target, update) {
-    update = isFunction(update) ? update : constant$4(update);
+    update = isFunction(update) ? update : constant$5(update);
     return target ? function (_, pulse) {
       const value = update(_, pulse);
 
@@ -12099,7 +12190,7 @@
   } // License: https://github.com/HarryStevens/d3-regression/blob/master/LICENSE
 
 
-  function linear$2(data, x, y) {
+  function linear$3(data, x, y) {
     let X = 0,
         Y = 0,
         XY = 0,
@@ -12258,7 +12349,7 @@
 
   function poly(data, x, y, order) {
     // use more efficient methods for lower orders
-    if (order === 1) return linear$2(data, x, y);
+    if (order === 1) return linear$3(data, x, y);
     if (order === 2) return quad(data, x, y);
     const [xv, yv, ux, uy] = points(data, x, y),
           n = xv.length,
@@ -12734,7 +12825,7 @@
   const ValidAggregateOps = Object.keys(AggregateOps);
 
   function measure(key, value) {
-    return out => extend$1({
+    return out => extend$4({
       name: key,
       out: out || key
     }, base_op, value);
@@ -13839,11 +13930,11 @@
         d.data((def.from || data()).map(def[name]));
       } // if distribution mixture, recurse to parse each definition
       else if (name === DISTRIBUTIONS) {
-          d[name](def[name].map(_ => parse$3(_, data)));
-        } // otherwise, simply set the parameter
-        else if (typeof d[name] === FUNCTION) {
-            d[name](def[name]);
-          }
+        d[name](def[name].map(_ => parse$3(_, data)));
+      } // otherwise, simply set the parameter
+      else if (typeof d[name] === FUNCTION) {
+        d[name](def[name]);
+      }
     }
 
     return d;
@@ -15005,7 +15096,7 @@
       aggr.changes(); // write aggregate values to input tuples
 
       pulse.visit(pulse.SOURCE, t => {
-        extend$1(t, cells[aggr.cellkey(t)].tuple);
+        extend$4(t, cells[aggr.cellkey(t)].tuple);
       });
       return pulse.reflow(mod).modifies(this._outputs);
     },
@@ -16195,7 +16286,7 @@
   function WindowOp(op, field, param, as) {
     const fn = WindowOps[op](field, param);
     return {
-      init: fn.init || zero$3,
+      init: fn.init || zero$4,
       update: function (w, t) {
         t[as] = fn.next(w);
       }
@@ -16368,26 +16459,26 @@
         windows.push(WindowOp(op, fields[i], params[i], name));
       } // Aggregate operation
       else {
-          if (field == null && op !== 'count') {
-            error('Null aggregate field specified.');
-          }
-
-          if (op === 'count') {
-            counts.push(name);
-            return;
-          }
-
-          countOnly = false;
-          let m = map[mname];
-
-          if (!m) {
-            m = map[mname] = [];
-            m.field = field;
-            measures.push(m);
-          }
-
-          m.push(createMeasure(op, name));
+        if (field == null && op !== 'count') {
+          error('Null aggregate field specified.');
         }
+
+        if (op === 'count') {
+          counts.push(name);
+          return;
+        }
+
+        countOnly = false;
+        let m = map[mname];
+
+        if (!m) {
+          m = map[mname] = [];
+          m.field = field;
+          measures.push(m);
+        }
+
+        m.push(createMeasure(op, name));
+      }
     });
 
     if (counts.length || measures.length) {
@@ -16620,7 +16711,7 @@
       p1: 0,
       index: 0,
       data: data,
-      compare: sort || constant$4(-1)
+      compare: sort || constant$5(-1)
     };
     state.init();
 
@@ -16746,28 +16837,28 @@
         this._ += "M" + (this._x1 = x1) + "," + (this._y1 = y1);
       } // Or, is (x1,y1) coincident with (x0,y0)? Do nothing.
       else if (!(l01_2 > epsilon$4)) ; // Or, are (x0,y0), (x1,y1) and (x2,y2) collinear?
-        // Equivalently, is (x1,y1) coincident with (x2,y2)?
-        // Or, is the radius zero? Line to (x1,y1).
-        else if (!(Math.abs(y01 * x21 - y21 * x01) > epsilon$4) || !r) {
-            this._ += "L" + (this._x1 = x1) + "," + (this._y1 = y1);
-          } // Otherwise, draw an arc!
-          else {
-              var x20 = x2 - x0,
-                  y20 = y2 - y0,
-                  l21_2 = x21 * x21 + y21 * y21,
-                  l20_2 = x20 * x20 + y20 * y20,
-                  l21 = Math.sqrt(l21_2),
-                  l01 = Math.sqrt(l01_2),
-                  l = r * Math.tan((pi$3 - Math.acos((l21_2 + l01_2 - l20_2) / (2 * l21 * l01))) / 2),
-                  t01 = l / l01,
-                  t21 = l / l21; // If the start tangent is not coincident with (x0,y0), line to.
+      // Equivalently, is (x1,y1) coincident with (x2,y2)?
+      // Or, is the radius zero? Line to (x1,y1).
+      else if (!(Math.abs(y01 * x21 - y21 * x01) > epsilon$4) || !r) {
+        this._ += "L" + (this._x1 = x1) + "," + (this._y1 = y1);
+      } // Otherwise, draw an arc!
+      else {
+        var x20 = x2 - x0,
+            y20 = y2 - y0,
+            l21_2 = x21 * x21 + y21 * y21,
+            l20_2 = x20 * x20 + y20 * y20,
+            l21 = Math.sqrt(l21_2),
+            l01 = Math.sqrt(l01_2),
+            l = r * Math.tan((pi$3 - Math.acos((l21_2 + l01_2 - l20_2) / (2 * l21 * l01))) / 2),
+            t01 = l / l01,
+            t21 = l / l21; // If the start tangent is not coincident with (x0,y0), line to.
 
-              if (Math.abs(t01 - 1) > epsilon$4) {
-                this._ += "L" + (x1 + t01 * x01) + "," + (y1 + t01 * y01);
-              }
+        if (Math.abs(t01 - 1) > epsilon$4) {
+          this._ += "L" + (x1 + t01 * x01) + "," + (y1 + t01 * y01);
+        }
 
-              this._ += "A" + r + "," + r + ",0,0," + +(y01 * x20 > x01 * y20) + "," + (this._x1 = x1 + t21 * x21) + "," + (this._y1 = y1 + t21 * y21);
-            }
+        this._ += "A" + r + "," + r + ",0,0," + +(y01 * x20 > x01 * y20) + "," + (this._x1 = x1 + t21 * x21) + "," + (this._y1 = y1 + t21 * y21);
+      }
     },
     arc: function (x, y, r, a0, a1, ccw) {
       x = +x, y = +y, r = +r, ccw = !!ccw;
@@ -16784,8 +16875,8 @@
         this._ += "M" + x0 + "," + y0;
       } // Or, is (x0,y0) not coincident with the previous point? Line to (x0,y0).
       else if (Math.abs(this._x1 - x0) > epsilon$4 || Math.abs(this._y1 - y0) > epsilon$4) {
-          this._ += "L" + x0 + "," + y0;
-        } // Is this arc empty? We’re done.
+        this._ += "L" + x0 + "," + y0;
+      } // Is this arc empty? We’re done.
 
 
       if (!r) return; // Does the angle go the wrong way? Flip the direction.
@@ -16796,8 +16887,8 @@
         this._ += "A" + r + "," + r + ",0,1," + cw + "," + (x - dx) + "," + (y - dy) + "A" + r + "," + r + ",0,1," + cw + "," + (this._x1 = x0) + "," + (this._y1 = y0);
       } // Is this arc non-empty? Draw an arc!
       else if (da > epsilon$4) {
-          this._ += "A" + r + "," + r + ",0," + +(da >= pi$3) + "," + cw + "," + (this._x1 = x + r * Math.cos(a1)) + "," + (this._y1 = y + r * Math.sin(a1));
-        }
+        this._ += "A" + r + "," + r + ",0," + +(da >= pi$3) + "," + cw + "," + (this._x1 = x + r * Math.cos(a1)) + "," + (this._y1 = y + r * Math.sin(a1));
+      }
     },
     rect: function (x, y, w, h) {
       this._ += "M" + (this._x0 = this._x1 = +x) + "," + (this._y0 = this._y1 = +y) + "h" + +w + "v" + +h + "h" + -w + "Z";
@@ -16807,7 +16898,7 @@
     }
   };
 
-  function constant$3 (x) {
+  function constant$4 (x) {
     return function constant() {
       return x;
     };
@@ -16906,7 +16997,7 @@
   function arc$2$1 () {
     var innerRadius = arcInnerRadius,
         outerRadius = arcOuterRadius,
-        cornerRadius = constant$3(0),
+        cornerRadius = constant$4(0),
         padRadius = null,
         startAngle = arcStartAngle,
         endAngle = arcEndAngle,
@@ -16928,92 +17019,92 @@
 
       if (!(r1 > epsilon$3)) context.moveTo(0, 0); // Or is it a circle or annulus?
       else if (da > tau$2 - epsilon$3) {
-          context.moveTo(r1 * cos$2(a0), r1 * sin$2(a0));
-          context.arc(0, 0, r1, a0, a1, !cw);
+        context.moveTo(r1 * cos$2(a0), r1 * sin$2(a0));
+        context.arc(0, 0, r1, a0, a1, !cw);
 
-          if (r0 > epsilon$3) {
-            context.moveTo(r0 * cos$2(a1), r0 * sin$2(a1));
-            context.arc(0, 0, r0, a1, a0, cw);
+        if (r0 > epsilon$3) {
+          context.moveTo(r0 * cos$2(a1), r0 * sin$2(a1));
+          context.arc(0, 0, r0, a1, a0, cw);
+        }
+      } // Or is it a circular or annular sector?
+      else {
+        var a01 = a0,
+            a11 = a1,
+            a00 = a0,
+            a10 = a1,
+            da0 = da,
+            da1 = da,
+            ap = padAngle.apply(this, arguments) / 2,
+            rp = ap > epsilon$3 && (padRadius ? +padRadius.apply(this, arguments) : sqrt$3(r0 * r0 + r1 * r1)),
+            rc = min$1(abs$2(r1 - r0) / 2, +cornerRadius.apply(this, arguments)),
+            rc0 = rc,
+            rc1 = rc,
+            t0,
+            t1; // Apply padding? Note that since r1 ≥ r0, da1 ≥ da0.
+
+        if (rp > epsilon$3) {
+          var p0 = asin$2(rp / r0 * sin$2(ap)),
+              p1 = asin$2(rp / r1 * sin$2(ap));
+          if ((da0 -= p0 * 2) > epsilon$3) p0 *= cw ? 1 : -1, a00 += p0, a10 -= p0;else da0 = 0, a00 = a10 = (a0 + a1) / 2;
+          if ((da1 -= p1 * 2) > epsilon$3) p1 *= cw ? 1 : -1, a01 += p1, a11 -= p1;else da1 = 0, a01 = a11 = (a0 + a1) / 2;
+        }
+
+        var x01 = r1 * cos$2(a01),
+            y01 = r1 * sin$2(a01),
+            x10 = r0 * cos$2(a10),
+            y10 = r0 * sin$2(a10); // Apply rounded corners?
+
+        if (rc > epsilon$3) {
+          var x11 = r1 * cos$2(a11),
+              y11 = r1 * sin$2(a11),
+              x00 = r0 * cos$2(a00),
+              y00 = r0 * sin$2(a00),
+              oc; // Restrict the corner radius according to the sector angle.
+
+          if (da < pi$2 && (oc = intersect$3(x01, y01, x00, y00, x11, y11, x10, y10))) {
+            var ax = x01 - oc[0],
+                ay = y01 - oc[1],
+                bx = x11 - oc[0],
+                by = y11 - oc[1],
+                kc = 1 / sin$2(acos$1((ax * bx + ay * by) / (sqrt$3(ax * ax + ay * ay) * sqrt$3(bx * bx + by * by))) / 2),
+                lc = sqrt$3(oc[0] * oc[0] + oc[1] * oc[1]);
+            rc0 = min$1(rc, (r0 - lc) / (kc - 1));
+            rc1 = min$1(rc, (r1 - lc) / (kc + 1));
           }
-        } // Or is it a circular or annular sector?
-        else {
-            var a01 = a0,
-                a11 = a1,
-                a00 = a0,
-                a10 = a1,
-                da0 = da,
-                da1 = da,
-                ap = padAngle.apply(this, arguments) / 2,
-                rp = ap > epsilon$3 && (padRadius ? +padRadius.apply(this, arguments) : sqrt$3(r0 * r0 + r1 * r1)),
-                rc = min$1(abs$2(r1 - r0) / 2, +cornerRadius.apply(this, arguments)),
-                rc0 = rc,
-                rc1 = rc,
-                t0,
-                t1; // Apply padding? Note that since r1 ≥ r0, da1 ≥ da0.
-
-            if (rp > epsilon$3) {
-              var p0 = asin$2(rp / r0 * sin$2(ap)),
-                  p1 = asin$2(rp / r1 * sin$2(ap));
-              if ((da0 -= p0 * 2) > epsilon$3) p0 *= cw ? 1 : -1, a00 += p0, a10 -= p0;else da0 = 0, a00 = a10 = (a0 + a1) / 2;
-              if ((da1 -= p1 * 2) > epsilon$3) p1 *= cw ? 1 : -1, a01 += p1, a11 -= p1;else da1 = 0, a01 = a11 = (a0 + a1) / 2;
-            }
-
-            var x01 = r1 * cos$2(a01),
-                y01 = r1 * sin$2(a01),
-                x10 = r0 * cos$2(a10),
-                y10 = r0 * sin$2(a10); // Apply rounded corners?
-
-            if (rc > epsilon$3) {
-              var x11 = r1 * cos$2(a11),
-                  y11 = r1 * sin$2(a11),
-                  x00 = r0 * cos$2(a00),
-                  y00 = r0 * sin$2(a00),
-                  oc; // Restrict the corner radius according to the sector angle.
-
-              if (da < pi$2 && (oc = intersect$3(x01, y01, x00, y00, x11, y11, x10, y10))) {
-                var ax = x01 - oc[0],
-                    ay = y01 - oc[1],
-                    bx = x11 - oc[0],
-                    by = y11 - oc[1],
-                    kc = 1 / sin$2(acos$1((ax * bx + ay * by) / (sqrt$3(ax * ax + ay * ay) * sqrt$3(bx * bx + by * by))) / 2),
-                    lc = sqrt$3(oc[0] * oc[0] + oc[1] * oc[1]);
-                rc0 = min$1(rc, (r0 - lc) / (kc - 1));
-                rc1 = min$1(rc, (r1 - lc) / (kc + 1));
-              }
-            } // Is the sector collapsed to a line?
+        } // Is the sector collapsed to a line?
 
 
-            if (!(da1 > epsilon$3)) context.moveTo(x01, y01); // Does the sector’s outer ring have rounded corners?
-            else if (rc1 > epsilon$3) {
-                t0 = cornerTangents(x00, y00, x01, y01, r1, rc1, cw);
-                t1 = cornerTangents(x11, y11, x10, y10, r1, rc1, cw);
-                context.moveTo(t0.cx + t0.x01, t0.cy + t0.y01); // Have the corners merged?
+        if (!(da1 > epsilon$3)) context.moveTo(x01, y01); // Does the sector’s outer ring have rounded corners?
+        else if (rc1 > epsilon$3) {
+          t0 = cornerTangents(x00, y00, x01, y01, r1, rc1, cw);
+          t1 = cornerTangents(x11, y11, x10, y10, r1, rc1, cw);
+          context.moveTo(t0.cx + t0.x01, t0.cy + t0.y01); // Have the corners merged?
 
-                if (rc1 < rc) context.arc(t0.cx, t0.cy, rc1, atan2$1(t0.y01, t0.x01), atan2$1(t1.y01, t1.x01), !cw); // Otherwise, draw the two corners and the ring.
-                else {
-                    context.arc(t0.cx, t0.cy, rc1, atan2$1(t0.y01, t0.x01), atan2$1(t0.y11, t0.x11), !cw);
-                    context.arc(0, 0, r1, atan2$1(t0.cy + t0.y11, t0.cx + t0.x11), atan2$1(t1.cy + t1.y11, t1.cx + t1.x11), !cw);
-                    context.arc(t1.cx, t1.cy, rc1, atan2$1(t1.y11, t1.x11), atan2$1(t1.y01, t1.x01), !cw);
-                  }
-              } // Or is the outer ring just a circular arc?
-              else context.moveTo(x01, y01), context.arc(0, 0, r1, a01, a11, !cw); // Is there no inner ring, and it’s a circular sector?
-            // Or perhaps it’s an annular sector collapsed due to padding?
-
-            if (!(r0 > epsilon$3) || !(da0 > epsilon$3)) context.lineTo(x10, y10); // Does the sector’s inner ring (or point) have rounded corners?
-            else if (rc0 > epsilon$3) {
-                t0 = cornerTangents(x10, y10, x11, y11, r0, -rc0, cw);
-                t1 = cornerTangents(x01, y01, x00, y00, r0, -rc0, cw);
-                context.lineTo(t0.cx + t0.x01, t0.cy + t0.y01); // Have the corners merged?
-
-                if (rc0 < rc) context.arc(t0.cx, t0.cy, rc0, atan2$1(t0.y01, t0.x01), atan2$1(t1.y01, t1.x01), !cw); // Otherwise, draw the two corners and the ring.
-                else {
-                    context.arc(t0.cx, t0.cy, rc0, atan2$1(t0.y01, t0.x01), atan2$1(t0.y11, t0.x11), !cw);
-                    context.arc(0, 0, r0, atan2$1(t0.cy + t0.y11, t0.cx + t0.x11), atan2$1(t1.cy + t1.y11, t1.cx + t1.x11), cw);
-                    context.arc(t1.cx, t1.cy, rc0, atan2$1(t1.y11, t1.x11), atan2$1(t1.y01, t1.x01), !cw);
-                  }
-              } // Or is the inner ring just a circular arc?
-              else context.arc(0, 0, r0, a10, a00, cw);
+          if (rc1 < rc) context.arc(t0.cx, t0.cy, rc1, atan2$1(t0.y01, t0.x01), atan2$1(t1.y01, t1.x01), !cw); // Otherwise, draw the two corners and the ring.
+          else {
+            context.arc(t0.cx, t0.cy, rc1, atan2$1(t0.y01, t0.x01), atan2$1(t0.y11, t0.x11), !cw);
+            context.arc(0, 0, r1, atan2$1(t0.cy + t0.y11, t0.cx + t0.x11), atan2$1(t1.cy + t1.y11, t1.cx + t1.x11), !cw);
+            context.arc(t1.cx, t1.cy, rc1, atan2$1(t1.y11, t1.x11), atan2$1(t1.y01, t1.x01), !cw);
           }
+        } // Or is the outer ring just a circular arc?
+        else context.moveTo(x01, y01), context.arc(0, 0, r1, a01, a11, !cw); // Is there no inner ring, and it’s a circular sector?
+        // Or perhaps it’s an annular sector collapsed due to padding?
+
+        if (!(r0 > epsilon$3) || !(da0 > epsilon$3)) context.lineTo(x10, y10); // Does the sector’s inner ring (or point) have rounded corners?
+        else if (rc0 > epsilon$3) {
+          t0 = cornerTangents(x10, y10, x11, y11, r0, -rc0, cw);
+          t1 = cornerTangents(x01, y01, x00, y00, r0, -rc0, cw);
+          context.lineTo(t0.cx + t0.x01, t0.cy + t0.y01); // Have the corners merged?
+
+          if (rc0 < rc) context.arc(t0.cx, t0.cy, rc0, atan2$1(t0.y01, t0.x01), atan2$1(t1.y01, t1.x01), !cw); // Otherwise, draw the two corners and the ring.
+          else {
+            context.arc(t0.cx, t0.cy, rc0, atan2$1(t0.y01, t0.x01), atan2$1(t0.y11, t0.x11), !cw);
+            context.arc(0, 0, r0, atan2$1(t0.cy + t0.y11, t0.cx + t0.x11), atan2$1(t1.cy + t1.y11, t1.cx + t1.x11), cw);
+            context.arc(t1.cx, t1.cy, rc0, atan2$1(t1.y11, t1.x11), atan2$1(t1.y01, t1.x01), !cw);
+          }
+        } // Or is the inner ring just a circular arc?
+        else context.arc(0, 0, r0, a10, a00, cw);
+      }
       context.closePath();
       if (buffer) return context = null, buffer + "" || null;
     }
@@ -17025,31 +17116,31 @@
     };
 
     arc.innerRadius = function (_) {
-      return arguments.length ? (innerRadius = typeof _ === "function" ? _ : constant$3(+_), arc) : innerRadius;
+      return arguments.length ? (innerRadius = typeof _ === "function" ? _ : constant$4(+_), arc) : innerRadius;
     };
 
     arc.outerRadius = function (_) {
-      return arguments.length ? (outerRadius = typeof _ === "function" ? _ : constant$3(+_), arc) : outerRadius;
+      return arguments.length ? (outerRadius = typeof _ === "function" ? _ : constant$4(+_), arc) : outerRadius;
     };
 
     arc.cornerRadius = function (_) {
-      return arguments.length ? (cornerRadius = typeof _ === "function" ? _ : constant$3(+_), arc) : cornerRadius;
+      return arguments.length ? (cornerRadius = typeof _ === "function" ? _ : constant$4(+_), arc) : cornerRadius;
     };
 
     arc.padRadius = function (_) {
-      return arguments.length ? (padRadius = _ == null ? null : typeof _ === "function" ? _ : constant$3(+_), arc) : padRadius;
+      return arguments.length ? (padRadius = _ == null ? null : typeof _ === "function" ? _ : constant$4(+_), arc) : padRadius;
     };
 
     arc.startAngle = function (_) {
-      return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant$3(+_), arc) : startAngle;
+      return arguments.length ? (startAngle = typeof _ === "function" ? _ : constant$4(+_), arc) : startAngle;
     };
 
     arc.endAngle = function (_) {
-      return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant$3(+_), arc) : endAngle;
+      return arguments.length ? (endAngle = typeof _ === "function" ? _ : constant$4(+_), arc) : endAngle;
     };
 
     arc.padAngle = function (_) {
-      return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant$3(+_), arc) : padAngle;
+      return arguments.length ? (padAngle = typeof _ === "function" ? _ : constant$4(+_), arc) : padAngle;
     };
 
     arc.context = function (_) {
@@ -17114,12 +17205,12 @@
   }
 
   function line$2$1 (x, y) {
-    var defined = constant$3(true),
+    var defined = constant$4(true),
         context = null,
         curve = curveLinear,
         output = null;
-    x = typeof x === "function" ? x : x === undefined ? x$3 : constant$3(x);
-    y = typeof y === "function" ? y : y === undefined ? y$3 : constant$3(y);
+    x = typeof x === "function" ? x : x === undefined ? x$3 : constant$4(x);
+    y = typeof y === "function" ? y : y === undefined ? y$3 : constant$4(y);
 
     function line(data) {
       var i,
@@ -17141,15 +17232,15 @@
     }
 
     line.x = function (_) {
-      return arguments.length ? (x = typeof _ === "function" ? _ : constant$3(+_), line) : x;
+      return arguments.length ? (x = typeof _ === "function" ? _ : constant$4(+_), line) : x;
     };
 
     line.y = function (_) {
-      return arguments.length ? (y = typeof _ === "function" ? _ : constant$3(+_), line) : y;
+      return arguments.length ? (y = typeof _ === "function" ? _ : constant$4(+_), line) : y;
     };
 
     line.defined = function (_) {
-      return arguments.length ? (defined = typeof _ === "function" ? _ : constant$3(!!_), line) : defined;
+      return arguments.length ? (defined = typeof _ === "function" ? _ : constant$4(!!_), line) : defined;
     };
 
     line.curve = function (_) {
@@ -17165,13 +17256,13 @@
 
   function area$2$1 (x0, y0, y1) {
     var x1 = null,
-        defined = constant$3(true),
+        defined = constant$4(true),
         context = null,
         curve = curveLinear,
         output = null;
-    x0 = typeof x0 === "function" ? x0 : x0 === undefined ? x$3 : constant$3(+x0);
-    y0 = typeof y0 === "function" ? y0 : y0 === undefined ? constant$3(0) : constant$3(+y0);
-    y1 = typeof y1 === "function" ? y1 : y1 === undefined ? y$3 : constant$3(+y1);
+    x0 = typeof x0 === "function" ? x0 : x0 === undefined ? x$3 : constant$4(+x0);
+    y0 = typeof y0 === "function" ? y0 : y0 === undefined ? constant$4(0) : constant$4(+y0);
+    y1 = typeof y1 === "function" ? y1 : y1 === undefined ? y$3 : constant$4(+y1);
 
     function area(data) {
       var i,
@@ -17218,27 +17309,27 @@
     }
 
     area.x = function (_) {
-      return arguments.length ? (x0 = typeof _ === "function" ? _ : constant$3(+_), x1 = null, area) : x0;
+      return arguments.length ? (x0 = typeof _ === "function" ? _ : constant$4(+_), x1 = null, area) : x0;
     };
 
     area.x0 = function (_) {
-      return arguments.length ? (x0 = typeof _ === "function" ? _ : constant$3(+_), area) : x0;
+      return arguments.length ? (x0 = typeof _ === "function" ? _ : constant$4(+_), area) : x0;
     };
 
     area.x1 = function (_) {
-      return arguments.length ? (x1 = _ == null ? null : typeof _ === "function" ? _ : constant$3(+_), area) : x1;
+      return arguments.length ? (x1 = _ == null ? null : typeof _ === "function" ? _ : constant$4(+_), area) : x1;
     };
 
     area.y = function (_) {
-      return arguments.length ? (y0 = typeof _ === "function" ? _ : constant$3(+_), y1 = null, area) : y0;
+      return arguments.length ? (y0 = typeof _ === "function" ? _ : constant$4(+_), y1 = null, area) : y0;
     };
 
     area.y0 = function (_) {
-      return arguments.length ? (y0 = typeof _ === "function" ? _ : constant$3(+_), area) : y0;
+      return arguments.length ? (y0 = typeof _ === "function" ? _ : constant$4(+_), area) : y0;
     };
 
     area.y1 = function (_) {
-      return arguments.length ? (y1 = _ == null ? null : typeof _ === "function" ? _ : constant$3(+_), area) : y1;
+      return arguments.length ? (y1 = _ == null ? null : typeof _ === "function" ? _ : constant$4(+_), area) : y1;
     };
 
     area.lineX0 = area.lineY0 = function () {
@@ -17254,7 +17345,7 @@
     };
 
     area.defined = function (_) {
-      return arguments.length ? (defined = typeof _ === "function" ? _ : constant$3(!!_), area) : defined;
+      return arguments.length ? (defined = typeof _ === "function" ? _ : constant$4(!!_), area) : defined;
     };
 
     area.curve = function (_) {
@@ -17278,8 +17369,8 @@
 
   function symbol$2 (type, size) {
     var context = null;
-    type = typeof type === "function" ? type : constant$3(type || circle$2);
-    size = typeof size === "function" ? size : constant$3(size === undefined ? 64 : +size);
+    type = typeof type === "function" ? type : constant$4(type || circle$2);
+    size = typeof size === "function" ? size : constant$4(size === undefined ? 64 : +size);
 
     function symbol() {
       var buffer;
@@ -17289,11 +17380,11 @@
     }
 
     symbol.type = function (_) {
-      return arguments.length ? (type = typeof _ === "function" ? _ : constant$3(_), symbol) : type;
+      return arguments.length ? (type = typeof _ === "function" ? _ : constant$4(_), symbol) : type;
     };
 
     symbol.size = function (_) {
-      return arguments.length ? (size = typeof _ === "function" ? _ : constant$3(+_), symbol) : size;
+      return arguments.length ? (size = typeof _ === "function" ? _ : constant$4(+_), symbol) : size;
     };
 
     symbol.context = function (_) {
@@ -18426,11 +18517,11 @@
     return scale;
   }
 
-  function define (constructor, factory, prototype) {
+  function define$3 (constructor, factory, prototype) {
     constructor.prototype = factory.prototype = prototype;
     prototype.constructor = constructor;
   }
-  function extend(parent, definition) {
+  function extend$3(parent, definition) {
     var prototype = Object.create(parent.prototype);
 
     for (var key in definition) prototype[key] = definition[key];
@@ -18438,20 +18529,20 @@
     return prototype;
   }
 
-  function Color() {}
-  var darker = 0.7;
-  var brighter = 1 / darker;
-  var reI = "\\s*([+-]?\\d+)\\s*",
-      reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
-      reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
-      reHex = /^#([0-9a-f]{3,8})$/,
-      reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
-      reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
-      reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
-      reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
-      reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
-      reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
-  var named = {
+  function Color$3() {}
+  var darker$3 = 0.7;
+  var brighter$3 = 1 / darker$3;
+  var reI$3 = "\\s*([+-]?\\d+)\\s*",
+      reN$3 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP$3 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex$3 = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger$3 = new RegExp("^rgb\\(" + [reI$3, reI$3, reI$3] + "\\)$"),
+      reRgbPercent$3 = new RegExp("^rgb\\(" + [reP$3, reP$3, reP$3] + "\\)$"),
+      reRgbaInteger$3 = new RegExp("^rgba\\(" + [reI$3, reI$3, reI$3, reN$3] + "\\)$"),
+      reRgbaPercent$3 = new RegExp("^rgba\\(" + [reP$3, reP$3, reP$3, reN$3] + "\\)$"),
+      reHslPercent$3 = new RegExp("^hsl\\(" + [reN$3, reP$3, reP$3] + "\\)$"),
+      reHslaPercent$3 = new RegExp("^hsla\\(" + [reN$3, reP$3, reP$3, reN$3] + "\\)$");
+  var named$3 = {
     aliceblue: 0xf0f8ff,
     antiquewhite: 0xfaebd7,
     aqua: 0x00ffff,
@@ -18601,83 +18692,83 @@
     yellow: 0xffff00,
     yellowgreen: 0x9acd32
   };
-  define(Color, color$3, {
+  define$3(Color$3, color$6, {
     copy: function (channels) {
       return Object.assign(new this.constructor(), this, channels);
     },
     displayable: function () {
       return this.rgb().displayable();
     },
-    hex: color_formatHex,
+    hex: color_formatHex$3,
     // Deprecated! Use color.formatHex.
-    formatHex: color_formatHex,
-    formatHsl: color_formatHsl,
-    formatRgb: color_formatRgb,
-    toString: color_formatRgb
+    formatHex: color_formatHex$3,
+    formatHsl: color_formatHsl$3,
+    formatRgb: color_formatRgb$3,
+    toString: color_formatRgb$3
   });
 
-  function color_formatHex() {
+  function color_formatHex$3() {
     return this.rgb().formatHex();
   }
 
-  function color_formatHsl() {
-    return hslConvert(this).formatHsl();
+  function color_formatHsl$3() {
+    return hslConvert$3(this).formatHsl();
   }
 
-  function color_formatRgb() {
+  function color_formatRgb$3() {
     return this.rgb().formatRgb();
   }
 
-  function color$3(format) {
+  function color$6(format) {
     var m, l;
     format = (format + "").trim().toLowerCase();
-    return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
-    : l === 3 ? new Rgb(m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, (m & 0xf) << 4 | m & 0xf, 1) // #f00
-    : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
-    : l === 4 ? rgba(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
+    return (m = reHex$3.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$3(m) // #ff0000
+    : l === 3 ? new Rgb$3(m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, (m & 0xf) << 4 | m & 0xf, 1) // #f00
+    : l === 8 ? rgba$3(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+    : l === 4 ? rgba$3(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
     : null // invalid hex
-    ) : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
-    : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
-    : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
-    : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
-    : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
-    : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
-    : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
-    : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0) : null;
+    ) : (m = reRgbInteger$3.exec(format)) ? new Rgb$3(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+    : (m = reRgbPercent$3.exec(format)) ? new Rgb$3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+    : (m = reRgbaInteger$3.exec(format)) ? rgba$3(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+    : (m = reRgbaPercent$3.exec(format)) ? rgba$3(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+    : (m = reHslPercent$3.exec(format)) ? hsla$3(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+    : (m = reHslaPercent$3.exec(format)) ? hsla$3(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+    : named$3.hasOwnProperty(format) ? rgbn$3(named$3[format]) // eslint-disable-line no-prototype-builtins
+    : format === "transparent" ? new Rgb$3(NaN, NaN, NaN, 0) : null;
   }
 
-  function rgbn(n) {
-    return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  function rgbn$3(n) {
+    return new Rgb$3(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
   }
 
-  function rgba(r, g, b, a) {
+  function rgba$3(r, g, b, a) {
     if (a <= 0) r = g = b = NaN;
-    return new Rgb(r, g, b, a);
+    return new Rgb$3(r, g, b, a);
   }
 
-  function rgbConvert(o) {
-    if (!(o instanceof Color)) o = color$3(o);
-    if (!o) return new Rgb();
+  function rgbConvert$3(o) {
+    if (!(o instanceof Color$3)) o = color$6(o);
+    if (!o) return new Rgb$3();
     o = o.rgb();
-    return new Rgb(o.r, o.g, o.b, o.opacity);
+    return new Rgb$3(o.r, o.g, o.b, o.opacity);
   }
-  function rgb$1(r, g, b, opacity) {
-    return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+  function rgb$5(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert$3(r) : new Rgb$3(r, g, b, opacity == null ? 1 : opacity);
   }
-  function Rgb(r, g, b, opacity) {
+  function Rgb$3(r, g, b, opacity) {
     this.r = +r;
     this.g = +g;
     this.b = +b;
     this.opacity = +opacity;
   }
-  define(Rgb, rgb$1, extend(Color, {
+  define$3(Rgb$3, rgb$5, extend$3(Color$3, {
     brighter: function (k) {
-      k = k == null ? brighter : Math.pow(brighter, k);
-      return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+      k = k == null ? brighter$3 : Math.pow(brighter$3, k);
+      return new Rgb$3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     darker: function (k) {
-      k = k == null ? darker : Math.pow(darker, k);
-      return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+      k = k == null ? darker$3 : Math.pow(darker$3, k);
+      return new Rgb$3(this.r * k, this.g * k, this.b * k, this.opacity);
     },
     rgb: function () {
       return this;
@@ -18685,38 +18776,38 @@
     displayable: function () {
       return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
     },
-    hex: rgb_formatHex,
+    hex: rgb_formatHex$3,
     // Deprecated! Use color.formatHex.
-    formatHex: rgb_formatHex,
-    formatRgb: rgb_formatRgb,
-    toString: rgb_formatRgb
+    formatHex: rgb_formatHex$3,
+    formatRgb: rgb_formatRgb$3,
+    toString: rgb_formatRgb$3
   }));
 
-  function rgb_formatHex() {
-    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+  function rgb_formatHex$3() {
+    return "#" + hex$3(this.r) + hex$3(this.g) + hex$3(this.b);
   }
 
-  function rgb_formatRgb() {
+  function rgb_formatRgb$3() {
     var a = this.opacity;
     a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
     return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
   }
 
-  function hex(value) {
+  function hex$3(value) {
     value = Math.max(0, Math.min(255, Math.round(value) || 0));
     return (value < 16 ? "0" : "") + value.toString(16);
   }
 
-  function hsla(h, s, l, a) {
+  function hsla$3(h, s, l, a) {
     if (a <= 0) h = s = l = NaN;else if (l <= 0 || l >= 1) h = s = NaN;else if (s <= 0) h = NaN;
-    return new Hsl(h, s, l, a);
+    return new Hsl$3(h, s, l, a);
   }
 
-  function hslConvert(o) {
-    if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof Color)) o = color$3(o);
-    if (!o) return new Hsl();
-    if (o instanceof Hsl) return o;
+  function hslConvert$3(o) {
+    if (o instanceof Hsl$3) return new Hsl$3(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color$3)) o = color$6(o);
+    if (!o) return new Hsl$3();
+    if (o instanceof Hsl$3) return o;
     o = o.rgb();
     var r = o.r / 255,
         g = o.g / 255,
@@ -18735,27 +18826,27 @@
       s = l > 0 && l < 1 ? 0 : h;
     }
 
-    return new Hsl(h, s, l, o.opacity);
+    return new Hsl$3(h, s, l, o.opacity);
   }
-  function hsl$2(h, s, l, opacity) {
-    return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+  function hsl$5(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert$3(h) : new Hsl$3(h, s, l, opacity == null ? 1 : opacity);
   }
 
-  function Hsl(h, s, l, opacity) {
+  function Hsl$3(h, s, l, opacity) {
     this.h = +h;
     this.s = +s;
     this.l = +l;
     this.opacity = +opacity;
   }
 
-  define(Hsl, hsl$2, extend(Color, {
+  define$3(Hsl$3, hsl$5, extend$3(Color$3, {
     brighter: function (k) {
-      k = k == null ? brighter : Math.pow(brighter, k);
-      return new Hsl(this.h, this.s, this.l * k, this.opacity);
+      k = k == null ? brighter$3 : Math.pow(brighter$3, k);
+      return new Hsl$3(this.h, this.s, this.l * k, this.opacity);
     },
     darker: function (k) {
-      k = k == null ? darker : Math.pow(darker, k);
-      return new Hsl(this.h, this.s, this.l * k, this.opacity);
+      k = k == null ? darker$3 : Math.pow(darker$3, k);
+      return new Hsl$3(this.h, this.s, this.l * k, this.opacity);
     },
     rgb: function () {
       var h = this.h % 360 + (this.h < 0) * 360,
@@ -18763,7 +18854,7 @@
           l = this.l,
           m2 = l + (l < 0.5 ? l : 1 - l) * s,
           m1 = 2 * l - m2;
-      return new Rgb(hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), hsl2rgb(h, m1, m2), hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
+      return new Rgb$3(hsl2rgb$3(h >= 240 ? h - 240 : h + 120, m1, m2), hsl2rgb$3(h, m1, m2), hsl2rgb$3(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
     },
     displayable: function () {
       return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
@@ -18776,113 +18867,113 @@
   }));
   /* From FvD 13.37, CSS Color Module Level 3 */
 
-  function hsl2rgb(h, m1, m2) {
+  function hsl2rgb$3(h, m1, m2) {
     return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
   }
 
-  const radians$1 = Math.PI / 180;
-  const degrees$2 = 180 / Math.PI;
+  const radians$2 = Math.PI / 180;
+  const degrees$3 = 180 / Math.PI;
 
-  const K = 18,
-        Xn = 0.96422,
-        Yn = 1,
-        Zn = 0.82521,
-        t0 = 4 / 29,
-        t1 = 6 / 29,
-        t2 = 3 * t1 * t1,
-        t3 = t1 * t1 * t1;
+  const K$1 = 18,
+        Xn$1 = 0.96422,
+        Yn$1 = 1,
+        Zn$1 = 0.82521,
+        t0$1 = 4 / 29,
+        t1$1 = 6 / 29,
+        t2$1 = 3 * t1$1 * t1$1,
+        t3$1 = t1$1 * t1$1 * t1$1;
 
-  function labConvert(o) {
-    if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
-    if (o instanceof Hcl) return hcl2lab(o);
-    if (!(o instanceof Rgb)) o = rgbConvert(o);
-    var r = rgb2lrgb(o.r),
-        g = rgb2lrgb(o.g),
-        b = rgb2lrgb(o.b),
-        y = xyz2lab((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn),
+  function labConvert$1(o) {
+    if (o instanceof Lab$1) return new Lab$1(o.l, o.a, o.b, o.opacity);
+    if (o instanceof Hcl$1) return hcl2lab$1(o);
+    if (!(o instanceof Rgb$3)) o = rgbConvert$3(o);
+    var r = rgb2lrgb$1(o.r),
+        g = rgb2lrgb$1(o.g),
+        b = rgb2lrgb$1(o.b),
+        y = xyz2lab$1((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn$1),
         x,
         z;
     if (r === g && g === b) x = z = y;else {
-      x = xyz2lab((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn);
-      z = xyz2lab((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn);
+      x = xyz2lab$1((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn$1);
+      z = xyz2lab$1((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn$1);
     }
-    return new Lab(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
+    return new Lab$1(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
   }
-  function lab$1(l, a, b, opacity) {
-    return arguments.length === 1 ? labConvert(l) : new Lab(l, a, b, opacity == null ? 1 : opacity);
+  function lab$2(l, a, b, opacity) {
+    return arguments.length === 1 ? labConvert$1(l) : new Lab$1(l, a, b, opacity == null ? 1 : opacity);
   }
-  function Lab(l, a, b, opacity) {
+  function Lab$1(l, a, b, opacity) {
     this.l = +l;
     this.a = +a;
     this.b = +b;
     this.opacity = +opacity;
   }
-  define(Lab, lab$1, extend(Color, {
+  define$3(Lab$1, lab$2, extend$3(Color$3, {
     brighter: function (k) {
-      return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
+      return new Lab$1(this.l + K$1 * (k == null ? 1 : k), this.a, this.b, this.opacity);
     },
     darker: function (k) {
-      return new Lab(this.l - K * (k == null ? 1 : k), this.a, this.b, this.opacity);
+      return new Lab$1(this.l - K$1 * (k == null ? 1 : k), this.a, this.b, this.opacity);
     },
     rgb: function () {
       var y = (this.l + 16) / 116,
           x = isNaN(this.a) ? y : y + this.a / 500,
           z = isNaN(this.b) ? y : y - this.b / 200;
-      x = Xn * lab2xyz(x);
-      y = Yn * lab2xyz(y);
-      z = Zn * lab2xyz(z);
-      return new Rgb(lrgb2rgb(3.1338561 * x - 1.6168667 * y - 0.4906146 * z), lrgb2rgb(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z), lrgb2rgb(0.0719453 * x - 0.2289914 * y + 1.4052427 * z), this.opacity);
+      x = Xn$1 * lab2xyz$1(x);
+      y = Yn$1 * lab2xyz$1(y);
+      z = Zn$1 * lab2xyz$1(z);
+      return new Rgb$3(lrgb2rgb$1(3.1338561 * x - 1.6168667 * y - 0.4906146 * z), lrgb2rgb$1(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z), lrgb2rgb$1(0.0719453 * x - 0.2289914 * y + 1.4052427 * z), this.opacity);
     }
   }));
 
-  function xyz2lab(t) {
-    return t > t3 ? Math.pow(t, 1 / 3) : t / t2 + t0;
+  function xyz2lab$1(t) {
+    return t > t3$1 ? Math.pow(t, 1 / 3) : t / t2$1 + t0$1;
   }
 
-  function lab2xyz(t) {
-    return t > t1 ? t * t * t : t2 * (t - t0);
+  function lab2xyz$1(t) {
+    return t > t1$1 ? t * t * t : t2$1 * (t - t0$1);
   }
 
-  function lrgb2rgb(x) {
+  function lrgb2rgb$1(x) {
     return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
   }
 
-  function rgb2lrgb(x) {
+  function rgb2lrgb$1(x) {
     return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
   }
 
-  function hclConvert(o) {
-    if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
-    if (!(o instanceof Lab)) o = labConvert(o);
-    if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
-    var h = Math.atan2(o.b, o.a) * degrees$2;
-    return new Hcl(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
+  function hclConvert$1(o) {
+    if (o instanceof Hcl$1) return new Hcl$1(o.h, o.c, o.l, o.opacity);
+    if (!(o instanceof Lab$1)) o = labConvert$1(o);
+    if (o.a === 0 && o.b === 0) return new Hcl$1(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
+    var h = Math.atan2(o.b, o.a) * degrees$3;
+    return new Hcl$1(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
   }
-  function hcl$2(h, c, l, opacity) {
-    return arguments.length === 1 ? hclConvert(h) : new Hcl(h, c, l, opacity == null ? 1 : opacity);
+  function hcl$3(h, c, l, opacity) {
+    return arguments.length === 1 ? hclConvert$1(h) : new Hcl$1(h, c, l, opacity == null ? 1 : opacity);
   }
-  function Hcl(h, c, l, opacity) {
+  function Hcl$1(h, c, l, opacity) {
     this.h = +h;
     this.c = +c;
     this.l = +l;
     this.opacity = +opacity;
   }
 
-  function hcl2lab(o) {
-    if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
-    var h = o.h * radians$1;
-    return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
+  function hcl2lab$1(o) {
+    if (isNaN(o.h)) return new Lab$1(o.l, 0, 0, o.opacity);
+    var h = o.h * radians$2;
+    return new Lab$1(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
   }
 
-  define(Hcl, hcl$2, extend(Color, {
+  define$3(Hcl$1, hcl$3, extend$3(Color$3, {
     brighter: function (k) {
-      return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
+      return new Hcl$1(this.h, this.c, this.l + K$1 * (k == null ? 1 : k), this.opacity);
     },
     darker: function (k) {
-      return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
+      return new Hcl$1(this.h, this.c, this.l - K$1 * (k == null ? 1 : k), this.opacity);
     },
     rgb: function () {
-      return hcl2lab(this).rgb();
+      return hcl2lab$1(this).rgb();
     }
   }));
 
@@ -18897,7 +18988,7 @@
 
   function cubehelixConvert(o) {
     if (o instanceof Cubehelix) return new Cubehelix(o.h, o.s, o.l, o.opacity);
-    if (!(o instanceof Rgb)) o = rgbConvert(o);
+    if (!(o instanceof Rgb$3)) o = rgbConvert$3(o);
     var r = o.r / 255,
         g = o.g / 255,
         b = o.b / 255,
@@ -18906,7 +18997,7 @@
         k = (E * (g - l) - C$1 * bl) / D,
         s = Math.sqrt(k * k + bl * bl) / (E * l * (1 - l)),
         // NaN if l=0 or l=1
-    h = s ? Math.atan2(k, bl) * degrees$2 - 120 : NaN;
+    h = s ? Math.atan2(k, bl) * degrees$3 - 120 : NaN;
     return new Cubehelix(h < 0 ? h + 360 : h, s, l, o.opacity);
   }
 
@@ -18919,22 +19010,22 @@
     this.l = +l;
     this.opacity = +opacity;
   }
-  define(Cubehelix, cubehelix$2, extend(Color, {
+  define$3(Cubehelix, cubehelix$2, extend$3(Color$3, {
     brighter: function (k) {
-      k = k == null ? brighter : Math.pow(brighter, k);
+      k = k == null ? brighter$3 : Math.pow(brighter$3, k);
       return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
     },
     darker: function (k) {
-      k = k == null ? darker : Math.pow(darker, k);
+      k = k == null ? darker$3 : Math.pow(darker$3, k);
       return new Cubehelix(this.h, this.s, this.l * k, this.opacity);
     },
     rgb: function () {
-      var h = isNaN(this.h) ? 0 : (this.h + 120) * radians$1,
+      var h = isNaN(this.h) ? 0 : (this.h + 120) * radians$2,
           l = +this.l,
           a = isNaN(this.s) ? 0 : this.s * l * (1 - l),
           cosh = Math.cos(h),
           sinh = Math.sin(h);
-      return new Rgb(255 * (l + a * (A * cosh + B * sinh)), 255 * (l + a * (C$1 * cosh + D * sinh)), 255 * (l + a * (E * cosh)), this.opacity);
+      return new Rgb$3(255 * (l + a * (A * cosh + B * sinh)), 255 * (l + a * (C$1 * cosh + D * sinh)), 255 * (l + a * (E * cosh)), this.opacity);
     }
   }));
 
@@ -18967,15 +19058,15 @@
     };
   }
 
-  var constant$2 = (x => () => x);
+  var constant$3 = (x => () => x);
 
-  function linear$1(a, d) {
+  function linear$2(a, d) {
     return function (t) {
       return a + t * d;
     };
   }
 
-  function exponential(a, b, y) {
+  function exponential$1(a, b, y) {
     return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function (t) {
       return Math.pow(a + t * b, y);
     };
@@ -18983,26 +19074,26 @@
 
   function hue$1(a, b) {
     var d = b - a;
-    return d ? linear$1(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant$2(isNaN(a) ? b : a);
+    return d ? linear$2(a, d > 180 || d < -180 ? d - 360 * Math.round(d / 360) : d) : constant$3(isNaN(a) ? b : a);
   }
-  function gamma(y) {
-    return (y = +y) === 1 ? nogamma : function (a, b) {
-      return b - a ? exponential(a, b, y) : constant$2(isNaN(a) ? b : a);
+  function gamma$1(y) {
+    return (y = +y) === 1 ? nogamma$1 : function (a, b) {
+      return b - a ? exponential$1(a, b, y) : constant$3(isNaN(a) ? b : a);
     };
   }
-  function nogamma(a, b) {
+  function nogamma$1(a, b) {
     var d = b - a;
-    return d ? linear$1(a, d) : constant$2(isNaN(a) ? b : a);
+    return d ? linear$2(a, d) : constant$3(isNaN(a) ? b : a);
   }
 
-  var rgb = (function rgbGamma(y) {
-    var color = gamma(y);
+  var rgb$4 = (function rgbGamma(y) {
+    var color = gamma$1(y);
 
     function rgb(start, end) {
-      var r = color((start = rgb$1(start)).r, (end = rgb$1(end)).r),
+      var r = color((start = rgb$5(start)).r, (end = rgb$5(end)).r),
           g = color(start.g, end.g),
           b = color(start.b, end.b),
-          opacity = nogamma(start.opacity, end.opacity);
+          opacity = nogamma$1(start.opacity, end.opacity);
       return function (t) {
         start.r = r(t);
         start.g = g(t);
@@ -19026,7 +19117,7 @@
           color;
 
       for (i = 0; i < n; ++i) {
-        color = rgb$1(colors[i]);
+        color = rgb$5(colors[i]);
         r[i] = color.r || 0;
         g[i] = color.g || 0;
         b[i] = color.b || 0;
@@ -19048,7 +19139,7 @@
   var rgbBasis = rgbSpline(basis$1);
   var rgbBasisClosed = rgbSpline(basisClosed);
 
-  function numberArray (a, b) {
+  function numberArray$1 (a, b) {
     if (!b) b = [];
     var n = a ? Math.min(b.length, a.length) : 0,
         c = b.slice(),
@@ -19059,21 +19150,21 @@
       return c;
     };
   }
-  function isNumberArray(x) {
+  function isNumberArray$1(x) {
     return ArrayBuffer.isView(x) && !(x instanceof DataView);
   }
 
   function array$3 (a, b) {
-    return (isNumberArray(b) ? numberArray : genericArray)(a, b);
+    return (isNumberArray$1(b) ? numberArray$1 : genericArray$1)(a, b);
   }
-  function genericArray(a, b) {
+  function genericArray$1(a, b) {
     var nb = b ? b.length : 0,
         na = a ? Math.min(nb, a.length) : 0,
         x = new Array(na),
         c = new Array(nb),
         i;
 
-    for (i = 0; i < na; ++i) x[i] = interpolate$1$1(a[i], b[i]);
+    for (i = 0; i < na; ++i) x[i] = interpolate$3(a[i], b[i]);
 
     for (; i < nb; ++i) c[i] = b[i];
 
@@ -19084,7 +19175,7 @@
     };
   }
 
-  function date$1 (a, b) {
+  function date$2 (a, b) {
     var d = new Date();
     return a = +a, b = +b, function (t) {
       return d.setTime(a * (1 - t) + b * t), d;
@@ -19097,7 +19188,7 @@
     };
   }
 
-  function object (a, b) {
+  function object$1 (a, b) {
     var i = {},
         c = {},
         k;
@@ -19106,7 +19197,7 @@
 
     for (k in b) {
       if (k in a) {
-        i[k] = interpolate$1$1(a[k], b[k]);
+        i[k] = interpolate$3(a[k], b[k]);
       } else {
         c[k] = b[k];
       }
@@ -19119,23 +19210,23 @@
     };
   }
 
-  var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
-      reB = new RegExp(reA.source, "g");
+  var reA$1 = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+      reB$1 = new RegExp(reA$1.source, "g");
 
-  function zero$2(b) {
+  function zero$3(b) {
     return function () {
       return b;
     };
   }
 
-  function one$1(b) {
+  function one$2(b) {
     return function (t) {
       return b(t) + "";
     };
   }
 
-  function string (a, b) {
-    var bi = reA.lastIndex = reB.lastIndex = 0,
+  function string$1 (a, b) {
+    var bi = reA$1.lastIndex = reB$1.lastIndex = 0,
         // scan index for next number in b
     am,
         // current match in a
@@ -19152,7 +19243,7 @@
 
     a = a + "", b = b + ""; // Interpolate pairs of numbers in a & b.
 
-    while ((am = reA.exec(a)) && (bm = reB.exec(b))) {
+    while ((am = reA$1.exec(a)) && (bm = reB$1.exec(b))) {
       if ((bs = bm.index) > bi) {
         // a string precedes the next number in b
         bs = b.slice(bi, bs);
@@ -19173,7 +19264,7 @@
         });
       }
 
-      bi = reB.lastIndex;
+      bi = reB$1.lastIndex;
     } // Add remains of b.
 
 
@@ -19185,17 +19276,17 @@
     // Otherwise, interpolate each of the numbers and rejoin the string.
 
 
-    return s.length < 2 ? q[0] ? one$1(q[0].x) : zero$2(b) : (b = q.length, function (t) {
+    return s.length < 2 ? q[0] ? one$2(q[0].x) : zero$3(b) : (b = q.length, function (t) {
       for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
 
       return s.join("");
     });
   }
 
-  function interpolate$1$1 (a, b) {
+  function interpolate$3 (a, b) {
     var t = typeof b,
         c;
-    return b == null || t === "boolean" ? constant$2(b) : (t === "number" ? interpolateNumber : t === "string" ? (c = color$3(b)) ? (b = c, rgb) : string : b instanceof color$3 ? rgb : b instanceof Date ? date$1 : isNumberArray(b) ? numberArray : Array.isArray(b) ? genericArray : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object : interpolateNumber)(a, b);
+    return b == null || t === "boolean" ? constant$3(b) : (t === "number" ? interpolateNumber : t === "string" ? (c = color$6(b)) ? (b = c, rgb$4) : string$1 : b instanceof color$6 ? rgb$4 : b instanceof Date ? date$2 : isNumberArray$1(b) ? numberArray$1 : Array.isArray(b) ? genericArray$1 : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object$1 : interpolateNumber)(a, b);
   }
 
   function discrete$1 (range) {
@@ -19213,13 +19304,13 @@
     };
   }
 
-  function interpolateRound (a, b) {
+  function interpolateRound$1 (a, b) {
     return a = +a, b = +b, function (t) {
       return Math.round(a * (1 - t) + b * t);
     };
   }
 
-  var degrees$1 = 180 / Math.PI;
+  var degrees$2 = 180 / Math.PI;
   var identity$3 = {
     translateX: 0,
     translateY: 0,
@@ -19237,8 +19328,8 @@
     return {
       translateX: e,
       translateY: f,
-      rotate: Math.atan2(b, a) * degrees$1,
-      skewX: Math.atan(skewX) * degrees$1,
+      rotate: Math.atan2(b, a) * degrees$2,
+      skewX: Math.atan(skewX) * degrees$2,
       scaleX: scaleX,
       scaleY: scaleY
     };
@@ -19384,20 +19475,20 @@
         };
       } // General case.
       else {
-          var d1 = Math.sqrt(d2),
-              b0 = (w1 * w1 - w0 * w0 + rho4 * d2) / (2 * w0 * rho2 * d1),
-              b1 = (w1 * w1 - w0 * w0 - rho4 * d2) / (2 * w1 * rho2 * d1),
-              r0 = Math.log(Math.sqrt(b0 * b0 + 1) - b0),
-              r1 = Math.log(Math.sqrt(b1 * b1 + 1) - b1);
-          S = (r1 - r0) / rho;
+        var d1 = Math.sqrt(d2),
+            b0 = (w1 * w1 - w0 * w0 + rho4 * d2) / (2 * w0 * rho2 * d1),
+            b1 = (w1 * w1 - w0 * w0 - rho4 * d2) / (2 * w1 * rho2 * d1),
+            r0 = Math.log(Math.sqrt(b0 * b0 + 1) - b0),
+            r1 = Math.log(Math.sqrt(b1 * b1 + 1) - b1);
+        S = (r1 - r0) / rho;
 
-          i = function (t) {
-            var s = t * S,
-                coshr0 = cosh(r0),
-                u = w0 / (rho2 * d1) * (coshr0 * tanh(rho * s + r0) - sinh(r0));
-            return [ux0 + u * dx, uy0 + u * dy, w0 * coshr0 / cosh(rho * s + r0)];
-          };
-        }
+        i = function (t) {
+          var s = t * S,
+              coshr0 = cosh(r0),
+              u = w0 / (rho2 * d1) * (coshr0 * tanh(rho * s + r0) - sinh(r0));
+          return [ux0 + u * dx, uy0 + u * dy, w0 * coshr0 / cosh(rho * s + r0)];
+        };
+      }
 
       i.duration = S * 1000 * rho / Math.SQRT2;
       return i;
@@ -19414,12 +19505,12 @@
     return zoom;
   })(Math.SQRT2, 2, 4);
 
-  function hsl(hue) {
+  function hsl$3(hue) {
     return function (start, end) {
-      var h = hue((start = hsl$2(start)).h, (end = hsl$2(end)).h),
-          s = nogamma(start.s, end.s),
-          l = nogamma(start.l, end.l),
-          opacity = nogamma(start.opacity, end.opacity);
+      var h = hue((start = hsl$5(start)).h, (end = hsl$5(end)).h),
+          s = nogamma$1(start.s, end.s),
+          l = nogamma$1(start.l, end.l),
+          opacity = nogamma$1(start.opacity, end.opacity);
       return function (t) {
         start.h = h(t);
         start.s = s(t);
@@ -19430,14 +19521,14 @@
     };
   }
 
-  var hsl$1 = hsl(hue$1);
-  var hslLong = hsl(nogamma);
+  var hsl$4 = hsl$3(hue$1);
+  var hslLong = hsl$3(nogamma$1);
 
-  function lab(start, end) {
-    var l = nogamma((start = lab$1(start)).l, (end = lab$1(end)).l),
-        a = nogamma(start.a, end.a),
-        b = nogamma(start.b, end.b),
-        opacity = nogamma(start.opacity, end.opacity);
+  function lab$1(start, end) {
+    var l = nogamma$1((start = lab$2(start)).l, (end = lab$2(end)).l),
+        a = nogamma$1(start.a, end.a),
+        b = nogamma$1(start.b, end.b),
+        opacity = nogamma$1(start.opacity, end.opacity);
     return function (t) {
       start.l = l(t);
       start.a = a(t);
@@ -19447,12 +19538,12 @@
     };
   }
 
-  function hcl(hue) {
+  function hcl$1(hue) {
     return function (start, end) {
-      var h = hue((start = hcl$2(start)).h, (end = hcl$2(end)).h),
-          c = nogamma(start.c, end.c),
-          l = nogamma(start.l, end.l),
-          opacity = nogamma(start.opacity, end.opacity);
+      var h = hue((start = hcl$3(start)).h, (end = hcl$3(end)).h),
+          c = nogamma$1(start.c, end.c),
+          l = nogamma$1(start.l, end.l),
+          opacity = nogamma$1(start.opacity, end.opacity);
       return function (t) {
         start.h = h(t);
         start.c = c(t);
@@ -19463,8 +19554,8 @@
     };
   }
 
-  var hcl$1 = hcl(hue$1);
-  var hclLong = hcl(nogamma);
+  var hcl$2 = hcl$1(hue$1);
+  var hclLong = hcl$1(nogamma$1);
 
   function cubehelix(hue) {
     return function cubehelixGamma(y) {
@@ -19472,9 +19563,9 @@
 
       function cubehelix(start, end) {
         var h = hue((start = cubehelix$2(start)).h, (end = cubehelix$2(end)).h),
-            s = nogamma(start.s, end.s),
-            l = nogamma(start.l, end.l),
-            opacity = nogamma(start.opacity, end.opacity);
+            s = nogamma$1(start.s, end.s),
+            l = nogamma$1(start.l, end.l),
+            opacity = nogamma$1(start.opacity, end.opacity);
         return function (t) {
           start.h = h(t);
           start.s = s(t);
@@ -19490,10 +19581,10 @@
   }
 
   var cubehelix$1 = cubehelix(hue$1);
-  var cubehelixLong = cubehelix(nogamma);
+  var cubehelixLong = cubehelix(nogamma$1);
 
   function piecewise(interpolate, values) {
-    if (values === undefined) values = interpolate, interpolate = interpolate$1$1;
+    if (values === undefined) values = interpolate, interpolate = interpolate$3;
     var i = 0,
         n = values.length - 1,
         v = values[0],
@@ -19517,28 +19608,28 @@
 
   var $ = /*#__PURE__*/Object.freeze({
     __proto__: null,
-    interpolate: interpolate$1$1,
+    interpolate: interpolate$3,
     interpolateArray: array$3,
     interpolateBasis: basis$1,
     interpolateBasisClosed: basisClosed,
-    interpolateDate: date$1,
+    interpolateDate: date$2,
     interpolateDiscrete: discrete$1,
     interpolateHue: hue,
     interpolateNumber: interpolateNumber,
-    interpolateNumberArray: numberArray,
-    interpolateObject: object,
-    interpolateRound: interpolateRound,
-    interpolateString: string,
+    interpolateNumberArray: numberArray$1,
+    interpolateObject: object$1,
+    interpolateRound: interpolateRound$1,
+    interpolateString: string$1,
     interpolateTransformCss: interpolateTransformCss,
     interpolateTransformSvg: interpolateTransformSvg,
     interpolateZoom: zoom$1,
-    interpolateRgb: rgb,
+    interpolateRgb: rgb$4,
     interpolateRgbBasis: rgbBasis,
     interpolateRgbBasisClosed: rgbBasisClosed,
-    interpolateHsl: hsl$1,
+    interpolateHsl: hsl$4,
     interpolateHslLong: hslLong,
-    interpolateLab: lab,
-    interpolateHcl: hcl$1,
+    interpolateLab: lab$1,
+    interpolateHcl: hcl$2,
     interpolateHclLong: hclLong,
     interpolateCubehelix: cubehelix$1,
     interpolateCubehelixLong: cubehelixLong,
@@ -19552,7 +19643,7 @@
     };
   }
 
-  function number$5(x) {
+  function number$6(x) {
     return +x;
   }
 
@@ -19605,7 +19696,7 @@
     }
 
     return function (x) {
-      var i = bisectRight$1(domain, x, 1, j) - 1;
+      var i = bisect$1(domain, x, 1, j) - 1;
       return r[i](d[i](x));
     };
   }
@@ -19616,7 +19707,7 @@
   function transformer$3() {
     var domain = unit,
         range = unit,
-        interpolate = interpolate$1$1,
+        interpolate = interpolate$3,
         transform,
         untransform,
         unknown,
@@ -19642,7 +19733,7 @@
     };
 
     scale.domain = function (_) {
-      return arguments.length ? (domain = Array.from(_, number$5), rescale()) : domain.slice();
+      return arguments.length ? (domain = Array.from(_, number$6), rescale()) : domain.slice();
     };
 
     scale.range = function (_) {
@@ -19650,7 +19741,7 @@
     };
 
     scale.rangeRound = function (_) {
-      return range = Array.from(_), interpolate = interpolateRound, rescale();
+      return range = Array.from(_), interpolate = interpolateRound$1, rescale();
     };
 
     scale.clamp = function (_) {
@@ -19762,11 +19853,11 @@
 
     return scale;
   }
-  function linear() {
+  function linear$1() {
     var scale = continuous$1();
 
     scale.copy = function () {
-      return copy$2(scale, linear());
+      return copy$2(scale, linear$1());
     };
 
     initRange.apply(scale, arguments);
@@ -19783,7 +19874,7 @@
     scale.invert = scale;
 
     scale.domain = scale.range = function (_) {
-      return arguments.length ? (domain = Array.from(_, number$5), scale) : domain.slice();
+      return arguments.length ? (domain = Array.from(_, number$6), scale) : domain.slice();
     };
 
     scale.unknown = function (_) {
@@ -19794,7 +19885,7 @@
       return identity$1(domain).unknown(unknown);
     };
 
-    domain = arguments.length ? Array.from(domain, number$5) : [0, 1];
+    domain = arguments.length ? Array.from(domain, number$6) : [0, 1];
     return linearish(scale);
   }
 
@@ -20050,7 +20141,7 @@
     }
 
     function scale(x) {
-      return x == null || isNaN(x = +x) ? unknown : range[bisectRight$1(thresholds, x)];
+      return x == null || isNaN(x = +x) ? unknown : range[bisect$1(thresholds, x)];
     }
 
     scale.invertExtent = function (y) {
@@ -20096,7 +20187,7 @@
         unknown;
 
     function scale(x) {
-      return x != null && x <= x ? range[bisectRight$1(domain, x, 0, n)] : unknown;
+      return x != null && x <= x ? range[bisect$1(domain, x, 0, n)] : unknown;
     }
 
     function rescale() {
@@ -20143,7 +20234,7 @@
         n = 1;
 
     function scale(x) {
-      return x != null && x <= x ? range[bisectRight$1(domain, x, 0, n)] : unknown;
+      return x != null && x <= x ? range[bisect$1(domain, x, 0, n)] : unknown;
     }
 
     scale.domain = function (_) {
@@ -20170,11 +20261,11 @@
     return initRange.apply(scale, arguments);
   }
 
-  function date(t) {
+  function date$1(t) {
     return new Date(t);
   }
 
-  function number$4(t) {
+  function number$5(t) {
     return t instanceof Date ? +t : +new Date(+t);
   }
 
@@ -20200,7 +20291,7 @@
     };
 
     scale.domain = function (_) {
-      return arguments.length ? domain(Array.from(_, number$4)) : domain().map(date);
+      return arguments.length ? domain(Array.from(_, number$5)) : domain().map(date$1);
     };
 
     scale.ticks = function (interval) {
@@ -20225,11 +20316,11 @@
     return scale;
   }
   function time$1() {
-    return initRange.apply(calendar(timeTicks, timeTickInterval, year, month, sunday, day, hour, minute, second, timeFormat$2).domain([new Date(2000, 0, 1), new Date(2000, 0, 2)]), arguments);
+    return initRange.apply(calendar(timeTicks, timeTickInterval, timeYear, timeMonth, sunday, timeDay, timeHour, timeMinute, utcSecond, timeFormat$2).domain([new Date(2000, 0, 1), new Date(2000, 0, 2)]), arguments);
   }
 
   function utcTime() {
-    return initRange.apply(calendar(utcTicks, utcTickInterval, utcYear, utcMonth, utcSunday, utcDay, utcHour, utcMinute, second, utcFormat$1).domain([Date.UTC(2000, 0, 1), Date.UTC(2000, 0, 2)]), arguments);
+    return initRange.apply(calendar(utcTicks, utcTickInterval, utcYear$1, utcMonth$1, utcSunday, utcDay$1, utcHour$1, utcMinute$1, utcSecond, utcFormat$1).domain([Date.UTC(2000, 0, 1), Date.UTC(2000, 0, 2)]), arguments);
   }
 
   function transformer$2() {
@@ -20266,8 +20357,8 @@
       };
     }
 
-    scale.range = range(interpolate$1$1);
-    scale.rangeRound = range(interpolateRound);
+    scale.range = range(interpolate$3);
+    scale.rangeRound = range(interpolateRound$1);
 
     scale.unknown = function (_) {
       return arguments.length ? (unknown = _, scale) : unknown;
@@ -20360,8 +20451,8 @@
       };
     }
 
-    scale.range = range(interpolate$1$1);
-    scale.rangeRound = range(interpolateRound);
+    scale.range = range(interpolate$3);
+    scale.rangeRound = range(interpolateRound$1);
 
     scale.unknown = function (_) {
       return arguments.length ? (unknown = _, scale) : unknown;
@@ -20682,7 +20773,7 @@
         range = [];
 
     function scale(x) {
-      return x == null || x !== x ? undefined : range[(bisectRight$1(domain, x) - 1) % range.length];
+      return x == null || x !== x ? undefined : range[(bisect$1(domain, x) - 1) % range.length];
     }
 
     scale.domain = function (_) {
@@ -20747,7 +20838,7 @@
 
   scale$4(Identity, identity$1); // continuous scales
 
-  scale$4(Linear, linear, Continuous);
+  scale$4(Linear, linear$1, Continuous);
   scale$4(Log, log$2, [Continuous, Log]);
   scale$4(Pow, pow$2, Continuous);
   scale$4(Sqrt, sqrt$2, Continuous);
@@ -20826,7 +20917,7 @@
   }
 
   function interpolateColors(colors, type, gamma) {
-    return piecewise(interpolate$1(type || 'rgb', gamma), colors);
+    return piecewise(interpolate$2(type || 'rgb', gamma), colors);
   }
 
   function quantizeInterpolator(interpolator, count) {
@@ -20843,7 +20934,7 @@
     let i, t, s;
 
     if (!delta || !Number.isFinite(delta)) {
-      return constant$4(0.5);
+      return constant$5(0.5);
     } else {
       i = (t = scale$1.type).indexOf('-');
       t = i < 0 ? t : t.slice(i + 1);
@@ -20853,7 +20944,7 @@
     }
   }
 
-  function interpolate$1(type, gamma) {
+  function interpolate$2(type, gamma) {
     const interp = $[method(type)];
     return gamma != null && interp && interp.gamma ? interp.gamma(gamma) : interp;
   }
@@ -21226,15 +21317,15 @@
       return "".concat(n, " boundar").concat(n === 1 ? 'y' : 'ies', ": ").concat(v.join(', '));
     } // if scale domain is discrete, list values
     else if (isDiscrete$1(scale.type)) {
-        const d = scale.domain(),
-              n = d.length,
-              v = n > max ? d.slice(0, max - 2).map(fmt).join(', ') + ', ending with ' + d.slice(-1).map(fmt) : d.map(fmt).join(', ');
-        return "".concat(n, " value").concat(n === 1 ? '' : 's', ": ").concat(v);
-      } // if scale domain is continuous, describe value range
-      else {
-          const d = scale.domain();
-          return "values from ".concat(fmt(d[0]), " to ").concat(fmt(peek$1(d)));
-        }
+      const d = scale.domain(),
+            n = d.length,
+            v = n > max ? d.slice(0, max - 2).map(fmt).join(', ') + ', ending with ' + d.slice(-1).map(fmt) : d.map(fmt).join(', ');
+      return "".concat(n, " value").concat(n === 1 ? '' : 's', ": ").concat(v);
+    } // if scale domain is continuous, describe value range
+    else {
+      const d = scale.domain();
+      return "values from ".concat(fmt(d[0]), " to ").concat(fmt(peek$1(d)));
+    }
   }
 
   let gradient_id = 0;
@@ -21981,7 +22072,7 @@
     return d.height;
   }
 
-  function number$3(_) {
+  function number$4(_) {
     return typeof _ === 'function' ? _ : () => +_;
   }
 
@@ -21994,7 +22085,7 @@
         y = rectangleY,
         width = rectangleWidth,
         height = rectangleHeight,
-        crTL = number$3(0),
+        crTL = number$4(0),
         crTR = crTL,
         crBL = crTL,
         crBR = crTL,
@@ -22038,7 +22129,7 @@
 
     rectangle.x = function (_) {
       if (arguments.length) {
-        x = number$3(_);
+        x = number$4(_);
         return rectangle;
       } else {
         return x;
@@ -22047,7 +22138,7 @@
 
     rectangle.y = function (_) {
       if (arguments.length) {
-        y = number$3(_);
+        y = number$4(_);
         return rectangle;
       } else {
         return y;
@@ -22056,7 +22147,7 @@
 
     rectangle.width = function (_) {
       if (arguments.length) {
-        width = number$3(_);
+        width = number$4(_);
         return rectangle;
       } else {
         return width;
@@ -22065,7 +22156,7 @@
 
     rectangle.height = function (_) {
       if (arguments.length) {
-        height = number$3(_);
+        height = number$4(_);
         return rectangle;
       } else {
         return height;
@@ -22074,10 +22165,10 @@
 
     rectangle.cornerRadius = function (tl, tr, br, bl) {
       if (arguments.length) {
-        crTL = number$3(tl);
-        crTR = tr != null ? number$3(tr) : crTL;
-        crBR = br != null ? number$3(br) : crTL;
-        crBL = bl != null ? number$3(bl) : crTR;
+        crTL = number$4(tl);
+        crTR = tr != null ? number$4(tr) : crTL;
+        crBR = br != null ? number$4(br) : crTL;
+        crBL = bl != null ? number$4(bl) : crTR;
         return rectangle;
       } else {
         return crTL;
@@ -22877,7 +22968,7 @@
     return addStops(gradient, spec.stops);
   }
 
-  function color$2(context, item, value) {
+  function color$5(context, item, value) {
     return isGradient(value) ? gradient$2(context, value, item.bounds) : value;
   }
 
@@ -22886,7 +22977,7 @@
 
     if (opacity > 0) {
       context.globalAlpha = opacity;
-      context.fillStyle = color$2(context, item, item.fill);
+      context.fillStyle = color$5(context, item, item.fill);
       return true;
     } else {
       return false;
@@ -22902,7 +22993,7 @@
 
     if (opacity > 0) {
       context.globalAlpha = opacity;
-      context.strokeStyle = color$2(context, item, item.stroke);
+      context.strokeStyle = color$5(context, item, item.stroke);
       context.lineWidth = lw;
       context.lineCap = item.strokeCap || 'butt';
       context.lineJoin = item.strokeJoin || 'miter';
@@ -25999,7 +26090,7 @@
     _render(scene) {
       const m = markup(); // svg tag
 
-      m.open('svg', extend$1({}, metadata, {
+      m.open('svg', extend$4({}, metadata, {
         class: 'marks',
         width: this._width * this._scale,
         height: this._height * this._scale,
@@ -27840,6 +27931,557 @@
     viewlayout: ViewLayout$1
   });
 
+  function define$2 (constructor, factory, prototype) {
+    constructor.prototype = factory.prototype = prototype;
+    prototype.constructor = constructor;
+  }
+  function extend$2(parent, definition) {
+    var prototype = Object.create(parent.prototype);
+
+    for (var key in definition) prototype[key] = definition[key];
+
+    return prototype;
+  }
+
+  function Color$2() {}
+  var darker$2 = 0.7;
+  var brighter$2 = 1 / darker$2;
+  var reI$2 = "\\s*([+-]?\\d+)\\s*",
+      reN$2 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP$2 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex$2 = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger$2 = new RegExp("^rgb\\(" + [reI$2, reI$2, reI$2] + "\\)$"),
+      reRgbPercent$2 = new RegExp("^rgb\\(" + [reP$2, reP$2, reP$2] + "\\)$"),
+      reRgbaInteger$2 = new RegExp("^rgba\\(" + [reI$2, reI$2, reI$2, reN$2] + "\\)$"),
+      reRgbaPercent$2 = new RegExp("^rgba\\(" + [reP$2, reP$2, reP$2, reN$2] + "\\)$"),
+      reHslPercent$2 = new RegExp("^hsl\\(" + [reN$2, reP$2, reP$2] + "\\)$"),
+      reHslaPercent$2 = new RegExp("^hsla\\(" + [reN$2, reP$2, reP$2, reN$2] + "\\)$");
+  var named$2 = {
+    aliceblue: 0xf0f8ff,
+    antiquewhite: 0xfaebd7,
+    aqua: 0x00ffff,
+    aquamarine: 0x7fffd4,
+    azure: 0xf0ffff,
+    beige: 0xf5f5dc,
+    bisque: 0xffe4c4,
+    black: 0x000000,
+    blanchedalmond: 0xffebcd,
+    blue: 0x0000ff,
+    blueviolet: 0x8a2be2,
+    brown: 0xa52a2a,
+    burlywood: 0xdeb887,
+    cadetblue: 0x5f9ea0,
+    chartreuse: 0x7fff00,
+    chocolate: 0xd2691e,
+    coral: 0xff7f50,
+    cornflowerblue: 0x6495ed,
+    cornsilk: 0xfff8dc,
+    crimson: 0xdc143c,
+    cyan: 0x00ffff,
+    darkblue: 0x00008b,
+    darkcyan: 0x008b8b,
+    darkgoldenrod: 0xb8860b,
+    darkgray: 0xa9a9a9,
+    darkgreen: 0x006400,
+    darkgrey: 0xa9a9a9,
+    darkkhaki: 0xbdb76b,
+    darkmagenta: 0x8b008b,
+    darkolivegreen: 0x556b2f,
+    darkorange: 0xff8c00,
+    darkorchid: 0x9932cc,
+    darkred: 0x8b0000,
+    darksalmon: 0xe9967a,
+    darkseagreen: 0x8fbc8f,
+    darkslateblue: 0x483d8b,
+    darkslategray: 0x2f4f4f,
+    darkslategrey: 0x2f4f4f,
+    darkturquoise: 0x00ced1,
+    darkviolet: 0x9400d3,
+    deeppink: 0xff1493,
+    deepskyblue: 0x00bfff,
+    dimgray: 0x696969,
+    dimgrey: 0x696969,
+    dodgerblue: 0x1e90ff,
+    firebrick: 0xb22222,
+    floralwhite: 0xfffaf0,
+    forestgreen: 0x228b22,
+    fuchsia: 0xff00ff,
+    gainsboro: 0xdcdcdc,
+    ghostwhite: 0xf8f8ff,
+    gold: 0xffd700,
+    goldenrod: 0xdaa520,
+    gray: 0x808080,
+    green: 0x008000,
+    greenyellow: 0xadff2f,
+    grey: 0x808080,
+    honeydew: 0xf0fff0,
+    hotpink: 0xff69b4,
+    indianred: 0xcd5c5c,
+    indigo: 0x4b0082,
+    ivory: 0xfffff0,
+    khaki: 0xf0e68c,
+    lavender: 0xe6e6fa,
+    lavenderblush: 0xfff0f5,
+    lawngreen: 0x7cfc00,
+    lemonchiffon: 0xfffacd,
+    lightblue: 0xadd8e6,
+    lightcoral: 0xf08080,
+    lightcyan: 0xe0ffff,
+    lightgoldenrodyellow: 0xfafad2,
+    lightgray: 0xd3d3d3,
+    lightgreen: 0x90ee90,
+    lightgrey: 0xd3d3d3,
+    lightpink: 0xffb6c1,
+    lightsalmon: 0xffa07a,
+    lightseagreen: 0x20b2aa,
+    lightskyblue: 0x87cefa,
+    lightslategray: 0x778899,
+    lightslategrey: 0x778899,
+    lightsteelblue: 0xb0c4de,
+    lightyellow: 0xffffe0,
+    lime: 0x00ff00,
+    limegreen: 0x32cd32,
+    linen: 0xfaf0e6,
+    magenta: 0xff00ff,
+    maroon: 0x800000,
+    mediumaquamarine: 0x66cdaa,
+    mediumblue: 0x0000cd,
+    mediumorchid: 0xba55d3,
+    mediumpurple: 0x9370db,
+    mediumseagreen: 0x3cb371,
+    mediumslateblue: 0x7b68ee,
+    mediumspringgreen: 0x00fa9a,
+    mediumturquoise: 0x48d1cc,
+    mediumvioletred: 0xc71585,
+    midnightblue: 0x191970,
+    mintcream: 0xf5fffa,
+    mistyrose: 0xffe4e1,
+    moccasin: 0xffe4b5,
+    navajowhite: 0xffdead,
+    navy: 0x000080,
+    oldlace: 0xfdf5e6,
+    olive: 0x808000,
+    olivedrab: 0x6b8e23,
+    orange: 0xffa500,
+    orangered: 0xff4500,
+    orchid: 0xda70d6,
+    palegoldenrod: 0xeee8aa,
+    palegreen: 0x98fb98,
+    paleturquoise: 0xafeeee,
+    palevioletred: 0xdb7093,
+    papayawhip: 0xffefd5,
+    peachpuff: 0xffdab9,
+    peru: 0xcd853f,
+    pink: 0xffc0cb,
+    plum: 0xdda0dd,
+    powderblue: 0xb0e0e6,
+    purple: 0x800080,
+    rebeccapurple: 0x663399,
+    red: 0xff0000,
+    rosybrown: 0xbc8f8f,
+    royalblue: 0x4169e1,
+    saddlebrown: 0x8b4513,
+    salmon: 0xfa8072,
+    sandybrown: 0xf4a460,
+    seagreen: 0x2e8b57,
+    seashell: 0xfff5ee,
+    sienna: 0xa0522d,
+    silver: 0xc0c0c0,
+    skyblue: 0x87ceeb,
+    slateblue: 0x6a5acd,
+    slategray: 0x708090,
+    slategrey: 0x708090,
+    snow: 0xfffafa,
+    springgreen: 0x00ff7f,
+    steelblue: 0x4682b4,
+    tan: 0xd2b48c,
+    teal: 0x008080,
+    thistle: 0xd8bfd8,
+    tomato: 0xff6347,
+    turquoise: 0x40e0d0,
+    violet: 0xee82ee,
+    wheat: 0xf5deb3,
+    white: 0xffffff,
+    whitesmoke: 0xf5f5f5,
+    yellow: 0xffff00,
+    yellowgreen: 0x9acd32
+  };
+  define$2(Color$2, color$4, {
+    copy: function (channels) {
+      return Object.assign(new this.constructor(), this, channels);
+    },
+    displayable: function () {
+      return this.rgb().displayable();
+    },
+    hex: color_formatHex$2,
+    // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex$2,
+    formatHsl: color_formatHsl$2,
+    formatRgb: color_formatRgb$2,
+    toString: color_formatRgb$2
+  });
+
+  function color_formatHex$2() {
+    return this.rgb().formatHex();
+  }
+
+  function color_formatHsl$2() {
+    return hslConvert$2(this).formatHsl();
+  }
+
+  function color_formatRgb$2() {
+    return this.rgb().formatRgb();
+  }
+
+  function color$4(format) {
+    var m, l;
+    format = (format + "").trim().toLowerCase();
+    return (m = reHex$2.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$2(m) // #ff0000
+    : l === 3 ? new Rgb$2(m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, (m & 0xf) << 4 | m & 0xf, 1) // #f00
+    : l === 8 ? rgba$2(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+    : l === 4 ? rgba$2(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
+    : null // invalid hex
+    ) : (m = reRgbInteger$2.exec(format)) ? new Rgb$2(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+    : (m = reRgbPercent$2.exec(format)) ? new Rgb$2(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+    : (m = reRgbaInteger$2.exec(format)) ? rgba$2(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+    : (m = reRgbaPercent$2.exec(format)) ? rgba$2(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+    : (m = reHslPercent$2.exec(format)) ? hsla$2(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+    : (m = reHslaPercent$2.exec(format)) ? hsla$2(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+    : named$2.hasOwnProperty(format) ? rgbn$2(named$2[format]) // eslint-disable-line no-prototype-builtins
+    : format === "transparent" ? new Rgb$2(NaN, NaN, NaN, 0) : null;
+  }
+
+  function rgbn$2(n) {
+    return new Rgb$2(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  }
+
+  function rgba$2(r, g, b, a) {
+    if (a <= 0) r = g = b = NaN;
+    return new Rgb$2(r, g, b, a);
+  }
+
+  function rgbConvert$2(o) {
+    if (!(o instanceof Color$2)) o = color$4(o);
+    if (!o) return new Rgb$2();
+    o = o.rgb();
+    return new Rgb$2(o.r, o.g, o.b, o.opacity);
+  }
+  function rgb$3(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert$2(r) : new Rgb$2(r, g, b, opacity == null ? 1 : opacity);
+  }
+  function Rgb$2(r, g, b, opacity) {
+    this.r = +r;
+    this.g = +g;
+    this.b = +b;
+    this.opacity = +opacity;
+  }
+  define$2(Rgb$2, rgb$3, extend$2(Color$2, {
+    brighter: function (k) {
+      k = k == null ? brighter$2 : Math.pow(brighter$2, k);
+      return new Rgb$2(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    darker: function (k) {
+      k = k == null ? darker$2 : Math.pow(darker$2, k);
+      return new Rgb$2(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    rgb: function () {
+      return this;
+    },
+    displayable: function () {
+      return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
+    },
+    hex: rgb_formatHex$2,
+    // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex$2,
+    formatRgb: rgb_formatRgb$2,
+    toString: rgb_formatRgb$2
+  }));
+
+  function rgb_formatHex$2() {
+    return "#" + hex$2(this.r) + hex$2(this.g) + hex$2(this.b);
+  }
+
+  function rgb_formatRgb$2() {
+    var a = this.opacity;
+    a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+    return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
+  }
+
+  function hex$2(value) {
+    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    return (value < 16 ? "0" : "") + value.toString(16);
+  }
+
+  function hsla$2(h, s, l, a) {
+    if (a <= 0) h = s = l = NaN;else if (l <= 0 || l >= 1) h = s = NaN;else if (s <= 0) h = NaN;
+    return new Hsl$2(h, s, l, a);
+  }
+
+  function hslConvert$2(o) {
+    if (o instanceof Hsl$2) return new Hsl$2(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color$2)) o = color$4(o);
+    if (!o) return new Hsl$2();
+    if (o instanceof Hsl$2) return o;
+    o = o.rgb();
+    var r = o.r / 255,
+        g = o.g / 255,
+        b = o.b / 255,
+        min = Math.min(r, g, b),
+        max = Math.max(r, g, b),
+        h = NaN,
+        s = max - min,
+        l = (max + min) / 2;
+
+    if (s) {
+      if (r === max) h = (g - b) / s + (g < b) * 6;else if (g === max) h = (b - r) / s + 2;else h = (r - g) / s + 4;
+      s /= l < 0.5 ? max + min : 2 - max - min;
+      h *= 60;
+    } else {
+      s = l > 0 && l < 1 ? 0 : h;
+    }
+
+    return new Hsl$2(h, s, l, o.opacity);
+  }
+  function hsl$2(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert$2(h) : new Hsl$2(h, s, l, opacity == null ? 1 : opacity);
+  }
+
+  function Hsl$2(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
+  }
+
+  define$2(Hsl$2, hsl$2, extend$2(Color$2, {
+    brighter: function (k) {
+      k = k == null ? brighter$2 : Math.pow(brighter$2, k);
+      return new Hsl$2(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker: function (k) {
+      k = k == null ? darker$2 : Math.pow(darker$2, k);
+      return new Hsl$2(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb: function () {
+      var h = this.h % 360 + (this.h < 0) * 360,
+          s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+          l = this.l,
+          m2 = l + (l < 0.5 ? l : 1 - l) * s,
+          m1 = 2 * l - m2;
+      return new Rgb$2(hsl2rgb$2(h >= 240 ? h - 240 : h + 120, m1, m2), hsl2rgb$2(h, m1, m2), hsl2rgb$2(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
+    },
+    displayable: function () {
+      return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
+    },
+    formatHsl: function () {
+      var a = this.opacity;
+      a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+      return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
+    }
+  }));
+  /* From FvD 13.37, CSS Color Module Level 3 */
+
+  function hsl2rgb$2(h, m1, m2) {
+    return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
+  }
+
+  var constant$2 = (x => () => x);
+
+  function linear(a, d) {
+    return function (t) {
+      return a + t * d;
+    };
+  }
+
+  function exponential(a, b, y) {
+    return a = Math.pow(a, y), b = Math.pow(b, y) - a, y = 1 / y, function (t) {
+      return Math.pow(a + t * b, y);
+    };
+  }
+  function gamma(y) {
+    return (y = +y) === 1 ? nogamma : function (a, b) {
+      return b - a ? exponential(a, b, y) : constant$2(isNaN(a) ? b : a);
+    };
+  }
+  function nogamma(a, b) {
+    var d = b - a;
+    return d ? linear(a, d) : constant$2(isNaN(a) ? b : a);
+  }
+
+  var rgb$2 = (function rgbGamma(y) {
+    var color = gamma(y);
+
+    function rgb(start, end) {
+      var r = color((start = rgb$3(start)).r, (end = rgb$3(end)).r),
+          g = color(start.g, end.g),
+          b = color(start.b, end.b),
+          opacity = nogamma(start.opacity, end.opacity);
+      return function (t) {
+        start.r = r(t);
+        start.g = g(t);
+        start.b = b(t);
+        start.opacity = opacity(t);
+        return start + "";
+      };
+    }
+
+    rgb.gamma = rgbGamma;
+    return rgb;
+  })(1);
+
+  function numberArray (a, b) {
+    if (!b) b = [];
+    var n = a ? Math.min(b.length, a.length) : 0,
+        c = b.slice(),
+        i;
+    return function (t) {
+      for (i = 0; i < n; ++i) c[i] = a[i] * (1 - t) + b[i] * t;
+
+      return c;
+    };
+  }
+  function isNumberArray(x) {
+    return ArrayBuffer.isView(x) && !(x instanceof DataView);
+  }
+
+  function genericArray(a, b) {
+    var nb = b ? b.length : 0,
+        na = a ? Math.min(nb, a.length) : 0,
+        x = new Array(na),
+        c = new Array(nb),
+        i;
+
+    for (i = 0; i < na; ++i) x[i] = interpolate$1(a[i], b[i]);
+
+    for (; i < nb; ++i) c[i] = b[i];
+
+    return function (t) {
+      for (i = 0; i < na; ++i) c[i] = x[i](t);
+
+      return c;
+    };
+  }
+
+  function date (a, b) {
+    var d = new Date();
+    return a = +a, b = +b, function (t) {
+      return d.setTime(a * (1 - t) + b * t), d;
+    };
+  }
+
+  function number$3 (a, b) {
+    return a = +a, b = +b, function (t) {
+      return a * (1 - t) + b * t;
+    };
+  }
+
+  function object (a, b) {
+    var i = {},
+        c = {},
+        k;
+    if (a === null || typeof a !== "object") a = {};
+    if (b === null || typeof b !== "object") b = {};
+
+    for (k in b) {
+      if (k in a) {
+        i[k] = interpolate$1(a[k], b[k]);
+      } else {
+        c[k] = b[k];
+      }
+    }
+
+    return function (t) {
+      for (k in i) c[k] = i[k](t);
+
+      return c;
+    };
+  }
+
+  var reA = /[-+]?(?:\d+\.?\d*|\.?\d+)(?:[eE][-+]?\d+)?/g,
+      reB = new RegExp(reA.source, "g");
+
+  function zero$2(b) {
+    return function () {
+      return b;
+    };
+  }
+
+  function one$1(b) {
+    return function (t) {
+      return b(t) + "";
+    };
+  }
+
+  function string (a, b) {
+    var bi = reA.lastIndex = reB.lastIndex = 0,
+        // scan index for next number in b
+    am,
+        // current match in a
+    bm,
+        // current match in b
+    bs,
+        // string preceding current number in b, if any
+    i = -1,
+        // index in s
+    s = [],
+        // string constants and placeholders
+    q = []; // number interpolators
+    // Coerce inputs to strings.
+
+    a = a + "", b = b + ""; // Interpolate pairs of numbers in a & b.
+
+    while ((am = reA.exec(a)) && (bm = reB.exec(b))) {
+      if ((bs = bm.index) > bi) {
+        // a string precedes the next number in b
+        bs = b.slice(bi, bs);
+        if (s[i]) s[i] += bs; // coalesce with previous string
+        else s[++i] = bs;
+      }
+
+      if ((am = am[0]) === (bm = bm[0])) {
+        // numbers in a & b match
+        if (s[i]) s[i] += bm; // coalesce with previous string
+        else s[++i] = bm;
+      } else {
+        // interpolate non-matching numbers
+        s[++i] = null;
+        q.push({
+          i: i,
+          x: number$3(am, bm)
+        });
+      }
+
+      bi = reB.lastIndex;
+    } // Add remains of b.
+
+
+    if (bi < b.length) {
+      bs = b.slice(bi);
+      if (s[i]) s[i] += bs; // coalesce with previous string
+      else s[++i] = bs;
+    } // Special optimization for only a single match.
+    // Otherwise, interpolate each of the numbers and rejoin the string.
+
+
+    return s.length < 2 ? q[0] ? one$1(q[0].x) : zero$2(b) : (b = q.length, function (t) {
+      for (var i = 0, o; i < b; ++i) s[(o = q[i]).i] = o.x(t);
+
+      return s.join("");
+    });
+  }
+
+  function interpolate$1 (a, b) {
+    var t = typeof b,
+        c;
+    return b == null || t === "boolean" ? constant$2(b) : (t === "number" ? number$3 : t === "string" ? (c = color$4(b)) ? (b = c, rgb$2) : string : b instanceof color$4 ? rgb$2 : b instanceof Date ? date : isNumberArray(b) ? numberArray : Array.isArray(b) ? genericArray : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object : number$3)(a, b);
+  }
+
+  function interpolateRound (a, b) {
+    return a = +a, b = +b, function (t) {
+      return Math.round(a * (1 - t) + b * t);
+    };
+  }
+
   /**
    * Generates axis ticks for visualizing a spatial scale.
    * @constructor
@@ -28147,7 +28789,7 @@
 
           offset = items.reduce((max, value) => Math.max(max, size(value, _)), 0);
         } else {
-          size = constant$4(offset = size || 8);
+          size = constant$5(offset = size || 8);
         }
 
         items = items.map((value, index) => ingest$1({
@@ -28400,7 +29042,7 @@
       var as = _.as || ['startAngle', 'endAngle'],
           startAngle = as[0],
           endAngle = as[1],
-          field = _.field || one$2,
+          field = _.field || one$3,
           start = _.startAngle || 0,
           stop = _.endAngle != null ? _.endAngle : 2 * Math.PI,
           data = pulse.source,
@@ -28630,16 +29272,16 @@
       range = configureRangeStep(type, _, count);
     } // else if a range scheme is defined, use that
     else if (_.scheme) {
-        range = configureScheme(type, _, count);
+      range = configureScheme(type, _, count);
 
-        if (isFunction(range)) {
-          if (scale.interpolator) {
-            return scale.interpolator(range);
-          } else {
-            error("Scale type ".concat(type, " does not support interpolating color schemes."));
-          }
+      if (isFunction(range)) {
+        if (scale.interpolator) {
+          return scale.interpolator(range);
+        } else {
+          error("Scale type ".concat(type, " does not support interpolating color schemes."));
         }
-      } // given a range array for an interpolating scale, convert to interpolator
+      }
+    } // given a range array for an interpolating scale, convert to interpolator
 
 
     if (range && isInterpolating(type)) {
@@ -28648,11 +29290,11 @@
 
 
     if (range && _.interpolate && scale.interpolate) {
-      scale.interpolate(interpolate$1(_.interpolate, _.interpolateGamma));
+      scale.interpolate(interpolate$2(_.interpolate, _.interpolateGamma));
     } else if (isFunction(scale.round)) {
       scale.round(round);
     } else if (isFunction(scale.rangeRound)) {
-      scale.interpolate(round ? interpolateRound : interpolate$1$1);
+      scale.interpolate(round ? interpolateRound : interpolate$1);
     }
 
     if (range) scale.range(flip(range, _.reverse));
@@ -28769,7 +29411,7 @@
           y0 = as[0],
           y1 = as[1],
           sort = stableCompare(_.sort),
-          field = _.field || one$2,
+          field = _.field || one$3,
           stack = _.offset === Center$1 ? stackCenter : _.offset === Normalize ? stackNormalize : stackZero,
           groups,
           i,
@@ -28904,8 +29546,8 @@
   var halfPi$1 = pi$1 / 2;
   var quarterPi = pi$1 / 4;
   var tau$1 = pi$1 * 2;
-  var degrees = 180 / pi$1;
-  var radians = pi$1 / 180;
+  var degrees$1 = 180 / pi$1;
+  var radians$1 = pi$1 / 180;
   var abs$1 = Math.abs;
   var atan = Math.atan;
   var atan2 = Math.atan2;
@@ -29059,12 +29701,12 @@
   function areaPointFirst$1(lambda, phi) {
     areaStream$1.point = areaPoint$1;
     lambda00$2 = lambda, phi00$2 = phi;
-    lambda *= radians, phi *= radians;
+    lambda *= radians$1, phi *= radians$1;
     lambda0$1 = lambda, cosPhi0 = cos$1(phi = phi / 2 + quarterPi), sinPhi0 = sin$1(phi);
   }
 
   function areaPoint$1(lambda, phi) {
-    lambda *= radians, phi *= radians;
+    lambda *= radians$1, phi *= radians$1;
     phi = phi / 2 + quarterPi; // half the angular distance from south pole
     // Spherical excess E for a spherical triangle with vertices: south pole,
     // previous point, current point.  Uses a formula derived from Cagnoli’s
@@ -29122,22 +29764,22 @@
   lambda00$1, phi00$1, // first point
   p0, // previous 3D point
   deltaSum, ranges, range$3;
-  var boundsStream$1 = {
+  var boundsStream$2 = {
     point: boundsPoint$1,
     lineStart: boundsLineStart,
     lineEnd: boundsLineEnd,
     polygonStart: function () {
-      boundsStream$1.point = boundsRingPoint;
-      boundsStream$1.lineStart = boundsRingStart;
-      boundsStream$1.lineEnd = boundsRingEnd;
+      boundsStream$2.point = boundsRingPoint;
+      boundsStream$2.lineStart = boundsRingStart;
+      boundsStream$2.lineEnd = boundsRingEnd;
       deltaSum = new Adder();
       areaStream$1.polygonStart();
     },
     polygonEnd: function () {
       areaStream$1.polygonEnd();
-      boundsStream$1.point = boundsPoint$1;
-      boundsStream$1.lineStart = boundsLineStart;
-      boundsStream$1.lineEnd = boundsLineEnd;
+      boundsStream$2.point = boundsPoint$1;
+      boundsStream$2.lineStart = boundsLineStart;
+      boundsStream$2.lineEnd = boundsLineEnd;
       if (areaRingSum$1 < 0) lambda0 = -(lambda1 = 180), phi0 = -(phi1 = 90);else if (deltaSum > epsilon$2) phi1 = 90;else if (deltaSum < -epsilon$2) phi0 = -90;
       range$3[0] = lambda0, range$3[1] = lambda1;
     },
@@ -29153,7 +29795,7 @@
   }
 
   function linePoint(lambda, phi) {
-    var p = cartesian([lambda * radians, phi * radians]);
+    var p = cartesian([lambda * radians$1, phi * radians$1]);
 
     if (p0) {
       var normal = cartesianCross(p0, p),
@@ -29163,15 +29805,15 @@
       inflection = spherical(inflection);
       var delta = lambda - lambda2,
           sign = delta > 0 ? 1 : -1,
-          lambdai = inflection[0] * degrees * sign,
+          lambdai = inflection[0] * degrees$1 * sign,
           phii,
           antimeridian = abs$1(delta) > 180;
 
       if (antimeridian ^ (sign * lambda2 < lambdai && lambdai < sign * lambda)) {
-        phii = inflection[1] * degrees;
+        phii = inflection[1] * degrees$1;
         if (phii > phi1) phi1 = phii;
       } else if (lambdai = (lambdai + 360) % 360 - 180, antimeridian ^ (sign * lambda2 < lambdai && lambdai < sign * lambda)) {
-        phii = -inflection[1] * degrees;
+        phii = -inflection[1] * degrees$1;
         if (phii < phi0) phi0 = phii;
       } else {
         if (phi < phi0) phi0 = phi;
@@ -29206,12 +29848,12 @@
   }
 
   function boundsLineStart() {
-    boundsStream$1.point = linePoint;
+    boundsStream$2.point = linePoint;
   }
 
   function boundsLineEnd() {
     range$3[0] = lambda0, range$3[1] = lambda1;
-    boundsStream$1.point = boundsPoint$1;
+    boundsStream$2.point = boundsPoint$1;
     p0 = null;
   }
 
@@ -29258,7 +29900,7 @@
     var i, n, a, b, merged, deltaMax, delta;
     phi1 = lambda1 = -(lambda0 = phi0 = Infinity);
     ranges = [];
-    geoStream(feature, boundsStream$1); // First, sort ranges by their minimum longitudes.
+    geoStream(feature, boundsStream$2); // First, sort ranges by their minimum longitudes.
 
     if (n = ranges.length) {
       ranges.sort(rangeCompare); // Then, merge any ranges that overlap.
@@ -29305,7 +29947,7 @@
   }; // Arithmetic mean of Cartesian vectors.
 
   function centroidPoint$1(lambda, phi) {
-    lambda *= radians, phi *= radians;
+    lambda *= radians$1, phi *= radians$1;
     var cosPhi = cos$1(phi);
     centroidPointCartesian(cosPhi * cos$1(lambda), cosPhi * sin$1(lambda), sin$1(phi));
   }
@@ -29322,7 +29964,7 @@
   }
 
   function centroidLinePointFirst(lambda, phi) {
-    lambda *= radians, phi *= radians;
+    lambda *= radians$1, phi *= radians$1;
     var cosPhi = cos$1(phi);
     x0$4 = cosPhi * cos$1(lambda);
     y0$4 = cosPhi * sin$1(lambda);
@@ -29332,7 +29974,7 @@
   }
 
   function centroidLinePoint(lambda, phi) {
-    lambda *= radians, phi *= radians;
+    lambda *= radians$1, phi *= radians$1;
     var cosPhi = cos$1(phi),
         x = cosPhi * cos$1(lambda),
         y = cosPhi * sin$1(lambda),
@@ -29362,7 +30004,7 @@
 
   function centroidRingPointFirst(lambda, phi) {
     lambda00 = lambda, phi00 = phi;
-    lambda *= radians, phi *= radians;
+    lambda *= radians$1, phi *= radians$1;
     centroidStream$1.point = centroidRingPoint;
     var cosPhi = cos$1(phi);
     x0$4 = cosPhi * cos$1(lambda);
@@ -29372,7 +30014,7 @@
   }
 
   function centroidRingPoint(lambda, phi) {
-    lambda *= radians, phi *= radians;
+    lambda *= radians$1, phi *= radians$1;
     var cosPhi = cos$1(phi),
         x = cosPhi * cos$1(lambda),
         y = cosPhi * sin$1(lambda),
@@ -29415,7 +30057,7 @@
       if (m < epsilon2) return [NaN, NaN];
     }
 
-    return [atan2(y, x) * degrees, asin$1(z / m) * degrees];
+    return [atan2(y, x) * degrees$1, asin$1(z / m) * degrees$1];
   }
 
   function compose (a, b) {
@@ -29478,16 +30120,16 @@
   }
 
   function rotation (rotate) {
-    rotate = rotateRadians(rotate[0] * radians, rotate[1] * radians, rotate.length > 2 ? rotate[2] * radians : 0);
+    rotate = rotateRadians(rotate[0] * radians$1, rotate[1] * radians$1, rotate.length > 2 ? rotate[2] * radians$1 : 0);
 
     function forward(coordinates) {
-      coordinates = rotate(coordinates[0] * radians, coordinates[1] * radians);
-      return coordinates[0] *= degrees, coordinates[1] *= degrees, coordinates;
+      coordinates = rotate(coordinates[0] * radians$1, coordinates[1] * radians$1);
+      return coordinates[0] *= degrees$1, coordinates[1] *= degrees$1, coordinates;
     }
 
     forward.invert = function (coordinates) {
-      coordinates = rotate.invert(coordinates[0] * radians, coordinates[1] * radians);
-      return coordinates[0] *= degrees, coordinates[1] *= degrees, coordinates;
+      coordinates = rotate.invert(coordinates[0] * radians$1, coordinates[1] * radians$1);
+      return coordinates[0] *= degrees$1, coordinates[1] *= degrees$1, coordinates;
     };
 
     return forward;
@@ -29949,7 +30591,7 @@
 
   function clipCircle (radius) {
     var cr = cos$1(radius),
-        delta = 6 * radians,
+        delta = 6 * radians$1,
         smallRadius = cr > 0,
         notHemisphere = abs$1(cr) > epsilon$2; // TODO optimise for this common case
 
@@ -30514,6 +31156,8 @@
     areaPoint(x00$2, y00$2);
   }
 
+  var pathArea = areaStream;
+
   var x0$2 = Infinity,
       y0$2 = x0$2,
       x1 = -x0$2,
@@ -30537,6 +31181,8 @@
     if (y < y0$2) y0$2 = y;
     if (y > y1) y1 = y;
   }
+
+  var boundsStream$1 = boundsStream;
 
   var X0 = 0,
       Y0 = 0,
@@ -30626,6 +31272,8 @@
     Z2 += z * 3;
     centroidPoint(x0$1 = x, y0$1 = y);
   }
+
+  var pathCentroid = centroidStream;
 
   function PathContext(context) {
     this._context = context;
@@ -30717,6 +31365,8 @@
     x0 = x, y0 = y;
   }
 
+  var pathMeasure = lengthStream;
+
   function PathString() {
     this._string = [];
   }
@@ -30798,23 +31448,23 @@
     }
 
     path.area = function (object) {
-      geoStream(object, projectionStream(areaStream));
-      return areaStream.result();
+      geoStream(object, projectionStream(pathArea));
+      return pathArea.result();
     };
 
     path.measure = function (object) {
-      geoStream(object, projectionStream(lengthStream));
-      return lengthStream.result();
+      geoStream(object, projectionStream(pathMeasure));
+      return pathMeasure.result();
     };
 
     path.bounds = function (object) {
-      geoStream(object, projectionStream(boundsStream));
-      return boundsStream.result();
+      geoStream(object, projectionStream(boundsStream$1));
+      return boundsStream$1.result();
     };
 
     path.centroid = function (object) {
-      geoStream(object, projectionStream(centroidStream));
-      return centroidStream.result();
+      geoStream(object, projectionStream(pathCentroid));
+      return pathCentroid.result();
     };
 
     path.projection = function (_) {
@@ -30876,8 +31526,8 @@
     var clip = projection.clipExtent && projection.clipExtent();
     projection.scale(150).translate([0, 0]);
     if (clip != null) projection.clipExtent(null);
-    geoStream(object, projection.stream(boundsStream));
-    fitBounds(boundsStream.result());
+    geoStream(object, projection.stream(boundsStream$1));
+    fitBounds(boundsStream$1.result());
     if (clip != null) projection.clipExtent(clip);
     return projection;
   }
@@ -30916,7 +31566,7 @@
 
   var maxDepth = 16,
       // maximum depth of subdivision
-  cosMinDistance = cos$1(30 * radians); // cos(minimum angular distance)
+  cosMinDistance = cos$1(30 * radians$1); // cos(minimum angular distance)
 
   function resample (project, delta2) {
     return +delta2 ? resample$1(project, delta2) : resampleNone(project);
@@ -31026,7 +31676,7 @@
 
   var transformRadians = transformer({
     point: function (x, y) {
-      this.stream.point(x * radians, y * radians);
+      this.stream.point(x * radians$1, y * radians$1);
     }
   });
 
@@ -31121,12 +31771,12 @@
         cacheStream;
 
     function projection(point) {
-      return projectRotateTransform(point[0] * radians, point[1] * radians);
+      return projectRotateTransform(point[0] * radians$1, point[1] * radians$1);
     }
 
     function invert(point) {
       point = projectRotateTransform.invert(point[0], point[1]);
-      return point && [point[0] * degrees, point[1] * degrees];
+      return point && [point[0] * degrees$1, point[1] * degrees$1];
     }
 
     projection.stream = function (stream) {
@@ -31142,7 +31792,7 @@
     };
 
     projection.clipAngle = function (_) {
-      return arguments.length ? (preclip = +_ ? clipCircle(theta = _ * radians) : (theta = null, clipAntimeridian), reset()) : theta * degrees;
+      return arguments.length ? (preclip = +_ ? clipCircle(theta = _ * radians$1) : (theta = null, clipAntimeridian), reset()) : theta * degrees$1;
     };
 
     projection.clipExtent = function (_) {
@@ -31158,15 +31808,15 @@
     };
 
     projection.center = function (_) {
-      return arguments.length ? (lambda = _[0] % 360 * radians, phi = _[1] % 360 * radians, recenter()) : [lambda * degrees, phi * degrees];
+      return arguments.length ? (lambda = _[0] % 360 * radians$1, phi = _[1] % 360 * radians$1, recenter()) : [lambda * degrees$1, phi * degrees$1];
     };
 
     projection.rotate = function (_) {
-      return arguments.length ? (deltaLambda = _[0] % 360 * radians, deltaPhi = _[1] % 360 * radians, deltaGamma = _.length > 2 ? _[2] % 360 * radians : 0, recenter()) : [deltaLambda * degrees, deltaPhi * degrees, deltaGamma * degrees];
+      return arguments.length ? (deltaLambda = _[0] % 360 * radians$1, deltaPhi = _[1] % 360 * radians$1, deltaGamma = _.length > 2 ? _[2] % 360 * radians$1 : 0, recenter()) : [deltaLambda * degrees$1, deltaPhi * degrees$1, deltaGamma * degrees$1];
     };
 
     projection.angle = function (_) {
-      return arguments.length ? (alpha = _ % 360 * radians, recenter()) : alpha * degrees;
+      return arguments.length ? (alpha = _ % 360 * radians$1, recenter()) : alpha * degrees$1;
     };
 
     projection.reflectX = function (_) {
@@ -31226,7 +31876,7 @@
         p = m(phi0, phi1);
 
     p.parallels = function (_) {
-      return arguments.length ? m(phi0 = _[0] * radians, phi1 = _[1] * radians) : [phi0 * degrees, phi1 * degrees];
+      return arguments.length ? m(phi0 = _[0] * radians$1, phi1 = _[1] * radians$1) : [phi0 * degrees$1, phi1 * degrees$1];
     };
 
     return p;
@@ -31680,7 +32330,7 @@
     };
 
     projection.angle = function (_) {
-      return arguments.length ? (alpha = _ % 360 * radians, sa = sin$1(alpha), ca = cos$1(alpha), reset()) : alpha * degrees;
+      return arguments.length ? (alpha = _ % 360 * radians$1, sa = sin$1(alpha), ca = cos$1(alpha), reset()) : alpha * degrees$1;
     };
 
     projection.reflectX = function (_) {
@@ -31886,6 +32536,360 @@
 
   for (const key in projections) {
     projection(key, projections[key]);
+  }
+
+  function define$1 (constructor, factory, prototype) {
+    constructor.prototype = factory.prototype = prototype;
+    prototype.constructor = constructor;
+  }
+  function extend$1(parent, definition) {
+    var prototype = Object.create(parent.prototype);
+
+    for (var key in definition) prototype[key] = definition[key];
+
+    return prototype;
+  }
+
+  function Color$1() {}
+  var darker$1 = 0.7;
+  var brighter$1 = 1 / darker$1;
+  var reI$1 = "\\s*([+-]?\\d+)\\s*",
+      reN$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP$1 = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex$1 = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger$1 = new RegExp("^rgb\\(" + [reI$1, reI$1, reI$1] + "\\)$"),
+      reRgbPercent$1 = new RegExp("^rgb\\(" + [reP$1, reP$1, reP$1] + "\\)$"),
+      reRgbaInteger$1 = new RegExp("^rgba\\(" + [reI$1, reI$1, reI$1, reN$1] + "\\)$"),
+      reRgbaPercent$1 = new RegExp("^rgba\\(" + [reP$1, reP$1, reP$1, reN$1] + "\\)$"),
+      reHslPercent$1 = new RegExp("^hsl\\(" + [reN$1, reP$1, reP$1] + "\\)$"),
+      reHslaPercent$1 = new RegExp("^hsla\\(" + [reN$1, reP$1, reP$1, reN$1] + "\\)$");
+  var named$1 = {
+    aliceblue: 0xf0f8ff,
+    antiquewhite: 0xfaebd7,
+    aqua: 0x00ffff,
+    aquamarine: 0x7fffd4,
+    azure: 0xf0ffff,
+    beige: 0xf5f5dc,
+    bisque: 0xffe4c4,
+    black: 0x000000,
+    blanchedalmond: 0xffebcd,
+    blue: 0x0000ff,
+    blueviolet: 0x8a2be2,
+    brown: 0xa52a2a,
+    burlywood: 0xdeb887,
+    cadetblue: 0x5f9ea0,
+    chartreuse: 0x7fff00,
+    chocolate: 0xd2691e,
+    coral: 0xff7f50,
+    cornflowerblue: 0x6495ed,
+    cornsilk: 0xfff8dc,
+    crimson: 0xdc143c,
+    cyan: 0x00ffff,
+    darkblue: 0x00008b,
+    darkcyan: 0x008b8b,
+    darkgoldenrod: 0xb8860b,
+    darkgray: 0xa9a9a9,
+    darkgreen: 0x006400,
+    darkgrey: 0xa9a9a9,
+    darkkhaki: 0xbdb76b,
+    darkmagenta: 0x8b008b,
+    darkolivegreen: 0x556b2f,
+    darkorange: 0xff8c00,
+    darkorchid: 0x9932cc,
+    darkred: 0x8b0000,
+    darksalmon: 0xe9967a,
+    darkseagreen: 0x8fbc8f,
+    darkslateblue: 0x483d8b,
+    darkslategray: 0x2f4f4f,
+    darkslategrey: 0x2f4f4f,
+    darkturquoise: 0x00ced1,
+    darkviolet: 0x9400d3,
+    deeppink: 0xff1493,
+    deepskyblue: 0x00bfff,
+    dimgray: 0x696969,
+    dimgrey: 0x696969,
+    dodgerblue: 0x1e90ff,
+    firebrick: 0xb22222,
+    floralwhite: 0xfffaf0,
+    forestgreen: 0x228b22,
+    fuchsia: 0xff00ff,
+    gainsboro: 0xdcdcdc,
+    ghostwhite: 0xf8f8ff,
+    gold: 0xffd700,
+    goldenrod: 0xdaa520,
+    gray: 0x808080,
+    green: 0x008000,
+    greenyellow: 0xadff2f,
+    grey: 0x808080,
+    honeydew: 0xf0fff0,
+    hotpink: 0xff69b4,
+    indianred: 0xcd5c5c,
+    indigo: 0x4b0082,
+    ivory: 0xfffff0,
+    khaki: 0xf0e68c,
+    lavender: 0xe6e6fa,
+    lavenderblush: 0xfff0f5,
+    lawngreen: 0x7cfc00,
+    lemonchiffon: 0xfffacd,
+    lightblue: 0xadd8e6,
+    lightcoral: 0xf08080,
+    lightcyan: 0xe0ffff,
+    lightgoldenrodyellow: 0xfafad2,
+    lightgray: 0xd3d3d3,
+    lightgreen: 0x90ee90,
+    lightgrey: 0xd3d3d3,
+    lightpink: 0xffb6c1,
+    lightsalmon: 0xffa07a,
+    lightseagreen: 0x20b2aa,
+    lightskyblue: 0x87cefa,
+    lightslategray: 0x778899,
+    lightslategrey: 0x778899,
+    lightsteelblue: 0xb0c4de,
+    lightyellow: 0xffffe0,
+    lime: 0x00ff00,
+    limegreen: 0x32cd32,
+    linen: 0xfaf0e6,
+    magenta: 0xff00ff,
+    maroon: 0x800000,
+    mediumaquamarine: 0x66cdaa,
+    mediumblue: 0x0000cd,
+    mediumorchid: 0xba55d3,
+    mediumpurple: 0x9370db,
+    mediumseagreen: 0x3cb371,
+    mediumslateblue: 0x7b68ee,
+    mediumspringgreen: 0x00fa9a,
+    mediumturquoise: 0x48d1cc,
+    mediumvioletred: 0xc71585,
+    midnightblue: 0x191970,
+    mintcream: 0xf5fffa,
+    mistyrose: 0xffe4e1,
+    moccasin: 0xffe4b5,
+    navajowhite: 0xffdead,
+    navy: 0x000080,
+    oldlace: 0xfdf5e6,
+    olive: 0x808000,
+    olivedrab: 0x6b8e23,
+    orange: 0xffa500,
+    orangered: 0xff4500,
+    orchid: 0xda70d6,
+    palegoldenrod: 0xeee8aa,
+    palegreen: 0x98fb98,
+    paleturquoise: 0xafeeee,
+    palevioletred: 0xdb7093,
+    papayawhip: 0xffefd5,
+    peachpuff: 0xffdab9,
+    peru: 0xcd853f,
+    pink: 0xffc0cb,
+    plum: 0xdda0dd,
+    powderblue: 0xb0e0e6,
+    purple: 0x800080,
+    rebeccapurple: 0x663399,
+    red: 0xff0000,
+    rosybrown: 0xbc8f8f,
+    royalblue: 0x4169e1,
+    saddlebrown: 0x8b4513,
+    salmon: 0xfa8072,
+    sandybrown: 0xf4a460,
+    seagreen: 0x2e8b57,
+    seashell: 0xfff5ee,
+    sienna: 0xa0522d,
+    silver: 0xc0c0c0,
+    skyblue: 0x87ceeb,
+    slateblue: 0x6a5acd,
+    slategray: 0x708090,
+    slategrey: 0x708090,
+    snow: 0xfffafa,
+    springgreen: 0x00ff7f,
+    steelblue: 0x4682b4,
+    tan: 0xd2b48c,
+    teal: 0x008080,
+    thistle: 0xd8bfd8,
+    tomato: 0xff6347,
+    turquoise: 0x40e0d0,
+    violet: 0xee82ee,
+    wheat: 0xf5deb3,
+    white: 0xffffff,
+    whitesmoke: 0xf5f5f5,
+    yellow: 0xffff00,
+    yellowgreen: 0x9acd32
+  };
+  define$1(Color$1, color$3, {
+    copy: function (channels) {
+      return Object.assign(new this.constructor(), this, channels);
+    },
+    displayable: function () {
+      return this.rgb().displayable();
+    },
+    hex: color_formatHex$1,
+    // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex$1,
+    formatHsl: color_formatHsl$1,
+    formatRgb: color_formatRgb$1,
+    toString: color_formatRgb$1
+  });
+
+  function color_formatHex$1() {
+    return this.rgb().formatHex();
+  }
+
+  function color_formatHsl$1() {
+    return hslConvert$1(this).formatHsl();
+  }
+
+  function color_formatRgb$1() {
+    return this.rgb().formatRgb();
+  }
+
+  function color$3(format) {
+    var m, l;
+    format = (format + "").trim().toLowerCase();
+    return (m = reHex$1.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn$1(m) // #ff0000
+    : l === 3 ? new Rgb$1(m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, (m & 0xf) << 4 | m & 0xf, 1) // #f00
+    : l === 8 ? rgba$1(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+    : l === 4 ? rgba$1(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
+    : null // invalid hex
+    ) : (m = reRgbInteger$1.exec(format)) ? new Rgb$1(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+    : (m = reRgbPercent$1.exec(format)) ? new Rgb$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+    : (m = reRgbaInteger$1.exec(format)) ? rgba$1(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+    : (m = reRgbaPercent$1.exec(format)) ? rgba$1(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+    : (m = reHslPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+    : (m = reHslaPercent$1.exec(format)) ? hsla$1(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+    : named$1.hasOwnProperty(format) ? rgbn$1(named$1[format]) // eslint-disable-line no-prototype-builtins
+    : format === "transparent" ? new Rgb$1(NaN, NaN, NaN, 0) : null;
+  }
+
+  function rgbn$1(n) {
+    return new Rgb$1(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  }
+
+  function rgba$1(r, g, b, a) {
+    if (a <= 0) r = g = b = NaN;
+    return new Rgb$1(r, g, b, a);
+  }
+
+  function rgbConvert$1(o) {
+    if (!(o instanceof Color$1)) o = color$3(o);
+    if (!o) return new Rgb$1();
+    o = o.rgb();
+    return new Rgb$1(o.r, o.g, o.b, o.opacity);
+  }
+  function rgb$1(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert$1(r) : new Rgb$1(r, g, b, opacity == null ? 1 : opacity);
+  }
+  function Rgb$1(r, g, b, opacity) {
+    this.r = +r;
+    this.g = +g;
+    this.b = +b;
+    this.opacity = +opacity;
+  }
+  define$1(Rgb$1, rgb$1, extend$1(Color$1, {
+    brighter: function (k) {
+      k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+      return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    darker: function (k) {
+      k = k == null ? darker$1 : Math.pow(darker$1, k);
+      return new Rgb$1(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    rgb: function () {
+      return this;
+    },
+    displayable: function () {
+      return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
+    },
+    hex: rgb_formatHex$1,
+    // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex$1,
+    formatRgb: rgb_formatRgb$1,
+    toString: rgb_formatRgb$1
+  }));
+
+  function rgb_formatHex$1() {
+    return "#" + hex$1(this.r) + hex$1(this.g) + hex$1(this.b);
+  }
+
+  function rgb_formatRgb$1() {
+    var a = this.opacity;
+    a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+    return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
+  }
+
+  function hex$1(value) {
+    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    return (value < 16 ? "0" : "") + value.toString(16);
+  }
+
+  function hsla$1(h, s, l, a) {
+    if (a <= 0) h = s = l = NaN;else if (l <= 0 || l >= 1) h = s = NaN;else if (s <= 0) h = NaN;
+    return new Hsl$1(h, s, l, a);
+  }
+
+  function hslConvert$1(o) {
+    if (o instanceof Hsl$1) return new Hsl$1(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color$1)) o = color$3(o);
+    if (!o) return new Hsl$1();
+    if (o instanceof Hsl$1) return o;
+    o = o.rgb();
+    var r = o.r / 255,
+        g = o.g / 255,
+        b = o.b / 255,
+        min = Math.min(r, g, b),
+        max = Math.max(r, g, b),
+        h = NaN,
+        s = max - min,
+        l = (max + min) / 2;
+
+    if (s) {
+      if (r === max) h = (g - b) / s + (g < b) * 6;else if (g === max) h = (b - r) / s + 2;else h = (r - g) / s + 4;
+      s /= l < 0.5 ? max + min : 2 - max - min;
+      h *= 60;
+    } else {
+      s = l > 0 && l < 1 ? 0 : h;
+    }
+
+    return new Hsl$1(h, s, l, o.opacity);
+  }
+  function hsl$1(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert$1(h) : new Hsl$1(h, s, l, opacity == null ? 1 : opacity);
+  }
+
+  function Hsl$1(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
+  }
+
+  define$1(Hsl$1, hsl$1, extend$1(Color$1, {
+    brighter: function (k) {
+      k = k == null ? brighter$1 : Math.pow(brighter$1, k);
+      return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker: function (k) {
+      k = k == null ? darker$1 : Math.pow(darker$1, k);
+      return new Hsl$1(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb: function () {
+      var h = this.h % 360 + (this.h < 0) * 360,
+          s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+          l = this.l,
+          m2 = l + (l < 0.5 ? l : 1 - l) * s,
+          m1 = 2 * l - m2;
+      return new Rgb$1(hsl2rgb$1(h >= 240 ? h - 240 : h + 120, m1, m2), hsl2rgb$1(h, m1, m2), hsl2rgb$1(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
+    },
+    displayable: function () {
+      return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
+    },
+    formatHsl: function () {
+      var a = this.opacity;
+      a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+      return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
+    }
+  }));
+  /* From FvD 13.37, CSS Color Module Level 3 */
+
+  function hsl2rgb$1(h, m1, m2) {
+    return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
   }
 
   function noop$1() {}
@@ -32304,14 +33308,14 @@
   }
 
   function number$2(_) {
-    return isFunction(_) ? _ : constant$4(+_);
+    return isFunction(_) ? _ : constant$5(+_);
   } // Implementation adapted from d3/d3-contour. Thanks!
 
 
   function density2D() {
     var x = d => d[0],
         y = d => d[1],
-        weight = one$2,
+        weight = one$3,
         bandwidth = [-1, -1],
         dx = 960,
         dy = 500,
@@ -33181,12 +34185,12 @@
       source.forEach(t => {
         const v = field(t); // build proxy data object
 
-        const o = extend$1({}, t, obj); // set maximum value if not globally shared
+        const o = extend$4({}, t, obj); // set maximum value if not globally shared
 
         if (!shared) o.$max = max$2(v.values || []); // generate canvas image
         // optimize color/opacity if not pixel-dependent
 
-        t[as] = toCanvas(v, o, color.dep ? color : constant$4(color(o)), opacity.dep ? opacity : constant$4(opacity(o)));
+        t[as] = toCanvas(v, o, color.dep ? color : constant$5(color(o)), opacity.dep ? opacity : constant$5(opacity(o)));
       });
       return pulse.reflow(true).modifies(as);
     }
@@ -33202,7 +34206,7 @@
       f.dep = dependency(color);
     } else {
       // default to mid-grey
-      f = constant$4(rgb$1(color || '#888'));
+      f = constant$5(rgb$1(color || '#888'));
     }
 
     return f;
@@ -33217,7 +34221,7 @@
 
       f.dep = dependency(opacity);
     } else if (opacity) {
-      f = constant$4(opacity);
+      f = constant$5(opacity);
     } else {
       // default to [0, max] opacity gradient
       f = obj => obj.$value / obj.$max || 0;
@@ -33244,7 +34248,7 @@
           x2 = grid.x2 || n,
           y2 = grid.y2 || m,
           val = grid.values,
-          value = val ? i => val[i] : zero$3,
+          value = val ? i => val[i] : zero$4,
           can = domCanvas(x2 - x1, y2 - y1),
           ctx = can.getContext('2d'),
           img = ctx.getImageData(0, 0, x2 - x1, y2 - y1),
@@ -33485,36 +34489,36 @@
       y1 = (y0 = Math.floor(y)) + 1;
     } // Otherwise, double repeatedly to cover.
     else {
-        var z = x1 - x0 || 1,
-            node = this._root,
-            parent,
-            i;
+      var z = x1 - x0 || 1,
+          node = this._root,
+          parent,
+          i;
 
-        while (x0 > x || x >= x1 || y0 > y || y >= y1) {
-          i = (y < y0) << 1 | x < x0;
-          parent = new Array(4), parent[i] = node, node = parent, z *= 2;
+      while (x0 > x || x >= x1 || y0 > y || y >= y1) {
+        i = (y < y0) << 1 | x < x0;
+        parent = new Array(4), parent[i] = node, node = parent, z *= 2;
 
-          switch (i) {
-            case 0:
-              x1 = x0 + z, y1 = y0 + z;
-              break;
+        switch (i) {
+          case 0:
+            x1 = x0 + z, y1 = y0 + z;
+            break;
 
-            case 1:
-              x0 = x1 - z, y1 = y0 + z;
-              break;
+          case 1:
+            x0 = x1 - z, y1 = y0 + z;
+            break;
 
-            case 2:
-              x1 = x0 + z, y0 = y1 - z;
-              break;
+          case 2:
+            x1 = x0 + z, y0 = y1 - z;
+            break;
 
-            case 3:
-              x0 = x1 - z, y0 = y1 - z;
-              break;
-          }
+          case 3:
+            x0 = x1 - z, y0 = y1 - z;
+            break;
         }
-
-        if (this._root && this._root.length) this._root = node;
       }
+
+      if (this._root && this._root.length) this._root = node;
+    }
 
     this._x0 = x0;
     this._y0 = y0;
@@ -33580,17 +34584,17 @@
         }
       } // Visit this point. (Visiting coincident points isn’t necessary!)
       else {
-          var dx = x - +this._x.call(null, node.data),
-              dy = y - +this._y.call(null, node.data),
-              d2 = dx * dx + dy * dy;
+        var dx = x - +this._x.call(null, node.data),
+            dy = y - +this._y.call(null, node.data),
+            d2 = dx * dx + dy * dy;
 
-          if (d2 < radius) {
-            var d = Math.sqrt(radius = d2);
-            x0 = x - d, y0 = y - d;
-            x3 = x + d, y3 = y + d;
-            data = node.data;
-          }
+        if (d2 < radius) {
+          var d = Math.sqrt(radius = d2);
+          x0 = x - d, y0 = y - d;
+          x3 = x + d, y3 = y + d;
+          data = node.data;
         }
+      }
     }
 
     return data;
@@ -34135,100 +35139,100 @@
     return type;
   }
 
-  var frame = 0,
+  var frame$1 = 0,
       // is an animation frame pending?
-  timeout = 0,
+  timeout$1 = 0,
       // is a timeout pending?
-  interval$2 = 0,
+  interval$3 = 0,
       // are any timers active?
-  pokeDelay = 1000,
+  pokeDelay$1 = 1000,
       // how frequently we check for clock skew
-  taskHead,
-      taskTail,
-      clockLast = 0,
-      clockNow = 0,
-      clockSkew = 0,
-      clock = typeof performance === "object" && performance.now ? performance : Date,
-      setFrame = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function (f) {
+  taskHead$1,
+      taskTail$1,
+      clockLast$1 = 0,
+      clockNow$1 = 0,
+      clockSkew$1 = 0,
+      clock$1 = typeof performance === "object" && performance.now ? performance : Date,
+      setFrame$1 = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function (f) {
     setTimeout(f, 17);
   };
-  function now() {
-    return clockNow || (setFrame(clearNow), clockNow = clock.now() + clockSkew);
+  function now$1() {
+    return clockNow$1 || (setFrame$1(clearNow$1), clockNow$1 = clock$1.now() + clockSkew$1);
   }
 
-  function clearNow() {
-    clockNow = 0;
+  function clearNow$1() {
+    clockNow$1 = 0;
   }
 
-  function Timer$1() {
+  function Timer$2() {
     this._call = this._time = this._next = null;
   }
-  Timer$1.prototype = timer$1.prototype = {
-    constructor: Timer$1,
+  Timer$2.prototype = timer$1.prototype = {
+    constructor: Timer$2,
     restart: function (callback, delay, time) {
       if (typeof callback !== "function") throw new TypeError("callback is not a function");
-      time = (time == null ? now() : +time) + (delay == null ? 0 : +delay);
+      time = (time == null ? now$1() : +time) + (delay == null ? 0 : +delay);
 
-      if (!this._next && taskTail !== this) {
-        if (taskTail) taskTail._next = this;else taskHead = this;
-        taskTail = this;
+      if (!this._next && taskTail$1 !== this) {
+        if (taskTail$1) taskTail$1._next = this;else taskHead$1 = this;
+        taskTail$1 = this;
       }
 
       this._call = callback;
       this._time = time;
-      sleep();
+      sleep$1();
     },
     stop: function () {
       if (this._call) {
         this._call = null;
         this._time = Infinity;
-        sleep();
+        sleep$1();
       }
     }
   };
   function timer$1(callback, delay, time) {
-    var t = new Timer$1();
+    var t = new Timer$2();
     t.restart(callback, delay, time);
     return t;
   }
-  function timerFlush() {
-    now(); // Get the current time, if not already set.
+  function timerFlush$1() {
+    now$1(); // Get the current time, if not already set.
 
-    ++frame; // Pretend we’ve set an alarm, if we haven’t already.
+    ++frame$1; // Pretend we’ve set an alarm, if we haven’t already.
 
-    var t = taskHead,
+    var t = taskHead$1,
         e;
 
     while (t) {
-      if ((e = clockNow - t._time) >= 0) t._call.call(null, e);
+      if ((e = clockNow$1 - t._time) >= 0) t._call.call(null, e);
       t = t._next;
     }
 
-    --frame;
+    --frame$1;
   }
 
-  function wake() {
-    clockNow = (clockLast = clock.now()) + clockSkew;
-    frame = timeout = 0;
+  function wake$1() {
+    clockNow$1 = (clockLast$1 = clock$1.now()) + clockSkew$1;
+    frame$1 = timeout$1 = 0;
 
     try {
-      timerFlush();
+      timerFlush$1();
     } finally {
-      frame = 0;
-      nap();
-      clockNow = 0;
+      frame$1 = 0;
+      nap$1();
+      clockNow$1 = 0;
     }
   }
 
-  function poke() {
-    var now = clock.now(),
-        delay = now - clockLast;
-    if (delay > pokeDelay) clockSkew -= delay, clockLast = now;
+  function poke$1() {
+    var now = clock$1.now(),
+        delay = now - clockLast$1;
+    if (delay > pokeDelay$1) clockSkew$1 -= delay, clockLast$1 = now;
   }
 
-  function nap() {
+  function nap$1() {
     var t0,
-        t1 = taskHead,
+        t1 = taskHead$1,
         t2,
         time = Infinity;
 
@@ -34238,49 +35242,27 @@
         t0 = t1, t1 = t1._next;
       } else {
         t2 = t1._next, t1._next = null;
-        t1 = t0 ? t0._next = t2 : taskHead = t2;
+        t1 = t0 ? t0._next = t2 : taskHead$1 = t2;
       }
     }
 
-    taskTail = t0;
-    sleep(time);
+    taskTail$1 = t0;
+    sleep$1(time);
   }
 
-  function sleep(time) {
-    if (frame) return; // Soonest alarm already set, or will be.
+  function sleep$1(time) {
+    if (frame$1) return; // Soonest alarm already set, or will be.
 
-    if (timeout) timeout = clearTimeout(timeout);
-    var delay = time - clockNow; // Strictly less than if we recomputed clockNow.
+    if (timeout$1) timeout$1 = clearTimeout(timeout$1);
+    var delay = time - clockNow$1; // Strictly less than if we recomputed clockNow.
 
     if (delay > 24) {
-      if (time < Infinity) timeout = setTimeout(wake, time - clock.now() - clockSkew);
-      if (interval$2) interval$2 = clearInterval(interval$2);
+      if (time < Infinity) timeout$1 = setTimeout(wake$1, time - clock$1.now() - clockSkew$1);
+      if (interval$3) interval$3 = clearInterval(interval$3);
     } else {
-      if (!interval$2) clockLast = clock.now(), interval$2 = setInterval(poke, pokeDelay);
-      frame = 1, setFrame(wake);
+      if (!interval$3) clockLast$1 = clock$1.now(), interval$3 = setInterval(poke$1, pokeDelay$1);
+      frame$1 = 1, setFrame$1(wake$1);
     }
-  }
-
-  function interval$1 (callback, delay, time) {
-    var t = new Timer$1(),
-        total = delay;
-    if (delay == null) return t.restart(callback, delay, time), t;
-    t._restart = t.restart;
-
-    t.restart = function (callback, delay, time) {
-      delay = +delay, time = time == null ? now() : +time;
-
-      t._restart(function tick(elapsed) {
-        elapsed += total;
-
-        t._restart(tick, total += delay, time);
-
-        callback(elapsed);
-      }, delay, time);
-    };
-
-    t.restart(callback, delay, time);
-    return t;
   }
 
   // https://en.wikipedia.org/wiki/Linear_congruential_generator#Parameters_in_common_use
@@ -34478,12 +35460,12 @@
         quad.y = y / weight;
       } // For leaf nodes, accumulate forces from coincident quadrants.
       else {
-          q = quad;
-          q.x = q.data.x;
-          q.y = q.data.y;
+        q = quad;
+        q.x = q.data.x;
+        q.y = q.data.y;
 
-          do strength += strengths[q.data.index]; while (q = q.next);
-        }
+        do strength += strengths[q.data.index]; while (q = q.next);
+      }
 
       quad.value = strength;
     }
@@ -35940,23 +36922,23 @@
       if (nodeSize) root.eachBefore(sizeNode); // If a fixed tree size is specified, scale x and y based on the extent.
       // Compute the left-most, right-most, and depth-most nodes for extents.
       else {
-          var left = root,
-              right = root,
-              bottom = root;
-          root.eachBefore(function (node) {
-            if (node.x < left.x) left = node;
-            if (node.x > right.x) right = node;
-            if (node.depth > bottom.depth) bottom = node;
-          });
-          var s = left === right ? 1 : separation(left, right) / 2,
-              tx = s - left.x,
-              kx = dx / (right.x + s + tx),
-              ky = dy / (bottom.depth || 1);
-          root.eachBefore(function (node) {
-            node.x = (node.x + tx) * kx;
-            node.y = node.depth * ky;
-          });
-        }
+        var left = root,
+            right = root,
+            bottom = root;
+        root.eachBefore(function (node) {
+          if (node.x < left.x) left = node;
+          if (node.x > right.x) right = node;
+          if (node.depth > bottom.depth) bottom = node;
+        });
+        var s = left === right ? 1 : separation(left, right) / 2,
+            tx = s - left.x,
+            kx = dx / (right.x + s + tx),
+            ky = dy / (bottom.depth || 1);
+        root.eachBefore(function (node) {
+          node.x = (node.x + tx) * kx;
+          node.y = node.depth * ky;
+        });
+      }
       return root;
     } // Computes a preliminary x-coordinate for v. Before that, FIRST WALK is
     // applied recursively to the children of v, as well as the function
@@ -36498,7 +37480,7 @@
       setParams(layout, this.params, _);
 
       if (layout.separation) {
-        layout.separation(_.separation !== false ? defaultSeparation : one$2);
+        layout.separation(_.separation !== false ? defaultSeparation : one$3);
       }
 
       try {
@@ -37957,7 +38939,7 @@
 
   });
   const Methods = {
-    linear: linear$2,
+    linear: linear$3,
     log: log$3,
     exp: exp$1,
     pow: pow$3,
@@ -40062,7 +41044,7 @@
             as = _.as || Output;
       let fontSize = _.fontSize || 14,
           range;
-      isFunction(fontSize) ? range = _.fontSizeRange : fontSize = constant$4(fontSize); // create font size scaling function as needed
+      isFunction(fontSize) ? range = _.fontSizeRange : fontSize = constant$5(fontSize); // create font size scaling function as needed
 
       if (range) {
         const fsize = fontSize,
@@ -42617,6 +43599,466 @@
     return codegen;
   }
 
+  function define (constructor, factory, prototype) {
+    constructor.prototype = factory.prototype = prototype;
+    prototype.constructor = constructor;
+  }
+  function extend(parent, definition) {
+    var prototype = Object.create(parent.prototype);
+
+    for (var key in definition) prototype[key] = definition[key];
+
+    return prototype;
+  }
+
+  function Color() {}
+  var darker = 0.7;
+  var brighter = 1 / darker;
+  var reI = "\\s*([+-]?\\d+)\\s*",
+      reN = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)\\s*",
+      reP = "\\s*([+-]?\\d*\\.?\\d+(?:[eE][+-]?\\d+)?)%\\s*",
+      reHex = /^#([0-9a-f]{3,8})$/,
+      reRgbInteger = new RegExp("^rgb\\(" + [reI, reI, reI] + "\\)$"),
+      reRgbPercent = new RegExp("^rgb\\(" + [reP, reP, reP] + "\\)$"),
+      reRgbaInteger = new RegExp("^rgba\\(" + [reI, reI, reI, reN] + "\\)$"),
+      reRgbaPercent = new RegExp("^rgba\\(" + [reP, reP, reP, reN] + "\\)$"),
+      reHslPercent = new RegExp("^hsl\\(" + [reN, reP, reP] + "\\)$"),
+      reHslaPercent = new RegExp("^hsla\\(" + [reN, reP, reP, reN] + "\\)$");
+  var named = {
+    aliceblue: 0xf0f8ff,
+    antiquewhite: 0xfaebd7,
+    aqua: 0x00ffff,
+    aquamarine: 0x7fffd4,
+    azure: 0xf0ffff,
+    beige: 0xf5f5dc,
+    bisque: 0xffe4c4,
+    black: 0x000000,
+    blanchedalmond: 0xffebcd,
+    blue: 0x0000ff,
+    blueviolet: 0x8a2be2,
+    brown: 0xa52a2a,
+    burlywood: 0xdeb887,
+    cadetblue: 0x5f9ea0,
+    chartreuse: 0x7fff00,
+    chocolate: 0xd2691e,
+    coral: 0xff7f50,
+    cornflowerblue: 0x6495ed,
+    cornsilk: 0xfff8dc,
+    crimson: 0xdc143c,
+    cyan: 0x00ffff,
+    darkblue: 0x00008b,
+    darkcyan: 0x008b8b,
+    darkgoldenrod: 0xb8860b,
+    darkgray: 0xa9a9a9,
+    darkgreen: 0x006400,
+    darkgrey: 0xa9a9a9,
+    darkkhaki: 0xbdb76b,
+    darkmagenta: 0x8b008b,
+    darkolivegreen: 0x556b2f,
+    darkorange: 0xff8c00,
+    darkorchid: 0x9932cc,
+    darkred: 0x8b0000,
+    darksalmon: 0xe9967a,
+    darkseagreen: 0x8fbc8f,
+    darkslateblue: 0x483d8b,
+    darkslategray: 0x2f4f4f,
+    darkslategrey: 0x2f4f4f,
+    darkturquoise: 0x00ced1,
+    darkviolet: 0x9400d3,
+    deeppink: 0xff1493,
+    deepskyblue: 0x00bfff,
+    dimgray: 0x696969,
+    dimgrey: 0x696969,
+    dodgerblue: 0x1e90ff,
+    firebrick: 0xb22222,
+    floralwhite: 0xfffaf0,
+    forestgreen: 0x228b22,
+    fuchsia: 0xff00ff,
+    gainsboro: 0xdcdcdc,
+    ghostwhite: 0xf8f8ff,
+    gold: 0xffd700,
+    goldenrod: 0xdaa520,
+    gray: 0x808080,
+    green: 0x008000,
+    greenyellow: 0xadff2f,
+    grey: 0x808080,
+    honeydew: 0xf0fff0,
+    hotpink: 0xff69b4,
+    indianred: 0xcd5c5c,
+    indigo: 0x4b0082,
+    ivory: 0xfffff0,
+    khaki: 0xf0e68c,
+    lavender: 0xe6e6fa,
+    lavenderblush: 0xfff0f5,
+    lawngreen: 0x7cfc00,
+    lemonchiffon: 0xfffacd,
+    lightblue: 0xadd8e6,
+    lightcoral: 0xf08080,
+    lightcyan: 0xe0ffff,
+    lightgoldenrodyellow: 0xfafad2,
+    lightgray: 0xd3d3d3,
+    lightgreen: 0x90ee90,
+    lightgrey: 0xd3d3d3,
+    lightpink: 0xffb6c1,
+    lightsalmon: 0xffa07a,
+    lightseagreen: 0x20b2aa,
+    lightskyblue: 0x87cefa,
+    lightslategray: 0x778899,
+    lightslategrey: 0x778899,
+    lightsteelblue: 0xb0c4de,
+    lightyellow: 0xffffe0,
+    lime: 0x00ff00,
+    limegreen: 0x32cd32,
+    linen: 0xfaf0e6,
+    magenta: 0xff00ff,
+    maroon: 0x800000,
+    mediumaquamarine: 0x66cdaa,
+    mediumblue: 0x0000cd,
+    mediumorchid: 0xba55d3,
+    mediumpurple: 0x9370db,
+    mediumseagreen: 0x3cb371,
+    mediumslateblue: 0x7b68ee,
+    mediumspringgreen: 0x00fa9a,
+    mediumturquoise: 0x48d1cc,
+    mediumvioletred: 0xc71585,
+    midnightblue: 0x191970,
+    mintcream: 0xf5fffa,
+    mistyrose: 0xffe4e1,
+    moccasin: 0xffe4b5,
+    navajowhite: 0xffdead,
+    navy: 0x000080,
+    oldlace: 0xfdf5e6,
+    olive: 0x808000,
+    olivedrab: 0x6b8e23,
+    orange: 0xffa500,
+    orangered: 0xff4500,
+    orchid: 0xda70d6,
+    palegoldenrod: 0xeee8aa,
+    palegreen: 0x98fb98,
+    paleturquoise: 0xafeeee,
+    palevioletred: 0xdb7093,
+    papayawhip: 0xffefd5,
+    peachpuff: 0xffdab9,
+    peru: 0xcd853f,
+    pink: 0xffc0cb,
+    plum: 0xdda0dd,
+    powderblue: 0xb0e0e6,
+    purple: 0x800080,
+    rebeccapurple: 0x663399,
+    red: 0xff0000,
+    rosybrown: 0xbc8f8f,
+    royalblue: 0x4169e1,
+    saddlebrown: 0x8b4513,
+    salmon: 0xfa8072,
+    sandybrown: 0xf4a460,
+    seagreen: 0x2e8b57,
+    seashell: 0xfff5ee,
+    sienna: 0xa0522d,
+    silver: 0xc0c0c0,
+    skyblue: 0x87ceeb,
+    slateblue: 0x6a5acd,
+    slategray: 0x708090,
+    slategrey: 0x708090,
+    snow: 0xfffafa,
+    springgreen: 0x00ff7f,
+    steelblue: 0x4682b4,
+    tan: 0xd2b48c,
+    teal: 0x008080,
+    thistle: 0xd8bfd8,
+    tomato: 0xff6347,
+    turquoise: 0x40e0d0,
+    violet: 0xee82ee,
+    wheat: 0xf5deb3,
+    white: 0xffffff,
+    whitesmoke: 0xf5f5f5,
+    yellow: 0xffff00,
+    yellowgreen: 0x9acd32
+  };
+  define(Color, color$2, {
+    copy: function (channels) {
+      return Object.assign(new this.constructor(), this, channels);
+    },
+    displayable: function () {
+      return this.rgb().displayable();
+    },
+    hex: color_formatHex,
+    // Deprecated! Use color.formatHex.
+    formatHex: color_formatHex,
+    formatHsl: color_formatHsl,
+    formatRgb: color_formatRgb,
+    toString: color_formatRgb
+  });
+
+  function color_formatHex() {
+    return this.rgb().formatHex();
+  }
+
+  function color_formatHsl() {
+    return hslConvert(this).formatHsl();
+  }
+
+  function color_formatRgb() {
+    return this.rgb().formatRgb();
+  }
+
+  function color$2(format) {
+    var m, l;
+    format = (format + "").trim().toLowerCase();
+    return (m = reHex.exec(format)) ? (l = m[1].length, m = parseInt(m[1], 16), l === 6 ? rgbn(m) // #ff0000
+    : l === 3 ? new Rgb(m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, (m & 0xf) << 4 | m & 0xf, 1) // #f00
+    : l === 8 ? rgba(m >> 24 & 0xff, m >> 16 & 0xff, m >> 8 & 0xff, (m & 0xff) / 0xff) // #ff000000
+    : l === 4 ? rgba(m >> 12 & 0xf | m >> 8 & 0xf0, m >> 8 & 0xf | m >> 4 & 0xf0, m >> 4 & 0xf | m & 0xf0, ((m & 0xf) << 4 | m & 0xf) / 0xff) // #f000
+    : null // invalid hex
+    ) : (m = reRgbInteger.exec(format)) ? new Rgb(m[1], m[2], m[3], 1) // rgb(255, 0, 0)
+    : (m = reRgbPercent.exec(format)) ? new Rgb(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, 1) // rgb(100%, 0%, 0%)
+    : (m = reRgbaInteger.exec(format)) ? rgba(m[1], m[2], m[3], m[4]) // rgba(255, 0, 0, 1)
+    : (m = reRgbaPercent.exec(format)) ? rgba(m[1] * 255 / 100, m[2] * 255 / 100, m[3] * 255 / 100, m[4]) // rgb(100%, 0%, 0%, 1)
+    : (m = reHslPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, 1) // hsl(120, 50%, 50%)
+    : (m = reHslaPercent.exec(format)) ? hsla(m[1], m[2] / 100, m[3] / 100, m[4]) // hsla(120, 50%, 50%, 1)
+    : named.hasOwnProperty(format) ? rgbn(named[format]) // eslint-disable-line no-prototype-builtins
+    : format === "transparent" ? new Rgb(NaN, NaN, NaN, 0) : null;
+  }
+
+  function rgbn(n) {
+    return new Rgb(n >> 16 & 0xff, n >> 8 & 0xff, n & 0xff, 1);
+  }
+
+  function rgba(r, g, b, a) {
+    if (a <= 0) r = g = b = NaN;
+    return new Rgb(r, g, b, a);
+  }
+
+  function rgbConvert(o) {
+    if (!(o instanceof Color)) o = color$2(o);
+    if (!o) return new Rgb();
+    o = o.rgb();
+    return new Rgb(o.r, o.g, o.b, o.opacity);
+  }
+  function rgb(r, g, b, opacity) {
+    return arguments.length === 1 ? rgbConvert(r) : new Rgb(r, g, b, opacity == null ? 1 : opacity);
+  }
+  function Rgb(r, g, b, opacity) {
+    this.r = +r;
+    this.g = +g;
+    this.b = +b;
+    this.opacity = +opacity;
+  }
+  define(Rgb, rgb, extend(Color, {
+    brighter: function (k) {
+      k = k == null ? brighter : Math.pow(brighter, k);
+      return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    darker: function (k) {
+      k = k == null ? darker : Math.pow(darker, k);
+      return new Rgb(this.r * k, this.g * k, this.b * k, this.opacity);
+    },
+    rgb: function () {
+      return this;
+    },
+    displayable: function () {
+      return -0.5 <= this.r && this.r < 255.5 && -0.5 <= this.g && this.g < 255.5 && -0.5 <= this.b && this.b < 255.5 && 0 <= this.opacity && this.opacity <= 1;
+    },
+    hex: rgb_formatHex,
+    // Deprecated! Use color.formatHex.
+    formatHex: rgb_formatHex,
+    formatRgb: rgb_formatRgb,
+    toString: rgb_formatRgb
+  }));
+
+  function rgb_formatHex() {
+    return "#" + hex(this.r) + hex(this.g) + hex(this.b);
+  }
+
+  function rgb_formatRgb() {
+    var a = this.opacity;
+    a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+    return (a === 1 ? "rgb(" : "rgba(") + Math.max(0, Math.min(255, Math.round(this.r) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.g) || 0)) + ", " + Math.max(0, Math.min(255, Math.round(this.b) || 0)) + (a === 1 ? ")" : ", " + a + ")");
+  }
+
+  function hex(value) {
+    value = Math.max(0, Math.min(255, Math.round(value) || 0));
+    return (value < 16 ? "0" : "") + value.toString(16);
+  }
+
+  function hsla(h, s, l, a) {
+    if (a <= 0) h = s = l = NaN;else if (l <= 0 || l >= 1) h = s = NaN;else if (s <= 0) h = NaN;
+    return new Hsl(h, s, l, a);
+  }
+
+  function hslConvert(o) {
+    if (o instanceof Hsl) return new Hsl(o.h, o.s, o.l, o.opacity);
+    if (!(o instanceof Color)) o = color$2(o);
+    if (!o) return new Hsl();
+    if (o instanceof Hsl) return o;
+    o = o.rgb();
+    var r = o.r / 255,
+        g = o.g / 255,
+        b = o.b / 255,
+        min = Math.min(r, g, b),
+        max = Math.max(r, g, b),
+        h = NaN,
+        s = max - min,
+        l = (max + min) / 2;
+
+    if (s) {
+      if (r === max) h = (g - b) / s + (g < b) * 6;else if (g === max) h = (b - r) / s + 2;else h = (r - g) / s + 4;
+      s /= l < 0.5 ? max + min : 2 - max - min;
+      h *= 60;
+    } else {
+      s = l > 0 && l < 1 ? 0 : h;
+    }
+
+    return new Hsl(h, s, l, o.opacity);
+  }
+  function hsl(h, s, l, opacity) {
+    return arguments.length === 1 ? hslConvert(h) : new Hsl(h, s, l, opacity == null ? 1 : opacity);
+  }
+
+  function Hsl(h, s, l, opacity) {
+    this.h = +h;
+    this.s = +s;
+    this.l = +l;
+    this.opacity = +opacity;
+  }
+
+  define(Hsl, hsl, extend(Color, {
+    brighter: function (k) {
+      k = k == null ? brighter : Math.pow(brighter, k);
+      return new Hsl(this.h, this.s, this.l * k, this.opacity);
+    },
+    darker: function (k) {
+      k = k == null ? darker : Math.pow(darker, k);
+      return new Hsl(this.h, this.s, this.l * k, this.opacity);
+    },
+    rgb: function () {
+      var h = this.h % 360 + (this.h < 0) * 360,
+          s = isNaN(h) || isNaN(this.s) ? 0 : this.s,
+          l = this.l,
+          m2 = l + (l < 0.5 ? l : 1 - l) * s,
+          m1 = 2 * l - m2;
+      return new Rgb(hsl2rgb(h >= 240 ? h - 240 : h + 120, m1, m2), hsl2rgb(h, m1, m2), hsl2rgb(h < 120 ? h + 240 : h - 120, m1, m2), this.opacity);
+    },
+    displayable: function () {
+      return (0 <= this.s && this.s <= 1 || isNaN(this.s)) && 0 <= this.l && this.l <= 1 && 0 <= this.opacity && this.opacity <= 1;
+    },
+    formatHsl: function () {
+      var a = this.opacity;
+      a = isNaN(a) ? 1 : Math.max(0, Math.min(1, a));
+      return (a === 1 ? "hsl(" : "hsla(") + (this.h || 0) + ", " + (this.s || 0) * 100 + "%, " + (this.l || 0) * 100 + "%" + (a === 1 ? ")" : ", " + a + ")");
+    }
+  }));
+  /* From FvD 13.37, CSS Color Module Level 3 */
+
+  function hsl2rgb(h, m1, m2) {
+    return (h < 60 ? m1 + (m2 - m1) * h / 60 : h < 180 ? m2 : h < 240 ? m1 + (m2 - m1) * (240 - h) / 60 : m1) * 255;
+  }
+
+  const radians = Math.PI / 180;
+  const degrees = 180 / Math.PI;
+
+  const K = 18,
+        Xn = 0.96422,
+        Yn = 1,
+        Zn = 0.82521,
+        t0 = 4 / 29,
+        t1 = 6 / 29,
+        t2 = 3 * t1 * t1,
+        t3 = t1 * t1 * t1;
+
+  function labConvert(o) {
+    if (o instanceof Lab) return new Lab(o.l, o.a, o.b, o.opacity);
+    if (o instanceof Hcl) return hcl2lab(o);
+    if (!(o instanceof Rgb)) o = rgbConvert(o);
+    var r = rgb2lrgb(o.r),
+        g = rgb2lrgb(o.g),
+        b = rgb2lrgb(o.b),
+        y = xyz2lab((0.2225045 * r + 0.7168786 * g + 0.0606169 * b) / Yn),
+        x,
+        z;
+    if (r === g && g === b) x = z = y;else {
+      x = xyz2lab((0.4360747 * r + 0.3850649 * g + 0.1430804 * b) / Xn);
+      z = xyz2lab((0.0139322 * r + 0.0971045 * g + 0.7141733 * b) / Zn);
+    }
+    return new Lab(116 * y - 16, 500 * (x - y), 200 * (y - z), o.opacity);
+  }
+  function lab(l, a, b, opacity) {
+    return arguments.length === 1 ? labConvert(l) : new Lab(l, a, b, opacity == null ? 1 : opacity);
+  }
+  function Lab(l, a, b, opacity) {
+    this.l = +l;
+    this.a = +a;
+    this.b = +b;
+    this.opacity = +opacity;
+  }
+  define(Lab, lab, extend(Color, {
+    brighter: function (k) {
+      return new Lab(this.l + K * (k == null ? 1 : k), this.a, this.b, this.opacity);
+    },
+    darker: function (k) {
+      return new Lab(this.l - K * (k == null ? 1 : k), this.a, this.b, this.opacity);
+    },
+    rgb: function () {
+      var y = (this.l + 16) / 116,
+          x = isNaN(this.a) ? y : y + this.a / 500,
+          z = isNaN(this.b) ? y : y - this.b / 200;
+      x = Xn * lab2xyz(x);
+      y = Yn * lab2xyz(y);
+      z = Zn * lab2xyz(z);
+      return new Rgb(lrgb2rgb(3.1338561 * x - 1.6168667 * y - 0.4906146 * z), lrgb2rgb(-0.9787684 * x + 1.9161415 * y + 0.0334540 * z), lrgb2rgb(0.0719453 * x - 0.2289914 * y + 1.4052427 * z), this.opacity);
+    }
+  }));
+
+  function xyz2lab(t) {
+    return t > t3 ? Math.pow(t, 1 / 3) : t / t2 + t0;
+  }
+
+  function lab2xyz(t) {
+    return t > t1 ? t * t * t : t2 * (t - t0);
+  }
+
+  function lrgb2rgb(x) {
+    return 255 * (x <= 0.0031308 ? 12.92 * x : 1.055 * Math.pow(x, 1 / 2.4) - 0.055);
+  }
+
+  function rgb2lrgb(x) {
+    return (x /= 255) <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+  }
+
+  function hclConvert(o) {
+    if (o instanceof Hcl) return new Hcl(o.h, o.c, o.l, o.opacity);
+    if (!(o instanceof Lab)) o = labConvert(o);
+    if (o.a === 0 && o.b === 0) return new Hcl(NaN, 0 < o.l && o.l < 100 ? 0 : NaN, o.l, o.opacity);
+    var h = Math.atan2(o.b, o.a) * degrees;
+    return new Hcl(h < 0 ? h + 360 : h, Math.sqrt(o.a * o.a + o.b * o.b), o.l, o.opacity);
+  }
+  function hcl(h, c, l, opacity) {
+    return arguments.length === 1 ? hclConvert(h) : new Hcl(h, c, l, opacity == null ? 1 : opacity);
+  }
+  function Hcl(h, c, l, opacity) {
+    this.h = +h;
+    this.c = +c;
+    this.l = +l;
+    this.opacity = +opacity;
+  }
+
+  function hcl2lab(o) {
+    if (isNaN(o.h)) return new Lab(o.l, 0, 0, o.opacity);
+    var h = o.h * radians;
+    return new Lab(o.l, Math.cos(h) * o.c, Math.sin(h) * o.c, o.opacity);
+  }
+
+  define(Hcl, hcl, extend(Color, {
+    brighter: function (k) {
+      return new Hcl(this.h, this.c, this.l + K * (k == null ? 1 : k), this.opacity);
+    },
+    darker: function (k) {
+      return new Hcl(this.h, this.c, this.l - K * (k == null ? 1 : k), this.opacity);
+    },
+    rgb: function () {
+      return hcl2lab(this).rgb();
+    }
+  }));
+
   function ascending(a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
@@ -42816,7 +44258,7 @@
 
 
   function selectionTuples(array, base) {
-    return array.map(x => extend$1({
+    return array.map(x => extend$4({
       values: base.fields.map(f => (f.getter || (f.getter = field$1(f.field)))(x.datum))
     }, base));
   }
@@ -43182,7 +44624,7 @@
   }
 
   function luminance(color) {
-    const c = rgb$1(color),
+    const c = rgb(color),
           r = channel_luminance_value(c.r),
           g = channel_luminance_value(c.g),
           b = channel_luminance_value(c.b);
@@ -43201,7 +44643,7 @@
   function merge() {
     const args = [].slice.call(arguments);
     args.unshift({});
-    return extend$1(...args);
+    return extend$4(...args);
   }
 
   function equal(a, b) {
@@ -43519,10 +44961,10 @@
     span,
     inrange,
     truncate: truncate$1,
-    rgb: rgb$1,
-    lab: lab$1,
-    hcl: hcl$2,
-    hsl: hsl$2,
+    rgb,
+    lab,
+    hcl,
+    hsl,
     luminance,
     contrast,
     sequence: range$1$1,
@@ -43601,7 +45043,7 @@
       fn[name] = thisPrefix + name;
     }
 
-    extend$1(fn, internalScaleFunctions(codegen, functionContext, astVisitors));
+    extend$4(fn, internalScaleFunctions(codegen, functionContext, astVisitors));
     return fn;
   } // Register an expression function
 
@@ -43674,7 +45116,7 @@
     }); // return generated expression code and dependencies
 
     return {
-      $expr: extend$1({
+      $expr: extend$4({
         code: gen.code
       }, scope.options.ast ? {
         ast
@@ -44360,6 +45802,149 @@
     setState: setState$1
   };
 
+  var frame = 0,
+      // is an animation frame pending?
+  timeout = 0,
+      // is a timeout pending?
+  interval$2 = 0,
+      // are any timers active?
+  pokeDelay = 1000,
+      // how frequently we check for clock skew
+  taskHead,
+      taskTail,
+      clockLast = 0,
+      clockNow = 0,
+      clockSkew = 0,
+      clock = typeof performance === "object" && performance.now ? performance : Date,
+      setFrame = typeof window === "object" && window.requestAnimationFrame ? window.requestAnimationFrame.bind(window) : function (f) {
+    setTimeout(f, 17);
+  };
+  function now() {
+    return clockNow || (setFrame(clearNow), clockNow = clock.now() + clockSkew);
+  }
+
+  function clearNow() {
+    clockNow = 0;
+  }
+
+  function Timer$1() {
+    this._call = this._time = this._next = null;
+  }
+  Timer$1.prototype = {
+    constructor: Timer$1,
+    restart: function (callback, delay, time) {
+      if (typeof callback !== "function") throw new TypeError("callback is not a function");
+      time = (time == null ? now() : +time) + (delay == null ? 0 : +delay);
+
+      if (!this._next && taskTail !== this) {
+        if (taskTail) taskTail._next = this;else taskHead = this;
+        taskTail = this;
+      }
+
+      this._call = callback;
+      this._time = time;
+      sleep();
+    },
+    stop: function () {
+      if (this._call) {
+        this._call = null;
+        this._time = Infinity;
+        sleep();
+      }
+    }
+  };
+  function timerFlush() {
+    now(); // Get the current time, if not already set.
+
+    ++frame; // Pretend we’ve set an alarm, if we haven’t already.
+
+    var t = taskHead,
+        e;
+
+    while (t) {
+      if ((e = clockNow - t._time) >= 0) t._call.call(null, e);
+      t = t._next;
+    }
+
+    --frame;
+  }
+
+  function wake() {
+    clockNow = (clockLast = clock.now()) + clockSkew;
+    frame = timeout = 0;
+
+    try {
+      timerFlush();
+    } finally {
+      frame = 0;
+      nap();
+      clockNow = 0;
+    }
+  }
+
+  function poke() {
+    var now = clock.now(),
+        delay = now - clockLast;
+    if (delay > pokeDelay) clockSkew -= delay, clockLast = now;
+  }
+
+  function nap() {
+    var t0,
+        t1 = taskHead,
+        t2,
+        time = Infinity;
+
+    while (t1) {
+      if (t1._call) {
+        if (time > t1._time) time = t1._time;
+        t0 = t1, t1 = t1._next;
+      } else {
+        t2 = t1._next, t1._next = null;
+        t1 = t0 ? t0._next = t2 : taskHead = t2;
+      }
+    }
+
+    taskTail = t0;
+    sleep(time);
+  }
+
+  function sleep(time) {
+    if (frame) return; // Soonest alarm already set, or will be.
+
+    if (timeout) timeout = clearTimeout(timeout);
+    var delay = time - clockNow; // Strictly less than if we recomputed clockNow.
+
+    if (delay > 24) {
+      if (time < Infinity) timeout = setTimeout(wake, time - clock.now() - clockSkew);
+      if (interval$2) interval$2 = clearInterval(interval$2);
+    } else {
+      if (!interval$2) clockLast = clock.now(), interval$2 = setInterval(poke, pokeDelay);
+      frame = 1, setFrame(wake);
+    }
+  }
+
+  function interval$1 (callback, delay, time) {
+    var t = new Timer$1(),
+        total = delay;
+    if (delay == null) return t.restart(callback, delay, time), t;
+    t._restart = t.restart;
+
+    t.restart = function (callback, delay, time) {
+      delay = +delay, time = time == null ? now() : +time;
+
+      t._restart(function tick(elapsed) {
+        elapsed += total;
+
+        t._restart(tick, total += delay, time);
+
+        callback(elapsed);
+      }, delay, time);
+    };
+
+    t.restart(callback, delay, time);
+    return t;
+  }
+
   function initializeAria(view) {
     const el = view.container();
 
@@ -44575,8 +46160,8 @@
     }
 
     return {
-      view: constant$4(view),
-      item: constant$4(item || {}),
+      view: constant$5(view),
+      item: constant$5(item || {}),
       group: group,
       xy: xy,
       x: item => xy(item)[0],
@@ -44597,7 +46182,7 @@
    */
 
   function initializeEventConfig(config) {
-    const events = extend$1({
+    const events = extend$4({
       defaults: {}
     }, config);
 
@@ -45429,7 +47014,7 @@
     if (options.logLevel != null) view.logLevel(options.logLevel);
 
     if (options.locale || spec.locale) {
-      const loc = extend$1({}, spec.locale, options.locale);
+      const loc = extend$4({}, spec.locale, options.locale);
       view.locale(locale(loc.number, loc.time));
     }
 
@@ -45456,7 +47041,7 @@
     view._signals = ctx.signals;
     view._bind = (spec.bindings || []).map(_ => ({
       state: null,
-      param: extend$1({}, _)
+      param: extend$4({}, _)
     })); // initialize scenegraph
 
     if (ctx.root) ctx.root.set(root);
@@ -46007,7 +47592,7 @@
     };
   }
 
-  const encoder = _ => isObject(_) && !isArray(_) ? extend$1({}, _) : {
+  const encoder = _ => isObject(_) && !isArray(_) ? extend$4({}, _) : {
     value: _
   };
 
@@ -46042,7 +47627,7 @@
   function extendEncode(encode, extra, skip) {
     for (const name in extra) {
       if (skip && has$1(skip, name)) continue;
-      encode[name] = extend$1(encode[name] || {}, extra[name]);
+      encode[name] = extend$4(encode[name] || {}, extra[name]);
     }
 
     return encode;
@@ -46089,7 +47674,7 @@
     } // resolve mark config
 
 
-    props = role === FrameRole ? config.group : role === MarkRole ? extend$1({}, config.mark, config[type]) : null;
+    props = role === FrameRole ? config.group : role === MarkRole ? extend$4({}, config.mark, config[type]) : null;
 
     for (key in props) {
       // do not apply defaults if relevant fields are defined
@@ -46107,7 +47692,7 @@
         }
       }
     });
-    encode = extend$1({}, encode); // defensive copy
+    encode = extend$4({}, encode); // defensive copy
 
     for (key in defaults) {
       props = defaults[key];
@@ -46119,8 +47704,8 @@
       }
     }
 
-    encode.enter = extend$1(enter, encode.enter);
-    if (update) encode.update = extend$1(update, encode.update);
+    encode.enter = extend$4(enter, encode.enter);
+    if (update) encode.update = extend$4(update, encode.update);
     return encode;
   }
 
@@ -46310,7 +47895,7 @@
   function parse(code, scope, params, fields) {
     const expr = parser(code, scope);
     expr.$fields.forEach(name => fields[name] = 1);
-    extend$1(params, expr.$params);
+    extend$4(params, expr.$params);
     return expr.$expr;
   }
 
@@ -46583,7 +48168,7 @@
       };
     }
 
-    sources.forEach(source => scope.addUpdate(extend$1(streamSource(source, scope), entry)));
+    sources.forEach(source => scope.addUpdate(extend$4(streamSource(source, scope), entry)));
   }
 
   function streamSource(stream, scope) {
@@ -46879,7 +48464,7 @@
       return scope.signalRef(range.signal);
     } else if (isString(range)) {
       if (config && has$1(config, range)) {
-        spec = extend$1({}, spec, {
+        spec = extend$4({}, spec, {
           range: config[range]
         });
         return parseScaleRange$1(spec, scope, params);
@@ -47113,7 +48698,7 @@
         width: encoder(width),
         height: encoder(height)
       },
-      update: extend$1({}, enter, {
+      update: extend$4({}, enter, {
         opacity: one,
         fill: {
           gradient: scale,
@@ -47170,7 +48755,7 @@
     enter[vv] = encoder(thickness);
     const encode = {
       enter: enter,
-      update: extend$1({}, enter, {
+      update: extend$4({}, enter, {
         opacity: one
       }),
       exit: {
@@ -47711,7 +49296,7 @@
 
     if (!pdef) error('Unsupported parameter: ' + $$1(value)); // parse params, create Params transform, return ref
 
-    const params = extend$1(parseParameters(pdef, value, scope), pdef.key);
+    const params = extend$4(parseParameters(pdef, value, scope), pdef.key);
     return ref(scope.add(Params(params)));
   } // -- Utilities -----
 
@@ -47735,27 +49320,27 @@
       dataRef = ref(scope.add(Collect(null, [{}])));
     } // if faceted, process facet specification
     else if (facet = from.facet) {
-        if (!group) error('Only group marks can be faceted.'); // use pre-faceted source data, if available
+      if (!group) error('Only group marks can be faceted.'); // use pre-faceted source data, if available
 
-        if (facet.field != null) {
-          dataRef = parent = getDataRef(facet, scope);
+      if (facet.field != null) {
+        dataRef = parent = getDataRef(facet, scope);
+      } else {
+        // generate facet aggregates if no direct data specification
+        if (!from.data) {
+          op = parseTransform(extend$4({
+            type: 'aggregate',
+            groupby: array$5(facet.groupby)
+          }, facet.aggregate), scope);
+          op.params.key = scope.keyRef(facet.groupby);
+          op.params.pulse = getDataRef(facet, scope);
+          dataRef = parent = ref(scope.add(op));
         } else {
-          // generate facet aggregates if no direct data specification
-          if (!from.data) {
-            op = parseTransform(extend$1({
-              type: 'aggregate',
-              groupby: array$5(facet.groupby)
-            }, facet.aggregate), scope);
-            op.params.key = scope.keyRef(facet.groupby);
-            op.params.pulse = getDataRef(facet, scope);
-            dataRef = parent = ref(scope.add(op));
-          } else {
-            parent = ref(scope.getData(from.data).aggregate);
-          }
-
-          key = scope.keyRef(facet.groupby, true);
+          parent = ref(scope.getData(from.data).aggregate);
         }
-      } // if not yet defined, get source data reference
+
+        key = scope.keyRef(facet.groupby, true);
+      }
+    } // if not yet defined, get source data reference
 
 
     if (!dataRef) {
@@ -48219,15 +49804,15 @@
       params.count = params.count || scope.signalRef("max(2,2*floor((".concat(deref(_.gradientLength()), ")/100))"));
     } // discrete gradient legend
     else if (type === Discrete) {
-        children = [legendGradientDiscrete(spec, scale, config, encode.gradient, entryRef), legendGradientLabels(spec, config, encode.labels, entryRef)];
-      } // symbol legend
-      else {
-          // determine legend symbol group layout
-          entryLayout = legendSymbolLayout(spec, config);
-          children = [legendSymbolGroups(spec, config, encode, entryRef, deref(entryLayout.columns))]; // pass symbol size information to legend entry generator
+      children = [legendGradientDiscrete(spec, scale, config, encode.gradient, entryRef), legendGradientLabels(spec, config, encode.labels, entryRef)];
+    } // symbol legend
+    else {
+      // determine legend symbol group layout
+      entryLayout = legendSymbolLayout(spec, config);
+      children = [legendSymbolGroups(spec, config, encode, entryRef, deref(entryLayout.columns))]; // pass symbol size information to legend entry generator
 
-          params.size = sizeExpression(spec, scope, children[0].marks);
-        } // generate legend marks
+      params.size = sizeExpression(spec, scope, children[0].marks);
+    } // generate legend marks
 
 
     children = [guideGroup({
@@ -48355,7 +49940,7 @@
 
   function titleEncode(spec) {
     const encode = spec.encode;
-    return encode && encode.title || extend$1({
+    return encode && encode.title || extend$4({
       name: spec.name,
       interactive: spec.interactive,
       style: spec.style
@@ -48652,7 +50237,7 @@
       };
     } else {
       // otherwise generate rule set
-      return [extend$1({
+      return [extend$4({
         test
       }, a)].concat(b || []);
     }
@@ -48761,7 +50346,7 @@
       or = config['axis' + orient[0].toUpperCase() + orient.slice(1)];
     }
 
-    const result = xy || or || band ? extend$1({}, axis, xy, or, band) : axis;
+    const result = xy || or || band ? extend$4({}, axis, xy, or, band) : axis;
     return result;
   }
 
@@ -48864,7 +50449,7 @@
       range: 1,
       mult: sign,
       offset: offset
-    } : extend$1(sz, {
+    } : extend$4(sz, {
       mult: sign,
       offset: offset
     });
@@ -48889,7 +50474,7 @@
         signal: "(".concat(sign.signal, ") * (").concat(offset || 0, ")")
       } : sign * (offset || 0);
     } else {
-      let entry = offset = extend$1({}, offset);
+      let entry = offset = extend$4({}, offset);
 
       while (entry.mult != null) {
         if (!isObject(entry.mult)) {
@@ -48899,7 +50484,7 @@
           } : entry.mult * sign;
           return offset;
         } else {
-          entry = entry.mult = extend$1({}, entry.mult);
+          entry = entry.mult = extend$4({}, entry.mult);
         }
       }
 
@@ -49085,7 +50670,7 @@
           signal: alignExpr
         }
       },
-      update: update = extend$1({}, enter, {
+      update: update = extend$4({}, enter, {
         opacity: one,
         text: encoder(spec.title)
       }),
@@ -49367,7 +50952,7 @@
     array$5(spec.signals).forEach(s => {
       if (has$1(pre, s.name)) {
         // merge if built-in signal
-        s = extend$1(pre[s.name], s);
+        s = extend$4(pre[s.name], s);
       } else {
         // otherwise add to signal list
         signals.push(s);
@@ -49714,7 +51299,7 @@
         error('Nested signals do not support binding: ' + $$1(name));
       }
 
-      this.bindings.push(extend$1({
+      this.bindings.push(extend$4({
         signal: name
       }, bind));
     },
@@ -50052,120 +51637,8 @@
     return parseView(spec, new Scope$1(config, options)).toRuntime();
   }
 
-  extend$1(transforms, tx, vtx, encode$1, geo, force, label, tree, reg, voronoi, wordcloud, xf); // -- Exports -----
+  extend$4(transforms, tx, vtx, encode$1, geo, force, label, tree, reg, voronoi, wordcloud, xf); // -- Exports -----
 
-  var defaultStyle = `#vg-tooltip-element {
-  visibility: hidden;
-  padding: 8px;
-  position: fixed;
-  z-index: 1000;
-  font-family: sans-serif;
-  font-size: 11px;
-  border-radius: 3px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  /* The default theme is the light theme. */
-  background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid #d9d9d9;
-  color: black; }
-  #vg-tooltip-element.visible {
-    visibility: visible; }
-  #vg-tooltip-element h2 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 13px; }
-  #vg-tooltip-element img {
-    max-width: 200px;
-    max-height: 200px; }
-  #vg-tooltip-element table {
-    border-spacing: 0; }
-    #vg-tooltip-element table tr {
-      border: none; }
-      #vg-tooltip-element table tr td {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding-top: 2px;
-        padding-bottom: 2px; }
-        #vg-tooltip-element table tr td.key {
-          color: #808080;
-          max-width: 150px;
-          text-align: right;
-          padding-right: 4px; }
-        #vg-tooltip-element table tr td.value {
-          display: block;
-          max-width: 300px;
-          max-height: 7em;
-          text-align: left; }
-  #vg-tooltip-element.dark-theme {
-    background-color: rgba(32, 32, 32, 0.9);
-    border: 1px solid #f5f5f5;
-    color: white; }
-    #vg-tooltip-element.dark-theme td.key {
-      color: #bfbfbf; }
-`;
-  const EL_ID = 'vg-tooltip-element';
-  const DEFAULT_OPTIONS = {
-    /**
-     * X offset.
-     */
-    offsetX: 10,
-
-    /**
-     * Y offset.
-     */
-    offsetY: 10,
-
-    /**
-     * ID of the tooltip element.
-     */
-    id: EL_ID,
-
-    /**
-     * ID of the tooltip CSS style.
-     */
-    styleId: 'vega-tooltip-style',
-
-    /**
-     * The name of the theme. You can use the CSS class called [THEME]-theme to style the tooltips.
-     *
-     * There are two predefined themes: "light" (default) and "dark".
-     */
-    theme: 'light',
-
-    /**
-     * Do not use the default styles provided by Vega Tooltip. If you enable this option, you need to use your own styles. It is not necessary to disable the default style when using a custom theme.
-     */
-    disableDefaultStyle: false,
-
-    /**
-     * HTML sanitizer function that removes dangerous HTML to prevent XSS.
-     *
-     * This should be a function from string to string. You may replace it with a formatter such as a markdown formatter.
-     */
-    sanitize: escapeHTML,
-
-    /**
-     * The maximum recursion depth when printing objects in the tooltip.
-     */
-    maxDepth: 2
-  };
-  /**
-   * Escape special HTML characters.
-   *
-   * @param value A value to convert to string and HTML-escape.
-   */
-
-  function escapeHTML(value) {
-    return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;');
-  }
-
-  function createDefaultStyle(id) {
-    // Just in case this id comes from a user, ensure these is no security issues
-    if (!/^[A-Za-z]+[-:.\w]*$/.test(id)) {
-      throw new Error('Invalid HTML ID');
-    }
-
-    return defaultStyle.toString().replace(EL_ID, id);
-  }
   /*! *****************************************************************************
   Copyright (c) Microsoft Corporation.
 
@@ -50180,7 +51653,6 @@
   OTHER TORTIOUS ACTION, ARISING OUT OF OR IN CONNECTION WITH THE USE OR
   PERFORMANCE OF THIS SOFTWARE.
   ***************************************************************************** */
-
 
   function __rest(s, e) {
     var t = {};
@@ -50280,6 +51752,128 @@
 
   function stringify$1(obj, maxDepth) {
     return JSON.stringify(obj, replacer(maxDepth));
+  } // generated with build-style.sh
+
+
+  var defaultStyle = `#vg-tooltip-element {
+  visibility: hidden;
+  padding: 8px;
+  position: fixed;
+  z-index: 1000;
+  font-family: sans-serif;
+  font-size: 11px;
+  border-radius: 3px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+  /* The default theme is the light theme. */
+  background-color: rgba(255, 255, 255, 0.95);
+  border: 1px solid #d9d9d9;
+  color: black; }
+  #vg-tooltip-element.visible {
+    visibility: visible; }
+  #vg-tooltip-element h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 13px; }
+  #vg-tooltip-element img {
+    max-width: 200px;
+    max-height: 200px; }
+  #vg-tooltip-element table {
+    border-spacing: 0; }
+    #vg-tooltip-element table tr {
+      border: none; }
+      #vg-tooltip-element table tr td {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        padding-top: 2px;
+        padding-bottom: 2px; }
+        #vg-tooltip-element table tr td.key {
+          color: #808080;
+          max-width: 150px;
+          text-align: right;
+          padding-right: 4px; }
+        #vg-tooltip-element table tr td.value {
+          display: block;
+          max-width: 300px;
+          max-height: 7em;
+          text-align: left; }
+  #vg-tooltip-element.dark-theme {
+    background-color: rgba(32, 32, 32, 0.9);
+    border: 1px solid #f5f5f5;
+    color: white; }
+    #vg-tooltip-element.dark-theme td.key {
+      color: #bfbfbf; }
+`;
+  const EL_ID = 'vg-tooltip-element';
+  const DEFAULT_OPTIONS = {
+    /**
+     * X offset.
+     */
+    offsetX: 10,
+
+    /**
+     * Y offset.
+     */
+    offsetY: 10,
+
+    /**
+     * ID of the tooltip element.
+     */
+    id: EL_ID,
+
+    /**
+     * ID of the tooltip CSS style.
+     */
+    styleId: 'vega-tooltip-style',
+
+    /**
+     * The name of the theme. You can use the CSS class called [THEME]-theme to style the tooltips.
+     *
+     * There are two predefined themes: "light" (default) and "dark".
+     */
+    theme: 'light',
+
+    /**
+     * Do not use the default styles provided by Vega Tooltip. If you enable this option, you need to use your own styles. It is not necessary to disable the default style when using a custom theme.
+     */
+    disableDefaultStyle: false,
+
+    /**
+     * HTML sanitizer function that removes dangerous HTML to prevent XSS.
+     *
+     * This should be a function from string to string. You may replace it with a formatter such as a markdown formatter.
+     */
+    sanitize: escapeHTML,
+
+    /**
+     * The maximum recursion depth when printing objects in the tooltip.
+     */
+    maxDepth: 2,
+
+    /**
+     * A function to customize the rendered HTML of the tooltip.
+     * @param value A value string, or object of value strings keyed by field
+     * @param sanitize The `sanitize` function from `options.sanitize`
+     * @returns {string} The returned string will become the `innerHTML` of the tooltip element
+     */
+    formatTooltip: formatValue
+  };
+  /**
+   * Escape special HTML characters.
+   *
+   * @param value A value to convert to string and HTML-escape.
+   */
+
+  function escapeHTML(value) {
+    return String(value).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  }
+
+  function createDefaultStyle(id) {
+    // Just in case this id comes from a user, ensure these is no security issues
+    if (!/^[A-Za-z]+[-:.\w]*$/.test(id)) {
+      throw new Error('Invalid HTML ID');
+    }
+
+    return defaultStyle.toString().replace(EL_ID, id);
   }
   /**
    * Position the tooltip
@@ -50347,7 +51941,9 @@
 
     tooltipHandler(handler, event, item, value) {
       // console.log(handler, event, item, value);
-      // append a div element that we use as a tooltip unless it already exists
+      var _a; // append a div element that we use as a tooltip unless it already exists
+
+
       this.el = document.getElementById(this.options.id);
 
       if (!this.el) {
@@ -50357,7 +51953,7 @@
         document.body.appendChild(this.el);
       }
 
-      const tooltipContainer = document.fullscreenElement != null ? document.fullscreenElement : document.body;
+      const tooltipContainer = (_a = document.fullscreenElement) !== null && _a !== void 0 ? _a : document.body;
       tooltipContainer.appendChild(this.el); // hide tooltip for null, undefined, or empty string values
 
       if (value == null || value === '') {
@@ -50366,7 +51962,7 @@
       } // set the tooltip content
 
 
-      this.el.innerHTML = formatValue(value, this.options.sanitize, this.options.maxDepth); // make the tooltip visible
+      this.el.innerHTML = this.options.formatTooltip(value, this.options.sanitize, this.options.maxDepth); // make the tooltip visible
 
       this.el.classList.add('visible', `${this.options.theme}-theme`);
       const {
@@ -50380,12 +51976,9 @@
 
   Array.prototype.flat||Object.defineProperty(Array.prototype,"flat",{configurable:!0,value:function r(){var t=isNaN(arguments[0])?1:Number(arguments[0]);return t?Array.prototype.reduce.call(this,function(a,e){return Array.isArray(e)?a.push.apply(a,r.call(e,t-1)):a.push(e),a},[]):Array.prototype.slice.call(this)},writable:!0}),Array.prototype.flatMap||Object.defineProperty(Array.prototype,"flatMap",{configurable:!0,value:function(r){return Array.prototype.map.apply(this,arguments).flat()},writable:!0});
 
-  function createCommonjsModule(fn) {
-    var module = { exports: {} };
-  	return fn(module, module.exports), module.exports;
-  }
+  var clone = {exports: {}};
 
-  var clone_1 = createCommonjsModule(function (module) {
+  (function (module) {
     var clone = function () {
 
       function _instanceof(obj, type) {
@@ -50656,7 +52249,9 @@
     if (module.exports) {
       module.exports = clone;
     }
-  });
+  })(clone);
+
+  var clone_ = clone.exports;
 
   var fastDeepEqual = function equal(a, b) {
     if (a === b) return true;
@@ -50807,7 +52402,7 @@
   }
 
   const deepEqual = fastDeepEqual;
-  const duplicate = clone_1;
+  const duplicate = clone_;
   /**
    * Creates an object composed of the picked object properties.
    *
@@ -50928,7 +52523,7 @@
    */
   function mergeDeep(dest, ...src) {
     for (const s of src) {
-      deepMerge_(dest, s !== null && s !== void 0 ? s : {});
+      deepMerge_(dest, s ?? {});
     }
 
     return dest;
@@ -51877,6 +53472,8 @@
       frame,
       offset,
       orient,
+      angle,
+      limit,
       // color needs to be redirect to fill
       color,
       // subtitle properties
@@ -51896,7 +53493,7 @@
       } : {})
     }; // These are non-mark title config that need to be hardcoded
 
-    const nonMark = { ...(anchor ? {
+    const nonMarkTitleProperties = { ...(anchor ? {
         anchor
       } : {}),
       ...(frame ? {
@@ -51907,6 +53504,12 @@
       } : {}),
       ...(orient ? {
         orient
+      } : {}),
+      ...(angle !== undefined ? {
+        angle
+      } : {}),
+      ...(limit !== undefined ? {
+        limit
       } : {})
     }; // subtitle part can stay in config.title since header titles do not use subtitle
 
@@ -51932,11 +53535,11 @@
         subtitlePadding
       } : {})
     };
-    const subtitleMarkConfig = pick(titleMarkConfig, ['align', 'baseline', 'dx', 'dy', 'limit']);
+    const subtitleMarkConfig = pick(titleConfig, ['align', 'baseline', 'dx', 'dy', 'limit']);
     return {
       titleMarkConfig,
       subtitleMarkConfig,
-      nonMark,
+      nonMarkTitleProperties: nonMarkTitleProperties,
       subtitle
     };
   }
@@ -52138,9 +53741,7 @@
     return e;
   }
   function getStyles(mark) {
-    var _mark$style;
-
-    return [].concat(mark.type, (_mark$style = mark.style) !== null && _mark$style !== void 0 ? _mark$style : []);
+    return [].concat(mark.type, mark.style ?? []);
   }
   function getMarkPropOrConfig(channel, mark, config, opt = {}) {
     const {
@@ -52197,10 +53798,8 @@
 
   function sortParams(orderDef, fieldRefOption) {
     return array$5(orderDef).reduce((s, orderChannelDef) => {
-      var _orderChannelDef$sort;
-
       s.field.push(vgField(orderChannelDef, fieldRefOption));
-      s.order.push((_orderChannelDef$sort = orderChannelDef.sort) !== null && _orderChannelDef$sort !== void 0 ? _orderChannelDef$sort : 'ascending');
+      s.order.push(orderChannelDef.sort ?? 'ascending');
       return s;
     }, {
       field: [],
@@ -52960,7 +54559,7 @@
     return predicate && !!predicate.field && predicate.gte !== undefined;
   }
   function isFieldRangePredicate(predicate) {
-    if (predicate && predicate.field) {
+    if (predicate !== null && predicate !== void 0 && predicate.field) {
       if (isArray(predicate.range) && predicate.range.length === 2) {
         return true;
       } else if (isSignalRef(predicate.range)) {
@@ -53267,6 +54866,9 @@
   }
   function isDomainUnionWith(domain) {
     return domain && domain['unionWith'];
+  }
+  function isFieldRange(range) {
+    return isObject(range) && 'field' in range;
   }
   const SCALE_PROPERTY_INDEX = {
     type: 1,
@@ -53749,17 +55351,13 @@
     if (channelDef) {
       /* istanbul ignore else */
       if (isFieldOrDatumDef(channelDef)) {
-        var _ref, _bandPosition2;
-
         if (isTypedFieldDef(channelDef)) {
-          var _bandPosition;
-
-          (_bandPosition = bandPosition) !== null && _bandPosition !== void 0 ? _bandPosition : bandPosition = getBandPosition({
+          bandPosition ?? (bandPosition = getBandPosition({
             fieldDef: channelDef,
             fieldDef2: channel2Def,
             markDef,
             config
-          });
+          }));
           const {
             bin,
             timeUnit,
@@ -53769,7 +55367,7 @@
           if (isBinning(bin) || bandPosition && timeUnit && type === TEMPORAL) {
             // Use middle only for x an y to place marks in the center between start and end of the bin range.
             // We do not use the mid point for other channels (e.g. size) so that properties of legends and marks match.
-            if (stack && stack.impute) {
+            if (stack !== null && stack !== void 0 && stack.impute) {
               // For stack, we computed bin_mid so we can impute.
               return valueRefForFieldOrDatumDef(channelDef, scaleName, {
                 binSuffix: 'mid'
@@ -53817,7 +55415,7 @@
         {
           offset,
           // For band, to get mid point, need to offset by half of the band
-          band: scaleType === 'band' ? (_ref = (_bandPosition2 = bandPosition) !== null && _bandPosition2 !== void 0 ? _bandPosition2 : channelDef.bandPosition) !== null && _ref !== void 0 ? _ref : 0.5 : undefined
+          band: scaleType === 'band' ? bandPosition ?? channelDef.bandPosition ?? 0.5 : undefined
         });
       } else if (isValueDef(channelDef)) {
         const value = channelDef.value;
@@ -53958,9 +55556,7 @@
     config,
     field
   }) {
-    var _field;
-
-    (_field = field) !== null && _field !== void 0 ? _field : field = fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
+    field ?? (field = fieldToFormat(fieldOrDatumDef, expr, normalizeStack));
 
     if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
       const endField = vgField(fieldOrDatumDef, {
@@ -53976,8 +55572,7 @@
       signal: customFormatExpr(formatType, field, format)
     };
   }
-  function guideFormat(fieldOrDatumDef, type, format, formatType, config, omitTimeFormatConfig) // axis doesn't use config.timeFormat
-  {
+  function guideFormat(fieldOrDatumDef, type, format, formatType, config, omitTimeFormatConfig) {
     if (isCustomFormatType(formatType)) {
       return undefined; // handled in encode block
     }
@@ -54042,13 +55637,11 @@
   }
 
   function binNumberFormatExpr(field, format, formatType, config) {
-    var _ref;
-
     if (isCustomFormatType(formatType)) {
       return customFormatExpr(formatType, field, format);
     }
 
-    return formatExpr(field, (_ref = isString(format) ? format : undefined) !== null && _ref !== void 0 ? _ref : config.numberFormat);
+    return formatExpr(field, (isString(format) ? format : undefined) ?? config.numberFormat);
   }
 
   function binFormatExpression(startField, endField, format, formatType, config) {
@@ -54253,7 +55846,7 @@
    */
 
   function isConditionalDef(channelDef) {
-    return !!channelDef && 'condition' in channelDef;
+    return channelDef && 'condition' in channelDef;
   }
   /**
    * Return if a channelDef is a ConditionalValueDef with ConditionFieldDef
@@ -54273,13 +55866,13 @@
   }
   function isFieldDef(channelDef) {
     // TODO: we can't use field in channelDef here as it's somehow failing runtime test
-    return !!channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
+    return channelDef && (!!channelDef['field'] || channelDef['aggregate'] === 'count');
   }
   function channelDefType(channelDef) {
     return channelDef && channelDef['type'];
   }
   function isDatumDef(channelDef) {
-    return !!channelDef && 'datum' in channelDef;
+    return channelDef && 'datum' in channelDef;
   }
   function isContinuousFieldOrDatumDef(cd) {
     // TODO: make datum support DateTime object
@@ -54292,22 +55885,22 @@
     return isFieldDef(channelDef) || isDatumDef(channelDef);
   }
   function isTypedFieldDef(channelDef) {
-    return !!channelDef && ('field' in channelDef || channelDef['aggregate'] === 'count') && 'type' in channelDef;
+    return channelDef && ('field' in channelDef || channelDef['aggregate'] === 'count') && 'type' in channelDef;
   }
   function isValueDef(channelDef) {
     return channelDef && 'value' in channelDef && 'value' in channelDef;
   }
   function isScaleFieldDef(channelDef) {
-    return !!channelDef && ('scale' in channelDef || 'sort' in channelDef);
+    return channelDef && ('scale' in channelDef || 'sort' in channelDef);
   }
   function isPositionFieldOrDatumDef(channelDef) {
     return channelDef && ('axis' in channelDef || 'stack' in channelDef || 'impute' in channelDef);
   }
   function isMarkPropFieldOrDatumDef(channelDef) {
-    return !!channelDef && 'legend' in channelDef;
+    return channelDef && 'legend' in channelDef;
   }
   function isStringFieldOrDatumDef(channelDef) {
-    return !!channelDef && ('format' in channelDef || 'formatType' in channelDef);
+    return channelDef && ('format' in channelDef || 'formatType' in channelDef);
   }
   function toStringFieldDef(fieldDef) {
     // omit properties that don't exist in string field defs
@@ -54344,10 +55937,8 @@
           } = fieldDef;
 
           if (isBinning(bin)) {
-            var _opt$binSuffix, _opt$suffix;
-
             fn = binToString(bin);
-            suffix = ((_opt$binSuffix = opt.binSuffix) !== null && _opt$binSuffix !== void 0 ? _opt$binSuffix : '') + ((_opt$suffix = opt.suffix) !== null && _opt$suffix !== void 0 ? _opt$suffix : '');
+            suffix = (opt.binSuffix ?? '') + (opt.suffix ?? '');
           } else if (aggregate) {
             if (isArgmaxDef(aggregate)) {
               argAccessor = `["${field}"]`;
@@ -54359,10 +55950,8 @@
               fn = String(aggregate);
             }
           } else if (timeUnit) {
-            var _opt$suffix2;
-
             fn = timeUnitToString(timeUnit);
-            suffix = (!['range', 'mid'].includes(opt.binSuffix) && opt.binSuffix || '') + ((_opt$suffix2 = opt.suffix) !== null && _opt$suffix2 !== void 0 ? _opt$suffix2 : '');
+            suffix = (!['range', 'mid'].includes(opt.binSuffix) && opt.binSuffix || '') + (opt.suffix ?? '');
           }
         }
       }
@@ -54506,9 +56095,7 @@
     if (allowDisabling) {
       return getFirstDefined(guideTitle, fieldDef.title, def);
     } else {
-      var _ref;
-
-      return (_ref = guideTitle !== null && guideTitle !== void 0 ? guideTitle : fieldDef.title) !== null && _ref !== void 0 ? _ref : def;
+      return guideTitle ?? fieldDef.title ?? def;
     }
   }
   function getGuide(fieldDef) {
@@ -54536,9 +56123,7 @@
         formatType
       };
     } else {
-      var _getGuide2;
-
-      const guide = (_getGuide2 = getGuide(fieldDef)) !== null && _getGuide2 !== void 0 ? _getGuide2 : {};
+      const guide = getGuide(fieldDef) ?? {};
       const {
         format,
         formatType
@@ -55406,7 +56991,7 @@
 
         if (aggOp || timeUnit || bin) {
           const guide = getGuide(channelDef);
-          const isTitleDefined = guide && guide.title;
+          const isTitleDefined = guide === null || guide === void 0 ? void 0 : guide.title;
           let newField = vgField(channelDef, {
             forAs: true
           });
@@ -55960,7 +57545,7 @@
   }
 
   function filterAggregateFromChannelDef(continuousAxisChannelDef, compositeMark) {
-    if (continuousAxisChannelDef && continuousAxisChannelDef.aggregate) {
+    if (continuousAxisChannelDef !== null && continuousAxisChannelDef !== void 0 && continuousAxisChannelDef.aggregate) {
       const {
         aggregate,
         ...continuousAxisWithoutAggregate
@@ -56038,8 +57623,6 @@
   function normalizeBoxPlot(spec, {
     config
   }) {
-    var _markDef$extent;
-
     // Need to initEncoding first so we can infer type
     spec = { ...spec,
       encoding: normalizeEncoding(spec.encoding, config)
@@ -56059,7 +57642,7 @@
       warn(selectionNotSupported('boxplot'));
     }
 
-    const extent = (_markDef$extent = markDef.extent) !== null && _markDef$extent !== void 0 ? _markDef$extent : config.boxplot.extent;
+    const extent = markDef.extent ?? config.boxplot.extent;
     const sizeValue = getMarkPropOrConfig('size', markDef, // TODO: https://github.com/vega/vega-lite/issues/6245
     config);
     const boxPlotType = getBoxPlotType(extent);
@@ -56193,10 +57776,8 @@
     })];
 
     if (boxPlotType === 'min-max') {
-      var _outerSpec$transform;
-
       return { ...outerSpec,
-        transform: ((_outerSpec$transform = outerSpec.transform) !== null && _outerSpec$transform !== void 0 ? _outerSpec$transform : []).concat(transform),
+        transform: (outerSpec.transform ?? []).concat(transform),
         layer: boxLayers
       };
     } // Tukey Box Plot
@@ -56562,8 +58143,6 @@
   }
 
   function errorBarParams(spec, compositeMark, config) {
-    var _outerSpec$transform;
-
     // TODO: use selection
     const {
       mark,
@@ -56615,7 +58194,7 @@
     const groupby = inputType !== 'raw' ? [] : oldGroupBy;
     const tooltipEncoding = getCompositeMarkTooltip(tooltipSummary, continuousAxisChannelDef, encodingWithoutContinuousAxis, tooltipTitleWithFieldName);
     return {
-      transform: [...((_outerSpec$transform = outerSpec.transform) !== null && _outerSpec$transform !== void 0 ? _outerSpec$transform : []), ...bins, ...timeUnits, ...(aggregate.length === 0 ? [] : [{
+      transform: [...(outerSpec.transform ?? []), ...bins, ...timeUnits, ...(aggregate.length === 0 ? [] : [{
         aggregate,
         groupby
       }]), ...postAggregateCalculates],
@@ -57171,12 +58750,10 @@
     for (const prop of COMPOSITION_LAYOUT_PROPERTIES) {
       if (spec[prop] !== undefined) {
         if (prop === 'spacing') {
-          var _spacing$row, _spacing$column;
-
           const spacing = spec[prop];
           layout[prop] = isNumber$1(spacing) ? spacing : {
-            row: (_spacing$row = spacing.row) !== null && _spacing$row !== void 0 ? _spacing$row : spacingConfig,
-            column: (_spacing$column = spacing.column) !== null && _spacing$column !== void 0 ? _spacing$column : spacingConfig
+            row: spacing.row ?? spacingConfig,
+            column: spacing.column ?? spacingConfig
           };
         } else {
           layout[prop] = spec[prop];
@@ -57188,18 +58765,14 @@
   }
 
   function getViewConfigContinuousSize(viewConfig, channel) {
-    var _viewConfig$channel;
-
-    return (_viewConfig$channel = viewConfig[channel]) !== null && _viewConfig$channel !== void 0 ? _viewConfig$channel : viewConfig[channel === 'width' ? 'continuousWidth' : 'continuousHeight']; // get width/height for backwards compatibility
+    return viewConfig[channel] ?? viewConfig[channel === 'width' ? 'continuousWidth' : 'continuousHeight']; // get width/height for backwards compatibility
   }
   function getViewConfigDiscreteStep(viewConfig, channel) {
     const size = getViewConfigDiscreteSize(viewConfig, channel);
     return isStep(size) ? size.step : DEFAULT_STEP;
   }
   function getViewConfigDiscreteSize(viewConfig, channel) {
-    var _viewConfig$channel2;
-
-    const size = (_viewConfig$channel2 = viewConfig[channel]) !== null && _viewConfig$channel2 !== void 0 ? _viewConfig$channel2 : viewConfig[channel === 'width' ? 'discreteWidth' : 'discreteHeight']; // get width/height for backwards compatibility
+    const size = viewConfig[channel] ?? viewConfig[channel === 'width' ? 'discreteWidth' : 'discreteHeight']; // get width/height for backwards compatibility
 
     return getFirstDefined(size, {
       step: viewConfig.step
@@ -57496,9 +59069,15 @@
       color,
       font,
       fontSize,
+      selection,
       ...restConfig
     } = specifiedConfig;
-    const mergedConfig = mergeConfig({}, defaultConfig, font ? fontConfig(font) : {}, color ? colorSignalConfig(color) : {}, fontSize ? fontSizeSignalConfig(fontSize) : {}, restConfig || {});
+    const mergedConfig = mergeConfig({}, duplicate(defaultConfig), font ? fontConfig(font) : {}, color ? colorSignalConfig(color) : {}, fontSize ? fontSizeSignalConfig(fontSize) : {}, restConfig || {}); // mergeConfig doesn't recurse and overrides object values.
+
+    if (selection) {
+      writeConfig(mergedConfig, 'selection', selection, true);
+    }
+
     const outputConfig = omit(mergedConfig, configPropsWithExpr);
 
     for (const prop of ['background', 'lineBreak', 'padding']) {
@@ -57668,8 +59247,6 @@
 
   function redirectConfigToStyleConfig(config, prop, // string = composite mark
   toProp, compositeMarkPart) {
-    var _toProp;
-
     const propConfig = compositeMarkPart ? config[prop][compositeMarkPart] : config[prop];
 
     if (prop === 'view') {
@@ -57677,13 +59254,11 @@
     }
 
     const style = { ...propConfig,
-      ...config.style[(_toProp = toProp) !== null && _toProp !== void 0 ? _toProp : prop]
+      ...config.style[toProp ?? prop]
     }; // set config.style if it is not an empty object
 
     if (!isEmpty(style)) {
-      var _toProp2;
-
-      config.style[(_toProp2 = toProp) !== null && _toProp2 !== void 0 ? _toProp2 : prop] = style;
+      config.style[toProp ?? prop] = style;
     }
 
     if (!compositeMarkPart) {
@@ -57797,13 +59372,17 @@
   const STACKABLE_MARKS = new Set([ARC, BAR, AREA, RULE, POINT, CIRCLE, SQUARE, LINE, TEXT, TICK]);
   const STACK_BY_DEFAULT_MARKS = new Set([BAR, AREA, ARC]);
 
+  function isUnbinnedQuantitative(channelDef) {
+    return isFieldDef(channelDef) && channelDefType(channelDef) === 'quantitative' && !channelDef.bin;
+  }
+
   function potentialStackedChannel(encoding, x) {
     const y = x === 'x' ? 'y' : 'radius';
     const xDef = encoding[x];
     const yDef = encoding[y];
 
     if (isFieldDef(xDef) && isFieldDef(yDef)) {
-      if (channelDefType(xDef) === 'quantitative' && channelDefType(yDef) === 'quantitative') {
+      if (isUnbinnedQuantitative(xDef) && isUnbinnedQuantitative(yDef)) {
         if (xDef.stack) {
           return x;
         } else if (yDef.stack) {
@@ -57827,14 +59406,14 @@
             return x;
           }
         }
-      } else if (channelDefType(xDef) === 'quantitative') {
+      } else if (isUnbinnedQuantitative(xDef)) {
         return x;
-      } else if (channelDefType(yDef) === 'quantitative') {
+      } else if (isUnbinnedQuantitative(yDef)) {
         return y;
       }
-    } else if (channelDefType(xDef) === 'quantitative') {
+    } else if (isUnbinnedQuantitative(xDef)) {
       return x;
-    } else if (channelDefType(yDef) === 'quantitative') {
+    } else if (isUnbinnedQuantitative(yDef)) {
       return y;
     }
 
@@ -58276,8 +59855,7 @@
 
         if (isArray(channelDef)) {
           // array cannot have condition
-          out[channel] = channelDef. // somehow we need to cast it here
-          map(cd => replaceRepeaterInChannelDef(cd, repeater)).filter(cd => cd);
+          out[channel] = channelDef.map(cd => replaceRepeaterInChannelDef(cd, repeater)).filter(cd => cd);
         } else {
           const cd = replaceRepeaterInChannelDef(channelDef, repeater);
 
@@ -58326,7 +59904,6 @@
         mark
       } = spec;
       warn(lineWithRange(!!encoding.x2, !!encoding.y2));
-      console.log(mark);
       return normalize({ ...spec,
         mark: isObject(mark) ? { ...mark,
           type: 'rule'
@@ -58445,8 +60022,6 @@
     }
 
     mapNonLayerRepeat(spec, params) {
-      var _childSpec$data;
-
       const {
         repeat,
         spec: childSpec,
@@ -58492,7 +60067,7 @@
 
       const columns = isArray(repeat) ? spec.columns : repeat.column ? repeat.column.length : 1;
       return {
-        data: (_childSpec$data = childSpec.data) !== null && _childSpec$data !== void 0 ? _childSpec$data : data,
+        data: childSpec.data ?? data,
         // data from child spec should have precedence
         align: 'all',
         ...remainingProperties,
@@ -58629,9 +60204,7 @@
 
             for (const prop of ['align', 'center', 'spacing']) {
               if (def[prop] !== undefined) {
-                var _layout$prop;
-
-                (_layout$prop = layout[prop]) !== null && _layout$prop !== void 0 ? _layout$prop : layout[prop] = {};
+                layout[prop] ?? (layout[prop] = {});
                 layout[prop][channel] = def[prop];
               }
             }
@@ -58749,7 +60322,7 @@
       }));
     }
 
-    return projection !== null && projection !== void 0 ? projection : parentProjection;
+    return projection ?? parentProjection;
   }
 
   function isFilter(t) {
@@ -58829,10 +60402,8 @@
 
   class SelectionCompatibilityNormalizer extends SpecMapper {
     map(spec, normParams) {
-      var _normParams$emptySele, _normParams$selection;
-
-      (_normParams$emptySele = normParams.emptySelections) !== null && _normParams$emptySele !== void 0 ? _normParams$emptySele : normParams.emptySelections = {};
-      (_normParams$selection = normParams.selectionPredicates) !== null && _normParams$selection !== void 0 ? _normParams$selection : normParams.selectionPredicates = {};
+      normParams.emptySelections ?? (normParams.emptySelections = {});
+      normParams.selectionPredicates ?? (normParams.selectionPredicates = {});
       spec = normalizeTransforms(spec, normParams);
       return super.map(spec, normParams);
     }
@@ -58881,9 +60452,7 @@
 
             normParams.emptySelections[name] = empty !== 'none';
 
-            for (const pred of vals((_normParams$selection2 = normParams.selectionPredicates[name]) !== null && _normParams$selection2 !== void 0 ? _normParams$selection2 : {})) {
-              var _normParams$selection2;
-
+            for (const pred of vals(normParams.selectionPredicates[name] ?? {})) {
               pred.empty = empty !== 'none';
             }
 
@@ -59013,14 +60582,14 @@
     // Normalize old compositions of selection names (e.g., selection: {and: ["one", "two"]})
     const normalizeSelectionComposition = o => {
       return normalizeLogicalComposition(o, param => {
-        var _normParams$emptySele2, _normParams$selection3, _normParams$selection4;
+        var _normParams$selection;
 
-        const empty = (_normParams$emptySele2 = normParams.emptySelections[param]) !== null && _normParams$emptySele2 !== void 0 ? _normParams$emptySele2 : true;
+        const empty = normParams.emptySelections[param] ?? true;
         const pred = {
           param,
           empty
         };
-        (_normParams$selection4 = (_normParams$selection3 = normParams.selectionPredicates)[param]) !== null && _normParams$selection4 !== void 0 ? _normParams$selection4 : _normParams$selection3[param] = [];
+        (_normParams$selection = normParams.selectionPredicates)[param] ?? (_normParams$selection[param] = []);
         normParams.selectionPredicates[param].push(pred);
         return pred;
       });
@@ -59031,9 +60600,7 @@
 
   class TopLevelSelectionsNormalizer extends SpecMapper {
     map(spec, normParams) {
-      var _normParams$selection;
-
-      const selections = (_normParams$selection = normParams.selections) !== null && _normParams$selection !== void 0 ? _normParams$selection : [];
+      const selections = normParams.selections ?? [];
 
       if (spec.params && !isUnitSpec(spec)) {
         const params = [];
@@ -59054,11 +60621,9 @@
     }
 
     mapUnit(spec, normParams) {
-      var _normParams$path;
-
       const selections = normParams.selections;
       if (!selections || !selections.length) return spec;
-      const path = ((_normParams$path = normParams.path) !== null && _normParams$path !== void 0 ? _normParams$path : []).concat(spec.name);
+      const path = (normParams.path ?? []).concat(spec.name);
       const params = [];
 
       for (const selection of selections) {
@@ -59090,10 +60655,8 @@
   }
 
   function addSpecNameToParams(spec, params) {
-    var _params$path;
-
     return spec.name ? { ...params,
-      path: ((_params$path = params.path) !== null && _params$path !== void 0 ? _params$path : []).concat(spec.name)
+      path: (params.path ?? []).concat(spec.name)
     } : params;
   }
 
@@ -59136,7 +60699,7 @@
   function _normalizeAutoSize(autosize) {
     return isString(autosize) ? {
       type: autosize
-    } : autosize !== null && autosize !== void 0 ? autosize : {};
+    } : autosize ?? {};
   }
   /**
    * Normalize autosize and deal with width or height == "container".
@@ -59424,9 +60987,7 @@
     return isExpr ? wrap(stringify(init)) : init;
   }
   function assembleUnitSelectionSignals(model, signals) {
-    for (const selCmpt of vals((_model$component$sele = model.component.selection) !== null && _model$component$sele !== void 0 ? _model$component$sele : {})) {
-      var _model$component$sele;
-
+    for (const selCmpt of vals(model.component.selection ?? {})) {
       const name = selCmpt.name;
       let modifyExpr = `${name}${TUPLE}, ${selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`}`;
 
@@ -59467,9 +61028,7 @@
   function assembleTopLevelSignals(model, signals) {
     let hasSelections = false;
 
-    for (const selCmpt of vals((_model$component$sele2 = model.component.selection) !== null && _model$component$sele2 !== void 0 ? _model$component$sele2 : {})) {
-      var _model$component$sele2;
-
+    for (const selCmpt of vals(model.component.selection ?? {})) {
       const name = selCmpt.name;
       const store = $$1(name + STORE);
       const hasSg = signals.filter(s => s.name === name);
@@ -59512,9 +61071,7 @@
   function assembleUnitSelectionData(model, data) {
     const dataCopy = [...data];
 
-    for (const selCmpt of vals((_model$component$sele3 = model.component.selection) !== null && _model$component$sele3 !== void 0 ? _model$component$sele3 : {})) {
-      var _model$component$sele3;
-
+    for (const selCmpt of vals(model.component.selection ?? {})) {
       const init = {
         name: selCmpt.name + STORE
       };
@@ -59546,9 +61103,7 @@
     return dataCopy;
   }
   function assembleUnitSelectionMarks(model, marks) {
-    for (const selCmpt of vals((_model$component$sele4 = model.component.selection) !== null && _model$component$sele4 !== void 0 ? _model$component$sele4 : {})) {
-      var _model$component$sele4;
-
+    for (const selCmpt of vals(model.component.selection ?? {})) {
       for (const c of selectionCompilers) {
         if (c.defined(selCmpt) && c.marks) {
           marks = c.marks(model, selCmpt, marks);
@@ -59946,10 +61501,8 @@
       return true; // This transform handles its own defaults, so always run parse.
     },
     parse: (model, selCmpt, selDef) => {
-      var _selCmpt$project;
-
       const name = selCmpt.name;
-      const proj = (_selCmpt$project = selCmpt.project) !== null && _selCmpt$project !== void 0 ? _selCmpt$project : selCmpt.project = new SelectionProjectionComponent();
+      const proj = selCmpt.project ?? (selCmpt.project = new SelectionProjectionComponent());
       const parsed = {};
       const timeUnits = {};
       const signals = new Set();
@@ -60005,12 +61558,13 @@
 
       if (!fields && !encodings) {
         encodings = cfg.encodings;
-        fields = cfg.fields;
+
+        if ('fields' in cfg) {
+          fields = cfg.fields;
+        }
       }
 
-      for (const channel of (_encodings = encodings) !== null && _encodings !== void 0 ? _encodings : []) {
-        var _encodings;
-
+      for (const channel of encodings ?? []) {
         const fieldDef = model.fieldDef(channel);
 
         if (fieldDef) {
@@ -60070,12 +61624,9 @@
         } else {
           warn(cannotProjectOnChannelWithoutField(channel));
         }
-      } // TODO: find a possible channel mapping for these fields.
+      }
 
-
-      for (const field of (_fields = fields) !== null && _fields !== void 0 ? _fields : []) {
-        var _fields;
-
+      for (const field of fields ?? []) {
         if (proj.hasField[field]) continue;
         const p = {
           type: 'E',
@@ -60201,9 +61752,7 @@
   }
 
   function isTopLevelLayer(model) {
-    var _model$parent$parent;
-
-    return model.parent && isLayerModel(model.parent) && ((_model$parent$parent = !model.parent.parent) !== null && _model$parent$parent !== void 0 ? _model$parent$parent : isTopLevelLayer(model.parent.parent));
+    return model.parent && isLayerModel(model.parent) && (!model.parent.parent ?? isTopLevelLayer(model.parent.parent));
   }
 
   const BRUSH = '_brush';
@@ -60221,9 +61770,9 @@
       if (selCmpt.translate && !hasScales) {
         const filterExpr = `!event.item || event.item.mark.name !== ${$$1(name + BRUSH)}`;
         events(selCmpt, (on, evt) => {
-          var _evt$between$, _evt$between$$filter;
+          var _evt$between$;
 
-          const filters = array$5((_evt$between$$filter = (_evt$between$ = evt.between[0]).filter) !== null && _evt$between$$filter !== void 0 ? _evt$between$$filter : _evt$between$.filter = []);
+          const filters = array$5((_evt$between$ = evt.between[0]).filter ?? (_evt$between$.filter = []));
 
           if (!filters.includes(filterExpr)) {
             filters.push(filterExpr);
@@ -60257,7 +61806,7 @@
       }); // Proxy scale reactions to ensure that an infinite loop doesn't occur
       // when an interval selection filter touches the scale.
 
-      if (!hasScales) {
+      if (!hasScales && scaleTriggers.length) {
         signals.push({
           name: name + SCALE_TRIGGER,
           value: {},
@@ -60279,13 +61828,15 @@
         ...(init ? {
           init: `{${update}: ${assembleInit(init)}}`
         } : {}),
-        on: [{
-          events: [{
-            signal: dataSignals.join(' || ')
-          }],
-          // Prevents double invocation, see https://github.com/vega/vega#1672.
-          update: `${dataSignals.join(' && ')} ? {${update}: [${dataSignals}]} : null`
-        }]
+        ...(dataSignals.length ? {
+          on: [{
+            events: [{
+              signal: dataSignals.join(' || ')
+            }],
+            // Prevents double invocation, see https://github.com/vega/vega#1672.
+            update: `${dataSignals.join(' && ')} ? {${update}: [${dataSignals}]} : null`
+          }]
+        } : {})
       });
     },
     marks: (model, selCmpt, marks) => {
@@ -60296,9 +61847,10 @@
       } = selCmpt.project.hasChannel;
       const xvname = x && x.signals.visual;
       const yvname = y && y.signals.visual;
-      const store = `data(${$$1(selCmpt.name + STORE)})`; // Do not add a brush if we're binding to scales.
+      const store = `data(${$$1(selCmpt.name + STORE)})`; // Do not add a brush if we're binding to scales
+      // or we don't have a valid interval projection
 
-      if (scaleBindings.defined(selCmpt)) {
+      if (scaleBindings.defined(selCmpt) || !x && !y) {
         return marks;
       }
 
@@ -60481,7 +62033,7 @@
       const values = project.items.map(p => {
         const fieldDef = model.fieldDef(p.channel); // Binned fields should capture extents, for a range test against the raw field.
 
-        return fieldDef && fieldDef.bin ? `[${datum}[${$$1(model.vgField(p.channel, {}))}], ` + `${datum}[${$$1(model.vgField(p.channel, {
+        return fieldDef !== null && fieldDef !== void 0 && fieldDef.bin ? `[${datum}[${$$1(model.vgField(p.channel, {}))}], ` + `${datum}[${$$1(model.vgField(p.channel, {
         binSuffix: 'end'
       }))}]]` : `${datum}[${$$1(p.field)}]`;
       }).join(', '); // Only add a discrete selection to the store if a datum is present _and_
@@ -60494,11 +62046,15 @@
 
       const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
       const events = selCmpt.events;
+      const brushes = vals(model.component.selection ?? {}).reduce((acc, cmpt) => {
+        return cmpt.type === 'interval' ? acc.concat(cmpt.name + BRUSH) : acc;
+      }, []).map(b => `indexof(item().mark.name, '${b}') < 0`).join(' && ');
+      const test = `datum && item().mark.marktype !== 'group'` + (brushes ? ` && ${brushes}` : '');
       return signals.concat([{
         name: name + TUPLE,
         on: events ? [{
           events,
-          update: `datum && item().mark.marktype !== 'group' ? {${update}: [${values}]} : null`,
+          update: `${test} ? {${update}: [${values}]} : null`,
           force: true
         }] : []
       }]);
@@ -60646,8 +62202,6 @@
     const tuples = [];
 
     function add(fDef, channel) {
-      var _value;
-
       const mainChannel = getMainRangeChannel(channel);
       const fieldDef = isTypedFieldDef(fDef) ? fDef : { ...fDef,
         type: encoding[mainChannel].type // for secondary field def, copy type from main channel
@@ -60690,7 +62244,7 @@
         }
       }
 
-      (_value = value) !== null && _value !== void 0 ? _value : value = textRef(fieldDef, config, expr).signal;
+      value ?? (value = textRef(fieldDef, config, expr).signal);
       tuples.push({
         channel,
         key,
@@ -60838,13 +62392,11 @@
     } = opt;
 
     if (defaultRef === undefined) {
-      var _defaultValue;
-
       // prettier-ignore
-      (_defaultValue = defaultValue) !== null && _defaultValue !== void 0 ? _defaultValue : defaultValue = getMarkPropOrConfig(channel, markDef, config, {
+      defaultValue ?? (defaultValue = getMarkPropOrConfig(channel, markDef, config, {
         vgChannel,
         ignoreVgConfig: true
-      });
+      }));
 
       if (defaultValue !== undefined) {
         defaultRef = signalOrValueRef(defaultValue);
@@ -60852,7 +62404,7 @@
     }
 
     const channelDef = encoding[channel];
-    return wrapCondition(model, channelDef, vgChannel !== null && vgChannel !== void 0 ? vgChannel : channel, cDef => {
+    return wrapCondition(model, channelDef, vgChannel ?? channel, cDef => {
       return midPoint({
         channel,
         channelDef: cDef,
@@ -60870,8 +62422,6 @@
   function color(model, opt = {
     filled: undefined
   }) {
-    var _opt$filled, _ref, _getMarkPropOrConfig, _getMarkPropOrConfig2;
-
     const {
       markDef,
       encoding,
@@ -60881,17 +62431,17 @@
       type: markType
     } = markDef; // Allow filled to be overridden (for trail's "filled")
 
-    const filled = (_opt$filled = opt.filled) !== null && _opt$filled !== void 0 ? _opt$filled : getMarkPropOrConfig('filled', markDef, config);
+    const filled = opt.filled ?? getMarkPropOrConfig('filled', markDef, config);
     const transparentIfNeeded = contains(['bar', 'point', 'circle', 'square', 'geoshape'], markType) ? 'transparent' : undefined;
-    const defaultFill = (_ref = (_getMarkPropOrConfig = getMarkPropOrConfig(filled === true ? 'color' : undefined, markDef, config, {
+    const defaultFill = getMarkPropOrConfig(filled === true ? 'color' : undefined, markDef, config, {
       vgChannel: 'fill'
-    })) !== null && _getMarkPropOrConfig !== void 0 ? _getMarkPropOrConfig : // need to add this manually as getMarkConfig normally drops config.mark[channel] if vgChannel is specified
-    config.mark[filled === true && 'color']) !== null && _ref !== void 0 ? _ref : // If there is no fill, always fill symbols, bar, geoshape
+    }) ?? // need to add this manually as getMarkConfig normally drops config.mark[channel] if vgChannel is specified
+    config.mark[filled === true && 'color'] ?? // If there is no fill, always fill symbols, bar, geoshape
     // with transparent fills https://github.com/vega/vega-lite/issues/1316
     transparentIfNeeded;
-    const defaultStroke = (_getMarkPropOrConfig2 = getMarkPropOrConfig(filled === false ? 'color' : undefined, markDef, config, {
+    const defaultStroke = getMarkPropOrConfig(filled === false ? 'color' : undefined, markDef, config, {
       vgChannel: 'stroke'
-    })) !== null && _getMarkPropOrConfig2 !== void 0 ? _getMarkPropOrConfig2 : // need to add this manually as getMarkConfig normally drops config.mark[channel] if vgChannel is specified
+    }) ?? // need to add this manually as getMarkConfig normally drops config.mark[channel] if vgChannel is specified
     config.mark[filled === false && 'color'];
     const colorVgChannel = filled ? 'fill' : 'stroke';
     const fillStrokeMarkDefAndConfig = { ...(defaultFill ? {
@@ -61351,8 +62901,6 @@
   }
 
   function rectPosition(model, channel, mark) {
-    var _ref, _encoding$sizeChannel;
-
     const {
       config,
       encoding,
@@ -61366,13 +62914,13 @@
     const scaleType = scale ? scale.get('type') : undefined;
     const scaleName = model.scaleName(channel);
     const orient = markDef.orient;
-    const hasSizeDef = (_ref = (_encoding$sizeChannel = encoding[sizeChannel]) !== null && _encoding$sizeChannel !== void 0 ? _encoding$sizeChannel : encoding.size) !== null && _ref !== void 0 ? _ref : getMarkPropOrConfig('size', markDef, config, {
+    const hasSizeDef = encoding[sizeChannel] ?? encoding.size ?? getMarkPropOrConfig('size', markDef, config, {
       vgChannel: sizeChannel
     });
     const isBarBand = mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal'); // x, x2, and width -- we must specify two of these in all conditions
 
     if (isFieldDef(channelDef) && (isBinning(channelDef.bin) || isBinned(channelDef.bin) || channelDef.timeUnit && !channelDef2) && !(hasSizeDef && !isRelativeBandSize(hasSizeDef)) && !hasDiscreteDomain(scaleType)) {
-      var _model$component$axes, _axis$get;
+      var _model$component$axes;
 
       const bandSize = getBandSize({
         channel,
@@ -61382,7 +62930,7 @@
         scaleType
       });
       const axis = (_model$component$axes = model.component.axes[channel]) === null || _model$component$axes === void 0 ? void 0 : _model$component$axes[0];
-      const axisTranslate = (_axis$get = axis === null || axis === void 0 ? void 0 : axis.get('translate')) !== null && _axis$get !== void 0 ? _axis$get : 0.5; // vega default is 0.5
+      const axisTranslate = (axis === null || axis === void 0 ? void 0 : axis.get('translate')) ?? 0.5; // vega default is 0.5
 
       return rectBinPosition({
         fieldDef: channelDef,
@@ -61901,9 +63449,7 @@
       let index = 0;
       let exists = false;
       marks.forEach((mark, i) => {
-        var _mark$name;
-
-        const name = (_mark$name = mark.name) !== null && _mark$name !== void 0 ? _mark$name : '';
+        const name = mark.name ?? '';
 
         if (name === model.component.mark[0].name) {
           index = i;
@@ -61937,8 +63483,6 @@
         const hasSignal = signals.filter(s => s.name === sgname);
 
         if (!hasSignal.length) {
-          var _ref, _bind$p$field;
-
           signals.unshift({
             name: sgname,
             ...(init ? {
@@ -61950,7 +63494,7 @@
               events: selCmpt.events,
               update: `datum && item().mark.marktype !== 'group' ? ${datum}[${$$1(p.field)}] : null`
             }] : [],
-            bind: (_ref = (_bind$p$field = bind[p.field]) !== null && _bind$p$field !== void 0 ? _bind$p$field : bind[p.channel]) !== null && _ref !== void 0 ? _ref : bind
+            bind: bind[p.field] ?? bind[p.channel] ?? bind
           });
         }
       });
@@ -62082,9 +63626,7 @@
         const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
 
         for (const evt of selCmpt.events) {
-          var _evt$filter;
-
-          evt.filter = array$5((_evt$filter = evt.filter) !== null && _evt$filter !== void 0 ? _evt$filter : []);
+          evt.filter = array$5(evt.filter ?? []);
 
           if (!evt.filter.includes(legendFilter)) {
             evt.filter.push(legendFilter);
@@ -62178,15 +63720,11 @@
 
     const field = (_model$fieldDef = model.fieldDef(channel)) === null || _model$fieldDef === void 0 ? void 0 : _model$fieldDef.field;
 
-    for (const selCmpt of vals((_model$component$sele = model.component.selection) !== null && _model$component$sele !== void 0 ? _model$component$sele : {})) {
-      var _model$component$sele, _selCmpt$project$hasF;
-
-      const proj = (_selCmpt$project$hasF = selCmpt.project.hasField[field]) !== null && _selCmpt$project$hasF !== void 0 ? _selCmpt$project$hasF : selCmpt.project.hasChannel[channel];
+    for (const selCmpt of vals(model.component.selection ?? {})) {
+      const proj = selCmpt.project.hasField[field] ?? selCmpt.project.hasChannel[channel];
 
       if (proj && legendBindings.defined(selCmpt)) {
-        var _legendCmpt$get;
-
-        const legendSelections = (_legendCmpt$get = legendCmpt.get('selections')) !== null && _legendCmpt$get !== void 0 ? _legendCmpt$get : [];
+        const legendSelections = legendCmpt.get('selections') ?? [];
         legendSelections.push(selCmpt.name);
         legendCmpt.set('selections', legendSelections, false);
         proj.hasLegend = true;
@@ -62243,8 +63781,6 @@
   };
 
   function onDelta$1(model, selCmpt, proj, size, signals) {
-    var _scaleCmpt$get, _scaleCmpt$get2;
-
     const name = selCmpt.name;
     const anchor = name + ANCHOR$1;
     const delta = name + DELTA$1;
@@ -62260,7 +63796,7 @@
     const extent = `${anchor}.extent_${channel}`;
     const offset = `${sign}${delta}.${channel} / ${hasScales ? `${sizeSg}` : `span(${extent})`}`;
     const panFn = !hasScales ? 'panLinear' : scaleType === 'log' ? 'panLog' : scaleType === 'symlog' ? 'panSymlog' : scaleType === 'pow' ? 'panPow' : 'panLinear';
-    const arg = !hasScales ? '' : scaleType === 'pow' ? `, ${(_scaleCmpt$get = scaleCmpt.get('exponent')) !== null && _scaleCmpt$get !== void 0 ? _scaleCmpt$get : 1}` : scaleType === 'symlog' ? `, ${(_scaleCmpt$get2 = scaleCmpt.get('constant')) !== null && _scaleCmpt$get2 !== void 0 ? _scaleCmpt$get2 : 1}` : '';
+    const arg = !hasScales ? '' : scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') ?? 1}` : scaleType === 'symlog' ? `, ${scaleCmpt.get('constant') ?? 1}` : '';
     const update = `${panFn}(${extent}, ${offset}${arg})`;
     signal.on.push({
       events: {
@@ -62320,8 +63856,6 @@
   };
 
   function onDelta(model, selCmpt, proj, size, signals) {
-    var _scaleCmpt$get, _scaleCmpt$get2;
-
     const name = selCmpt.name;
     const channel = proj.channel;
     const hasScales = scaleBindings.defined(selCmpt);
@@ -62333,7 +63867,7 @@
     const delta = name + DELTA;
     const anchor = `${name}${ANCHOR}.${channel}`;
     const zoomFn = !hasScales ? 'zoomLinear' : scaleType === 'log' ? 'zoomLog' : scaleType === 'symlog' ? 'zoomSymlog' : scaleType === 'pow' ? 'zoomPow' : 'zoomLinear';
-    const arg = !hasScales ? '' : scaleType === 'pow' ? `, ${(_scaleCmpt$get = scaleCmpt.get('exponent')) !== null && _scaleCmpt$get !== void 0 ? _scaleCmpt$get : 1}` : scaleType === 'symlog' ? `, ${(_scaleCmpt$get2 = scaleCmpt.get('constant')) !== null && _scaleCmpt$get2 !== void 0 ? _scaleCmpt$get2 : 1}` : '';
+    const arg = !hasScales ? '' : scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') ?? 1}` : scaleType === 'symlog' ? `, ${scaleCmpt.get('constant') ?? 1}` : '';
     const update = `${zoomFn}(${base}, ${anchor}, ${delta}${arg})`;
     signal.on.push({
       events: {
@@ -62385,9 +63919,7 @@
     return name;
   }
   function requiresSelectionId(model) {
-    var _model$component$sele;
-
-    return vals((_model$component$sele = model.component.selection) !== null && _model$component$sele !== void 0 ? _model$component$sele : {}).reduce((identifier, selCmpt) => {
+    return vals(model.component.selection ?? {}).reduce((identifier, selCmpt) => {
       return identifier || selCmpt.project.items.some(proj => proj.field === SELECTION_ID);
     }, false);
   } // Binding a point selection to query widgets or legends disables default direct manipulation interaction.
@@ -62492,15 +64024,16 @@
       }; // Set default values from config if a property hasn't been specified,
       // or if it is true. E.g., "translate": true should use the default
       // event handlers for translate. However, true may be a valid value for
-      // a property (e.g., "nearest": true). Project transform applies its defaults.
+      // a property (e.g., "nearest": true).
 
-      const {
-        fields,
-        encodings,
-        ...cfg
-      } = selectionConfig[type];
+      const cfg = selectionConfig[type];
 
       for (const key in cfg) {
+        // Project transform applies its defaults.
+        if (key === 'fields' || key === 'encodings') {
+          continue;
+        }
+
         if (key === 'mark') {
           defaults[key] = { ...cfg[key],
             ...defaults[key]
@@ -62508,9 +64041,7 @@
         }
 
         if (defaults[key] === undefined || defaults[key] === true) {
-          var _cfg$key;
-
-          defaults[key] = (_cfg$key = cfg[key]) !== null && _cfg$key !== void 0 ? _cfg$key : defaults[key];
+          defaults[key] = cfg[key] ?? defaults[key];
         }
       }
 
@@ -62545,7 +64076,7 @@
     }
 
     if (selCmpt.project.timeUnit) {
-      const child = dfnode !== null && dfnode !== void 0 ? dfnode : model.component.data.raw;
+      const child = dfnode ?? model.component.data.raw;
       const tunode = selCmpt.project.timeUnit.clone();
 
       if (child.parent) {
@@ -62592,9 +64123,7 @@
     return `${selCmpt.name}[${$$1(replacePathInField(field))}]`;
   }
   function materializeSelections(model, main) {
-    for (const [selection, selCmpt] of entries$1((_model$component$sele = model.component.selection) !== null && _model$component$sele !== void 0 ? _model$component$sele : {})) {
-      var _model$component$sele;
-
+    for (const [selection, selCmpt] of entries$1(model.component.selection ?? {})) {
       const lookupName = model.getName(`lookup_${selection}`);
       model.component.data.outputNodes[lookupName] = selCmpt.materialized = new OutputNode(new FilterNode(main, model, {
         param: selection
@@ -62633,11 +64162,11 @@
   }
 
   function setAxisEncode(axis, part, vgProp, vgRef) {
-    var _axis$encode, _axis$encode2, _axis$encode2$part, _axis$encode$part, _axis$encode$part$upd;
+    var _axis$encode, _axis$encode$part;
 
-    (_axis$encode = axis.encode) !== null && _axis$encode !== void 0 ? _axis$encode : axis.encode = {};
-    (_axis$encode2$part = (_axis$encode2 = axis.encode)[part]) !== null && _axis$encode2$part !== void 0 ? _axis$encode2$part : _axis$encode2[part] = {};
-    (_axis$encode$part$upd = (_axis$encode$part = axis.encode[part]).update) !== null && _axis$encode$part$upd !== void 0 ? _axis$encode$part$upd : _axis$encode$part.update = {}; // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
+    axis.encode ?? (axis.encode = {});
+    (_axis$encode = axis.encode)[part] ?? (_axis$encode[part] = {});
+    (_axis$encode$part = axis.encode[part]).update ?? (_axis$encode$part.update = {}); // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
 
     axis.encode[part].update[vgProp] = vgRef;
   }
@@ -62773,11 +64302,11 @@
       }
 
       if (labelExpr !== undefined) {
-        var _axis$encode3, _axis$encode3$labels;
+        var _axis$encode2, _axis$encode2$labels;
 
         let expr = labelExpr;
 
-        if ((_axis$encode3 = axis.encode) !== null && _axis$encode3 !== void 0 && (_axis$encode3$labels = _axis$encode3.labels) !== null && _axis$encode3$labels !== void 0 && _axis$encode3$labels.update && isSignalRef(axis.encode.labels.update.text)) {
+        if ((_axis$encode2 = axis.encode) !== null && _axis$encode2 !== void 0 && (_axis$encode2$labels = _axis$encode2.labels) !== null && _axis$encode2$labels !== void 0 && _axis$encode2$labels.update && isSignalRef(axis.encode.labels.update.text)) {
           expr = replaceAll(labelExpr, 'datum.label', axis.encode.labels.update.text.signal);
         }
 
@@ -62973,11 +64502,7 @@
       fieldOrDatumDef,
       axis,
       scaleType
-    }) => {
-      var _axis$grid;
-
-      return (_axis$grid = axis.grid) !== null && _axis$grid !== void 0 ? _axis$grid : defaultGrid(scaleType, fieldOrDatumDef);
-    },
+    }) => axis.grid ?? defaultGrid(scaleType, fieldOrDatumDef),
     gridScale: ({
       model,
       channel
@@ -63002,20 +64527,12 @@
       axis,
       fieldOrDatumDef,
       channel
-    }) => {
-      var _axis$labelFlush;
-
-      return (_axis$labelFlush = axis.labelFlush) !== null && _axis$labelFlush !== void 0 ? _axis$labelFlush : defaultLabelFlush(fieldOrDatumDef.type, channel);
-    },
+    }) => axis.labelFlush ?? defaultLabelFlush(fieldOrDatumDef.type, channel),
     labelOverlap: ({
       axis,
       fieldOrDatumDef,
       scaleType
-    }) => {
-      var _axis$labelOverlap;
-
-      return (_axis$labelOverlap = axis.labelOverlap) !== null && _axis$labelOverlap !== void 0 ? _axis$labelOverlap : defaultLabelOverlap$1(fieldOrDatumDef.type, scaleType, isFieldDef(fieldOrDatumDef) && !!fieldOrDatumDef.timeUnit, isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined);
-    },
+    }) => axis.labelOverlap ?? defaultLabelOverlap$1(fieldOrDatumDef.type, scaleType, isFieldDef(fieldOrDatumDef) && !!fieldOrDatumDef.timeUnit, isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined),
     // we already calculate orient in parse
     orient: ({
       orient
@@ -63028,11 +64545,9 @@
       fieldOrDatumDef,
       scaleType
     }) => {
-      var _axis$tickCount;
-
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
       const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
-      return (_axis$tickCount = axis.tickCount) !== null && _axis$tickCount !== void 0 ? _axis$tickCount : defaultTickCount({
+      return axis.tickCount ?? defaultTickCount({
         fieldOrDatumDef,
         scaleType,
         size,
@@ -63068,11 +64583,7 @@
       axis,
       fieldOrDatumDef,
       mark
-    }) => {
-      var _axis$zindex;
-
-      return (_axis$zindex = axis.zindex) !== null && _axis$zindex !== void 0 ? _axis$zindex : defaultZindex(mark, fieldOrDatumDef);
-    }
+    }) => axis.zindex ?? defaultZindex(mark, fieldOrDatumDef)
   }; // TODO: we need to refactor this method after we take care of config refactoring
 
   /**
@@ -63369,7 +64880,7 @@
     return vgField(fieldDef, {
       prefix: channel,
       suffix: 'sort_index',
-      ...(opt !== null && opt !== void 0 ? opt : {})
+      ...(opt ?? {})
     });
   }
 
@@ -63489,13 +65000,11 @@
     } = facetFieldDef;
 
     if (isSortField(sort)) {
-      var _sort$order;
-
       return {
         field: vgField(sort, {
           expr: 'datum'
         }),
-        order: (_sort$order = sort.order) !== null && _sort$order !== void 0 ? _sort$order : 'ascending'
+        order: sort.order ?? 'ascending'
       };
     } else if (isArray(sort)) {
       return {
@@ -63509,7 +65018,7 @@
         field: vgField(facetFieldDef, {
           expr: 'datum'
         }),
-        order: sort !== null && sort !== void 0 ? sort : 'ascending'
+        order: sort ?? 'ascending'
       };
     }
   }
@@ -63757,10 +65266,12 @@
   }
 
   function defaultScaleResolve(channel, model) {
-    if (isLayerModel(model) || isFacetModel(model)) {
+    if (isFacetModel(model)) {
+      return channel === 'theta' ? 'independent' : 'shared';
+    } else if (isLayerModel(model)) {
       return 'shared';
     } else if (isConcatModel(model)) {
-      return isXorY(channel) ? 'independent' : 'shared';
+      return isXorY(channel) || channel === 'theta' || channel === 'radius' ? 'independent' : 'shared';
     }
     /* istanbul ignore next: should never reach here. */
 
@@ -63813,8 +65324,6 @@
     legendCmpt,
     legendType
   }) {
-    var _legendCmpt$get, _legendCmpt$get2, _legendCmpt$get3, _getMaxValue;
-
     if (legendType !== 'symbol') {
       return undefined;
     }
@@ -63832,10 +65341,10 @@
       })
     }; // FIXME: remove this when VgEncodeEntry is compatible with SymbolEncodeEntry
 
-    const symbolOpacity = (_legendCmpt$get = legendCmpt.get('symbolOpacity')) !== null && _legendCmpt$get !== void 0 ? _legendCmpt$get : config.legend.symbolOpacity;
-    const symbolFillColor = (_legendCmpt$get2 = legendCmpt.get('symbolFillColor')) !== null && _legendCmpt$get2 !== void 0 ? _legendCmpt$get2 : config.legend.symbolFillColor;
-    const symbolStrokeColor = (_legendCmpt$get3 = legendCmpt.get('symbolStrokeColor')) !== null && _legendCmpt$get3 !== void 0 ? _legendCmpt$get3 : config.legend.symbolStrokeColor;
-    const opacity = symbolOpacity === undefined ? (_getMaxValue = getMaxValue(encoding.opacity)) !== null && _getMaxValue !== void 0 ? _getMaxValue : markDef.opacity : undefined;
+    const symbolOpacity = legendCmpt.get('symbolOpacity') ?? config.legend.symbolOpacity;
+    const symbolFillColor = legendCmpt.get('symbolFillColor') ?? config.legend.symbolFillColor;
+    const symbolStrokeColor = legendCmpt.get('symbolStrokeColor') ?? config.legend.symbolStrokeColor;
+    const opacity = symbolOpacity === undefined ? getMaxValue(encoding.opacity) ?? markDef.opacity : undefined;
 
     if (out.fill) {
       // for fill legend, we don't want any fill in symbol
@@ -63847,15 +65356,11 @@
           if (symbolFillColor) {
             delete out.fill;
           } else {
-            var _config$legend$symbol;
-
-            out.fill = signalOrValueRef((_config$legend$symbol = config.legend.symbolBaseFillColor) !== null && _config$legend$symbol !== void 0 ? _config$legend$symbol : 'black');
-            out.fillOpacity = signalOrValueRef(opacity !== null && opacity !== void 0 ? opacity : 1);
+            out.fill = signalOrValueRef(config.legend.symbolBaseFillColor ?? 'black');
+            out.fillOpacity = signalOrValueRef(opacity ?? 1);
           }
         } else if (isArray(out.fill)) {
-          var _ref, _getFirstConditionVal, _encoding$fill;
-
-          const fill = (_ref = (_getFirstConditionVal = getFirstConditionValue((_encoding$fill = encoding.fill) !== null && _encoding$fill !== void 0 ? _encoding$fill : encoding.color)) !== null && _getFirstConditionVal !== void 0 ? _getFirstConditionVal : markDef.fill) !== null && _ref !== void 0 ? _ref : filled && markDef.color;
+          const fill = getFirstConditionValue(encoding.fill ?? encoding.color) ?? markDef.fill ?? (filled && markDef.color);
 
           if (fill) {
             out.fill = signalOrValueRef(fill);
@@ -63889,7 +65394,7 @@
       if (condition) {
         out.opacity = [{
           test: condition,
-          ...signalOrValueRef(opacity !== null && opacity !== void 0 ? opacity : 1)
+          ...signalOrValueRef(opacity ?? 1)
         }, signalOrValueRef(config.legend.unselectedOpacity)];
       } else if (opacity) {
         out.opacity = signalOrValueRef(opacity);
@@ -63906,8 +65411,6 @@
     legendType,
     legendCmpt
   }) {
-    var _legendCmpt$get4;
-
     if (legendType !== 'gradient') {
       return undefined;
     }
@@ -63918,7 +65421,7 @@
       encoding
     } = model;
     let out = {};
-    const gradientOpacity = (_legendCmpt$get4 = legendCmpt.get('gradientOpacity')) !== null && _legendCmpt$get4 !== void 0 ? _legendCmpt$get4 : config.legend.gradientOpacity;
+    const gradientOpacity = legendCmpt.get('gradientOpacity') ?? config.legend.gradientOpacity;
     const opacity = gradientOpacity === undefined ? getMaxValue(encoding.opacity) || markDef.opacity : undefined;
 
     if (opacity) {
@@ -64034,33 +65537,23 @@
       return guideFormatType(formatType, fieldOrDatumDef, scaleType);
     },
     gradientLength: params => {
-      var _ref, _legend$gradientLengt;
-
       const {
         legend,
         legendConfig
       } = params;
-      return (_ref = (_legend$gradientLengt = legend.gradientLength) !== null && _legend$gradientLengt !== void 0 ? _legend$gradientLengt : legendConfig.gradientLength) !== null && _ref !== void 0 ? _ref : defaultGradientLength(params);
+      return legend.gradientLength ?? legendConfig.gradientLength ?? defaultGradientLength(params);
     },
     labelOverlap: ({
       legend,
       legendConfig,
       scaleType
-    }) => {
-      var _ref2, _legend$labelOverlap;
-
-      return (_ref2 = (_legend$labelOverlap = legend.labelOverlap) !== null && _legend$labelOverlap !== void 0 ? _legend$labelOverlap : legendConfig.labelOverlap) !== null && _ref2 !== void 0 ? _ref2 : defaultLabelOverlap(scaleType);
-    },
+    }) => legend.labelOverlap ?? legendConfig.labelOverlap ?? defaultLabelOverlap(scaleType),
     symbolType: ({
       legend,
       markDef,
       channel,
       encoding
-    }) => {
-      var _legend$symbolType;
-
-      return (_legend$symbolType = legend.symbolType) !== null && _legend$symbolType !== void 0 ? _legend$symbolType : defaultSymbolType(markDef.type, channel, encoding.shape, markDef.shape);
-    },
+    }) => legend.symbolType ?? defaultSymbolType(markDef.type, channel, encoding.shape, markDef.shape),
     title: ({
       fieldOrDatumDef,
       config
@@ -64101,10 +65594,8 @@
   }
   function defaultSymbolType(mark, channel, shapeChannelDef, markShape) {
     if (channel !== 'shape') {
-      var _getFirstConditionVal;
-
       // use the value from the shape encoding or the mark config if they exist
-      const shape = (_getFirstConditionVal = getFirstConditionValue(shapeChannelDef)) !== null && _getFirstConditionVal !== void 0 ? _getFirstConditionVal : markShape;
+      const shape = getFirstConditionValue(shapeChannelDef) ?? markShape;
 
       if (shape) {
         return shape;
@@ -64163,9 +65654,7 @@
     orient,
     legend
   }) {
-    var _ref3, _legend$direction;
-
-    return (_ref3 = (_legend$direction = legend.direction) !== null && _legend$direction !== void 0 ? _legend$direction : legendConfig[legendType ? 'gradientDirection' : 'symbolDirection']) !== null && _ref3 !== void 0 ? _ref3 : defaultDirection(orient, legendType);
+    return legend.direction ?? legendConfig[legendType ? 'gradientDirection' : 'symbolDirection'] ?? defaultDirection(orient, legendType);
   }
   function defaultDirection(orient, legendType) {
     switch (orient) {
@@ -64314,7 +65803,7 @@
   }
 
   function parseLegendForChannel(model, channel) {
-    var _normalizeTimeUnit, _legend$encoding, _legend;
+    var _normalizeTimeUnit, _legend;
 
     let legend = model.legend(channel);
     const {
@@ -64380,7 +65869,7 @@
       }
     }
 
-    const legendEncoding = (_legend$encoding = (_legend = legend) === null || _legend === void 0 ? void 0 : _legend.encoding) !== null && _legend$encoding !== void 0 ? _legend$encoding : {};
+    const legendEncoding = ((_legend = legend) === null || _legend === void 0 ? void 0 : _legend.encoding) ?? {};
     const selections = legendCmpt.get('selections');
     const legendEncode = {};
     const legendEncodeParams = {
@@ -64392,9 +65881,7 @@
     };
 
     for (const part of ['labels', 'legend', 'title', 'symbols', 'gradient', 'entries']) {
-      var _legendEncoding$part;
-
-      const legendEncodingPart = guideEncodeEntry((_legendEncoding$part = legendEncoding[part]) !== null && _legendEncoding$part !== void 0 ? _legendEncoding$part : {}, model);
+      const legendEncodingPart = guideEncodeEntry(legendEncoding[part] ?? {}, model);
       const value = part in legendEncodeRules ? legendEncodeRules[part](legendEncodingPart, legendEncodeParams) // apply rule
       : legendEncodingPart; // no rule -- just default values
 
@@ -64525,11 +66012,11 @@
   }
 
   function setLegendEncode(legend, part, vgProp, vgRef) {
-    var _legend$encode, _legend$encode2, _legend$encode2$part, _legend$encode$part, _legend$encode$part$u;
+    var _legend$encode, _legend$encode$part;
 
-    (_legend$encode = legend.encode) !== null && _legend$encode !== void 0 ? _legend$encode : legend.encode = {};
-    (_legend$encode2$part = (_legend$encode2 = legend.encode)[part]) !== null && _legend$encode2$part !== void 0 ? _legend$encode2$part : _legend$encode2[part] = {};
-    (_legend$encode$part$u = (_legend$encode$part = legend.encode[part]).update) !== null && _legend$encode$part$u !== void 0 ? _legend$encode$part$u : _legend$encode$part.update = {}; // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
+    legend.encode ?? (legend.encode = {});
+    (_legend$encode = legend.encode)[part] ?? (_legend$encode[part] = {});
+    (_legend$encode$part = legend.encode[part]).update ?? (_legend$encode$part.update = {}); // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
 
     legend.encode[part].update[vgProp] = vgRef;
   }
@@ -64560,7 +66047,7 @@
     return legends;
   }
   function assembleLegend(legendCmpt, config) {
-    var _legend$encode3;
+    var _legend$encode2;
 
     const {
       disable,
@@ -64577,7 +66064,7 @@
       legend.aria = false;
     }
 
-    if ((_legend$encode3 = legend.encode) !== null && _legend$encode3 !== void 0 && _legend$encode3.symbols) {
+    if ((_legend$encode2 = legend.encode) !== null && _legend$encode2 !== void 0 && _legend$encode2.symbols) {
       const out = legend.encode.symbols.update;
 
       if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
@@ -64601,11 +66088,11 @@
     }
 
     if (labelExpr !== undefined) {
-      var _legend$encode4, _legend$encode4$label;
+      var _legend$encode3, _legend$encode3$label;
 
       let expr = labelExpr;
 
-      if ((_legend$encode4 = legend.encode) !== null && _legend$encode4 !== void 0 && (_legend$encode4$label = _legend$encode4.labels) !== null && _legend$encode4$label !== void 0 && _legend$encode4$label.update && isSignalRef(legend.encode.labels.update.text)) {
+      if ((_legend$encode3 = legend.encode) !== null && _legend$encode3 !== void 0 && (_legend$encode3$label = _legend$encode3.labels) !== null && _legend$encode3$label !== void 0 && _legend$encode3$label.update && isSignalRef(legend.encode.labels.update.text)) {
         expr = replaceAll(labelExpr, 'datum.label', legend.encode.labels.update.text.signal);
       }
 
@@ -64721,14 +66208,12 @@
 
   function parseUnitProjection(model) {
     if (model.hasProjection) {
-      var _replaceExprRef;
-
       const proj = replaceExprRef(model.specifiedProjection);
       const fit = !(proj && (proj.scale != null || proj.translate != null));
       const size = fit ? [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')] : undefined;
       const data = fit ? gatherFitData(model) : undefined;
-      const projComp = new ProjectionComponent(model.projectionName(true), { ...((_replaceExprRef = replaceExprRef(model.config.projection)) !== null && _replaceExprRef !== void 0 ? _replaceExprRef : {}),
-        ...(proj !== null && proj !== void 0 ? proj : {})
+      const projComp = new ProjectionComponent(model.projectionName(true), { ...(replaceExprRef(model.config.projection) ?? {}),
+        ...(proj ?? {})
       }, size, data);
 
       if (!projComp.get('type')) {
@@ -64859,10 +66344,8 @@
 
   function rangeFormula(model, fieldDef, channel, config) {
     if (binRequiresRange(fieldDef, channel)) {
-      var _ref, _model$axis;
-
       // read format from axis or legend, if there is no format then use config.numberFormat
-      const guide = isUnitModel(model) ? (_ref = (_model$axis = model.axis(channel)) !== null && _model$axis !== void 0 ? _model$axis : model.legend(channel)) !== null && _ref !== void 0 ? _ref : {} : {};
+      const guide = isUnitModel(model) ? model.axis(channel) ?? model.legend(channel) ?? {} : {};
       const startField = vgField(fieldDef, {
         expr: 'datum'
       });
@@ -64894,9 +66377,7 @@
   }
 
   function getBinSignalName(model, field, bin) {
-    var _normalizeBin;
-
-    const normalizedBin = (_normalizeBin = normalizeBin(bin, undefined)) !== null && _normalizeBin !== void 0 ? _normalizeBin : {};
+    const normalizedBin = normalizeBin(bin, undefined) ?? {};
     const key = binKey(normalizedBin, field);
     return model.getName(`${key}_bins`);
   }
@@ -65106,6 +66587,8 @@
   }
 
   function addDimension(dims, channel, fieldDef, model) {
+    var _fieldDef$scale;
+
     const channelDef2 = isUnitModel(model) ? model.encoding[getSecondaryRangeChannel(channel)] : undefined;
 
     if (isTypedFieldDef(fieldDef) && isUnitModel(model) && hasBandEnd(fieldDef, channelDef2, model.markDef, model.config)) {
@@ -65126,6 +66609,10 @@
       dims.add(vgField(fieldDef));
     }
 
+    if (isScaleFieldDef(fieldDef) && isFieldRange((_fieldDef$scale = fieldDef.scale) === null || _fieldDef$scale === void 0 ? void 0 : _fieldDef$scale.range)) {
+      dims.add(fieldDef.scale.range.field);
+    }
+
     return dims;
   }
 
@@ -65136,10 +66623,8 @@
 
       for (const op of keys(ops)) {
         if (field in parentMeasures) {
-          var _parentMeasures$field;
-
           // add operator to existing measure field
-          parentMeasures[field][op] = new Set([...((_parentMeasures$field = parentMeasures[field][op]) !== null && _parentMeasures$field !== void 0 ? _parentMeasures$field : []), ...ops[op]]);
+          parentMeasures[field][op] = new Set([...(parentMeasures[field][op] ?? []), ...ops[op]]);
         } else {
           parentMeasures[field] = {
             [op]: ops[op]
@@ -65192,19 +66677,17 @@
 
         if (aggregate) {
           if (aggregate === 'count') {
-            var _, _meas$_;
+            var _;
 
-            (_meas$_ = meas[_ = '*']) !== null && _meas$_ !== void 0 ? _meas$_ : meas[_] = {};
+            meas[_ = '*'] ?? (meas[_] = {});
             meas['*']['count'] = new Set([vgField(fieldDef, {
               forAs: true
             })]);
           } else {
             if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
-              var _meas$argField;
-
               const op = isArgminDef(aggregate) ? 'argmin' : 'argmax';
               const argField = aggregate[op];
-              (_meas$argField = meas[argField]) !== null && _meas$argField !== void 0 ? _meas$argField : meas[argField] = {};
+              meas[argField] ?? (meas[argField] = {});
               meas[argField][op] = new Set([vgField({
                 op,
                 field: argField
@@ -65212,9 +66695,7 @@
                 forAs: true
               })]);
             } else {
-              var _meas$field;
-
-              (_meas$field = meas[field]) !== null && _meas$field !== void 0 ? _meas$field : meas[field] = {};
+              meas[field] ?? (meas[field] = {});
               meas[field][aggregate] = new Set([vgField(fieldDef, {
                 forAs: true
               })]);
@@ -65222,9 +66703,7 @@
 
 
             if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
-              var _meas$field2;
-
-              (_meas$field2 = meas[field]) !== null && _meas$field2 !== void 0 ? _meas$field2 : meas[field] = {};
+              meas[field] ?? (meas[field] = {});
               meas[field]['min'] = new Set([vgField({
                 field,
                 aggregate: 'min'
@@ -65264,16 +66743,14 @@
 
         if (op) {
           if (op === 'count') {
-            var _2, _meas$_2;
+            var _2;
 
-            (_meas$_2 = meas[_2 = '*']) !== null && _meas$_2 !== void 0 ? _meas$_2 : meas[_2] = {};
+            meas[_2 = '*'] ?? (meas[_2] = {});
             meas['*']['count'] = new Set([as ? as : vgField(s, {
               forAs: true
             })]);
           } else {
-            var _meas$field3;
-
-            (_meas$field3 = meas[field]) !== null && _meas$field3 !== void 0 ? _meas$field3 : meas[field] = {};
+            meas[field] ?? (meas[field] = {});
             meas[field][op] = new Set([as ? as : vgField(s, {
               forAs: true
             })]);
@@ -65281,9 +66758,7 @@
         }
       }
 
-      for (const s of (_t$groupby = t.groupby) !== null && _t$groupby !== void 0 ? _t$groupby : []) {
-        var _t$groupby;
-
+      for (const s of t.groupby ?? []) {
         dims.add(s);
       }
 
@@ -65544,7 +67019,7 @@
       return {
         name: this[channel].name,
         // Use data from the crossed one if it exist
-        source: crossedDataName !== null && crossedDataName !== void 0 ? crossedDataName : this.data,
+        source: crossedDataName ?? this.data,
         transform: [{
           type: 'aggregate',
           groupby: this[channel].fields,
@@ -65569,9 +67044,7 @@
 
       for (const headerChannel of HEADER_CHANNELS) {
         for (const headerType of HEADER_TYPES) {
-          var _ref;
-
-          const headers = (_ref = layoutHeaders[headerChannel] && layoutHeaders[headerChannel][headerType]) !== null && _ref !== void 0 ? _ref : [];
+          const headers = (layoutHeaders[headerChannel] && layoutHeaders[headerChannel][headerType]) ?? [];
 
           for (const header of headers) {
             var _header$axes;
@@ -65626,11 +67099,9 @@
       } = this;
 
       if (column && row && (childIndependentFieldsWithStep.x || childIndependentFieldsWithStep.y)) {
-        var _childIndependentFiel, _childIndependentFiel2;
-
         // Need to create a cross dataset to correctly calculate cardinality
         crossedDataName = `cross_${this.column.name}_${this.row.name}`;
-        const fields = [].concat((_childIndependentFiel = childIndependentFieldsWithStep.x) !== null && _childIndependentFiel !== void 0 ? _childIndependentFiel : [], (_childIndependentFiel2 = childIndependentFieldsWithStep.y) !== null && _childIndependentFiel2 !== void 0 ? _childIndependentFiel2 : []);
+        const fields = [].concat(childIndependentFieldsWithStep.x ?? [], childIndependentFieldsWithStep.y ?? []);
         const ops = fields.map(() => 'distinct');
         data.push({
           name: crossedDataName,
@@ -65727,9 +67198,7 @@
         } else if (isFieldRangePredicate(filter)) {
           val = filter.range[0];
         } else if (isFieldOneOfPredicate(filter)) {
-          var _filter$oneOf;
-
-          val = ((_filter$oneOf = filter.oneOf) !== null && _filter$oneOf !== void 0 ? _filter$oneOf : filter['in'])[0];
+          val = (filter.oneOf ?? filter['in'])[0];
         } // else -- for filter expression, we can't infer anything
 
 
@@ -65762,8 +67231,8 @@
         implicit[fieldDef.field] = 'date';
       } else if (fieldDef.type === 'quantitative' && isMinMaxOp(fieldDef.aggregate) // we need to parse numbers to support correct min and max
       ) {
-          implicit[fieldDef.field] = 'number';
-        } else if (accessPathDepth(fieldDef.field) > 1) {
+        implicit[fieldDef.field] = 'number';
+      } else if (accessPathDepth(fieldDef.field) > 1) {
         // For non-date/non-number (strings and booleans), derive a flattened field for a referenced nested field.
         // (Parsing numbers / dates already flattens numeric and temporal fields.)
         if (!(fieldDef.field in implicit)) {
@@ -65856,11 +67325,13 @@
 
 
     static makeExplicit(parent, model, ancestorParse) {
+      var _data$format;
+
       // Custom parse
       let explicit = {};
       const data = model.data;
 
-      if (!isGenerator(data) && data && data.format && data.format.parse) {
+      if (!isGenerator(data) && data !== null && data !== void 0 && (_data$format = data.format) !== null && _data$format !== void 0 && _data$format.parse) {
         explicit = data.format.parse;
       }
 
@@ -66054,9 +67525,7 @@
     }
 
     producedFields() {
-      var _this$params$as;
-
-      return new Set([(_this$params$as = this.params.as) !== null && _this$params$as !== void 0 ? _this$params$as : 'data']);
+      return new Set([this.params.as ?? 'data']);
     }
 
     hash() {
@@ -66074,8 +67543,6 @@
 
   class SourceNode extends DataFlowNode {
     constructor(data) {
-      var _data;
-
       super(null); // source cannot have parent
 
       _defineProperty(this, "_data", void 0);
@@ -66084,9 +67551,9 @@
 
       _defineProperty(this, "_generator", void 0);
 
-      (_data = data) !== null && _data !== void 0 ? _data : data = {
+      data ?? (data = {
         name: 'source'
-      };
+      });
       let format;
 
       if (!isGenerator(data)) {
@@ -66200,7 +67667,7 @@
    * Contains only mutation handling logic. Subclasses need to implement iteration logic.
    */
 
-  var _modified = new WeakMap();
+  var _modified = /*#__PURE__*/new WeakMap();
 
   class Optimizer {
     constructor() {
@@ -66718,9 +68185,7 @@
     }
 
     getDefaultName(joinAggregateFieldDef) {
-      var _joinAggregateFieldDe;
-
-      return (_joinAggregateFieldDe = joinAggregateFieldDef.as) !== null && _joinAggregateFieldDe !== void 0 ? _joinAggregateFieldDe : vgField(joinAggregateFieldDef);
+      return joinAggregateFieldDef.as ?? vgField(joinAggregateFieldDef);
     }
 
     hash() {
@@ -66938,7 +68403,7 @@
         return [vgField(dimensionFieldDef)];
       }
 
-      return groupby !== null && groupby !== void 0 ? groupby : [];
+      return groupby ?? [];
     }
 
     assemble() {
@@ -67023,11 +68488,9 @@
     }
 
     dependentFields() {
-      var _this$transform$group, _this$transform$sort;
-
       const out = new Set();
-      ((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : []).forEach(out.add, out);
-      ((_this$transform$sort = this.transform.sort) !== null && _this$transform$sort !== void 0 ? _this$transform$sort : []).forEach(m => out.add(m.field));
+      (this.transform.groupby ?? []).forEach(out.add, out);
+      (this.transform.sort ?? []).forEach(m => out.add(m.field));
       this.transform.window.map(w => w.field).filter(f => f !== undefined).forEach(out.add, out);
       return out;
     }
@@ -67037,9 +68500,7 @@
     }
 
     getDefaultName(windowFieldDef) {
-      var _windowFieldDef$as;
-
-      return (_windowFieldDef$as = windowFieldDef.as) !== null && _windowFieldDef$as !== void 0 ? _windowFieldDef$as : vgField(windowFieldDef);
+      return windowFieldDef.as ?? vgField(windowFieldDef);
     }
 
     hash() {
@@ -67080,10 +68541,8 @@
 
       if (this.transform.sort !== undefined) {
         for (const sortField of this.transform.sort) {
-          var _sortField$order;
-
           sortFields.push(sortField.field);
-          sortOrder.push((_sortField$order = sortField.order) !== null && _sortField$order !== void 0 ? _sortField$order : 'ascending');
+          sortOrder.push(sortField.order ?? 'ascending');
         }
       }
 
@@ -67625,7 +69084,7 @@
     } = sort;
     return {
       // Apply default op
-      op: op !== null && op !== void 0 ? op : isStackedMeasure ? 'sum' : DEFAULT_SORT_OP,
+      op: op ?? (isStackedMeasure ? 'sum' : DEFAULT_SORT_OP),
       // flatten nested fields
       ...(field ? {
         field: replacePathInField(field)
@@ -67649,7 +69108,7 @@
       // As scale parsing occurs before selection parsing, we cannot set
       // domainRaw directly. So instead, we store the selectionExtent on
       // the scale component, and then add domainRaw during scale assembly.
-      scale.set('selectionExtent', domain !== null && domain !== void 0 ? domain : extent, true);
+      scale.set('selectionExtent', domain ?? extent, true);
     }
   }
 
@@ -68182,7 +69641,7 @@
 
     if ((rangeMin !== undefined || rangeMax !== undefined) && // it's ok to check just rangeMin's compatibility since rangeMin/rangeMax are the same
     scaleTypeSupportProperty(scaleType, 'rangeMin') && isArray(d) && d.length === 2) {
-      return makeExplicit([rangeMin !== null && rangeMin !== void 0 ? rangeMin : d[0], rangeMax !== null && rangeMax !== void 0 ? rangeMax : d[1]]);
+      return makeExplicit([rangeMin ?? d[0], rangeMax ?? d[1]]);
     }
 
     return makeImplicit(d);
@@ -68998,9 +70457,7 @@
       let specifiedScale = fieldOrDatumDef && fieldOrDatumDef['scale'];
 
       if (fieldOrDatumDef && specifiedScale !== null && specifiedScale !== false) {
-        var _specifiedScale;
-
-        (_specifiedScale = specifiedScale) !== null && _specifiedScale !== void 0 ? _specifiedScale : specifiedScale = {};
+        specifiedScale ?? (specifiedScale = {});
         const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, markDef);
         scaleComponents[channel] = new ScaleComponent(model.scaleName(`${channel}`, true), {
           value: sType,
@@ -69023,10 +70480,10 @@
       parseScaleCore(child); // Instead of always merging right away -- check if it is compatible to merge first!
 
       for (const channel of keys(child.component.scales)) {
-        var _resolve$scale, _resolve$scale$channe;
+        var _resolve$scale;
 
         // if resolve is undefined, set default first
-        (_resolve$scale$channe = (_resolve$scale = resolve.scale)[channel]) !== null && _resolve$scale$channe !== void 0 ? _resolve$scale$channe : _resolve$scale[channel] = defaultScaleResolve(channel, model);
+        (_resolve$scale = resolve.scale)[channel] ?? (_resolve$scale[channel] = defaultScaleResolve(channel, model));
 
         if (resolve.scale[channel] === 'shared') {
           const explicitScaleType = scaleTypeWithExplicitIndex[channel];
@@ -69124,8 +70581,6 @@
 
     /** Name map for signals, which can be renamed by a model's parent. */
     constructor(spec, type, parent, parentGivenName, config, resolve, view) {
-      var _spec$name, _spec$transform;
-
       this.type = type;
       this.parent = parent;
       this.config = config;
@@ -69154,17 +70609,19 @@
 
       _defineProperty(this, "view", void 0);
 
-      _defineProperty(this, "children", []);
+      _defineProperty(this, "children", void 0);
 
       _defineProperty(this, "correctDataNames", mark => {
+        var _mark$from, _mark$from2, _mark$from2$facet;
+
         // TODO: make this correct
         // for normal data references
-        if (mark.from && mark.from.data) {
+        if ((_mark$from = mark.from) !== null && _mark$from !== void 0 && _mark$from.data) {
           mark.from.data = this.lookupDataSource(mark.from.data);
         } // for access to facet data
 
 
-        if (mark.from && mark.from.facet && mark.from.facet.data) {
+        if ((_mark$from2 = mark.from) !== null && _mark$from2 !== void 0 && (_mark$from2$facet = _mark$from2.facet) !== null && _mark$from2$facet !== void 0 && _mark$from2$facet.data) {
           mark.from.facet.data = this.lookupDataSource(mark.from.facet.data);
         }
 
@@ -69175,7 +70632,7 @@
       this.config = config;
       this.view = replaceExprRef(view); // If name is not provided, always use parent's givenName to avoid name conflicts.
 
-      this.name = (_spec$name = spec.name) !== null && _spec$name !== void 0 ? _spec$name : parentGivenName;
+      this.name = spec.name ?? parentGivenName;
       this.title = isText(spec.title) ? {
         text: spec.title
       } : spec.title ? replaceExprRef(spec.title) : undefined; // Shared name maps
@@ -69185,7 +70642,7 @@
       this.signalNameMap = parent ? parent.signalNameMap : new NameMap();
       this.data = spec.data;
       this.description = spec.description;
-      this.transforms = normalizeTransform((_spec$transform = spec.transform) !== null && _spec$transform !== void 0 ? _spec$transform : []);
+      this.transforms = normalizeTransform(spec.transform ?? []);
       this.layout = type === 'layer' || type === 'unit' ? {} : extractCompositionLayout(spec, type, config);
       this.component = {
         data: {
@@ -69267,16 +70724,6 @@
       parseLegend(this);
     }
 
-    assembleGroupStyle() {
-      if (this.type === 'unit' || this.type === 'layer') {
-        var _this$view$style, _this$view;
-
-        return (_this$view$style = (_this$view = this.view) === null || _this$view === void 0 ? void 0 : _this$view.style) !== null && _this$view$style !== void 0 ? _this$view$style : 'cell';
-      }
-
-      return undefined;
-    }
-
     assembleEncodeFromView(view) {
       // Exclude "style"
       const {
@@ -69312,12 +70759,10 @@
 
 
         if (this.type === 'unit' || this.type === 'layer') {
-          var _encodeEntry;
-
           return {
             width: this.getSizeSignalRef('width'),
             height: this.getSizeSignalRef('height'),
-            ...((_encodeEntry = encodeEntry) !== null && _encodeEntry !== void 0 ? _encodeEntry : {})
+            ...(encodeEntry ?? {})
           };
         }
       }
@@ -69385,13 +70830,11 @@
     }
 
     assembleTitle() {
-      var _this$title;
-
       const {
         encoding,
         ...titleNoEncoding
-      } = (_this$title = this.title) !== null && _this$title !== void 0 ? _this$title : {};
-      const title = { ...extractTitleConfig(this.config.title).nonMark,
+      } = this.title ?? {};
+      const title = { ...extractTitleConfig(this.config.title).nonMarkTitleProperties,
         ...titleNoEncoding,
         ...(encoding ? {
           encode: {
@@ -69404,17 +70847,13 @@
         if (contains(['unit', 'layer'], this.type)) {
           // Unit/Layer
           if (contains(['middle', undefined], title.anchor)) {
-            var _title$frame;
-
-            (_title$frame = title.frame) !== null && _title$frame !== void 0 ? _title$frame : title.frame = 'group';
+            title.frame ?? (title.frame = 'group');
           }
         } else {
-          var _title$anchor;
-
           // composition with Vega layout
           // Set title = "start" by default for composition as "middle" does not look nice
           // https://github.com/vega/vega/issues/960#issuecomment-471360328
-          (_title$anchor = title.anchor) !== null && _title$anchor !== void 0 ? _title$anchor : title.anchor = 'start';
+          title.anchor ?? (title.anchor = 'start');
         }
 
         return isEmpty(title) ? undefined : title;
@@ -69700,20 +71139,16 @@
     }
 
     constructor(parent, transform) {
-      var _this$transform$as, _specifiedAs$, _specifiedAs$2;
-
       super(parent);
       this.transform = transform;
       this.transform = duplicate(transform); // duplicate to prevent side effects
 
-      const specifiedAs = (_this$transform$as = this.transform.as) !== null && _this$transform$as !== void 0 ? _this$transform$as : [undefined, undefined];
-      this.transform.as = [(_specifiedAs$ = specifiedAs[0]) !== null && _specifiedAs$ !== void 0 ? _specifiedAs$ : 'value', (_specifiedAs$2 = specifiedAs[1]) !== null && _specifiedAs$2 !== void 0 ? _specifiedAs$2 : 'density'];
+      const specifiedAs = this.transform.as ?? [undefined, undefined];
+      this.transform.as = [specifiedAs[0] ?? 'value', specifiedAs[1] ?? 'density'];
     }
 
     dependentFields() {
-      var _this$transform$group;
-
-      return new Set([this.transform.density, ...((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : [])]);
+      return new Set([this.transform.density, ...(this.transform.groupby ?? [])]);
     }
 
     producedFields() {
@@ -69845,11 +71280,7 @@
         flatten,
         as = []
       } = this.transform;
-      this.transform.as = flatten.map((f, i) => {
-        var _as$i;
-
-        return (_as$i = as[i]) !== null && _as$i !== void 0 ? _as$i : f;
-      });
+      this.transform.as = flatten.map((f, i) => as[i] ?? f);
     }
 
     dependentFields() {
@@ -69889,14 +71320,12 @@
     }
 
     constructor(parent, transform) {
-      var _this$transform$as, _specifiedAs$, _specifiedAs$2;
-
       super(parent);
       this.transform = transform;
       this.transform = duplicate(transform); // duplicate to prevent side effects
 
-      const specifiedAs = (_this$transform$as = this.transform.as) !== null && _this$transform$as !== void 0 ? _this$transform$as : [undefined, undefined];
-      this.transform.as = [(_specifiedAs$ = specifiedAs[0]) !== null && _specifiedAs$ !== void 0 ? _specifiedAs$ : 'key', (_specifiedAs$2 = specifiedAs[1]) !== null && _specifiedAs$2 !== void 0 ? _specifiedAs$2 : 'value'];
+      const specifiedAs = this.transform.as ?? [undefined, undefined];
+      this.transform.as = [specifiedAs[0] ?? 'key', specifiedAs[1] ?? 'value'];
     }
 
     dependentFields() {
@@ -69972,9 +71401,7 @@
     }
 
     dependentFields() {
-      var _this$fields;
-
-      const fields = ((_this$fields = this.fields) !== null && _this$fields !== void 0 ? _this$fields : []).filter(isString);
+      const fields = (this.fields ?? []).filter(isString);
       return new Set([...(this.geojson ? [this.geojson] : []), ...fields]);
     }
 
@@ -70074,9 +71501,7 @@
     }
 
     dependentFields() {
-      var _this$transform$group;
-
-      return new Set([this.transform.impute, this.transform.key, ...((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : [])]);
+      return new Set([this.transform.impute, this.transform.key, ...(this.transform.groupby ?? [])]);
     }
 
     producedFields() {
@@ -70206,20 +71631,16 @@
     }
 
     constructor(parent, transform) {
-      var _this$transform$as, _specifiedAs$, _specifiedAs$2;
-
       super(parent);
       this.transform = transform;
       this.transform = duplicate(transform); // duplicate to prevent side effects
 
-      const specifiedAs = (_this$transform$as = this.transform.as) !== null && _this$transform$as !== void 0 ? _this$transform$as : [undefined, undefined];
-      this.transform.as = [(_specifiedAs$ = specifiedAs[0]) !== null && _specifiedAs$ !== void 0 ? _specifiedAs$ : transform.on, (_specifiedAs$2 = specifiedAs[1]) !== null && _specifiedAs$2 !== void 0 ? _specifiedAs$2 : transform.loess];
+      const specifiedAs = this.transform.as ?? [undefined, undefined];
+      this.transform.as = [specifiedAs[0] ?? transform.on, specifiedAs[1] ?? transform.loess];
     }
 
     dependentFields() {
-      var _this$transform$group;
-
-      return new Set([this.transform.loess, this.transform.on, ...((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : [])]);
+      return new Set([this.transform.loess, this.transform.on, ...(this.transform.groupby ?? [])]);
     }
 
     producedFields() {
@@ -70364,20 +71785,16 @@
     }
 
     constructor(parent, transform) {
-      var _this$transform$as, _specifiedAs$, _specifiedAs$2;
-
       super(parent);
       this.transform = transform;
       this.transform = duplicate(transform); // duplicate to prevent side effects
 
-      const specifiedAs = (_this$transform$as = this.transform.as) !== null && _this$transform$as !== void 0 ? _this$transform$as : [undefined, undefined];
-      this.transform.as = [(_specifiedAs$ = specifiedAs[0]) !== null && _specifiedAs$ !== void 0 ? _specifiedAs$ : 'prob', (_specifiedAs$2 = specifiedAs[1]) !== null && _specifiedAs$2 !== void 0 ? _specifiedAs$2 : 'value'];
+      const specifiedAs = this.transform.as ?? [undefined, undefined];
+      this.transform.as = [specifiedAs[0] ?? 'prob', specifiedAs[1] ?? 'value'];
     }
 
     dependentFields() {
-      var _this$transform$group;
-
-      return new Set([this.transform.quantile, ...((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : [])]);
+      return new Set([this.transform.quantile, ...(this.transform.groupby ?? [])]);
     }
 
     producedFields() {
@@ -70413,20 +71830,16 @@
     }
 
     constructor(parent, transform) {
-      var _this$transform$as, _specifiedAs$, _specifiedAs$2;
-
       super(parent);
       this.transform = transform;
       this.transform = duplicate(transform); // duplicate to prevent side effects
 
-      const specifiedAs = (_this$transform$as = this.transform.as) !== null && _this$transform$as !== void 0 ? _this$transform$as : [undefined, undefined];
-      this.transform.as = [(_specifiedAs$ = specifiedAs[0]) !== null && _specifiedAs$ !== void 0 ? _specifiedAs$ : transform.on, (_specifiedAs$2 = specifiedAs[1]) !== null && _specifiedAs$2 !== void 0 ? _specifiedAs$2 : transform.regression];
+      const specifiedAs = this.transform.as ?? [undefined, undefined];
+      this.transform.as = [specifiedAs[0] ?? transform.on, specifiedAs[1] ?? transform.regression];
     }
 
     dependentFields() {
-      var _this$transform$group;
-
-      return new Set([this.transform.regression, this.transform.on, ...((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : [])]);
+      return new Set([this.transform.regression, this.transform.on, ...(this.transform.groupby ?? [])]);
     }
 
     producedFields() {
@@ -70469,9 +71882,7 @@
     }
 
     addDimensions(fields) {
-      var _this$transform$group;
-
-      this.transform.groupby = unique(((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : []).concat(fields), d => d);
+      this.transform.groupby = unique((this.transform.groupby ?? []).concat(fields), d => d);
     }
 
     producedFields() {
@@ -70479,9 +71890,7 @@
     }
 
     dependentFields() {
-      var _this$transform$group2;
-
-      return new Set([this.transform.pivot, this.transform.value, ...((_this$transform$group2 = this.transform.groupby) !== null && _this$transform$group2 !== void 0 ? _this$transform$group2 : [])]);
+      return new Set([this.transform.pivot, this.transform.value, ...(this.transform.groupby ?? [])]);
     }
 
     hash() {
@@ -70573,10 +71982,8 @@
 
       if (node instanceof ParseNode) {
         if (node.parent instanceof SourceNode && !dataSource.source) {
-          var _dataSource$format;
-
           // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
-          dataSource.format = { ...((_dataSource$format = dataSource.format) !== null && _dataSource$format !== void 0 ? _dataSource$format : {}),
+          dataSource.format = { ...(dataSource.format ?? {}),
             parse: node.assembleFormatParse()
           }; // add calculates for all nested fields
 
@@ -70739,18 +72146,14 @@
     let whereTo = 0;
 
     for (const [i, d] of data.entries()) {
-      var _d$transform;
-
-      if (((_d$transform = d.transform) !== null && _d$transform !== void 0 ? _d$transform : []).length === 0 && !d.source) {
+      if ((d.transform ?? []).length === 0 && !d.source) {
         data.splice(whereTo++, 0, data.splice(i, 1)[0]);
       }
     } // now fix the from references in lookup transforms
 
 
     for (const d of data) {
-      for (const t of (_d$transform2 = d.transform) !== null && _d$transform2 !== void 0 ? _d$transform2 : []) {
-        var _d$transform2;
-
+      for (const t of d.transform ?? []) {
         if (t.type === 'lookup') {
           t.from = dataComponent.outputNodes[t.from].getSource();
         }
@@ -70848,10 +72251,8 @@
         const layoutHeader = layoutHeaders[headerChannel];
 
         for (const axisComponent of child.component.axes[channel]) {
-          var _layoutHeader$headerT;
-
           const headerType = getHeaderType(axisComponent.get('orient'));
-          (_layoutHeader$headerT = layoutHeader[headerType]) !== null && _layoutHeader$headerT !== void 0 ? _layoutHeader$headerT : layoutHeader[headerType] = [makeHeaderComponent(model, headerChannel, false)]; // FIXME: assemble shouldn't be called here, but we do it this way so we only extract the main part of the axes
+          layoutHeader[headerType] ?? (layoutHeader[headerType] = [makeHeaderComponent(model, headerChannel, false)]); // FIXME: assemble shouldn't be called here, but we do it this way so we only extract the main part of the axes
 
           const mainAxis = assembleAxis(axisComponent, 'main', model.config, {
             header: true
@@ -70906,10 +72307,8 @@
     let mergedSize; // Try to merge layout size
 
     for (const child of model.children) {
-      var _resolve$scale$channe;
-
       const childSize = child.component.layoutSize.getWithExplicit(sizeType);
-      const scaleResolve = (_resolve$scale$channe = resolve.scale[channel]) !== null && _resolve$scale$channe !== void 0 ? _resolve$scale$channe : defaultScaleResolve(channel, model);
+      const scaleResolve = resolve.scale[channel] ?? defaultScaleResolve(channel, model);
 
       if (scaleResolve === 'independent' && childSize.value === 'step') {
         // Do not merge independent scales with range-step as their size depends
@@ -71000,7 +72399,7 @@
   function facetSortFieldName(fieldDef, sort, opt) {
     return vgField(sort, {
       suffix: `by_${vgField(fieldDef)}`,
-      ...(opt !== null && opt !== void 0 ? opt : {})
+      ...(opt ?? {})
     });
   }
   class FacetModel extends ModelWithField {
@@ -71125,10 +72524,8 @@
             const titleOrient = getHeaderProperty('titleOrient', facetFieldDef.header, this.config, channel);
 
             if (['right', 'bottom'].includes(titleOrient)) {
-              var _layoutMixins$titleAn;
-
               const headerChannel = getHeaderChannel(channel, titleOrient);
-              (_layoutMixins$titleAn = layoutMixins.titleAnchor) !== null && _layoutMixins$titleAn !== void 0 ? _layoutMixins$titleAn : layoutMixins.titleAnchor = {};
+              layoutMixins.titleAnchor ?? (layoutMixins.titleAnchor = {});
               layoutMixins.titleAnchor[headerChannel] = 'end';
             }
           }
@@ -71139,17 +72536,13 @@
             const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
 
             if (channel !== 'facet' && !this.child.component.layoutSize.get(sizeType)) {
-              var _layoutMixins$bandTyp;
-
               // If facet child does not have size signal, then apply headerBand
-              (_layoutMixins$bandTyp = layoutMixins[bandType]) !== null && _layoutMixins$bandTyp !== void 0 ? _layoutMixins$bandTyp : layoutMixins[bandType] = {};
+              layoutMixins[bandType] ?? (layoutMixins[bandType] = {});
               layoutMixins[bandType][channel] = 0.5;
             }
 
             if (layoutHeaderComponent.title) {
-              var _layoutMixins$offset;
-
-              (_layoutMixins$offset = layoutMixins.offset) !== null && _layoutMixins$offset !== void 0 ? _layoutMixins$offset : layoutMixins.offset = {};
+              layoutMixins.offset ?? (layoutMixins.offset = {});
               layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
             }
           }
@@ -71201,6 +72594,10 @@
           signal: `length(data('${facetLayoutDataName}'))`
         };
       }
+    }
+
+    assembleGroupStyle() {
+      return undefined;
     }
 
     assembleGroup(signals) {
@@ -71608,10 +73005,8 @@
         transformNode = head = new CalculateNode(head, t);
         derivedType = 'derived';
       } else if (isFilter(t)) {
-        var _ParseNode$makeWithAn;
-
         const implicit = getImplicitFromFilterTransform(t);
-        transformNode = head = (_ParseNode$makeWithAn = ParseNode.makeWithAncestors(head, {}, implicit, ancestorParse)) !== null && _ParseNode$makeWithAn !== void 0 ? _ParseNode$makeWithAn : head;
+        transformNode = head = ParseNode.makeWithAncestors(head, {}, implicit, ancestorParse) ?? head;
         head = new FilterNode(head, model, t.filter);
       } else if (isBin(t)) {
         transformNode = head = BinNode.makeFromTransform(head, t, model);
@@ -71679,9 +73074,7 @@
       }
 
       if (transformNode && derivedType !== undefined) {
-        for (const field of (_transformNode$produc = transformNode.producedFields()) !== null && _transformNode$produc !== void 0 ? _transformNode$produc : []) {
-          var _transformNode$produc;
-
+        for (const field of transformNode.producedFields() ?? []) {
           ancestorParse.set(field, derivedType, false);
         }
       }
@@ -71745,15 +73138,16 @@
   */
 
   function parseData(model) {
-    var _data$format3, _ParseNode$makeExplic, _ParseNode$makeWithAn2;
+    var _data$format3;
 
     let head = parseRoot(model, model.component.data.sources);
     const {
       outputNodes,
       outputNodeRefCounts
     } = model.component.data;
-    const ancestorParse = model.parent ? model.parent.component.data.ancestorParse.clone() : new AncestorParse();
     const data = model.data;
+    const newData = data && (isGenerator(data) || isUrlData(data) || isInlineData(data));
+    const ancestorParse = !newData && model.parent ? model.parent.component.data.ancestorParse.clone() : new AncestorParse();
 
     if (isGenerator(data)) {
       // insert generator transform
@@ -71770,7 +73164,7 @@
       ancestorParse.parseNothing = true;
     }
 
-    head = (_ParseNode$makeExplic = ParseNode.makeExplicit(head, model, ancestorParse)) !== null && _ParseNode$makeExplic !== void 0 ? _ParseNode$makeExplic : head; // Default discrete selections require an identifer transform to
+    head = ParseNode.makeExplicit(head, model, ancestorParse) ?? head; // Default discrete selections require an identifer transform to
     // uniquely identify data points. Add this transform at the head of
     // the pipeline such that the identifier field is available for all
     // subsequent datasets. During optimization, we will remove this
@@ -71785,9 +73179,7 @@
 
     if (isUnitModel(model) || isFacetModel(model)) {
       if (parentIsLayer) {
-        var _BinNode$makeFromEnco;
-
-        head = (_BinNode$makeFromEnco = BinNode.makeFromEncoding(head, model)) !== null && _BinNode$makeFromEnco !== void 0 ? _BinNode$makeFromEnco : head;
+        head = BinNode.makeFromEncoding(head, model) ?? head;
       }
     }
 
@@ -71798,9 +73190,9 @@
 
     const implicitSelection = getImplicitFromSelection(model);
     const implicitEncoding = getImplicitFromEncoding(model);
-    head = (_ParseNode$makeWithAn2 = ParseNode.makeWithAncestors(head, {}, { ...implicitSelection,
+    head = ParseNode.makeWithAncestors(head, {}, { ...implicitSelection,
       ...implicitEncoding
-    }, ancestorParse)) !== null && _ParseNode$makeWithAn2 !== void 0 ? _ParseNode$makeWithAn2 : head;
+    }, ancestorParse) ?? head;
 
     if (isUnitModel(model)) {
       head = GeoJSONNode.parseAll(head, model);
@@ -71808,15 +73200,11 @@
     }
 
     if (isUnitModel(model) || isFacetModel(model)) {
-      var _TimeUnitNode$makeFro;
-
       if (!parentIsLayer) {
-        var _BinNode$makeFromEnco2;
-
-        head = (_BinNode$makeFromEnco2 = BinNode.makeFromEncoding(head, model)) !== null && _BinNode$makeFromEnco2 !== void 0 ? _BinNode$makeFromEnco2 : head;
+        head = BinNode.makeFromEncoding(head, model) ?? head;
       }
 
-      head = (_TimeUnitNode$makeFro = TimeUnitNode.makeFromEncoding(head, model)) !== null && _TimeUnitNode$makeFro !== void 0 ? _TimeUnitNode$makeFro : head;
+      head = TimeUnitNode.makeFromEncoding(head, model) ?? head;
       head = CalculateNode.parseAllForSortIndex(head, model);
     } // add an output node pre aggregation
 
@@ -71827,8 +73215,6 @@
     head = raw;
 
     if (isUnitModel(model)) {
-      var _ImputeNode$makeFromE, _StackNode$makeFromEn;
-
       const agg = AggregateNode.makeFromEncoding(head, model);
 
       if (agg) {
@@ -71839,14 +73225,12 @@
         }
       }
 
-      head = (_ImputeNode$makeFromE = ImputeNode.makeFromEncoding(head, model)) !== null && _ImputeNode$makeFromE !== void 0 ? _ImputeNode$makeFromE : head;
-      head = (_StackNode$makeFromEn = StackNode.makeFromEncoding(head, model)) !== null && _StackNode$makeFromEn !== void 0 ? _StackNode$makeFromEn : head;
+      head = ImputeNode.makeFromEncoding(head, model) ?? head;
+      head = StackNode.makeFromEncoding(head, model) ?? head;
     }
 
     if (isUnitModel(model)) {
-      var _FilterInvalidNode$ma;
-
-      head = (_FilterInvalidNode$ma = FilterInvalidNode.make(head, model)) !== null && _FilterInvalidNode$ma !== void 0 ? _FilterInvalidNode$ma : head;
+      head = FilterInvalidNode.make(head, model) ?? head;
     } // output node for marks
 
 
@@ -71863,12 +73247,10 @@
     let facetRoot = null;
 
     if (isFacetModel(model)) {
-      var _makeJoinAggregateFro;
-
       const facetName = model.getName('facet'); // Derive new aggregate for facet's sort field
       // augment data source with new fields for crossed facet
 
-      head = (_makeJoinAggregateFro = makeJoinAggregateFromFacet(head, model.facet)) !== null && _makeJoinAggregateFro !== void 0 ? _makeJoinAggregateFro : head;
+      head = makeJoinAggregateFromFacet(head, model.facet) ?? head;
       facetRoot = new FacetNode(head, model, facetName, main.getSource());
       outputNodes[facetName] = facetRoot;
     }
@@ -72002,6 +73384,10 @@
       });
     }
 
+    assembleGroupStyle() {
+      return undefined;
+    }
+
     assembleDefaultLayout() {
       const columns = this.layout.columns;
       return { ...(columns != null ? {
@@ -72062,13 +73448,11 @@
   }
 
   function labels(model, channel, specifiedLabelsSpec) {
-    var _getFieldOrDatumDef;
-
     const {
       encoding,
       config
     } = model;
-    const fieldOrDatumDef = (_getFieldOrDatumDef = getFieldOrDatumDef(encoding[channel])) !== null && _getFieldOrDatumDef !== void 0 ? _getFieldOrDatumDef : getFieldOrDatumDef(encoding[getSecondaryRangeChannel(channel)]);
+    const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) ?? getFieldOrDatumDef(encoding[getSecondaryRangeChannel(channel)]);
     const axis = model.axis(channel) || {};
     const {
       format,
@@ -72148,10 +73532,8 @@
         }
 
         if (resolve.axis[channel] === 'independent') {
-          var _axes$channel;
-
           // If axes are independent, concat the axisComponent array.
-          axes[channel] = ((_axes$channel = axes[channel]) !== null && _axes$channel !== void 0 ? _axes$channel : []).concat(child.component.axes[channel]); // Automatically adjust orient
+          axes[channel] = (axes[channel] ?? []).concat(child.component.axes[channel]); // Automatically adjust orient
 
           for (const axisComponent of child.component.axes[channel]) {
             const {
@@ -72249,8 +73631,7 @@
     }
 
     return merged;
-  } // eslint-disable-next-line @typescript-eslint/ban-types
-
+  }
 
   function isExplicit(value, property, axis, model, channel) {
     if (property === 'disable') {
@@ -72294,7 +73675,7 @@
   'format', 'formatType', 'orient', 'labelExpr', 'tickCount', 'position', 'tickMinStep']);
 
   function parseAxis(channel, model) {
-    var _axis, _config, _config$axis, _axis2, _axis$encoding;
+    var _axis, _config, _config$axis, _axis2;
 
     let axis = model.axis(channel);
     const axisComponent = new AxisComponent();
@@ -72346,8 +73727,7 @@
           axisComponent.set(property, value, explicit);
         } else if ( // Cases need implicit values
         // 1. Axis config that aren't available in Vega
-        !(configFrom === 'vgAxisConfig') || // 2. Certain properties are always included (see `propsToAlwaysIncludeConfig`'s declaration for more details)
-        propsToAlwaysIncludeConfig.has(property) && hasConfigValue || // 3. Conditional axis values and signals
+        !(configFrom === 'vgAxisConfig') || propsToAlwaysIncludeConfig.has(property) && hasConfigValue || // 3. Conditional axis values and signals
         isConditionalAxisValue(configValue) || isSignalRef(configValue)) {
           // If a config is specified and is conditional, copy conditional value from axis config
           axisComponent.set(property, configValue, false);
@@ -72356,16 +73736,14 @@
     } // 2) Add guide encode definition groups
 
 
-    const axisEncoding = (_axis$encoding = axis.encoding) !== null && _axis$encoding !== void 0 ? _axis$encoding : {};
+    const axisEncoding = axis.encoding ?? {};
     const axisEncode = AXIS_PARTS.reduce((e, part) => {
-      var _axisEncoding$part;
-
       if (!axisComponent.hasAxisPart(part)) {
         // No need to create encode for a disabled part.
         return e;
       }
 
-      const axisEncodingPart = guideEncodeEntry((_axisEncoding$part = axisEncoding[part]) !== null && _axisEncoding$part !== void 0 ? _axisEncoding$part : {}, model);
+      const axisEncodingPart = guideEncodeEntry(axisEncoding[part] ?? {}, model);
       const value = part === 'labels' ? labels(model, channel, axisEncodingPart) : axisEncodingPart;
 
       if (value !== undefined && !isEmpty(value)) {
@@ -72979,8 +74357,6 @@
   };
 
   function defaultSize(model) {
-    var _getMarkPropOrConfig;
-
     const {
       config,
       markDef
@@ -72990,9 +74366,9 @@
     } = markDef;
     const vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
     const scale = model.getScaleComponent(orient === 'horizontal' ? 'x' : 'y');
-    const markPropOrConfig = (_getMarkPropOrConfig = getMarkPropOrConfig('size', markDef, config, {
+    const markPropOrConfig = getMarkPropOrConfig('size', markDef, config, {
       vgChannel: vgSizeChannel
-    })) !== null && _getMarkPropOrConfig !== void 0 ? _getMarkPropOrConfig : config.tick.bandSize;
+    }) ?? config.tick.bandSize;
 
     if (markPropOrConfig !== undefined) {
       return markPropOrConfig;
@@ -73345,10 +74721,12 @@
         } else if (s === null) {
           return undefined;
         } else {
+          var _model$stack;
+
           return {
             field: vgField(dimensionChannelDef, {
               // For stack with imputation, we only have bin_mid
-              binSuffix: model.stack && model.stack.impute ? 'mid' : undefined,
+              binSuffix: (_model$stack = model.stack) !== null && _model$stack !== void 0 && _model$stack.impute ? 'mid' : undefined,
               expr: 'datum'
             })
           };
@@ -73456,8 +74834,6 @@
 
   class UnitModel extends ModelWithField {
     constructor(spec, parent, parentGivenName, parentGivenSize = {}, config) {
-      var _spec$params;
-
       super(spec, 'unit', parent, parentGivenName, config, undefined, isFrameMixins(spec) ? spec.view : undefined);
 
       _defineProperty(this, "markDef", void 0);
@@ -73510,7 +74886,7 @@
       this.specifiedLegends = this.initLegends(encoding);
       this.specifiedProjection = spec.projection; // Selections will be initialized upon parse.
 
-      this.selection = ((_spec$params = spec.params) !== null && _spec$params !== void 0 ? _spec$params : []).filter(p => isSelectionParameter(p));
+      this.selection = (spec.params ?? []).filter(p => isSelectionParameter(p));
     }
 
     get hasProjection() {
@@ -73545,9 +74921,7 @@
         const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]);
 
         if (fieldOrDatumDef) {
-          var _fieldOrDatumDef$scal;
-
-          scales[channel] = this.initScale((_fieldOrDatumDef$scal = fieldOrDatumDef.scale) !== null && _fieldOrDatumDef$scal !== void 0 ? _fieldOrDatumDef$scal : {});
+          scales[channel] = this.initScale(fieldOrDatumDef.scale ?? {});
         }
 
         return scales;
@@ -73657,9 +75031,7 @@
     }
 
     assembleMarks() {
-      var _this$component$mark;
-
-      let marks = (_this$component$mark = this.component.mark) !== null && _this$component$mark !== void 0 ? _this$component$mark : []; // If this unit is part of a layer, selections should augment
+      let marks = this.component.mark ?? []; // If this unit is part of a layer, selections should augment
       // all in concert rather than each unit individually. This
       // ensures correct interleaving of clipping and brushed marks.
 
@@ -73668,6 +75040,22 @@
       }
 
       return marks.map(this.correctDataNames);
+    }
+
+    assembleGroupStyle() {
+      const {
+        style
+      } = this.view || {};
+
+      if (style !== undefined) {
+        return style;
+      }
+
+      if (this.encoding.x || this.encoding.y) {
+        return 'cell';
+      } else {
+        return undefined;
+      }
     }
 
     getMapping() {
@@ -73782,6 +75170,19 @@
 
     assembleSelectionData(data) {
       return this.children.reduce((db, child) => child.assembleSelectionData(db), data);
+    }
+
+    assembleGroupStyle() {
+      const uniqueStyles = new Set();
+
+      for (const child of this.children) {
+        for (const style of array$5(child.assembleGroupStyle())) {
+          uniqueStyles.add(style);
+        }
+      }
+
+      const styles = Array.from(uniqueStyles);
+      return styles.length > 1 ? styles : styles.length === 1 ? styles[0] : undefined;
     }
 
     assembleTitle() {
@@ -74122,12 +75523,12 @@
 
   window['runStreamingExample'] = runStreamingExample;
   window['embedExample'] = embedExample;
-  core.registerLanguage('javascript', javascript_1);
-  core.registerLanguage('typescript', typescript_1);
-  core.registerLanguage('json', json_1);
-  core.registerLanguage('html', xml_1);
-  core.registerLanguage('css', css_1);
-  core.registerLanguage('diff', diff_1); // highlight jekyll code blocks
+  core.registerLanguage('javascript', javascript$1);
+  core.registerLanguage('typescript', typescript);
+  core.registerLanguage('json', json$1);
+  core.registerLanguage('html', xml);
+  core.registerLanguage('css', css);
+  core.registerLanguage('diff', diff); // highlight jekyll code blocks
 
   core.highlightAll();
   const loader = loader$1({
@@ -74153,7 +75554,7 @@
 
     if (!figureOnly) {
       const code = $target.append('pre').attr('class', 'example-code').append('code').attr('class', 'json').text(textClean);
-      core.highlightBlock(code.node());
+      core.highlightElement(code.node());
     }
 
     const spec = JSON.parse(specText);
