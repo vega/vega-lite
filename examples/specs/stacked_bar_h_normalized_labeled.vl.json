@@ -23,7 +23,7 @@
       }
     }
   }, {
-    "mark": "text",
+    "mark": {"type": "text", "opacity": 0.9, "color": "white"},
     "encoding": {
       "x": {
         "aggregate": "sum", "field": "people",
