@@ -17,7 +17,7 @@
       }
     },
     {
-      "mark": "text",
+      "mark": {"type": "text", "opacity": 0.9, "color": "white"},
       "encoding": {
         "y": {"field": "age"},
         "x": {
