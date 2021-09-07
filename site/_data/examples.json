@@ -41,6 +41,10 @@
         "title": "Normalized (Percentage) Stacked Bar Chart"
       },
       {
+        "name": "stacked_bar_h_normalized_labeled",
+        "title": "Normalized (Percentage) Stacked Bar Chart With Labels"
+      },
+      {
         "name": "bar_gantt",
         "title": "Gantt Chart (Ranged Bar Marks)",
         "style": "background-size: auto 75%; background-position-y: center !important;"
