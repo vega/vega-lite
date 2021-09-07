@@ -14,8 +14,8 @@ export const rect: MarkCompiler = {
         size: 'ignore',
         theta: 'ignore'
       }),
-      ...encode.rectPosition(model, 'x', 'rect'),
-      ...encode.rectPosition(model, 'y', 'rect')
+      ...encode.rectPosition(model, 'x'),
+      ...encode.rectPosition(model, 'y')
     };
   }
 };

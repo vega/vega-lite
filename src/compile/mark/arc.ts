@@ -18,8 +18,8 @@ export const arc: MarkCompiler = {
       ...encode.pointPosition('y', model, {defaultPos: 'mid'}),
 
       // arcs are rectangles in polar coordinates
-      ...encode.rectPosition(model, 'radius', 'arc'),
-      ...encode.rectPosition(model, 'theta', 'arc')
+      ...encode.rectPosition(model, 'radius'),
+      ...encode.rectPosition(model, 'theta')
     };
   }
 };
