@@ -244,7 +244,6 @@ export function midPoint({
     if (isFieldOrDatumDef(channelDef)) {
       const scaleType = scale?.get('type');
       if (isTypedFieldDef(channelDef)) {
-
         bandPosition ??= getBandPosition({
           fieldDef: channelDef,
           fieldDef2: channel2Def,
@@ -289,7 +288,6 @@ export function midPoint({
           }
         }
       }
-
 
       return valueRefForFieldOrDatumDef(
         channelDef,

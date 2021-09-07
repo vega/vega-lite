@@ -3,9 +3,12 @@ import {isArray} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../bin';
 import {
   COLOR,
-  FILL, isXorY, POLAR_POSITION_SCALE_CHANNELS,
+  FILL,
+  isXorY,
+  POLAR_POSITION_SCALE_CHANNELS,
   POSITION_SCALE_CHANNELS,
-  ScaleChannel, STROKE
+  ScaleChannel,
+  STROKE
 } from '../../channel';
 import {
   getFieldDef,
