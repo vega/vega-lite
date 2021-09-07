@@ -45,9 +45,7 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
-          "stroke": {
-            "signal": "scale(\"color\", 0.5 * datum[\"bin_maxbins_6_Acceleration\"] + 0.5 * datum[\"bin_maxbins_6_Acceleration_end\"])"
-          },
+          "stroke": {"scale": "color", "field": "bin_maxbins_6_Acceleration"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
             "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Acceleration (binned): \" + (!isValid(datum[\"bin_maxbins_6_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" – \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\"))"
