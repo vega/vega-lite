@@ -42,6 +42,19 @@ describe('Mark: Point', () => {
     });
   });
 
+  it('applies bin_range to ordinal bin', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      mark: 'point',
+      encoding: {
+        y: {bin: true, field: 'Miles_per_Gallon', type: 'ordinal'}
+      }
+    });
+
+    const props = point.encodeEntry(model);
+
+    expect(props.y).toEqual({scale: 'y', field: 'bin_maxbins_10_Miles_per_Gallon_range'});
+  });
+
   it('with offset includes offset on y', () => {
     const model = parseUnitModelWithScaleAndLayoutSize({
       mark: {
