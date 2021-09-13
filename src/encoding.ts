@@ -3,8 +3,7 @@ import {array, isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
 import {
-  ANGLE,
-  CHANNELS,
+  ANGLE, Channel, CHANNELS,
   COLOR,
   DESCRIPTION,
   DETAIL,
@@ -34,13 +33,11 @@ import {
   TEXT,
   THETA,
   THETA2,
-  TOOLTIP,
-  URL,
+  TOOLTIP, UNIT_CHANNELS, URL,
   X,
   X2,
   Y,
-  Y2,
-  Channel
+  Y2
 } from './channel';
 import {
   binRequiresRange,
@@ -478,14 +475,21 @@ export function initEncoding(
   filled: boolean,
   config: Config
 ): Encoding<string> {
-  return keys(encoding).reduce((normalizedEncoding: Encoding<string>, channel: Channel) => {
-    if (!isChannel(channel)) {
+  const normalizedEncoding: Encoding<string> = {};
+  for (const key of keys(encoding)) {
+    if (!isChannel(key)) {
       // Drop invalid channel
-      log.warn(log.message.invalidEncodingChannel(channel));
-      return normalizedEncoding;
+      log.warn(log.message.invalidEncodingChannel(key));
+    }
+  }
+
+  for (let channel of UNIT_CHANNELS) {
+    if (!encoding[channel]) {
+      continue;
     }
 
     const channelDef = encoding[channel];
+
     if (channel === 'angle' && mark === 'arc' && !encoding.theta) {
       log.warn(log.message.REPLACE_ANGLE_WITH_THETA);
       channel = THETA;
@@ -494,7 +498,7 @@ export function initEncoding(
     if (!markChannelCompatible(encoding, channel, mark)) {
       // Drop unsupported channel
       log.warn(log.message.incompatibleChannel(channel, mark));
-      return normalizedEncoding;
+      continue;
     }
 
     // Drop line's size if the field is aggregated.
@@ -502,14 +506,14 @@ export function initEncoding(
       const fieldDef = getFieldDef(encoding[channel]);
       if (fieldDef?.aggregate) {
         log.warn(log.message.LINE_WITH_VARYING_SIZE);
-        return normalizedEncoding;
+        continue;
       }
     }
     // Drop color if either fill or stroke is specified
 
     if (channel === COLOR && (filled ? 'fill' in encoding : 'stroke' in encoding)) {
       log.warn(log.message.droppingColor('encoding', {fill: 'fill' in encoding, stroke: 'stroke' in encoding}));
-      return normalizedEncoding;
+      continue;
     }
 
     if (
@@ -543,13 +547,13 @@ export function initEncoding(
         !isSignalRef(channelDef)
       ) {
         log.warn(log.message.emptyFieldDef(channelDef, channel));
-        return normalizedEncoding;
+        continue;
       }
 
       normalizedEncoding[channel as any] = initChannelDef(channelDef as ChannelDef, channel, config);
     }
-    return normalizedEncoding;
-  }, {});
+  }
+  return normalizedEncoding;
 }
 
 /**

@@ -101,7 +101,7 @@ describe('compile/data/aggregate', () => {
       const agg = AggregateNode.makeFromEncoding(null, model);
       expect(agg.assemble()).toEqual({
         type: 'aggregate',
-        groupby: ['y', 'x', 'y2', 'x2'],
+        groupby: ['x', 'x2', 'y', 'y2'],
         ops: ['count'],
         fields: [null],
         as: [internalField('count')]
