@@ -3,7 +3,9 @@ import {array, isArray} from 'vega-util';
 import {isArgmaxDef, isArgminDef} from './aggregate';
 import {isBinned, isBinning} from './bin';
 import {
-  ANGLE, Channel, CHANNELS,
+  ANGLE,
+  Channel,
+  CHANNELS,
   COLOR,
   DESCRIPTION,
   DETAIL,
@@ -33,7 +35,9 @@ import {
   TEXT,
   THETA,
   THETA2,
-  TOOLTIP, UNIT_CHANNELS, URL,
+  TOOLTIP,
+  UNIT_CHANNELS,
+  URL,
   X,
   X2,
   Y,
