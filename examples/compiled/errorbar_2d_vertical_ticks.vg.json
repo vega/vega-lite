@@ -40,7 +40,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"lower_Miles_per_Gallon\"]) && isFinite(+datum[\"lower_Miles_per_Gallon\"]) && (isDate(datum[\"year_Year\"]) || (isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"])))"
+          "expr": "(isDate(datum[\"year_Year\"]) || (isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"]))) && isValid(datum[\"lower_Miles_per_Gallon\"]) && isFinite(+datum[\"lower_Miles_per_Gallon\"])"
         }
       ]
     },
@@ -50,7 +50,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "isValid(datum[\"upper_Miles_per_Gallon\"]) && isFinite(+datum[\"upper_Miles_per_Gallon\"]) && (isDate(datum[\"year_Year\"]) || (isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"])))"
+          "expr": "(isDate(datum[\"year_Year\"]) || (isValid(datum[\"year_Year\"]) && isFinite(+datum[\"year_Year\"]))) && isValid(datum[\"upper_Miles_per_Gallon\"]) && isFinite(+datum[\"upper_Miles_per_Gallon\"])"
         }
       ]
     }
@@ -121,7 +121,7 @@
             "signal": "{\"Ci1 of Miles_per_Gallon\": format(datum[\"upper_Miles_per_Gallon\"], \"\"), \"Ci0 of Miles_per_Gallon\": format(datum[\"lower_Miles_per_Gallon\"], \"\"), \"Mean of Miles_per_Gallon\": format(datum[\"center_Miles_per_Gallon\"], \"\"), \"Year (year)\": timeFormat(datum[\"year_Year\"], '%b %d, %Y')}"
           },
           "description": {
-            "signal": "\"Miles per Gallon (95% CIs): \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; upper_Miles_per_Gallon: \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; Year (year): \" + (timeFormat(datum[\"year_Year\"], '%b %d, %Y')) + \"; Ci1 of Miles_per_Gallon: \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; Ci0 of Miles_per_Gallon: \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; Mean of Miles_per_Gallon: \" + (format(datum[\"center_Miles_per_Gallon\"], \"\"))"
+            "signal": "\"Year (year): \" + (timeFormat(datum[\"year_Year\"], '%b %d, %Y')) + \"; Miles per Gallon (95% CIs): \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; upper_Miles_per_Gallon: \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; Ci1 of Miles_per_Gallon: \" + (format(datum[\"upper_Miles_per_Gallon\"], \"\")) + \"; Ci0 of Miles_per_Gallon: \" + (format(datum[\"lower_Miles_per_Gallon\"], \"\")) + \"; Mean of Miles_per_Gallon: \" + (format(datum[\"center_Miles_per_Gallon\"], \"\"))"
           },
           "x": {"scale": "x", "field": "year_Year"},
           "y": [

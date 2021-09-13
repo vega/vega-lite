@@ -245,7 +245,7 @@
         {"type": "filter", "expr": "datum.name != 'Participant ID'"},
         {
           "type": "aggregate",
-          "groupby": ["name", "value"],
+          "groupby": ["value", "name"],
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
@@ -268,7 +268,7 @@
           "fill": {"value": "#6EB4FD"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; Number of Ratings: \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; Number of Ratings: \" + (format(datum[\"__count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "value"},
           "y": {"scale": "y", "field": "name"},
@@ -288,7 +288,7 @@
           "fill": {"value": "black"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; median: \" + (format(datum[\"median\"], \"\"))"
+            "signal": "\"median: \" + (format(datum[\"median\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"])"
           },
           "xc": {"scale": "x", "field": "median"},
           "yc": {"scale": "y", "field": "name"},

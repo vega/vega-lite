@@ -171,7 +171,7 @@
           "strokeWidth": {"value": 2},
           "stroke": {"value": "#404040"},
           "description": {
-            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; lead: \" + (isValid(datum[\"lead\"]) ? datum[\"lead\"] : \"\"+datum[\"lead\"]) + \"; sum: \" + (format(datum[\"sum\"], \"\"))"
+            "signal": "\"label: \" + (isValid(datum[\"label\"]) ? datum[\"label\"] : \"\"+datum[\"label\"]) + \"; sum: \" + (format(datum[\"sum\"], \"\")) + \"; lead: \" + (isValid(datum[\"lead\"]) ? datum[\"lead\"] : \"\"+datum[\"lead\"])"
           },
           "x": {"scale": "x", "field": "label", "offset": -22.5, "band": 0.5},
           "x2": {"scale": "x", "field": "lead", "offset": 22.5, "band": 0.5},

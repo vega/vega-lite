@@ -106,7 +106,7 @@
               "fill": {"scale": "color", "field": "pct"},
               "ariaRoleDescription": {"value": "geoshape"},
               "description": {
-                "signal": "\"geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; pct: \" + (format(datum[\"pct\"], \"\"))"
+                "signal": "\"pct: \" + (format(datum[\"pct\"], \"\")) + \"; geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"])"
               }
             }
           },
