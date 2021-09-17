@@ -615,7 +615,7 @@
               ],
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"Country: \" + (isValid(datum[\"Country\"]) ? datum[\"Country\"] : \"\"+datum[\"Country\"]) + \"; Population_ages_15_64_of_total: \" + (format(datum[\"Population_ages_15_64_of_total\"], \"\"))"
+                "signal": "\"\" + \"Country\" + \": \" + (isValid(datum[\"Country\"]) ? datum[\"Country\"] : \"\"+datum[\"Country\"]) + \"; \" + \"Population_ages_15_64_of_total\" + \": \" + (format(datum[\"Population_ages_15_64_of_total\"], \"\"))"
               },
               "x": {
                 "scale": "concat_0_x",
@@ -939,7 +939,7 @@
               ],
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"Country: \" + (isValid(datum[\"Country\"]) ? datum[\"Country\"] : \"\"+datum[\"Country\"]) + \"; Population_ages_65_and_above_of_total: \" + (format(datum[\"Population_ages_65_and_above_of_total\"], \"\"))"
+                "signal": "\"\" + \"Country\" + \": \" + (isValid(datum[\"Country\"]) ? datum[\"Country\"] : \"\"+datum[\"Country\"]) + \"; \" + \"Population_ages_65_and_above_of_total\" + \": \" + (format(datum[\"Population_ages_65_and_above_of_total\"], \"\"))"
               },
               "x": {
                 "scale": "concat_1_x",
@@ -1342,7 +1342,7 @@
               ],
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Population_ages_15_64_of_total: \" + (format(datum[\"Population_ages_15_64_of_total\"], \"\")) + \"; Population_ages_65_and_above_of_total: \" + (format(datum[\"Population_ages_65_and_above_of_total\"], \"\"))"
+                "signal": "\"\" + \"Population_ages_15_64_of_total\" + \": \" + (format(datum[\"Population_ages_15_64_of_total\"], \"\")) + \"; \" + \"Population_ages_65_and_above_of_total\" + \": \" + (format(datum[\"Population_ages_65_and_above_of_total\"], \"\"))"
               },
               "x": [
                 {

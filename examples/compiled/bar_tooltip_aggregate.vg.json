@@ -37,7 +37,7 @@
           "tooltip": {"signal": "format(datum[\"mean_data\"], \"\")"},
           "ariaRoleDescription": {"value": "tick"},
           "description": {
-            "signal": "\"Mean of data: \" + (format(datum[\"mean_data\"], \"\"))"
+            "signal": "\"\" + \"Mean of data\" + \": \" + (format(datum[\"mean_data\"], \"\"))"
           },
           "xc": {"signal": "width", "mult": 0.5},
           "yc": {"scale": "y", "field": "mean_data"},
