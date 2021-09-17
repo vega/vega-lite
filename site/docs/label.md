@@ -17,6 +17,7 @@ Labels can provide details of a particular data point as a text annotation direc
 <!--prettier-ignore-end-->
 
 ## Syntax
+
 ```js
 {
   ...,
@@ -47,13 +48,17 @@ Labels can provide details of a particular data point as a text annotation direc
 ## Examples
 
 {:#example-scatter}
+
 ### Scatter Plot
 
 {:#example-line}
+
 ### Line Chart
 
 {:#example-multi-line}
+
 ### Multi-series Line Chart
 
 {:#example-stacked-area}
+
 ### Stacked Area Chart
