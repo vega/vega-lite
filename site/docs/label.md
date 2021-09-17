@@ -5,7 +5,9 @@ title: Labeling
 permalink: /docs/label.html
 ---
 
-Labels can provide details of a particular data point as a text annotation directly near the data point. Users can add text labels to marks of the following types: area, bar, line, trail, rect, circle, point, and square. To annotate marks with labels, users can encode fields with label encoding channel.
+Labels can provide details of a particular data point as a text annotation directly near the data point.
+Users can add text labels to marks of the following types: area, bar, line, trail, rect, circle, point, and square.
+To annotate marks with labels, users can encode fields with label encoding channel.
 
 <!--prettier-ignore-start-->
 ## Documentation Overview
@@ -47,13 +49,17 @@ Labels can provide details of a particular data point as a text annotation direc
 ## Examples
 
 {:#example-scatter}
+
 ### Scatter Plot
 
 {:#example-line}
+
 ### Line Chart
 
 {:#example-multi-line}
+
 ### Multi-series Line Chart
 
 {:#example-stacked-area}
+
 ### Stacked Area Chart
