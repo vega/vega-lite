@@ -19,6 +19,7 @@ To annotate marks with labels, users can encode fields with label encoding chann
 <!--prettier-ignore-end-->
 
 ## Syntax
+
 ```js
 {
   ...,
