@@ -120,7 +120,7 @@
               "fill": {"scale": "color", "field": "gender"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"population: \" + (format(datum[\"sum_people\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+                "signal": "\"gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"]) + \"; population: \" + (format(datum[\"sum_people\"], \"\"))"
               },
               "x": {"scale": "x", "field": "gender"},
               "width": {"scale": "x", "band": 1},

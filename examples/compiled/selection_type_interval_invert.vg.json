@@ -12,7 +12,7 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["Origin", "Cylinders"],
+          "groupby": ["Cylinders", "Origin"],
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
@@ -304,7 +304,7 @@
             {"scale": "color", "field": "__count"}
           ],
           "description": {
-            "signal": "\"Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Cylinders"},
           "width": {"scale": "x", "band": 1},
