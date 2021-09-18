@@ -70,13 +70,7 @@
           "description": {
             "signal": "\"x: \" + (format(datum[\"x\"], \"\")) + \"; y: \" + (format(datum[\"y\"], \"\"))"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"x\"]) || !isFinite(+datum[\"x\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "x"}
-          ],
+          "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "y"}
         }
       }

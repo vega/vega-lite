@@ -140,26 +140,14 @@
               "description": {
                 "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Beak_Length__mm_column_Body_Mass__g__x",
-                  "field": "Body Mass (g)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Beak_Length__mm_column_Body_Mass__g__y",
-                  "field": "Beak Length (mm)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Beak_Length__mm_column_Body_Mass__g__x",
+                "field": "Body Mass (g)"
+              },
+              "y": {
+                "scale": "child__row_Beak_Length__mm_column_Body_Mass__g__y",
+                "field": "Beak Length (mm)"
+              }
             }
           }
         }
@@ -239,26 +227,14 @@
               "description": {
                 "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Beak_Length__mm_column_Flipper_Length__mm__x",
-                  "field": "Flipper Length (mm)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Beak_Length__mm_column_Flipper_Length__mm__y",
-                  "field": "Beak Length (mm)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Beak_Length__mm_column_Flipper_Length__mm__x",
+                "field": "Flipper Length (mm)"
+              },
+              "y": {
+                "scale": "child__row_Beak_Length__mm_column_Flipper_Length__mm__y",
+                "field": "Beak Length (mm)"
+              }
             }
           }
         }
@@ -338,26 +314,14 @@
               "description": {
                 "signal": "\"Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Beak_Length__mm_column_Beak_Depth__mm__x",
-                  "field": "Beak Depth (mm)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Beak_Length__mm_column_Beak_Depth__mm__y",
-                  "field": "Beak Length (mm)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Beak_Length__mm_column_Beak_Depth__mm__x",
+                "field": "Beak Depth (mm)"
+              },
+              "y": {
+                "scale": "child__row_Beak_Length__mm_column_Beak_Depth__mm__y",
+                "field": "Beak Length (mm)"
+              }
             }
           }
         }
@@ -437,26 +401,14 @@
               "description": {
                 "signal": "\"Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Beak_Length__mm_column_Beak_Length__mm__x",
-                  "field": "Beak Length (mm)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Beak_Length__mm_column_Beak_Length__mm__y",
-                  "field": "Beak Length (mm)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Beak_Length__mm_column_Beak_Length__mm__x",
+                "field": "Beak Length (mm)"
+              },
+              "y": {
+                "scale": "child__row_Beak_Length__mm_column_Beak_Length__mm__y",
+                "field": "Beak Length (mm)"
+              }
             }
           }
         }
@@ -536,26 +488,14 @@
               "description": {
                 "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Beak_Depth__mm_column_Body_Mass__g__x",
-                  "field": "Body Mass (g)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Beak_Depth__mm_column_Body_Mass__g__y",
-                  "field": "Beak Depth (mm)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Beak_Depth__mm_column_Body_Mass__g__x",
+                "field": "Body Mass (g)"
+              },
+              "y": {
+                "scale": "child__row_Beak_Depth__mm_column_Body_Mass__g__y",
+                "field": "Beak Depth (mm)"
+              }
             }
           }
         }
@@ -635,26 +575,14 @@
               "description": {
                 "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__x",
-                  "field": "Flipper Length (mm)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__y",
-                  "field": "Beak Depth (mm)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__x",
+                "field": "Flipper Length (mm)"
+              },
+              "y": {
+                "scale": "child__row_Beak_Depth__mm_column_Flipper_Length__mm__y",
+                "field": "Beak Depth (mm)"
+              }
             }
           }
         }
@@ -734,26 +662,14 @@
               "description": {
                 "signal": "\"Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__x",
-                  "field": "Beak Depth (mm)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__y",
-                  "field": "Beak Depth (mm)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__x",
+                "field": "Beak Depth (mm)"
+              },
+              "y": {
+                "scale": "child__row_Beak_Depth__mm_column_Beak_Depth__mm__y",
+                "field": "Beak Depth (mm)"
+              }
             }
           }
         }
@@ -833,26 +749,14 @@
               "description": {
                 "signal": "\"Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Beak_Depth__mm_column_Beak_Length__mm__x",
-                  "field": "Beak Length (mm)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Beak_Depth__mm_column_Beak_Length__mm__y",
-                  "field": "Beak Depth (mm)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Beak_Depth__mm_column_Beak_Length__mm__x",
+                "field": "Beak Length (mm)"
+              },
+              "y": {
+                "scale": "child__row_Beak_Depth__mm_column_Beak_Length__mm__y",
+                "field": "Beak Depth (mm)"
+              }
             }
           }
         }
@@ -932,26 +836,14 @@
               "description": {
                 "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Flipper_Length__mm_column_Body_Mass__g__x",
-                  "field": "Body Mass (g)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Flipper_Length__mm_column_Body_Mass__g__y",
-                  "field": "Flipper Length (mm)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Flipper_Length__mm_column_Body_Mass__g__x",
+                "field": "Body Mass (g)"
+              },
+              "y": {
+                "scale": "child__row_Flipper_Length__mm_column_Body_Mass__g__y",
+                "field": "Flipper Length (mm)"
+              }
             }
           }
         }
@@ -1031,26 +923,14 @@
               "description": {
                 "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__x",
-                  "field": "Flipper Length (mm)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__y",
-                  "field": "Flipper Length (mm)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__x",
+                "field": "Flipper Length (mm)"
+              },
+              "y": {
+                "scale": "child__row_Flipper_Length__mm_column_Flipper_Length__mm__y",
+                "field": "Flipper Length (mm)"
+              }
             }
           }
         }
@@ -1130,26 +1010,14 @@
               "description": {
                 "signal": "\"Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__x",
-                  "field": "Beak Depth (mm)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__y",
-                  "field": "Flipper Length (mm)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__x",
+                "field": "Beak Depth (mm)"
+              },
+              "y": {
+                "scale": "child__row_Flipper_Length__mm_column_Beak_Depth__mm__y",
+                "field": "Flipper Length (mm)"
+              }
             }
           }
         }
@@ -1229,26 +1097,14 @@
               "description": {
                 "signal": "\"Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Flipper_Length__mm_column_Beak_Length__mm__x",
-                  "field": "Beak Length (mm)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Flipper_Length__mm_column_Beak_Length__mm__y",
-                  "field": "Flipper Length (mm)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Flipper_Length__mm_column_Beak_Length__mm__x",
+                "field": "Beak Length (mm)"
+              },
+              "y": {
+                "scale": "child__row_Flipper_Length__mm_column_Beak_Length__mm__y",
+                "field": "Flipper Length (mm)"
+              }
             }
           }
         }
@@ -1328,26 +1184,14 @@
               "description": {
                 "signal": "\"Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Body_Mass__g_column_Body_Mass__g__x",
-                  "field": "Body Mass (g)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Body_Mass__g_column_Body_Mass__g__y",
-                  "field": "Body Mass (g)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Body_Mass__g_column_Body_Mass__g__x",
+                "field": "Body Mass (g)"
+              },
+              "y": {
+                "scale": "child__row_Body_Mass__g_column_Body_Mass__g__y",
+                "field": "Body Mass (g)"
+              }
             }
           }
         }
@@ -1427,26 +1271,14 @@
               "description": {
                 "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Body_Mass__g_column_Flipper_Length__mm__x",
-                  "field": "Flipper Length (mm)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Body_Mass__g_column_Flipper_Length__mm__y",
-                  "field": "Body Mass (g)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Body_Mass__g_column_Flipper_Length__mm__x",
+                "field": "Flipper Length (mm)"
+              },
+              "y": {
+                "scale": "child__row_Body_Mass__g_column_Flipper_Length__mm__y",
+                "field": "Body Mass (g)"
+              }
             }
           }
         }
@@ -1526,26 +1358,14 @@
               "description": {
                 "signal": "\"Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Beak Depth (mm)\"]) || !isFinite(+datum[\"Beak Depth (mm)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Body_Mass__g_column_Beak_Depth__mm__x",
-                  "field": "Beak Depth (mm)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Body_Mass__g_column_Beak_Depth__mm__y",
-                  "field": "Body Mass (g)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Body_Mass__g_column_Beak_Depth__mm__x",
+                "field": "Beak Depth (mm)"
+              },
+              "y": {
+                "scale": "child__row_Body_Mass__g_column_Beak_Depth__mm__y",
+                "field": "Body Mass (g)"
+              }
             }
           }
         }
@@ -1625,26 +1445,14 @@
               "description": {
                 "signal": "\"Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"Beak Length (mm)\"]) || !isFinite(+datum[\"Beak Length (mm)\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__row_Body_Mass__g_column_Beak_Length__mm__x",
-                  "field": "Beak Length (mm)"
-                }
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"])",
-                  "field": {"group": "height"}
-                },
-                {
-                  "scale": "child__row_Body_Mass__g_column_Beak_Length__mm__y",
-                  "field": "Body Mass (g)"
-                }
-              ]
+              "x": {
+                "scale": "child__row_Body_Mass__g_column_Beak_Length__mm__x",
+                "field": "Beak Length (mm)"
+              },
+              "y": {
+                "scale": "child__row_Body_Mass__g_column_Beak_Length__mm__y",
+                "field": "Body Mass (g)"
+              }
             }
           }
         }

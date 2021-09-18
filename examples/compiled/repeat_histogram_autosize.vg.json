@@ -112,27 +112,15 @@
               "description": {
                 "signal": "\"Horsepower (binned): \" + (!isValid(datum[\"bin_maxbins_10_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_10_Horsepower\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Horsepower\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Horsepower_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
               },
-              "x2": [
-                {
-                  "test": "!isValid(datum[\"bin_maxbins_10_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_10_Horsepower\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__Horsepower_x",
-                  "field": "bin_maxbins_10_Horsepower",
-                  "offset": 1
-                }
-              ],
-              "x": [
-                {
-                  "test": "!isValid(datum[\"bin_maxbins_10_Horsepower\"]) || !isFinite(+datum[\"bin_maxbins_10_Horsepower\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__Horsepower_x",
-                  "field": "bin_maxbins_10_Horsepower_end"
-                }
-              ],
+              "x2": {
+                "scale": "child__Horsepower_x",
+                "field": "bin_maxbins_10_Horsepower",
+                "offset": 1
+              },
+              "x": {
+                "scale": "child__Horsepower_x",
+                "field": "bin_maxbins_10_Horsepower_end"
+              },
               "y": {"scale": "child__Horsepower_y", "field": "__count"},
               "y2": {"scale": "child__Horsepower_y", "value": 0}
             }
@@ -198,27 +186,15 @@
               "description": {
                 "signal": "\"Miles_per_Gallon (binned): \" + (!isValid(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) || !isFinite(+datum[\"bin_maxbins_10_Miles_per_Gallon\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Miles_per_Gallon\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Miles_per_Gallon_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
               },
-              "x2": [
-                {
-                  "test": "!isValid(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) || !isFinite(+datum[\"bin_maxbins_10_Miles_per_Gallon\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__Miles_per_Gallon_x",
-                  "field": "bin_maxbins_10_Miles_per_Gallon",
-                  "offset": 1
-                }
-              ],
-              "x": [
-                {
-                  "test": "!isValid(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) || !isFinite(+datum[\"bin_maxbins_10_Miles_per_Gallon\"])",
-                  "value": 0
-                },
-                {
-                  "scale": "child__Miles_per_Gallon_x",
-                  "field": "bin_maxbins_10_Miles_per_Gallon_end"
-                }
-              ],
+              "x2": {
+                "scale": "child__Miles_per_Gallon_x",
+                "field": "bin_maxbins_10_Miles_per_Gallon",
+                "offset": 1
+              },
+              "x": {
+                "scale": "child__Miles_per_Gallon_x",
+                "field": "bin_maxbins_10_Miles_per_Gallon_end"
+              },
               "y": {"scale": "child__Miles_per_Gallon_y", "field": "__count"},
               "y2": {"scale": "child__Miles_per_Gallon_y", "value": 0}
             }

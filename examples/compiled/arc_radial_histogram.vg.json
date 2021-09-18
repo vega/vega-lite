@@ -79,20 +79,11 @@
           "y": {"signal": "height", "mult": 0.5},
           "outerRadius": {"scale": "radius", "field": "__count"},
           "innerRadius": {"scale": "radius", "value": 0},
-          "endAngle": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"])",
-              "value": 0
-            },
-            {"scale": "theta", "field": "bin_maxbins_10_IMDB Rating"}
-          ],
-          "startAngle": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"])",
-              "value": 0
-            },
-            {"scale": "theta", "field": "bin_maxbins_10_IMDB Rating_end"}
-          ]
+          "endAngle": {"scale": "theta", "field": "bin_maxbins_10_IMDB Rating"},
+          "startAngle": {
+            "scale": "theta",
+            "field": "bin_maxbins_10_IMDB Rating_end"
+          }
         }
       }
     },
@@ -118,15 +109,9 @@
           },
           "baseline": {"value": "middle"},
           "radius": {"scale": "radius", "field": "__count", "offset": 15},
-          "theta": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"])",
-              "value": 0
-            },
-            {
-              "signal": "scale(\"theta\", 0.5 * datum[\"bin_maxbins_10_IMDB Rating\"] + 0.5 * datum[\"bin_maxbins_10_IMDB Rating_end\"])"
-            }
-          ]
+          "theta": {
+            "signal": "scale(\"theta\", 0.5 * datum[\"bin_maxbins_10_IMDB Rating\"] + 0.5 * datum[\"bin_maxbins_10_IMDB Rating_end\"])"
+          }
         }
       }
     }

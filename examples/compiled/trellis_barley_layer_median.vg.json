@@ -202,13 +202,7 @@
               "description": {
                 "signal": "\"Median of yield: \" + (format(datum[\"median_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"median_yield\"]) || !isFinite(+datum[\"median_yield\"])",
-                  "value": 0
-                },
-                {"scale": "trellis_barley_x", "field": "median_yield"}
-              ],
+              "x": {"scale": "trellis_barley_x", "field": "median_yield"},
               "y": {"scale": "trellis_barley_y", "field": "variety"}
             }
           }
@@ -224,13 +218,7 @@
               "description": {
                 "signal": "\"Median of yield: \" + (format(datum[\"median_yield\"], \"\"))"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"median_yield\"]) || !isFinite(+datum[\"median_yield\"])",
-                  "value": 0
-                },
-                {"scale": "trellis_barley_x", "field": "median_yield"}
-              ],
+              "x": {"scale": "trellis_barley_x", "field": "median_yield"},
               "y": {"value": 0},
               "y2": {"field": {"group": "height"}}
             }

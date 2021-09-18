@@ -73,20 +73,8 @@
           "description": {
             "signal": "\"yield: \" + (format(datum[\"lower_yield_center\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; upper_yield_center: \" + (format(datum[\"upper_yield_center\"], \"\")) + \"; yield_center: \" + (format(datum[\"yield_center\"], \"\")) + \"; yield_center + yield_error: \" + (format(datum[\"upper_yield_center\"], \"\")) + \"; yield_center - yield_error: \" + (format(datum[\"lower_yield_center\"], \"\"))"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"lower_yield_center\"]) || !isFinite(+datum[\"lower_yield_center\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "lower_yield_center"}
-          ],
-          "x2": [
-            {
-              "test": "!isValid(datum[\"upper_yield_center\"]) || !isFinite(+datum[\"upper_yield_center\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "upper_yield_center"}
-          ],
+          "x": {"scale": "x", "field": "lower_yield_center"},
+          "x2": {"scale": "x", "field": "upper_yield_center"},
           "y": {"scale": "y", "field": "variety", "band": 0.5}
         }
       }
@@ -104,13 +92,7 @@
           "description": {
             "signal": "\"yield_center: \" + (format(datum[\"yield_center\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"])"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"yield_center\"]) || !isFinite(+datum[\"yield_center\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "yield_center"}
-          ],
+          "x": {"scale": "x", "field": "yield_center"},
           "y": {"scale": "y", "field": "variety", "band": 0.5}
         }
       }

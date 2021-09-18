@@ -57,24 +57,12 @@
           "description": {
             "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_10_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_IMDB Rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
-          "x2": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "bin_maxbins_10_IMDB Rating"}
-          ],
-          "x": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_10_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_10_IMDB Rating\"])",
-              "value": 0
-            },
-            {
-              "scale": "x",
-              "field": "bin_maxbins_10_IMDB Rating_end",
-              "offset": 1
-            }
-          ],
+          "x2": {"scale": "x", "field": "bin_maxbins_10_IMDB Rating"},
+          "x": {
+            "scale": "x",
+            "field": "bin_maxbins_10_IMDB Rating_end",
+            "offset": 1
+          },
           "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }
