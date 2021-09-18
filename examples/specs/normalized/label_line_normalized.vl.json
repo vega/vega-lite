@@ -1,0 +1,21 @@
+{
+  "data": {"url": "data/stocks.csv"},
+  "transform": [{"filter": "datum.symbol==='GOOG'"}],
+  "layer": [
+    {
+      "mark": "line",
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "price", "type": "quantitative"}
+      }
+    },
+    {
+      "mark": {"type": "point", "opacity": 0, "filled": true},
+      "encoding": {
+        "x": {"field": "date", "type": "temporal"},
+        "y": {"field": "price", "type": "quantitative"},
+        "label": {"field": "year", "type": "nominal", "avoid": {"ancestor": 1}}
+      }
+    }
+  ]
+}

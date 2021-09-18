@@ -11,11 +11,21 @@
       "url": "data/stocks.csv",
       "format": {"type": "csv", "parse": {"date": "date"}},
       "transform": [{"type": "filter", "expr": "datum.symbol==='GOOG'"}]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+        }
+      ]
     }
   ],
   "marks": [
     {
-      "name": "marks",
+      "name": "layer_0_marks",
       "type": "line",
       "style": ["line"],
       "sort": {"field": "datum[\"date\"]"},
@@ -33,19 +43,82 @@
           }
         }
       }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0},
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
+          },
+          "x": {"scale": "x", "field": "date"},
+          "y": {"scale": "y", "field": "price"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks_label",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "layer_1_marks"},
+      "encode": {
+        "update": {
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
+          },
+          "text": {
+            "signal": "isValid(datum.datum[\"year\"]) ? datum.datum[\"year\"] : \"\"+datum.datum[\"year\"]"
+          }
+        }
+      },
+      "transform": [
+        {
+          "type": "label",
+          "size": {"signal": "[width, height]"},
+          "anchor": [
+            "top-right",
+            "top",
+            "top-left",
+            "left",
+            "bottom-left",
+            "bottom",
+            "bottom-right",
+            "middle"
+          ],
+          "offset": [2, 2, 2, 2, 2, 2, 2, 2, 2],
+          "avoidMarks": ["layer_0_marks"]
+        }
+      ]
     }
   ],
   "scales": [
     {
       "name": "x",
       "type": "time",
-      "domain": {"data": "source_0", "field": "date"},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "date"},
+          {"data": "data_0", "field": "date"}
+        ]
+      },
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "source_0", "field": "price"},
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "price"},
+          {"data": "data_0", "field": "price"}
+        ]
+      },
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
