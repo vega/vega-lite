@@ -14,7 +14,7 @@ import {getBandSize, isFieldDef, isFieldOrDatumDef, TypedFieldDef, vgField} from
 import {Config, getViewConfigDiscreteStep} from '../../../config';
 import {Encoding} from '../../../encoding';
 import * as log from '../../../log';
-import {BandSize, isRelativeBandSize, Mark, MarkDef} from '../../../mark';
+import {BandSize, isRelativeBandSize} from '../../../mark';
 import {hasDiscreteDomain} from '../../../scale';
 import {isSignalRef, isVgRangeStep, VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {getMarkPropOrConfig, signalOrStringValue, signalOrValueRef} from '../../common';
@@ -268,22 +268,16 @@ function rectBinPosition({
   if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
     return {
       [vgChannel2]: rectBinRef({
-        channel,
         fieldDef,
         scaleName,
-        markDef,
         bandPosition,
         offset: getBinSpacing(channel2, spacing, reverse, axisTranslate, offset),
-        config
       }),
       [vgChannel]: rectBinRef({
-        channel,
         fieldDef,
         scaleName,
-        markDef,
         bandPosition: isSignalRef(bandPosition) ? {signal: `1-${bandPosition.signal}`} : 1 - bandPosition,
         offset: getBinSpacing(channel, spacing, reverse, axisTranslate, offset),
-        config
       })
     };
   } else if (isBinned(fieldDef.bin)) {
@@ -322,34 +316,20 @@ function rectBinPosition({
  * Value Ref for binned fields
  */
 export function rectBinRef({
-  channel,
   fieldDef,
   scaleName,
-  markDef,
   bandPosition,
   offset,
-  config
 }: {
-  channel: PositionChannel | PolarPositionChannel;
   fieldDef: TypedFieldDef<string>;
   scaleName: string;
-  markDef: MarkDef<Mark>;
   bandPosition: number | SignalRef;
   offset?: number | SignalRef;
-  config?: Config<SignalRef>;
 }) {
-  const r = ref.interpolatedSignalRef({
+  return ref.interpolatedSignalRef({
     scaleName,
     fieldOrDatumDef: fieldDef,
     bandPosition,
     offset
-  });
-
-  return ref.wrapPositionInvalidTest({
-    fieldDef,
-    channel,
-    markDef,
-    ref: r,
-    config
   });
 }
