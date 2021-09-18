@@ -1,0 +1,10 @@
+{
+  "data": {"url": "data/stocks.csv"},
+  "mark": "line",
+  "encoding": {
+    "x": {"timeUnit": "year", "field": "date"},
+    "y": {"aggregate":"mean", "field": "price", "type": "quantitative"},
+    "color": {"field": "symbol", "type": "nominal", "legend": null},
+    "label": {"field": "symbol", "type": "nominal"}
+  }
+}

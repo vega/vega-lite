@@ -51,14 +51,22 @@ Labels can provide details of a particular data point as a text annotation direc
 
 ### Scatter Plot
 
+<span class="vl-example" data-name="label_scatter"></span>
+
 {:#example-line}
 
 ### Line Chart
+
+<span class="vl-example" data-name="label_line"></span>
 
 {:#example-multi-line}
 
 ### Multi-series Line Chart
 
+<span class="vl-example" data-name="label_multi_line"></span>
+
 {:#example-stacked-area}
 
 ### Stacked Area Chart
+
+<span class="vl-example" data-name="label_stacked_area"></span>
