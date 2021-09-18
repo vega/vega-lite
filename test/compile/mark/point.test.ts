@@ -237,7 +237,10 @@ describe('Mark: Point', () => {
     const props = point.encodeEntry(model);
 
     it('should test for invalid values on y', () => {
-      expect(props.y).toEqual([{"field": {"group": "height"}, "test": "!isValid(datum[\"yield\"]) || !isFinite(+datum[\"yield\"])"}, {scale: Y, field: 'yield'}]);
+      expect(props.y).toEqual([
+        {field: {group: 'height'}, test: '!isValid(datum["yield"]) || !isFinite(+datum["yield"])'},
+        {scale: Y, field: 'yield'}
+      ]);
     });
 
     it('should be an unfilled circle', () => {
