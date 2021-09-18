@@ -8,7 +8,7 @@ import {internalField} from '../../../src/util';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Mark: Point', () => {
-  function pointXY(moreEncoding: Encoding<string> = {}, moreConfig: Config = {}): TopLevel<NormalizedUnitSpec> {
+  function pointXY(moreEncoding: Encoding<string> = {}, config: Config = {}): TopLevel<NormalizedUnitSpec> {
     return {
       mark: 'point',
       encoding: {
@@ -17,7 +17,7 @@ describe('Mark: Point', () => {
         ...moreEncoding
       },
       data: {url: 'data/barley.json'},
-      config: {mark: {invalid: null}, ...moreConfig}
+      config
     };
   }
 
@@ -120,10 +120,9 @@ describe('Mark: Point', () => {
 
     const props = point.encodeEntry(model);
 
-    expect(props.x).toEqual([
-      {test: '!isValid(datum["bin_maxbins_10_a"]) || !isFinite(+datum["bin_maxbins_10_a"])', value: 0},
+    expect(props.x).toEqual(
       {signal: 'scale("x", 0.6 * datum["bin_maxbins_10_a"] + 0.4 * datum["bin_maxbins_10_a_end"])'}
-    ]);
+    );
   });
   it('interpolates x timeUnit with timeUnitBand = 0.5', () => {
     // This is a simplified example for stacked point.

@@ -68,8 +68,7 @@ describe('Mark: Arc', () => {
       encoding: {
         theta: {bin: true, field: 'field', type: 'quantitative'},
         radius: {aggregate: 'count', type: 'quantitative'}
-      },
-      config: {mark: {invalid: null}} // don't apply invalid check to simplify the test
+      }
     });
 
     const props = arc.encodeEntry(model);
