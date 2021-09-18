@@ -5,6 +5,6 @@
   "encoding": {
     "x": {"field": "date", "type": "temporal"},
     "y": {"field": "price", "type": "quantitative"},
-    "legend": {"field": "year", "type": "nominal"}
+    "label": {"field": "year", "type": "nominal"}
   }
 }
