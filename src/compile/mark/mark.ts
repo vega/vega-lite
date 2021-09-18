@@ -511,7 +511,7 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
 function scaleClip(model: UnitModel) {
   const xScale = model.getScaleComponent('x');
   const yScale = model.getScaleComponent('y');
-  return (xScale?.get('selectionExtent')) || (yScale?.get('selectionExtent')) ? true : undefined;
+  return xScale?.get('selectionExtent') || yScale?.get('selectionExtent') ? true : undefined;
 }
 
 /**
