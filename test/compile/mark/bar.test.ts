@@ -39,12 +39,8 @@ describe('Mark: Bar', () => {
       }
     });
     const props = bar.encodeEntry(model);
-    expect(props.x).toEqual(
-      {scale: 'x', field: 'bin_start'}
-    );
-    expect(props.x2).toEqual(
-      {scale: 'x', field: 'bin_end'}
-    );
+    expect(props.x).toEqual({scale: 'x', field: 'bin_start'});
+    expect(props.x2).toEqual({scale: 'x', field: 'bin_end'});
     expect(props.y).toEqual({scale: 'y', field: 'Acceleration'});
     expect(props.y2).toEqual({scale: 'y', value: 0});
     expect(props.height).toBeUndefined();
@@ -300,16 +296,12 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      expect(props.y2).toEqual(
-        {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: 5}
-      );
-      expect(props.y).toEqual(
-        {
-          scale: 'y',
-          field: 'bin_maxbins_10_Horsepower_end',
-          offset: defaultBarConfig.binSpacing + 5
-        }
-      );
+      expect(props.y2).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: 5});
+      expect(props.y).toEqual({
+        scale: 'y',
+        field: 'bin_maxbins_10_Horsepower_end',
+        offset: defaultBarConfig.binSpacing + 5
+      });
       expect(props.height).toBeUndefined();
     });
   });
@@ -327,18 +319,14 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      expect(props.y2).toEqual(
-        {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: {signal: '0.5 + (a + -0.5)'}}
-      );
-      expect(props.y).toEqual(
-        {
-          scale: 'y',
-          field: 'bin_maxbins_10_Horsepower_end',
-          offset: {
-            signal: '0.5 + (a + 0.5)'
-          }
+      expect(props.y2).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: {signal: '0.5 + (a + -0.5)'}});
+      expect(props.y).toEqual({
+        scale: 'y',
+        field: 'bin_maxbins_10_Horsepower_end',
+        offset: {
+          signal: '0.5 + (a + 0.5)'
         }
-      );
+      });
       expect(props.height).toBeUndefined();
     });
   });
@@ -356,9 +344,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      expect(props.y2).toEqual(
-        {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing}
-      );
+      expect(props.y2).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
       expect(props.y).toEqual([fieldInvalidTestValueRef(y, 'y'), {scale: 'y', field: 'bin_maxbins_10_Horsepower_end'}]);
       expect(props.height).toBeUndefined();
     });
@@ -377,9 +363,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      expect(props.y2).toEqual(
-        {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing}
-      );
+      expect(props.y2).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
       expect(props.y).toEqual([fieldInvalidTestValueRef(y, 'y'), {scale: 'y', field: 'bin_maxbins_10_Horsepower_end'}]);
       expect(props.height).toBeUndefined();
     });
@@ -399,9 +383,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x and x2', () => {
-      expect(props.x2).toEqual(
-        {scale: 'x', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing}
-      );
+      expect(props.x2).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
       expect(props.x).toEqual([fieldInvalidTestValueRef(x, 'x'), {scale: 'x', field: 'bin_maxbins_10_Horsepower_end'}]);
       expect(props.width).toBeUndefined();
     });
@@ -421,11 +403,9 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with xc and width', () => {
-      expect(props.xc).toEqual(
-        {
-          signal: 'scale("x", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])'
-        }
-      );
+      expect(props.xc).toEqual({
+        signal: 'scale("x", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])'
+      });
       expect(props.width).toEqual({value: 5});
     });
   });
@@ -444,13 +424,11 @@ describe('Mark: Bar', () => {
 
     it('should draw bar with x and x2', () => {
       expect(props.x2).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower'});
-      expect(props.x).toEqual(
-        {
-          scale: 'x',
-          field: 'bin_maxbins_10_Horsepower_end',
-          offset: defaultBarConfig.binSpacing
-        }
-      );
+      expect(props.x).toEqual({
+        scale: 'x',
+        field: 'bin_maxbins_10_Horsepower_end',
+        offset: defaultBarConfig.binSpacing
+      });
       expect(props.width).toBeUndefined();
     });
   });
@@ -503,12 +481,8 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y and y2', () => {
-      expect(props.y2).toEqual(
-        {scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: 0.5}
-      );
-      expect(props.y).toEqual(
-        {scale: 'y', field: 'bin_maxbins_10_Horsepower_end', offset: 0.5}
-      );
+      expect(props.y2).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: 0.5});
+      expect(props.y).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower_end', offset: 0.5});
       expect(props.height).toBeUndefined();
     });
   });
@@ -527,12 +501,8 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x and x2', () => {
-      expect(props.x2).toEqual(
-        {scale: 'x', field: 'bin_maxbins_10_Horsepower', offset: 0.5}
-      );
-      expect(props.x).toEqual(
-        {scale: 'x', field: 'bin_maxbins_10_Horsepower_end', offset: 0.5}
-      );
+      expect(props.x2).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower', offset: 0.5});
+      expect(props.x).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower_end', offset: 0.5});
       expect(props.width).toBeUndefined();
     });
   });
@@ -551,11 +521,9 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with y centered on bin_mid and height = size field', () => {
-      expect(props.yc).toEqual(
-        {
-          signal: 'scale("y", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])'
-        }
-      );
+      expect(props.yc).toEqual({
+        signal: 'scale("y", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])'
+      });
       expect(props.height).toEqual({scale: 'size', field: 'mean_Acceleration'});
     });
   });
@@ -574,12 +542,9 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should draw bar with x centered on bin_mid and width = size field', () => {
-      expect(props.xc).toEqual(
-
-        {
-          signal: 'scale("x", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])'
-        }
-      );
+      expect(props.xc).toEqual({
+        signal: 'scale("x", 0.5 * datum["bin_maxbins_10_Horsepower"] + 0.5 * datum["bin_maxbins_10_Horsepower_end"])'
+      });
       expect(props.width).toEqual({scale: 'size', field: 'mean_Acceleration'});
     });
   });
@@ -890,9 +855,7 @@ describe('Mark: Bar', () => {
     it('should produce horizontal bar using x, x2', () => {
       expect(props.x).toEqual({scale: 'x', field: 'Acceleration'});
       expect(props.x2).toEqual({scale: 'x', value: 0});
-      expect(props.yc).toEqual(
-        {scale: 'y', field: 'Horsepower'}
-      );
+      expect(props.yc).toEqual({scale: 'y', field: 'Horsepower'});
       expect(props.height).toEqual({value: defaultBarConfig.continuousBandSize});
     });
   });
@@ -915,9 +878,7 @@ describe('Mark: Bar', () => {
     const props = bar.encodeEntry(model);
 
     it('should produce horizontal bar using x, x2', () => {
-      expect(props.xc).toEqual(
-        {scale: 'x', field: 'Acceleration'}
-      );
+      expect(props.xc).toEqual({scale: 'x', field: 'Acceleration'});
       expect(props.width).toEqual({value: defaultBarConfig.continuousBandSize});
       expect(props.y).toEqual({scale: 'y', field: 'Horsepower'});
       expect(props.y2).toEqual({scale: 'y', value: 0});
