@@ -101,7 +101,6 @@
     {
       "type": "group",
       "name": "child__row_population_group",
-      "style": "cell",
       "encode": {
         "update": {
           "width": {"signal": "width"},
@@ -122,7 +121,7 @@
               },
               "ariaRoleDescription": {"value": "geoshape"},
               "description": {
-                "signal": "\"geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; population: \" + (format(datum[\"population\"], \"\"))"
+                "signal": "\"population: \" + (format(datum[\"population\"], \"\")) + \"; geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"])"
               }
             }
           },
@@ -146,7 +145,6 @@
     {
       "type": "group",
       "name": "child__row_engineers_group",
-      "style": "cell",
       "encode": {
         "update": {
           "width": {"signal": "width"},
@@ -167,7 +165,7 @@
               },
               "ariaRoleDescription": {"value": "geoshape"},
               "description": {
-                "signal": "\"geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; engineers: \" + (format(datum[\"engineers\"], \"\"))"
+                "signal": "\"engineers: \" + (format(datum[\"engineers\"], \"\")) + \"; geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"])"
               }
             }
           },
@@ -191,7 +189,6 @@
     {
       "type": "group",
       "name": "child__row_hurricanes_group",
-      "style": "cell",
       "encode": {
         "update": {
           "width": {"signal": "width"},
@@ -212,7 +209,7 @@
               },
               "ariaRoleDescription": {"value": "geoshape"},
               "description": {
-                "signal": "\"geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"]) + \"; hurricanes: \" + (format(datum[\"hurricanes\"], \"\"))"
+                "signal": "\"hurricanes: \" + (format(datum[\"hurricanes\"], \"\")) + \"; geo: \" + (isValid(datum[\"geo\"]) ? datum[\"geo\"] : \"\"+datum[\"geo\"])"
               }
             }
           },

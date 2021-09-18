@@ -14,8 +14,8 @@ export const image: MarkCompiler = {
         size: 'ignore',
         theta: 'ignore'
       }),
-      ...encode.rectPosition(model, 'x', 'image'),
-      ...encode.rectPosition(model, 'y', 'image'),
+      ...encode.rectPosition(model, 'x'),
+      ...encode.rectPosition(model, 'y'),
       ...encode.text(model, 'url')
     };
   }

@@ -43,6 +43,7 @@
   ],
   "layout": {
     "padding": {"row": 20, "column": 10},
+    "titleAnchor": {"column": "end"},
     "offset": {"columnTitle": 10},
     "columns": {"signal": "length(data('column_domain'))"},
     "bounds": "full",
@@ -53,7 +54,12 @@
       "name": "column-title",
       "type": "group",
       "role": "column-title",
-      "title": {"text": "age", "style": "guide-title", "offset": 10}
+      "title": {
+        "text": "age",
+        "style": "guide-title",
+        "orient": "bottom",
+        "offset": 10
+      }
     },
     {
       "name": "row_header",
@@ -73,9 +79,9 @@
       ]
     },
     {
-      "name": "column_header",
+      "name": "column_footer",
       "type": "group",
-      "role": "column-header",
+      "role": "column-footer",
       "from": {"data": "column_domain"},
       "sort": {"field": "datum[\"age\"]", "order": "ascending"},
       "title": {
@@ -84,28 +90,10 @@
         },
         "style": "guide-label",
         "frame": "group",
+        "orient": "bottom",
         "offset": 10
       },
       "encode": {"update": {"width": {"signal": "child_width"}}}
-    },
-    {
-      "name": "column_footer",
-      "type": "group",
-      "role": "column-footer",
-      "from": {"data": "column_domain"},
-      "sort": {"field": "datum[\"age\"]", "order": "ascending"},
-      "encode": {"update": {"width": {"signal": "child_width"}}},
-      "axes": [
-        {
-          "scale": "x",
-          "orient": "bottom",
-          "grid": false,
-          "labelAlign": "right",
-          "labelAngle": 270,
-          "labelBaseline": "middle",
-          "zindex": 0
-        }
-      ]
     },
     {
       "name": "cell",
@@ -132,7 +120,7 @@
               "fill": {"scale": "color", "field": "gender"},
               "ariaRoleDescription": {"value": "bar"},
               "description": {
-                "signal": "\"population: \" + (format(datum[\"sum_people\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+                "signal": "\"gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"]) + \"; population: \" + (format(datum[\"sum_people\"], \"\"))"
               },
               "x": {"scale": "x", "field": "gender"},
               "width": {"scale": "x", "band": 1},

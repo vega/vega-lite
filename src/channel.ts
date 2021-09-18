@@ -367,7 +367,7 @@ const {label: _label, tooltip: _tooltip, ...STACKABLE_CHANNEL_INDEX} = NONPOSITI
 export const STACKABLE_CHANNELS = keys(STACKABLE_CHANNEL_INDEX);
 export type StackableChannel = typeof STACKABLE_CHANNELS[number];
 
-export const POSITION_SCALE_CHANNEL_INDEX = {
+const POSITION_SCALE_CHANNEL_INDEX = {
   x: 1,
   y: 1
 } as const;

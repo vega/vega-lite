@@ -13,14 +13,14 @@
         {
           "field": "time",
           "type": "timeunit",
-          "units": ["day"],
-          "as": ["day_time", "day_time_end"]
+          "units": ["hours"],
+          "as": ["hours_time", "hours_time_end"]
         },
         {
           "field": "time",
           "type": "timeunit",
-          "units": ["hours"],
-          "as": ["hours_time", "hours_time_end"]
+          "units": ["day"],
+          "as": ["day_time", "day_time_end"]
         },
         {
           "type": "formula",
@@ -35,7 +35,7 @@
       "transform": [
         {
           "type": "aggregate",
-          "groupby": ["day_time", "hours_time"],
+          "groupby": ["hours_time", "day_time"],
           "ops": ["sum"],
           "fields": ["count"],
           "as": ["sum_count"]
@@ -80,7 +80,7 @@
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "circle"},
           "description": {
-            "signal": "\"time (day): \" + (timeFormat(datum[\"day_time\"], timeUnitSpecifier([\"day\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; time (hours): \" + (timeFormat(datum[\"hours_time\"], timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of count: \" + (format(datum[\"sum_count\"], \"\"))"
+            "signal": "\"time (hours): \" + (timeFormat(datum[\"hours_time\"], timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; time (day): \" + (timeFormat(datum[\"day_time\"], timeUnitSpecifier([\"day\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of count: \" + (format(datum[\"sum_count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "hours_time"},
           "y": {"scale": "y", "field": "day_time"},

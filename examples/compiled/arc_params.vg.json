@@ -80,7 +80,6 @@
       "type": "group",
       "name": "concat_0_group",
       "title": {"text": "Single Arc", "frame": "group"},
-      "style": "cell",
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
@@ -115,7 +114,6 @@
       "type": "group",
       "name": "concat_1_group",
       "title": {"text": "Stacked Arcs", "frame": "group"},
-      "style": "cell",
       "encode": {
         "update": {
           "width": {"signal": "childWidth"},
@@ -142,8 +140,8 @@
               "y": {"signal": "height", "mult": 0.5},
               "outerRadius": {"signal": "radius"},
               "innerRadius": {"signal": "radius2"},
-              "startAngle": {"scale": "theta", "field": "value_end"},
-              "endAngle": {"scale": "theta", "field": "value_start"}
+              "startAngle": {"scale": "concat_1_theta", "field": "value_end"},
+              "endAngle": {"scale": "concat_1_theta", "field": "value_start"}
             }
           }
         }
@@ -152,19 +150,18 @@
   ],
   "scales": [
     {
-      "name": "theta",
-      "type": "linear",
-      "domain": {"data": "data_0", "fields": ["value_start", "value_end"]},
-      "range": [0, 6.283185307179586],
-      "zero": true
-    },
-    {
       "name": "color",
       "type": "ordinal",
       "domain": {"data": "data_0", "field": "category", "sort": true},
       "range": "category"
+    },
+    {
+      "name": "concat_1_theta",
+      "type": "linear",
+      "domain": {"data": "data_0", "fields": ["value_start", "value_end"]},
+      "range": [0, 6.283185307179586],
+      "zero": true
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "circle", "title": "category"}],
-  "config": {"style": {"cell": {"stroke": null}}}
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "category"}]
 }

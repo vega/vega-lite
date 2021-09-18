@@ -69,10 +69,11 @@
           "encode": {
             "update": {
               "stroke": {
-                "signal": "scale(\"color\", 0.5 * datum[\"bin_maxbins_6_Acceleration\"] + 0.5 * datum[\"bin_maxbins_6_Acceleration_end\"])"
+                "scale": "color",
+                "field": "bin_maxbins_6_Acceleration"
               },
               "description": {
-                "signal": "\"Mean of Horsepower: \" + (format(datum[\"mean_Horsepower\"], \"\")) + \"; Year: \" + (timeFormat(datum[\"Year\"], '%b %d, %Y')) + \"; Acceleration (binned): \" + (!isValid(datum[\"bin_maxbins_6_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" – \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\"))"
+                "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], '%b %d, %Y')) + \"; Mean of Horsepower: \" + (format(datum[\"mean_Horsepower\"], \"\")) + \"; Acceleration (binned): \" + (!isValid(datum[\"bin_maxbins_6_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_6_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Acceleration\"], \"\") + \" – \" + format(datum[\"bin_maxbins_6_Acceleration_end\"], \"\"))"
               },
               "x": {"scale": "x", "field": "Year"},
               "y": {"scale": "y", "field": "mean_Horsepower"},

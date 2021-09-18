@@ -184,7 +184,7 @@ export abstract class Model {
 
   public readonly view?: ViewBackground<SignalRef>;
 
-  public abstract readonly children: Model[] = [];
+  public abstract readonly children: Model[];
 
   constructor(
     spec: NormalizedSpec,
@@ -302,12 +302,7 @@ export abstract class Model {
 
   public abstract assembleSelectionData(data: readonly VgData[]): readonly VgData[];
 
-  public assembleGroupStyle(): string | string[] {
-    if (this.type === 'unit' || this.type === 'layer') {
-      return this.view?.style ?? 'cell';
-    }
-    return undefined;
-  }
+  public abstract assembleGroupStyle(): string | string[];
 
   private assembleEncodeFromView(view: ViewBackground<SignalRef>): VgEncodeEntry {
     // Exclude "style"
@@ -408,7 +403,7 @@ export abstract class Model {
     const {encoding, ...titleNoEncoding} = this.title ?? ({} as TitleParams<SignalRef>);
 
     const title: VgTitle = {
-      ...extractTitleConfig(this.config.title).nonMark,
+      ...extractTitleConfig(this.config.title).nonMarkTitleProperties,
       ...titleNoEncoding,
       ...(encoding ? {encode: {update: encoding}} : {})
     };

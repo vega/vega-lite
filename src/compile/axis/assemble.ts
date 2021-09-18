@@ -7,7 +7,7 @@ import {Config} from '../../config';
 import {isText} from '../../title';
 import {contains, getFirstDefined, isEmpty, replaceAll} from '../../util';
 import {isSignalRef, VgEncodeChannel, VgValueRef} from '../../vega.schema';
-import {exprFromValueOrSignalRef} from '../common';
+import {exprFromValueRefOrSignalRef} from '../common';
 import {Model} from '../model';
 import {expression} from '../predicate';
 import {AxisComponent, AxisComponentIndex} from './component';
@@ -87,9 +87,9 @@ export function assembleAxis(
             conditions
               .map(c => {
                 const {test, ...valueOrSignalCRef} = c;
-                return `${expression(null, test)} ? ${exprFromValueOrSignalRef(valueOrSignalCRef)} : `;
+                return `${expression(null, test)} ? ${exprFromValueRefOrSignalRef(valueOrSignalCRef)} : `;
               })
-              .join('') + exprFromValueOrSignalRef(valueOrSignalRef)
+              .join('') + exprFromValueRefOrSignalRef(valueOrSignalRef)
         };
         axis[prop] = signalRef;
       }

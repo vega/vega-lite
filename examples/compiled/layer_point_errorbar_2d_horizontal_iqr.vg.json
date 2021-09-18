@@ -58,7 +58,7 @@
             "signal": "{\"Q3 of yield\": format(datum[\"upper_yield\"], \"\"), \"Q1 of yield\": format(datum[\"lower_yield\"], \"\"), \"Median of yield\": format(datum[\"center_yield\"], \"\"), \"variety\": isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]}"
           },
           "description": {
-            "signal": "\"yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; Q3 of yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Q1 of yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; Median of yield: \" + (format(datum[\"center_yield\"], \"\"))"
+            "signal": "\"yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Q3 of yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Q1 of yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; Median of yield: \" + (format(datum[\"center_yield\"], \"\"))"
           },
           "x": [
             {

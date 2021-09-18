@@ -1,0 +1,130 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/barley.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["site", "year"],
+          "ops": ["sum"],
+          "fields": ["yield"],
+          "as": ["sum_yield"]
+        },
+        {
+          "type": "stack",
+          "groupby": ["year"],
+          "field": "sum_yield",
+          "sort": {"field": ["site"], "order": ["ascending"]},
+          "as": ["sum_yield_start", "sum_yield_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"sum_yield\"]) && isFinite(+datum[\"sum_yield\"])"
+        }
+      ]
+    },
+    {
+      "name": "column_domain",
+      "source": "source_0",
+      "transform": [{"type": "aggregate", "groupby": ["year"]}]
+    }
+  ],
+  "signals": [
+    {"name": "child_width", "value": 200},
+    {"name": "child_height", "value": 200}
+  ],
+  "layout": {
+    "padding": 20,
+    "offset": {"columnTitle": 10},
+    "columns": {"signal": "length(data('column_domain'))"},
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "name": "column-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {"text": "year", "style": "guide-title", "offset": 10}
+    },
+    {
+      "name": "column_header",
+      "type": "group",
+      "role": "column-header",
+      "from": {"data": "column_domain"},
+      "sort": {"field": "datum[\"year\"]", "order": "ascending"},
+      "title": {
+        "text": {
+          "signal": "isValid(parent[\"year\"]) ? parent[\"year\"] : \"\"+parent[\"year\"]"
+        },
+        "style": "guide-label",
+        "frame": "group",
+        "offset": 10
+      },
+      "encode": {"update": {"width": {"signal": "child_width"}}}
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "from": {
+        "facet": {"name": "facet", "data": "source_0", "groupby": ["year"]}
+      },
+      "sort": {"field": ["datum[\"year\"]"], "order": ["ascending"]},
+      "encode": {
+        "update": {
+          "width": {"signal": "child_width"},
+          "height": {"signal": "child_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "arc",
+          "style": ["arc"],
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "fill": {"scale": "color", "field": "site"},
+              "description": {
+                "signal": "\"Sum of yield: \" + (format(datum[\"sum_yield\"], \"\")) + \"; site: \" + (isValid(datum[\"site\"]) ? datum[\"site\"] : \"\"+datum[\"site\"])"
+              },
+              "x": {"signal": "child_width", "mult": 0.5},
+              "y": {"signal": "child_height", "mult": 0.5},
+              "outerRadius": {"signal": "min(child_width,child_height)/2"},
+              "innerRadius": {"value": 0},
+              "startAngle": {"scale": "child_theta", "field": "sum_yield_end"},
+              "endAngle": {"scale": "child_theta", "field": "sum_yield_start"}
+            }
+          }
+        }
+      ],
+      "scales": [
+        {
+          "name": "child_theta",
+          "type": "linear",
+          "domain": {
+            "data": "facet",
+            "fields": ["sum_yield_start", "sum_yield_end"]
+          },
+          "range": [0, 6.283185307179586],
+          "zero": true
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "source_0", "field": "site", "sort": true},
+      "range": "category"
+    }
+  ],
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "site"}]
+}

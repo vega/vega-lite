@@ -70,7 +70,7 @@
         "update": {
           "stroke": {"value": "#ccc"},
           "description": {
-            "signal": "\"Count of Records: \" + (format(datum[\"__count\"], \"\")) + \"; key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"])"
+            "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
           "x": {"scale": "x", "field": "key", "band": 0.5},
           "y": {"value": 0},
@@ -109,7 +109,7 @@
                 "signal": "{\"Beak Length (mm)\": format(datum[\"Beak Length (mm)\"], \"\"), \"Beak Depth (mm)\": format(datum[\"Beak Depth (mm)\"], \"\"), \"Flipper Length (mm)\": format(datum[\"Flipper Length (mm)\"], \"\"), \"Body Mass (g)\": format(datum[\"Body Mass (g)\"], \"\")}"
               },
               "description": {
-                "signal": "\"Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; index: \" + (isValid(datum[\"index\"]) ? datum[\"index\"] : \"\"+datum[\"index\"]) + \"; key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; norm_val: \" + (format(datum[\"norm_val\"], \"\")) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\"))"
+                "signal": "\"key: \" + (isValid(datum[\"key\"]) ? datum[\"key\"] : \"\"+datum[\"key\"]) + \"; norm_val: \" + (format(datum[\"norm_val\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; index: \" + (isValid(datum[\"index\"]) ? datum[\"index\"] : \"\"+datum[\"index\"]) + \"; Beak Length (mm): \" + (format(datum[\"Beak Length (mm)\"], \"\")) + \"; Beak Depth (mm): \" + (format(datum[\"Beak Depth (mm)\"], \"\")) + \"; Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\"))"
               },
               "x": {"scale": "x", "field": "key", "band": 0.5},
               "y": {"scale": "y", "field": "norm_val"},

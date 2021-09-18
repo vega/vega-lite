@@ -242,6 +242,7 @@ export function midPoint({
     /* istanbul ignore else */
 
     if (isFieldOrDatumDef(channelDef)) {
+      const scaleType = scale?.get('type');
       if (isTypedFieldDef(channelDef)) {
         bandPosition ??= getBandPosition({
           fieldDef: channelDef,
@@ -259,7 +260,7 @@ export function midPoint({
             return valueRefForFieldOrDatumDef(channelDef, scaleName, {binSuffix: 'mid'}, {offset});
           }
 
-          if (bandPosition) {
+          if (bandPosition && !hasDiscreteDomain(scaleType)) {
             // if band = 0, no need to call interpolation
             // For non-stack, we can just calculate bin mid on the fly using signal.
             return interpolatedSignalRef({scaleName, fieldOrDatumDef: channelDef, bandPosition, offset});
@@ -288,7 +289,6 @@ export function midPoint({
         }
       }
 
-      const scaleType = scale?.get('type');
       return valueRefForFieldOrDatumDef(
         channelDef,
         scaleName,

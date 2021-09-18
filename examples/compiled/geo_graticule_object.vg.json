@@ -4,7 +4,6 @@
   "padding": 5,
   "width": 200,
   "height": 200,
-  "style": "cell",
   "data": [
     {"name": "source_0", "transform": [{"type": "graticule", "step": [15, 15]}]}
   ],

@@ -1,0 +1,120 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A histogram for a data source that provides non-linear bins. Thanks to [@Saba9](https://github.com/Saba9) who helps create this example.",
+  "background": "white",
+  "padding": 5,
+  "height": 100,
+  "title": {"text": "Distribution of Frame Render Time (ms)", "frame": "group"},
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"startTime": "0", "endTime": "8.33", "residency": 0},
+        {"startTime": "8.33", "endTime": "12.50", "residency": 0},
+        {"startTime": "12.50", "endTime": "16.67", "residency": 31.17},
+        {"startTime": "16.67", "endTime": "33.33", "residency": 38.96},
+        {"startTime": "33.33", "endTime": "50.00", "residency": 6.49},
+        {"startTime": "50.00", "endTime": "66.67", "residency": 2.9},
+        {"startTime": "66.67", "endTime": "83.33", "residency": 2.6},
+        {"startTime": "83.33", "endTime": "∞", "residency": 16.88}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["startTime"],
+          "field": "residency",
+          "sort": {"field": [], "order": []},
+          "as": ["residency_start", "residency_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"residency\"]) && isFinite(+datum[\"residency\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 40},
+    {"name": "width", "update": "bandspace(domain('x').length, 1, 0) * x_step"}
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "cornerRadiusTopLeft": {"value": 0},
+          "cornerRadiusTopRight": {"value": 0},
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"startTime: \" + (isValid(datum[\"startTime\"]) ? datum[\"startTime\"] : \"\"+datum[\"startTime\"]) + \"; residency: \" + (format(datum[\"residency\"], \"\")) + \"; endTime: \" + (isValid(datum[\"endTime\"]) ? datum[\"endTime\"] : \"\"+datum[\"endTime\"])"
+          },
+          "x": {"scale": "x", "field": "startTime"},
+          "x2": {"scale": "x", "field": "endTime"},
+          "y": {"scale": "y", "field": "residency_end"},
+          "y2": {"scale": "y", "field": "residency_start"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "point",
+      "domain": {"data": "data_0", "fields": ["startTime", "endTime"]},
+      "range": {"step": {"signal": "x_step"}},
+      "padding": 0
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": [0, 100],
+      "range": [{"signal": "height"}, 0],
+      "zero": true
+    }
+  ],
+  "axes": [
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "labelAngle": 0,
+      "labelBaseline": "top",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "encode": {
+        "labels": {"update": {"text": {"signal": "datum.label + '%'"}}}
+      },
+      "zindex": 0
+    }
+  ]
+}

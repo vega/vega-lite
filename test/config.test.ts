@@ -166,6 +166,7 @@ describe('config', () => {
         baseline: 'middle',
         dx: 5,
         dy: 5,
+        angle: 1,
         limit: 5
       },
       boxplot: {

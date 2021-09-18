@@ -14,8 +14,8 @@ export const bar: MarkCompiler = {
         size: 'ignore',
         theta: 'ignore'
       }),
-      ...encode.rectPosition(model, 'x', 'bar'),
-      ...encode.rectPosition(model, 'y', 'bar')
+      ...encode.rectPosition(model, 'x'),
+      ...encode.rectPosition(model, 'y')
     };
   }
 };

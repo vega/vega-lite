@@ -300,8 +300,11 @@ export function parseData(model: Model): DataComponent {
   let head = parseRoot(model, model.component.data.sources);
 
   const {outputNodes, outputNodeRefCounts} = model.component.data;
-  const ancestorParse = model.parent ? model.parent.component.data.ancestorParse.clone() : new AncestorParse();
   const data = model.data;
+
+  const newData = data && (isGenerator(data) || isUrlData(data) || isInlineData(data));
+  const ancestorParse =
+    !newData && model.parent ? model.parent.component.data.ancestorParse.clone() : new AncestorParse();
 
   if (isGenerator(data)) {
     // insert generator transform

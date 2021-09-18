@@ -24,6 +24,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["bin_start", "bin_start"],
+          "field": "count",
+          "sort": {"field": [], "order": []},
+          "as": ["count_start", "count_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"bin_start\"]) && isFinite(+datum[\"bin_start\"]) && isValid(datum[\"count\"]) && isFinite(+datum[\"count\"])"
         }
@@ -45,8 +53,8 @@
           },
           "x2": {"scale": "x", "field": "bin_start", "offset": 1},
           "x": {"scale": "x", "field": "bin_end"},
-          "y": {"scale": "y", "field": "count"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {"scale": "y", "field": "count_end"},
+          "y2": {"scale": "y", "field": "count_start"}
         }
       }
     }
@@ -63,7 +71,7 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "count"},
+      "domain": {"data": "data_0", "fields": ["count_start", "count_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true

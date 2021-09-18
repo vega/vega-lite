@@ -1,0 +1,16 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "data": {"url": "data/flights-5k.json"},
+  "mark": {"type": "bar"},
+  "encoding": {
+    "x": {
+      "field": "delay",
+      "type": "quantitative",
+      "bin": {"maxbins": 100, "minstep": 1},
+      "axis": {"title": "delay", "titleAnchor": "start", "format": "d"}
+    }
+  },
+  "width": 300,
+  "height": 50,
+  "config": {"view": {"stroke": null}}
+}

@@ -4,7 +4,6 @@
   "padding": 5,
   "width": 800,
   "height": 500,
-  "style": "cell",
   "data": [
     {
       "name": "source_0",
@@ -130,7 +129,7 @@
         "update": {
           "stroke": {"value": "black"},
           "description": {
-            "signal": "\"origin_longitude: \" + (format(datum[\"origin_longitude\"], \"\")) + \"; origin_latitude: \" + (format(datum[\"origin_latitude\"], \"\")) + \"; dest_longitude: \" + (format(datum[\"dest_longitude\"], \"\")) + \"; dest_latitude: \" + (format(datum[\"dest_latitude\"], \"\"))"
+            "signal": "\"origin_longitude: \" + (format(datum[\"origin_longitude\"], \"\")) + \"; dest_longitude: \" + (format(datum[\"dest_longitude\"], \"\")) + \"; origin_latitude: \" + (format(datum[\"origin_latitude\"], \"\")) + \"; dest_latitude: \" + (format(datum[\"dest_latitude\"], \"\"))"
           },
           "x": {"field": "layer_2_x"},
           "x2": {"field": "layer_2_x2"},

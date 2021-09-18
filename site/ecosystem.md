@@ -25,6 +25,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Codimd](https://github.com/hackmdio/codimd), realtime collaborative markdown notes editor with support of various diagram syntaxes including [Vega-Lite](https://hackmd.io/c/codimd-documentation/%2F%40codimd%2Fextra-supported-syntax#Vega-Lite).
 - [Ivy](http://ivy-vis.netlify.app/), an Integrated Visualization Editing environment that wraps Vega-Lite (among other declarative visualization grammars) as templates to facilitate reuse, exploration, and opportunistic creation. Includes an in-app reproduction of [Polestar](https://github.com/vega/polestar).
 - [Deneb](https://deneb-viz.github.io), a Power BI custom visual with an editor for Vega-Lite or Vega specifications.
+- [VizLinter](https://vizlinter.idvxlab.com/), an online editor that detects and fixes encoding issues based on vega-lite-linter.
 
 ## Plug-ins for Vega-Lite
 
@@ -38,7 +39,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - <span class="octicon octicon-star"></span> [Elm-Vega](https://package.elm-lang.org/packages/gicentre/elm-vega/latest) generates Vega-Lite specifications in the pure functional language [Elm](https://elm-lang.org).
 - [Altair wrapper in R](https://vegawidget.github.io/altair/)
 - [ipyvega](https://github.com/vega/ipyvega) supports Vega and Vega-Lite charts in Jupyter Notebooks.
-- [VegaLite](https://github.com/elixir-nx/vega_lite) are Elixir bindings to Vega-Lite.
+- [VegaLite (Elixir bindings)](https://github.com/elixir-nx/vega_lite).
 - <span class="octicon octicon-star"></span> [VegaLite.jl](https://github.com/queryverse/VegaLite.jl) are Julia bindings to Vega and Vega-Lite.
 - [Vega-Lite "bindings" for R](https://github.com/hrbrmstr/vegalite), create Vega-Lite visualizations in R.
 - [vegaliteR](https://github.com/timelyportfolio/vegaliteR), vega-lite htmlwidget for R.
@@ -55,6 +56,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Vega.rb](https://github.com/ankane/vega) brings Vega and Vega-Lite to Ruby.
 - [Jekyll Diagrams](https://github.com/zhustec/jekyll-diagrams) A Jekyll plugin with support for Vega & Vega-Lite and others diagramming libraries.
 - [Liquid Diagrams](https://github.com/zhustec/liquid-diagrams) A Liquid plugin with support for Vega & Vega-Lite and others diagramming libraries.
+- [Vega-Lite-Linter](https://github.com/idvxlab/vega-lite-linter) is a python package to help users detect and fix encoding issues.
 
 ## Programming / Data Science Environment that supports Vega-Lite
 

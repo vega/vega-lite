@@ -292,6 +292,17 @@ export class UnitModel extends ModelWithField {
     // move label marks to the top
     return [...marks.filter(mark => !isLabelMark(mark)), ...marks.filter(isLabelMark)];
   }
+  public assembleGroupStyle(): string | string[] {
+    const {style} = this.view || {};
+    if (style !== undefined) {
+      return style;
+    }
+    if (this.encoding.x || this.encoding.y) {
+      return 'cell';
+    } else {
+      return undefined;
+    }
+  }
 
   protected getMapping() {
     return this.encoding;
