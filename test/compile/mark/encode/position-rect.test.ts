@@ -19,14 +19,10 @@ describe('compile/mark/encode/position-rect', () => {
       });
 
       const props = rectPosition(model, 'x');
-      expect(props.x[0]).toEqual({
-        test: '!isValid(datum["bin_maxbins_10_x"]) || !isFinite(+datum["bin_maxbins_10_x"])',
-        value: 0
-      });
-      expect(props.x[1].offset).toEqual({
+      expect(props.x['offset']).toEqual({
         signal: '0.5 + (r ? -1 : 1) * -0.5'
       });
-      expect(props.x2[1].offset).toEqual({
+      expect(props.x2['offset']).toEqual({
         signal: '0.5 + (r ? -1 : 1) * 0.5'
       });
     });
@@ -67,10 +63,10 @@ describe('compile/mark/encode/position-rect', () => {
       });
 
       const props = rectPosition(model, 'y');
-      expect(props.y2[1].offset).toEqual({
+      expect(props.y2['offset']).toEqual({
         signal: '0.5 + (r ? -1 : 1) * -0.5'
       });
-      expect(props.y[1].offset).toEqual({
+      expect(props.y['offset']).toEqual({
         signal: '0.5 + (r ? -1 : 1) * 0.5'
       });
     });
@@ -91,10 +87,10 @@ describe('compile/mark/encode/position-rect', () => {
 
       const props = rectPosition(model, 'x');
 
-      expect(props.x[1].offset).toEqual({
+      expect(props.x['offset']).toEqual({
         signal: '0.5 + (r ? -1 : 1) * -1'
       });
-      expect(props.x2[1].offset).toEqual({
+      expect(props.x2['offset']).toEqual({
         signal: '0.5 + (r ? -1 : 1) * 1'
       });
     });
@@ -114,10 +110,10 @@ describe('compile/mark/encode/position-rect', () => {
       });
 
       const props = rectPosition(model, 'y');
-      expect(props.y2[1].offset).toEqual({
+      expect(props.y2['offset']).toEqual({
         signal: '0.5 + (r ? -1 : 1) * -1'
       });
-      expect(props.y[1].offset).toEqual({
+      expect(props.y['offset']).toEqual({
         signal: '0.5 + (r ? -1 : 1) * 1'
       });
     });
@@ -182,10 +178,10 @@ describe('compile/mark/encode/position-rect', () => {
       model.parseAxesAndHeaders();
 
       const props = rectPosition(model, 'x');
-      expect(props.x[1].offset).toEqual({
+      expect(props.x['offset']).toEqual({
         signal: 't + -0.5'
       });
-      expect(props.x2[1].offset).toEqual({
+      expect(props.x2['offset']).toEqual({
         signal: 't + 0.5'
       });
     });
@@ -207,10 +203,10 @@ describe('compile/mark/encode/position-rect', () => {
       model.parseAxesAndHeaders();
 
       const props = rectPosition(model, 'x');
-      expect(props.x[1].offset).toEqual({
+      expect(props.x['offset']).toEqual({
         signal: 't + (r ? -1 : 1) * (o + -0.5)'
       });
-      expect(props.x2[1].offset).toEqual({
+      expect(props.x2['offset']).toEqual({
         signal: 't + (r ? -1 : 1) * (o + 0.5)'
       });
     });

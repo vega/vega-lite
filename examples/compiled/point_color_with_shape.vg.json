@@ -34,20 +34,8 @@
           "description": {
             "signal": "\"Flipper Length (mm): \" + (format(datum[\"Flipper Length (mm)\"], \"\")) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"Flipper Length (mm)\"]) || !isFinite(+datum[\"Flipper Length (mm)\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "Flipper Length (mm)"}
-          ],
-          "y": [
-            {
-              "test": "!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "Body Mass (g)"}
-          ],
+          "x": {"scale": "x", "field": "Flipper Length (mm)"},
+          "y": {"scale": "y", "field": "Body Mass (g)"},
           "shape": {"scale": "shape", "field": "Species"}
         }
       }

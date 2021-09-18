@@ -85,20 +85,8 @@
           "description": {
             "signal": "\"yield: \" + (format(datum[\"lower_upper_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; upper_upper_yield: \" + (format(datum[\"upper_upper_yield\"], \"\")) + \"; lower_yield: \" + (format(datum[\"upper_upper_yield\"], \"\")) + \"; upper_yield: \" + (format(datum[\"lower_upper_yield\"], \"\"))"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"lower_upper_yield\"]) || !isFinite(+datum[\"lower_upper_yield\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "lower_upper_yield"}
-          ],
-          "x2": [
-            {
-              "test": "!isValid(datum[\"upper_upper_yield\"]) || !isFinite(+datum[\"upper_upper_yield\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "upper_upper_yield"}
-          ],
+          "x": {"scale": "x", "field": "lower_upper_yield"},
+          "x2": {"scale": "x", "field": "upper_upper_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5}
         }
       }
@@ -116,13 +104,7 @@
           "description": {
             "signal": "\"center: \" + (format(datum[\"center\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"])"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"center\"]) || !isFinite(+datum[\"center\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "center"}
-          ],
+          "x": {"scale": "x", "field": "center"},
           "y": {"scale": "y", "field": "variety", "band": 0.5}
         }
       }

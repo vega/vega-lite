@@ -54,20 +54,8 @@
           "description": {
             "signal": "\"a (hours): \" + (timeFormat(datum[\"hours_a\"], timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
-          "x2": [
-            {
-              "test": "!isValid(datum[\"hours_a\"]) || !isFinite(+datum[\"hours_a\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "hours_a", "offset": 1}
-          ],
-          "x": [
-            {
-              "test": "!isValid(datum[\"hours_a\"]) || !isFinite(+datum[\"hours_a\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "hours_a_end"}
-          ],
+          "x2": {"scale": "x", "field": "hours_a", "offset": 1},
+          "x": {"scale": "x", "field": "hours_a_end"},
           "y": {"scale": "y", "field": "b_end"},
           "y2": {"scale": "y", "field": "b_start"}
         }

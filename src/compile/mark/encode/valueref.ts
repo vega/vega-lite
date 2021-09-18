@@ -53,10 +53,9 @@ export function midPointRefWithPositionInvalidTest(
     // Only this for field def without counting aggregate (as count wouldn't be null)
     isFieldDef(channelDef) &&
     !isCountingAggregateOp(channelDef.aggregate) &&
-    // and only for continuous scale without zero (otherwise, null / invalid will be interpreted as zero, which doesn't cause layout problem)
+    // and only for continuous scale
     scale &&
-    isContinuousToContinuous(scale.get('type')) &&
-    scale.get('zero') === false
+    isContinuousToContinuous(scale.get('type'))
   ) {
     return wrapPositionInvalidTest({
       fieldDef: channelDef,
@@ -90,10 +89,9 @@ export function wrapPositionInvalidTest({
   const invalid = getMarkPropOrConfig('invalid', markDef, config);
   if (invalid === null) {
     // if there is no invalid filter, don't do the invalid test
-    return ref;
+    return [fieldInvalidTestValueRef(fieldDef, channel), ref];
   }
-
-  return [fieldInvalidTestValueRef(fieldDef, channel), ref];
+  return ref;
 }
 
 export function fieldInvalidTestValueRef(fieldDef: FieldDef<string>, channel: PositionChannel | PolarPositionChannel) {

@@ -195,27 +195,15 @@
                   "description": {
                     "signal": "\"Rotten Tomatoes Rating (binned): \" + (!isValid(datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_Rotten Tomatoes Rating_end\"], \"\")) + \"; Count: \" + (format(datum[\"__count\"], \"\"))"
                   },
-                  "x2": [
-                    {
-                      "test": "!isValid(datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"])",
-                      "value": 0
-                    },
-                    {
-                      "scale": "child__column_Rotten_Tomatoes_Rating_x",
-                      "field": "bin_maxbins_20_Rotten Tomatoes Rating",
-                      "offset": 1
-                    }
-                  ],
-                  "x": [
-                    {
-                      "test": "!isValid(datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_Rotten Tomatoes Rating\"])",
-                      "value": 0
-                    },
-                    {
-                      "scale": "child__column_Rotten_Tomatoes_Rating_x",
-                      "field": "bin_maxbins_20_Rotten Tomatoes Rating_end"
-                    }
-                  ],
+                  "x2": {
+                    "scale": "child__column_Rotten_Tomatoes_Rating_x",
+                    "field": "bin_maxbins_20_Rotten Tomatoes Rating",
+                    "offset": 1
+                  },
+                  "x": {
+                    "scale": "child__column_Rotten_Tomatoes_Rating_x",
+                    "field": "bin_maxbins_20_Rotten Tomatoes Rating_end"
+                  },
                   "y": {
                     "scale": "child__column_Rotten_Tomatoes_Rating_y",
                     "field": "__count"
@@ -287,27 +275,15 @@
                   "description": {
                     "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_20_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_20_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_IMDB Rating_end\"], \"\")) + \"; Count: \" + (format(datum[\"__count\"], \"\"))"
                   },
-                  "x2": [
-                    {
-                      "test": "!isValid(datum[\"bin_maxbins_20_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_IMDB Rating\"])",
-                      "value": 0
-                    },
-                    {
-                      "scale": "child__column_IMDB_Rating_x",
-                      "field": "bin_maxbins_20_IMDB Rating",
-                      "offset": 1
-                    }
-                  ],
-                  "x": [
-                    {
-                      "test": "!isValid(datum[\"bin_maxbins_20_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_20_IMDB Rating\"])",
-                      "value": 0
-                    },
-                    {
-                      "scale": "child__column_IMDB_Rating_x",
-                      "field": "bin_maxbins_20_IMDB Rating_end"
-                    }
-                  ],
+                  "x2": {
+                    "scale": "child__column_IMDB_Rating_x",
+                    "field": "bin_maxbins_20_IMDB Rating",
+                    "offset": 1
+                  },
+                  "x": {
+                    "scale": "child__column_IMDB_Rating_x",
+                    "field": "bin_maxbins_20_IMDB Rating_end"
+                  },
                   "y": {
                     "scale": "child__column_IMDB_Rating_y",
                     "field": "__count"
@@ -384,27 +360,15 @@
                   "description": {
                     "signal": "\"US Gross (binned): \" + (!isValid(datum[\"bin_maxbins_20_US Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_US Gross\"]) ? \"null\" : format(datum[\"bin_maxbins_20_US Gross\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_US Gross_end\"], \"\")) + \"; Count: \" + (format(datum[\"__count\"], \"\"))"
                   },
-                  "x2": [
-                    {
-                      "test": "!isValid(datum[\"bin_maxbins_20_US Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_US Gross\"])",
-                      "value": 0
-                    },
-                    {
-                      "scale": "child__column_US_Gross_x",
-                      "field": "bin_maxbins_20_US Gross",
-                      "offset": 1
-                    }
-                  ],
-                  "x": [
-                    {
-                      "test": "!isValid(datum[\"bin_maxbins_20_US Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_US Gross\"])",
-                      "value": 0
-                    },
-                    {
-                      "scale": "child__column_US_Gross_x",
-                      "field": "bin_maxbins_20_US Gross_end"
-                    }
-                  ],
+                  "x2": {
+                    "scale": "child__column_US_Gross_x",
+                    "field": "bin_maxbins_20_US Gross",
+                    "offset": 1
+                  },
+                  "x": {
+                    "scale": "child__column_US_Gross_x",
+                    "field": "bin_maxbins_20_US Gross_end"
+                  },
                   "y": {
                     "scale": "child__column_US_Gross_y",
                     "field": "__count"
@@ -473,27 +437,15 @@
                   "description": {
                     "signal": "\"Worldwide Gross (binned): \" + (!isValid(datum[\"bin_maxbins_20_Worldwide Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_Worldwide Gross\"]) ? \"null\" : format(datum[\"bin_maxbins_20_Worldwide Gross\"], \"\") + \" – \" + format(datum[\"bin_maxbins_20_Worldwide Gross_end\"], \"\")) + \"; Count: \" + (format(datum[\"__count\"], \"\"))"
                   },
-                  "x2": [
-                    {
-                      "test": "!isValid(datum[\"bin_maxbins_20_Worldwide Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_Worldwide Gross\"])",
-                      "value": 0
-                    },
-                    {
-                      "scale": "child__column_Worldwide_Gross_x",
-                      "field": "bin_maxbins_20_Worldwide Gross",
-                      "offset": 1
-                    }
-                  ],
-                  "x": [
-                    {
-                      "test": "!isValid(datum[\"bin_maxbins_20_Worldwide Gross\"]) || !isFinite(+datum[\"bin_maxbins_20_Worldwide Gross\"])",
-                      "value": 0
-                    },
-                    {
-                      "scale": "child__column_Worldwide_Gross_x",
-                      "field": "bin_maxbins_20_Worldwide Gross_end"
-                    }
-                  ],
+                  "x2": {
+                    "scale": "child__column_Worldwide_Gross_x",
+                    "field": "bin_maxbins_20_Worldwide Gross",
+                    "offset": 1
+                  },
+                  "x": {
+                    "scale": "child__column_Worldwide_Gross_x",
+                    "field": "bin_maxbins_20_Worldwide Gross_end"
+                  },
                   "y": {
                     "scale": "child__column_Worldwide_Gross_y",
                     "field": "__count"

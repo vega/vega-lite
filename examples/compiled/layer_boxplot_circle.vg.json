@@ -92,8 +92,20 @@
           "tooltip": {
             "signal": "{\"Upper Whisker of population\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of population\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
-          "x": {"scale": "x", "field": "lower_whisker_people"},
-          "x2": {"scale": "x", "field": "lower_box_people"},
+          "x": [
+            {
+              "test": "!isValid(datum[\"lower_whisker_people\"]) || !isFinite(+datum[\"lower_whisker_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "lower_whisker_people"}
+          ],
+          "x2": [
+            {
+              "test": "!isValid(datum[\"lower_box_people\"]) || !isFinite(+datum[\"lower_box_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "lower_box_people"}
+          ],
           "y": {"scale": "y", "field": "age", "band": 0.5}
         }
       }
@@ -110,8 +122,20 @@
           "tooltip": {
             "signal": "{\"Upper Whisker of population\": format(datum[\"upper_whisker_people\"], \"\"), \"Lower Whisker of population\": format(datum[\"lower_whisker_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
-          "x": {"scale": "x", "field": "upper_box_people"},
-          "x2": {"scale": "x", "field": "upper_whisker_people"},
+          "x": [
+            {
+              "test": "!isValid(datum[\"upper_box_people\"]) || !isFinite(+datum[\"upper_box_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "upper_box_people"}
+          ],
+          "x2": [
+            {
+              "test": "!isValid(datum[\"upper_whisker_people\"]) || !isFinite(+datum[\"upper_whisker_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "upper_whisker_people"}
+          ],
           "y": {"scale": "y", "field": "age", "band": 0.5}
         }
       }
@@ -131,8 +155,20 @@
           "description": {
             "signal": "\"population: \" + (format(datum[\"lower_box_people\"], \"\")) + \"; age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; upper_box_people: \" + (format(datum[\"upper_box_people\"], \"\")) + \"; Max of population: \" + (format(datum[\"max_people\"], \"\")) + \"; Q3 of population: \" + (format(datum[\"upper_box_people\"], \"\")) + \"; Median of population: \" + (format(datum[\"mid_box_people\"], \"\")) + \"; Q1 of population: \" + (format(datum[\"lower_box_people\"], \"\")) + \"; Min of population: \" + (format(datum[\"min_people\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "lower_box_people"},
-          "x2": {"scale": "x", "field": "upper_box_people"},
+          "x": [
+            {
+              "test": "!isValid(datum[\"lower_box_people\"]) || !isFinite(+datum[\"lower_box_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "lower_box_people"}
+          ],
+          "x2": [
+            {
+              "test": "!isValid(datum[\"upper_box_people\"]) || !isFinite(+datum[\"upper_box_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "upper_box_people"}
+          ],
           "yc": {"scale": "y", "field": "age", "band": 0.5},
           "height": {"value": 14}
         }
@@ -151,7 +187,13 @@
           "tooltip": {
             "signal": "{\"Max of population\": format(datum[\"max_people\"], \"\"), \"Q3 of population\": format(datum[\"upper_box_people\"], \"\"), \"Median of population\": format(datum[\"mid_box_people\"], \"\"), \"Q1 of population\": format(datum[\"lower_box_people\"], \"\"), \"Min of population\": format(datum[\"min_people\"], \"\"), \"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]}"
           },
-          "xc": {"scale": "x", "field": "mid_box_people"},
+          "xc": [
+            {
+              "test": "!isValid(datum[\"mid_box_people\"]) || !isFinite(+datum[\"mid_box_people\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "mid_box_people"}
+          ],
           "yc": {"scale": "y", "field": "age", "band": 0.5},
           "height": {"value": 14},
           "width": {"value": 1}

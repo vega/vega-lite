@@ -301,13 +301,7 @@
             "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; Region: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"])"
           },
           "x": {"scale": "x", "field": "fertility"},
-          "y": [
-            {
-              "test": "!isValid(datum[\"life_expect\"]) || !isFinite(+datum[\"life_expect\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "life_expect"}
-          ],
+          "y": {"scale": "y", "field": "life_expect"},
           "shape": {"value": "circle"}
         }
       }
@@ -327,13 +321,7 @@
             "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; Region: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]) + \"; country: \" + (isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"])"
           },
           "x": {"scale": "x", "field": "fertility"},
-          "y": [
-            {
-              "test": "!isValid(datum[\"life_expect\"]) || !isFinite(+datum[\"life_expect\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "life_expect", "offset": -12}
-          ],
+          "y": {"scale": "y", "field": "life_expect", "offset": -12},
           "text": {
             "signal": "isValid(datum[\"country\"]) ? datum[\"country\"] : \"\"+datum[\"country\"]"
           },
@@ -356,13 +344,7 @@
             "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
           },
           "x": {"scale": "x", "field": "fertility"},
-          "y": [
-            {
-              "test": "!isValid(datum[\"life_expect\"]) || !isFinite(+datum[\"life_expect\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "life_expect", "offset": -12}
-          ],
+          "y": {"scale": "y", "field": "life_expect", "offset": -12},
           "text": {
             "signal": "isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"]"
           },
@@ -386,13 +368,7 @@
             "signal": "\"fertility: \" + (format(datum[\"fertility\"], \"\")) + \"; life_expect: \" + (format(datum[\"life_expect\"], \"\"))"
           },
           "x": {"scale": "x", "field": "fertility"},
-          "y": [
-            {
-              "test": "!isValid(datum[\"life_expect\"]) || !isFinite(+datum[\"life_expect\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "life_expect"}
-          ],
+          "y": {"scale": "y", "field": "life_expect"},
           "shape": {"value": "circle"}
         }
       }

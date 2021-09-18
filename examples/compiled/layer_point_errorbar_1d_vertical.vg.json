@@ -68,20 +68,8 @@
             "signal": "\"yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Mean of yield: \" + (format(datum[\"center_yield\"], \"\")) + \"; Mean + stderr of yield: \" + (format(datum[\"upper_yield\"], \"\")) + \"; Mean - stderr of yield: \" + (format(datum[\"lower_yield\"], \"\"))"
           },
           "x": {"signal": "width", "mult": 0.5},
-          "y": [
-            {
-              "test": "!isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "lower_yield"}
-          ],
-          "y2": [
-            {
-              "test": "!isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "upper_yield"}
-          ]
+          "y": {"scale": "y", "field": "lower_yield"},
+          "y2": {"scale": "y", "field": "upper_yield"}
         }
       }
     },
@@ -98,13 +86,7 @@
             "signal": "\"Mean of yield: \" + (format(datum[\"mean_yield\"], \"\"))"
           },
           "x": {"signal": "width", "mult": 0.5},
-          "y": [
-            {
-              "test": "!isValid(datum[\"mean_yield\"]) || !isFinite(+datum[\"mean_yield\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "mean_yield"}
-          ]
+          "y": {"scale": "y", "field": "mean_yield"}
         }
       }
     }

@@ -111,13 +111,7 @@
             "signal": "\"Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; Body Mass (g): \" + (format(datum[\"Body Mass (g)\"], \"\"))"
           },
           "x": {"scale": "x", "field": "Species", "band": 0.5},
-          "y": [
-            {
-              "test": "!isValid(datum[\"Body Mass (g)\"]) || !isFinite(+datum[\"Body Mass (g)\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "Body Mass (g)"}
-          ]
+          "y": {"scale": "y", "field": "Body Mass (g)"}
         }
       }
     },
@@ -134,8 +128,20 @@
             "signal": "{\"Upper Whisker of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Lower Whisker of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
           },
           "x": {"scale": "x", "field": "Species", "band": 0.5},
-          "y": {"scale": "y", "field": "lower_whisker_Body Mass (g)"},
-          "y2": {"scale": "y", "field": "lower_box_Body Mass (g)"}
+          "y": [
+            {
+              "test": "!isValid(datum[\"lower_whisker_Body Mass (g)\"]) || !isFinite(+datum[\"lower_whisker_Body Mass (g)\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "lower_whisker_Body Mass (g)"}
+          ],
+          "y2": [
+            {
+              "test": "!isValid(datum[\"lower_box_Body Mass (g)\"]) || !isFinite(+datum[\"lower_box_Body Mass (g)\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "lower_box_Body Mass (g)"}
+          ]
         }
       }
     },
@@ -152,8 +158,20 @@
             "signal": "{\"Upper Whisker of Body Mass (g)\": format(datum[\"upper_whisker_Body Mass (g)\"], \"\"), \"Lower Whisker of Body Mass (g)\": format(datum[\"lower_whisker_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
           },
           "x": {"scale": "x", "field": "Species", "band": 0.5},
-          "y": {"scale": "y", "field": "upper_box_Body Mass (g)"},
-          "y2": {"scale": "y", "field": "upper_whisker_Body Mass (g)"}
+          "y": [
+            {
+              "test": "!isValid(datum[\"upper_box_Body Mass (g)\"]) || !isFinite(+datum[\"upper_box_Body Mass (g)\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "upper_box_Body Mass (g)"}
+          ],
+          "y2": [
+            {
+              "test": "!isValid(datum[\"upper_whisker_Body Mass (g)\"]) || !isFinite(+datum[\"upper_whisker_Body Mass (g)\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "upper_whisker_Body Mass (g)"}
+          ]
         }
       }
     },
@@ -174,8 +192,20 @@
           },
           "xc": {"scale": "x", "field": "Species", "band": 0.5},
           "width": {"value": 14},
-          "y": {"scale": "y", "field": "lower_box_Body Mass (g)"},
-          "y2": {"scale": "y", "field": "upper_box_Body Mass (g)"}
+          "y": [
+            {
+              "test": "!isValid(datum[\"lower_box_Body Mass (g)\"]) || !isFinite(+datum[\"lower_box_Body Mass (g)\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "lower_box_Body Mass (g)"}
+          ],
+          "y2": [
+            {
+              "test": "!isValid(datum[\"upper_box_Body Mass (g)\"]) || !isFinite(+datum[\"upper_box_Body Mass (g)\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "upper_box_Body Mass (g)"}
+          ]
         }
       }
     },
@@ -193,7 +223,13 @@
             "signal": "{\"Max of Body Mass (g)\": format(datum[\"max_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": format(datum[\"min_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
           },
           "xc": {"scale": "x", "field": "Species", "band": 0.5},
-          "yc": {"scale": "y", "field": "mid_box_Body Mass (g)"},
+          "yc": [
+            {
+              "test": "!isValid(datum[\"mid_box_Body Mass (g)\"]) || !isFinite(+datum[\"mid_box_Body Mass (g)\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "mid_box_Body Mass (g)"}
+          ],
           "width": {"value": 14},
           "height": {"value": 1}
         }

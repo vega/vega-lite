@@ -144,20 +144,8 @@
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
-          "y": [
-            {
-              "test": "!isValid(datum[\"record.low\"]) || !isFinite(+datum[\"record.low\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "record\\.low"}
-          ],
-          "y2": [
-            {
-              "test": "!isValid(datum[\"record.high\"]) || !isFinite(+datum[\"record.high\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "record\\.high"}
-          ]
+          "y": {"scale": "y", "field": "record\\.low"},
+          "y2": {"scale": "y", "field": "record\\.high"}
         }
       }
     },
@@ -175,20 +163,8 @@
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 20},
-          "y": [
-            {
-              "test": "!isValid(datum[\"normal.low\"]) || !isFinite(+datum[\"normal.low\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "normal\\.low"}
-          ],
-          "y2": [
-            {
-              "test": "!isValid(datum[\"normal.high\"]) || !isFinite(+datum[\"normal.high\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "normal\\.high"}
-          ]
+          "y": {"scale": "y", "field": "normal\\.low"},
+          "y2": {"scale": "y", "field": "normal\\.high"}
         }
       }
     },
@@ -206,20 +182,8 @@
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
-          "y": [
-            {
-              "test": "!isValid(datum[\"actual.low\"]) || !isFinite(+datum[\"actual.low\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "actual\\.low"}
-          ],
-          "y2": [
-            {
-              "test": "!isValid(datum[\"actual.high\"]) || !isFinite(+datum[\"actual.high\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "actual\\.high"}
-          ]
+          "y": {"scale": "y", "field": "actual\\.low"},
+          "y2": {"scale": "y", "field": "actual\\.high"}
         }
       }
     },
@@ -237,20 +201,8 @@
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
-          "y": [
-            {
-              "test": "!isValid(datum[\"forecast.low.low\"]) || !isFinite(+datum[\"forecast.low.low\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "forecast\\.low\\.low"}
-          ],
-          "y2": [
-            {
-              "test": "!isValid(datum[\"forecast.low.high\"]) || !isFinite(+datum[\"forecast.low.high\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "forecast\\.low\\.high"}
-          ]
+          "y": {"scale": "y", "field": "forecast\\.low\\.low"},
+          "y2": {"scale": "y", "field": "forecast\\.low\\.high"}
         }
       }
     },
@@ -268,20 +220,8 @@
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 3},
-          "y": [
-            {
-              "test": "!isValid(datum[\"forecast.low.high\"]) || !isFinite(+datum[\"forecast.low.high\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "forecast\\.low\\.high"}
-          ],
-          "y2": [
-            {
-              "test": "!isValid(datum[\"forecast.high.low\"]) || !isFinite(+datum[\"forecast.high.low\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "forecast\\.high\\.low"}
-          ]
+          "y": {"scale": "y", "field": "forecast\\.low\\.high"},
+          "y2": {"scale": "y", "field": "forecast\\.high\\.low"}
         }
       }
     },
@@ -299,20 +239,8 @@
           },
           "xc": {"scale": "x", "field": "id", "band": 0.5},
           "width": {"value": 12},
-          "y": [
-            {
-              "test": "!isValid(datum[\"forecast.high.low\"]) || !isFinite(+datum[\"forecast.high.low\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "forecast\\.high\\.low"}
-          ],
-          "y2": [
-            {
-              "test": "!isValid(datum[\"forecast.high.high\"]) || !isFinite(+datum[\"forecast.high.high\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "forecast\\.high\\.high"}
-          ]
+          "y": {"scale": "y", "field": "forecast\\.high\\.low"},
+          "y2": {"scale": "y", "field": "forecast\\.high\\.high"}
         }
       }
     },

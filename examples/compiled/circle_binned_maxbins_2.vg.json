@@ -72,24 +72,12 @@
           "description": {
             "signal": "\"IMDB Rating (binned): \" + (!isValid(datum[\"bin_maxbins_2_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_2_IMDB Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_2_IMDB Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_2_IMDB Rating_end\"], \"\")) + \"; Rotten Tomatoes Rating (binned): \" + (!isValid(datum[\"bin_maxbins_2_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_2_Rotten Tomatoes Rating\"]) ? \"null\" : format(datum[\"bin_maxbins_2_Rotten Tomatoes Rating\"], \"\") + \" – \" + format(datum[\"bin_maxbins_2_Rotten Tomatoes Rating_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_2_IMDB Rating\"]) || !isFinite(+datum[\"bin_maxbins_2_IMDB Rating\"])",
-              "value": 0
-            },
-            {
-              "signal": "scale(\"x\", 0.5 * datum[\"bin_maxbins_2_IMDB Rating\"] + 0.5 * datum[\"bin_maxbins_2_IMDB Rating_end\"])"
-            }
-          ],
-          "y": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_2_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"bin_maxbins_2_Rotten Tomatoes Rating\"])",
-              "field": {"group": "height"}
-            },
-            {
-              "signal": "scale(\"y\", 0.5 * datum[\"bin_maxbins_2_Rotten Tomatoes Rating\"] + 0.5 * datum[\"bin_maxbins_2_Rotten Tomatoes Rating_end\"])"
-            }
-          ],
+          "x": {
+            "signal": "scale(\"x\", 0.5 * datum[\"bin_maxbins_2_IMDB Rating\"] + 0.5 * datum[\"bin_maxbins_2_IMDB Rating_end\"])"
+          },
+          "y": {
+            "signal": "scale(\"y\", 0.5 * datum[\"bin_maxbins_2_Rotten Tomatoes Rating\"] + 0.5 * datum[\"bin_maxbins_2_Rotten Tomatoes Rating_end\"])"
+          },
           "size": {"scale": "size", "field": "__count"},
           "shape": {"value": "circle"}
         }

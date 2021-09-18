@@ -100,20 +100,8 @@
           "description": {
             "signal": "\"year: \" + (format(datum[\"year\"], \"d\")) + \"; wheat: \" + (format(datum[\"wheat\"], \"\")) + \"; year_end: \" + (format(datum[\"year_end\"], \"\"))"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"year\"]) || !isFinite(+datum[\"year\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "year"}
-          ],
-          "x2": [
-            {
-              "test": "!isValid(datum[\"year_end\"]) || !isFinite(+datum[\"year_end\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "year_end"}
-          ],
+          "x": {"scale": "x", "field": "year"},
+          "x2": {"scale": "x", "field": "year_end"},
           "y": {"scale": "y", "field": "wheat"},
           "y2": {"scale": "y", "value": 0}
         }
@@ -132,13 +120,7 @@
           "description": {
             "signal": "\"year: \" + (format(datum[\"year\"], \"d\"))"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"year\"]) || !isFinite(+datum[\"year\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "year"}
-          ],
+          "x": {"scale": "x", "field": "year"},
           "y": {"value": 0},
           "y2": {"field": {"group": "height"}}
         }
@@ -221,20 +203,8 @@
           "description": {
             "signal": "\"start: \" + (format(datum[\"start\"], \"d\")) + \"; y: \" + (format(datum[\"y\"], \"\")) + \"; end: \" + (format(datum[\"end\"], \"\")) + \"; offset: \" + (format(datum[\"offset\"], \"\")) + \"; commonwealth: \" + (isValid(datum[\"commonwealth\"]) ? datum[\"commonwealth\"] : \"\"+datum[\"commonwealth\"])"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"start\"]) || !isFinite(+datum[\"start\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "start"}
-          ],
-          "x2": [
-            {
-              "test": "!isValid(datum[\"end\"]) || !isFinite(+datum[\"end\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "end"}
-          ],
+          "x": {"scale": "x", "field": "start"},
+          "x2": {"scale": "x", "field": "end"},
           "y": {"scale": "y", "field": "y"},
           "y2": {"scale": "y", "field": "offset"}
         }
@@ -254,13 +224,7 @@
           "description": {
             "signal": "\"x: \" + (format(datum[\"x\"], \"d\")) + \"; off2: \" + (format(datum[\"off2\"], \"\")) + \"; name: \" + (isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"])"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"x\"]) || !isFinite(+datum[\"x\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "x"}
-          ],
+          "x": {"scale": "x", "field": "x"},
           "y": {"scale": "y", "field": "off2", "offset": 16},
           "text": {
             "signal": "isValid(datum[\"name\"]) ? datum[\"name\"] : \"\"+datum[\"name\"]"

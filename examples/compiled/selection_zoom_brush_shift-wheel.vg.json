@@ -317,20 +317,8 @@
           "description": {
             "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Cylinders: \" + (format(datum[\"Cylinders\"], \"\"))"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"Horsepower\"]) || !isFinite(+datum[\"Horsepower\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "Horsepower"}
-          ],
-          "y": [
-            {
-              "test": "!isValid(datum[\"Miles_per_Gallon\"]) || !isFinite(+datum[\"Miles_per_Gallon\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "Miles_per_Gallon"}
-          ],
+          "x": {"scale": "x", "field": "Horsepower"},
+          "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": {"scale": "size", "field": "Cylinders"},
           "shape": {"value": "circle"}
         }

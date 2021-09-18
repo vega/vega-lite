@@ -96,20 +96,8 @@
           "description": {
             "signal": "\"lower: \" + (format(datum[\"lower\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; upper: \" + (format(datum[\"upper\"], \"\"))"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"lower\"]) || !isFinite(+datum[\"lower\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "lower"}
-          ],
-          "x2": [
-            {
-              "test": "!isValid(datum[\"upper\"]) || !isFinite(+datum[\"upper\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "upper"}
-          ],
+          "x": {"scale": "x", "field": "lower"},
+          "x2": {"scale": "x", "field": "upper"},
           "y": {"scale": "y", "field": "Species", "band": 0.5}
         }
       }
@@ -126,20 +114,8 @@
           "description": {
             "signal": "\"q1: \" + (format(datum[\"q1\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]) + \"; q3: \" + (format(datum[\"q3\"], \"\"))"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"q1\"]) || !isFinite(+datum[\"q1\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "q1"}
-          ],
-          "x2": [
-            {
-              "test": "!isValid(datum[\"q3\"]) || !isFinite(+datum[\"q3\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "q3"}
-          ],
+          "x": {"scale": "x", "field": "q1"},
+          "x2": {"scale": "x", "field": "q3"},
           "yc": {"scale": "y", "field": "Species", "band": 0.5},
           "height": {"value": 14}
         }
@@ -158,13 +134,7 @@
           "description": {
             "signal": "\"median: \" + (format(datum[\"median\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
           },
-          "xc": [
-            {
-              "test": "!isValid(datum[\"median\"]) || !isFinite(+datum[\"median\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "median"}
-          ],
+          "xc": {"scale": "x", "field": "median"},
           "yc": {"scale": "y", "field": "Species", "band": 0.5},
           "height": {"value": 14},
           "width": {"value": 1}
@@ -185,13 +155,7 @@
           "description": {
             "signal": "\"outliers: \" + (format(datum[\"outliers\"], \"\")) + \"; Species: \" + (isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"])"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"outliers\"]) || !isFinite(+datum[\"outliers\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "outliers"}
-          ],
+          "x": {"scale": "x", "field": "outliers"},
           "y": {"scale": "y", "field": "Species", "band": 0.5}
         }
       }

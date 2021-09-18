@@ -300,20 +300,12 @@
           "description": {
             "signal": "\"Acceleration (binned): \" + (!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
-          "x2": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "bin_maxbins_10_Acceleration", "offset": 1}
-          ],
-          "x": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "bin_maxbins_10_Acceleration_end"}
-          ],
+          "x2": {
+            "scale": "x",
+            "field": "bin_maxbins_10_Acceleration",
+            "offset": 1
+          },
+          "x": {"scale": "x", "field": "bin_maxbins_10_Acceleration_end"},
           "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }
@@ -332,20 +324,12 @@
           "description": {
             "signal": "\"Acceleration (binned): \" + (!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Acceleration\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Acceleration_end\"], \"\")) + \"; Count of Records: \" + (format(datum[\"__count\"], \"\"))"
           },
-          "x2": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "bin_maxbins_10_Acceleration", "offset": 1}
-          ],
-          "x": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_10_Acceleration\"]) || !isFinite(+datum[\"bin_maxbins_10_Acceleration\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "bin_maxbins_10_Acceleration_end"}
-          ],
+          "x2": {
+            "scale": "x",
+            "field": "bin_maxbins_10_Acceleration",
+            "offset": 1
+          },
+          "x": {"scale": "x", "field": "bin_maxbins_10_Acceleration_end"},
           "y": {"scale": "y", "field": "__count"},
           "y2": {"scale": "y", "value": 0}
         }

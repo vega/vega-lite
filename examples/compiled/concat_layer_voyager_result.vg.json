@@ -235,20 +235,8 @@
               "description": {
                 "signal": "\"from: \" + (format(datum[\"from\"], \"\")) + \"; to: \" + (format(datum[\"to\"], \"\"))"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"from\"]) || !isFinite(+datum[\"from\"])",
-                  "value": 0
-                },
-                {"scale": "concat_1_x", "field": "from"}
-              ],
-              "x2": [
-                {
-                  "test": "!isValid(datum[\"to\"]) || !isFinite(+datum[\"to\"])",
-                  "value": 0
-                },
-                {"scale": "concat_1_x", "field": "to"}
-              ],
+              "x": {"scale": "concat_1_x", "field": "from"},
+              "x2": {"scale": "concat_1_x", "field": "to"},
               "y": {"signal": "concat_1_height", "mult": 0.5}
             }
           }
@@ -267,13 +255,7 @@
               "description": {
                 "signal": "\"to: \" + (format(datum[\"to\"], \"\"))"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"to\"]) || !isFinite(+datum[\"to\"])",
-                  "value": 0
-                },
-                {"scale": "concat_1_x", "field": "to"}
-              ],
+              "x": {"scale": "concat_1_x", "field": "to"},
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "shape": [
                 {"test": "datum.to > 0", "value": "triangle-right"},
@@ -295,13 +277,7 @@
               "description": {
                 "signal": "\"from: \" + (format(datum[\"from\"], \"\"))"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"from\"]) || !isFinite(+datum[\"from\"])",
-                  "value": 0
-                },
-                {"scale": "concat_1_x", "field": "from"}
-              ],
+              "x": {"scale": "concat_1_x", "field": "from"},
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "baseline": {"value": "middle"}
             }
@@ -320,13 +296,7 @@
               "description": {
                 "signal": "\"from: \" + (format(datum[\"from\"], \"\"))"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"from\"]) || !isFinite(+datum[\"from\"])",
-                  "value": 0
-                },
-                {"scale": "concat_1_x", "field": "from"}
-              ],
+              "x": {"scale": "concat_1_x", "field": "from"},
               "y": {"signal": "concat_1_height", "mult": 0.5},
               "baseline": {"value": "middle"}
             }
