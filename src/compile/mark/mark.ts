@@ -397,8 +397,8 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
   const {label} = model.encoding;
   const {position, avoid, mark: labelMark, method, lineAnchor, padding, ...textEncoding} = label;
 
-  const anchor = position && position.map(p => p.anchor);
-  const offset = position && position.map(p => p.offset);
+  const anchor = position?.map(p => p.anchor);
+  const offset = position?.map(p => p.offset);
 
   const common: LabelTransform = {
     type: 'label',
@@ -511,7 +511,7 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
 function scaleClip(model: UnitModel) {
   const xScale = model.getScaleComponent('x');
   const yScale = model.getScaleComponent('y');
-  return (xScale && xScale.get('selectionExtent')) || (yScale && yScale.get('selectionExtent')) ? true : undefined;
+  return (xScale?.get('selectionExtent')) || (yScale?.get('selectionExtent')) ? true : undefined;
 }
 
 /**
