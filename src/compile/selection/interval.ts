@@ -104,8 +104,8 @@ const interval: SelectionCompiler<'interval'> = {
   marks: (model, selCmpt, marks) => {
     const name = selCmpt.name;
     const {x, y} = selCmpt.project.hasChannel;
-    const xvname = x && x.signals.visual;
-    const yvname = y && y.signals.visual;
+    const xvname = x?.signals.visual;
+    const yvname = y?.signals.visual;
     const store = `data(${stringValue(selCmpt.name + STORE)})`;
 
     // Do not add a brush if we're binding to scales
