@@ -271,13 +271,13 @@ function rectBinPosition({
         fieldDef,
         scaleName,
         bandPosition,
-        offset: getBinSpacing(channel2, spacing, reverse, axisTranslate, offset),
+        offset: getBinSpacing(channel2, spacing, reverse, axisTranslate, offset)
       }),
       [vgChannel]: rectBinRef({
         fieldDef,
         scaleName,
         bandPosition: isSignalRef(bandPosition) ? {signal: `1-${bandPosition.signal}`} : 1 - bandPosition,
-        offset: getBinSpacing(channel, spacing, reverse, axisTranslate, offset),
+        offset: getBinSpacing(channel, spacing, reverse, axisTranslate, offset)
       })
     };
   } else if (isBinned(fieldDef.bin)) {
@@ -319,7 +319,7 @@ export function rectBinRef({
   fieldDef,
   scaleName,
   bandPosition,
-  offset,
+  offset
 }: {
   fieldDef: TypedFieldDef<string>;
   scaleName: string;
