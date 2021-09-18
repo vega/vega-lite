@@ -1,6 +1,5 @@
 import {PositionFieldDef, SecondaryFieldDef} from '../../../src/channeldef';
 import {bar} from '../../../src/compile/mark/bar';
-import {fieldInvalidTestValueRef} from '../../../src/compile/mark/encode/valueref';
 import {DEFAULT_STEP} from '../../../src/config';
 import {defaultBarConfig} from '../../../src/mark';
 import {parseUnitModelWithScaleAndLayoutSize} from '../../util';
@@ -345,7 +344,7 @@ describe('Mark: Bar', () => {
 
     it('should draw bar with y and y2', () => {
       expect(props.y2).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
-      expect(props.y).toEqual([fieldInvalidTestValueRef(y, 'y'), {scale: 'y', field: 'bin_maxbins_10_Horsepower_end'}]);
+      expect(props.y).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
       expect(props.height).toBeUndefined();
     });
   });
@@ -364,7 +363,7 @@ describe('Mark: Bar', () => {
 
     it('should draw bar with y and y2', () => {
       expect(props.y2).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
-      expect(props.y).toEqual([fieldInvalidTestValueRef(y, 'y'), {scale: 'y', field: 'bin_maxbins_10_Horsepower_end'}]);
+      expect(props.y).toEqual({scale: 'y', field: 'bin_maxbins_10_Horsepower_end'});
       expect(props.height).toBeUndefined();
     });
   });
@@ -384,7 +383,8 @@ describe('Mark: Bar', () => {
 
     it('should draw bar with x and x2', () => {
       expect(props.x2).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower', offset: defaultBarConfig.binSpacing});
-      expect(props.x).toEqual([fieldInvalidTestValueRef(x, 'x'), {scale: 'x', field: 'bin_maxbins_10_Horsepower_end'}]);
+
+      expect(props.x).toEqual({scale: 'x', field: 'bin_maxbins_10_Horsepower_end'});
       expect(props.width).toBeUndefined();
     });
   });
