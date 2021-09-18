@@ -220,7 +220,7 @@ export abstract class Model {
         outputNodes: parent ? parent.component.data.outputNodes : {},
         outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
         // data is faceted if the spec is a facet spec or the parent has faceted data and data is undefined
-        isFaceted: isFacetSpec(spec) || (parent && parent.component.data.isFaceted && spec.data === undefined)
+        isFaceted: isFacetSpec(spec) || (parent?.component.data.isFaceted && spec.data === undefined)
       },
       layoutSize: new Split<LayoutSizeIndex>(),
       layoutHeaders: {row: {}, column: {}, facet: {}},
