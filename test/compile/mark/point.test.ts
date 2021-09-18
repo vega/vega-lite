@@ -232,6 +232,20 @@ describe('Mark: Point', () => {
     });
   });
 
+  describe('with x and y and invalid null', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize(pointXY({}, {mark: {invalid: null}}));
+    const props = point.encodeEntry(model);
+
+    it('should test for invalid values on y', () => {
+      expect(props.y).toEqual([{"field": {"group": "height"}, "test": "!isValid(datum[\"yield\"]) || !isFinite(+datum[\"yield\"])"}, {scale: Y, field: 'yield'}]);
+    });
+
+    it('should be an unfilled circle', () => {
+      expect(props.fill).toEqual({value: 'transparent'});
+      expect(props.stroke).toEqual({value: defaultMarkConfig.color});
+    });
+  });
+
   describe('with band x and quantitative y', () => {
     it('should offset band position by half band', () => {
       const model = parseUnitModelWithScaleAndLayoutSize({
