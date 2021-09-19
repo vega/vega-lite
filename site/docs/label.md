@@ -21,13 +21,13 @@ Labels can provide details of a particular data point as a text annotation direc
 ```js
 {
   ...,
-  mark: 'point',
+  mark: ...,
   encoding: {
     x: {...},
     y: {...},
     label: {
       // field(s) to encode as text label
-      text: {field: 'a', type: 'nominal'},
+      field: ...,
 
       // label properties
       positions: ...,
