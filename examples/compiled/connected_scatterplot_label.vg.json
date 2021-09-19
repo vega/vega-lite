@@ -8,9 +8,8 @@
   "data": [
     {
       "name": "source_0",
-      "url": "data/stocks.csv",
-      "format": {"type": "csv", "parse": {"date": "date"}},
-      "transform": [{"type": "filter", "expr": "datum.symbol==='GOOG'"}]
+      "url": "data/driving.json",
+      "format": {"type": "json"}
     },
     {
       "name": "data_0",
@@ -18,7 +17,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+          "expr": "isValid(datum[\"miles\"]) && isFinite(+datum[\"miles\"]) && isValid(datum[\"gas\"]) && isFinite(+datum[\"gas\"])"
         }
       ]
     }
@@ -28,18 +27,18 @@
       "name": "layer_0_marks",
       "type": "line",
       "style": ["line"],
-      "sort": {"field": "datum[\"date\"]"},
+      "sort": {"field": ["datum[\"year\"]"], "order": ["ascending"]},
       "from": {"data": "source_0"},
       "encode": {
         "update": {
           "stroke": {"value": "#4c78a8"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+            "signal": "\"miles: \" + (format(datum[\"miles\"], \"\")) + \"; gas: \" + (format(datum[\"gas\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
           },
-          "x": {"scale": "x", "field": "date"},
-          "y": {"scale": "y", "field": "price"},
+          "x": {"scale": "x", "field": "miles"},
+          "y": {"scale": "y", "field": "gas"},
           "defined": {
-            "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+            "signal": "isValid(datum[\"miles\"]) && isFinite(+datum[\"miles\"]) && isValid(datum[\"gas\"]) && isFinite(+datum[\"gas\"])"
           }
         }
       }
@@ -48,17 +47,30 @@
       "name": "layer_1_marks",
       "type": "symbol",
       "style": ["point"],
+      "sort": {"field": ["datum[\"year\"]"], "order": ["ascending"]},
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "opacity": {"value": 0},
+          "opacity": {"value": 1},
           "fill": {"value": "#4c78a8"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
-            "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\"))"
+            "signal": "\"miles: \" + (format(datum[\"miles\"], \"\")) + \"; gas: \" + (format(datum[\"gas\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
           },
-          "x": {"scale": "x", "field": "date"},
-          "y": {"scale": "y", "field": "price"}
+          "x": [
+            {
+              "test": "!isValid(datum[\"miles\"]) || !isFinite(+datum[\"miles\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "miles"}
+          ],
+          "y": [
+            {
+              "test": "!isValid(datum[\"gas\"]) || !isFinite(+datum[\"gas\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "gas"}
+          ]
         }
       }
     },
@@ -66,15 +78,16 @@
       "name": "layer_1_marks_label",
       "type": "text",
       "style": ["text"],
+      "sort": {"field": ["datum[\"year\"]"], "order": ["ascending"]},
       "from": {"data": "layer_1_marks"},
       "encode": {
         "update": {
           "fill": {"value": "black"},
           "description": {
-            "signal": "\"price: \" + (isValid(datum[\"price\"]) ? datum[\"price\"] : \"\"+datum[\"price\"])"
+            "signal": "\"year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
           },
           "text": {
-            "signal": "isValid(datum.datum[\"price\"]) ? datum.datum[\"price\"] : \"\"+datum.datum[\"price\"]"
+            "signal": "isValid(datum.datum[\"year\"]) ? datum.datum[\"year\"] : \"\"+datum.datum[\"year\"]"
           }
         }
       },
@@ -101,27 +114,29 @@
   "scales": [
     {
       "name": "x",
-      "type": "time",
+      "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "date"},
-          {"data": "data_0", "field": "date"}
+          {"data": "source_0", "field": "miles"},
+          {"data": "data_0", "field": "miles"}
         ]
       },
-      "range": [0, {"signal": "width"}]
+      "range": [0, {"signal": "width"}],
+      "zero": false,
+      "nice": true
     },
     {
       "name": "y",
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "source_0", "field": "price"},
-          {"data": "data_0", "field": "price"}
+          {"data": "source_0", "field": "gas"},
+          {"data": "data_0", "field": "gas"}
         ]
       },
       "range": [{"signal": "height"}, 0],
-      "nice": true,
-      "zero": true
+      "zero": false,
+      "nice": true
     }
   ],
   "axes": [
@@ -157,7 +172,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "date",
+      "title": "miles",
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -167,7 +182,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "price",
+      "title": "gas",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
