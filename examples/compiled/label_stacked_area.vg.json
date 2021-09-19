@@ -180,6 +180,5 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ],
-  "legends": [{"fill": "color", "symbolType": "circle", "title": "Species"}]
+  ]
 }
