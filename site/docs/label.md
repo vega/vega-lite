@@ -41,7 +41,7 @@ Labels can provide details of a particular data point as a text annotation direc
 }
 ```
 
-## Configurations
+## Properties
 
 {% include table-anyof.html props="position,avoid,mark,padding,method,lineAnchor" source="LabelDef" index=0 %}
 
@@ -53,11 +53,18 @@ Labels can provide details of a particular data point as a text annotation direc
 
 You only need to specify the field to encode the text label. Vega-Lite uses the default configurations based on the type of the chart.
 
-<span class="vl-example" data-name="label_scatter"></span>
+<span class="vl-example" data-name="point_2d_label"></span>
 
-You can customize the definition of text label in `mark` the same way as customizing text mark in its mark definition. TODO: add bold text, opacity, color.
+You can customize the definition of text label in `mark` the same way as customizing text mark in its mark definition.
+In this example, we change the color of the labels to red and reduce the font size of the labels to 5.
 
-<span class="vl-example" data-name="label_scatter"></span>
+<span class="vl-example" data-name="point_2d_label_with_configs"></span>
+
+{:#example-connected-scatter}
+
+### Connected Scatter Plot
+
+<span class="vl-example" data-name="connected_scatterplot_label"></span>
 
 {:#example-line}
 
@@ -65,7 +72,7 @@ You can customize the definition of text label in `mark` the same way as customi
 
 Encoding a field to labels in a line chart results the labeling algorithm to label each data point in the line.
 
-<span class="vl-example" data-name="label_line"></span>
+<span class="vl-example" data-name="line_label"></span>
 
 {:#example-multi-line}
 
@@ -75,12 +82,13 @@ Encoding a field to labels in multi-series line chart results the labeling algor
 
 <span class="vl-example" data-name="label_multi_line"></span>
 
-As a default, the labeling algorithm place each label at the end of each line. You can configure it to place each label at the beginning of each line by setting `lineAnchor: 'begin'`. TODO: begin label
+As a default, the labeling algorithm place each label at the end of each line.
+You can configure it to place each label at the beginning of each line by setting `lineAnchor: 'begin'`.
 
-<span class="vl-example" data-name="label_multi_line"></span>
+<span class="vl-example" data-name="line_color_label_begin"></span>
 
 {:#example-stacked-area}
 
 ### Stacked Area Chart
 
-<span class="vl-example" data-name="label_stacked_area"></span>
+<span class="vl-example" data-name="stacked_area_label"></span>
