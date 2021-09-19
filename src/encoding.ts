@@ -46,7 +46,7 @@ import {
   XOFFSET,
   Y,
 
-  Y2
+  Y2, YOFFSET
 } from './channel';
 import {
   binRequiresRange,
