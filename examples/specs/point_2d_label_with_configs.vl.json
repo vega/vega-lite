@@ -8,7 +8,7 @@
       "field": "Horsepower",
       "mark": {
         "color": "red",
-        "fontSize": 5,
+        "fontSize": 5
       }
     }
   }
