@@ -51,17 +51,35 @@ Labels can provide details of a particular data point as a text annotation direc
 
 ### Scatter Plot
 
+You only need to specify the field to encode the text label.
+Vega-Lite uses the default configurations based on the type of the chart.
+
+<span class="vl-example" data-name="label_scatter"></span>
+
+You can customize the definition of text label in `mark` the same way as customizing text mark in its mark definition.
+TODO: add bold text, opacity, color.
+
 <span class="vl-example" data-name="label_scatter"></span>
 
 {:#example-line}
 
 ### Line Chart
 
+Encoding a field to labels in a line chart results the labeling algorithm to label each data point in the line.
+
 <span class="vl-example" data-name="label_line"></span>
 
 {:#example-multi-line}
 
 ### Multi-series Line Chart
+
+Encoding a field to labels in multi-series line chart results the labeling algorithm to label each line.
+
+<span class="vl-example" data-name="label_multi_line"></span>
+
+As a default, the labeling algorithm place each label at the end of each line.
+You can configure it to place each label at the beginning of each line by setting `lineAnchor: 'begin'`.
+TODO: begin label
 
 <span class="vl-example" data-name="label_multi_line"></span>
 

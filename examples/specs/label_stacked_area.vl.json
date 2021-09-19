@@ -15,7 +15,7 @@
   "encoding": {
     "x": {"field": "value", "type": "quantitative", "title": "Body Mass (g)"},
     "y": {"field": "density", "type": "quantitative", "stack": "zero"},
-    "color": {"field": "Species", "type": "nominal", "lagend": null},
-    "label": {"field": "Species", "type": "nominal"}
+    "color": {"field": "Species", "type": "nominal", "legend": null},
+    "label": {"field": "Species"}
   }
 }

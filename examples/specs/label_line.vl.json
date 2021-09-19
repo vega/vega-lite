@@ -11,6 +11,6 @@
       "scale": {"zero": false}
     },
     "order": {"field": "year"},
-    "label": {"field": "year", "type": "nominal"}
+    "label": {"field": "year"}
   }
 }
