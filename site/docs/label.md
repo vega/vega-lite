@@ -55,8 +55,7 @@ You only need to specify the field to encode the text label. Vega-Lite uses the 
 
 <span class="vl-example" data-name="point_2d_label"></span>
 
-You can customize the definition of text label in `mark` the same way as customizing text mark in its mark definition.
-In this example, we change the color of the labels to red and reduce the font size of the labels to 5.
+You can customize the definition of text label in `mark` the same way as customizing text mark in its mark definition. In this example, we change the color of the labels to red and reduce the font size of the labels to 5.
 
 <span class="vl-example" data-name="point_2d_label_with_configs"></span>
 
@@ -82,8 +81,7 @@ Encoding a field to labels in multi-series line chart results the labeling algor
 
 <span class="vl-example" data-name="label_multi_line"></span>
 
-As a default, the labeling algorithm place each label at the end of each line.
-You can configure it to place each label at the beginning of each line by setting `lineAnchor: 'begin'`.
+As a default, the labeling algorithm place each label at the end of each line. You can configure it to place each label at the beginning of each line by setting `lineAnchor: 'begin'`.
 
 <span class="vl-example" data-name="line_color_label_begin"></span>
 
