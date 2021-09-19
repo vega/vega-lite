@@ -380,5 +380,5 @@
 - [Labeling]({{site.baseurl}}/docs/label.html)
     - [Documentation Overview]({{site.baseurl}}/docs/label.html#documentation-overview)
     - [Syntax]({{site.baseurl}}/docs/label.html#syntax)
-    - [Configurations]({{site.baseurl}}/docs/label.html#configurations)
+    - [Properties]({{site.baseurl}}/docs/label.html#properties)
     - [Examples]({{site.baseurl}}/docs/label.html#examples)
