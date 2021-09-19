@@ -22,10 +22,25 @@
     {
       "name": "data_0",
       "source": "source_0",
+      "transform": [{"type": "formula", "expr": "datum.value/2", "as": "half"}]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
       "transform": [
         {
           "type": "filter",
           "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"half\"]) && isFinite(+datum[\"half\"])"
         }
       ]
     }
@@ -42,10 +57,10 @@
   ],
   "marks": [
     {
-      "name": "marks",
+      "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "group"},
@@ -63,13 +78,42 @@
           "y2": {"scale": "y", "value": 0}
         }
       }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "black"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; half: \" + (format(datum[\"half\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
+          },
+          "x": {
+            "scale": "x",
+            "field": "category",
+            "offset": {"scale": "xOffset", "field": "group", "band": 0.5}
+          },
+          "y": {"scale": "y", "field": "half"},
+          "shape": {"value": "circle"}
+        }
+      }
     }
   ],
   "scales": [
     {
       "name": "x",
       "type": "band",
-      "domain": {"data": "data_0", "field": "category", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "category"},
+          {"data": "data_2", "field": "category"}
+        ],
+        "sort": true
+      },
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0.2,
       "paddingOuter": 0.2
@@ -77,7 +121,12 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "value"},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "value"},
+          {"data": "data_2", "field": "half"}
+        ]
+      },
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -85,13 +134,19 @@
     {
       "name": "xOffset",
       "type": "band",
-      "domain": {"data": "data_0", "field": "group", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "group"},
+          {"data": "data_2", "field": "group"}
+        ],
+        "sort": true
+      },
       "range": {"step": 20}
     },
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "data_0", "field": "group", "sort": true},
+      "domain": {"data": "data_1", "field": "group", "sort": true},
       "range": "category"
     }
   ],
@@ -124,7 +179,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "value",
+      "title": "value, half",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0

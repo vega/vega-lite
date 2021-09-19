@@ -31,13 +31,10 @@
     }
   ],
   "signals": [
-    {
-      "name": "x_step",
-      "update": "20 * bandspace(domain('xOffset').length) / (1-0.2)"
-    },
+    {"name": "x_step", "value": 50},
     {
       "name": "width",
-      "update": "bandspace(domain('x').length, 0.2, 0.2) * x_step"
+      "update": "bandspace(domain('x').length, 0.4, 0.4) * x_step"
     }
   ],
   "marks": [
@@ -71,8 +68,7 @@
       "type": "band",
       "domain": {"data": "data_0", "field": "category", "sort": true},
       "range": {"step": {"signal": "x_step"}},
-      "paddingInner": 0.2,
-      "paddingOuter": 0.2
+      "padding": 0.4
     },
     {
       "name": "y",
@@ -86,7 +82,7 @@
       "name": "xOffset",
       "type": "band",
       "domain": {"data": "data_0", "field": "group", "sort": true},
-      "range": {"step": 20}
+      "range": [0, {"signal": "bandwidth('x')"}]
     },
     {
       "name": "color",

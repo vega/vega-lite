@@ -23,6 +23,7 @@
       "name": "data_0",
       "source": "source_0",
       "transform": [
+        {"type": "formula", "expr": "datum.value/2", "as": "half"},
         {
           "type": "filter",
           "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
@@ -42,7 +43,7 @@
   ],
   "marks": [
     {
-      "name": "marks",
+      "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
       "from": {"data": "data_0"},
@@ -61,6 +62,30 @@
           "width": {"scale": "xOffset", "band": 1},
           "y": {"scale": "y", "field": "value"},
           "y2": {"scale": "y", "value": 0}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "dy": {"value": -8},
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
+          },
+          "x": {
+            "scale": "x",
+            "field": "category",
+            "offset": {"scale": "xOffset", "field": "group", "band": 0.5}
+          },
+          "y": {"scale": "y", "field": "value"},
+          "text": {"signal": "format(datum[\"value\"], \"\")"},
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
         }
       }
     }

@@ -1,5 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "xOffset without x will be replaced as x",
   "background": "white",
   "padding": 5,
   "height": 200,
@@ -24,6 +25,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["group"],
+          "field": "value",
+          "sort": {"field": [], "order": []},
+          "as": ["value_start", "value_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
         }
@@ -31,13 +40,10 @@
     }
   ],
   "signals": [
-    {
-      "name": "x_step",
-      "update": "20 * bandspace(domain('xOffset').length) / (1-0.2)"
-    },
+    {"name": "x_step", "value": 20},
     {
       "name": "width",
-      "update": "bandspace(domain('x').length, 0.2, 0.2) * x_step"
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
     }
   ],
   "marks": [
@@ -51,16 +57,12 @@
           "fill": {"scale": "color", "field": "group"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
+            "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
           },
-          "x": {
-            "scale": "x",
-            "field": "category",
-            "offset": {"scale": "xOffset", "field": "group"}
-          },
-          "width": {"scale": "xOffset", "band": 1},
-          "y": {"scale": "y", "field": "value"},
-          "y2": {"scale": "y", "value": 0}
+          "x": {"scale": "x", "field": "group"},
+          "width": {"scale": "x", "band": 1},
+          "y": {"scale": "y", "field": "value_end"},
+          "y2": {"scale": "y", "field": "value_start"}
         }
       }
     }
@@ -69,24 +71,18 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {"data": "data_0", "field": "category", "sort": true},
+      "domain": {"data": "data_0", "field": "group", "sort": true},
       "range": {"step": {"signal": "x_step"}},
-      "paddingInner": 0.2,
-      "paddingOuter": 0.2
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "value"},
+      "domain": {"data": "data_0", "fields": ["value_start", "value_end"]},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
-    },
-    {
-      "name": "xOffset",
-      "type": "band",
-      "domain": {"data": "data_0", "field": "group", "sort": true},
-      "range": {"step": 20}
     },
     {
       "name": "color",
@@ -114,7 +110,7 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "category",
+      "title": "group",
       "labelAlign": "right",
       "labelAngle": 270,
       "labelBaseline": "middle",

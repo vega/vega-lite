@@ -31,10 +31,7 @@
     }
   ],
   "signals": [
-    {
-      "name": "x_step",
-      "update": "20 * bandspace(domain('xOffset').length) / (1-0.2)"
-    },
+    {"name": "x_step", "value": 50},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.2, 0.2) * x_step"
@@ -86,7 +83,7 @@
       "name": "xOffset",
       "type": "band",
       "domain": {"data": "data_0", "field": "group", "sort": true},
-      "range": {"step": 20}
+      "range": [0, {"signal": "bandwidth('x')"}]
     },
     {
       "name": "color",

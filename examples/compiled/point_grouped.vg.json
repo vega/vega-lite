@@ -43,13 +43,15 @@
   "marks": [
     {
       "name": "marks",
-      "type": "rect",
-      "style": ["bar"],
+      "type": "symbol",
+      "style": ["point"],
       "from": {"data": "data_0"},
       "encode": {
         "update": {
-          "fill": {"scale": "color", "field": "group"},
-          "ariaRoleDescription": {"value": "bar"},
+          "opacity": {"value": 0.7},
+          "fill": {"value": "transparent"},
+          "stroke": {"scale": "color", "field": "group"},
+          "ariaRoleDescription": {"value": "point"},
           "description": {
             "signal": "\"category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
           },
@@ -58,9 +60,7 @@
             "field": "category",
             "offset": {"scale": "xOffset", "field": "group"}
           },
-          "width": {"scale": "xOffset", "band": 1},
-          "y": {"scale": "y", "field": "value"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {"scale": "y", "field": "value"}
         }
       }
     }
@@ -84,9 +84,10 @@
     },
     {
       "name": "xOffset",
-      "type": "band",
+      "type": "point",
       "domain": {"data": "data_0", "field": "group", "sort": true},
-      "range": {"step": 20}
+      "range": {"step": 20},
+      "paddingOuter": 0.5
     },
     {
       "name": "color",
@@ -130,5 +131,19 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "square", "title": "group"}]
+  "legends": [
+    {
+      "stroke": "color",
+      "symbolType": "circle",
+      "title": "group",
+      "encode": {
+        "symbols": {
+          "update": {
+            "fill": {"value": "transparent"},
+            "opacity": {"value": 0.7}
+          }
+        }
+      }
+    }
+  ]
 }

@@ -2,6 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
   "padding": 5,
+  "width": 500,
   "height": 200,
   "style": "cell",
   "data": [
@@ -28,16 +29,6 @@
           "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
         }
       ]
-    }
-  ],
-  "signals": [
-    {
-      "name": "x_step",
-      "update": "20 * bandspace(domain('xOffset').length) / (1-0.2)"
-    },
-    {
-      "name": "width",
-      "update": "bandspace(domain('x').length, 0.2, 0.2) * x_step"
     }
   ],
   "marks": [
@@ -70,7 +61,7 @@
       "name": "x",
       "type": "band",
       "domain": {"data": "data_0", "field": "category", "sort": true},
-      "range": {"step": {"signal": "x_step"}},
+      "range": [0, {"signal": "width"}],
       "paddingInner": 0.2,
       "paddingOuter": 0.2
     },
@@ -86,7 +77,7 @@
       "name": "xOffset",
       "type": "band",
       "domain": {"data": "data_0", "field": "group", "sort": true},
-      "range": {"step": 20}
+      "range": [0, {"signal": "bandwidth('x')"}]
     },
     {
       "name": "color",
@@ -96,20 +87,6 @@
     }
   ],
   "axes": [
-    {
-      "scale": "y",
-      "orient": "left",
-      "gridScale": "x",
-      "grid": true,
-      "tickCount": {"signal": "ceil(height/40)"},
-      "domain": false,
-      "labels": false,
-      "aria": false,
-      "maxExtent": 0,
-      "minExtent": 0,
-      "ticks": false,
-      "zindex": 0
-    },
     {
       "scale": "x",
       "orient": "bottom",
@@ -124,7 +101,7 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "value",
+      "title": "population",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
