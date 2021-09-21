@@ -406,7 +406,6 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
     ...(padding === undefined ? {} : {padding})
   };
 
-
   let labelTransform: LabelTransform;
   switch (mark) {
     case 'area':
@@ -437,7 +436,7 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
               anchor: [...LINE_ANCHOR_DEFAULTS[orient].anchor[_lineAnchor]],
               offset: [2, 2, 2]
             }),
-        ...(padding === undefined ? {padding: 'inf'} : {})
+        ...(padding === undefined ? {padding: null} : {})
       };
       break;
     }
