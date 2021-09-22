@@ -57,20 +57,8 @@
           "description": {
             "signal": "\"miles: \" + (format(datum[\"miles\"], \"\")) + \"; gas: \" + (format(datum[\"gas\"], \"\")) + \"; year: \" + (isValid(datum[\"year\"]) ? datum[\"year\"] : \"\"+datum[\"year\"])"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"miles\"]) || !isFinite(+datum[\"miles\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "miles"}
-          ],
-          "y": [
-            {
-              "test": "!isValid(datum[\"gas\"]) || !isFinite(+datum[\"gas\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "gas"}
-          ]
+          "x": {"scale": "x", "field": "miles"},
+          "y": {"scale": "y", "field": "gas"}
         }
       }
     },
