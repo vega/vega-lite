@@ -436,7 +436,7 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
               anchor: [...LINE_ANCHOR_DEFAULTS[orient].anchor[_lineAnchor]],
               offset: [2, 2, 2]
             }),
-        ...(padding === undefined ? {padding: {signal: LINE_ANCHOR_DEFAULTS[orient].padding}} : {})
+        ...(padding === undefined ? {padding: null} : {})
       };
       break;
     }
