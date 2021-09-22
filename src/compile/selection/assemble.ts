@@ -1,5 +1,5 @@
 import {Signal, SignalRef} from 'vega';
-import {selector as parseSelector} from 'vega-event-selector';
+import {parseSelector} from 'vega-event-selector';
 import {identity, isArray, stringValue} from 'vega-util';
 import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers} from '.';
 import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime';

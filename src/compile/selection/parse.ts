@@ -1,4 +1,4 @@
-import {selector as parseSelector} from 'vega-event-selector';
+import {parseSelector} from 'vega-event-selector';
 import {array, isObject, isString, stringValue} from 'vega-util';
 import {selectionCompilers, SelectionComponent, STORE} from '.';
 import {warn} from '../../log';
