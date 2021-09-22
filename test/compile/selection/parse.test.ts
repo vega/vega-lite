@@ -1,4 +1,4 @@
-import {selector as parseSelector} from 'vega-event-selector';
+import {parseSelector} from 'vega-event-selector';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {keys} from '../../../src/util';
 import {parseUnitModel, parseModelWithScale, parseUnitModelWithScale} from '../../util';
@@ -287,13 +287,13 @@ describe('Selection', () => {
       const component = parseUnitSelection(model, [
         {
           name: 'one',
-          select: {type: 'interval', fields: ['Horsepower', 'Miles_per_Gallon'], encodings: ['x', 'y']}
+          select: {type: 'point', fields: ['Horsepower', 'Miles_per_Gallon'], encodings: ['x', 'y']}
         }
       ]);
 
       expect(component['one'].project.items).toEqual([
-        {field: 'Horsepower', channel: 'x', type: 'R', signals: {data: 'one_Horsepower', visual: 'one_x'}},
-        {field: 'Miles_per_Gallon', channel: 'y', type: 'R', signals: {data: 'one_Miles_per_Gallon', visual: 'one_y'}}
+        {field: 'Horsepower', channel: 'x', type: 'E', signals: {data: 'one_Horsepower', visual: 'one_x'}},
+        {field: 'Miles_per_Gallon', channel: 'y', type: 'E', signals: {data: 'one_Miles_per_Gallon', visual: 'one_y'}}
       ]);
     });
   });

@@ -494,20 +494,8 @@
               "description": {
                 "signal": "\"X: \" + (format(datum[\"X\"], \"\")) + \"; Y: \" + (format(datum[\"Y\"], \"\"))"
               },
-              "x": [
-                {
-                  "test": "!isValid(datum[\"X\"]) || !isFinite(+datum[\"X\"])",
-                  "value": 0
-                },
-                {"scale": "x", "field": "X"}
-              ],
-              "y": [
-                {
-                  "test": "!isValid(datum[\"Y\"]) || !isFinite(+datum[\"Y\"])",
-                  "field": {"group": "height"}
-                },
-                {"scale": "y", "field": "Y"}
-              ],
+              "x": {"scale": "x", "field": "X"},
+              "y": {"scale": "y", "field": "Y"},
               "size": [
                 {
                   "test": "!length(data(\"brush_store\")) || vlSelectionTest(\"brush_store\", datum, \"intersect\")",

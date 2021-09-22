@@ -67,20 +67,8 @@
           "description": {
             "signal": "\"date (minutes): \" + (timeFormat(datum[\"minutes_step_5_date\"], timeUnitSpecifier([\"minutes\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Sum of distance: \" + (format(datum[\"sum_distance\"], \"\"))"
           },
-          "x2": [
-            {
-              "test": "!isValid(datum[\"minutes_step_5_date\"]) || !isFinite(+datum[\"minutes_step_5_date\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "minutes_step_5_date", "offset": 1}
-          ],
-          "x": [
-            {
-              "test": "!isValid(datum[\"minutes_step_5_date\"]) || !isFinite(+datum[\"minutes_step_5_date\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "minutes_step_5_date_end"}
-          ],
+          "x2": {"scale": "x", "field": "minutes_step_5_date", "offset": 1},
+          "x": {"scale": "x", "field": "minutes_step_5_date_end"},
           "y": {"scale": "y", "field": "sum_distance"},
           "y2": {"scale": "y", "value": 0}
         }

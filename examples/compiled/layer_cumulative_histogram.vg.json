@@ -77,20 +77,8 @@
           "description": {
             "signal": "\"IMDB Rating: \" + (format(datum[\"bin_IMDB_Rating\"], \"\")) + \"; Cumulative Count: \" + (format(datum[\"Cumulative Count\"], \"\")) + \"; bin_IMDB_Rating_end: \" + (format(datum[\"bin_IMDB_Rating_end\"], \"\"))"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "bin_IMDB_Rating"}
-          ],
-          "x2": [
-            {
-              "test": "!isValid(datum[\"bin_IMDB_Rating_end\"]) || !isFinite(+datum[\"bin_IMDB_Rating_end\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "bin_IMDB_Rating_end"}
-          ],
+          "x": {"scale": "x", "field": "bin_IMDB_Rating"},
+          "x2": {"scale": "x", "field": "bin_IMDB_Rating_end"},
           "y": {"scale": "y", "field": "Cumulative Count"},
           "y2": {"scale": "y", "value": 0}
         }
@@ -109,20 +97,8 @@
           "description": {
             "signal": "\"IMDB Rating: \" + (format(datum[\"bin_IMDB_Rating\"], \"\")) + \"; count: \" + (format(datum[\"count\"], \"\")) + \"; bin_IMDB_Rating_end: \" + (format(datum[\"bin_IMDB_Rating_end\"], \"\"))"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"bin_IMDB_Rating\"]) || !isFinite(+datum[\"bin_IMDB_Rating\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "bin_IMDB_Rating"}
-          ],
-          "x2": [
-            {
-              "test": "!isValid(datum[\"bin_IMDB_Rating_end\"]) || !isFinite(+datum[\"bin_IMDB_Rating_end\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "bin_IMDB_Rating_end"}
-          ],
+          "x": {"scale": "x", "field": "bin_IMDB_Rating"},
+          "x2": {"scale": "x", "field": "bin_IMDB_Rating_end"},
           "y": {"scale": "y", "field": "count"},
           "y2": {"scale": "y", "value": 0}
         }

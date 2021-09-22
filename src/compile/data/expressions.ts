@@ -1,4 +1,4 @@
-import {parse} from 'vega-expression';
+import {parseExpression} from 'vega-expression';
 
 function getName(node: any) {
   const name: string[] = [];
@@ -27,9 +27,10 @@ function startsWithDatum(node: any): boolean {
 }
 
 export function getDependentFields(expression: string) {
-  const ast = parse(expression);
+  const ast = parseExpression(expression);
   const dependents = new Set<string>();
-  ast.visit((node: any) => {
+  // visit is missing in types https://github.com/vega/vega/issues/3298
+  (ast as any).visit((node: any) => {
     if (node.type === 'MemberExpression' && startsWithDatum(node)) {
       dependents.add(getName(node).slice(1).join('.'));
     }

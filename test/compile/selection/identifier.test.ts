@@ -30,7 +30,7 @@ describe('compile/data/identifier', () => {
       function run(selDef?: any) {
         const data = getVgData(selDef);
         for (const d of data) {
-          expect(d.transform && d.transform.some(t => t.type === 'identifier')).not.toBe(true);
+          expect(d.transform?.some(t => t.type === 'identifier')).not.toBe(true);
         }
       }
 

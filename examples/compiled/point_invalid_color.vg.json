@@ -29,8 +29,20 @@
           "description": {
             "signal": "\"IMDB Rating: \" + (format(datum[\"IMDB Rating\"], \"\")) + \"; Rotten Tomatoes Rating: \" + (format(datum[\"Rotten Tomatoes Rating\"], \"\"))"
           },
-          "x": {"scale": "x", "field": "IMDB Rating"},
-          "y": {"scale": "y", "field": "Rotten Tomatoes Rating"}
+          "x": [
+            {
+              "test": "!isValid(datum[\"IMDB Rating\"]) || !isFinite(+datum[\"IMDB Rating\"])",
+              "value": 0
+            },
+            {"scale": "x", "field": "IMDB Rating"}
+          ],
+          "y": [
+            {
+              "test": "!isValid(datum[\"Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"Rotten Tomatoes Rating\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "Rotten Tomatoes Rating"}
+          ]
         }
       }
     }

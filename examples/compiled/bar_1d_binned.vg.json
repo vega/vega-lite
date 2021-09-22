@@ -48,24 +48,12 @@
           "description": {
             "signal": "\"delay (binned): \" + (!isValid(datum[\"bin_maxbins_100_minstep_1_delay\"]) || !isFinite(+datum[\"bin_maxbins_100_minstep_1_delay\"]) ? \"null\" : format(datum[\"bin_maxbins_100_minstep_1_delay\"], \"d\") + \" – \" + format(datum[\"bin_maxbins_100_minstep_1_delay_end\"], \"d\"))"
           },
-          "x2": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_100_minstep_1_delay\"]) || !isFinite(+datum[\"bin_maxbins_100_minstep_1_delay\"])",
-              "value": 0
-            },
-            {
-              "scale": "x",
-              "field": "bin_maxbins_100_minstep_1_delay",
-              "offset": 1
-            }
-          ],
-          "x": [
-            {
-              "test": "!isValid(datum[\"bin_maxbins_100_minstep_1_delay\"]) || !isFinite(+datum[\"bin_maxbins_100_minstep_1_delay\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "bin_maxbins_100_minstep_1_delay_end"}
-          ],
+          "x2": {
+            "scale": "x",
+            "field": "bin_maxbins_100_minstep_1_delay",
+            "offset": 1
+          },
+          "x": {"scale": "x", "field": "bin_maxbins_100_minstep_1_delay_end"},
           "y": {"value": 0},
           "y2": {"field": {"group": "height"}}
         }

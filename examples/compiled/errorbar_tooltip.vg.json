@@ -54,20 +54,8 @@
           "description": {
             "signal": "\"yield: \" + (format(datum[\"lower_yield\"], \"\")) + \"; variety: \" + (isValid(datum[\"variety\"]) ? datum[\"variety\"] : \"\"+datum[\"variety\"]) + \"; upper_yield: \" + (format(datum[\"upper_yield\"], \"\"))"
           },
-          "x": [
-            {
-              "test": "!isValid(datum[\"lower_yield\"]) || !isFinite(+datum[\"lower_yield\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "lower_yield"}
-          ],
-          "x2": [
-            {
-              "test": "!isValid(datum[\"upper_yield\"]) || !isFinite(+datum[\"upper_yield\"])",
-              "value": 0
-            },
-            {"scale": "x", "field": "upper_yield"}
-          ],
+          "x": {"scale": "x", "field": "lower_yield"},
+          "x2": {"scale": "x", "field": "upper_yield"},
           "y": {"scale": "y", "field": "variety", "band": 0.5}
         }
       }

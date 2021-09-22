@@ -1,5 +1,5 @@
 import {Update} from 'vega';
-import {selector as parseSelector} from 'vega-event-selector';
+import {parseSelector} from 'vega-event-selector';
 import {isString} from 'vega-util';
 import {TUPLE} from '.';
 import {varName} from '../../util';

@@ -149,13 +149,7 @@
             "signal": "\"income: \" + (format(datum[\"income\"], \"\")) + \"; health: \" + (format(datum[\"health\"], \"\")) + \"; population: \" + (format(datum[\"population\"], \"\"))"
           },
           "x": {"scale": "x", "field": "income"},
-          "y": [
-            {
-              "test": "!isValid(datum[\"health\"]) || !isFinite(+datum[\"health\"])",
-              "field": {"group": "height"}
-            },
-            {"scale": "y", "field": "health"}
-          ],
+          "y": {"scale": "y", "field": "health"},
           "size": {"scale": "size", "field": "population"},
           "shape": {"value": "circle"}
         }
