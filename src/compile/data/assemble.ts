@@ -176,7 +176,7 @@ function makeWalkTree(data: VgData[]) {
         for (const child of node.children) {
           const newData: VgData = {
             name: null,
-            source: source,
+            source,
             transform: []
           };
           walkTree(child, newData);

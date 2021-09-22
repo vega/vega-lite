@@ -234,7 +234,7 @@ function assembleTopLevelModel(
     ...(style ? {style} : {}),
     ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
     data,
-    ...(projections.length > 0 ? {projections: projections} : {}),
+    ...(projections.length > 0 ? {projections} : {}),
     ...model.assembleGroup([
       ...layoutSignals,
       ...model.assembleSelectionTopLevelSignals([]),

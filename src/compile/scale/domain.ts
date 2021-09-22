@@ -375,7 +375,7 @@ function parseSingleChannelDomain(
           ? model.requestDataName(DataSourceType.Main)
           : model.requestDataName(DataSourceType.Raw),
         field: model.vgField(channel),
-        sort: sort
+        sort
       }
     ]);
   } else {

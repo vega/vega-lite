@@ -47,7 +47,7 @@ const translate: SelectionCompiler<'interval'> = {
         value: {},
         on: [
           {
-            events: events,
+            events,
             update: `{x: ${anchor}.x - x(unit), y: ${anchor}.y - y(unit)}`
           }
         ]
