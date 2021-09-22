@@ -31,6 +31,8 @@ export function debugImports() {
 const extensions = ['.js', '.ts'];
 
 const globals = {
+  'vega-event-selector': 'vega',
+  'vega-expression': 'vega',
   'vega-util': 'vega',
   vega: 'vega'
 };
