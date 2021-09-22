@@ -1,6 +1,6 @@
 import {range} from 'd3-array';
 import {AxisOrient, Orient, SignalRef} from 'vega';
-import {codegen, parse} from 'vega-expression';
+import {codegenExpression, parseExpression} from 'vega-expression';
 import {stringValue} from 'vega-util';
 import {getAxisConfigs} from '../../../src/compile/axis/config';
 import * as properties from '../../../src/compile/axis/properties';
@@ -12,14 +12,13 @@ import {isSignalRef} from '../../../src/vega.schema';
 describe('compile/axis/properties', () => {
   function evalValueOrSignal(valueOrSignalRef: string | SignalRef, o: Orient) {
     if (isSignalRef(valueOrSignalRef)) {
-      const ast = parse(valueOrSignalRef.signal);
-      const {code} = codegen({
+      const ast = parseExpression(valueOrSignalRef.signal);
+      const {code} = codegenExpression({
         globalvar: ((v: string) => (v === 'o' ? stringValue(o) : undefined)) as any
       })(ast);
       return eval(code);
-    } else {
-      return valueOrSignalRef;
     }
+    return valueOrSignalRef;
   }
 
   describe('defaultGrid()', () => {
@@ -231,13 +230,13 @@ describe('compile/axis/properties', () => {
     });
 
     it('correctly align y-axis labels for labelAngle and orient signals', () => {
-      const ast = parse(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
+      const ast = parseExpression(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
       let a: number;
       let o: AxisOrient;
       // test all angles
       for (a of range(-360, 375, 15)) {
         for (o of ['left', 'right'] as AxisOrient[]) {
-          const {code} = codegen({
+          const {code} = codegenExpression({
             globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
           })(ast);
 
@@ -250,13 +249,13 @@ describe('compile/axis/properties', () => {
 
     it('correctly align x-axis labels for labelAngle and orient signals', () => {
       return new Promise<void>(done => {
-        const ast = parse(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
+        const ast = parseExpression(defaultLabelAlign({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
         let a: number;
         let o: AxisOrient;
         // test all angles
         for (a of range(-360, 375, 15)) {
           for (o of ['top', 'bottom'] as AxisOrient[]) {
-            const {code} = codegen({
+            const {code} = codegenExpression({
               globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
             })(ast);
 
@@ -343,13 +342,13 @@ describe('compile/axis/properties', () => {
 
     it('correctly align y-axis labels for labelAngle and orient signals', () => {
       return new Promise<void>(done => {
-        const ast = parse(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
+        const ast = parseExpression(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'y')['signal']);
         let a: number;
         let o: AxisOrient;
         // test all angles
         for (a of range(-360, 375, 15)) {
           for (o of ['left', 'right'] as AxisOrient[]) {
-            const {code} = codegen({
+            const {code} = codegenExpression({
               globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
             })(ast);
 
@@ -364,13 +363,13 @@ describe('compile/axis/properties', () => {
 
     it('correctly align x-axis labels for labelAngle and orient signals', () => {
       return new Promise<void>(done => {
-        const ast = parse(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
+        const ast = parseExpression(defaultLabelBaseline({signal: 'a'}, {signal: 'o'}, 'x')['signal']);
         let a: number;
         let o: AxisOrient;
         // test all angles
         for (a of range(-360, 375, 15)) {
           for (o of ['top', 'bottom'] as AxisOrient[]) {
-            const {code} = codegen({
+            const {code} = codegenExpression({
               globalvar: ((v: string) => (v === 'a' ? a : v === 'o' ? stringValue(o) : undefined)) as any
             })(ast);
 
