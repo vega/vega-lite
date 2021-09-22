@@ -1,5 +1,5 @@
 import {isObject, MergedStream, Stream} from 'vega';
-import {selector as parseSelector} from 'vega-event-selector';
+import {parseSelector} from 'vega-event-selector';
 import {array, isString} from 'vega-util';
 import {disableDirectManipulation, TUPLE} from '.';
 import {NonPositionScaleChannel} from '../../channel';
