@@ -707,7 +707,7 @@ describe('Mark', () => {
           expect(label.transform[0]).toStrictEqual({
             type: 'label',
             size: {signal: '[width, height]'},
-            padding: 50,
+            padding: null,
             lineAnchor: 'begin',
             anchor: ['top-left', 'left', 'bottom-left'],
             offset: [2, 2, 2]
@@ -730,57 +730,11 @@ describe('Mark', () => {
           expect(label.transform[0]).toStrictEqual({
             type: 'label',
             size: {signal: '[width, height]'},
-            padding: 50,
+            padding: null,
             lineAnchor: 'end',
             anchor: ['top-right', 'right', 'bottom-right'],
             offset: [2, 2, 2]
           });
-        });
-      });
-
-      it(`should have correct default label-transform config for line (begin - horizontal)`, () => {
-        const model = parseUnitModelWithScale({
-          mark: 'line',
-          encoding: {
-            y: {type: 'nominal', field: 'col1'},
-            x: {type: 'quantitative', field: 'col2'},
-            color: {type: 'quantitative', field: 'col3'},
-            label: {type: 'nominal', field: 'col', lineAnchor: 'begin'}
-          }
-        });
-
-        const label = getLabelMark(model, 'anything');
-        expect(model.markDef.orient).toBe('horizontal');
-        expect(label.transform[0]).toStrictEqual({
-          type: 'label',
-          size: {signal: '[width, height]'},
-          padding: 50,
-          lineAnchor: 'begin',
-          anchor: ['bottom-left', 'bottom', 'bottom-right'],
-          offset: [2, 2, 2]
-        });
-      });
-
-      it(`should have correct default label-transform config for line (end - horizontal)`, () => {
-        const model = parseUnitModelWithScale({
-          mark: 'line',
-          encoding: {
-            y: {type: 'nominal', field: 'col1'},
-            x: {type: 'quantitative', field: 'col2'},
-            color: {type: 'quantitative', field: 'col3'},
-            label: {type: 'nominal', field: 'col', lineAnchor: 'end'}
-          }
-        });
-
-        const label = getLabelMark(model, 'anything');
-        expect(model.markDef.orient).toBe('horizontal');
-        expect(label.transform[0]).toStrictEqual({
-          type: 'label',
-          size: {signal: '[width, height]'},
-          padding: 50,
-          lineAnchor: 'end',
-          anchor: ['top-left', 'top', 'top-right'],
-          offset: [2, 2, 2]
         });
       });
 
