@@ -91,7 +91,7 @@
           "lineAnchor": "end",
           "anchor": ["top-right", "right", "bottom-right"],
           "offset": [2, 2, 2],
-          "padding": {"signal": "width * 0.2"}
+          "padding": null
         }
       ]
     }
