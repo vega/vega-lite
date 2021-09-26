@@ -22,8 +22,30 @@
     {
       "name": "data_0",
       "source": "source_0",
+      "transform": [{"type": "formula", "expr": "datum.value/2", "as": "half"}]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
       "transform": [
-        {"type": "formula", "expr": "datum.value/2", "as": "half"},
+        {
+          "type": "stack",
+          "groupby": ["category", "group"],
+          "field": "value",
+          "sort": {"field": [], "order": []},
+          "as": ["value_start", "value_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
         {
           "type": "filter",
           "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
@@ -46,7 +68,7 @@
       "name": "layer_0_marks",
       "type": "rect",
       "style": ["bar"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "fill": {"scale": "color", "field": "group"},
@@ -60,8 +82,8 @@
             "offset": {"scale": "xOffset", "field": "group"}
           },
           "width": {"scale": "xOffset", "band": 1},
-          "y": {"scale": "y", "field": "value"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {"scale": "y", "field": "value_end"},
+          "y2": {"scale": "y", "field": "value_start"}
         }
       }
     },
@@ -69,7 +91,7 @@
       "name": "layer_1_marks",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_0"},
+      "from": {"data": "data_2"},
       "encode": {
         "update": {
           "dy": {"value": -8},
@@ -94,7 +116,13 @@
     {
       "name": "x",
       "type": "band",
-      "domain": {"data": "data_0", "field": "category", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "category"},
+          {"data": "data_2", "field": "category"}
+        ],
+        "sort": true
+      },
       "range": {"step": {"signal": "x_step"}},
       "paddingInner": 0.2,
       "paddingOuter": 0.2
@@ -102,7 +130,13 @@
     {
       "name": "y",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "value"},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "value_start"},
+          {"data": "data_1", "field": "value_end"},
+          {"data": "data_2", "field": "value"}
+        ]
+      },
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -110,13 +144,19 @@
     {
       "name": "xOffset",
       "type": "band",
-      "domain": {"data": "data_0", "field": "group", "sort": true},
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "group"},
+          {"data": "data_2", "field": "group"}
+        ],
+        "sort": true
+      },
       "range": {"step": 20}
     },
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {"data": "data_0", "field": "group", "sort": true},
+      "domain": {"data": "data_1", "field": "group", "sort": true},
       "range": "category"
     }
   ],
