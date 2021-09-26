@@ -28,7 +28,7 @@ export function positionOffset({
   model?: UnitModel;
   bandPosition?: number;
 }): Offset {
-  const channel = (baseChannel + 'Offset') as
+  const channel = `${baseChannel}Offset` as
     | 'xOffset'
     | 'yOffset'
     | 'x2Offset'

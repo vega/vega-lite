@@ -376,7 +376,7 @@ function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: Scal
     return [0, {signal: `bandwidth('${positionScaleName}')`}];
   } else {
     // continuous scale
-    throw new Error(`Cannot use ${channel} scale if ${positionChannel} scale is not discrete.`);
+    return util.never(`Cannot use ${channel} scale if ${positionChannel} scale is not discrete.`);
   }
 }
 

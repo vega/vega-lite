@@ -8,6 +8,10 @@ import {isLogicalAnd, isLogicalNot, isLogicalOr, LogicalComposition} from './log
 export const deepEqual = deepEqual_;
 export const duplicate = clone_;
 
+export function never(message: string): never {
+  throw new Error(message);
+}
+
 /**
  * Creates an object composed of the picked object properties.
  *

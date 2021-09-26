@@ -81,6 +81,21 @@ describe('compile/scale', () => {
         expect(parseRangeForChannel('y', model)).toEqual(makeExplicit([{signal: 'height'}, 40]));
       });
 
+      it('should return step * bandspace when there is a nested offset', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'xSub', type: 'nominal'},
+            y: {field: 'y', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('x', model)).toEqual(
+          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length) / (1-0.2)"}})
+        );
+      });
+
       it('should return config.view.discreteWidth for x/y-band/point scales by default.', () => {
         for (const scaleType of [ScaleType.BAND, ScaleType.POINT]) {
           const model = parseUnitModelWithScaleExceptRange({
@@ -171,6 +186,24 @@ describe('compile/scale', () => {
 
         expect(parseRangeForChannel('xOffset', model)).toEqual(makeExplicit({step: 23}));
       });
+
+      it('returns step if x is band scale with default step', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'subx', type: 'nominal'}
+          },
+          config: {
+            view: {
+              discreteWidth: {step: 23}
+            }
+          }
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(makeImplicit({step: 23}));
+      });
+
       it('returns step if x is band scale with fixed step for offset', () => {
         const model = parseUnitModelWithScaleExceptRange({
           width: {step: 23, for: 'offset'},
