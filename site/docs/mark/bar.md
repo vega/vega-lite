@@ -137,6 +137,10 @@ Alternatively, you can also use [faceting](facet.html) to produce a grouped bar 
 
 <span class="vl-example" data-name="bar_grouped_facet"></span>
 
+This allows you to use independent x-scale for each facet:
+
+<span class="vl-example" data-name="bar_grouped_facet_independent_scale"></span>
+
 {:#ranged}
 
 ### Ranged Bars

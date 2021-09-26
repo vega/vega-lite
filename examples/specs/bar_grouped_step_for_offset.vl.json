@@ -13,7 +13,7 @@
       {"category":"C", "group": "z", "value":0.2}
     ]
   },
-  "width": {"step": 24, "for": "offset"},
+  "width": {"step": 24},
   "mark": "bar",
   "encoding": {
     "x": {"field": "category"},
