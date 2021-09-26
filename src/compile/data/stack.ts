@@ -127,10 +127,12 @@ export class StackNode extends DataFlowNode {
 
     const {groupbyChannels, fieldChannel, offset, impute} = stackProperties;
 
-    const dimensionFieldDefs = groupbyChannels.map((groupbyChannel => {
-      const cDef = encoding[groupbyChannel];
-      return getFieldDef(cDef)
-    })).filter(def => !!def);
+    const dimensionFieldDefs = groupbyChannels
+      .map(groupbyChannel => {
+        const cDef = encoding[groupbyChannel];
+        return getFieldDef(cDef);
+      })
+      .filter(def => !!def);
 
     const stackby = getStackByFields(model);
     const orderDef = model.encoding.order;
@@ -198,21 +200,23 @@ export class StackNode extends DataFlowNode {
     const {dimensionFieldDefs, impute, groupby} = this._stack;
 
     if (dimensionFieldDefs.length > 0) {
-      return dimensionFieldDefs.map((dimensionFieldDef) =>{
-        if (dimensionFieldDef.bin) {
-          if (impute) {
-            // For binned group by field with impute, we calculate bin_mid
-            // as we cannot impute two fields simultaneously
-            return [vgField(dimensionFieldDef, {binSuffix: 'mid'})];
+      return dimensionFieldDefs
+        .map(dimensionFieldDef => {
+          if (dimensionFieldDef.bin) {
+            if (impute) {
+              // For binned group by field with impute, we calculate bin_mid
+              // as we cannot impute two fields simultaneously
+              return [vgField(dimensionFieldDef, {binSuffix: 'mid'})];
+            }
+            return [
+              // For binned group by field without impute, we need both bin (start) and bin_end
+              vgField(dimensionFieldDef, {}),
+              vgField(dimensionFieldDef, {binSuffix: 'end'})
+            ];
           }
-          return [
-            // For binned group by field without impute, we need both bin (start) and bin_end
-            vgField(dimensionFieldDef, {}),
-            vgField(dimensionFieldDef, {binSuffix: 'end'})
-          ];
-        }
-        return [vgField(dimensionFieldDef)];
-      }).flat();
+          return [vgField(dimensionFieldDef)];
+        })
+        .flat();
     }
     return groupby ?? [];
   }

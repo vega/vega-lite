@@ -166,7 +166,7 @@ export function stack(
   const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string> | PositionDatumDef<string>;
   const stackedField = isFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
 
-  let dimensionChannel: 'x' | 'y' | 'theta' | 'radius' = getDimensionChannel(fieldChannel);
+  const dimensionChannel: 'x' | 'y' | 'theta' | 'radius' = getDimensionChannel(fieldChannel);
   const groupbyChannels: StackProperties['groupbyChannels'] = [];
   const groupbyFields: FieldName[] = [];
 
@@ -210,7 +210,7 @@ export function stack(
           // if fielddef is a repeat, just include it in the stack by
           !f ||
           // otherwise, the field must be different from the groupBy fields.
-          (!contains(groupbyFields, f))
+          !contains(groupbyFields, f)
         ) {
           sc.push({channel, fieldDef});
         }
