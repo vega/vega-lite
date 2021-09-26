@@ -17,7 +17,7 @@
         "type": "quantitative",
         "title": "Total Gross"
       },
-      "color": {"datum": {"repeat": "layer"}},
+      "color": {"datum": {"repeat": "layer"}, "title": "Gross"},
       "xOffset": {"datum": {"repeat": "layer"}}
     }
   },

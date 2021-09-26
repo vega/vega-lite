@@ -384,7 +384,7 @@ export interface DatumDef<
   F extends Field = string,
   V extends PrimitiveValue | DateTime | ExprRef | SignalRef = PrimitiveValue | DateTime | ExprRef | SignalRef
 > extends Partial<TypeMixins<Type>>,
-    BandMixins {
+    BandMixins, TitleMixins {
   /**
    * A constant value in data domain.
    */
@@ -934,7 +934,7 @@ export function title(
   const guideTitle = getGuide(fieldOrDatumDef)?.title;
 
   if (!isFieldDef(fieldOrDatumDef)) {
-    return guideTitle;
+    return guideTitle ?? fieldOrDatumDef.title;
   }
   const fieldDef = fieldOrDatumDef;
 
