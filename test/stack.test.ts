@@ -309,7 +309,7 @@ describe('stack', () => {
     })
   );
 
-  describe('stack().groupbyChannel, .fieldChannel', () => {
+  describe('stack().groupbyChannels, .fieldChannels', () => {
     it('should be correct for horizontal', () => {
       for (const stackableMark of [BAR, AREA]) {
         const spec: TopLevel<NormalizedUnitSpec> = {
@@ -323,7 +323,7 @@ describe('stack', () => {
         };
         const _stack = stack(spec.mark, spec.encoding, undefined);
         expect(_stack.fieldChannel).toBe(X);
-        expect(_stack.groupbyChannel).toBe(Y);
+        expect(_stack.groupbyChannels).toEqual([Y]);
       }
     });
 
@@ -339,7 +339,7 @@ describe('stack', () => {
         };
         const _stack = stack(spec.mark, spec.encoding, undefined);
         expect(_stack.fieldChannel).toBe(X);
-        expect(_stack.groupbyChannel).toBeUndefined();
+        expect(_stack.groupbyChannels).toEqual([]);
       }
     });
 
@@ -356,7 +356,7 @@ describe('stack', () => {
         };
         const _stack = stack(spec.mark, spec.encoding, undefined);
         expect(_stack.fieldChannel).toBe(Y);
-        expect(_stack.groupbyChannel).toBe(X);
+        expect(_stack.groupbyChannels).toEqual([X]);
       }
     });
 
@@ -372,7 +372,7 @@ describe('stack', () => {
         };
         const _stack = stack(spec.mark, spec.encoding, undefined);
         expect(_stack.fieldChannel).toBe(Y);
-        expect(_stack.groupbyChannel).toBeUndefined();
+        expect(_stack.groupbyChannels).toEqual([]);
       }
     });
 

@@ -48,10 +48,10 @@ export function isStackOffset(s: string): s is StackOffset {
 
 export interface StackProperties {
   /** Dimension axis of the stack. */
-  groupbyChannel?: 'x' | 'y' | 'theta' | 'radius';
+  groupbyChannels: ('x' | 'y' | 'theta' | 'radius' | 'xOffset' | 'yOffset')[];
 
   /** Field for groupbyChannel. */
-  groupbyField?: FieldName;
+  groupbyFields: FieldName[];
 
   /** Measure axis of the stack. */
   fieldChannel: 'x' | 'y' | 'theta' | 'radius';
@@ -167,22 +167,31 @@ export function stack(
   const stackedField = isFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
 
   let dimensionChannel: 'x' | 'y' | 'theta' | 'radius' = getDimensionChannel(fieldChannel);
-  let dimensionDef = encoding[dimensionChannel];
+  const groupbyChannels: StackProperties['groupbyChannels'] = [];
+  const groupbyFields: FieldName[] = [];
 
-  let dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
+  if (encoding[dimensionChannel]) {
+    const dimensionDef = encoding[dimensionChannel];
+    const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
 
-  // avoid grouping by the stacked field
-  if (dimensionField === stackedField) {
-    dimensionField = undefined;
-    dimensionDef = undefined;
-    dimensionChannel = undefined;
+    if (dimensionField && dimensionField !== stackedField) {
+      // avoid grouping by the stacked field
+      groupbyChannels.push(dimensionChannel);
+      groupbyFields.push(dimensionField);
+    }
+
+    const dimensionOffsetChannel = dimensionChannel === 'x' ? 'xOffset' : 'yOffset';
+    const dimensionOffsetDef = encoding[dimensionOffsetChannel];
+    const dimensionOffsetField = isFieldDef(dimensionOffsetDef) ? vgField(dimensionOffsetDef, {}) : undefined;
+
+    if (dimensionOffsetField && dimensionOffsetField !== stackedField) {
+      // avoid grouping by the stacked field
+      groupbyChannels.push(dimensionOffsetChannel);
+      groupbyFields.push(dimensionOffsetField);
+    }
   }
 
   // If the dimension has offset, don't stack anymore
-  const dimensionOffsetChannel = dimensionChannel === 'x' ? 'xOffset' : 'yOffset';
-  if (getFieldDef(encoding[dimensionOffsetChannel])) {
-    return null;
-  }
 
   // Should have grouping level of detail that is different from the dimension field
   const stackBy = NONPOSITION_CHANNELS.reduce((sc, channel) => {
@@ -200,8 +209,8 @@ export function stack(
         if (
           // if fielddef is a repeat, just include it in the stack by
           !f ||
-          // otherwise, the field must be different from x and y fields.
-          f !== dimensionField
+          // otherwise, the field must be different from the groupBy fields.
+          (!contains(groupbyFields, f))
         ) {
           sc.push({channel, fieldDef});
         }
@@ -253,8 +262,8 @@ export function stack(
   }
 
   return {
-    groupbyChannel: dimensionDef ? dimensionChannel : undefined,
-    groupbyField: dimensionField,
+    groupbyChannels,
+    groupbyFields,
     fieldChannel,
     impute: stackedFieldDef.impute === null ? false : isPathMark(mark),
     stackBy,

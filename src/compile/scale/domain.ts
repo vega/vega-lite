@@ -439,7 +439,7 @@ export function domainSort(
 
   const {stack} = model;
   const stackDimensions = stack
-    ? [...(stack.groupbyField ? [stack.groupbyField] : []), ...stack.stackBy.map(s => s.fieldDef.field)]
+    ? [...stack.groupbyFields , ...stack.stackBy.map(s => s.fieldDef.field)]
     : undefined;
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
