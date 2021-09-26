@@ -346,7 +346,7 @@ export function channelHasNestedOffsetScale<F extends Field>(
 ): boolean {
   if (isXorY(channel)) {
     const fieldDef = encoding[channel];
-    if (isFieldDef(fieldDef) && isDiscrete(fieldDef.type)) {
+    if ((isFieldDef(fieldDef) || isDatumDef(fieldDef)) && isDiscrete(fieldDef.type)) {
       const offsetChannel = getOffsetScaleChannel(channel);
       return channelHasField(encoding, offsetChannel);
     }

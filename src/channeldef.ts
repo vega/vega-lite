@@ -377,9 +377,8 @@ export interface ScaleMixins {
   scale?: Scale | null;
 }
 
-export type OffsetFieldDef<F extends Field, T extends Type = StandardType> = ScaleFieldDef<F, T>;
 
-export type OffsetDef<F extends Field, T extends Type = StandardType> = OffsetFieldDef<F, T> | ValueDef<number>;
+export type OffsetDef<F extends Field, T extends Type = StandardType> = ScaleFieldDef<F, T> | ScaleDatumDef<F> | ValueDef<number>;
 
 export interface DatumDef<
   F extends Field = string,
