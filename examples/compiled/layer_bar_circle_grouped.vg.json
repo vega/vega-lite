@@ -29,6 +29,14 @@
       "source": "data_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["category", "group"],
+          "field": "value",
+          "sort": {"field": [], "order": []},
+          "as": ["value_start", "value_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
         }
@@ -74,8 +82,8 @@
             "offset": {"scale": "xOffset", "field": "group"}
           },
           "width": {"scale": "xOffset", "band": 1},
-          "y": {"scale": "y", "field": "value"},
-          "y2": {"scale": "y", "value": 0}
+          "y": {"scale": "y", "field": "value_end"},
+          "y2": {"scale": "y", "field": "value_start"}
         }
       }
     },
@@ -123,7 +131,8 @@
       "type": "linear",
       "domain": {
         "fields": [
-          {"data": "data_1", "field": "value"},
+          {"data": "data_1", "field": "value_start"},
+          {"data": "data_1", "field": "value_end"},
           {"data": "data_2", "field": "half"}
         ]
       },

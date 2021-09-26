@@ -24,6 +24,14 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "stack",
+          "groupby": ["category", "group"],
+          "field": "value",
+          "sort": {"field": [], "order": []},
+          "as": ["value_start", "value_end"],
+          "offset": "zero"
+        },
+        {
           "type": "filter",
           "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
         }
@@ -53,8 +61,8 @@
           "description": {
             "signal": "\"value: \" + (format(datum[\"value\"], \"\")) + \"; category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
           },
-          "x": {"scale": "x", "field": "value"},
-          "x2": {"scale": "x", "value": 0},
+          "x": {"scale": "x", "field": "value_end"},
+          "x2": {"scale": "x", "field": "value_start"},
           "y": {
             "scale": "y",
             "field": "category",
@@ -69,7 +77,7 @@
     {
       "name": "x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "value"},
+      "domain": {"data": "data_0", "fields": ["value_start", "value_end"]},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
