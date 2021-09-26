@@ -1,5 +1,5 @@
 import {SignalRef} from 'vega';
-import {getMainRangeChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel';
+import {getMainRangeChannel, getOffsetChannel, getSecondaryRangeChannel, getSizeChannel, getVgPositionChannel} from '../../../channel';
 import {isFieldOrDatumDef} from '../../../channeldef';
 import * as log from '../../../log';
 import {isRelativeBandSize, Mark, MarkConfig, MarkDef} from '../../../mark';
@@ -77,13 +77,15 @@ function pointPosition2OrSize(
   const baseChannel = getMainRangeChannel(channel);
   const sizeChannel = getSizeChannel(channel);
   const vgChannel = getVgPositionChannel(channel);
+  const offsetChannel = getOffsetChannel(channel);
 
   const channelDef = encoding[baseChannel];
   const scaleName = model.scaleName(baseChannel);
   const scale = model.getScaleComponent(baseChannel);
 
   const {offset} =
-    channel in encoding || channel in markDef
+    (channel in encoding || channel in markDef ||
+    offsetChannel in encoding || offsetChannel in markDef)
       ? positionOffset({channel, markDef, encoding, model})
       : positionOffset({channel: baseChannel, markDef, encoding, model});
 
@@ -124,23 +126,25 @@ function pointPosition2OrSize(
   // no x2/y2 encoding, then try to read x2/y2 or width/height based on precedence:
   // markDef > config.style > mark-specific config (config[mark]) > general mark config (config.mark)
 
-  return (
-    position2orSize(channel, markDef) ||
+  return position2orSize(channel, markDef, offset) ||
     position2orSize(channel, {
       [channel]: getMarkStyleConfig(channel, markDef, config.style),
       [sizeChannel]: getMarkStyleConfig(sizeChannel, markDef, config.style)
-    }) ||
-    position2orSize(channel, config[mark]) ||
-    position2orSize(channel, config.mark) || {
-      [vgChannel]: pointPositionDefaultRef({
-        model,
-        defaultPos,
-        channel,
-        scaleName,
-        scale
-      })()
-    }
-  );
+    }, offset) ||
+    position2orSize(channel, config[mark], offset) ||
+    position2orSize(channel, config.mark, offset) || {
+      [vgChannel]: {
+        ...pointPositionDefaultRef({
+          model,
+          defaultPos,
+          channel,
+          scaleName,
+          scale
+        })(),
+        ...(offset ? {offset}: {})
+      }
+    };
+
 }
 
 export function position2Ref({
@@ -180,20 +184,23 @@ export function position2Ref({
 
 function position2orSize(
   channel: 'x2' | 'y2' | 'radius2' | 'theta2',
-  markDef: MarkConfig<SignalRef> | MarkDef<Mark, SignalRef>
+  markDef: MarkConfig<SignalRef> | MarkDef<Mark, SignalRef>,
+  offset: number | VgValueRef
 ) {
   const sizeChannel = getSizeChannel(channel);
   const vgChannel = getVgPositionChannel(channel);
-  if (markDef[vgChannel] !== undefined) {
-    return {[vgChannel]: ref.widthHeightValueOrSignalRef(channel, markDef[vgChannel])};
-  } else if (markDef[channel] !== undefined) {
-    return {[vgChannel]: ref.widthHeightValueOrSignalRef(channel, markDef[channel])};
+
+  const position2 = markDef[vgChannel] ?? markDef[channel];
+  if (position2 !== undefined) {
+    const position2Ref = ref.widthHeightValueOrSignalRef(channel, position2)
+    return {[vgChannel]: offset ? {...position2Ref, offset} : position2Ref};
   } else if (markDef[sizeChannel]) {
     const dimensionSize = markDef[sizeChannel];
     if (isRelativeBandSize(dimensionSize)) {
       log.warn(log.message.relativeBandSizeNotSupported(sizeChannel));
     } else {
-      return {[sizeChannel]: ref.widthHeightValueOrSignalRef(channel, dimensionSize)};
+      const sizeRef = ref.widthHeightValueOrSignalRef(channel, dimensionSize);
+      return {[sizeChannel]: offset ? {...sizeRef, offset} : sizeRef};
     }
   }
   return undefined;
