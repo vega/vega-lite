@@ -27,10 +27,10 @@ import {
   Y,
   YOFFSET
 } from '../../channel';
-import {getFieldOrDatumDef, isFieldDef, ScaleDatumDef, ScaleFieldDef} from '../../channeldef';
+import {getFieldOrDatumDef, isFieldOrDatumDef, ScaleDatumDef, ScaleFieldDef} from '../../channeldef';
 import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config';
 import {DataSourceType} from '../../data';
-import {channelHasField} from '../../encoding';
+import {channelHasFieldOrDatum} from '../../encoding';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {
@@ -332,9 +332,9 @@ function getPositionStep(step: Step, model: UnitModel, channel: PositionScaleCha
   const mergedScaleCmpt = model.getScaleComponent(channel);
   const offsetChannel = getOffsetScaleChannel(channel);
   const offsetDef = encoding[offsetChannel];
-  const stepFor = getStepFor({step, offsetIsDiscrete: isFieldDef(offsetDef) && isDiscrete(offsetDef.type)});
+  const stepFor = getStepFor({step, offsetIsDiscrete: isFieldOrDatumDef(offsetDef) && isDiscrete(offsetDef.type)});
 
-  if (stepFor === 'offset' && channelHasField(encoding, offsetChannel)) {
+  if (stepFor === 'offset' && channelHasFieldOrDatum(encoding, offsetChannel)) {
     const offsetScaleName = model.scaleName(offsetChannel);
     const paddingInner = mergedScaleCmpt.get('paddingInner');
     const padding = mergedScaleCmpt.get('padding');

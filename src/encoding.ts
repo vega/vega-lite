@@ -45,8 +45,8 @@ import {
   X2,
   XOFFSET,
   Y,
-  Y2,
-  YOFFSET
+
+  Y2, YOFFSET
 } from './channel';
 import {
   binRequiresRange,
@@ -57,8 +57,7 @@ import {
   FieldDefWithoutScale,
   getFieldDef,
   getGuide,
-  hasConditionalFieldDef,
-  initChannelDef,
+  hasConditionalFieldDef, hasConditionalFieldOrDatumDef, initChannelDef,
   initFieldDef,
   isConditionalDef,
   isDatumDef,
@@ -340,6 +339,21 @@ export function channelHasField<F extends Field>(
   return false;
 }
 
+export function channelHasFieldOrDatum<F extends Field>(
+  encoding: EncodingWithFacet<F>,
+  channel: keyof EncodingWithFacet<F>
+): boolean {
+  const channelDef = encoding && encoding[channel];
+  if (channelDef) {
+    if (isArray(channelDef)) {
+      return some(channelDef, fieldDef => !!fieldDef.field);
+    } else {
+      return isFieldDef(channelDef) || isDatumDef(channelDef) || hasConditionalFieldOrDatumDef<Field>(channelDef);
+    }
+  }
+  return false;
+}
+
 export function channelHasNestedOffsetScale<F extends Field>(
   encoding: EncodingWithFacet<F>,
   channel: keyof EncodingWithFacet<F>
@@ -348,7 +362,7 @@ export function channelHasNestedOffsetScale<F extends Field>(
     const fieldDef = encoding[channel];
     if ((isFieldDef(fieldDef) || isDatumDef(fieldDef)) && isDiscrete(fieldDef.type)) {
       const offsetChannel = getOffsetScaleChannel(channel);
-      return channelHasField(encoding, offsetChannel);
+      return channelHasFieldOrDatum(encoding, offsetChannel);
     }
   }
   return false;
