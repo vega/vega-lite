@@ -45,8 +45,8 @@ import {
   X2,
   XOFFSET,
   Y,
-
-  Y2, YOFFSET
+  Y2,
+  YOFFSET
 } from './channel';
 import {
   binRequiresRange,
@@ -57,7 +57,9 @@ import {
   FieldDefWithoutScale,
   getFieldDef,
   getGuide,
-  hasConditionalFieldDef, hasConditionalFieldOrDatumDef, initChannelDef,
+  hasConditionalFieldDef,
+  hasConditionalFieldOrDatumDef,
+  initChannelDef,
   initFieldDef,
   isConditionalDef,
   isDatumDef,

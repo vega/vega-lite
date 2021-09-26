@@ -76,6 +76,7 @@ For a discrete x-field or discrete y-field with nested offset, the step will be 
 To specify step for the x/y scale instead, you can include `"for": "position"` in the `width` or `height`.
 
 <span class="vl-example" data-name="bar_grouped_step_for_position"></span>
+
 ### Autosize
 
 The specified dimensions of a chart as explained above set the size of the data rectangle (plotting) dimensions. You can override this behavior by setting the autosize property in [the top level specification](spec.html#top-level). Please note the [limitations below](#limitations).

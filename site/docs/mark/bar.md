@@ -141,7 +141,6 @@ This allows you to use independent x-scale for each facet:
 
 <span class="vl-example" data-name="bar_grouped_facet_independent_scale"></span>
 
-
 ### Grouped Bar Chart (Multiple Measure with Repeat)
 
 <span class="vl-example" data-name="bar_grouped_repeated"></span>

@@ -173,7 +173,9 @@ function positionAndSize(
     offset,
     defaultRef: pointPositionDefaultRef({model, defaultPos: 'mid', channel, scaleName, scale}),
     bandPosition: center
-      ? (offsetType === 'encoding'  ? 0 : 0.5)
+      ? offsetType === 'encoding'
+        ? 0
+        : 0.5
       : isSignalRef(bandSize)
       ? {signal: `(1-${bandSize})/2`}
       : isRelativeBandSize(bandSize)

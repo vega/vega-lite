@@ -377,14 +377,17 @@ export interface ScaleMixins {
   scale?: Scale | null;
 }
 
-
-export type OffsetDef<F extends Field, T extends Type = StandardType> = ScaleFieldDef<F, T> | ScaleDatumDef<F> | ValueDef<number>;
+export type OffsetDef<F extends Field, T extends Type = StandardType> =
+  | ScaleFieldDef<F, T>
+  | ScaleDatumDef<F>
+  | ValueDef<number>;
 
 export interface DatumDef<
   F extends Field = string,
   V extends PrimitiveValue | DateTime | ExprRef | SignalRef = PrimitiveValue | DateTime | ExprRef | SignalRef
 > extends Partial<TypeMixins<Type>>,
-    BandMixins, TitleMixins {
+    BandMixins,
+    TitleMixins {
   /**
    * A constant value in data domain.
    */

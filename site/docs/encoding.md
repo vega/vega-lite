@@ -229,7 +229,7 @@ In addition to the general [field definition properties](#field-def), field defi
 
 <span class="vl-example" data-name="bar_grouped"></span>
 
-__Note:__ Read [here](size.html#offset-step) for more details about how to set step size for offset scale.
+**Note:** Read [here](size.html#offset-step) for more details about how to set step size for offset scale.
 
 ### Example: Jittering
 
