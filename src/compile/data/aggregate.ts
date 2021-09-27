@@ -160,10 +160,9 @@ export class AggregateNode extends DataFlowNode {
     if (setEqual(this.dimensions, other.dimensions)) {
       mergeMeasures(this.measures, other.measures);
       return true;
-    } else {
-      log.debug('different dimensions, cannot merge');
-      return false;
     }
+    log.debug('different dimensions, cannot merge');
+    return false;
   }
 
   public addDimensions(fields: readonly string[]) {

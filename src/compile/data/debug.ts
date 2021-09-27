@@ -79,7 +79,7 @@ export function dotString(roots: readonly DataFlowNode[]) {
   function collector(node: DataFlowNode) {
     const id = getId(node);
     nodes[id] = {
-      id: id,
+      id,
       label: getLabel(node),
       hash:
         node instanceof SourceNode

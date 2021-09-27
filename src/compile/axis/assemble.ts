@@ -208,7 +208,7 @@ export function assembleAxisSignals(model: Model): NewSignal[] {
           if (sizeType !== update) {
             signals.push({
               name: sizeType,
-              update: update
+              update
             });
           }
         }

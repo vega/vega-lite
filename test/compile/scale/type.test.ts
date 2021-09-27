@@ -180,13 +180,13 @@ describe('compile/scale', () => {
 
       it('should return time for all non-utc time units.', () => {
         for (const timeUnit of TIMEUNITS.filter(t => !isUTCTimeUnit(t))) {
-          expect(scaleType({}, Y, {type: 'temporal', field: 'x', timeUnit: timeUnit}, 'point')).toEqual(ScaleType.TIME);
+          expect(scaleType({}, Y, {type: 'temporal', field: 'x', timeUnit}, 'point')).toEqual(ScaleType.TIME);
         }
       });
 
       it('should return utc for all utc time units.', () => {
         for (const timeUnit of TIMEUNITS.filter(t => isUTCTimeUnit(t))) {
-          expect(scaleType({}, Y, {type: 'temporal', field: 'x', timeUnit: timeUnit}, 'point')).toEqual(ScaleType.UTC);
+          expect(scaleType({}, Y, {type: 'temporal', field: 'x', timeUnit}, 'point')).toEqual(ScaleType.UTC);
         }
       });
     });

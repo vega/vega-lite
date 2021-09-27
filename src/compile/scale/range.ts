@@ -191,7 +191,7 @@ function parseScheme(scheme: Scheme | SignalRef): RangeScheme {
       ...util.omit(scheme, ['name'])
     };
   }
-  return {scheme: scheme};
+  return {scheme};
 }
 
 function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
