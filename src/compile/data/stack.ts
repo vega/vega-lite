@@ -232,13 +232,13 @@ export class StackNode extends DataFlowNode {
         if (bin) {
           // As we can only impute one field at a time, we need to calculate
           // mid point for a binned field
+
+          const binStart = vgField(dimensionFieldDef, {expr: 'datum'})
+          const binEnd = vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'});
           transform.push({
             type: 'formula',
             expr:
-              `${bandPosition}*` +
-              vgField(dimensionFieldDef, {expr: 'datum'}) +
-              `+${1 - bandPosition}*` +
-              vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}),
+              `${bandPosition}*${binStart}+${1 - bandPosition}*${binEnd}`,
             as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true})
           });
         }
