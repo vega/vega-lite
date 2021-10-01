@@ -41,7 +41,7 @@
   "signals": [
     {
       "name": "y_step",
-      "update": "20 * bandspace(domain('yOffset').length) / (1-0.2)"
+      "update": "20 * bandspace(domain('yOffset').length, 0, 0) / (1-0.2)"
     },
     {
       "name": "height",

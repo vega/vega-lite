@@ -42,7 +42,7 @@
     {"name": "x_step", "value": 50},
     {
       "name": "width",
-      "update": "bandspace(domain('x').length, 0.4, 0.4) * x_step"
+      "update": "bandspace(domain('x').length, 0.2, 0.2) * x_step"
     }
   ],
   "marks": [
@@ -76,7 +76,7 @@
       "type": "band",
       "domain": {"data": "data_0", "field": "category", "sort": true},
       "range": {"step": {"signal": "x_step"}},
-      "padding": 0.4
+      "padding": 0.2
     },
     {
       "name": "y",
@@ -90,7 +90,8 @@
       "name": "xOffset",
       "type": "band",
       "domain": {"data": "data_0", "field": "group", "sort": true},
-      "range": [0, {"signal": "bandwidth('x')"}]
+      "range": [0, {"signal": "bandwidth('x')"}],
+      "paddingInner": 0.2
     },
     {
       "name": "color",

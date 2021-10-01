@@ -31,10 +31,7 @@
     }
   ],
   "signals": [
-    {
-      "name": "x_step",
-      "update": "20 * bandspace(domain('xOffset').length) / (1-0.2)"
-    },
+    {"name": "x_step", "update": "20 * domain('xOffset').length / (1-0.2)"},
     {
       "name": "width",
       "update": "bandspace(domain('x').length, 0.2, 0.2) * x_step"

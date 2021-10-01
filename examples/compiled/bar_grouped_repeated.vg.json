@@ -23,7 +23,7 @@
   "signals": [
     {
       "name": "x_step",
-      "update": "20 * bandspace(domain('xOffset').length) / (1-0.2)"
+      "update": "20 * bandspace(domain('xOffset').length, 0, 0) / (1-0.2)"
     },
     {
       "name": "width",
