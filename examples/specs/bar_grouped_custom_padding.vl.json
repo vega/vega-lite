@@ -16,9 +16,9 @@
   "width": {"step": 50, "for": "position"},
   "mark": "bar",
   "encoding": {
-    "x": {"field": "category", "scale": {"padding": 0.4}},
+    "x": {"field": "category", "scale": {"padding": 0.2}},
     "y": {"field": "value", "type": "quantitative"},
-    "xOffset": {"field": "group"},
+    "xOffset": {"field": "group", "scale": {"paddingInner": 0.2}},
     "color": {"field": "group"}
   }
 }

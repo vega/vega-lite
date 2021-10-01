@@ -81,7 +81,7 @@ describe('compile/scale', () => {
         expect(parseRangeForChannel('y', model)).toEqual(makeExplicit([{signal: 'height'}, 40]));
       });
 
-      it('should return step * bandspace when there is a nested offset', () => {
+      it('should return step * stepCount when there is a nested offset', () => {
         const model = parseUnitModelWithScaleExceptRange({
           mark: 'point',
           encoding: {
@@ -92,7 +92,52 @@ describe('compile/scale', () => {
         });
 
         expect(parseRangeForChannel('x', model)).toEqual(
-          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length) / (1-0.2)"}})
+          makeImplicit({step: {signal: "20 * domain('xOffset').length / (1-0.2)"}})
+        );
+      });
+
+      it('should return step * bandspace when there is a nested offset with band scale', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'xSub', type: 'nominal'},
+            y: {field: 'y', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('x', model)).toEqual(
+          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length, 0, 0) / (1-0.2)"}})
+        );
+      });
+
+      it('should return step * bandspace when there is a nested offset with band scale with custom padding', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'xSub', type: 'nominal', scale: {padding: 0.2}},
+            y: {field: 'y', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('x', model)).toEqual(
+          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length, 0.2, 0.2) / (1-0.2)"}})
+        );
+      });
+
+      it('should return step * bandspace when there is a nested offset with band scale with custom paddingInner and -Outer', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'xSub', type: 'nominal', scale: {paddingInner: 0.1, paddingOuter: 0.3}},
+            y: {field: 'y', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('x', model)).toEqual(
+          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length, 0.1, 0.3) / (1-0.2)"}})
         );
       });
 

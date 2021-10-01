@@ -335,13 +335,20 @@ function getPositionStep(step: Step, model: UnitModel, channel: PositionScaleCha
   const stepFor = getStepFor({step, offsetIsDiscrete: isFieldOrDatumDef(offsetDef) && isDiscrete(offsetDef.type)});
 
   if (stepFor === 'offset' && channelHasFieldOrDatum(encoding, offsetChannel)) {
+    const offsetScaleCmpt = model.getScaleComponent(offsetChannel);
     const offsetScaleName = model.scaleName(offsetChannel);
-    const paddingInner = mergedScaleCmpt.get('paddingInner');
-    const padding = mergedScaleCmpt.get('padding');
+
+    let stepCount = `domain('${offsetScaleName}').length`;
+
+    if (offsetScaleCmpt.get('type') === 'band') {
+      const offsetPaddingInner = offsetScaleCmpt.get('paddingInner') ?? offsetScaleCmpt.get('padding') ?? 0;
+      const offsetPaddingOuter = offsetScaleCmpt.get('paddingOuter') ?? offsetScaleCmpt.get('padding') ?? 0;
+      stepCount = `bandspace(${stepCount}, ${offsetPaddingInner}, ${offsetPaddingOuter})`;
+    }
+
+    const paddingInner = mergedScaleCmpt.get('paddingInner') ?? mergedScaleCmpt.get('padding');
     return {
-      signal: `${step.step} * bandspace(domain('${offsetScaleName}').length) / (1-${exprFromSignalRefOrValue(
-        paddingInner ?? padding
-      )})`
+      signal: `${step.step} * ${stepCount} / (1-${exprFromSignalRefOrValue(paddingInner)})`
     };
   } else {
     return step.step;
