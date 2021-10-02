@@ -21392,6 +21392,32 @@
           "maximum": 1,
           "minimum": 0
         },
+        "bandWithNestedOffsetPaddingInner": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Default inner padding for `x` and `y` band scales with nested `xOffset` and `yOffset` encoding.\n\n__Default value:__ `0.2`",
+          "maximum": 1,
+          "minimum": 0
+        },
+        "bandWithNestedOffsetPaddingOuter": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "$ref": "#/definitions/ExprRef"
+            }
+          ],
+          "description": "Default outer padding for `x` and `y` band scales with nested `xOffset` and `yOffset` encoding.\n\n__Default value:__ `0.2`",
+          "maximum": 1,
+          "minimum": 0
+        },
         "barBandPaddingInner": {
           "anyOf": [
             {
@@ -21480,7 +21506,7 @@
           "minimum": 0,
           "type": "number"
         },
-        "nestedOffsetPaddingInner": {
+        "offsetBandPaddingInner": {
           "anyOf": [
             {
               "type": "number"
@@ -21489,11 +21515,9 @@
               "$ref": "#/definitions/ExprRef"
             }
           ],
-          "description": "Default inner padding for `x` and `y` band scales with nested `xOffset` and `yOffset` encoding.\n\n__Default value:__ `0.2`",
-          "maximum": 1,
-          "minimum": 0
+          "description": "Default padding inner for xOffset/yOffset's band scales.\n\n__Default Value:__ `0`"
         },
-        "nestedOffsetPaddingOuter": {
+        "offsetBandPaddingOuter": {
           "anyOf": [
             {
               "type": "number"
@@ -21502,9 +21526,7 @@
               "$ref": "#/definitions/ExprRef"
             }
           ],
-          "description": "Default outer padding for `x` and `y` band scales with nested `xOffset` and `yOffset` encoding.\n\n__Default value:__ `0.2`",
-          "maximum": 1,
-          "minimum": 0
+          "description": "Default padding outer for xOffset/yOffset's band scales.\n\n__Default Value:__ `0`"
         },
         "pointPadding": {
           "anyOf": [
