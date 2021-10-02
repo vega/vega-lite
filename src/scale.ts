@@ -245,6 +245,21 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   rectBandPaddingInner?: number | ES;
 
   /**
+   * Default padding inner for xOffset/yOffset's band scales.
+   *
+   * __Default Value:__ `0`
+   */
+  offsetBandPaddingInner?: number | ES;
+
+   /**
+   * Default padding outer for xOffset/yOffset's band scales.
+   *
+   * __Default Value:__ `0`
+   */
+  offsetBandPaddingOuter?: number | ES;
+
+
+  /**
    * Default padding for continuous x/y scales.
    *
    * __Default:__ The bar width for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.

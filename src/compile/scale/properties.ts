@@ -154,8 +154,8 @@ export const scaleRules: {
   padding: ({channel, scaleType, fieldOrDatumDef, markDef, config}) =>
     padding(channel, scaleType, config.scale, fieldOrDatumDef, markDef, config.bar),
 
-  paddingInner: ({scalePadding, channel, markDef, config, hasNestedOffsetScale}) =>
-    paddingInner(scalePadding, channel, markDef.type, config.scale, hasNestedOffsetScale),
+  paddingInner: ({scalePadding, channel, markDef, scaleType, config, hasNestedOffsetScale}) =>
+    paddingInner(scalePadding, channel, markDef.type, scaleType, config.scale, hasNestedOffsetScale),
 
   paddingOuter: ({scalePadding, channel, scaleType, scalePaddingInner, config, hasNestedOffsetScale}) =>
     paddingOuter(scalePadding, channel, scaleType, scalePaddingInner, config.scale, hasNestedOffsetScale),
@@ -291,6 +291,7 @@ export function paddingInner(
   paddingValue: number | SignalRef,
   channel: ScaleChannel,
   mark: Mark,
+  scaleType: ScaleType,
   scaleConfig: ScaleConfig<SignalRef>,
   hasNestedOffsetScale = false
 ) {
@@ -311,6 +312,10 @@ export function paddingInner(
     }
 
     return getFirstDefined(bandPaddingInner, mark === 'bar' ? barBandPaddingInner : rectBandPaddingInner);
+  } else if (isXorYOffset(channel)) {
+    if (scaleType === ScaleType.BAND) {
+      return scaleConfig.offsetBandPaddingInner;
+    }
   }
   return undefined;
 }
@@ -348,6 +353,8 @@ export function paddingOuter(
   } else if (isXorYOffset(channel)) {
     if (scaleType === ScaleType.POINT) {
       return 0.5; // so the point positions align with centers of band scales.
+    } else if (scaleType === ScaleType.BAND) {
+      return scaleConfig.offsetBandPaddingOuter;
     }
   }
   return undefined;
