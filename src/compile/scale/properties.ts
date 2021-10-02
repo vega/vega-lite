@@ -304,10 +304,10 @@ export function paddingInner(
     // Basically it doesn't make sense to add padding for color and size.
 
     // paddingOuter would only be called if it's a band scale, just return the default for bandScale.
-    const {bandPaddingInner, barBandPaddingInner, rectBandPaddingInner, nestedOffsetPaddingInner} = scaleConfig;
+    const {bandPaddingInner, barBandPaddingInner, rectBandPaddingInner, bandWithNestedOffsetPaddingInner} = scaleConfig;
 
     if (hasNestedOffsetScale) {
-      return nestedOffsetPaddingInner;
+      return bandWithNestedOffsetPaddingInner;
     }
 
     return getFirstDefined(bandPaddingInner, mark === 'bar' ? barBandPaddingInner : rectBandPaddingInner);
@@ -329,9 +329,9 @@ export function paddingOuter(
   }
 
   if (isXorY(channel)) {
-    const {bandPaddingOuter, nestedOffsetPaddingOuter} = scaleConfig;
+    const {bandPaddingOuter, bandWithNestedOffsetPaddingOuter} = scaleConfig;
     if (hasNestedOffsetScale) {
-      return nestedOffsetPaddingOuter;
+      return bandWithNestedOffsetPaddingOuter;
     }
     // Padding is only set for X and Y by default.
     // Basically it doesn't make sense to add padding for color and size.

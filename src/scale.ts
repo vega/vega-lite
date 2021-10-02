@@ -188,7 +188,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
    * @minimum 0
    * @maximum 1
    */
-  nestedOffsetPaddingInner?: number | ES;
+  bandWithNestedOffsetPaddingInner?: number | ES;
 
   /**
    * Default outer padding for `x` and `y` band scales with nested `xOffset` and `yOffset` encoding.
@@ -199,7 +199,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
    * @maximum 1
    */
   // Note: nested offset always uses band scale, so we don't need "band" in the name for brevity.
-  nestedOffsetPaddingOuter?: number | ES;
+  bandWithNestedOffsetPaddingOuter?: number | ES;
 
   /**
    * Default inner padding for `x` and `y` band scales.
@@ -396,8 +396,8 @@ export const defaultScaleConfig: ScaleConfig<SignalRef> = {
 
   barBandPaddingInner: 0.1,
   rectBandPaddingInner: 0,
-  nestedOffsetPaddingInner: 0.2,
-  nestedOffsetPaddingOuter: 0.2,
+  bandWithNestedOffsetPaddingInner: 0.2,
+  bandWithNestedOffsetPaddingOuter: 0.2,
 
   minBandSize: 2,
 

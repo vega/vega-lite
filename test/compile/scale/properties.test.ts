@@ -88,8 +88,8 @@ describe('compile/scale', () => {
     });
 
     it('should be config.scale.nestedOffsetPaddingInner if channel is x or y and padding is not specified and there is a nested offset encoding', () => {
-      expect(rules.paddingInner(undefined, 'x', 'bar', {nestedOffsetPaddingInner: 15}, true)).toEqual(15);
-      expect(rules.paddingInner(undefined, 'y', 'bar', {nestedOffsetPaddingInner: 15}, true)).toEqual(15);
+      expect(rules.paddingInner(undefined, 'x', 'bar', {bandWithNestedOffsetPaddingInner: 15}, true)).toEqual(15);
+      expect(rules.paddingInner(undefined, 'y', 'bar', {bandWithNestedOffsetPaddingInner: 15}, true)).toEqual(15);
     });
 
     it('should be undefined for non-xy channels', () => {
@@ -114,7 +114,7 @@ describe('compile/scale', () => {
 
     it('should be config.scale.nestedOffsetPaddingOuter for band scale if channel is x or y and padding is not specified and there is a nested offset encoding', () => {
       for (const c of ['x', 'y'] as const) {
-        expect(rules.paddingOuter(undefined, c, 'band', 0, {nestedOffsetPaddingOuter: 16}, true)).toEqual(16);
+        expect(rules.paddingOuter(undefined, c, 'band', 0, {bandWithNestedOffsetPaddingOuter: 16}, true)).toEqual(16);
       }
     });
 
