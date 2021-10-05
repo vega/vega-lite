@@ -73,6 +73,23 @@ describe('FacetModel', () => {
         row: {field: 'a', type: 'nominal', header: null}
       });
     });
+
+    it('honors overall dimensions', () => {
+      const model = parseFacetModel({
+        facet: {
+          row: {type: 'ordinal', field: 'a'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {}
+        },
+        width: 500,
+        height: 300
+      });
+      expect(model.width).toEqual({signal: 'width'});
+      expect(model.height).toEqual({signal: 'height'});
+      expect(model.size).toEqual({width: 500, height: 300});
+    });
   });
 
   describe('parseAxisAndHeader', () => {
@@ -415,6 +432,34 @@ describe('FacetModel', () => {
       model.parseAxesAndHeaders();
       const layout = model.assembleLayout();
       expect(layout.titleAnchor).toEqual({column: 'end'});
+    });
+
+    it('returns signals that size the child facets relative to the parent', () => {
+      const model = parseFacetModelWithScale({
+        data: {url: 'data/cars.json'},
+        facet: {
+          column: {field: 'Origin', type: 'ordinal'}
+        },
+        spec: {
+          mark: 'point',
+          encoding: {
+            x: {field: 'Horsepower', type: 'quantitative'},
+            y: {field: 'Acceleration', type: 'quantitative'}
+          }
+        },
+        width: 500,
+        height: 300
+      });
+      model.parseLayoutSize();
+      model.parseAxesAndHeaders();
+      const layoutSignals = model.assembleLayoutSignals();
+
+      expect(layoutSignals).toEqual([
+        {name: 'width', value: 500},
+        {name: 'height', value: 300},
+        {name: 'child_width', update: "width / length(data('column_domain'))"},
+        {name: 'child_height', update: 'height'}
+      ]);
     });
   });
 
