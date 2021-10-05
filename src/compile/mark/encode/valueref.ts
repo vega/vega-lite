@@ -173,7 +173,7 @@ export function interpolatedSignalRef({
   fieldOrDatumDef: TypedFieldDef<string>;
   fieldOrDatumDef2?: SecondaryFieldDef<string>;
   startSuffix?: string;
-  offset: number | SignalRef;
+  offset: number | SignalRef | VgValueRef;
   bandPosition: number | SignalRef;
 }): VgValueRef {
   const expr = 0 < bandPosition && bandPosition < 1 ? 'datum' : undefined;
@@ -213,7 +213,7 @@ export interface MidPointParams {
   scaleName: string;
   scale: ScaleComponent;
   stack?: StackProperties;
-  offset?: number | SignalRef;
+  offset?: number | SignalRef | VgValueRef;
   defaultRef: VgValueRef | (() => VgValueRef);
 
   bandPosition?: number | SignalRef;

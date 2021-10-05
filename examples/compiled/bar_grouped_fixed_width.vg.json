@@ -1,0 +1,119 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 500,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"category": "A", "group": "x", "value": 0.1},
+        {"category": "A", "group": "y", "value": 0.6},
+        {"category": "A", "group": "z", "value": 0.9},
+        {"category": "B", "group": "x", "value": 0.7},
+        {"category": "B", "group": "y", "value": 0.2},
+        {"category": "B", "group": "z", "value": 1.1},
+        {"category": "C", "group": "x", "value": 0.6},
+        {"category": "C", "group": "y", "value": 0.1},
+        {"category": "C", "group": "z", "value": 0.2}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["category", "group"],
+          "field": "value",
+          "sort": {"field": [], "order": []},
+          "as": ["value_start", "value_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "group"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]) + \"; value: \" + (format(datum[\"value\"], \"\")) + \"; group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"])"
+          },
+          "x": {
+            "scale": "x",
+            "field": "category",
+            "offset": {"scale": "xOffset", "field": "group"}
+          },
+          "width": {"scale": "xOffset", "band": 1},
+          "y": {"scale": "y", "field": "value_end"},
+          "y2": {"scale": "y", "field": "value_start"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "category", "sort": true},
+      "range": [0, {"signal": "width"}],
+      "paddingInner": 0.2,
+      "paddingOuter": 0.2
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "fields": ["value_start", "value_end"]},
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "xOffset",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "group", "sort": true},
+      "range": [0, {"signal": "bandwidth('x')"}]
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "group", "sort": true},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "category",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "population",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [{"fill": "color", "symbolType": "square", "title": "group"}]
+}

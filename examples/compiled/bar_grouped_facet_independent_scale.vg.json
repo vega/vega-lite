@@ -1,0 +1,205 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"category": "A", "group": "x", "value": 0.1},
+        {"category": "A", "group": "y", "value": 0.6},
+        {"category": "A", "group": "z", "value": 0.9},
+        {"category": "B", "group": "x", "value": 0.7},
+        {"category": "B", "group": "y", "value": 0.2},
+        {"category": "C", "group": "x", "value": 0.6}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["group", "category"],
+          "field": "value",
+          "sort": {"field": [], "order": []},
+          "as": ["value_start", "value_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
+        }
+      ]
+    },
+    {
+      "name": "column_domain",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["category"],
+          "fields": ["group"],
+          "ops": ["distinct"],
+          "as": ["distinct_group"]
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "child_x_step", "value": 20},
+    {"name": "child_height", "value": 200}
+  ],
+  "layout": {
+    "padding": 20,
+    "titleAnchor": {"column": "end"},
+    "offset": {"columnTitle": 10},
+    "columns": {"signal": "length(data('column_domain'))"},
+    "bounds": "full",
+    "align": "none"
+  },
+  "marks": [
+    {
+      "name": "column-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {
+        "text": "category",
+        "style": "guide-title",
+        "orient": "bottom",
+        "offset": 10
+      }
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "value",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "from": {"data": "column_domain"},
+      "sort": {"field": "datum[\"category\"]", "order": "ascending"},
+      "title": {
+        "text": {
+          "signal": "isValid(parent[\"category\"]) ? parent[\"category\"] : \"\"+parent[\"category\"]"
+        },
+        "style": "guide-label",
+        "frame": "group",
+        "orient": "bottom",
+        "offset": 10
+      },
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "bandspace(datum[\"distinct_group\"], 0.1, 0.05) * child_x_step"
+          }
+        }
+      }
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "style": "cell",
+      "from": {
+        "facet": {
+          "name": "facet",
+          "data": "data_0",
+          "groupby": ["category"],
+          "aggregate": {
+            "fields": ["group"],
+            "ops": ["distinct"],
+            "as": ["distinct_group"]
+          }
+        }
+      },
+      "sort": {"field": ["datum[\"category\"]"], "order": ["ascending"]},
+      "encode": {
+        "update": {
+          "width": {
+            "signal": "bandspace(datum[\"distinct_group\"], 0.1, 0.05) * child_x_step"
+          },
+          "height": {"signal": "child_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "rect",
+          "style": ["bar"],
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "fill": {"scale": "color", "field": "group"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"]) + \"; value: \" + (format(datum[\"value\"], \"\"))"
+              },
+              "x": {"scale": "child_x", "field": "group"},
+              "width": {"scale": "child_x", "band": 1},
+              "y": {"scale": "y", "field": "value_end"},
+              "y2": {"scale": "y", "field": "value_start"}
+            }
+          }
+        }
+      ],
+      "scales": [
+        {
+          "name": "child_x",
+          "type": "band",
+          "domain": {"data": "facet", "field": "group", "sort": true},
+          "range": {"step": {"signal": "child_x_step"}},
+          "paddingInner": 0.1,
+          "paddingOuter": 0.05
+        }
+      ],
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "gridScale": "child_x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "domain": false,
+          "labels": false,
+          "aria": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "fields": ["value_start", "value_end"]},
+      "range": [{"signal": "child_height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "group", "sort": true},
+      "range": "category"
+    }
+  ],
+  "legends": [{"fill": "color", "symbolType": "square", "title": "group"}],
+  "config": {"style": {"cell": {"stroke": "transparent"}}}
+}

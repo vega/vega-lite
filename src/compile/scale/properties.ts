@@ -5,6 +5,7 @@ import {
   COLOR,
   FILL,
   isXorY,
+  isXorYOffset,
   POLAR_POSITION_SCALE_CHANNELS,
   POSITION_SCALE_CHANNELS,
   ScaleChannel,
@@ -21,6 +22,7 @@ import {
 } from '../../channeldef';
 import {Config} from '../../config';
 import {isDateTime} from '../../datetime';
+import {channelHasNestedOffsetScale} from '../../encoding';
 import * as log from '../../log';
 import {Mark, MarkDef, RectConfig} from '../../mark';
 import {
@@ -115,7 +117,8 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
                 scalePaddingInner,
                 domain: specifiedScale.domain,
                 markDef,
-                config
+                config,
+                hasNestedOffsetScale: channelHasNestedOffsetScale(encoding, channel)
               })
             : config.scale[property];
         if (value !== undefined) {
@@ -130,6 +133,7 @@ export interface ScaleRuleParams {
   model: Model;
   channel: ScaleChannel;
   fieldOrDatumDef: ScaleFieldDef<string, Type> | ScaleDatumDef;
+  hasNestedOffsetScale: boolean;
   scaleType: ScaleType;
   scalePadding: number | SignalRef;
   scalePaddingInner: number | SignalRef;
@@ -150,11 +154,11 @@ export const scaleRules: {
   padding: ({channel, scaleType, fieldOrDatumDef, markDef, config}) =>
     padding(channel, scaleType, config.scale, fieldOrDatumDef, markDef, config.bar),
 
-  paddingInner: ({scalePadding, channel, markDef, config}) =>
-    paddingInner(scalePadding, channel, markDef.type, config.scale),
+  paddingInner: ({scalePadding, channel, markDef, config, hasNestedOffsetScale}) =>
+    paddingInner(scalePadding, channel, markDef.type, config.scale, hasNestedOffsetScale),
 
-  paddingOuter: ({scalePadding, channel, scaleType, markDef, scalePaddingInner, config}) =>
-    paddingOuter(scalePadding, channel, scaleType, markDef.type, scalePaddingInner, config.scale),
+  paddingOuter: ({scalePadding, channel, scaleType, scalePaddingInner, config, hasNestedOffsetScale}) =>
+    paddingOuter(scalePadding, channel, scaleType, scalePaddingInner, config.scale, hasNestedOffsetScale),
 
   reverse: ({fieldOrDatumDef, scaleType, channel, config}) => {
     const sort = isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined;
@@ -287,7 +291,8 @@ export function paddingInner(
   paddingValue: number | SignalRef,
   channel: ScaleChannel,
   mark: Mark,
-  scaleConfig: ScaleConfig<SignalRef>
+  scaleConfig: ScaleConfig<SignalRef>,
+  hasNestedOffsetScale = false
 ) {
   if (paddingValue !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingInner.
@@ -299,8 +304,11 @@ export function paddingInner(
     // Basically it doesn't make sense to add padding for color and size.
 
     // paddingOuter would only be called if it's a band scale, just return the default for bandScale.
+    const {bandPaddingInner, barBandPaddingInner, rectBandPaddingInner, nestedOffsetPaddingInner} = scaleConfig;
 
-    const {bandPaddingInner, barBandPaddingInner, rectBandPaddingInner} = scaleConfig;
+    if (hasNestedOffsetScale) {
+      return nestedOffsetPaddingInner;
+    }
 
     return getFirstDefined(bandPaddingInner, mark === 'bar' ? barBandPaddingInner : rectBandPaddingInner);
   }
@@ -311,9 +319,9 @@ export function paddingOuter(
   paddingValue: number | SignalRef,
   channel: ScaleChannel,
   scaleType: ScaleType,
-  mark: Mark,
   paddingInnerValue: number | SignalRef,
-  scaleConfig: ScaleConfig<SignalRef>
+  scaleConfig: ScaleConfig<SignalRef>,
+  hasNestedOffsetScale = false
 ) {
   if (paddingValue !== undefined) {
     // If user has already manually specified "padding", no need to add default paddingOuter.
@@ -321,11 +329,13 @@ export function paddingOuter(
   }
 
   if (isXorY(channel)) {
+    const {bandPaddingOuter, nestedOffsetPaddingOuter} = scaleConfig;
+    if (hasNestedOffsetScale) {
+      return nestedOffsetPaddingOuter;
+    }
     // Padding is only set for X and Y by default.
     // Basically it doesn't make sense to add padding for color and size.
     if (scaleType === ScaleType.BAND) {
-      const {bandPaddingOuter} = scaleConfig;
-
       return getFirstDefined(
         bandPaddingOuter,
         /* By default, paddingOuter is paddingInner / 2. The reason is that
@@ -334,6 +344,10 @@ export function paddingOuter(
           Note that step (by default) and cardinality are integers.) */
         isSignalRef(paddingInnerValue) ? {signal: `${paddingInnerValue.signal}/2`} : paddingInnerValue / 2
       );
+    }
+  } else if (isXorYOffset(channel)) {
+    if (scaleType === ScaleType.POINT) {
+      return 0.5; // so the point positions align with centers of band scales.
     }
   }
   return undefined;

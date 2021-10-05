@@ -1,6 +1,6 @@
 import {Transforms as VgTransform} from 'vega';
 import {isArray, isString} from 'vega-util';
-import {FieldName, getFieldDef, isFieldDef, PositionFieldDef, vgField} from '../../channeldef';
+import {FieldDef, FieldName, getFieldDef, isFieldDef, vgField} from '../../channeldef';
 import {SortFields, SortOrder} from '../../sort';
 import {StackOffset} from '../../stack';
 import {StackTransform} from '../../transform';
@@ -27,7 +27,7 @@ export interface StackComponent {
    */
   facetby: string[];
 
-  dimensionFieldDef?: PositionFieldDef<string>;
+  dimensionFieldDefs: FieldDef<string>[];
 
   /**
    * Stack measure's field. Used in makeFromEncoding.
@@ -107,6 +107,7 @@ export class StackNode extends DataFlowNode {
     }
 
     return new StackNode(parent, {
+      dimensionFieldDefs: [],
       stackField: stack,
       groupby,
       offset,
@@ -124,13 +125,14 @@ export class StackNode extends DataFlowNode {
       return null;
     }
 
-    const {groupbyChannel, fieldChannel, offset, impute} = stackProperties;
+    const {groupbyChannels, fieldChannel, offset, impute} = stackProperties;
 
-    let dimensionFieldDef: PositionFieldDef<string>;
-    if (groupbyChannel) {
-      const cDef = encoding[groupbyChannel];
-      dimensionFieldDef = getFieldDef(cDef) as PositionFieldDef<string>; // Fair to cast as groupByChannel is always either x or y
-    }
+    const dimensionFieldDefs = groupbyChannels
+      .map(groupbyChannel => {
+        const cDef = encoding[groupbyChannel];
+        return getFieldDef(cDef);
+      })
+      .filter(def => !!def);
 
     const stackby = getStackByFields(model);
     const orderDef = model.encoding.order;
@@ -152,7 +154,7 @@ export class StackNode extends DataFlowNode {
     }
 
     return new StackNode(parent, {
-      dimensionFieldDef,
+      dimensionFieldDefs,
       stackField: model.vgField(fieldChannel),
       facetby: [],
       stackby,
@@ -195,54 +197,61 @@ export class StackNode extends DataFlowNode {
   }
 
   private getGroupbyFields() {
-    const {dimensionFieldDef, impute, groupby} = this._stack;
-    if (dimensionFieldDef) {
-      if (dimensionFieldDef.bin) {
-        if (impute) {
-          // For binned group by field with impute, we calculate bin_mid
-          // as we cannot impute two fields simultaneously
-          return [vgField(dimensionFieldDef, {binSuffix: 'mid'})];
-        }
-        return [
-          // For binned group by field without impute, we need both bin (start) and bin_end
-          vgField(dimensionFieldDef, {}),
-          vgField(dimensionFieldDef, {binSuffix: 'end'})
-        ];
-      }
-      return [vgField(dimensionFieldDef)];
+    const {dimensionFieldDefs, impute, groupby} = this._stack;
+
+    if (dimensionFieldDefs.length > 0) {
+      return dimensionFieldDefs
+        .map(dimensionFieldDef => {
+          if (dimensionFieldDef.bin) {
+            if (impute) {
+              // For binned group by field with impute, we calculate bin_mid
+              // as we cannot impute two fields simultaneously
+              return [vgField(dimensionFieldDef, {binSuffix: 'mid'})];
+            }
+            return [
+              // For binned group by field without impute, we need both bin (start) and bin_end
+              vgField(dimensionFieldDef, {}),
+              vgField(dimensionFieldDef, {binSuffix: 'end'})
+            ];
+          }
+          return [vgField(dimensionFieldDef)];
+        })
+        .flat();
     }
     return groupby ?? [];
   }
 
   public assemble(): VgTransform[] {
     const transform: VgTransform[] = [];
-    const {facetby, dimensionFieldDef, stackField: field, stackby, sort, offset, impute, as} = this._stack;
+    const {facetby, dimensionFieldDefs, stackField: field, stackby, sort, offset, impute, as} = this._stack;
 
     // Impute
-    if (impute && dimensionFieldDef) {
-      const {bandPosition = 0.5, bin} = dimensionFieldDef;
-      if (bin) {
-        // As we can only impute one field at a time, we need to calculate
-        // mid point for a binned field
+    if (impute) {
+      for (const dimensionFieldDef of dimensionFieldDefs) {
+        const {bandPosition = 0.5, bin} = dimensionFieldDef;
+        if (bin) {
+          // As we can only impute one field at a time, we need to calculate
+          // mid point for a binned field
+
+          const binStart = vgField(dimensionFieldDef, {expr: 'datum'})
+          const binEnd = vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'});
+          transform.push({
+            type: 'formula',
+            expr:
+              `${bandPosition}*${binStart}+${1 - bandPosition}*${binEnd}`,
+            as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true})
+          });
+        }
+
         transform.push({
-          type: 'formula',
-          expr:
-            `${bandPosition}*` +
-            vgField(dimensionFieldDef, {expr: 'datum'}) +
-            `+${1 - bandPosition}*` +
-            vgField(dimensionFieldDef, {expr: 'datum', binSuffix: 'end'}),
-          as: vgField(dimensionFieldDef, {binSuffix: 'mid', forAs: true})
+          type: 'impute',
+          field,
+          groupby: [...stackby, ...facetby],
+          key: vgField(dimensionFieldDef, {binSuffix: 'mid'}),
+          method: 'value',
+          value: 0
         });
       }
-
-      transform.push({
-        type: 'impute',
-        field,
-        groupby: [...stackby, ...facetby],
-        key: vgField(dimensionFieldDef, {binSuffix: 'mid'}),
-        method: 'value',
-        value: 0
-      });
     }
 
     // Stack

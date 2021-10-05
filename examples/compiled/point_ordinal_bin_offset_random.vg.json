@@ -1,0 +1,136 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "extent",
+          "field": "Miles_per_Gallon",
+          "signal": "bin_maxbins_10_Miles_per_Gallon_extent"
+        },
+        {
+          "type": "bin",
+          "field": "Miles_per_Gallon",
+          "as": [
+            "bin_maxbins_10_Miles_per_Gallon",
+            "bin_maxbins_10_Miles_per_Gallon_end"
+          ],
+          "signal": "bin_maxbins_10_Miles_per_Gallon_bins",
+          "extent": {"signal": "bin_maxbins_10_Miles_per_Gallon_extent"},
+          "maxbins": 10
+        },
+        {
+          "type": "formula",
+          "expr": "!isValid(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) || !isFinite(+datum[\"bin_maxbins_10_Miles_per_Gallon\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Miles_per_Gallon\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Miles_per_Gallon_end\"], \"\")",
+          "as": "bin_maxbins_10_Miles_per_Gallon_range"
+        },
+        {"type": "formula", "expr": "random()", "as": "random"},
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"Horsepower\"]) && isFinite(+datum[\"Horsepower\"]) && isValid(datum[\"random\"]) && isFinite(+datum[\"random\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 50},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 0.2, 0.2) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "transparent"},
+          "stroke": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Horsepower: \" + (format(datum[\"Horsepower\"], \"\")) + \"; Miles_per_Gallon (binned): \" + (!isValid(datum[\"bin_maxbins_10_Miles_per_Gallon\"]) || !isFinite(+datum[\"bin_maxbins_10_Miles_per_Gallon\"]) ? \"null\" : format(datum[\"bin_maxbins_10_Miles_per_Gallon\"], \"\") + \" – \" + format(datum[\"bin_maxbins_10_Miles_per_Gallon_end\"], \"\")) + \"; random: \" + (format(datum[\"random\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "Horsepower"},
+          "y": {
+            "scale": "y",
+            "field": "bin_maxbins_10_Miles_per_Gallon_range",
+            "offset": {"scale": "yOffset", "field": "random"}
+          }
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Horsepower"},
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {
+        "data": "source_0",
+        "field": "bin_maxbins_10_Miles_per_Gallon_range",
+        "sort": {"field": "bin_maxbins_10_Miles_per_Gallon", "op": "min"}
+      },
+      "range": {"step": {"signal": "y_step"}},
+      "paddingInner": 0.2,
+      "paddingOuter": 0.2
+    },
+    {
+      "name": "yOffset",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "random"},
+      "range": [0, {"signal": "bandwidth('y')"}],
+      "zero": false
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Horsepower",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Miles_per_Gallon (binned)",
+      "zindex": 0
+    }
+  ]
+}

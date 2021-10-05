@@ -1,0 +1,185 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"category": "A", "group": "x", "value": 0.1},
+        {"category": "A", "group": "y", "value": 0.6},
+        {"category": "A", "group": "z", "value": 0.9},
+        {"category": "B", "group": "x", "value": 0.7},
+        {"category": "B", "group": "y", "value": 0.2},
+        {"category": "B", "group": "z", "value": 1.1},
+        {"category": "C", "group": "x", "value": 0.6},
+        {"category": "C", "group": "y", "value": 0.1},
+        {"category": "C", "group": "z", "value": 0.2}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": ["group", "category"],
+          "field": "value",
+          "sort": {"field": [], "order": []},
+          "as": ["value_start", "value_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
+        }
+      ]
+    },
+    {
+      "name": "column_domain",
+      "source": "data_0",
+      "transform": [{"type": "aggregate", "groupby": ["category"]}]
+    }
+  ],
+  "signals": [
+    {"name": "x_step", "value": 20},
+    {
+      "name": "child_width",
+      "update": "bandspace(domain('x').length, 0.1, 0.05) * x_step"
+    },
+    {"name": "child_height", "value": 200}
+  ],
+  "layout": {
+    "padding": 20,
+    "titleAnchor": {"column": "end"},
+    "offset": {"columnTitle": 10},
+    "columns": {"signal": "length(data('column_domain'))"},
+    "bounds": "full",
+    "align": "all"
+  },
+  "marks": [
+    {
+      "name": "column-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {
+        "text": "category",
+        "style": "guide-title",
+        "orient": "bottom",
+        "offset": 10
+      }
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "value",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "from": {"data": "column_domain"},
+      "sort": {"field": "datum[\"category\"]", "order": "ascending"},
+      "title": {
+        "text": {
+          "signal": "isValid(parent[\"category\"]) ? parent[\"category\"] : \"\"+parent[\"category\"]"
+        },
+        "style": "guide-label",
+        "frame": "group",
+        "orient": "bottom",
+        "offset": 10
+      },
+      "encode": {"update": {"width": {"signal": "child_width"}}}
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "style": "cell",
+      "from": {
+        "facet": {"name": "facet", "data": "data_0", "groupby": ["category"]}
+      },
+      "sort": {"field": ["datum[\"category\"]"], "order": ["ascending"]},
+      "encode": {
+        "update": {
+          "width": {"signal": "child_width"},
+          "height": {"signal": "child_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "rect",
+          "style": ["bar"],
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "fill": {"scale": "color", "field": "group"},
+              "ariaRoleDescription": {"value": "bar"},
+              "description": {
+                "signal": "\"group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"]) + \"; value: \" + (format(datum[\"value\"], \"\"))"
+              },
+              "x": {"scale": "x", "field": "group"},
+              "width": {"scale": "x", "band": 1},
+              "y": {"scale": "y", "field": "value_end"},
+              "y2": {"scale": "y", "field": "value_start"}
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "gridScale": "x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "domain": false,
+          "labels": false,
+          "aria": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "group", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "data_0", "fields": ["value_start", "value_end"]},
+      "range": [{"signal": "child_height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "group", "sort": true},
+      "range": "category"
+    }
+  ],
+  "legends": [{"fill": "color", "symbolType": "square", "title": "group"}],
+  "config": {"style": {"cell": {"stroke": "transparent"}}}
+}

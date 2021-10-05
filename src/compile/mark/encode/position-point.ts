@@ -14,7 +14,7 @@ import {VgValueRef} from '../../../vega.schema';
 import {getMarkPropOrConfig} from '../../common';
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
-import {getOffset} from './offset';
+import {positionOffset} from './offset';
 import * as ref from './valueref';
 
 /**
@@ -38,7 +38,13 @@ export function pointPosition(
   const scaleName = model.scaleName(channel);
   const scale = model.getScaleComponent(channel);
 
-  const offset = getOffset(channel, markDef);
+  const {offset, offsetType} = positionOffset({
+    channel,
+    markDef,
+    encoding,
+    model,
+    bandPosition: 0.5
+  });
 
   // Get default position or position from mark def
   const defaultRef = pointPositionDefaultRef({
@@ -63,7 +69,8 @@ export function pointPosition(
           scale,
           stack,
           offset,
-          defaultRef
+          defaultRef,
+          bandPosition: offsetType === 'encoding' ? 0 : undefined
         });
 
   return valueRef ? {[vgChannel || channel]: valueRef} : undefined;

@@ -44,8 +44,10 @@ import {
   URL,
   X,
   X2,
+  XOFFSET,
   Y,
-  Y2
+  Y2,
+  YOFFSET
 } from './channel';
 import {getMarkConfig, getMarkPropOrConfig} from './compile/common';
 import {isCustomFormatType} from './compile/format';
@@ -375,11 +377,17 @@ export interface ScaleMixins {
   scale?: Scale | null;
 }
 
+export type OffsetDef<F extends Field, T extends Type = StandardType> =
+  | ScaleFieldDef<F, T>
+  | ScaleDatumDef<F>
+  | ValueDef<number>;
+
 export interface DatumDef<
   F extends Field = string,
   V extends PrimitiveValue | DateTime | ExprRef | SignalRef = PrimitiveValue | DateTime | ExprRef | SignalRef
 > extends Partial<TypeMixins<Type>>,
-    BandMixins {
+    BandMixins,
+    TitleMixins {
   /**
    * A constant value in data domain.
    */
@@ -929,7 +937,7 @@ export function title(
   const guideTitle = getGuide(fieldOrDatumDef)?.title;
 
   if (!isFieldDef(fieldOrDatumDef)) {
-    return guideTitle;
+    return guideTitle ?? fieldOrDatumDef.title;
   }
   const fieldDef = fieldOrDatumDef;
 
@@ -1248,6 +1256,8 @@ export function channelCompatibility(
 
     case X:
     case Y:
+    case XOFFSET:
+    case YOFFSET:
     case COLOR:
     case FILL:
     case STROKE:
