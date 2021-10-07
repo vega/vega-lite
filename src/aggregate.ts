@@ -62,9 +62,10 @@ export function isAggregateOp(a: string | ArgminDef | ArgmaxDef): a is Aggregate
 }
 
 export const COUNTING_OPS: NonArgAggregateOp[] = ['count', 'valid', 'missing', 'distinct'];
+export const COUNTING_OPS_INDEX = toSet(COUNTING_OPS);
 
 export function isCountingAggregateOp(aggregate?: string | Aggregate): boolean {
-  return isString(aggregate) && contains(COUNTING_OPS, aggregate);
+  return isString(aggregate) && COUNTING_OPS_INDEX[aggregate];
 }
 
 export function isMinMaxOp(aggregate?: Aggregate | string): boolean {
