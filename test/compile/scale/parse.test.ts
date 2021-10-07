@@ -1,4 +1,3 @@
-import {toSet} from 'vega-util';
 import {parseScaleCore, parseScales} from '../../../src/compile/scale/parse';
 import * as log from '../../../src/log';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale';
@@ -6,8 +5,8 @@ import {parseModel, parseModelWithScale, parseUnitModelWithScale, without} from 
 
 describe('src/compile', () => {
   it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES without type, domain, and range properties', () => {
-    expect(toSet(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES)).toEqual(
-      toSet(without(SCALE_PROPERTIES, ['type', 'domain', 'range', 'rangeMax', 'rangeMin', 'scheme']))
+    expect(new Set(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES)).toEqual(
+      new Set(without(SCALE_PROPERTIES, ['type', 'domain', 'range', 'rangeMax', 'rangeMin', 'scheme']))
     );
   });
 

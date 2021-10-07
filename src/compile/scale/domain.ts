@@ -1,12 +1,13 @@
 import {SignalRef} from 'vega';
 import {isObject, isString} from 'vega-util';
 import {
+  Aggregate,
   isAggregateOp,
   isArgmaxDef,
   isArgminDef,
   MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX,
   NonArgAggregateOp,
-  SHARED_DOMAIN_OP_INDEX
+  SHARED_DOMAIN_OPS
 } from '../../aggregate';
 import {isBinning, isBinParams, isParameterExtent} from '../../bin';
 import {getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
@@ -22,6 +23,7 @@ import {
   valueExpr,
   vgField
 } from '../../channeldef';
+import {CompositeAggregate} from '../../compositemark';
 import {DataSourceType} from '../../data';
 import {DateTime} from '../../datetime';
 import {ExprRef} from '../../expr';
@@ -505,7 +507,7 @@ export function canUseUnaggregatedDomain(
     };
   }
 
-  if (isString(aggregate) && !SHARED_DOMAIN_OP_INDEX[aggregate]) {
+  if (isString(aggregate) && !(SHARED_DOMAIN_OPS as Set<Aggregate | CompositeAggregate>).has(aggregate)) {
     return {
       valid: false,
       reason: log.message.unaggregateDomainWithNonSharedDomainOp(aggregate)
