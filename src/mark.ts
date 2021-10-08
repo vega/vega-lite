@@ -119,8 +119,8 @@ export interface VLOnlyMarkConfig<ES extends ExprRef | SignalRef> extends ColorM
   /**
    * The secondary (inner) radius in pixels of arc marks.
    *
-   * @minimum 0
    * __Default value:__ `0`
+   * @minimum 0
    */
   radius2?: number | ES; // In Vega, this is called innerRadius
 }
@@ -261,25 +261,24 @@ export interface MarkConfig<ES extends ExprRef | SignalRef>
    *
    * For text marks, polar coordinate radial offset, in pixels, of the text from the origin determined by the `x` and `y` properties.
    *
-   * @minimum 0
-   *
    * __Default value:__ `min(plot_width, plot_height)/2`
+   * @minimum 0
    */
   radius?: number | ES; // overriding VG
 
   /**
    * The inner radius in pixels of arc marks. `innerRadius` is an alias for `radius2`.
    *
-   * @minimum 0
    * __Default value:__ `0`
+   * @minimum 0
    */
   innerRadius?: number | ES;
 
   /**
    * The outer radius in pixels of arc marks. `outerRadius` is an alias for `radius`.
    *
-   * @minimum 0
    * __Default value:__ `0`
+   * @minimum 0
    */
   outerRadius?: number | ES;
 }
