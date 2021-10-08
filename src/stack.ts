@@ -51,7 +51,7 @@ export interface StackProperties {
   groupbyChannels: ('x' | 'y' | 'theta' | 'radius' | 'xOffset' | 'yOffset')[];
 
   /** Field for groupbyChannel. */
-  groupbyFields: FieldName[];
+  groupbyFields: Set<FieldName>;
 
   /** Measure axis of the stack. */
   fieldChannel: 'x' | 'y' | 'theta' | 'radius';
@@ -168,7 +168,7 @@ export function stack(
 
   const dimensionChannel: 'x' | 'y' | 'theta' | 'radius' = getDimensionChannel(fieldChannel);
   const groupbyChannels: StackProperties['groupbyChannels'] = [];
-  const groupbyFields: FieldName[] = [];
+  const groupbyFields: Set<FieldName> = new Set();
 
   if (encoding[dimensionChannel]) {
     const dimensionDef = encoding[dimensionChannel];
@@ -177,7 +177,7 @@ export function stack(
     if (dimensionField && dimensionField !== stackedField) {
       // avoid grouping by the stacked field
       groupbyChannels.push(dimensionChannel);
-      groupbyFields.push(dimensionField);
+      groupbyFields.add(dimensionField);
     }
 
     const dimensionOffsetChannel = dimensionChannel === 'x' ? 'xOffset' : 'yOffset';
@@ -187,7 +187,7 @@ export function stack(
     if (dimensionOffsetField && dimensionOffsetField !== stackedField) {
       // avoid grouping by the stacked field
       groupbyChannels.push(dimensionOffsetChannel);
-      groupbyFields.push(dimensionOffsetField);
+      groupbyFields.add(dimensionOffsetField);
     }
   }
 
@@ -210,7 +210,7 @@ export function stack(
           // if fielddef is a repeat, just include it in the stack by
           !f ||
           // otherwise, the field must be different from the groupBy fields.
-          !contains(groupbyFields, f)
+          !groupbyFields.has(f)
         ) {
           sc.push({channel, fieldDef});
         }

@@ -183,7 +183,14 @@ describe('compile/mark/encode/tooltip', () => {
               type: 'quantitative'
             }
           },
-          {fieldChannel: 'x', groupbyChannels: [], groupbyFields: [], offset: 'normalize', impute: false, stackBy: []},
+          {
+            fieldChannel: 'x',
+            groupbyChannels: [],
+            groupbyFields: new Set(),
+            offset: 'normalize',
+            impute: false,
+            stackBy: []
+          },
           defaultConfig
         )
       ).toEqual({
