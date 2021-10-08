@@ -439,19 +439,19 @@ export function domainSort(
 
   const {stack} = model;
   const stackDimensions = stack
-    ? [...(stack.groupbyField ? [stack.groupbyField] : []), ...stack.stackBy.map(s => s.fieldDef.field)]
+    ? new Set([...stack.groupbyFields, ...stack.stackBy.map(s => s.fieldDef.field)])
     : undefined;
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {
-    const isStackedMeasure = stack && !util.contains(stackDimensions, sort.field);
+    const isStackedMeasure = stack && !stackDimensions.has(sort.field);
     return normalizeSortField(sort, isStackedMeasure);
   } else if (isSortByEncoding(sort)) {
     const {encoding, order} = sort;
     const fieldDefToSortBy = model.fieldDef(encoding);
     const {aggregate, field} = fieldDefToSortBy;
 
-    const isStackedMeasure = stack && !util.contains(stackDimensions, field);
+    const isStackedMeasure = stack && !stackDimensions.has(field);
 
     if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
       return normalizeSortField(

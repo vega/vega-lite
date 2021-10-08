@@ -3,7 +3,15 @@
  */
 import {AggregateOp, SignalRef} from 'vega';
 import {Aggregate} from '../aggregate';
-import {Channel, ExtendedChannel, FacetChannel, getSizeChannel, PositionScaleChannel, ScaleChannel} from '../channel';
+import {
+  Channel,
+  ExtendedChannel,
+  FacetChannel,
+  getSizeChannel,
+  OffsetScaleChannel,
+  PositionScaleChannel,
+  ScaleChannel
+} from '../channel';
 import {HiddenCompositeAggregate, TypedFieldDef, Value} from '../channeldef';
 import {SplitParentProperty} from '../compile/split';
 import {CompositeMark} from '../compositemark';
@@ -141,6 +149,14 @@ export function projectionOverridden<ES extends ExprRef | SignalRef>(opt: {
 
 export const REPLACE_ANGLE_WITH_THETA = 'Arc marks uses theta channel rather than angle, replacing angle with theta.';
 
+export function offsetNestedInsideContinuousPositionScaleDropped(mainChannel: PositionScaleChannel) {
+  return `${mainChannel}Offset dropped because ${mainChannel} is continuous`;
+}
+
+export function replaceOffsetWithMainChannel(mainChannel: PositionScaleChannel) {
+  return `There is no ${mainChannel} encoding. Replacing ${mainChannel}Offset encoding as ${mainChannel}.`;
+}
+
 export function primitiveChannelDef(
   channel: ExtendedChannel,
   type: 'string' | 'number' | 'boolean',
@@ -190,6 +206,10 @@ export function incompatibleChannel(
   when?: string
 ) {
   return `${channel} dropped as it is incompatible with "${markOrFacet}"${when ? ` when ${when}` : ''}.`;
+}
+
+export function offsetEncodingScaleIgnored(channel: OffsetScaleChannel) {
+  return `${channel} encoding has no scale, so specified scale is ignored.`;
 }
 
 export function invalidEncodingChannel(channel: ExtendedChannel) {

@@ -2,7 +2,7 @@ import {InitSignal, NewSignal} from 'vega';
 import {getViewConfigContinuousSize} from '../../config';
 import {hasDiscreteDomain} from '../../scale';
 import {getFirstDefined} from '../../util';
-import {isVgRangeStep, VgRangeStep} from '../../vega.schema';
+import {isSignalRef, isVgRangeStep, VgRangeStep} from '../../vega.schema';
 import {signalOrStringValue} from '../common';
 import {isFacetModel, Model} from '../model';
 import {ScaleComponent} from '../scale/component';
@@ -75,10 +75,12 @@ export function sizeSignals(model: Model, sizeType: LayoutSizeType): (NewSignal 
 }
 
 function stepSignal(scaleName: string, range: VgRangeStep): NewSignal {
-  return {
-    name: `${scaleName}_step`,
-    value: range.step
-  };
+  const name = `${scaleName}_step`;
+  if (isSignalRef(range.step)) {
+    return {name, update: range.step.signal};
+  } else {
+    return {name, value: range.step};
+  }
 }
 
 export function sizeExpr(scaleName: string, scaleComponent: ScaleComponent, cardinality: string) {

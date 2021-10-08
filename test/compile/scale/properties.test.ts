@@ -1,4 +1,4 @@
-import {NONPOSITION_SCALE_CHANNELS} from '../../../src/channel';
+import {NONPOSITION_SCALE_CHANNELS, OFFSET_SCALE_CHANNELS} from '../../../src/channel';
 import * as rules from '../../../src/compile/scale/properties';
 import {AREA, BAR, LINE} from '../../../src/mark';
 import {ScaleType} from '../../../src/scale';
@@ -79,17 +79,32 @@ describe('compile/scale', () => {
 
   describe('paddingInner', () => {
     it('should be undefined if padding is specified', () => {
-      expect(rules.paddingInner(10, 'x', 'bar', {})).toBeUndefined();
+      expect(rules.paddingInner(10, 'x', 'bar', 'band', {})).toBeUndefined();
     });
 
     it('should be bandPaddingInner if channel is x or y and padding is not specified', () => {
-      expect(rules.paddingInner(undefined, 'x', 'bar', {bandPaddingInner: 15})).toEqual(15);
-      expect(rules.paddingInner(undefined, 'y', 'bar', {bandPaddingInner: 15})).toEqual(15);
+      expect(rules.paddingInner(undefined, 'x', 'bar', 'band', {bandPaddingInner: 15})).toEqual(15);
+      expect(rules.paddingInner(undefined, 'y', 'bar', 'band', {bandPaddingInner: 15})).toEqual(15);
+    });
+
+    it('should be config.scale.nestedOffsetPaddingInner if channel is x or y and padding is not specified and there is a nested offset encoding', () => {
+      expect(rules.paddingInner(undefined, 'x', 'bar', 'band', {bandWithNestedOffsetPaddingInner: 15}, true)).toEqual(
+        15
+      );
+      expect(rules.paddingInner(undefined, 'y', 'bar', 'band', {bandWithNestedOffsetPaddingInner: 15}, true)).toEqual(
+        15
+      );
     });
 
     it('should be undefined for non-xy channels', () => {
       for (const c of NONPOSITION_SCALE_CHANNELS) {
-        expect(rules.paddingInner(undefined, c, 'bar', {bandPaddingInner: 15})).toBeUndefined();
+        expect(rules.paddingInner(undefined, c, 'bar', 'band', {bandPaddingInner: 15})).toBeUndefined();
+      }
+    });
+
+    it('should be offsetBandPaddingInnher for x/y-offset channels', () => {
+      for (const c of OFFSET_SCALE_CHANNELS) {
+        expect(rules.paddingInner(undefined, c, 'bar', 'band', {offsetBandPaddingInner: 0.11})).toBe(0.11);
       }
     });
   });
@@ -97,26 +112,44 @@ describe('compile/scale', () => {
   describe('paddingOuter', () => {
     it('should be undefined if padding is specified', () => {
       for (const scaleType of ['point', 'band'] as ScaleType[]) {
-        expect(rules.paddingOuter(10, 'x', scaleType, 'bar', 0, {})).toBeUndefined();
+        expect(rules.paddingOuter(10, 'x', scaleType, 0, {})).toBeUndefined();
       }
     });
 
     it('should be config.scale.bandPaddingOuter for band scale if channel is x or y and padding is not specified and config.scale.bandPaddingOuter', () => {
       for (const c of ['x', 'y'] as const) {
-        expect(rules.paddingOuter(undefined, c, 'band', 'bar', 0, {bandPaddingOuter: 16})).toEqual(16);
+        expect(rules.paddingOuter(undefined, c, 'band', 0, {bandPaddingOuter: 16})).toEqual(16);
       }
     });
+
+    it('should be config.scale.nestedOffsetPaddingOuter for band scale if channel is x or y and padding is not specified and there is a nested offset encoding', () => {
+      for (const c of ['x', 'y'] as const) {
+        expect(rules.paddingOuter(undefined, c, 'band', 0, {bandWithNestedOffsetPaddingOuter: 16}, true)).toEqual(16);
+      }
+    });
+
     it('should be paddingInner/2 for band scale if channel is x or y and padding is not specified and config.scale.bandPaddingOuter', () => {
       for (const c of ['x', 'y'] as const) {
-        expect(rules.paddingOuter(undefined, c, 'band', 'bar', 10, {})).toEqual(5);
+        expect(rules.paddingOuter(undefined, c, 'band', 10, {})).toEqual(5);
       }
     });
 
     it('should be undefined for non-xy channels', () => {
       for (const c of NONPOSITION_SCALE_CHANNELS) {
         for (const scaleType of ['point', 'band'] as ScaleType[]) {
-          expect(rules.paddingOuter(undefined, c, scaleType, 'bar', 0, {})).toBeUndefined();
+          expect(rules.paddingOuter(undefined, c, scaleType, 0, {})).toBeUndefined();
         }
+      }
+    });
+
+    it('should be 0.5 for x/yOffset channels with point scales', () => {
+      for (const c of ['xOffset', 'yOffset'] as const) {
+        expect(rules.paddingOuter(undefined, c, 'point', 0, {})).toEqual(0.5);
+      }
+    });
+    it('should be offsetBandPaddingOuter for x/yOffset channels with band scales', () => {
+      for (const c of ['xOffset', 'yOffset'] as const) {
+        expect(rules.paddingOuter(undefined, c, 'band', 0, {offsetBandPaddingOuter: 0.23})).toEqual(0.23);
       }
     });
   });

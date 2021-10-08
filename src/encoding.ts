@@ -11,11 +11,14 @@ import {
   DETAIL,
   FILL,
   FILLOPACITY,
+  getMainChannelFromOffsetChannel,
+  getOffsetScaleChannel,
   HREF,
   isChannel,
   isNonPositionScaleChannel,
   isSecondaryRangeChannel,
   isXorY,
+  isXorYOffset,
   KEY,
   LATITUDE,
   LATITUDE2,
@@ -40,8 +43,10 @@ import {
   URL,
   X,
   X2,
+  XOFFSET,
   Y,
-  Y2
+  Y2,
+  YOFFSET
 } from './channel';
 import {
   binRequiresRange,
@@ -53,6 +58,7 @@ import {
   getFieldDef,
   getGuide,
   hasConditionalFieldDef,
+  hasConditionalFieldOrDatumDef,
   initChannelDef,
   initFieldDef,
   isConditionalDef,
@@ -63,6 +69,7 @@ import {
   LatLongDef,
   NumericArrayMarkPropDef,
   NumericMarkPropDef,
+  OffsetDef,
   OrderFieldDef,
   OrderValueDef,
   PolarDef,
@@ -83,7 +90,7 @@ import * as log from './log';
 import {Mark} from './mark';
 import {EncodingFacetMapping} from './spec/facet';
 import {AggregatedFieldDef, BinTransform, TimeUnitTransform} from './transform';
-import {QUANTITATIVE, TEMPORAL} from './type';
+import {isContinuous, isDiscrete, QUANTITATIVE, TEMPORAL} from './type';
 import {keys, some} from './util';
 import {isSignalRef} from './vega.schema';
 
@@ -101,6 +108,16 @@ export interface Encoding<F extends Field> {
    * The `value` of this channel can be a number or a string `"height"` for the height of the plot.
    */
   y?: PositionDef<F>;
+
+  /**
+   * Offset of x-position of the marks
+   */
+  xOffset?: OffsetDef<F>;
+
+  /**
+   * Offset of y-position of the marks
+   */
+  yOffset?: OffsetDef<F>;
 
   /**
    * X2 coordinates for ranged `"area"`, `"bar"`, `"rect"`, and  `"rule"`.
@@ -324,6 +341,35 @@ export function channelHasField<F extends Field>(
   return false;
 }
 
+export function channelHasFieldOrDatum<F extends Field>(
+  encoding: EncodingWithFacet<F>,
+  channel: keyof EncodingWithFacet<F>
+): boolean {
+  const channelDef = encoding && encoding[channel];
+  if (channelDef) {
+    if (isArray(channelDef)) {
+      return some(channelDef, fieldDef => !!fieldDef.field);
+    } else {
+      return isFieldDef(channelDef) || isDatumDef(channelDef) || hasConditionalFieldOrDatumDef<Field>(channelDef);
+    }
+  }
+  return false;
+}
+
+export function channelHasNestedOffsetScale<F extends Field>(
+  encoding: EncodingWithFacet<F>,
+  channel: keyof EncodingWithFacet<F>
+): boolean {
+  if (isXorY(channel)) {
+    const fieldDef = encoding[channel];
+    if ((isFieldDef(fieldDef) || isDatumDef(fieldDef)) && isDiscrete(fieldDef.type)) {
+      const offsetChannel = getOffsetScaleChannel(channel);
+      return channelHasFieldOrDatum(encoding, offsetChannel);
+    }
+  }
+  return false;
+}
+
 export function isAggregate(encoding: EncodingWithFacet<any>) {
   return some(CHANNELS, channel => {
     if (channelHasField(encoding, channel)) {
@@ -493,6 +539,25 @@ export function initEncoding(
     }
 
     const channelDef = encoding[channel];
+    if (isXorYOffset(channel)) {
+      const mainChannel = getMainChannelFromOffsetChannel(channel);
+
+      const positionDef = normalizedEncoding[mainChannel];
+      if (isFieldDef(positionDef)) {
+        if (isContinuous(positionDef.type)) {
+          if (isFieldDef(channelDef)) {
+            // TODO: nesting continuous field instead continuous field should
+            // behave like offsetting the data in data domain
+            log.warn(log.message.offsetNestedInsideContinuousPositionScaleDropped(mainChannel));
+            continue;
+          }
+        }
+      } else {
+        // no x/y, replace it with main channel
+        channel = mainChannel;
+        log.warn(log.message.replaceOffsetWithMainChannel(mainChannel));
+      }
+    }
 
     if (channel === 'angle' && mark === 'arc' && !encoding.theta) {
       log.warn(log.message.REPLACE_ANGLE_WITH_THETA);
@@ -649,6 +714,8 @@ export function pathGroupingFields(mark: Mark, encoding: Encoding<string>): stri
       case URL:
       case X2:
       case Y2:
+      case XOFFSET:
+      case YOFFSET:
       case THETA:
       case THETA2:
       case RADIUS:

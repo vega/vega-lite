@@ -51,11 +51,26 @@ export interface DataMixins {
   data: Data;
 }
 
+export type StepFor = 'position' | 'offset';
+
 export interface Step {
   /**
    * The size (width/height) per discrete step.
    */
   step: number;
+
+  /**
+   * Whether to apply the step to position scale or offset scale when there are both `x` and `xOffset` or both `y` and `yOffset` encodings.
+   */
+  for?: StepFor;
+}
+
+export function getStepFor({step, offsetIsDiscrete}: {step: Step; offsetIsDiscrete: boolean}): StepFor {
+  if (offsetIsDiscrete) {
+    return step.for ?? 'offset';
+  } else {
+    return 'position';
+  }
 }
 
 export function isStep(size: number | Step | 'container' | 'merged'): size is Step {

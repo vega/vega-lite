@@ -81,6 +81,7 @@ An integral part of the data visualization process is encoding data with visual 
 The keys in the `encoding` object are encoding channels. Vega-Lite supports the following groups of encoding channels
 
 - [Position Channels](#position): `x`, `y`, `x2`, `y2`, `xError`, `yError`, `xError2`, `yError2`
+- [Position Offset Channels](#position-offset): `xOffset`, `yOffset`
 - [Polar Position Channels](#polar): `theta`, `theta2`, `radius`, `radius2`
 - [Geographic Position Channels](#geo): `longitude`, `latitude`, `longitude2`, `latitude2`
 - [Mark Property Channels](#mark-prop): `angle`, `color` (and `fill` / `stroke`), `opacity`, `fillOpacity`, `strokeOpacity`, `shape`, `size`, `strokeDash`, `strokeWidth`
@@ -211,6 +212,28 @@ In addition to the general [field definition properties](#field-def), field defi
 {% include table.html props="scale,axis,sort,impute,stack" source="PositionFieldDef" %}
 
 **Note:** `x2` and `y2` do not have their own definitions for `scale`, `axis`, `sort`, and `stack` since they share the same scales and axes with `x` and `y` respectively.
+
+{:#positon-offset}
+
+## Position Offset Channels
+
+`xOffset` and `yOffset` position channels determine additional offset to the `x` or `y` position.
+
+### Position Offset Field Definition and Datum Definition
+
+In addition to the general [field definition properties](#field-def), field definitions for `xOffset` and `yOffset` channels may include the properties listed below. Similarly, [datum definitions](#datum-def) for `x` and `y` channels also support these properties.
+
+{% include table.html props="scale,sort" source="ScaleFieldDef" %}
+
+### Example: Grouped Bar Chart
+
+<span class="vl-example" data-name="bar_grouped"></span>
+
+**Note:** Read [here](size.html#offset-step) for more details about how to set step size for offset scale.
+
+### Example: Jittering
+
+<span class="vl-example" data-name="point_offset_random"></span>
 
 {:#polar}
 
