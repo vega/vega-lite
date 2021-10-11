@@ -193,9 +193,31 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   clamp?: boolean | ES;
 
   /**
-   * Default inner padding for `x` and `y` band-ordinal scales.
+   * Default inner padding for `x` and `y` band scales with nested `xOffset` and `yOffset` encoding.
+   *
+   * __Default value:__ `0.2`
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  bandWithNestedOffsetPaddingInner?: number | ES;
+
+  /**
+   * Default outer padding for `x` and `y` band scales with nested `xOffset` and `yOffset` encoding.
+   *
+   * __Default value:__ `0.2`
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  // Note: nested offset always uses band scale, so we don't need "band" in the name for brevity.
+  bandWithNestedOffsetPaddingOuter?: number | ES;
+
+  /**
+   * Default inner padding for `x` and `y` band scales.
    *
    * __Default value:__
+   * - `nestedOffsetPaddingInner` for x/y scales with nested x/y offset scales.
    * - `barBandPaddingInner` for bar marks (`0.1` by default)
    * - `rectBandPaddingInner` for rect and other marks (`0` by default)
    *
@@ -205,7 +227,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   bandPaddingInner?: number | ES;
 
   /**
-   * Default outer padding for `x` and `y` band-ordinal scales.
+   * Default outer padding for `x` and `y` band scales.
    *
    * __Default value:__ `paddingInner/2` (which makes _width/height = number of unique values * step_)
    *
@@ -235,9 +257,23 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   rectBandPaddingInner?: number | ES;
 
   /**
-   * Default padding for continuous scales.
+   * Default padding inner for xOffset/yOffset's band scales.
    *
-   * __Default:__ `5` for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.
+   * __Default Value:__ `0`
+   */
+  offsetBandPaddingInner?: number | ES;
+
+  /**
+   * Default padding outer for xOffset/yOffset's band scales.
+   *
+   * __Default Value:__ `0`
+   */
+  offsetBandPaddingOuter?: number | ES;
+
+  /**
+   * Default padding for continuous x/y scales.
+   *
+   * __Default:__ The bar width for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.
    *
    * @minimum 0
    */
@@ -386,6 +422,8 @@ export const defaultScaleConfig: ScaleConfig<SignalRef> = {
 
   barBandPaddingInner: 0.1,
   rectBandPaddingInner: 0,
+  bandWithNestedOffsetPaddingInner: 0.2,
+  bandWithNestedOffsetPaddingOuter: 0.2,
 
   minBandSize: 2,
 
@@ -812,16 +850,29 @@ export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType:
   return true;
 }
 
-export function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean {
+export function channelSupportScaleType(channel: Channel, scaleType: ScaleType, hasNestedOffsetScale = false): boolean {
   if (!CHANNEL.isScaleChannel(channel)) {
     return false;
   }
   switch (channel) {
     case CHANNEL.X:
     case CHANNEL.Y:
+    case CHANNEL.XOFFSET:
+    case CHANNEL.YOFFSET:
     case CHANNEL.THETA:
     case CHANNEL.RADIUS:
-      return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
+      if (isContinuousToContinuous(scaleType)) {
+        return true;
+      } else if (scaleType === 'band') {
+        return true;
+      } else if (scaleType === 'point') {
+        /*
+          Point scale can't be use if the position has a nested offset scale
+          because if there is a nested scale, then it's band.
+        */
+        return !hasNestedOffsetScale;
+      }
+      return false;
     case CHANNEL.SIZE: // TODO: size and opacity can support ordinal with more modification
     case CHANNEL.STROKEWIDTH:
     case CHANNEL.OPACITY:

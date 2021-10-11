@@ -169,16 +169,18 @@ function getGroupsForStackedBarWithCornerRadius(model: UnitModel) {
 
   const groupby: string[] = [];
 
-  if (model.stack.groupbyChannel) {
-    // For bin and time unit, we have to add bin/timeunit -end channels.
-    const groupByField = model.fieldDef(model.stack.groupbyChannel);
-    const field = vgField(groupByField);
-    if (field) {
-      groupby.push(field);
-    }
+  if (model.stack.groupbyChannels?.length > 0) {
+    for (const groupbyChannel of model.stack.groupbyChannels) {
+      // For bin and time unit, we have to add bin/timeunit -end channels.
+      const groupByField = model.fieldDef(groupbyChannel);
+      const field = vgField(groupByField);
+      if (field) {
+        groupby.push(field);
+      }
 
-    if (groupByField?.bin || groupByField?.timeUnit) {
-      groupby.push(vgField(groupByField, {binSuffix: 'end'}));
+      if (groupByField?.bin || groupByField?.timeUnit) {
+        groupby.push(vgField(groupByField, {binSuffix: 'end'}));
+      }
     }
   }
 

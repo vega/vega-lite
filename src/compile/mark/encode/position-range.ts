@@ -6,7 +6,7 @@ import {isRelativeBandSize, Mark, MarkConfig, MarkDef} from '../../../mark';
 import {VgEncodeEntry, VgValueRef} from '../../../vega.schema';
 import {getMarkStyleConfig} from '../../common';
 import {UnitModel} from '../../unit';
-import {getOffset} from './offset';
+import {positionOffset} from './offset';
 import {vgAlignedPositionChannel} from './position-align';
 import {pointPosition, pointPositionDefaultRef} from './position-point';
 import * as ref from './valueref';
@@ -82,10 +82,10 @@ function pointPosition2OrSize(
   const scaleName = model.scaleName(baseChannel);
   const scale = model.getScaleComponent(baseChannel);
 
-  const offset =
+  const {offset} =
     channel in encoding || channel in markDef
-      ? getOffset(channel, model.markDef)
-      : getOffset(baseChannel, model.markDef);
+      ? positionOffset({channel, markDef, encoding, model})
+      : positionOffset({channel: baseChannel, markDef, encoding, model});
 
   if (!channelDef && (channel === 'x2' || channel === 'y2') && (encoding.latitude || encoding.longitude)) {
     const vgSizeChannel = getSizeChannel(channel);

@@ -67,6 +67,12 @@ export function signalOrValueRef<T>(value: T | SignalRef | ExprRef): {value: T} 
   return value !== undefined ? {value} : undefined;
 }
 
+export function exprFromSignalRefOrValue<T extends SignalRef>(ref: Value<T> | SignalRef): string {
+  if (isSignalRef(ref)) {
+    return ref.signal;
+  }
+  return stringValue(ref);
+}
 export function exprFromValueRefOrSignalRef(ref: VgValueRef | SignalRef): string {
   if (isSignalRef(ref)) {
     return ref.signal;

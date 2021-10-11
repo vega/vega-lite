@@ -2,6 +2,7 @@ import {SignalRef} from 'vega';
 import {isArray, isNumber} from 'vega-util';
 import {isBinned, isBinning, isBinParams} from '../../../bin';
 import {
+  getOffsetChannel,
   getSecondaryRangeChannel,
   getSizeChannel,
   getVgPositionChannel,
@@ -21,7 +22,7 @@ import {getMarkPropOrConfig, signalOrStringValue, signalOrValueRef} from '../../
 import {ScaleComponent} from '../../scale/component';
 import {UnitModel} from '../../unit';
 import {nonPosition} from './nonposition';
-import {getOffset} from './offset';
+import {positionOffset} from './offset';
 import {vgAlignedPositionChannel} from './position-align';
 import {pointPositionDefaultRef} from './position-point';
 import {rangePosition} from './position-range';
@@ -120,6 +121,9 @@ function positionAndSize(
   const vgSizeChannel = getSizeChannel(channel);
   const channel2 = getSecondaryRangeChannel(channel);
 
+  const offsetScaleChannel = getOffsetChannel(channel);
+  const offsetScaleName = model.scaleName(offsetScaleChannel);
+
   // use "size" channel for bars, if there is orient and the channel matches the right orientation
   const useVlSizeChannel = (orient === 'horizontal' && channel === 'y') || (orient === 'vertical' && channel === 'x');
 
@@ -139,7 +143,9 @@ function positionAndSize(
   // Otherwise, apply default value
   const bandSize = getBandSize({channel, fieldDef, markDef, config, scaleType: scale?.get('type'), useVlSizeChannel});
 
-  sizeMixins = sizeMixins || {[vgSizeChannel]: defaultSizeRef(vgSizeChannel, scaleName, scale, config, bandSize)};
+  sizeMixins = sizeMixins || {
+    [vgSizeChannel]: defaultSizeRef(vgSizeChannel, offsetScaleName || scaleName, scale, config, bandSize)
+  };
 
   /*
     Band scales with size value and all point scales, use xc/yc + band=0.5
@@ -154,7 +160,7 @@ function positionAndSize(
 
   const vgChannel = vgAlignedPositionChannel(channel, markDef, config, defaultBandAlign);
   const center = vgChannel === 'xc' || vgChannel === 'yc';
-  const offset = getOffset(channel, markDef);
+  const {offset, offsetType} = positionOffset({channel, markDef, encoding, model, bandPosition: center ? 0.5 : 0});
 
   const posRef = ref.midPointRefWithPositionInvalidTest({
     channel,
@@ -167,7 +173,9 @@ function positionAndSize(
     offset,
     defaultRef: pointPositionDefaultRef({model, defaultPos: 'mid', channel, scaleName, scale}),
     bandPosition: center
-      ? 0.5
+      ? offsetType === 'encoding'
+        ? 0
+        : 0.5
       : isSignalRef(bandSize)
       ? {signal: `(1-${bandSize})/2`}
       : isRelativeBandSize(bandSize)
@@ -202,7 +210,7 @@ function getBinSpacing(
   spacing: number,
   reverse: boolean | SignalRef,
   translate: number | SignalRef,
-  offset: number | SignalRef
+  offset: number | VgValueRef
 ) {
   if (isPolarPositionChannel(channel)) {
     return 0;
@@ -239,7 +247,7 @@ function rectBinPosition({
   channel: 'x' | 'y' | 'theta' | 'radius';
   model: UnitModel;
 }) {
-  const {config, markDef} = model;
+  const {config, markDef, encoding} = model;
 
   const scale = model.getScaleComponent(channel);
   const scaleName = model.scaleName(channel);
@@ -257,7 +265,7 @@ function rectBinPosition({
   const vgChannel = getVgPositionChannel(channel);
   const vgChannel2 = getVgPositionChannel(channel2);
 
-  const offset = getOffset(channel, markDef);
+  const {offset} = positionOffset({channel, markDef, encoding, model, bandPosition: 0});
 
   const bandPosition = isSignalRef(bandSize)
     ? {signal: `(1-${bandSize.signal})/2`}
