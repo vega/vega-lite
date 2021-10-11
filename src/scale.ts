@@ -8,7 +8,7 @@ import {
   TimeInterval,
   TimeIntervalStep
 } from 'vega';
-import {isString, toSet} from 'vega-util';
+import {isString} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, isColorChannel} from './channel';
 import {DateTime} from './datetime';
@@ -119,52 +119,64 @@ export function scaleTypePrecedence(scaleType: ScaleType): number {
   return SCALE_PRECEDENCE_INDEX[scaleType];
 }
 
-export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'time', 'utc'];
-const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
+export const QUANTITATIVE_SCALES = new Set<ScaleType>([
+  'linear',
+  'log',
+  'pow',
+  'sqrt',
+  'symlog'
+]) as ReadonlySet<ScaleType>;
 
-export const QUANTITATIVE_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'symlog'];
-
-const QUANTITATIVE_SCALES_INDEX = toSet(QUANTITATIVE_SCALES);
+export const CONTINUOUS_TO_CONTINUOUS_SCALES = new Set<ScaleType>([
+  ...QUANTITATIVE_SCALES,
+  'time',
+  'utc'
+]) as ReadonlySet<ScaleType>;
 
 export function isQuantitative(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' {
-  return type in QUANTITATIVE_SCALES_INDEX;
+  return QUANTITATIVE_SCALES.has(type);
 }
 
-export const CONTINUOUS_TO_DISCRETE_SCALES: ScaleType[] = ['quantile', 'quantize', 'threshold'];
-const CONTINUOUS_TO_DISCRETE_INDEX = toSet(CONTINUOUS_TO_DISCRETE_SCALES);
-
-export const CONTINUOUS_DOMAIN_SCALES: ScaleType[] = CONTINUOUS_TO_CONTINUOUS_SCALES.concat([
+export const CONTINUOUS_TO_DISCRETE_SCALES = new Set<ScaleType>([
   'quantile',
   'quantize',
-  'threshold',
+  'threshold'
+]) as ReadonlySet<ScaleType>;
+
+export const CONTINUOUS_DOMAIN_SCALES = new Set<ScaleType>([
+  ...CONTINUOUS_TO_CONTINUOUS_SCALES,
+  ...CONTINUOUS_TO_DISCRETE_SCALES,
   'sequential',
   'identity'
-]);
-const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
+]) as ReadonlySet<ScaleType>;
 
-export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'bin-ordinal', 'point', 'band'];
-const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
+export const DISCRETE_DOMAIN_SCALES = new Set<ScaleType>([
+  'ordinal',
+  'bin-ordinal',
+  'point',
+  'band'
+]) as ReadonlySet<ScaleType>;
 
-export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
+export const TIME_SCALE_TYPES = new Set<ScaleType>(['time', 'utc']) as ReadonlySet<ScaleType>;
 
 export function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'bin-ordinal' | 'point' | 'band' {
-  return type in DISCRETE_DOMAIN_INDEX;
+  return DISCRETE_DOMAIN_SCALES.has(type);
 }
 
 export function hasContinuousDomain(
   type: ScaleType
 ): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' | 'time' | 'utc' | 'quantile' | 'quantize' | 'threshold' {
-  return type in CONTINUOUS_DOMAIN_INDEX;
+  return CONTINUOUS_DOMAIN_SCALES.has(type);
 }
 
 export function isContinuousToContinuous(
   type: ScaleType
 ): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' | 'time' | 'utc' {
-  return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
+  return CONTINUOUS_TO_CONTINUOUS_SCALES.has(type);
 }
 
 export function isContinuousToDiscrete(type: ScaleType): type is 'quantile' | 'quantize' | 'threshold' {
-  return type in CONTINUOUS_TO_DISCRETE_INDEX;
+  return CONTINUOUS_TO_DISCRETE_SCALES.has(type);
 }
 
 export interface ScaleConfig<ES extends ExprRef | SignalRef> {
@@ -832,20 +844,7 @@ export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType:
   } else if (fieldDefType === TEMPORAL) {
     return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
   } else if (fieldDefType === QUANTITATIVE) {
-    return contains(
-      [
-        ScaleType.LOG,
-        ScaleType.POW,
-        ScaleType.SQRT,
-        ScaleType.SYMLOG,
-        ScaleType.QUANTILE,
-        ScaleType.QUANTIZE,
-        ScaleType.THRESHOLD,
-        ScaleType.LINEAR,
-        undefined
-      ],
-      specifiedType
-    );
+    return isQuantitative(specifiedType) || isContinuousToDiscrete(specifiedType) || specifiedType === undefined;
   }
 
   return true;

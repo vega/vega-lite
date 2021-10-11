@@ -77,7 +77,7 @@ describe('compile/mark/init', () => {
     });
 
     it('should return undefined by default for other marks', () => {
-      const otherMarks = without(PRIMITIVE_MARKS, [POINT, TICK, CIRCLE, SQUARE, GEOSHAPE]);
+      const otherMarks = without([...PRIMITIVE_MARKS], [POINT, TICK, CIRCLE, SQUARE, GEOSHAPE]);
       for (const mark of otherMarks) {
         const model = parseUnitModelWithScaleAndLayoutSize({
           mark,

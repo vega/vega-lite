@@ -569,7 +569,7 @@ export function initConfig(specifiedConfig: Config = {}): Config<SignalRef> {
   return outputConfig;
 }
 
-const MARK_STYLES = ['view', ...PRIMITIVE_MARKS] as ('view' | Mark)[];
+const MARK_STYLES = new Set(['view', ...PRIMITIVE_MARKS]) as ReadonlySet<'view' | Mark>;
 
 const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'color',

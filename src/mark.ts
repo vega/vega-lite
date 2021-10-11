@@ -1,5 +1,4 @@
 import {Align, Color, Gradient, MarkConfig as VgMarkConfig, Orientation, SignalRef, TextBaseline} from 'vega';
-import {toSet} from 'vega-util';
 import {CompositeMark, CompositeMarkDef} from './compositemark';
 import {ExprRef} from './expr';
 import {Flag, keys} from './util';
@@ -54,7 +53,7 @@ export function isRectBasedMark(m: Mark | CompositeMark): m is 'rect' | 'bar' | 
   return ['rect', 'bar', 'image', 'arc' /* arc is rect/interval in polar coordinate */].includes(m);
 }
 
-export const PRIMITIVE_MARKS = keys(Mark);
+export const PRIMITIVE_MARKS = new Set(keys(Mark));
 
 export interface ColorMixins<ES extends ExprRef | SignalRef> {
   /**
@@ -300,11 +299,9 @@ export function isMarkDef(mark: string | GenericMarkDef<any>): mark is GenericMa
   return mark['type'];
 }
 
-const PRIMITIVE_MARK_INDEX = toSet(PRIMITIVE_MARKS);
-
 export function isPrimitiveMark(mark: AnyMark): mark is Mark {
   const markType = isMarkDef(mark) ? mark.type : mark;
-  return markType in PRIMITIVE_MARK_INDEX;
+  return (PRIMITIVE_MARKS as Set<Mark | CompositeMark>).has(markType);
 }
 
 export const STROKE_CONFIG = [

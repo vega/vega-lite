@@ -1,5 +1,5 @@
 import {array, isBoolean} from 'vega-util';
-import {SUM_OPS} from './aggregate';
+import {Aggregate, SUM_OPS} from './aggregate';
 import {getSecondaryRangeChannel, NonPositionChannel, NONPOSITION_CHANNELS} from './channel';
 import {
   channelDefType,
@@ -13,6 +13,7 @@ import {
   TypedFieldDef,
   vgField
 } from './channeldef';
+import {CompositeAggregate} from './compositemark';
 import {channelHasField, Encoding, isAggregate} from './encoding';
 import * as log from './log';
 import {
@@ -32,7 +33,6 @@ import {
   TICK
 } from './mark';
 import {ScaleType} from './scale';
-import {contains} from './util';
 
 const STACK_OFFSET_INDEX = {
   zero: 1,
@@ -257,7 +257,11 @@ export function stack(
   }
 
   // Warn if stacking non-summative aggregate
-  if (isFieldDef(stackedFieldDef) && stackedFieldDef.aggregate && !contains(SUM_OPS, stackedFieldDef.aggregate)) {
+  if (
+    isFieldDef(stackedFieldDef) &&
+    stackedFieldDef.aggregate &&
+    !(SUM_OPS as Set<Aggregate | CompositeAggregate>).has(stackedFieldDef.aggregate)
+  ) {
     log.warn(log.message.stackNonSummativeAggregate(stackedFieldDef.aggregate));
   }
 
