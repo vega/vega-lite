@@ -1258,7 +1258,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      expect(sort).toEqual(true);
+      expect(sort).toBe(true);
     });
 
     it('should return undefined if sort = null', () => {
@@ -1305,7 +1305,7 @@ describe('compile/scale', () => {
         }
       });
       const sort = domainSort(model, 'x', ScaleType.ORDINAL);
-      expect(sort).toEqual(true);
+      expect(sort).toBe(true);
     });
 
     it('should return sort if it is specified', () => {

@@ -46,7 +46,7 @@ describe('compile/mark/init', () => {
             x: {type: 'quantitative', field: 'bar'}
           }
         });
-        expect(model.markDef.opacity).toEqual(0.7);
+        expect(model.markDef.opacity).toBe(0.7);
       }
     });
 
@@ -72,7 +72,7 @@ describe('compile/mark/init', () => {
             x: {type: 'quantitative', field: 'bar'}
           }
         });
-        expect(model.markDef.opacity).toEqual(0.9);
+        expect(model.markDef.opacity).toBe(0.9);
       }
     });
 

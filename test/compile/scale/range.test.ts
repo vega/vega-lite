@@ -439,7 +439,7 @@ describe('compile/scale', () => {
           }
         });
         const r = parseRangeForChannel('radius', model);
-        expect(r.value[0]).toEqual(0);
+        expect(r.value[0]).toBe(0);
         expect(r.value[1]).toEqual({signal: 'min(width,height)/2'});
       });
     });
@@ -729,7 +729,7 @@ describe('compile/scale', () => {
           quantileCount: 4
         }
       };
-      expect(defaultContinuousToDiscreteCount('quantile', config, undefined, 'x')).toEqual(4);
+      expect(defaultContinuousToDiscreteCount('quantile', config, undefined, 'x')).toBe(4);
     });
 
     it('should use config.scale.quantizeCount for quantize scale', () => {
@@ -738,16 +738,16 @@ describe('compile/scale', () => {
           quantizeCount: 4
         }
       };
-      expect(defaultContinuousToDiscreteCount('quantize', config, undefined, 'x')).toEqual(4);
+      expect(defaultContinuousToDiscreteCount('quantize', config, undefined, 'x')).toBe(4);
     });
 
     it('should use domain size for threshold scale', () => {
-      expect(defaultContinuousToDiscreteCount('threshold', {}, [1, 10], 'x')).toEqual(3);
+      expect(defaultContinuousToDiscreteCount('threshold', {}, [1, 10], 'x')).toBe(3);
     });
 
     it('should throw warning and default to 4 for scale without domain', () => {
       log.wrap(localLogger => {
-        expect(defaultContinuousToDiscreteCount('quantize', {}, undefined, 'x')).toEqual(4);
+        expect(defaultContinuousToDiscreteCount('quantize', {}, undefined, 'x')).toBe(4);
         expect(localLogger.warns[0]).toEqual(log.message.domainRequiredForThresholdScale('x'));
       });
     });

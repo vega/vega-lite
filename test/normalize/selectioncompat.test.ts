@@ -254,10 +254,10 @@ describe('SelectionCompatibilityNormalizer', () => {
       ])
     );
 
-    expect(normalized.encoding.x.bin).toEqual(true);
+    expect(normalized.encoding.x.bin).toBe(true);
     expect(normalized.encoding.y.bin).toEqual({extent: {param: 'foo'}, nice: true});
     expect(normalized.encoding.color.bin).toEqual({extent: {param: 'foo', encoding: 'x'}, nice: false});
-    expect(normalized.encoding.size.condition.bin).toEqual(true);
+    expect(normalized.encoding.size.condition.bin).toBe(true);
     expect(normalized.encoding.opacity.condition.bin).toEqual({extent: {param: 'brush', field: 'Lbs'}, nice: true});
   });
 
@@ -388,7 +388,7 @@ describe('SelectionCompatibilityNormalizer', () => {
 
     const normalized = normalize(spec) as any;
     expect(normalized.spec.layer[0]).toHaveProperty('params');
-    expect(normalized.spec.layer[0].params[0].name).toEqual('brush');
+    expect(normalized.spec.layer[0].params[0].name).toBe('brush');
   });
 
   it('should normalize multi-views', () => {

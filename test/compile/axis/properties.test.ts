@@ -77,7 +77,7 @@ describe('compile/axis/properties', () => {
           scaleType: 'linear',
           size: {signal: 'a'}
         });
-        expect(tickCount).not.toBeDefined();
+        expect(tickCount).toBeUndefined();
       });
     }
 

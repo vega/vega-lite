@@ -45,7 +45,7 @@ describe('Model', () => {
         }
       });
 
-      expect(model.assembleGroupStyle()).toEqual('cell');
+      expect(model.assembleGroupStyle()).toBe('cell');
     });
 
     it('returns cell by default for layered cartesian plots', () => {
@@ -69,7 +69,7 @@ describe('Model', () => {
         ]
       });
 
-      expect(model.assembleGroupStyle()).toEqual('cell');
+      expect(model.assembleGroupStyle()).toBe('cell');
     });
 
     it('merged styles for layered cartesian plots', () => {

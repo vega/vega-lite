@@ -25,7 +25,7 @@ describe('compile/axis/assemble', () => {
         zindex: 3
       });
       const axis = assembleAxis(axisCmpt, 'grid', defaultConfig);
-      expect(axis.zindex).toEqual(3);
+      expect(axis.zindex).toBe(3);
     });
 
     it('outputs main axis without grid encode blocks', () => {

@@ -204,7 +204,7 @@ describe('compile/data/lookup', () => {
       );
       lookup.assemble();
 
-      expect(lookup.hash()).toEqual(
+      expect(lookup.hash()).toBe(
         'Lookup {"secondary":"lookup_0","transform":{"as":"lookedup","from":{"data":{"url":"data/lookup_people.csv"},"key":"name"},"lookup":"person"}}'
       );
     });

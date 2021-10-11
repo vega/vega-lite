@@ -186,8 +186,8 @@ describe('config', () => {
     });
 
     it('should remove VL only mark config but keep Vega mark config', () => {
-      expect(output.mark.color).not.toBeDefined();
-      expect(output.mark.opacity).toEqual(0.3);
+      expect(output.mark.color).toBeUndefined();
+      expect(output.mark.opacity).toBe(0.3);
     });
 
     it('should remove VL tooltip object', () => {
@@ -195,19 +195,19 @@ describe('config', () => {
     });
 
     it('should remove conditional axis config', () => {
-      expect(output.axis).not.toBeDefined();
+      expect(output.axis).toBeUndefined();
     });
 
     it('should redirect mark config to style and remove VL only mark-specific config', () => {
       for (const mark of PRIMITIVE_MARKS) {
-        expect(output[mark]).not.toBeDefined();
+        expect(output[mark]).toBeUndefined();
       }
-      expect(output.style.bar['binSpacing']).not.toBeDefined();
-      expect(output.style.cell['width']).not.toBeDefined();
-      expect(output.style.cell['height']).not.toBeDefined();
+      expect(output.style.bar['binSpacing']).toBeUndefined();
+      expect(output.style.cell['width']).toBeUndefined();
+      expect(output.style.cell['height']).toBeUndefined();
       expect(output.style.cell['fill']).toBe('#eee');
 
-      expect(output.style.bar.opacity).toEqual(0.5);
+      expect(output.style.bar.opacity).toBe(0.5);
     });
 
     it('should redirect config.title to config.style.group-title and rename color to fill', () => {
@@ -221,7 +221,7 @@ describe('config', () => {
     });
 
     it('should remove empty config object', () => {
-      expect(output.axisTop).not.toBeDefined();
+      expect(output.axisTop).toBeUndefined();
     });
 
     it('should keep subtitle config in config.title if specified', () => {

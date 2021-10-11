@@ -38,7 +38,7 @@ describe('Axis', () => {
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
-      expect(axisComponent['x'][0].explicit.grid).toEqual(true);
+      expect(axisComponent['x'][0].explicit.grid).toBe(true);
     });
 
     it('should respect config even though the function could provide default value', () => {
@@ -54,7 +54,7 @@ describe('Axis', () => {
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
-      expect(axisComponent['x'][0].implicit.labelAlign).toEqual('right');
+      expect(axisComponent['x'][0].implicit.labelAlign).toBe('right');
     });
 
     it('should produce grid, orient, tickCount, labelExpr in the component when axis config is specified.', () => {
@@ -70,10 +70,10 @@ describe('Axis', () => {
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
-      expect(axisComponent['x'][0].implicit.grid).toEqual(true);
-      expect(axisComponent['x'][0].implicit.orient).toEqual('right');
-      expect(axisComponent['x'][0].implicit.tickCount).toEqual(20);
-      expect(axisComponent['x'][0].implicit.labelExpr).toEqual('abc');
+      expect(axisComponent['x'][0].implicit.grid).toBe(true);
+      expect(axisComponent['x'][0].implicit.orient).toBe('right');
+      expect(axisComponent['x'][0].implicit.tickCount).toBe(20);
+      expect(axisComponent['x'][0].implicit.labelExpr).toBe('abc');
     });
 
     it('should include conditional axis config', () => {
@@ -127,7 +127,7 @@ describe('Axis', () => {
 
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
-      expect(axisComponent['x'][0].implicit.labelColor).toEqual('red');
+      expect(axisComponent['x'][0].implicit.labelColor).toBe('red');
     });
 
     it('should include axis property in axis config style', () => {
@@ -149,7 +149,7 @@ describe('Axis', () => {
 
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
-      expect(axisComponent['x'][0].implicit.labelColor).toEqual('red');
+      expect(axisComponent['x'][0].implicit.labelColor).toBe('red');
     });
 
     it('should include axis property in orientation and type based axis config style', () => {
@@ -168,7 +168,7 @@ describe('Axis', () => {
 
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
-      expect(axisComponent['x'][0].implicit.labelColor).toEqual('red');
+      expect(axisComponent['x'][0].implicit.labelColor).toBe('red');
     });
 
     it('should include axis property in axis config over axis config style', () => {
@@ -208,7 +208,7 @@ describe('Axis', () => {
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
-      expect(axisComponent['x'][0].explicit.grid).toEqual(false);
+      expect(axisComponent['x'][0].explicit.grid).toBe(false);
     });
 
     it('should ignore null scales', () => {
@@ -226,8 +226,8 @@ describe('Axis', () => {
         }
       });
       const axisComponent = parseUnitAxes(model);
-      expect(axisComponent['x']).not.toBeDefined();
-      expect(axisComponent['y']).not.toBeDefined();
+      expect(axisComponent['x']).toBeUndefined();
+      expect(axisComponent['y']).toBeUndefined();
     });
 
     it('should produce Vega grid axis = undefined axis if grid is disabled via config.axisX', () => {
@@ -419,7 +419,7 @@ describe('Axis', () => {
       });
       const axisComponent = parseUnitAxes(model);
       expect(axisComponent['x']).toHaveLength(1);
-      expect(axisComponent['x'][0].get('formatType')).toEqual('time');
+      expect(axisComponent['x'][0].get('formatType')).toBe('time');
     });
 
     it('should have output axis custom format in label encode block', () => {
@@ -572,7 +572,7 @@ describe('Axis', () => {
       parseLayerAxes(model);
       const axisComponents = model.component.axes;
 
-      expect(axisComponents.x[0].get('title')).toEqual('Hello, World');
+      expect(axisComponents.x[0].get('title')).toBe('Hello, World');
       expect(axisComponents.y[0].get('title')).toBeNull();
     });
   });

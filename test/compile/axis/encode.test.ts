@@ -35,7 +35,7 @@ describe('compile/axis/encode', () => {
         config: {customFormatTypes: true}
       });
       const labels = encode.labels(model, 'x', {});
-      expect(labels.text.signal).toEqual('customNumberFormat(datum.value, "abc")');
+      expect(labels.text.signal).toBe('customNumberFormat(datum.value, "abc")');
     });
 
     it('applies custom format type without format', () => {
@@ -47,7 +47,7 @@ describe('compile/axis/encode', () => {
         config: {customFormatTypes: true}
       });
       const labels = encode.labels(model, 'x', {});
-      expect(labels.text.signal).toEqual('customNumberFormat(datum.value)');
+      expect(labels.text.signal).toBe('customNumberFormat(datum.value)');
     });
   });
 });

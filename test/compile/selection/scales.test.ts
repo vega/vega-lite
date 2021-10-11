@@ -336,7 +336,7 @@ describe('Selection + Scales', () => {
 
       expect(acc).toHaveLength(1);
       expect(named).toHaveLength(1);
-      expect(named[0].update).toEqual(
+      expect(named[0].update).toBe(
         '{"Miles_per_Gallon": grid_Miles_per_Gallon, "Horsepower": grid_Horsepower, "Acceleration": grid_Acceleration}'
       );
 
@@ -381,7 +381,7 @@ describe('Selection + Scales', () => {
       const signals = assembleTopLevelSignals(model.children[2] as UnitModel, []);
       const named = signals.filter(s => s.name === 'sel11') as NewSignal[];
       expect(named).toHaveLength(1);
-      expect(named[0].update).toEqual('{"p\\\\.x": sel11_p_x, "p\\\\.y": sel11_p_y}');
+      expect(named[0].update).toBe('{"p\\\\.x": sel11_p_x, "p\\\\.y": sel11_p_y}');
     });
   });
 

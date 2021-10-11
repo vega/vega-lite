@@ -105,18 +105,18 @@ describe('compile/header/index', () => {
 
   describe('getLayoutTitleBand', () => {
     it('should return 0 for column start', () => {
-      expect(getLayoutTitleBand('start', 'column')).toEqual(0);
+      expect(getLayoutTitleBand('start', 'column')).toBe(0);
     });
 
     it('should return 1 for column end', () => {
-      expect(getLayoutTitleBand('end', 'column')).toEqual(1);
+      expect(getLayoutTitleBand('end', 'column')).toBe(1);
     });
     it('should return 1 for row start', () => {
-      expect(getLayoutTitleBand('start', 'row')).toEqual(1);
+      expect(getLayoutTitleBand('start', 'row')).toBe(1);
     });
 
     it('should return 0 for row end', () => {
-      expect(getLayoutTitleBand('end', 'row')).toEqual(0);
+      expect(getLayoutTitleBand('end', 'row')).toBe(0);
     });
   });
 
@@ -209,7 +209,7 @@ describe('compile/header/index', () => {
         HEADER_TITLE_PROPERTIES_MAP
       );
       it('should return the correct title property from header', () => {
-        expect(headerTitleProps.fontSize).toEqual(40);
+        expect(headerTitleProps.fontSize).toBe(40);
       });
 
       const configTitleProps = assembleHeaderProperties(
@@ -231,7 +231,7 @@ describe('compile/header/index', () => {
         HEADER_TITLE_PROPERTIES_MAP
       );
       it('should overwrite the config title property with the header title property', () => {
-        expect(bothTitleProps.fontSize).toEqual(40);
+        expect(bothTitleProps.fontSize).toBe(40);
       });
     });
 
@@ -263,7 +263,7 @@ describe('compile/header/index', () => {
         HEADER_LABEL_PROPERTIES_MAP
       );
       it('should return the correct label property from header', () => {
-        expect(headerLabelProps.fontSize).toEqual(40);
+        expect(headerLabelProps.fontSize).toBe(40);
       });
 
       const configLabelProps = assembleHeaderProperties(
@@ -285,7 +285,7 @@ describe('compile/header/index', () => {
         HEADER_LABEL_PROPERTIES_MAP
       );
       it('should overwrite the config label property with the header label property', () => {
-        expect(bothLabelProps.fontSize).toEqual(40);
+        expect(bothLabelProps.fontSize).toBe(40);
       });
     });
   });

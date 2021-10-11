@@ -64,7 +64,7 @@ describe('Selection time unit', () => {
       {name: 'two', select: {type: 'point', encodings: ['x', 'y']}}
     ]));
 
-    expect(selCmpts['one'].project.timeUnit).not.toBeDefined();
+    expect(selCmpts['one'].project.timeUnit).toBeUndefined();
     expect(selCmpts['two'].project.timeUnit).toBeInstanceOf(TimeUnitNode);
 
     const as = selCmpts['two'].project.timeUnit.assemble().map(tx => tx.as);

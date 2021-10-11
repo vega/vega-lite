@@ -78,7 +78,7 @@ describe('compile/data/optimize', () => {
       });
       model.parse();
       optimizeDataflow(model.component.data, model);
-      expect(model.getSignalName('layer_0_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins')).toEqual(
+      expect(model.getSignalName('layer_0_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins')).toBe(
         'layer_1_bin_extent_0_100_anchor_6_maxbins_10_Acceleration_bins'
       );
     });
