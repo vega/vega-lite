@@ -42,7 +42,7 @@ describe('compile/data/geojson', () => {
     expect(
       every(['longitude', 'latitude'], field => contains(geoJSONTransform.fields as Vector2<FieldRef>, field))
     ).toBe(true);
-    expect(geoJSONTransform.geojson).not.toBeDefined();
+    expect(geoJSONTransform.geojson).toBeUndefined();
   });
 
   it('should add filter when shape channel is used', () => {

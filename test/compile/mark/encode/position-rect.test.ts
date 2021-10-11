@@ -135,7 +135,7 @@ describe('compile/mark/encode/position-rect', () => {
         });
 
         const props = rectPosition(model, 'x');
-        expect(props).not.toBeDefined();
+        expect(props).toBeUndefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('x2'));
       })
     );
@@ -157,7 +157,7 @@ describe('compile/mark/encode/position-rect', () => {
         });
 
         const props = rectPosition(model, 'y');
-        expect(props).not.toBeDefined();
+        expect(props).toBeUndefined();
         expect(logger.warns[0]).toEqual(log.message.channelRequiredForBinned('y2'));
       })
     );

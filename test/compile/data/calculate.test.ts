@@ -63,7 +63,7 @@ describe('compile/data/calculate', () => {
         }
       });
       const node = CalculateNode.parseAllForSortIndex(null, model) as CalculateNode;
-      expect(node.hash()).toEqual(
+      expect(node.hash()).toBe(
         'Calculate {"as":"x_a_sort_index","calculate":"datum[\\"a\\"]===\\"B\\" ? 0 : datum[\\"a\\"]===\\"A\\" ? 1 : datum[\\"a\\"]===\\"C\\" ? 2 : 3"}'
       );
     });

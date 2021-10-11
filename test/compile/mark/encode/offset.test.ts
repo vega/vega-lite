@@ -9,7 +9,7 @@ describe('compile/mark/encode/offset', () => {
         type: 'point',
         x2Offset: 100
       };
-      expect(positionOffset({channel: 'x2', markDef}).offset).toEqual(100);
+      expect(positionOffset({channel: 'x2', markDef}).offset).toBe(100);
     });
     it('should return undefined when the offset value for the given channel is not defined', () => {
       const markDef: MarkDef<Mark, SignalRef> = {

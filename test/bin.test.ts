@@ -17,7 +17,7 @@ describe('autoMaxBins', () => {
   it('should assign generate correct defaults for different channels', () => {
     // Not testing case for 10 because it's already tested
     [COLOR, FILL, STROKE, STROKEWIDTH, SIZE, OPACITY, FILLOPACITY, STROKEOPACITY, SHAPE, ROW, COLUMN].forEach(a =>
-      expect(autoMaxBins(a)).toEqual(6)
+      expect(autoMaxBins(a)).toBe(6)
     );
   });
 });
@@ -30,10 +30,10 @@ describe('binToString', () => {
 
 describe('isBinParams', () => {
   it('should detect whether the input is BinParams or not', () => {
-    expect(isBinParams(true)).toEqual(false);
-    expect(isBinParams('binned')).toEqual(false);
-    expect(isBinParams({})).toEqual(true);
-    expect(isBinParams({binned: true})).toEqual(true);
-    expect(isBinParams({extent: [0, 1]})).toEqual(true);
+    expect(isBinParams(true)).toBe(false);
+    expect(isBinParams('binned')).toBe(false);
+    expect(isBinParams({})).toBe(true);
+    expect(isBinParams({binned: true})).toBe(true);
+    expect(isBinParams({extent: [0, 1]})).toBe(true);
   });
 });

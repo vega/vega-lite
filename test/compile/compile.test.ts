@@ -472,7 +472,7 @@ describe('compile/compile', () => {
       ],
       config: {title: {offset: 5}}
     });
-    expect(spec.title).not.toBeDefined();
+    expect(spec.title).toBeUndefined();
   });
 
   it('should use provided config.', () => {

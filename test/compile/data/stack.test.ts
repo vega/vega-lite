@@ -349,7 +349,7 @@ describe('compile/data/stack', () => {
         }
       });
       const stack = StackNode.makeFromEncoding(null, model);
-      expect(stack.hash()).toEqual(
+      expect(stack.hash()).toBe(
         'Stack {"as":["sum_a_start","sum_a_end"],"dimensionFieldDefs":[{"field":"b","type":"nominal"}],"facetby":[],"impute":false,"offset":"zero","sort":{"field":["c"],"order":["ascending"]},"stackField":"sum_a","stackby":["c"]}'
       );
     });
