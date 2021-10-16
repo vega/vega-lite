@@ -68,10 +68,7 @@ const outputs = [
         babelHelpers: 'bundled',
         presets: [
           [
-            '@babel/env',
-            {
-              targets: 'defaults and not IE 11'
-            }
+            '@babel/preset-env',
           ],
           '@babel/typescript'
         ]
