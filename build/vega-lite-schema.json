@@ -12892,8 +12892,8 @@
         "labelOffset": {
           "anyOf": [
             {
-              "description": "The offset of the legend label.",
-              "minimum": "0\n\n__Default value:__ `4`.",
+              "description": "The offset of the legend label.\n\n__Default value:__ `4`.",
+              "minimum": 0,
               "type": "number"
             },
             {
@@ -13713,8 +13713,8 @@
         "labelOffset": {
           "anyOf": [
             {
-              "description": "The offset of the legend label.",
-              "minimum": "0\n\n__Default value:__ `4`.",
+              "description": "The offset of the legend label.\n\n__Default value:__ `4`.",
+              "minimum": 0,
               "type": "number"
             },
             {

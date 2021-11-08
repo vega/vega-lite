@@ -7389,9 +7389,9 @@ vega-transforms@~4.9.4:
     vega-util "^1.16.1"
 
 vega-typings@~0.22.0:
-  version "0.22.0"
-  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.22.0.tgz#a7cd4ce8194d332dc7a21a2ce09c9261a0d29c66"
-  integrity sha512-TgBGRkZHQgcduGsoFKq3Scpn6eNY4L3p0YKRhgCPVU3HEaCeYkPFGaR8ynK+XrKmvrqpDv0YHIOwCt7Gn3RpCA==
+  version "0.22.1"
+  resolved "https://registry.yarnpkg.com/vega-typings/-/vega-typings-0.22.1.tgz#287c646cfa93b1822d0fb6ea11d5543632f8b56e"
+  integrity sha512-88cIrjmoTxo/0nWTf+GuitkFhirHWVWCfymADiCUXt6s9arpQ6XPP5xjrN5KDc0LZd9xr7p4FIiEgADghgLTgw==
   dependencies:
     vega-event-selector "^3.0.0"
     vega-expression "^5.0.0"
