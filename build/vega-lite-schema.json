@@ -4327,8 +4327,7 @@
         },
         "options": {
           "description": "An array of options to select from.",
-          "items": {
-          },
+          "items": {},
           "type": "array"
         }
       },
@@ -8100,8 +8099,7 @@
       "type": "object"
     },
     "Dict": {
-      "additionalProperties": {
-      },
+      "additionalProperties": {},
       "type": "object"
     },
     "Diverging": {
@@ -11203,10 +11201,8 @@
       ],
       "type": "object"
     },
-    "GeoJsonFeature": {
-    },
-    "GeoJsonFeatureCollection": {
-    },
+    "GeoJsonFeature": {},
+    "GeoJsonFeatureCollection": {},
     "Gradient": {
       "anyOf": [
         {
@@ -11908,8 +11904,7 @@
         "keyvals": {
           "anyOf": [
             {
-              "items": {
-              },
+              "items": {},
               "type": "array"
             },
             {
@@ -11982,8 +11977,7 @@
         "keyvals": {
           "anyOf": [
             {
-              "items": {
-              },
+              "items": {},
               "type": "array"
             },
             {
@@ -12899,6 +12893,7 @@
           "anyOf": [
             {
               "description": "The offset of the legend label.",
+              "minimum": "0\n\n__Default value:__ `4`.",
               "type": "number"
             },
             {
@@ -13719,6 +13714,7 @@
           "anyOf": [
             {
               "description": "The offset of the legend label.",
+              "minimum": "0\n\n__Default value:__ `4`.",
               "type": "number"
             },
             {
