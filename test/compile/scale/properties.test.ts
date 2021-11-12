@@ -7,25 +7,39 @@ describe('compile/scale', () => {
   describe('nice', () => {
     it('should return nice for x and y', () => {
       for (const c of ['x', 'y'] as const) {
-        expect(rules.nice('linear', c, undefined, {type: 'quantitative'})).toBe(true);
+        expect(rules.nice('linear', c, undefined, {type: 'quantitative'}, undefined, undefined)).toBe(true);
       }
     });
 
     it('should not return nice for binned x and y', () => {
       for (const c of ['x', 'y'] as const) {
-        expect(rules.nice('linear', c, undefined, {type: 'quantitative', field: 'a', bin: true})).toBeUndefined();
+        expect(
+          rules.nice('linear', c, undefined, {type: 'quantitative', field: 'a', bin: true}, undefined, undefined)
+        ).toBeUndefined();
       }
     });
 
     it('should not return nice for temporal x and y', () => {
       for (const c of ['x', 'y'] as const) {
-        expect(rules.nice('time', c, undefined, {type: 'temporal'})).toBeUndefined();
+        expect(rules.nice('time', c, undefined, {type: 'temporal'}, undefined, undefined)).toBeUndefined();
       }
     });
 
     it('should not return nice when domain is set explicitly', () => {
       for (const c of ['x', 'y'] as const) {
-        expect(rules.nice('time', c, [0, 42], {type: 'quantitative'})).toBeUndefined();
+        expect(rules.nice('time', c, [0, 42], {type: 'quantitative'}, undefined, undefined)).toBeUndefined();
+      }
+    });
+
+    it('should not return nice when domainMin is set explicitly', () => {
+      for (const c of ['x', 'y'] as const) {
+        expect(rules.nice('time', c, undefined, {type: 'quantitative'}, 0, undefined)).toBeUndefined();
+      }
+    });
+
+    it('should not return nice when domainMax is set explicitly', () => {
+      for (const c of ['x', 'y'] as const) {
+        expect(rules.nice('time', c, [0, 42], {type: 'quantitative'}, undefined, 0)).toBeUndefined();
       }
     });
   });
