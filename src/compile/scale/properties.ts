@@ -153,8 +153,8 @@ export const scaleRules: {
 
   interpolate: ({channel, fieldOrDatumDef}) => interpolate(channel, fieldOrDatumDef.type),
 
-  nice: ({scaleType, channel, domain, fieldOrDatumDef, domainMin, domainMax}) =>
-    nice(scaleType, channel, domain, fieldOrDatumDef, domainMin, domainMax),
+  nice: ({scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef}) =>
+    nice(scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef),
 
   padding: ({channel, scaleType, fieldOrDatumDef, markDef, config}) =>
     padding(channel, scaleType, config.scale, fieldOrDatumDef, markDef, config.bar),
@@ -251,9 +251,9 @@ export function nice(
   scaleType: ScaleType,
   channel: ScaleChannel,
   specifiedDomain: Domain,
-  fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef,
   domainMin: Scale['domainMin'],
-  domainMax: Scale['domainMax']
+  domainMax: Scale['domainMax'],
+  fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef
 ): boolean | TimeInterval {
   if (
     getFieldDef(fieldOrDatumDef)?.bin ||
