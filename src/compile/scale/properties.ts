@@ -116,6 +116,8 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
                 scalePadding,
                 scalePaddingInner,
                 domain: specifiedScale.domain,
+                domainMin: specifiedScale.domainMin,
+                domainMax: specifiedScale.domainMax,
                 markDef,
                 config,
                 hasNestedOffsetScale: channelHasNestedOffsetScale(encoding, channel)
@@ -138,6 +140,8 @@ export interface ScaleRuleParams {
   scalePadding: number | SignalRef;
   scalePaddingInner: number | SignalRef;
   domain: Domain;
+  domainMin: Scale['domainMin'];
+  domainMax: Scale['domainMax'];
   markDef: MarkDef<Mark, SignalRef>;
   config: Config<SignalRef>;
 }
@@ -149,7 +153,8 @@ export const scaleRules: {
 
   interpolate: ({channel, fieldOrDatumDef}) => interpolate(channel, fieldOrDatumDef.type),
 
-  nice: ({scaleType, channel, domain, fieldOrDatumDef}) => nice(scaleType, channel, domain, fieldOrDatumDef),
+  nice: ({scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef}) =>
+    nice(scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef),
 
   padding: ({channel, scaleType, fieldOrDatumDef, markDef, config}) =>
     padding(channel, scaleType, config.scale, fieldOrDatumDef, markDef, config.bar),
@@ -246,11 +251,15 @@ export function nice(
   scaleType: ScaleType,
   channel: ScaleChannel,
   specifiedDomain: Domain,
+  domainMin: Scale['domainMin'],
+  domainMax: Scale['domainMax'],
   fieldOrDatumDef: TypedFieldDef<string> | ScaleDatumDef
 ): boolean | TimeInterval {
   if (
     getFieldDef(fieldOrDatumDef)?.bin ||
     isArray(specifiedDomain) ||
+    domainMax != null ||
+    domainMin != null ||
     util.contains([ScaleType.TIME, ScaleType.UTC], scaleType)
   ) {
     return undefined;
