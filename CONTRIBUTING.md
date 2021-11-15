@@ -134,6 +134,35 @@ For Jekyll and its dependencies, because we already have the `Gemfile` in the re
 pushd site && bundle install && popd
 ```
 
+### Use Docker for environemnt setup
+
+We provide a Dockerfile, which installs all the needed development tools inside a Docker container.
+
+One example usage of that, is to build it first:
+
+```
+docker build  -t vega-lite .
+```
+
+To build the current project files, we can mount then the current folder into the container by running:
+
+```
+docker run -ti -v `pwd`:/vega-lite -w /vega-lite -u 1000:100 vega-lite  /bin/bash
+```
+
+This mounts the current folder and assumes a user id of 1000 of the current user. Its sets the uid/gid of generated files correctly.
+
+To install all gems needed by building and running the `site` run:
+
+```
+pushd site && bundle install && popd
+
+```
+
+From now on all `yarn xxx` commands will work.
+
+Running the runtime tests which start a running browser, is currently not working.
+
 ## Directory Structure
 
 - `bin/` – Scripts for using Vega-Lite with command line.
