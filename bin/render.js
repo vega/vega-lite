@@ -5,6 +5,7 @@ const path = require('path');
 const args = require('./args');
 const read = require('./read');
 const vegaLite = require('..');
+const themes = require('vega-themes');
 
 function load(file) {
   return require(path.resolve(file));
@@ -47,8 +48,9 @@ module.exports = (type, callback, opt) => {
 
   // instantiate view and invoke headless render method
   function render(vlSpec) {
+    const specTheme = themes[vlSpec.usermeta.embedOptions.theme];
     const vgSpec = vegaLite.compile(vlSpec, {config}).spec;
-    const view = new vega.View(vega.parse(vgSpec), {
+    const view = new vega.View(vega.parse(vgSpec, specTheme), {
       locale: locale, // set locale options
       loader: vega.loader({baseURL: base}), // load files from base path
       logger: vega.logger(loglevel, 'error'), // route all logging to stderr
