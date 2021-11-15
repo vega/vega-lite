@@ -41,6 +41,9 @@ jobs:
       - name: Build Schema
         run: yarn schema
 
+      - name: Check Dockerfile
+        run: docker build .
+
       - name: Check Schema
         run: ./scripts/check-schema.sh
 
