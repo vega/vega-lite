@@ -100,4 +100,7 @@ jobs:
     steps:
       steps:
         - uses: actions/checkout@v2
-        - uses: .github/
+        - name: Build docker images
+          run: docker build -t local - < .devcontainer/Dockerfile
+        - name: Run tests
+          run: docker run -it -v $PWD:/srv -w/srv local bash -c "yarn && yarn build"

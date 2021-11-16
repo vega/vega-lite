@@ -1,5 +1,0 @@
-name: 'Hello action'
-description: 'Sharing actions with devcontainers'
-runs:
-  using: 'docker'
-  image: '../.devcontainer/Dockerfile'
