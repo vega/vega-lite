@@ -134,34 +134,26 @@ For Jekyll and its dependencies, because we already have the `Gemfile` in the re
 pushd site && bundle install && popd
 ```
 
-### Use Docker for environemnt setup
+### Use  Visual Studio Code Remote - Containers for development
 
-We provide a Dockerfile, which installs all the needed development tools inside a Docker container.
+We support development of Vega Lite in VS Code Remote containers.
+The project contains a ".devcontainer/" folder including a Dockerfile which installs all the
+needed development tools inside a Docker container.
 
-One example usage of that, is to build it first:
+See [here](https://code.visualstudio.com/docs/remote/containers) for information on its requirements for different operation systems. (basically a working Docker instalation)
 
-```
-docker build  -t vega-lite .
-```
+Once you have the [Remote Development extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) installed,
+opening the vega-lite source folder, will propose you to re-open it in a container, which you should confirm.
 
-To build the current project files, we can mount then the current folder into the container by running:
+This will restart VSCode, build the image (could take a while the first time) and then your are inside the container.
+So any terminal shell, is for example, inside the container.
 
-```
-docker run -ti -v `pwd`:/vega-lite -w /vega-lite -u 1000:100 vega-lite  /bin/bash
-```
+The code is mounted into the container as well automatically.
 
-This mounts the current folder and assumes a user id of 1000 of the current user. Its sets the uid/gid of generated files correctly.
+If you start the site (with `yarn site`) VS code detects the opening of a port and proposes you to open a Browser window to view it.
 
-To install all gems needed by building and running the `site` run:
 
-```
-pushd site && bundle install && popd
 
-```
-
-From now on all `yarn xxx` commands will work.
-
-Running the runtime tests which start a running browser, is currently not working.
 
 ## Directory Structure
 

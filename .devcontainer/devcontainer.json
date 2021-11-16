@@ -1,0 +1,7 @@
+{
+  "name": "vega-lite",
+  "build": {
+    "dockerfile": "../Dockerfile"
+  },
+  "postCreateCommand": "pushd site && bundle install && popd"
+}
