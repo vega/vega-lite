@@ -92,15 +92,3 @@ jobs:
 
       - name: Check and Commit
         run: ./scripts/check-and-commit-toc.sh
-
-  docker:
-    name: Devcontainer
-    runs-on: ubuntu-latest
-
-    steps:
-      steps:
-        - uses: actions/checkout@v2
-        - name: Build docker images
-          run: docker build -t local - < .devcontainer/Dockerfile
-        - name: Run tests
-          run: docker run -it -v $PWD:/srv -w/srv local bash -c "yarn && yarn build"
