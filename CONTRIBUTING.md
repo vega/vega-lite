@@ -136,8 +136,7 @@ pushd site && bundle install && popd
 
 ### Develop inside a Container
 
-We support (optional) development of Vega-Lite in [VSCode Remote containers](https://code.visualstudio.com/docs/remote/containers). Once you have the [Remote Development extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) installed,
-opening the Vega-Lite source folder, will propose you to re-open it in a container. Once the image is built, you can tun the development commands inside the container.
+We support (optional) development of Vega-Lite in [VSCode Remote containers](https://code.visualstudio.com/docs/remote/containers). Once you have the [Remote Development extension pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack) installed, opening the Vega-Lite source folder, will propose you to re-open it in a container. Once the image is built, you can tun the development commands inside the container.
 
 ## Directory Structure
 
