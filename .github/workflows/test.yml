@@ -133,9 +133,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      steps:
-        - uses: actions/checkout@v2
-        - name: Build Docker image
-          run: docker build -t local - < .devcontainer/Dockerfile
-        - name: Run build in Docker
-          run: docker run -it -v $PWD:/srv -w/srv local bash -c "yarn && yarn build"
+      - uses: actions/checkout@v2
+      - name: Build Docker image
+        run: docker build -t local - < .devcontainer/Dockerfile
+      - name: Run build in Docker
+        run: docker run -it -v $PWD:/srv -w/srv local bash -c "yarn && yarn build"
