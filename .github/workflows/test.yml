@@ -137,4 +137,4 @@ jobs:
       - name: Build Docker image
         run: docker build -t local - < .devcontainer/Dockerfile
       - name: Run build in Docker
-        run: docker run -it -v $PWD:/srv -w/srv local bash -c "yarn && yarn build"
+        run: docker run -v $PWD:/srv -w/srv local bash -c "yarn && yarn build"
