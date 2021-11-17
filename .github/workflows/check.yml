@@ -56,8 +56,6 @@ jobs:
       runs-on: ubuntu-latest
       steps:
       - uses: actions/checkout@v2
-        with:
-          token: ${{ secrets.GH_PAT || github.token }}
 
       - name: Build Dockerfile
         run: docker build -t vega-lite .
