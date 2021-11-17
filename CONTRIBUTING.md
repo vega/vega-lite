@@ -150,7 +150,7 @@ So any terminal shell, is for example, inside the container.
 
 The code is mounted into the container as well automatically.
 
-If you start the site (with `yarn site`) VS code detects the opening of a port and proposes you to open a Browser window to view it.
+If you start the site (with `yarn site`) VS code detects the opening of a port and proposes you to open a browser window to view it.
 
 
 
