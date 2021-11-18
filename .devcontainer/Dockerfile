@@ -5,7 +5,6 @@ RUN apt-get update && apt-get install -y git ruby ruby-dev build-essential rsync
 # make /bin/sh run /bin/bash
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# install bundler
 USER node
 RUN mkdir -p /home/node/.gem/ruby/2.5.0/bin
 ENV PATH=/home/node/.gem/ruby/2.5.0/bin:$PATH
