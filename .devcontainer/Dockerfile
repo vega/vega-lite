@@ -2,7 +2,7 @@ FROM node:16 -buster-slim
 # install base development tools
 RUN apt-get update && apt-get install -y git ruby ruby-dev build-essential rsync chromium parallel
 
-# make /bin/sh running /bin/bash
+# make /bin/sh run /bin/bash
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 # install bundler
