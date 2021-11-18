@@ -135,8 +135,11 @@ jobs:
       steps:
       - uses: actions/checkout@v2
 
-      - name: Build Dockerfile
-        run: docker build -t vega-lite -f .devcontainer/Dockerfile .
+      - name: Install devcontainer cli
+        run: npm install @vscode/dev-container-cli
+
+      - name: Build devcontainer image
+        run: ./node_modules/.bin/devcontainer build --image-name vega-lite-devcontainer
 
       - name: Run yarn-build
-        run: docker run -ti -v `pwd`:/app -w /app vega-lite yarn build
+        run: docker run -ti -v `pwd`:/app -w /app vega-lite-devcontainer yarn build
