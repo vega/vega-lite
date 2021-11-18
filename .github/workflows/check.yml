@@ -51,9 +51,10 @@ jobs:
         run: ./scripts/check-and-commit.sh
 
   docker-check:
-    name: docker
-    runs-on: ubuntu-latest
-    steps:
+      name: docker
+      runs-on: ubuntu-latest
+
+      steps:
       - uses: actions/checkout@v2
 
       - name: Build Dockerfile
