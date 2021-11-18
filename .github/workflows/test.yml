@@ -129,10 +129,10 @@ jobs:
           bin/vl2pdf < examples/specs/bar.vl.json > bar-stdin.pdf
 
   docker-check:
-      name: docker
-      runs-on: ubuntu-latest
+    name: docker
+    runs-on: ubuntu-latest
 
-      steps:
+    steps:
       - uses: actions/checkout@v2
 
       - name: Install devcontainer cli
