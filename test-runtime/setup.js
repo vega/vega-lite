@@ -3,7 +3,7 @@ const os = require('os');
 const path = require('path');
 const mkdirp = require('mkdirp');
 const puppeteer = require('puppeteer');
-const {setup: setupDevServer} = require('jest-dev-server');
+const { setup: setupDevServer } = require('jest-dev-server');
 const chalk = require('chalk');
 
 const DIR = path.join(os.tmpdir(), 'jest_puppeteer_global_setup');
@@ -18,8 +18,8 @@ module.exports = async function () {
   console.log(chalk.green('Setup Puppeteer'));
 
   const browser = await puppeteer.launch({
-  args: ['--no-sandbox', '--disable-setuid-sandbox'],
-});
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
   // store the browser instance so we can teardown it later
   // this global is only available in the teardown but not in TestEnvironments
   global.__BROWSER_GLOBAL__ = browser;

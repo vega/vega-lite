@@ -1,11 +1,11 @@
-FROM node:14-buster-slim
+FROM node:16 -buster-slim
 # install base development tools
-RUN apt-get update && apt-get install -y git ruby ruby-dev build-essential rsync vim chromium parallel xvfb
+RUN apt-get update && apt-get install -y git ruby ruby-dev build-essential rsync chromium parallel
 
 # make /bin/sh running /bin/bash
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
-# install gems
+# install bundler
 USER node
 RUN mkdir -p /home/node/.gem/ruby/2.5.0/bin
 ENV PATH=/home/node/.gem/ruby/2.5.0/bin:$PATH

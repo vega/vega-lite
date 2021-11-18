@@ -41,7 +41,6 @@ jobs:
       - name: Build Schema
         run: yarn schema
 
-
       - name: Check Schema
         run: ./scripts/check-schema.sh
 
@@ -52,14 +51,14 @@ jobs:
         run: ./scripts/check-and-commit.sh
 
   docker-check:
-      name: docker
-      runs-on: ubuntu-latest
-      steps:
+    name: docker
+    runs-on: ubuntu-latest
+    steps:
       - uses: actions/checkout@v2
 
       - name: Build Dockerfile
         run: docker build -t vega-lite .
-        
+
       - name: Run yarn-build
         run: docker run -ti -v `pwd`:/app -w /app vega-lite yarn build
 

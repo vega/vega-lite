@@ -1,7 +1,13 @@
 {
   "name": "vega-lite",
   "build": {
-    "dockerfile": "../Dockerfile"
+    "dockerfile": "Dockerfile"
   },
-  "postCreateCommand": ".devcontainer/post_create.sh"
+  "extensions": [
+    "dbaeumer.vscode-eslint",
+    "orta.vscode-jest",
+    "eg2.vscode-npm-script"
+  ],
+  "postCreateCommand": ".devcontainer/post_create.sh",
+  "postStartCommand": "yarn build"
 }
