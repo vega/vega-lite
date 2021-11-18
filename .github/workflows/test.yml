@@ -127,3 +127,16 @@ jobs:
           bin/vl2png < examples/specs/bar.vl.json > bar-stdin.png
           bin/vl2svg < examples/specs/bar.vl.json > bar-stdin.svg
           bin/vl2pdf < examples/specs/bar.vl.json > bar-stdin.pdf
+
+  docker-check:
+      name: docker
+      runs-on: ubuntu-latest
+
+      steps:
+      - uses: actions/checkout@v2
+
+      - name: Build Dockerfile
+        run: docker build -t vega-lite -f .devcontainer/Dockerfile .
+
+      - name: Run yarn-build
+        run: docker run -ti -v `pwd`:/app -w /app vega-lite yarn build

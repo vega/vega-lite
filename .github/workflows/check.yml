@@ -50,18 +50,6 @@ jobs:
       - name: Check and Commit
         run: ./scripts/check-and-commit.sh
 
-  docker-check:
-      name: docker
-      runs-on: ubuntu-latest
-
-      steps:
-      - uses: actions/checkout@v2
-
-      - name: Build Dockerfile
-        run: docker build -t vega-lite .
-
-      - name: Run yarn-build
-        run: docker run -ti -v `pwd`:/app -w /app vega-lite yarn build
 
   toc:
     name: TOC
