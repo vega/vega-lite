@@ -142,4 +142,4 @@ jobs:
         run: ./node_modules/.bin/devcontainer build --image-name vega-lite-devcontainer
 
       - name: Run yarn-build
-        run: docker run -v `pwd`:/app -w /app vega-lite-devcontainer bash -c "yarn build"
+        run: docker run -v `pwd`:/app -w /app vega-lite-devcontainer bash -c "yarn install && yarn build"
