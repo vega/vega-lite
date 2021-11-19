@@ -8,6 +8,6 @@
     "orta.vscode-jest",
     "eg2.vscode-npm-script"
   ],
-  "postCreateCommand": ".devcontainer/post_create.sh",
-  "postStartCommand": "yarn install && yarn build"
+  "onCreateCommand": ".devcontainer/install.sh",
+  "postStartCommand": ".devcontainer/build.sh"
 }
