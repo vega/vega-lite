@@ -9,4 +9,4 @@
     "eg2.vscode-npm-script"
   ],
   "postStartCommand": ".devcontainer/install.sh"
-  }
+}
