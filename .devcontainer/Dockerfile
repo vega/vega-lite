@@ -6,11 +6,12 @@ RUN apt-get update && apt-get install -y git ruby ruby-dev build-essential rsync
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 RUN npm install -g jest
-
+RUN apt-get install -y zlib1g-dev liblzma-dev patch
 USER node
 RUN mkdir -p /home/node/.gem/ruby/2.5.0/bin
 ENV PATH=/home/node/.gem/ruby/2.5.0/bin:$PATH
 RUN gem install bundler --user-install
+RUN gem install nokogiri --platform=ruby --user-install
 ENV GEM_HOME=/home/node/.gem/
 ENV LC_ALL "C.UTF-8"
 ENV LANG "en_US.UTF-8"
