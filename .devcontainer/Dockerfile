@@ -6,7 +6,7 @@ RUN apt-get update && apt-get install -y git ruby ruby-dev build-essential rsync
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 
 RUN npm install -g jest
-RUN apt-get install -y zlib1g-dev liblzma-dev patch
+RUN apt-get install -y zlib1g-dev liblzma-dev patch pkg-config
 USER node
 RUN mkdir -p /home/node/.gem/ruby/2.5.0/bin
 ENV PATH=/home/node/.gem/ruby/2.5.0/bin:$PATH
