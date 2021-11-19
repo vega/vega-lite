@@ -8,6 +8,5 @@
     "orta.vscode-jest",
     "eg2.vscode-npm-script"
   ],
-  "onCreateCommand": ".devcontainer/install.sh",
-  "postStartCommand": ".devcontainer/build.sh"
-}
+  "postStartCommand": ".devcontainer/install.sh"
+  }
