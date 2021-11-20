@@ -130,7 +130,7 @@ jobs:
 
   docker-check:
     name: docker
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
 
     steps:
       - uses: actions/checkout@v2
