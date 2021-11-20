@@ -13,5 +13,8 @@ ENV PATH=/home/node/.gem/ruby/2.5.0/bin:$PATH
 RUN gem install bundler --user-install
 RUN gem install nokogiri --platform=ruby --user-install
 ENV GEM_HOME=/home/node/.gem/
+ENV LC_ALL "C.UTF-8"
+ENV LANG "en_US.UTF-8"
+ENV LANGUAGE "en_US.UTF-8"
 
 
