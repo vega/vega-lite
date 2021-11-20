@@ -1,6 +1,6 @@
 FROM node:16-buster-slim
 # install base development tools
-RUN apt-get update && apt-get install -y git ruby ruby-dev build-essential rsync chromium parallel python3
+RUN apt-get update && apt-get install -y git ruby ruby-dev build-essential rsync chromium parallel python3 libpixman-1-dev libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev
 
 # make /bin/sh run /bin/bash
 RUN rm /bin/sh && ln -s /bin/bash /bin/sh
