@@ -6,7 +6,8 @@
   "extensions": [
     "dbaeumer.vscode-eslint",
     "orta.vscode-jest",
-    "eg2.vscode-npm-script"
+    "eg2.vscode-npm-script",
+    "esbenp.prettier-vscode"
   ],
   "postStartCommand": ".devcontainer/install.sh"
 }
