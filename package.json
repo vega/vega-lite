@@ -55,6 +55,7 @@
     "presite": "yarn data && yarn schema && yarn build:site && yarn build:versions && scripts/create-example-pages.sh",
     "site": "yarn site:only",
     "site:only": "pushd site && bundle exec jekyll serve -I -l && popd",
+    "site:docker": "docker run --rm -v \"$PWD/site:/srv/jekyll\" -p [::1]:4000:4000 jekyll/jekyll jekyll serve -I -l",
     "prettierbase": "prettier '**/*.{md,css,yml}'",
     "eslintbase": "eslint .",
     "format": "yarn eslintbase --fix && yarn prettierbase --write",

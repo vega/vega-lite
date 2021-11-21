@@ -42,6 +42,8 @@ The website is under `site/` and the documentation is under `site/docs/`. We use
 
 Since we only publish the GitHub Pages when we release a new version, it might be slightly outdated compared to `master`. For development, once you have [setup the repository](#repository-setup), you can run `yarn site` to serve the GitHub page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
 
+If you have troubles with the Jekyll dependencies, you can run the site with [Docker](https://www.docker.com) using `yarn site:docker`. You may need to run `yarn presite` to compile some necessry pages.
+
 Note that when you checkout different branches, the compiled JavaScript for the website might be reset. You might have to run `yarn build:site` to recompile the JavaScript so that interactive examples work.
 
 ### Documentation Guide
