@@ -1,5 +1,5 @@
 import {vgField} from '../../src/channeldef';
-import {formatSignalRef, numberFormat, timeFormatExpression} from '../../src/compile/format';
+import {formatSignalRef, guideFormatType, numberFormat, timeFormatExpression} from '../../src/compile/format';
 import {defaultConfig} from '../../src/config';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
 
@@ -128,6 +128,19 @@ describe('Format', () => {
       ).toEqual({
         signal: 'format(200, ".2f")'
       });
+    });
+  });
+
+  describe('guideFormatType()', () => {
+    it('should return existing format type', () => {
+      expect(guideFormatType('number', {field: ' foo', type: 'quantitative'}, 'ordinal')).toBe('number');
+      expect(guideFormatType('time', {field: ' foo', type: 'quantitative'}, 'ordinal')).toBe('time');
+    });
+
+    it('should return utc for utc time units', () => {
+      expect(
+        guideFormatType('', {field: ' foo', type: 'ordinal', timeUnit: {utc: true, unit: 'year'}}, 'ordinal')
+      ).toBe('utc');
     });
   });
 });
