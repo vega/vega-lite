@@ -19,7 +19,7 @@
   }, {
     "transform": [
       {"filter": {"param": "brush"}},
-      {"window": [{"op": "rank", "as": "rank"}], "sort": [{"field": "Name","order":"ascending"}]},
+      {"window": [{"op": "rank", "as": "rank"}], "sort": [{"field": "Name", "order":"ascending"}]},
       {"filter": {"field": "rank", "lt": 20}}
     ],
     "hconcat": [{
