@@ -2,6 +2,7 @@ import babel from '@rollup/plugin-babel';
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
+import alias from '@rollup/plugin-alias';
 import bundleSize from 'rollup-plugin-bundle-size';
 import {terser} from 'rollup-plugin-terser';
 import pkg from './package.json';
@@ -31,9 +32,6 @@ export function debugImports() {
 const extensions = ['.js', '.ts'];
 
 const globals = {
-  'vega-event-selector': 'vega',
-  'vega-expression': 'vega',
-  'vega-util': 'vega',
   vega: 'vega'
 };
 
@@ -60,6 +58,13 @@ const outputs = [
     plugins: [
       disallowedImports(),
       debugImports(),
+      alias({
+        entries: {
+          'vega-event-selector': 'vega',
+          'vega-expression': 'vega',
+          'vega-util': 'vega'
+        }
+      }),
       resolve({browser: true, extensions}),
       commonjs(),
       json(),
@@ -78,7 +83,7 @@ const outputs = [
       }),
       bundleSize()
     ],
-    external: ['vega', 'vega-util']
+    external: ['vega']
   }
 ];
 
