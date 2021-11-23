@@ -492,7 +492,8 @@
   }
 
   function defaultView (node) {
-    return node.ownerDocument && node.ownerDocument.defaultView || node.document && node // node is a Window
+    return node.ownerDocument && node.ownerDocument.defaultView // node is a Node
+    || node.document && node // node is a Window
     || node.defaultView; // node is a Document
   }
 
@@ -990,7 +991,7 @@
    */
 
 
-  function inherit$1(original, ...objects) {
+  function inherit$1(original) {
     /** @type Record<string,any> */
     const result = Object.create(null);
 
@@ -998,12 +999,19 @@
       result[key] = original[key];
     }
 
+    for (var _len = arguments.length, objects = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      objects[_key - 1] = arguments[_key];
+    }
+
     objects.forEach(function (obj) {
       for (const key in obj) {
         result[key] = obj[key];
       }
     });
-    return result;
+    return (
+      /** @type {T} */
+      result
+    );
   }
   /**
    * @typedef {object} Renderer
@@ -1036,15 +1044,17 @@
    */
 
 
-  const expandScopeName = (name, {
-    prefix
-  }) => {
+  const expandScopeName = (name, _ref) => {
+    let {
+      prefix
+    } = _ref;
+
     if (name.includes(".")) {
       const pieces = name.split(".");
-      return [`${prefix}${pieces.shift()}`, ...pieces.map((x, i) => `${x}${"_".repeat(i + 1)}`)].join(" ");
+      return ["".concat(prefix).concat(pieces.shift()), ...pieces.map((x, i) => "".concat(x).concat("_".repeat(i + 1)))].join(" ");
     }
 
-    return `${prefix}${name}`;
+    return "".concat(prefix).concat(name);
   };
   /** @type {Renderer} */
 
@@ -1081,7 +1091,7 @@
       let scope = node.kind;
 
       if (node.sublanguage) {
-        scope = `language-${scope}`;
+        scope = "language-".concat(scope);
       } else {
         scope = expandScopeName(scope, {
           prefix: this.classPrefix
@@ -1116,7 +1126,7 @@
 
 
     span(className) {
-      this.buffer += `<span class="${className}">`;
+      this.buffer += "<span class=\"".concat(className, "\">");
     }
 
   }
@@ -1321,7 +1331,7 @@
    */
 
 
-  function source$7(re) {
+  function source$2(re) {
     if (!re) return null;
     if (typeof re === "string") return re;
     return re.source;
@@ -1332,8 +1342,26 @@
    */
 
 
-  function lookahead$5(re) {
-    return concat$4('(?=', re, ')');
+  function lookahead$1(re) {
+    return concat('(?=', re, ')');
+  }
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+
+
+  function anyNumberOfTimes(re) {
+    return concat('(?:', re, ')*');
+  }
+  /**
+   * @param {RegExp | string } re
+   * @returns {string}
+   */
+
+
+  function optional$1(re) {
+    return concat('(?:', re, ')?');
   }
   /**
    * @param {...(RegExp | string) } args
@@ -1341,12 +1369,21 @@
    */
 
 
-  function concat$4(...args) {
-    const joined = args.map(x => source$7(x)).join("");
+  function concat() {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+
+    const joined = args.map(x => source$2(x)).join("");
     return joined;
   }
+  /**
+   * @param { Array<string | RegExp | Object> } args
+   * @returns {object}
+   */
 
-  function stripOptionsFromArgs$2(args) {
+
+  function stripOptionsFromArgs(args) {
     const opts = args[args.length - 1];
 
     if (typeof opts === 'object' && opts.constructor === Object) {
@@ -1365,13 +1402,18 @@
    */
 
 
-  function either$2(...args) {
-    const opts = stripOptionsFromArgs$2(args);
-    const joined = '(' + (opts.capture ? "" : "?:") + args.map(x => source$7(x)).join("|") + ")";
+  function either() {
+    for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+      args[_key3] = arguments[_key3];
+    }
+
+    /** @type { object & {capture?: boolean} }  */
+    const opts = stripOptionsFromArgs(args);
+    const joined = '(' + (opts.capture ? "" : "?:") + args.map(x => source$2(x)).join("|") + ")";
     return joined;
   }
   /**
-   * @param {RegExp} re
+   * @param {RegExp | string} re
    * @returns {number}
    */
 
@@ -1411,14 +1453,15 @@
    * @returns {string}
    */
 
-  function _rewriteBackreferences(regexps, {
-    joinWith
-  }) {
+  function _rewriteBackreferences(regexps, _ref2) {
+    let {
+      joinWith
+    } = _ref2;
     let numCaptures = 0;
     return regexps.map(regex => {
       numCaptures += 1;
       const offset = numCaptures;
-      let re = source$7(regex);
+      let re = source$2(regex);
       let out = '';
 
       while (re.length > 0) {
@@ -1445,7 +1488,7 @@
       }
 
       return out;
-    }).map(re => `(${re})`).join(joinWith);
+    }).map(re => "(".concat(re, ")")).join(joinWith);
   }
   /** @typedef {import('highlight.js').Mode} Mode */
 
@@ -1466,11 +1509,12 @@
   * @param { Partial<Mode> & {binary?: string | RegExp} } opts
   */
 
-  const SHEBANG = (opts = {}) => {
+  const SHEBANG = function () {
+    let opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     const beginShebang = /^#![ ]*\//;
 
     if (opts.binary) {
-      opts.begin = concat$4(beginShebang, /.*\b/, opts.binary, /\b.*/);
+      opts.begin = concat(beginShebang, /.*\b/, opts.binary, /\b.*/);
     }
 
     return inherit$1({
@@ -1517,7 +1561,8 @@
    * @returns {Partial<Mode>}
    */
 
-  const COMMENT = function (begin, end, modeOptions = {}) {
+  const COMMENT = function (begin, end) {
+    let modeOptions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     const mode = inherit$1({
       scope: 'comment',
       begin,
@@ -1533,7 +1578,7 @@
       excludeBegin: true,
       relevance: 0
     });
-    const ENGLISH_WORD = either$2( // list of common 1 and 2 letter words in English
+    const ENGLISH_WORD = either( // list of common 1 and 2 letter words in English
     "I", "a", "is", "so", "us", "to", "at", "if", "in", "it", "on", // note: this is not an exhaustive list of contractions, just popular ones
     /[A-Za-z]+['](d|ve|re|ll|t|s|n)/, // contractions - can't we'd they're let's, etc
     /[A-Za-z]+[-][a-z]+/, // `no-way`, etc.
@@ -1554,7 +1599,7 @@
       //
       // for a visual example please see:
       // https://github.com/highlightjs/highlight.js/issues/2827
-      begin: concat$4(/[ ]+/, // necessary to prevent us gobbling up doctags like /* @author Bob Mcgill */
+      begin: concat(/[ ]+/, // necessary to prevent us gobbling up doctags like /* @author Bob Mcgill */
       '(', ENGLISH_WORD, /[.]?[:]?([.][ ]|[ ])/, '){3}') // look for 3 words in a row
 
     });
@@ -1741,7 +1786,7 @@
 
   function compileIllegal(mode, _parent) {
     if (!Array.isArray(mode.illegal)) return;
-    mode.illegal = either$2(...mode.illegal);
+    mode.illegal = either(...mode.illegal);
   }
   /**
    * `match` to match a single expression for readability
@@ -1778,7 +1823,7 @@
       delete mode[key];
     });
     mode.keywords = originalMode.keywords;
-    mode.begin = concat$4(originalMode.beforeMatch, lookahead$5(originalMode.begin));
+    mode.begin = concat(originalMode.beforeMatch, lookahead$1(originalMode.begin));
     mode.starts = {
       relevance: 0,
       contains: [Object.assign(originalMode, {
@@ -1802,7 +1847,9 @@
    * @param {boolean} caseInsensitive
    */
 
-  function compileKeywords(rawKeywords, caseInsensitive, scopeName = DEFAULT_KEYWORD_SCOPE) {
+  function compileKeywords(rawKeywords, caseInsensitive) {
+    let scopeName = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : DEFAULT_KEYWORD_SCOPE;
+
     /** @type KeywordDict */
     const compiledKeywords = Object.create(null); // input can be a string of keywords, an array of keywords, or a object with
     // named keys representing scopeName (which can then point to a string or array)
@@ -1894,8 +1941,12 @@
    */
 
 
-  const warn$2 = (message, ...args) => {
-    console.log(`WARN: ${message}`, ...args);
+  const warn$2 = function (message) {
+    for (var _len4 = arguments.length, args = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+      args[_key4 - 1] = arguments[_key4];
+    }
+
+    console.log("WARN: ".concat(message), ...args);
   };
   /**
    * @param {string} version
@@ -1904,9 +1955,9 @@
 
 
   const deprecated = (version, message) => {
-    if (seenDeprecations[`${version}/${message}`]) return;
-    console.log(`Deprecated as of ${version}. ${message}`);
-    seenDeprecations[`${version}/${message}`] = true;
+    if (seenDeprecations["".concat(version, "/").concat(message)]) return;
+    console.log("Deprecated as of ".concat(version, ". ").concat(message));
+    seenDeprecations["".concat(version, "/").concat(message)] = true;
   };
   /* eslint-disable no-throw-literal */
 
@@ -1941,13 +1992,14 @@
    * are 1, 2, and 5.  This function handles this behavior.
    *
    * @param {CompiledMode} mode
-   * @param {Array<RegExp>} regexes
+   * @param {Array<RegExp | string>} regexes
    * @param {{key: "beginScope"|"endScope"}} opts
    */
 
-  function remapScopeNames(mode, regexes, {
-    key
-  }) {
+  function remapScopeNames(mode, regexes, _ref3) {
+    let {
+      key
+    } = _ref3;
     let offset = 0;
     const scopeNames = mode[key];
     /** @type Record<number,boolean> */
@@ -2088,7 +2140,7 @@
      * @param {boolean} [global]
      */
     function langRe(value, global) {
-      return new RegExp(source$7(value), 'm' + (language.case_insensitive ? 'i' : '') + (global ? 'g' : ''));
+      return new RegExp(source$2(value), 'm' + (language.case_insensitive ? 'i' : '') + (language.unicodeRegex ? 'u' : '') + (global ? 'g' : ''));
     }
     /**
       Stores multiple regular expressions and allows you to quickly search for
@@ -2197,7 +2249,10 @@
       getMatcher(index) {
         if (this.multiRegexes[index]) return this.multiRegexes[index];
         const matcher = new MultiRegex();
-        this.rules.slice(index).forEach(([re, opts]) => matcher.addRule(re, opts));
+        this.rules.slice(index).forEach(_ref4 => {
+          let [re, opts] = _ref4;
+          return matcher.addRule(re, opts);
+        });
         matcher.compile();
         this.multiRegexes[index] = matcher;
         return matcher;
@@ -2343,7 +2398,9 @@
 
 
     function compileMode(mode, parent) {
-      const cmode = mode;
+      const cmode =
+      /** @type CompiledMode */
+      mode;
       if (mode.isCompiled) return cmode;
       [scopeClassName, // do this early so compiler extensions generally don't have to worry about
       // the distinction between match/begin
@@ -2377,23 +2434,27 @@
 
       if (parent) {
         if (!mode.begin) mode.begin = /\B|\b/;
-        cmode.beginRe = langRe(mode.begin);
+        cmode.beginRe = langRe(cmode.begin);
         if (!mode.end && !mode.endsWithParent) mode.end = /\B|\b/;
-        if (mode.end) cmode.endRe = langRe(mode.end);
-        cmode.terminatorEnd = source$7(mode.end) || '';
+        if (mode.end) cmode.endRe = langRe(cmode.end);
+        cmode.terminatorEnd = source$2(cmode.end) || '';
 
         if (mode.endsWithParent && parent.terminatorEnd) {
           cmode.terminatorEnd += (mode.end ? '|' : '') + parent.terminatorEnd;
         }
       }
 
-      if (mode.illegal) cmode.illegalRe = langRe(mode.illegal);
+      if (mode.illegal) cmode.illegalRe = langRe(
+      /** @type {RegExp | string} */
+      mode.illegal);
       if (!mode.contains) mode.contains = [];
       mode.contains = [].concat(...mode.contains.map(function (c) {
         return expandOrCloneMode(c === 'self' ? mode : c);
       }));
       mode.contains.forEach(function (c) {
-        compileMode(c, cmode);
+        compileMode(
+        /** @type Mode */
+        c, cmode);
       });
 
       if (mode.starts) {
@@ -2412,7 +2473,9 @@
 
 
     language.classNameAliases = inherit$1(language.classNameAliases || {});
-    return compileMode(language);
+    return compileMode(
+    /** @type Mode */
+    language);
   }
   /**
    * Determines if a mode has a dependency on it's parent or not
@@ -2477,7 +2540,16 @@
     return mode;
   }
 
-  var version = "11.2.0";
+  var version = "11.3.1";
+
+  class HTMLInjectionError extends Error {
+    constructor(reason, html) {
+      super(reason);
+      this.name = "HTMLInjectionError";
+      this.html = html;
+    }
+
+  }
   /*
   Syntax highlighting with language autodetection.
   https://highlightjs.org/
@@ -2486,6 +2558,7 @@
   /**
   @typedef {import('highlight.js').Mode} Mode
   @typedef {import('highlight.js').CompiledMode} CompiledMode
+  @typedef {import('highlight.js').CompiledScope} CompiledScope
   @typedef {import('highlight.js').Language} Language
   @typedef {import('highlight.js').HLJSApi} HLJSApi
   @typedef {import('highlight.js').HLJSPlugin} HLJSPlugin
@@ -2502,6 +2575,7 @@
   @typedef {import('highlight.js').HighlightOptions} HighlightOptions
   @typedef {import('highlight.js').HighlightResult} HighlightResult
   */
+
 
   const escape$1 = escapeHTML$1;
   const inherit = inherit$1;
@@ -2540,6 +2614,7 @@
 
     let options = {
       ignoreUnescapedHTML: false,
+      throwUnescapedHTML: false,
       noHighlightRe: /^(no-?highlight)$/i,
       languageDetectRe: /\blang(?:uage)?-([\w-]+)\b/i,
       classPrefix: 'hljs-',
@@ -2725,7 +2800,9 @@
           }
 
           result = _highlight(top.subLanguage, modeBuffer, true, continuations[top.subLanguage]);
-          continuations[top.subLanguage] = result._top;
+          continuations[top.subLanguage] =
+          /** @type {CompiledMode} */
+          result._top;
         } else {
           result = highlightAuto(modeBuffer, top.subLanguage.length ? top.subLanguage : null);
         } // Counting embedded language score towards the host language may be disabled
@@ -2751,7 +2828,7 @@
         modeBuffer = '';
       }
       /**
-       * @param {CompiledMode} mode
+       * @param {CompiledScope} scope
        * @param {RegExpMatchArray} match
        */
 
@@ -2999,7 +3076,7 @@
 
           if (!SAFE_MODE) {
             /** @type {AnnotatedError} */
-            const err = new Error(`0 width match regex (${languageName})`);
+            const err = new Error("0 width match regex (".concat(languageName, ")"));
             err.languageName = languageName;
             err.badRule = lastMatch.rule;
             throw err;
@@ -3225,7 +3302,7 @@
     function updateClassName(element, currentLang, resultLang) {
       const language = currentLang && aliases[currentLang] || resultLang;
       element.classList.add("hljs");
-      element.classList.add(`language-${language}`);
+      element.classList.add("language-".concat(language));
     }
     /**
      * Applies highlighting to a DOM node containing code.
@@ -3242,12 +3319,23 @@
       fire("before:highlightElement", {
         el: element,
         language: language
-      }); // we should be all text, no child nodes
+      }); // we should be all text, no child nodes (unescaped HTML) - this is possibly
+      // an HTML injection attack - it's likely too late if this is already in
+      // production (the code has likely already done its damage by the time
+      // we're seeing it)... but we yell loudly about this so that hopefully it's
+      // more likely to be caught in development before making it to production
 
-      if (!options.ignoreUnescapedHTML && element.children.length > 0) {
-        console.warn("One of your code blocks includes unescaped HTML. This is a potentially serious security risk.");
-        console.warn("https://github.com/highlightjs/highlight.js/issues/2886");
-        console.warn(element);
+      if (element.children.length > 0) {
+        if (!options.ignoreUnescapedHTML) {
+          console.warn("One of your code blocks includes unescaped HTML. This is a potentially serious security risk.");
+          console.warn("https://github.com/highlightjs/highlight.js/issues/2886");
+          console.warn(element);
+        }
+
+        if (options.throwUnescapedHTML) {
+          const err = new HTMLInjectionError("One of your code blocks includes unescaped HTML.", element.innerHTML);
+          throw err;
+        }
       }
 
       node = element;
@@ -3407,9 +3495,11 @@
      */
 
 
-    function registerAliases(aliasList, {
-      languageName
-    }) {
+    function registerAliases(aliasList, _ref5) {
+      let {
+        languageName
+      } = _ref5;
+
       if (typeof aliasList === 'string') {
         aliasList = [aliasList];
       }
@@ -3520,6 +3610,13 @@
     };
 
     hljs.versionString = version;
+    hljs.regex = {
+      concat: concat,
+      lookahead: lookahead$1,
+      either: either,
+      optional: optional$1,
+      anyNumberOfTimes: anyNumberOfTimes
+    };
 
     for (const key in MODES$1) {
       // @ts-ignore
@@ -3537,6 +3634,8 @@
 
   var highlight = HLJS({});
   var core = highlight;
+  highlight.HighlightJS = highlight;
+  highlight.default = highlight;
 
   const MODES = hljs => {
     return {
@@ -3544,9 +3643,14 @@
         scope: 'meta',
         begin: '!important'
       },
+      BLOCK_COMMENT: hljs.C_BLOCK_COMMENT_MODE,
       HEXCOLOR: {
         scope: 'number',
-        begin: '#([a-fA-F0-9]{6}|[a-fA-F0-9]{3})'
+        begin: /#(([0-9a-fA-F]{3,4})|(([0-9a-fA-F]{2}){3,4}))\b/
+      },
+      FUNCTION_DISPATCH: {
+        className: "built_in",
+        begin: /[\w-]+(?=\()/
       },
       ATTRIBUTE_SELECTOR_MODE: {
         scope: 'selector-attr',
@@ -3588,44 +3692,10 @@
   ]; // https://developer.mozilla.org/en-US/docs/Web/CSS/Pseudo-elements
 
   const PSEUDO_ELEMENTS = ['after', 'backdrop', 'before', 'cue', 'cue-region', 'first-letter', 'first-line', 'grammar-error', 'marker', 'part', 'placeholder', 'selection', 'slotted', 'spelling-error'];
-  const ATTRIBUTES = ['align-content', 'align-items', 'align-self', 'animation', 'animation-delay', 'animation-direction', 'animation-duration', 'animation-fill-mode', 'animation-iteration-count', 'animation-name', 'animation-play-state', 'animation-timing-function', 'auto', 'backface-visibility', 'background', 'background-attachment', 'background-clip', 'background-color', 'background-image', 'background-origin', 'background-position', 'background-repeat', 'background-size', 'border', 'border-bottom', 'border-bottom-color', 'border-bottom-left-radius', 'border-bottom-right-radius', 'border-bottom-style', 'border-bottom-width', 'border-collapse', 'border-color', 'border-image', 'border-image-outset', 'border-image-repeat', 'border-image-slice', 'border-image-source', 'border-image-width', 'border-left', 'border-left-color', 'border-left-style', 'border-left-width', 'border-radius', 'border-right', 'border-right-color', 'border-right-style', 'border-right-width', 'border-spacing', 'border-style', 'border-top', 'border-top-color', 'border-top-left-radius', 'border-top-right-radius', 'border-top-style', 'border-top-width', 'border-width', 'bottom', 'box-decoration-break', 'box-shadow', 'box-sizing', 'break-after', 'break-before', 'break-inside', 'caption-side', 'clear', 'clip', 'clip-path', 'color', 'column-count', 'column-fill', 'column-gap', 'column-rule', 'column-rule-color', 'column-rule-style', 'column-rule-width', 'column-span', 'column-width', 'columns', 'content', 'counter-increment', 'counter-reset', 'cursor', 'direction', 'display', 'empty-cells', 'filter', 'flex', 'flex-basis', 'flex-direction', 'flex-flow', 'flex-grow', 'flex-shrink', 'flex-wrap', 'float', 'font', 'font-display', 'font-family', 'font-feature-settings', 'font-kerning', 'font-language-override', 'font-size', 'font-size-adjust', 'font-smoothing', 'font-stretch', 'font-style', 'font-variant', 'font-variant-ligatures', 'font-variation-settings', 'font-weight', 'height', 'hyphens', 'icon', 'image-orientation', 'image-rendering', 'image-resolution', 'ime-mode', 'inherit', 'initial', 'justify-content', 'left', 'letter-spacing', 'line-height', 'list-style', 'list-style-image', 'list-style-position', 'list-style-type', 'margin', 'margin-bottom', 'margin-left', 'margin-right', 'margin-top', 'marks', 'mask', 'max-height', 'max-width', 'min-height', 'min-width', 'nav-down', 'nav-index', 'nav-left', 'nav-right', 'nav-up', 'none', 'normal', 'object-fit', 'object-position', 'opacity', 'order', 'orphans', 'outline', 'outline-color', 'outline-offset', 'outline-style', 'outline-width', 'overflow', 'overflow-wrap', 'overflow-x', 'overflow-y', 'padding', 'padding-bottom', 'padding-left', 'padding-right', 'padding-top', 'page-break-after', 'page-break-before', 'page-break-inside', 'perspective', 'perspective-origin', 'pointer-events', 'position', 'quotes', 'resize', 'right', 'src', // @font-face
-  'tab-size', 'table-layout', 'text-align', 'text-align-last', 'text-decoration', 'text-decoration-color', 'text-decoration-line', 'text-decoration-style', 'text-indent', 'text-overflow', 'text-rendering', 'text-shadow', 'text-transform', 'text-underline-position', 'top', 'transform', 'transform-origin', 'transform-style', 'transition', 'transition-delay', 'transition-duration', 'transition-property', 'transition-timing-function', 'unicode-bidi', 'vertical-align', 'visibility', 'white-space', 'widows', 'width', 'word-break', 'word-spacing', 'word-wrap', 'z-index' // reverse makes sure longer attributes `font-weight` are matched fully
+  const ATTRIBUTES = ['align-content', 'align-items', 'align-self', 'all', 'animation', 'animation-delay', 'animation-direction', 'animation-duration', 'animation-fill-mode', 'animation-iteration-count', 'animation-name', 'animation-play-state', 'animation-timing-function', 'backface-visibility', 'background', 'background-attachment', 'background-clip', 'background-color', 'background-image', 'background-origin', 'background-position', 'background-repeat', 'background-size', 'border', 'border-bottom', 'border-bottom-color', 'border-bottom-left-radius', 'border-bottom-right-radius', 'border-bottom-style', 'border-bottom-width', 'border-collapse', 'border-color', 'border-image', 'border-image-outset', 'border-image-repeat', 'border-image-slice', 'border-image-source', 'border-image-width', 'border-left', 'border-left-color', 'border-left-style', 'border-left-width', 'border-radius', 'border-right', 'border-right-color', 'border-right-style', 'border-right-width', 'border-spacing', 'border-style', 'border-top', 'border-top-color', 'border-top-left-radius', 'border-top-right-radius', 'border-top-style', 'border-top-width', 'border-width', 'bottom', 'box-decoration-break', 'box-shadow', 'box-sizing', 'break-after', 'break-before', 'break-inside', 'caption-side', 'caret-color', 'clear', 'clip', 'clip-path', 'clip-rule', 'color', 'column-count', 'column-fill', 'column-gap', 'column-rule', 'column-rule-color', 'column-rule-style', 'column-rule-width', 'column-span', 'column-width', 'columns', 'contain', 'content', 'content-visibility', 'counter-increment', 'counter-reset', 'cue', 'cue-after', 'cue-before', 'cursor', 'direction', 'display', 'empty-cells', 'filter', 'flex', 'flex-basis', 'flex-direction', 'flex-flow', 'flex-grow', 'flex-shrink', 'flex-wrap', 'float', 'flow', 'font', 'font-display', 'font-family', 'font-feature-settings', 'font-kerning', 'font-language-override', 'font-size', 'font-size-adjust', 'font-smoothing', 'font-stretch', 'font-style', 'font-synthesis', 'font-variant', 'font-variant-caps', 'font-variant-east-asian', 'font-variant-ligatures', 'font-variant-numeric', 'font-variant-position', 'font-variation-settings', 'font-weight', 'gap', 'glyph-orientation-vertical', 'grid', 'grid-area', 'grid-auto-columns', 'grid-auto-flow', 'grid-auto-rows', 'grid-column', 'grid-column-end', 'grid-column-start', 'grid-gap', 'grid-row', 'grid-row-end', 'grid-row-start', 'grid-template', 'grid-template-areas', 'grid-template-columns', 'grid-template-rows', 'hanging-punctuation', 'height', 'hyphens', 'icon', 'image-orientation', 'image-rendering', 'image-resolution', 'ime-mode', 'isolation', 'justify-content', 'left', 'letter-spacing', 'line-break', 'line-height', 'list-style', 'list-style-image', 'list-style-position', 'list-style-type', 'margin', 'margin-bottom', 'margin-left', 'margin-right', 'margin-top', 'marks', 'mask', 'mask-border', 'mask-border-mode', 'mask-border-outset', 'mask-border-repeat', 'mask-border-slice', 'mask-border-source', 'mask-border-width', 'mask-clip', 'mask-composite', 'mask-image', 'mask-mode', 'mask-origin', 'mask-position', 'mask-repeat', 'mask-size', 'mask-type', 'max-height', 'max-width', 'min-height', 'min-width', 'mix-blend-mode', 'nav-down', 'nav-index', 'nav-left', 'nav-right', 'nav-up', 'none', 'normal', 'object-fit', 'object-position', 'opacity', 'order', 'orphans', 'outline', 'outline-color', 'outline-offset', 'outline-style', 'outline-width', 'overflow', 'overflow-wrap', 'overflow-x', 'overflow-y', 'padding', 'padding-bottom', 'padding-left', 'padding-right', 'padding-top', 'page-break-after', 'page-break-before', 'page-break-inside', 'pause', 'pause-after', 'pause-before', 'perspective', 'perspective-origin', 'pointer-events', 'position', 'quotes', 'resize', 'rest', 'rest-after', 'rest-before', 'right', 'row-gap', 'scroll-margin', 'scroll-margin-block', 'scroll-margin-block-end', 'scroll-margin-block-start', 'scroll-margin-bottom', 'scroll-margin-inline', 'scroll-margin-inline-end', 'scroll-margin-inline-start', 'scroll-margin-left', 'scroll-margin-right', 'scroll-margin-top', 'scroll-padding', 'scroll-padding-block', 'scroll-padding-block-end', 'scroll-padding-block-start', 'scroll-padding-bottom', 'scroll-padding-inline', 'scroll-padding-inline-end', 'scroll-padding-inline-start', 'scroll-padding-left', 'scroll-padding-right', 'scroll-padding-top', 'scroll-snap-align', 'scroll-snap-stop', 'scroll-snap-type', 'shape-image-threshold', 'shape-margin', 'shape-outside', 'speak', 'speak-as', 'src', // @font-face
+  'tab-size', 'table-layout', 'text-align', 'text-align-all', 'text-align-last', 'text-combine-upright', 'text-decoration', 'text-decoration-color', 'text-decoration-line', 'text-decoration-style', 'text-emphasis', 'text-emphasis-color', 'text-emphasis-position', 'text-emphasis-style', 'text-indent', 'text-justify', 'text-orientation', 'text-overflow', 'text-rendering', 'text-shadow', 'text-transform', 'text-underline-position', 'top', 'transform', 'transform-box', 'transform-origin', 'transform-style', 'transition', 'transition-delay', 'transition-duration', 'transition-property', 'transition-timing-function', 'unicode-bidi', 'vertical-align', 'visibility', 'voice-balance', 'voice-duration', 'voice-family', 'voice-pitch', 'voice-range', 'voice-rate', 'voice-stress', 'voice-volume', 'white-space', 'widows', 'width', 'will-change', 'word-break', 'word-spacing', 'word-wrap', 'writing-mode', 'z-index' // reverse makes sure longer attributes `font-weight` are matched fully
   // instead of getting false positives on say `font`
   ].reverse();
-  /**
-   * @param {string} value
-   * @returns {RegExp}
-   * */
-
-  /**
-   * @param {RegExp | string } re
-   * @returns {string}
-   */
-
-  function source$6(re) {
-    if (!re) return null;
-    if (typeof re === "string") return re;
-    return re.source;
-  }
-  /**
-   * @param {RegExp | string } re
-   * @returns {string}
-   */
-
-
-  function lookahead$4(re) {
-    return concat$3('(?=', re, ')');
-  }
-  /**
-   * @param {...(RegExp | string) } args
-   * @returns {string}
-   */
-
-
-  function concat$3(...args) {
-    const joined = args.map(x => source$6(x)).join("");
-    return joined;
-  }
   /*
   Language: CSS
   Category: common, css, web
@@ -3634,13 +3704,9 @@
 
   /** @type LanguageFn */
 
-
   function css(hljs) {
+    const regex = hljs.regex;
     const modes = MODES(hljs);
-    const FUNCTION_DISPATCH = {
-      className: "built_in",
-      begin: /[\w-]+(?=\()/
-    };
     const VENDOR_PREFIX = {
       begin: /-(webkit|moz|ms|o)-(?=[a-z])/
     };
@@ -3661,7 +3727,7 @@
         // don't have a great class for this?
         keyframePosition: "selector-tag"
       },
-      contains: [hljs.C_BLOCK_COMMENT_MODE, VENDOR_PREFIX, // to recognize keyframe 40% etc which are outside the scope of our
+      contains: [modes.BLOCK_COMMENT, VENDOR_PREFIX, // to recognize keyframe 40% etc which are outside the scope of our
       // attribute value mode
       modes.CSS_NUMBER_MODE, {
         className: 'selector-id',
@@ -3676,7 +3742,7 @@
         variants: [{
           begin: ':(' + PSEUDO_CLASSES.join('|') + ')'
         }, {
-          begin: '::(' + PSEUDO_ELEMENTS.join('|') + ')'
+          begin: ':(:)?(' + PSEUDO_ELEMENTS.join('|') + ')'
         }]
       }, // we may actually need this (12/2020)
       // { // pseudo-selector params
@@ -3689,9 +3755,9 @@
         begin: '\\b(' + ATTRIBUTES.join('|') + ')\\b'
       }, // attribute values
       {
-        begin: ':',
-        end: '[;}]',
-        contains: [modes.HEXCOLOR, modes.IMPORTANT, modes.CSS_NUMBER_MODE, ...STRINGS, // needed to highlight these as strings and to avoid issues with
+        begin: /:/,
+        end: /[;}{]/,
+        contains: [modes.BLOCK_COMMENT, modes.HEXCOLOR, modes.IMPORTANT, modes.CSS_NUMBER_MODE, ...STRINGS, // needed to highlight these as strings and to avoid issues with
         // illegal characters that might be inside urls that would tigger the
         // languages illegal stack
         {
@@ -3710,9 +3776,9 @@
             endsWithParent: true,
             excludeEnd: true
           }]
-        }, FUNCTION_DISPATCH]
+        }, modes.FUNCTION_DISPATCH]
       }, {
-        begin: lookahead$4(/@/),
+        begin: regex.lookahead(/@/),
         end: '[{;]',
         relevance: 0,
         illegal: /:/,
@@ -3742,45 +3808,6 @@
     };
   }
 
-  /**
-   * @param {string} value
-   * @returns {RegExp}
-   * */
-
-  /**
-   * @param {RegExp | string } re
-   * @returns {string}
-   */
-  function source$5(re) {
-    if (!re) return null;
-    if (typeof re === "string") return re;
-    return re.source;
-  }
-
-  function stripOptionsFromArgs$1(args) {
-    const opts = args[args.length - 1];
-
-    if (typeof opts === 'object' && opts.constructor === Object) {
-      args.splice(args.length - 1, 1);
-      return opts;
-    } else {
-      return {};
-    }
-  }
-  /**
-   * Any of the passed expresssions may match
-   *
-   * Creates a huge this | this | that | that match
-   * @param {(RegExp | string)[] } args
-   * @returns {string}
-   */
-
-
-  function either$1(...args) {
-    const opts = stripOptionsFromArgs$1(args);
-    const joined = '(' + (opts.capture ? "" : "?:") + args.map(x => source$5(x)).join("|") + ")";
-    return joined;
-  }
   /*
   Language: Diff
   Description: Unified and context diff
@@ -3790,20 +3817,19 @@
   */
 
   /** @type LanguageFn */
-
-
   function diff(hljs) {
+    const regex = hljs.regex;
     return {
       name: 'Diff',
       aliases: ['patch'],
       contains: [{
         className: 'meta',
         relevance: 10,
-        match: either$1(/^@@ +-\d+,\d+ +\+\d+,\d+ +@@/, /^\*\*\* +\d+,\d+ +\*\*\*\*$/, /^--- +\d+,\d+ +----$/)
+        match: regex.either(/^@@ +-\d+,\d+ +\+\d+,\d+ +@@/, /^\*\*\* +\d+,\d+ +\*\*\*\*$/, /^--- +\d+,\d+ +----$/)
       }, {
         className: 'comment',
         variants: [{
-          begin: either$1(/Index: /, /^index/, /={3,}/, /^-{3}/, /^\*{3} /, /^\+{3}/, /^diff --git/),
+          begin: regex.either(/Index: /, /^index/, /={3,}/, /^-{3}/, /^\*{3} /, /^\+{3}/, /^diff --git/),
           end: /$/
         }, {
           match: /^\*{15}$/
@@ -3830,47 +3856,24 @@
   // "get",
   // "set",
   "debugger", "async", "await", "static", "import", "from", "export", "extends"];
-  const LITERALS$1 = ["true", "false", "null", "undefined", "NaN", "Infinity"];
-  const TYPES$1 = ["Intl", "DataView", "Number", "Math", "Date", "String", "RegExp", "Object", "Function", "Boolean", "Error", "Symbol", "Set", "Map", "WeakSet", "WeakMap", "Proxy", "Reflect", "JSON", "Promise", "Float64Array", "Int16Array", "Int32Array", "Int8Array", "Uint16Array", "Uint32Array", "Float32Array", "Array", "Uint8Array", "Uint8ClampedArray", "ArrayBuffer", "BigInt64Array", "BigUint64Array", "BigInt"];
-  const ERROR_TYPES$1 = ["EvalError", "InternalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError"];
+  const LITERALS$1 = ["true", "false", "null", "undefined", "NaN", "Infinity"]; // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
+
+  const TYPES$1 = [// Fundamental objects
+  "Object", "Function", "Boolean", "Symbol", // numbers and dates
+  "Math", "Date", "Number", "BigInt", // text
+  "String", "RegExp", // Indexed collections
+  "Array", "Float32Array", "Float64Array", "Int8Array", "Uint8Array", "Uint8ClampedArray", "Int16Array", "Int32Array", "Uint16Array", "Uint32Array", "BigInt64Array", "BigUint64Array", // Keyed collections
+  "Set", "Map", "WeakSet", "WeakMap", // Structured data
+  "ArrayBuffer", "SharedArrayBuffer", "Atomics", "DataView", "JSON", // Control abstraction objects
+  "Promise", "Generator", "GeneratorFunction", "AsyncFunction", // Reflection
+  "Reflect", "Proxy", // Internationalization
+  "Intl", // WebAssembly
+  "WebAssembly"];
+  const ERROR_TYPES$1 = ["Error", "EvalError", "InternalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError"];
   const BUILT_IN_GLOBALS$1 = ["setInterval", "setTimeout", "clearInterval", "clearTimeout", "require", "exports", "eval", "isFinite", "isNaN", "parseFloat", "parseInt", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "escape", "unescape"];
   const BUILT_IN_VARIABLES$1 = ["arguments", "this", "super", "console", "window", "document", "localStorage", "module", "global" // Node.js
   ];
   const BUILT_INS$1 = [].concat(BUILT_IN_GLOBALS$1, TYPES$1, ERROR_TYPES$1);
-  /**
-   * @param {string} value
-   * @returns {RegExp}
-   * */
-
-  /**
-   * @param {RegExp | string } re
-   * @returns {string}
-   */
-
-  function source$4(re) {
-    if (!re) return null;
-    if (typeof re === "string") return re;
-    return re.source;
-  }
-  /**
-   * @param {RegExp | string } re
-   * @returns {string}
-   */
-
-
-  function lookahead$3(re) {
-    return concat$2('(?=', re, ')');
-  }
-  /**
-   * @param {...(RegExp | string) } args
-   * @returns {string}
-   */
-
-
-  function concat$2(...args) {
-    const joined = args.map(x => source$4(x)).join("");
-    return joined;
-  }
   /*
   Language: JavaScript
   Description: JavaScript (JS) is a lightweight, interpreted, or just-in-time compiled programming language with first-class functions.
@@ -3880,8 +3883,8 @@
 
   /** @type LanguageFn */
 
-
   function javascript$1(hljs) {
+    const regex = hljs.regex;
     /**
      * Takes a string like "<Booger" and checks to see
      * if we can find a matching "</Booger" later in the
@@ -3889,9 +3892,11 @@
      * @param {RegExpMatchArray} match
      * @param {{after:number}} param1
      */
-    const hasClosingTag = (match, {
-      after
-    }) => {
+
+    const hasClosingTag = (match, _ref) => {
+      let {
+        after
+      } = _ref;
       const tag = "</" + match[0].slice(1);
       const pos = match.input.indexOf(tag, after);
       return pos !== -1;
@@ -3901,7 +3906,9 @@
     const FRAGMENT = {
       begin: '<>',
       end: '</>'
-    };
+    }; // to avoid some special cases inside isTrulyOpeningTag
+
+    const XML_SELF_CLOSING = /<[A-Za-z0-9\\._:-]+\s*\/>/;
     const XML_TAG = {
       begin: /<[A-Za-z0-9\\._:-]+/,
       end: /\/[A-Za-z0-9\\._:-]+>|\/>/,
@@ -3912,15 +3919,18 @@
        */
       isTrulyOpeningTag: (match, response) => {
         const afterMatchIndex = match[0].length + match.index;
-        const nextChar = match.input[afterMatchIndex]; // nested type?
-        // HTML should not include another raw `<` inside a tag
-        // But a type might: `<Array<Array<number>>`, etc.
+        const nextChar = match.input[afterMatchIndex];
 
-        if (nextChar === "<") {
+        if ( // HTML should not include another raw `<` inside a tag
+        // nested type?
+        // `<Array<Array<number>>`, etc.
+        nextChar === "<" || // the , gives away that this is not HTML
+        // `<T, A extends keyof T, V>`
+        nextChar === ",") {
           response.ignoreMatch();
           return;
-        } // <something>
-        // This is now either a tag or a type.
+        } // `<something>`
+        // Quite possibly a tag, lets look for a matching closing tag...
 
 
         if (nextChar === ">") {
@@ -3930,6 +3940,21 @@
             after: afterMatchIndex
           })) {
             response.ignoreMatch();
+          }
+        } // `<blah />` (self-closing)
+        // handled by simpleSelfClosing rule
+        // `<From extends string>`
+        // technically this could be HTML, but it smells like a type
+
+
+        let m;
+        const afterMatch = match.input.substr(afterMatchIndex); // NOTE: This is ugh, but added specifically for https://github.com/highlightjs/highlight.js/issues/3276
+
+        if (m = afterMatch.match(/^\s+extends\s+/)) {
+          if (m.index === 0) {
+            response.ignoreMatch(); // eslint-disable-next-line no-useless-return
+
+            return;
           }
         }
       }
@@ -3943,20 +3968,20 @@
     }; // https://tc39.es/ecma262/#sec-literals-numeric-literals
 
     const decimalDigits = '[0-9](_?[0-9])*';
-    const frac = `\\.(${decimalDigits})`; // DecimalIntegerLiteral, including Annex B NonOctalDecimalIntegerLiteral
+    const frac = "\\.(".concat(decimalDigits, ")"); // DecimalIntegerLiteral, including Annex B NonOctalDecimalIntegerLiteral
     // https://tc39.es/ecma262/#sec-additional-syntax-numeric-literals
 
-    const decimalInteger = `0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*`;
+    const decimalInteger = "0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*";
     const NUMBER = {
       className: 'number',
       variants: [// DecimalLiteral
       {
-        begin: `(\\b(${decimalInteger})((${frac})|\\.)?|(${frac}))` + `[eE][+-]?(${decimalDigits})\\b`
+        begin: "(\\b(".concat(decimalInteger, ")((").concat(frac, ")|\\.)?|(").concat(frac, "))") + "[eE][+-]?(".concat(decimalDigits, ")\\b")
       }, {
-        begin: `\\b(${decimalInteger})\\b((${frac})\\b|\\.)?|(${frac})\\b`
+        begin: "\\b(".concat(decimalInteger, ")\\b((").concat(frac, ")\\b|\\.)?|(").concat(frac, ")\\b")
       }, // DecimalBigIntegerLiteral
       {
-        begin: `\\b(0|[1-9](_?[0-9])*)n\\b`
+        begin: "\\b(0|[1-9](_?[0-9])*)n\\b"
       }, // NonDecimalIntegerLiteral
       {
         begin: "\\b0[xX][0-9a-fA-F](_?[0-9a-fA-F])*n?\\b"
@@ -4037,7 +4062,10 @@
       className: "comment",
       variants: [JSDOC_COMMENT, hljs.C_BLOCK_COMMENT_MODE, hljs.C_LINE_COMMENT_MODE]
     };
-    const SUBST_INTERNALS = [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, NUMBER, hljs.REGEXP_MODE];
+    const SUBST_INTERNALS = [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, NUMBER // This is intentional:
+    // See https://github.com/highlightjs/highlight.js/issues/3288
+    // hljs.REGEXP_MODE
+    ];
     SUBST.contains = SUBST_INTERNALS.concat({
       // we need to pair up {} inside our subst to prevent
       // it from ending too early by matching another }
@@ -4065,23 +4093,32 @@
     }; // ES6 classes
 
     const CLASS_OR_EXTENDS = {
-      variants: [{
+      variants: [// class Car extends vehicle
+      {
+        match: [/class/, /\s+/, IDENT_RE$1$1, /\s+/, /extends/, /\s+/, regex.concat(IDENT_RE$1$1, "(", regex.concat(/\./, IDENT_RE$1$1), ")*")],
+        scope: {
+          1: "keyword",
+          3: "title.class",
+          5: "keyword",
+          7: "title.class.inherited"
+        }
+      }, // class Car
+      {
         match: [/class/, /\s+/, IDENT_RE$1$1],
         scope: {
           1: "keyword",
           3: "title.class"
         }
-      }, {
-        match: [/extends/, /\s+/, concat$2(IDENT_RE$1$1, "(", concat$2(/\./, IDENT_RE$1$1), ")*")],
-        scope: {
-          1: "keyword",
-          3: "title.class.inherited"
-        }
       }]
     };
     const CLASS_REFERENCE = {
       relevance: 0,
-      match: /\b[A-Z][a-z]+([A-Z][a-z]+)*/,
+      match: regex.either( // Hard coded exceptions
+      /\bJSON/, // Float32Array
+      /\b[A-Z][a-z]+([A-Z][a-z]+|\d)*/, // CSSFactory
+      /\b[A-Z]{2,}([A-Z][a-z]+|\d)+/ // BLAH
+      // this will be flagged as a UPPER_CASE_CONSTANT instead
+      ),
       className: "title.class",
       keywords: {
         _: [// se we still get relevance credit for JS library classes
@@ -4116,16 +4153,16 @@
     };
 
     function noneOf(list) {
-      return concat$2("(?!", list.join("|"), ")");
+      return regex.concat("(?!", list.join("|"), ")");
     }
 
     const FUNCTION_CALL = {
-      match: concat$2(/\b/, noneOf([...BUILT_IN_GLOBALS$1, "super"]), IDENT_RE$1$1, lookahead$3(/\(/)),
+      match: regex.concat(/\b/, noneOf([...BUILT_IN_GLOBALS$1, "super"]), IDENT_RE$1$1, regex.lookahead(/\(/)),
       className: "title.function",
       relevance: 0
     };
     const PROPERTY_ACCESS = {
-      begin: concat$2(/\./, lookahead$3(concat$2(IDENT_RE$1$1, /(?![0-9A-Za-z$_(])/))),
+      begin: regex.concat(/\./, regex.lookahead(regex.concat(IDENT_RE$1$1, /(?![0-9A-Za-z$_(])/))),
       end: IDENT_RE$1$1,
       excludeBegin: true,
       keywords: "prototype",
@@ -4145,7 +4182,7 @@
     };
     const FUNC_LEAD_IN_RE = '(\\(' + '[^()]*(\\(' + '[^()]*(\\(' + '[^()]*' + '\\)[^()]*)*' + '\\)[^()]*)*' + '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>';
     const FUNCTION_VARIABLE = {
-      match: [/const|var|let/, /\s+/, IDENT_RE$1$1, /\s*/, /=\s*/, lookahead$3(FUNC_LEAD_IN_RE)],
+      match: [/const|var|let/, /\s+/, IDENT_RE$1$1, /\s*/, /=\s*/, regex.lookahead(FUNC_LEAD_IN_RE)],
       className: {
         1: "keyword",
         3: "title.function"
@@ -4158,7 +4195,8 @@
       keywords: KEYWORDS$1$1,
       // this will be extended by TypeScript
       exports: {
-        PARAMS_CONTAINS
+        PARAMS_CONTAINS,
+        CLASS_REFERENCE
       },
       illegal: /#(?![$_A-z])/,
       contains: [hljs.SHEBANG({
@@ -4167,7 +4205,7 @@
         relevance: 5
       }), USE_STRICT, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, COMMENT, NUMBER, CLASS_REFERENCE, {
         className: 'attr',
-        begin: IDENT_RE$1$1 + lookahead$3(':'),
+        begin: IDENT_RE$1$1 + regex.lookahead(':'),
         relevance: 0
       }, FUNCTION_VARIABLE, {
         // "value" container
@@ -4212,6 +4250,8 @@
           variants: [{
             begin: FRAGMENT.begin,
             end: FRAGMENT.end
+          }, {
+            match: XML_SELF_CLOSING
           }, {
             begin: XML_TAG.begin,
             // we carefully check the opening tag to see if it truly
@@ -4306,47 +4346,24 @@
   // "get",
   // "set",
   "debugger", "async", "await", "static", "import", "from", "export", "extends"];
-  const LITERALS = ["true", "false", "null", "undefined", "NaN", "Infinity"];
-  const TYPES = ["Intl", "DataView", "Number", "Math", "Date", "String", "RegExp", "Object", "Function", "Boolean", "Error", "Symbol", "Set", "Map", "WeakSet", "WeakMap", "Proxy", "Reflect", "JSON", "Promise", "Float64Array", "Int16Array", "Int32Array", "Int8Array", "Uint16Array", "Uint32Array", "Float32Array", "Array", "Uint8Array", "Uint8ClampedArray", "ArrayBuffer", "BigInt64Array", "BigUint64Array", "BigInt"];
-  const ERROR_TYPES = ["EvalError", "InternalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError"];
+  const LITERALS = ["true", "false", "null", "undefined", "NaN", "Infinity"]; // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects
+
+  const TYPES = [// Fundamental objects
+  "Object", "Function", "Boolean", "Symbol", // numbers and dates
+  "Math", "Date", "Number", "BigInt", // text
+  "String", "RegExp", // Indexed collections
+  "Array", "Float32Array", "Float64Array", "Int8Array", "Uint8Array", "Uint8ClampedArray", "Int16Array", "Int32Array", "Uint16Array", "Uint32Array", "BigInt64Array", "BigUint64Array", // Keyed collections
+  "Set", "Map", "WeakSet", "WeakMap", // Structured data
+  "ArrayBuffer", "SharedArrayBuffer", "Atomics", "DataView", "JSON", // Control abstraction objects
+  "Promise", "Generator", "GeneratorFunction", "AsyncFunction", // Reflection
+  "Reflect", "Proxy", // Internationalization
+  "Intl", // WebAssembly
+  "WebAssembly"];
+  const ERROR_TYPES = ["Error", "EvalError", "InternalError", "RangeError", "ReferenceError", "SyntaxError", "TypeError", "URIError"];
   const BUILT_IN_GLOBALS = ["setInterval", "setTimeout", "clearInterval", "clearTimeout", "require", "exports", "eval", "isFinite", "isNaN", "parseFloat", "parseInt", "decodeURI", "decodeURIComponent", "encodeURI", "encodeURIComponent", "escape", "unescape"];
   const BUILT_IN_VARIABLES = ["arguments", "this", "super", "console", "window", "document", "localStorage", "module", "global" // Node.js
   ];
   const BUILT_INS = [].concat(BUILT_IN_GLOBALS, TYPES, ERROR_TYPES);
-  /**
-   * @param {string} value
-   * @returns {RegExp}
-   * */
-
-  /**
-   * @param {RegExp | string } re
-   * @returns {string}
-   */
-
-  function source$3(re) {
-    if (!re) return null;
-    if (typeof re === "string") return re;
-    return re.source;
-  }
-  /**
-   * @param {RegExp | string } re
-   * @returns {string}
-   */
-
-
-  function lookahead$2(re) {
-    return concat$1('(?=', re, ')');
-  }
-  /**
-   * @param {...(RegExp | string) } args
-   * @returns {string}
-   */
-
-
-  function concat$1(...args) {
-    const joined = args.map(x => source$3(x)).join("");
-    return joined;
-  }
   /*
   Language: JavaScript
   Description: JavaScript (JS) is a lightweight, interpreted, or just-in-time compiled programming language with first-class functions.
@@ -4356,8 +4373,8 @@
 
   /** @type LanguageFn */
 
-
   function javascript(hljs) {
+    const regex = hljs.regex;
     /**
      * Takes a string like "<Booger" and checks to see
      * if we can find a matching "</Booger" later in the
@@ -4365,9 +4382,11 @@
      * @param {RegExpMatchArray} match
      * @param {{after:number}} param1
      */
-    const hasClosingTag = (match, {
-      after
-    }) => {
+
+    const hasClosingTag = (match, _ref) => {
+      let {
+        after
+      } = _ref;
       const tag = "</" + match[0].slice(1);
       const pos = match.input.indexOf(tag, after);
       return pos !== -1;
@@ -4377,7 +4396,9 @@
     const FRAGMENT = {
       begin: '<>',
       end: '</>'
-    };
+    }; // to avoid some special cases inside isTrulyOpeningTag
+
+    const XML_SELF_CLOSING = /<[A-Za-z0-9\\._:-]+\s*\/>/;
     const XML_TAG = {
       begin: /<[A-Za-z0-9\\._:-]+/,
       end: /\/[A-Za-z0-9\\._:-]+>|\/>/,
@@ -4388,15 +4409,18 @@
        */
       isTrulyOpeningTag: (match, response) => {
         const afterMatchIndex = match[0].length + match.index;
-        const nextChar = match.input[afterMatchIndex]; // nested type?
-        // HTML should not include another raw `<` inside a tag
-        // But a type might: `<Array<Array<number>>`, etc.
+        const nextChar = match.input[afterMatchIndex];
 
-        if (nextChar === "<") {
+        if ( // HTML should not include another raw `<` inside a tag
+        // nested type?
+        // `<Array<Array<number>>`, etc.
+        nextChar === "<" || // the , gives away that this is not HTML
+        // `<T, A extends keyof T, V>`
+        nextChar === ",") {
           response.ignoreMatch();
           return;
-        } // <something>
-        // This is now either a tag or a type.
+        } // `<something>`
+        // Quite possibly a tag, lets look for a matching closing tag...
 
 
         if (nextChar === ">") {
@@ -4406,6 +4430,21 @@
             after: afterMatchIndex
           })) {
             response.ignoreMatch();
+          }
+        } // `<blah />` (self-closing)
+        // handled by simpleSelfClosing rule
+        // `<From extends string>`
+        // technically this could be HTML, but it smells like a type
+
+
+        let m;
+        const afterMatch = match.input.substr(afterMatchIndex); // NOTE: This is ugh, but added specifically for https://github.com/highlightjs/highlight.js/issues/3276
+
+        if (m = afterMatch.match(/^\s+extends\s+/)) {
+          if (m.index === 0) {
+            response.ignoreMatch(); // eslint-disable-next-line no-useless-return
+
+            return;
           }
         }
       }
@@ -4419,20 +4458,20 @@
     }; // https://tc39.es/ecma262/#sec-literals-numeric-literals
 
     const decimalDigits = '[0-9](_?[0-9])*';
-    const frac = `\\.(${decimalDigits})`; // DecimalIntegerLiteral, including Annex B NonOctalDecimalIntegerLiteral
+    const frac = "\\.(".concat(decimalDigits, ")"); // DecimalIntegerLiteral, including Annex B NonOctalDecimalIntegerLiteral
     // https://tc39.es/ecma262/#sec-additional-syntax-numeric-literals
 
-    const decimalInteger = `0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*`;
+    const decimalInteger = "0|[1-9](_?[0-9])*|0[0-7]*[89][0-9]*";
     const NUMBER = {
       className: 'number',
       variants: [// DecimalLiteral
       {
-        begin: `(\\b(${decimalInteger})((${frac})|\\.)?|(${frac}))` + `[eE][+-]?(${decimalDigits})\\b`
+        begin: "(\\b(".concat(decimalInteger, ")((").concat(frac, ")|\\.)?|(").concat(frac, "))") + "[eE][+-]?(".concat(decimalDigits, ")\\b")
       }, {
-        begin: `\\b(${decimalInteger})\\b((${frac})\\b|\\.)?|(${frac})\\b`
+        begin: "\\b(".concat(decimalInteger, ")\\b((").concat(frac, ")\\b|\\.)?|(").concat(frac, ")\\b")
       }, // DecimalBigIntegerLiteral
       {
-        begin: `\\b(0|[1-9](_?[0-9])*)n\\b`
+        begin: "\\b(0|[1-9](_?[0-9])*)n\\b"
       }, // NonDecimalIntegerLiteral
       {
         begin: "\\b0[xX][0-9a-fA-F](_?[0-9a-fA-F])*n?\\b"
@@ -4513,7 +4552,10 @@
       className: "comment",
       variants: [JSDOC_COMMENT, hljs.C_BLOCK_COMMENT_MODE, hljs.C_LINE_COMMENT_MODE]
     };
-    const SUBST_INTERNALS = [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, NUMBER, hljs.REGEXP_MODE];
+    const SUBST_INTERNALS = [hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, NUMBER // This is intentional:
+    // See https://github.com/highlightjs/highlight.js/issues/3288
+    // hljs.REGEXP_MODE
+    ];
     SUBST.contains = SUBST_INTERNALS.concat({
       // we need to pair up {} inside our subst to prevent
       // it from ending too early by matching another }
@@ -4541,23 +4583,32 @@
     }; // ES6 classes
 
     const CLASS_OR_EXTENDS = {
-      variants: [{
+      variants: [// class Car extends vehicle
+      {
+        match: [/class/, /\s+/, IDENT_RE$1, /\s+/, /extends/, /\s+/, regex.concat(IDENT_RE$1, "(", regex.concat(/\./, IDENT_RE$1), ")*")],
+        scope: {
+          1: "keyword",
+          3: "title.class",
+          5: "keyword",
+          7: "title.class.inherited"
+        }
+      }, // class Car
+      {
         match: [/class/, /\s+/, IDENT_RE$1],
         scope: {
           1: "keyword",
           3: "title.class"
         }
-      }, {
-        match: [/extends/, /\s+/, concat$1(IDENT_RE$1, "(", concat$1(/\./, IDENT_RE$1), ")*")],
-        scope: {
-          1: "keyword",
-          3: "title.class.inherited"
-        }
       }]
     };
     const CLASS_REFERENCE = {
       relevance: 0,
-      match: /\b[A-Z][a-z]+([A-Z][a-z]+)*/,
+      match: regex.either( // Hard coded exceptions
+      /\bJSON/, // Float32Array
+      /\b[A-Z][a-z]+([A-Z][a-z]+|\d)*/, // CSSFactory
+      /\b[A-Z]{2,}([A-Z][a-z]+|\d)+/ // BLAH
+      // this will be flagged as a UPPER_CASE_CONSTANT instead
+      ),
       className: "title.class",
       keywords: {
         _: [// se we still get relevance credit for JS library classes
@@ -4592,16 +4643,16 @@
     };
 
     function noneOf(list) {
-      return concat$1("(?!", list.join("|"), ")");
+      return regex.concat("(?!", list.join("|"), ")");
     }
 
     const FUNCTION_CALL = {
-      match: concat$1(/\b/, noneOf([...BUILT_IN_GLOBALS, "super"]), IDENT_RE$1, lookahead$2(/\(/)),
+      match: regex.concat(/\b/, noneOf([...BUILT_IN_GLOBALS, "super"]), IDENT_RE$1, regex.lookahead(/\(/)),
       className: "title.function",
       relevance: 0
     };
     const PROPERTY_ACCESS = {
-      begin: concat$1(/\./, lookahead$2(concat$1(IDENT_RE$1, /(?![0-9A-Za-z$_(])/))),
+      begin: regex.concat(/\./, regex.lookahead(regex.concat(IDENT_RE$1, /(?![0-9A-Za-z$_(])/))),
       end: IDENT_RE$1,
       excludeBegin: true,
       keywords: "prototype",
@@ -4621,7 +4672,7 @@
     };
     const FUNC_LEAD_IN_RE = '(\\(' + '[^()]*(\\(' + '[^()]*(\\(' + '[^()]*' + '\\)[^()]*)*' + '\\)[^()]*)*' + '\\)|' + hljs.UNDERSCORE_IDENT_RE + ')\\s*=>';
     const FUNCTION_VARIABLE = {
-      match: [/const|var|let/, /\s+/, IDENT_RE$1, /\s*/, /=\s*/, lookahead$2(FUNC_LEAD_IN_RE)],
+      match: [/const|var|let/, /\s+/, IDENT_RE$1, /\s*/, /=\s*/, regex.lookahead(FUNC_LEAD_IN_RE)],
       className: {
         1: "keyword",
         3: "title.function"
@@ -4634,7 +4685,8 @@
       keywords: KEYWORDS$1,
       // this will be extended by TypeScript
       exports: {
-        PARAMS_CONTAINS
+        PARAMS_CONTAINS,
+        CLASS_REFERENCE
       },
       illegal: /#(?![$_A-z])/,
       contains: [hljs.SHEBANG({
@@ -4643,7 +4695,7 @@
         relevance: 5
       }), USE_STRICT, hljs.APOS_STRING_MODE, hljs.QUOTE_STRING_MODE, HTML_TEMPLATE, CSS_TEMPLATE, TEMPLATE_STRING, COMMENT, NUMBER, CLASS_REFERENCE, {
         className: 'attr',
-        begin: IDENT_RE$1 + lookahead$2(':'),
+        begin: IDENT_RE$1 + regex.lookahead(':'),
         relevance: 0
       }, FUNCTION_VARIABLE, {
         // "value" container
@@ -4688,6 +4740,8 @@
           variants: [{
             begin: FRAGMENT.begin,
             end: FRAGMENT.end
+          }, {
+            match: XML_SELF_CLOSING
           }, {
             begin: XML_TAG.begin,
             // we carefully check the opening tag to see if it truly
@@ -4755,24 +4809,30 @@
 
 
   function typescript(hljs) {
+    const tsLanguage = javascript(hljs);
     const IDENT_RE$1 = IDENT_RE;
+    const TYPES = ["any", "void", "number", "boolean", "string", "object", "never", "enum"];
     const NAMESPACE = {
       beginKeywords: 'namespace',
       end: /\{/,
-      excludeEnd: true
+      excludeEnd: true,
+      contains: [tsLanguage.exports.CLASS_REFERENCE]
     };
     const INTERFACE = {
       beginKeywords: 'interface',
       end: /\{/,
       excludeEnd: true,
-      keywords: 'interface extends'
+      keywords: {
+        keyword: 'interface extends',
+        built_in: TYPES
+      },
+      contains: [tsLanguage.exports.CLASS_REFERENCE]
     };
     const USE_STRICT = {
       className: 'meta',
       relevance: 10,
       begin: /^\s*['"]use strict['"]/
     };
-    const TYPES = ["any", "void", "number", "boolean", "string", "object", "never", "enum"];
     const TS_SPECIFIC_KEYWORDS = ["type", "namespace", "typedef", "interface", "public", "private", "protected", "implements", "declare", "abstract", "readonly"];
     const KEYWORDS$1 = {
       $pattern: IDENT_RE,
@@ -4794,10 +4854,9 @@
       }
 
       mode.contains.splice(indx, 1, replacement);
-    };
-
-    const tsLanguage = javascript(hljs); // this should update anywhere keywords is used since
+    }; // this should update anywhere keywords is used since
     // it will be the same actual JS object
+
 
     Object.assign(tsLanguage.keywords, KEYWORDS$1);
     tsLanguage.exports.PARAMS_CONTAINS.push(DECORATOR);
@@ -4816,73 +4875,6 @@
     return tsLanguage;
   }
 
-  /**
-   * @param {string} value
-   * @returns {RegExp}
-   * */
-
-  /**
-   * @param {RegExp | string } re
-   * @returns {string}
-   */
-  function source$2(re) {
-    if (!re) return null;
-    if (typeof re === "string") return re;
-    return re.source;
-  }
-  /**
-   * @param {RegExp | string } re
-   * @returns {string}
-   */
-
-
-  function lookahead$1(re) {
-    return concat('(?=', re, ')');
-  }
-  /**
-   * @param {RegExp | string } re
-   * @returns {string}
-   */
-
-
-  function optional$1(re) {
-    return concat('(?:', re, ')?');
-  }
-  /**
-   * @param {...(RegExp | string) } args
-   * @returns {string}
-   */
-
-
-  function concat(...args) {
-    const joined = args.map(x => source$2(x)).join("");
-    return joined;
-  }
-
-  function stripOptionsFromArgs(args) {
-    const opts = args[args.length - 1];
-
-    if (typeof opts === 'object' && opts.constructor === Object) {
-      args.splice(args.length - 1, 1);
-      return opts;
-    } else {
-      return {};
-    }
-  }
-  /**
-   * Any of the passed expresssions may match
-   *
-   * Creates a huge this | this | that | that match
-   * @param {(RegExp | string)[] } args
-   * @returns {string}
-   */
-
-
-  function either(...args) {
-    const opts = stripOptionsFromArgs(args);
-    const joined = '(' + (opts.capture ? "" : "?:") + args.map(x => source$2(x)).join("|") + ")";
-    return joined;
-  }
   /*
   Language: HTML, XML
   Website: https://www.w3.org/XML/
@@ -4891,11 +4883,10 @@
   */
 
   /** @type LanguageFn */
-
-
   function xml(hljs) {
-    // Element names can contain letters, digits, hyphens, underscores, and periods
-    const TAG_NAME_RE = concat(/[A-Z_]/, optional$1(/[A-Z0-9_.-]*:/), /[A-Z0-9_.-]*/);
+    const regex = hljs.regex; // Element names can contain letters, digits, hyphens, underscores, and periods
+
+    const TAG_NAME_RE = regex.concat(/[A-Z_]/, regex.optional(/[A-Z0-9_.-]*:/), /[A-Z0-9_.-]*/);
     const XML_IDENT_RE = /[A-Za-z0-9._:-]+/;
     const XML_ENTITIES = {
       className: 'symbol',
@@ -5017,10 +5008,10 @@
       }, // open tag
       {
         className: 'tag',
-        begin: concat(/</, lookahead$1(concat(TAG_NAME_RE, // <tag/>
+        begin: regex.concat(/</, regex.lookahead(regex.concat(TAG_NAME_RE, // <tag/>
         // <tag>
         // <tag ...
-        either(/\/>/, />/, /\s/)))),
+        regex.either(/\/>/, />/, /\s/)))),
         end: /\/?>/,
         contains: [{
           className: 'name',
@@ -5031,7 +5022,7 @@
       }, // close tag
       {
         className: 'tag',
-        begin: concat(/<\//, lookahead$1(concat(TAG_NAME_RE, />/))),
+        begin: regex.concat(/<\//, regex.lookahead(regex.concat(TAG_NAME_RE, />/))),
         contains: [{
           className: 'name',
           begin: TAG_NAME_RE,
@@ -5254,6 +5245,7 @@
   const Debug = 4;
 
   function logger(_, method) {
+    let handler = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : log$1$1;
     let level = _ || None$2;
     return {
       level(_) {
@@ -5266,22 +5258,22 @@
       },
 
       error() {
-        if (level >= Error$1) log$1$1(method || 'error', 'ERROR', arguments);
+        if (level >= Error$1) handler(method || 'error', 'ERROR', arguments);
         return this;
       },
 
       warn() {
-        if (level >= Warn) log$1$1(method || 'warn', 'WARN', arguments);
+        if (level >= Warn) handler(method || 'warn', 'WARN', arguments);
         return this;
       },
 
       info() {
-        if (level >= Info) log$1$1(method || 'log', 'INFO', arguments);
+        if (level >= Info) handler(method || 'log', 'INFO', arguments);
         return this;
       },
 
       debug() {
-        if (level >= Debug) log$1$1(method || 'log', 'DEBUG', arguments);
+        if (level >= Debug) handler(method || 'log', 'DEBUG', arguments);
         return this;
       }
 
@@ -5296,7 +5288,11 @@
 
   const isLegalKey = key => key !== '__proto__';
 
-  function mergeConfig(...configs) {
+  function mergeConfig() {
+    for (var _len = arguments.length, configs = new Array(_len), _key = 0; _key < _len; _key++) {
+      configs[_key] = arguments[_key];
+    }
+
     return configs.reduce((out, source) => {
       for (const key in source) {
         if (key === 'signals') {
@@ -5984,231 +5980,6 @@
     }
   }
 
-  //   https://...    file://...    //...
-
-  const protocol_re = /^([A-Za-z]+:)?\/\//; // Matches allowed URIs. From https://github.com/cure53/DOMPurify/blob/master/src/regexp.js with added file://
-
-  const allowed_re = /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp|file|data):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i; // eslint-disable-line no-useless-escape
-
-  const whitespace_re = /[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205f\u3000]/g; // eslint-disable-line no-control-regex
-  // Special treatment in node.js for the file: protocol
-
-  const fileProtocol = 'file://';
-  /**
-   * Factory for a loader constructor that provides methods for requesting
-   * files from either the network or disk, and for sanitizing request URIs.
-   * @param {function} fetch - The Fetch API for HTTP network requests.
-   *   If null or undefined, HTTP loading will be disabled.
-   * @param {object} fs - The file system interface for file loading.
-   *   If null or undefined, local file loading will be disabled.
-   * @return {function} A loader constructor with the following signature:
-   *   param {object} [options] - Optional default loading options to use.
-   *   return {object} - A new loader instance.
-   */
-
-  function loaderFactory (fetch, fs) {
-    return options => ({
-      options: options || {},
-      sanitize: sanitize,
-      load: load$1,
-      fileAccess: !!fs,
-      file: fileLoader(fs),
-      http: httpLoader(fetch)
-    });
-  }
-  /**
-   * Load an external resource, typically either from the web or from the local
-   * filesystem. This function uses {@link sanitize} to first sanitize the uri,
-   * then calls either {@link http} (for web requests) or {@link file} (for
-   * filesystem loading).
-   * @param {string} uri - The resource indicator (e.g., URL or filename).
-   * @param {object} [options] - Optional loading options. These options will
-   *   override any existing default options.
-   * @return {Promise} - A promise that resolves to the loaded content.
-   */
-
-  async function load$1(uri, options) {
-    const opt = await this.sanitize(uri, options),
-          url = opt.href;
-    return opt.localFile ? this.file(url) : this.http(url, options);
-  }
-  /**
-   * URI sanitizer function.
-   * @param {string} uri - The uri (url or filename) to sanity check.
-   * @param {object} options - An options hash.
-   * @return {Promise} - A promise that resolves to an object containing
-   *  sanitized uri data, or rejects it the input uri is deemed invalid.
-   *  The properties of the resolved object are assumed to be
-   *  valid attributes for an HTML 'a' tag. The sanitized uri *must* be
-   *  provided by the 'href' property of the returned object.
-   */
-
-
-  async function sanitize(uri, options) {
-    options = extend$4({}, this.options, options);
-    const fileAccess = this.fileAccess,
-          result = {
-      href: null
-    };
-    let isFile, loadFile, base;
-    const isAllowed = allowed_re.test(uri.replace(whitespace_re, ''));
-
-    if (uri == null || typeof uri !== 'string' || !isAllowed) {
-      error('Sanitize failure, invalid URI: ' + $$1(uri));
-    }
-
-    const hasProtocol = protocol_re.test(uri); // if relative url (no protocol/host), prepend baseURL
-
-    if ((base = options.baseURL) && !hasProtocol) {
-      // Ensure that there is a slash between the baseURL (e.g. hostname) and url
-      if (!uri.startsWith('/') && base[base.length - 1] !== '/') {
-        uri = '/' + uri;
-      }
-
-      uri = base + uri;
-    } // should we load from file system?
-
-
-    loadFile = (isFile = uri.startsWith(fileProtocol)) || options.mode === 'file' || options.mode !== 'http' && !hasProtocol && fileAccess;
-
-    if (isFile) {
-      // strip file protocol
-      uri = uri.slice(fileProtocol.length);
-    } else if (uri.startsWith('//')) {
-      if (options.defaultProtocol === 'file') {
-        // if is file, strip protocol and set loadFile flag
-        uri = uri.slice(2);
-        loadFile = true;
-      } else {
-        // if relative protocol (starts with '//'), prepend default protocol
-        uri = (options.defaultProtocol || 'http') + ':' + uri;
-      }
-    } // set non-enumerable mode flag to indicate local file load
-
-
-    Object.defineProperty(result, 'localFile', {
-      value: !!loadFile
-    }); // set uri
-
-    result.href = uri; // set default result target, if specified
-
-    if (options.target) {
-      result.target = options.target + '';
-    } // set default result rel, if specified (#1542)
-
-
-    if (options.rel) {
-      result.rel = options.rel + '';
-    } // provide control over cross-origin image handling (#2238)
-    // https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image
-
-
-    if (options.context === 'image' && options.crossOrigin) {
-      result.crossOrigin = options.crossOrigin + '';
-    } // return
-
-
-    return result;
-  }
-  /**
-   * File system loader factory.
-   * @param {object} fs - The file system interface.
-   * @return {function} - A file loader with the following signature:
-   *   param {string} filename - The file system path to load.
-   *   param {string} filename - The file system path to load.
-   *   return {Promise} A promise that resolves to the file contents.
-   */
-
-
-  function fileLoader(fs) {
-    return fs ? filename => new Promise((accept, reject) => {
-      fs.readFile(filename, (error, data) => {
-        if (error) reject(error);else accept(data);
-      });
-    }) : fileReject;
-  }
-  /**
-   * Default file system loader that simply rejects.
-   */
-
-
-  async function fileReject() {
-    error('No file system access.');
-  }
-  /**
-   * HTTP request handler factory.
-   * @param {function} fetch - The Fetch API method.
-   * @return {function} - An http loader with the following signature:
-   *   param {string} url - The url to request.
-   *   param {object} options - An options hash.
-   *   return {Promise} - A promise that resolves to the file contents.
-   */
-
-
-  function httpLoader(fetch) {
-    return fetch ? async function (url, options) {
-      const opt = extend$4({}, this.options.http, options),
-            type = options && options.response,
-            response = await fetch(url, opt);
-      return !response.ok ? error(response.status + '' + response.statusText) : isFunction(response[type]) ? response[type]() : response.text();
-    } : httpReject;
-  }
-  /**
-   * Default http request handler that simply rejects.
-   */
-
-
-  async function httpReject() {
-    error('No HTTP fetch method available.');
-  }
-
-  const isValid = _ => _ != null && _ === _;
-
-  const isBoolean$1 = _ => _ === 'true' || _ === 'false' || _ === true || _ === false;
-
-  const isDate = _ => !Number.isNaN(Date.parse(_));
-
-  const isNumber = _ => !Number.isNaN(+_) && !(_ instanceof Date);
-
-  const isInteger = _ => isNumber(_) && Number.isInteger(+_);
-
-  const typeParsers = {
-    boolean: toBoolean,
-    integer: toNumber,
-    number: toNumber,
-    date: toDate,
-    string: toString,
-    unknown: identity$6
-  };
-  const typeTests = [isBoolean$1, isInteger, isNumber, isDate];
-  const typeList = ['boolean', 'integer', 'number', 'date'];
-  function inferType(values, field) {
-    if (!values || !values.length) return 'unknown';
-    const n = values.length,
-          m = typeTests.length,
-          a = typeTests.map((_, i) => i + 1);
-
-    for (let i = 0, t = 0, j, value; i < n; ++i) {
-      value = field ? values[i][field] : values[i];
-
-      for (j = 0; j < m; ++j) {
-        if (a[j] && isValid(value) && !typeTests[j](value)) {
-          a[j] = 0;
-          ++t;
-          if (t === typeTests.length) return 'string';
-        }
-      }
-    }
-
-    return typeList[a.reduce((u, v) => u === 0 ? v : u, 0) - 1];
-  }
-  function inferTypes(data, fields) {
-    return fields.reduce((types, field) => {
-      types[field] = inferType(data, field);
-      return types;
-    }, {});
-  }
-
   var EOL = {},
       EOF = {},
       QUOTE = 34,
@@ -6375,44 +6146,6 @@
       formatRow: formatRow,
       formatValue: formatValue
     };
-  }
-
-  function delimitedFormat(delimiter) {
-    const parse = function (data, format) {
-      const delim = {
-        delimiter: delimiter
-      };
-      return dsv(data, format ? extend$4(format, delim) : delim);
-    };
-
-    parse.responseType = 'text';
-    return parse;
-  }
-  function dsv(data, format) {
-    if (format.header) {
-      data = format.header.map($$1).join(format.delimiter) + '\n' + data;
-    }
-
-    return dsvFormat(format.delimiter).parse(data + '');
-  }
-  dsv.responseType = 'text';
-
-  function isBuffer(_) {
-    return typeof Buffer === 'function' && isFunction(Buffer.isBuffer) ? Buffer.isBuffer(_) : false;
-  }
-
-  function json(data, format) {
-    const prop = format && format.property ? field$1(format.property) : identity$6;
-    return isObject(data) && !isBuffer(data) ? parseJSON(prop(data), format) : prop(JSON.parse(data));
-  }
-  json.responseType = 'json';
-
-  function parseJSON(data, format) {
-    if (!isArray(data) && isIterable(data)) {
-      data = [...data];
-    }
-
-    return format && format.copy ? JSON.parse(JSON.stringify(data)) : data;
   }
 
   function identity$5 (x) {
@@ -6721,50 +6454,6 @@
     return arcs;
   }
 
-  const filters = {
-    interior: (a, b) => a !== b,
-    exterior: (a, b) => a === b
-  };
-  function topojson(data, format) {
-    let method, object, property, filter;
-    data = json(data, format);
-
-    if (format && format.feature) {
-      method = feature;
-      property = format.feature;
-    } else if (format && format.mesh) {
-      method = mesh;
-      property = format.mesh;
-      filter = filters[format.filter];
-    } else {
-      error('Missing TopoJSON feature or mesh parameter.');
-    }
-
-    object = (object = data.objects[property]) ? method(data, object, filter) : error('Invalid TopoJSON object: ' + property);
-    return object && object.features || [object];
-  }
-  topojson.responseType = 'json';
-
-  const format$3 = {
-    dsv: dsv,
-    csv: delimitedFormat(','),
-    tsv: delimitedFormat('\t'),
-    json: json,
-    topojson: topojson
-  };
-  function formats$1(name, reader) {
-    if (arguments.length > 1) {
-      format$3[name] = reader;
-      return this;
-    } else {
-      return has$1(format$3, name) ? format$3[name] : null;
-    }
-  }
-  function responseType(type) {
-    const f = formats$1(type);
-    return f && f.responseType || 'text';
-  }
-
   function ascending$2 (a, b) {
     return a < b ? -1 : a > b ? 1 : a >= b ? 0 : NaN;
   }
@@ -7037,7 +6726,11 @@
 
   // ISC license, Copyright 2018 Vladimir Agafonkin.
 
-  function quickselect(array, k, left = 0, right = array.length - 1, compare = ascending$2) {
+  function quickselect(array, k) {
+    let left = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
+    let right = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : array.length - 1;
+    let compare = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : ascending$2;
+
     while (right > left) {
       if (right - left > 600) {
         const n = right - left + 1;
@@ -7090,7 +6783,8 @@
         value1 = min$2(values.subarray(i0 + 1));
     return value0 + (value1 - value0) * (i - i0);
   }
-  function quantileSorted(values, p, valueof = number$7) {
+  function quantileSorted(values, p) {
+    let valueof = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : number$7;
     if (!(n = values.length)) return;
     if ((p = +p) <= 0 || n < 2) return +valueof(values[0], 0, values);
     if (p >= 1) return +valueof(values[n - 1], n - 1, values);
@@ -7455,7 +7149,7 @@
   }
 
   var locale$2;
-  var format$2;
+  var format$3;
   var formatPrefix;
   defaultLocale$2({
     thousands: ",",
@@ -7464,7 +7158,7 @@
   });
   function defaultLocale$2(definition) {
     locale$2 = formatLocale$1(definition);
-    format$2 = locale$2.format;
+    format$3 = locale$2.format;
     formatPrefix = locale$2.formatPrefix;
     return locale$2;
   }
@@ -7776,7 +7470,10 @@
 
     function tickInterval(start, stop, count) {
       const target = Math.abs(stop - start) / count;
-      const i = bisector$1(([,, step]) => step).right(tickIntervals, target);
+      const i = bisector$1(_ref => {
+        let [,, step] = _ref;
+        return step;
+      }).right(tickIntervals, target);
       if (i === tickIntervals.length) return year.every(tickStep(start / durationYear$1, stop / durationYear$1, count));
       if (i === 0) return utcMillisecond.every(Math.max(tickStep(start, stop, count), 1));
       const [t, step] = tickIntervals[target / tickIntervals[i - 1][2] < tickIntervals[i][2] / target ? i - 1 : i];
@@ -8969,7 +8666,7 @@
 
   function resetNumberFormatDefaultLocale() {
     return defaultNumberLocale = numberLocale({
-      format: format$2,
+      format: format$3,
       formatPrefix: formatPrefix
     });
   }
@@ -9058,7 +8755,321 @@
     return args ? createLocale(numberFormatDefaultLocale(numberSpec), timeFormatDefaultLocale(timeSpec)) : createLocale(numberFormatDefaultLocale(), timeFormatDefaultLocale());
   }
 
-  function read (data, schema, timeParser, utcParser) {
+  const protocol_re = /^(data:|([A-Za-z]+:)?\/\/)/; // Matches allowed URIs. From https://github.com/cure53/DOMPurify/blob/master/src/regexp.js with added file://
+
+  const allowed_re = /^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp|file|data):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i; // eslint-disable-line no-useless-escape
+
+  const whitespace_re = /[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205f\u3000]/g; // eslint-disable-line no-control-regex
+  // Special treatment in node.js for the file: protocol
+
+  const fileProtocol = 'file://';
+  /**
+   * Factory for a loader constructor that provides methods for requesting
+   * files from either the network or disk, and for sanitizing request URIs.
+   * @param {function} fetch - The Fetch API for HTTP network requests.
+   *   If null or undefined, HTTP loading will be disabled.
+   * @param {object} fs - The file system interface for file loading.
+   *   If null or undefined, local file loading will be disabled.
+   * @return {function} A loader constructor with the following signature:
+   *   param {object} [options] - Optional default loading options to use.
+   *   return {object} - A new loader instance.
+   */
+
+  function loaderFactory(fetch, fs) {
+    return options => ({
+      options: options || {},
+      sanitize: sanitize,
+      load: load$1,
+      fileAccess: !!fs,
+      file: fileLoader(fs),
+      http: httpLoader(fetch)
+    });
+  }
+  /**
+   * Load an external resource, typically either from the web or from the local
+   * filesystem. This function uses {@link sanitize} to first sanitize the uri,
+   * then calls either {@link http} (for web requests) or {@link file} (for
+   * filesystem loading).
+   * @param {string} uri - The resource indicator (e.g., URL or filename).
+   * @param {object} [options] - Optional loading options. These options will
+   *   override any existing default options.
+   * @return {Promise} - A promise that resolves to the loaded content.
+   */
+
+
+  async function load$1(uri, options) {
+    const opt = await this.sanitize(uri, options),
+          url = opt.href;
+    return opt.localFile ? this.file(url) : this.http(url, options);
+  }
+  /**
+   * URI sanitizer function.
+   * @param {string} uri - The uri (url or filename) to check.
+   * @param {object} options - An options hash.
+   * @return {Promise} - A promise that resolves to an object containing
+   *  sanitized uri data, or rejects it the input uri is deemed invalid.
+   *  The properties of the resolved object are assumed to be
+   *  valid attributes for an HTML 'a' tag. The sanitized uri *must* be
+   *  provided by the 'href' property of the returned object.
+   */
+
+
+  async function sanitize(uri, options) {
+    options = extend$4({}, this.options, options);
+    const fileAccess = this.fileAccess,
+          result = {
+      href: null
+    };
+    let isFile, loadFile, base;
+    const isAllowed = allowed_re.test(uri.replace(whitespace_re, ''));
+
+    if (uri == null || typeof uri !== 'string' || !isAllowed) {
+      error('Sanitize failure, invalid URI: ' + $$1(uri));
+    }
+
+    const hasProtocol = protocol_re.test(uri); // if relative url (no protocol/host), prepend baseURL
+
+    if ((base = options.baseURL) && !hasProtocol) {
+      // Ensure that there is a slash between the baseURL (e.g. hostname) and url
+      if (!uri.startsWith('/') && !base.endsWith('/')) {
+        uri = '/' + uri;
+      }
+
+      uri = base + uri;
+    } // should we load from file system?
+
+
+    loadFile = (isFile = uri.startsWith(fileProtocol)) || options.mode === 'file' || options.mode !== 'http' && !hasProtocol && fileAccess;
+
+    if (isFile) {
+      // strip file protocol
+      uri = uri.slice(fileProtocol.length);
+    } else if (uri.startsWith('//')) {
+      if (options.defaultProtocol === 'file') {
+        // if is file, strip protocol and set loadFile flag
+        uri = uri.slice(2);
+        loadFile = true;
+      } else {
+        // if relative protocol (starts with '//'), prepend default protocol
+        uri = (options.defaultProtocol || 'http') + ':' + uri;
+      }
+    } // set non-enumerable mode flag to indicate local file load
+
+
+    Object.defineProperty(result, 'localFile', {
+      value: !!loadFile
+    }); // set uri
+
+    result.href = uri; // set default result target, if specified
+
+    if (options.target) {
+      result.target = options.target + '';
+    } // set default result rel, if specified (#1542)
+
+
+    if (options.rel) {
+      result.rel = options.rel + '';
+    } // provide control over cross-origin image handling (#2238)
+    // https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image
+
+
+    if (options.context === 'image' && options.crossOrigin) {
+      result.crossOrigin = options.crossOrigin + '';
+    } // return
+
+
+    return result;
+  }
+  /**
+   * File system loader factory.
+   * @param {object} fs - The file system interface.
+   * @return {function} - A file loader with the following signature:
+   *   param {string} filename - The file system path to load.
+   *   param {string} filename - The file system path to load.
+   *   return {Promise} A promise that resolves to the file contents.
+   */
+
+
+  function fileLoader(fs) {
+    return fs ? filename => new Promise((accept, reject) => {
+      fs.readFile(filename, (error, data) => {
+        if (error) reject(error);else accept(data);
+      });
+    }) : fileReject;
+  }
+  /**
+   * Default file system loader that simply rejects.
+   */
+
+
+  async function fileReject() {
+    error('No file system access.');
+  }
+  /**
+   * HTTP request handler factory.
+   * @param {function} fetch - The Fetch API method.
+   * @return {function} - An http loader with the following signature:
+   *   param {string} url - The url to request.
+   *   param {object} options - An options hash.
+   *   return {Promise} - A promise that resolves to the file contents.
+   */
+
+
+  function httpLoader(fetch) {
+    return fetch ? async function (url, options) {
+      const opt = extend$4({}, this.options.http, options),
+            type = options && options.response,
+            response = await fetch(url, opt);
+      return !response.ok ? error(response.status + '' + response.statusText) : isFunction(response[type]) ? response[type]() : response.text();
+    } : httpReject;
+  }
+  /**
+   * Default http request handler that simply rejects.
+   */
+
+
+  async function httpReject() {
+    error('No HTTP fetch method available.');
+  }
+
+  const isValid = _ => _ != null && _ === _;
+
+  const isBoolean$1 = _ => _ === 'true' || _ === 'false' || _ === true || _ === false;
+
+  const isDate = _ => !Number.isNaN(Date.parse(_));
+
+  const isNumber = _ => !Number.isNaN(+_) && !(_ instanceof Date);
+
+  const isInteger = _ => isNumber(_) && Number.isInteger(+_);
+
+  const typeParsers = {
+    boolean: toBoolean,
+    integer: toNumber,
+    number: toNumber,
+    date: toDate,
+    string: toString,
+    unknown: identity$6
+  };
+  const typeTests = [isBoolean$1, isInteger, isNumber, isDate];
+  const typeList = ['boolean', 'integer', 'number', 'date'];
+
+  function inferType(values, field) {
+    if (!values || !values.length) return 'unknown';
+    const n = values.length,
+          m = typeTests.length,
+          a = typeTests.map((_, i) => i + 1);
+
+    for (let i = 0, t = 0, j, value; i < n; ++i) {
+      value = field ? values[i][field] : values[i];
+
+      for (j = 0; j < m; ++j) {
+        if (a[j] && isValid(value) && !typeTests[j](value)) {
+          a[j] = 0;
+          ++t;
+          if (t === typeTests.length) return 'string';
+        }
+      }
+    }
+
+    return typeList[a.reduce((u, v) => u === 0 ? v : u, 0) - 1];
+  }
+
+  function inferTypes(data, fields) {
+    return fields.reduce((types, field) => {
+      types[field] = inferType(data, field);
+      return types;
+    }, {});
+  }
+
+  function delimitedFormat(delimiter) {
+    const parse = function (data, format) {
+      const delim = {
+        delimiter: delimiter
+      };
+      return dsv(data, format ? extend$4(format, delim) : delim);
+    };
+
+    parse.responseType = 'text';
+    return parse;
+  }
+
+  function dsv(data, format) {
+    if (format.header) {
+      data = format.header.map($$1).join(format.delimiter) + '\n' + data;
+    }
+
+    return dsvFormat(format.delimiter).parse(data + '');
+  }
+
+  dsv.responseType = 'text';
+
+  function isBuffer(_) {
+    return typeof Buffer === 'function' && isFunction(Buffer.isBuffer) ? Buffer.isBuffer(_) : false;
+  }
+
+  function json(data, format) {
+    const prop = format && format.property ? field$1(format.property) : identity$6;
+    return isObject(data) && !isBuffer(data) ? parseJSON(prop(data), format) : prop(JSON.parse(data));
+  }
+
+  json.responseType = 'json';
+
+  function parseJSON(data, format) {
+    if (!isArray(data) && isIterable(data)) {
+      data = [...data];
+    }
+
+    return format && format.copy ? JSON.parse(JSON.stringify(data)) : data;
+  }
+
+  const filters = {
+    interior: (a, b) => a !== b,
+    exterior: (a, b) => a === b
+  };
+
+  function topojson(data, format) {
+    let method, object, property, filter;
+    data = json(data, format);
+
+    if (format && format.feature) {
+      method = feature;
+      property = format.feature;
+    } else if (format && format.mesh) {
+      method = mesh;
+      property = format.mesh;
+      filter = filters[format.filter];
+    } else {
+      error('Missing TopoJSON feature or mesh parameter.');
+    }
+
+    object = (object = data.objects[property]) ? method(data, object, filter) : error('Invalid TopoJSON object: ' + property);
+    return object && object.features || [object];
+  }
+
+  topojson.responseType = 'json';
+  const format$2 = {
+    dsv: dsv,
+    csv: delimitedFormat(','),
+    tsv: delimitedFormat('\t'),
+    json: json,
+    topojson: topojson
+  };
+
+  function formats$1(name, reader) {
+    if (arguments.length > 1) {
+      format$2[name] = reader;
+      return this;
+    } else {
+      return has$1(format$2, name) ? format$2[name] : null;
+    }
+  }
+
+  function responseType(type) {
+    const f = formats$1(type);
+    return f && f.responseType || 'text';
+  }
+
+  function read(data, schema, timeParser, utcParser) {
     schema = schema || {};
     const reader = formats$1(schema.type || 'json');
     if (!reader) error('Unknown data format type: ' + schema.type);
@@ -10860,7 +10871,7 @@
 
     df._input = {};
     df._pulse = null;
-    df.debug(`Pulse ${stamp}: ${count} operators`);
+    df.debug("Pulse ".concat(stamp, ": ").concat(count, " operators"));
 
     if (error) {
       df._postrun = [];
@@ -12575,10 +12586,10 @@
 
     prev[1] += uy;
     return out;
-  } // subdivide up to accuracy of 0.1 degrees
+  } // subdivide up to accuracy of 0.5 degrees
 
 
-  const MIN_RADIANS = 0.1 * Math.PI / 180; // Adaptively sample an interpolated function over a domain extent
+  const MIN_RADIANS = 0.5 * Math.PI / 180; // Adaptively sample an interpolated function over a domain extent
 
   function sampleCurve(f, extent, minSteps, maxSteps) {
     minSteps = minSteps || 25;
@@ -12610,16 +12621,19 @@
       }
     }
 
-    let p0 = prev[0],
-        p1 = next[next.length - 1];
+    let p0 = prev[0];
+    let p1 = next[next.length - 1];
+    const sx = 1 / span;
+    const sy = scaleY(p0[1], next);
 
     while (p1) {
       // midpoint for potential curve subdivision
       const pm = point((p0[0] + p1[0]) / 2);
+      const dx = pm[0] - p0[0] >= stop;
 
-      if (pm[0] - p0[0] >= stop && angleDelta(p0, pm, p1) > MIN_RADIANS) {
+      if (dx && angleDelta(p0, pm, p1, sx, sy) > MIN_RADIANS) {
         // maximum resolution has not yet been met, and
-        // subdivision midpoint sufficiently different from endpoint
+        // subdivision midpoint is sufficiently different from endpoint
         // save subdivision, push midpoint onto the visitation stack
         next.push(pm);
       } else {
@@ -12636,9 +12650,23 @@
     return prev;
   }
 
-  function angleDelta(p, q, r) {
-    const a0 = Math.atan2(r[1] - p[1], r[0] - p[0]),
-          a1 = Math.atan2(q[1] - p[1], q[0] - p[0]);
+  function scaleY(init, points) {
+    let ymin = init;
+    let ymax = init;
+    const n = points.length;
+
+    for (let i = 0; i < n; ++i) {
+      const y = points[i][1];
+      if (y < ymin) ymin = y;
+      if (y > ymax) ymax = y;
+    }
+
+    return 1 / (ymax - ymin);
+  }
+
+  function angleDelta(p, q, r, sx, sy) {
+    const a0 = Math.atan2(sy * (r[1] - p[1]), sx * (r[0] - p[0])),
+          a1 = Math.atan2(sy * (q[1] - p[1]), sx * (q[0] - p[0]));
     return Math.abs(a0 - a1);
   }
 
@@ -14305,8 +14333,8 @@
 
       if (!Number.isFinite(min) || !Number.isFinite(max)) {
         let name = accessorName(field);
-        if (name) name = ` for field "${name}"`;
-        pulse.dataflow.warn(`Infinite extent${name}: [${min}, ${max}]`);
+        if (name) name = " for field \"".concat(name, "\"");
+        pulse.dataflow.warn("Infinite extent".concat(name, ": [").concat(min, ", ").concat(max, "]"));
         min = max = undefined;
       }
 
@@ -19796,7 +19824,7 @@
         }
     }
 
-    return format$2(specifier);
+    return format$3(specifier);
   }
 
   function linearish(scale) {
@@ -20014,7 +20042,7 @@
 
     scale.tickFormat = function (count, specifier) {
       if (specifier == null) specifier = base === 10 ? ".0e" : ",";
-      if (typeof specifier !== "function") specifier = format$2(specifier);
+      if (typeof specifier !== "function") specifier = format$3(specifier);
       if (count === Infinity) return specifier;
       if (count == null) count = 10;
       var k = Math.max(1, base * count / scale.ticks().length); // TODO fast estimate?
@@ -20878,11 +20906,11 @@
     return s && s.metadata[type];
   }
 
-  function isContinuous(key) {
+  function isContinuous$1(key) {
     return hasType(key, Continuous);
   }
 
-  function isDiscrete$1(key) {
+  function isDiscrete$2(key) {
     return hasType(key, Discrete$1);
   }
 
@@ -21316,7 +21344,7 @@
             n = v.length;
       return "".concat(n, " boundar").concat(n === 1 ? 'y' : 'ies', ": ").concat(v.join(', '));
     } // if scale domain is discrete, list values
-    else if (isDiscrete$1(scale.type)) {
+    else if (isDiscrete$2(scale.type)) {
       const d = scale.domain(),
             n = d.length,
             v = n > max ? d.slice(0, max - 2).map(fmt).join(', ') + ', ending with ' + d.slice(-1).map(fmt) : d.map(fmt).join(', ');
@@ -23796,7 +23824,7 @@
   }
 
   function _measureWidth(text, currentFont) {
-    const key = `(${currentFont}) ${text}`;
+    const key = "(".concat(currentFont, ") ").concat(text);
     let width = widthCache.get(key);
 
     if (width === undefined) {
@@ -25181,11 +25209,11 @@
     },
     'title-text': {
       desc: 'title',
-      caption: item => `Title text '${titleCaption(item)}'`
+      caption: item => "Title text '".concat(titleCaption(item), "'")
     },
     'title-subtitle': {
       desc: 'subtitle',
-      caption: item => `Subtitle text '${titleCaption(item)}'`
+      caption: item => "Subtitle text '".concat(titleCaption(item), "'")
     }
   }; // aria properties generated for mark item encoding channels
 
@@ -25207,7 +25235,7 @@
       const type = item.mark.marktype;
       emit(ARIA_LABEL, item.description);
       emit(ARIA_ROLE, item.ariaRole || (type === 'group' ? GRAPHICS_OBJECT : GRAPHICS_SYMBOL));
-      emit(ARIA_ROLEDESCRIPTION, item.ariaRoleDescription || `${type} mark`);
+      emit(ARIA_ROLEDESCRIPTION, item.ariaRoleDescription || "".concat(type, " mark"));
     }
   }
 
@@ -25220,7 +25248,7 @@
   function ariaMark(mark) {
     const type = mark.marktype;
     const recurse = type === 'group' || type === 'text' || mark.items.some(_ => _.description != null && _.aria !== false);
-    return bundle(recurse ? GRAPHICS_OBJECT : GRAPHICS_SYMBOL, `${type} mark container`, mark.description);
+    return bundle(recurse ? GRAPHICS_OBJECT : GRAPHICS_SYMBOL, "".concat(type, " mark container"), mark.description);
   }
 
   function ariaGuide(mark, opt) {
@@ -25247,19 +25275,19 @@
           locale = ctx.dataflow.locale(),
           type = scale.type,
           xy = orient === 'left' || orient === 'right' ? 'Y' : 'X';
-    return `${xy}-axis` + (title ? ` titled '${title}'` : '') + ` for a ${isDiscrete$1(type) ? 'discrete' : type} scale` + ` with ${domainCaption(locale, scale, item)}`;
+    return "".concat(xy, "-axis") + (title ? " titled '".concat(title, "'") : '') + " for a ".concat(isDiscrete$2(type) ? 'discrete' : type, " scale") + " with ".concat(domainCaption(locale, scale, item));
   }
 
   function legendCaption(item) {
     const datum = item.datum,
           title = datum.title ? extractTitle(item) : null,
-          type = `${datum.type || ''} legend`.trim(),
+          type = "".concat(datum.type || '', " legend").trim(),
           scales = datum.scales,
           props = Object.keys(scales),
           ctx = item.context,
           scale = ctx.scales[scales[props[0]]].value,
           locale = ctx.dataflow.locale();
-    return capitalize(type) + (title ? ` titled '${title}'` : '') + ` for ${channelCaption(props)}` + ` with ${domainCaption(locale, scale, item)}`;
+    return capitalize(type) + (title ? " titled '".concat(title, "'") : '') + " for ".concat(channelCaption(props)) + " with ".concat(domainCaption(locale, scale, item));
   }
 
   function extractTitle(item) {
@@ -25292,20 +25320,24 @@
           clear = () => outer = inner = '',
           push = tag => {
       if (outer) {
-        buf += `${outer}>${inner}`;
+        buf += "".concat(outer, ">").concat(inner);
         clear();
       }
 
       stack.push(tag);
     },
           attr = (name, value) => {
-      if (value != null) outer += ` ${name}="${attrText(value)}"`;
+      if (value != null) outer += " ".concat(name, "=\"").concat(attrText(value), "\"");
       return m;
     },
           m = {
-      open(tag, ...attrs) {
+      open(tag) {
         push(tag);
         outer = '<' + tag;
+
+        for (var _len = arguments.length, attrs = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          attrs[_key - 1] = arguments[_key];
+        }
 
         for (const set of attrs) {
           for (const key in set) attr(key, set[key]);
@@ -25318,9 +25350,9 @@
         const tag = stack.pop();
 
         if (outer) {
-          buf += outer + (inner ? `>${inner}</${tag}>` : '/>');
+          buf += outer + (inner ? ">".concat(inner, "</").concat(tag, ">") : '/>');
         } else {
-          buf += `</${tag}>`;
+          buf += "</".concat(tag, ">");
         }
 
         clear();
@@ -25466,10 +25498,10 @@
         setAttributes(this._svg, {
           width: this._width * this._scale,
           height: this._height * this._scale,
-          viewBox: `0 0 ${this._width} ${this._height}`
+          viewBox: "0 0 ".concat(this._width, " ").concat(this._height)
         });
 
-        this._root.setAttribute('transform', `translate(${this._origin})`);
+        this._root.setAttribute('transform', "translate(".concat(this._origin, ")"));
       }
 
       this._dirty = [];
@@ -25792,7 +25824,7 @@
       setAttributes(pt, {
         width: 1,
         height: 1,
-        fill: `url(${href()}#${grad.id})`
+        fill: "url(".concat(href(), "#").concat(grad.id, ")")
       });
       el = domChild(el, index++, 'radialGradient', svgns);
       setAttributes(el, {
@@ -26094,7 +26126,7 @@
         class: 'marks',
         width: this._width * this._scale,
         height: this._height * this._scale,
-        viewBox: `0 0 ${this._width} ${this._height}`
+        viewBox: "0 0 ".concat(this._width, " ").concat(this._height)
       })); // background, if defined
 
       const bg = this._bgcolor;
@@ -29079,7 +29111,7 @@
   }
 
   function includePad(type) {
-    return isContinuous(type) && type !== Sequential;
+    return isContinuous$1(type) && type !== Sequential;
   }
 
   const SKIP$1 = toSet(['set', 'modified', 'clear', 'type', 'scheme', 'schemeExtent', 'schemeCount', 'domain', 'domainMin', 'domainMid', 'domainMax', 'domainRaw', 'domainImplicit', 'nice', 'zero', 'bins', 'range', 'rangeStep', 'round', 'reverse', 'interpolate', 'interpolateGamma']);
@@ -29134,7 +29166,7 @@
 
   function isContinuousColor(_) {
     const t = _.type;
-    return isContinuous(t) && t !== Time && t !== UTC && (_.scheme || _.range && _.range.length && _.range.every(isString));
+    return isContinuous$1(t) && t !== Time && t !== UTC && (_.scheme || _.range && _.range.length && _.range.every(isString));
   }
 
   function configureDomain(scale, _, df) {
@@ -38201,6 +38233,10 @@
     return x - r < 0 || x + r > width || y - (r = textHeight / 2) < 0 || y + r > height;
   }
 
+  function _outOfBounds() {
+    return false;
+  }
+
   function collision($, x, y, textHeight, textWidth, h, bm0, bm1) {
     const w = textWidth * h / (textHeight * 2),
           x1 = $(x - w),
@@ -38210,9 +38246,27 @@
     return bm0.outOfBounds(x1, y1, x2, y2) || bm0.getRange(x1, y1, x2, y2) || bm1 && bm1.getRange(x1, y1, x2, y2);
   }
 
-  function placeAreaLabelReducedSearch($, bitmaps, avoidBaseMark, markIndex) {
+  function _collision($, x, y, textHeight, textWidth, h, bm0, bm1) {
+    const w = textWidth * h / (textHeight * 2);
+    let x1 = $(x - w),
+        x2 = $(x + w),
+        y1 = $(y - (h = h / 2)),
+        y2 = $(y + h);
+    x1 = x1 > 0 ? x1 : 0;
+    y1 = y1 > 0 ? y1 : 0;
+    x2 = x2 < $.width ? x2 : $.width - 1;
+    y2 = y2 < $.height ? y2 : $.height - 1;
+    return bm0.getRange(x1, y1, x2, y2) || bm1 && bm1.getRange(x1, y1, x2, y2);
+  }
+
+  function getTests(infPadding) {
+    return infPadding ? [_collision, _outOfBounds] : [collision, outOfBounds];
+  }
+
+  function placeAreaLabelReducedSearch($, bitmaps, avoidBaseMark, markIndex, infPadding) {
     const width = $.width,
           height = $.height,
+          [collision, outOfBounds] = getTests(infPadding),
           bm0 = bitmaps[0],
           // where labels have been placed
     bm1 = bitmaps[1]; // area outlines
@@ -38357,9 +38411,10 @@
   const X_DIR = [-1, -1, 1, 1];
   const Y_DIR = [-1, 1, -1, 1];
 
-  function placeAreaLabelFloodFill($, bitmaps, avoidBaseMark, markIndex) {
+  function placeAreaLabelFloodFill($, bitmaps, avoidBaseMark, markIndex, infPadding) {
     const width = $.width,
           height = $.height,
+          [collision, outOfBounds] = getTests(infPadding),
           bm0 = bitmaps[0],
           // where labels have been placed
     bm1 = bitmaps[1],
@@ -38481,7 +38536,7 @@
   const Aligns = ['right', 'center', 'left'],
         Baselines = ['bottom', 'middle', 'top'];
 
-  function placeMarkLabel($, bitmaps, anchors, offsets) {
+  function placeMarkLabel($, bitmaps, anchors, offsets, infPadding) {
     const width = $.width,
           height = $.height,
           bm0 = bitmaps[0],
@@ -38491,7 +38546,7 @@
       const boundary = d.boundary,
             textHeight = d.datum.fontSize; // can not be placed if the mark is not visible in the graph bound
 
-      if (boundary[2] < 0 || boundary[5] < 0 || boundary[0] > width || boundary[3] > height) {
+      if (!infPadding && (boundary[2] < 0 || boundary[5] < 0 || boundary[0] > width || boundary[3] > height)) {
         return false;
       }
 
@@ -38527,6 +38582,12 @@
         _y1 = $(y1);
         _y2 = $(y2);
 
+        if (infPadding) {
+          _x1 = _x1 < 0 ? 0 : _x1;
+          _y1 = _y1 < 0 ? 0 : _y1;
+          _y2 = _y2 >= $.height ? $.height - 1 : _y2;
+        }
+
         if (!textWidth) {
           // to avoid finding width of text label,
           if (!test(_x1, _x1, _y1, _y2, bm0, bm1, x1, x1, y1, y2, boundary, isInside)) {
@@ -38543,6 +38604,11 @@
         x2 = xc + textWidth / 2;
         _x1 = $(x1);
         _x2 = $(x2);
+
+        if (infPadding) {
+          _x1 = _x1 < 0 ? 0 : _x1;
+          _x2 = _x2 >= $.width ? $.width - 1 : _x2;
+        }
 
         if (test(_x1, _x2, _y1, _y2, bm0, bm1, x1, x2, y1, y2, boundary, isInside)) {
           // place label if the position is placeable
@@ -38602,7 +38668,8 @@
           grouptype = marktype === 'group' && texts[0].datum.items[markIndex].marktype,
           isGroupArea = grouptype === 'area',
           boundary = markBoundary(marktype, grouptype, lineAnchor, markIndex),
-          $ = scaler(size[0], size[1], padding),
+          infPadding = padding === null || padding === Infinity,
+          $ = scaler(size[0], size[1], infPadding ? 0 : padding),
           isNaiveGroupArea = isGroupArea && method === 'naive'; // prepare text mark data for placing
 
     const data = texts.map(d => ({
@@ -38642,7 +38709,7 @@
     } // generate label placement function
 
 
-    const place = isGroupArea ? placeAreaLabel[method]($, bitmaps, avoidBaseMark, markIndex) : placeMarkLabel($, bitmaps, anchors, offsets); // place all labels
+    const place = isGroupArea ? placeAreaLabel[method]($, bitmaps, avoidBaseMark, markIndex, infPadding) : placeMarkLabel($, bitmaps, anchors, offsets, infPadding); // place all labels
 
     data.forEach(d => d.opacity = +place(d));
     return data;
@@ -38718,8 +38785,9 @@
    *   The available options are 'top-left', 'left', 'bottom-left', 'top',
    *   'bottom', 'top-right', 'right', 'bottom-right', 'middle'.
    * @param {Array<number>} [params.offset] - Label offsets (in pixels) from the base mark bounding box.
-   *   This parameter  is parallel to the list of anchor points.
-   * @param {number} [params.padding=0] - The amount (in pixels) that a label may exceed the layout size.
+   *   This parameter is parallel to the list of anchor points.
+   * @param {number | null} [params.padding=0] - The amount (in pixels) that a label may exceed the layout size.
+   *   If this parameter is null, a label may exceed the layout size without any boundary.
    * @param {string} [params.lineAnchor='end'] - For group line mark labels only, indicates the anchor
    *   position for labels. One of 'start' or 'end'.
    * @param {string} [params.markIndex=0] - For group mark labels only, an index indicating
@@ -38765,7 +38833,8 @@
     }, {
       name: 'padding',
       type: 'number',
-      default: 0
+      default: 0,
+      null: true
     }, {
       name: 'lineAnchor',
       type: 'string',
@@ -38812,7 +38881,7 @@
 
       const as = _.as || Output$1; // run label layout
 
-      labelLayout(pulse.materialize(pulse.SOURCE).source, _.size, _.sort, array$5(_.offset || 1), array$5(_.anchor || Anchors), _.avoidMarks || [], _.avoidBaseMark === false ? false : true, _.lineAnchor || 'end', _.markIndex || 0, _.padding || 0, _.method || 'naive').forEach(l => {
+      labelLayout(pulse.materialize(pulse.SOURCE).source || [], _.size, _.sort, array$5(_.offset == null ? 1 : _.offset), array$5(_.anchor || Anchors), _.avoidMarks || [], _.avoidBaseMark !== false, _.lineAnchor || 'end', _.markIndex || 0, _.padding === undefined ? 0 : _.padding, _.method || 'naive').forEach(l => {
         // write layout results to data stream
         const t = l.datum;
         t[as[0]] = l.x;
@@ -39092,7 +39161,9 @@
   const EPSILON = Math.pow(2, -52);
   const EDGE_STACK = new Uint32Array(512);
   class Delaunator {
-    static from(points, getX = defaultGetX, getY = defaultGetY) {
+    static from(points) {
+      let getX = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : defaultGetX;
+      let getY = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : defaultGetY;
       const n = points.length;
       const coords = new Float64Array(n * 2);
 
@@ -39600,7 +39671,7 @@
     }
 
     moveTo(x, y) {
-      this._ += `M${this._x0 = this._x1 = +x},${this._y0 = this._y1 = +y}`;
+      this._ += "M".concat(this._x0 = this._x1 = +x, ",").concat(this._y0 = this._y1 = +y);
     }
 
     closePath() {
@@ -39611,7 +39682,7 @@
     }
 
     lineTo(x, y) {
-      this._ += `L${this._x1 = +x},${this._y1 = +y}`;
+      this._ += "L".concat(this._x1 = +x, ",").concat(this._y1 = +y);
     }
 
     arc(x, y, r) {
@@ -39619,13 +39690,13 @@
       const x0 = x + r;
       const y0 = y;
       if (r < 0) throw new Error("negative radius");
-      if (this._x1 === null) this._ += `M${x0},${y0}`;else if (Math.abs(this._x1 - x0) > epsilon || Math.abs(this._y1 - y0) > epsilon) this._ += "L" + x0 + "," + y0;
+      if (this._x1 === null) this._ += "M".concat(x0, ",").concat(y0);else if (Math.abs(this._x1 - x0) > epsilon || Math.abs(this._y1 - y0) > epsilon) this._ += "L" + x0 + "," + y0;
       if (!r) return;
-      this._ += `A${r},${r},0,1,1,${x - r},${y}A${r},${r},0,1,1,${this._x1 = x0},${this._y1 = y0}`;
+      this._ += "A".concat(r, ",").concat(r, ",0,1,1,").concat(x - r, ",").concat(y, "A").concat(r, ",").concat(r, ",0,1,1,").concat(this._x1 = x0, ",").concat(this._y1 = y0);
     }
 
     rect(x, y, w, h) {
-      this._ += `M${this._x0 = this._x1 = +x},${this._y0 = this._y1 = +y}h${+w}v${+h}h${-w}Z`;
+      this._ += "M".concat(this._x0 = this._x1 = +x, ",").concat(this._y0 = this._y1 = +y, "h").concat(+w, "v").concat(+h, "h").concat(-w, "Z");
     }
 
     value() {
@@ -39658,7 +39729,8 @@
   }
 
   class Voronoi$1 {
-    constructor(delaunay, [xmin, ymin, xmax, ymax] = [0, 0, 960, 500]) {
+    constructor(delaunay) {
+      let [xmin, ymin, xmax, ymax] = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [0, 0, 960, 500];
       if (!((xmax = +xmax) >= (xmin = +xmin)) || !((ymax = +ymax) >= (ymin = +ymin))) throw new Error("invalid bounds");
       this.delaunay = delaunay;
       this._circumcenters = new Float64Array(delaunay.points.length * 2);
@@ -40129,7 +40201,10 @@
   }
 
   class Delaunay {
-    static from(points, fx = pointX, fy = pointY, that) {
+    static from(points) {
+      let fx = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : pointX;
+      let fy = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : pointY;
+      let that = arguments.length > 3 ? arguments[3] : undefined;
       return new Delaunay("length" in points ? flatArray(points, fx, fy, that) : Float64Array.from(flatIterable(points, fx, fy, that)));
     }
 
@@ -40248,7 +40323,8 @@
       } while (e !== e0);
     }
 
-    find(x, y, i = 0) {
+    find(x, y) {
+      let i = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 0;
       if ((x = +x, x !== x) || (y = +y, y !== y)) return -1;
       const i0 = i;
       let c;
@@ -40317,7 +40393,8 @@
       return buffer && buffer.value();
     }
 
-    renderPoints(context, r = 2) {
+    renderPoints(context) {
+      let r = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 2;
       const buffer = context == null ? context = new Path() : undefined;
       const {
         points
@@ -42011,20 +42088,11 @@
 
 
   function isIdentifierStart(ch) {
-    return ch === 0x24 || ch === 0x5F || // $ (dollar) and _ (underscore)
-    ch >= 0x41 && ch <= 0x5A || // A..Z
-    ch >= 0x61 && ch <= 0x7A || // a..z
-    ch === 0x5C || // \ (backslash)
-    ch >= 0x80 && RegexNonAsciiIdentifierStart.test(String.fromCharCode(ch));
+    return ch === 0x24 || ch === 0x5F || ch >= 0x41 && ch <= 0x5A || ch >= 0x61 && ch <= 0x7A || ch === 0x5C || ch >= 0x80 && RegexNonAsciiIdentifierStart.test(String.fromCharCode(ch));
   }
 
   function isIdentifierPart(ch) {
-    return ch === 0x24 || ch === 0x5F || // $ (dollar) and _ (underscore)
-    ch >= 0x41 && ch <= 0x5A || // A..Z
-    ch >= 0x61 && ch <= 0x7A || // a..z
-    ch >= 0x30 && ch <= 0x39 || // 0..9
-    ch === 0x5C || // \ (backslash)
-    ch >= 0x80 && RegexNonAsciiIdentifierPart.test(String.fromCharCode(ch));
+    return ch === 0x24 || ch === 0x5F || ch >= 0x41 && ch <= 0x5A || ch >= 0x61 && ch <= 0x7A || ch >= 0x30 && ch <= 0x39 || ch === 0x5C || ch >= 0x80 && RegexNonAsciiIdentifierPart.test(String.fromCharCode(ch));
   } // 7.6.1.1 Keywords
 
 
@@ -44748,19 +44816,35 @@
     return array(seq) || (isString(seq) ? seq : null);
   }
 
-  function join(seq, ...args) {
+  function join(seq) {
+    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      args[_key - 1] = arguments[_key];
+    }
+
     return array(seq).join(...args);
   }
 
-  function indexof(seq, ...args) {
+  function indexof(seq) {
+    for (var _len2 = arguments.length, args = new Array(_len2 > 1 ? _len2 - 1 : 0), _key2 = 1; _key2 < _len2; _key2++) {
+      args[_key2 - 1] = arguments[_key2];
+    }
+
     return sequence(seq).indexOf(...args);
   }
 
-  function lastindexof(seq, ...args) {
+  function lastindexof(seq) {
+    for (var _len3 = arguments.length, args = new Array(_len3 > 1 ? _len3 - 1 : 0), _key3 = 1; _key3 < _len3; _key3++) {
+      args[_key3 - 1] = arguments[_key3];
+    }
+
     return sequence(seq).lastIndexOf(...args);
   }
 
-  function slice(seq, ...args) {
+  function slice(seq) {
+    for (var _len4 = arguments.length, args = new Array(_len4 > 1 ? _len4 - 1 : 0), _key4 = 1; _key4 < _len4; _key4++) {
+      args[_key4 - 1] = arguments[_key4];
+    }
+
     return sequence(seq).slice(...args);
   }
 
@@ -46216,7 +46300,7 @@
     const rule = view._eventConfig && view._eventConfig[key];
 
     if (rule === false || isObject(rule) && !rule[type]) {
-      view.warn(`Blocked ${key} ${type} event listener.`);
+      view.warn("Blocked ".concat(key, " ").concat(type, " event listener."));
       return false;
     }
 
@@ -47719,7 +47803,7 @@
 
   const scaleRef = scale => isString(scale) ? $$1(scale) : scale.signal ? "(".concat(scale.signal, ")") : field(scale);
 
-  function entry(enc) {
+  function entry$1(enc) {
     if (enc.gradient != null) {
       return gradient$1(enc);
     }
@@ -47753,7 +47837,7 @@
     return value;
   }
 
-  const _color = (type, x, y, z) => "(".concat(type, "(").concat([x, y, z].map(entry).join(','), ")+'')");
+  const _color = (type, x, y, z) => "(".concat(type, "(").concat([x, y, z].map(entry$1).join(','), ")+'')");
 
   function color$1(enc) {
     return enc.c ? _color('hcl', enc.h, enc.c, enc.l) : enc.h || enc.s ? _color('hsl', enc.h, enc.s, enc.l) : enc.l || enc.a ? _color('lab', enc.l, enc.a, enc.b) : enc.r || enc.g || enc.b ? _color('rgb', enc.r, enc.g, enc.b) : null;
@@ -47770,7 +47854,7 @@
   }
 
   function property(property) {
-    return isObject(property) ? '(' + entry(property) + ')' : property;
+    return isObject(property) ? '(' + entry$1(property) + ')' : property;
   }
 
   function field(ref) {
@@ -47841,7 +47925,7 @@
   function rule$1(enc) {
     let code = '';
     enc.forEach(rule => {
-      const value = entry(rule);
+      const value = entry$1(rule);
       code += rule.test ? "(".concat(rule.test, ")?").concat(value, ":") : value;
     }); // if no else clause, terminate with null (#1366)
 
@@ -47874,7 +47958,7 @@
     for (const name in block) {
       if (block[name] != null) {
         // skip any null entries
-        channels[name] = parse(expr(block[name]), scope, params, fields);
+        channels[name] = parse$1(expr(block[name]), scope, params, fields);
       }
     }
 
@@ -47889,10 +47973,10 @@
   }
 
   function expr(enc) {
-    return isArray(enc) ? rule$1(enc) : entry(enc);
+    return isArray(enc) ? rule$1(enc) : entry$1(enc);
   }
 
-  function parse(code, scope, params, fields) {
+  function parse$1(code, scope, params, fields) {
     const expr = parser(code, scope);
     expr.$fields.forEach(name => fields[name] = 1);
     extend$4(params, expr.$params);
@@ -47932,12 +48016,12 @@
     if (parent) this.parent = parent;
   }
 
-  function entry$1(type, value, params, parent) {
+  function entry(type, value, params, parent) {
     return new Entry(type, value, params, parent);
   }
 
   function operator(value, params) {
-    return entry$1('operator', value, params);
+    return entry('operator', value, params);
   } // -----
 
 
@@ -47950,7 +48034,7 @@
     return ref;
   }
 
-  function fieldRef(field, name) {
+  function fieldRef$1(field, name) {
     return name ? {
       $field: field,
       $name: name
@@ -47959,7 +48043,7 @@
     };
   }
 
-  const keyFieldRef = fieldRef('key');
+  const keyFieldRef = fieldRef$1('key');
 
   function compareRef(fields, orders) {
     return {
@@ -47989,14 +48073,14 @@
   } // -----
 
 
-  const Scope = 'scope';
+  const Scope$1 = 'scope';
   const View = 'view';
 
   function isSignal(_) {
     return _ && _.signal;
   }
 
-  function isExpr(_) {
+  function isExpr$1(_) {
     return _ && _.expr;
   }
 
@@ -48024,7 +48108,7 @@
   }
 
   function eventSource(source) {
-    return source === Scope ? View : source || View;
+    return source === Scope$1 ? View : source || View;
   }
 
   function mergeStream(stream, scope) {
@@ -48080,7 +48164,7 @@
       param.push(filterMark(stream.marktype, stream.markname, stream.markrole));
     }
 
-    if (stream.source === Scope) {
+    if (stream.source === Scope$1) {
       // add filter to limit events from sub-scope only
       param.push('inScope(event.item)');
     }
@@ -48132,7 +48216,7 @@
 
 
     if (isString(events)) {
-      events = eventSelector(events, scope.isSubscope() ? Scope : View);
+      events = eventSelector(events, scope.isSubscope() ? Scope$1 : View);
     } // separate event streams from signal updates
 
 
@@ -48207,7 +48291,7 @@
     }
   }
 
-  const transform = name => (params, value, parent) => entry$1(name, value, params || undefined, parent);
+  const transform = name => (params, value, parent) => entry(name, value, params || undefined, parent);
 
   const Aggregate = transform('aggregate');
   const AxisTicks = transform('axisticks');
@@ -48316,7 +48400,7 @@
   function singularDomain(domain, spec, scope) {
     const data = scope.getData(domain.data);
     if (!data) dataLookupError(domain.data);
-    return isDiscrete$1(spec.type) ? data.valuesRef(scope, domain.field, parseSort(domain.sort, false)) : isQuantile$1(spec.type) ? data.domainRef(scope, domain.field) : data.extentRef(scope, domain.field);
+    return isDiscrete$2(spec.type) ? data.valuesRef(scope, domain.field, parseSort(domain.sort, false)) : isQuantile$1(spec.type) ? data.domainRef(scope, domain.field) : data.extentRef(scope, domain.field);
   }
 
   function multipleDomain(domain, spec, scope) {
@@ -48325,14 +48409,14 @@
       d = isString(d) ? {
         data: data,
         field: d
-      } : isArray(d) || d.signal ? fieldRef$1(d, scope) : d;
+      } : isArray(d) || d.signal ? fieldRef(d, scope) : d;
       dom.push(d);
       return dom;
     }, []);
-    return (isDiscrete$1(spec.type) ? ordinalMultipleDomain : isQuantile$1(spec.type) ? quantileMultipleDomain : numericMultipleDomain)(domain, scope, fields);
+    return (isDiscrete$2(spec.type) ? ordinalMultipleDomain : isQuantile$1(spec.type) ? quantileMultipleDomain : numericMultipleDomain)(domain, scope, fields);
   }
 
-  function fieldRef$1(data, scope) {
+  function fieldRef(data, scope) {
     const name = '_:vega:_' + FIELD_REF_ID++,
           coll = Collect({});
 
@@ -48473,7 +48557,7 @@
           signal: 'width'
         }];
       } else if (range === 'height') {
-        range = isDiscrete$1(spec.type) ? [0, {
+        range = isDiscrete$2(spec.type) ? [0, {
           signal: 'height'
         }] : [{
           signal: 'height'
@@ -48489,7 +48573,7 @@
     } else if (range.step) {
       params.rangeStep = parseLiteral(range.step, scope);
       return;
-    } else if (isDiscrete$1(spec.type) && !isArray(range)) {
+    } else if (isDiscrete$2(spec.type) && !isArray(range)) {
       return parseScaleDomain$1(range, spec, scope);
     } else if (!isArray(range)) {
       error('Unsupported range type: ' + $$1(range));
@@ -48504,21 +48588,21 @@
 
     for (const name in proj) {
       if (name === 'name') continue;
-      params[name] = parseParameter(proj[name], name, scope);
+      params[name] = parseParameter$1(proj[name], name, scope);
     } // apply projection defaults from config
 
 
     for (const name in config) {
       if (params[name] == null) {
-        params[name] = parseParameter(config[name], name, scope);
+        params[name] = parseParameter$1(config[name], name, scope);
       }
     }
 
     scope.addProjection(proj.name, params);
   }
 
-  function parseParameter(_, name, scope) {
-    return isArray(_) ? _.map(_ => parseParameter(_, name, scope)) : !isObject(_) ? _ : _.signal ? scope.signalRef(_.signal) : name === 'fit' ? _ : error('Unsupported parameter object: ' + $$1(_));
+  function parseParameter$1(_, name, scope) {
+    return isArray(_) ? _.map(_ => parseParameter$1(_, name, scope)) : !isObject(_) ? _ : _.signal ? scope.signalRef(_.signal) : name === 'fit' ? _ : error('Unsupported parameter object: ' + $$1(_));
   }
 
   const Top = 'top';
@@ -48604,7 +48688,7 @@
     return "item.anchor === '".concat(Start, "' ? ").concat(s, " : item.anchor === '").concat(End, "' ? ").concat(e, " : ").concat(m);
   }
 
-  const alignExpr = anchorExpr($$1(Left), $$1(Right), $$1(Center));
+  const alignExpr$1 = anchorExpr($$1(Left), $$1(Right), $$1(Center));
 
   function tickBand(_) {
     const v = _('tickBand');
@@ -48778,7 +48862,7 @@
     }, userEncode);
   }
 
-  const alignExpr$1 = "datum.".concat(Perc, "<=0?\"").concat(Left, "\":datum.").concat(Perc, ">=1?\"").concat(Right, "\":\"").concat(Center, "\""),
+  const alignExpr = "datum.".concat(Perc, "<=0?\"").concat(Left, "\":datum.").concat(Perc, ">=1?\"").concat(Right, "\":\"").concat(Center, "\""),
         baselineExpr = "datum.".concat(Perc, "<=0?\"").concat(Bottom, "\":datum.").concat(Perc, ">=1?\"").concat(Top, "\":\"").concat(Middle, "\"");
 
   function legendGradientLabels(spec, config, userEncode, dataRef) {
@@ -48830,7 +48914,7 @@
       adjust = '1-';
     } else {
       enter.align = update.align = {
-        signal: alignExpr$1
+        signal: alignExpr
       };
       enter.baseline = {
         value: 'top'
@@ -49065,7 +49149,7 @@
         isVG = "datum.vgrad && ".concat(isLR),
         baseline$1 = anchorExpr('"top"', '"bottom"', '"middle"'),
         alignFlip = anchorExpr('"right"', '"left"', '"center"'),
-        exprAlign = "datum.vgrad && ".concat(isR, " ? (").concat(alignFlip, ") : (").concat(isLR, " && !(datum.vgrad && ").concat(isL, ")) ? \"left\" : ").concat(alignExpr),
+        exprAlign = "datum.vgrad && ".concat(isR, " ? (").concat(alignFlip, ") : (").concat(isLR, " && !(datum.vgrad && ").concat(isL, ")) ? \"left\" : ").concat(alignExpr$1),
         exprAnchor = "item._anchor || (".concat(isLR, " ? \"middle\" : \"start\")"),
         exprAngle = "".concat(isVG, " ? (").concat(isL, " ? -90 : 90) : 0"),
         exprBaseline = "".concat(isLR, " ? (datum.vgrad ? (").concat(isR, " ? \"bottom\" : \"top\") : ").concat(baseline$1, ") : \"top\"");
@@ -49179,7 +49263,7 @@
   function parseTransform(spec, scope) {
     const def = definition$1(spec.type);
     if (!def) error('Unrecognized transform type: ' + $$1(spec.type));
-    const t = entry$1(def.type.toLowerCase(), null, parseParameters(def, spec, scope));
+    const t = entry(def.type.toLowerCase(), null, parseParameters(def, spec, scope));
     if (spec.signal) scope.addSignal(spec.signal, scope.proxy(t));
     t.metadata = def.metadata || {};
     return t;
@@ -49195,7 +49279,7 @@
 
     for (let i = 0; i < n; ++i) {
       const pdef = def.params[i];
-      params[pdef.name] = parseParameter$1(pdef, spec, scope);
+      params[pdef.name] = parseParameter(pdef, spec, scope);
     }
 
     return params;
@@ -49205,7 +49289,7 @@
    */
 
 
-  function parseParameter$1(def, spec, scope) {
+  function parseParameter(def, spec, scope) {
     const type = def.type,
           value = spec[def.name];
 
@@ -49234,10 +49318,10 @@
     const type = def.type;
 
     if (isSignal(value)) {
-      return isExpr$1(type) ? error('Expression references can not be signals.') : isField(type) ? scope.fieldRef(value) : isCompare(type) ? scope.compareRef(value) : scope.signalRef(value.signal);
+      return isExpr(type) ? error('Expression references can not be signals.') : isField(type) ? scope.fieldRef(value) : isCompare(type) ? scope.compareRef(value) : scope.signalRef(value.signal);
     } else {
       const expr = def.expr || isField(type);
-      return expr && outerExpr(value) ? scope.exprRef(value.expr, value.as) : expr && outerField(value) ? fieldRef(value.field, value.as) : isExpr$1(type) ? parser(value, scope) : isData(type) ? ref(scope.getData(value).values) : isField(type) ? fieldRef(value) : isCompare(type) ? scope.compareRef(value) : value;
+      return expr && outerExpr(value) ? scope.exprRef(value.expr, value.as) : expr && outerField(value) ? fieldRef$1(value.field, value.as) : isExpr(type) ? parser(value, scope) : isData(type) ? ref(scope.getData(value).values) : isField(type) ? fieldRef$1(value) : isCompare(type) ? scope.compareRef(value) : value;
     }
   }
   /**
@@ -49307,7 +49391,7 @@
 
   const isData = _ => _ === 'data';
 
-  const isExpr$1 = _ => _ === 'expr';
+  const isExpr = _ => _ === 'expr';
 
   const isField = _ => _ === 'field';
 
@@ -49444,7 +49528,7 @@
         pulse: ref(ds.output)
       };
       if (sort) params.sort = scope.sortRef(counts);
-      op = scope.add(entry$1(optype, undefined, params));
+      op = scope.add(entry(optype, undefined, params));
       if (index) ds.index[field] = op;
       v = ref(op);
       if (k != null) cache[k] = v;
@@ -49600,7 +49684,7 @@
     const input = parseData$1(spec.from, group, scope); // data join to map tuples to visual items
 
     op = scope.add(DataJoin({
-      key: input.key || (spec.key ? fieldRef(spec.key) : undefined),
+      key: input.key || (spec.key ? fieldRef$1(spec.key) : undefined),
       pulse: input.pulse,
       clean: !group
     }));
@@ -49847,7 +49931,7 @@
     let type = spec.type || Symbols;
 
     if (!spec.type && scaleCount(spec) === 1 && (spec.fill || spec.stroke)) {
-      type = isContinuous(scaleType) ? Gradient : isDiscretizing$1(scaleType) ? Discrete : Symbols;
+      type = isContinuous$1(scaleType) ? Gradient : isDiscretizing$1(scaleType) ? Discrete : Symbols;
     }
 
     return type !== Gradient ? type : isDiscretizing$1(scaleType) ? Discrete : Gradient;
@@ -49956,7 +50040,7 @@
       orient: _('orient'),
       anchor: _('anchor'),
       align: {
-        signal: alignExpr
+        signal: alignExpr$1
       },
       angle: {
         signal: angleExpr
@@ -50075,7 +50159,7 @@
     }, userEncode);
   }
 
-  function parseData$1$1(data, scope) {
+  function parseData$2(data, scope) {
     const transforms = [];
 
     if (data.transform) {
@@ -50667,7 +50751,7 @@
         opacity: zero$1,
         anchor: encoder(_('titleAnchor', null)),
         align: {
-          signal: alignExpr
+          signal: alignExpr$1
         }
       },
       update: update = extend$4({}, enter, {
@@ -50833,7 +50917,7 @@
 
     scales.forEach(_ => initScale(_, scope)); // parse data sources
 
-    array$5(spec.data).forEach(_ => parseData$1$1(_, scope)); // parse scale definitions
+    array$5(spec.data).forEach(_ => parseData$2(_, scope)); // parse scale definitions
 
     scales.forEach(_ => parseScale(_, scope)); // parse signal updates
 
@@ -50970,7 +51054,7 @@
     return signals;
   }
 
-  function Scope$1(config, options) {
+  function Scope(config, options) {
     this.config = config || {};
     this.options = options || {};
     this.bindings = [];
@@ -51016,7 +51100,7 @@
     this._markpath = scope._markpath;
   }
 
-  Scope$1.prototype = Subscope.prototype = {
+  Scope.prototype = Subscope.prototype = {
     parse(spec) {
       return parseScope(spec, this);
     },
@@ -51160,7 +51244,7 @@
 
     // ----
     fieldRef(field, name) {
-      if (isString(field)) return fieldRef(field, name);
+      if (isString(field)) return fieldRef$1(field, name);
 
       if (!field.signal) {
         error('Unsupported field reference: ' + $$1(field));
@@ -51183,7 +51267,7 @@
     compareRef(cmp) {
       let signal = false;
 
-      const check = _ => isSignal(_) ? (signal = true, this.signalRef(_.signal)) : isExpr(_) ? (signal = true, this.exprRef(_.expr)) : _;
+      const check = _ => isSignal(_) ? (signal = true, this.signalRef(_.signal)) : isExpr$1(_) ? (signal = true, this.exprRef(_.expr)) : _;
 
       const fields = array$5(cmp.field).map(check),
             orders = array$5(cmp.order).map(check);
@@ -51628,13 +51712,13 @@
     };
   }
 
-  function parse$1(spec, config, options) {
+  function parse(spec, config, options) {
     if (!isObject(spec)) {
       error('Input Vega specification must be an object.');
     }
 
     config = mergeConfig(defaults(), config, spec.config);
-    return parseView(spec, new Scope$1(config, options)).toRuntime();
+    return parseView(spec, new Scope(config, options)).toRuntime();
   }
 
   extend$4(transforms, tx, vtx, encode$1, geo, force, label, tree, reg, voronoi, wordcloud, xf); // -- Exports -----
@@ -51674,7 +51758,7 @@
 
   function formatValue(value, valueToHtml, maxDepth) {
     if (isArray(value)) {
-      return `[${value.map(v => valueToHtml(isString(v) ? v : stringify$1(v, maxDepth))).join(', ')}]`;
+      return "[".concat(value.map(v => valueToHtml(isString(v) ? v : stringify$1(v, maxDepth))).join(', '), "]");
     }
 
     if (isObject(value)) {
@@ -51688,11 +51772,11 @@
             rest = __rest(_a, ["title", "image"]);
 
       if (title) {
-        content += `<h2>${valueToHtml(title)}</h2>`;
+        content += "<h2>".concat(valueToHtml(title), "</h2>");
       }
 
       if (image) {
-        content += `<img src="${valueToHtml(image)}">`;
+        content += "<img src=\"".concat(valueToHtml(image), "\">");
       }
 
       const keys = Object.keys(rest);
@@ -51711,10 +51795,10 @@
             val = stringify$1(val, maxDepth);
           }
 
-          content += `<tr><td class="key">${valueToHtml(key)}:</td><td class="value">${valueToHtml(val)}</td></tr>`;
+          content += "<tr><td class=\"key\">".concat(valueToHtml(key), ":</td><td class=\"value\">").concat(valueToHtml(val), "</td></tr>");
         }
 
-        content += `</table>`;
+        content += "</table>";
       }
 
       return content || '{}'; // show empty object if there are no properties
@@ -51755,54 +51839,7 @@
   } // generated with build-style.sh
 
 
-  var defaultStyle = `#vg-tooltip-element {
-  visibility: hidden;
-  padding: 8px;
-  position: fixed;
-  z-index: 1000;
-  font-family: sans-serif;
-  font-size: 11px;
-  border-radius: 3px;
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
-  /* The default theme is the light theme. */
-  background-color: rgba(255, 255, 255, 0.95);
-  border: 1px solid #d9d9d9;
-  color: black; }
-  #vg-tooltip-element.visible {
-    visibility: visible; }
-  #vg-tooltip-element h2 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    font-size: 13px; }
-  #vg-tooltip-element img {
-    max-width: 200px;
-    max-height: 200px; }
-  #vg-tooltip-element table {
-    border-spacing: 0; }
-    #vg-tooltip-element table tr {
-      border: none; }
-      #vg-tooltip-element table tr td {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        padding-top: 2px;
-        padding-bottom: 2px; }
-        #vg-tooltip-element table tr td.key {
-          color: #808080;
-          max-width: 150px;
-          text-align: right;
-          padding-right: 4px; }
-        #vg-tooltip-element table tr td.value {
-          display: block;
-          max-width: 300px;
-          max-height: 7em;
-          text-align: left; }
-  #vg-tooltip-element.dark-theme {
-    background-color: rgba(32, 32, 32, 0.9);
-    border: 1px solid #f5f5f5;
-    color: white; }
-    #vg-tooltip-element.dark-theme td.key {
-      color: #bfbfbf; }
-`;
+  var defaultStyle = "#vg-tooltip-element {\n  visibility: hidden;\n  padding: 8px;\n  position: fixed;\n  z-index: 1000;\n  font-family: sans-serif;\n  font-size: 11px;\n  border-radius: 3px;\n  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);\n  /* The default theme is the light theme. */\n  background-color: rgba(255, 255, 255, 0.95);\n  border: 1px solid #d9d9d9;\n  color: black; }\n  #vg-tooltip-element.visible {\n    visibility: visible; }\n  #vg-tooltip-element h2 {\n    margin-top: 0;\n    margin-bottom: 10px;\n    font-size: 13px; }\n  #vg-tooltip-element img {\n    max-width: 200px;\n    max-height: 200px; }\n  #vg-tooltip-element table {\n    border-spacing: 0; }\n    #vg-tooltip-element table tr {\n      border: none; }\n      #vg-tooltip-element table tr td {\n        overflow: hidden;\n        text-overflow: ellipsis;\n        padding-top: 2px;\n        padding-bottom: 2px; }\n        #vg-tooltip-element table tr td.key {\n          color: #808080;\n          max-width: 150px;\n          text-align: right;\n          padding-right: 4px; }\n        #vg-tooltip-element table tr td.value {\n          display: block;\n          max-width: 300px;\n          max-height: 7em;\n          text-align: left; }\n  #vg-tooltip-element.dark-theme {\n    background-color: rgba(32, 32, 32, 0.9);\n    border: 1px solid #f5f5f5;\n    color: white; }\n    #vg-tooltip-element.dark-theme td.key {\n      color: #bfbfbf; }\n";
   const EL_ID = 'vg-tooltip-element';
   const DEFAULT_OPTIONS = {
     /**
@@ -51957,19 +51994,19 @@
       tooltipContainer.appendChild(this.el); // hide tooltip for null, undefined, or empty string values
 
       if (value == null || value === '') {
-        this.el.classList.remove('visible', `${this.options.theme}-theme`);
+        this.el.classList.remove('visible', "".concat(this.options.theme, "-theme"));
         return;
       } // set the tooltip content
 
 
       this.el.innerHTML = this.options.formatTooltip(value, this.options.sanitize, this.options.maxDepth); // make the tooltip visible
 
-      this.el.classList.add('visible', `${this.options.theme}-theme`);
+      this.el.classList.add('visible', "".concat(this.options.theme, "-theme"));
       const {
         x,
         y
       } = calculatePosition(event, this.el.getBoundingClientRect(), this.options.offsetX, this.options.offsetY);
-      this.el.setAttribute('style', `top: ${y}px; left: ${x}px`);
+      this.el.setAttribute('style', "top: ".concat(y, "px; left: ").concat(x, "px"));
     }
 
   }
@@ -52403,6 +52440,9 @@
 
   const deepEqual = fastDeepEqual;
   const duplicate = clone_;
+  function never(message) {
+    throw new Error(message);
+  }
   /**
    * Creates an object composed of the picked object properties.
    *
@@ -52444,7 +52484,7 @@
    */
 
   Set.prototype['toJSON'] = function () {
-    return `Set(${[...this].map(x => fastJsonStableStringify(x)).join(',')})`;
+    return "Set(".concat([...this].map(x => fastJsonStableStringify(x)).join(','), ")");
   };
   /**
    * Converts any object to a string representation that can be consumed by humans.
@@ -52521,9 +52561,13 @@
   /**
    * recursively merges src into dest
    */
-  function mergeDeep(dest, ...src) {
+  function mergeDeep(dest) {
+    for (var _len = arguments.length, src = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+      src[_key - 1] = arguments[_key];
+    }
+
     for (const s of src) {
-      deepMerge_(dest, s ?? {});
+      deepMerge_(dest, s !== null && s !== void 0 ? s : {});
     }
 
     return dest;
@@ -52581,7 +52625,7 @@
     for (const x of a) {
       const splitField = splitAccessPath(x); // Wrap every element other than the first in `[]`
 
-      const wrappedWithAccessors = splitField.map((y, i) => i === 0 ? y : `[${y}]`);
+      const wrappedWithAccessors = splitField.map((y, i) => i === 0 ? y : "[".concat(y, "]"));
       const computedPrefixes = wrappedWithAccessors.map((_, i) => wrappedWithAccessors.slice(0, i + 1).join(''));
 
       for (const y of computedPrefixes) {
@@ -52628,11 +52672,11 @@
   }
   function logicalExpr(op, cb) {
     if (isLogicalNot(op)) {
-      return `!(${logicalExpr(op.not, cb)})`;
+      return "!(".concat(logicalExpr(op.not, cb), ")");
     } else if (isLogicalAnd(op)) {
-      return `(${op.and.map(and => logicalExpr(and, cb)).join(') && (')})`;
+      return "(".concat(op.and.map(and => logicalExpr(and, cb)).join(') && ('), ")");
     } else if (isLogicalOr(op)) {
-      return `(${op.or.map(or => logicalExpr(or, cb)).join(') || (')})`;
+      return "(".concat(op.or.map(or => logicalExpr(or, cb)).join(') || ('), ")");
     } else {
       return cb(op);
     }
@@ -52663,13 +52707,14 @@
    * @param datum The string to use for `datum`.
    */
 
-  function accessPathWithDatum(path, datum = 'datum') {
+  function accessPathWithDatum(path) {
+    let datum = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'datum';
     const pieces = splitAccessPath(path);
     const prefixes = [];
 
     for (let i = 1; i <= pieces.length; i++) {
-      const prefix = `[${pieces.slice(0, i).map($$1).join('][')}]`;
-      prefixes.push(`${datum}${prefix}`);
+      const prefix = "[".concat(pieces.slice(0, i).map($$1).join(']['), "]");
+      prefixes.push("".concat(datum).concat(prefix));
     }
 
     return prefixes.join(' && ');
@@ -52681,8 +52726,9 @@
    * @param datum The string to use for `datum`.
    */
 
-  function flatAccessWithDatum(path, datum = 'datum') {
-    return `${datum}[${$$1(splitAccessPath(path).join('.'))}]`;
+  function flatAccessWithDatum(path) {
+    let datum = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'datum';
+    return "".concat(datum, "[").concat($$1(splitAccessPath(path).join('.')), "]");
   }
 
   function escapePathAccess(string) {
@@ -52695,7 +52741,7 @@
 
 
   function replacePathInField(path) {
-    return `${splitAccessPath(path).map(escapePathAccess).join('\\.')}`;
+    return "".concat(splitAccessPath(path).map(escapePathAccess).join('\\.'));
   }
   /**
    * Replace all occurrences of a string with another string.
@@ -52714,7 +52760,7 @@
    */
 
   function removePathFromField(path) {
-    return `${splitAccessPath(path).join('.')}`;
+    return "".concat(splitAccessPath(path).join('.'));
   }
   /**
    * Count the depth of the path. Returns 1 for fields that are not nested.
@@ -52731,7 +52777,11 @@
    * This is a replacement for chained || for numeric properties or properties that respect null so that 0 will be included.
    */
 
-  function getFirstDefined(...args) {
+  function getFirstDefined() {
+    for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+      args[_key2] = arguments[_key2];
+    }
+
     for (const arg of args) {
       if (arg !== undefined) {
         return arg;
@@ -52753,7 +52803,7 @@
     return prefix ? String(prefix) + id : id;
   }
   function internalField(name) {
-    return isInternalField(name) ? name : `__${name}`;
+    return isInternalField(name) ? name : "__".concat(name);
   }
   function isInternalField(name) {
     return name.startsWith('__');
@@ -52793,7 +52843,10 @@
   const X = 'x';
   const Y = 'y';
   const X2 = 'x2';
-  const Y2 = 'y2'; // Arc-Position
+  const Y2 = 'y2'; // Position Offset
+
+  const XOFFSET = 'xOffset';
+  const YOFFSET = 'yOffset'; // Arc-Position
 
   const RADIUS = 'radius';
   const RADIUS2 = 'radius2';
@@ -52868,6 +52921,8 @@
   const UNIT_CHANNEL_INDEX = { ...POSITION_CHANNEL_INDEX,
     ...POLAR_POSITION_CHANNEL_INDEX,
     ...GEO_POSIITON_CHANNEL_INDEX,
+    xOffset: 1,
+    yOffset: 1,
     // color
     color: 1,
     fill: 1,
@@ -53000,7 +53055,7 @@
 
     return undefined;
   }
-  function getSizeChannel$1(channel) {
+  function getSizeChannel(channel) {
     switch (channel) {
       case X:
       case X2:
@@ -53045,7 +53100,33 @@
     }
 
     return undefined;
+  }
+  /**
+   * Get the main channel for a range channel. E.g. `x` for `x2`.
+   */
+
+  function getOffsetScaleChannel(channel) {
+    switch (channel) {
+      case X:
+        return 'xOffset';
+
+      case Y:
+        return 'yOffset';
+    }
+
+    return undefined;
+  }
+  function getMainChannelFromOffsetChannel(channel) {
+    switch (channel) {
+      case 'xOffset':
+        return 'x';
+
+      case 'yOffset':
+        return 'y';
+    }
   } // CHANNELS without COLUMN, ROW
+
+  const UNIT_CHANNELS = keys(UNIT_CHANNEL_INDEX); // NONPOSITION_CHANNELS = UNIT_CHANNELS without X, Y, X2, Y2;
 
   const {
     x: _x,
@@ -53053,6 +53134,9 @@
     // x2 and y2 share the same scale as x and y
     x2: _x2,
     y2: _y2,
+    //
+    xOffset: _xo,
+    yOffset: _yo,
     latitude: _latitude,
     longitude: _longitude,
     latitude2: _latitude2,
@@ -53080,7 +53164,14 @@
   const POLAR_POSITION_SCALE_CHANNELS = keys(POLAR_POSITION_SCALE_CHANNEL_INDEX);
   function getPositionScaleChannel(sizeType) {
     return sizeType === 'width' ? X : Y;
-  } // NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without X, Y
+  }
+  const OFFSET_SCALE_CHANNEL_INDEX = {
+    xOffset: 1,
+    yOffset: 1
+  };
+  function isXorYOffset(channel) {
+    return channel in OFFSET_SCALE_CHANNEL_INDEX;
+  } // NON_POSITION_SCALE_CHANNEL = SCALE_CHANNELS without position / offset
 
   const {
     // x2 and y2 share the same scale as x and y
@@ -53126,6 +53217,7 @@
 
   const SCALE_CHANNEL_INDEX = { ...POSITION_SCALE_CHANNEL_INDEX,
     ...POLAR_POSITION_SCALE_CHANNEL_INDEX,
+    ...OFFSET_SCALE_CHANNEL_INDEX,
     ...NONPOSITION_SCALE_CHANNEL_INDEX
   };
   /** List of channels with scales */
@@ -53197,6 +53289,8 @@
 
       case X:
       case Y:
+      case XOFFSET:
+      case YOFFSET:
       case LATITUDE:
       case LONGITUDE:
         // all marks except geoshape. geoshape does not use X, Y -- it uses a projection
@@ -53294,6 +53388,8 @@
       case Y:
       case THETA:
       case RADIUS:
+      case XOFFSET:
+      case YOFFSET:
       case SIZE:
       case ANGLE:
       case STROKEWIDTH:
@@ -53377,22 +53473,21 @@
   function isAggregateOp(a) {
     return isString(a) && !!AGGREGATE_OP_INDEX[a];
   }
-  const COUNTING_OPS = ['count', 'valid', 'missing', 'distinct'];
+  const COUNTING_OPS = new Set(['count', 'valid', 'missing', 'distinct']);
   function isCountingAggregateOp(aggregate) {
-    return isString(aggregate) && contains(COUNTING_OPS, aggregate);
+    return isString(aggregate) && COUNTING_OPS.has(aggregate);
   }
   function isMinMaxOp(aggregate) {
     return isString(aggregate) && contains(['min', 'max'], aggregate);
   }
   /** Additive-based aggregation operations. These can be applied to stack. */
 
-  const SUM_OPS = ['count', 'sum', 'distinct', 'valid', 'missing'];
+  const SUM_OPS = new Set(['count', 'sum', 'distinct', 'valid', 'missing']);
   /**
    * Aggregation operators that always produce values within the range [domainMin, domainMax].
    */
 
-  const SHARED_DOMAIN_OPS = ['mean', 'average', 'median', 'q1', 'q3', 'min', 'max'];
-  const SHARED_DOMAIN_OP_INDEX = toSet(SHARED_DOMAIN_OPS);
+  const SHARED_DOMAIN_OPS = new Set(['mean', 'average', 'median', 'q1', 'q3', 'min', 'max']);
 
   /**
    * Create a key for the bin configuration. Not for prebinned bin.
@@ -53402,7 +53497,7 @@
       bin = normalizeBin(bin, undefined);
     }
 
-    return 'bin' + keys(bin).map(p => isParameterExtent(bin[p]) ? varName(`_${p}_${entries$1(bin[p])}`) : varName(`_${p}_${bin[p]}`)).join('');
+    return 'bin' + keys(bin).map(p => isParameterExtent(bin[p]) ? varName("_".concat(p, "_").concat(entries$1(bin[p]))) : varName("_".concat(p, "_").concat(bin[p]))).join('');
   }
   /**
    * Vega-Lite should bin the data.
@@ -53539,7 +53634,7 @@
     return {
       titleMarkConfig,
       subtitleMarkConfig,
-      nonMarkTitleProperties: nonMarkTitleProperties,
+      nonMarkTitleProperties,
       subtitle
     };
   }
@@ -53715,7 +53810,14 @@
       value
     } : undefined;
   }
-  function exprFromValueOrSignalRef(ref) {
+  function exprFromSignalRefOrValue(ref) {
+    if (isSignalRef(ref)) {
+      return ref.signal;
+    }
+
+    return $$1(ref);
+  }
+  function exprFromValueRefOrSignalRef(ref) {
     if (isSignalRef(ref)) {
       return ref.signal;
     }
@@ -53741,9 +53843,12 @@
     return e;
   }
   function getStyles(mark) {
-    return [].concat(mark.type, mark.style ?? []);
+    var _mark$style;
+
+    return [].concat(mark.type, (_mark$style = mark.style) !== null && _mark$style !== void 0 ? _mark$style : []);
   }
-  function getMarkPropOrConfig(channel, mark, config, opt = {}) {
+  function getMarkPropOrConfig(channel, mark, config) {
+    let opt = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
     const {
       vgChannel,
       ignoreVgConfig
@@ -53764,9 +53869,10 @@
    * Otherwise, return general mark specific config.
    */
 
-  function getMarkConfig(channel, mark, config, {
-    vgChannel
-  } = {}) {
+  function getMarkConfig(channel, mark, config) {
+    let {
+      vgChannel
+    } = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
     return getFirstDefined( // style config has highest precedence
     vgChannel ? getMarkStyleConfig(channel, mark, config.style) : undefined, getMarkStyleConfig(channel, mark, config.style), // then mark-specific config
     vgChannel ? config[mark.type][vgChannel] : undefined, config[mark.type][channel], // Need to cast because MarkDef doesn't perfectly match with AnyMarkConfig, but if the type isn't available, we'll get nothing here, which is fine
@@ -53798,8 +53904,10 @@
 
   function sortParams(orderDef, fieldRefOption) {
     return array$5(orderDef).reduce((s, orderChannelDef) => {
+      var _orderChannelDef$sort;
+
       s.field.push(vgField(orderChannelDef, fieldRefOption));
-      s.order.push(orderChannelDef.sort ?? 'ascending');
+      s.order.push((_orderChannelDef$sort = orderChannelDef.sort) !== null && _orderChannelDef$sort !== void 0 ? _orderChannelDef$sort : 'ascending');
       return s;
     }, {
       field: [],
@@ -53924,186 +54032,207 @@
     }
   }
 
+  function _checkPrivateRedeclaration(obj, privateCollection) {
+    if (privateCollection.has(obj)) {
+      throw new TypeError("Cannot initialize the same private elements twice on an object");
+    }
+  }
+
+  function _classPrivateFieldInitSpec(obj, privateMap, value) {
+    _checkPrivateRedeclaration(obj, privateMap);
+
+    privateMap.set(obj, value);
+  }
+
   /**
    * Collection of all Vega-Lite Error Messages
    */
   function invalidSpec(spec) {
-    return `Invalid specification ${stringify(spec)}. Make sure the specification includes at least one of the following properties: "mark", "layer", "facet", "hconcat", "vconcat", "concat", or "repeat".`;
+    return "Invalid specification ".concat(stringify(spec), ". Make sure the specification includes at least one of the following properties: \"mark\", \"layer\", \"facet\", \"hconcat\", \"vconcat\", \"concat\", or \"repeat\".");
   } // FIT
 
   const FIT_NON_SINGLE = 'Autosize "fit" only works for single views and layered views.';
   function containerSizeNonSingle(name) {
     const uName = name == 'width' ? 'Width' : 'Height';
-    return `${uName} "container" only works for single views and layered views.`;
+    return "".concat(uName, " \"container\" only works for single views and layered views.");
   }
   function containerSizeNotCompatibleWithAutosize(name) {
     const uName = name == 'width' ? 'Width' : 'Height';
     const fitDirection = name == 'width' ? 'x' : 'y';
-    return `${uName} "container" only works well with autosize "fit" or "fit-${fitDirection}".`;
+    return "".concat(uName, " \"container\" only works well with autosize \"fit\" or \"fit-").concat(fitDirection, "\".");
   }
   function droppingFit(channel) {
-    return channel ? `Dropping "fit-${channel}" because spec has discrete ${getSizeChannel$1(channel)}.` : `Dropping "fit" because spec has discrete size.`;
+    return channel ? "Dropping \"fit-".concat(channel, "\" because spec has discrete ").concat(getSizeChannel(channel), ".") : "Dropping \"fit\" because spec has discrete size.";
   } // VIEW SIZE
 
   function unknownField(channel) {
-    return `Unknown field for ${channel}. Cannot calculate view size.`;
+    return "Unknown field for ".concat(channel, ". Cannot calculate view size.");
   } // SELECTION
 
   function cannotProjectOnChannelWithoutField(channel) {
-    return `Cannot project a selection on encoding channel "${channel}", which has no field.`;
+    return "Cannot project a selection on encoding channel \"".concat(channel, "\", which has no field.");
   }
   function cannotProjectAggregate(channel, aggregate) {
-    return `Cannot project a selection on encoding channel "${channel}" as it uses an aggregate function ("${aggregate}").`;
+    return "Cannot project a selection on encoding channel \"".concat(channel, "\" as it uses an aggregate function (\"").concat(aggregate, "\").");
   }
   function nearestNotSupportForContinuous(mark) {
-    return `The "nearest" transform is not supported for ${mark} marks.`;
+    return "The \"nearest\" transform is not supported for ".concat(mark, " marks.");
   }
   function selectionNotSupported(mark) {
-    return `Selection not supported for ${mark} yet.`;
+    return "Selection not supported for ".concat(mark, " yet.");
   }
   function selectionNotFound(name) {
-    return `Cannot find a selection named "${name}".`;
+    return "Cannot find a selection named \"".concat(name, "\".");
   }
   const SCALE_BINDINGS_CONTINUOUS = 'Scale bindings are currently only supported for scales with unbinned, continuous domains.';
   const LEGEND_BINDINGS_MUST_HAVE_PROJECTION = 'Legend bindings are only supported for selections over an individual field or encoding channel.';
   function cannotLookupVariableParameter(name) {
-    return `Lookups can only be performed on selection parameters. "${name}" is a variable parameter.`;
+    return "Lookups can only be performed on selection parameters. \"".concat(name, "\" is a variable parameter.");
   }
   function noSameUnitLookup(name) {
-    return `Cannot define and lookup the "${name}" selection in the same view. ` + `Try moving the lookup into a second, layered view?`;
+    return "Cannot define and lookup the \"".concat(name, "\" selection in the same view. ") + "Try moving the lookup into a second, layered view?";
   }
   const NEEDS_SAME_SELECTION = 'The same selection must be used to override scale domains in a layered view.';
   const INTERVAL_INITIALIZED_WITH_X_Y = 'Interval selections should be initialized using "x" and/or "y" keys.'; // REPEAT
 
   function noSuchRepeatedValue(field) {
-    return `Unknown repeated value "${field}".`;
+    return "Unknown repeated value \"".concat(field, "\".");
   }
   function columnsNotSupportByRowCol(type) {
-    return `The "columns" property cannot be used when "${type}" has nested row/column.`;
+    return "The \"columns\" property cannot be used when \"".concat(type, "\" has nested row/column.");
   } // CONCAT / REPEAT
 
   const CONCAT_CANNOT_SHARE_AXIS = 'Axes cannot be shared in concatenated or repeated views yet (https://github.com/vega/vega-lite/issues/2415).'; // DATA
 
   function unrecognizedParse(p) {
-    return `Unrecognized parse "${p}".`;
+    return "Unrecognized parse \"".concat(p, "\".");
   }
   function differentParse(field, local, ancestor) {
-    return `An ancestor parsed field "${field}" as ${ancestor} but a child wants to parse the field as ${local}.`;
+    return "An ancestor parsed field \"".concat(field, "\" as ").concat(ancestor, " but a child wants to parse the field as ").concat(local, ".");
   }
   const ADD_SAME_CHILD_TWICE = 'Attempt to add the same child twice.'; // TRANSFORMS
 
   function invalidTransformIgnored(transform) {
-    return `Ignoring an invalid transform: ${stringify(transform)}.`;
+    return "Ignoring an invalid transform: ".concat(stringify(transform), ".");
   }
   const NO_FIELDS_NEEDS_AS = 'If "from.fields" is not specified, "as" has to be a string that specifies the key to be used for the data from the secondary source.'; // ENCODING & FACET
 
   function customFormatTypeNotAllowed(channel) {
-    return `Config.customFormatTypes is not true, thus custom format type and format for channel ${channel} are dropped.`;
+    return "Config.customFormatTypes is not true, thus custom format type and format for channel ".concat(channel, " are dropped.");
   }
   function projectionOverridden(opt) {
     const {
       parentProjection,
       projection
     } = opt;
-    return `Layer's shared projection ${stringify(parentProjection)} is overridden by a child projection ${stringify(projection)}.`;
+    return "Layer's shared projection ".concat(stringify(parentProjection), " is overridden by a child projection ").concat(stringify(projection), ".");
   }
   const REPLACE_ANGLE_WITH_THETA = 'Arc marks uses theta channel rather than angle, replacing angle with theta.';
+  function offsetNestedInsideContinuousPositionScaleDropped(mainChannel) {
+    return "".concat(mainChannel, "Offset dropped because ").concat(mainChannel, " is continuous");
+  }
+  function replaceOffsetWithMainChannel(mainChannel) {
+    return "There is no ".concat(mainChannel, " encoding. Replacing ").concat(mainChannel, "Offset encoding as ").concat(mainChannel, ".");
+  }
   function primitiveChannelDef(channel, type, value) {
-    return `Channel ${channel} is a ${type}. Converted to {value: ${stringify(value)}}.`;
+    return "Channel ".concat(channel, " is a ").concat(type, ". Converted to {value: ").concat(stringify(value), "}.");
   }
   function invalidFieldType(type) {
-    return `Invalid field type "${type}".`;
+    return "Invalid field type \"".concat(type, "\".");
   }
   function invalidFieldTypeForCountAggregate(type, aggregate) {
-    return `Invalid field type "${type}" for aggregate: "${aggregate}", using "quantitative" instead.`;
+    return "Invalid field type \"".concat(type, "\" for aggregate: \"").concat(aggregate, "\", using \"quantitative\" instead.");
   }
   function invalidAggregate(aggregate) {
-    return `Invalid aggregation operator "${aggregate}".`;
+    return "Invalid aggregation operator \"".concat(aggregate, "\".");
   }
   function droppingColor(type, opt) {
     const {
       fill,
       stroke
     } = opt;
-    return `Dropping color ${type} as the plot also has ${fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke'}.`;
+    return "Dropping color ".concat(type, " as the plot also has ").concat(fill && stroke ? 'fill and stroke' : fill ? 'fill' : 'stroke', ".");
   }
   function relativeBandSizeNotSupported(sizeChannel) {
-    return `Position range does not support relative band size for ${sizeChannel}.`;
+    return "Position range does not support relative band size for ".concat(sizeChannel, ".");
   }
   function emptyFieldDef(fieldDef, channel) {
-    return `Dropping ${stringify(fieldDef)} from channel "${channel}" since it does not contain any data field, datum, value, or signal.`;
+    return "Dropping ".concat(stringify(fieldDef), " from channel \"").concat(channel, "\" since it does not contain any data field, datum, value, or signal.");
   }
   const LINE_WITH_VARYING_SIZE = 'Line marks cannot encode size with a non-groupby field. You may want to use trail marks instead.';
   function incompatibleChannel(channel, markOrFacet, when) {
-    return `${channel} dropped as it is incompatible with "${markOrFacet}"${when ? ` when ${when}` : ''}.`;
+    return "".concat(channel, " dropped as it is incompatible with \"").concat(markOrFacet, "\"").concat(when ? " when ".concat(when) : '', ".");
+  }
+  function offsetEncodingScaleIgnored(channel) {
+    return "".concat(channel, " encoding has no scale, so specified scale is ignored.");
   }
   function invalidEncodingChannel(channel) {
-    return `${channel}-encoding is dropped as ${channel} is not a valid encoding channel.`;
+    return "".concat(channel, "-encoding is dropped as ").concat(channel, " is not a valid encoding channel.");
   }
   function channelShouldBeDiscrete(channel) {
-    return `${channel} encoding should be discrete (ordinal / nominal / binned).`;
+    return "".concat(channel, " encoding should be discrete (ordinal / nominal / binned).");
   }
   function channelShouldBeDiscreteOrDiscretizing(channel) {
-    return `${channel} encoding should be discrete (ordinal / nominal / binned) or use a discretizing scale (e.g. threshold).`;
+    return "".concat(channel, " encoding should be discrete (ordinal / nominal / binned) or use a discretizing scale (e.g. threshold).");
   }
   function facetChannelDropped(channels) {
-    return `Facet encoding dropped as ${channels.join(' and ')} ${channels.length > 1 ? 'are' : 'is'} also specified.`;
+    return "Facet encoding dropped as ".concat(channels.join(' and '), " ").concat(channels.length > 1 ? 'are' : 'is', " also specified.");
   }
   function discreteChannelCannotEncode(channel, type) {
-    return `Using discrete channel "${channel}" to encode "${type}" field can be misleading as it does not encode ${type === 'ordinal' ? 'order' : 'magnitude'}.`;
+    return "Using discrete channel \"".concat(channel, "\" to encode \"").concat(type, "\" field can be misleading as it does not encode ").concat(type === 'ordinal' ? 'order' : 'magnitude', ".");
   } // MARK
 
   function rangeMarkAlignmentCannotBeExpression(align) {
-    return `The ${align} for range marks cannot be an expression`;
+    return "The ".concat(align, " for range marks cannot be an expression");
   }
   function lineWithRange(hasX2, hasY2) {
     const channels = hasX2 && hasY2 ? 'x2 and y2' : hasX2 ? 'x2' : 'y2';
-    return `Line mark is for continuous lines and thus cannot be used with ${channels}. We will use the rule mark (line segments) instead.`;
+    return "Line mark is for continuous lines and thus cannot be used with ".concat(channels, ". We will use the rule mark (line segments) instead.");
   }
   function orientOverridden(original, actual) {
-    return `Specified orient "${original}" overridden with "${actual}".`;
+    return "Specified orient \"".concat(original, "\" overridden with \"").concat(actual, "\".");
   } // SCALE
   function cannotUseScalePropertyWithNonColor(prop) {
-    return `Cannot use the scale property "${prop}" with non-color channel.`;
+    return "Cannot use the scale property \"".concat(prop, "\" with non-color channel.");
   }
   function cannotUseRelativeBandSizeWithNonBandScale(scaleType) {
-    return `Cannot use the relative band size with ${scaleType} scale.`;
+    return "Cannot use the relative band size with ".concat(scaleType, " scale.");
   }
   function unaggregateDomainHasNoEffectForRawField(fieldDef) {
-    return `Using unaggregated domain with raw field has no effect (${stringify(fieldDef)}).`;
+    return "Using unaggregated domain with raw field has no effect (".concat(stringify(fieldDef), ").");
   }
   function unaggregateDomainWithNonSharedDomainOp(aggregate) {
-    return `Unaggregated domain not applicable for "${aggregate}" since it produces values outside the origin domain of the source data.`;
+    return "Unaggregated domain not applicable for \"".concat(aggregate, "\" since it produces values outside the origin domain of the source data.");
   }
   function unaggregatedDomainWithLogScale(fieldDef) {
-    return `Unaggregated domain is currently unsupported for log scale (${stringify(fieldDef)}).`;
+    return "Unaggregated domain is currently unsupported for log scale (".concat(stringify(fieldDef), ").");
   }
   function cannotApplySizeToNonOrientedMark(mark) {
-    return `Cannot apply size to non-oriented mark "${mark}".`;
+    return "Cannot apply size to non-oriented mark \"".concat(mark, "\".");
   }
   function scaleTypeNotWorkWithChannel(channel, scaleType, defaultScaleType) {
-    return `Channel "${channel}" does not work with "${scaleType}" scale. We are using "${defaultScaleType}" scale instead.`;
+    return "Channel \"".concat(channel, "\" does not work with \"").concat(scaleType, "\" scale. We are using \"").concat(defaultScaleType, "\" scale instead.");
   }
   function scaleTypeNotWorkWithFieldDef(scaleType, defaultScaleType) {
-    return `FieldDef does not work with "${scaleType}" scale. We are using "${defaultScaleType}" scale instead.`;
+    return "FieldDef does not work with \"".concat(scaleType, "\" scale. We are using \"").concat(defaultScaleType, "\" scale instead.");
   }
   function scalePropertyNotWorkWithScaleType(scaleType, propName, channel) {
-    return `${channel}-scale's "${propName}" is dropped as it does not work with ${scaleType} scale.`;
+    return "".concat(channel, "-scale's \"").concat(propName, "\" is dropped as it does not work with ").concat(scaleType, " scale.");
   }
   function stepDropped(channel) {
-    return `The step for "${channel}" is dropped because the ${channel === 'width' ? 'x' : 'y'} is continuous.`;
+    return "The step for \"".concat(channel, "\" is dropped because the ").concat(channel === 'width' ? 'x' : 'y', " is continuous.");
   }
   function mergeConflictingProperty(property, propertyOf, v1, v2) {
-    return `Conflicting ${propertyOf.toString()} property "${property.toString()}" (${stringify(v1)} and ${stringify(v2)}). Using ${stringify(v1)}.`;
+    return "Conflicting ".concat(propertyOf.toString(), " property \"").concat(property.toString(), "\" (").concat(stringify(v1), " and ").concat(stringify(v2), "). Using ").concat(stringify(v1), ".");
   }
   function mergeConflictingDomainProperty(property, propertyOf, v1, v2) {
-    return `Conflicting ${propertyOf.toString()} property "${property.toString()}" (${stringify(v1)} and ${stringify(v2)}). Using the union of the two domains.`;
+    return "Conflicting ".concat(propertyOf.toString(), " property \"").concat(property.toString(), "\" (").concat(stringify(v1), " and ").concat(stringify(v2), "). Using the union of the two domains.");
   }
   function independentScaleMeansIndependentGuide(channel) {
-    return `Setting the scale to be independent for "${channel}" means we also have to set the guide (axis or legend) to be independent.`;
+    return "Setting the scale to be independent for \"".concat(channel, "\" means we also have to set the guide (axis or legend) to be independent.");
   }
   function domainSortDropped(sort) {
-    return `Dropping sort property ${stringify(sort)} as unioned domains only support boolean or op "count", "min", and "max".`;
+    return "Dropping sort property ".concat(stringify(sort), " as unioned domains only support boolean or op \"count\", \"min\", and \"max\".");
   }
   const MORE_THAN_ONE_SORT = 'Domains that should be unioned has conflicting sort properties. Sort will be set to true.';
   const FACETED_INDEPENDENT_DIFFERENT_SOURCES = 'Detected faceted independent scales that union domain of multiple fields from different data sources. We will use the first field. The result view size may be incorrect.';
@@ -54111,42 +54240,42 @@
   const FACETED_INDEPENDENT_SAME_SOURCE = 'Detected faceted independent scales that union domain of multiple fields from the same data source. We will use the first field. The result view size may be incorrect.'; // AXIS
 
   function cannotStackRangedMark(channel) {
-    return `Cannot stack "${channel}" if there is already "${channel}2".`;
+    return "Cannot stack \"".concat(channel, "\" if there is already \"").concat(channel, "2\".");
   }
   function cannotStackNonLinearScale(scaleType) {
-    return `Cannot stack non-linear scale (${scaleType}).`;
+    return "Cannot stack non-linear scale (".concat(scaleType, ").");
   }
   function stackNonSummativeAggregate(aggregate) {
-    return `Stacking is applied even though the aggregate function is non-summative ("${aggregate}").`;
+    return "Stacking is applied even though the aggregate function is non-summative (\"".concat(aggregate, "\").");
   } // TIMEUNIT
 
   function invalidTimeUnit(unitName, value) {
-    return `Invalid ${unitName}: ${stringify(value)}.`;
+    return "Invalid ".concat(unitName, ": ").concat(stringify(value), ".");
   }
   function droppedDay(d) {
-    return `Dropping day from datetime ${stringify(d)} as day cannot be combined with other units.`;
+    return "Dropping day from datetime ".concat(stringify(d), " as day cannot be combined with other units.");
   }
   function errorBarCenterAndExtentAreNotNeeded(center, extent) {
-    return `${extent ? 'extent ' : ''}${extent && center ? 'and ' : ''}${center ? 'center ' : ''}${extent && center ? 'are ' : 'is '}not needed when data are aggregated.`;
+    return "".concat(extent ? 'extent ' : '').concat(extent && center ? 'and ' : '').concat(center ? 'center ' : '').concat(extent && center ? 'are ' : 'is ', "not needed when data are aggregated.");
   }
   function errorBarCenterIsUsedWithWrongExtent(center, extent, mark) {
-    return `${center} is not usually used with ${extent} for ${mark}.`;
+    return "".concat(center, " is not usually used with ").concat(extent, " for ").concat(mark, ".");
   }
   function errorBarContinuousAxisHasCustomizedAggregate(aggregate, compositeMark) {
-    return `Continuous axis should not have customized aggregation function ${aggregate}; ${compositeMark} already agregates the axis.`;
+    return "Continuous axis should not have customized aggregation function ".concat(aggregate, "; ").concat(compositeMark, " already agregates the axis.");
   }
   function errorBand1DNotSupport(property) {
-    return `1D error band does not support ${property}.`;
+    return "1D error band does not support ".concat(property, ".");
   } // CHANNEL
 
   function channelRequiredForBinned(channel) {
-    return `Channel ${channel} is required for "binned" bin.`;
+    return "Channel ".concat(channel, " is required for \"binned\" bin.");
   }
   function channelShouldNotBeUsedForBinned(channel) {
-    return `Channel ${channel} should not be used with "binned" bin.`;
+    return "Channel ".concat(channel, " should not be used with \"binned\" bin.");
   }
   function domainRequiredForThresholdScale(channel) {
-    return `Domain for ${channel} is required for threshold scale.`;
+    return "Domain for ".concat(channel, " is required for threshold scale.");
   }
 
   /**
@@ -54171,11 +54300,11 @@
     current = main;
     return current;
   }
-  function warn(...args) {
-    current.warn(...args);
+  function warn() {
+    current.warn(...arguments);
   }
-  function debug(...args) {
-    current.debug(...args);
+  function debug() {
+    current.debug(...arguments);
   }
 
   // DateTime definition object
@@ -54306,7 +54435,7 @@
       parts.push(month);
     } else if (d.quarter !== undefined) {
       const quarter = normalize ? normalizeQuarter(d.quarter) : d.quarter;
-      parts.push(isNumber$1(quarter) ? quarter * 3 : `${quarter}*3`);
+      parts.push(isNumber$1(quarter) ? quarter * 3 : "".concat(quarter, "*3"));
     } else {
       parts.push(0); // months start at zero in JS
     }
@@ -54317,7 +54446,7 @@
       // HACK: Day only works as a standalone unit
       // This is only correct because we always set year to 2006 for day
       const day = normalize ? normalizeDay(d.day) : d.day;
-      parts.push(isNumber$1(day) ? day + 1 : `${day}+1`);
+      parts.push(isNumber$1(day) ? day + 1 : "".concat(day, "+1"));
     } else {
       parts.push(1); // Date starts at 1 in JS
     } // Note: can't use TimeUnit enum here as importing it will create
@@ -54344,9 +54473,9 @@
     const string = parts.join(', ');
 
     if (d.utc) {
-      return `utc(${string})`;
+      return "utc(".concat(string, ")");
     } else {
-      return `datetime(${string})`;
+      return "datetime(".concat(string, ")");
     }
   }
   /**
@@ -54361,9 +54490,9 @@
     const string = parts.join(', ');
 
     if (d.utc) {
-      return `utc(${string})`;
+      return "utc(".concat(string, ")");
     } else {
-      return `datetime(${string})`;
+      return "datetime(".concat(string, ")");
     }
   }
   /**
@@ -54443,20 +54572,21 @@
    * Returns Vega expression for a given timeUnit and fieldRef
    */
 
-  function fieldExpr(fullTimeUnit, field, {
-    end
-  } = {
-    end: false
-  }) {
+  function fieldExpr(fullTimeUnit, field) {
+    let {
+      end
+    } = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {
+      end: false
+    };
     const fieldRef = accessPathWithDatum(field);
     const utc = isUTCTimeUnit(fullTimeUnit) ? 'utc' : '';
 
     function func(timeUnit) {
       if (timeUnit === 'quarter') {
         // quarter starting at 0 (0,3,6,9).
-        return `(${utc}quarter(${fieldRef})-1)`;
+        return "(".concat(utc, "quarter(").concat(fieldRef, ")-1)");
       } else {
-        return `${utc}${timeUnit}(${fieldRef})`;
+        return "".concat(utc).concat(timeUnit, "(").concat(fieldRef, ")");
       }
     }
 
@@ -54482,7 +54612,7 @@
     }
 
     const timeUnitParts = getTimeUnitParts(timeUnit);
-    return `timeUnitSpecifier(${stringify(timeUnitParts)}, ${stringify(VEGALITE_TIMEFORMAT)})`;
+    return "timeUnitSpecifier(".concat(stringify(timeUnitParts), ", ").concat(stringify(VEGALITE_TIMEFORMAT), ")");
   }
   /**
    * Returns the signal expression used for axis labels for a time unit.
@@ -54498,7 +54628,7 @@
     // Thus, utc time units should use timeFormat to avoid shifting the time twice.
 
     const utc = isUTCScale || isUTCTimeUnit(timeUnit);
-    return `${utc ? 'utc' : 'time'}Format(${field}, ${expr})`;
+    return "".concat(utc ? 'utc' : 'time', "Format(").concat(field, ", ").concat(expr, ")");
   }
   function normalizeTimeUnit(timeUnit) {
     if (!timeUnit) {
@@ -54533,10 +54663,10 @@
     } = normalizeTimeUnit(tu);
 
     if (rest.unit) {
-      return (utc ? 'utc' : '') + keys(rest).map(p => varName(`${p === 'unit' ? '' : `_${p}_`}${rest[p]}`)).join('');
+      return (utc ? 'utc' : '') + keys(rest).map(p => varName("".concat(p === 'unit' ? '' : "_".concat(p, "_")).concat(rest[p]))).join('');
     } else {
       // when maxbins is specified instead of units
-      return (utc ? 'utc' : '') + 'timeunit' + keys(rest).map(p => varName(`_${p}_${rest[p]}`)).join('');
+      return (utc ? 'utc' : '') + 'timeunit' + keys(rest).map(p => varName("_".concat(p, "_").concat(rest[p]))).join('');
     }
   }
 
@@ -54592,9 +54722,10 @@
   } // This method is used by Voyager. Do not change its behavior without changing Voyager.
 
 
-  function fieldFilterExpression(predicate, useInRange = true) {
+  function fieldFilterExpression(predicate) {
     var _normalizeTimeUnit;
 
+    let useInRange = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
     const {
       field
     } = predicate;
@@ -54602,26 +54733,26 @@
     const fieldExpr$1 = timeUnit ? // For timeUnit, cast into integer with time() so we can use ===, inrange, indexOf to compare values directly.
     // TODO: We calculate timeUnit on the fly here. Consider if we would like to consolidate this with timeUnit pipeline
     // TODO: support utc
-    `time(${fieldExpr(timeUnit, field)})` : vgField(predicate, {
+    "time(".concat(fieldExpr(timeUnit, field), ")") : vgField(predicate, {
       expr: 'datum'
     });
 
     if (isFieldEqualPredicate(predicate)) {
-      return `${fieldExpr$1}===${predicateValueExpr(predicate.equal, timeUnit)}`;
+      return "".concat(fieldExpr$1, "===").concat(predicateValueExpr(predicate.equal, timeUnit));
     } else if (isFieldLTPredicate(predicate)) {
       const upper = predicate.lt;
-      return `${fieldExpr$1}<${predicateValueExpr(upper, timeUnit)}`;
+      return "".concat(fieldExpr$1, "<").concat(predicateValueExpr(upper, timeUnit));
     } else if (isFieldGTPredicate(predicate)) {
       const lower = predicate.gt;
-      return `${fieldExpr$1}>${predicateValueExpr(lower, timeUnit)}`;
+      return "".concat(fieldExpr$1, ">").concat(predicateValueExpr(lower, timeUnit));
     } else if (isFieldLTEPredicate(predicate)) {
       const upper = predicate.lte;
-      return `${fieldExpr$1}<=${predicateValueExpr(upper, timeUnit)}`;
+      return "".concat(fieldExpr$1, "<=").concat(predicateValueExpr(upper, timeUnit));
     } else if (isFieldGTEPredicate(predicate)) {
       const lower = predicate.gte;
-      return `${fieldExpr$1}>=${predicateValueExpr(lower, timeUnit)}`;
+      return "".concat(fieldExpr$1, ">=").concat(predicateValueExpr(lower, timeUnit));
     } else if (isFieldOneOfPredicate(predicate)) {
-      return `indexof([${predicateValuesExpr(predicate.oneOf, timeUnit).join(',')}], ${fieldExpr$1}) !== -1`;
+      return "indexof([".concat(predicateValuesExpr(predicate.oneOf, timeUnit).join(','), "], ").concat(fieldExpr$1, ") !== -1");
     } else if (isFieldValidPredicate(predicate)) {
       return fieldValidPredicate(fieldExpr$1, predicate.valid);
     } else if (isFieldRangePredicate(predicate)) {
@@ -54629,10 +54760,10 @@
         range
       } = predicate;
       const lower = isSignalRef(range) ? {
-        signal: `${range.signal}[0]`
+        signal: "".concat(range.signal, "[0]")
       } : range[0];
       const upper = isSignalRef(range) ? {
-        signal: `${range.signal}[1]`
+        signal: "".concat(range.signal, "[1]")
       } : range[1];
 
       if (lower !== null && upper !== null && useInRange) {
@@ -54642,11 +54773,11 @@
       const exprs = [];
 
       if (lower !== null) {
-        exprs.push(`${fieldExpr$1} >= ${predicateValueExpr(lower, timeUnit)}`);
+        exprs.push("".concat(fieldExpr$1, " >= ").concat(predicateValueExpr(lower, timeUnit)));
       }
 
       if (upper !== null) {
-        exprs.push(`${fieldExpr$1} <= ${predicateValueExpr(upper, timeUnit)}`);
+        exprs.push("".concat(fieldExpr$1, " <= ").concat(predicateValueExpr(upper, timeUnit)));
       }
 
       return exprs.length > 0 ? exprs.join(' && ') : 'true';
@@ -54654,13 +54785,15 @@
     /* istanbul ignore next: it should never reach here */
 
 
-    throw new Error(`Invalid field predicate: ${stringify(predicate)}`);
+    throw new Error("Invalid field predicate: ".concat(stringify(predicate)));
   }
-  function fieldValidPredicate(fieldExpr, valid = true) {
+  function fieldValidPredicate(fieldExpr) {
+    let valid = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+
     if (valid) {
-      return `isValid(${fieldExpr}) && isFinite(+${fieldExpr})`;
+      return "isValid(".concat(fieldExpr, ") && isFinite(+").concat(fieldExpr, ")");
     } else {
-      return `!isValid(${fieldExpr}) || !isFinite(+${fieldExpr})`;
+      return "!isValid(".concat(fieldExpr, ") || !isFinite(+").concat(fieldExpr, ")");
     }
   }
   function normalizePredicate$1(f) {
@@ -54686,6 +54819,12 @@
     nominal: 'nominal',
     geojson: 'geojson'
   };
+  function isContinuous(type) {
+    return type === 'quantitative' || type === 'temporal';
+  }
+  function isDiscrete$1(type) {
+    return type === 'ordinal' || type === 'nominal';
+  }
   const QUANTITATIVE = Type.quantitative;
   const ORDINAL = Type.ordinal;
   const TEMPORAL = Type.temporal;
@@ -54816,35 +54955,32 @@
   function scaleTypePrecedence(scaleType) {
     return SCALE_PRECEDENCE_INDEX[scaleType];
   }
-  const CONTINUOUS_TO_CONTINUOUS_SCALES = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'time', 'utc'];
-  const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
-  const QUANTITATIVE_SCALES = ['linear', 'log', 'pow', 'sqrt', 'symlog'];
-  const QUANTITATIVE_SCALES_INDEX = toSet(QUANTITATIVE_SCALES);
+  const QUANTITATIVE_SCALES = new Set(['linear', 'log', 'pow', 'sqrt', 'symlog']);
+  const CONTINUOUS_TO_CONTINUOUS_SCALES = new Set([...QUANTITATIVE_SCALES, 'time', 'utc']);
   function isQuantitative(type) {
-    return type in QUANTITATIVE_SCALES_INDEX;
+    return QUANTITATIVE_SCALES.has(type);
   }
-  const CONTINUOUS_TO_DISCRETE_SCALES = ['quantile', 'quantize', 'threshold'];
-  const CONTINUOUS_TO_DISCRETE_INDEX = toSet(CONTINUOUS_TO_DISCRETE_SCALES);
-  const CONTINUOUS_DOMAIN_SCALES = CONTINUOUS_TO_CONTINUOUS_SCALES.concat(['quantile', 'quantize', 'threshold', 'sequential', 'identity']);
-  const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
-  const DISCRETE_DOMAIN_SCALES = ['ordinal', 'bin-ordinal', 'point', 'band'];
-  const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
+  const CONTINUOUS_TO_DISCRETE_SCALES = new Set(['quantile', 'quantize', 'threshold']);
+  const CONTINUOUS_DOMAIN_SCALES = new Set([...CONTINUOUS_TO_CONTINUOUS_SCALES, ...CONTINUOUS_TO_DISCRETE_SCALES, 'sequential', 'identity']);
+  const DISCRETE_DOMAIN_SCALES = new Set(['ordinal', 'bin-ordinal', 'point', 'band']);
   function hasDiscreteDomain(type) {
-    return type in DISCRETE_DOMAIN_INDEX;
+    return DISCRETE_DOMAIN_SCALES.has(type);
   }
   function hasContinuousDomain(type) {
-    return type in CONTINUOUS_DOMAIN_INDEX;
+    return CONTINUOUS_DOMAIN_SCALES.has(type);
   }
   function isContinuousToContinuous(type) {
-    return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
+    return CONTINUOUS_TO_CONTINUOUS_SCALES.has(type);
   }
   function isContinuousToDiscrete(type) {
-    return type in CONTINUOUS_TO_DISCRETE_INDEX;
+    return CONTINUOUS_TO_DISCRETE_SCALES.has(type);
   }
   const defaultScaleConfig = {
     pointPadding: 0.5,
     barBandPaddingInner: 0.1,
     rectBandPaddingInner: 0,
+    bandWithNestedOffsetPaddingInner: 0.2,
+    bandWithNestedOffsetPaddingOuter: 0.2,
     minBandSize: 2,
     minFontSize: 8,
     maxFontSize: 40,
@@ -55011,12 +55147,14 @@
     } else if (fieldDefType === TEMPORAL) {
       return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
     } else if (fieldDefType === QUANTITATIVE) {
-      return contains([ScaleType.LOG, ScaleType.POW, ScaleType.SQRT, ScaleType.SYMLOG, ScaleType.QUANTILE, ScaleType.QUANTIZE, ScaleType.THRESHOLD, ScaleType.LINEAR, undefined], specifiedType);
+      return isQuantitative(specifiedType) || isContinuousToDiscrete(specifiedType) || specifiedType === undefined;
     }
 
     return true;
   }
   function channelSupportScaleType(channel, scaleType) {
+    let hasNestedOffsetScale = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
+
     if (!isScaleChannel(channel)) {
       return false;
     }
@@ -55024,9 +55162,23 @@
     switch (channel) {
       case X:
       case Y:
+      case XOFFSET:
+      case YOFFSET:
       case THETA:
       case RADIUS:
-        return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
+        if (isContinuousToContinuous(scaleType)) {
+          return true;
+        } else if (scaleType === 'band') {
+          return true;
+        } else if (scaleType === 'point') {
+          /*
+            Point scale can't be use if the position has a nested offset scale
+            because if there is a nested scale, then it's band.
+          */
+          return !hasNestedOffsetScale;
+        }
+
+        return false;
 
       case SIZE: // TODO: size and opacity can support ordinal with more modification
 
@@ -55092,11 +55244,10 @@
     /* arc is rect/interval in polar coordinate */
     ].includes(m);
   }
-  const PRIMITIVE_MARKS = keys(Mark);
+  const PRIMITIVE_MARKS = new Set(keys(Mark));
   function isMarkDef(mark) {
     return mark['type'];
   }
-  toSet(PRIMITIVE_MARKS);
   const STROKE_CONFIG = ['stroke', 'strokeWidth', 'strokeDash', 'strokeDashOffset', 'strokeOpacity', 'strokeJoin', 'strokeMiterLimit'];
   const FILL_CONFIG = ['fill', 'fillOpacity'];
   const FILL_STROKE_CONFIG = [...STROKE_CONFIG, ...FILL_CONFIG];
@@ -55181,8 +55332,8 @@
     const ref = midPoint(params); // Wrap to check if the positional value is invalid, if so, plot the point on the min value
 
     if ( // Only this for field def without counting aggregate (as count wouldn't be null)
-    isFieldDef(channelDef) && !isCountingAggregateOp(channelDef.aggregate) && // and only for continuous scale without zero (otherwise, null / invalid will be interpreted as zero, which doesn't cause layout problem)
-    scale && isContinuousToContinuous(scale.get('type')) && scale.get('zero') === false) {
+    isFieldDef(channelDef) && !isCountingAggregateOp(channelDef.aggregate) && // and only for continuous scale
+    scale && isContinuousToContinuous(scale.get('type'))) {
       return wrapPositionInvalidTest({
         fieldDef: channelDef,
         channel,
@@ -55194,13 +55345,15 @@
 
     return ref;
   }
-  function wrapPositionInvalidTest({
-    fieldDef,
-    channel,
-    markDef,
-    ref,
-    config
-  }) {
+  function wrapPositionInvalidTest(_ref) {
+    let {
+      fieldDef,
+      channel,
+      markDef,
+      ref,
+      config
+    } = _ref;
+
     if (isPathMark(markDef.type)) {
       // path mark already use defined to skip points, no need to do it here.
       return ref;
@@ -55210,10 +55363,10 @@
 
     if (invalid === null) {
       // if there is no invalid filter, don't do the invalid test
-      return ref;
+      return [fieldInvalidTestValueRef(fieldDef, channel), ref];
     }
 
-    return [fieldInvalidTestValueRef(fieldDef, channel), ref];
+    return ref;
   }
   function fieldInvalidTestValueRef(fieldDef, channel) {
     const test = fieldInvalidPredicate(fieldDef, true);
@@ -55232,7 +55385,8 @@
       ...zeroValueRef
     };
   }
-  function fieldInvalidPredicate(field, invalid = true) {
+  function fieldInvalidPredicate(field) {
+    let invalid = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
     return fieldValidPredicate(isString(field) ? field : vgField(field, {
       expr: 'datum'
     }), !invalid);
@@ -55246,7 +55400,7 @@
       return dateTimeToExpr(datum);
     }
 
-    return `${stringify(datum)}`;
+    return "".concat(stringify(datum));
   }
   function valueRefForFieldOrDatumDef(fieldDef, scaleName, opt, encode) {
     const ref = {};
@@ -55294,14 +55448,15 @@
    * Signal that returns the middle of a bin from start and end field. Should only be used with x and y.
    */
 
-  function interpolatedSignalRef({
-    scaleName,
-    fieldOrDatumDef,
-    fieldOrDatumDef2,
-    offset,
-    startSuffix,
-    bandPosition = 0.5
-  }) {
+  function interpolatedSignalRef(_ref2) {
+    let {
+      scaleName,
+      fieldOrDatumDef,
+      fieldOrDatumDef2,
+      offset,
+      startSuffix,
+      bandPosition = 0.5
+    } = _ref2;
     const expr = 0 < bandPosition && bandPosition < 1 ? 'datum' : undefined;
     const start = vgField(fieldOrDatumDef, {
       expr,
@@ -55320,8 +55475,8 @@
       const val = bandPosition === 0 ? start : end;
       ref.field = val;
     } else {
-      const datum = isSignalRef(bandPosition) ? `${bandPosition.signal} * ${start} + (1-${bandPosition.signal}) * ${end}` : `${bandPosition} * ${start} + ${1 - bandPosition} * ${end}`;
-      ref.signal = `scale("${scaleName}", ${datum})`;
+      const datum = isSignalRef(bandPosition) ? "".concat(bandPosition.signal, " * ").concat(start, " + (1-").concat(bandPosition.signal, ") * ").concat(end) : "".concat(bandPosition, " * ").concat(start, " + ").concat(1 - bandPosition, " * ").concat(end);
+      ref.signal = "scale(\"".concat(scaleName, "\", ").concat(datum, ")");
     }
 
     if (offset) {
@@ -55334,30 +55489,38 @@
   /**
    * @returns {VgValueRef} Value Ref for xc / yc or mid point for other channels.
    */
-  function midPoint({
-    channel,
-    channelDef,
-    channel2Def,
-    markDef,
-    config,
-    scaleName,
-    scale,
-    stack,
-    offset,
-    defaultRef,
-    bandPosition
-  }) {
+  function midPoint(_ref3) {
+    let {
+      channel,
+      channelDef,
+      channel2Def,
+      markDef,
+      config,
+      scaleName,
+      scale,
+      stack,
+      offset,
+      defaultRef,
+      bandPosition
+    } = _ref3;
+
     // TODO: datum support
     if (channelDef) {
       /* istanbul ignore else */
       if (isFieldOrDatumDef(channelDef)) {
+        var _ref4, _bandPosition2;
+
+        const scaleType = scale === null || scale === void 0 ? void 0 : scale.get('type');
+
         if (isTypedFieldDef(channelDef)) {
-          bandPosition ?? (bandPosition = getBandPosition({
+          var _bandPosition;
+
+          (_bandPosition = bandPosition) !== null && _bandPosition !== void 0 ? _bandPosition : bandPosition = getBandPosition({
             fieldDef: channelDef,
             fieldDef2: channel2Def,
             markDef,
             config
-          }));
+          });
           const {
             bin,
             timeUnit,
@@ -55376,7 +55539,7 @@
               });
             }
 
-            if (bandPosition) {
+            if (bandPosition && !hasDiscreteDomain(scaleType)) {
               // if band = 0, no need to call interpolation
               // For non-stack, we can just calculate bin mid on the fly using signal.
               return interpolatedSignalRef({
@@ -55408,14 +55571,13 @@
           }
         }
 
-        const scaleType = scale === null || scale === void 0 ? void 0 : scale.get('type');
         return valueRefForFieldOrDatumDef(channelDef, scaleName, hasDiscreteDomain(scaleType) ? {
           binSuffix: 'range'
         } : {}, // no need for bin suffix if there is no scale
         {
           offset,
           // For band, to get mid point, need to offset by half of the band
-          band: scaleType === 'band' ? bandPosition ?? channelDef.bandPosition ?? 0.5 : undefined
+          band: scaleType === 'band' ? (_ref4 = (_bandPosition2 = bandPosition) !== null && _bandPosition2 !== void 0 ? _bandPosition2 : channelDef.bandPosition) !== null && _ref4 !== void 0 ? _ref4 : 0.5 : undefined
         });
       } else if (isValueDef(channelDef)) {
         const value = channelDef.value;
@@ -55473,18 +55635,20 @@
   }
 
   function customFormatExpr(formatType, field, format) {
-    return `${formatType}(${field}${format ? `, ${stringify(format)}` : ''})`;
+    return "".concat(formatType, "(").concat(field).concat(format ? ", ".concat(stringify(format)) : '', ")");
   }
 
   const BIN_RANGE_DELIMITER = ' \u2013 ';
-  function formatSignalRef({
-    fieldOrDatumDef,
-    format,
-    formatType,
-    expr,
-    normalizeStack,
-    config
-  }) {
+  function formatSignalRef(_ref) {
+    let {
+      fieldOrDatumDef,
+      format,
+      formatType,
+      expr,
+      normalizeStack,
+      config
+    } = _ref;
+
     if (isCustomFormatType(formatType)) {
       return formatCustomType({
         fieldOrDatumDef,
@@ -55518,11 +55682,11 @@
       };
     } else if (format || channelDefType(fieldOrDatumDef) === 'quantitative') {
       return {
-        signal: `${formatExpr(field, format)}`
+        signal: "".concat(formatExpr(field, format))
       };
     } else {
       return {
-        signal: `isValid(${field}) ? ${field} : ""+${field}`
+        signal: "isValid(".concat(field, ") ? ").concat(field, " : \"\"+").concat(field)
       };
     }
   }
@@ -55530,13 +55694,13 @@
   function fieldToFormat(fieldOrDatumDef, expr, normalizeStack) {
     if (isFieldDef(fieldOrDatumDef)) {
       if (normalizeStack) {
-        return `${vgField(fieldOrDatumDef, {
-        expr,
-        suffix: 'end'
-      })}-${vgField(fieldOrDatumDef, {
-        expr,
-        suffix: 'start'
-      })}`;
+        return "".concat(vgField(fieldOrDatumDef, {
+          expr,
+          suffix: 'end'
+        }), "-").concat(vgField(fieldOrDatumDef, {
+          expr,
+          suffix: 'start'
+        }));
       } else {
         return vgField(fieldOrDatumDef, {
           expr
@@ -55547,16 +55711,19 @@
     }
   }
 
-  function formatCustomType({
-    fieldOrDatumDef,
-    format,
-    formatType,
-    expr,
-    normalizeStack,
-    config,
-    field
-  }) {
-    field ?? (field = fieldToFormat(fieldOrDatumDef, expr, normalizeStack));
+  function formatCustomType(_ref2) {
+    var _field;
+
+    let {
+      fieldOrDatumDef,
+      format,
+      formatType,
+      expr,
+      normalizeStack,
+      config,
+      field
+    } = _ref2;
+    (_field = field) !== null && _field !== void 0 ? _field : field = fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
 
     if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
       const endField = vgField(fieldOrDatumDef, {
@@ -55633,21 +55800,23 @@
   }
 
   function formatExpr(field, format) {
-    return `format(${field}, "${format || ''}")`;
+    return "format(".concat(field, ", \"").concat(format || '', "\")");
   }
 
   function binNumberFormatExpr(field, format, formatType, config) {
+    var _ref3;
+
     if (isCustomFormatType(formatType)) {
       return customFormatExpr(formatType, field, format);
     }
 
-    return formatExpr(field, (isString(format) ? format : undefined) ?? config.numberFormat);
+    return formatExpr(field, (_ref3 = isString(format) ? format : undefined) !== null && _ref3 !== void 0 ? _ref3 : config.numberFormat);
   }
 
   function binFormatExpression(startField, endField, format, formatType, config) {
     const start = binNumberFormatExpr(startField, format, formatType, config);
     const end = binNumberFormatExpr(endField, format, formatType, config);
-    return `${fieldValidPredicate(startField, false)} ? "null" : ${start} + "${BIN_RANGE_DELIMITER}" + ${end}`;
+    return "".concat(fieldValidPredicate(startField, false), " ? \"null\" : ").concat(start, " + \"").concat(BIN_RANGE_DELIMITER, "\" + ").concat(end);
   }
   /**
    * Returns the time expression used for axis/legend labels or text mark for a temporal field
@@ -55659,7 +55828,7 @@
       // If there is no time unit, or if user explicitly specifies format for axis/legend/text.
       format = isString(format) ? format : rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
 
-      return `${isUTCScale ? 'utc' : 'time'}Format(${field}, '${format}')`;
+      return "".concat(isUTCScale ? 'utc' : 'time', "Format(").concat(field, ", '").concat(format, "')");
     } else {
       return formatExpression(timeUnit, field, isUTCScale);
     }
@@ -55745,12 +55914,14 @@
   function isSortableFieldDef(fieldDef) {
     return 'sort' in fieldDef;
   }
-  function getBandPosition({
-    fieldDef,
-    fieldDef2,
-    markDef: mark,
-    config
-  }) {
+  function getBandPosition(_ref) {
+    let {
+      fieldDef,
+      fieldDef2,
+      markDef: mark,
+      config
+    } = _ref;
+
     if (isFieldOrDatumDef(fieldDef) && fieldDef.bandPosition !== undefined) {
       return fieldDef.bandPosition;
     }
@@ -55770,16 +55941,17 @@
 
     return undefined;
   }
-  function getBandSize({
-    channel,
-    fieldDef,
-    fieldDef2,
-    markDef: mark,
-    config,
-    scaleType,
-    useVlSizeChannel
-  }) {
-    const sizeChannel = getSizeChannel$1(channel);
+  function getBandSize(_ref2) {
+    let {
+      channel,
+      fieldDef,
+      fieldDef2,
+      markDef: mark,
+      config,
+      scaleType,
+      useVlSizeChannel
+    } = _ref2;
+    const sizeChannel = getSizeChannel(channel);
     const size = getMarkPropOrConfig(useVlSizeChannel ? 'size' : sizeChannel, mark, config, {
       vgChannel: sizeChannel
     });
@@ -55915,7 +56087,8 @@
    */
 
 
-  function vgField(fieldDef, opt = {}) {
+  function vgField(fieldDef) {
+    let opt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     let field = fieldDef.field;
     const prefix = opt.prefix;
     let suffix = opt.suffix;
@@ -55937,36 +56110,40 @@
           } = fieldDef;
 
           if (isBinning(bin)) {
+            var _opt$binSuffix, _opt$suffix;
+
             fn = binToString(bin);
-            suffix = (opt.binSuffix ?? '') + (opt.suffix ?? '');
+            suffix = ((_opt$binSuffix = opt.binSuffix) !== null && _opt$binSuffix !== void 0 ? _opt$binSuffix : '') + ((_opt$suffix = opt.suffix) !== null && _opt$suffix !== void 0 ? _opt$suffix : '');
           } else if (aggregate) {
             if (isArgmaxDef(aggregate)) {
-              argAccessor = `["${field}"]`;
-              field = `argmax_${aggregate.argmax}`;
+              argAccessor = "[\"".concat(field, "\"]");
+              field = "argmax_".concat(aggregate.argmax);
             } else if (isArgminDef(aggregate)) {
-              argAccessor = `["${field}"]`;
-              field = `argmin_${aggregate.argmin}`;
+              argAccessor = "[\"".concat(field, "\"]");
+              field = "argmin_".concat(aggregate.argmin);
             } else {
               fn = String(aggregate);
             }
           } else if (timeUnit) {
+            var _opt$suffix2;
+
             fn = timeUnitToString(timeUnit);
-            suffix = (!['range', 'mid'].includes(opt.binSuffix) && opt.binSuffix || '') + (opt.suffix ?? '');
+            suffix = (!['range', 'mid'].includes(opt.binSuffix) && opt.binSuffix || '') + ((_opt$suffix2 = opt.suffix) !== null && _opt$suffix2 !== void 0 ? _opt$suffix2 : '');
           }
         }
       }
 
       if (fn) {
-        field = field ? `${fn}_${field}` : fn;
+        field = field ? "".concat(fn, "_").concat(field) : fn;
       }
     }
 
     if (suffix) {
-      field = `${field}_${suffix}`;
+      field = "".concat(field, "_").concat(suffix);
     }
 
     if (prefix) {
-      field = `${prefix}_${field}`;
+      field = "".concat(prefix, "_").concat(field);
     }
 
     if (opt.forAs) {
@@ -56014,22 +56191,22 @@
     if (aggregate === 'count') {
       return config.countTitle;
     } else if (isBinning(bin)) {
-      return `${field} (binned)`;
+      return "".concat(field, " (binned)");
     } else if (timeUnit) {
       var _normalizeTimeUnit;
 
       const unit = (_normalizeTimeUnit = normalizeTimeUnit(timeUnit)) === null || _normalizeTimeUnit === void 0 ? void 0 : _normalizeTimeUnit.unit;
 
       if (unit) {
-        return `${field} (${getTimeUnitParts(unit).join('-')})`;
+        return "".concat(field, " (").concat(getTimeUnitParts(unit).join('-'), ")");
       }
     } else if (aggregate) {
       if (isArgmaxDef(aggregate)) {
-        return `${field} for max ${aggregate.argmax}`;
+        return "".concat(field, " for max ").concat(aggregate.argmax);
       } else if (isArgminDef(aggregate)) {
-        return `${field} for min ${aggregate.argmin}`;
+        return "".concat(field, " for min ").concat(aggregate.argmin);
       } else {
-        return `${titleCase(aggregate)} of ${field}`;
+        return "".concat(titleCase(aggregate), " of ").concat(field);
       }
     }
 
@@ -56044,16 +56221,16 @@
     } = fieldDef;
 
     if (isArgmaxDef(aggregate)) {
-      return `${field} for argmax(${aggregate.argmax})`;
+      return "".concat(field, " for argmax(").concat(aggregate.argmax, ")");
     } else if (isArgminDef(aggregate)) {
-      return `${field} for argmin(${aggregate.argmin})`;
+      return "".concat(field, " for argmin(").concat(aggregate.argmin, ")");
     }
 
     const timeUnitParams = normalizeTimeUnit(timeUnit);
     const fn = aggregate || (timeUnitParams === null || timeUnitParams === void 0 ? void 0 : timeUnitParams.unit) || (timeUnitParams === null || timeUnitParams === void 0 ? void 0 : timeUnitParams.maxbins) && 'timeunit' || isBinning(bin) && 'bin';
 
     if (fn) {
-      return `${fn.toUpperCase()}(${field})`;
+      return "".concat(fn.toUpperCase(), "(").concat(field, ")");
     } else {
       return field;
     }
@@ -56077,16 +56254,17 @@
   function resetTitleFormatter() {
     setTitleFormatter(defaultTitleFormatter);
   }
-  function title(fieldOrDatumDef, config, {
-    allowDisabling,
-    includeDefault = true
-  }) {
+  function title(fieldOrDatumDef, config, _ref3) {
     var _getGuide;
 
+    let {
+      allowDisabling,
+      includeDefault = true
+    } = _ref3;
     const guideTitle = (_getGuide = getGuide(fieldOrDatumDef)) === null || _getGuide === void 0 ? void 0 : _getGuide.title;
 
     if (!isFieldDef(fieldOrDatumDef)) {
-      return guideTitle;
+      return guideTitle !== null && guideTitle !== void 0 ? guideTitle : fieldOrDatumDef.title;
     }
 
     const fieldDef = fieldOrDatumDef;
@@ -56095,7 +56273,9 @@
     if (allowDisabling) {
       return getFirstDefined(guideTitle, fieldDef.title, def);
     } else {
-      return guideTitle ?? fieldDef.title ?? def;
+      var _ref4;
+
+      return (_ref4 = guideTitle !== null && guideTitle !== void 0 ? guideTitle : fieldDef.title) !== null && _ref4 !== void 0 ? _ref4 : def;
     }
   }
   function getGuide(fieldDef) {
@@ -56123,7 +56303,9 @@
         formatType
       };
     } else {
-      const guide = getGuide(fieldDef) ?? {};
+      var _getGuide2;
+
+      const guide = (_getGuide2 = getGuide(fieldDef)) !== null && _getGuide2 !== void 0 ? _getGuide2 : {};
       const {
         format,
         formatType
@@ -56211,7 +56393,9 @@
    * Convert type to full, lowercase type, or augment the fieldDef with a default type if missing.
    */
 
-  function initChannelDef(channelDef, channel, config, opt = {}) {
+  function initChannelDef(channelDef, channel, config) {
+    let opt = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+
     if (isString(channelDef) || isNumber$1(channelDef) || isBoolean$2(channelDef)) {
       const primitiveType = isString(channelDef) ? 'string' : isNumber$1(channelDef) ? 'number' : 'boolean';
       warn(primitiveChannelDef(channel, primitiveType, channelDef));
@@ -56286,9 +56470,10 @@
     };
   }
 
-  function initFieldDef(fd, channel, {
-    compositeMark = false
-  } = {}) {
+  function initFieldDef(fd, channel) {
+    let {
+      compositeMark = false
+    } = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     const {
       aggregate,
       timeUnit,
@@ -56309,7 +56494,7 @@
     }
 
     if (field) {
-      fieldDef.field = `${field}`;
+      fieldDef.field = "".concat(field);
     } // Normalize bin
 
 
@@ -56431,7 +56616,7 @@
     if (type === 'geojson' && channel !== 'shape') {
       return {
         compatible: false,
-        warning: `Channel ${channel} should not be used with a geojson data.`
+        warning: "Channel ".concat(channel, " should not be used with a geojson data.")
       };
     }
 
@@ -56450,6 +56635,8 @@
 
       case X:
       case Y:
+      case XOFFSET:
+      case YOFFSET:
       case COLOR:
       case FILL:
       case STROKE:
@@ -56472,7 +56659,7 @@
         if (type !== QUANTITATIVE) {
           return {
             compatible: false,
-            warning: `Channel ${channel} should be used with a quantitative field only, not ${fieldDef.type} field.`
+            warning: "Channel ".concat(channel, " should be used with a quantitative field only, not ").concat(fieldDef.type, " field.")
           };
         }
 
@@ -56490,7 +56677,7 @@
         if (type === 'nominal' && !fieldDef['sort']) {
           return {
             compatible: false,
-            warning: `Channel ${channel} should not be used with an unsorted discrete field.`
+            warning: "Channel ".concat(channel, " should not be used with an unsorted discrete field.")
           };
         }
 
@@ -56511,7 +56698,7 @@
         if (fieldDef.type === 'nominal' && !('sort' in fieldDef)) {
           return {
             compatible: false,
-            warning: `Channel order is inappropriate for nominal field, which has no inherent order.`
+            warning: "Channel order is inappropriate for nominal field, which has no inherent order."
           };
         }
 
@@ -56541,14 +56728,15 @@
    * Convert the value to Vega expression if applicable (for datetime object, or string if the field def is temporal or has timeUnit)
    */
 
-  function valueExpr(v, {
-    timeUnit,
-    type,
-    wrapTime,
-    undefinedIfExprNotRequired
-  }) {
+  function valueExpr(v, _ref5) {
     var _normalizeTimeUnit2;
 
+    let {
+      timeUnit,
+      type,
+      wrapTime,
+      undefinedIfExprNotRequired
+    } = _ref5;
     const unit = timeUnit && ((_normalizeTimeUnit2 = normalizeTimeUnit(timeUnit)) === null || _normalizeTimeUnit2 === void 0 ? void 0 : _normalizeTimeUnit2.unit);
     let isTime = unit || type === 'temporal';
     let expr;
@@ -56562,7 +56750,7 @@
       expr = dateTimeToExpr(v);
     } else if (isString(v) || isNumber$1(v)) {
       if (isTime) {
-        expr = `datetime(${stringify(v)})`;
+        expr = "datetime(".concat(stringify(v), ")");
 
         if (isLocalSingleTimeUnit(unit)) {
           // for single timeUnit, we will use dateTimeToExpr to convert number/string to match the timeUnit
@@ -56576,7 +56764,7 @@
     }
 
     if (expr) {
-      return wrapTime && isTime ? `time(${expr})` : expr;
+      return wrapTime && isTime ? "time(".concat(expr, ")") : expr;
     } // number or boolean or normal string
 
 
@@ -56956,6 +57144,31 @@
 
     return false;
   }
+  function channelHasFieldOrDatum(encoding, channel) {
+    const channelDef = encoding && encoding[channel];
+
+    if (channelDef) {
+      if (isArray(channelDef)) {
+        return some(channelDef, fieldDef => !!fieldDef.field);
+      } else {
+        return isFieldDef(channelDef) || isDatumDef(channelDef) || hasConditionalFieldOrDatumDef(channelDef);
+      }
+    }
+
+    return false;
+  }
+  function channelHasNestedOffsetScale(encoding, channel) {
+    if (isXorY(channel)) {
+      const fieldDef = encoding[channel];
+
+      if ((isFieldDef(fieldDef) || isDatumDef(fieldDef)) && isDiscrete$1(fieldDef.type)) {
+        const offsetChannel = getOffsetScaleChannel(channel);
+        return channelHasFieldOrDatum(encoding, offsetChannel);
+      }
+    }
+
+    return false;
+  }
   function isAggregate$1(encoding) {
     return some(CHANNELS, channel => {
       if (channelHasField(encoding, channel)) {
@@ -57017,7 +57230,7 @@
               }, {
                 forAs: true
               });
-              newFieldDef.field = `${newField}.${field}`;
+              newFieldDef.field = "".concat(newField, ".").concat(field);
             } else if (isArgminDef(aggOp)) {
               op = 'argmin';
               newField = vgField({
@@ -57026,7 +57239,7 @@
               }, {
                 forAs: true
               });
-              newFieldDef.field = `${newField}.${field}`;
+              newFieldDef.field = "".concat(newField, ".").concat(field);
             } else if (aggOp !== 'boxplot' && aggOp !== 'errorbar' && aggOp !== 'errorband') {
               op = aggOp;
             }
@@ -57066,9 +57279,9 @@
 
               if (isXorY(channel)) {
                 const secondaryChannel = {
-                  field: `${newField}_end`
+                  field: "".concat(newField, "_end")
                 };
-                encoding[`${channel}2`] = secondaryChannel;
+                encoding["".concat(channel, "2")] = secondaryChannel;
               }
 
               newFieldDef.bin = 'binned';
@@ -57141,14 +57354,41 @@
     return true;
   }
   function initEncoding(encoding, mark, filled, config) {
-    return keys(encoding).reduce((normalizedEncoding, channel) => {
-      if (!isChannel(channel)) {
+    const normalizedEncoding = {};
+
+    for (const key of keys(encoding)) {
+      if (!isChannel(key)) {
         // Drop invalid channel
-        warn(invalidEncodingChannel(channel));
-        return normalizedEncoding;
+        warn(invalidEncodingChannel(key));
+      }
+    }
+
+    for (let channel of UNIT_CHANNELS) {
+      if (!encoding[channel]) {
+        continue;
       }
 
       const channelDef = encoding[channel];
+
+      if (isXorYOffset(channel)) {
+        const mainChannel = getMainChannelFromOffsetChannel(channel);
+        const positionDef = normalizedEncoding[mainChannel];
+
+        if (isFieldDef(positionDef)) {
+          if (isContinuous(positionDef.type)) {
+            if (isFieldDef(channelDef)) {
+              // TODO: nesting continuous field instead continuous field should
+              // behave like offsetting the data in data domain
+              warn(offsetNestedInsideContinuousPositionScaleDropped(mainChannel));
+              continue;
+            }
+          }
+        } else {
+          // no x/y, replace it with main channel
+          channel = mainChannel;
+          warn(replaceOffsetWithMainChannel(mainChannel));
+        }
+      }
 
       if (channel === 'angle' && mark === 'arc' && !encoding.theta) {
         warn(REPLACE_ANGLE_WITH_THETA);
@@ -57158,7 +57398,7 @@
       if (!markChannelCompatible(encoding, channel, mark)) {
         // Drop unsupported channel
         warn(incompatibleChannel(channel, mark));
-        return normalizedEncoding;
+        continue;
       } // Drop line's size if the field is aggregated.
 
 
@@ -57167,7 +57407,7 @@
 
         if (fieldDef !== null && fieldDef !== void 0 && fieldDef.aggregate) {
           warn(LINE_WITH_VARYING_SIZE);
-          return normalizedEncoding;
+          continue;
         }
       } // Drop color if either fill or stroke is specified
 
@@ -57177,7 +57417,7 @@
           fill: 'fill' in encoding,
           stroke: 'stroke' in encoding
         }));
-        return normalizedEncoding;
+        continue;
       }
 
       if (channel === DETAIL || channel === ORDER && !isArray(channelDef) && !isValueDef(channelDef) || channel === TOOLTIP && isArray(channelDef)) {
@@ -57199,14 +57439,14 @@
           normalizedEncoding[channel] = null;
         } else if (!isFieldDef(channelDef) && !isDatumDef(channelDef) && !isValueDef(channelDef) && !isConditionalDef(channelDef) && !isSignalRef(channelDef)) {
           warn(emptyFieldDef(channelDef, channel));
-          return normalizedEncoding;
+          continue;
         }
 
         normalizedEncoding[channel] = initChannelDef(channelDef, channel, config);
       }
+    }
 
-      return normalizedEncoding;
-    }, {});
+    return normalizedEncoding;
   }
   /**
    * For composite marks, we have to call initChannelDef during init so we can infer types earlier.
@@ -57293,6 +57533,8 @@
         case URL:
         case X2:
         case Y2:
+        case XOFFSET:
+        case YOFFSET:
         case THETA:
         case THETA2:
         case RADIUS:
@@ -57420,23 +57662,26 @@
       filteredEncoding
     };
   }
-  function getCompositeMarkTooltip(tooltipSummary, continuousAxisChannelDef, encodingWithoutContinuousAxis, withFieldName = true) {
+  function getCompositeMarkTooltip(tooltipSummary, continuousAxisChannelDef, encodingWithoutContinuousAxis) {
+    let withFieldName = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
+
     if ('tooltip' in encodingWithoutContinuousAxis) {
       return {
         tooltip: encodingWithoutContinuousAxis.tooltip
       };
     }
 
-    const fiveSummaryTooltip = tooltipSummary.map(({
-      fieldPrefix,
-      titlePrefix
-    }) => {
-      const mainTitle = withFieldName ? ` of ${getTitle(continuousAxisChannelDef)}` : '';
+    const fiveSummaryTooltip = tooltipSummary.map(_ref => {
+      let {
+        fieldPrefix,
+        titlePrefix
+      } = _ref;
+      const mainTitle = withFieldName ? " of ".concat(getTitle(continuousAxisChannelDef)) : '';
       return {
         field: fieldPrefix + continuousAxisChannelDef.field,
         type: continuousAxisChannelDef.type,
         title: isSignalRef(titlePrefix) ? {
-          signal: `${titlePrefix}"${escape(mainTitle)}"`
+          signal: "".concat(titlePrefix, "\"").concat(escape(mainTitle), "\"")
         } : titlePrefix + mainTitle
       };
     });
@@ -57458,20 +57703,21 @@
       scale,
       axis
     } = continuousAxisChannelDef;
-    return ({
-      partName,
-      mark,
-      positionPrefix,
-      endPositionPrefix = undefined,
-      extraEncoding = {}
-    }) => {
+    return _ref2 => {
+      let {
+        partName,
+        mark,
+        positionPrefix,
+        endPositionPrefix = undefined,
+        extraEncoding = {}
+      } = _ref2;
       const title = getTitle(continuousAxisChannelDef);
       return partLayerMixins(compositeMarkDef, partName, compositeMarkConfig, {
         mark,
         // TODO better remove this method and just have mark as a parameter of the method
         encoding: {
           [continuousAxis]: {
-            field: `${positionPrefix}_${continuousAxisChannelDef.field}`,
+            field: "".concat(positionPrefix, "_").concat(continuousAxisChannelDef.field),
             type: continuousAxisChannelDef.type,
             ...(title !== undefined ? {
               title
@@ -57484,8 +57730,8 @@
             } : {})
           },
           ...(isString(endPositionPrefix) ? {
-            [`${continuousAxis}2`]: {
-              field: `${endPositionPrefix}_${continuousAxisChannelDef.field}`
+            ["".concat(continuousAxis, "2")]: {
+              field: "".concat(endPositionPrefix, "_").concat(continuousAxisChannelDef.field)
             }
           } : {}),
           ...sharedEncoding,
@@ -57517,7 +57763,7 @@
           ...(isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : {
             type: partBaseSpec.mark
           }),
-          style: `${mark}-${part}`,
+          style: "".concat(mark, "-").concat(part),
           ...(isBoolean$2(markDef[part]) ? {} : markDef[part])
         }
       }];
@@ -57532,9 +57778,9 @@
     const continuousAxis = orient === 'vertical' ? 'y' : 'x';
     const continuousAxisChannelDef = encoding[continuousAxis]; // Safe to cast because if x is not continuous fielddef, the orient would not be horizontal.
 
-    const continuousAxisChannelDef2 = encoding[`${continuousAxis}2`];
-    const continuousAxisChannelDefError = encoding[`${continuousAxis}Error`];
-    const continuousAxisChannelDefError2 = encoding[`${continuousAxis}Error2`];
+    const continuousAxisChannelDef2 = encoding["".concat(continuousAxis, "2")];
+    const continuousAxisChannelDefError = encoding["".concat(continuousAxis, "Error")];
+    const continuousAxisChannelDefError2 = encoding["".concat(continuousAxis, "Error2")];
     return {
       continuousAxisChannelDef: filterAggregateFromChannelDef(continuousAxisChannelDef, compositeMark),
       continuousAxisChannelDef2: filterAggregateFromChannelDef(continuousAxisChannelDef2, compositeMark),
@@ -57605,7 +57851,7 @@
       return 'vertical';
     } else {
       // Neither x nor y is continuous.
-      throw new Error(`Need a valid continuous axis for ${compositeMark}s`);
+      throw new Error("Need a valid continuous axis for ".concat(compositeMark, "s"));
     }
   }
 
@@ -57620,9 +57866,12 @@
 
     return extent;
   }
-  function normalizeBoxPlot(spec, {
-    config
-  }) {
+  function normalizeBoxPlot(spec, _ref) {
+    var _markDef$extent;
+
+    let {
+      config
+    } = _ref;
     // Need to initEncoding first so we can infer type
     spec = { ...spec,
       encoding: normalizeEncoding(spec.encoding, config)
@@ -57642,7 +57891,7 @@
       warn(selectionNotSupported('boxplot'));
     }
 
-    const extent = markDef.extent ?? config.boxplot.extent;
+    const extent = (_markDef$extent = markDef.extent) !== null && _markDef$extent !== void 0 ? _markDef$extent : config.boxplot.extent;
     const sizeValue = getMarkPropOrConfig('size', markDef, // TODO: https://github.com/vega/vega-lite/issues/6245
     config);
     const boxPlotType = getBoxPlotType(extent);
@@ -57776,44 +58025,46 @@
     })];
 
     if (boxPlotType === 'min-max') {
+      var _outerSpec$transform;
+
       return { ...outerSpec,
-        transform: (outerSpec.transform ?? []).concat(transform),
+        transform: ((_outerSpec$transform = outerSpec.transform) !== null && _outerSpec$transform !== void 0 ? _outerSpec$transform : []).concat(transform),
         layer: boxLayers
       };
     } // Tukey Box Plot
 
 
-    const lowerBoxExpr = `datum["lower_box_${continuousAxisChannelDef.field}"]`;
-    const upperBoxExpr = `datum["upper_box_${continuousAxisChannelDef.field}"]`;
-    const iqrExpr = `(${upperBoxExpr} - ${lowerBoxExpr})`;
-    const lowerWhiskerExpr = `${lowerBoxExpr} - ${extent} * ${iqrExpr}`;
-    const upperWhiskerExpr = `${upperBoxExpr} + ${extent} * ${iqrExpr}`;
-    const fieldExpr = `datum["${continuousAxisChannelDef.field}"]`;
+    const lowerBoxExpr = "datum[\"lower_box_".concat(continuousAxisChannelDef.field, "\"]");
+    const upperBoxExpr = "datum[\"upper_box_".concat(continuousAxisChannelDef.field, "\"]");
+    const iqrExpr = "(".concat(upperBoxExpr, " - ").concat(lowerBoxExpr, ")");
+    const lowerWhiskerExpr = "".concat(lowerBoxExpr, " - ").concat(extent, " * ").concat(iqrExpr);
+    const upperWhiskerExpr = "".concat(upperBoxExpr, " + ").concat(extent, " * ").concat(iqrExpr);
+    const fieldExpr = "datum[\"".concat(continuousAxisChannelDef.field, "\"]");
     const joinaggregateTransform = {
       joinaggregate: boxParamsQuartiles(continuousAxisChannelDef.field),
       groupby
     };
     const filteredWhiskerSpec = {
       transform: [{
-        filter: `(${lowerWhiskerExpr} <= ${fieldExpr}) && (${fieldExpr} <= ${upperWhiskerExpr})`
+        filter: "(".concat(lowerWhiskerExpr, " <= ").concat(fieldExpr, ") && (").concat(fieldExpr, " <= ").concat(upperWhiskerExpr, ")")
       }, {
         aggregate: [{
           op: 'min',
           field: continuousAxisChannelDef.field,
-          as: `lower_whisker_${continuousAxisChannelDef.field}`
+          as: "lower_whisker_".concat(continuousAxisChannelDef.field)
         }, {
           op: 'max',
           field: continuousAxisChannelDef.field,
-          as: `upper_whisker_${continuousAxisChannelDef.field}`
+          as: "upper_whisker_".concat(continuousAxisChannelDef.field)
         }, // preserve lower_box / upper_box
         {
           op: 'min',
-          field: `lower_box_${continuousAxisChannelDef.field}`,
-          as: `lower_box_${continuousAxisChannelDef.field}`
+          field: "lower_box_".concat(continuousAxisChannelDef.field),
+          as: "lower_box_".concat(continuousAxisChannelDef.field)
         }, {
           op: 'max',
-          field: `upper_box_${continuousAxisChannelDef.field}`,
-          as: `upper_box_${continuousAxisChannelDef.field}`
+          field: "upper_box_".concat(continuousAxisChannelDef.field),
+          as: "upper_box_".concat(continuousAxisChannelDef.field)
         }, ...aggregate],
         groupby
       }],
@@ -57831,7 +58082,7 @@
     const axisWithoutTitle = omit(axis, ['title']);
     const outlierLayersMixins = partLayerMixins(markDef, 'outliers', config.boxplot, {
       transform: [{
-        filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`
+        filter: "(".concat(fieldExpr, " < ").concat(lowerWhiskerExpr, ") || (").concat(fieldExpr, " > ").concat(upperWhiskerExpr, ")")
       }],
       mark: 'point',
       encoding: {
@@ -57884,11 +58135,11 @@
     return [{
       op: 'q1',
       field: continousAxisField,
-      as: `lower_box_${continousAxisField}`
+      as: "lower_box_".concat(continousAxisField)
     }, {
       op: 'q3',
       field: continousAxisField,
-      as: `upper_box_${continousAxisField}`
+      as: "upper_box_".concat(continousAxisField)
     }];
   }
 
@@ -57903,7 +58154,7 @@
     const boxplotSpecificAggregate = [...boxParamsQuartiles(continuousFieldName), {
       op: 'median',
       field: continuousFieldName,
-      as: `mid_box_${continuousFieldName}`
+      as: "mid_box_".concat(continuousFieldName)
     }, {
       op: 'min',
       field: continuousFieldName,
@@ -57915,14 +58166,14 @@
     }];
     const postAggregateCalculates = boxPlotType === 'min-max' || boxPlotType === 'tukey' ? [] : [// This is for the  original k-IQR, which we do not expose
     {
-      calculate: `datum["upper_box_${continuousFieldName}"] - datum["lower_box_${continuousFieldName}"]`,
-      as: `iqr_${continuousFieldName}`
+      calculate: "datum[\"upper_box_".concat(continuousFieldName, "\"] - datum[\"lower_box_").concat(continuousFieldName, "\"]"),
+      as: "iqr_".concat(continuousFieldName)
     }, {
-      calculate: `min(datum["upper_box_${continuousFieldName}"] + datum["iqr_${continuousFieldName}"] * ${extent}, datum["max_${continuousFieldName}"])`,
-      as: `upper_whisker_${continuousFieldName}`
+      calculate: "min(datum[\"upper_box_".concat(continuousFieldName, "\"] + datum[\"iqr_").concat(continuousFieldName, "\"] * ").concat(extent, ", datum[\"max_").concat(continuousFieldName, "\"])"),
+      as: "upper_whisker_".concat(continuousFieldName)
     }, {
-      calculate: `max(datum["lower_box_${continuousFieldName}"] - datum["iqr_${continuousFieldName}"] * ${extent}, datum["min_${continuousFieldName}"])`,
-      as: `lower_whisker_${continuousFieldName}`
+      calculate: "max(datum[\"lower_box_".concat(continuousFieldName, "\"] - datum[\"iqr_").concat(continuousFieldName, "\"] * ").concat(extent, ", datum[\"min_").concat(continuousFieldName, "\"])"),
+      as: "lower_whisker_".concat(continuousFieldName)
     }];
     const {
       [continuousAxis]: oldContinuousAxisChannelDef,
@@ -57963,9 +58214,10 @@
   const ERRORBAR = 'errorbar';
   const ERRORBAR_PARTS = ['ticks', 'rule'];
   const errorBarNormalizer = new CompositeMarkNormalizer(ERRORBAR, normalizeErrorBar);
-  function normalizeErrorBar(spec, {
-    config
-  }) {
+  function normalizeErrorBar(spec, _ref) {
+    let {
+      config
+    } = _ref;
     // Need to initEncoding first so we can infer type
     spec = { ...spec,
       encoding: normalizeEncoding(spec.encoding, config)
@@ -58047,7 +58299,7 @@
     if (isTypeAggregatedUpperLower) {
       // type is aggregated-upper-lower
       if (isTypeAggregatedError) {
-        throw new Error(`${compositeMark} cannot be both type aggregated-upper-lower and aggregated-error`);
+        throw new Error("".concat(compositeMark, " cannot be both type aggregated-upper-lower and aggregated-error"));
       }
 
       const x2 = encoding.x2;
@@ -58055,7 +58307,7 @@
 
       if (isFieldOrDatumDef(x2) && isFieldOrDatumDef(y2)) {
         // having both x, x2 and y, y2
-        throw new Error(`${compositeMark} cannot have both x2 and y2`);
+        throw new Error("".concat(compositeMark, " cannot have both x2 and y2"));
       } else if (isFieldOrDatumDef(x2)) {
         if (isContinuousFieldOrDatumDef(x)) {
           // having x, x2 quantitative and field y, y2 are not specified
@@ -58065,7 +58317,7 @@
           };
         } else {
           // having x, x2 that are not both quantitative
-          throw new Error(`Both x and x2 have to be quantitative in ${compositeMark}`);
+          throw new Error("Both x and x2 have to be quantitative in ".concat(compositeMark));
         }
       } else if (isFieldOrDatumDef(y2)) {
         // y2 is a FieldDef
@@ -58077,7 +58329,7 @@
           };
         } else {
           // having y, y2 that are not both quantitative
-          throw new Error(`Both y and y2 have to be quantitative in ${compositeMark}`);
+          throw new Error("Both y and y2 have to be quantitative in ".concat(compositeMark));
         }
       }
 
@@ -58091,17 +58343,17 @@
 
       if (isFieldOrDatumDef(xError2) && !isFieldOrDatumDef(xError)) {
         // having xError2 without xError
-        throw new Error(`${compositeMark} cannot have xError2 without xError`);
+        throw new Error("".concat(compositeMark, " cannot have xError2 without xError"));
       }
 
       if (isFieldOrDatumDef(yError2) && !isFieldOrDatumDef(yError)) {
         // having yError2 without yError
-        throw new Error(`${compositeMark} cannot have yError2 without yError`);
+        throw new Error("".concat(compositeMark, " cannot have yError2 without yError"));
       }
 
       if (isFieldOrDatumDef(xError) && isFieldOrDatumDef(yError)) {
         // having both xError and yError
-        throw new Error(`${compositeMark} cannot have both xError and yError with both are quantiative`);
+        throw new Error("".concat(compositeMark, " cannot have both xError and yError with both are quantiative"));
       } else if (isFieldOrDatumDef(xError)) {
         if (isContinuousFieldOrDatumDef(x)) {
           // having x and xError that are all quantitative
@@ -58143,6 +58395,8 @@
   }
 
   function errorBarParams(spec, compositeMark, config) {
+    var _outerSpec$transform;
+
     // TODO: use selection
     const {
       mark,
@@ -58194,7 +58448,7 @@
     const groupby = inputType !== 'raw' ? [] : oldGroupBy;
     const tooltipEncoding = getCompositeMarkTooltip(tooltipSummary, continuousAxisChannelDef, encodingWithoutContinuousAxis, tooltipTitleWithFieldName);
     return {
-      transform: [...(outerSpec.transform ?? []), ...bins, ...timeUnits, ...(aggregate.length === 0 ? [] : [{
+      transform: [...((_outerSpec$transform = outerSpec.transform) !== null && _outerSpec$transform !== void 0 ? _outerSpec$transform : []), ...bins, ...timeUnits, ...(aggregate.length === 0 ? [] : [{
         aggregate,
         groupby
       }]), ...postAggregateCalculates],
@@ -58228,18 +58482,18 @@
         errorBarSpecificAggregate = [{
           op: extent,
           field: continuousFieldName,
-          as: `extent_${continuousFieldName}`
+          as: "extent_".concat(continuousFieldName)
         }, {
           op: center,
           field: continuousFieldName,
-          as: `center_${continuousFieldName}`
+          as: "center_".concat(continuousFieldName)
         }];
         postAggregateCalculates = [{
-          calculate: `datum["center_${continuousFieldName}"] + datum["extent_${continuousFieldName}"]`,
-          as: `upper_${continuousFieldName}`
+          calculate: "datum[\"center_".concat(continuousFieldName, "\"] + datum[\"extent_").concat(continuousFieldName, "\"]"),
+          as: "upper_".concat(continuousFieldName)
         }, {
-          calculate: `datum["center_${continuousFieldName}"] - datum["extent_${continuousFieldName}"]`,
-          as: `lower_${continuousFieldName}`
+          calculate: "datum[\"center_".concat(continuousFieldName, "\"] - datum[\"extent_").concat(continuousFieldName, "\"]"),
+          as: "lower_".concat(continuousFieldName)
         }];
         tooltipSummary = [{
           fieldPrefix: 'center_',
@@ -58270,15 +58524,15 @@
         errorBarSpecificAggregate = [{
           op: lowerExtentOp,
           field: continuousFieldName,
-          as: `lower_${continuousFieldName}`
+          as: "lower_".concat(continuousFieldName)
         }, {
           op: upperExtentOp,
           field: continuousFieldName,
-          as: `upper_${continuousFieldName}`
+          as: "upper_".concat(continuousFieldName)
         }, {
           op: centerOp,
           field: continuousFieldName,
-          as: `center_${continuousFieldName}`
+          as: "center_".concat(continuousFieldName)
         }];
         tooltipSummary = [{
           fieldPrefix: 'upper_',
@@ -58317,11 +58571,11 @@
       if (inputType === 'aggregated-upper-lower') {
         tooltipSummary = [];
         postAggregateCalculates = [{
-          calculate: `datum["${continuousAxisChannelDef2.field}"]`,
-          as: `upper_${continuousFieldName}`
+          calculate: "datum[\"".concat(continuousAxisChannelDef2.field, "\"]"),
+          as: "upper_".concat(continuousFieldName)
         }, {
-          calculate: `datum["${continuousFieldName}"]`,
-          as: `lower_${continuousFieldName}`
+          calculate: "datum[\"".concat(continuousFieldName, "\"]"),
+          as: "lower_".concat(continuousFieldName)
         }];
       } else if (inputType === 'aggregated-error') {
         tooltipSummary = [{
@@ -58329,19 +58583,19 @@
           titlePrefix: continuousFieldName
         }];
         postAggregateCalculates = [{
-          calculate: `datum["${continuousFieldName}"] + datum["${continuousAxisChannelDefError.field}"]`,
-          as: `upper_${continuousFieldName}`
+          calculate: "datum[\"".concat(continuousFieldName, "\"] + datum[\"").concat(continuousAxisChannelDefError.field, "\"]"),
+          as: "upper_".concat(continuousFieldName)
         }];
 
         if (continuousAxisChannelDefError2) {
           postAggregateCalculates.push({
-            calculate: `datum["${continuousFieldName}"] + datum["${continuousAxisChannelDefError2.field}"]`,
-            as: `lower_${continuousFieldName}`
+            calculate: "datum[\"".concat(continuousFieldName, "\"] + datum[\"").concat(continuousAxisChannelDefError2.field, "\"]"),
+            as: "lower_".concat(continuousFieldName)
           });
         } else {
           postAggregateCalculates.push({
-            calculate: `datum["${continuousFieldName}"] - datum["${continuousAxisChannelDefError.field}"]`,
-            as: `lower_${continuousFieldName}`
+            calculate: "datum[\"".concat(continuousFieldName, "\"] - datum[\"").concat(continuousAxisChannelDefError.field, "\"]"),
+            as: "lower_".concat(continuousFieldName)
           });
         }
       }
@@ -58363,15 +58617,16 @@
   }
 
   function getTitlePrefix(center, extent, operation) {
-    return `${titleCase(center)} ${operation} ${extent}`;
+    return "".concat(titleCase(center), " ").concat(operation, " ").concat(extent);
   }
 
   const ERRORBAND = 'errorband';
   const ERRORBAND_PARTS = ['band', 'borders'];
   const errorBandNormalizer = new CompositeMarkNormalizer(ERRORBAND, normalizeErrorBand);
-  function normalizeErrorBand(spec, {
-    config
-  }) {
+  function normalizeErrorBand(spec, _ref) {
+    let {
+      config
+    } = _ref;
     // Need to initEncoding first so we can infer type
     spec = { ...spec,
       encoding: normalizeEncoding(spec.encoding, config)
@@ -58679,7 +58934,7 @@
     return autoSizeType === 'fit' || autoSizeType === 'fit-x' || autoSizeType === 'fit-y';
   }
   function getFitType(sizeType) {
-    return sizeType ? `fit-${getPositionScaleChannel(sizeType)}` : 'fit';
+    return sizeType ? "fit-".concat(getPositionScaleChannel(sizeType)) : 'fit';
   }
   const TOP_LEVEL_PROPERTIES = ['background', 'padding' // We do not include "autosize" here as it is supported by only unit and layer specs and thus need to be normalized
   ];
@@ -58703,6 +58958,20 @@
    * Common properties for all types of specification
    */
 
+  function getStepFor(_ref) {
+    let {
+      step,
+      offsetIsDiscrete
+    } = _ref;
+
+    if (offsetIsDiscrete) {
+      var _step$for;
+
+      return (_step$for = step.for) !== null && _step$for !== void 0 ? _step$for : 'offset';
+    } else {
+      return 'position';
+    }
+  }
   function isStep(size) {
     return isObject(size) && size['step'] !== undefined;
   } // TODO(https://github.com/vega/vega-lite/issues/2503): Make this generic so we can support some form of top-down sizing.
@@ -58750,10 +59019,12 @@
     for (const prop of COMPOSITION_LAYOUT_PROPERTIES) {
       if (spec[prop] !== undefined) {
         if (prop === 'spacing') {
+          var _spacing$row, _spacing$column;
+
           const spacing = spec[prop];
           layout[prop] = isNumber$1(spacing) ? spacing : {
-            row: spacing.row ?? spacingConfig,
-            column: spacing.column ?? spacingConfig
+            row: (_spacing$row = spacing.row) !== null && _spacing$row !== void 0 ? _spacing$row : spacingConfig,
+            column: (_spacing$column = spacing.column) !== null && _spacing$column !== void 0 ? _spacing$column : spacingConfig
           };
         } else {
           layout[prop] = spec[prop];
@@ -58765,14 +59036,18 @@
   }
 
   function getViewConfigContinuousSize(viewConfig, channel) {
-    return viewConfig[channel] ?? viewConfig[channel === 'width' ? 'continuousWidth' : 'continuousHeight']; // get width/height for backwards compatibility
+    var _viewConfig$channel;
+
+    return (_viewConfig$channel = viewConfig[channel]) !== null && _viewConfig$channel !== void 0 ? _viewConfig$channel : viewConfig[channel === 'width' ? 'continuousWidth' : 'continuousHeight']; // get width/height for backwards compatibility
   }
   function getViewConfigDiscreteStep(viewConfig, channel) {
     const size = getViewConfigDiscreteSize(viewConfig, channel);
     return isStep(size) ? size.step : DEFAULT_STEP;
   }
   function getViewConfigDiscreteSize(viewConfig, channel) {
-    const size = viewConfig[channel] ?? viewConfig[channel === 'width' ? 'discreteWidth' : 'discreteHeight']; // get width/height for backwards compatibility
+    var _viewConfig$channel2;
+
+    const size = (_viewConfig$channel2 = viewConfig[channel]) !== null && _viewConfig$channel2 !== void 0 ? _viewConfig$channel2 : viewConfig[channel === 'width' ? 'discreteWidth' : 'discreteHeight']; // get width/height for backwards compatibility
 
     return getFirstDefined(size, {
       step: viewConfig.step
@@ -58889,7 +59164,8 @@
     gray14: '#eee',
     gray15: '#fff'
   };
-  function colorSignalConfig(color = {}) {
+  function colorSignalConfig() {
+    let color = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     return {
       signals: [{
         name: 'color',
@@ -59064,7 +59340,8 @@
    * then replace all expressions with signals
    */
 
-  function initConfig(specifiedConfig = {}) {
+  function initConfig() {
+    let specifiedConfig = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     const {
       color,
       font,
@@ -59127,7 +59404,7 @@
 
     return outputConfig;
   }
-  const MARK_STYLES = ['view', ...PRIMITIVE_MARKS];
+  const MARK_STYLES = new Set(['view', ...PRIMITIVE_MARKS]);
   const VL_ONLY_CONFIG_PROPERTIES = ['color', 'fontSize', 'background', // We apply background to the spec directly.
   'padding', 'facet', 'concat', 'numberFormat', 'timeFormat', 'countTitle', 'header', 'axisQuantitative', 'axisTemporal', 'axisDiscrete', 'axisPoint', 'axisXBand', 'axisXPoint', 'axisXDiscrete', 'axisXQuantitative', 'axisXTemporal', 'axisYBand', 'axisYPoint', 'axisYDiscrete', 'axisYQuantitative', 'axisYTemporal', 'scale', 'selection', 'overlay' // FIXME: Redesign and unhide this
   ];
@@ -59247,6 +59524,8 @@
 
   function redirectConfigToStyleConfig(config, prop, // string = composite mark
   toProp, compositeMarkPart) {
+    var _toProp;
+
     const propConfig = compositeMarkPart ? config[prop][compositeMarkPart] : config[prop];
 
     if (prop === 'view') {
@@ -59254,11 +59533,13 @@
     }
 
     const style = { ...propConfig,
-      ...config.style[toProp ?? prop]
+      ...config.style[(_toProp = toProp) !== null && _toProp !== void 0 ? _toProp : prop]
     }; // set config.style if it is not an empty object
 
     if (!isEmpty(style)) {
-      config.style[toProp ?? prop] = style;
+      var _toProp2;
+
+      config.style[(_toProp2 = toProp) !== null && _toProp2 !== void 0 ? _toProp2 : prop] = style;
     }
 
     if (!compositeMarkPart) {
@@ -59438,9 +59719,10 @@
   // If required properties change, make sure to update CompassQL.
 
 
-  function stack(m, encoding, opt = {}) {
+  function stack(m, encoding) {
     var _stackedFieldDef$scal, _stackedFieldDef$scal2;
 
+    let opt = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     const mark = isMarkDef(m) ? m.type : m; // Should have stackable mark
 
     if (!STACKABLE_MARKS.has(mark)) {
@@ -59459,15 +59741,31 @@
 
     const stackedFieldDef = encoding[fieldChannel];
     const stackedField = isFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
-    let dimensionChannel = getDimensionChannel(fieldChannel);
-    let dimensionDef = encoding[dimensionChannel];
-    let dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined; // avoid grouping by the stacked field
+    const dimensionChannel = getDimensionChannel(fieldChannel);
+    const groupbyChannels = [];
+    const groupbyFields = new Set();
 
-    if (dimensionField === stackedField) {
-      dimensionField = undefined;
-      dimensionDef = undefined;
-      dimensionChannel = undefined;
-    } // Should have grouping level of detail that is different from the dimension field
+    if (encoding[dimensionChannel]) {
+      const dimensionDef = encoding[dimensionChannel];
+      const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
+
+      if (dimensionField && dimensionField !== stackedField) {
+        // avoid grouping by the stacked field
+        groupbyChannels.push(dimensionChannel);
+        groupbyFields.add(dimensionField);
+      }
+
+      const dimensionOffsetChannel = dimensionChannel === 'x' ? 'xOffset' : 'yOffset';
+      const dimensionOffsetDef = encoding[dimensionOffsetChannel];
+      const dimensionOffsetField = isFieldDef(dimensionOffsetDef) ? vgField(dimensionOffsetDef, {}) : undefined;
+
+      if (dimensionOffsetField && dimensionOffsetField !== stackedField) {
+        // avoid grouping by the stacked field
+        groupbyChannels.push(dimensionOffsetChannel);
+        groupbyFields.add(dimensionOffsetField);
+      }
+    } // If the dimension has offset, don't stack anymore
+    // Should have grouping level of detail that is different from the dimension field
 
 
     const stackBy = NONPOSITION_CHANNELS.reduce((sc, channel) => {
@@ -59486,8 +59784,8 @@
           const f = vgField(fieldDef, {});
 
           if ( // if fielddef is a repeat, just include it in the stack by
-          !f || // otherwise, the field must be different from x and y fields.
-          f !== dimensionField) {
+          !f || // otherwise, the field must be different from the groupBy fields.
+          !groupbyFields.has(f)) {
             sc.push({
               channel,
               fieldDef
@@ -59538,13 +59836,13 @@
     } // Warn if stacking non-summative aggregate
 
 
-    if (isFieldDef(stackedFieldDef) && stackedFieldDef.aggregate && !contains(SUM_OPS, stackedFieldDef.aggregate)) {
+    if (isFieldDef(stackedFieldDef) && stackedFieldDef.aggregate && !SUM_OPS.has(stackedFieldDef.aggregate)) {
       warn(stackNonSummativeAggregate(stackedFieldDef.aggregate));
     }
 
     return {
-      groupbyChannel: dimensionDef ? dimensionChannel : undefined,
-      groupbyField: dimensionField,
+      groupbyChannels,
+      groupbyFields,
       fieldChannel,
       impute: stackedFieldDef.impute === null ? false : isPathMark(mark),
       stackBy,
@@ -59574,7 +59872,10 @@
     return config;
   }
 
-  function getPointOverlay(markDef, markConfig = {}, encoding) {
+  function getPointOverlay(markDef) {
+    let markConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+    let encoding = arguments.length > 2 ? arguments[2] : undefined;
+
     if (markDef.point === 'transparent') {
       return {
         opacity: 0
@@ -59597,7 +59898,9 @@
     }
   }
 
-  function getLineOverlay(markDef, markConfig = {}) {
+  function getLineOverlay(markDef) {
+    let markConfig = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     if (markDef.line) {
       // true or object
       return markDef.line === true ? {} : markDef.line;
@@ -59855,7 +60158,8 @@
 
         if (isArray(channelDef)) {
           // array cannot have condition
-          out[channel] = channelDef.map(cd => replaceRepeaterInChannelDef(cd, repeater)).filter(cd => cd);
+          out[channel] = channelDef // somehow we need to cast it here
+          .map(cd => replaceRepeaterInChannelDef(cd, repeater)).filter(cd => cd);
         } else {
           const cd = replaceRepeaterInChannelDef(channelDef, repeater);
 
@@ -59914,8 +60218,8 @@
   }
 
   class CoreNormalizer extends SpecMapper {
-    constructor(...args) {
-      super(...args);
+    constructor() {
+      super(...arguments);
 
       _defineProperty(this, "nonFacetUnitNormalizers", [boxPlotNormalizer, errorBarNormalizer, errorBandNormalizer, new PathOverlayNormalizer(), new RuleForRangedLineNormalizer()]);
     }
@@ -60009,7 +60313,7 @@
             const childRepeater = { ...repeater,
               layer: layerValue
             };
-            const childName = `${(childSpec.name || '') + repeaterPrefix}child__layer_${varName(layerValue)}`;
+            const childName = "".concat((childSpec.name || '') + repeaterPrefix, "child__layer_").concat(varName(layerValue));
             const child = this.mapLayerOrUnit(childSpec, { ...params,
               repeater: childRepeater,
               repeaterPrefix: childName
@@ -60022,6 +60326,8 @@
     }
 
     mapNonLayerRepeat(spec, params) {
+      var _childSpec$data;
+
       const {
         repeat,
         spec: childSpec,
@@ -60053,7 +60359,7 @@
               column: columnValue,
               layer: repeater.layer
             };
-            const childName = (childSpec.name || '') + repeaterPrefix + 'child__' + (isArray(repeat) ? `${varName(repeatValue)}` : (repeat.row ? `row_${varName(rowValue)}` : '') + (repeat.column ? `column_${varName(columnValue)}` : ''));
+            const childName = (childSpec.name || '') + repeaterPrefix + 'child__' + (isArray(repeat) ? "".concat(varName(repeatValue)) : (repeat.row ? "row_".concat(varName(rowValue)) : '') + (repeat.column ? "column_".concat(varName(columnValue)) : ''));
             const child = this.map(childSpec, { ...params,
               repeater: childRepeater,
               repeaterPrefix: childName
@@ -60067,7 +60373,7 @@
 
       const columns = isArray(repeat) ? spec.columns : repeat.column ? repeat.column.length : 1;
       return {
-        data: childSpec.data ?? data,
+        data: (_childSpec$data = childSpec.data) !== null && _childSpec$data !== void 0 ? _childSpec$data : data,
         // data from child spec should have precedence
         align: 'all',
         ...remainingProperties,
@@ -60204,7 +60510,9 @@
 
             for (const prop of ['align', 'center', 'spacing']) {
               if (def[prop] !== undefined) {
-                layout[prop] ?? (layout[prop] = {});
+                var _layout$prop;
+
+                (_layout$prop = layout[prop]) !== null && _layout$prop !== void 0 ? _layout$prop : layout[prop] = {};
                 layout[prop][channel] = def[prop];
               }
             }
@@ -60242,11 +60550,12 @@
       }
     }
 
-    mapLayer(spec, {
-      parentEncoding,
-      parentProjection,
-      ...otherParams
-    }) {
+    mapLayer(spec, _ref) {
+      let {
+        parentEncoding,
+        parentProjection,
+        ...otherParams
+      } = _ref;
       // Special handling for extended layer spec
       const {
         encoding,
@@ -60269,11 +60578,12 @@
 
   }
 
-  function mergeEncoding({
-    parentEncoding,
-    encoding = {},
-    layer
-  }) {
+  function mergeEncoding(_ref2) {
+    let {
+      parentEncoding,
+      encoding = {},
+      layer
+    } = _ref2;
     let merged = {};
 
     if (parentEncoding) {
@@ -60322,7 +60632,7 @@
       }));
     }
 
-    return projection ?? parentProjection;
+    return projection !== null && projection !== void 0 ? projection : parentProjection;
   }
 
   function isFilter(t) {
@@ -60402,8 +60712,10 @@
 
   class SelectionCompatibilityNormalizer extends SpecMapper {
     map(spec, normParams) {
-      normParams.emptySelections ?? (normParams.emptySelections = {});
-      normParams.selectionPredicates ?? (normParams.selectionPredicates = {});
+      var _normParams$emptySele, _normParams$selection;
+
+      (_normParams$emptySele = normParams.emptySelections) !== null && _normParams$emptySele !== void 0 ? _normParams$emptySele : normParams.emptySelections = {};
+      (_normParams$selection = normParams.selectionPredicates) !== null && _normParams$selection !== void 0 ? _normParams$selection : normParams.selectionPredicates = {};
       spec = normalizeTransforms(spec, normParams);
       return super.map(spec, normParams);
     }
@@ -60434,7 +60746,8 @@
 
       if (selection) {
         return { ...rest,
-          params: entries$1(selection).map(([name, selDef]) => {
+          params: entries$1(selection).map(_ref => {
+            let [name, selDef] = _ref;
             const {
               init: value,
               bind,
@@ -60452,7 +60765,9 @@
 
             normParams.emptySelections[name] = empty !== 'none';
 
-            for (const pred of vals(normParams.selectionPredicates[name] ?? {})) {
+            for (const pred of vals((_normParams$selection2 = normParams.selectionPredicates[name]) !== null && _normParams$selection2 !== void 0 ? _normParams$selection2 : {})) {
+              var _normParams$selection2;
+
               pred.empty = empty !== 'none';
             }
 
@@ -60582,14 +60897,14 @@
     // Normalize old compositions of selection names (e.g., selection: {and: ["one", "two"]})
     const normalizeSelectionComposition = o => {
       return normalizeLogicalComposition(o, param => {
-        var _normParams$selection;
+        var _normParams$emptySele2, _normParams$selection3, _normParams$selection4;
 
-        const empty = normParams.emptySelections[param] ?? true;
+        const empty = (_normParams$emptySele2 = normParams.emptySelections[param]) !== null && _normParams$emptySele2 !== void 0 ? _normParams$emptySele2 : true;
         const pred = {
           param,
           empty
         };
-        (_normParams$selection = normParams.selectionPredicates)[param] ?? (_normParams$selection[param] = []);
+        (_normParams$selection4 = (_normParams$selection3 = normParams.selectionPredicates)[param]) !== null && _normParams$selection4 !== void 0 ? _normParams$selection4 : _normParams$selection3[param] = [];
         normParams.selectionPredicates[param].push(pred);
         return pred;
       });
@@ -60600,7 +60915,9 @@
 
   class TopLevelSelectionsNormalizer extends SpecMapper {
     map(spec, normParams) {
-      const selections = normParams.selections ?? [];
+      var _normParams$selection;
+
+      const selections = (_normParams$selection = normParams.selections) !== null && _normParams$selection !== void 0 ? _normParams$selection : [];
 
       if (spec.params && !isUnitSpec(spec)) {
         const params = [];
@@ -60621,9 +60938,11 @@
     }
 
     mapUnit(spec, normParams) {
+      var _normParams$path;
+
       const selections = normParams.selections;
       if (!selections || !selections.length) return spec;
-      const path = (normParams.path ?? []).concat(spec.name);
+      const path = ((_normParams$path = normParams.path) !== null && _normParams$path !== void 0 ? _normParams$path : []).concat(spec.name);
       const params = [];
 
       for (const selection of selections) {
@@ -60655,8 +60974,10 @@
   }
 
   function addSpecNameToParams(spec, params) {
+    var _params$path;
+
     return spec.name ? { ...params,
-      path: (params.path ?? []).concat(spec.name)
+      path: ((_params$path = params.path) !== null && _params$path !== void 0 ? _params$path : []).concat(spec.name)
     } : params;
   }
 
@@ -60689,7 +61010,8 @@
    * And push top-level selection definitions down to unit specs.
    */
 
-  function normalizeGenericSpec(spec, config = {}) {
+  function normalizeGenericSpec(spec) {
+    let config = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     const normParams = {
       config
     };
@@ -60699,7 +61021,7 @@
   function _normalizeAutoSize(autosize) {
     return isString(autosize) ? {
       type: autosize
-    } : autosize ?? {};
+    } : autosize !== null && autosize !== void 0 ? autosize : {};
   }
   /**
    * Normalize autosize and deal with width or height == "container".
@@ -60778,7 +61100,9 @@
   // eslint-disable-next-line @typescript-eslint/ban-types
 
   class Split {
-    constructor(explicit = {}, implicit = {}) {
+    constructor() {
+      let explicit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      let implicit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       this.explicit = explicit;
       this.implicit = implicit;
     }
@@ -60819,10 +61143,12 @@
       };
     }
 
-    setWithExplicit(key, {
-      value,
-      explicit
-    }) {
+    setWithExplicit(key, _ref) {
+      let {
+        value,
+        explicit
+      } = _ref;
+
       if (value !== undefined) {
         this.set(key, value, explicit);
       }
@@ -60834,10 +61160,12 @@
       return this;
     }
 
-    copyKeyFromSplit(key, {
-      explicit,
-      implicit
-    }) {
+    copyKeyFromSplit(key, _ref2) {
+      let {
+        explicit,
+        implicit
+      } = _ref2;
+
       // Explicit has higher precedence
       if (explicit[key] !== undefined) {
         this.set(key, explicit[key], true);
@@ -60899,7 +61227,9 @@
 
     return v1;
   }
-  function mergeValuesWithExplicit(v1, v2, property, propertyOf, tieBreaker = defaultTieBreaker) {
+  function mergeValuesWithExplicit(v1, v2, property, propertyOf) {
+    let tieBreaker = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : defaultTieBreaker;
+
     if (v1 === undefined || v1.value === undefined) {
       // For first run
       return v2;
@@ -60922,7 +61252,10 @@
    * same field again (or differently).
    */
   class AncestorParse extends Split {
-    constructor(explicit = {}, implicit = {}, parseNothing = false) {
+    constructor() {
+      let explicit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      let implicit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      let parseNothing = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       super(explicit, implicit);
       this.explicit = explicit;
       this.implicit = implicit;
@@ -60972,10 +61305,13 @@
     DataSourceType[DataSourceType["Lookup"] = 4] = "Lookup";
   })(DataSourceType || (DataSourceType = {}));
 
-  function assembleInit(init, isExpr = true, wrap = identity$6) {
+  function assembleInit(init) {
+    let isExpr = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : true;
+    let wrap = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : identity$6;
+
     if (isArray(init)) {
       const assembled = init.map(v => assembleInit(v, isExpr, wrap));
-      return isExpr ? `[${assembled.join(', ')}]` : assembled;
+      return isExpr ? "[".concat(assembled.join(', '), "]") : assembled;
     } else if (isDateTime(init)) {
       if (isExpr) {
         return wrap(dateTimeToExpr(init));
@@ -60987,9 +61323,11 @@
     return isExpr ? wrap(stringify(init)) : init;
   }
   function assembleUnitSelectionSignals(model, signals) {
-    for (const selCmpt of vals(model.component.selection ?? {})) {
+    for (const selCmpt of vals((_model$component$sele = model.component.selection) !== null && _model$component$sele !== void 0 ? _model$component$sele : {})) {
+      var _model$component$sele;
+
       const name = selCmpt.name;
-      let modifyExpr = `${name}${TUPLE}, ${selCmpt.resolve === 'global' ? 'true' : `{unit: ${unitName(model)}}`}`;
+      let modifyExpr = "".concat(name).concat(TUPLE, ", ").concat(selCmpt.resolve === 'global' ? 'true' : "{unit: ".concat(unitName(model), "}"));
 
       for (const c of selectionCompilers) {
         if (!c.defined(selCmpt)) continue;
@@ -61003,7 +61341,7 @@
           events: {
             signal: selCmpt.name + TUPLE
           },
-          update: `modify(${$$1(selCmpt.name + STORE)}, ${modifyExpr})`
+          update: "modify(".concat($$1(selCmpt.name + STORE), ", ").concat(modifyExpr, ")")
         }]
       });
     }
@@ -61018,7 +61356,7 @@
         value: {},
         on: [{
           events: eventSelector('mousemove', 'scope'),
-          update: `isTuple(facet) ? facet : group(${name}).datum`
+          update: "isTuple(facet) ? facet : group(".concat(name, ").datum")
         }]
       });
     }
@@ -61028,7 +61366,9 @@
   function assembleTopLevelSignals(model, signals) {
     let hasSelections = false;
 
-    for (const selCmpt of vals(model.component.selection ?? {})) {
+    for (const selCmpt of vals((_model$component$sele2 = model.component.selection) !== null && _model$component$sele2 !== void 0 ? _model$component$sele2 : {})) {
+      var _model$component$sele2;
+
       const name = selCmpt.name;
       const store = $$1(name + STORE);
       const hasSg = signals.filter(s => s.name === name);
@@ -61038,7 +61378,7 @@
         const isPoint = selCmpt.type === 'point' ? ', true, true)' : ')';
         signals.push({
           name: selCmpt.name,
-          update: `${VL_SELECTION_RESOLVE}(${store}, ${$$1(resolve)}${isPoint}`
+          update: "".concat(VL_SELECTION_RESOLVE, "(").concat(store, ", ").concat($$1(resolve)).concat(isPoint)
         });
       }
 
@@ -61071,7 +61411,9 @@
   function assembleUnitSelectionData(model, data) {
     const dataCopy = [...data];
 
-    for (const selCmpt of vals(model.component.selection ?? {})) {
+    for (const selCmpt of vals((_model$component$sele3 = model.component.selection) !== null && _model$component$sele3 !== void 0 ? _model$component$sele3 : {})) {
+      var _model$component$sele3;
+
       const init = {
         name: selCmpt.name + STORE
       };
@@ -61103,7 +61445,9 @@
     return dataCopy;
   }
   function assembleUnitSelectionMarks(model, marks) {
-    for (const selCmpt of vals(model.component.selection ?? {})) {
+    for (const selCmpt of vals((_model$component$sele4 = model.component.selection) !== null && _model$component$sele4 !== void 0 ? _model$component$sele4 : {})) {
+      var _model$component$sele4;
+
       for (const c of selectionCompilers) {
         if (c.defined(selCmpt) && c.marks) {
           marks = c.marks(model, selCmpt, marks);
@@ -61125,7 +61469,7 @@
   function assembleSelectionScaleDomain(model, extent, scaleCmpt, domain) {
     const parsedExtent = parseSelectionExtent(model, extent.param, extent);
     return {
-      signal: hasContinuousDomain(scaleCmpt.get('type')) && isArray(domain) && domain[0] > domain[1] ? `isValid(${parsedExtent}) && reverse(${parsedExtent})` : parsedExtent
+      signal: hasContinuousDomain(scaleCmpt.get('type')) && isArray(domain) && domain[0] > domain[1] ? "isValid(".concat(parsedExtent, ") && reverse(").concat(parsedExtent, ")") : parsedExtent
     };
   }
 
@@ -61261,9 +61605,9 @@
   class OutputNode extends DataFlowNode {
     clone() {
       const cloneObj = new this.constructor();
-      cloneObj.debugName = `clone_${this.debugName}`;
+      cloneObj.debugName = "clone_".concat(this.debugName);
       cloneObj._source = this._source;
-      cloneObj._name = `clone_${this._name}`;
+      cloneObj._name = "clone_".concat(this._name);
       cloneObj.type = this.type;
       cloneObj.refCounts = this.refCounts;
       cloneObj.refCounts[cloneObj._name] = 0;
@@ -61302,7 +61646,7 @@
 
     hash() {
       if (this._hash === undefined) {
-        this._hash = `Output ${uniqueId()}`;
+        this._hash = "Output ".concat(uniqueId());
       }
 
       return this._hash;
@@ -61439,7 +61783,7 @@
     }
 
     hash() {
-      return `TimeUnit ${hash(this.formula)}`;
+      return "TimeUnit ".concat(hash(this.formula));
     }
 
     assemble() {
@@ -61466,7 +61810,7 @@
             timezone: 'utc'
           } : {}),
           ...params,
-          as: [as, `${as}_end`]
+          as: [as, "".concat(as, "_end")]
         });
       }
 
@@ -61481,7 +61825,7 @@
    */
 
   class SelectionProjectionComponent {
-    constructor(...items) {
+    constructor() {
       _defineProperty(this, "hasChannel", void 0);
 
       _defineProperty(this, "hasField", void 0);
@@ -61489,6 +61833,10 @@
       _defineProperty(this, "timeUnit", void 0);
 
       _defineProperty(this, "items", void 0);
+
+      for (var _len = arguments.length, items = new Array(_len), _key = 0; _key < _len; _key++) {
+        items[_key] = arguments[_key];
+      }
 
       this.items = items;
       this.hasChannel = {};
@@ -61501,18 +61849,20 @@
       return true; // This transform handles its own defaults, so always run parse.
     },
     parse: (model, selCmpt, selDef) => {
+      var _selCmpt$project;
+
       const name = selCmpt.name;
-      const proj = selCmpt.project ?? (selCmpt.project = new SelectionProjectionComponent());
+      const proj = (_selCmpt$project = selCmpt.project) !== null && _selCmpt$project !== void 0 ? _selCmpt$project : selCmpt.project = new SelectionProjectionComponent();
       const parsed = {};
       const timeUnits = {};
       const signals = new Set();
 
       const signalName = (p, range) => {
         const suffix = range === 'visual' ? p.channel : p.field;
-        let sg = varName(`${name}_${suffix}`);
+        let sg = varName("".concat(name, "_").concat(suffix));
 
         for (let counter = 1; signals.has(sg); counter++) {
-          sg = varName(`${name}_${suffix}_${counter}`);
+          sg = varName("".concat(name, "_").concat(suffix, "_").concat(counter));
         }
 
         signals.add(sg);
@@ -61564,7 +61914,9 @@
         }
       }
 
-      for (const channel of encodings ?? []) {
+      for (const channel of (_encodings = encodings) !== null && _encodings !== void 0 ? _encodings : []) {
+        var _encodings;
+
         const fieldDef = model.fieldDef(channel);
 
         if (fieldDef) {
@@ -61626,7 +61978,9 @@
         }
       }
 
-      for (const field of fields ?? []) {
+      for (const field of (_fields = fields) !== null && _fields !== void 0 ? _fields : []) {
+        var _fields;
+
         if (proj.hasField[field]) continue;
         const p = {
           type: 'E',
@@ -61715,13 +62069,13 @@
       let update = namedSg.update;
 
       if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
-        namedSg.update = `{${bound.map(proj => `${$$1(replacePathInField(proj.field))}: ${proj.signals.data}`).join(', ')}}`;
+        namedSg.update = "{".concat(bound.map(proj => "".concat($$1(replacePathInField(proj.field)), ": ").concat(proj.signals.data)).join(', '), "}");
       } else {
         for (const proj of bound) {
-          const mapping = `${$$1(replacePathInField(proj.field))}: ${proj.signals.data}`;
+          const mapping = "".concat($$1(replacePathInField(proj.field)), ": ").concat(proj.signals.data);
 
           if (!update.includes(mapping)) {
-            update = `${update.substring(0, update.length - 1)}, ${mapping}}`;
+            update = "".concat(update.substring(0, update.length - 1), ", ").concat(mapping, "}");
           }
         }
 
@@ -61748,11 +62102,13 @@
   };
   function domain(model, channel) {
     const scale = $$1(model.scaleName(channel));
-    return `domain(${scale})`;
+    return "domain(".concat(scale, ")");
   }
 
   function isTopLevelLayer(model) {
-    return model.parent && isLayerModel(model.parent) && (!model.parent.parent ?? isTopLevelLayer(model.parent.parent));
+    var _model$parent$parent;
+
+    return model.parent && isLayerModel(model.parent) && ((_model$parent$parent = !model.parent.parent) !== null && _model$parent$parent !== void 0 ? _model$parent$parent : isTopLevelLayer(model.parent.parent));
   }
 
   const BRUSH = '_brush';
@@ -61768,11 +62124,11 @@
       const scaleTriggers = [];
 
       if (selCmpt.translate && !hasScales) {
-        const filterExpr = `!event.item || event.item.mark.name !== ${$$1(name + BRUSH)}`;
+        const filterExpr = "!event.item || event.item.mark.name !== ".concat($$1(name + BRUSH));
         events(selCmpt, (on, evt) => {
-          var _evt$between$;
+          var _evt$between$, _evt$between$$filter;
 
-          const filters = array$5((_evt$between$ = evt.between[0]).filter ?? (_evt$between$.filter = []));
+          const filters = array$5((_evt$between$$filter = (_evt$between$ = evt.between[0]).filter) !== null && _evt$between$$filter !== void 0 ? _evt$between$$filter : _evt$between$.filter = []);
 
           if (!filters.includes(filterExpr)) {
             filters.push(filterExpr);
@@ -61801,7 +62157,7 @@
         dataSignals.push(dname);
         scaleTriggers.push({
           scaleName: model.scaleName(channel),
-          expr: `(!isArray(${dname}) || ` + `(${toNum}invert(${scaleName}, ${vname})[0] === ${toNum}${dname}[0] && ` + `${toNum}invert(${scaleName}, ${vname})[1] === ${toNum}${dname}[1]))`
+          expr: "(!isArray(".concat(dname, ") || ") + "(".concat(toNum, "invert(").concat(scaleName, ", ").concat(vname, ")[0] === ").concat(toNum).concat(dname, "[0] && ") + "".concat(toNum, "invert(").concat(scaleName, ", ").concat(vname, ")[1] === ").concat(toNum).concat(dname, "[1]))")
         });
       }); // Proxy scale reactions to ensure that an infinite loop doesn't occur
       // when an interval selection filter touches the scale.
@@ -61814,7 +62170,7 @@
             events: scaleTriggers.map(t => ({
               scale: t.scaleName
             })),
-            update: `${scaleTriggers.map(t => t.expr).join(' && ')} ? ${name + SCALE_TRIGGER} : {}`
+            update: "".concat(scaleTriggers.map(t => t.expr).join(' && '), " ? ").concat(name + SCALE_TRIGGER, " : {}")
           }]
         });
       } // Only add an interval to the store if it has valid data extents. Data extents
@@ -61822,11 +62178,11 @@
       // ordinal/nominal domains which, when inverted, will still produce a valid datum.
 
 
-      const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
+      const update = "unit: ".concat(unitName(model), ", fields: ").concat(fieldsSg, ", values");
       return signals.concat({
         name: name + TUPLE,
         ...(init ? {
-          init: `{${update}: ${assembleInit(init)}}`
+          init: "{".concat(update, ": ").concat(assembleInit(init), "}")
         } : {}),
         ...(dataSignals.length ? {
           on: [{
@@ -61834,7 +62190,7 @@
               signal: dataSignals.join(' || ')
             }],
             // Prevents double invocation, see https://github.com/vega/vega#1672.
-            update: `${dataSignals.join(' && ')} ? {${update}: [${dataSignals}]} : null`
+            update: "".concat(dataSignals.join(' && '), " ? {").concat(update, ": [").concat(dataSignals, "]} : null")
           }]
         } : {})
       });
@@ -61845,9 +62201,9 @@
         x,
         y
       } = selCmpt.project.hasChannel;
-      const xvname = x && x.signals.visual;
-      const yvname = y && y.signals.visual;
-      const store = `data(${$$1(selCmpt.name + STORE)})`; // Do not add a brush if we're binding to scales
+      const xvname = x === null || x === void 0 ? void 0 : x.signals.visual;
+      const yvname = y === null || y === void 0 ? void 0 : y.signals.visual;
+      const store = "data(".concat($$1(selCmpt.name + STORE), ")"); // Do not add a brush if we're binding to scales
       // or we don't have a valid interval projection
 
       if (scaleBindings.defined(selCmpt) || !x && !y) {
@@ -61856,24 +62212,24 @@
 
       const update = {
         x: x !== undefined ? {
-          signal: `${xvname}[0]`
+          signal: "".concat(xvname, "[0]")
         } : {
           value: 0
         },
         y: y !== undefined ? {
-          signal: `${yvname}[0]`
+          signal: "".concat(yvname, "[0]")
         } : {
           value: 0
         },
         x2: x !== undefined ? {
-          signal: `${xvname}[1]`
+          signal: "".concat(xvname, "[1]")
         } : {
           field: {
             group: 'width'
           }
         },
         y2: y !== undefined ? {
-          signal: `${yvname}[1]`
+          signal: "".concat(yvname, "[1]")
         } : {
           field: {
             group: 'height'
@@ -61887,7 +62243,7 @@
       if (selCmpt.resolve === 'global') {
         for (const key of keys(update)) {
           update[key] = [{
-            test: `${store}.length && ${store}[0].unit === ${unitName(model)}`,
+            test: "".concat(store, ".length && ").concat(store, "[0].unit === ").concat(unitName(model)),
             ...update[key]
           }, {
             value: 0
@@ -61906,7 +62262,7 @@
       } = selCmpt.mark;
       const vgStroke = keys(stroke).reduce((def, k) => {
         def[k] = [{
-          test: [x !== undefined && `${xvname}[0] !== ${xvname}[1]`, y !== undefined && `${yvname}[0] !== ${yvname}[1]`].filter(t => t).join(' && '),
+          test: [x !== undefined && "".concat(xvname, "[0] !== ").concat(xvname, "[1]"), y !== undefined && "".concat(yvname, "[0] !== ").concat(yvname, "[1]")].filter(t => t).join(' && '),
           value: stroke[k]
         }, {
           value: null
@@ -61914,7 +62270,7 @@
         return def;
       }, {});
       return [{
-        name: `${name + BRUSH}_bg`,
+        name: "".concat(name + BRUSH, "_bg"),
         type: 'rect',
         clip: true,
         encode: {
@@ -61926,7 +62282,7 @@
               value: fillOpacity
             }
           },
-          update: update
+          update
         }
       }, ...marks, {
         name: name + BRUSH,
@@ -61962,18 +62318,18 @@
     const scale = model.getScaleComponent(channel);
     const scaleType = scale ? scale.get('type') : undefined;
 
-    const scaled = str => `scale(${scaleName}, ${str})`;
+    const scaled = str => "scale(".concat(scaleName, ", ").concat(str, ")");
 
     const size = model.getSizeSignalRef(channel === X ? 'width' : 'height').signal;
-    const coord = `${channel}(unit)`;
+    const coord = "".concat(channel, "(unit)");
     const on = events(selCmpt, (def, evt) => {
       return [...def, {
         events: evt.between[0],
-        update: `[${coord}, ${coord}]`
+        update: "[".concat(coord, ", ").concat(coord, "]")
       }, // Brush Start
       {
         events: evt,
-        update: `[${vname}[0], clamp(${coord}, 0, ${size})]`
+        update: "[".concat(vname, "[0], clamp(").concat(coord, ", 0, ").concat(size, ")]")
       } // Brush End
       ];
     }); // React to pan/zooms of continuous scales. Non-continuous scales
@@ -61984,7 +62340,7 @@
       events: {
         signal: selCmpt.name + SCALE_TRIGGER
       },
-      update: hasContinuousDomain(scaleType) ? `[${scaled(`${dname}[0]`)}, ${scaled(`${dname}[1]`)}]` : `[0, 0]`
+      update: hasContinuousDomain(scaleType) ? "[".concat(scaled("".concat(dname, "[0]")), ", ").concat(scaled("".concat(dname, "[1]")), "]") : "[0, 0]"
     });
     return hasScales ? [{
       name: dname,
@@ -61996,7 +62352,7 @@
       } : {
         value: []
       }),
-      on: on
+      on
     }, {
       name: dname,
       ...(init ? {
@@ -62007,7 +62363,7 @@
         events: {
           signal: vname
         },
-        update: `${vname}[0] === ${vname}[1] ? null : invert(${scaleName}, ${vname})`
+        update: "".concat(vname, "[0] === ").concat(vname, "[1] ? null : invert(").concat(scaleName, ", ").concat(vname, ")")
       }]
     }];
   }
@@ -62015,7 +62371,7 @@
   function events(selCmpt, cb) {
     return selCmpt.events.reduce((on, evt) => {
       if (!evt.between) {
-        warn(`${evt} is not an ordered event stream for interval selections.`);
+        warn("".concat(evt, " is not an ordered event stream for interval selections."));
         return on;
       }
 
@@ -62026,6 +62382,8 @@
   const point$1 = {
     defined: selCmpt => selCmpt.type === 'point',
     signals: (model, selCmpt, signals) => {
+      var _model$component$sele;
+
       const name = selCmpt.name;
       const fieldsSg = name + TUPLE_FIELDS;
       const project = selCmpt.project;
@@ -62033,9 +62391,9 @@
       const values = project.items.map(p => {
         const fieldDef = model.fieldDef(p.channel); // Binned fields should capture extents, for a range test against the raw field.
 
-        return fieldDef !== null && fieldDef !== void 0 && fieldDef.bin ? `[${datum}[${$$1(model.vgField(p.channel, {}))}], ` + `${datum}[${$$1(model.vgField(p.channel, {
-        binSuffix: 'end'
-      }))}]]` : `${datum}[${$$1(p.field)}]`;
+        return fieldDef !== null && fieldDef !== void 0 && fieldDef.bin ? "[".concat(datum, "[").concat($$1(model.vgField(p.channel, {})), "], ") + "".concat(datum, "[").concat($$1(model.vgField(p.channel, {
+          binSuffix: 'end'
+        })), "]]") : "".concat(datum, "[").concat($$1(p.field), "]");
       }).join(', '); // Only add a discrete selection to the store if a datum is present _and_
       // the interaction isn't occurring on a group mark. This guards against
       // polluting interactive state with invalid values in faceted displays
@@ -62044,17 +62402,17 @@
       // whitespace followed by a click in whitespace; the store should only
       // be cleared on the second click).
 
-      const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
+      const update = "unit: ".concat(unitName(model), ", fields: ").concat(fieldsSg, ", values");
       const events = selCmpt.events;
-      const brushes = vals(model.component.selection ?? {}).reduce((acc, cmpt) => {
+      const brushes = vals((_model$component$sele = model.component.selection) !== null && _model$component$sele !== void 0 ? _model$component$sele : {}).reduce((acc, cmpt) => {
         return cmpt.type === 'interval' ? acc.concat(cmpt.name + BRUSH) : acc;
-      }, []).map(b => `indexof(item().mark.name, '${b}') < 0`).join(' && ');
-      const test = `datum && item().mark.marktype !== 'group'` + (brushes ? ` && ${brushes}` : '');
+      }, []).map(b => "indexof(item().mark.name, '".concat(b, "') < 0")).join(' && ');
+      const test = "datum && item().mark.marktype !== 'group'".concat(brushes ? " && ".concat(brushes) : '');
       return signals.concat([{
         name: name + TUPLE,
         on: events ? [{
           events,
-          update: `${test} ? {${update}: [${values}]} : null`,
+          update: "".concat(test, " ? {").concat(update, ": [").concat(values, "]} : null"),
           force: true
         }] : []
       }]);
@@ -62106,11 +62464,14 @@
     }
   }
 
-  function text$1(model, channel = 'text') {
+  function text$1(model) {
+    let channel = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'text';
     const channelDef = model.encoding[channel];
     return wrapCondition(model, channelDef, channel, cDef => textRef(cDef, model.config));
   }
-  function textRef(channelDef, config, expr = 'datum') {
+  function textRef(channelDef, config) {
+    let expr = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'datum';
+
     // text
     if (channelDef) {
       if (isValueDef(channelDef)) {
@@ -62135,7 +62496,8 @@
     return undefined;
   }
 
-  function tooltip(model, opt = {}) {
+  function tooltip(model) {
+    let opt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     const {
       encoding,
       markDef,
@@ -62194,14 +62556,17 @@
       });
     }
   }
-  function tooltipData(encoding, stack, config, {
-    reactiveGeom
-  } = {}) {
+  function tooltipData(encoding, stack, config) {
+    let {
+      reactiveGeom
+    } = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
     const toSkip = {};
     const expr = reactiveGeom ? 'datum.datum' : 'datum';
     const tuples = [];
 
     function add(fDef, channel) {
+      var _value;
+
       const mainChannel = getMainRangeChannel(channel);
       const fieldDef = isTypedFieldDef(fDef) ? fDef : { ...fDef,
         type: encoding[mainChannel].type // for secondary field def, copy type from main channel
@@ -62244,7 +62609,7 @@
         }
       }
 
-      value ?? (value = textRef(fieldDef, config, expr).signal);
+      (_value = value) !== null && _value !== void 0 ? _value : value = textRef(fieldDef, config, expr).signal;
       tuples.push({
         channel,
         key,
@@ -62273,15 +62638,19 @@
 
     return out;
   }
-  function tooltipRefForEncoding(encoding, stack, config, {
-    reactiveGeom
-  } = {}) {
+  function tooltipRefForEncoding(encoding, stack, config) {
+    let {
+      reactiveGeom
+    } = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
     const data = tooltipData(encoding, stack, config, {
       reactiveGeom
     });
-    const keyValues = entries$1(data).map(([key, value]) => `"${key}": ${value}`);
+    const keyValues = entries$1(data).map(_ref => {
+      let [key, value] = _ref;
+      return "\"".concat(key, "\": ").concat(value);
+    });
     return keyValues.length > 0 ? {
-      signal: `{${keyValues.join(', ')}}`
+      signal: "{".concat(keyValues.join(', '), "}")
     } : undefined;
   }
 
@@ -62368,7 +62737,10 @@
 
     return {
       description: {
-        signal: entries$1(data).map(([key, value], index) => `"${index > 0 ? '; ' : ''}${key}: " + (${value})`).join(' + ')
+        signal: entries$1(data).map((_ref, index) => {
+          let [key, value] = _ref;
+          return "\"".concat(index > 0 ? '; ' : '').concat(key, ": \" + (").concat(value, ")");
+        }).join(' + ')
       }
     };
   }
@@ -62377,7 +62749,8 @@
    * Return encode for non-positional channels with scales. (Text doesn't have scale.)
    */
 
-  function nonPosition(channel, model, opt = {}) {
+  function nonPosition(channel, model) {
+    let opt = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
     const {
       markDef,
       encoding,
@@ -62392,11 +62765,13 @@
     } = opt;
 
     if (defaultRef === undefined) {
+      var _defaultValue;
+
       // prettier-ignore
-      defaultValue ?? (defaultValue = getMarkPropOrConfig(channel, markDef, config, {
+      (_defaultValue = defaultValue) !== null && _defaultValue !== void 0 ? _defaultValue : defaultValue = getMarkPropOrConfig(channel, markDef, config, {
         vgChannel,
         ignoreVgConfig: true
-      }));
+      });
 
       if (defaultValue !== undefined) {
         defaultRef = signalOrValueRef(defaultValue);
@@ -62404,7 +62779,7 @@
     }
 
     const channelDef = encoding[channel];
-    return wrapCondition(model, channelDef, vgChannel ?? channel, cDef => {
+    return wrapCondition(model, channelDef, vgChannel !== null && vgChannel !== void 0 ? vgChannel : channel, cDef => {
       return midPoint({
         channel,
         channelDef: cDef,
@@ -62419,9 +62794,12 @@
     });
   }
 
-  function color(model, opt = {
-    filled: undefined
-  }) {
+  function color(model) {
+    var _opt$filled, _ref, _getMarkPropOrConfig, _getMarkPropOrConfig2;
+
+    let opt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
+      filled: undefined
+    };
     const {
       markDef,
       encoding,
@@ -62431,17 +62809,17 @@
       type: markType
     } = markDef; // Allow filled to be overridden (for trail's "filled")
 
-    const filled = opt.filled ?? getMarkPropOrConfig('filled', markDef, config);
+    const filled = (_opt$filled = opt.filled) !== null && _opt$filled !== void 0 ? _opt$filled : getMarkPropOrConfig('filled', markDef, config);
     const transparentIfNeeded = contains(['bar', 'point', 'circle', 'square', 'geoshape'], markType) ? 'transparent' : undefined;
-    const defaultFill = getMarkPropOrConfig(filled === true ? 'color' : undefined, markDef, config, {
+    const defaultFill = (_ref = (_getMarkPropOrConfig = getMarkPropOrConfig(filled === true ? 'color' : undefined, markDef, config, {
       vgChannel: 'fill'
-    }) ?? // need to add this manually as getMarkConfig normally drops config.mark[channel] if vgChannel is specified
-    config.mark[filled === true && 'color'] ?? // If there is no fill, always fill symbols, bar, geoshape
+    })) !== null && _getMarkPropOrConfig !== void 0 ? _getMarkPropOrConfig : // need to add this manually as getMarkConfig normally drops config.mark[channel] if vgChannel is specified
+    config.mark[filled === true && 'color']) !== null && _ref !== void 0 ? _ref : // If there is no fill, always fill symbols, bar, geoshape
     // with transparent fills https://github.com/vega/vega-lite/issues/1316
     transparentIfNeeded;
-    const defaultStroke = getMarkPropOrConfig(filled === false ? 'color' : undefined, markDef, config, {
+    const defaultStroke = (_getMarkPropOrConfig2 = getMarkPropOrConfig(filled === false ? 'color' : undefined, markDef, config, {
       vgChannel: 'stroke'
-    }) ?? // need to add this manually as getMarkConfig normally drops config.mark[channel] if vgChannel is specified
+    })) !== null && _getMarkPropOrConfig2 !== void 0 ? _getMarkPropOrConfig2 : // need to add this manually as getMarkConfig normally drops config.mark[channel] if vgChannel is specified
     config.mark[filled === false && 'color'];
     const colorVgChannel = filled ? 'fill' : 'stroke';
     const fillStrokeMarkDefAndConfig = { ...(defaultFill ? {
@@ -62492,26 +62870,58 @@
   /**
    * Utility files for producing Vega ValueRef for marks
    */
-  function getOffset(channel, markDef) {
-    const offsetChannel = getOffsetChannel(channel); // TODO: in the future read from encoding channel too
+  function positionOffset(_ref) {
+    let {
+      channel: baseChannel,
+      markDef,
+      encoding = {},
+      model,
+      bandPosition
+    } = _ref;
+    const channel = "".concat(baseChannel, "Offset"); // Need to cast as the type can't be inferred automatically
 
-    const markDefOffsetValue = markDef[offsetChannel];
+    const defaultValue = markDef[channel];
+    const channelDef = encoding[channel];
 
-    if (markDefOffsetValue) {
-      return markDefOffsetValue;
+    if ((channel === 'xOffset' || channel === 'yOffset') && channelDef) {
+      const ref = midPoint({
+        channel: channel,
+        channelDef,
+        markDef,
+        config: model === null || model === void 0 ? void 0 : model.config,
+        scaleName: model.scaleName(channel),
+        scale: model.getScaleComponent(channel),
+        stack: null,
+        defaultRef: signalOrValueRef(defaultValue),
+        bandPosition
+      });
+      return {
+        offsetType: 'encoding',
+        offset: ref
+      };
     }
 
-    return undefined;
+    const markDefOffsetValue = markDef[channel];
+
+    if (markDefOffsetValue) {
+      return {
+        offsetType: 'visual',
+        offset: markDefOffsetValue
+      };
+    }
+
+    return {};
   }
 
   /**
    * Return encode for point (non-band) position channels.
    */
 
-  function pointPosition(channel, model, {
-    defaultPos,
-    vgChannel
-  }) {
+  function pointPosition(channel, model, _ref) {
+    let {
+      defaultPos,
+      vgChannel
+    } = _ref;
     const {
       encoding,
       markDef,
@@ -62522,7 +62932,16 @@
     const channel2Def = encoding[getSecondaryRangeChannel(channel)];
     const scaleName = model.scaleName(channel);
     const scale = model.getScaleComponent(channel);
-    const offset = getOffset(channel, markDef); // Get default position or position from mark def
+    const {
+      offset,
+      offsetType
+    } = positionOffset({
+      channel,
+      markDef,
+      encoding,
+      model,
+      bandPosition: 0.5
+    }); // Get default position or position from mark def
 
     const defaultRef = pointPositionDefaultRef({
       model,
@@ -62544,7 +62963,8 @@
       scale,
       stack,
       offset,
-      defaultRef
+      defaultRef,
+      bandPosition: offsetType === 'encoding' ? 0 : undefined
     });
     return valueRef ? {
       [vgChannel || channel]: valueRef
@@ -62598,13 +63018,14 @@
 
     return midPointRefWithPositionInvalidTest(params);
   }
-  function pointPositionDefaultRef({
-    model,
-    defaultPos,
-    channel,
-    scaleName,
-    scale
-  }) {
+  function pointPositionDefaultRef(_ref2) {
+    let {
+      model,
+      defaultPos,
+      channel,
+      scaleName,
+      scale
+    } = _ref2;
     const {
       markDef,
       config
@@ -62650,7 +63071,7 @@
               case 'radius':
                 // max of radius is min(width, height) / 2
                 return {
-                  signal: `min(${model.width.signal},${model.height.signal})/2`
+                  signal: "min(".concat(model.width.signal, ",").concat(model.height.signal, ")/2")
                 };
 
               case 'theta':
@@ -62676,7 +63097,7 @@
 
         case 'mid':
           {
-            const sizeRef = model[getSizeChannel$1(channel)];
+            const sizeRef = model[getSizeChannel(channel)];
             return { ...sizeRef,
               mult: 0.5
             };
@@ -62698,7 +63119,9 @@
     middle: 'yc',
     bottom: 'y2'
   };
-  function vgAlignedPositionChannel(channel, markDef, config, defaultAlign = 'middle') {
+  function vgAlignedPositionChannel(channel, markDef, config) {
+    let defaultAlign = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'middle';
+
     if (channel === 'radius' || channel === 'theta') {
       return getVgPositionChannel(channel);
     }
@@ -62726,11 +63149,13 @@
    * (One of the axes should be point and the other should be range.)
    */
 
-  function pointOrRangePosition(channel, model, {
-    defaultPos,
-    defaultPos2,
-    range
-  }) {
+  function pointOrRangePosition(channel, model, _ref) {
+    let {
+      defaultPos,
+      defaultPos2,
+      range
+    } = _ref;
+
     if (range) {
       return rangePosition(channel, model, {
         defaultPos,
@@ -62742,16 +63167,17 @@
       defaultPos
     });
   }
-  function rangePosition(channel, model, {
-    defaultPos,
-    defaultPos2
-  }) {
+  function rangePosition(channel, model, _ref2) {
+    let {
+      defaultPos,
+      defaultPos2
+    } = _ref2;
     const {
       markDef,
       config
     } = model;
     const channel2 = getSecondaryRangeChannel(channel);
-    const sizeChannel = getSizeChannel$1(channel);
+    const sizeChannel = getSizeChannel(channel);
     const pos2Mixins = pointPosition2OrSize(model, defaultPos2, channel2);
     const vgChannel = pos2Mixins[sizeChannel] ? // If there is width/height, we need to position the marks based on the alignment.
     vgAlignedPositionChannel(channel, markDef, config) : // Otherwise, make sure to apply to the right Vg Channel (for arc mark)
@@ -62777,15 +63203,27 @@
       config
     } = model;
     const baseChannel = getMainRangeChannel(channel);
-    const sizeChannel = getSizeChannel$1(channel);
+    const sizeChannel = getSizeChannel(channel);
     const vgChannel = getVgPositionChannel(channel);
     const channelDef = encoding[baseChannel];
     const scaleName = model.scaleName(baseChannel);
     const scale = model.getScaleComponent(baseChannel);
-    const offset = channel in encoding || channel in markDef ? getOffset(channel, model.markDef) : getOffset(baseChannel, model.markDef);
+    const {
+      offset
+    } = channel in encoding || channel in markDef ? positionOffset({
+      channel,
+      markDef,
+      encoding,
+      model
+    }) : positionOffset({
+      channel: baseChannel,
+      markDef,
+      encoding,
+      model
+    });
 
     if (!channelDef && (channel === 'x2' || channel === 'y2') && (encoding.latitude || encoding.longitude)) {
-      const vgSizeChannel = getSizeChannel$1(channel);
+      const vgSizeChannel = getSizeChannel(channel);
       const size = model.markDef[vgSizeChannel];
 
       if (size != null) {
@@ -62839,18 +63277,20 @@
     };
   }
 
-  function position2Ref({
-    channel,
-    channelDef,
-    channel2Def,
-    markDef,
-    config,
-    scaleName,
-    scale,
-    stack,
-    offset,
-    defaultRef
-  }) {
+  function position2Ref(_ref3) {
+    let {
+      channel,
+      channelDef,
+      channel2Def,
+      markDef,
+      config,
+      scaleName,
+      scale,
+      stack,
+      offset,
+      defaultRef
+    } = _ref3;
+
     if (isFieldOrDatumDef(channelDef) && stack && // If fieldChannel is X and channel is X2 (or Y and Y2)
     channel.charAt(0) === stack.fieldChannel.charAt(0)) {
       return valueRefForFieldOrDatumDef(channelDef, scaleName, {
@@ -62874,7 +63314,7 @@
   }
 
   function position2orSize(channel, markDef) {
-    const sizeChannel = getSizeChannel$1(channel);
+    const sizeChannel = getSizeChannel(channel);
     const vgChannel = getVgPositionChannel(channel);
 
     if (markDef[vgChannel] !== undefined) {
@@ -62900,49 +63340,33 @@
     return undefined;
   }
 
-  function rectPosition(model, channel, mark) {
+  function rectPosition(model, channel) {
+    var _ref, _encoding$sizeChannel;
+
     const {
       config,
       encoding,
       markDef
     } = model;
+    const mark = markDef.type;
     const channel2 = getSecondaryRangeChannel(channel);
-    const sizeChannel = getSizeChannel$1(channel);
+    const sizeChannel = getSizeChannel(channel);
     const channelDef = encoding[channel];
     const channelDef2 = encoding[channel2];
     const scale = model.getScaleComponent(channel);
     const scaleType = scale ? scale.get('type') : undefined;
-    const scaleName = model.scaleName(channel);
     const orient = markDef.orient;
-    const hasSizeDef = encoding[sizeChannel] ?? encoding.size ?? getMarkPropOrConfig('size', markDef, config, {
+    const hasSizeDef = (_ref = (_encoding$sizeChannel = encoding[sizeChannel]) !== null && _encoding$sizeChannel !== void 0 ? _encoding$sizeChannel : encoding.size) !== null && _ref !== void 0 ? _ref : getMarkPropOrConfig('size', markDef, config, {
       vgChannel: sizeChannel
     });
     const isBarBand = mark === 'bar' && (channel === 'x' ? orient === 'vertical' : orient === 'horizontal'); // x, x2, and width -- we must specify two of these in all conditions
 
     if (isFieldDef(channelDef) && (isBinning(channelDef.bin) || isBinned(channelDef.bin) || channelDef.timeUnit && !channelDef2) && !(hasSizeDef && !isRelativeBandSize(hasSizeDef)) && !hasDiscreteDomain(scaleType)) {
-      var _model$component$axes;
-
-      const bandSize = getBandSize({
-        channel,
-        fieldDef: channelDef,
-        markDef,
-        config,
-        scaleType
-      });
-      const axis = (_model$component$axes = model.component.axes[channel]) === null || _model$component$axes === void 0 ? void 0 : _model$component$axes[0];
-      const axisTranslate = (axis === null || axis === void 0 ? void 0 : axis.get('translate')) ?? 0.5; // vega default is 0.5
-
       return rectBinPosition({
         fieldDef: channelDef,
         fieldDef2: channelDef2,
         channel,
-        markDef,
-        scaleName,
-        bandSize,
-        axisTranslate,
-        spacing: isXorY(channel) ? getMarkPropOrConfig('binSpacing', markDef, config) : undefined,
-        reverse: scale.get('reverse'),
-        config
+        model
       });
     } else if ((isFieldOrDatumDef(channelDef) && hasDiscreteDomain(scaleType) || isBarBand) && !channelDef2) {
       return positionAndSize(channelDef, channel, model);
@@ -63015,8 +63439,10 @@
     const orient = markDef.orient;
     const scaleName = model.scaleName(channel);
     const scale = model.getScaleComponent(channel);
-    const vgSizeChannel = getSizeChannel$1(channel);
-    const channel2 = getSecondaryRangeChannel(channel); // use "size" channel for bars, if there is orient and the channel matches the right orientation
+    const vgSizeChannel = getSizeChannel(channel);
+    const channel2 = getSecondaryRangeChannel(channel);
+    const offsetScaleChannel = getOffsetChannel(channel);
+    const offsetScaleName = model.scaleName(offsetScaleChannel); // use "size" channel for bars, if there is orient and the channel matches the right orientation
 
     const useVlSizeChannel = orient === 'horizontal' && channel === 'y' || orient === 'vertical' && channel === 'x'; // Use size encoding / mark property / config if it exists
 
@@ -63043,7 +63469,7 @@
       useVlSizeChannel
     });
     sizeMixins = sizeMixins || {
-      [vgSizeChannel]: defaultSizeRef(vgSizeChannel, scaleName, scale, config, bandSize)
+      [vgSizeChannel]: defaultSizeRef(vgSizeChannel, offsetScaleName || scaleName, scale, config, bandSize)
     };
     /*
       Band scales with size value and all point scales, use xc/yc + band=0.5
@@ -63056,7 +63482,16 @@
     const defaultBandAlign = (scale === null || scale === void 0 ? void 0 : scale.get('type')) !== 'band' || !('band' in sizeMixins[vgSizeChannel]) ? 'middle' : 'top';
     const vgChannel = vgAlignedPositionChannel(channel, markDef, config, defaultBandAlign);
     const center = vgChannel === 'xc' || vgChannel === 'yc';
-    const offset = getOffset(channel, markDef);
+    const {
+      offset,
+      offsetType
+    } = positionOffset({
+      channel,
+      markDef,
+      encoding,
+      model,
+      bandPosition: center ? 0.5 : 0
+    });
     const posRef = midPointRefWithPositionInvalidTest({
       channel,
       channelDef: fieldDef,
@@ -63073,8 +63508,8 @@
         scaleName,
         scale
       }),
-      bandPosition: center ? 0.5 : isSignalRef(bandSize) ? {
-        signal: `(1-${bandSize})/2`
+      bandPosition: center ? offsetType === 'encoding' ? 0 : 0.5 : isSignalRef(bandSize) ? {
+        signal: "(1-".concat(bandSize, ")/2")
       } : isRelativeBandSize(bandSize) ? (1 - bandSize.band) / 2 : 0
     });
 
@@ -63114,9 +63549,9 @@
       const reverseExpr = signalOrStringValue(reverse);
       const offsetExpr = signalOrStringValue(offset);
       const translateExpr = signalOrStringValue(translate);
-      const t = translateExpr ? `${translateExpr} + ` : '';
-      const r = reverseExpr ? `(${reverseExpr} ? -1 : 1) * ` : '';
-      const o = offsetExpr ? `(${offsetExpr} + ${spacingOffset})` : spacingOffset;
+      const t = translateExpr ? "".concat(translateExpr, " + ") : '';
+      const r = reverseExpr ? "(".concat(reverseExpr, " ? -1 : 1) * ") : '';
+      const o = offsetExpr ? "(".concat(offsetExpr, " + ").concat(spacingOffset, ")") : spacingOffset;
       return {
         signal: t + r + o
       };
@@ -63126,47 +63561,66 @@
     }
   }
 
-  function rectBinPosition({
-    fieldDef,
-    fieldDef2,
-    channel,
-    bandSize,
-    scaleName,
-    markDef,
-    spacing = 0,
-    axisTranslate,
-    reverse,
-    config
-  }) {
+  function rectBinPosition(_ref2) {
+    var _model$component$axes, _axis$get, _getMarkPropOrConfig;
+
+    let {
+      fieldDef,
+      fieldDef2,
+      channel,
+      model
+    } = _ref2;
+    const {
+      config,
+      markDef,
+      encoding
+    } = model;
+    const scale = model.getScaleComponent(channel);
+    const scaleName = model.scaleName(channel);
+    const scaleType = scale ? scale.get('type') : undefined;
+    const reverse = scale.get('reverse');
+    const bandSize = getBandSize({
+      channel,
+      fieldDef,
+      markDef,
+      config,
+      scaleType
+    });
+    const axis = (_model$component$axes = model.component.axes[channel]) === null || _model$component$axes === void 0 ? void 0 : _model$component$axes[0];
+    const axisTranslate = (_axis$get = axis === null || axis === void 0 ? void 0 : axis.get('translate')) !== null && _axis$get !== void 0 ? _axis$get : 0.5; // vega default is 0.5
+
+    const spacing = isXorY(channel) ? (_getMarkPropOrConfig = getMarkPropOrConfig('binSpacing', markDef, config)) !== null && _getMarkPropOrConfig !== void 0 ? _getMarkPropOrConfig : 0 : 0;
     const channel2 = getSecondaryRangeChannel(channel);
     const vgChannel = getVgPositionChannel(channel);
     const vgChannel2 = getVgPositionChannel(channel2);
-    const offset = getOffset(channel, markDef);
+    const {
+      offset
+    } = positionOffset({
+      channel,
+      markDef,
+      encoding,
+      model,
+      bandPosition: 0
+    });
     const bandPosition = isSignalRef(bandSize) ? {
-      signal: `(1-${bandSize.signal})/2`
+      signal: "(1-".concat(bandSize.signal, ")/2")
     } : isRelativeBandSize(bandSize) ? (1 - bandSize.band) / 2 : 0.5;
 
     if (isBinning(fieldDef.bin) || fieldDef.timeUnit) {
       return {
         [vgChannel2]: rectBinRef({
-          channel,
           fieldDef,
           scaleName,
-          markDef,
           bandPosition,
-          offset: getBinSpacing(channel2, spacing, reverse, axisTranslate, offset),
-          config
+          offset: getBinSpacing(channel2, spacing, reverse, axisTranslate, offset)
         }),
         [vgChannel]: rectBinRef({
-          channel,
           fieldDef,
           scaleName,
-          markDef,
           bandPosition: isSignalRef(bandPosition) ? {
-            signal: `1-${bandPosition.signal}`
+            signal: "1-".concat(bandPosition.signal)
           } : 1 - bandPosition,
-          offset: getBinSpacing(channel, spacing, reverse, axisTranslate, offset),
-          config
+          offset: getBinSpacing(channel, spacing, reverse, axisTranslate, offset)
         })
       };
     } else if (isBinned(fieldDef.bin)) {
@@ -63185,9 +63639,9 @@
         return {
           [vgChannel2]: startRef,
           [vgChannel]: {
-            signal: `scale("${scaleName}", ${vgField(fieldDef, {
-            expr: 'datum'
-          })} + ${fieldDef.bin.step})`,
+            signal: "scale(\"".concat(scaleName, "\", ").concat(vgField(fieldDef, {
+              expr: 'datum'
+            }), " + ").concat(fieldDef.bin.step, ")"),
             offset: getBinSpacing(channel, spacing, reverse, axisTranslate, offset)
           }
         };
@@ -63201,27 +63655,19 @@
    * Value Ref for binned fields
    */
 
-  function rectBinRef({
-    channel,
-    fieldDef,
-    scaleName,
-    markDef,
-    bandPosition,
-    offset,
-    config
-  }) {
-    const r = interpolatedSignalRef({
+
+  function rectBinRef(_ref3) {
+    let {
+      fieldDef,
+      scaleName,
+      bandPosition,
+      offset
+    } = _ref3;
+    return interpolatedSignalRef({
       scaleName,
       fieldOrDatumDef: fieldDef,
       bandPosition,
       offset
-    });
-    return wrapPositionInvalidTest({
-      fieldDef,
-      channel,
-      markDef,
-      ref: r,
-      config
     });
   }
 
@@ -63289,10 +63735,11 @@
     }, {});
   }
 
-  function allFieldsInvalidPredicate$1(model, {
-    invalid = false,
-    channels
-  }) {
+  function allFieldsInvalidPredicate$1(model, _ref) {
+    let {
+      invalid = false,
+      channels
+    } = _ref;
     const filterIndex = channels.reduce((aggregator, channel) => {
       const scaleComponent = model.getScaleComponent(channel);
 
@@ -63313,7 +63760,7 @@
 
     if (fields.length > 0) {
       const op = invalid ? '||' : '&&';
-      return fields.map(field => fieldInvalidPredicate(field, invalid)).join(` ${op} `);
+      return fields.map(field => fieldInvalidPredicate(field, invalid)).join(" ".concat(op, " "));
     }
 
     return undefined;
@@ -63343,10 +63790,11 @@
     return {};
   }
 
-  function allFieldsInvalidPredicate(model, {
-    invalid = false,
-    channels
-  }) {
+  function allFieldsInvalidPredicate(model, _ref) {
+    let {
+      invalid = false,
+      channels
+    } = _ref;
     const filterIndex = channels.reduce((aggregator, channel) => {
       const scaleComponent = model.getScaleComponent(channel);
 
@@ -63367,7 +63815,7 @@
 
     if (fields.length > 0) {
       const op = invalid ? '||' : '&&';
-      return fields.map(field => fieldInvalidPredicate(field, invalid)).join(` ${op} `);
+      return fields.map(field => fieldInvalidPredicate(field, invalid)).join(" ".concat(op, " "));
     }
 
     return undefined;
@@ -63449,7 +63897,9 @@
       let index = 0;
       let exists = false;
       marks.forEach((mark, i) => {
-        const name = mark.name ?? '';
+        var _mark$name;
+
+        const name = (_mark$name = mark.name) !== null && _mark$name !== void 0 ? _mark$name : '';
 
         if (name === model.component.mark[0].name) {
           index = i;
@@ -63479,10 +63929,12 @@
 
       const datum = nearest.defined(selCmpt) ? '(item().isVoronoi ? datum.datum : datum)' : 'datum';
       proj.items.forEach((p, i) => {
-        const sgname = varName(`${name}_${p.field}`);
+        const sgname = varName("".concat(name, "_").concat(p.field));
         const hasSignal = signals.filter(s => s.name === sgname);
 
         if (!hasSignal.length) {
+          var _ref, _bind$p$field;
+
           signals.unshift({
             name: sgname,
             ...(init ? {
@@ -63492,9 +63944,9 @@
             }),
             on: selCmpt.events ? [{
               events: selCmpt.events,
-              update: `datum && item().mark.marktype !== 'group' ? ${datum}[${$$1(p.field)}] : null`
+              update: "datum && item().mark.marktype !== 'group' ? ".concat(datum, "[").concat($$1(p.field), "] : null")
             }] : [],
-            bind: bind[p.field] ?? bind[p.channel] ?? bind
+            bind: (_ref = (_bind$p$field = bind[p.field]) !== null && _bind$p$field !== void 0 ? _bind$p$field : bind[p.channel]) !== null && _ref !== void 0 ? _ref : bind
           });
         }
       });
@@ -63505,11 +63957,11 @@
       const proj = selCmpt.project;
       const signal = signals.filter(s => s.name === name + TUPLE)[0];
       const fields = name + TUPLE_FIELDS;
-      const values = proj.items.map(p => varName(`${name}_${p.field}`));
-      const valid = values.map(v => `${v} !== null`).join(' && ');
+      const values = proj.items.map(p => varName("".concat(name, "_").concat(p.field)));
+      const valid = values.map(v => "".concat(v, " !== null")).join(' && ');
 
       if (values.length) {
-        signal.update = `${valid} ? {fields: ${fields}, values: [${values.join(', ')}]} : null`;
+        signal.update = "".concat(valid, " ? {fields: ").concat(fields, ", values: [").concat(values.join(', '), "]} : null");
       }
 
       delete signal.value;
@@ -63536,7 +63988,7 @@
     modifyExpr: (model, selCmpt) => {
       const tpl = selCmpt.name + TUPLE;
       const signal = selCmpt.name + TOGGLE;
-      return `${signal} ? null : ${tpl}, ` + (selCmpt.resolve === 'global' ? `${signal} ? null : true, ` : `${signal} ? null : {unit: ${unitName(model)}}, `) + `${signal} ? ${tpl} : null`;
+      return "".concat(signal, " ? null : ").concat(tpl, ", ") + (selCmpt.resolve === 'global' ? "".concat(signal, " ? null : true, ") : "".concat(signal, " ? null : {unit: ").concat(unitName(model), "}, ")) + "".concat(signal, " ? ").concat(tpl, " : null");
     }
   };
 
@@ -63552,7 +64004,7 @@
     topLevelSignals: (model, selCmpt, signals) => {
       if (inputBindings.defined(selCmpt)) {
         for (const proj of selCmpt.project.items) {
-          const idx = signals.findIndex(n => n.name === varName(`${selCmpt.name}_${proj.field}`));
+          const idx = signals.findIndex(n => n.name === varName("".concat(selCmpt.name, "_").concat(proj.field)));
 
           if (idx !== -1) {
             signals[idx].on.push({
@@ -63626,7 +64078,9 @@
         const legendFilter = 'event.item && indexof(event.item.mark.role, "legend") < 0';
 
         for (const evt of selCmpt.events) {
-          evt.filter = array$5(evt.filter ?? []);
+          var _evt$filter;
+
+          evt.filter = array$5((_evt$filter = evt.filter) !== null && _evt$filter !== void 0 ? _evt$filter : []);
 
           if (!evt.filter.includes(legendFilter)) {
             evt.filter.push(legendFilter);
@@ -63654,12 +64108,12 @@
 
       for (const proj of selCmpt.project.items) {
         if (!proj.hasLegend) continue;
-        const prefix = `${varName(proj.field)}_legend`;
-        const sgName = `${selName}_${prefix}`;
+        const prefix = "".concat(varName(proj.field), "_legend");
+        const sgName = "".concat(selName, "_").concat(prefix);
         const hasSignal = signals.filter(s => s.name === sgName);
 
         if (hasSignal.length === 0) {
-          const events = stream.merge.map(markName(`${prefix}_symbols`)).concat(stream.merge.map(markName(`${prefix}_labels`))).concat(stream.merge.map(markName(`${prefix}_entries`)));
+          const events = stream.merge.map(markName("".concat(prefix, "_symbols"))).concat(stream.merge.map(markName("".concat(prefix, "_labels")))).concat(stream.merge.map(markName("".concat(prefix, "_entries"))));
           signals.unshift({
             name: sgName,
             ...(!selCmpt.init ? {
@@ -63672,7 +64126,7 @@
               force: true
             }, {
               events: stream.merge,
-              update: `!event.item || !datum ? null : ${sgName}`,
+              update: "!event.item || !datum ? null : ".concat(sgName),
               force: true
             }]
           });
@@ -63686,9 +64140,9 @@
       const proj = selCmpt.project;
       const tuple = signals.find(s => s.name === name + TUPLE);
       const fields = name + TUPLE_FIELDS;
-      const values = proj.items.filter(p => p.hasLegend).map(p => varName(`${name}_${varName(p.field)}_legend`));
-      const valid = values.map(v => `${v} !== null`).join(' && ');
-      const update = `${valid} ? {fields: ${fields}, values: [${values.join(', ')}]} : null`;
+      const values = proj.items.filter(p => p.hasLegend).map(p => varName("".concat(name, "_").concat(varName(p.field), "_legend")));
+      const valid = values.map(v => "".concat(v, " !== null")).join(' && ');
+      const update = "".concat(valid, " ? {fields: ").concat(fields, ", values: [").concat(values.join(', '), "]} : null");
 
       if (selCmpt.events && values.length > 0) {
         tuple.on.push({
@@ -63720,11 +64174,15 @@
 
     const field = (_model$fieldDef = model.fieldDef(channel)) === null || _model$fieldDef === void 0 ? void 0 : _model$fieldDef.field;
 
-    for (const selCmpt of vals(model.component.selection ?? {})) {
-      const proj = selCmpt.project.hasField[field] ?? selCmpt.project.hasChannel[channel];
+    for (const selCmpt of vals((_model$component$sele = model.component.selection) !== null && _model$component$sele !== void 0 ? _model$component$sele : {})) {
+      var _model$component$sele, _selCmpt$project$hasF;
+
+      const proj = (_selCmpt$project$hasF = selCmpt.project.hasField[field]) !== null && _selCmpt$project$hasF !== void 0 ? _selCmpt$project$hasF : selCmpt.project.hasChannel[channel];
 
       if (proj && legendBindings.defined(selCmpt)) {
-        const legendSelections = legendCmpt.get('selections') ?? [];
+        var _legendCmpt$get;
+
+        const legendSelections = (_legendCmpt$get = legendCmpt.get('selections')) !== null && _legendCmpt$get !== void 0 ? _legendCmpt$get : [];
         legendSelections.push(selCmpt.name);
         legendCmpt.set('selections', legendSelections, false);
         proj.hasLegend = true;
@@ -63757,14 +64215,14 @@
         value: {},
         on: [{
           events: events.map(e => e.between[0]),
-          update: '{x: x(unit), y: y(unit)' + (x !== undefined ? `, extent_x: ${hasScales ? domain(model, X) : `slice(${x.signals.visual})`}` : '') + (y !== undefined ? `, extent_y: ${hasScales ? domain(model, Y) : `slice(${y.signals.visual})`}` : '') + '}'
+          update: '{x: x(unit), y: y(unit)' + (x !== undefined ? ", extent_x: ".concat(hasScales ? domain(model, X) : "slice(".concat(x.signals.visual, ")")) : '') + (y !== undefined ? ", extent_y: ".concat(hasScales ? domain(model, Y) : "slice(".concat(y.signals.visual, ")")) : '') + '}'
         }]
       }, {
         name: name + DELTA$1,
         value: {},
         on: [{
-          events: events,
-          update: `{x: ${anchor}.x - x(unit), y: ${anchor}.y - y(unit)}`
+          events,
+          update: "{x: ".concat(anchor, ".x - x(unit), y: ").concat(anchor, ".y - y(unit)}")
         }]
       });
 
@@ -63781,6 +64239,8 @@
   };
 
   function onDelta$1(model, selCmpt, proj, size, signals) {
+    var _scaleCmpt$get, _scaleCmpt$get2;
+
     const name = selCmpt.name;
     const anchor = name + ANCHOR$1;
     const delta = name + DELTA$1;
@@ -63793,16 +64253,16 @@
     const reversed = scaleCmpt.get('reverse'); // scale parsing sets this flag for fieldDef.sort
 
     const sign = !hasScales ? '' : channel === X ? reversed ? '' : '-' : reversed ? '-' : '';
-    const extent = `${anchor}.extent_${channel}`;
-    const offset = `${sign}${delta}.${channel} / ${hasScales ? `${sizeSg}` : `span(${extent})`}`;
+    const extent = "".concat(anchor, ".extent_").concat(channel);
+    const offset = "".concat(sign).concat(delta, ".").concat(channel, " / ").concat(hasScales ? "".concat(sizeSg) : "span(".concat(extent, ")"));
     const panFn = !hasScales ? 'panLinear' : scaleType === 'log' ? 'panLog' : scaleType === 'symlog' ? 'panSymlog' : scaleType === 'pow' ? 'panPow' : 'panLinear';
-    const arg = !hasScales ? '' : scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') ?? 1}` : scaleType === 'symlog' ? `, ${scaleCmpt.get('constant') ?? 1}` : '';
-    const update = `${panFn}(${extent}, ${offset}${arg})`;
+    const arg = !hasScales ? '' : scaleType === 'pow' ? ", ".concat((_scaleCmpt$get = scaleCmpt.get('exponent')) !== null && _scaleCmpt$get !== void 0 ? _scaleCmpt$get : 1) : scaleType === 'symlog' ? ", ".concat((_scaleCmpt$get2 = scaleCmpt.get('constant')) !== null && _scaleCmpt$get2 !== void 0 ? _scaleCmpt$get2 : 1) : '';
+    const update = "".concat(panFn, "(").concat(extent, ", ").concat(offset).concat(arg, ")");
     signal.on.push({
       events: {
         signal: delta
       },
-      update: hasScales ? update : `clampRange(${update}, 0, ${sizeSg})`
+      update: hasScales ? update : "clampRange(".concat(update, ", 0, ").concat(sizeSg, ")")
     });
   }
 
@@ -63831,13 +64291,13 @@
       signals.push({
         name: name + ANCHOR,
         on: [{
-          events: events,
-          update: !hasScales ? `{x: x(unit), y: y(unit)}` : '{' + [sx ? `x: invert(${sx}, x(unit))` : '', sy ? `y: invert(${sy}, y(unit))` : ''].filter(expr => !!expr).join(', ') + '}'
+          events,
+          update: !hasScales ? "{x: x(unit), y: y(unit)}" : '{' + [sx ? "x: invert(".concat(sx, ", x(unit))") : '', sy ? "y: invert(".concat(sy, ", y(unit))") : ''].filter(expr => !!expr).join(', ') + '}'
         }]
       }, {
         name: delta,
         on: [{
-          events: events,
+          events,
           force: true,
           update: 'pow(1.001, event.deltaY * pow(16, event.deltaMode))'
         }]
@@ -63856,6 +64316,8 @@
   };
 
   function onDelta(model, selCmpt, proj, size, signals) {
+    var _scaleCmpt$get, _scaleCmpt$get2;
+
     const name = selCmpt.name;
     const channel = proj.channel;
     const hasScales = scaleBindings.defined(selCmpt);
@@ -63865,15 +64327,15 @@
     const scaleType = scaleCmpt.get('type');
     const base = hasScales ? domain(model, channel) : signal.name;
     const delta = name + DELTA;
-    const anchor = `${name}${ANCHOR}.${channel}`;
+    const anchor = "".concat(name).concat(ANCHOR, ".").concat(channel);
     const zoomFn = !hasScales ? 'zoomLinear' : scaleType === 'log' ? 'zoomLog' : scaleType === 'symlog' ? 'zoomSymlog' : scaleType === 'pow' ? 'zoomPow' : 'zoomLinear';
-    const arg = !hasScales ? '' : scaleType === 'pow' ? `, ${scaleCmpt.get('exponent') ?? 1}` : scaleType === 'symlog' ? `, ${scaleCmpt.get('constant') ?? 1}` : '';
-    const update = `${zoomFn}(${base}, ${anchor}, ${delta}${arg})`;
+    const arg = !hasScales ? '' : scaleType === 'pow' ? ", ".concat((_scaleCmpt$get = scaleCmpt.get('exponent')) !== null && _scaleCmpt$get !== void 0 ? _scaleCmpt$get : 1) : scaleType === 'symlog' ? ", ".concat((_scaleCmpt$get2 = scaleCmpt.get('constant')) !== null && _scaleCmpt$get2 !== void 0 ? _scaleCmpt$get2 : 1) : '';
+    const update = "".concat(zoomFn, "(").concat(base, ", ").concat(anchor, ", ").concat(delta).concat(arg, ")");
     signal.on.push({
       events: {
         signal: delta
       },
-      update: hasScales ? update : `clampRange(${update}, 0, ${sizeSg})`
+      update: hasScales ? update : "clampRange(".concat(update, ", 0, ").concat(sizeSg, ")")
     });
   }
 
@@ -63896,11 +64358,12 @@
     return parent;
   }
 
-  function unitName(model, {
-    escape
-  } = {
-    escape: true
-  }) {
+  function unitName(model) {
+    let {
+      escape
+    } = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
+      escape: true
+    };
     let name = escape ? $$1(model.name) : model.name;
     const facetModel = getFacetModel(model);
 
@@ -63911,7 +64374,7 @@
 
       for (const channel of FACET_CHANNELS) {
         if (facet[channel]) {
-          name += ` + '__facet_${channel}_' + (facet[${$$1(facetModel.vgField(channel))}])`;
+          name += " + '__facet_".concat(channel, "_' + (facet[").concat($$1(facetModel.vgField(channel)), "])");
         }
       }
     }
@@ -63919,7 +64382,9 @@
     return name;
   }
   function requiresSelectionId(model) {
-    return vals(model.component.selection ?? {}).reduce((identifier, selCmpt) => {
+    var _model$component$sele;
+
+    return vals((_model$component$sele = model.component.selection) !== null && _model$component$sele !== void 0 ? _model$component$sele : {}).reduce((identifier, selCmpt) => {
       return identifier || selCmpt.project.items.some(proj => proj.field === SELECTION_ID);
     }, false);
   } // Binding a point selection to query widgets or legends disables default direct manipulation interaction.
@@ -63960,7 +64425,8 @@
 
   function getDependentFields(expression) {
     const ast = parser$1(expression);
-    const dependents = new Set();
+    const dependents = new Set(); // visit is missing in types https://github.com/vega/vega/issues/3298
+
     ast.visit(node => {
       if (node.type === 'MemberExpression' && startsWithDatum(node)) {
         dependents.add(getName(node).slice(1).join('.'));
@@ -64005,7 +64471,7 @@
     }
 
     hash() {
-      return `Filter ${this.expr}`;
+      return "Filter ".concat(this.expr);
     }
 
   }
@@ -64041,7 +64507,9 @@
         }
 
         if (defaults[key] === undefined || defaults[key] === true) {
-          defaults[key] = cfg[key] ?? defaults[key];
+          var _cfg$key;
+
+          defaults[key] = (_cfg$key = cfg[key]) !== null && _cfg$key !== void 0 ? _cfg$key : defaults[key];
         }
       }
 
@@ -64062,7 +64530,8 @@
 
     return selCmpts;
   }
-  function parseSelectionPredicate(model, pred, dfnode, datum = 'datum') {
+  function parseSelectionPredicate(model, pred, dfnode) {
+    let datum = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : 'datum';
     const name = isString(pred) ? pred : pred.param;
     const vname = varName(name);
     const store = $$1(vname + STORE);
@@ -64072,11 +64541,11 @@
       selCmpt = model.getSelectionComponent(vname, name);
     } catch (e) {
       // If a selection isn't found, treat as a variable parameter and coerce to boolean.
-      return `!!${vname}`;
+      return "!!".concat(vname);
     }
 
     if (selCmpt.project.timeUnit) {
-      const child = dfnode ?? model.component.data.raw;
+      const child = dfnode !== null && dfnode !== void 0 ? dfnode : model.component.data.raw;
       const tunode = selCmpt.project.timeUnit.clone();
 
       if (child.parent) {
@@ -64086,9 +64555,9 @@
       }
     }
 
-    const test = `vlSelectionTest(${store}, ${datum}${selCmpt.resolve === 'global' ? ')' : `, ${$$1(selCmpt.resolve)})`}`;
-    const length = `length(data(${store}))`;
-    return pred.empty === false ? `${length} && ${test}` : `!${length} || ${test}`;
+    const test = "vlSelectionTest(".concat(store, ", ").concat(datum).concat(selCmpt.resolve === 'global' ? ')' : ", ".concat($$1(selCmpt.resolve), ")"));
+    const length = "length(data(".concat(store, "))");
+    return pred.empty === false ? "".concat(length, " && ").concat(test) : "!".concat(length, " || ").concat(test);
   }
   function parseSelectionExtent(model, name, extent) {
     const vname = varName(name);
@@ -64107,24 +64576,26 @@
       field = selCmpt.project.items[0].field;
 
       if (selCmpt.project.items.length > 1) {
-        warn('A "field" or "encoding" must be specified when using a selection as a scale domain. ' + `Using "field": ${$$1(field)}.`);
+        warn('A "field" or "encoding" must be specified when using a selection as a scale domain. ' + "Using \"field\": ".concat($$1(field), "."));
       }
     } else if (encoding && !field) {
       const encodings = selCmpt.project.items.filter(p => p.channel === encoding);
 
       if (!encodings.length || encodings.length > 1) {
         field = selCmpt.project.items[0].field;
-        warn((!encodings.length ? 'No ' : 'Multiple ') + `matching ${$$1(encoding)} encoding found for selection ${$$1(extent.param)}. ` + `Using "field": ${$$1(field)}.`);
+        warn((!encodings.length ? 'No ' : 'Multiple ') + "matching ".concat($$1(encoding), " encoding found for selection ").concat($$1(extent.param), ". ") + "Using \"field\": ".concat($$1(field), "."));
       } else {
         field = encodings[0].field;
       }
     }
 
-    return `${selCmpt.name}[${$$1(replacePathInField(field))}]`;
+    return "".concat(selCmpt.name, "[").concat($$1(replacePathInField(field)), "]");
   }
   function materializeSelections(model, main) {
-    for (const [selection, selCmpt] of entries$1(model.component.selection ?? {})) {
-      const lookupName = model.getName(`lookup_${selection}`);
+    for (const [selection, selCmpt] of entries$1((_model$component$sele = model.component.selection) !== null && _model$component$sele !== void 0 ? _model$component$sele : {})) {
+      var _model$component$sele;
+
+      const lookupName = model.getName("lookup_".concat(selection));
       model.component.data.outputNodes[lookupName] = selCmpt.materialized = new OutputNode(new FilterNode(main, model, {
         param: selection
       }), lookupName, DataSourceType.Lookup, model.component.data.outputNodeRefCounts);
@@ -64162,18 +64633,19 @@
   }
 
   function setAxisEncode(axis, part, vgProp, vgRef) {
-    var _axis$encode, _axis$encode$part;
+    var _axis$encode, _axis$encode2, _axis$encode2$part, _axis$encode$part, _axis$encode$part$upd;
 
-    axis.encode ?? (axis.encode = {});
-    (_axis$encode = axis.encode)[part] ?? (_axis$encode[part] = {});
-    (_axis$encode$part = axis.encode[part]).update ?? (_axis$encode$part.update = {}); // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
+    (_axis$encode = axis.encode) !== null && _axis$encode !== void 0 ? _axis$encode : axis.encode = {};
+    (_axis$encode2$part = (_axis$encode2 = axis.encode)[part]) !== null && _axis$encode2$part !== void 0 ? _axis$encode2$part : _axis$encode2[part] = {};
+    (_axis$encode$part$upd = (_axis$encode$part = axis.encode[part]).update) !== null && _axis$encode$part$upd !== void 0 ? _axis$encode$part$upd : _axis$encode$part.update = {}; // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
 
     axis.encode[part].update[vgProp] = vgRef;
   }
 
-  function assembleAxis(axisCmpt, kind, config, opt = {
-    header: false
-  }) {
+  function assembleAxis(axisCmpt, kind, config) {
+    let opt = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {
+      header: false
+    };
     const {
       disable,
       orient,
@@ -64231,8 +64703,8 @@
                 test,
                 ...valueOrSignalCRef
               } = c;
-              return `${expression(null, test)} ? ${exprFromValueOrSignalRef(valueOrSignalCRef)} : `;
-            }).join('') + exprFromValueOrSignalRef(valueOrSignalRef)
+              return "".concat(expression(null, test), " ? ").concat(exprFromValueRefOrSignalRef(valueOrSignalCRef), " : ");
+            }).join('') + exprFromValueRefOrSignalRef(valueOrSignalRef)
           };
           axis[prop] = signalRef;
         }
@@ -64302,11 +64774,11 @@
       }
 
       if (labelExpr !== undefined) {
-        var _axis$encode2, _axis$encode2$labels;
+        var _axis$encode3, _axis$encode3$labels;
 
         let expr = labelExpr;
 
-        if ((_axis$encode2 = axis.encode) !== null && _axis$encode2 !== void 0 && (_axis$encode2$labels = _axis$encode2.labels) !== null && _axis$encode2$labels !== void 0 && _axis$encode2$labels.update && isSignalRef(axis.encode.labels.update.text)) {
+        if ((_axis$encode3 = axis.encode) !== null && _axis$encode3 !== void 0 && (_axis$encode3$labels = _axis$encode3.labels) !== null && _axis$encode3$labels !== void 0 && _axis$encode3$labels.update && isSignalRef(axis.encode.labels.update.text)) {
           expr = replaceAll(labelExpr, 'datum.label', axis.encode.labels.update.text.signal);
         }
 
@@ -64371,7 +64843,7 @@
             if (sizeType !== update) {
               signals.push({
                 name: sizeType,
-                update: update
+                update
               });
             }
           }
@@ -64402,7 +64874,7 @@
         for (const prop of props.values()) {
           conditionalOrientAxisConfig[prop] = {
             // orient is surely signal in this case
-            signal: `${orient['signal']} === "${orient1}" ? ${signalOrStringValue(orientConfig1[prop])} : ${signalOrStringValue(orientConfig2[prop])}`
+            signal: "".concat(orient['signal'], " === \"").concat(orient1, "\" ? ").concat(signalOrStringValue(orientConfig1[prop]), " : ").concat(signalOrStringValue(orientConfig2[prop]))
           };
         }
 
@@ -64416,7 +64888,7 @@
   function getAxisConfigs(channel, scaleType, orient, config) {
     const typeBasedConfigTypes = scaleType === 'band' ? ['axisDiscrete', 'axisBand'] : scaleType === 'point' ? ['axisDiscrete', 'axisPoint'] : isQuantitative(scaleType) ? ['axisQuantitative'] : scaleType === 'time' || scaleType === 'utc' ? ['axisTemporal'] : [];
     const axisChannel = channel === 'x' ? 'axisX' : 'axisY';
-    const axisOrient = isSignalRef(orient) ? 'axisOrient' : `axis${titleCase(orient)}`; // axisTop, axisBottom, ...
+    const axisOrient = isSignalRef(orient) ? 'axisOrient' : "axis".concat(titleCase(orient)); // axisTop, axisBottom, ...
 
     const vlOnlyConfigTypes = [// technically Vega does have axisBand, but if we make another separation here,
     // it will further introduce complexity in the code
@@ -64448,7 +64920,8 @@
 
     return Object.assign.apply(null, toMerge);
   }
-  function getAxisConfig(property, styleConfigIndex, style, axisConfigs = {}) {
+  function getAxisConfig(property, styleConfigIndex, style) {
+    let axisConfigs = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
     const styleConfig = getStyleConfig(property, style, styleConfigIndex);
 
     if (styleConfig !== undefined) {
@@ -64473,92 +64946,132 @@
   }
 
   const axisRules = {
-    scale: ({
-      model,
-      channel
-    }) => model.scaleName(channel),
-    format: ({
-      fieldOrDatumDef,
-      config,
-      axis
-    }) => {
+    scale: _ref => {
+      let {
+        model,
+        channel
+      } = _ref;
+      return model.scaleName(channel);
+    },
+    format: _ref2 => {
+      let {
+        fieldOrDatumDef,
+        config,
+        axis
+      } = _ref2;
       const {
         format,
         formatType
       } = axis;
       return guideFormat(fieldOrDatumDef, fieldOrDatumDef.type, format, formatType, config, true);
     },
-    formatType: ({
-      axis,
-      fieldOrDatumDef,
-      scaleType
-    }) => {
+    formatType: _ref3 => {
+      let {
+        axis,
+        fieldOrDatumDef,
+        scaleType
+      } = _ref3;
       const {
         formatType
       } = axis;
       return guideFormatType(formatType, fieldOrDatumDef, scaleType);
     },
-    grid: ({
-      fieldOrDatumDef,
-      axis,
-      scaleType
-    }) => axis.grid ?? defaultGrid(scaleType, fieldOrDatumDef),
-    gridScale: ({
-      model,
-      channel
-    }) => gridScale(model, channel),
-    labelAlign: ({
-      axis,
-      labelAngle,
-      orient,
-      channel
-    }) => axis.labelAlign || defaultLabelAlign(labelAngle, orient, channel),
-    labelAngle: ({
-      labelAngle
-    }) => labelAngle,
+    grid: _ref4 => {
+      var _axis$grid;
+
+      let {
+        fieldOrDatumDef,
+        axis,
+        scaleType
+      } = _ref4;
+      return (_axis$grid = axis.grid) !== null && _axis$grid !== void 0 ? _axis$grid : defaultGrid(scaleType, fieldOrDatumDef);
+    },
+    gridScale: _ref5 => {
+      let {
+        model,
+        channel
+      } = _ref5;
+      return gridScale(model, channel);
+    },
+    labelAlign: _ref6 => {
+      let {
+        axis,
+        labelAngle,
+        orient,
+        channel
+      } = _ref6;
+      return axis.labelAlign || defaultLabelAlign(labelAngle, orient, channel);
+    },
+    labelAngle: _ref7 => {
+      let {
+        labelAngle
+      } = _ref7;
+      return labelAngle;
+    },
     // we already calculate this in parse
-    labelBaseline: ({
-      axis,
-      labelAngle,
-      orient,
-      channel
-    }) => axis.labelBaseline || defaultLabelBaseline(labelAngle, orient, channel),
-    labelFlush: ({
-      axis,
-      fieldOrDatumDef,
-      channel
-    }) => axis.labelFlush ?? defaultLabelFlush(fieldOrDatumDef.type, channel),
-    labelOverlap: ({
-      axis,
-      fieldOrDatumDef,
-      scaleType
-    }) => axis.labelOverlap ?? defaultLabelOverlap$1(fieldOrDatumDef.type, scaleType, isFieldDef(fieldOrDatumDef) && !!fieldOrDatumDef.timeUnit, isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined),
+    labelBaseline: _ref8 => {
+      let {
+        axis,
+        labelAngle,
+        orient,
+        channel
+      } = _ref8;
+      return axis.labelBaseline || defaultLabelBaseline(labelAngle, orient, channel);
+    },
+    labelFlush: _ref9 => {
+      var _axis$labelFlush;
+
+      let {
+        axis,
+        fieldOrDatumDef,
+        channel
+      } = _ref9;
+      return (_axis$labelFlush = axis.labelFlush) !== null && _axis$labelFlush !== void 0 ? _axis$labelFlush : defaultLabelFlush(fieldOrDatumDef.type, channel);
+    },
+    labelOverlap: _ref10 => {
+      var _axis$labelOverlap;
+
+      let {
+        axis,
+        fieldOrDatumDef,
+        scaleType
+      } = _ref10;
+      return (_axis$labelOverlap = axis.labelOverlap) !== null && _axis$labelOverlap !== void 0 ? _axis$labelOverlap : defaultLabelOverlap$1(fieldOrDatumDef.type, scaleType, isFieldDef(fieldOrDatumDef) && !!fieldOrDatumDef.timeUnit, isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined);
+    },
     // we already calculate orient in parse
-    orient: ({
-      orient
-    }) => orient,
+    orient: _ref11 => {
+      let {
+        orient
+      } = _ref11;
+      return orient;
+    },
     // Need to cast until Vega supports signal
-    tickCount: ({
-      channel,
-      model,
-      axis,
-      fieldOrDatumDef,
-      scaleType
-    }) => {
+    tickCount: _ref12 => {
+      var _axis$tickCount;
+
+      let {
+        channel,
+        model,
+        axis,
+        fieldOrDatumDef,
+        scaleType
+      } = _ref12;
       const sizeType = channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
       const size = sizeType ? model.getSizeSignalRef(sizeType) : undefined;
-      return axis.tickCount ?? defaultTickCount({
+      return (_axis$tickCount = axis.tickCount) !== null && _axis$tickCount !== void 0 ? _axis$tickCount : defaultTickCount({
         fieldOrDatumDef,
         scaleType,
         size,
         values: axis.values
       });
     },
-    title: ({
-      axis,
-      model,
-      channel
-    }) => {
+    title: _ref13 => {
+      let {
+        axis,
+        model,
+        channel
+      } = _ref13;
+
       if (axis.title !== undefined) {
         return axis.title;
       }
@@ -64575,15 +65088,23 @@
 
       return mergeTitleFieldDefs(fieldDef ? [toFieldDefBase(fieldDef)] : [], isFieldDef(fieldDef2) ? [toFieldDefBase(fieldDef2)] : []);
     },
-    values: ({
-      axis,
-      fieldOrDatumDef
-    }) => values$1(axis, fieldOrDatumDef),
-    zindex: ({
-      axis,
-      fieldOrDatumDef,
-      mark
-    }) => axis.zindex ?? defaultZindex(mark, fieldOrDatumDef)
+    values: _ref14 => {
+      let {
+        axis,
+        fieldOrDatumDef
+      } = _ref14;
+      return values$1(axis, fieldOrDatumDef);
+    },
+    zindex: _ref15 => {
+      var _axis$zindex;
+
+      let {
+        axis,
+        fieldOrDatumDef,
+        mark
+      } = _ref15;
+      return (_axis$zindex = axis.zindex) !== null && _axis$zindex !== void 0 ? _axis$zindex : defaultZindex(mark, fieldOrDatumDef);
+    }
   }; // TODO: we need to refactor this method after we take care of config refactoring
 
   /**
@@ -64628,16 +65149,16 @@
     }
   }
   function normalizeAngleExpr(angle) {
-    return `(((${angle.signal} % 360) + 360) % 360)`;
+    return "(((".concat(angle.signal, " % 360) + 360) % 360)");
   }
   function defaultLabelBaseline(angle, orient, channel, alwaysIncludeMiddle) {
     if (angle !== undefined) {
       if (channel === 'x') {
         if (isSignalRef(angle)) {
           const a = normalizeAngleExpr(angle);
-          const orientIsTop = isSignalRef(orient) ? `(${orient.signal} === "top")` : orient === 'top';
+          const orientIsTop = isSignalRef(orient) ? "(".concat(orient.signal, " === \"top\")") : orient === 'top';
           return {
-            signal: `(45 < ${a} && ${a} < 135) || (225 < ${a} && ${a} < 315) ? "middle" :` + `(${a} <= 45 || 315 <= ${a}) === ${orientIsTop} ? "bottom" : "top"`
+            signal: "(45 < ".concat(a, " && ").concat(a, " < 135) || (225 < ").concat(a, " && ").concat(a, " < 315) ? \"middle\" :") + "(".concat(a, " <= 45 || 315 <= ").concat(a, ") === ").concat(orientIsTop, " ? \"bottom\" : \"top\"")
           };
         }
 
@@ -64648,7 +65169,7 @@
         if (isSignalRef(orient)) {
           const op = angle <= 45 || 315 <= angle ? '===' : '!==';
           return {
-            signal: `${orient.signal} ${op} "top" ? "bottom" : "top"`
+            signal: "".concat(orient.signal, " ").concat(op, " \"top\" ? \"bottom\" : \"top\"")
           };
         }
 
@@ -64656,10 +65177,10 @@
       } else {
         if (isSignalRef(angle)) {
           const a = normalizeAngleExpr(angle);
-          const orientIsLeft = isSignalRef(orient) ? `(${orient.signal} === "left")` : orient === 'left';
+          const orientIsLeft = isSignalRef(orient) ? "(".concat(orient.signal, " === \"left\")") : orient === 'left';
           const middle = alwaysIncludeMiddle ? '"middle"' : 'null';
           return {
-            signal: `${a} <= 45 || 315 <= ${a} || (135 <= ${a} && ${a} <= 225) ? ${middle} : (45 <= ${a} && ${a} <= 135) === ${orientIsLeft} ? "top" : "bottom"`
+            signal: "".concat(a, " <= 45 || 315 <= ").concat(a, " || (135 <= ").concat(a, " && ").concat(a, " <= 225) ? ").concat(middle, " : (45 <= ").concat(a, " && ").concat(a, " <= 135) === ").concat(orientIsLeft, " ? \"top\" : \"bottom\"")
           };
         }
 
@@ -64670,7 +65191,7 @@
         if (isSignalRef(orient)) {
           const op = 45 <= angle && angle <= 135 ? '===' : '!==';
           return {
-            signal: `${orient.signal} ${op} "left" ? "top" : "bottom"`
+            signal: "".concat(orient.signal, " ").concat(op, " \"left\" ? \"top\" : \"bottom\"")
           };
         }
 
@@ -64691,9 +65212,9 @@
 
     if (isSignalRef(angle)) {
       const a = normalizeAngleExpr(angle);
-      const orientIsMain = isSignalRef(orient) ? `(${orient.signal} === "${mainOrient}")` : orient === mainOrient;
+      const orientIsMain = isSignalRef(orient) ? "(".concat(orient.signal, " === \"").concat(mainOrient, "\")") : orient === mainOrient;
       return {
-        signal: `(${startAngle ? `(${a} + 90)` : a} % 180 === 0) ? ${isX ? null : '"center"'} :` + `(${startAngle} < ${a} && ${a} < ${180 + startAngle}) === ${orientIsMain} ? "left" : "right"`
+        signal: "(".concat(startAngle ? "(".concat(a, " + 90)") : a, " % 180 === 0) ? ").concat(isX ? null : '"center"', " :") + "(".concat(startAngle, " < ").concat(a, " && ").concat(a, " < ").concat(180 + startAngle, ") === ").concat(orientIsMain, " ? \"left\" : \"right\"")
       };
     }
 
@@ -64704,9 +65225,9 @@
 
     if (isSignalRef(orient)) {
       const op = startAngle < angle && angle < 180 + startAngle ? '===' : '!==';
-      const orientIsMain = `${orient.signal} ${op} "${mainOrient}"`;
+      const orientIsMain = "".concat(orient.signal, " ").concat(op, " \"").concat(mainOrient, "\"");
       return {
-        signal: `${orientIsMain} ? "left" : "right"`
+        signal: "".concat(orientIsMain, " ? \"left\" : \"right\"")
       };
     }
 
@@ -64738,12 +65259,14 @@
   function defaultOrient(channel) {
     return channel === 'x' ? 'bottom' : 'left';
   }
-  function defaultTickCount({
-    fieldOrDatumDef,
-    scaleType,
-    size,
-    values: vals
-  }) {
+  function defaultTickCount(_ref16) {
+    let {
+      fieldOrDatumDef,
+      scaleType,
+      size,
+      values: vals
+    } = _ref16;
+
     if (!vals && !hasDiscreteDomain(scaleType) && scaleType !== 'log') {
       if (isFieldDef(fieldOrDatumDef)) {
         var _normalizeTimeUnit;
@@ -64751,7 +65274,7 @@
         if (isBinning(fieldOrDatumDef.bin)) {
           // for binned data, we don't want more ticks than maxbins
           return {
-            signal: `ceil(${size.signal}/10)`
+            signal: "ceil(".concat(size.signal, "/10)")
           };
         }
 
@@ -64761,7 +65284,7 @@
       }
 
       return {
-        signal: `ceil(${size.signal}/40)`
+        signal: "ceil(".concat(size.signal, "/40)")
       };
     }
 
@@ -64838,11 +65361,11 @@
           const sort = fieldDef.sort; // generate `datum["a"] === val0 ? 0 : datum["a"] === val1 ? 1 : ... : n` via FieldEqualPredicate
 
           const calculate = sort.map((sortValue, i) => {
-            return `${fieldFilterExpression({
-            field,
-            timeUnit,
-            equal: sortValue
-          })} ? ${i} : `;
+            return "".concat(fieldFilterExpression({
+              field,
+              timeUnit,
+              equal: sortValue
+            }), " ? ").concat(i, " : ");
           }).join('') + sort.length;
           parent = new CalculateNode(parent, {
             calculate,
@@ -64872,7 +65395,7 @@
     }
 
     hash() {
-      return `Calculate ${hash(this.transform)}`;
+      return "Calculate ".concat(hash(this.transform));
     }
 
   }
@@ -64880,7 +65403,7 @@
     return vgField(fieldDef, {
       prefix: channel,
       suffix: 'sort_index',
-      ...(opt ?? {})
+      ...(opt !== null && opt !== void 0 ? opt : {})
     });
   }
 
@@ -64936,9 +65459,9 @@
     const headerChannel = getHeaderChannel(channel, titleOrient);
     const titleAngle = normalizeAngle(ta);
     return {
-      name: `${channel}-title`,
+      name: "".concat(channel, "-title"),
       type: 'group',
-      role: `${headerChannel}-title`,
+      role: "".concat(headerChannel, "-title"),
       title: {
         text: title,
         ...(channel === 'row' ? {
@@ -64951,7 +65474,9 @@
       }
     };
   }
-  function defaultHeaderGuideAlign(headerChannel, angle, anchor = 'middle') {
+  function defaultHeaderGuideAlign(headerChannel, angle) {
+    let anchor = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 'middle';
+
     switch (anchor) {
       case 'start':
         return {
@@ -65000,11 +65525,13 @@
     } = facetFieldDef;
 
     if (isSortField(sort)) {
+      var _sort$order;
+
       return {
         field: vgField(sort, {
           expr: 'datum'
         }),
-        order: sort.order ?? 'ascending'
+        order: (_sort$order = sort.order) !== null && _sort$order !== void 0 ? _sort$order : 'ascending'
       };
     } else if (isArray(sort)) {
       return {
@@ -65018,7 +65545,7 @@
         field: vgField(facetFieldDef, {
           expr: 'datum'
         }),
-        order: sort ?? 'ascending'
+        order: sort !== null && sort !== void 0 ? sort : 'ascending'
       };
     }
   }
@@ -65081,18 +65608,18 @@
       if (title || hasAxes) {
         const sizeChannel = channel === 'row' ? 'height' : 'width';
         return {
-          name: model.getName(`${channel}_${headerType}`),
+          name: model.getName("".concat(channel, "_").concat(headerType)),
           type: 'group',
-          role: `${channel}-${headerType}`,
+          role: "".concat(channel, "-").concat(headerType),
           ...(layoutHeader.facetFieldDef ? {
             from: {
-              data: model.getName(`${channel}_domain`)
+              data: model.getName("".concat(channel, "_domain"))
             },
             sort: getSort$1(facetFieldDef, channel)
           } : {}),
           ...(hasAxes && isFacetWithoutRowCol ? {
             from: {
-              data: model.getName(`facet_domain_${channel}`)
+              data: model.getName("facet_domain_".concat(channel))
             }
           } : {}),
           ...(title ? {
@@ -65204,7 +65731,7 @@
 
           return [stepSignal(scaleName, range), {
             name,
-            update: sizeExpr(scaleName, scaleComponent, `domain('${scaleName}').length`)
+            update: sizeExpr(scaleName, scaleComponent, "domain('".concat(scaleName, "').length"))
           }];
         }
       }
@@ -65216,7 +65743,7 @@
       const isWidth = name.endsWith('width');
       const expr = isWidth ? 'containerSize()[0]' : 'containerSize()[1]';
       const defaultValue = getViewConfigContinuousSize(model.config.view, isWidth ? 'width' : 'height');
-      const safeExpr = `isFinite(${expr}) ? ${expr} : ${defaultValue}`;
+      const safeExpr = "isFinite(".concat(expr, ") ? ").concat(expr, " : ").concat(defaultValue);
       return [{
         name,
         init: safeExpr,
@@ -65234,10 +65761,19 @@
   }
 
   function stepSignal(scaleName, range) {
-    return {
-      name: `${scaleName}_step`,
-      value: range.step
-    };
+    const name = "".concat(scaleName, "_step");
+
+    if (isSignalRef(range.step)) {
+      return {
+        name,
+        update: range.step.signal
+      };
+    } else {
+      return {
+        name,
+        value: range.step
+      };
+    }
   }
 
   function sizeExpr(scaleName, scaleComponent, cardinality) {
@@ -65249,7 +65785,7 @@
     paddingInner !== undefined ? paddingInner : padding : // For point, as calculated in https://github.com/vega/vega-scale/blob/master/src/band.js#L128,
     // it's equivalent to have paddingInner = 1 since there is only n-1 steps between n points.
     1;
-    return `bandspace(${cardinality}, ${signalOrStringValue(paddingInner)}, ${signalOrStringValue(paddingOuter)}) * ${scaleName}_step`;
+    return "bandspace(".concat(cardinality, ", ").concat(signalOrStringValue(paddingInner), ", ").concat(signalOrStringValue(paddingOuter), ") * ").concat(scaleName, "_step");
   }
 
   function getSizeTypeFromLayoutSizeType(layoutSizeType) {
@@ -65317,13 +65853,17 @@
     labels: labels$1,
     entries
   };
-  function symbols(symbolsSpec, {
-    fieldOrDatumDef,
-    model,
-    channel,
-    legendCmpt,
-    legendType
-  }) {
+  function symbols(symbolsSpec, _ref) {
+    var _legendCmpt$get, _legendCmpt$get2, _legendCmpt$get3, _getMaxValue;
+
+    let {
+      fieldOrDatumDef,
+      model,
+      channel,
+      legendCmpt,
+      legendType
+    } = _ref;
+
     if (legendType !== 'symbol') {
       return undefined;
     }
@@ -65341,10 +65881,10 @@
       })
     }; // FIXME: remove this when VgEncodeEntry is compatible with SymbolEncodeEntry
 
-    const symbolOpacity = legendCmpt.get('symbolOpacity') ?? config.legend.symbolOpacity;
-    const symbolFillColor = legendCmpt.get('symbolFillColor') ?? config.legend.symbolFillColor;
-    const symbolStrokeColor = legendCmpt.get('symbolStrokeColor') ?? config.legend.symbolStrokeColor;
-    const opacity = symbolOpacity === undefined ? getMaxValue(encoding.opacity) ?? markDef.opacity : undefined;
+    const symbolOpacity = (_legendCmpt$get = legendCmpt.get('symbolOpacity')) !== null && _legendCmpt$get !== void 0 ? _legendCmpt$get : config.legend.symbolOpacity;
+    const symbolFillColor = (_legendCmpt$get2 = legendCmpt.get('symbolFillColor')) !== null && _legendCmpt$get2 !== void 0 ? _legendCmpt$get2 : config.legend.symbolFillColor;
+    const symbolStrokeColor = (_legendCmpt$get3 = legendCmpt.get('symbolStrokeColor')) !== null && _legendCmpt$get3 !== void 0 ? _legendCmpt$get3 : config.legend.symbolStrokeColor;
+    const opacity = symbolOpacity === undefined ? (_getMaxValue = getMaxValue(encoding.opacity)) !== null && _getMaxValue !== void 0 ? _getMaxValue : markDef.opacity : undefined;
 
     if (out.fill) {
       // for fill legend, we don't want any fill in symbol
@@ -65356,11 +65896,15 @@
           if (symbolFillColor) {
             delete out.fill;
           } else {
-            out.fill = signalOrValueRef(config.legend.symbolBaseFillColor ?? 'black');
-            out.fillOpacity = signalOrValueRef(opacity ?? 1);
+            var _config$legend$symbol;
+
+            out.fill = signalOrValueRef((_config$legend$symbol = config.legend.symbolBaseFillColor) !== null && _config$legend$symbol !== void 0 ? _config$legend$symbol : 'black');
+            out.fillOpacity = signalOrValueRef(opacity !== null && opacity !== void 0 ? opacity : 1);
           }
         } else if (isArray(out.fill)) {
-          const fill = getFirstConditionValue(encoding.fill ?? encoding.color) ?? markDef.fill ?? (filled && markDef.color);
+          var _ref2, _getFirstConditionVal, _encoding$fill;
+
+          const fill = (_ref2 = (_getFirstConditionVal = getFirstConditionValue((_encoding$fill = encoding.fill) !== null && _encoding$fill !== void 0 ? _encoding$fill : encoding.color)) !== null && _getFirstConditionVal !== void 0 ? _getFirstConditionVal : markDef.fill) !== null && _ref2 !== void 0 ? _ref2 : filled && markDef.color;
 
           if (fill) {
             out.fill = signalOrValueRef(fill);
@@ -65394,7 +65938,7 @@
       if (condition) {
         out.opacity = [{
           test: condition,
-          ...signalOrValueRef(opacity ?? 1)
+          ...signalOrValueRef(opacity !== null && opacity !== void 0 ? opacity : 1)
         }, signalOrValueRef(config.legend.unselectedOpacity)];
       } else if (opacity) {
         out.opacity = signalOrValueRef(opacity);
@@ -65406,11 +65950,15 @@
     };
     return isEmpty(out) ? undefined : out;
   }
-  function gradient(gradientSpec, {
-    model,
-    legendType,
-    legendCmpt
-  }) {
+  function gradient(gradientSpec, _ref3) {
+    var _legendCmpt$get4;
+
+    let {
+      model,
+      legendType,
+      legendCmpt
+    } = _ref3;
+
     if (legendType !== 'gradient') {
       return undefined;
     }
@@ -65421,7 +65969,7 @@
       encoding
     } = model;
     let out = {};
-    const gradientOpacity = legendCmpt.get('gradientOpacity') ?? config.legend.gradientOpacity;
+    const gradientOpacity = (_legendCmpt$get4 = legendCmpt.get('gradientOpacity')) !== null && _legendCmpt$get4 !== void 0 ? _legendCmpt$get4 : config.legend.gradientOpacity;
     const opacity = gradientOpacity === undefined ? getMaxValue(encoding.opacity) || markDef.opacity : undefined;
 
     if (opacity) {
@@ -65434,12 +65982,13 @@
     };
     return isEmpty(out) ? undefined : out;
   }
-  function labels$1(specifiedlabelsSpec, {
-    fieldOrDatumDef,
-    model,
-    channel,
-    legendCmpt
-  }) {
+  function labels$1(specifiedlabelsSpec, _ref4) {
+    let {
+      fieldOrDatumDef,
+      model,
+      channel,
+      legendCmpt
+    } = _ref4;
     const legend = model.legend(channel) || {};
     const config = model.config;
     const condition = isFieldDef(fieldOrDatumDef) ? selectedCondition(model, legendCmpt, fieldOrDatumDef) : undefined;
@@ -65470,9 +66019,10 @@
     };
     return isEmpty(labelsSpec) ? undefined : labelsSpec;
   }
-  function entries(entriesSpec, {
-    legendCmpt
-  }) {
+  function entries(entriesSpec, _ref5) {
+    let {
+      legendCmpt
+    } = _ref5;
     const selections = legendCmpt.get('selections');
     return selections !== null && selections !== void 0 && selections.length ? { ...entriesSpec,
       fill: {
@@ -65507,64 +66057,86 @@
     const field = $$1(fieldDef.field);
     return selections.map(name => {
       const store = $$1(varName(name) + STORE);
-      return `(!length(data(${store})) || (${name}[${field}] && indexof(${name}[${field}], datum.value) >= 0))`;
+      return "(!length(data(".concat(store, ")) || (").concat(name, "[").concat(field, "] && indexof(").concat(name, "[").concat(field, "], datum.value) >= 0))");
     }).join(' || ');
   }
 
   const legendRules = {
-    direction: ({
-      direction
-    }) => direction,
-    format: ({
-      fieldOrDatumDef,
-      legend,
-      config
-    }) => {
+    direction: _ref => {
+      let {
+        direction
+      } = _ref;
+      return direction;
+    },
+    format: _ref2 => {
+      let {
+        fieldOrDatumDef,
+        legend,
+        config
+      } = _ref2;
       const {
         format,
         formatType
       } = legend;
       return guideFormat(fieldOrDatumDef, fieldOrDatumDef.type, format, formatType, config, false);
     },
-    formatType: ({
-      legend,
-      fieldOrDatumDef,
-      scaleType
-    }) => {
+    formatType: _ref3 => {
+      let {
+        legend,
+        fieldOrDatumDef,
+        scaleType
+      } = _ref3;
       const {
         formatType
       } = legend;
       return guideFormatType(formatType, fieldOrDatumDef, scaleType);
     },
     gradientLength: params => {
+      var _ref4, _legend$gradientLengt;
+
       const {
         legend,
         legendConfig
       } = params;
-      return legend.gradientLength ?? legendConfig.gradientLength ?? defaultGradientLength(params);
+      return (_ref4 = (_legend$gradientLengt = legend.gradientLength) !== null && _legend$gradientLengt !== void 0 ? _legend$gradientLengt : legendConfig.gradientLength) !== null && _ref4 !== void 0 ? _ref4 : defaultGradientLength(params);
     },
-    labelOverlap: ({
-      legend,
-      legendConfig,
-      scaleType
-    }) => legend.labelOverlap ?? legendConfig.labelOverlap ?? defaultLabelOverlap(scaleType),
-    symbolType: ({
-      legend,
-      markDef,
-      channel,
-      encoding
-    }) => legend.symbolType ?? defaultSymbolType(markDef.type, channel, encoding.shape, markDef.shape),
-    title: ({
-      fieldOrDatumDef,
-      config
-    }) => title(fieldOrDatumDef, config, {
-      allowDisabling: true
-    }),
-    type: ({
-      legendType,
-      scaleType,
-      channel
-    }) => {
+    labelOverlap: _ref5 => {
+      var _ref6, _legend$labelOverlap;
+
+      let {
+        legend,
+        legendConfig,
+        scaleType
+      } = _ref5;
+      return (_ref6 = (_legend$labelOverlap = legend.labelOverlap) !== null && _legend$labelOverlap !== void 0 ? _legend$labelOverlap : legendConfig.labelOverlap) !== null && _ref6 !== void 0 ? _ref6 : defaultLabelOverlap(scaleType);
+    },
+    symbolType: _ref7 => {
+      var _legend$symbolType;
+
+      let {
+        legend,
+        markDef,
+        channel,
+        encoding
+      } = _ref7;
+      return (_legend$symbolType = legend.symbolType) !== null && _legend$symbolType !== void 0 ? _legend$symbolType : defaultSymbolType(markDef.type, channel, encoding.shape, markDef.shape);
+    },
+    title: _ref8 => {
+      let {
+        fieldOrDatumDef,
+        config
+      } = _ref8;
+      return title(fieldOrDatumDef, config, {
+        allowDisabling: true
+      });
+    },
+    type: _ref9 => {
+      let {
+        legendType,
+        scaleType,
+        channel
+      } = _ref9;
+
       if (isColorChannel(channel) && isContinuousToContinuous(scaleType)) {
         if (legendType === 'gradient') {
           return undefined;
@@ -65576,10 +66148,13 @@
       return legendType;
     },
     // depended by other property, let's define upfront
-    values: ({
-      fieldOrDatumDef,
-      legend
-    }) => values(legend, fieldOrDatumDef)
+    values: _ref10 => {
+      let {
+        fieldOrDatumDef,
+        legend
+      } = _ref10;
+      return values(legend, fieldOrDatumDef);
+    }
   };
   function values(legend, fieldOrDatumDef) {
     const vals = legend.values;
@@ -65594,8 +66169,10 @@
   }
   function defaultSymbolType(mark, channel, shapeChannelDef, markShape) {
     if (channel !== 'shape') {
+      var _getFirstConditionVal;
+
       // use the value from the shape encoding or the mark config if they exist
-      const shape = getFirstConditionValue(shapeChannelDef) ?? markShape;
+      const shape = (_getFirstConditionVal = getFirstConditionValue(shapeChannelDef)) !== null && _getFirstConditionVal !== void 0 ? _getFirstConditionVal : markShape;
 
       if (shape) {
         return shape;
@@ -65630,11 +66207,13 @@
     } = params;
     return getFirstDefined(legend.type, defaultType$1(params));
   }
-  function defaultType$1({
-    channel,
-    timeUnit,
-    scaleType
-  }) {
+  function defaultType$1(_ref11) {
+    let {
+      channel,
+      timeUnit,
+      scaleType
+    } = _ref11;
+
     // Following the logic in https://github.com/vega/vega-parser/blob/master/src/parsers/legend.js
     if (isColorChannel(channel)) {
       if (contains(['quarter', 'month', 'day'], timeUnit)) {
@@ -65648,13 +66227,16 @@
 
     return 'symbol';
   }
-  function getDirection({
-    legendConfig,
-    legendType,
-    orient,
-    legend
-  }) {
-    return legend.direction ?? legendConfig[legendType ? 'gradientDirection' : 'symbolDirection'] ?? defaultDirection(orient, legendType);
+  function getDirection(_ref12) {
+    var _ref13, _legend$direction;
+
+    let {
+      legendConfig,
+      legendType,
+      orient,
+      legend
+    } = _ref12;
+    return (_ref13 = (_legend$direction = legend.direction) !== null && _legend$direction !== void 0 ? _legend$direction : legendConfig[legendType ? 'gradientDirection' : 'symbolDirection']) !== null && _ref13 !== void 0 ? _ref13 : defaultDirection(orient, legendType);
   }
   function defaultDirection(orient, legendType) {
     switch (orient) {
@@ -65676,13 +66258,14 @@
         return legendType === 'gradient' ? 'horizontal' : undefined;
     }
   }
-  function defaultGradientLength({
-    legendConfig,
-    model,
-    direction,
-    orient,
-    scaleType
-  }) {
+  function defaultGradientLength(_ref14) {
+    let {
+      legendConfig,
+      model,
+      direction,
+      orient,
+      scaleType
+    } = _ref14;
     const {
       gradientHorizontalMaxLength,
       gradientHorizontalMinLength,
@@ -65709,7 +66292,7 @@
   function gradientLengthSignal(model, sizeType, min, max) {
     const sizeSignal = model.getSizeSignalRef(sizeType).signal;
     return {
-      signal: `clamp(${sizeSignal}, ${min}, ${max})`
+      signal: "clamp(".concat(sizeSignal, ", ").concat(min, ", ").concat(max, ")")
     };
   }
 
@@ -65803,7 +66386,7 @@
   }
 
   function parseLegendForChannel(model, channel) {
-    var _normalizeTimeUnit, _legend;
+    var _normalizeTimeUnit, _legend$encoding, _legend;
 
     let legend = model.legend(channel);
     const {
@@ -65869,7 +66452,7 @@
       }
     }
 
-    const legendEncoding = ((_legend = legend) === null || _legend === void 0 ? void 0 : _legend.encoding) ?? {};
+    const legendEncoding = (_legend$encoding = (_legend = legend) === null || _legend === void 0 ? void 0 : _legend.encoding) !== null && _legend$encoding !== void 0 ? _legend$encoding : {};
     const selections = legendCmpt.get('selections');
     const legendEncode = {};
     const legendEncodeParams = {
@@ -65881,13 +66464,15 @@
     };
 
     for (const part of ['labels', 'legend', 'title', 'symbols', 'gradient', 'entries']) {
-      const legendEncodingPart = guideEncodeEntry(legendEncoding[part] ?? {}, model);
+      var _legendEncoding$part;
+
+      const legendEncodingPart = guideEncodeEntry((_legendEncoding$part = legendEncoding[part]) !== null && _legendEncoding$part !== void 0 ? _legendEncoding$part : {}, model);
       const value = part in legendEncodeRules ? legendEncodeRules[part](legendEncodingPart, legendEncodeParams) // apply rule
       : legendEncodingPart; // no rule -- just default values
 
       if (value !== undefined && !isEmpty(value)) {
         legendEncode[part] = { ...(selections !== null && selections !== void 0 && selections.length && isFieldDef(fieldOrDatumDef) ? {
-            name: `${varName(fieldOrDatumDef.field)}_legend_${part}`
+            name: "".concat(varName(fieldOrDatumDef.field), "_legend_").concat(part)
           } : {}),
           ...(selections !== null && selections !== void 0 && selections.length ? {
             interactive: !!selections
@@ -66012,11 +66597,11 @@
   }
 
   function setLegendEncode(legend, part, vgProp, vgRef) {
-    var _legend$encode, _legend$encode$part;
+    var _legend$encode, _legend$encode2, _legend$encode2$part, _legend$encode$part, _legend$encode$part$u;
 
-    legend.encode ?? (legend.encode = {});
-    (_legend$encode = legend.encode)[part] ?? (_legend$encode[part] = {});
-    (_legend$encode$part = legend.encode[part]).update ?? (_legend$encode$part.update = {}); // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
+    (_legend$encode = legend.encode) !== null && _legend$encode !== void 0 ? _legend$encode : legend.encode = {};
+    (_legend$encode2$part = (_legend$encode2 = legend.encode)[part]) !== null && _legend$encode2$part !== void 0 ? _legend$encode2$part : _legend$encode2[part] = {};
+    (_legend$encode$part$u = (_legend$encode$part = legend.encode[part]).update) !== null && _legend$encode$part$u !== void 0 ? _legend$encode$part$u : _legend$encode$part.update = {}; // TODO: remove as any after https://github.com/prisma/nexus-prisma/issues/291
 
     legend.encode[part].update[vgProp] = vgRef;
   }
@@ -66047,7 +66632,7 @@
     return legends;
   }
   function assembleLegend(legendCmpt, config) {
-    var _legend$encode2;
+    var _legend$encode3;
 
     const {
       disable,
@@ -66064,7 +66649,7 @@
       legend.aria = false;
     }
 
-    if ((_legend$encode2 = legend.encode) !== null && _legend$encode2 !== void 0 && _legend$encode2.symbols) {
+    if ((_legend$encode3 = legend.encode) !== null && _legend$encode3 !== void 0 && _legend$encode3.symbols) {
       const out = legend.encode.symbols.update;
 
       if (out.fill && out.fill['value'] !== 'transparent' && !out.stroke && !legend.stroke) {
@@ -66088,11 +66673,11 @@
     }
 
     if (labelExpr !== undefined) {
-      var _legend$encode3, _legend$encode3$label;
+      var _legend$encode4, _legend$encode4$label;
 
       let expr = labelExpr;
 
-      if ((_legend$encode3 = legend.encode) !== null && _legend$encode3 !== void 0 && (_legend$encode3$label = _legend$encode3.labels) !== null && _legend$encode3$label !== void 0 && _legend$encode3$label.update && isSignalRef(legend.encode.labels.update.text)) {
+      if ((_legend$encode4 = legend.encode) !== null && _legend$encode4 !== void 0 && (_legend$encode4$label = _legend$encode4.labels) !== null && _legend$encode4$label !== void 0 && _legend$encode4$label.update && isSignalRef(legend.encode.labels.update.text)) {
         expr = replaceAll(labelExpr, 'datum.label', legend.encode.labels.update.text.signal);
       }
 
@@ -66144,10 +66729,10 @@
     } else {
       // generate projection that uses extent fitting
       const size = {
-        signal: `[${component.size.map(ref => ref.signal).join(', ')}]`
+        signal: "[".concat(component.size.map(ref => ref.signal).join(', '), "]")
       };
       const fits = component.data.reduce((sources, data) => {
-        const source = isSignalRef(data) ? data.signal : `data('${model.lookupDataSource(data)}')`;
+        const source = isSignalRef(data) ? data.signal : "data('".concat(model.lookupDataSource(data), "')");
 
         if (!contains(sources, source)) {
           // build a unique list of sources
@@ -66165,7 +66750,7 @@
         name,
         size,
         fit: {
-          signal: fits.length > 1 ? `[${fits.join(', ')}]` : fits[0]
+          signal: fits.length > 1 ? "[".concat(fits.join(', '), "]") : fits[0]
         },
         ...projection
       }];
@@ -66208,12 +66793,14 @@
 
   function parseUnitProjection(model) {
     if (model.hasProjection) {
+      var _replaceExprRef;
+
       const proj = replaceExprRef(model.specifiedProjection);
       const fit = !(proj && (proj.scale != null || proj.translate != null));
       const size = fit ? [model.getSizeSignalRef('width'), model.getSizeSignalRef('height')] : undefined;
       const data = fit ? gatherFitData(model) : undefined;
-      const projComp = new ProjectionComponent(model.projectionName(true), { ...(replaceExprRef(model.config.projection) ?? {}),
-        ...(proj ?? {})
+      const projComp = new ProjectionComponent(model.projectionName(true), { ...((_replaceExprRef = replaceExprRef(model.config.projection)) !== null && _replaceExprRef !== void 0 ? _replaceExprRef : {}),
+        ...(proj !== null && proj !== void 0 ? proj : {})
       }, size, data);
 
       if (!projComp.get('type')) {
@@ -66235,14 +66822,14 @@
     for (const posssiblePair of [[LONGITUDE, LATITUDE], [LONGITUDE2, LATITUDE2]]) {
       if (getFieldOrDatumDef(encoding[posssiblePair[0]]) || getFieldOrDatumDef(encoding[posssiblePair[1]])) {
         data.push({
-          signal: model.getName(`geojson_${data.length}`)
+          signal: model.getName("geojson_".concat(data.length))
         });
       }
     }
 
     if (model.channelHasField(SHAPE) && model.typedFieldDef(SHAPE).type === GEOJSON) {
       data.push({
-        signal: model.getName(`geojson_${data.length}`)
+        signal: model.getName("geojson_".concat(data.length))
       });
     }
 
@@ -66344,8 +66931,10 @@
 
   function rangeFormula(model, fieldDef, channel, config) {
     if (binRequiresRange(fieldDef, channel)) {
+      var _ref, _model$axis;
+
       // read format from axis or legend, if there is no format then use config.numberFormat
-      const guide = isUnitModel(model) ? model.axis(channel) ?? model.legend(channel) ?? {} : {};
+      const guide = isUnitModel(model) ? (_ref = (_model$axis = model.axis(channel)) !== null && _model$axis !== void 0 ? _model$axis : model.legend(channel)) !== null && _ref !== void 0 ? _ref : {} : {};
       const startField = vgField(fieldDef, {
         expr: 'datum'
       });
@@ -66366,20 +66955,22 @@
   }
 
   function binKey(bin, field) {
-    return `${binToString(bin)}_${field}`;
+    return "".concat(binToString(bin), "_").concat(field);
   }
 
   function getSignalsFromModel(model, key) {
     return {
-      signal: model.getName(`${key}_bins`),
-      extentSignal: model.getName(`${key}_extent`)
+      signal: model.getName("".concat(key, "_bins")),
+      extentSignal: model.getName("".concat(key, "_extent"))
     };
   }
 
   function getBinSignalName(model, field, bin) {
-    const normalizedBin = normalizeBin(bin, undefined) ?? {};
+    var _normalizeBin;
+
+    const normalizedBin = (_normalizeBin = normalizeBin(bin, undefined)) !== null && _normalizeBin !== void 0 ? _normalizeBin : {};
     const key = binKey(normalizedBin, field);
-    return model.getName(`${key}_bins`);
+    return model.getName("".concat(key, "_bins"));
   }
 
   function isBinTransform(t) {
@@ -66391,7 +66982,7 @@
     let span;
 
     if (isBinTransform(t)) {
-      as = isString(t.as) ? [t.as, `${t.as}_end`] : [t.as[0], t.as[1]];
+      as = isString(t.as) ? [t.as, "".concat(t.as, "_end")] : [t.as[0], t.as[1]];
     } else {
       as = [vgField(t, {
         forAs: true
@@ -66516,7 +67107,7 @@
     }
 
     hash() {
-      return `Bin ${hash(this.bins)}`;
+      return "Bin ".concat(hash(this.bins));
     }
 
     assemble() {
@@ -66539,7 +67130,7 @@
           }),
           ...(bin.span ? {
             span: {
-              signal: `span(${bin.span})`
+              signal: "span(".concat(bin.span, ")")
             }
           } : {}),
           ...params
@@ -66623,8 +67214,10 @@
 
       for (const op of keys(ops)) {
         if (field in parentMeasures) {
+          var _parentMeasures$field;
+
           // add operator to existing measure field
-          parentMeasures[field][op] = new Set([...(parentMeasures[field][op] ?? []), ...ops[op]]);
+          parentMeasures[field][op] = new Set([...((_parentMeasures$field = parentMeasures[field][op]) !== null && _parentMeasures$field !== void 0 ? _parentMeasures$field : []), ...ops[op]]);
         } else {
           parentMeasures[field] = {
             [op]: ops[op]
@@ -66677,17 +67270,19 @@
 
         if (aggregate) {
           if (aggregate === 'count') {
-            var _;
+            var _, _meas$_;
 
-            meas[_ = '*'] ?? (meas[_] = {});
+            (_meas$_ = meas[_ = '*']) !== null && _meas$_ !== void 0 ? _meas$_ : meas[_] = {};
             meas['*']['count'] = new Set([vgField(fieldDef, {
               forAs: true
             })]);
           } else {
             if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
+              var _meas$argField;
+
               const op = isArgminDef(aggregate) ? 'argmin' : 'argmax';
               const argField = aggregate[op];
-              meas[argField] ?? (meas[argField] = {});
+              (_meas$argField = meas[argField]) !== null && _meas$argField !== void 0 ? _meas$argField : meas[argField] = {};
               meas[argField][op] = new Set([vgField({
                 op,
                 field: argField
@@ -66695,7 +67290,9 @@
                 forAs: true
               })]);
             } else {
-              meas[field] ?? (meas[field] = {});
+              var _meas$field;
+
+              (_meas$field = meas[field]) !== null && _meas$field !== void 0 ? _meas$field : meas[field] = {};
               meas[field][aggregate] = new Set([vgField(fieldDef, {
                 forAs: true
               })]);
@@ -66703,7 +67300,9 @@
 
 
             if (isScaleChannel(channel) && model.scaleDomain(channel) === 'unaggregated') {
-              meas[field] ?? (meas[field] = {});
+              var _meas$field2;
+
+              (_meas$field2 = meas[field]) !== null && _meas$field2 !== void 0 ? _meas$field2 : meas[field] = {};
               meas[field]['min'] = new Set([vgField({
                 field,
                 aggregate: 'min'
@@ -66743,14 +67342,16 @@
 
         if (op) {
           if (op === 'count') {
-            var _2;
+            var _2, _meas$_2;
 
-            meas[_2 = '*'] ?? (meas[_2] = {});
+            (_meas$_2 = meas[_2 = '*']) !== null && _meas$_2 !== void 0 ? _meas$_2 : meas[_2] = {};
             meas['*']['count'] = new Set([as ? as : vgField(s, {
               forAs: true
             })]);
           } else {
-            meas[field] ?? (meas[field] = {});
+            var _meas$field3;
+
+            (_meas$field3 = meas[field]) !== null && _meas$field3 !== void 0 ? _meas$field3 : meas[field] = {};
             meas[field][op] = new Set([as ? as : vgField(s, {
               forAs: true
             })]);
@@ -66758,7 +67359,9 @@
         }
       }
 
-      for (const s of t.groupby ?? []) {
+      for (const s of (_t$groupby = t.groupby) !== null && _t$groupby !== void 0 ? _t$groupby : []) {
+        var _t$groupby;
+
         dims.add(s);
       }
 
@@ -66773,10 +67376,10 @@
       if (setEqual(this.dimensions, other.dimensions)) {
         mergeMeasures(this.measures, other.measures);
         return true;
-      } else {
-        debug('different dimensions, cannot merge');
-        return false;
       }
+
+      debug('different dimensions, cannot merge');
+      return false;
     }
 
     addDimensions(fields) {
@@ -66795,7 +67398,7 @@
           const m = this.measures[field][op];
 
           if (m.size === 0) {
-            out.add(`${op}_${field}`);
+            out.add("".concat(op, "_").concat(field));
           } else {
             m.forEach(out.add, out);
           }
@@ -66806,10 +67409,10 @@
     }
 
     hash() {
-      return `Aggregate ${hash({
-      dimensions: this.dimensions,
-      measures: this.measures
-    })}`;
+      return "Aggregate ".concat(hash({
+        dimensions: this.dimensions,
+        measures: this.measures
+      }));
     }
 
     assemble() {
@@ -66871,7 +67474,7 @@
             sort
           } = fieldDef;
           this[channel] = {
-            name: model.getName(`${channel}_domain`),
+            name: model.getName("".concat(channel, "_domain")),
             fields: [vgField(fieldDef), ...(isBinning(bin) ? [vgField(fieldDef, {
               binSuffix: 'end'
             })] : [])],
@@ -66888,11 +67491,11 @@
     }
 
     hash() {
-      let out = `Facet`;
+      let out = "Facet";
 
       for (const channel of FACET_CHANNELS) {
         if (this[channel]) {
-          out += ` ${channel.charAt(0)}:${hash(this[channel])}`;
+          out += " ".concat(channel.charAt(0), ":").concat(hash(this[channel]));
         }
       }
 
@@ -66983,7 +67586,7 @@
       if (childChannel && childIndependentFieldsWithStep && childIndependentFieldsWithStep[childChannel]) {
         if (crossedDataName) {
           // If there is a crossed data, calculate max
-          fields.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
+          fields.push("distinct_".concat(childIndependentFieldsWithStep[childChannel]));
           ops.push('max');
         } else {
           // If there is no crossed data, just calculate distinct
@@ -66992,7 +67595,7 @@
         } // Although it is technically a max, just name it distinct so it's easier to refer to it
 
 
-        as.push(`distinct_${childIndependentFieldsWithStep[childChannel]}`);
+        as.push("distinct_".concat(childIndependentFieldsWithStep[childChannel]));
       }
 
       const {
@@ -67019,7 +67622,7 @@
       return {
         name: this[channel].name,
         // Use data from the crossed one if it exist
-        source: crossedDataName ?? this.data,
+        source: crossedDataName !== null && crossedDataName !== void 0 ? crossedDataName : this.data,
         transform: [{
           type: 'aggregate',
           groupby: this[channel].fields,
@@ -67044,7 +67647,9 @@
 
       for (const headerChannel of HEADER_CHANNELS) {
         for (const headerType of HEADER_TYPES) {
-          const headers = (layoutHeaders[headerChannel] && layoutHeaders[headerChannel][headerType]) ?? [];
+          var _ref;
+
+          const headers = (_ref = layoutHeaders[headerChannel] && layoutHeaders[headerChannel][headerType]) !== null && _ref !== void 0 ? _ref : [];
 
           for (const header of headers) {
             var _header$axes;
@@ -67057,16 +67662,16 @@
         }
 
         if (hasSharedAxis[headerChannel]) {
-          const cardinality = `length(data("${this.facet.name}"))`;
+          const cardinality = "length(data(\"".concat(this.facet.name, "\"))");
           const stop = headerChannel === 'row' ? columns ? {
-            signal: `ceil(${cardinality} / ${columns})`
+            signal: "ceil(".concat(cardinality, " / ").concat(columns, ")")
           } : 1 : columns ? {
-            signal: `min(${cardinality}, ${columns})`
+            signal: "min(".concat(cardinality, ", ").concat(columns, ")")
           } : {
             signal: cardinality
           };
           data.push({
-            name: `${this.facet.name}_${headerChannel}`,
+            name: "".concat(this.facet.name, "_").concat(headerChannel),
             transform: [{
               type: 'sequence',
               start: 0,
@@ -67099,9 +67704,11 @@
       } = this;
 
       if (column && row && (childIndependentFieldsWithStep.x || childIndependentFieldsWithStep.y)) {
+        var _childIndependentFiel, _childIndependentFiel2;
+
         // Need to create a cross dataset to correctly calculate cardinality
-        crossedDataName = `cross_${this.column.name}_${this.row.name}`;
-        const fields = [].concat(childIndependentFieldsWithStep.x ?? [], childIndependentFieldsWithStep.y ?? []);
+        crossedDataName = "cross_".concat(this.column.name, "_").concat(this.row.name);
+        const fields = [].concat((_childIndependentFiel = childIndependentFieldsWithStep.x) !== null && _childIndependentFiel !== void 0 ? _childIndependentFiel : [], (_childIndependentFiel2 = childIndependentFieldsWithStep.y) !== null && _childIndependentFiel2 !== void 0 ? _childIndependentFiel2 : []);
         const ops = fields.map(() => 'distinct');
         data.push({
           name: crossedDataName,
@@ -67139,7 +67746,7 @@
    */
 
   function unquote(pattern) {
-    if (pattern[0] === "'" && pattern[pattern.length - 1] === "'" || pattern[0] === '"' && pattern[pattern.length - 1] === '"') {
+    if (pattern.startsWith("'") && pattern.endsWith("'") || pattern.startsWith('"') && pattern.endsWith('"')) {
       return pattern.slice(1, -1);
     }
 
@@ -67155,21 +67762,21 @@
     const f = accessPathWithDatum(field);
 
     if (parse === 'number') {
-      return `toNumber(${f})`;
+      return "toNumber(".concat(f, ")");
     } else if (parse === 'boolean') {
-      return `toBoolean(${f})`;
+      return "toBoolean(".concat(f, ")");
     } else if (parse === 'string') {
-      return `toString(${f})`;
+      return "toString(".concat(f, ")");
     } else if (parse === 'date') {
-      return `toDate(${f})`;
+      return "toDate(".concat(f, ")");
     } else if (parse === 'flatten') {
       return f;
     } else if (parse.startsWith('date:')) {
       const specifier = unquote(parse.slice(5, parse.length));
-      return `timeParse(${f},'${specifier}')`;
+      return "timeParse(".concat(f, ",'").concat(specifier, "')");
     } else if (parse.startsWith('utc:')) {
       const specifier = unquote(parse.slice(4, parse.length));
-      return `utcParse(${f},'${specifier}')`;
+      return "utcParse(".concat(f, ",'").concat(specifier, "')");
     } else {
       warn(unrecognizedParse(parse));
       return null;
@@ -67198,7 +67805,9 @@
         } else if (isFieldRangePredicate(filter)) {
           val = filter.range[0];
         } else if (isFieldOneOfPredicate(filter)) {
-          val = (filter.oneOf ?? filter['in'])[0];
+          var _filter$oneOf;
+
+          val = ((_filter$oneOf = filter.oneOf) !== null && _filter$oneOf !== void 0 ? _filter$oneOf : filter['in'])[0];
         } // else -- for filter expression, we can't infer anything
 
 
@@ -67317,7 +67926,7 @@
     }
 
     hash() {
-      return `Parse ${hash(this._parse)}`;
+      return "Parse ".concat(hash(this._parse));
     }
     /**
      * Creates a parse node from a data.format.parse and updates ancestorParse.
@@ -67429,7 +68038,8 @@
       return new Set(keys(this._parse));
     }
 
-    assembleTransforms(onlyNested = false) {
+    assembleTransforms() {
+      let onlyNested = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : false;
       return keys(this._parse).filter(field => onlyNested ? accessPathDepth(field) > 1 : true).map(field => {
         const expr = parseExpression(field, this._parse[field]);
 
@@ -67498,7 +68108,7 @@
     }
 
     hash() {
-      return `Graticule ${hash(this.params)}`;
+      return "Graticule ".concat(hash(this.params));
     }
 
     assemble() {
@@ -67525,11 +68135,13 @@
     }
 
     producedFields() {
-      return new Set([this.params.as ?? 'data']);
+      var _this$params$as;
+
+      return new Set([(_this$params$as = this.params.as) !== null && _this$params$as !== void 0 ? _this$params$as : 'data']);
     }
 
     hash() {
-      return `Hash ${hash(this.params)}`;
+      return "Hash ".concat(hash(this.params));
     }
 
     assemble() {
@@ -67543,6 +68155,8 @@
 
   class SourceNode extends DataFlowNode {
     constructor(data) {
+      var _data;
+
       super(null); // source cannot have parent
 
       _defineProperty(this, "_data", void 0);
@@ -67551,9 +68165,9 @@
 
       _defineProperty(this, "_generator", void 0);
 
-      data ?? (data = {
+      (_data = data) !== null && _data !== void 0 ? _data : data = {
         name: 'source'
-      });
+      };
       let format;
 
       if (!isGenerator(data)) {
@@ -67671,7 +68285,7 @@
 
   class Optimizer {
     constructor() {
-      _modified.set(this, {
+      _classPrivateFieldInitSpec(this, _modified, {
         writable: true,
         value: void 0
       });
@@ -68185,11 +68799,13 @@
     }
 
     getDefaultName(joinAggregateFieldDef) {
-      return joinAggregateFieldDef.as ?? vgField(joinAggregateFieldDef);
+      var _joinAggregateFieldDe;
+
+      return (_joinAggregateFieldDe = joinAggregateFieldDef.as) !== null && _joinAggregateFieldDe !== void 0 ? _joinAggregateFieldDe : vgField(joinAggregateFieldDef);
     }
 
     hash() {
-      return `JoinAggregateTransform ${hash(this.transform)}`;
+      return "JoinAggregateTransform ".concat(hash(this.transform));
     }
 
     assemble() {
@@ -68274,12 +68890,13 @@
       if (isValidAsArray(as)) {
         normalizedAs = as;
       } else if (isString(as)) {
-        normalizedAs = [as, `${as}_end`];
+        normalizedAs = [as, "".concat(as, "_end")];
       } else {
-        normalizedAs = [`${stackTransform.stack}_start`, `${stackTransform.stack}_end`];
+        normalizedAs = ["".concat(stackTransform.stack, "_start"), "".concat(stackTransform.stack, "_end")];
       }
 
       return new StackNode(parent, {
+        dimensionFieldDefs: [],
         stackField: stack,
         groupby,
         offset,
@@ -68300,18 +68917,15 @@
       }
 
       const {
-        groupbyChannel,
+        groupbyChannels,
         fieldChannel,
         offset,
         impute
       } = stackProperties;
-      let dimensionFieldDef;
-
-      if (groupbyChannel) {
+      const dimensionFieldDefs = groupbyChannels.map(groupbyChannel => {
         const cDef = encoding[groupbyChannel];
-        dimensionFieldDef = getFieldDef(cDef); // Fair to cast as groupByChannel is always either x or y
-      }
-
+        return getFieldDef(cDef);
+      }).filter(def => !!def);
       const stackby = getStackByFields(model);
       const orderDef = model.encoding.order;
       let sort;
@@ -68332,7 +68946,7 @@
       }
 
       return new StackNode(parent, {
-        dimensionFieldDef,
+        dimensionFieldDefs,
         stackField: model.vgField(fieldChannel),
         facetby: [],
         stackby,
@@ -68374,43 +68988,45 @@
     }
 
     hash() {
-      return `Stack ${hash(this._stack)}`;
+      return "Stack ".concat(hash(this._stack));
     }
 
     getGroupbyFields() {
       const {
-        dimensionFieldDef,
+        dimensionFieldDefs,
         impute,
         groupby
       } = this._stack;
 
-      if (dimensionFieldDef) {
-        if (dimensionFieldDef.bin) {
-          if (impute) {
-            // For binned group by field with impute, we calculate bin_mid
-            // as we cannot impute two fields simultaneously
-            return [vgField(dimensionFieldDef, {
-              binSuffix: 'mid'
+      if (dimensionFieldDefs.length > 0) {
+        return dimensionFieldDefs.map(dimensionFieldDef => {
+          if (dimensionFieldDef.bin) {
+            if (impute) {
+              // For binned group by field with impute, we calculate bin_mid
+              // as we cannot impute two fields simultaneously
+              return [vgField(dimensionFieldDef, {
+                binSuffix: 'mid'
+              })];
+            }
+
+            return [// For binned group by field without impute, we need both bin (start) and bin_end
+            vgField(dimensionFieldDef, {}), vgField(dimensionFieldDef, {
+              binSuffix: 'end'
             })];
           }
 
-          return [// For binned group by field without impute, we need both bin (start) and bin_end
-          vgField(dimensionFieldDef, {}), vgField(dimensionFieldDef, {
-            binSuffix: 'end'
-          })];
-        }
-
-        return [vgField(dimensionFieldDef)];
+          return [vgField(dimensionFieldDef)];
+        }).flat();
       }
 
-      return groupby ?? [];
+      return groupby !== null && groupby !== void 0 ? groupby : [];
     }
 
     assemble() {
       const transform = [];
       const {
         facetby,
-        dimensionFieldDef,
+        dimensionFieldDefs,
         stackField: field,
         stackby,
         sort,
@@ -68419,40 +69035,44 @@
         as
       } = this._stack; // Impute
 
-      if (impute && dimensionFieldDef) {
-        const {
-          bandPosition = 0.5,
-          bin
-        } = dimensionFieldDef;
+      if (impute) {
+        for (const dimensionFieldDef of dimensionFieldDefs) {
+          const {
+            bandPosition = 0.5,
+            bin
+          } = dimensionFieldDef;
 
-        if (bin) {
-          // As we can only impute one field at a time, we need to calculate
-          // mid point for a binned field
-          transform.push({
-            type: 'formula',
-            expr: `${bandPosition}*` + vgField(dimensionFieldDef, {
+          if (bin) {
+            // As we can only impute one field at a time, we need to calculate
+            // mid point for a binned field
+            const binStart = vgField(dimensionFieldDef, {
               expr: 'datum'
-            }) + `+${1 - bandPosition}*` + vgField(dimensionFieldDef, {
+            });
+            const binEnd = vgField(dimensionFieldDef, {
               expr: 'datum',
               binSuffix: 'end'
+            });
+            transform.push({
+              type: 'formula',
+              expr: "".concat(bandPosition, "*").concat(binStart, "+").concat(1 - bandPosition, "*").concat(binEnd),
+              as: vgField(dimensionFieldDef, {
+                binSuffix: 'mid',
+                forAs: true
+              })
+            });
+          }
+
+          transform.push({
+            type: 'impute',
+            field,
+            groupby: [...stackby, ...facetby],
+            key: vgField(dimensionFieldDef, {
+              binSuffix: 'mid'
             }),
-            as: vgField(dimensionFieldDef, {
-              binSuffix: 'mid',
-              forAs: true
-            })
+            method: 'value',
+            value: 0
           });
         }
-
-        transform.push({
-          type: 'impute',
-          field,
-          groupby: [...stackby, ...facetby],
-          key: vgField(dimensionFieldDef, {
-            binSuffix: 'mid'
-          }),
-          method: 'value',
-          value: 0
-        });
       } // Stack
 
 
@@ -68488,9 +69108,11 @@
     }
 
     dependentFields() {
+      var _this$transform$group, _this$transform$sort;
+
       const out = new Set();
-      (this.transform.groupby ?? []).forEach(out.add, out);
-      (this.transform.sort ?? []).forEach(m => out.add(m.field));
+      ((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : []).forEach(out.add, out);
+      ((_this$transform$sort = this.transform.sort) !== null && _this$transform$sort !== void 0 ? _this$transform$sort : []).forEach(m => out.add(m.field));
       this.transform.window.map(w => w.field).filter(f => f !== undefined).forEach(out.add, out);
       return out;
     }
@@ -68500,11 +69122,13 @@
     }
 
     getDefaultName(windowFieldDef) {
-      return windowFieldDef.as ?? vgField(windowFieldDef);
+      var _windowFieldDef$as;
+
+      return (_windowFieldDef$as = windowFieldDef.as) !== null && _windowFieldDef$as !== void 0 ? _windowFieldDef$as : vgField(windowFieldDef);
     }
 
     hash() {
-      return `WindowTransform ${hash(this.transform)}`;
+      return "WindowTransform ".concat(hash(this.transform));
     }
 
     assemble() {
@@ -68541,8 +69165,10 @@
 
       if (this.transform.sort !== undefined) {
         for (const sortField of this.transform.sort) {
+          var _sortField$order;
+
           sortFields.push(sortField.field);
-          sortOrder.push(sortField.order ?? 'ascending');
+          sortOrder.push((_sortField$order = sortField.order) !== null && _sortField$order !== void 0 ? _sortField$order : 'ascending');
         }
       }
 
@@ -68748,7 +69374,7 @@
     checkLinks(data.sources);
 
     if (Math.max(firstPassCounter, secondPassCounter) === MAX_OPTIMIZATION_RUNS) {
-      warn(`Maximum optimization runs(${MAX_OPTIMIZATION_RUNS}) reached.`);
+      warn("Maximum optimization runs(".concat(MAX_OPTIMIZATION_RUNS, ") reached."));
     }
   }
 
@@ -68920,7 +69546,7 @@
         type
       });
       return {
-        signal: `{data: ${data}}`
+        signal: "{data: ".concat(data, "}")
       };
     });
   }
@@ -69040,7 +69666,7 @@
           const binSignal = getBinSignalName(model, fieldDef.field, bin);
           return makeImplicit([new SignalRefWrapper(() => {
             const signal = model.getSignalName(binSignal);
-            return `[${signal}.start, ${signal}.stop]`;
+            return "[".concat(signal, ".start, ").concat(signal, ".stop]");
           })]);
         } else {
           return makeImplicit([{
@@ -69066,7 +69692,7 @@
         // so we can aggregate values for the scale independently from the main aggregation.
         data: isBoolean(sort) ? model.requestDataName(DataSourceType.Main) : model.requestDataName(DataSourceType.Raw),
         field: model.vgField(channel),
-        sort: sort
+        sort
       }]);
     } else {
       return makeImplicit([{
@@ -69084,7 +69710,7 @@
     } = sort;
     return {
       // Apply default op
-      op: op ?? (isStackedMeasure ? 'sum' : DEFAULT_SORT_OP),
+      op: op !== null && op !== void 0 ? op : isStackedMeasure ? 'sum' : DEFAULT_SORT_OP,
       // flatten nested fields
       ...(field ? {
         field: replacePathInField(field)
@@ -69108,7 +69734,7 @@
       // As scale parsing occurs before selection parsing, we cannot set
       // domainRaw directly. So instead, we store the selectionExtent on
       // the scale component, and then add domainRaw during scale assembly.
-      scale.set('selectionExtent', domain ?? extent, true);
+      scale.set('selectionExtent', domain !== null && domain !== void 0 ? domain : extent, true);
     }
   }
 
@@ -69132,10 +69758,10 @@
     const {
       stack
     } = model;
-    const stackDimensions = stack ? [...(stack.groupbyField ? [stack.groupbyField] : []), ...stack.stackBy.map(s => s.fieldDef.field)] : undefined; // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
+    const stackDimensions = stack ? new Set([...stack.groupbyFields, ...stack.stackBy.map(s => s.fieldDef.field)]) : undefined; // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
 
     if (isSortField(sort)) {
-      const isStackedMeasure = stack && !contains(stackDimensions, sort.field);
+      const isStackedMeasure = stack && !stackDimensions.has(sort.field);
       return normalizeSortField(sort, isStackedMeasure);
     } else if (isSortByEncoding(sort)) {
       const {
@@ -69147,7 +69773,7 @@
         aggregate,
         field
       } = fieldDefToSortBy;
-      const isStackedMeasure = stack && !contains(stackDimensions, field);
+      const isStackedMeasure = stack && !stackDimensions.has(field);
 
       if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
         return normalizeSortField({
@@ -69198,7 +69824,7 @@
       };
     }
 
-    if (isString(aggregate) && !SHARED_DOMAIN_OP_INDEX[aggregate]) {
+    if (isString(aggregate) && !SHARED_DOMAIN_OPS.has(aggregate)) {
       return {
         valid: false,
         reason: unaggregateDomainWithNonSharedDomainOp(aggregate)
@@ -69457,7 +70083,7 @@
         // For width/height step, use a signal created in layout assemble instead of a constant step.
         return {
           step: {
-            signal: `${scaleName}_step`
+            signal: "".concat(scaleName, "_step")
           }
         };
       }
@@ -69503,11 +70129,6 @@
   }
 
   const RANGE_PROPERTIES = ['range', 'scheme'];
-
-  function getSizeChannel(channel) {
-    return channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
-  }
-
   function parseUnitScaleRange(model) {
     const localScaleComponents = model.component.scales; // use SCALE_CHANNELS instead of scales[channel] to ensure that x, y come first!
 
@@ -69537,16 +70158,16 @@
       if (isObject(bin) && bin.binned && bin.step !== undefined) {
         return new SignalRefWrapper(() => {
           const scaleName = model.scaleName(channel);
-          const binCount = `(domain("${scaleName}")[1] - domain("${scaleName}")[0]) / ${bin.step}`;
-          return `${model.getSignalName(sizeSignal)} / (${binCount})`;
+          const binCount = "(domain(\"".concat(scaleName, "\")[1] - domain(\"").concat(scaleName, "\")[0]) / ").concat(bin.step);
+          return "".concat(model.getSignalName(sizeSignal), " / (").concat(binCount, ")");
         });
       } else if (isBinning(bin)) {
         const binSignal = getBinSignalName(model, field, bin); // TODO: extract this to be range step signal
 
         return new SignalRefWrapper(() => {
           const updatedName = model.getSignalName(binSignal);
-          const binCount = `(${updatedName}.stop - ${updatedName}.start) / ${updatedName}.step`;
-          return `${model.getSignalName(sizeSignal)} / (${binCount})`;
+          const binCount = "(".concat(updatedName, ".stop - ").concat(updatedName, ".start) / ").concat(updatedName, ".step");
+          return "".concat(model.getSignalName(sizeSignal), " / (").concat(binCount, ")");
         });
       }
     }
@@ -69618,17 +70239,33 @@
       }
     }
 
-    if (channel === X || channel === Y) {
-      const sizeChannel = channel === X ? 'width' : 'height';
-      const sizeValue = size[sizeChannel];
+    const sizeChannel = channel === X || channel === 'xOffset' ? 'width' : 'height';
+    const sizeValue = size[sizeChannel];
 
-      if (isStep(sizeValue)) {
+    if (isStep(sizeValue)) {
+      if (isXorY(channel)) {
         if (hasDiscreteDomain(scaleType)) {
-          return makeExplicit({
-            step: sizeValue.step
-          });
+          const step = getPositionStep(sizeValue, model, channel); // Need to be explicit so layer with step wins over layer without step
+
+          if (step) {
+            return makeExplicit({
+              step
+            });
+          }
         } else {
           warn(stepDropped(sizeChannel));
+        }
+      } else if (isXorYOffset(channel)) {
+        const positionChannel = channel === XOFFSET ? 'x' : 'y';
+        const positionScaleCmpt = model.getScaleComponent(positionChannel);
+        const positionScaleType = positionScaleCmpt.get('type');
+
+        if (positionScaleType === 'band') {
+          const step = getOffsetStep(sizeValue, scaleType);
+
+          if (step) {
+            return makeExplicit(step);
+          }
         }
       }
     }
@@ -69641,7 +70278,7 @@
 
     if ((rangeMin !== undefined || rangeMax !== undefined) && // it's ok to check just rangeMin's compatibility since rangeMin/rangeMax are the same
     scaleTypeSupportProperty(scaleType, 'rangeMin') && isArray(d) && d.length === 2) {
-      return makeExplicit([rangeMin ?? d[0], rangeMax ?? d[1]]);
+      return makeExplicit([rangeMin !== null && rangeMin !== void 0 ? rangeMin : d[0], rangeMax !== null && rangeMax !== void 0 ? rangeMax : d[1]]);
     }
 
     return makeImplicit(d);
@@ -69656,7 +70293,7 @@
     }
 
     return {
-      scheme: scheme
+      scheme
     };
   }
 
@@ -69684,18 +70321,13 @@
         {
           // If there is no explicit width/height for discrete x/y scales
           if (contains(['point', 'band'], scaleType)) {
-            if (channel === X && !size.width) {
-              const w = getViewConfigDiscreteSize(config.view, 'width');
+            const positionSize = getDiscretePositionSize(channel, size, config.view);
 
-              if (isStep(w)) {
-                return w;
-              }
-            } else if (channel === Y && !size.height) {
-              const h = getViewConfigDiscreteSize(config.view, 'height');
-
-              if (isStep(h)) {
-                return h;
-              }
+            if (isStep(positionSize)) {
+              const step = getPositionStep(positionSize, model, channel);
+              return {
+                step
+              };
             }
           } // If step is null, use zero to width or height.
           // Note that we use SignalRefWrapper to account for potential merges and renames.
@@ -69711,6 +70343,10 @@
             return [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
           }
         }
+
+      case XOFFSET:
+      case YOFFSET:
+        return getOffsetRange(channel, model, scaleType);
 
       case SIZE:
         {
@@ -69740,7 +70376,7 @@
           return [0, new SignalRefWrapper(() => {
             const w = model.getSignalName('width');
             const h = model.getSignalName('height');
-            return `min(${w},${h})/2`;
+            return "min(".concat(w, ",").concat(h, ")/2");
           })];
         }
 
@@ -69775,10 +70411,96 @@
         // TODO: support custom rangeMin, rangeMax
         return [config.scale.minOpacity, config.scale.maxOpacity];
     }
-    /* istanbul ignore next: should never reach here */
+  }
+
+  function getPositionStep(step, model, channel) {
+    const {
+      encoding
+    } = model;
+    const mergedScaleCmpt = model.getScaleComponent(channel);
+    const offsetChannel = getOffsetScaleChannel(channel);
+    const offsetDef = encoding[offsetChannel];
+    const stepFor = getStepFor({
+      step,
+      offsetIsDiscrete: isFieldOrDatumDef(offsetDef) && isDiscrete$1(offsetDef.type)
+    });
+
+    if (stepFor === 'offset' && channelHasFieldOrDatum(encoding, offsetChannel)) {
+      var _mergedScaleCmpt$get;
+
+      const offsetScaleCmpt = model.getScaleComponent(offsetChannel);
+      const offsetScaleName = model.scaleName(offsetChannel);
+      let stepCount = "domain('".concat(offsetScaleName, "').length");
+
+      if (offsetScaleCmpt.get('type') === 'band') {
+        var _ref, _offsetScaleCmpt$get, _ref2, _offsetScaleCmpt$get2;
+
+        const offsetPaddingInner = (_ref = (_offsetScaleCmpt$get = offsetScaleCmpt.get('paddingInner')) !== null && _offsetScaleCmpt$get !== void 0 ? _offsetScaleCmpt$get : offsetScaleCmpt.get('padding')) !== null && _ref !== void 0 ? _ref : 0;
+        const offsetPaddingOuter = (_ref2 = (_offsetScaleCmpt$get2 = offsetScaleCmpt.get('paddingOuter')) !== null && _offsetScaleCmpt$get2 !== void 0 ? _offsetScaleCmpt$get2 : offsetScaleCmpt.get('padding')) !== null && _ref2 !== void 0 ? _ref2 : 0;
+        stepCount = "bandspace(".concat(stepCount, ", ").concat(offsetPaddingInner, ", ").concat(offsetPaddingOuter, ")");
+      }
+
+      const paddingInner = (_mergedScaleCmpt$get = mergedScaleCmpt.get('paddingInner')) !== null && _mergedScaleCmpt$get !== void 0 ? _mergedScaleCmpt$get : mergedScaleCmpt.get('padding');
+      return {
+        signal: "".concat(step.step, " * ").concat(stepCount, " / (1-").concat(exprFromSignalRefOrValue(paddingInner), ")")
+      };
+    } else {
+      return step.step;
+    }
+  }
+
+  function getOffsetStep(step, offsetScaleType) {
+    const stepFor = getStepFor({
+      step,
+      offsetIsDiscrete: hasDiscreteDomain(offsetScaleType)
+    });
+
+    if (stepFor === 'offset') {
+      return {
+        step: step.step
+      };
+    }
+
+    return undefined;
+  }
+
+  function getOffsetRange(channel, model, offsetScaleType) {
+    const positionChannel = channel === XOFFSET ? 'x' : 'y';
+    const positionScaleCmpt = model.getScaleComponent(positionChannel);
+    const positionScaleType = positionScaleCmpt.get('type');
+    const positionScaleName = model.scaleName(positionChannel);
+
+    if (positionScaleType === 'band') {
+      const size = getDiscretePositionSize(positionChannel, model.size, model.config.view);
+
+      if (isStep(size)) {
+        // step is for offset
+        const step = getOffsetStep(size, offsetScaleType);
+
+        if (step) {
+          return step;
+        }
+      } // otherwise use the position
 
 
-    throw new Error(`Scale range undefined for channel ${channel}`);
+      return [0, {
+        signal: "bandwidth('".concat(positionScaleName, "')")
+      }];
+    } else {
+      // continuous scale
+      return never("Cannot use ".concat(channel, " scale if ").concat(positionChannel, " scale is not discrete."));
+    }
+  }
+
+  function getDiscretePositionSize(channel, size, viewConfig) {
+    const sizeChannel = channel === X ? 'width' : 'height';
+    const sizeValue = size[sizeChannel];
+
+    if (sizeValue) {
+      return sizeValue;
+    }
+
+    return getViewConfigDiscreteSize(viewConfig, sizeChannel);
   }
 
   function defaultContinuousToDiscreteCount(scaleType, config, domain, channel) {
@@ -69813,8 +70535,8 @@
     const f = () => {
       const rMax = signalOrStringValue(rangeMax);
       const rMin = signalOrStringValue(rangeMin);
-      const step = `(${rMax} - ${rMin}) / (${cardinality} - 1)`;
-      return `sequence(${rMin}, ${rMax} + ${step}, ${step})`;
+      const step = "(".concat(rMax, " - ").concat(rMin, ") / (").concat(cardinality, " - 1)");
+      return "sequence(".concat(rMin, ", ").concat(rMax, " + ").concat(step, ", ").concat(step, ")");
     };
 
     if (isSignalRef(rangeMax)) {
@@ -69830,7 +70552,7 @@
     if (zero) {
       if (isSignalRef(zero)) {
         return {
-          signal: `${zero.signal} ? 0 : ${sizeRangeMin(mark, false, config)}`
+          signal: "".concat(zero.signal, " ? 0 : ").concat(sizeRangeMin(mark, false, config))
         };
       } else {
         return 0;
@@ -69883,7 +70605,7 @@
           if (isNumber$1(min)) {
             return min - 1;
           } else {
-            return new SignalRefWrapper(() => `${min.signal} - 1`);
+            return new SignalRefWrapper(() => "".concat(min.signal, " - 1"));
           }
         }
 
@@ -69908,7 +70630,7 @@
           if (isNumber$1(pointStep)) {
             return Math.pow(MAX_SIZE_RANGE_STEP_RATIO * pointStep, 2);
           } else {
-            return new SignalRefWrapper(() => `pow(${MAX_SIZE_RANGE_STEP_RATIO} * ${pointStep.signal}, 2)`);
+            return new SignalRefWrapper(() => "pow(".concat(MAX_SIZE_RANGE_STEP_RATIO, " * ").concat(pointStep.signal, ", 2)"));
           }
         }
     }
@@ -69930,7 +70652,7 @@
     if (xyStepSignals.x || xyStepSignals.y) {
       return new SignalRefWrapper(() => {
         const exprs = [xyStepSignals.x ? xyStepSignals.x.signal : widthStep, xyStepSignals.y ? xyStepSignals.y.signal : heightStep];
-        return `min(${exprs.join(', ')})`;
+        return "min(".concat(exprs.join(', '), ")");
       });
     }
 
@@ -70010,8 +70732,11 @@
             scalePadding,
             scalePaddingInner,
             domain: specifiedScale.domain,
+            domainMin: specifiedScale.domainMin,
+            domainMax: specifiedScale.domainMax,
             markDef,
-            config
+            config,
+            hasNestedOffsetScale: channelHasNestedOffsetScale(encoding, channel)
           }) : config.scale[property];
 
           if (value !== undefined) {
@@ -70023,57 +70748,83 @@
   }
 
   const scaleRules = {
-    bins: ({
-      model,
-      fieldOrDatumDef
-    }) => isFieldDef(fieldOrDatumDef) ? bins(model, fieldOrDatumDef) : undefined,
-    interpolate: ({
-      channel,
-      fieldOrDatumDef
-    }) => interpolate(channel, fieldOrDatumDef.type),
-    nice: ({
-      scaleType,
-      channel,
-      domain,
-      fieldOrDatumDef
-    }) => nice(scaleType, channel, domain, fieldOrDatumDef),
-    padding: ({
-      channel,
-      scaleType,
-      fieldOrDatumDef,
-      markDef,
-      config
-    }) => padding(channel, scaleType, config.scale, fieldOrDatumDef, markDef, config.bar),
-    paddingInner: ({
-      scalePadding,
-      channel,
-      markDef,
-      config
-    }) => paddingInner(scalePadding, channel, markDef.type, config.scale),
-    paddingOuter: ({
-      scalePadding,
-      channel,
-      scaleType,
-      markDef,
-      scalePaddingInner,
-      config
-    }) => paddingOuter(scalePadding, channel, scaleType, markDef.type, scalePaddingInner, config.scale),
-    reverse: ({
-      fieldOrDatumDef,
-      scaleType,
-      channel,
-      config
-    }) => {
+    bins: _ref => {
+      let {
+        model,
+        fieldOrDatumDef
+      } = _ref;
+      return isFieldDef(fieldOrDatumDef) ? bins(model, fieldOrDatumDef) : undefined;
+    },
+    interpolate: _ref2 => {
+      let {
+        channel,
+        fieldOrDatumDef
+      } = _ref2;
+      return interpolate(channel, fieldOrDatumDef.type);
+    },
+    nice: _ref3 => {
+      let {
+        scaleType,
+        channel,
+        domain,
+        domainMin,
+        domainMax,
+        fieldOrDatumDef
+      } = _ref3;
+      return nice(scaleType, channel, domain, domainMin, domainMax, fieldOrDatumDef);
+    },
+    padding: _ref4 => {
+      let {
+        channel,
+        scaleType,
+        fieldOrDatumDef,
+        markDef,
+        config
+      } = _ref4;
+      return padding(channel, scaleType, config.scale, fieldOrDatumDef, markDef, config.bar);
+    },
+    paddingInner: _ref5 => {
+      let {
+        scalePadding,
+        channel,
+        markDef,
+        scaleType,
+        config,
+        hasNestedOffsetScale
+      } = _ref5;
+      return paddingInner(scalePadding, channel, markDef.type, scaleType, config.scale, hasNestedOffsetScale);
+    },
+    paddingOuter: _ref6 => {
+      let {
+        scalePadding,
+        channel,
+        scaleType,
+        scalePaddingInner,
+        config,
+        hasNestedOffsetScale
+      } = _ref6;
+      return paddingOuter(scalePadding, channel, scaleType, scalePaddingInner, config.scale, hasNestedOffsetScale);
+    },
+    reverse: _ref7 => {
+      let {
+        fieldOrDatumDef,
+        scaleType,
+        channel,
+        config
+      } = _ref7;
       const sort = isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined;
       return reverse(scaleType, sort, channel, config.scale);
     },
-    zero: ({
-      channel,
-      fieldOrDatumDef,
-      domain,
-      markDef,
-      scaleType
-    }) => zero(channel, fieldOrDatumDef, domain, markDef, scaleType)
+    zero: _ref8 => {
+      let {
+        channel,
+        fieldOrDatumDef,
+        domain,
+        markDef,
+        scaleType
+      } = _ref8;
+      return zero(channel, fieldOrDatumDef, domain, markDef, scaleType);
+    }
   }; // This method is here rather than in range.ts to avoid circular dependency.
 
   function parseScaleRange(model) {
@@ -70146,17 +70897,17 @@
 
     return undefined;
   }
-  function nice(scaleType, channel, specifiedDomain, fieldOrDatumDef) {
+  function nice(scaleType, channel, specifiedDomain, domainMin, domainMax, fieldOrDatumDef) {
     var _getFieldDef;
 
-    if ((_getFieldDef = getFieldDef(fieldOrDatumDef)) !== null && _getFieldDef !== void 0 && _getFieldDef.bin || isArray(specifiedDomain) || contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
+    if ((_getFieldDef = getFieldDef(fieldOrDatumDef)) !== null && _getFieldDef !== void 0 && _getFieldDef.bin || isArray(specifiedDomain) || domainMax != null || domainMin != null || contains([ScaleType.TIME, ScaleType.UTC], scaleType)) {
       return undefined;
     }
 
-    return channel in POSITION_SCALE_CHANNEL_INDEX ? true : undefined;
+    return isXorY(channel) ? true : undefined;
   }
   function padding(channel, scaleType, scaleConfig, fieldOrDatumDef, markDef, barConfig) {
-    if (channel in POSITION_SCALE_CHANNEL_INDEX) {
+    if (isXorY(channel)) {
       if (isContinuousToContinuous(scaleType)) {
         if (scaleConfig.continuousPadding !== undefined) {
           return scaleConfig.continuousPadding;
@@ -70181,47 +70932,73 @@
 
     return undefined;
   }
-  function paddingInner(paddingValue, channel, mark, scaleConfig) {
+  function paddingInner(paddingValue, channel, mark, scaleType, scaleConfig) {
+    let hasNestedOffsetScale = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
+
     if (paddingValue !== undefined) {
       // If user has already manually specified "padding", no need to add default paddingInner.
       return undefined;
     }
 
-    if (channel in POSITION_SCALE_CHANNEL_INDEX) {
+    if (isXorY(channel)) {
       // Padding is only set for X and Y by default.
       // Basically it doesn't make sense to add padding for color and size.
       // paddingOuter would only be called if it's a band scale, just return the default for bandScale.
       const {
         bandPaddingInner,
         barBandPaddingInner,
-        rectBandPaddingInner
+        rectBandPaddingInner,
+        bandWithNestedOffsetPaddingInner
       } = scaleConfig;
+
+      if (hasNestedOffsetScale) {
+        return bandWithNestedOffsetPaddingInner;
+      }
+
       return getFirstDefined(bandPaddingInner, mark === 'bar' ? barBandPaddingInner : rectBandPaddingInner);
+    } else if (isXorYOffset(channel)) {
+      if (scaleType === ScaleType.BAND) {
+        return scaleConfig.offsetBandPaddingInner;
+      }
     }
 
     return undefined;
   }
-  function paddingOuter(paddingValue, channel, scaleType, mark, paddingInnerValue, scaleConfig) {
+  function paddingOuter(paddingValue, channel, scaleType, paddingInnerValue, scaleConfig) {
+    let hasNestedOffsetScale = arguments.length > 5 && arguments[5] !== undefined ? arguments[5] : false;
+
     if (paddingValue !== undefined) {
       // If user has already manually specified "padding", no need to add default paddingOuter.
       return undefined;
     }
 
-    if (channel in POSITION_SCALE_CHANNEL_INDEX) {
-      // Padding is only set for X and Y by default.
+    if (isXorY(channel)) {
+      const {
+        bandPaddingOuter,
+        bandWithNestedOffsetPaddingOuter
+      } = scaleConfig;
+
+      if (hasNestedOffsetScale) {
+        return bandWithNestedOffsetPaddingOuter;
+      } // Padding is only set for X and Y by default.
       // Basically it doesn't make sense to add padding for color and size.
+
+
       if (scaleType === ScaleType.BAND) {
-        const {
-          bandPaddingOuter
-        } = scaleConfig;
         return getFirstDefined(bandPaddingOuter,
         /* By default, paddingOuter is paddingInner / 2. The reason is that
           size (width/height) = step * (cardinality - paddingInner + 2 * paddingOuter).
           and we want the width/height to be integer by default.
           Note that step (by default) and cardinality are integers.) */
         isSignalRef(paddingInnerValue) ? {
-          signal: `${paddingInnerValue.signal}/2`
+          signal: "".concat(paddingInnerValue.signal, "/2")
         } : paddingInnerValue / 2);
+      }
+    } else if (isXorYOffset(channel)) {
+      if (scaleType === ScaleType.POINT) {
+        return 0.5; // so the point positions align with centers of band scales.
+      } else if (scaleType === ScaleType.BAND) {
+        return scaleConfig.offsetBandPaddingOuter;
       }
     }
 
@@ -70232,7 +71009,7 @@
       if (hasContinuousDomain(scaleType) && sort === 'descending') {
         if (isSignalRef(scaleConfig.xReverse)) {
           return {
-            signal: `!${scaleConfig.xReverse.signal}`
+            signal: "!".concat(scaleConfig.xReverse.signal)
           };
         } else {
           return !scaleConfig.xReverse;
@@ -70305,7 +71082,8 @@
    */
   // NOTE: CompassQL uses this method.
   function scaleType(specifiedScale, channel, fieldDef, mark) {
-    const defaultScaleType = defaultType(channel, fieldDef, mark);
+    let hasNestedOffsetScale = arguments.length > 4 && arguments[4] !== undefined ? arguments[4] : false;
+    const defaultScaleType = defaultType(channel, fieldDef, mark, hasNestedOffsetScale);
     const {
       type
     } = specifiedScale;
@@ -70338,7 +71116,7 @@
    */
   // NOTE: Voyager uses this method.
 
-  function defaultType(channel, fieldDef, mark) {
+  function defaultType(channel, fieldDef, mark, hasNestedOffsetScale) {
     switch (fieldDef.type) {
       case 'nominal':
       case 'ordinal':
@@ -70353,17 +71131,22 @@
             return 'ordinal';
           }
 
-          if (channel in POSITION_SCALE_CHANNEL_INDEX) {
+          if (isXorY(channel) || isXorYOffset(channel)) {
             if (contains(['rect', 'bar', 'image', 'rule'], mark.type)) {
               // The rect/bar mark should fit into a band.
               // For rule, using band scale to make rule align with axis ticks better https://github.com/vega/vega-lite/issues/3429
+              return 'band';
+            }
+
+            if (hasNestedOffsetScale) {
+              // If there is a nested offset scale, then there is a "band" for the span of the nested scale.
               return 'band';
             }
           } else if (mark.type === 'arc' && channel in POLAR_POSITION_SCALE_CHANNEL_INDEX) {
             return 'band';
           }
 
-          const dimensionSize = mark[getSizeChannel$1(channel)];
+          const dimensionSize = mark[getSizeChannel(channel)];
 
           if (isRelativeBandSize(dimensionSize)) {
             return 'band';
@@ -70414,9 +71197,10 @@
     throw new Error(invalidFieldType(fieldDef.type));
   }
 
-  function parseScales(model, {
-    ignoreRange
-  } = {}) {
+  function parseScales(model) {
+    let {
+      ignoreRange
+    } = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
     parseScaleCore(model);
     parseScaleDomain(model);
 
@@ -70446,27 +71230,45 @@
       mark,
       markDef
     } = model;
-    return SCALE_CHANNELS.reduce((scaleComponents, channel) => {
+    const scaleComponents = {};
+
+    for (const channel of SCALE_CHANNELS) {
       const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]); // must be typed def to have scale
       // Don't generate scale for shape of geoshape
 
       if (fieldOrDatumDef && mark === GEOSHAPE && channel === SHAPE && fieldOrDatumDef.type === GEOJSON) {
-        return scaleComponents;
+        continue;
       }
 
       let specifiedScale = fieldOrDatumDef && fieldOrDatumDef['scale'];
 
+      if (isXorYOffset(channel)) {
+        const mainChannel = getMainChannelFromOffsetChannel(channel);
+
+        if (!channelHasNestedOffsetScale(encoding, mainChannel)) {
+          // Don't generate scale when the offset encoding shouldn't yield a nested scale
+          if (specifiedScale) {
+            warn(offsetEncodingScaleIgnored(channel));
+          }
+
+          continue;
+        }
+      }
+
       if (fieldOrDatumDef && specifiedScale !== null && specifiedScale !== false) {
-        specifiedScale ?? (specifiedScale = {});
-        const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, markDef);
-        scaleComponents[channel] = new ScaleComponent(model.scaleName(`${channel}`, true), {
+        var _specifiedScale;
+
+        (_specifiedScale = specifiedScale) !== null && _specifiedScale !== void 0 ? _specifiedScale : specifiedScale = {};
+        const hasNestedOffsetScale = channelHasNestedOffsetScale(encoding, channel);
+        const sType = scaleType(specifiedScale, channel, fieldOrDatumDef, markDef, hasNestedOffsetScale);
+        scaleComponents[channel] = new ScaleComponent(model.scaleName("".concat(channel), true), {
           value: sType,
           explicit: specifiedScale.type === sType
         });
       }
+    }
 
-      return scaleComponents;
-    }, {});
+    return scaleComponents;
   }
 
   const scaleTypeTieBreaker = tieBreakByComparing((st1, st2) => scaleTypePrecedence(st1) - scaleTypePrecedence(st2));
@@ -70480,10 +71282,10 @@
       parseScaleCore(child); // Instead of always merging right away -- check if it is compatible to merge first!
 
       for (const channel of keys(child.component.scales)) {
-        var _resolve$scale;
+        var _resolve$scale, _resolve$scale$channe;
 
         // if resolve is undefined, set default first
-        (_resolve$scale = resolve.scale)[channel] ?? (_resolve$scale[channel] = defaultScaleResolve(channel, model));
+        (_resolve$scale$channe = (_resolve$scale = resolve.scale)[channel]) !== null && _resolve$scale$channe !== void 0 ? _resolve$scale$channe : _resolve$scale[channel] = defaultScaleResolve(channel, model);
 
         if (resolve.scale[channel] === 'shared') {
           const explicitScaleType = scaleTypeWithExplicitIndex[channel];
@@ -70581,6 +71383,8 @@
 
     /** Name map for signals, which can be renamed by a model's parent. */
     constructor(spec, type, parent, parentGivenName, config, resolve, view) {
+      var _spec$name, _spec$transform;
+
       this.type = type;
       this.parent = parent;
       this.config = config;
@@ -70632,7 +71436,7 @@
       this.config = config;
       this.view = replaceExprRef(view); // If name is not provided, always use parent's givenName to avoid name conflicts.
 
-      this.name = spec.name ?? parentGivenName;
+      this.name = (_spec$name = spec.name) !== null && _spec$name !== void 0 ? _spec$name : parentGivenName;
       this.title = isText(spec.title) ? {
         text: spec.title
       } : spec.title ? replaceExprRef(spec.title) : undefined; // Shared name maps
@@ -70642,7 +71446,7 @@
       this.signalNameMap = parent ? parent.signalNameMap : new NameMap();
       this.data = spec.data;
       this.description = spec.description;
-      this.transforms = normalizeTransform(spec.transform ?? []);
+      this.transforms = normalizeTransform((_spec$transform = spec.transform) !== null && _spec$transform !== void 0 ? _spec$transform : []);
       this.layout = type === 'layer' || type === 'unit' ? {} : extractCompositionLayout(spec, type, config);
       this.component = {
         data: {
@@ -70650,7 +71454,7 @@
           outputNodes: parent ? parent.component.data.outputNodes : {},
           outputNodeRefCounts: parent ? parent.component.data.outputNodeRefCounts : {},
           // data is faceted if the spec is a facet spec or the parent has faceted data and data is undefined
-          isFaceted: isFacetSpec(spec) || parent && parent.component.data.isFaceted && spec.data === undefined
+          isFaceted: isFacetSpec(spec) || (parent === null || parent === void 0 ? void 0 : parent.component.data.isFaceted) && spec.data === undefined
         },
         layoutSize: new Split(),
         layoutHeaders: {
@@ -70759,10 +71563,12 @@
 
 
         if (this.type === 'unit' || this.type === 'layer') {
+          var _encodeEntry;
+
           return {
             width: this.getSizeSignalRef('width'),
             height: this.getSizeSignalRef('height'),
-            ...(encodeEntry ?? {})
+            ...((_encodeEntry = encodeEntry) !== null && _encodeEntry !== void 0 ? _encodeEntry : {})
           };
         }
       }
@@ -70830,10 +71636,12 @@
     }
 
     assembleTitle() {
+      var _this$title;
+
       const {
         encoding,
         ...titleNoEncoding
-      } = this.title ?? {};
+      } = (_this$title = this.title) !== null && _this$title !== void 0 ? _this$title : {};
       const title = { ...extractTitleConfig(this.config.title).nonMarkTitleProperties,
         ...titleNoEncoding,
         ...(encoding ? {
@@ -70847,13 +71655,17 @@
         if (contains(['unit', 'layer'], this.type)) {
           // Unit/Layer
           if (contains(['middle', undefined], title.anchor)) {
-            title.frame ?? (title.frame = 'group');
+            var _title$frame;
+
+            (_title$frame = title.frame) !== null && _title$frame !== void 0 ? _title$frame : title.frame = 'group';
           }
         } else {
+          var _title$anchor;
+
           // composition with Vega layout
           // Set title = "start" by default for composition as "middle" does not look nice
           // https://github.com/vega/vega/issues/960#issuecomment-471360328
-          title.anchor ?? (title.anchor = 'start');
+          (_title$anchor = title.anchor) !== null && _title$anchor !== void 0 ? _title$anchor : title.anchor = 'start';
         }
 
         return isEmpty(title) ? undefined : title;
@@ -70866,7 +71678,8 @@
      */
 
 
-    assembleGroup(signals = []) {
+    assembleGroup() {
+      let signals = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
       const group = {};
       signals = signals.concat(this.assembleSignals());
 
@@ -70905,7 +71718,7 @@
     }
 
     getName(text) {
-      return varName((this.name ? `${this.name}_` : '') + text);
+      return varName((this.name ? "".concat(this.name, "_") : '') + text);
     }
 
     getDataName(type) {
@@ -71095,7 +71908,8 @@
 
   class ModelWithField extends Model {
     /** Get "field" reference for Vega */
-    vgField(channel, opt = {}) {
+    vgField(channel) {
+      let opt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       const fieldDef = this.fieldDef(channel);
 
       if (!fieldDef) {
@@ -71139,16 +71953,20 @@
     }
 
     constructor(parent, transform) {
+      var _this$transform$as, _specifiedAs$, _specifiedAs$2;
+
       super(parent);
       this.transform = transform;
       this.transform = duplicate(transform); // duplicate to prevent side effects
 
-      const specifiedAs = this.transform.as ?? [undefined, undefined];
-      this.transform.as = [specifiedAs[0] ?? 'value', specifiedAs[1] ?? 'density'];
+      const specifiedAs = (_this$transform$as = this.transform.as) !== null && _this$transform$as !== void 0 ? _this$transform$as : [undefined, undefined];
+      this.transform.as = [(_specifiedAs$ = specifiedAs[0]) !== null && _specifiedAs$ !== void 0 ? _specifiedAs$ : 'value', (_specifiedAs$2 = specifiedAs[1]) !== null && _specifiedAs$2 !== void 0 ? _specifiedAs$2 : 'density'];
     }
 
     dependentFields() {
-      return new Set([this.transform.density, ...(this.transform.groupby ?? [])]);
+      var _this$transform$group;
+
+      return new Set([this.transform.density, ...((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : [])]);
     }
 
     producedFields() {
@@ -71156,7 +71974,7 @@
     }
 
     hash() {
-      return `DensityTransform ${hash(this.transform)}`;
+      return "DensityTransform ".concat(hash(this.transform));
     }
 
     assemble() {
@@ -71229,7 +72047,7 @@
     }
 
     hash() {
-      return `FilterInvalid ${hash(this.filter)}`;
+      return "FilterInvalid ".concat(hash(this.filter));
     }
     /**
      * Create the VgTransforms for each of the filtered fields.
@@ -71245,10 +72063,10 @@
 
         if (fieldDef !== null) {
           if (fieldDef.type === 'temporal') {
-            vegaFilters.push(`(isDate(${ref}) || (isValid(${ref}) && isFinite(+${ref})))`);
+            vegaFilters.push("(isDate(".concat(ref, ") || (isValid(").concat(ref, ") && isFinite(+").concat(ref, ")))"));
           } else if (fieldDef.type === 'quantitative') {
-            vegaFilters.push(`isValid(${ref})`);
-            vegaFilters.push(`isFinite(+${ref})`);
+            vegaFilters.push("isValid(".concat(ref, ")"));
+            vegaFilters.push("isFinite(+".concat(ref, ")"));
           } else ;
         }
 
@@ -71280,7 +72098,11 @@
         flatten,
         as = []
       } = this.transform;
-      this.transform.as = flatten.map((f, i) => as[i] ?? f);
+      this.transform.as = flatten.map((f, i) => {
+        var _as$i;
+
+        return (_as$i = as[i]) !== null && _as$i !== void 0 ? _as$i : f;
+      });
     }
 
     dependentFields() {
@@ -71292,7 +72114,7 @@
     }
 
     hash() {
-      return `FlattenTransform ${hash(this.transform)}`;
+      return "FlattenTransform ".concat(hash(this.transform));
     }
 
     assemble() {
@@ -71320,12 +72142,14 @@
     }
 
     constructor(parent, transform) {
+      var _this$transform$as, _specifiedAs$, _specifiedAs$2;
+
       super(parent);
       this.transform = transform;
       this.transform = duplicate(transform); // duplicate to prevent side effects
 
-      const specifiedAs = this.transform.as ?? [undefined, undefined];
-      this.transform.as = [specifiedAs[0] ?? 'key', specifiedAs[1] ?? 'value'];
+      const specifiedAs = (_this$transform$as = this.transform.as) !== null && _this$transform$as !== void 0 ? _this$transform$as : [undefined, undefined];
+      this.transform.as = [(_specifiedAs$ = specifiedAs[0]) !== null && _specifiedAs$ !== void 0 ? _specifiedAs$ : 'key', (_specifiedAs$2 = specifiedAs[1]) !== null && _specifiedAs$2 !== void 0 ? _specifiedAs$2 : 'value'];
     }
 
     dependentFields() {
@@ -71337,7 +72161,7 @@
     }
 
     hash() {
-      return `FoldTransform ${hash(this.transform)}`;
+      return "FoldTransform ".concat(hash(this.transform));
     }
 
     assemble() {
@@ -71371,14 +72195,14 @@
         const pair = coordinates.map(channel => {
           const def = getFieldOrDatumDef(model.encoding[channel]);
           return isFieldDef(def) ? def.field : isDatumDef(def) ? {
-            expr: `${def.datum}`
+            expr: "".concat(def.datum)
           } : isValueDef(def) ? {
-            expr: `${def['value']}`
+            expr: "".concat(def['value'])
           } : undefined;
         });
 
         if (pair[0] || pair[1]) {
-          parent = new GeoJSONNode(parent, pair, null, model.getName(`geojson_${geoJsonCounter++}`));
+          parent = new GeoJSONNode(parent, pair, null, model.getName("geojson_".concat(geoJsonCounter++)));
         }
       }
 
@@ -71386,7 +72210,7 @@
         const fieldDef = model.typedFieldDef(SHAPE);
 
         if (fieldDef.type === GEOJSON) {
-          parent = new GeoJSONNode(parent, null, fieldDef.field, model.getName(`geojson_${geoJsonCounter++}`));
+          parent = new GeoJSONNode(parent, null, fieldDef.field, model.getName("geojson_".concat(geoJsonCounter++)));
         }
       }
 
@@ -71401,7 +72225,9 @@
     }
 
     dependentFields() {
-      const fields = (this.fields ?? []).filter(isString);
+      var _this$fields;
+
+      const fields = ((_this$fields = this.fields) !== null && _this$fields !== void 0 ? _this$fields : []).filter(isString);
       return new Set([...(this.geojson ? [this.geojson] : []), ...fields]);
     }
 
@@ -71410,13 +72236,13 @@
     }
 
     hash() {
-      return `GeoJSON ${this.geojson} ${this.signal} ${hash(this.fields)}`;
+      return "GeoJSON ".concat(this.geojson, " ").concat(this.signal, " ").concat(hash(this.fields));
     }
 
     assemble() {
       return [...(this.geojson ? [{
         type: 'filter',
-        expr: `isValid(datum["${this.geojson}"])`
+        expr: "isValid(datum[\"".concat(this.geojson, "\"])")
       }] : []), {
         type: 'geojson',
         ...(this.fields ? {
@@ -71452,15 +72278,15 @@
         const pair = coordinates.map(channel => {
           const def = getFieldOrDatumDef(model.encoding[channel]);
           return isFieldDef(def) ? def.field : isDatumDef(def) ? {
-            expr: `${def.datum}`
+            expr: "".concat(def.datum)
           } : isValueDef(def) ? {
-            expr: `${def['value']}`
+            expr: "".concat(def['value'])
           } : undefined;
         });
         const suffix = coordinates[0] === LONGITUDE2 ? '2' : '';
 
         if (pair[0] || pair[1]) {
-          parent = new GeoPointNode(parent, model.projectionName(), pair, [model.getName(`x${suffix}`), model.getName(`y${suffix}`)]);
+          parent = new GeoPointNode(parent, model.projectionName(), pair, [model.getName("x".concat(suffix)), model.getName("y".concat(suffix))]);
         }
       }
 
@@ -71476,7 +72302,7 @@
     }
 
     hash() {
-      return `Geopoint ${this.projection} ${hash(this.fields)} ${hash(this.as)}`;
+      return "Geopoint ".concat(this.projection, " ").concat(hash(this.fields), " ").concat(hash(this.as));
     }
 
     assemble() {
@@ -71501,7 +72327,9 @@
     }
 
     dependentFields() {
-      return new Set([this.transform.impute, this.transform.key, ...(this.transform.groupby ?? [])]);
+      var _this$transform$group;
+
+      return new Set([this.transform.impute, this.transform.key, ...((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : [])]);
     }
 
     producedFields() {
@@ -71516,7 +72344,7 @@
       } = keyvals;
       const result = [start, stop, ...(step ? [step] : [])].join(',');
       return {
-        signal: `sequence(${result})`
+        signal: "sequence(".concat(result, ")")
       };
     }
 
@@ -71569,7 +72397,7 @@
     }
 
     hash() {
-      return `Impute ${hash(this.transform)}`;
+      return "Impute ".concat(hash(this.transform));
     }
 
     assemble() {
@@ -71599,7 +72427,7 @@
       if (method && method !== 'value') {
         const deriveNewField = {
           type: 'window',
-          as: [`imputed_${impute}_value`],
+          as: ["imputed_".concat(impute, "_value")],
           ops: [method],
           fields: [impute],
           frame,
@@ -71610,7 +72438,7 @@
         };
         const replaceOriginal = {
           type: 'formula',
-          expr: `datum.${impute} === null ? datum.imputed_${impute}_value : datum.${impute}`,
+          expr: "datum.".concat(impute, " === null ? datum.imputed_").concat(impute, "_value : datum.").concat(impute),
           as: impute
         };
         return [imputeTransform, deriveNewField, replaceOriginal];
@@ -71631,16 +72459,20 @@
     }
 
     constructor(parent, transform) {
+      var _this$transform$as, _specifiedAs$, _specifiedAs$2;
+
       super(parent);
       this.transform = transform;
       this.transform = duplicate(transform); // duplicate to prevent side effects
 
-      const specifiedAs = this.transform.as ?? [undefined, undefined];
-      this.transform.as = [specifiedAs[0] ?? transform.on, specifiedAs[1] ?? transform.loess];
+      const specifiedAs = (_this$transform$as = this.transform.as) !== null && _this$transform$as !== void 0 ? _this$transform$as : [undefined, undefined];
+      this.transform.as = [(_specifiedAs$ = specifiedAs[0]) !== null && _specifiedAs$ !== void 0 ? _specifiedAs$ : transform.on, (_specifiedAs$2 = specifiedAs[1]) !== null && _specifiedAs$2 !== void 0 ? _specifiedAs$2 : transform.loess];
     }
 
     dependentFields() {
-      return new Set([this.transform.loess, this.transform.on, ...(this.transform.groupby ?? [])]);
+      var _this$transform$group;
+
+      return new Set([this.transform.loess, this.transform.on, ...((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : [])]);
     }
 
     producedFields() {
@@ -71648,7 +72480,7 @@
     }
 
     hash() {
-      return `LoessTransform ${hash(this.transform)}`;
+      return "LoessTransform ".concat(hash(this.transform));
     }
 
     assemble() {
@@ -71694,7 +72526,7 @@
           sources.push(fromSource);
         }
 
-        const fromOutputName = model.getName(`lookup_${counter}`);
+        const fromOutputName = model.getName("lookup_".concat(counter));
         fromOutputNode = new OutputNode(fromSource, fromOutputName, DataSourceType.Lookup, model.component.data.outputNodeRefCounts);
         model.component.data.outputNodes[fromOutputName] = fromOutputNode;
       } else if (isLookupSelection(from)) {
@@ -71730,10 +72562,10 @@
     }
 
     hash() {
-      return `Lookup ${hash({
-      transform: this.transform,
-      secondary: this.secondary
-    })}`;
+      return "Lookup ".concat(hash({
+        transform: this.transform,
+        secondary: this.secondary
+      }));
     }
 
     assemble() {
@@ -71785,16 +72617,20 @@
     }
 
     constructor(parent, transform) {
+      var _this$transform$as, _specifiedAs$, _specifiedAs$2;
+
       super(parent);
       this.transform = transform;
       this.transform = duplicate(transform); // duplicate to prevent side effects
 
-      const specifiedAs = this.transform.as ?? [undefined, undefined];
-      this.transform.as = [specifiedAs[0] ?? 'prob', specifiedAs[1] ?? 'value'];
+      const specifiedAs = (_this$transform$as = this.transform.as) !== null && _this$transform$as !== void 0 ? _this$transform$as : [undefined, undefined];
+      this.transform.as = [(_specifiedAs$ = specifiedAs[0]) !== null && _specifiedAs$ !== void 0 ? _specifiedAs$ : 'prob', (_specifiedAs$2 = specifiedAs[1]) !== null && _specifiedAs$2 !== void 0 ? _specifiedAs$2 : 'value'];
     }
 
     dependentFields() {
-      return new Set([this.transform.quantile, ...(this.transform.groupby ?? [])]);
+      var _this$transform$group;
+
+      return new Set([this.transform.quantile, ...((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : [])]);
     }
 
     producedFields() {
@@ -71802,7 +72638,7 @@
     }
 
     hash() {
-      return `QuantileTransform ${hash(this.transform)}`;
+      return "QuantileTransform ".concat(hash(this.transform));
     }
 
     assemble() {
@@ -71830,16 +72666,20 @@
     }
 
     constructor(parent, transform) {
+      var _this$transform$as, _specifiedAs$, _specifiedAs$2;
+
       super(parent);
       this.transform = transform;
       this.transform = duplicate(transform); // duplicate to prevent side effects
 
-      const specifiedAs = this.transform.as ?? [undefined, undefined];
-      this.transform.as = [specifiedAs[0] ?? transform.on, specifiedAs[1] ?? transform.regression];
+      const specifiedAs = (_this$transform$as = this.transform.as) !== null && _this$transform$as !== void 0 ? _this$transform$as : [undefined, undefined];
+      this.transform.as = [(_specifiedAs$ = specifiedAs[0]) !== null && _specifiedAs$ !== void 0 ? _specifiedAs$ : transform.on, (_specifiedAs$2 = specifiedAs[1]) !== null && _specifiedAs$2 !== void 0 ? _specifiedAs$2 : transform.regression];
     }
 
     dependentFields() {
-      return new Set([this.transform.regression, this.transform.on, ...(this.transform.groupby ?? [])]);
+      var _this$transform$group;
+
+      return new Set([this.transform.regression, this.transform.on, ...((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : [])]);
     }
 
     producedFields() {
@@ -71847,7 +72687,7 @@
     }
 
     hash() {
-      return `RegressionTransform ${hash(this.transform)}`;
+      return "RegressionTransform ".concat(hash(this.transform));
     }
 
     assemble() {
@@ -71882,7 +72722,9 @@
     }
 
     addDimensions(fields) {
-      this.transform.groupby = unique((this.transform.groupby ?? []).concat(fields), d => d);
+      var _this$transform$group;
+
+      this.transform.groupby = unique(((_this$transform$group = this.transform.groupby) !== null && _this$transform$group !== void 0 ? _this$transform$group : []).concat(fields), d => d);
     }
 
     producedFields() {
@@ -71890,11 +72732,13 @@
     }
 
     dependentFields() {
-      return new Set([this.transform.pivot, this.transform.value, ...(this.transform.groupby ?? [])]);
+      var _this$transform$group2;
+
+      return new Set([this.transform.pivot, this.transform.value, ...((_this$transform$group2 = this.transform.groupby) !== null && _this$transform$group2 !== void 0 ? _this$transform$group2 : [])]);
     }
 
     hash() {
-      return `PivotTransform ${hash(this.transform)}`;
+      return "PivotTransform ".concat(hash(this.transform));
     }
 
     assemble() {
@@ -71946,7 +72790,7 @@
     }
 
     hash() {
-      return `SampleTransform ${hash(this.transform)}`;
+      return "SampleTransform ".concat(hash(this.transform));
     }
 
     assemble() {
@@ -71982,8 +72826,10 @@
 
       if (node instanceof ParseNode) {
         if (node.parent instanceof SourceNode && !dataSource.source) {
+          var _dataSource$format;
+
           // If node's parent is a root source and the data source does not refer to another data source, use normal format parse
-          dataSource.format = { ...(dataSource.format ?? {}),
+          dataSource.format = { ...((_dataSource$format = dataSource.format) !== null && _dataSource$format !== void 0 ? _dataSource$format : {}),
             parse: node.assembleFormatParse()
           }; // add calculates for all nested fields
 
@@ -71996,7 +72842,7 @@
 
       if (node instanceof FacetNode) {
         if (!dataSource.name) {
-          dataSource.name = `data_${datasetIndex++}`;
+          dataSource.name = "data_".concat(datasetIndex++);
         }
 
         if (!dataSource.source || dataSource.transform.length > 0) {
@@ -72028,7 +72874,7 @@
           node.setSource(dataSource.name);
         } else {
           if (!dataSource.name) {
-            dataSource.name = `data_${datasetIndex++}`;
+            dataSource.name = "data_".concat(datasetIndex++);
           } // Here we set the name of the datasource we generated. From now on
           // other assemblers can use it.
 
@@ -72064,7 +72910,7 @@
         default:
           {
             if (!dataSource.name) {
-              dataSource.name = `data_${datasetIndex++}`;
+              dataSource.name = "data_".concat(datasetIndex++);
             }
 
             let source = dataSource.name;
@@ -72078,7 +72924,7 @@
             for (const child of node.children) {
               const newData = {
                 name: null,
-                source: source,
+                source,
                 transform: []
               };
               walkTree(child, newData);
@@ -72128,7 +72974,7 @@
     for (const root of dataComponent.sources) {
       // assign a name if the source does not have a name yet
       if (!root.hasName()) {
-        root.dataName = `source_${sourceIndex++}`;
+        root.dataName = "source_".concat(sourceIndex++);
       }
 
       const newData = root.assemble();
@@ -72146,14 +72992,18 @@
     let whereTo = 0;
 
     for (const [i, d] of data.entries()) {
-      if ((d.transform ?? []).length === 0 && !d.source) {
+      var _d$transform;
+
+      if (((_d$transform = d.transform) !== null && _d$transform !== void 0 ? _d$transform : []).length === 0 && !d.source) {
         data.splice(whereTo++, 0, data.splice(i, 1)[0]);
       }
     } // now fix the from references in lookup transforms
 
 
     for (const d of data) {
-      for (const t of d.transform ?? []) {
+      for (const t of (_d$transform2 = d.transform) !== null && _d$transform2 !== void 0 ? _d$transform2 : []) {
+        var _d$transform2;
+
         if (t.type === 'lookup') {
           t.from = dataComponent.outputNodes[t.from].getSource();
         }
@@ -72209,7 +73059,7 @@
         // TODO: better handle multiline titles
         title$1 = isArray(title$1) ? title$1.join(', ') : title$1; // merge title with child to produce "Title / Subtitle / Sub-subtitle"
 
-        title$1 += ` / ${child.component.layoutHeaders[channel].title}`;
+        title$1 += " / ".concat(child.component.layoutHeaders[channel].title);
         child.component.layoutHeaders[channel].title = null;
       }
 
@@ -72251,8 +73101,10 @@
         const layoutHeader = layoutHeaders[headerChannel];
 
         for (const axisComponent of child.component.axes[channel]) {
+          var _layoutHeader$headerT;
+
           const headerType = getHeaderType(axisComponent.get('orient'));
-          layoutHeader[headerType] ?? (layoutHeader[headerType] = [makeHeaderComponent(model, headerChannel, false)]); // FIXME: assemble shouldn't be called here, but we do it this way so we only extract the main part of the axes
+          (_layoutHeader$headerT = layoutHeader[headerType]) !== null && _layoutHeader$headerT !== void 0 ? _layoutHeader$headerT : layoutHeader[headerType] = [makeHeaderComponent(model, headerChannel, false)]; // FIXME: assemble shouldn't be called here, but we do it this way so we only extract the main part of the axes
 
           const mainAxis = assembleAxis(axisComponent, 'main', model.config, {
             header: true
@@ -72307,8 +73159,10 @@
     let mergedSize; // Try to merge layout size
 
     for (const child of model.children) {
+      var _resolve$scale$channe;
+
       const childSize = child.component.layoutSize.getWithExplicit(sizeType);
-      const scaleResolve = resolve.scale[channel] ?? defaultScaleResolve(channel, model);
+      const scaleResolve = (_resolve$scale$channe = resolve.scale[channel]) !== null && _resolve$scale$channe !== void 0 ? _resolve$scale$channe : defaultScaleResolve(channel, model);
 
       if (scaleResolve === 'independent' && childSize.value === 'step') {
         // Do not merge independent scales with range-step as their size depends
@@ -72354,7 +73208,7 @@
     } = model;
 
     for (const channel of POSITION_SCALE_CHANNELS) {
-      const sizeType = getSizeChannel$1(channel);
+      const sizeType = getSizeChannel(channel);
 
       if (size[sizeType]) {
         const specifiedSize = size[sizeType];
@@ -72398,8 +73252,8 @@
 
   function facetSortFieldName(fieldDef, sort, opt) {
     return vgField(sort, {
-      suffix: `by_${vgField(fieldDef)}`,
-      ...(opt ?? {})
+      suffix: "by_".concat(vgField(fieldDef)),
+      ...(opt !== null && opt !== void 0 ? opt : {})
     });
   }
   class FacetModel extends ModelWithField {
@@ -72524,8 +73378,10 @@
             const titleOrient = getHeaderProperty('titleOrient', facetFieldDef.header, this.config, channel);
 
             if (['right', 'bottom'].includes(titleOrient)) {
+              var _layoutMixins$titleAn;
+
               const headerChannel = getHeaderChannel(channel, titleOrient);
-              layoutMixins.titleAnchor ?? (layoutMixins.titleAnchor = {});
+              (_layoutMixins$titleAn = layoutMixins.titleAnchor) !== null && _layoutMixins$titleAn !== void 0 ? _layoutMixins$titleAn : layoutMixins.titleAnchor = {};
               layoutMixins.titleAnchor[headerChannel] = 'end';
             }
           }
@@ -72536,13 +73392,17 @@
             const bandType = headerType === 'header' ? 'headerBand' : 'footerBand';
 
             if (channel !== 'facet' && !this.child.component.layoutSize.get(sizeType)) {
+              var _layoutMixins$bandTyp;
+
               // If facet child does not have size signal, then apply headerBand
-              layoutMixins[bandType] ?? (layoutMixins[bandType] = {});
+              (_layoutMixins$bandTyp = layoutMixins[bandType]) !== null && _layoutMixins$bandTyp !== void 0 ? _layoutMixins$bandTyp : layoutMixins[bandType] = {};
               layoutMixins[bandType][channel] = 0.5;
             }
 
             if (layoutHeaderComponent.title) {
-              layoutMixins.offset ?? (layoutMixins.offset = {});
+              var _layoutMixins$offset;
+
+              (_layoutMixins$offset = layoutMixins.offset) !== null && _layoutMixins$offset !== void 0 ? _layoutMixins$offset : layoutMixins.offset = {};
               layoutMixins.offset[channel === 'row' ? 'rowTitle' : 'columnTitle'] = 10;
             }
           }
@@ -72591,7 +73451,7 @@
         // In facetNode.assemble(), the name is always this.getName('column') + '_layout'.
         const facetLayoutDataName = this.getName('column_domain');
         return {
-          signal: `length(data('${facetLayoutDataName}'))`
+          signal: "length(data('".concat(facetLayoutDataName, "'))")
         };
       }
     }
@@ -72639,7 +73499,7 @@
           const field = vgField(this.child.facet.column);
           fields.push(field);
           ops.push('distinct');
-          as.push(`distinct_${field}`);
+          as.push("distinct_".concat(field));
         }
       } else {
         for (const channel of POSITION_SCALE_CHANNELS) {
@@ -72656,7 +73516,7 @@
               if (field) {
                 fields.push(field);
                 ops.push('distinct');
-                as.push(`distinct_${field}`);
+                as.push("distinct_".concat(field));
               } else {
                 warn(unknownField(channel));
               }
@@ -72854,7 +73714,7 @@
           order: FACET_CHANNELS.map(c => this.facetSortOrder(c)).flat()
         },
         ...(data.length > 0 ? {
-          data: data
+          data
         } : {}),
         ...(encodeEntry ? {
           encode: {
@@ -73005,8 +73865,10 @@
         transformNode = head = new CalculateNode(head, t);
         derivedType = 'derived';
       } else if (isFilter(t)) {
+        var _ParseNode$makeWithAn;
+
         const implicit = getImplicitFromFilterTransform(t);
-        transformNode = head = ParseNode.makeWithAncestors(head, {}, implicit, ancestorParse) ?? head;
+        transformNode = head = (_ParseNode$makeWithAn = ParseNode.makeWithAncestors(head, {}, implicit, ancestorParse)) !== null && _ParseNode$makeWithAn !== void 0 ? _ParseNode$makeWithAn : head;
         head = new FilterNode(head, model, t.filter);
       } else if (isBin(t)) {
         transformNode = head = BinNode.makeFromTransform(head, t, model);
@@ -73074,7 +73936,9 @@
       }
 
       if (transformNode && derivedType !== undefined) {
-        for (const field of transformNode.producedFields() ?? []) {
+        for (const field of (_transformNode$produc = transformNode.producedFields()) !== null && _transformNode$produc !== void 0 ? _transformNode$produc : []) {
+          var _transformNode$produc;
+
           ancestorParse.set(field, derivedType, false);
         }
       }
@@ -73138,7 +74002,7 @@
   */
 
   function parseData(model) {
-    var _data$format3;
+    var _data$format3, _ParseNode$makeExplic, _ParseNode$makeWithAn2;
 
     let head = parseRoot(model, model.component.data.sources);
     const {
@@ -73164,7 +74028,7 @@
       ancestorParse.parseNothing = true;
     }
 
-    head = ParseNode.makeExplicit(head, model, ancestorParse) ?? head; // Default discrete selections require an identifer transform to
+    head = (_ParseNode$makeExplic = ParseNode.makeExplicit(head, model, ancestorParse)) !== null && _ParseNode$makeExplic !== void 0 ? _ParseNode$makeExplic : head; // Default discrete selections require an identifer transform to
     // uniquely identify data points. Add this transform at the head of
     // the pipeline such that the identifier field is available for all
     // subsequent datasets. During optimization, we will remove this
@@ -73179,7 +74043,9 @@
 
     if (isUnitModel(model) || isFacetModel(model)) {
       if (parentIsLayer) {
-        head = BinNode.makeFromEncoding(head, model) ?? head;
+        var _BinNode$makeFromEnco;
+
+        head = (_BinNode$makeFromEnco = BinNode.makeFromEncoding(head, model)) !== null && _BinNode$makeFromEnco !== void 0 ? _BinNode$makeFromEnco : head;
       }
     }
 
@@ -73190,9 +74056,9 @@
 
     const implicitSelection = getImplicitFromSelection(model);
     const implicitEncoding = getImplicitFromEncoding(model);
-    head = ParseNode.makeWithAncestors(head, {}, { ...implicitSelection,
+    head = (_ParseNode$makeWithAn2 = ParseNode.makeWithAncestors(head, {}, { ...implicitSelection,
       ...implicitEncoding
-    }, ancestorParse) ?? head;
+    }, ancestorParse)) !== null && _ParseNode$makeWithAn2 !== void 0 ? _ParseNode$makeWithAn2 : head;
 
     if (isUnitModel(model)) {
       head = GeoJSONNode.parseAll(head, model);
@@ -73200,11 +74066,15 @@
     }
 
     if (isUnitModel(model) || isFacetModel(model)) {
+      var _TimeUnitNode$makeFro;
+
       if (!parentIsLayer) {
-        head = BinNode.makeFromEncoding(head, model) ?? head;
+        var _BinNode$makeFromEnco2;
+
+        head = (_BinNode$makeFromEnco2 = BinNode.makeFromEncoding(head, model)) !== null && _BinNode$makeFromEnco2 !== void 0 ? _BinNode$makeFromEnco2 : head;
       }
 
-      head = TimeUnitNode.makeFromEncoding(head, model) ?? head;
+      head = (_TimeUnitNode$makeFro = TimeUnitNode.makeFromEncoding(head, model)) !== null && _TimeUnitNode$makeFro !== void 0 ? _TimeUnitNode$makeFro : head;
       head = CalculateNode.parseAllForSortIndex(head, model);
     } // add an output node pre aggregation
 
@@ -73215,6 +74085,8 @@
     head = raw;
 
     if (isUnitModel(model)) {
+      var _ImputeNode$makeFromE, _StackNode$makeFromEn;
+
       const agg = AggregateNode.makeFromEncoding(head, model);
 
       if (agg) {
@@ -73225,12 +74097,14 @@
         }
       }
 
-      head = ImputeNode.makeFromEncoding(head, model) ?? head;
-      head = StackNode.makeFromEncoding(head, model) ?? head;
+      head = (_ImputeNode$makeFromE = ImputeNode.makeFromEncoding(head, model)) !== null && _ImputeNode$makeFromE !== void 0 ? _ImputeNode$makeFromE : head;
+      head = (_StackNode$makeFromEn = StackNode.makeFromEncoding(head, model)) !== null && _StackNode$makeFromEn !== void 0 ? _StackNode$makeFromEn : head;
     }
 
     if (isUnitModel(model)) {
-      head = FilterInvalidNode.make(head, model) ?? head;
+      var _FilterInvalidNode$ma;
+
+      head = (_FilterInvalidNode$ma = FilterInvalidNode.make(head, model)) !== null && _FilterInvalidNode$ma !== void 0 ? _FilterInvalidNode$ma : head;
     } // output node for marks
 
 
@@ -73247,10 +74121,12 @@
     let facetRoot = null;
 
     if (isFacetModel(model)) {
+      var _makeJoinAggregateFro;
+
       const facetName = model.getName('facet'); // Derive new aggregate for facet's sort field
       // augment data source with new fields for crossed facet
 
-      head = makeJoinAggregateFromFacet(head, model.facet) ?? head;
+      head = (_makeJoinAggregateFro = makeJoinAggregateFromFacet(head, model.facet)) !== null && _makeJoinAggregateFro !== void 0 ? _makeJoinAggregateFro : head;
       facetRoot = new FacetNode(head, model, facetName, main.getSource());
       outputNodes[facetName] = facetRoot;
     }
@@ -73278,7 +74154,7 @@
       }
 
       this.children = this.getChildren(spec).map((child, i) => {
-        return buildModel(child, this, this.getName(`concat_${i}`), undefined, config);
+        return buildModel(child, this, this.getName("concat_".concat(i)), undefined, config);
       });
     }
 
@@ -73391,7 +74267,7 @@
     assembleDefaultLayout() {
       const columns = this.layout.columns;
       return { ...(columns != null ? {
-          columns: columns
+          columns
         } : {}),
         bounds: 'full',
         // Use align each so it can work with multiple plots with different size
@@ -73415,7 +74291,10 @@
   };
   const AXIS_COMPONENT_PROPERTIES = keys(AXIS_COMPONENT_PROPERTIES_INDEX);
   class AxisComponent extends Split {
-    constructor(explicit = {}, implicit = {}, mainExtracted = false) {
+    constructor() {
+      let explicit = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      let implicit = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+      let mainExtracted = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : false;
       super();
       this.explicit = explicit;
       this.implicit = implicit;
@@ -73448,11 +74327,13 @@
   }
 
   function labels(model, channel, specifiedLabelsSpec) {
+    var _getFieldOrDatumDef;
+
     const {
       encoding,
       config
     } = model;
-    const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]) ?? getFieldOrDatumDef(encoding[getSecondaryRangeChannel(channel)]);
+    const fieldOrDatumDef = (_getFieldOrDatumDef = getFieldOrDatumDef(encoding[channel])) !== null && _getFieldOrDatumDef !== void 0 ? _getFieldOrDatumDef : getFieldOrDatumDef(encoding[getSecondaryRangeChannel(channel)]);
     const axis = model.axis(channel) || {};
     const {
       format,
@@ -73532,8 +74413,10 @@
         }
 
         if (resolve.axis[channel] === 'independent') {
+          var _axes$channel;
+
           // If axes are independent, concat the axisComponent array.
-          axes[channel] = (axes[channel] ?? []).concat(child.component.axes[channel]); // Automatically adjust orient
+          axes[channel] = ((_axes$channel = axes[channel]) !== null && _axes$channel !== void 0 ? _axes$channel : []).concat(child.component.axes[channel]); // Automatically adjust orient
 
           for (const axisComponent of child.component.axes[channel]) {
             const {
@@ -73675,7 +74558,7 @@
   'format', 'formatType', 'orient', 'labelExpr', 'tickCount', 'position', 'tickMinStep']);
 
   function parseAxis(channel, model) {
-    var _axis, _config, _config$axis, _axis2;
+    var _axis, _config, _config$axis, _axis2, _axis$encoding;
 
     let axis = model.axis(channel);
     const axisComponent = new AxisComponent();
@@ -73727,7 +74610,8 @@
           axisComponent.set(property, value, explicit);
         } else if ( // Cases need implicit values
         // 1. Axis config that aren't available in Vega
-        !(configFrom === 'vgAxisConfig') || propsToAlwaysIncludeConfig.has(property) && hasConfigValue || // 3. Conditional axis values and signals
+        !(configFrom === 'vgAxisConfig') || // 2. Certain properties are always included (see `propsToAlwaysIncludeConfig`'s declaration for more details)
+        propsToAlwaysIncludeConfig.has(property) && hasConfigValue || // 3. Conditional axis values and signals
         isConditionalAxisValue(configValue) || isSignalRef(configValue)) {
           // If a config is specified and is conditional, copy conditional value from axis config
           axisComponent.set(property, configValue, false);
@@ -73736,14 +74620,16 @@
     } // 2) Add guide encode definition groups
 
 
-    const axisEncoding = axis.encoding ?? {};
+    const axisEncoding = (_axis$encoding = axis.encoding) !== null && _axis$encoding !== void 0 ? _axis$encoding : {};
     const axisEncode = AXIS_PARTS.reduce((e, part) => {
+      var _axisEncoding$part;
+
       if (!axisComponent.hasAxisPart(part)) {
         // No need to create encode for a disabled part.
         return e;
       }
 
-      const axisEncodingPart = guideEncodeEntry(axisEncoding[part] ?? {}, model);
+      const axisEncodingPart = guideEncodeEntry((_axisEncoding$part = axisEncoding[part]) !== null && _axisEncoding$part !== void 0 ? _axisEncoding$part : {}, model);
       const value = part === 'labels' ? labels(model, channel, axisEncodingPart) : axisEncodingPart;
 
       if (value !== undefined && !isEmpty(value)) {
@@ -73762,12 +74648,14 @@
     return axisComponent;
   }
 
-  function initLayoutSize({
-    encoding,
-    size
-  }) {
+  function initLayoutSize(_ref) {
+    let {
+      encoding,
+      size
+    } = _ref;
+
     for (const channel of POSITION_SCALE_CHANNELS) {
-      const sizeType = getSizeChannel$1(channel);
+      const sizeType = getSizeChannel(channel);
 
       if (isStep(size[sizeType])) {
         if (isContinuousFieldOrDatumDef(encoding[channel])) {
@@ -73843,9 +74731,11 @@
     return undefined;
   }
 
-  function defaultFilled(markDef, config, {
-    graticule
-  }) {
+  function defaultFilled(markDef, config, _ref) {
+    let {
+      graticule
+    } = _ref;
+
     if (graticule) {
       return false;
     }
@@ -74000,8 +74890,8 @@
           defaultPos: 'mid'
         }),
         // arcs are rectangles in polar coordinates
-        ...rectPosition(model, 'radius', 'arc'),
-        ...rectPosition(model, 'theta', 'arc')
+        ...rectPosition(model, 'radius'),
+        ...rectPosition(model, 'theta')
       };
     }
   };
@@ -74043,8 +74933,8 @@
           size: 'ignore',
           theta: 'ignore'
         }),
-        ...rectPosition(model, 'x', 'bar'),
-        ...rectPosition(model, 'y', 'bar')
+        ...rectPosition(model, 'x'),
+        ...rectPosition(model, 'y')
       };
     }
   };
@@ -74092,8 +74982,8 @@
           size: 'ignore',
           theta: 'ignore'
         }),
-        ...rectPosition(model, 'x', 'image'),
-        ...rectPosition(model, 'y', 'image'),
+        ...rectPosition(model, 'x'),
+        ...rectPosition(model, 'y'),
         ...text$1(model, 'url')
       };
     }
@@ -74212,8 +75102,8 @@
           size: 'ignore',
           theta: 'ignore'
         }),
-        ...rectPosition(model, 'x', 'rect'),
-        ...rectPosition(model, 'y', 'rect')
+        ...rectPosition(model, 'x'),
+        ...rectPosition(model, 'y')
       };
     }
   };
@@ -74357,6 +75247,8 @@
   };
 
   function defaultSize(model) {
+    var _getMarkPropOrConfig;
+
     const {
       config,
       markDef
@@ -74366,9 +75258,9 @@
     } = markDef;
     const vgSizeChannel = orient === 'horizontal' ? 'width' : 'height';
     const scale = model.getScaleComponent(orient === 'horizontal' ? 'x' : 'y');
-    const markPropOrConfig = getMarkPropOrConfig('size', markDef, config, {
+    const markPropOrConfig = (_getMarkPropOrConfig = getMarkPropOrConfig('size', markDef, config, {
       vgChannel: vgSizeChannel
-    }) ?? config.tick.bandSize;
+    })) !== null && _getMarkPropOrConfig !== void 0 ? _getMarkPropOrConfig : config.tick.bandSize;
 
     if (markPropOrConfig !== undefined) {
       return markPropOrConfig;
@@ -74461,6 +75353,8 @@
    */
 
   function getGroupsForStackedBarWithCornerRadius(model) {
+    var _model$stack$groupbyC;
+
     // Generate the mark
     const [mark] = getMarkGroup(model, {
       fromPrefix: STACK_GROUP_PREFIX
@@ -74468,7 +75362,10 @@
 
     const fieldScale = model.scaleName(model.stack.fieldChannel);
 
-    const stackField = (opt = {}) => model.vgField(model.stack.fieldChannel, opt); // Find the min/max of the pixel value on the stacked direction
+    const stackField = function () {
+      let opt = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+      return model.vgField(model.stack.fieldChannel, opt);
+    }; // Find the min/max of the pixel value on the stacked direction
 
 
     const stackFieldGroup = (func, expr) => {
@@ -74489,7 +75386,7 @@
         suffix: 'end',
         expr
       })];
-      return `${func}(${vgFieldMinMax.map(field => `scale('${fieldScale}',${field})`).join(',')})`;
+      return "".concat(func, "(").concat(vgFieldMinMax.map(field => "scale('".concat(fieldScale, "',").concat(field, ")")).join(','), ")");
     };
 
     let groupUpdate;
@@ -74587,19 +75484,21 @@
 
     const groupby = [];
 
-    if (model.stack.groupbyChannel) {
-      // For bin and time unit, we have to add bin/timeunit -end channels.
-      const groupByField = model.fieldDef(model.stack.groupbyChannel);
-      const field = vgField(groupByField);
+    if (((_model$stack$groupbyC = model.stack.groupbyChannels) === null || _model$stack$groupbyC === void 0 ? void 0 : _model$stack$groupbyC.length) > 0) {
+      for (const groupbyChannel of model.stack.groupbyChannels) {
+        // For bin and time unit, we have to add bin/timeunit -end channels.
+        const groupByField = model.fieldDef(groupbyChannel);
+        const field = vgField(groupByField);
 
-      if (field) {
-        groupby.push(field);
-      }
+        if (field) {
+          groupby.push(field);
+        }
 
-      if (groupByField !== null && groupByField !== void 0 && groupByField.bin || groupByField !== null && groupByField !== void 0 && groupByField.timeUnit) {
-        groupby.push(vgField(groupByField, {
-          binSuffix: 'end'
-        }));
+        if (groupByField !== null && groupByField !== void 0 && groupByField.bin || groupByField !== null && groupByField !== void 0 && groupByField.timeUnit) {
+          groupby.push(vgField(groupByField, {
+            binSuffix: 'end'
+          }));
+        }
       }
     }
 
@@ -74739,9 +75638,10 @@
     return undefined;
   }
 
-  function getMarkGroup(model, opt = {
-    fromPrefix: ''
-  }) {
+  function getMarkGroup(model) {
+    let opt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {
+      fromPrefix: ''
+    };
     const {
       mark,
       markDef,
@@ -74795,7 +75695,7 @@
   function scaleClip(model) {
     const xScale = model.getScaleComponent('x');
     const yScale = model.getScaleComponent('y');
-    return xScale && xScale.get('selectionExtent') || yScale && yScale.get('selectionExtent') ? true : undefined;
+    return xScale !== null && xScale !== void 0 && xScale.get('selectionExtent') || yScale !== null && yScale !== void 0 && yScale.get('selectionExtent') ? true : undefined;
   }
   /**
    * If we use a custom projection with auto-fitting to the geodata extent,
@@ -74833,7 +75733,11 @@
    */
 
   class UnitModel extends ModelWithField {
-    constructor(spec, parent, parentGivenName, parentGivenSize = {}, config) {
+    constructor(spec, parent, parentGivenName) {
+      var _spec$params;
+
+      let parentGivenSize = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : {};
+      let config = arguments.length > 4 ? arguments[4] : undefined;
       super(spec, 'unit', parent, parentGivenName, config, undefined, isFrameMixins(spec) ? spec.view : undefined);
 
       _defineProperty(this, "markDef", void 0);
@@ -74869,7 +75773,7 @@
       const encoding = this.encoding = initEncoding(spec.encoding || {}, mark, markDef.filled, config);
       this.markDef = initMarkdef(markDef, encoding, config);
       this.size = initLayoutSize({
-        encoding: encoding,
+        encoding,
         size: isFrameMixins(spec) ? { ...parentGivenSize,
           ...(spec.width ? {
             width: spec.width
@@ -74886,7 +75790,7 @@
       this.specifiedLegends = this.initLegends(encoding);
       this.specifiedProjection = spec.projection; // Selections will be initialized upon parse.
 
-      this.selection = (spec.params ?? []).filter(p => isSelectionParameter(p));
+      this.selection = ((_spec$params = spec.params) !== null && _spec$params !== void 0 ? _spec$params : []).filter(p => isSelectionParameter(p));
     }
 
     get hasProjection() {
@@ -74921,7 +75825,9 @@
         const fieldOrDatumDef = getFieldOrDatumDef(encoding[channel]);
 
         if (fieldOrDatumDef) {
-          scales[channel] = this.initScale(fieldOrDatumDef.scale ?? {});
+          var _fieldOrDatumDef$scal;
+
+          scales[channel] = this.initScale((_fieldOrDatumDef$scal = fieldOrDatumDef.scale) !== null && _fieldOrDatumDef$scal !== void 0 ? _fieldOrDatumDef$scal : {});
         }
 
         return scales;
@@ -75031,7 +75937,9 @@
     }
 
     assembleMarks() {
-      let marks = this.component.mark ?? []; // If this unit is part of a layer, selections should augment
+      var _this$component$mark;
+
+      let marks = (_this$component$mark = this.component.mark) !== null && _this$component$mark !== void 0 ? _this$component$mark : []; // If this unit is part of a layer, selections should augment
       // all in concert rather than each unit individually. This
       // ensures correct interleaving of clipping and brushed marks.
 
@@ -75105,9 +76013,9 @@
       };
       this.children = spec.layer.map((layer, i) => {
         if (isLayerSpec(layer)) {
-          return new LayerModel(layer, this, this.getName(`layer_${i}`), layoutSize, config);
+          return new LayerModel(layer, this, this.getName("layer_".concat(i)), layoutSize, config);
         } else if (isUnitSpec(layer)) {
-          return new UnitModel(layer, this, this.getName(`layer_${i}`), layoutSize, config);
+          return new UnitModel(layer, this, this.getName("layer_".concat(i)), layoutSize, config);
         }
 
         throw new Error(invalidSpec(layer));
@@ -75267,7 +76175,9 @@
    * @param opt       Optional arguments passed to the Vega-Lite compiler.
    * @returns         An object containing the compiled Vega spec and normalized Vega-Lite spec.
    */
-  function compile(inputSpec, opt = {}) {
+  function compile(inputSpec) {
+    let opt = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+
     // 0. Augment opt with default opts
     if (opt.logger) {
       // set the singleton logger to the provided logger
@@ -75375,7 +76285,9 @@
    */
 
 
-  function assembleTopLevelModel(model, topLevelProperties, datasets = {}, usermeta) {
+  function assembleTopLevelModel(model, topLevelProperties) {
+    let datasets = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
+    let usermeta = arguments.length > 3 ? arguments[3] : undefined;
     // Config with Vega-Lite only config removed.
     const vgConfig = model.config ? stripAndRedirectConfig(model.config) : undefined;
     const data = [].concat(model.assembleSelectionData([]), // only assemble data in the root
@@ -75417,7 +76329,7 @@
       } : {}),
       data,
       ...(projections.length > 0 ? {
-        projections: projections
+        projections
       } : {}),
       ...model.assembleGroup([...layoutSignals, ...model.assembleSelectionTopLevelSignals([]), ...assembleParameterSignals(params)]),
       ...(vgConfig ? {
@@ -75541,7 +76453,7 @@
     const sel = select$1(this);
     const name = sel.attr('id');
     const title = sel.html();
-    sel.html(`<a href="#${name}" class="anchor"><span class="octicon octicon-link"></span></a>${title.trim()}`);
+    sel.html("<a href=\"#".concat(name, "\" class=\"anchor\"><span class=\"octicon octicon-link\"></span></a>").concat(title.trim()));
   });
   /* Documentation */
 
@@ -75561,11 +76473,13 @@
     embedExample(vis.node(), spec, true, !$target.classed('no-tooltip'));
   }
 
-  function embedExample($target, spec, actions = true, tooltip = true) {
+  function embedExample($target, spec) {
+    let actions = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : true;
+    let tooltip = arguments.length > 3 && arguments[3] !== undefined ? arguments[3] : true;
     const {
       spec: vgSpec
     } = compile(spec);
-    const view = new View$1(parse$1(vgSpec), {
+    const view = new View$1(parse(vgSpec), {
       loader: loader
     }).renderer('svg').initialize($target);
 
@@ -75599,7 +76513,7 @@
 
     if (name) {
       const dir = sel.attr('data-dir');
-      const fullUrl = `${BASEURL}/examples/${dir ? `${dir}/` : ''}${name}.vl.json`;
+      const fullUrl = "".concat(BASEURL, "/examples/").concat(dir ? "".concat(dir, "/") : '').concat(name, ".vl.json");
       fetch(fullUrl).then(response => {
         response.text().then(spec => {
           renderExample(sel, spec, figureOnly);
@@ -75617,12 +76531,12 @@
   };
 
   window['buildSpecOpts'] = (id, baseName) => {
-    const oldName = select$1(`#${id}`).attr('data-name');
-    const prefixSel = select$1(`select[name=${id}]`);
-    const inputsSel = selectAll(`input[name=${id}]:checked`);
+    const oldName = select$1("#".concat(id)).attr('data-name');
+    const prefixSel = select$1("select[name=".concat(id, "]"));
+    const inputsSel = selectAll("input[name=".concat(id, "]:checked"));
     const prefix = prefixSel.empty() ? id : prefixSel.property('value');
     const values = inputsSel.nodes().map(n => n.value).sort().join('_');
-    const newName = baseName + prefix + (values ? `_${values}` : '');
+    const newName = baseName + prefix + (values ? "_".concat(values) : '');
 
     if (oldName !== newName) {
       window['changeSpec'](id, newName);
@@ -75725,5 +76639,5 @@
 
   return exports;
 
-}({}));
+})({});
 //# sourceMappingURL=bundle.js.map

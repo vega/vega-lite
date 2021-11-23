@@ -8,9 +8,9 @@ CompositeUnitSpec:
   link: 'spec.html#single'
 FacetedUnitSpec:
   name: 'UnitSpec'
-  link: 'unit.html'
+  link: 'spec.html#single'
 UnitSpec:
-  link: 'unit.html'
+  link: 'spec.html#single'
 LayerSpec:
   link: 'layer.html'
 

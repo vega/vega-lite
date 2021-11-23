@@ -80,6 +80,12 @@ Fields can also be encoded in the [scatter plot](#scatter) using the `color` or 
 
 <span class="vl-example" data-name="point_color_with_shape"></span>
 
+### Dot Plot with Jittering
+
+To jitter points on a discrete scale, you can add random offset:
+
+<span class="vl-example" data-name="point_offset_random"></span>
+
 ### Wind Vector Map
 
 We can also use point mark with angle encoding to create a wind vector map.

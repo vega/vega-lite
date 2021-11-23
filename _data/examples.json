@@ -22,7 +22,13 @@
       },
       {
         "name": "bar_grouped",
-        "title": "Grouped Bar Chart"
+        "title": "Grouped Bar Chart",
+        "description": "Read [here](https://vega.github.io/editor/#/examples/vega-lite/size.html#offset-step) for more details about how to set step size for grouped bar. "
+      },
+      {
+        "name": "bar_grouped_repeated",
+        "title": "Grouped Bar Chart (Multiple Measure with Repeat)",
+        "description": "Read [here](https://vega.github.io/editor/#/examples/vega-lite/size.html#offset-step) for more details about how to set step size for grouped bar. "
       },
       {
         "name": "stacked_bar_weather",
@@ -39,6 +45,10 @@
       {
         "name": "stacked_bar_normalize",
         "title": "Normalized (Percentage) Stacked Bar Chart"
+      },
+      {
+        "name": "stacked_bar_h_normalized_labeled",
+        "title": "Normalized (Percentage) Stacked Bar Chart With Labels"
       },
       {
         "name": "bar_gantt",
@@ -212,6 +222,10 @@
         "name": "circle_custom_tick_labels",
         "description": "After using the numerical values to calculate the average rating, they are replaced by string labels.",
         "title": "Strip plot with custom axis tick labels"
+      },
+      {
+        "name": "point_offset_random",
+        "title": "Dot Plot with Jittering"
       }
     ],
     "Line Charts": [

@@ -1,33 +1,23 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "data": { "url": "data/population.json"},
-  "transform": [
-    {"filter": "datum.year == 2000"},
-    {"calculate": "datum.sex == 2 ? 'Female' : 'Male'", "as": "gender"}
-  ],
-  "width": {"step": 12},
+  "data": {
+    "values": [
+      {"category":"A", "group": "x", "value":0.1},
+      {"category":"A", "group": "y", "value":0.6},
+      {"category":"A", "group": "z", "value":0.9},
+      {"category":"B", "group": "x", "value":0.7},
+      {"category":"B", "group": "y", "value":0.2},
+      {"category":"B", "group": "z", "value":1.1},
+      {"category":"C", "group": "x", "value":0.6},
+      {"category":"C", "group": "y", "value":0.1},
+      {"category":"C", "group": "z", "value":0.2}
+    ]
+  },
   "mark": "bar",
   "encoding": {
-    "column": {
-      "field": "age", "type": "ordinal", "spacing": 10,
-      "header": {"orient": "bottom"}
-    },
-    "y": {
-      "aggregate": "sum", "field": "people",
-      "title": "population",
-      "axis": {"grid": false}
-    },
-    "x": {
-      "field": "gender",
-      "axis": null
-    },
-    "color": {
-      "field": "gender",
-      "scale": {"range": ["#675193", "#ca8861"]}
-    }
-  },
-  "config": {
-    "view": {"stroke": "transparent"},
-    "axis": {"domainWidth": 1}
+    "x": {"field": "category"},
+    "y": {"field": "value", "type": "quantitative"},
+    "xOffset": {"field": "group"},
+    "color": {"field": "group"}
   }
 }

@@ -65,6 +65,18 @@ For a discrete x-field or discrete y-field, we can also set `width` (or `height`
 
 **Note:** By default, Vega-Lite sets padding for [band and point scales](scale.html#band) such that _width/height = number of unique values \* step_. See [the scale documentation](scale.html#band) to read more about the relationship among width/height, step, and other scale properties.
 
+{:#offset-step}
+
+#### Step for Offset Channel
+
+For a discrete x-field or discrete y-field with nested offset, the step will be applied to the offset step by default.
+
+<span class="vl-example" data-name="bar_grouped_step_for_offset"></span>
+
+To specify step for the x/y scale instead, you can include `"for": "position"` in the `width` or `height`.
+
+<span class="vl-example" data-name="bar_grouped_step_for_position"></span>
+
 ### Autosize
 
 The specified dimensions of a chart as explained above set the size of the data rectangle (plotting) dimensions. You can override this behavior by setting the autosize property in [the top level specification](spec.html#top-level). Please note the [limitations below](#limitations).
