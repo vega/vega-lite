@@ -4546,15 +4546,15 @@ jest-config@^27.3.1:
     pretty-format "^27.3.1"
 
 jest-dev-server@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/jest-dev-server/-/jest-dev-server-6.0.0.tgz#b46ddeb3f74f953cc78b884fe6c5211a1e4aba6b"
-  integrity sha512-6X8+/gtFeZBfX7fX3BTAnZzPbdDYcWUdhsvcbJI5PsDXdJ06VNMPqwcPP7ZR5hUeXyvww6CX6ro+oIiARHo5Sg==
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/jest-dev-server/-/jest-dev-server-6.0.2.tgz#04092cd7177e78e911f3be0a3e57e95ae551c1e4"
+  integrity sha512-cVpBu4KvNnefZsiustbaQmgGEKn72K6yk0OMgXDJ3yMT9N24ZM16TG0QgEacHPkrHKirOXZa1GN9Mi/lNl9Y+Q==
   dependencies:
     chalk "^4.1.2"
     cwd "^0.10.0"
     find-process "^1.4.5"
     prompts "^2.4.1"
-    spawnd "^6.0.0"
+    spawnd "^6.0.2"
     tree-kill "^1.2.2"
     wait-on "^6.0.0"
 
@@ -6286,6 +6286,11 @@ signal-exit@^3.0.0, signal-exit@^3.0.2, signal-exit@^3.0.3:
   resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.5.tgz#9e3e8cc0c75a99472b44321033a7702e7738252f"
   integrity sha512-KWcOiKeQj6ZyXx7zq4YxSMgHRlod4czeBQZrPb8OKcohcqAXShm7E20kEMle9WBt26hFcAf0qLOcp5zmY7kOqQ==
 
+signal-exit@^3.0.6:
+  version "3.0.6"
+  resolved "https://registry.yarnpkg.com/signal-exit/-/signal-exit-3.0.6.tgz#24e630c4b0f03fea446a2bd299e62b4a6ca8d0af"
+  integrity sha512-sDl4qMFpijcGw22U5w63KmD3cZJfBuFlVNbVMKje2keoKML7X2UzWbc4XrmEbDwg0NXJc3yv4/ox7b+JWb57kQ==
+
 simple-concat@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/simple-concat/-/simple-concat-1.0.1.tgz#f46976082ba35c2263f1c8ab5edfe26c41c9552f"
@@ -6346,13 +6351,13 @@ sourcemap-codec@^1.4.4:
   resolved "https://registry.yarnpkg.com/sourcemap-codec/-/sourcemap-codec-1.4.8.tgz#ea804bd94857402e6992d05a38ef1ae35a9ab4c4"
   integrity sha512-9NykojV5Uih4lgo5So5dtw+f0JgJX30KCNI8gwhz2J9A15wD0Ml6tjHKwf6fTSa6fAdVBdZeNOs9eJ71qCk8vA==
 
-spawnd@^6.0.0:
-  version "6.0.0"
-  resolved "https://registry.yarnpkg.com/spawnd/-/spawnd-6.0.0.tgz#8bcb3b8769901cfb434ea3ff4334ac3bde3b9cda"
-  integrity sha512-ItqOhwoMppJDL8IEF44bupB37f7dIpKrCqkd8TV8PWB7gHDBfMYgGgslTkkcdvKPxhE4BfvNqs2ZI/GVoGXyIQ==
+spawnd@^6.0.2:
+  version "6.0.2"
+  resolved "https://registry.yarnpkg.com/spawnd/-/spawnd-6.0.2.tgz#a2631cab24ce5e3525e720af4058f10a0905147c"
+  integrity sha512-+YJtx0dvy2wt304MrHD//tASc84zinBUYU1jacPBzrjhZUd7RsDo25krxr4HUHAQzEQFuMAs4/p+yLYU5ciZ1w==
   dependencies:
     exit "^0.1.2"
-    signal-exit "^3.0.3"
+    signal-exit "^3.0.6"
     tree-kill "^1.2.2"
 
 spdx-correct@^3.0.0:
