@@ -91,6 +91,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [NL4DV](https://nl4dv.github.io/nl4dv/), a Python toolkit that generates analytic specifications (attributes + tasks + Vega-Lite visualizations) from natural language (NL) queries, helping people prototype NL systems for data visualization.
 - [Saite](https://github.com/jsa-aerial/saite) Interactive exploratory graphics and ad hoc visualization application for Clojure(Script). Built on top of [Hanami](https://github.com/jsa-aerial/hanami).
 - [Datablocks](https://datablocks.pro), a node-based editor for exploring, analyzing and transforming data without code.
+- [Rath](https://github.com/Kanaries/Rath) A augmented analysis tool including auto-EDA, pattern discovery and multi-dimensional visualization recommendation. It also can automated generate interactive dashbords from raw dataset. 
 
 ## Tools for Embedding Vega-Lite Visualizations
 
