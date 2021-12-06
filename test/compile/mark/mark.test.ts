@@ -72,7 +72,7 @@ describe('Mark', () => {
 
       it('should not have post encoding transform', () => {
         const markGroup = parseMarkGroupsAndLabels(model).mark;
-        expect(markGroup[0].transform).not.toBeDefined();
+        expect(markGroup[0].transform).toBeUndefined();
       });
 
       // NON-PATH
@@ -95,7 +95,7 @@ describe('Mark', () => {
 
       it('should not have post encoding transform', () => {
         const markGroup = parseMarkGroupsAndLabels(model).mark;
-        expect(markGroup[0].transform).not.toBeDefined();
+        expect(markGroup[0].transform).toBeUndefined();
       });
     });
 
@@ -135,7 +135,7 @@ describe('Mark', () => {
       });
       it('should not have post encoding transform', () => {
         const markGroup = parseMarkGroupsAndLabels(model).mark;
-        expect(markGroup[0].transform).not.toBeDefined();
+        expect(markGroup[0].transform).toBeUndefined();
       });
     });
 
@@ -166,7 +166,7 @@ describe('Mark', () => {
         model.parseLayoutSize();
 
         const markGroup = parseMarkGroupsAndLabels(model.child as UnitModel).mark;
-        expect(markGroup[0].transform).not.toBeDefined();
+        expect(markGroup[0].transform).toBeUndefined();
       });
     });
 
@@ -186,7 +186,7 @@ describe('Mark', () => {
 
       it('should not have post encoding transform', () => {
         const markGroup = parseMarkGroupsAndLabels(model).mark;
-        expect(markGroup[0].transform).not.toBeDefined();
+        expect(markGroup[0].transform).toBeUndefined();
       });
     });
 
