@@ -6981,9 +6981,9 @@ vega-datasets@~2.2.0:
   integrity sha512-8WgehTGic6fHbQKyxApM29vnwGGeYqgan9xW0jW2d/L3jWngF2qIDkZktt+Y+vUpW2qp9MJWelNSVhplWhL8EA==
 
 vega-embed@^6.20.2:
-  version "6.20.2"
-  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.20.2.tgz#b5623fc44688388829c8fe6c6829ebcb134b496b"
-  integrity sha512-U31UrhCOB1FRtxNh98AMFNvNneS17wavtE3WRU8W2BT/XWC99pCzKWzfMyszCdSMuXTAZaCuLZuGF/ebZ9v2Gg==
+  version "6.20.5"
+  resolved "https://registry.yarnpkg.com/vega-embed/-/vega-embed-6.20.5.tgz#c92a6ecf754f1c13c6b7860b945b1e50cfc29259"
+  integrity sha512-WmKzYPVUw6x+I2ucoeHySoWWqWO/oBvBGiDq+79hN1vvHc0g7QkDtRpfndSxkDWoagSTkuYTXSb9r1THrj/kfw==
   dependencies:
     fast-json-patch "^3.1.0"
     json-stringify-pretty-compact "^3.0.0"
