@@ -107,7 +107,7 @@ export class UnitModel extends ModelWithField {
     this.markDef = initMarkdef(markDef, encoding, config);
 
     this.size = initLayoutSize({
-      encoding: encoding,
+      encoding,
       size: isFrameMixins(spec)
         ? {
             ...parentGivenSize,

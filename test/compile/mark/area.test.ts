@@ -34,7 +34,7 @@ describe('Mark: Area', () => {
     });
 
     it('should has no height', () => {
-      expect(props.height).not.toBeDefined();
+      expect(props.height).toBeUndefined();
     });
   });
 
@@ -71,7 +71,7 @@ describe('Mark: Area', () => {
     });
 
     it('should has no height', () => {
-      expect(props.height).not.toBeDefined();
+      expect(props.height).toBeUndefined();
     });
   });
 
@@ -178,7 +178,7 @@ describe('Mark: Area', () => {
     });
 
     it('should have no width', () => {
-      expect(props.width).not.toBeDefined();
+      expect(props.width).toBeUndefined();
     });
   });
 
@@ -199,7 +199,7 @@ describe('Mark: Area', () => {
     });
 
     it('should have no width', () => {
-      expect(props.width).not.toBeDefined();
+      expect(props.width).toBeUndefined();
     });
   });
 

@@ -142,7 +142,7 @@ describe('filter', () => {
           month: 'January'
         }
       });
-      expect(expr).toEqual(
+      expect(expr).toBe(
         'time(datetime(2012, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(2012, 0, 1, 0, 0, 0, 0))'
       );
     });
@@ -153,7 +153,7 @@ describe('filter', () => {
         field: 'date',
         equal: 'January'
       });
-      expect(expr).toEqual(
+      expect(expr).toBe(
         'time(datetime(2012, month(datum["date"]), 1, 0, 0, 0, 0))===time(datetime(2012, 0, 1, 0, 0, 0, 0))'
       );
     });
@@ -176,7 +176,7 @@ describe('filter', () => {
           month: 'January'
         }
       });
-      expect(expr).toEqual(
+      expect(expr).toBe(
         'time(datetime(2012, month(datum["date"]), 1, 0, 0, 0, 0))>time(datetime(2012, 0, 1, 0, 0, 0, 0))'
       );
     });
@@ -187,7 +187,7 @@ describe('filter', () => {
         field: 'date',
         gte: 'January'
       });
-      expect(expr).toEqual(
+      expect(expr).toBe(
         'time(datetime(2012, month(datum["date"]), 1, 0, 0, 0, 0))>=time(datetime(2012, 0, 1, 0, 0, 0, 0))'
       );
     });

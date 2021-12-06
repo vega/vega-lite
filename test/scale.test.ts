@@ -97,6 +97,12 @@ describe('scale', () => {
       }
     });
 
+    it('x and y do not support point scale if there is a nested offset scale', () => {
+      for (const channel of ['x', 'y'] as ScaleChannel[]) {
+        expect(channelSupportScaleType(channel, 'point', true)).toBeFalsy();
+      }
+    });
+
     it('size and opacity support all continuous scale type as well as band and point', () => {
       // x,y should use either band or point for ordinal input
       const scaleTypes = [...CONTINUOUS_TO_CONTINUOUS_SCALES, ScaleType.BAND, ScaleType.POINT];

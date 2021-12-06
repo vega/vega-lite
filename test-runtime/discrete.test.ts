@@ -30,7 +30,7 @@ describe(`point selections at runtime in unit views`, () => {
       expect(store[0].fields).toHaveLength(1);
       expect(store[0].values).toHaveLength(1);
       expect(store[0].fields[0].field).toEqual(SELECTION_ID);
-      expect(store[0].fields[0].type).toEqual('E');
+      expect(store[0].fields[0].type).toBe('E');
       await testRender(`click_${i}`);
     }
   });

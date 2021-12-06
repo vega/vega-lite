@@ -10,17 +10,14 @@ jobs:
   test-matrix:
     name: Node
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node: [12, 14, 15]
 
     steps:
       - uses: actions/checkout@v2
 
-      - name: Setup Node ${{ matrix.node }}
-        uses: actions/setup-node@v2.4.0
+      - name: Setup Node
+        uses: actions/setup-node@v2.4.1
         with:
-          node-version: ${{ matrix.node }}
+          cache: 'yarn'
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
@@ -41,6 +38,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
+      - name: Setup Node
+        uses: actions/setup-node@v2.4.1
+        with:
+          cache: 'yarn'
+
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
 
@@ -56,6 +58,11 @@ jobs:
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
+
+      - name: Setup Node
+        uses: actions/setup-node@v2.4.1
+        with:
+          cache: 'yarn'
 
       - name: Install extra dependencies for Puppeteer
         run: sudo apt-get install libgbm1
@@ -90,6 +97,11 @@ jobs:
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
+
+      - name: Setup Node
+        uses: actions/setup-node@v2.4.1
+        with:
+          cache: 'yarn'
 
       - name: Build
         run: yarn build:only

@@ -1,5 +1,13 @@
 import {isBinning} from '../../bin';
-import {Channel, getSizeChannel, isColorChannel, isScaleChannel, isXorY, rangeType} from '../../channel';
+import {
+  getSizeChannel,
+  isColorChannel,
+  isScaleChannel,
+  isXorY,
+  isXorYOffset,
+  rangeType,
+  ScaleChannel
+} from '../../channel';
 import {DatumDef, isFieldDef, isPositionFieldOrDatumDef, ScaleDatumDef, TypedFieldDef} from '../../channeldef';
 import * as log from '../../log';
 import {isRelativeBandSize, MarkDef} from '../../mark';
@@ -17,11 +25,12 @@ export type RangeType = 'continuous' | 'discrete' | 'flexible' | undefined;
 // NOTE: CompassQL uses this method.
 export function scaleType(
   specifiedScale: Scale,
-  channel: Channel,
+  channel: ScaleChannel,
   fieldDef: TypedFieldDef<string> | DatumDef,
-  mark: MarkDef
+  mark: MarkDef,
+  hasNestedOffsetScale = false
 ): ScaleType {
-  const defaultScaleType = defaultType(channel, fieldDef, mark);
+  const defaultScaleType = defaultType(channel, fieldDef, mark, hasNestedOffsetScale);
   const {type} = specifiedScale;
 
   if (!isScaleChannel(channel)) {
@@ -51,7 +60,12 @@ export function scaleType(
  * Determine appropriate default scale type.
  */
 // NOTE: Voyager uses this method.
-function defaultType(channel: Channel, fieldDef: TypedFieldDef<string> | ScaleDatumDef, mark: MarkDef): ScaleType {
+function defaultType(
+  channel: ScaleChannel,
+  fieldDef: TypedFieldDef<string> | ScaleDatumDef,
+  mark: MarkDef,
+  hasNestedOffsetScale: boolean
+): ScaleType {
   switch (fieldDef.type) {
     case 'nominal':
     case 'ordinal': {
@@ -62,10 +76,14 @@ function defaultType(channel: Channel, fieldDef: TypedFieldDef<string> | ScaleDa
         return 'ordinal';
       }
 
-      if (isXorY(channel)) {
+      if (isXorY(channel) || isXorYOffset(channel)) {
         if (util.contains(['rect', 'bar', 'image', 'rule'], mark.type)) {
           // The rect/bar mark should fit into a band.
           // For rule, using band scale to make rule align with axis ticks better https://github.com/vega/vega-lite/issues/3429
+          return 'band';
+        }
+        if (hasNestedOffsetScale) {
+          // If there is a nested offset scale, then there is a "band" for the span of the nested scale.
           return 'band';
         }
       } else if (mark.type === 'arc' && channel in POLAR_POSITION_SCALE_CHANNEL_INDEX) {

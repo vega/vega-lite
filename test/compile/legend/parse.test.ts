@@ -67,7 +67,7 @@ describe('compile/legend', () => {
       }
 
       const legendComp = parseLegend(unitModel);
-      expect(legendComp[SHAPE]).not.toBeDefined();
+      expect(legendComp[SHAPE]).toBeUndefined();
     });
   });
 
@@ -173,9 +173,9 @@ describe('compile/legend', () => {
         }
 
         if (channel !== OPACITY) {
-          expect((def.encode.symbols.update.opacity as any).value).toEqual(0.7);
+          expect((def.encode.symbols.update.opacity as any).value).toBe(0.7);
         } else {
-          expect(def.encode.symbols.update.opacity).not.toBeDefined();
+          expect(def.encode.symbols.update.opacity).toBeUndefined();
         }
         expect(typeof def).toBe('object');
         expect(def.title).toBe('a');
@@ -255,8 +255,8 @@ describe('compile/legend', () => {
       model.parseScale();
       model.parseLegends();
       expect(model.component.legends.color).toBeTruthy();
-      expect(model.children[0].component.legends.color).not.toBeDefined();
-      expect(model.children[1].component.legends.color).not.toBeDefined();
+      expect(model.children[0].component.legends.color).toBeUndefined();
+      expect(model.children[1].component.legends.color).toBeUndefined();
     });
   });
 });

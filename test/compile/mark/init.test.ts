@@ -46,7 +46,7 @@ describe('compile/mark/init', () => {
             x: {type: 'quantitative', field: 'bar'}
           }
         });
-        expect(model.markDef.opacity).toEqual(0.7);
+        expect(model.markDef.opacity).toBe(0.7);
       }
     });
 
@@ -72,12 +72,12 @@ describe('compile/mark/init', () => {
             x: {type: 'quantitative', field: 'bar'}
           }
         });
-        expect(model.markDef.opacity).toEqual(0.9);
+        expect(model.markDef.opacity).toBe(0.9);
       }
     });
 
     it('should return undefined by default for other marks', () => {
-      const otherMarks = without(PRIMITIVE_MARKS, [POINT, TICK, CIRCLE, SQUARE, GEOSHAPE]);
+      const otherMarks = without([...PRIMITIVE_MARKS], [POINT, TICK, CIRCLE, SQUARE, GEOSHAPE]);
       for (const mark of otherMarks) {
         const model = parseUnitModelWithScaleAndLayoutSize({
           mark,

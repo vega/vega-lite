@@ -1,0 +1,162 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/movies.json",
+      "format": {"type": "json"},
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["Major Genre"],
+          "ops": ["sum", "sum"],
+          "fields": ["US Gross", "Worldwide Gross"],
+          "as": ["sum_US Gross", "sum_Worldwide Gross"]
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "x_step",
+      "update": "20 * bandspace(domain('xOffset').length, 0, 0) / (1-0.2)"
+    },
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0.2, 0.2) * x_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "child__layer_Worldwide_Gross_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "value": "Worldwide Gross"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Total Gross: \" + (format(datum[\"sum_Worldwide Gross\"], \"\"))"
+          },
+          "x": {
+            "scale": "x",
+            "field": "Major Genre",
+            "offset": {"scale": "xOffset", "value": "Worldwide Gross"}
+          },
+          "width": {"scale": "xOffset", "band": 1},
+          "y": [
+            {
+              "test": "!isValid(datum[\"sum_Worldwide Gross\"]) || !isFinite(+datum[\"sum_Worldwide Gross\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "sum_Worldwide Gross"}
+          ],
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    },
+    {
+      "name": "child__layer_US_Gross_marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "value": "US Gross"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"Major Genre: \" + (isValid(datum[\"Major Genre\"]) ? datum[\"Major Genre\"] : \"\"+datum[\"Major Genre\"]) + \"; Total Gross: \" + (format(datum[\"sum_US Gross\"], \"\"))"
+          },
+          "x": {
+            "scale": "x",
+            "field": "Major Genre",
+            "offset": {"scale": "xOffset", "value": "US Gross"}
+          },
+          "width": {"scale": "xOffset", "band": 1},
+          "y": [
+            {
+              "test": "!isValid(datum[\"sum_US Gross\"]) || !isFinite(+datum[\"sum_US Gross\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "sum_US Gross"}
+          ],
+          "y2": {"scale": "y", "value": 0}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "Major Genre", "sort": true},
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0.2,
+      "paddingOuter": 0.2
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["sum_Worldwide Gross", "sum_US Gross"]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "xOffset",
+      "type": "band",
+      "domain": {"fields": [["Worldwide Gross"], ["US Gross"]]},
+      "range": {"step": 20}
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"fields": [["Worldwide Gross"], ["US Gross"]]},
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Major Genre",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Total Gross",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [{"fill": "color", "symbolType": "square", "title": "Gross"}]
+}

@@ -64,7 +64,7 @@ describe('Selection Predicate', () => {
     );
 
     // Variable parameters
-    expect(predicate(model, {param: 'helloworld'})).toEqual('!!helloworld');
+    expect(predicate(model, {param: 'helloworld'})).toBe('!!helloworld');
   });
 
   it('generates Vega production rules', () => {
@@ -98,14 +98,12 @@ describe('Selection Predicate', () => {
   });
 
   it('generates a selection filter', () => {
-    expect(expression(model, {param: 'one'})).toEqual(
-      '!length(data("one_store")) || vlSelectionTest("one_store", datum)'
-    );
+    expect(expression(model, {param: 'one'})).toBe('!length(data("one_store")) || vlSelectionTest("one_store", datum)');
 
-    expect(expression(model, {not: {param: 'one', empty: false}})).toEqual(
+    expect(expression(model, {not: {param: 'one', empty: false}})).toBe(
       '!(length(data("one_store")) && vlSelectionTest("one_store", datum))'
     );
 
-    expect(expression(model, {not: {param: 'varHelloWorld'}})).toEqual('!(!!varHelloWorld)');
+    expect(expression(model, {not: {param: 'varHelloWorld'}})).toBe('!(!!varHelloWorld)');
   });
 });

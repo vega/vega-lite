@@ -1,4 +1,4 @@
-import {Channel, RADIUS, rangeType, SCALE_CHANNELS, THETA, X, Y} from '../../../src/channel';
+import {RADIUS, rangeType, ScaleChannel, SCALE_CHANNELS, THETA, X, Y} from '../../../src/channel';
 import {DatumDef, TypedFieldDef} from '../../../src/channeldef';
 import {scaleType as _scaleType} from '../../../src/compile/scale/type';
 import * as log from '../../../src/log';
@@ -27,7 +27,7 @@ const TIMEUNITS = keys(TIMEUNIT_INDEX);
 
 function scaleType(
   specifiedScale: Scale,
-  channel: Channel,
+  channel: ScaleChannel,
   fieldDef: TypedFieldDef<string> | DatumDef,
   mark: Mark
 ): ScaleType {
@@ -36,10 +36,6 @@ function scaleType(
 
 describe('compile/scale', () => {
   describe('type()', () => {
-    it('should return null for channel without scale', () => {
-      expect(scaleType({}, 'detail', {type: 'temporal', timeUnit: 'yearmonth'}, 'point')).toBeNull();
-    });
-
     it(
       'should show warning if users try to override the scale and use bin',
       log.wrap(localLogger => {
@@ -180,13 +176,13 @@ describe('compile/scale', () => {
 
       it('should return time for all non-utc time units.', () => {
         for (const timeUnit of TIMEUNITS.filter(t => !isUTCTimeUnit(t))) {
-          expect(scaleType({}, Y, {type: 'temporal', field: 'x', timeUnit: timeUnit}, 'point')).toEqual(ScaleType.TIME);
+          expect(scaleType({}, Y, {type: 'temporal', field: 'x', timeUnit}, 'point')).toEqual(ScaleType.TIME);
         }
       });
 
       it('should return utc for all utc time units.', () => {
         for (const timeUnit of TIMEUNITS.filter(t => isUTCTimeUnit(t))) {
-          expect(scaleType({}, Y, {type: 'temporal', field: 'x', timeUnit: timeUnit}, 'point')).toEqual(ScaleType.UTC);
+          expect(scaleType({}, Y, {type: 'temporal', field: 'x', timeUnit}, 'point')).toEqual(ScaleType.UTC);
         }
       });
     });

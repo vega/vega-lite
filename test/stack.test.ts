@@ -30,7 +30,7 @@ describe('stack', () => {
     for (const mark of STACKABLE_NON_POLAR_MARKS) {
       const spec: TopLevel<NormalizedUnitSpec> = {
         data: {url: 'data/barley.json'},
-        mark: mark,
+        mark,
         encoding: {
           x: {field: 'yield', type: 'quantitative', stack: 'zero'},
           y: {field: 'variety', type: 'nominal'},
@@ -46,7 +46,7 @@ describe('stack', () => {
     for (const mark of STACKABLE_NON_POLAR_MARKS) {
       const spec: TopLevel<NormalizedUnitSpec> = {
         data: {url: 'data/barley.json'},
-        mark: mark,
+        mark,
         encoding: {
           x: {field: 'yield', type: 'quantitative', bin: true}
         }
@@ -60,7 +60,7 @@ describe('stack', () => {
     for (const mark of STACKABLE_NON_POLAR_MARKS) {
       const spec: TopLevel<NormalizedUnitSpec> = {
         data: {url: 'data/barley.json'},
-        mark: mark,
+        mark,
         encoding: {
           x: {aggregate: 'mean', field: 'yield', type: 'quantitative', stack: false},
           y: {field: 'variety', type: 'nominal'},
@@ -76,7 +76,7 @@ describe('stack', () => {
     for (const mark of STACK_BY_DEFAULT_MARKS) {
       const spec: TopLevel<NormalizedUnitSpec> = {
         data: {url: 'data/barley.json'},
-        mark: mark,
+        mark,
         encoding: {
           x: {field: 'yield', type: 'quantitative'},
           y: {field: 'variety', type: 'nominal'}
@@ -91,7 +91,7 @@ describe('stack', () => {
     for (const mark of STACKABLE_NON_POLAR_MARKS) {
       const spec: TopLevel<NormalizedUnitSpec> = {
         data: {url: 'data/barley.json'},
-        mark: mark,
+        mark,
         encoding: {
           x: {field: 'yield', type: 'quantitative', stack: 'zero'},
           y: {field: 'variety', type: 'quantitative'},
@@ -108,7 +108,7 @@ describe('stack', () => {
       for (const mark of PRIMITIVE_MARKS) {
         const spec: TopLevel<NormalizedUnitSpec> = {
           data: {url: 'data/barley.json'},
-          mark: mark,
+          mark,
           encoding: {
             x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: s},
             y: {field: 'variety', type: 'nominal'},
@@ -128,7 +128,7 @@ describe('stack', () => {
       for (const mark of marks) {
         const spec: TopLevel<NormalizedUnitSpec> = {
           data: {url: 'data/barley.json'},
-          mark: mark,
+          mark,
           encoding: {
             x: {aggregate: 'sum', field: 'yield', type: 'quantitative', stack: s},
             y: {field: 'variety', type: 'nominal'},
@@ -171,7 +171,7 @@ describe('stack', () => {
     for (const mark of PRIMITIVE_MARKS) {
       const spec: TopLevel<NormalizedUnitSpec> = {
         data: {url: 'data/barley.json'},
-        mark: mark,
+        mark,
         encoding: {
           x: {aggregate: 'sum', field: 'yield', type: 'quantitative'},
           y: {aggregate: 'count', type: 'quantitative'},
@@ -186,7 +186,7 @@ describe('stack', () => {
     for (const mark of PRIMITIVE_MARKS) {
       const spec: TopLevel<NormalizedUnitSpec> = {
         data: {url: 'data/barley.json'},
-        mark: mark,
+        mark,
         encoding: {
           x: {field: 'variety', type: 'nominal'},
           y: {field: 'variety', type: 'nominal'},
@@ -202,7 +202,7 @@ describe('stack', () => {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
       for (const mark of marks) {
         const spec: TopLevel<NormalizedUnitSpec> = {
-          mark: mark,
+          mark,
           encoding: {
             x: {field: 'a', type: 'quantitative', aggregate: 'sum'},
             x2: {field: 'a', aggregate: 'sum'},
@@ -220,7 +220,7 @@ describe('stack', () => {
       const marks = stacked === undefined ? STACK_BY_DEFAULT_NON_POLAR_MARKS : STACKABLE_NON_POLAR_MARKS;
       for (const mark of marks) {
         const spec: TopLevel<NormalizedUnitSpec> = {
-          mark: mark,
+          mark,
           encoding: {
             y: {field: 'a', type: 'quantitative', aggregate: 'sum'},
             y2: {field: 'a', aggregate: 'sum'},
@@ -242,7 +242,7 @@ describe('stack', () => {
           for (const mark of marks) {
             const spec: TopLevel<NormalizedUnitSpec> = {
               data: {url: 'data/barley.json'},
-              mark: mark,
+              mark,
               encoding: {
                 x: {field: 'a', type: 'quantitative', aggregate: 'sum', stack: s, scale: {type: scaleType}},
                 y: {field: 'variety', type: 'nominal'},
@@ -266,7 +266,7 @@ describe('stack', () => {
         for (const mark of marks) {
           const spec: TopLevel<NormalizedUnitSpec> = {
             data: {url: 'data/barley.json'},
-            mark: mark,
+            mark,
             encoding: {
               x: {field: 'a', type: 'quantitative', aggregate: 'sum', scale: {type: scaleType}},
               y: {field: 'variety', type: 'nominal'},
@@ -288,7 +288,7 @@ describe('stack', () => {
           for (const mark of marks) {
             const spec: TopLevel<NormalizedUnitSpec> = {
               data: {url: 'data/barley.json'},
-              mark: mark,
+              mark,
               encoding: {
                 x: {
                   aggregate,
@@ -311,7 +311,7 @@ describe('stack', () => {
     })
   );
 
-  describe('stack().groupbyChannel, .fieldChannel', () => {
+  describe('stack().groupbyChannels, .fieldChannels', () => {
     it('should be correct for horizontal', () => {
       for (const stackableMark of [BAR, AREA]) {
         const spec: TopLevel<NormalizedUnitSpec> = {
@@ -325,7 +325,7 @@ describe('stack', () => {
         };
         const _stack = stack(spec.mark, spec.encoding, undefined);
         expect(_stack.fieldChannel).toBe(X);
-        expect(_stack.groupbyChannel).toBe(Y);
+        expect(_stack.groupbyChannels).toEqual([Y]);
       }
     });
 
@@ -341,7 +341,7 @@ describe('stack', () => {
         };
         const _stack = stack(spec.mark, spec.encoding, undefined);
         expect(_stack.fieldChannel).toBe(X);
-        expect(_stack.groupbyChannel).toBeUndefined();
+        expect(_stack.groupbyChannels).toEqual([]);
       }
     });
 
@@ -358,7 +358,7 @@ describe('stack', () => {
         };
         const _stack = stack(spec.mark, spec.encoding, undefined);
         expect(_stack.fieldChannel).toBe(Y);
-        expect(_stack.groupbyChannel).toBe(X);
+        expect(_stack.groupbyChannels).toEqual([X]);
       }
     });
 
@@ -374,7 +374,7 @@ describe('stack', () => {
         };
         const _stack = stack(spec.mark, spec.encoding, undefined);
         expect(_stack.fieldChannel).toBe(Y);
-        expect(_stack.groupbyChannel).toBeUndefined();
+        expect(_stack.groupbyChannels).toEqual([]);
       }
     });
 

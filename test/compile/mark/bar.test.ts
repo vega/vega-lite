@@ -25,6 +25,24 @@ describe('Mark: Bar', () => {
     });
   });
 
+  it('should draw vertical grouped bar, with y from zero to field value and with band value for x/width', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {url: 'data/cars.json'},
+      mark: 'bar',
+      encoding: {
+        x: {field: 'Origin', type: 'nominal'},
+        xOffset: {field: 'SubOrigin', type: 'nominal'},
+        y: {type: 'quantitative', field: 'Acceleration', aggregate: 'mean'}
+      }
+    });
+    const props = bar.encodeEntry(model);
+    expect(props.x).toEqual({scale: 'x', field: 'Origin', offset: {scale: 'xOffset', field: 'SubOrigin'}});
+    expect(props.width).toEqual({scale: 'xOffset', band: 1});
+    expect(props.y).toEqual({scale: 'y', field: 'mean_Acceleration'});
+    expect(props.y2).toEqual({scale: 'y', value: 0});
+    expect(props.height).toBeUndefined();
+  });
+
   it('should draw vertical bar, with y from zero to field value and bar with quantitative x, x2, and y', () => {
     const x: PositionFieldDef<string> = {field: 'bin_start', type: 'quantitative'};
     const x2: SecondaryFieldDef<string> = {field: 'bin_end'};

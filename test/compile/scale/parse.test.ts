@@ -1,4 +1,3 @@
-import {toSet} from 'vega-util';
 import {parseScaleCore, parseScales} from '../../../src/compile/scale/parse';
 import * as log from '../../../src/log';
 import {NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES, SCALE_PROPERTIES} from '../../../src/scale';
@@ -6,8 +5,8 @@ import {parseModel, parseModelWithScale, parseUnitModelWithScale, without} from 
 
 describe('src/compile', () => {
   it('NON_TYPE_RANGE_SCALE_PROPERTIES should be SCALE_PROPERTIES without type, domain, and range properties', () => {
-    expect(toSet(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES)).toEqual(
-      toSet(without(SCALE_PROPERTIES, ['type', 'domain', 'range', 'rangeMax', 'rangeMin', 'scheme']))
+    expect(new Set(NON_TYPE_DOMAIN_RANGE_VEGA_SCALE_PROPERTIES)).toEqual(
+      new Set(without(SCALE_PROPERTIES, ['type', 'domain', 'range', 'rangeMax', 'rangeMin', 'scheme']))
     );
   });
 
@@ -224,7 +223,7 @@ describe('src/compile', () => {
           ]
         });
         parseScales(model);
-        expect(model.getScaleComponent('y').explicit.padding).toEqual(0.2);
+        expect(model.getScaleComponent('y').explicit.padding).toBe(0.2);
         expect(logger.warns).toHaveLength(0);
       })
     );
@@ -270,7 +269,7 @@ describe('src/compile', () => {
         }
       });
       const scale = model.getScaleComponent('x');
-      expect(scale.explicit.padding).toEqual(0.6);
+      expect(scale.explicit.padding).toBe(0.6);
       expect(scale.get('paddingInner')).toBeUndefined();
       expect(scale.get('paddingOuter')).toBeUndefined();
     });
@@ -286,8 +285,8 @@ describe('src/compile', () => {
         }
       });
       const scale = model.getScaleComponent('x');
-      expect(scale.implicit.paddingInner).toEqual(0.3);
-      expect(scale.implicit.paddingOuter).toEqual(0.15);
+      expect(scale.implicit.paddingInner).toBe(0.3);
+      expect(scale.implicit.paddingOuter).toBe(0.15);
       expect(scale.get('padding')).toBeUndefined();
     });
 
@@ -469,12 +468,12 @@ describe('src/compile', () => {
 
       it('should add a selection extent', () => {
         expect('selectionExtent' in xScale.explicit).toBeTruthy();
-        expect(xScale.explicit.selectionExtent.param).toEqual('brush');
-        expect(xScale.explicit.selectionExtent['encoding']).toEqual('x');
+        expect(xScale.explicit.selectionExtent.param).toBe('brush');
+        expect(xScale.explicit.selectionExtent['encoding']).toBe('x');
 
         expect('selectionExtent' in yScale.explicit).toBeTruthy();
-        expect(yScale.explicit.selectionExtent.param).toEqual('foobar');
-        expect(yScale.explicit.selectionExtent['field']).toEqual('Miles_per_Gallon');
+        expect(yScale.explicit.selectionExtent.param).toBe('foobar');
+        expect(yScale.explicit.selectionExtent['field']).toBe('Miles_per_Gallon');
       });
     });
   });

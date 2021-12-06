@@ -103,7 +103,7 @@ describe('Selection', () => {
 
     expect(component.three.name).toBe('three');
     expect(component.three.type).toBe('interval');
-    expect(component.three.translate).toEqual(false);
+    expect(component.three.translate).toBe(false);
     expect(component.three.zoom).toBe('wheel[event.altKey]');
     expect(component['three'].project.items).toEqual(
       expect.arrayContaining([

@@ -35,7 +35,7 @@ const zoom: SelectionCompiler<'interval'> = {
         name: name + ANCHOR,
         on: [
           {
-            events: events,
+            events,
             update: !hasScales
               ? `{x: x(unit), y: y(unit)}`
               : '{' +
@@ -50,7 +50,7 @@ const zoom: SelectionCompiler<'interval'> = {
         name: delta,
         on: [
           {
-            events: events,
+            events,
             force: true,
             update: 'pow(1.001, event.deltaY * pow(16, event.deltaMode))'
           }

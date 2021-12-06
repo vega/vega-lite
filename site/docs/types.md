@@ -1,7 +1,7 @@
 ---
 layout: docs
 menu: docs
-title: Parameter Types
+title: Property Types
 permalink: /docs/types.html
 ---
 

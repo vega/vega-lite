@@ -1,5 +1,5 @@
 import {array, isBoolean} from 'vega-util';
-import {SUM_OPS} from './aggregate';
+import {Aggregate, SUM_OPS} from './aggregate';
 import {getSecondaryRangeChannel, NonPositionChannel, STACKABLE_CHANNELS} from './channel';
 import {
   channelDefType,
@@ -13,6 +13,7 @@ import {
   TypedFieldDef,
   vgField
 } from './channeldef';
+import {CompositeAggregate} from './compositemark';
 import {channelHasField, Encoding, isAggregate} from './encoding';
 import * as log from './log';
 import {
@@ -32,7 +33,6 @@ import {
   TICK
 } from './mark';
 import {ScaleType} from './scale';
-import {contains} from './util';
 
 const STACK_OFFSET_INDEX = {
   zero: 1,
@@ -48,10 +48,10 @@ export function isStackOffset(s: string): s is StackOffset {
 
 export interface StackProperties {
   /** Dimension axis of the stack. */
-  groupbyChannel?: 'x' | 'y' | 'theta' | 'radius';
+  groupbyChannels: ('x' | 'y' | 'theta' | 'radius' | 'xOffset' | 'yOffset')[];
 
   /** Field for groupbyChannel. */
-  groupbyField?: FieldName;
+  groupbyFields: Set<FieldName>;
 
   /** Measure axis of the stack. */
   fieldChannel: 'x' | 'y' | 'theta' | 'radius';
@@ -166,17 +166,32 @@ export function stack(
   const stackedFieldDef = encoding[fieldChannel] as PositionFieldDef<string> | PositionDatumDef<string>;
   const stackedField = isFieldDef(stackedFieldDef) ? vgField(stackedFieldDef, {}) : undefined;
 
-  let dimensionChannel: 'x' | 'y' | 'theta' | 'radius' = getDimensionChannel(fieldChannel);
-  let dimensionDef = encoding[dimensionChannel];
+  const dimensionChannel: 'x' | 'y' | 'theta' | 'radius' = getDimensionChannel(fieldChannel);
+  const groupbyChannels: StackProperties['groupbyChannels'] = [];
+  const groupbyFields: Set<FieldName> = new Set();
 
-  let dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
+  if (encoding[dimensionChannel]) {
+    const dimensionDef = encoding[dimensionChannel];
+    const dimensionField = isFieldDef(dimensionDef) ? vgField(dimensionDef, {}) : undefined;
 
-  // avoid grouping by the stacked field
-  if (dimensionField === stackedField) {
-    dimensionField = undefined;
-    dimensionDef = undefined;
-    dimensionChannel = undefined;
+    if (dimensionField && dimensionField !== stackedField) {
+      // avoid grouping by the stacked field
+      groupbyChannels.push(dimensionChannel);
+      groupbyFields.add(dimensionField);
+    }
+
+    const dimensionOffsetChannel = dimensionChannel === 'x' ? 'xOffset' : 'yOffset';
+    const dimensionOffsetDef = encoding[dimensionOffsetChannel];
+    const dimensionOffsetField = isFieldDef(dimensionOffsetDef) ? vgField(dimensionOffsetDef, {}) : undefined;
+
+    if (dimensionOffsetField && dimensionOffsetField !== stackedField) {
+      // avoid grouping by the stacked field
+      groupbyChannels.push(dimensionOffsetChannel);
+      groupbyFields.add(dimensionOffsetField);
+    }
   }
+
+  // If the dimension has offset, don't stack anymore
 
   // Should have grouping level of detail that is different from the dimension field
   // Ignore tooltip in stackBy (https://github.com/vega/vega-lite/issues/4001)
@@ -194,8 +209,8 @@ export function stack(
         if (
           // if fielddef is a repeat, just include it in the stack by
           !f ||
-          // otherwise, the field must be different from x and y fields.
-          f !== dimensionField
+          // otherwise, the field must be different from the groupBy fields.
+          !groupbyFields.has(f)
         ) {
           sc.push({channel, fieldDef});
         }
@@ -242,13 +257,17 @@ export function stack(
   }
 
   // Warn if stacking non-summative aggregate
-  if (isFieldDef(stackedFieldDef) && stackedFieldDef.aggregate && !contains(SUM_OPS, stackedFieldDef.aggregate)) {
+  if (
+    isFieldDef(stackedFieldDef) &&
+    stackedFieldDef.aggregate &&
+    !(SUM_OPS as Set<Aggregate | CompositeAggregate>).has(stackedFieldDef.aggregate)
+  ) {
     log.warn(log.message.stackNonSummativeAggregate(stackedFieldDef.aggregate));
   }
 
   return {
-    groupbyChannel: dimensionDef ? dimensionChannel : undefined,
-    groupbyField: dimensionField,
+    groupbyChannels,
+    groupbyFields,
     fieldChannel,
     impute: stackedFieldDef.impute === null ? false : isPathMark(mark),
     stackBy,

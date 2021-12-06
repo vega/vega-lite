@@ -1,12 +1,13 @@
 import {SignalRef} from 'vega';
 import {isObject, isString} from 'vega-util';
 import {
+  Aggregate,
   isAggregateOp,
   isArgmaxDef,
   isArgminDef,
   MULTIDOMAIN_SORT_OP_INDEX as UNIONDOMAIN_SORT_OP_INDEX,
   NonArgAggregateOp,
-  SHARED_DOMAIN_OP_INDEX
+  SHARED_DOMAIN_OPS
 } from '../../aggregate';
 import {isBinning, isBinParams, isParameterExtent} from '../../bin';
 import {getSecondaryRangeChannel, isScaleChannel, ScaleChannel} from '../../channel';
@@ -22,6 +23,7 @@ import {
   valueExpr,
   vgField
 } from '../../channeldef';
+import {CompositeAggregate} from '../../compositemark';
 import {DataSourceType} from '../../data';
 import {DateTime} from '../../datetime';
 import {ExprRef} from '../../expr';
@@ -375,7 +377,7 @@ function parseSingleChannelDomain(
           ? model.requestDataName(DataSourceType.Main)
           : model.requestDataName(DataSourceType.Raw),
         field: model.vgField(channel),
-        sort: sort
+        sort
       }
     ]);
   } else {
@@ -439,19 +441,19 @@ export function domainSort(
 
   const {stack} = model;
   const stackDimensions = stack
-    ? [...(stack.groupbyField ? [stack.groupbyField] : []), ...stack.stackBy.map(s => s.fieldDef.field)]
+    ? new Set([...stack.groupbyFields, ...stack.stackBy.map(s => s.fieldDef.field)])
     : undefined;
 
   // Sorted based on an aggregate calculation over a specified sort field (only for ordinal scale)
   if (isSortField(sort)) {
-    const isStackedMeasure = stack && !util.contains(stackDimensions, sort.field);
+    const isStackedMeasure = stack && !stackDimensions.has(sort.field);
     return normalizeSortField(sort, isStackedMeasure);
   } else if (isSortByEncoding(sort)) {
     const {encoding, order} = sort;
     const fieldDefToSortBy = model.fieldDef(encoding);
     const {aggregate, field} = fieldDefToSortBy;
 
-    const isStackedMeasure = stack && !util.contains(stackDimensions, field);
+    const isStackedMeasure = stack && !stackDimensions.has(field);
 
     if (isArgminDef(aggregate) || isArgmaxDef(aggregate)) {
       return normalizeSortField(
@@ -505,7 +507,7 @@ export function canUseUnaggregatedDomain(
     };
   }
 
-  if (isString(aggregate) && !SHARED_DOMAIN_OP_INDEX[aggregate]) {
+  if (isString(aggregate) && !(SHARED_DOMAIN_OPS as Set<Aggregate | CompositeAggregate>).has(aggregate)) {
     return {
       valid: false,
       reason: log.message.unaggregateDomainWithNonSharedDomainOp(aggregate)

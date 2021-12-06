@@ -419,7 +419,7 @@ export class FacetModel extends ModelWithField {
         field: FACET_CHANNELS.map(c => this.facetSortFields(c)).flat(),
         order: FACET_CHANNELS.map(c => this.facetSortOrder(c)).flat()
       },
-      ...(data.length > 0 ? {data: data} : {}),
+      ...(data.length > 0 ? {data} : {}),
       ...(encodeEntry ? {encode: {update: encodeEntry}} : {}),
       ...child.assembleGroup(assembleFacetSignals(this, []))
     };

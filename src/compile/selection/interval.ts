@@ -164,7 +164,7 @@ const interval: SelectionCompiler<'interval'> = {
             fill: {value: fill},
             fillOpacity: {value: fillOpacity}
           },
-          update: update
+          update
         }
       },
       ...marks,
@@ -227,7 +227,7 @@ function channelSignals(
         {
           name: vname,
           ...(init ? {init: assembleInit(init, true, scaled)} : {value: []}),
-          on: on
+          on
         },
         {
           name: dname,

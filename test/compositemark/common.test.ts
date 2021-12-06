@@ -97,12 +97,12 @@ describe('common', () => {
     expect(transforms).toBeTruthy();
 
     const upperCalculate = transforms[1];
-    expect(isCalculate(upperCalculate) && upperCalculate.calculate).toEqual(
+    expect(isCalculate(upperCalculate) && upperCalculate.calculate).toBe(
       'datum["center_yield space,punctuation"] + datum["extent_yield space,punctuation"]'
     );
 
     const lowerCalculate = transforms[2];
-    expect(isCalculate(lowerCalculate) && lowerCalculate.calculate).toEqual(
+    expect(isCalculate(lowerCalculate) && lowerCalculate.calculate).toBe(
       'datum["center_yield space,punctuation"] - datum["extent_yield space,punctuation"]'
     );
   });

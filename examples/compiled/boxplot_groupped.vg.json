@@ -1,0 +1,366 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A vertical box plot showing median, min, and max body mass of penguins.",
+  "background": "white",
+  "padding": 5,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {"name": "source_0", "url": "data/cars.json", "format": {"type": "json"}},
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "joinaggregate",
+          "as": ["lower_box_Acceleration", "upper_box_Acceleration"],
+          "ops": ["q1", "q3"],
+          "fields": ["Acceleration", "Acceleration"],
+          "groupby": ["Cylinders", "Origin", "Origin"]
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "(datum[\"Acceleration\"] < datum[\"lower_box_Acceleration\"] - 1.5 * (datum[\"upper_box_Acceleration\"] - datum[\"lower_box_Acceleration\"])) || (datum[\"Acceleration\"] > datum[\"upper_box_Acceleration\"] + 1.5 * (datum[\"upper_box_Acceleration\"] - datum[\"lower_box_Acceleration\"]))"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"Acceleration\"]) && isFinite(+datum[\"Acceleration\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_2",
+      "source": "data_0",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "(datum[\"lower_box_Acceleration\"] - 1.5 * (datum[\"upper_box_Acceleration\"] - datum[\"lower_box_Acceleration\"]) <= datum[\"Acceleration\"]) && (datum[\"Acceleration\"] <= datum[\"upper_box_Acceleration\"] + 1.5 * (datum[\"upper_box_Acceleration\"] - datum[\"lower_box_Acceleration\"]))"
+        },
+        {
+          "type": "aggregate",
+          "groupby": ["Cylinders", "Origin"],
+          "ops": ["min", "max", "min", "max"],
+          "fields": [
+            "Acceleration",
+            "Acceleration",
+            "lower_box_Acceleration",
+            "upper_box_Acceleration"
+          ],
+          "as": [
+            "lower_whisker_Acceleration",
+            "upper_whisker_Acceleration",
+            "lower_box_Acceleration",
+            "upper_box_Acceleration"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "data_3",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["Cylinders", "Origin"],
+          "ops": ["q1", "q3", "median", "min", "max"],
+          "fields": [
+            "Acceleration",
+            "Acceleration",
+            "Acceleration",
+            "Acceleration",
+            "Acceleration"
+          ],
+          "as": [
+            "lower_box_Acceleration",
+            "upper_box_Acceleration",
+            "mid_box_Acceleration",
+            "min_Acceleration",
+            "max_Acceleration"
+          ]
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "x_step",
+      "update": "20 * bandspace(domain('xOffset').length, 0, 0) / (1-0.2)"
+    },
+    {
+      "name": "width",
+      "update": "bandspace(domain('x').length, 0.2, 0.2) * x_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_layer_0_marks",
+      "type": "symbol",
+      "style": ["point", "boxplot-outliers"],
+      "from": {"data": "data_1"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "transparent"},
+          "stroke": {"scale": "color", "field": "Origin"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Acceleration: \" + (format(datum[\"Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+          },
+          "x": {
+            "scale": "x",
+            "field": "Cylinders",
+            "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
+          },
+          "y": {"scale": "y", "field": "Acceleration"}
+        }
+      }
+    },
+    {
+      "name": "layer_0_layer_1_layer_0_marks",
+      "type": "rule",
+      "style": ["rule", "boxplot-rule"],
+      "aria": false,
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"Upper Whisker of Acceleration\": format(datum[\"upper_whisker_Acceleration\"], \"\"), \"Lower Whisker of Acceleration\": format(datum[\"lower_whisker_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
+          },
+          "x": {
+            "scale": "x",
+            "field": "Cylinders",
+            "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
+          },
+          "y": [
+            {
+              "test": "!isValid(datum[\"lower_whisker_Acceleration\"]) || !isFinite(+datum[\"lower_whisker_Acceleration\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "lower_whisker_Acceleration"}
+          ],
+          "y2": [
+            {
+              "test": "!isValid(datum[\"lower_box_Acceleration\"]) || !isFinite(+datum[\"lower_box_Acceleration\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "lower_box_Acceleration"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "layer_0_layer_1_layer_1_marks",
+      "type": "rule",
+      "style": ["rule", "boxplot-rule"],
+      "aria": false,
+      "from": {"data": "data_2"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"Upper Whisker of Acceleration\": format(datum[\"upper_whisker_Acceleration\"], \"\"), \"Lower Whisker of Acceleration\": format(datum[\"lower_whisker_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
+          },
+          "x": {
+            "scale": "x",
+            "field": "Cylinders",
+            "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
+          },
+          "y": [
+            {
+              "test": "!isValid(datum[\"upper_box_Acceleration\"]) || !isFinite(+datum[\"upper_box_Acceleration\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "upper_box_Acceleration"}
+          ],
+          "y2": [
+            {
+              "test": "!isValid(datum[\"upper_whisker_Acceleration\"]) || !isFinite(+datum[\"upper_whisker_Acceleration\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "upper_whisker_Acceleration"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_0_marks",
+      "type": "rect",
+      "style": ["bar", "boxplot-box"],
+      "from": {"data": "data_3"},
+      "encode": {
+        "update": {
+          "ariaRoleDescription": {"value": "box"},
+          "fill": {"scale": "color", "field": "Origin"},
+          "tooltip": {
+            "signal": "{\"Max of Acceleration\": format(datum[\"max_Acceleration\"], \"\"), \"Q3 of Acceleration\": format(datum[\"upper_box_Acceleration\"], \"\"), \"Median of Acceleration\": format(datum[\"mid_box_Acceleration\"], \"\"), \"Q1 of Acceleration\": format(datum[\"lower_box_Acceleration\"], \"\"), \"Min of Acceleration\": format(datum[\"min_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
+          },
+          "description": {
+            "signal": "\"Cylinders: \" + (isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"]) + \"; Acceleration: \" + (format(datum[\"lower_box_Acceleration\"], \"\")) + \"; upper_box_Acceleration: \" + (format(datum[\"upper_box_Acceleration\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Max of Acceleration: \" + (format(datum[\"max_Acceleration\"], \"\")) + \"; Q3 of Acceleration: \" + (format(datum[\"upper_box_Acceleration\"], \"\")) + \"; Median of Acceleration: \" + (format(datum[\"mid_box_Acceleration\"], \"\")) + \"; Q1 of Acceleration: \" + (format(datum[\"lower_box_Acceleration\"], \"\")) + \"; Min of Acceleration: \" + (format(datum[\"min_Acceleration\"], \"\"))"
+          },
+          "xc": {
+            "scale": "x",
+            "field": "Cylinders",
+            "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
+          },
+          "width": {"value": 14},
+          "y": [
+            {
+              "test": "!isValid(datum[\"lower_box_Acceleration\"]) || !isFinite(+datum[\"lower_box_Acceleration\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "lower_box_Acceleration"}
+          ],
+          "y2": [
+            {
+              "test": "!isValid(datum[\"upper_box_Acceleration\"]) || !isFinite(+datum[\"upper_box_Acceleration\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "upper_box_Acceleration"}
+          ]
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_1_marks",
+      "type": "rect",
+      "style": ["tick", "boxplot-median"],
+      "aria": false,
+      "from": {"data": "data_3"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.7},
+          "fill": {"value": "white"},
+          "tooltip": {
+            "signal": "{\"Max of Acceleration\": format(datum[\"max_Acceleration\"], \"\"), \"Q3 of Acceleration\": format(datum[\"upper_box_Acceleration\"], \"\"), \"Median of Acceleration\": format(datum[\"mid_box_Acceleration\"], \"\"), \"Q1 of Acceleration\": format(datum[\"lower_box_Acceleration\"], \"\"), \"Min of Acceleration\": format(datum[\"min_Acceleration\"], \"\"), \"Cylinders\": isValid(datum[\"Cylinders\"]) ? datum[\"Cylinders\"] : \"\"+datum[\"Cylinders\"], \"Origin\": isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]}"
+          },
+          "xc": {
+            "scale": "x",
+            "field": "Cylinders",
+            "offset": {"scale": "xOffset", "field": "Origin", "band": 0.5}
+          },
+          "yc": [
+            {
+              "test": "!isValid(datum[\"mid_box_Acceleration\"]) || !isFinite(+datum[\"mid_box_Acceleration\"])",
+              "field": {"group": "height"}
+            },
+            {"scale": "y", "field": "mid_box_Acceleration"}
+          ],
+          "width": {"value": 14},
+          "height": {"value": 1}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "band",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "Cylinders"},
+          {"data": "data_2", "field": "Cylinders"},
+          {"data": "data_3", "field": "Cylinders"}
+        ],
+        "sort": true
+      },
+      "range": {"step": {"signal": "x_step"}},
+      "paddingInner": 0.2,
+      "paddingOuter": 0.2
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "Acceleration"},
+          {"data": "data_2", "field": "lower_whisker_Acceleration"},
+          {"data": "data_2", "field": "lower_box_Acceleration"},
+          {"data": "data_2", "field": "upper_box_Acceleration"},
+          {"data": "data_2", "field": "upper_whisker_Acceleration"},
+          {"data": "data_3", "field": "lower_box_Acceleration"},
+          {"data": "data_3", "field": "upper_box_Acceleration"},
+          {"data": "data_3", "field": "mid_box_Acceleration"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "xOffset",
+      "type": "band",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "Origin"},
+          {"data": "data_2", "field": "Origin"},
+          {"data": "data_3", "field": "Origin"}
+        ],
+        "sort": true
+      },
+      "range": {"step": 20}
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {
+        "fields": [
+          {"data": "data_1", "field": "Origin"},
+          {"data": "data_3", "field": "Origin"}
+        ],
+        "sort": true
+      },
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Cylinders",
+      "labelAlign": "right",
+      "labelAngle": 270,
+      "labelBaseline": "middle",
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Acceleration",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "stroke": "color",
+      "symbolType": "circle",
+      "title": "Origin",
+      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
+      "fill": "color"
+    }
+  ]
+}

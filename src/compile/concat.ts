@@ -124,7 +124,7 @@ export class ConcatModel extends Model {
   protected assembleDefaultLayout(): VgLayout {
     const columns = this.layout.columns;
     return {
-      ...(columns != null ? {columns: columns} : {}),
+      ...(columns != null ? {columns} : {}),
       bounds: 'full',
       // Use align each so it can work with multiple plots with different size
       align: 'each'

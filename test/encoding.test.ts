@@ -87,6 +87,45 @@ describe('encoding', () => {
         expect(logger.warns[0]).toEqual(log.message.droppingColor('encoding', {stroke: true}));
       })
     );
+
+    it(
+      'replaces xOffset with x if there is no x',
+      log.wrap(logger => {
+        const encoding = initEncoding(
+          {
+            xOffset: {field: 'a', type: 'quantitative'}
+          },
+          'point',
+          false,
+          defaultConfig
+        );
+
+        expect(encoding).toEqual({
+          x: {field: 'a', type: 'quantitative'}
+        });
+        expect(logger.warns[0]).toEqual(log.message.replaceOffsetWithMainChannel('x'));
+      })
+    );
+
+    it(
+      'drops xOffset if x is continuous',
+      log.wrap(logger => {
+        const encoding = initEncoding(
+          {
+            x: {field: 'a', type: 'quantitative'},
+            xOffset: {field: 'b', type: 'quantitative'}
+          },
+          'point',
+          false,
+          defaultConfig
+        );
+
+        expect(encoding).toEqual({
+          x: {field: 'a', type: 'quantitative'}
+        });
+        expect(logger.warns[0]).toEqual(log.message.offsetNestedInsideContinuousPositionScaleDropped('x'));
+      })
+    );
   });
 
   describe('extractTransformsFromEncoding', () => {

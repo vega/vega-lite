@@ -280,7 +280,7 @@ describe('compile/data/facet', () => {
 
       const facetNode = new FacetNode(null, model, 'facetName', 'dataName');
 
-      expect(facetNode.hash()).toEqual(
+      expect(facetNode.hash()).toBe(
         'Facet r:{"fields":["r"],"name":"row_domain","sortField":{"field":"b","op":"median"}} c:{"fields":["c"],"name":"column_domain","sortField":{"field":"a","op":"median"}}'
       );
     });

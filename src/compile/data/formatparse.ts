@@ -37,10 +37,7 @@ import {DataFlowNode} from './dataflow';
  * Remove quotes from a string.
  */
 function unquote(pattern: string) {
-  if (
-    (pattern[0] === "'" && pattern[pattern.length - 1] === "'") ||
-    (pattern[0] === '"' && pattern[pattern.length - 1] === '"')
-  ) {
+  if ((pattern.startsWith("'") && pattern.endsWith("'")) || (pattern.startsWith('"') && pattern.endsWith('"'))) {
     return pattern.slice(1, -1);
   }
   return pattern;

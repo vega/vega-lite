@@ -122,7 +122,7 @@ export function extractTitleConfig(titleConfig: TitleConfig<SignalRef>): {
 
   const subtitleMarkConfig = pick(titleConfig, ['align', 'baseline', 'dx', 'dy', 'limit']);
 
-  return {titleMarkConfig, subtitleMarkConfig, nonMarkTitleProperties: nonMarkTitleProperties, subtitle};
+  return {titleMarkConfig, subtitleMarkConfig, nonMarkTitleProperties, subtitle};
 }
 
 export function isText(v: any): v is Text {

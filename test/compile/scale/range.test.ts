@@ -81,6 +81,66 @@ describe('compile/scale', () => {
         expect(parseRangeForChannel('y', model)).toEqual(makeExplicit([{signal: 'height'}, 40]));
       });
 
+      it('should return step * stepCount when there is a nested offset', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'point',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'xSub', type: 'nominal'},
+            y: {field: 'y', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('x', model)).toEqual(
+          makeImplicit({step: {signal: "20 * domain('xOffset').length / (1-0.2)"}})
+        );
+      });
+
+      it('should return step * bandspace when there is a nested offset with band scale', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'xSub', type: 'nominal'},
+            y: {field: 'y', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('x', model)).toEqual(
+          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length, 0, 0) / (1-0.2)"}})
+        );
+      });
+
+      it('should return step * bandspace when there is a nested offset with band scale with custom padding', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'xSub', type: 'nominal', scale: {padding: 0.2}},
+            y: {field: 'y', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('x', model)).toEqual(
+          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length, 0.2, 0.2) / (1-0.2)"}})
+        );
+      });
+
+      it('should return step * bandspace when there is a nested offset with band scale with custom paddingInner and -Outer', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'xSub', type: 'nominal', scale: {paddingInner: 0.1, paddingOuter: 0.3}},
+            y: {field: 'y', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('x', model)).toEqual(
+          makeImplicit({step: {signal: "20 * bandspace(domain('xOffset').length, 0.1, 0.3) / (1-0.2)"}})
+        );
+      });
+
       it('should return config.view.discreteWidth for x/y-band/point scales by default.', () => {
         for (const scaleType of [ScaleType.BAND, ScaleType.POINT]) {
           const model = parseUnitModelWithScaleExceptRange({
@@ -130,6 +190,76 @@ describe('compile/scale', () => {
             expect(localLogger.warns[0]).toEqual(log.message.stepDropped('width'));
           })();
         }
+      });
+    });
+
+    describe('xOffset', () => {
+      it('returns [0, bandwidth] if x is band scale with fixed width', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          width: 500,
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'subx', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(makeImplicit([0, {signal: "bandwidth('x')"}]));
+      });
+      it("returns [0, bandwidth('x')] if x has a fixed step for position", () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          width: {step: 23, for: 'position'},
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'subx', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(makeImplicit([0, {signal: "bandwidth('x')"}]));
+      });
+
+      it('returns step if x is band scale with fixed step with default for', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          width: {step: 23},
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'subx', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(makeExplicit({step: 23}));
+      });
+
+      it('returns step if x is band scale with default step', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'subx', type: 'nominal'}
+          },
+          config: {
+            view: {
+              discreteWidth: {step: 23}
+            }
+          }
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(makeImplicit({step: 23}));
+      });
+
+      it('returns step if x is band scale with fixed step for offset', () => {
+        const model = parseUnitModelWithScaleExceptRange({
+          width: {step: 23, for: 'offset'},
+          mark: 'bar',
+          encoding: {
+            x: {field: 'x', type: 'nominal'},
+            xOffset: {field: 'subx', type: 'nominal'}
+          }
+        });
+
+        expect(parseRangeForChannel('xOffset', model)).toEqual(makeExplicit({step: 23}));
       });
     });
 
@@ -309,7 +439,7 @@ describe('compile/scale', () => {
           }
         });
         const r = parseRangeForChannel('radius', model);
-        expect(r.value[0]).toEqual(0);
+        expect(r.value[0]).toBe(0);
         expect(r.value[1]).toEqual({signal: 'min(width,height)/2'});
       });
     });
@@ -599,7 +729,7 @@ describe('compile/scale', () => {
           quantileCount: 4
         }
       };
-      expect(defaultContinuousToDiscreteCount('quantile', config, undefined, 'x')).toEqual(4);
+      expect(defaultContinuousToDiscreteCount('quantile', config, undefined, 'x')).toBe(4);
     });
 
     it('should use config.scale.quantizeCount for quantize scale', () => {
@@ -608,16 +738,16 @@ describe('compile/scale', () => {
           quantizeCount: 4
         }
       };
-      expect(defaultContinuousToDiscreteCount('quantize', config, undefined, 'x')).toEqual(4);
+      expect(defaultContinuousToDiscreteCount('quantize', config, undefined, 'x')).toBe(4);
     });
 
     it('should use domain size for threshold scale', () => {
-      expect(defaultContinuousToDiscreteCount('threshold', {}, [1, 10], 'x')).toEqual(3);
+      expect(defaultContinuousToDiscreteCount('threshold', {}, [1, 10], 'x')).toBe(3);
     });
 
     it('should throw warning and default to 4 for scale without domain', () => {
       log.wrap(localLogger => {
-        expect(defaultContinuousToDiscreteCount('quantize', {}, undefined, 'x')).toEqual(4);
+        expect(defaultContinuousToDiscreteCount('quantize', {}, undefined, 'x')).toBe(4);
         expect(localLogger.warns[0]).toEqual(log.message.domainRequiredForThresholdScale('x'));
       });
     });

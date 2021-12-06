@@ -25,7 +25,7 @@ describe('compile/data/stack', () => {
       });
 
       expect(parse(model)).toEqual({
-        dimensionFieldDef: {field: 'b', type: 'nominal'},
+        dimensionFieldDefs: [{field: 'b', type: 'nominal'}],
         facetby: [],
         stackField: 'sum_a',
         stackby: ['c'],
@@ -50,7 +50,7 @@ describe('compile/data/stack', () => {
       });
 
       expect(parse(model)).toEqual({
-        dimensionFieldDef: {field: 'b', type: 'nominal'},
+        dimensionFieldDefs: [{field: 'b', type: 'nominal'}],
         facetby: [],
         stackField: 'sum_a\\[foo\\]',
         stackby: ['c'],
@@ -75,7 +75,7 @@ describe('compile/data/stack', () => {
       });
 
       expect(parse(model)).toEqual({
-        dimensionFieldDef: {bin: {maxbins: 10}, field: 'b', type: 'quantitative'},
+        dimensionFieldDefs: [{bin: {maxbins: 10}, field: 'b', type: 'quantitative'}],
         facetby: [],
         stackField: 'sum_a',
         stackby: ['c'],
@@ -99,7 +99,7 @@ describe('compile/data/stack', () => {
       });
 
       expect(parse(model)).toEqual({
-        dimensionFieldDef: undefined,
+        dimensionFieldDefs: [],
         facetby: [],
         stackField: 'sum_a',
         stackby: ['c'],
@@ -139,7 +139,7 @@ describe('compile/data/stack', () => {
       });
 
       expect(parse(model)).toEqual({
-        dimensionFieldDef: {field: 'b', type: 'nominal'},
+        dimensionFieldDefs: [{field: 'b', type: 'nominal'}],
         facetby: [],
         stackField: 'sum_a',
         stackby: ['c'],
@@ -186,7 +186,7 @@ describe('compile/data/stack', () => {
       });
 
       expect(parse(model)).toEqual({
-        dimensionFieldDef: {bin: {maxbins: 10}, field: 'b', type: 'quantitative'},
+        dimensionFieldDefs: [{bin: {maxbins: 10}, field: 'b', type: 'quantitative'}],
         facetby: [],
         stackField: 'sum_a',
         stackby: ['c'],
@@ -349,8 +349,8 @@ describe('compile/data/stack', () => {
         }
       });
       const stack = StackNode.makeFromEncoding(null, model);
-      expect(stack.hash()).toEqual(
-        'Stack {"as":["sum_a_start","sum_a_end"],"dimensionFieldDef":{"field":"b","type":"nominal"},"facetby":[],"impute":false,"offset":"zero","sort":{"field":["c"],"order":["ascending"]},"stackField":"sum_a","stackby":["c"]}'
+      expect(stack.hash()).toBe(
+        'Stack {"as":["sum_a_start","sum_a_end"],"dimensionFieldDefs":[{"field":"b","type":"nominal"}],"facetby":[],"impute":false,"offset":"zero","sort":{"field":["c"],"order":["ascending"]},"stackField":"sum_a","stackby":["c"]}'
       );
     });
 

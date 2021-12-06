@@ -87,7 +87,7 @@ describe('UnitModel', () => {
         }
       });
 
-      expect(model.axis(X).offset).toEqual(345);
+      expect(model.axis(X).offset).toBe(345);
       expect(model.axis(X).labelColor).toEqual({signal: 'red'});
     });
   });

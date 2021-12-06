@@ -2,20 +2,64 @@
  * Utility files for producing Vega ValueRef for marks
  */
 import {SignalRef} from 'vega';
-import {getOffsetChannel, PolarPositionChannel, PositionChannel} from '../../../channel';
+import {PolarPositionChannel, PositionChannel} from '../../../channel';
+import {Encoding} from '../../../encoding';
 import {Mark, MarkDef} from '../../../mark';
+import {VgValueRef} from '../../../vega.schema';
+import {signalOrValueRef} from '../../common';
+import {UnitModel} from '../../unit';
+import {midPoint} from './valueref';
 
-export function getOffset(
-  channel: PositionChannel | PolarPositionChannel,
-  markDef: MarkDef<Mark, SignalRef>
-): number | SignalRef {
-  const offsetChannel = getOffsetChannel(channel);
+export interface Offset {
+  offsetType?: 'visual' | 'encoding';
+  offset?: number | VgValueRef;
+}
 
-  // TODO: in the future read from encoding channel too
-  const markDefOffsetValue = markDef[offsetChannel];
-  if (markDefOffsetValue) {
-    return markDefOffsetValue;
+export function positionOffset({
+  channel: baseChannel,
+  markDef,
+  encoding = {},
+  model,
+  bandPosition
+}: {
+  channel: PositionChannel | PolarPositionChannel;
+  markDef: MarkDef<Mark, SignalRef>;
+  encoding?: Encoding<string>;
+  model?: UnitModel;
+  bandPosition?: number;
+}): Offset {
+  const channel = `${baseChannel}Offset` as
+    | 'xOffset'
+    | 'yOffset'
+    | 'x2Offset'
+    | 'y2Offset'
+    | 'thetaOffset'
+    | 'radiusOffset'
+    | 'theta2Offset'
+    | 'radius2Offset'; // Need to cast as the type can't be inferred automatically
+
+  const defaultValue = markDef[channel];
+  const channelDef = encoding[channel];
+
+  if ((channel === 'xOffset' || channel === 'yOffset') && channelDef) {
+    const ref = midPoint({
+      channel: channel,
+      channelDef,
+      markDef,
+      config: model?.config,
+      scaleName: model.scaleName(channel),
+      scale: model.getScaleComponent(channel),
+      stack: null,
+      defaultRef: signalOrValueRef(defaultValue),
+      bandPosition
+    });
+    return {offsetType: 'encoding', offset: ref};
   }
 
-  return undefined;
+  const markDefOffsetValue = markDef[channel];
+  if (markDefOffsetValue) {
+    return {offsetType: 'visual', offset: markDefOffsetValue};
+  }
+
+  return {};
 }

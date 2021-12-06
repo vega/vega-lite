@@ -42,7 +42,7 @@ const point: SelectionCompiler<'point'> = {
       .map(b => `indexof(item().mark.name, '${b}') < 0`)
       .join(' && ');
 
-    const test = `datum && item().mark.marktype !== 'group'` + (brushes ? ` && ${brushes}` : '');
+    const test = `datum && item().mark.marktype !== 'group'${brushes ? ` && ${brushes}` : ''}`;
 
     return signals.concat([
       {

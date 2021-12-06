@@ -1,18 +1,22 @@
 import {SignalRef} from 'vega';
-import {getOffset} from '../../../../src/compile/mark/encode/offset';
+import {positionOffset} from '../../../../src/compile/mark/encode/offset';
 import {Mark, MarkDef} from '../../../../src/mark';
 
 describe('compile/mark/encode/offset', () => {
-  describe('getOffset', () => {
-    const markDef: MarkDef<Mark, SignalRef> = {
-      type: 'point',
-      x2Offset: 100
-    };
-    it('should correctly get the offset value for the given channel', () => {
-      expect(getOffset('x2', markDef)).toEqual(100);
+  describe('positionOffset', () => {
+    it('correctly get the offset value for the given channel', () => {
+      const markDef: MarkDef<Mark, SignalRef> = {
+        type: 'point',
+        x2Offset: 100
+      };
+      expect(positionOffset({channel: 'x2', markDef}).offset).toBe(100);
     });
     it('should return undefined when the offset value for the given channel is not defined', () => {
-      expect(getOffset('x', markDef)).toBeUndefined();
+      const markDef: MarkDef<Mark, SignalRef> = {
+        type: 'point',
+        x2Offset: 100
+      };
+      expect(positionOffset({channel: 'x', markDef}).offset).toBeUndefined();
     });
   });
 });

@@ -1,15 +1,15 @@
-import {getSort, parseMarkGroupsAndLabels, getLabelMark} from '../../../src/compile/mark/mark';
+import {getLabelMark, getSort, parseMarkGroupsAndLabels} from '../../../src/compile/mark/mark';
 import {UnitModel} from '../../../src/compile/unit';
+import * as log from '../../../src/log';
 import {GEOSHAPE} from '../../../src/mark';
 import {
+  parseConcatModel,
   parseFacetModel,
   parseUnitModel,
   parseUnitModelWithScale,
   parseUnitModelWithScaleAndLayoutSize,
-  parseConcatModel,
   parseUnitModelWithScaleAndSelection
 } from '../../util';
-import * as log from '../../../src/log';
 
 describe('Mark', () => {
   describe('parseMarkGroupAndLabels', () => {
@@ -51,7 +51,7 @@ describe('Mark', () => {
           }
         });
         const submarkGroup = markGroup.marks[0];
-        expect(submarkGroup.transform).not.toBeDefined();
+        expect(submarkGroup.transform).toBeUndefined();
       });
     });
 

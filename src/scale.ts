@@ -8,7 +8,7 @@ import {
   TimeInterval,
   TimeIntervalStep
 } from 'vega';
-import {isString, toSet} from 'vega-util';
+import {isString} from 'vega-util';
 import * as CHANNEL from './channel';
 import {Channel, isColorChannel} from './channel';
 import {DateTime} from './datetime';
@@ -119,52 +119,64 @@ export function scaleTypePrecedence(scaleType: ScaleType): number {
   return SCALE_PRECEDENCE_INDEX[scaleType];
 }
 
-export const CONTINUOUS_TO_CONTINUOUS_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'symlog', 'time', 'utc'];
-const CONTINUOUS_TO_CONTINUOUS_INDEX = toSet(CONTINUOUS_TO_CONTINUOUS_SCALES);
+export const QUANTITATIVE_SCALES = new Set<ScaleType>([
+  'linear',
+  'log',
+  'pow',
+  'sqrt',
+  'symlog'
+]) as ReadonlySet<ScaleType>;
 
-export const QUANTITATIVE_SCALES: ScaleType[] = ['linear', 'log', 'pow', 'sqrt', 'symlog'];
-
-const QUANTITATIVE_SCALES_INDEX = toSet(QUANTITATIVE_SCALES);
+export const CONTINUOUS_TO_CONTINUOUS_SCALES = new Set<ScaleType>([
+  ...QUANTITATIVE_SCALES,
+  'time',
+  'utc'
+]) as ReadonlySet<ScaleType>;
 
 export function isQuantitative(type: ScaleType): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' {
-  return type in QUANTITATIVE_SCALES_INDEX;
+  return QUANTITATIVE_SCALES.has(type);
 }
 
-export const CONTINUOUS_TO_DISCRETE_SCALES: ScaleType[] = ['quantile', 'quantize', 'threshold'];
-const CONTINUOUS_TO_DISCRETE_INDEX = toSet(CONTINUOUS_TO_DISCRETE_SCALES);
-
-export const CONTINUOUS_DOMAIN_SCALES: ScaleType[] = CONTINUOUS_TO_CONTINUOUS_SCALES.concat([
+export const CONTINUOUS_TO_DISCRETE_SCALES = new Set<ScaleType>([
   'quantile',
   'quantize',
-  'threshold',
+  'threshold'
+]) as ReadonlySet<ScaleType>;
+
+export const CONTINUOUS_DOMAIN_SCALES = new Set<ScaleType>([
+  ...CONTINUOUS_TO_CONTINUOUS_SCALES,
+  ...CONTINUOUS_TO_DISCRETE_SCALES,
   'sequential',
   'identity'
-]);
-const CONTINUOUS_DOMAIN_INDEX = toSet(CONTINUOUS_DOMAIN_SCALES);
+]) as ReadonlySet<ScaleType>;
 
-export const DISCRETE_DOMAIN_SCALES: ScaleType[] = ['ordinal', 'bin-ordinal', 'point', 'band'];
-const DISCRETE_DOMAIN_INDEX = toSet(DISCRETE_DOMAIN_SCALES);
+export const DISCRETE_DOMAIN_SCALES = new Set<ScaleType>([
+  'ordinal',
+  'bin-ordinal',
+  'point',
+  'band'
+]) as ReadonlySet<ScaleType>;
 
-export const TIME_SCALE_TYPES: ScaleType[] = ['time', 'utc'];
+export const TIME_SCALE_TYPES = new Set<ScaleType>(['time', 'utc']) as ReadonlySet<ScaleType>;
 
 export function hasDiscreteDomain(type: ScaleType): type is 'ordinal' | 'bin-ordinal' | 'point' | 'band' {
-  return type in DISCRETE_DOMAIN_INDEX;
+  return DISCRETE_DOMAIN_SCALES.has(type);
 }
 
 export function hasContinuousDomain(
   type: ScaleType
 ): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' | 'time' | 'utc' | 'quantile' | 'quantize' | 'threshold' {
-  return type in CONTINUOUS_DOMAIN_INDEX;
+  return CONTINUOUS_DOMAIN_SCALES.has(type);
 }
 
 export function isContinuousToContinuous(
   type: ScaleType
 ): type is 'linear' | 'log' | 'pow' | 'sqrt' | 'symlog' | 'time' | 'utc' {
-  return type in CONTINUOUS_TO_CONTINUOUS_INDEX;
+  return CONTINUOUS_TO_CONTINUOUS_SCALES.has(type);
 }
 
 export function isContinuousToDiscrete(type: ScaleType): type is 'quantile' | 'quantize' | 'threshold' {
-  return type in CONTINUOUS_TO_DISCRETE_INDEX;
+  return CONTINUOUS_TO_DISCRETE_SCALES.has(type);
 }
 
 export interface ScaleConfig<ES extends ExprRef | SignalRef> {
@@ -181,9 +193,31 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   clamp?: boolean | ES;
 
   /**
-   * Default inner padding for `x` and `y` band-ordinal scales.
+   * Default inner padding for `x` and `y` band scales with nested `xOffset` and `yOffset` encoding.
+   *
+   * __Default value:__ `0.2`
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  bandWithNestedOffsetPaddingInner?: number | ES;
+
+  /**
+   * Default outer padding for `x` and `y` band scales with nested `xOffset` and `yOffset` encoding.
+   *
+   * __Default value:__ `0.2`
+   *
+   * @minimum 0
+   * @maximum 1
+   */
+  // Note: nested offset always uses band scale, so we don't need "band" in the name for brevity.
+  bandWithNestedOffsetPaddingOuter?: number | ES;
+
+  /**
+   * Default inner padding for `x` and `y` band scales.
    *
    * __Default value:__
+   * - `nestedOffsetPaddingInner` for x/y scales with nested x/y offset scales.
    * - `barBandPaddingInner` for bar marks (`0.1` by default)
    * - `rectBandPaddingInner` for rect and other marks (`0` by default)
    *
@@ -193,7 +227,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   bandPaddingInner?: number | ES;
 
   /**
-   * Default outer padding for `x` and `y` band-ordinal scales.
+   * Default outer padding for `x` and `y` band scales.
    *
    * __Default value:__ `paddingInner/2` (which makes _width/height = number of unique values * step_)
    *
@@ -223,9 +257,23 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   rectBandPaddingInner?: number | ES;
 
   /**
-   * Default padding for continuous scales.
+   * Default padding inner for xOffset/yOffset's band scales.
    *
-   * __Default:__ `5` for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.
+   * __Default Value:__ `0`
+   */
+  offsetBandPaddingInner?: number | ES;
+
+  /**
+   * Default padding outer for xOffset/yOffset's band scales.
+   *
+   * __Default Value:__ `0`
+   */
+  offsetBandPaddingOuter?: number | ES;
+
+  /**
+   * Default padding for continuous x/y scales.
+   *
+   * __Default:__ The bar width for continuous x-scale of a vertical bar and continuous y-scale of a horizontal bar.; `0` otherwise.
    *
    * @minimum 0
    */
@@ -374,6 +422,8 @@ export const defaultScaleConfig: ScaleConfig<SignalRef> = {
 
   barBandPaddingInner: 0.1,
   rectBandPaddingInner: 0,
+  bandWithNestedOffsetPaddingInner: 0.2,
+  bandWithNestedOffsetPaddingOuter: 0.2,
 
   minBandSize: 2,
 
@@ -623,7 +673,7 @@ export interface Scale<ES extends ExprRef | SignalRef = ExprRef | SignalRef> {
    *
    * For temporal fields with time and utc scales, the `nice` value can be a string indicating the desired time interval. Legal values are `"millisecond"`, `"second"`, `"minute"`, `"hour"`, `"day"`, `"week"`, `"month"`, and `"year"`. Alternatively, `time` and `utc` scales can accept an object-valued interval specifier of the form `{"interval": "month", "step": 3}`, which includes a desired number of interval steps. Here, the domain would snap to quarter (Jan, Apr, Jul, Oct) boundaries.
    *
-   * __Default value:__ `true` for unbinned _quantitative_ fields; `false` otherwise.
+   * __Default value:__ `true` for unbinned _quantitative_ fields without explicit domain bounds; `false` otherwise.
    *
    */
   nice?: boolean | number | TimeInterval | TimeIntervalStep | ES;
@@ -794,35 +844,35 @@ export function scaleTypeSupportDataType(specifiedType: ScaleType, fieldDefType:
   } else if (fieldDefType === TEMPORAL) {
     return contains([ScaleType.TIME, ScaleType.UTC, undefined], specifiedType);
   } else if (fieldDefType === QUANTITATIVE) {
-    return contains(
-      [
-        ScaleType.LOG,
-        ScaleType.POW,
-        ScaleType.SQRT,
-        ScaleType.SYMLOG,
-        ScaleType.QUANTILE,
-        ScaleType.QUANTIZE,
-        ScaleType.THRESHOLD,
-        ScaleType.LINEAR,
-        undefined
-      ],
-      specifiedType
-    );
+    return isQuantitative(specifiedType) || isContinuousToDiscrete(specifiedType) || specifiedType === undefined;
   }
 
   return true;
 }
 
-export function channelSupportScaleType(channel: Channel, scaleType: ScaleType): boolean {
+export function channelSupportScaleType(channel: Channel, scaleType: ScaleType, hasNestedOffsetScale = false): boolean {
   if (!CHANNEL.isScaleChannel(channel)) {
     return false;
   }
   switch (channel) {
     case CHANNEL.X:
     case CHANNEL.Y:
+    case CHANNEL.XOFFSET:
+    case CHANNEL.YOFFSET:
     case CHANNEL.THETA:
     case CHANNEL.RADIUS:
-      return isContinuousToContinuous(scaleType) || contains(['band', 'point'], scaleType);
+      if (isContinuousToContinuous(scaleType)) {
+        return true;
+      } else if (scaleType === 'band') {
+        return true;
+      } else if (scaleType === 'point') {
+        /*
+          Point scale can't be use if the position has a nested offset scale
+          because if there is a nested scale, then it's band.
+        */
+        return !hasNestedOffsetScale;
+      }
+      return false;
     case CHANNEL.SIZE: // TODO: size and opacity can support ordinal with more modification
     case CHANNEL.STROKEWIDTH:
     case CHANNEL.OPACITY:

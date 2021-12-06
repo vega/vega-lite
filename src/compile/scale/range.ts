@@ -6,8 +6,12 @@ import {
   COLOR,
   FILL,
   FILLOPACITY,
+  getOffsetScaleChannel,
+  getSizeChannel,
   isXorY,
+  isXorYOffset,
   OPACITY,
+  PositionScaleChannel,
   RADIUS,
   ScaleChannel,
   SCALE_CHANNELS,
@@ -19,11 +23,14 @@ import {
   STROKEWIDTH,
   THETA,
   X,
-  Y
+  XOFFSET,
+  Y,
+  YOFFSET
 } from '../../channel';
-import {getFieldOrDatumDef, ScaleDatumDef, ScaleFieldDef} from '../../channeldef';
+import {getFieldOrDatumDef, isFieldOrDatumDef, ScaleDatumDef, ScaleFieldDef} from '../../channeldef';
 import {Config, getViewConfigDiscreteSize, getViewConfigDiscreteStep, ViewConfig} from '../../config';
 import {DataSourceType} from '../../data';
+import {channelHasFieldOrDatum} from '../../encoding';
 import * as log from '../../log';
 import {Mark} from '../../mark';
 import {
@@ -34,13 +41,15 @@ import {
   isContinuousToDiscrete,
   isExtendedScheme,
   Scale,
+  ScaleType,
   scaleTypeSupportProperty,
   Scheme
 } from '../../scale';
-import {isStep, LayoutSizeMixins} from '../../spec/base';
+import {getStepFor, isStep, LayoutSizeMixins, Step} from '../../spec/base';
+import {isDiscrete} from '../../type';
 import * as util from '../../util';
 import {isSignalRef, VgRange} from '../../vega.schema';
-import {signalOrStringValue} from '../common';
+import {exprFromSignalRefOrValue, signalOrStringValue} from '../common';
 import {getBinSignalName} from '../data/bin';
 import {SignalRefWrapper} from '../signal';
 import {Explicit, makeExplicit, makeImplicit} from '../split';
@@ -48,10 +57,6 @@ import {UnitModel} from '../unit';
 import {ScaleComponentIndex} from './component';
 
 export const RANGE_PROPERTIES: (keyof Scale)[] = ['range', 'scheme'];
-
-function getSizeChannel(channel: ScaleChannel) {
-  return channel === 'x' ? 'width' : channel === 'y' ? 'height' : undefined;
-}
 
 export function parseUnitScaleRange(model: UnitModel) {
   const localScaleComponents: ScaleComponentIndex = model.component.scales;
@@ -156,14 +161,28 @@ export function parseRangeForChannel(channel: ScaleChannel, model: UnitModel): E
     }
   }
 
-  if (channel === X || channel === Y) {
-    const sizeChannel = channel === X ? 'width' : 'height';
-    const sizeValue = size[sizeChannel];
-    if (isStep(sizeValue)) {
+  const sizeChannel = channel === X || channel === 'xOffset' ? 'width' : 'height';
+  const sizeValue = size[sizeChannel];
+  if (isStep(sizeValue)) {
+    if (isXorY(channel)) {
       if (hasDiscreteDomain(scaleType)) {
-        return makeExplicit({step: sizeValue.step});
+        const step = getPositionStep(sizeValue, model, channel);
+        // Need to be explicit so layer with step wins over layer without step
+        if (step) {
+          return makeExplicit({step});
+        }
       } else {
         log.warn(log.message.stepDropped(sizeChannel));
+      }
+    } else if (isXorYOffset(channel)) {
+      const positionChannel = channel === XOFFSET ? 'x' : 'y';
+      const positionScaleCmpt = model.getScaleComponent(positionChannel);
+      const positionScaleType = positionScaleCmpt.get('type');
+      if (positionScaleType === 'band') {
+        const step = getOffsetStep(sizeValue, scaleType);
+        if (step) {
+          return makeExplicit(step);
+        }
       }
     }
   }
@@ -191,7 +210,7 @@ function parseScheme(scheme: Scheme | SignalRef): RangeScheme {
       ...util.omit(scheme, ['name'])
     };
   }
-  return {scheme: scheme};
+  return {scheme};
 }
 
 function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
@@ -211,16 +230,10 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
     case Y: {
       // If there is no explicit width/height for discrete x/y scales
       if (util.contains(['point', 'band'], scaleType)) {
-        if (channel === X && !size.width) {
-          const w = getViewConfigDiscreteSize(config.view, 'width');
-          if (isStep(w)) {
-            return w;
-          }
-        } else if (channel === Y && !size.height) {
-          const h = getViewConfigDiscreteSize(config.view, 'height');
-          if (isStep(h)) {
-            return h;
-          }
+        const positionSize = getDiscretePositionSize(channel, size, config.view);
+        if (isStep(positionSize)) {
+          const step = getPositionStep(positionSize, model, channel);
+          return {step};
         }
       }
 
@@ -237,6 +250,10 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
         return [0, SignalRefWrapper.fromName(getSignalName, sizeSignal)];
       }
     }
+
+    case XOFFSET:
+    case YOFFSET:
+      return getOffsetRange(channel, model, scaleType);
 
     case SIZE: {
       // TODO: support custom rangeMin, rangeMax
@@ -307,8 +324,80 @@ function defaultRange(channel: ScaleChannel, model: UnitModel): VgRange {
       // TODO: support custom rangeMin, rangeMax
       return [config.scale.minOpacity, config.scale.maxOpacity];
   }
-  /* istanbul ignore next: should never reach here */
-  throw new Error(`Scale range undefined for channel ${channel}`);
+}
+
+function getPositionStep(step: Step, model: UnitModel, channel: PositionScaleChannel): number | SignalRef {
+  const {encoding} = model;
+
+  const mergedScaleCmpt = model.getScaleComponent(channel);
+  const offsetChannel = getOffsetScaleChannel(channel);
+  const offsetDef = encoding[offsetChannel];
+  const stepFor = getStepFor({step, offsetIsDiscrete: isFieldOrDatumDef(offsetDef) && isDiscrete(offsetDef.type)});
+
+  if (stepFor === 'offset' && channelHasFieldOrDatum(encoding, offsetChannel)) {
+    const offsetScaleCmpt = model.getScaleComponent(offsetChannel);
+    const offsetScaleName = model.scaleName(offsetChannel);
+
+    let stepCount = `domain('${offsetScaleName}').length`;
+
+    if (offsetScaleCmpt.get('type') === 'band') {
+      const offsetPaddingInner = offsetScaleCmpt.get('paddingInner') ?? offsetScaleCmpt.get('padding') ?? 0;
+      const offsetPaddingOuter = offsetScaleCmpt.get('paddingOuter') ?? offsetScaleCmpt.get('padding') ?? 0;
+      stepCount = `bandspace(${stepCount}, ${offsetPaddingInner}, ${offsetPaddingOuter})`;
+    }
+
+    const paddingInner = mergedScaleCmpt.get('paddingInner') ?? mergedScaleCmpt.get('padding');
+    return {
+      signal: `${step.step} * ${stepCount} / (1-${exprFromSignalRefOrValue(paddingInner)})`
+    };
+  } else {
+    return step.step;
+  }
+}
+
+function getOffsetStep(step: Step, offsetScaleType: ScaleType) {
+  const stepFor = getStepFor({step, offsetIsDiscrete: hasDiscreteDomain(offsetScaleType)});
+  if (stepFor === 'offset') {
+    return {step: step.step};
+  }
+  return undefined;
+}
+
+function getOffsetRange(channel: string, model: UnitModel, offsetScaleType: ScaleType): VgRange {
+  const positionChannel = channel === XOFFSET ? 'x' : 'y';
+  const positionScaleCmpt = model.getScaleComponent(positionChannel);
+  const positionScaleType = positionScaleCmpt.get('type');
+  const positionScaleName = model.scaleName(positionChannel);
+
+  if (positionScaleType === 'band') {
+    const size = getDiscretePositionSize(positionChannel, model.size, model.config.view);
+
+    if (isStep(size)) {
+      // step is for offset
+      const step = getOffsetStep(size, offsetScaleType);
+      if (step) {
+        return step;
+      }
+    }
+    // otherwise use the position
+    return [0, {signal: `bandwidth('${positionScaleName}')`}];
+  } else {
+    // continuous scale
+    return util.never(`Cannot use ${channel} scale if ${positionChannel} scale is not discrete.`);
+  }
+}
+
+function getDiscretePositionSize(
+  channel: 'x' | 'y',
+  size: LayoutSizeMixins,
+  viewConfig: ViewConfig<SignalRef>
+): Step | number | 'container' {
+  const sizeChannel = channel === X ? 'width' : 'height';
+  const sizeValue = size[sizeChannel];
+  if (sizeValue) {
+    return sizeValue;
+  }
+  return getViewConfigDiscreteSize(viewConfig, sizeChannel);
 }
 
 export function defaultContinuousToDiscreteCount(
