@@ -5967,9 +5967,9 @@ punycode@^2.1.0, punycode@^2.1.1:
   integrity sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==
 
 puppeteer@^12.0.0:
-  version "12.0.0"
-  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-12.0.0.tgz#38544c9a608c79ded84bb4225af26d2d42c988cf"
-  integrity sha512-a+vLxtwuDLUIq8Vz8X5bX+YMhcQrgyfq0Jo5Wcm49EfUawgCxeCN9/rUAS3VdAAiQZ1PKiv9pGyQN8jj1ypecQ==
+  version "12.0.1"
+  resolved "https://registry.yarnpkg.com/puppeteer/-/puppeteer-12.0.1.tgz#ae79d0e174a07563e0bf2e05c94ccafce3e70033"
+  integrity sha512-YQ3GRiyZW0ddxTW+iiQcv2/8TT5c3+FcRUCg7F8q2gHqxd5akZN400VRXr9cHQKLWGukmJLDiE72MrcLK9tFHQ==
   dependencies:
     debug "4.3.2"
     devtools-protocol "0.0.937139"
