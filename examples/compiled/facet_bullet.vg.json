@@ -80,7 +80,12 @@
       ]
     },
     {
-      "name": "data_1",
+      "name": "row_domain",
+      "source": "data_0",
+      "transform": [{"type": "aggregate", "groupby": ["title"]}]
+    },
+    {
+      "name": "data_2",
       "source": "data_0",
       "transform": [
         {
@@ -98,7 +103,7 @@
       ]
     },
     {
-      "name": "data_2",
+      "name": "data_3",
       "source": "data_0",
       "transform": [
         {
@@ -116,7 +121,7 @@
       ]
     },
     {
-      "name": "data_3",
+      "name": "data_4",
       "source": "data_0",
       "transform": [
         {
@@ -134,7 +139,7 @@
       ]
     },
     {
-      "name": "data_4",
+      "name": "data_5",
       "source": "data_0",
       "transform": [
         {
@@ -152,7 +157,7 @@
       ]
     },
     {
-      "name": "data_5",
+      "name": "data_6",
       "source": "data_0",
       "transform": [
         {
@@ -170,7 +175,7 @@
       ]
     },
     {
-      "name": "data_6",
+      "name": "data_7",
       "source": "data_0",
       "transform": [
         {
@@ -178,11 +183,6 @@
           "expr": "isValid(datum[\"markers.0\"]) && isFinite(+datum[\"markers.0\"])"
         }
       ]
-    },
-    {
-      "name": "row_domain",
-      "source": "data_0",
-      "transform": [{"type": "aggregate", "groupby": ["title"]}]
     }
   ],
   "signals": [
