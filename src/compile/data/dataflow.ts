@@ -122,7 +122,7 @@ export abstract class DataFlowNode {
     this._parent = newParent;
     newParent.addChild(this, loc);
 
-    parent._parent = this
+    parent._parent = this;
     this.addChild(parent, loc);
   }
 }
