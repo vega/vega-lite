@@ -116,11 +116,14 @@ export abstract class DataFlowNode {
     // remove old links
     this._children = []; // equivalent to removing every child link one by one
     parent.removeChild(this);
-    parent.parent.removeChild(parent);
+    const loc = parent.parent.removeChild(parent);
 
     // swap two nodes
-    this.parent = newParent;
-    parent.parent = this;
+    this._parent = newParent;
+    newParent.addChild(this, loc);
+
+    parent._parent = this
+    this.addChild(parent, loc);
   }
 }
 
