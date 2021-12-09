@@ -17,6 +17,20 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "filter",
+          "expr": "length(data(\"hover_store\")) && vlSelectionTest(\"hover_store\", datum)"
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
           "type": "pivot",
           "field": "symbol",
           "value": "price",
@@ -26,20 +40,6 @@
         {
           "type": "filter",
           "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"])))"
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "length(data(\"hover_store\")) && vlSelectionTest(\"hover_store\", datum)"
-        },
-        {
-          "type": "filter",
-          "expr": "(isDate(datum[\"date\"]) || (isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]))) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
         }
       ]
     }
@@ -147,7 +147,7 @@
       "type": "symbol",
       "style": ["point"],
       "interactive": false,
-      "from": {"data": "data_1"},
+      "from": {"data": "data_0"},
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
@@ -167,7 +167,7 @@
       "type": "rule",
       "style": ["rule"],
       "interactive": true,
-      "from": {"data": "data_0"},
+      "from": {"data": "data_1"},
       "encode": {
         "update": {
           "stroke": {"value": "black"},
@@ -223,8 +223,8 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "date"},
-          {"data": "data_1", "field": "date"},
-          {"data": "data_0", "field": "date"}
+          {"data": "data_0", "field": "date"},
+          {"data": "data_1", "field": "date"}
         ]
       },
       "range": [0, {"signal": "width"}]
@@ -235,7 +235,7 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "price"},
-          {"data": "data_1", "field": "price"}
+          {"data": "data_0", "field": "price"}
         ]
       },
       "range": [{"signal": "height"}, 0],
@@ -248,7 +248,7 @@
       "domain": {
         "fields": [
           {"data": "source_0", "field": "symbol"},
-          {"data": "data_1", "field": "symbol"}
+          {"data": "data_0", "field": "symbol"}
         ],
         "sort": true
       },
