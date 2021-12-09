@@ -118,7 +118,7 @@ export abstract class DataFlowNode {
     parent.removeChild(this);
     const loc = parent.parent.removeChild(parent);
 
-    // swap two nodes
+    // swap two nodes but maintain order in children
     this._parent = newParent;
     newParent.addChild(this, loc);
 
