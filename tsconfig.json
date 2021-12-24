@@ -14,6 +14,7 @@
     "preserveConstEnums": true,
     "resolveJsonModule": true,
     "suppressImplicitAnyIndexErrors": true,
+    "isolatedModules": true,
     "lib": ["ESNext.Array", "DOM", "DOM.Iterable"],
     "noEmit": true
   },
