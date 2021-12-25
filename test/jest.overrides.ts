@@ -11,3 +11,5 @@ console.warn = function (msg: string, msg2: string) {
   warn.apply(console, arguments);
   throw new Error(`${msg}: ${msg2} -- Please remove unnecessary errors or use log.wrap to consume reasonable errors`);
 };
+
+export {};
