@@ -25,9 +25,9 @@ import {
   normalizeErrorBar
 } from './errorbar';
 
-export {BoxPlotConfig} from './boxplot';
-export {ErrorBandConfigMixins} from './errorband';
-export {ErrorBarConfigMixins} from './errorbar';
+export type {BoxPlotConfig} from './boxplot';
+export type {ErrorBandConfigMixins} from './errorband';
+export type {ErrorBarConfigMixins} from './errorbar';
 
 export type CompositeMarkNormalizerRun = (
   spec: GenericUnitSpec<any, any>,
