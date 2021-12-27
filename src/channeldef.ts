@@ -239,7 +239,7 @@ export function getAncestorLevel(avoid: LabelAvoid): number {
   }
 }
 
-export type LabelDefMixins = {
+export interface LabelDefMixins {
   /**
    * A list of possible positions for a label to be placed relative to its base mark.
    * The default value depends on the mark type.
@@ -345,9 +345,9 @@ export type LabelDefMixins = {
    * __Default value:__ `"end"`
    */
   lineAnchor?: LineLabelAnchor;
-};
+}
 
-export type LabelDef<F extends Field> = TextDef<F> & LabelDefMixins;
+export type LabelDef<F extends Field> = (StringFieldDef<F> | StringDatumDef<F> | ValueDef<Text>) & LabelDefMixins;
 
 /**
  * A ValueDef with optional Condition<ValueDef | FieldDef>
