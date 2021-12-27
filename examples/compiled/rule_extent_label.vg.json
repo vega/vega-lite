@@ -1,0 +1,157 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json", "parse": {"Horsepower": "number"}},
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["Origin"],
+          "ops": ["min", "max"],
+          "fields": ["Horsepower", "Horsepower"],
+          "as": ["min_Horsepower", "max_Horsepower"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"min_Horsepower\"]) && isFinite(+datum[\"min_Horsepower\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 20},
+    {"name": "height", "update": "bandspace(domain('y').length, 0, 0) * y_step"}
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "rule",
+      "style": ["rule"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "stroke": {"value": "black"},
+          "description": {
+            "signal": "\"Min of Horsepower: \" + (format(datum[\"min_Horsepower\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"]) + \"; Max of Horsepower: \" + (format(datum[\"max_Horsepower\"], \"\"))"
+          },
+          "x": {"scale": "x", "field": "min_Horsepower"},
+          "x2": {"scale": "x", "field": "max_Horsepower"},
+          "y": {"scale": "y", "field": "Origin", "band": 0.5}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "symbol",
+      "style": ["point"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0},
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "point"},
+          "description": {
+            "signal": "\"Min of Horsepower: \" + (format(datum[\"min_Horsepower\"], \"\")) + \"; Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+          },
+          "x": {"scale": "x", "field": "min_Horsepower"},
+          "y": {"scale": "y", "field": "Origin", "band": 0.5}
+        }
+      }
+    },
+    {
+      "name": "layer_1_marks_label",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "layer_1_marks"},
+      "encode": {
+        "update": {
+          "fill": {"value": "black"},
+          "description": {
+            "signal": "\"Origin: \" + (isValid(datum[\"Origin\"]) ? datum[\"Origin\"] : \"\"+datum[\"Origin\"])"
+          },
+          "text": {
+            "signal": "isValid(datum.datum[\"Origin\"]) ? datum.datum[\"Origin\"] : \"\"+datum.datum[\"Origin\"]"
+          }
+        }
+      },
+      "transform": [
+        {
+          "type": "label",
+          "size": {"signal": "[width, height]"},
+          "anchor": [
+            "top-right",
+            "top",
+            "top-left",
+            "left",
+            "bottom-left",
+            "bottom",
+            "bottom-right",
+            "middle"
+          ],
+          "offset": [2, 2, 2, 2, 2, 2, 2, 2, 2],
+          "avoidMarks": ["layer_0_marks"]
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "data": "source_0",
+        "fields": ["min_Horsepower", "max_Horsepower"]
+      },
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {"data": "source_0", "field": "Origin", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "paddingInner": 0,
+      "paddingOuter": 0
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "Min of Horsepower, Max of Horsepower",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Origin",
+      "zindex": 0
+    }
+  ]
+}
