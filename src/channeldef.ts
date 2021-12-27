@@ -206,7 +206,7 @@ export type TextDef<F extends Field> =
 export type LabelPosition = {
   /**
    * Distance of a label from its base mark.
-   * If negative, the label position is insize.
+   * If negative, the label position is inside the mark.
    */
   offset: number;
 
