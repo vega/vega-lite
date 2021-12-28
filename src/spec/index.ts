@@ -15,16 +15,8 @@ import {TopLevel} from './toplevel';
 import {FacetedUnitSpec, GenericUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec, UnitSpecWithFrame} from './unit';
 
 export type {BaseSpec, LayoutSizeMixins} from './base';
-export type {
-  GenericHConcatSpec,
-  GenericVConcatSpec,
-  NormalizedConcatSpec
-} from './concat';
-export {
-  isAnyConcatSpec,
-  isHConcatSpec,
-  isVConcatSpec,
-} from './concat';
+export type {GenericHConcatSpec, GenericVConcatSpec, NormalizedConcatSpec} from './concat';
+export {isAnyConcatSpec, isHConcatSpec, isVConcatSpec} from './concat';
 export type {GenericFacetSpec, NormalizedFacetSpec} from './facet';
 export {isFacetSpec} from './facet';
 export type {GenericLayerSpec, LayerSpec, NormalizedLayerSpec} from './layer';
