@@ -689,6 +689,41 @@ describe('Mark', () => {
 
           const label = getLabelMark(model, 'anything');
           expect(label.transform[0].lineAnchor).toBe('end');
+          expect(label.encode).toBe(null);
+        });
+
+        // TODO: more test for inherit
+        it(`should correctly inherit default encoding channel for ${mark}`, () => {
+          const model = parseUnitModelWithScale({
+            mark,
+            encoding: {
+              x: {type: 'nominal', field: 'col1'},
+              y: {type: 'quantitative', field: 'col2'},
+              color: {type: 'quantitative', field: 'col3'},
+              label: {type: 'nominal', field: 'col'}
+            }
+          });
+
+          const label = getLabelMark(model, 'anything');
+          expect(label.transform[0].lineAnchor).toBe('end');
+          expect(label.encode).toBe(null);
+        });
+
+        // TODO: more test for inherit
+        it(`should correctly inherit color for ${mark}`, () => {
+          const model = parseUnitModelWithScale({
+            mark,
+            encoding: {
+              x: {type: 'nominal', field: 'col1'},
+              y: {type: 'quantitative', field: 'col2'},
+              color: {type: 'quantitative', field: 'col3'},
+              label: {type: 'nominal', field: 'col'}
+            }
+          });
+
+          const label = getLabelMark(model, 'anything');
+          expect(label.transform[0].lineAnchor).toBe('end');
+          expect(label.encode).toBe(null);
         });
 
         it(`should have correct default label-transform config for ${mark} (begin - vertical)`, () => {

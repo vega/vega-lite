@@ -21,6 +21,7 @@ import {
   isXorY,
   KEY,
   LABEL,
+  LabelInheritableChannel,
   LATITUDE,
   LATITUDE2,
   LONGITUDE,
@@ -345,6 +346,20 @@ export type LabelDefMixins = {
    * __Default value:__ `"end"`
    */
   lineAnchor?: LineLabelAnchor;
+
+  /**
+   * Labels inherit encoding channels from its base mark.
+   * Labels can inherit `"color"`, `"fill"`, `"stroke"`, `"opacity"`,
+   * `"fillOpacity"`, `"strokeOpacity"`, `"strokeWidth"`, `"strokeDash"`,
+   * `"tooltip"`, `"href"`, `"url"`, and\or `"description"`.
+   *
+   * __Default value:__
+   * - line mark: ["color", "fill", "stroke", "opacity",
+   *   "fillOpacity", "strokeOpacity", "strokeWidth", "strokeDash",
+   *   "tooltip", "href", "url", "description"]
+   * - other marks: ["tooltip", "href", "url", "description"]
+   */
+  inherit?: LabelInheritableChannel | LabelInheritableChannel[];
 };
 
 export type LabelDef<F extends Field> = TextDef<F> & LabelDefMixins;

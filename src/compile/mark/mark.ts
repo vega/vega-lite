@@ -1,8 +1,8 @@
-import {LabelTransform, Mark as VGMark, BaseMark, Encodable} from 'vega';
+import {LabelTransform, Mark as VGMark, BaseMark, Encodable, array} from 'vega';
 import {isArray} from 'vega-util';
 import {getAncestorLevel, FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef';
 import {DataSourceType} from '../../data';
-import {isAggregate, pathGroupingFields} from '../../encoding';
+import {Encoding, isAggregate, pathGroupingFields} from '../../encoding';
 import {AREA, BAR, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortByEncoding, isSortField} from '../../sort';
 import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../util';
@@ -24,7 +24,7 @@ import {tick} from './tick';
 import {baseEncodeEntry as encodeBaseEncodeEntry, text as encodeText, nonPosition as encodeNonPosition} from './encode';
 import {NormalizedUnitSpec} from '../../spec';
 import * as log from '../../log';
-import {supportMark} from '../../channel';
+import {LabelInheritableChannel, LABEL_INHERITABLE_CHANNEL, supportMark} from '../../channel';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,
@@ -380,6 +380,18 @@ const LINE_ANCHOR_DEFAULTS = {
   }
 } as const;
 
+function getLabelInheritableChannels(mark: Mark, encoding: Encoding<string>, inherit?: LabelInheritableChannel | LabelInheritableChannel[]) {
+  if (!inherit) {
+    inherit = mark === 'line' ? LABEL_INHERITABLE_CHANNEL : ['tooltip', 'href', 'url', 'description'];
+  }
+
+  return Object.fromEntries(
+    array(inherit)
+      .filter(channel => encoding[channel])
+      .map(channel => [channel, encoding[channel]])
+  );
+}
+
 export function getLabelMark(model: UnitModel, data: string): LabelMark {
   if (!model.encoding.label) {
     return null;
@@ -397,7 +409,7 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
   }
 
   const {label} = model.encoding;
-  const {position, avoid, mark: labelMark, method, lineAnchor, padding, ...textEncoding} = label;
+  const {position, avoid, mark: labelMark, method, lineAnchor, padding, inherit, ...textEncoding} = label;
 
   const anchor = position?.map(p => p.anchor);
   const offset = position?.map(p => p.offset);
@@ -459,7 +471,7 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
   const textSpec: NormalizedUnitSpec = {
     data: null,
     mark: {type: 'text', ...(labelMark ?? {})},
-    encoding: {text: textEncoding}
+    encoding: {text: textEncoding, ...getLabelInheritableChannels(mark, model.encoding, inherit)}
   };
   const textModel = new UnitModel(textSpec, null, '', undefined, model.config);
   textModel.parse();
