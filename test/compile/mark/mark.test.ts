@@ -689,41 +689,84 @@ describe('Mark', () => {
 
           const label = getLabelMark(model, 'anything');
           expect(label.transform[0].lineAnchor).toBe('end');
-          expect(label.encode).toBe(null);
+          expect(label.encode.update.fill).toStrictEqual({field: 'col3', scale: 'color'});
+          expect(label.encode.update.text).toStrictEqual({
+            signal: 'isValid(datum.datum["col"]) ? datum.datum["col"] : ""+datum.datum["col"]'
+          });
         });
 
-        // TODO: more test for inherit
-        it(`should correctly inherit default encoding channel for ${mark}`, () => {
+        it(`should correctly inherit default encoding channels for ${mark}`, () => {
           const model = parseUnitModelWithScale({
             mark,
             encoding: {
               x: {type: 'nominal', field: 'col1'},
               y: {type: 'quantitative', field: 'col2'},
               color: {type: 'quantitative', field: 'col3'},
-              label: {type: 'nominal', field: 'col'}
+              fill: {type: 'quantitative', field: 'col3'},
+              stroke: {type: 'quantitative', field: 'col3'},
+              opacity: {type: 'quantitative', field: 'col3'},
+              fillOpacity: {type: 'quantitative', field: 'col3'},
+              strokeOpacity: {type: 'quantitative', field: 'col3'},
+              strokeWidth: {type: 'quantitative', field: 'col3'},
+              strokeDash: {type: 'quantitative', field: 'col3'},
+              tooltip: {type: 'quantitative', field: 'col3'},
+              href: {type: 'quantitative', field: 'col3'},
+              url: {type: 'quantitative', field: 'col3'},
+              label: {type: 'nominal', field: 'col'},
+              description: {type: 'quantitative', field: 'col3'}
             }
           });
 
           const label = getLabelMark(model, 'anything');
           expect(label.transform[0].lineAnchor).toBe('end');
-          expect(label.encode).toBe(null);
+          expect(label.encode.update).toStrictEqual({
+            cursor: {value: 'pointer'},
+            description: {signal: 'format(datum["col3"], "")'},
+            fill: {field: 'col3', scale: 'fill'},
+            fillOpacity: {field: 'col3', scale: 'fillOpacity'},
+            href: {signal: 'format(datum["col3"], "")'},
+            opacity: {field: 'col3', scale: 'opacity'},
+            stroke: {field: 'col3', scale: 'stroke'},
+            strokeOpacity: {field: 'col3', scale: 'strokeOpacity'},
+            strokeWidth: {field: 'col3', scale: 'strokeWidth'},
+            text: {signal: 'isValid(datum.datum["col"]) ? datum.datum["col"] : ""+datum.datum["col"]'},
+            tooltip: {signal: 'format(datum["col3"], "")'}
+          });
         });
 
-        // TODO: more test for inherit
-        it(`should correctly inherit color for ${mark}`, () => {
+        it(`should correctly inherit encoding channel for ${mark} as specified by users`, () => {
           const model = parseUnitModelWithScale({
             mark,
             encoding: {
               x: {type: 'nominal', field: 'col1'},
               y: {type: 'quantitative', field: 'col2'},
               color: {type: 'quantitative', field: 'col3'},
-              label: {type: 'nominal', field: 'col'}
+              fill: {type: 'quantitative', field: 'col3'},
+              stroke: {type: 'quantitative', field: 'col3'},
+              opacity: {type: 'quantitative', field: 'col3'},
+              fillOpacity: {type: 'quantitative', field: 'col3'},
+              strokeOpacity: {type: 'quantitative', field: 'col3'},
+              strokeWidth: {type: 'quantitative', field: 'col3'},
+              strokeDash: {type: 'quantitative', field: 'col3'},
+              tooltip: {type: 'quantitative', field: 'col3'},
+              href: {type: 'quantitative', field: 'col3'},
+              url: {type: 'quantitative', field: 'col3'},
+              label: {type: 'nominal', field: 'col', inherit: ['color', 'opacity']},
+              description: {type: 'quantitative', field: 'col3'}
             }
           });
 
           const label = getLabelMark(model, 'anything');
           expect(label.transform[0].lineAnchor).toBe('end');
-          expect(label.encode).toBe(null);
+          expect(label.encode.update).toStrictEqual({
+            description: {
+              signal:
+                '"col3: " + (format(datum["col3"], "")) + "; col: " + (isValid(datum["col"]) ? datum["col"] : ""+datum["col"])'
+            },
+            fill: {value: 'black'},
+            opacity: {field: 'col3', scale: 'opacity'},
+            text: {signal: 'isValid(datum.datum["col"]) ? datum.datum["col"] : ""+datum.datum["col"]'}
+          });
         });
 
         it(`should have correct default label-transform config for ${mark} (begin - vertical)`, () => {

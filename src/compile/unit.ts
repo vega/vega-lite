@@ -84,6 +84,8 @@ export class UnitModel extends ModelWithField {
 
   public avoidAncestorLevel: number;
 
+  public originalEncoding: Encoding<string>;
+
   constructor(
     spec: NormalizedUnitSpec,
     parent: Model,
@@ -110,10 +112,10 @@ export class UnitModel extends ModelWithField {
       encoding,
       size: isFrameMixins(spec)
         ? {
-            ...parentGivenSize,
-            ...(spec.width ? {width: spec.width} : {}),
-            ...(spec.height ? {height: spec.height} : {})
-          }
+          ...parentGivenSize,
+          ...(spec.width ? {width: spec.width} : {}),
+          ...(spec.height ? {height: spec.height} : {})
+        }
         : parentGivenSize
     });
 

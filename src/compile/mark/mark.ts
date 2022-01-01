@@ -356,8 +356,8 @@ function getMarkGroup(model: UnitModel, opt: {fromPrefix: string} = {fromPrefix:
       },
       ...(postEncodingTransform
         ? {
-            transform: postEncodingTransform
-          }
+          transform: postEncodingTransform
+        }
         : {})
     }
   ];
@@ -382,7 +382,11 @@ const LINE_ANCHOR_DEFAULTS = {
 
 function getLabelInheritableChannels(mark: Mark, encoding: Encoding<string>, inherit?: LabelInheritableChannel | LabelInheritableChannel[]) {
   if (!inherit) {
-    inherit = mark === 'line' ? LABEL_INHERITABLE_CHANNEL : ['tooltip', 'href', 'url', 'description'];
+    if (mark === 'line' || mark === 'trail') {
+      inherit = LABEL_INHERITABLE_CHANNEL;
+    } else {
+      inherit = ['tooltip', 'href', 'url', 'description'];
+    }
   }
 
   return Object.fromEntries(
@@ -431,8 +435,8 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
         ...(position
           ? {anchor, offset}
           : stack?.stackBy?.length > 0
-          ? {anchor: ['middle'], offset: [0]}
-          : {
+            ? {anchor: ['middle'], offset: [0]}
+            : {
               anchor: orient === 'horizontal' ? ['right', 'right'] : ['top', 'top'],
               offset: [2, -2]
             })
@@ -447,9 +451,9 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
         ...(position
           ? {anchor, offset}
           : {
-              anchor: [...LINE_ANCHOR_DEFAULTS[orient].anchor[_lineAnchor]],
-              offset: [2, 2, 2]
-            }),
+            anchor: [...LINE_ANCHOR_DEFAULTS[orient].anchor[_lineAnchor]],
+            offset: [2, 2, 2]
+          }),
         ...(padding === undefined ? {padding: null} : {})
       };
       break;
@@ -551,7 +555,7 @@ function interactiveFlag(model: UnitModel) {
   }
   return parentCount
     ? {
-        interactive: unitCount > 0 || !!model.encoding.tooltip
-      }
+      interactive: unitCount > 0 || !!model.encoding.tooltip
+    }
     : null;
 }
