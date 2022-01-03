@@ -104,7 +104,7 @@ describe('Toggle point selections at runtime', () => {
         const even = i % 2 === 0;
         const parent = parentSelector(specType, ~~(i / 2));
         const store = await page.evaluate(toggle('qq_clear', 0, even, parent));
-        expect(store).toHaveLength(even ? length : (length = length - 2));
+        expect(store).toHaveLength(even ? length : (length -= 2));
         if (!even) {
           await testRender(`${specType}_clear_${i}`);
         }
