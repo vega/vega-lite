@@ -402,6 +402,7 @@ export const {
   text: _text,
   label: _label,
   order: _order,
+  url: _url,
   ...LABEL_INHERITABLE_CHANNEL_INDEX
 } = NONPOSITION_CHANNEL_INDEX;
 

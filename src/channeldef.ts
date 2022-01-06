@@ -351,13 +351,11 @@ export type LabelDefMixins = {
    * Labels inherit encoding channels from its base mark.
    * Labels can inherit `"color"`, `"fill"`, `"stroke"`, `"opacity"`,
    * `"fillOpacity"`, `"strokeOpacity"`, `"strokeWidth"`, `"strokeDash"`,
-   * `"tooltip"`, `"href"`, `"url"`, and\or `"description"`.
+   * `"tooltip"`, `"href"`, and\or `"description"`.
    *
    * __Default value:__
-   * - line mark: ["color", "fill", "stroke", "opacity",
-   *   "fillOpacity", "strokeOpacity", "strokeWidth", "strokeDash",
-   *   "tooltip", "href", "url", "description"]
-   * - other marks: ["tooltip", "href", "url", "description"]
+   * - line/trail mark: ["color", "opacity"]
+   * - other marks: []
    */
   inherit?: LabelInheritableChannel | LabelInheritableChannel[];
 };

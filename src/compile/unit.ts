@@ -105,6 +105,8 @@ export class UnitModel extends ModelWithField {
       });
     }
 
+    this.originalEncoding = spec.encoding;
+
     const encoding = (this.encoding = initEncoding(spec.encoding || {}, mark, markDef.filled, config));
     this.markDef = initMarkdef(markDef, encoding, config);
 

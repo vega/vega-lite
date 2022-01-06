@@ -702,35 +702,30 @@ describe('Mark', () => {
               x: {type: 'nominal', field: 'col1'},
               y: {type: 'quantitative', field: 'col2'},
               color: {type: 'quantitative', field: 'col3'},
-              fill: {type: 'quantitative', field: 'col3'},
-              stroke: {type: 'quantitative', field: 'col3'},
-              opacity: {type: 'quantitative', field: 'col3'},
-              fillOpacity: {type: 'quantitative', field: 'col3'},
-              strokeOpacity: {type: 'quantitative', field: 'col3'},
-              strokeWidth: {type: 'quantitative', field: 'col3'},
-              strokeDash: {type: 'quantitative', field: 'col3'},
-              tooltip: {type: 'quantitative', field: 'col3'},
-              href: {type: 'quantitative', field: 'col3'},
-              url: {type: 'quantitative', field: 'col3'},
-              label: {type: 'nominal', field: 'col'},
-              description: {type: 'quantitative', field: 'col3'}
+              fill: {type: 'quantitative', field: 'col4'},
+              stroke: {type: 'quantitative', field: 'col5'},
+              opacity: {type: 'quantitative', field: 'col6'},
+              fillOpacity: {type: 'quantitative', field: 'col7'},
+              strokeOpacity: {type: 'quantitative', field: 'col8'},
+              strokeWidth: {type: 'quantitative', field: 'col9'},
+              strokeDash: {type: 'quantitative', field: 'col10'},
+              tooltip: {type: 'quantitative', field: 'col11'},
+              href: {type: 'quantitative', field: 'col12'},
+              description: {type: 'quantitative', field: 'col14'},
+              label: {type: 'nominal', field: 'col'}
             }
           });
 
           const label = getLabelMark(model, 'anything');
           expect(label.transform[0].lineAnchor).toBe('end');
           expect(label.encode.update).toStrictEqual({
-            cursor: {value: 'pointer'},
-            description: {signal: 'format(datum["col3"], "")'},
-            fill: {field: 'col3', scale: 'fill'},
-            fillOpacity: {field: 'col3', scale: 'fillOpacity'},
-            href: {signal: 'format(datum["col3"], "")'},
-            opacity: {field: 'col3', scale: 'opacity'},
-            stroke: {field: 'col3', scale: 'stroke'},
-            strokeOpacity: {field: 'col3', scale: 'strokeOpacity'},
-            strokeWidth: {field: 'col3', scale: 'strokeWidth'},
-            text: {signal: 'isValid(datum.datum["col"]) ? datum.datum["col"] : ""+datum.datum["col"]'},
-            tooltip: {signal: 'format(datum["col3"], "")'}
+            description: {
+              signal:
+                '"col3: " + (format(datum["col3"], "")) + "; col6: " + (format(datum["col6"], "")) + "; col: " + (isValid(datum["col"]) ? datum["col"] : ""+datum["col"])'
+            },
+            fill: {field: 'col3', scale: 'color'},
+            opacity: {field: 'col6', scale: 'opacity'},
+            text: {signal: 'isValid(datum.datum["col"]) ? datum.datum["col"] : ""+datum.datum["col"]'}
           });
         });
 
@@ -741,30 +736,31 @@ describe('Mark', () => {
               x: {type: 'nominal', field: 'col1'},
               y: {type: 'quantitative', field: 'col2'},
               color: {type: 'quantitative', field: 'col3'},
-              fill: {type: 'quantitative', field: 'col3'},
-              stroke: {type: 'quantitative', field: 'col3'},
-              opacity: {type: 'quantitative', field: 'col3'},
-              fillOpacity: {type: 'quantitative', field: 'col3'},
-              strokeOpacity: {type: 'quantitative', field: 'col3'},
-              strokeWidth: {type: 'quantitative', field: 'col3'},
-              strokeDash: {type: 'quantitative', field: 'col3'},
-              tooltip: {type: 'quantitative', field: 'col3'},
-              href: {type: 'quantitative', field: 'col3'},
-              url: {type: 'quantitative', field: 'col3'},
-              label: {type: 'nominal', field: 'col', inherit: ['color', 'opacity']},
-              description: {type: 'quantitative', field: 'col3'}
+              fill: {type: 'quantitative', field: 'col4'},
+              stroke: {type: 'quantitative', field: 'col5'},
+              opacity: {type: 'quantitative', field: 'col6'},
+              fillOpacity: {type: 'quantitative', field: 'col7'},
+              strokeOpacity: {type: 'quantitative', field: 'col8'},
+              strokeWidth: {type: 'quantitative', field: 'col9'},
+              strokeDash: {type: 'quantitative', field: 'col10'},
+              tooltip: {type: 'quantitative', field: 'col11'},
+              href: {type: 'quantitative', field: 'col12'},
+              description: {type: 'quantitative', field: 'col14'},
+              label: {type: 'nominal', field: 'col', inherit: ['color', 'opacity', 'href']}
             }
           });
 
           const label = getLabelMark(model, 'anything');
           expect(label.transform[0].lineAnchor).toBe('end');
           expect(label.encode.update).toStrictEqual({
+            cursor: {value: 'pointer'},
             description: {
               signal:
-                '"col3: " + (format(datum["col3"], "")) + "; col: " + (isValid(datum["col"]) ? datum["col"] : ""+datum["col"])'
+                '"col3: " + (format(datum["col3"], "")) + "; col6: " + (format(datum["col6"], "")) + "; col: " + (isValid(datum["col"]) ? datum["col"] : ""+datum["col"]) + "; col12: " + (format(datum["col12"], ""))'
             },
-            fill: {value: 'black'},
-            opacity: {field: 'col3', scale: 'opacity'},
+            fill: {field: 'col3', scale: 'color'},
+            href: {signal: 'format(datum["col12"], "")'},
+            opacity: {field: 'col6', scale: 'opacity'},
             text: {signal: 'isValid(datum.datum["col"]) ? datum.datum["col"] : ""+datum.datum["col"]'}
           });
         });

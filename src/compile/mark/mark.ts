@@ -24,7 +24,7 @@ import {tick} from './tick';
 import {baseEncodeEntry as encodeBaseEncodeEntry, text as encodeText, nonPosition as encodeNonPosition} from './encode';
 import {NormalizedUnitSpec} from '../../spec';
 import * as log from '../../log';
-import {LabelInheritableChannel, LABEL_INHERITABLE_CHANNEL, supportMark} from '../../channel';
+import {LabelInheritableChannel, supportMark} from '../../channel';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,
@@ -382,11 +382,7 @@ const LINE_ANCHOR_DEFAULTS = {
 
 function getLabelInheritableChannels(mark: Mark, encoding: Encoding<string>, inherit?: LabelInheritableChannel | LabelInheritableChannel[]) {
   if (!inherit) {
-    if (mark === 'line' || mark === 'trail') {
-      inherit = LABEL_INHERITABLE_CHANNEL;
-    } else {
-      inherit = ['tooltip', 'href', 'url', 'description'];
-    }
+    inherit = (mark === 'line' || mark === 'trail') ? ['color', 'opacity'] : [];
   }
 
   return Object.fromEntries(
@@ -412,6 +408,7 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
     return null;
   }
 
+  const {label: _label, ...originalEncoding} = model.originalEncoding;
   const {label} = model.encoding;
   const {position, avoid, mark: labelMark, method, lineAnchor, padding, inherit, ...textEncoding} = label;
 
@@ -475,7 +472,7 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
   const textSpec: NormalizedUnitSpec = {
     data: null,
     mark: {type: 'text', ...(labelMark ?? {})},
-    encoding: {text: textEncoding, ...getLabelInheritableChannels(mark, model.encoding, inherit)}
+    encoding: {text: textEncoding, ...getLabelInheritableChannels(mark, originalEncoding, inherit)}
   };
   const textModel = new UnitModel(textSpec, null, '', undefined, model.config);
   textModel.parse();
