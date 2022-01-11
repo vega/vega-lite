@@ -215,7 +215,7 @@ In addition to the general [field definition properties](#field-def), field defi
 
 {:#positon-offset}
 
-## Position Offset Channels
+## Position Offset Channels {% include tag ver="5.2" %}
 
 `xOffset` and `yOffset` position channels determine additional offset to the `x` or `y` position.
 
