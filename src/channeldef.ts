@@ -660,21 +660,21 @@ export function isConditionalDef<CD extends ChannelDef<any> | GuideEncodingCondi
 export function hasConditionalFieldDef<F extends Field>(
   channelDef: Partial<ChannelDef<F>>
 ): channelDef is {condition: Conditional<TypedFieldDef<F>>} {
-  const condition = channelDef && channelDef['condition'];
+  const condition = channelDef?.['condition'];
   return !!condition && !isArray(condition) && isFieldDef(condition);
 }
 
 export function hasConditionalFieldOrDatumDef<F extends Field>(
   channelDef: ChannelDef<F>
 ): channelDef is {condition: Conditional<TypedFieldDef<F>>} {
-  const condition = channelDef && channelDef['condition'];
+  const condition = channelDef?.['condition'];
   return !!condition && !isArray(condition) && isFieldOrDatumDef(condition);
 }
 
 export function hasConditionalValueDef<F extends Field>(
   channelDef: ChannelDef<F>
 ): channelDef is ValueDef<any> & {condition: Conditional<ValueDef<any>> | Conditional<ValueDef<any>>[]} {
-  const condition = channelDef && channelDef['condition'];
+  const condition = channelDef?.['condition'];
   return !!condition && (isArray(condition) || isValueDef(condition));
 }
 
@@ -686,7 +686,7 @@ export function isFieldDef<F extends Field>(
 }
 
 export function channelDefType<F extends Field>(channelDef: ChannelDef<F>): Type | undefined {
-  return channelDef && channelDef['type'];
+  return channelDef?.['type'];
 }
 
 export function isDatumDef<F extends Field>(

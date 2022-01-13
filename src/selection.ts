@@ -321,7 +321,7 @@ export const defaultConfig: SelectionConfig = {
 };
 
 export function isLegendBinding(bind: any): bind is LegendBinding {
-  return !!bind && (bind === 'legend' || !!bind.legend);
+  return bind === 'legend' || !!bind?.legend;
 }
 
 export function isLegendStreamBinding(bind: any): bind is LegendStreamBinding {
@@ -329,5 +329,5 @@ export function isLegendStreamBinding(bind: any): bind is LegendStreamBinding {
 }
 
 export function isSelectionParameter(param: any): param is SelectionParameter {
-  return !!param['select'];
+  return !!param?.['select'];
 }
