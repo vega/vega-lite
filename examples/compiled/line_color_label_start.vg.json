@@ -1,3 +1,4 @@
+start
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
   "background": "white",
@@ -88,7 +89,7 @@
         {
           "type": "label",
           "size": {"signal": "[width, height]"},
-          "lineAnchor": "begin",
+          "lineAnchor": "start",
           "anchor": ["top-left", "left", "bottom-left"],
           "offset": [2, 2, 2],
           "padding": null
