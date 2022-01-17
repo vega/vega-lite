@@ -487,7 +487,7 @@ export interface DomainUnionWith {
 }
 
 export function isDomainUnionWith(domain: Domain): domain is DomainUnionWith {
-  return domain && domain['unionWith'];
+  return domain?.['unionWith'];
 }
 
 export interface FieldRange {

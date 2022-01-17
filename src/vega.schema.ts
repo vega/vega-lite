@@ -87,7 +87,7 @@ export type VgScaleDataRefWithSort = ScaleDataRef & {
 };
 
 export function isSignalRef(o: any): o is SignalRef {
-  return o && !!o['signal'];
+  return !!o?.signal;
 }
 
 // TODO: add type of value (Make it VgValueRef<V extends ValueOrGradient> {value?:V ...})
