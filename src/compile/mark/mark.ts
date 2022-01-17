@@ -429,7 +429,6 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
     case 'line':
     case 'trail': {
       const _lineAnchor = lineAnchor ?? 'end';
-      console.log(_lineAnchor);
       labelTransform = {
         ...common,
         lineAnchor: _lineAnchor,
