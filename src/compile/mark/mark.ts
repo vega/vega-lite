@@ -56,11 +56,12 @@ export function isLabelMark(mark: VGMark) {
 export function parseMarkGroupsAndLabels(model: UnitModel): {mark: any[]; label?: LabelMark} {
   if (contains([LINE, AREA, TRAIL], model.mark)) {
     const details = pathGroupingFields(model.mark, model.encoding);
+
+    // FIXME -- even if details length = 0 we might wanna do per-series label?
     if (details.length > 0) {
       const label = getLabelMark(model, model.getName('pathgroup'));
       return {mark: getPathGroups(model, details), label};
     }
-    // otherwise use standard mark groups
   } else if (model.mark === BAR) {
     const hasCornerRadius = VG_CORNERRADIUS_CHANNELS.some(prop =>
       getMarkPropOrConfig(prop, model.markDef, model.config)
@@ -70,6 +71,7 @@ export function parseMarkGroupsAndLabels(model: UnitModel): {mark: any[]; label?
     }
   }
 
+  // otherwise use standard mark groups
   const label = getLabelMark(model, model.getName('marks'));
   return {mark: getMarkGroup(model), label};
 }
