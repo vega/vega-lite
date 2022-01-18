@@ -53,6 +53,10 @@ describe('Mark: Area', () => {
     it('should use bin_mid for x', () => {
       expect(props.x).toEqual({field: 'bin_maxbins_10_IMDB_Rating_mid', scale: 'x'});
     });
+
+    it('should use bin_mid for the defined check', () => {
+      expect(props.defined.signal.includes('bin_maxbins_10_IMDB_Rating_mid')).toBe(true);
+    });
   });
 
   describe('vertical area, with zero=false', () => {
