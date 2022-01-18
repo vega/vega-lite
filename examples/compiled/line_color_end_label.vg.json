@@ -1,0 +1,203 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Multi-series line chart with labels.",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/stocks.csv",
+      "format": {"type": "csv", "parse": {"date": "date"}},
+      "transform": [{"type": "filter", "expr": "datum.symbol!=='IBM'"}]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": ["symbol"],
+          "ops": ["max", "argmax"],
+          "fields": ["date", "date"],
+          "as": ["max_date", "argmax_date"]
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"max_date\"]) || (isValid(datum[\"max_date\"]) && isFinite(+datum[\"max_date\"]))) && isValid(datum[\"argmax_date\"][\"price\"]) && isFinite(+datum[\"argmax_date\"][\"price\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_pathgroup",
+      "type": "group",
+      "from": {
+        "facet": {
+          "name": "faceted_path_layer_0_main",
+          "data": "source_0",
+          "groupby": ["symbol"]
+        }
+      },
+      "encode": {
+        "update": {
+          "width": {"field": {"group": "width"}},
+          "height": {"field": {"group": "height"}}
+        }
+      },
+      "marks": [
+        {
+          "name": "layer_0_marks",
+          "type": "line",
+          "style": ["line"],
+          "sort": {"field": "datum[\"date\"]"},
+          "from": {"data": "faceted_path_layer_0_main"},
+          "encode": {
+            "update": {
+              "stroke": {"scale": "color", "field": "symbol"},
+              "description": {
+                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+              },
+              "x": {"scale": "x", "field": "date"},
+              "y": {"scale": "y", "field": "price"},
+              "defined": {
+                "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+              }
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "layer_1_layer_0_marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"scale": "color", "field": "symbol"},
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"Max of date: \" + (timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; price for max date: \" + (format(datum[\"argmax_date\"][\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+          },
+          "x": {"scale": "x", "field": "max_date"},
+          "y": {"scale": "y", "field": "argmax_date[\"price\"]"},
+          "shape": {"value": "circle"}
+        }
+      }
+    },
+    {
+      "name": "layer_1_layer_1_marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "align": {"value": "left"},
+          "dx": {"value": 4},
+          "fill": {"scale": "color", "field": "symbol"},
+          "description": {
+            "signal": "\"Max of date: \" + (timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; price for max date: \" + (format(datum[\"argmax_date\"][\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+          },
+          "x": {"scale": "x", "field": "max_date"},
+          "y": {"scale": "y", "field": "argmax_date[\"price\"]"},
+          "text": {
+            "signal": "isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]"
+          },
+          "baseline": {"value": "middle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "date"},
+          {"data": "data_0", "field": "max_date"}
+        ]
+      },
+      "range": [0, {"signal": "width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "price"},
+          {"data": "data_0", "field": "argmax_date[\"price\"]"}
+        ]
+      },
+      "range": [{"signal": "height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {
+        "fields": [
+          {"data": "source_0", "field": "symbol"},
+          {"data": "data_0", "field": "symbol"}
+        ],
+        "sort": true
+      },
+      "range": "category"
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "gridScale": "x",
+      "grid": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "date",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "price",
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(height/40)"},
+      "zindex": 0
+    }
+  ],
+  "config": {"style": {"cell": {"stroke": null}}}
+}

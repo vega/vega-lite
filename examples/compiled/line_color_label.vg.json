@@ -1,6 +1,5 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Multi-series line chart with labels.",
   "background": "white",
   "padding": 5,
   "width": 200,
@@ -11,33 +10,30 @@
       "name": "source_0",
       "url": "data/stocks.csv",
       "format": {"type": "csv", "parse": {"date": "date"}},
-      "transform": [{"type": "filter", "expr": "datum.symbol!=='IBM'"}]
-    },
-    {
-      "name": "data_0",
-      "source": "source_0",
       "transform": [
         {
-          "type": "aggregate",
-          "groupby": ["symbol"],
-          "ops": ["max", "argmax"],
-          "fields": ["date", "date"],
-          "as": ["max_date", "argmax_date"]
+          "field": "date",
+          "type": "timeunit",
+          "units": ["year"],
+          "as": ["year_date", "year_date_end"]
         },
         {
-          "type": "filter",
-          "expr": "(isDate(datum[\"max_date\"]) || (isValid(datum[\"max_date\"]) && isFinite(+datum[\"max_date\"]))) && isValid(datum[\"argmax_date\"][\"price\"]) && isFinite(+datum[\"argmax_date\"][\"price\"])"
+          "type": "aggregate",
+          "groupby": ["year_date", "symbol"],
+          "ops": ["mean"],
+          "fields": ["price"],
+          "as": ["mean_price"]
         }
       ]
     }
   ],
   "marks": [
     {
-      "name": "layer_0_pathgroup",
+      "name": "pathgroup",
       "type": "group",
       "from": {
         "facet": {
-          "name": "faceted_path_layer_0_main",
+          "name": "faceted_path_main",
           "data": "source_0",
           "groupby": ["symbol"]
         }
@@ -50,21 +46,21 @@
       },
       "marks": [
         {
-          "name": "layer_0_marks",
+          "name": "marks",
           "type": "line",
           "style": ["line"],
-          "sort": {"field": "datum[\"date\"]"},
-          "from": {"data": "faceted_path_layer_0_main"},
+          "sort": {"field": "datum[\"year_date\"]"},
+          "from": {"data": "faceted_path_main"},
           "encode": {
             "update": {
               "stroke": {"scale": "color", "field": "symbol"},
               "description": {
-                "signal": "\"date: \" + (timeFormat(datum[\"date\"], '%b %d, %Y')) + \"; price: \" + (format(datum[\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+                "signal": "\"date (year): \" + (timeFormat(datum[\"year_date\"], timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"}))) + \"; Mean of price: \" + (format(datum[\"mean_price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
               },
-              "x": {"scale": "x", "field": "date"},
-              "y": {"scale": "y", "field": "price"},
+              "x": {"scale": "x", "field": "year_date"},
+              "y": {"scale": "y", "field": "mean_price"},
               "defined": {
-                "signal": "isValid(datum[\"date\"]) && isFinite(+datum[\"date\"]) && isValid(datum[\"price\"]) && isFinite(+datum[\"price\"])"
+                "signal": "isValid(datum[\"year_date\"]) && isFinite(+datum[\"year_date\"]) && isValid(datum[\"mean_price\"]) && isFinite(+datum[\"mean_price\"])"
               }
             }
           }
@@ -72,67 +68,45 @@
       ]
     },
     {
-      "name": "layer_1_layer_0_marks",
-      "type": "symbol",
-      "style": ["circle"],
-      "from": {"data": "data_0"},
-      "encode": {
-        "update": {
-          "fill": {"scale": "color", "field": "symbol"},
-          "ariaRoleDescription": {"value": "circle"},
-          "description": {
-            "signal": "\"Max of date: \" + (timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; price for max date: \" + (format(datum[\"argmax_date\"][\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
-          },
-          "x": {"scale": "x", "field": "max_date"},
-          "y": {"scale": "y", "field": "argmax_date[\"price\"]"},
-          "shape": {"value": "circle"}
-        }
-      }
-    },
-    {
-      "name": "layer_1_layer_1_marks",
+      "name": "marks_label",
       "type": "text",
       "style": ["text"],
-      "from": {"data": "data_0"},
+      "sort": {"field": "datum[\"year_date\"]"},
+      "from": {"data": "pathgroup"},
       "encode": {
         "update": {
-          "align": {"value": "left"},
-          "dx": {"value": 4},
-          "fill": {"scale": "color", "field": "symbol"},
+          "fill": {"value": "black"},
           "description": {
-            "signal": "\"Max of date: \" + (timeFormat(datum[\"max_date\"], '%b %d, %Y')) + \"; price for max date: \" + (format(datum[\"argmax_date\"][\"price\"], \"\")) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
+            "signal": "\"symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
           },
-          "x": {"scale": "x", "field": "max_date"},
-          "y": {"scale": "y", "field": "argmax_date[\"price\"]"},
           "text": {
-            "signal": "isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]"
-          },
-          "baseline": {"value": "middle"}
+            "signal": "isValid(datum.datum[\"symbol\"]) ? datum.datum[\"symbol\"] : \"\"+datum.datum[\"symbol\"]"
+          }
         }
-      }
+      },
+      "transform": [
+        {
+          "type": "label",
+          "size": {"signal": "[width, height]"},
+          "lineAnchor": "end",
+          "anchor": ["top-right", "right", "bottom-right"],
+          "offset": [2, 2, 2],
+          "padding": null
+        }
+      ]
     }
   ],
   "scales": [
     {
       "name": "x",
       "type": "time",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "date"},
-          {"data": "data_0", "field": "max_date"}
-        ]
-      },
+      "domain": {"data": "source_0", "field": "year_date"},
       "range": [0, {"signal": "width"}]
     },
     {
       "name": "y",
       "type": "linear",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "price"},
-          {"data": "data_0", "field": "argmax_date[\"price\"]"}
-        ]
-      },
+      "domain": {"data": "source_0", "field": "mean_price"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
@@ -140,13 +114,7 @@
     {
       "name": "color",
       "type": "ordinal",
-      "domain": {
-        "fields": [
-          {"data": "source_0", "field": "symbol"},
-          {"data": "data_0", "field": "symbol"}
-        ],
-        "sort": true
-      },
+      "domain": {"data": "source_0", "field": "symbol", "sort": true},
       "range": "category"
     }
   ],
@@ -183,7 +151,10 @@
       "scale": "x",
       "orient": "bottom",
       "grid": false,
-      "title": "date",
+      "title": "date (year)",
+      "format": {
+        "signal": "timeUnitSpecifier([\"year\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
+      },
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
@@ -193,11 +164,10 @@
       "scale": "y",
       "orient": "left",
       "grid": false,
-      "title": "price",
+      "title": "Mean of price",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ],
-  "config": {"style": {"cell": {"stroke": null}}}
+  ]
 }

@@ -1,10 +1,14 @@
-import {LabelTransform, Mark as VGMark, BaseMark, Encodable} from 'vega';
+import {BaseMark, Encodable, LabelTransform, Mark as VGMark} from 'vega';
 import {isArray} from 'vega-util';
-import {getAncestorLevel, FieldRefOption, isFieldDef, isValueDef, vgField} from '../../channeldef';
+import {supportMark} from '../../channel';
+import {FieldRefOption, getAncestorLevel, isFieldDef, isValueDef, LabelDef, vgField} from '../../channeldef';
 import {DataSourceType} from '../../data';
 import {isAggregate, pathGroupingFields} from '../../encoding';
+import * as log from '../../log';
 import {AREA, BAR, isPathMark, LINE, Mark, TRAIL} from '../../mark';
 import {isSortByEncoding, isSortField} from '../../sort';
+import {NormalizedUnitSpec} from '../../spec';
+import {StackProperties} from '../../stack';
 import {contains, getFirstDefined, isNullOrFalse, keys, omit, pick} from '../../util';
 import {VgCompare, VgEncodeEntry, VG_CORNERRADIUS_CHANNELS} from '../../vega.schema';
 import {getMarkConfig, getMarkPropOrConfig, getStyles, signalOrValueRef, sortParams} from '../common';
@@ -13,6 +17,7 @@ import {arc} from './arc';
 import {area} from './area';
 import {bar} from './bar';
 import {MarkCompiler} from './base';
+import {baseEncodeEntry as encodeBaseEncodeEntry, nonPosition as encodeNonPosition, text as encodeText} from './encode';
 import {geoshape} from './geoshape';
 import {image} from './image';
 import {line, trail} from './line';
@@ -21,10 +26,6 @@ import {rect} from './rect';
 import {rule} from './rule';
 import {text} from './text';
 import {tick} from './tick';
-import {baseEncodeEntry as encodeBaseEncodeEntry, text as encodeText, nonPosition as encodeNonPosition} from './encode';
-import {NormalizedUnitSpec} from '../../spec';
-import * as log from '../../log';
-import {supportMark} from '../../channel';
 
 const markCompiler: Record<Mark, MarkCompiler> = {
   arc,
@@ -55,11 +56,12 @@ export function isLabelMark(mark: VGMark) {
 export function parseMarkGroupsAndLabels(model: UnitModel): {mark: any[]; label?: LabelMark} {
   if (contains([LINE, AREA, TRAIL], model.mark)) {
     const details = pathGroupingFields(model.mark, model.encoding);
+
+    // FIXME -- even if details length = 0 we might wanna do per-series label?
     if (details.length > 0) {
       const label = getLabelMark(model, model.getName('pathgroup'));
       return {mark: getPathGroups(model, details), label};
     }
-    // otherwise use standard mark groups
   } else if (model.mark === BAR) {
     const hasCornerRadius = VG_CORNERRADIUS_CHANNELS.some(prop =>
       getMarkPropOrConfig(prop, model.markDef, model.config)
@@ -69,6 +71,7 @@ export function parseMarkGroupsAndLabels(model: UnitModel): {mark: any[]; label?
     }
   }
 
+  // otherwise use standard mark groups
   const label = getLabelMark(model, model.getName('marks'));
   return {mark: getMarkGroup(model), label};
 }
@@ -397,64 +400,10 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
   }
 
   const {label} = model.encoding;
+
   const {position, avoid, mark: labelMark, method, lineAnchor, padding, ...textEncoding} = label;
 
-  const anchor = position?.map(p => p.anchor);
-  const offset = position?.map(p => p.offset);
-
-  const common: LabelTransform = {
-    type: 'label',
-    size: {signal: '[width, height]'},
-    ...(padding === undefined ? {} : {padding})
-  };
-
-  let labelTransform: LabelTransform;
-  switch (mark) {
-    case 'area':
-      labelTransform = {...common, method: method ?? 'reduced-search'};
-      break;
-    case 'bar':
-      labelTransform = {
-        ...common,
-        ...(position
-          ? {anchor, offset}
-          : stack?.stackBy?.length > 0
-          ? {anchor: ['middle'], offset: [0]}
-          : {
-              anchor: orient === 'horizontal' ? ['right', 'right'] : ['top', 'top'],
-              offset: [2, -2]
-            })
-      };
-      break;
-    case 'line':
-    case 'trail': {
-      const _lineAnchor = lineAnchor ?? 'end';
-      labelTransform = {
-        ...common,
-        lineAnchor: _lineAnchor,
-        ...(position
-          ? {anchor, offset}
-          : {
-              anchor: [...LINE_ANCHOR_DEFAULTS[orient].anchor[_lineAnchor]],
-              offset: [2, 2, 2]
-            }),
-        ...(padding === undefined ? {padding: null} : {})
-      };
-      break;
-    }
-    case 'rect':
-      labelTransform = {...common, anchor: anchor ?? ['middle'], offset: offset ?? [0]};
-      break;
-    case 'circle':
-    case 'point':
-    case 'square':
-    default:
-      labelTransform = {
-        ...common,
-        anchor: anchor ?? ['top-right', 'top', 'top-left', 'left', 'bottom-left', 'bottom', 'bottom-right', 'middle'],
-        offset: offset ?? [2, 2, 2, 2, 2, 2, 2, 2, 2]
-      };
-  }
+  const labelTransform = getLabelTransform({label, orient, mark, stack});
 
   const textSpec: NormalizedUnitSpec = {
     data: null,
@@ -474,7 +423,7 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
 
   return {
     name: model.getName('marks_label'),
-    type: markCompiler.text.vgMark as 'text',
+    type: 'text',
     ...(clip ? {clip: true} : {}),
     ...(style ? {style} : {}),
     ...(key ? {key: key.field} : {}),
@@ -503,6 +452,72 @@ export function getLabelMark(model: UnitModel, data: string): LabelMark {
     },
     transform: [labelTransform]
   };
+}
+
+function getLabelTransform({
+  orient,
+  label,
+  mark,
+  stack
+}: {
+  orient: string;
+  label: LabelDef<string>;
+  mark: Mark;
+  stack: StackProperties;
+}): LabelTransform {
+  const {position, method, lineAnchor, padding} = label;
+  const anchor = position?.map(p => p.anchor);
+  const offset = position?.map(p => p.offset);
+
+  const common: LabelTransform = {
+    type: 'label',
+    size: {signal: '[width, height]'},
+    ...(padding === undefined ? {} : {padding})
+  };
+
+  switch (mark) {
+    case 'area':
+      return {...common, method: method ?? 'reduced-search'};
+      break;
+    case 'bar':
+      return {
+        ...common,
+        ...(position
+          ? {anchor, offset}
+          : stack?.stackBy?.length > 0
+          ? {anchor: ['middle'], offset: [0]}
+          : {
+              anchor: orient === 'horizontal' ? ['right', 'right'] : ['top', 'top'],
+              offset: [2, -2]
+            })
+      };
+    case 'line':
+    case 'trail': {
+      const _lineAnchor = lineAnchor ?? 'end';
+      return {
+        ...common,
+        lineAnchor: _lineAnchor,
+        ...(position
+          ? {anchor, offset}
+          : {
+              anchor: [...LINE_ANCHOR_DEFAULTS[orient].anchor[_lineAnchor]],
+              offset: [2, 2, 2]
+            }),
+        ...(padding === undefined ? {padding: null} : {})
+      };
+    }
+    case 'rect':
+      return {...common, anchor: anchor ?? ['middle'], offset: offset ?? [0]};
+    case 'circle':
+    case 'point':
+    case 'square':
+    default:
+      return {
+        ...common,
+        anchor: anchor ?? ['top-right', 'top', 'top-left', 'left', 'bottom-left', 'bottom', 'bottom-right', 'middle'],
+        offset: offset ?? [2, 2, 2, 2, 2, 2, 2, 2, 2]
+      };
+  }
 }
 
 /**

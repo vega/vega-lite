@@ -1,32 +1,11 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Multi-series line chart with labels.",
   "data": {"url": "data/stocks.csv"},
-  "transform": [{"filter": "datum.symbol!=='IBM'"}],
+  "mark": "line",
   "encoding": {
-    "color": {
-      "field":"symbol",
-      "type":"nominal",
-      "legend": null
-    }
-  },
-  "layer": [{
-    "mark": "line",
-    "encoding": {
-      "x": {"field": "date", "type": "temporal", "title": "date"},
-      "y": {"field": "price", "type": "quantitative", "title": "price"}
-    }
-  },{
-    "encoding": {
-      "x": {"aggregate": "max", "field": "date", "type": "temporal"},
-      "y": {"aggregate": {"argmax": "date"}, "field": "price", "type": "quantitative"}
-    },
-    "layer": [{
-      "mark": {"type": "circle"}
-    }, {
-      "mark": {"type": "text", "align": "left", "dx": 4},
-      "encoding": {"text": {"field":"symbol", "type": "nominal"}}
-    }]
-  }],
-  "config": {"view": {"stroke": null}}
+    "x": {"timeUnit": "year", "field": "date"},
+    "y": {"aggregate":"mean", "field": "price", "type": "quantitative"},
+    "color": {"field": "symbol", "type": "nominal", "legend": null},
+    "label": {"field": "symbol"}
+  }
 }

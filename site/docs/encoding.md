@@ -50,6 +50,9 @@ An integral part of the data visualization process is encoding data with visual 
     "text": ...,
     "tooltip": ...,
 
+    // Label Channel
+    "label": ...,
+
     // Hyperlink Channel
     "href": ...,
 
@@ -86,6 +89,7 @@ The keys in the `encoding` object are encoding channels. Vega-Lite supports the 
 - [Geographic Position Channels](#geo): `longitude`, `latitude`, `longitude2`, `latitude2`
 - [Mark Property Channels](#mark-prop): `angle`, `color` (and `fill` / `stroke`), `opacity`, `fillOpacity`, `strokeOpacity`, `shape`, `size`, `strokeDash`, `strokeWidth`
 - [Text and Tooltip Channels](#text): `text`, `tooltip`
+- [Label Channels](#label): `label`
 - [Hyperlink Channel](#href): `href`
 - [Description Channel](#description): `description`
 - [Level of Detail Channel](#detail): `detail`
@@ -322,6 +326,10 @@ In addition to the constant `value`, [value definitions](#value-def) of `text` a
 Similar to [`detail`](#detail), you can use an array of field definitions. Vega-Lite will display a tooltip with multiple fields. [Vega tooltip](https://github.com/vega/vega-tooltip/) will display a table that shows the name of the field and its value. See the [tooltip](tooltip.html) page for details.
 
 {:#href}
+
+## Label Channel
+
+Label channel allows you to add label to the mark. See the [labeling documentation](label.html) for more details.
 
 ## Hyperlink Channel
 

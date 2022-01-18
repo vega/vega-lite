@@ -114,7 +114,7 @@ describe('Layer', () => {
     });
   });
 
-  describe("label's avoidMarks", () => {
+  describe('avoidMarks', () => {
     const model = parseLayerModel({
       layer: [
         {

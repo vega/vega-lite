@@ -325,7 +325,7 @@ describe('Mark', () => {
     });
 
     describe('parse labels', () => {
-      it('should parse mark and label saparately', () => {
+      it('should parse mark and label separately', () => {
         const model = parseUnitModelWithScale({
           mark: 'bar',
           encoding: {
