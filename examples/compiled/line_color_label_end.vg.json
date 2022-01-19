@@ -88,8 +88,8 @@
         {
           "type": "label",
           "size": {"signal": "[width, height]"},
-          "lineAnchor": "begin",
-          "anchor": ["top-left", "left", "bottom-left"],
+          "lineAnchor": "end",
+          "anchor": ["top-right", "right", "bottom-right"],
           "offset": [2, 2, 2],
           "padding": null
         }

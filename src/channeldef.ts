@@ -256,7 +256,7 @@ export type LabelDefMixins = {
    *     ]`
    * - `line` or `trail`:
    *   - If vertical line/trail chart:
-   *     - If `lineAnchor` is `"begin"`: `[
+   *     - If `lineAnchor` is `"start"`: `[
    *         {anchor: "bottom-left", offset: 2},
    *         {anchor: "bottom", offset: 2},
    *         {anchor: "bottom-right", offset: 2},
@@ -267,7 +267,7 @@ export type LabelDefMixins = {
    *         {anchor: "top-right", offset: 2},
    *       ]`
    *   - If horizontal line/trail chart:
-   *     - If `lineAnchor` is `"begin"`: `[
+   *     - If `lineAnchor` is `"start"`: `[
    *         {anchor: "top-left", offset: 2},
    *         {anchor: "left", offset: 2},
    *         {anchor: "bottom-left", offset: 2},

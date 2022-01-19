@@ -691,14 +691,14 @@ describe('Mark', () => {
           expect(label.transform[0].lineAnchor).toBe('end');
         });
 
-        it(`should have correct default label-transform config for ${mark} (begin - vertical)`, () => {
+        it(`should have correct default label-transform config for ${mark} (start - vertical)`, () => {
           const model = parseUnitModelWithScale({
             mark,
             encoding: {
               x: {type: 'nominal', field: 'col1'},
               y: {type: 'quantitative', field: 'col2'},
               color: {type: 'quantitative', field: 'col3'},
-              label: {type: 'nominal', field: 'col', lineAnchor: 'begin'}
+              label: {type: 'nominal', field: 'col', lineAnchor: 'start'}
             }
           });
 
@@ -708,7 +708,7 @@ describe('Mark', () => {
             type: 'label',
             size: {signal: '[width, height]'},
             padding: null,
-            lineAnchor: 'begin',
+            lineAnchor: 'start',
             anchor: ['top-left', 'left', 'bottom-left'],
             offset: [2, 2, 2]
           });
