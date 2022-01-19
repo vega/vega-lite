@@ -83,7 +83,7 @@ Encoding a field to labels in multi-series line chart results the labeling algor
 
 As a default, the labeling algorithm place each label at the end of each line. You can configure it to place each label at the start of each line by setting `lineAnchor: 'start'`.
 
-<span class="vl-example" data-name="line_color_label_start"></span>
+<span class="vl-example" data-name="line_color_label_end"></span>
 
 {:#example-stacked-area}
 
