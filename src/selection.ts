@@ -202,7 +202,6 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'>
   mark?: BrushConfig;
 }
 
-
 export interface LassoSelectionConfig extends BaseSelectionConfig<'lasso'> {
   /**
    * A lasso selection also adds a path mark to depict the
@@ -214,14 +213,13 @@ export interface LassoSelectionConfig extends BaseSelectionConfig<'lasso'> {
   mark?: BrushConfig;
 
   /**
- * An array of field names whose values must match for a data tuple to
- * fall within the selection.
- *
- * __See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.
- */
+   * An array of field names whose values must match for a data tuple to
+   * fall within the selection.
+   *
+   * __See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.
+   */
   fields?: FieldName[];
 }
-
 
 export interface SelectionParameter<T extends SelectionType = SelectionType> {
   /**
@@ -307,7 +305,6 @@ export type IntervalSelectionConfigWithoutType = Omit<IntervalSelectionConfig, '
 
 export type LassoSelectionConfigWithoutType = Omit<LassoSelectionConfig, 'type'>;
 
-
 export interface SelectionConfig {
   /**
    * The default definition for a [`point`](https://vega.github.io/vega-lite/docs/parameter.html#select) selection. All properties and transformations
@@ -325,7 +322,6 @@ export interface SelectionConfig {
    * interval selections by default.
    */
   interval?: IntervalSelectionConfigWithoutType;
-
 
   /**
    * The default definition for an [`lasso`](https://vega.github.io/vega-lite/docs/parameter.html#select) selection. All properties and transformations

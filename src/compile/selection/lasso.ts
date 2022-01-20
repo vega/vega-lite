@@ -1,15 +1,13 @@
-import {NewSignal, OnEvent, Signal, Stream} from 'vega';
+import {OnEvent, Signal, Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {SelectionCompiler, SelectionComponent, TUPLE, unitName} from '.';
-import {ScaleChannel, X} from '../../channel';
 import {warn} from '../../log';
-import {UnitModel} from '../unit';
 import {assembleInit} from './assemble';
-import {SelectionProjection, TUPLE_FIELDS} from './project';
+import {TUPLE_FIELDS} from './project';
 import scales from './scales';
 export const BRUSH = '_brush';
-export const SELECTION_IDS = '_selectionids'
-export const SCREEN_PATH = '_screen_path'
+export const SELECTION_IDS = '_selectionids';
+export const SCREEN_PATH = '_screen_path';
 
 const lasso: SelectionCompiler<'lasso'> = {
   defined: selCmpt => selCmpt.type === 'lasso',
@@ -21,13 +19,13 @@ const lasso: SelectionCompiler<'lasso'> = {
 
     const fieldsSg = `${name}${TUPLE_FIELDS}`;
     const screenPathName = `${name}${SCREEN_PATH}`;
-    const selectionIds = `${name}${SELECTION_IDS}`
+    const selectionIds = `${name}${SELECTION_IDS}`;
 
-    const xScale = model.getScaleComponent('x')
-    const yScale = model.getScaleComponent('y')
+    const xScale = model.getScaleComponent('x');
+    const yScale = model.getScaleComponent('y');
 
-    const xField = model.fieldDef('x')
-    const yField = model.fieldDef('y')
+    const xField = model.fieldDef('x');
+    const yField = model.fieldDef('y');
 
     const w = model.getSizeSignalRef('width').signal;
     const h = model.getSizeSignalRef('height').signal;
@@ -40,7 +38,7 @@ const lasso: SelectionCompiler<'lasso'> = {
           update: `invertLasso(${stringValue(model.getName('marks'))}, ${screenPathName}, ${stringValue(xScale.implicit.name)}, ${stringValue(xField.field)}, ${stringValue(yScale.implicit.name)}, ${stringValue(yField.field)})`
         }
       ]
-    })
+    });
 
     const on = events(selCmpt, (def: OnEvent[], evt: Stream) => {
       return [
@@ -107,11 +105,10 @@ const lasso: SelectionCompiler<'lasso'> = {
   }
 };
 
-
 function events(selCmpt: SelectionComponent<'lasso'>, cb: (def: OnEvent[], evt: Stream) => OnEvent[]): OnEvent[] {
   return selCmpt.events.reduce((on, evt) => {
     if (!evt.between) {
-      warn(`${evt} is not an ordered event stream for interval selections.`);
+      warn(`${evt} is not an ordered event stream for lasso selections.`);
       return on;
     }
     return cb(on, evt);
