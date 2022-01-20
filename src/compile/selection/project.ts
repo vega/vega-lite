@@ -2,7 +2,7 @@ import {array, isObject} from 'vega-util';
 import {isSingleDefUnitChannel, ScaleChannel, SingleDefUnitChannel} from '../../channel';
 import * as log from '../../log';
 import {hasContinuousDomain} from '../../scale';
-import {PointSelectionConfig, SelectionInitIntervalMapping, SelectionInitMapping} from '../../selection';
+import {PointSelectionConfig, SelectionInitIntervalMapping, SelectionInitMapping, SELECTION_ID} from '../../selection';
 import {Dict, hash, keys, replacePathInField, varName, isEmpty} from '../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../data/timeunit';
 import {SelectionCompiler} from '.';
@@ -30,6 +30,7 @@ export interface SelectionProjection {
 export class SelectionProjectionComponent {
   public hasChannel: Partial<Record<SingleDefUnitChannel, SelectionProjection>>;
   public hasField: Record<string, SelectionProjection>;
+  public hasSelectionId: boolean;
   public timeUnit?: TimeUnitNode;
   public items: SelectionProjection[];
 
@@ -37,6 +38,7 @@ export class SelectionProjectionComponent {
     this.items = items;
     this.hasChannel = {};
     this.hasField = {};
+    this.hasSelectionId = false;
   }
 }
 
@@ -152,6 +154,7 @@ const project: SelectionCompiler = {
           p.signals = {...signalName(p, 'data'), ...signalName(p, 'visual')};
           proj.items.push((parsed[field] = p));
           proj.hasField[field] = proj.hasChannel[channel] = parsed[field];
+          proj.hasSelectionId = proj.hasSelectionId || field === SELECTION_ID;
         }
       } else {
         log.warn(log.message.cannotProjectOnChannelWithoutField(channel));
@@ -164,6 +167,7 @@ const project: SelectionCompiler = {
       p.signals = {...signalName(p, 'data')};
       proj.items.push(p);
       proj.hasField[field] = p;
+      proj.hasSelectionId = proj.hasSelectionId || field === SELECTION_ID;
     }
 
     if (init) {
@@ -182,7 +186,7 @@ const project: SelectionCompiler = {
   signals: (model, selCmpt, allSignals) => {
     const name = selCmpt.name + TUPLE_FIELDS;
     const hasSignal = allSignals.filter(s => s.name === name);
-    return hasSignal.length > 0
+    return hasSignal.length > 0 || selCmpt.project.hasSelectionId
       ? allSignals
       : allSignals.concat({
           name,
