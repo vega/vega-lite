@@ -75,7 +75,7 @@ const lasso: SelectionCompiler<'lasso'> = {
     const name = selCmpt.name;
     const {fill, fillOpacity, stroke, strokeDash, strokeWidth} = selCmpt.mark;
 
-    const screenPathName = name + '_screen_path';
+    const screenPathName = `${name}${SCREEN_PATH}`;
 
     // Do not add a brush if we're binding to scales.
     if (scales.defined(selCmpt)) {
