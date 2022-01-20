@@ -90,6 +90,11 @@ describe('Multi Selection', () => {
       name: 'eight',
       value: 75,
       select: 'point'
+    },
+    {
+      name: 'nine',
+      value: [{_vgsid_: 75}, {_vgsid_: 80}],
+      select: 'point'
     }
   ]));
 
@@ -102,7 +107,7 @@ describe('Multi Selection', () => {
           {
             events: selCmpts['one'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: one_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
             force: true
           }
         ]
@@ -203,7 +208,7 @@ describe('Multi Selection', () => {
           {
             events: selCmpts['one'].events,
             update:
-              "datum && item().mark.marktype !== 'group' && indexof(item().mark.name, 'two_brush') < 0 && indexof(item().mark.name, 'three_brush') < 0 ? {unit: \"\", fields: one_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+              "datum && item().mark.marktype !== 'group' && indexof(item().mark.name, 'two_brush') < 0 && indexof(item().mark.name, 'three_brush') < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
             force: true
           }
         ]
@@ -261,7 +266,10 @@ describe('Multi Selection', () => {
 
   it('builds unit datasets', () => {
     expect(assembleUnitSelectionData(model, [])).toEqual([
-      {name: 'one_store'},
+      {
+        name: 'one_store',
+        transform: [{type: 'collect', sort: {field: '_vgsid_'}}]
+      },
       {name: 'two_store'},
       {
         name: 'thr_ee_store',
@@ -320,12 +328,15 @@ describe('Multi Selection', () => {
       },
       {
         name: 'eight_store',
+        transform: [{type: 'collect', sort: {field: '_vgsid_'}}],
+        values: [{unit: '', _vgsid_: 75}]
+      },
+      {
+        name: 'nine_store',
+        transform: [{type: 'collect', sort: {field: '_vgsid_'}}],
         values: [
-          {
-            unit: '',
-            fields: [{type: 'E', field: '_vgsid_'}],
-            values: [75]
-          }
+          {unit: '', _vgsid_: 75},
+          {unit: '', _vgsid_: 80}
         ]
       }
     ]);
