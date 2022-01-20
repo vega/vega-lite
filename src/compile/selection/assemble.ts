@@ -4,7 +4,7 @@ import {identity, isArray, stringValue} from 'vega-util';
 import {MODIFY, STORE, unitName, VL_SELECTION_RESOLVE, TUPLE, selectionCompilers} from '.';
 import {dateTimeToExpr, isDateTime, dateTimeToTimestamp} from '../../datetime';
 import {hasContinuousDomain} from '../../scale';
-import {SelectionInit, SelectionInitInterval, ParameterExtent} from '../../selection';
+import {SelectionInit, SelectionInitInterval, ParameterExtent, SELECTION_ID} from '../../selection';
 import {keys, stringify, vals} from '../../util';
 import {VgData, VgDomain} from '../../vega.schema';
 import {FacetModel} from '../facet';
@@ -114,23 +114,29 @@ export function assembleTopLevelSignals(model: UnitModel, signals: Signal[]) {
 
 export function assembleUnitSelectionData(model: UnitModel, data: readonly VgData[]): VgData[] {
   const dataCopy = [...data];
+  const unit = unitName(model, {escape: false});
+
   for (const selCmpt of vals(model.component.selection ?? {})) {
-    const init: VgData = {name: selCmpt.name + STORE};
+    const store: VgData = {name: selCmpt.name + STORE};
+
+    if (selCmpt.project.hasSelectionId) {
+      store.transform = [{type: 'collect', sort: {field: SELECTION_ID}}];
+    }
+
     if (selCmpt.init) {
       const fields = selCmpt.project.items.map(proj => {
         const {signals, ...rest} = proj;
         return rest;
       });
 
-      init.values = selCmpt.init.map(i => ({
-        unit: unitName(model, {escape: false}),
-        fields,
-        values: assembleInit(i, false)
-      }));
+      store.values = selCmpt.project.hasSelectionId
+        ? selCmpt.init.map(i => ({unit, [SELECTION_ID]: assembleInit(i, false)[0]}))
+        : selCmpt.init.map(i => ({unit, fields, values: assembleInit(i, false)}));
     }
+
     const contains = dataCopy.filter(d => d.name === selCmpt.name + STORE);
     if (!contains.length) {
-      dataCopy.push(init);
+      dataCopy.push(store);
     }
   }
 

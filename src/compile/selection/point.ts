@@ -1,6 +1,7 @@
 import {Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {SelectionCompiler, TUPLE, unitName} from '.';
+import {SELECTION_ID} from '../../selection';
 import {vals} from '../../util';
 import {BRUSH} from './interval';
 import {TUPLE_FIELDS} from './project';
@@ -13,16 +14,6 @@ const point: SelectionCompiler<'point'> = {
     const fieldsSg = name + TUPLE_FIELDS;
     const project = selCmpt.project;
     const datum = '(item().isVoronoi ? datum.datum : datum)';
-    const values = project.items
-      .map(p => {
-        const fieldDef = model.fieldDef(p.channel);
-        // Binned fields should capture extents, for a range test against the raw field.
-        return fieldDef?.bin
-          ? `[${datum}[${stringValue(model.vgField(p.channel, {}))}], ` +
-              `${datum}[${stringValue(model.vgField(p.channel, {binSuffix: 'end'}))}]]`
-          : `${datum}[${stringValue(p.field)}]`;
-      })
-      .join(', ');
 
     // Only add a discrete selection to the store if a datum is present _and_
     // the interaction isn't occurring on a group mark. This guards against
@@ -31,10 +22,6 @@ const point: SelectionCompiler<'point'> = {
     // for constant null states but varying toggles (e.g., shift-click in
     // whitespace followed by a click in whitespace; the store should only
     // be cleared on the second click).
-    const update = `unit: ${unitName(model)}, fields: ${fieldsSg}, values`;
-
-    const events: Stream[] = selCmpt.events;
-
     const brushes = vals(model.component.selection ?? {})
       .reduce((acc, cmpt) => {
         return cmpt.type === 'interval' ? acc.concat(cmpt.name + BRUSH) : acc;
@@ -44,6 +31,26 @@ const point: SelectionCompiler<'point'> = {
 
     const test = `datum && item().mark.marktype !== 'group'${brushes ? ` && ${brushes}` : ''}`;
 
+    let update = `unit: ${unitName(model)}, `;
+
+    if (selCmpt.project.hasSelectionId) {
+      update += `${SELECTION_ID}: ${datum}[${stringValue(SELECTION_ID)}]`;
+    } else {
+      const values = project.items
+        .map(p => {
+          const fieldDef = model.fieldDef(p.channel);
+          // Binned fields should capture extents, for a range test against the raw field.
+          return fieldDef?.bin
+            ? `[${datum}[${stringValue(model.vgField(p.channel, {}))}], ` +
+                `${datum}[${stringValue(model.vgField(p.channel, {binSuffix: 'end'}))}]]`
+            : `${datum}[${stringValue(p.field)}]`;
+        })
+        .join(', ');
+
+      update += `fields: ${fieldsSg}, values: [${values}]`;
+    }
+
+    const events: Stream[] = selCmpt.events;
     return signals.concat([
       {
         name: name + TUPLE,
@@ -51,7 +58,7 @@ const point: SelectionCompiler<'point'> = {
           ? [
               {
                 events,
-                update: `${test} ? {${update}: [${values}]} : null`,
+                update: `${test} ? {${update}} : null`,
                 force: true
               }
             ]

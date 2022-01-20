@@ -7,8 +7,7 @@ import {
   SelectionInit,
   SelectionInitInterval,
   SelectionResolution,
-  SelectionType,
-  SELECTION_ID
+  SelectionType
 } from '../../selection';
 import {Dict, vals} from '../../util';
 import {OutputNode} from '../data/dataflow';
@@ -110,7 +109,7 @@ export function unitName(model: Model, {escape} = {escape: true}) {
 
 export function requiresSelectionId(model: Model) {
   return vals(model.component.selection ?? {}).reduce((identifier, selCmpt) => {
-    return identifier || selCmpt.project.items.some(proj => proj.field === SELECTION_ID);
+    return identifier || selCmpt.project.hasSelectionId;
   }, false);
 }
 

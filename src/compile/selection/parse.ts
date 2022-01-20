@@ -90,9 +90,9 @@ export function parseSelectionPredicate(
     }
   }
 
-  const test = `vlSelectionTest(${store}, ${datum}${
-    selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`
-  }`;
+  const fn = selCmpt.project.hasSelectionId ? 'vlSelectionIdTest(' : 'vlSelectionTest(';
+  const resolve = selCmpt.resolve === 'global' ? ')' : `, ${stringValue(selCmpt.resolve)})`;
+  const test = `${fn}${store}, ${datum}${resolve}`;
   const length = `length(data(${store}))`;
 
   return pred.empty === false ? `${length} && ${test}` : `!${length} || ${test}`;
