@@ -55,7 +55,7 @@ describe('Mark: Area', () => {
     });
 
     it('should use bin_mid for the defined check', () => {
-      expect(props.defined.signal.includes('bin_maxbins_10_IMDB_Rating_mid')).toBe(true);
+      expect(props.defined['signal']).toContain('bin_maxbins_10_IMDB_Rating_mid');
     });
   });
 
