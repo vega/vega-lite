@@ -6,7 +6,10 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "paintbrush_store"},
+    {
+      "name": "paintbrush_store",
+      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}]
+    },
     {
       "name": "source_0",
       "url": "data/cars.json",
@@ -38,15 +41,11 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: paintbrush_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
-    },
-    {
-      "name": "paintbrush_tuple_fields",
-      "value": [{"type": "E", "field": "_vgsid_"}]
     },
     {
       "name": "paintbrush_toggle",
@@ -92,7 +91,7 @@
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": [
             {
-              "test": "!length(data(\"paintbrush_store\")) || vlSelectionTest(\"paintbrush_store\", datum)",
+              "test": "!length(data(\"paintbrush_store\")) || vlSelectionIdTest(\"paintbrush_store\", datum)",
               "value": 300
             },
             {"value": 50}

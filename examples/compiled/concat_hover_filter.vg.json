@@ -5,7 +5,10 @@
   "padding": 5,
   "height": 200,
   "data": [
-    {"name": "hover_store"},
+    {
+      "name": "hover_store",
+      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}]
+    },
     {
       "name": "source_0",
       "url": "data/cars.json",
@@ -28,7 +31,7 @@
       "transform": [
         {
           "type": "filter",
-          "expr": "length(data(\"hover_store\")) && vlSelectionTest(\"hover_store\", datum)"
+          "expr": "length(data(\"hover_store\")) && vlSelectionIdTest(\"hover_store\", datum)"
         }
       ]
     },
@@ -95,7 +98,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "mouseover"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_0_layer_0\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_0_layer_0\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
               "force": true
             },
             {
@@ -103,10 +106,6 @@
               "update": "null"
             }
           ]
-        },
-        {
-          "name": "hover_tuple_fields",
-          "value": [{"type": "E", "field": "_vgsid_"}]
         },
         {
           "name": "hover_toggle",
@@ -240,7 +239,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "mouseover"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1_layer_0\", fields: hover_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1_layer_0\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
               "force": true
             },
             {
@@ -248,10 +247,6 @@
               "update": "null"
             }
           ]
-        },
-        {
-          "name": "hover_tuple_fields",
-          "value": [{"type": "E", "field": "_vgsid_"}]
         },
         {
           "name": "hover_toggle",
