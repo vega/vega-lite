@@ -75,7 +75,7 @@
       "from": {"data": "pathgroup"},
       "encode": {
         "update": {
-          "fill": {"value": "black"},
+          "fill": {"scale": "color", "field": "symbol"},
           "description": {
             "signal": "\"symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"])"
           },

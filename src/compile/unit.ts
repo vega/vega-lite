@@ -84,6 +84,8 @@ export class UnitModel extends ModelWithField {
 
   public avoidAncestorLevel: number;
 
+  public originalEncoding: Encoding<string>;
+
   constructor(
     spec: NormalizedUnitSpec,
     parent: Model,
@@ -102,6 +104,8 @@ export class UnitModel extends ModelWithField {
         graticule: spec.data && isGraticuleGenerator(spec.data)
       });
     }
+
+    this.originalEncoding = spec.encoding;
 
     const encoding = (this.encoding = initEncoding(spec.encoding || {}, mark, markDef.filled, config));
     this.markDef = initMarkdef(markDef, encoding, config);

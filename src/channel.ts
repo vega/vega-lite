@@ -393,7 +393,27 @@ const {
 export const NONPOSITION_CHANNELS = keys(NONPOSITION_CHANNEL_INDEX);
 export type NonPositionChannel = typeof NONPOSITION_CHANNELS[number];
 
-const {label: _label, tooltip: _tooltip, ...STACKABLE_CHANNEL_INDEX} = NONPOSITION_CHANNEL_INDEX;
+export const {
+  size: _size,
+  angle: _angle,
+  shape: _shape,
+  detail: _detail,
+  key: _key,
+  text: _text,
+  label: _label,
+  order: _order,
+  url: _url,
+  ...LABEL_INHERITABLE_CHANNEL_INDEX
+} = NONPOSITION_CHANNEL_INDEX;
+
+export const LABEL_INHERITABLE_CHANNEL = keys(LABEL_INHERITABLE_CHANNEL_INDEX);
+export type LabelInheritableChannel = typeof LABEL_INHERITABLE_CHANNEL[number];
+
+export function isLabelInheritableChannel(channel: Channel): channel is LabelInheritableChannel {
+  return !!LABEL_INHERITABLE_CHANNEL[channel];
+}
+
+const {label: __label, tooltip: _tooltip, ...STACKABLE_CHANNEL_INDEX} = NONPOSITION_CHANNEL_INDEX;
 
 export const STACKABLE_CHANNELS = keys(STACKABLE_CHANNEL_INDEX);
 export type StackableChannel = typeof STACKABLE_CHANNELS[number];

@@ -12396,6 +12396,20 @@
               "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
               "type": "string"
             },
+            "inherit": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/LabelInheritableChannel"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/LabelInheritableChannel"
+                  },
+                  "type": "array"
+                }
+              ],
+              "description": "Labels inherit encoding channels from its base mark. Labels can inherit `\"color\"`, `\"fill\"`, `\"stroke\"`, `\"opacity\"`, `\"fillOpacity\"`, `\"strokeOpacity\"`, `\"strokeWidth\"`, `\"strokeDash\"`, `\"tooltip\"`, `\"href\"`, and\\or `\"description\"`.\n\n__Default value:__\n- line/trail mark: [\"color\", \"opacity\"]\n- other marks: []"
+            },
             "lineAnchor": {
               "$ref": "#/definitions/LineLabelAnchor",
               "description": "The anchor position of labels for line marks, where one line receives one label. One of `\"start\"` or `\"end\"` (the default). This property only applies when the mark is multi-series line or trail.\n\n__Default value:__ `\"end\"`"
@@ -13491,6 +13505,20 @@
               "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
               "type": "string"
             },
+            "inherit": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/LabelInheritableChannel"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/LabelInheritableChannel"
+                  },
+                  "type": "array"
+                }
+              ],
+              "description": "Labels inherit encoding channels from its base mark. Labels can inherit `\"color\"`, `\"fill\"`, `\"stroke\"`, `\"opacity\"`, `\"fillOpacity\"`, `\"strokeOpacity\"`, `\"strokeWidth\"`, `\"strokeDash\"`, `\"tooltip\"`, `\"href\"`, and\\or `\"description\"`.\n\n__Default value:__\n- line/trail mark: [\"color\", \"opacity\"]\n- other marks: []"
+            },
             "lineAnchor": {
               "$ref": "#/definitions/LineLabelAnchor",
               "description": "The anchor position of labels for line marks, where one line receives one label. One of `\"start\"` or `\"end\"` (the default). This property only applies when the mark is multi-series line or trail.\n\n__Default value:__ `\"end\"`"
@@ -14540,6 +14568,20 @@
               ],
               "description": "A field definition or one or more value definition(s) with a parameter predicate."
             },
+            "inherit": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/LabelInheritableChannel"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/LabelInheritableChannel"
+                  },
+                  "type": "array"
+                }
+              ],
+              "description": "Labels inherit encoding channels from its base mark. Labels can inherit `\"color\"`, `\"fill\"`, `\"stroke\"`, `\"opacity\"`, `\"fillOpacity\"`, `\"strokeOpacity\"`, `\"strokeWidth\"`, `\"strokeDash\"`, `\"tooltip\"`, `\"href\"`, and\\or `\"description\"`.\n\n__Default value:__\n- line/trail mark: [\"color\", \"opacity\"]\n- other marks: []"
+            },
             "lineAnchor": {
               "$ref": "#/definitions/LineLabelAnchor",
               "description": "The anchor position of labels for line marks, where one line receives one label. One of `\"start\"` or `\"end\"` (the default). This property only applies when the mark is multi-series line or trail.\n\n__Default value:__ `\"end\"`"
@@ -15540,6 +15582,22 @@
           "type": "object"
         }
       ]
+    },
+    "LabelInheritableChannel": {
+      "enum": [
+        "color",
+        "fill",
+        "stroke",
+        "opacity",
+        "fillOpacity",
+        "strokeOpacity",
+        "strokeWidth",
+        "strokeDash",
+        "tooltip",
+        "href",
+        "description"
+      ],
+      "type": "string"
     },
     "LabelOverlap": {
       "anyOf": [
@@ -26736,6 +26794,20 @@
             "formatType": {
               "description": "The format type for labels. One of `\"number\"`, `\"time\"`, or a [registered custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type).\n\n__Default value:__\n- `\"time\"` for temporal fields and ordinal and nominal fields with `timeUnit`.\n- `\"number\"` for quantitative fields as well as ordinal and nominal fields without `timeUnit`.",
               "type": "string"
+            },
+            "inherit": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/LabelInheritableChannel"
+                },
+                {
+                  "items": {
+                    "$ref": "#/definitions/LabelInheritableChannel"
+                  },
+                  "type": "array"
+                }
+              ],
+              "description": "Labels inherit encoding channels from its base mark. Labels can inherit `\"color\"`, `\"fill\"`, `\"stroke\"`, `\"opacity\"`, `\"fillOpacity\"`, `\"strokeOpacity\"`, `\"strokeWidth\"`, `\"strokeDash\"`, `\"tooltip\"`, `\"href\"`, and\\or `\"description\"`.\n\n__Default value:__\n- line/trail mark: [\"color\", \"opacity\"]\n- other marks: []"
             },
             "lineAnchor": {
               "$ref": "#/definitions/LineLabelAnchor",
