@@ -28,6 +28,7 @@ import toggle from './toggle';
 import translate from './translate';
 import zoom from './zoom';
 import {ParameterName} from '../../parameter';
+import lasso from './lasso';
 
 export const STORE = '_store';
 export const TUPLE = '_tuple';
@@ -69,6 +70,7 @@ export interface SelectionCompiler<T extends SelectionType = SelectionType> {
 export const selectionCompilers: SelectionCompiler[] = [
   point,
   interval,
+  lasso,
   project,
   toggle,
 
