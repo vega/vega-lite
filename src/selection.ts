@@ -7,14 +7,16 @@ import {ParameterName} from './parameter';
 import {Dict} from './util';
 
 export const SELECTION_ID = '_vgsid_';
-export type SelectionType = 'point' | 'interval';
+export type SelectionType = 'point' | 'interval' | 'lasso';
 export type SelectionResolution = 'global' | 'union' | 'intersect';
 
 export type SelectionInit = PrimitiveValue | DateTime;
 export type SelectionInitInterval = Vector2<boolean> | Vector2<number> | Vector2<string> | Vector2<DateTime>;
+export type SelectionInitLasso = number[];
 
 export type SelectionInitMapping = Dict<SelectionInit>;
 export type SelectionInitIntervalMapping = Dict<SelectionInitInterval>;
+export type SelectionInitLassoMapping = Dict<SelectionInitLasso>;
 
 export type LegendStreamBinding = {legend: string | Stream};
 export type LegendBinding = 'legend' | LegendStreamBinding;
@@ -200,6 +202,25 @@ export interface IntervalSelectionConfig extends BaseSelectionConfig<'interval'>
   mark?: BrushConfig;
 }
 
+export interface LassoSelectionConfig extends BaseSelectionConfig<'lasso'> {
+  /**
+   * A lasso selection also adds a path mark to depict the
+   * shape of the lasso. The `mark` property can be used to customize the
+   * appearance of the mark.
+   *
+   * __See also:__ [`mark` examples](https://vega.github.io/vega-lite/docs/selection.html#mark) in the documentation.
+   */
+  mark?: BrushConfig;
+
+  /**
+   * An array of field names whose values must match for a data tuple to
+   * fall within the selection.
+   *
+   * __See also:__ The [projection with `encodings` and `fields` section](https://vega.github.io/vega-lite/docs/selection.html#project) in the documentation.
+   */
+  fields?: FieldName[];
+}
+
 export interface SelectionParameter<T extends SelectionType = SelectionType> {
   /**
    * Required. A unique name for the selection parameter. Selection names should be valid JavaScript identifiers: they should contain only alphanumeric characters (or "$", or "_") and may not start with a digit. Reserved keywords that may not be used as parameter names are "datum", "event", "item", and "parent".
@@ -212,7 +233,15 @@ export interface SelectionParameter<T extends SelectionType = SelectionType> {
    * - `"point"` -- to select multiple discrete data values; the first value is selected on `click` and additional values toggled on shift-click.
    * - `"interval"` -- to select a continuous range of data values on `drag`.
    */
-  select: T | (T extends 'point' ? PointSelectionConfig : T extends 'interval' ? IntervalSelectionConfig : never);
+  select:
+    | T
+    | (T extends 'point'
+        ? PointSelectionConfig
+        : T extends 'interval'
+        ? IntervalSelectionConfig
+        : T extends 'lasso'
+        ? LassoSelectionConfig
+        : never);
 
   /**
    * Initialize the selection with a mapping between [projected channels or field names](https://vega.github.io/vega-lite/docs/selection.html#project) and initial values.
@@ -281,7 +310,7 @@ export type ParameterExtent =
 export type PointSelectionConfigWithoutType = Omit<PointSelectionConfig, 'type'>;
 
 export type IntervalSelectionConfigWithoutType = Omit<IntervalSelectionConfig, 'type'>;
-
+export type LassoSelectionConfigWithoutType = Omit<LassoSelectionConfig, 'type'>;
 export interface SelectionConfig {
   /**
    * The default definition for a [`point`](https://vega.github.io/vega-lite/docs/parameter.html#select) selection. All properties and transformations
@@ -299,6 +328,12 @@ export interface SelectionConfig {
    * interval selections by default.
    */
   interval?: IntervalSelectionConfigWithoutType;
+
+  /**
+   * The default definition for an [`lasso`](https://vega.github.io/vega-lite/docs/parameter.html#select) selection. All properties and transformations
+   * for an lasso selection definition (except `type`) may be specified here.
+   */
+  lasso?: LassoSelectionConfigWithoutType;
 }
 
 export const defaultConfig: SelectionConfig = {
@@ -316,6 +351,13 @@ export const defaultConfig: SelectionConfig = {
     zoom: 'wheel!',
     mark: {fill: '#333', fillOpacity: 0.125, stroke: 'white'},
     resolve: 'global',
+    clear: 'dblclick'
+  },
+  lasso: {
+    on: '[mousedown, window:mouseup] > window:mousemove!',
+    resolve: 'global',
+    fields: [SELECTION_ID],
+    mark: {fill: '#333', fillOpacity: 0.125, stroke: 'gray', strokeWidth: 2, strokeDash: [8, 5]},
     clear: 'dblclick'
   }
 };
