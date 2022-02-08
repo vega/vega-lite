@@ -17346,7 +17346,7 @@
           "description": "An object that specifies the format for parsing the data."
         },
         "name": {
-          "description": "Provide a placeholder name and bind data at runtime.",
+          "description": "Provide a placeholder name and bind data at runtime.\n\nNew data may change the layout but Vega does not always resize the chart. To update the layout when the data updates, set [autosize](https://vega.github.io/vega-lite/docs/size.html#autosize) or explicitly use [view.resize](https://vega.github.io/vega/docs/api/view/#view_resize).",
           "type": "string"
         }
       },
