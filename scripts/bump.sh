@@ -22,5 +22,5 @@ yarn version --new-version $1 --no-git-tag-version
 
 git add package.json
 
-git commit -m "chore: release v$1"
+git commit -m "chore: release v$1 [skip ci]"
 git tag -m "Release v$1." "v$1"
