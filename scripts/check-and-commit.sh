@@ -7,7 +7,7 @@ git checkout $GIT_BRANCH
 
 echo "On branch $GIT_BRANCH."
 
-if [ "$GIT_BRANCH" != "master" ] && [[ "$GIT_BRANCH" != dependabot/* ]]; then
+if [ "$GIT_BRANCH" != "stable" ] && [[ "$GIT_BRANCH" != dependabot/* ]]; then
   PUSH_BRANCH=true
   echo "Will try to push changes."
 else
@@ -21,7 +21,7 @@ echo ""
 
 # Commit the schema if outdated
 if ! git diff --exit-code ./build/vega-lite-schema.json; then
-  ## Only do this for master
+  ## Only do this for stable
   if [ "$PUSH_BRANCH" = true ]; then
     git add ./build/vega-lite-schema.json
     git commit -m "chore: update schema [ci skip]"

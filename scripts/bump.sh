@@ -7,12 +7,12 @@ if [ "$#" -lt 1 ]; then
   exit 1
 fi
 
-if [ "$(git rev-parse --abbrev-ref HEAD)" != "master" ]; then
+if [ "$(git rev-parse --abbrev-ref HEAD)" != "stable" ]; then
   if [ "$(git rev-parse --abbrev-ref HEAD)" != $2 ]; then
-    echo "Not on master, please checkout master branch before running this script or provide the branch name as the second parameter if you want to release from non-master branch."
+    echo "Not on stable, please checkout stable branch before running this script or provide the branch name as the second parameter if you want to release from non-stable branch."
     exit 1
   else
-    echo "Note: releasing from a non-master branch '$2'."
+    echo "Note: releasing from a non-stable branch '$2'."
   fi
 fi
 
