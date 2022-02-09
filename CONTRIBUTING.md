@@ -194,7 +194,7 @@ During development, it can be convenient to rebuild automatically or to run test
 
 ### Deployment
 
-To make a new release, bump the version number with `scripts/bump.sh 4.0.0` (you can get the current version with `scripts/bump.sh`). Then push the tagged commit that the script creates, make a new GitHub release for the tag, and update the changelog. `yarn changelog` can help generate initial draft for a changelog, though we should manually add screenshots for feature releases (major and minor). After creating a GitHub release, GitHub will run checks and make a release. This will also update the website and schema. If you want to update only GitHub Pages, use `yarn deploy:site`.
+To make a new release, bump the version number with `scripts/bump.sh 4.0.0` (you can get the current version with `scripts/version.sh`). Then push the tagged commit that the script creates, make a new GitHub release for the tag, and update the changelog. `yarn changelog` can help generate initial draft for a changelog, though we should manually add screenshots for feature releases (major and minor). After creating a GitHub release, GitHub will run checks and make a release. This will also update the website and schema. If you want to update only GitHub Pages, use `yarn deploy:site`.
 
 ## Suggested Programming Environment.
 

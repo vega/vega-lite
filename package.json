@@ -69,7 +69,8 @@
     "test:runtime:generate": "yarn build:only && del-cli test-runtime/resources && VL_GENERATE_TESTS=true yarn test:runtime",
     "watch": "tsc -p tsconfig.build.json -w",
     "watch:site": "yarn build:site -w",
-    "watch:test": "yarn jest --watch test/"
+    "watch:test": "yarn jest --watch test/",
+    "release": "yarn run prebuild && yarn build && auto shipit"
   },
   "repository": {
     "type": "git",
