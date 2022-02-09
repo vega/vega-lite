@@ -1,0 +1,32 @@
+name: Publish to NPM (canaries and prereleases)
+
+on:
+  push:
+    branches-ignore:
+      # No canary deploys for branches opened by dependabot
+      - 'dependabot/**'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
+
+    name: Make a release and publish to NPM
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Prepare repository
+        run: git fetch --unshallow --tags
+
+      - uses: actions/setup-node@v2.4.0
+        with:
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
+
+      - run: npm run release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

@@ -1,8 +1,11 @@
-name: Release
+name: Publish Documentation and Schema
 
 on:
   release:
-    types: [published]
+    # https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#release
+    # The "published" event includes both releases and prereleases
+    # use "released" to limit triggers to official releases
+    types: [released]
 
 jobs:
   release:
@@ -37,12 +40,6 @@ jobs:
       - uses: actions/setup-node@v2.5.1
         with:
           registry-url: 'https://registry.npmjs.org'
-      - name: Publish to NPM registry
-        run: |
-          echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" > ~/.npmrc
-          npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Prebuild website
         run: yarn predeploy:site
