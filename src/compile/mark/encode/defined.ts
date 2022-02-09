@@ -30,7 +30,7 @@ function allFieldsInvalidPredicate(
     const scaleComponent = model.getScaleComponent(channel);
     if (scaleComponent) {
       const scaleType = scaleComponent.get('type');
-      const field = model.vgField(channel, {expr: 'datum'});
+      const field = model.vgField(channel, {expr: 'datum', binSuffix: model.stack?.impute ? 'mid' : undefined});
 
       // While discrete domain scales can handle invalid values, continuous scales can't.
       if (field && hasContinuousDomain(scaleType)) {
