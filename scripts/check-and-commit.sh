@@ -24,7 +24,7 @@ if ! git diff --exit-code ./build/vega-lite-schema.json; then
   ## Only do this for master
   if [ "$PUSH_BRANCH" = true ]; then
     git add ./build/vega-lite-schema.json
-    git commit -m "chore: update schema [CI]"
+    git commit -m "chore: update schema [ci skip]"
   else
     echo "Outdated schema."
     exit 1
@@ -49,7 +49,7 @@ git add examples
 
 if [ "$PUSH_BRANCH" = true ]; then
   if ! git diff --cached --word-diff=color --exit-code examples; then
-    git commit -m "chore: update examples [CI]"
+    git commit -m "chore: update examples [ci skip]"
   fi
 else
   # Don't diff SVG as floating point calculation is not always consistent
@@ -66,7 +66,7 @@ echo ""
 if [ "$PUSH_BRANCH" = true ]; then
   if ! git diff --exit-code site src test test-runtime; then
     git add --all
-    git commit -m "style: auto-formatting [CI]"
+    git commit -m "style: auto-formatting [ci skip]"
   fi
 
   # should be empty
