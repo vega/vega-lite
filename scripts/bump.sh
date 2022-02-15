@@ -20,8 +20,7 @@ set -x
 
 yarn version --new-version $1 --no-git-tag-version
 
-yarn build:versions
-git add site/_data/versions.yml package.json
+git add package.json
 
 git commit -m "chore: release v$1"
 git tag -m "Release v$1." "v$1"
