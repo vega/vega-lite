@@ -6,7 +6,9 @@ version=$(scripts/version.sh vega-lite)
 
 pushd ../schema/vega-lite/
 
-git checkout stable
+# Note this script is running in the context of
+# github.com/vega/schema, NOT github.com/vega/vega-lite
+git checkout master
 git pull
 
 rm -f v$version.json
