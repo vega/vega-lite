@@ -121,7 +121,7 @@
     "serve": "^13.0.2",
     "terser": "^5.10.0",
     "ts-jest": "^27.1.1",
-    "ts-json-schema-generator": "^0.97.0",
+    "ts-json-schema-generator": "^0.98.0",
     "typescript": "~4.5.3",
     "vega-cli": "^5.21.0",
     "vega-datasets": "~2.2.0",
