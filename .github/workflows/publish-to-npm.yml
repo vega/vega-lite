@@ -5,6 +5,8 @@ on:
     branches-ignore:
       # No canary deploys for branches opened by dependabot
       - 'dependabot/**'
+      # documentation site should not trigger releases
+      - 'gh-pages'
 
 jobs:
   publish:
