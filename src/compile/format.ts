@@ -160,7 +160,7 @@ export function guideFormatType(
     return formatType;
   }
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) && scaleType !== 'time' && scaleType !== 'utc') {
-    return 'time';
+    return isFieldDef(fieldOrDatumDef) && normalizeTimeUnit(fieldOrDatumDef?.timeUnit)?.utc ? 'utc' : 'time';
   }
   return undefined;
 }
