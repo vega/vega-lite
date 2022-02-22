@@ -116,6 +116,8 @@ export interface InlineData extends DataBase {
 export interface NamedData extends DataBase {
   /**
    * Provide a placeholder name and bind data at runtime.
+   *
+   * New data may change the layout but Vega does not always resize the chart. To update the layout when the data updates, set [autosize](https://vega.github.io/vega-lite/docs/size.html#autosize) or explicitly use [view.resize](https://vega.github.io/vega/docs/api/view/#view_resize).
    */
   name: string;
 }
