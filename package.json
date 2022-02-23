@@ -69,7 +69,8 @@
     "test:runtime:generate": "yarn build:only && del-cli test-runtime/resources && VL_GENERATE_TESTS=true yarn test:runtime",
     "watch": "tsc -p tsconfig.build.json -w",
     "watch:site": "yarn build:site -w",
-    "watch:test": "yarn jest --watch test/"
+    "watch:test": "yarn jest --watch test/",
+    "release": "yarn run prebuild && yarn build && auto shipit"
   },
   "repository": {
     "type": "git",
@@ -80,6 +81,8 @@
     "url": "https://github.com/vega/vega-lite/issues"
   },
   "devDependencies": {
+    "@auto-it/conventional-commits": "^10.32.6",
+    "@auto-it/first-time-contributor": "^10.32.6",
     "@babel/core": "^7.16.0",
     "@babel/preset-env": "^7.16.4",
     "@babel/preset-typescript": "^7.16.0",
@@ -97,6 +100,7 @@
     "@typescript-eslint/parser": "^5.6.0",
     "ajv": "^8.8.2",
     "ajv-formats": "^2.1.1",
+    "auto": "^10.32.6",
     "chai": "^4.3.4",
     "cheerio": "^1.0.0-rc.10",
     "conventional-changelog-cli": "^2.1.1",

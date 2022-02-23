@@ -7,7 +7,7 @@ git checkout $GIT_BRANCH
 
 echo "On branch $GIT_BRANCH."
 
-if [ "$GIT_BRANCH" != "master" ] && [[ "$GIT_BRANCH" != dependabot/* ]]; then
+if [ "$GIT_BRANCH" != "stable" ] && [[ "$GIT_BRANCH" != dependabot/* ]]; then
   PUSH_BRANCH=true
   echo "Will try to push changes."
 else
