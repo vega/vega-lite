@@ -54,6 +54,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Vegas](https://github.com/aishfenton/Vegas) brings visualizations to Scala and Spark using Vega-Lite.
 - [Smile](https://haifengl.github.io/) is a machine learning engine for JVM using Vega-Lite.
 - [vegawidget](https://vegawidget.github.io/vegawidget), low-level interface in R to render Vega and Vega-Lite specifications as htmlwidgets, including functions to interact with data, events, and signals in [Shiny](https://shiny.rstudio.com).
+- [vegabrite](https://vegawidget.github.io/vegabrite), functional interface for building up Vega-Lite specifications in R. Built on top of the lower-level interface provided by vegawidget
 - [Hanami](https://github.com/jsa-aerial/hanami) A Clojure(Script) library for creating domain specific interactive visualization applications. Exposes a parameterized template system that uses recursive transformation to finished Vega-Lite and Vega specs. Built with [reagent](https://reagent-project.github.io/) (react) and [re-com](https://github.com/Day8/re-com) enabled.
 - [Vizard](https://github.com/yieldbot/vizard) tiny REPL client to visualize Clojure data in browser w/ Vega-Lite.
 - [Oz](https://github.com/metasoarous/oz) is a Vega & Vega-Lite based visualization and scientific document toolkit for Clojure & ClojureScript (Reagent). Originally a fork of Vizard, Oz adds support for Vega, publishing/sharing, markdown & hiccup extensions for embedding Vega-Lite & Vega visualizations in html documents, static html output, and Jupyter notebooks.
