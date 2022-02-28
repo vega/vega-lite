@@ -16,7 +16,7 @@ jobs:
           token: ${{ secrets.GH_PAT || github.token }}
 
       - name: Setup Node
-        uses: actions/setup-node@v2.5.1
+        uses: actions/setup-node@v3
         with:
           cache: 'yarn'
 
@@ -61,7 +61,7 @@ jobs:
           token: ${{ secrets.GH_PAT || github.token }}
 
       - name: Setup Node
-        uses: actions/setup-node@v2.5.1
+        uses: actions/setup-node@v3
         with:
           cache: 'yarn'
 
