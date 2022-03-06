@@ -69,7 +69,7 @@ export const LOCAL_MULTI_TIMEUNIT_INDEX = {
   monthdatehoursminutesseconds: 1,
 
   weekday: 1,
-  weeksdayhours: 1,
+  weekdayhours: 1,
   weekdayhoursminutes: 1,
   weekdayhoursminutesseconds: 1,
 
