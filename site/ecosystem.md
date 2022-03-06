@@ -81,7 +81,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 ## Tools that use Vega-Lite
 
 - [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
-- <span class="octicon octicon-star"></span> [PdVega](https://jakevdp.github.io/pdvega/), lets you create interactive Vega-Lite plots for Pandas. Uses [ipyvega](https://github.com/vega/ipyvega).
+- <span class="octicon octicon-star"></span> [PdVega](https://altair-viz.github.io/pdvega/), lets you create interactive Vega-Lite plots for Pandas. Uses [ipyvega](https://github.com/vega/ipyvega).
 - [Turi Create](https://github.com/apple/turicreate) Apple's tool to simplify the development of custom machine learning models.
 - [mondrian-rest-ui](https://github.com/jazzido/mondrian-rest-ui), an experimental UI for [`mondrian-rest`](https://github.com/jazzido/mondrian-rest) inspired by [Polestar](https://github.com/vega/polestar) and [CubesViewer](https://github.com/jjmontesl/cubesviewer).
 - [Django Chartflo](https://github.com/synw/django-chartflo), charts for the lazy ones in Django
