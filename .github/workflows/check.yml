@@ -35,7 +35,7 @@ jobs:
           sudo mv parallel sem /usr/local/bin
 
       - name: Format
-        if: github.ref != 'refs/heads/master'
+        if: github.ref != 'refs/heads/next'
         run: yarn format
 
       - name: Build Schema
