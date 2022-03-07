@@ -16,7 +16,7 @@ jobs:
     name: Make a release and publish to NPM
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Prepare repository
         run: git fetch --unshallow --tags
