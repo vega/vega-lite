@@ -40,7 +40,7 @@ You can find [tasks with the "Good first issue" label in the issue tracker :pray
 
 The website is under `site/` and the documentation is under `site/docs/`. We use GitHub Pages to publish our documentation when we release a new version. To contribute changes to the documentation or website, simply submit a pull request that changes the corresponding markdown files in `site/`.
 
-Since we only publish the GitHub Pages when we release a new version, it might be slightly outdated compared to `master`. For development, once you have [setup the repository](#repository-setup), you can run `yarn site` to serve the GitHub page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
+Since we only publish the GitHub Pages when we release a new version, it might be slightly outdated compared to `next`. For development, once you have [setup the repository](#repository-setup), you can run `yarn site` to serve the GitHub page locally at [http://localhost:4000/vega-lite/](http://localhost:4000/vega-lite/).
 
 Note that when you checkout different branches, the compiled JavaScript for the website might be reset. You might have to run `yarn build:site` to recompile the JavaScript so that interactive examples work.
 
