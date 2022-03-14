@@ -1,4 +1,3 @@
-import {range} from 'd3-array';
 import {AxisOrient, Orient, SignalRef} from 'vega';
 import {codegenExpression, parseExpression} from 'vega-expression';
 import {stringValue} from 'vega-util';
@@ -8,6 +7,7 @@ import {defaultLabelAlign, defaultLabelBaseline, getLabelAngle} from '../../../s
 import {TimeUnit} from '../../../src/timeunit';
 import {normalizeAngle} from '../../../src/util';
 import {isSignalRef} from '../../../src/vega.schema';
+import {range} from '../../util';
 
 describe('compile/axis/properties', () => {
   function evalValueOrSignal(valueOrSignalRef: string | SignalRef, o: Orient) {
