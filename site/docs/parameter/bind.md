@@ -13,7 +13,7 @@ Using the `bind` property, parameters can be bound in the following ways:
 
 ## Input Element Binding
 
-For variable parameters and point selections, the `bind` property can follow the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind). Doing so generates an input element (per [projected channel or field](project.html) for selections) which can be used to interactively set the parameter value.
+For variable parameters and point selections, the `bind` property can follow the form of Vega's [input element binding definition](https://vega.github.io/vega/docs/signals/#bind). Doing so generates an input element (per [projected channel or field](projection.html) for selections) which can be used to interactively set the parameter value.
 
 For example, in the specification below, we use a variety of variable parameters to interactively manipulate the `rect` mark.
 
