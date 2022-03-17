@@ -130,7 +130,7 @@ An alternate way to construct either of these examples would be to _first_ filte
 
 However, setting the data extents (rather than filtering data out) yields superior interactive performance. Rather than testing whether each data value falls within the selection or not, the data extents (either the bin extents or scale domains) are changed directly to the brush extents.
 
-If the selection is [projected](projection.html) over _multiple_ fields or encodings, one must be given as part of the data extent definition. Vega-Lite automatically infers this property if the selection is only projected over a single field or encoding. Thus, with the above example, the scale domain can be specified more explicitly as:
+If the selection is [projected](selection.html#project) over _multiple_ fields or encodings, one must be given as part of the data extent definition. Vega-Lite automatically infers this property if the selection is only projected over a single field or encoding. Thus, with the above example, the scale domain can be specified more explicitly as:
 
 - `"scale": {"domain": {"param": "brush", "encoding": "x"}}` or
 - `"scale": {"domain": {"param": "brush", "field": "date"}}`
