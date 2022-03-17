@@ -64,6 +64,14 @@ To avoid that the tooltips groups the data, add an aggregate to the tooltip enco
 
 <div class="vl-example" data-name="bar_tooltip_aggregate"></div>
 
+## Tooltip image
+
+To display an image in a tooltip, you need to use the special field name `image`, which is an indicator to the Vega Tooltip plugin to render an image instead of displaying text in the tooltip. The image tooltip can be specified either by setting the `tooltip` property of the mark definition (as detailed above) or by passing the field *as an array* to the tooltip encoding channel, as in the example below:
+
+<div class="vl-example" data-name="text_tooltip_image"></div>
+
+In addition to providing the path to an image, the Vega Tooltip plugin can also render base64 encoded images prefixed with `data:image/png;base64,`, [similarly to how these are rendered inside HTML image tags](https://www.w3docs.com/snippets/html/how-to-display-base64-images-in-html.html). To change the maximum size of the rendered tooltip images, you can adjust the `max-width` and `max-height` properties of the CSS selector `#vg-tooltip-element img`.
+
 ## Disable tooltips
 
 To disable tooltips for a particular single view specification, you can set the `"tooltip"` property of a mark definition block to `null`.
