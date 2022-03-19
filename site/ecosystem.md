@@ -27,6 +27,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Deneb](https://deneb-viz.github.io), a Power BI custom visual with an editor for Vega-Lite or Vega specifications.
 - [VizLinter](https://vizlinter.idvxlab.com/), an online editor that detects and fixes encoding issues based on vega-lite-linter.
 - [Datapane](https://github.com/datapane/datapane), a Python framework for building interactive reports from open-source visualization formats such as Vega-Lite.
+- [Graphpad](https://www.figma.com/community/widget/1027276088284051809), an editor for creating Vega-Lite visualizations in the Figjam collaborative whiteboarding tool.
 
 ## Tools for Scaling Vega-Lite Visualizations
 
