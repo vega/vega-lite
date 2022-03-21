@@ -20,16 +20,16 @@
   integrity sha512-nEXcOa8UVHYzVdszPKTGldoE2h1mI2RvrHpqtOpjTNuUOy3eb8QuaAu8nSI2AsUPEWFToPLgdxgz90iAeDInRg==
 
 "@auto-it/conventional-commits@^10.34.1":
-  version "10.34.1"
-  resolved "https://registry.yarnpkg.com/@auto-it/conventional-commits/-/conventional-commits-10.34.1.tgz#500d1c02f98f2879c3406642776a7fa1a7d32a11"
-  integrity sha512-sJaCGsU3GqGZmnjzCpWC+ZSw6gyrC4g73W7E1qlJQvmEGJROmUeCx8PEKrBk6YFN3oZgIXIRbWyuxR7+Siv2WA==
+  version "10.36.5"
+  resolved "https://registry.yarnpkg.com/@auto-it/conventional-commits/-/conventional-commits-10.36.5.tgz#53262c6c097a7baf340fc985de382ad57c320a6e"
+  integrity sha512-FCYdDsgYTvv1oUDcrZl0PFxTRfPLCwmLQAl8ulDH3mVAqssro+HITh2Z1+SZ/b/AaCJQZIc+cD2pMELQasuVUQ==
   dependencies:
-    "@auto-it/core" "10.34.1"
+    "@auto-it/core" "10.36.5"
     array.prototype.flatmap "^1.2.2"
     conventional-changelog-core "^4.2.0"
     conventional-changelog-preset-loader "^2.3.4"
     conventional-commits-parser "^3.1.0"
-    endent "^2.0.1"
+    endent "^2.1.0"
     fp-ts "^2.5.3"
     io-ts "^2.1.2"
     tslib "2.1.0"
