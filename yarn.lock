@@ -14,6 +14,11 @@
   resolved "https://registry.yarnpkg.com/@auto-it/bot-list/-/bot-list-10.34.1.tgz#bff8519286a3c8fe7249684c6b5591f9a286ecec"
   integrity sha512-wUARnM3Xl24YE3q+39T29azNVPRWzRNVq6qe/Z9ulN/bM4tXBgpcH5proJOH+ed3QKOiUgqvRJU5fGu0mOmIaA==
 
+"@auto-it/bot-list@10.36.5":
+  version "10.36.5"
+  resolved "https://registry.yarnpkg.com/@auto-it/bot-list/-/bot-list-10.36.5.tgz#bd83300f315ef8df97e5c28bc0bf44a9401b1708"
+  integrity sha512-nEXcOa8UVHYzVdszPKTGldoE2h1mI2RvrHpqtOpjTNuUOy3eb8QuaAu8nSI2AsUPEWFToPLgdxgz90iAeDInRg==
+
 "@auto-it/conventional-commits@^10.34.1":
   version "10.34.1"
   resolved "https://registry.yarnpkg.com/@auto-it/conventional-commits/-/conventional-commits-10.34.1.tgz#500d1c02f98f2879c3406642776a7fa1a7d32a11"
@@ -74,15 +79,60 @@
     typescript-memoize "^1.0.0-alpha.3"
     url-join "^4.0.0"
 
-"@auto-it/first-time-contributor@^10.34.1":
-  version "10.34.1"
-  resolved "https://registry.yarnpkg.com/@auto-it/first-time-contributor/-/first-time-contributor-10.34.1.tgz#63211fe25f101310edaa0b47e8990154245faa4e"
-  integrity sha512-qdiRClyA1DealXEGxmnErcAOzmah/MeR2rU52upM1lHcLncX5ITsLuFkehPFoybrRAtfv+zS+A50Quc7G/8caw==
+"@auto-it/core@10.36.5":
+  version "10.36.5"
+  resolved "https://registry.yarnpkg.com/@auto-it/core/-/core-10.36.5.tgz#c6c0a42177be15d0f319462000c8fe424fbf0696"
+  integrity sha512-muA7V4oKl5EYt7xzuuQp1qyXjUIapUn5XRj9fHgDrFcHseQhOZLJjjmPXI7W6NVZ9AGW98eq7xcQzbg/VC1HSg==
   dependencies:
-    "@auto-it/bot-list" "10.34.1"
-    "@auto-it/core" "10.34.1"
+    "@auto-it/bot-list" "10.36.5"
+    "@endemolshinegroup/cosmiconfig-typescript-loader" "^3.0.2"
+    "@octokit/plugin-enterprise-compatibility" "1.3.0"
+    "@octokit/plugin-retry" "^3.0.9"
+    "@octokit/plugin-throttling" "^3.6.2"
+    "@octokit/rest" "^18.12.0"
+    await-to-js "^3.0.0"
+    chalk "^4.0.0"
+    cosmiconfig "7.0.0"
+    deepmerge "^4.0.0"
+    dotenv "^8.0.0"
+    endent "^2.1.0"
+    enquirer "^2.3.4"
+    env-ci "^5.0.1"
+    fast-glob "^3.1.1"
+    fp-ts "^2.5.3"
+    fromentries "^1.2.0"
+    gitlog "^4.0.3"
+    https-proxy-agent "^5.0.0"
+    import-cwd "^3.0.0"
+    import-from "^3.0.0"
+    io-ts "^2.1.2"
+    lodash.chunk "^4.2.0"
+    log-symbols "^4.0.0"
+    node-fetch "2.6.7"
+    parse-author "^2.0.0"
+    parse-github-url "1.0.2"
+    pretty-ms "^7.0.0"
+    requireg "^0.2.2"
+    semver "^7.0.0"
+    signale "^1.4.0"
+    tapable "^2.2.0"
+    terminal-link "^2.1.1"
+    tinycolor2 "^1.4.1"
+    ts-node "^9.1.1"
+    tslib "2.1.0"
+    type-fest "^0.21.1"
+    typescript-memoize "^1.0.0-alpha.3"
+    url-join "^4.0.0"
+
+"@auto-it/first-time-contributor@^10.34.1":
+  version "10.36.5"
+  resolved "https://registry.yarnpkg.com/@auto-it/first-time-contributor/-/first-time-contributor-10.36.5.tgz#3795d5d44bfef613f784841df0df0efd81700ae0"
+  integrity sha512-kNpQdz6qPrm+8ubCogTTYiGj/2oJI8pfVxta1U6vhz7LCs2umvY3QbR2g46Sl2fsBsL+ZQ8cm80Re8ndCruF9g==
+  dependencies:
+    "@auto-it/bot-list" "10.36.5"
+    "@auto-it/core" "10.36.5"
     array.prototype.flatmap "^1.2.2"
-    endent "^2.0.1"
+    endent "^2.1.0"
     tslib "2.1.0"
     url-join "^4.0.0"
 
@@ -1422,7 +1472,7 @@
     "@octokit/types" "^6.34.0"
     deprecation "^2.3.1"
 
-"@octokit/plugin-retry@^3.0.1":
+"@octokit/plugin-retry@^3.0.1", "@octokit/plugin-retry@^3.0.9":
   version "3.0.9"
   resolved "https://registry.yarnpkg.com/@octokit/plugin-retry/-/plugin-retry-3.0.9.tgz#ae625cca1e42b0253049102acd71c1d5134788fe"
   integrity sha512-r+fArdP5+TG6l1Rv/C9hVoty6tldw6cE2pRHNGmFPdyfrc696R6JjrQ3d7HdVqGwuzfyrcaLAKD7K8TX8aehUQ==
@@ -1434,6 +1484,14 @@
   version "3.6.1"
   resolved "https://registry.yarnpkg.com/@octokit/plugin-throttling/-/plugin-throttling-3.6.1.tgz#06b1704af6123125b129ec30ad74e7a1009f9789"
   integrity sha512-T5DOcDQP0K/Ng5pnOEqCHDFojsftYL5o91MNbbR3nj1yAOACoGj3wDYCx0+5yJkbvRjYUdU0GsUt5/wYBba1cA==
+  dependencies:
+    "@octokit/types" "^6.0.1"
+    bottleneck "^2.15.3"
+
+"@octokit/plugin-throttling@^3.6.2":
+  version "3.6.2"
+  resolved "https://registry.yarnpkg.com/@octokit/plugin-throttling/-/plugin-throttling-3.6.2.tgz#abfc045309b8e46f6d6b6c01047eb41c4031f2f8"
+  integrity sha512-0az5fxgVlhFfFtiKLKVXTpmCG2tK3BG0fYI8SO4pmGlN1kyJktJVQA+6KKaFxtxMIWsuHmSEAkR6zSgtk86g2A==
   dependencies:
     "@octokit/types" "^6.0.1"
     bottleneck "^2.15.3"
@@ -1459,7 +1517,7 @@
     node-fetch "^2.6.7"
     universal-user-agent "^6.0.0"
 
-"@octokit/rest@^18.0.0":
+"@octokit/rest@^18.0.0", "@octokit/rest@^18.12.0":
   version "18.12.0"
   resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-18.12.0.tgz#f06bc4952fc87130308d810ca9d00e79f6988881"
   integrity sha512-gDPiOHlyGavxr72y0guQEhLsemgVjwRePayJ+FcKc2SJqKUbxbkvf5kAZEWA/MKvsfYlQAMVzNJE3ezQcxMJ2Q==
@@ -3696,7 +3754,7 @@ end-of-stream@^1.1.0, end-of-stream@^1.4.1:
   dependencies:
     once "^1.4.0"
 
-endent@^2.0.1:
+endent@^2.0.1, endent@^2.1.0:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/endent/-/endent-2.1.0.tgz#5aaba698fb569e5e18e69e1ff7a28ff35373cd88"
   integrity sha512-r8VyPX7XL8U01Xgnb1CjZ3XV+z90cXIJ9JPE/R9SEC9vpw2P6CfsRPJmp20DppC5N7ZAMCmjYkJIa744Iyg96w==
