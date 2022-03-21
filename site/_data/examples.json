@@ -677,6 +677,10 @@
       {
         "name": "facet_grid_bar",
         "title": "Compact Trellis Grid of Bar Charts"
+      },
+      {
+        "name": "facet_waffle",
+        "title": "Faceted Percentage Waffle Chart"
       }
     ],
     "Repeat & Concatenation": [
