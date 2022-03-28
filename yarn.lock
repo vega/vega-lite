@@ -7446,17 +7446,17 @@ ts-jest@^27.1.3:
     semver "7.x"
     yargs-parser "20.x"
 
-ts-json-schema-generator@^0.98.0:
-  version "0.98.0"
-  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-0.98.0.tgz#5aa957f45ba4b662a53ffafe86164e6e218942fa"
-  integrity sha512-emurTxAKkhk9a/i0Rfg5WkT5Hbg7MaL9VlxQXsWScBun0aXVl99gr06sEcHm3EJ8As4Ji51J7VJGEg6wrER/Kg==
+ts-json-schema-generator@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/ts-json-schema-generator/-/ts-json-schema-generator-1.0.0.tgz#33e4affd1665268899eb57afbad397bc6a58cc53"
+  integrity sha512-F5VofsyMhNSXKII32NDS8/Ur8o2K3Sh5i/U2ke3UgCKf26ybgm2cZeT2x7VJPl1trML/9QLzz/82l0mvzmb3Vw==
   dependencies:
     "@types/json-schema" "^7.0.9"
     commander "^9.0.0"
     glob "^7.2.0"
     json5 "^2.2.0"
     safe-stable-stringify "^2.3.1"
-    typescript "~4.5.4"
+    typescript "~4.6.2"
 
 ts-node@^9, ts-node@^9.1.1:
   version "9.1.1"
@@ -7557,11 +7557,6 @@ typescript-memoize@^1.0.0-alpha.3:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/typescript-memoize/-/typescript-memoize-1.1.0.tgz#4a8f512d06fc995167c703a3592219901db8bc79"
   integrity sha512-LQPKVXK8QrBBkL/zclE6YgSWn0I8ew5m0Lf+XL00IwMhlotqRLlzHV+BRrljVQIc+NohUAuQP7mg4HQwrx5Xbg==
-
-typescript@~4.5.4:
-  version "4.5.5"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.5.5.tgz#d8c953832d28924a9e3d37c73d729c846c5896f3"
-  integrity sha512-TCTIul70LyWe6IJWT8QSYeA54WQe8EjQFU4wY52Fasj5UKx88LNYKCgBEHcOMOrFF1rKGbD8v/xcNWVUq9SymA==
 
 typescript@~4.6.2:
   version "4.6.3"
