@@ -56,6 +56,21 @@ describe('compile/data/fold', () => {
         as: ['A', 'density']
       });
     });
+
+    it('should add steps if we group', () => {
+      const transform: Transform = {
+        density: 'v',
+        groupby: ['a']
+      };
+      const density = new DensityTransformNode(null, transform);
+      expect(density.assemble()).toEqual({
+        type: 'kde',
+        groupby: ['a'],
+        field: 'v',
+        steps: 200,
+        as: ['value', 'density']
+      });
+    });
   });
 
   describe('dependentFields', () => {
