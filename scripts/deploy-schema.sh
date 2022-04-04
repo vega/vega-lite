@@ -26,7 +26,7 @@ done
 if [ -n "$(git status --porcelain)" ]; then
     # Note: git commands need single quotes for all the files and directories with wildcards
     git add '*.json'
-    git commit -m"Add Vega-Lite $version [ci skip]"
+    git commit -m"Add Vega-Lite $version [CI]"
     git push
 else
   echo "Nothing has changed"
