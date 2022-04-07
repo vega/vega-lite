@@ -66,7 +66,7 @@ To avoid that the tooltips groups the data, add an aggregate to the tooltip enco
 
 ## Tooltip image
 
-To display an image in a tooltip you need to be using the [Vega Tooltip plugin](#plugin). Vega Tooltip requires the special field name `image` to be used to indicate that the field values should be rendered as images instead of displayed as text in the tooltip. The image tooltip can be specified either by setting the `tooltip` property of the mark definition (as detailed above) or by passing the field *as an array* to the tooltip encoding channel, as in the example below:
+To display an image in a tooltip you need to be using the [Vega Tooltip plugin](#plugin). Vega Tooltip requires the special field name `image` to be used to indicate that the field values should be rendered as images instead of displayed as text in the tooltip. The image tooltip can be specified either by setting the `tooltip` property of the mark definition (as detailed above) or by passing the field _as an array_ to the tooltip encoding channel, as in the example below:
 
 <div class="vl-example" data-name="text_tooltip_image"></div>
 
