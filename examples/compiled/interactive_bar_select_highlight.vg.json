@@ -6,8 +6,14 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "highlight_store"},
-    {"name": "select_store"},
+    {
+      "name": "highlight_store",
+      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}]
+    },
+    {
+      "name": "select_store",
+      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}]
+    },
     {
       "name": "source_0",
       "values": [
@@ -68,15 +74,11 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: highlight_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
-    },
-    {
-      "name": "highlight_tuple_fields",
-      "value": [{"type": "E", "field": "_vgsid_"}]
     },
     {
       "name": "highlight_toggle",
@@ -103,15 +105,11 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: select_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
-    },
-    {
-      "name": "select_tuple_fields",
-      "value": [{"type": "E", "field": "_vgsid_"}]
     },
     {
       "name": "select_toggle",
@@ -148,18 +146,18 @@
           "cursor": {"value": "pointer"},
           "fillOpacity": [
             {
-              "test": "!length(data(\"select_store\")) || vlSelectionTest(\"select_store\", datum)",
+              "test": "!length(data(\"select_store\")) || vlSelectionIdTest(\"select_store\", datum)",
               "value": 1
             },
             {"value": 0.3}
           ],
           "strokeWidth": [
             {
-              "test": "length(data(\"select_store\")) && vlSelectionTest(\"select_store\", datum)",
+              "test": "length(data(\"select_store\")) && vlSelectionIdTest(\"select_store\", datum)",
               "value": 2
             },
             {
-              "test": "length(data(\"highlight_store\")) && vlSelectionTest(\"highlight_store\", datum)",
+              "test": "length(data(\"highlight_store\")) && vlSelectionIdTest(\"highlight_store\", datum)",
               "value": 1
             },
             {"value": 0}

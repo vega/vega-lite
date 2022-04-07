@@ -6,7 +6,10 @@
   "height": 200,
   "style": "cell",
   "data": [
-    {"name": "pts_store"},
+    {
+      "name": "pts_store",
+      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}]
+    },
     {
       "name": "source_0",
       "url": "data/cars.json",
@@ -37,13 +40,12 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
     },
-    {"name": "pts_tuple_fields", "value": [{"type": "E", "field": "_vgsid_"}]},
     {
       "name": "pts_toggle",
       "value": false,
@@ -78,7 +80,7 @@
           "fill": {"value": "transparent"},
           "stroke": [
             {
-              "test": "!length(data(\"pts_store\")) || vlSelectionTest(\"pts_store\", datum)",
+              "test": "!length(data(\"pts_store\")) || vlSelectionIdTest(\"pts_store\", datum)",
               "scale": "color",
               "field": "Cylinders"
             },
@@ -92,7 +94,7 @@
           "y": {"scale": "y", "field": "Miles_per_Gallon"},
           "size": [
             {
-              "test": "length(data(\"pts_store\")) && vlSelectionTest(\"pts_store\", datum)",
+              "test": "length(data(\"pts_store\")) && vlSelectionIdTest(\"pts_store\", datum)",
               "value": 200
             },
             {"value": 50}
