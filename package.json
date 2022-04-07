@@ -70,6 +70,7 @@
     "watch": "tsc -p tsconfig.build.json -w",
     "watch:site": "yarn build:site -w",
     "watch:test": "yarn jest --watch test/",
+    "watch:test:runtime": "NODE_OPTIONS=--experimental-vm-modules TZ=America/Los_Angeles npx jest --watch test-runtime/ --config test-runtime/jest-config.json",
     "release": "yarn run prebuild && yarn build && auto shipit"
   },
   "repository": {

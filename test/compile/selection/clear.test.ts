@@ -61,7 +61,7 @@ describe('Clear selection transform, point types', () => {
           {
             events: selCmpts['one'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: one_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
             force: true
           },
           {events: parseSelector('dblclick', 'view'), update: 'null'}
@@ -78,7 +78,7 @@ describe('Clear selection transform, point types', () => {
           {
             events: selCmpts['three'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: three_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
             force: true
           },
           {events: parseSelector('mouseout', 'view'), update: 'null'}
@@ -95,7 +95,7 @@ describe('Clear selection transform, point types', () => {
           {
             events: selCmpts['four'].events,
             update:
-              'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: four_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["_vgsid_"]]} : null',
+              'datum && item().mark.marktype !== \'group\' ? {unit: "", _vgsid_: (item().isVoronoi ? datum.datum : datum)["_vgsid_"]} : null',
             force: true
           },
           {events: parseSelector('mouseout', 'view'), update: 'null'}
