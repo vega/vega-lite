@@ -1,5 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+   "view": {"stroke": null},
   "description": "A simple chart with an image tooltip.",
   "data": {
     "values": [
