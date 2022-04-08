@@ -5,6 +5,7 @@
   "padding": 5,
   "width": 20,
   "style": "cell",
+  "encode": {"update": {"stroke": {"value": null}}},
   "data": [
     {
       "name": "source_0",
