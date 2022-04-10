@@ -1,0 +1,61 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A simple chart with an image tooltip.",
+  "background": "white",
+  "padding": 5,
+  "width": 20,
+  "style": "cell",
+  "encode": {"update": {"stroke": {"value": null}}},
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"image": "data/ffox.png"},
+        {"image": "data/gimp.png"},
+        {"image": "data/7zip.png"}
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 20},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 1, 0.5) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "text",
+      "style": ["text"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "black"},
+          "tooltip": {
+            "signal": "{\"image\": isValid(datum[\"image\"]) ? datum[\"image\"] : \"\"+datum[\"image\"]}"
+          },
+          "description": {
+            "signal": "\"image: \" + (isValid(datum[\"image\"]) ? datum[\"image\"] : \"\"+datum[\"image\"])"
+          },
+          "x": {"signal": "width", "mult": 0.5},
+          "y": {"scale": "y", "field": "image"},
+          "text": {
+            "signal": "isValid(datum[\"image\"]) ? datum[\"image\"] : \"\"+datum[\"image\"]"
+          },
+          "align": {"value": "center"},
+          "baseline": {"value": "middle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "y",
+      "type": "point",
+      "domain": {"data": "source_0", "field": "image", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "padding": 0.5
+    }
+  ]
+}

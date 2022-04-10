@@ -374,5 +374,6 @@
     - [Tooltip Based on Encoding]({{site.baseurl}}/docs/tooltip.html#encoding)
     - [Tooltip Based on Underlying Data Point]({{site.baseurl}}/docs/tooltip.html#data)
     - [Tooltip channel]({{site.baseurl}}/docs/tooltip.html#channel)
+    - [Tooltip image]({{site.baseurl}}/docs/tooltip.html#tooltip-image)
     - [Disable tooltips]({{site.baseurl}}/docs/tooltip.html#disable-tooltips)
     - [Vega Tooltip plugin]({{site.baseurl}}/docs/tooltip.html#plugin)
