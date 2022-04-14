@@ -79,7 +79,7 @@ For example, try the two types against the example selection (named `pts`) below
 
 <div id="selection_type" class="vl-example" data-name="selection_type_point"></div>
 
-While selection types provide useful defaults, you can set `select` to be a [selection definion](selection.html) to override default selection behaviors and customize the interaction design. See the [selection](selection.html) documentation for more information about the selection definition.
+While selection types provide useful defaults, you can set `select` to be a [selection definition](selection.html) to override default selection behaviors and customize the interaction design. See the [selection](selection.html) documentation for more information about the selection definition.
 
 ## Using Parameters
 
