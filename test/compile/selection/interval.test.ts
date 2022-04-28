@@ -2,11 +2,11 @@ import {parseSelector} from 'vega-event-selector';
 import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
 import interval from '../../../src/compile/selection/interval';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
-import {parseUnitModel} from '../../util';
+import {parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
 describe('Interval Selections', () => {
   describe('Scaled intervals', () => {
-    const model = parseUnitModel({
+    const model = parseUnitModelWithScale({
       mark: 'circle',
       encoding: {
         x: {field: 'Horsepower', type: 'quantitative'},
@@ -14,7 +14,6 @@ describe('Interval Selections', () => {
         color: {field: 'Origin', type: 'nominal'}
       }
     });
-    model.parseScale();
 
     const selCmpts = (model.component.selection = parseUnitSelection(model, [
       {
@@ -836,6 +835,125 @@ describe('Interval Selections', () => {
           }
         }
       ]);
+    });
+  });
+
+  describe('Geo intervals', () => {
+    const model = parseUnitModelWithScaleAndLayoutSize({
+      data: {
+        url: 'data/airports.csv',
+        format: {
+          type: 'csv'
+        }
+      },
+      mark: 'circle',
+      projection: {
+        type: 'albersUsa'
+      },
+      encoding: {
+        longitude: {
+          field: 'longitude',
+          type: 'quantitative'
+        },
+        latitude: {
+          field: 'latitude',
+          type: 'quantitative'
+        }
+      }
+    });
+    model.parseProjection();
+
+    const selCmpts = (model.component.selection = parseUnitSelection(model, [
+      {
+        name: 'one',
+        select: {type: 'interval', encodings: ['latitude'], clear: false, translate: false, zoom: false}
+      },
+      {
+        name: 'two',
+        select: {type: 'interval', clear: false, translate: false, zoom: false},
+        value: {
+          latitude: [30, 40],
+          longitude: [-86, -118]
+        }
+      }
+    ]));
+
+    describe('Tuple Signals', () => {
+      it('builds projection signals', () => {
+        const oneSg = interval.signals(model, selCmpts['one'], []);
+        expect(oneSg).toEqual(
+          expect.arrayContaining([
+            {
+              name: 'one_latitude_1',
+              value: [],
+              on: [
+                {
+                  events: parseSelector('mousedown', 'scope')[0],
+                  update: '[y(unit), y(unit)]'
+                },
+                {
+                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  update: '[one_latitude_1[0], clamp(y(unit), 0, height)]'
+                }
+              ]
+            }
+          ])
+        );
+
+        const twoSg = interval.signals(model, selCmpts['two'], []);
+        expect(twoSg).toEqual(
+          expect.arrayContaining([
+            {
+              name: 'two_init',
+              init: '[scale("projection", [-86, 30]), scale("projection", [-118, 40])]'
+            },
+            {
+              name: 'two_latitude_1',
+              init: '[two_init[0][1], two_init[1][1]]',
+              on: [
+                {
+                  events: parseSelector('mousedown', 'scope')[0],
+                  update: '[y(unit), y(unit)]'
+                },
+                {
+                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  update: '[two_latitude_1[0], clamp(y(unit), 0, height)]'
+                }
+              ]
+            },
+            {
+              name: 'two_longitude_1',
+              init: '[two_init[0][0], two_init[1][0]]',
+              on: [
+                {
+                  events: parseSelector('mousedown', 'scope')[0],
+                  update: '[x(unit), x(unit)]'
+                },
+                {
+                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  update: '[two_longitude_1[0], clamp(x(unit), 0, width)]'
+                }
+              ]
+            }
+          ])
+        );
+      });
+
+      it('builds trigger signals', () => {
+        const oneSg = interval.signals(model, selCmpts['one'], []);
+        expect(oneSg).toContainEqual({
+          name: 'one_tuple',
+          update:
+            'vlSelectionTuples(intersect([[0, one_latitude_1[0]],[width, one_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})'
+        });
+
+        const twoSg = interval.signals(model, selCmpts['two'], []);
+        expect(twoSg).toContainEqual({
+          name: 'two_tuple',
+          update:
+            'vlSelectionTuples(intersect([[two_longitude_1[0], two_latitude_1[0]],[two_longitude_1[1], two_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})'
+        });
+      });
     });
   });
 });
