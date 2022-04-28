@@ -10,9 +10,10 @@ import {
 import * as log from '../../log';
 import {hasContinuousDomain} from '../../scale';
 import {PointSelectionConfig, SelectionInitIntervalMapping, SelectionInitMapping, SELECTION_ID} from '../../selection';
-import {Dict, hash, keys, replacePathInField, varName, isEmpty} from '../../util';
+import {Dict, hash, keys, varName, isEmpty} from '../../util';
 import {TimeUnitComponent, TimeUnitNode} from '../data/timeunit';
 import {SelectionCompiler} from '.';
+import {assembleProjection} from './assemble';
 export const TUPLE_FIELDS = '_tuple_fields';
 
 /**
@@ -212,11 +213,7 @@ const project: SelectionCompiler = {
       ? allSignals
       : allSignals.concat({
           name,
-          value: selCmpt.project.items.map(proj => {
-            const {signals, hasLegend, ...rest} = proj;
-            rest.field = replacePathInField(rest.field);
-            return rest;
-          })
+          value: selCmpt.project.items.map(assembleProjection)
         });
   }
 };
