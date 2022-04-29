@@ -5,6 +5,7 @@
   "padding": 5,
   "width": 900,
   "height": 500,
+  "style": "view",
   "data": [
     {"name": "org_store"},
     {
@@ -177,7 +178,7 @@
       "name": "layer_0_marks",
       "type": "shape",
       "style": ["geoshape"],
-      "interactive": false,
+      "interactive": true,
       "from": {"data": "source_0"},
       "encode": {
         "update": {

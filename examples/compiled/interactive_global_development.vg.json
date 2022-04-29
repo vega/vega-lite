@@ -5,7 +5,7 @@
   "padding": 5,
   "width": 800,
   "height": 500,
-  "style": "cell",
+  "style": ["view", "cell"],
   "data": [
     {
       "name": "year_store",
