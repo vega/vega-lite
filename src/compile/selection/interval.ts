@@ -8,6 +8,7 @@ import {hasContinuousDomain} from '../../scale';
 import {IntervalSelectionConfigWithoutType, SelectionInitInterval, SELECTION_ID} from '../../selection';
 import {keys, vals} from '../../util';
 import {LayoutSizeIndex} from '../layoutsize/component';
+import {isUnitModel} from '../model';
 import {UnitModel} from '../unit';
 import {assembleInit} from './assemble';
 import {SelectionProjection, TUPLE_FIELDS} from './project';
@@ -152,12 +153,42 @@ const interval: SelectionCompiler<'interval'> = {
 
       const intersect = `intersect(${bbox}, {markname: ${stringValue(model.getName('marks'))}}, unit.mark)`;
       const base = `{unit: ${unitName(model)}}`;
+      const update = `vlSelectionTuples(${intersect}, ${base})`;
 
       return signals.concat({
         name: tupleSg,
-        update: `vlSelectionTuples(${intersect}, ${base})`
+        update,
+        ...(init
+          ? {
+              on: [{events: {signal: GEO_INIT_TICK}, update}]
+            }
+          : {})
       });
     }
+  },
+
+  topLevelSignals: (model, selCmpt, signals) => {
+    if (isUnitModel(model) && model.hasProjection && selCmpt.init) {
+      // Workaround for https://github.com/vega/vega/issues/3481
+      // The scenegraph isn't populated on the first pulse. So we use a timer signal
+      // to re-pulse the dataflow as soon as possible. We return an object to ensure
+      // this only occurs once.
+      const hasTick = signals.filter(s => s.name === GEO_INIT_TICK);
+      if (!hasTick.length) {
+        signals.unshift({
+          name: GEO_INIT_TICK,
+          value: null,
+          on: [
+            {
+              events: 'timer{1}',
+              update: `${GEO_INIT_TICK} === null ? {} : ${GEO_INIT_TICK}`
+            }
+          ]
+        });
+      }
+    }
+
+    return signals;
   },
 
   marks: (model, selCmpt, marks) => {
