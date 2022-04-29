@@ -1,0 +1,131 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "A bar graph showing what activites consume what percentage of the day.",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "style": "cell",
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"Activity": "Sleeping", "Time": 8},
+        {"Activity": "Eating", "Time": 2},
+        {"Activity": "TV", "Time": 4},
+        {"Activity": "Work", "Time": 8},
+        {"Activity": "Exercise", "Time": 2}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "joinaggregate",
+          "as": ["TotalTime"],
+          "ops": ["sum"],
+          "fields": ["Time"]
+        },
+        {
+          "type": "formula",
+          "expr": "datum.Time/datum.TotalTime * 100",
+          "as": "PercentOfTotal"
+        },
+        {
+          "type": "stack",
+          "groupby": ["Activity"],
+          "field": "PercentOfTotal",
+          "sort": {"field": [], "order": []},
+          "as": ["PercentOfTotal_start", "PercentOfTotal_end"],
+          "offset": "zero"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"PercentOfTotal\"]) && isFinite(+datum[\"PercentOfTotal\"])"
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "y_step", "value": 12},
+    {
+      "name": "height",
+      "update": "bandspace(domain('y').length, 0.1, 0.05) * y_step"
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "rect",
+      "style": ["bar"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "#4c78a8"},
+          "ariaRoleDescription": {"value": "bar"},
+          "description": {
+            "signal": "\"% of total Time: \" + (format(datum[\"PercentOfTotal\"], \"\")) + \"; Activity: \" + (isValid(datum[\"Activity\"]) ? datum[\"Activity\"] : \"\"+datum[\"Activity\"])"
+          },
+          "x": {"scale": "x", "field": "PercentOfTotal_end"},
+          "x2": {"scale": "x", "field": "PercentOfTotal_start"},
+          "y": {"scale": "y", "field": "Activity"},
+          "height": {"scale": "y", "band": 1}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "linear",
+      "domain": {
+        "data": "data_0",
+        "fields": ["PercentOfTotal_start", "PercentOfTotal_end"]
+      },
+      "range": [0, {"signal": "width"}],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "y",
+      "type": "band",
+      "domain": {"data": "data_0", "field": "Activity", "sort": true},
+      "range": {"step": {"signal": "y_step"}},
+      "paddingInner": 0.1,
+      "paddingOuter": 0.05
+    }
+  ],
+  "axes": [
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "gridScale": "y",
+      "grid": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "domain": false,
+      "labels": false,
+      "aria": false,
+      "maxExtent": 0,
+      "minExtent": 0,
+      "ticks": false,
+      "zindex": 0
+    },
+    {
+      "scale": "x",
+      "orient": "bottom",
+      "grid": false,
+      "title": "% of total Time",
+      "labelFlush": true,
+      "labelOverlap": true,
+      "tickCount": {"signal": "ceil(width/40)"},
+      "zindex": 0
+    },
+    {
+      "scale": "y",
+      "orient": "left",
+      "grid": false,
+      "title": "Activity",
+      "zindex": 0
+    }
+  ]
+}
