@@ -145,7 +145,7 @@ const interval: SelectionCompiler<'interval'> = {
           if (!hasCenterSg) {
             signals.unshift({
               name: centerSg,
-              update: `invert(${projection}, [${sizeSg('width')}/2, ` + `${sizeSg('height')}/2])`
+              update: `invert(${projection}, [${sizeSg('width')}/2, ${sizeSg('height')}/2])`
             });
           }
         }

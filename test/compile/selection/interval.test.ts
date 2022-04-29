@@ -1,6 +1,6 @@
 import {parseSelector} from 'vega-event-selector';
 import {assembleUnitSelectionSignals} from '../../../src/compile/selection/assemble';
-import interval from '../../../src/compile/selection/interval';
+import interval, {GEO_INIT_TICK} from '../../../src/compile/selection/interval';
 import {parseUnitSelection} from '../../../src/compile/selection/parse';
 import {parseUnitModel, parseUnitModelWithScale, parseUnitModelWithScaleAndLayoutSize} from '../../util';
 
@@ -866,15 +866,24 @@ describe('Interval Selections', () => {
     const selCmpts = (model.component.selection = parseUnitSelection(model, [
       {
         name: 'one',
-        select: {type: 'interval', encodings: ['latitude'], clear: false, translate: false, zoom: false}
+        select: {type: 'interval', clear: false, translate: false, zoom: false}
       },
       {
         name: 'two',
+        select: {type: 'interval', encodings: ['longitude'], clear: false, translate: false, zoom: false}
+      },
+      {
+        name: 'three',
         select: {type: 'interval', clear: false, translate: false, zoom: false},
         value: {
           latitude: [30, 40],
           longitude: [-86, -118]
         }
+      },
+      {
+        name: 'four',
+        select: {type: 'interval', clear: false, translate: false, zoom: false},
+        value: {latitude: [30, 40]}
       }
     ]));
 
@@ -896,6 +905,20 @@ describe('Interval Selections', () => {
                   update: '[one_latitude_1[0], clamp(y(unit), 0, height)]'
                 }
               ]
+            },
+            {
+              name: 'one_longitude_1',
+              value: [],
+              on: [
+                {
+                  events: parseSelector('mousedown', 'scope')[0],
+                  update: '[x(unit), x(unit)]'
+                },
+                {
+                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  update: '[one_longitude_1[0], clamp(x(unit), 0, width)]'
+                }
+              ]
             }
           ])
         );
@@ -904,26 +927,8 @@ describe('Interval Selections', () => {
         expect(twoSg).toEqual(
           expect.arrayContaining([
             {
-              name: 'two_init',
-              init: '[scale("projection", [-86, 30]), scale("projection", [-118, 40])]'
-            },
-            {
-              name: 'two_latitude_1',
-              init: '[two_init[0][1], two_init[1][1]]',
-              on: [
-                {
-                  events: parseSelector('mousedown', 'scope')[0],
-                  update: '[y(unit), y(unit)]'
-                },
-                {
-                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
-                  update: '[two_latitude_1[0], clamp(y(unit), 0, height)]'
-                }
-              ]
-            },
-            {
               name: 'two_longitude_1',
-              init: '[two_init[0][0], two_init[1][0]]',
+              value: [],
               on: [
                 {
                   events: parseSelector('mousedown', 'scope')[0],
@@ -937,6 +942,72 @@ describe('Interval Selections', () => {
             }
           ])
         );
+
+        const threeSg = interval.signals(model, selCmpts['three'], []);
+        expect(threeSg).toEqual(
+          expect.arrayContaining([
+            {
+              name: 'three_init',
+              init: '[scale("projection", [-86, 30]), scale("projection", [-118, 40])]'
+            },
+            {
+              name: 'three_latitude_1',
+              init: '[three_init[0][1], three_init[1][1]]',
+              on: [
+                {
+                  events: parseSelector('mousedown', 'scope')[0],
+                  update: '[y(unit), y(unit)]'
+                },
+                {
+                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  update: '[three_latitude_1[0], clamp(y(unit), 0, height)]'
+                }
+              ]
+            },
+            {
+              name: 'three_longitude_1',
+              init: '[three_init[0][0], three_init[1][0]]',
+              on: [
+                {
+                  events: parseSelector('mousedown', 'scope')[0],
+                  update: '[x(unit), x(unit)]'
+                },
+                {
+                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  update: '[three_longitude_1[0], clamp(x(unit), 0, width)]'
+                }
+              ]
+            }
+          ])
+        );
+
+        const fourSg = interval.signals(model, selCmpts['four'], []);
+        expect(fourSg).toEqual(
+          expect.arrayContaining([
+            {
+              name: 'projection_center',
+              update: 'invert("projection", [width/2, height/2])'
+            },
+            {
+              name: 'four_init',
+              init: '[scale("projection", [projection_center[0], 30]), scale("projection", [projection_center[0], 40])]'
+            },
+            {
+              name: 'four_latitude_1',
+              init: '[four_init[0][1], four_init[1][1]]',
+              on: [
+                {
+                  events: parseSelector('mousedown', 'scope')[0],
+                  update: '[y(unit), y(unit)]'
+                },
+                {
+                  events: parseSelector('[mousedown, window:mouseup] > window:mousemove!', 'scope')[0],
+                  update: '[four_latitude_1[0], clamp(y(unit), 0, height)]'
+                }
+              ]
+            }
+          ])
+        );
       });
 
       it('builds trigger signals', () => {
@@ -944,14 +1015,32 @@ describe('Interval Selections', () => {
         expect(oneSg).toContainEqual({
           name: 'one_tuple',
           update:
-            'vlSelectionTuples(intersect([[0, one_latitude_1[0]],[width, one_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})'
+            'vlSelectionTuples(intersect([[one_longitude_1[0], one_latitude_1[0]],[one_longitude_1[1], one_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})'
         });
 
         const twoSg = interval.signals(model, selCmpts['two'], []);
         expect(twoSg).toContainEqual({
           name: 'two_tuple',
           update:
-            'vlSelectionTuples(intersect([[two_longitude_1[0], two_latitude_1[0]],[two_longitude_1[1], two_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})'
+            'vlSelectionTuples(intersect([[two_longitude_1[0], 0],[two_longitude_1[1], height]], {markname: "marks"}, unit.mark), {unit: ""})'
+        });
+
+        const threeSg = interval.signals(model, selCmpts['three'], []);
+        let update =
+          'vlSelectionTuples(intersect([[three_longitude_1[0], three_latitude_1[0]],[three_longitude_1[1], three_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})';
+        expect(threeSg).toContainEqual({
+          name: 'three_tuple',
+          update,
+          on: [{events: {signal: GEO_INIT_TICK}, update}]
+        });
+
+        const fourSg = interval.signals(model, selCmpts['four'], []);
+        update =
+          'vlSelectionTuples(intersect([[0, four_latitude_1[0]],[width, four_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})';
+        expect(fourSg).toContainEqual({
+          name: 'four_tuple',
+          update,
+          on: [{events: {signal: GEO_INIT_TICK}, update}]
         });
       });
     });
