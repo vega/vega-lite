@@ -7,6 +7,7 @@ import {warn} from '../../log';
 import {hasContinuousDomain} from '../../scale';
 import {IntervalSelectionConfigWithoutType, SelectionInitInterval, SELECTION_ID} from '../../selection';
 import {keys, vals} from '../../util';
+import {LayoutSizeIndex} from '../layoutsize/component';
 import {UnitModel} from '../unit';
 import {assembleInit} from './assemble';
 import {SelectionProjection, TUPLE_FIELDS} from './project';
@@ -14,7 +15,9 @@ import scales from './scales';
 
 export const BRUSH = '_brush';
 export const SCALE_TRIGGER = '_scale_trigger';
+export const GEO_INIT_TICK = 'geo_interval_init_tick'; // Workaround for https://github.com/vega/vega/issues/3481
 const INIT = '_init';
+const CENTER = '_center';
 
 // Separate type because the "fields" property is only used internally and we don't want to leak it to the schema.
 export type IntervalSelectionConfigWithField = IntervalSelectionConfigWithoutType & {fields?: FieldName[]};
@@ -113,33 +116,47 @@ const interval: SelectionCompiler<'interval'> = {
       });
     } else {
       const projection = stringValue(model.projectionName());
+      const centerSg = model.projectionName() + CENTER;
       const {x, y} = selCmpt.project.hasChannel;
       const xvname = x && x.signals.visual;
       const yvname = y && y.signals.visual;
-      const xinit = init && init[x.index];
-      const yinit = init && init[y.index];
+      const xinit = x ? init && init[x.index] : `${centerSg}[0]`;
+      const yinit = y ? init && init[y.index] : `${centerSg}[1]`;
+      const sizeSg = (layout: keyof LayoutSizeIndex) => model.getSizeSignalRef(layout).signal;
       const bbox =
         `[` +
         `[${xvname ? xvname + '[0]' : '0'}, ${yvname ? yvname + '[0]' : '0'}],` +
-        `[${xvname ? xvname + '[1]' : 'width'}, ${yvname ? yvname + '[1]' : 'height'}]` +
+        `[${xvname ? xvname + '[1]' : sizeSg('width')}, ` +
+        `${yvname ? yvname + '[1]' : sizeSg('height')}]` +
         `]`;
+
+      if (init) {
+        signals.unshift({
+          name: name + INIT,
+          init:
+            `[scale(${projection}, [${x ? xinit[0] : xinit}, ${y ? yinit[0] : yinit}]), ` +
+            `scale(${projection}, [${x ? xinit[1] : xinit}, ${y ? yinit[1] : yinit}])]`
+        });
+
+        if (!x || !y) {
+          // If initializing a uni-dimensional brush, use the center of the view to determine the other coord
+          const hasCenterSg = signals.find(s => s.name === centerSg);
+          if (!hasCenterSg) {
+            signals.unshift({
+              name: centerSg,
+              update: `invert(${projection}, [${sizeSg('width')}/2, ` + `${sizeSg('height')}/2])`
+            });
+          }
+        }
+      }
 
       const intersect = `intersect(${bbox}, {markname: ${stringValue(model.getName('marks'))}}, unit.mark)`;
       const base = `{unit: ${unitName(model)}}`;
 
-      return [
-        {
-          name: name + INIT,
-          init: init
-            ? `[scale(${projection}, [${xinit[0]}, ${yinit[0]}]), scale(${projection}, [${xinit[1]}, ${yinit[1]}])]`
-            : null
-        },
-        ...signals,
-        {
-          name: tupleSg,
-          update: `vlSelectionTuples(${intersect}, ${base})`
-        }
-      ];
+      return signals.concat({
+        name: tupleSg,
+        update: `vlSelectionTuples(${intersect}, ${base})`
+      });
     }
   },
 

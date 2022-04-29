@@ -8,6 +8,7 @@ import {UnitModel} from '../unit';
 import {SelectionProjection} from './project';
 import {SelectionCompiler} from '.';
 import {replacePathInField} from '../../util';
+import {NewSignal} from 'vega';
 
 const scaleBindings: SelectionCompiler<'interval'> = {
   defined: selCmpt => {
@@ -52,7 +53,7 @@ const scaleBindings: SelectionCompiler<'interval'> = {
     // state is captured by the top-level signals that we insert and "push
     // outer" to from within the units. We need to reassemble this state into
     // the top-level named signal, except no single selCmpt has a global view.
-    const namedSg = signals.filter(s => s.name === selCmpt.name)[0];
+    const namedSg: NewSignal = signals.filter(s => s.name === selCmpt.name)[0];
     let update = namedSg.update;
     if (update.indexOf(VL_SELECTION_RESOLVE) >= 0) {
       namedSg.update = `{${bound

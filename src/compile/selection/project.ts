@@ -81,10 +81,6 @@ const project: SelectionCompiler = {
         ? (array(selDef.value as any) as SelectionInitMapping[] | SelectionInitIntervalMapping[])
         : null;
 
-    if (init && selCmpt.type === 'interval' && model.hasProjection && init[0].length !== 2) {
-      log.warn(log.message.INITIALIZE_GEO_INTERVAL);
-    }
-
     // If no explicit projection (either fields or encodings) is specified, set some defaults.
     // If an initial value is set, try to infer projections.
     let {fields, encodings} = (isObject(selDef.select) ? selDef.select : {}) as PointSelectionConfig;

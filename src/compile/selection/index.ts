@@ -1,4 +1,4 @@
-import {Binding, isString, NewSignal, Signal, Stream} from 'vega';
+import {Binding, isString, Signal, Stream} from 'vega';
 import {stringValue} from 'vega-util';
 import {FACET_CHANNELS} from '../../channel';
 import {
@@ -57,8 +57,8 @@ export interface SelectionComponent<T extends SelectionType = SelectionType> {
 export interface SelectionCompiler<T extends SelectionType = SelectionType> {
   defined: (selCmpt: SelectionComponent) => boolean;
   parse?: (model: UnitModel, selCmpt: SelectionComponent<T>, def: SelectionParameter<T>) => void;
-  signals?: (model: UnitModel, selCmpt: SelectionComponent<T>, signals: NewSignal[]) => Signal[]; // the output can be a new or a push signal
-  topLevelSignals?: (model: Model, selCmpt: SelectionComponent<T>, signals: NewSignal[]) => NewSignal[];
+  signals?: (model: UnitModel, selCmpt: SelectionComponent<T>, signals: Signal[]) => Signal[];
+  topLevelSignals?: (model: Model, selCmpt: SelectionComponent<T>, signals: Signal[]) => Signal[];
   modifyExpr?: (model: UnitModel, selCmpt: SelectionComponent<T>, expr: string) => string;
   marks?: (model: UnitModel, selCmpt: SelectionComponent<T>, marks: any[]) => any[];
 }
