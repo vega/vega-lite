@@ -772,6 +772,12 @@
         "title": "Projection explorer",
         "description": "Compare different projections.",
         "png": true
+      },
+      {
+	"name": "interactive_geo_earthquakes",
+	"title": "Earthquakes Example",
+	"description": "Interactive globe visualization of earthquakes",
+	"png": true
       }
     ]
   },
