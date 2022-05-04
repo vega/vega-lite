@@ -811,7 +811,7 @@ export function channelScalePropertyIncompatability(channel: Channel, propName: 
     case 'scheme':
     case 'domainMid':
       if (!isColorChannel(channel)) {
-        return log.message.cannotUseScalePropertyWithNonColor(channel);
+        return log.message.cannotUseScalePropertyWithNonColor(propName);
       }
       return undefined;
     case 'align':
