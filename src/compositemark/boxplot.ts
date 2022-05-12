@@ -289,7 +289,7 @@ export function normalizeBoxPlot(
 
   const outlierLayersMixins = partLayerMixins<BoxPlotPartsMixins>(markDef, 'outliers', config.boxplot, {
     transform: [{filter: `(${fieldExpr} < ${lowerWhiskerExpr}) || (${fieldExpr} > ${upperWhiskerExpr})`}],
-    mark: {"type": "point", "tooltip": {"content": "data"}},
+    mark: {type: 'point', tooltip: {content: 'data'}},
     encoding: {
       [continuousAxis]: {
         field: continuousAxisChannelDef.field,
