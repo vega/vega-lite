@@ -140,7 +140,7 @@
     "clone": "~2.1.2",
     "fast-deep-equal": "~3.1.3",
     "fast-json-stable-stringify": "~2.1.0",
-    "json-stringify-pretty-compact": "~3.0.0",
+    "json-stringify-pretty-compact": "~4.0.0",
     "tslib": "~2.4.0",
     "vega-event-selector": "~3.0.0",
     "vega-expression": "~5.0.0",
