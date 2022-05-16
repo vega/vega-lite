@@ -96,7 +96,7 @@
     "@types/d3": "^7.1.0",
     "@types/jest": "^27.4.1",
     "@types/mkdirp": "^1.0.2",
-    "@types/pako": "^1.0.3",
+    "@types/pako": "^2.0.0",
     "@typescript-eslint/eslint-plugin": "^5.14.0",
     "@typescript-eslint/parser": "^5.14.0",
     "ajv": "^8.10.0",
