@@ -145,7 +145,7 @@
     "vega-event-selector": "~3.0.0",
     "vega-expression": "~5.0.0",
     "vega-util": "~1.17.0",
-    "yargs": "~17.4.0"
+    "yargs": "~17.5.1"
   },
   "peerDependencies": {
     "vega": "^5.22.0"
