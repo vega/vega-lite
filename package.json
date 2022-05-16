@@ -105,7 +105,7 @@
     "chai": "^4.3.6",
     "cheerio": "^1.0.0-rc.10",
     "conventional-changelog-cli": "^2.2.2",
-    "d3": "^7.3.0",
+    "d3": "^7.4.4",
     "del-cli": "^4.0.1",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
