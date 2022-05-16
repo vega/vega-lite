@@ -111,7 +111,7 @@
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest": "^26.1.1",
     "eslint-plugin-prettier": "^4.0.0",
-    "gh-pages": "^3.2.3",
+    "gh-pages": "^4.0.0",
     "highlight.js": "^11.5.0",
     "jest": "^27.5.1",
     "jest-dev-server": "^6.0.3",
