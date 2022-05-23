@@ -1,6 +1,7 @@
 import pkg from '../package.json';
 export const version = pkg.version;
 
+export {defaultTitleFormatter} from './channeldef';
 export {compile} from './compile/compile';
 export type {Config} from './config';
 export {normalize} from './normalize';
