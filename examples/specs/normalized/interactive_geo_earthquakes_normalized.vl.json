@@ -75,6 +75,5 @@
         "rotate": [{"signal": "rotate0"}, {"signal": "rotate1"}, 0]
       }
     }
-  ],
-  "config": {}
+  ]
 }
