@@ -4,7 +4,7 @@
   "height": 300,
   "projection": {
     "type": "orthographic",
-    "rotate": [{"signal": "rotate0"}, {"signal": "rotate1"}, 0]
+    "rotate": {"expr": "[rotate0, rotate1, 0]"}
   },
   "params": [
     {
