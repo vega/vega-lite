@@ -1,0 +1,139 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "background": "white",
+  "padding": 5,
+  "width": 300,
+  "height": 300,
+  "data": [
+    {"name": "source_0", "values": [{"type": "Sphere"}]},
+    {
+      "name": "world",
+      "url": "data/world-110m.json",
+      "format": {"type": "topojson", "feature": "countries"}
+    },
+    {
+      "name": "earthquakes",
+      "url": "data/earthquakes.json",
+      "format": {"type": "json", "property": "features"},
+      "transform": [
+        {
+          "type": "formula",
+          "expr": "datum.geometry.coordinates[0]",
+          "as": "longitude"
+        },
+        {
+          "type": "formula",
+          "expr": "datum.geometry.coordinates[1]",
+          "as": "latitude"
+        },
+        {
+          "type": "filter",
+          "expr": "(rotate0 * -1) - 90 < datum.longitude && datum.longitude < (rotate0 * -1) + 90 && (rotate1 * -1) - 90 < datum.latitude && datum.latitude < (rotate1 * -1) + 90"
+        },
+        {"type": "formula", "expr": "datum.properties.mag", "as": "magnitude"},
+        {
+          "type": "geojson",
+          "fields": ["longitude", "latitude"],
+          "signal": "layer_2_geojson_0"
+        },
+        {
+          "type": "geopoint",
+          "projection": "projection",
+          "fields": ["longitude", "latitude"],
+          "as": ["layer_2_x", "layer_2_y"]
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"magnitude\"]) && isFinite(+datum[\"magnitude\"])"
+        }
+      ]
+    }
+  ],
+  "projections": [
+    {
+      "name": "projection",
+      "size": {"signal": "[width, height]"},
+      "fit": {"signal": "[data('source_0'), data('world'), layer_2_geojson_0]"},
+      "type": "orthographic",
+      "rotate": {"signal": "[rotate0, rotate1, 0]"}
+    }
+  ],
+  "signals": [
+    {
+      "name": "rotate0",
+      "value": 0,
+      "bind": {"input": "range", "min": -90, "max": 90, "step": 1}
+    },
+    {
+      "name": "rotate1",
+      "value": 0,
+      "bind": {"input": "range", "min": -90, "max": 90, "step": 1}
+    },
+    {
+      "name": "earthquakeSize",
+      "value": 6,
+      "bind": {"input": "range", "min": 0, "max": 12, "step": 0.1}
+    }
+  ],
+  "marks": [
+    {
+      "name": "layer_0_marks",
+      "type": "shape",
+      "style": ["geoshape"],
+      "from": {"data": "source_0"},
+      "encode": {
+        "update": {
+          "fill": {"value": "aliceblue"},
+          "ariaRoleDescription": {"value": "geoshape"}
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    },
+    {
+      "name": "layer_1_marks",
+      "type": "shape",
+      "style": ["geoshape"],
+      "from": {"data": "world"},
+      "encode": {
+        "update": {
+          "fill": {"value": "mintcream"},
+          "stroke": {"value": "black"},
+          "ariaRoleDescription": {"value": "geoshape"}
+        }
+      },
+      "transform": [{"type": "geoshape", "projection": "projection"}]
+    },
+    {
+      "name": "layer_2_marks",
+      "type": "symbol",
+      "style": ["circle"],
+      "from": {"data": "earthquakes"},
+      "encode": {
+        "update": {
+          "opacity": {"value": 0.25},
+          "fill": {"value": "red"},
+          "tooltip": {
+            "signal": "{\"magnitude\": isValid(datum[\"magnitude\"]) ? datum[\"magnitude\"] : \"\"+datum[\"magnitude\"]}"
+          },
+          "ariaRoleDescription": {"value": "circle"},
+          "description": {
+            "signal": "\"longitude: \" + (format(datum[\"longitude\"], \"\")) + \"; latitude: \" + (format(datum[\"latitude\"], \"\")) + \"; magnitude: \" + (format(datum[\"magnitude\"], \"\"))"
+          },
+          "x": {"field": "layer_2_x"},
+          "y": {"field": "layer_2_y"},
+          "size": {"scale": "size", "field": "magnitude"},
+          "shape": {"value": "circle"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "size",
+      "type": "sqrt",
+      "domain": [0, 100],
+      "range": [0, {"signal": "pow(earthquakeSize, 3)"}],
+      "zero": true
+    }
+  ]
+}
