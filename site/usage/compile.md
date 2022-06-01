@@ -60,7 +60,7 @@ To customize how Vega-Lite generates axis or legend titles for a [field definiti
 
 ```js
 const vgSpec = vegaLite.compile(vlSpec, {
-  titleFormat: function (fieldDef, config) {
+  fieldTitle: function (fieldDef, config) {
     const fn = fieldDef.aggregate || fieldDef.timeUnit || (fieldDef.bin && 'bin');
     if (fn) {
       return `${fn.toUpperCase()}(${fieldDef.field})`;
