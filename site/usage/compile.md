@@ -56,7 +56,7 @@ interface LoggerInterface {
 
 ### Customized Field Title Formatter
 
-To customize how Vega-Lite generates axis or legend titles for a [field definition](encoding.html#field-def), you can provide a `titleFormat` function as a property of the `compile` function's `options` argument.
+To customize how Vega-Lite generates axis or legend titles for a [field definition](encoding.html#field-def), you can provide a `fieldTitle` function as a property of the `compile` function's `options` argument.
 
 ```js
 const vgSpec = vegaLite.compile(vlSpec, {
