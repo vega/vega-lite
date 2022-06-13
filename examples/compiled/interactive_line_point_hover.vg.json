@@ -1,6 +1,6 @@
 {
   "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "Stock prices of 5 Tech Companies over Time, with a point marker on hover.",
+  "description": "Stock prices of 5 Tech Companies over Time, with a point marker on hover. Note that the hidden markers are intentionally bigger to make it easier for readers to hover.",
   "background": "white",
   "padding": 5,
   "width": 200,
