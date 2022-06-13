@@ -69,7 +69,7 @@ export const LOCAL_MULTI_TIMEUNIT_INDEX = {
   monthdatehoursminutesseconds: 1,
 
   weekday: 1,
-  weeksdayhours: 1,
+  weekdayhours: 1,
   weekdayhoursminutes: 1,
   weekdayhoursminutesseconds: 1,
 
@@ -113,7 +113,7 @@ export const UTC_MULTI_TIMEUNIT_INDEX = {
   utcmonthdatehoursminutesseconds: 1,
 
   utcweekday: 1,
-  utcweeksdayhours: 1,
+  utcweekdayhours: 1,
   utcweekdayhoursminutes: 1,
   utcweekdayhoursminutesseconds: 1,
 
