@@ -154,15 +154,19 @@ const interval: SelectionCompiler<'interval'> = {
       const intersect = `intersect(${bbox}, {markname: ${stringValue(model.getName('marks'))}}, unit.mark)`;
       const base = `{unit: ${unitName(model)}}`;
       const update = `vlSelectionTuples(${intersect}, ${base})`;
+      const visualSignals = channels.map(proj => proj.signals.visual);
 
       return signals.concat({
         name: tupleSg,
-        update,
-        ...(init
-          ? {
-              on: [{events: {signal: GEO_INIT_TICK}, update}]
-            }
-          : {})
+        on: [
+          {
+            events: [
+              ...(visualSignals.length ? [{signal: visualSignals.join(' || ')}] : []),
+              ...(init ? [{signal: GEO_INIT_TICK}] : [])
+            ],
+            update
+          }
+        ]
       });
     }
   },

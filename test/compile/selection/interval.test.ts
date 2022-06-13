@@ -1014,15 +1014,25 @@ describe('Interval Selections', () => {
         const oneSg = interval.signals(model, selCmpts['one'], []);
         expect(oneSg).toContainEqual({
           name: 'one_tuple',
-          update:
-            'vlSelectionTuples(intersect([[one_longitude_1[0], one_latitude_1[0]],[one_longitude_1[1], one_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})'
+          on: [
+            {
+              events: [{signal: 'one_longitude_1 || one_latitude_1'}],
+              update:
+                'vlSelectionTuples(intersect([[one_longitude_1[0], one_latitude_1[0]],[one_longitude_1[1], one_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})'
+            }
+          ]
         });
 
         const twoSg = interval.signals(model, selCmpts['two'], []);
         expect(twoSg).toContainEqual({
           name: 'two_tuple',
-          update:
-            'vlSelectionTuples(intersect([[two_longitude_1[0], 0],[two_longitude_1[1], height]], {markname: "marks"}, unit.mark), {unit: ""})'
+          on: [
+            {
+              events: [{signal: 'two_longitude_1'}],
+              update:
+                'vlSelectionTuples(intersect([[two_longitude_1[0], 0],[two_longitude_1[1], height]], {markname: "marks"}, unit.mark), {unit: ""})'
+            }
+          ]
         });
 
         const threeSg = interval.signals(model, selCmpts['three'], []);
@@ -1030,8 +1040,7 @@ describe('Interval Selections', () => {
           'vlSelectionTuples(intersect([[three_longitude_1[0], three_latitude_1[0]],[three_longitude_1[1], three_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})';
         expect(threeSg).toContainEqual({
           name: 'three_tuple',
-          update,
-          on: [{events: {signal: GEO_INIT_TICK}, update}]
+          on: [{events: [{signal: 'three_latitude_1 || three_longitude_1'}, {signal: GEO_INIT_TICK}], update}]
         });
 
         const fourSg = interval.signals(model, selCmpts['four'], []);
@@ -1039,8 +1048,7 @@ describe('Interval Selections', () => {
           'vlSelectionTuples(intersect([[0, four_latitude_1[0]],[width, four_latitude_1[1]]], {markname: "marks"}, unit.mark), {unit: ""})';
         expect(fourSg).toContainEqual({
           name: 'four_tuple',
-          update,
-          on: [{events: {signal: GEO_INIT_TICK}, update}]
+          on: [{events: [{signal: 'four_latitude_1'}, {signal: GEO_INIT_TICK}], update}]
         });
       });
     });
