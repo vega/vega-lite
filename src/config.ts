@@ -145,9 +145,21 @@ export interface VLOnlyConfig<ES extends ExprRef | SignalRef> {
   fieldTitle?: 'verbal' | 'functional' | 'plain';
 
   /**
-   * D3 Number format for guide labels and text marks. For example `"s"` for SI units. Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
+   * If numberFormatType is not specified or is `"format"`,
+   * D3 Number format for guide labels and text marks. For example `"s"` for SI units.
+   * Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
+   *
+   * If `config.numberFormatType` is specified and `config.customFormatTypes` is `true`, this value will be passed as `format` alongside `datum.value` to the `config.numberFormatType` function.
    */
   numberFormat?: string;
+
+  /**
+   * [Custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type)
+   * for `config.numberFormat`.
+   *
+   * __Default value:__ `undefined` -- This is equilvalent to call D3-format, which is exposed as [`format` in Vega-Expression](https://vega.github.io/vega/docs/expressions/#format).
+   */
+  numberFormatType?: string;
 
   /**
    * Default time format for raw time values (without time units) in text marks, legend labels and header labels.
@@ -579,6 +591,7 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'facet',
   'concat',
   'numberFormat',
+  'numberFormatType',
   'timeFormat',
   'countTitle',
   'header',
