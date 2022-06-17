@@ -109,9 +109,13 @@
           "orient": "left",
           "grid": false,
           "title": "Miles_per_Gallon",
-          "format": "1.0",
           "labelOverlap": true,
           "tickCount": {"signal": "ceil(child_height/40)"},
+          "encode": {
+            "labels": {
+              "update": {"text": {"signal": "pow(datum.value, \"1.0\")"}}
+            }
+          },
           "zindex": 0
         }
       ]
@@ -140,7 +144,7 @@
       "type": "group",
       "title": {
         "text": {
-          "signal": "!isValid(parent[\"bin_maxbins_4_Weight_in_lbs\"]) || !isFinite(+parent[\"bin_maxbins_4_Weight_in_lbs\"]) ? \"null\" : format(parent[\"bin_maxbins_4_Weight_in_lbs\"], \"1.0\") + \" – \" + format(parent[\"bin_maxbins_4_Weight_in_lbs_end\"], \"1.0\")"
+          "signal": "!isValid(parent[\"bin_maxbins_4_Weight_in_lbs\"]) || !isFinite(+parent[\"bin_maxbins_4_Weight_in_lbs\"]) ? \"null\" : pow(parent[\"bin_maxbins_4_Weight_in_lbs\"], \"1.0\") + \" – \" + pow(parent[\"bin_maxbins_4_Weight_in_lbs_end\"], \"1.0\")"
         },
         "style": "guide-label",
         "frame": "group",
@@ -177,13 +181,13 @@
             "update": {
               "opacity": {"value": 0.7},
               "tooltip": {
-                "signal": "{\"Year\": timeFormat(datum[\"Year\"], '%b %d, %Y'), \"Miles_per_Gallon\": format(datum[\"Miles_per_Gallon\"], \"1.0\"), \"Acceleration\": format(datum[\"Acceleration\"], \"1.0\"), \"Displacement (binned)\": !isValid(datum[\"bin_maxbins_6_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_6_Displacement\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Displacement\"], \"1.0\") + \" – \" + format(datum[\"bin_maxbins_6_Displacement_end\"], \"1.0\")}"
+                "signal": "{\"Year\": timeFormat(datum[\"Year\"], '%b %d, %Y'), \"Miles_per_Gallon\": pow(datum[\"Miles_per_Gallon\"], \"1.0\"), \"Acceleration\": pow(datum[\"Acceleration\"], \"1.0\"), \"Displacement (binned)\": !isValid(datum[\"bin_maxbins_6_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_6_Displacement\"]) ? \"null\" : pow(datum[\"bin_maxbins_6_Displacement\"], \"1.0\") + \" – \" + pow(datum[\"bin_maxbins_6_Displacement_end\"], \"1.0\")}"
               },
               "fill": {"value": "transparent"},
               "stroke": {"scale": "color", "field": "Acceleration"},
               "ariaRoleDescription": {"value": "point"},
               "description": {
-                "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], '%b %d, %Y')) + \"; Miles_per_Gallon: \" + (format(datum[\"Miles_per_Gallon\"], \"1.0\")) + \"; Acceleration: \" + (format(datum[\"Acceleration\"], \"1.0\")) + \"; Displacement (binned): \" + (!isValid(datum[\"bin_maxbins_6_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_6_Displacement\"]) ? \"null\" : format(datum[\"bin_maxbins_6_Displacement\"], \"1.0\") + \" – \" + format(datum[\"bin_maxbins_6_Displacement_end\"], \"1.0\"))"
+                "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], '%b %d, %Y')) + \"; Miles_per_Gallon: \" + (pow(datum[\"Miles_per_Gallon\"], \"1.0\")) + \"; Acceleration: \" + (pow(datum[\"Acceleration\"], \"1.0\")) + \"; Displacement (binned): \" + (!isValid(datum[\"bin_maxbins_6_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_6_Displacement\"]) ? \"null\" : pow(datum[\"bin_maxbins_6_Displacement\"], \"1.0\") + \" – \" + pow(datum[\"bin_maxbins_6_Displacement_end\"], \"1.0\"))"
               },
               "x": {"scale": "x", "field": "Year"},
               "y": {"scale": "y", "field": "Miles_per_Gallon"},
@@ -263,17 +267,19 @@
   "legends": [
     {
       "stroke": "color",
-      "format": "1.0",
       "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
       "title": "Acceleration",
-      "encode": {"gradient": {"update": {"opacity": {"value": 0.7}}}}
+      "encode": {
+        "labels": {"update": {"text": {"signal": "pow(datum.value, \"1.0\")"}}},
+        "gradient": {"update": {"opacity": {"value": 0.7}}}
+      }
     },
     {
       "size": "size",
-      "format": "1.0",
       "symbolType": "circle",
       "title": "Displacement (binned)",
       "encode": {
+        "labels": {"update": {"text": {"signal": "pow(datum.value, \"1.0\")"}}},
         "symbols": {
           "update": {
             "fill": {"value": "transparent"},
@@ -283,5 +289,5 @@
       }
     }
   ],
-  "config": {"numberFormatType": "pow", "customFormatTypes": true}
+  "config": {"customFormatTypes": true}
 }
