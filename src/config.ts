@@ -145,7 +145,7 @@ export interface VLOnlyConfig<ES extends ExprRef | SignalRef> {
   fieldTitle?: 'verbal' | 'functional' | 'plain';
 
   /**
-   * If numberFormatType is not specified or is `"format"`,
+   * If numberFormatType is not specified,
    * D3 Number format for guide labels and text marks. For example `"s"` for SI units.
    * Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
    *
@@ -155,9 +155,10 @@ export interface VLOnlyConfig<ES extends ExprRef | SignalRef> {
 
   /**
    * [Custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type)
-   * for `config.numberFormat`.
+   * for `config.numberFormat`.  
    *
    * __Default value:__ `undefined` -- This is equilvalent to call D3-format, which is exposed as [`format` in Vega-Expression](https://vega.github.io/vega/docs/expressions/#format).
+   * __Note:__ You must also set `customFormatTypes` to `true` to use this feature. 
    */
   numberFormatType?: string;
 
