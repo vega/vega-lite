@@ -792,6 +792,10 @@
         "title": "Bar Chart with Highlighting on Hover and Selection on Click"
       },
       {
+        "name": "interactive_histogram_full_height_hover",
+        "title": "Histogram with Full-Height Hover Targets for Tooltip"
+      },
+      {
         "name": "interactive_legend",
         "title": "Interactive Legend"
       },
