@@ -58,7 +58,9 @@ These two config properties define the default number and time formats for text 
 
 ### Providing Custom Formatters
 
-To customize how Vega-Lite formats numbers or text, you can register a new formatter by (1) registering [an expression function](https://vega.github.io/vega/docs/api/extensibility/#expressions) that takes a data point and an optional format property and (2) setting the `customFormatTypes` config to `true`. For example, to register `customFormatA`, you run need to register the function:
+To customize how Vega-Lite formats numbers or text, you can register a custom formatter by
+
+(1) Registering [an expression function](https://vega.github.io/vega/docs/api/extensibility/#expressions) that takes a data point and an optional format property. For example, to register `customFormatA`, you need to register the function:
 
 ```js
 vega.expressionFunction('customFormatA', function(datum, params) {
@@ -67,9 +69,18 @@ vega.expressionFunction('customFormatA', function(datum, params) {
 });
 ```
 
-You can then use this custom format function with `format` and `formatType` properties in text encodings and guides (axis/legend/header).
+2. Setting the `customFormatTypes` config to `true`.
 
-```json
+```js
+{
+  ...,
+  "config": {"customFormatTypes": true}
+}
+```
+
+3. You can then use this custom format function with `format` and `formatType` properties in text encodings and guides (axis/legend/header).
+
+```js
 {
   "format": <params>,
   "formatType": "customFormatA"
