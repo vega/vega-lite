@@ -73,7 +73,7 @@ export interface FieldEqualPredicate extends FieldPredicateBase {
 }
 
 export function isFieldEqualPredicate(predicate: any): predicate is FieldEqualPredicate {
-  return predicate && !!predicate.field && predicate.equal !== undefined;
+  return !!predicate?.field && predicate.equal !== undefined;
 }
 
 export interface FieldLTPredicate extends FieldPredicateBase {
@@ -84,7 +84,7 @@ export interface FieldLTPredicate extends FieldPredicateBase {
 }
 
 export function isFieldLTPredicate(predicate: any): predicate is FieldLTPredicate {
-  return predicate && !!predicate.field && predicate.lt !== undefined;
+  return !!predicate?.field && predicate.lt !== undefined;
 }
 
 export interface FieldLTEPredicate extends FieldPredicateBase {
@@ -95,7 +95,7 @@ export interface FieldLTEPredicate extends FieldPredicateBase {
 }
 
 export function isFieldLTEPredicate(predicate: any): predicate is FieldLTEPredicate {
-  return predicate && !!predicate.field && predicate.lte !== undefined;
+  return !!predicate?.field && predicate.lte !== undefined;
 }
 
 export interface FieldGTPredicate extends FieldPredicateBase {
@@ -106,7 +106,7 @@ export interface FieldGTPredicate extends FieldPredicateBase {
 }
 
 export function isFieldGTPredicate(predicate: any): predicate is FieldGTPredicate {
-  return predicate && !!predicate.field && predicate.gt !== undefined;
+  return !!predicate?.field && predicate.gt !== undefined;
 }
 
 export interface FieldGTEPredicate extends FieldPredicateBase {
@@ -117,7 +117,7 @@ export interface FieldGTEPredicate extends FieldPredicateBase {
 }
 
 export function isFieldGTEPredicate(predicate: any): predicate is FieldGTEPredicate {
-  return predicate && !!predicate.field && predicate.gte !== undefined;
+  return !!predicate?.field && predicate.gte !== undefined;
 }
 
 export interface FieldRangePredicate extends FieldPredicateBase {
@@ -158,12 +158,12 @@ export interface FieldValidPredicate extends FieldPredicateBase {
 
 export function isFieldOneOfPredicate(predicate: any): predicate is FieldOneOfPredicate {
   return (
-    predicate && !!predicate.field && (isArray(predicate.oneOf) || isArray(predicate.in)) // backward compatibility
+    !!predicate?.field && (isArray(predicate.oneOf) || isArray(predicate.in)) // backward compatibility
   );
 }
 
 export function isFieldValidPredicate(predicate: any): predicate is FieldValidPredicate {
-  return predicate && !!predicate.field && predicate.valid !== undefined;
+  return !!predicate?.field && predicate.valid !== undefined;
 }
 
 export function isFieldPredicate(

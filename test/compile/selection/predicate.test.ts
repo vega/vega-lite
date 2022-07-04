@@ -21,7 +21,7 @@ describe('Selection Predicate', () => {
         field: 'Acceleration',
         type: 'quantitative',
         condition: {
-          param: 'one',
+          param: 'two',
           empty: false,
           value: 0.5
         }
@@ -47,9 +47,11 @@ describe('Selection Predicate', () => {
 
   it('generates the predicate expression', () => {
     // Different resolutions
-    expect(predicate(model, {param: 'one'})).toBe('!length(data("one_store")) || vlSelectionTest("one_store", datum)');
+    expect(predicate(model, {param: 'one'})).toBe(
+      '!length(data("one_store")) || vlSelectionIdTest("one_store", datum)'
+    );
     expect(predicate(model, {param: 'two'})).toBe(
-      '!length(data("two_store")) || vlSelectionTest("two_store", datum, "union")'
+      '!length(data("two_store")) || vlSelectionIdTest("two_store", datum, "union")'
     );
     expect(predicate(model, {param: 'thr-ee'})).toBe(
       '!length(data("thr_ee_store")) || vlSelectionTest("thr_ee_store", datum, "intersect")'
@@ -57,10 +59,10 @@ describe('Selection Predicate', () => {
 
     // Different emptiness
     expect(predicate(model, {param: 'one', empty: true})).toBe(
-      '!length(data("one_store")) || vlSelectionTest("one_store", datum)'
+      '!length(data("one_store")) || vlSelectionIdTest("one_store", datum)'
     );
-    expect(predicate(model, {param: 'one', empty: false})).toBe(
-      'length(data("one_store")) && vlSelectionTest("one_store", datum)'
+    expect(predicate(model, {param: 'two', empty: false})).toBe(
+      'length(data("two_store")) && vlSelectionIdTest("two_store", datum, "union")'
     );
 
     // Variable parameters
@@ -70,7 +72,7 @@ describe('Selection Predicate', () => {
   it('generates Vega production rules', () => {
     expect(nonPosition('color', model, {vgChannel: 'fill'})).toEqual({
       fill: [
-        {test: '!length(data("one_store")) || vlSelectionTest("one_store", datum)', value: 'grey'},
+        {test: '!length(data("one_store")) || vlSelectionIdTest("one_store", datum)', value: 'grey'},
         {scale: 'color', field: 'Cylinders'}
       ]
     });
@@ -78,7 +80,7 @@ describe('Selection Predicate', () => {
     expect(nonPosition('opacity', model)).toEqual({
       opacity: [
         {
-          test: 'length(data("one_store")) && vlSelectionTest("one_store", datum)',
+          test: 'length(data("two_store")) && vlSelectionIdTest("two_store", datum, "union")',
           value: 0.5
         },
         {scale: 'opacity', field: 'Acceleration'}
@@ -98,10 +100,12 @@ describe('Selection Predicate', () => {
   });
 
   it('generates a selection filter', () => {
-    expect(expression(model, {param: 'one'})).toBe('!length(data("one_store")) || vlSelectionTest("one_store", datum)');
+    expect(expression(model, {param: 'one'})).toBe(
+      '!length(data("one_store")) || vlSelectionIdTest("one_store", datum)'
+    );
 
-    expect(expression(model, {not: {param: 'one', empty: false}})).toBe(
-      '!(length(data("one_store")) && vlSelectionTest("one_store", datum))'
+    expect(expression(model, {not: {param: 'two', empty: false}})).toBe(
+      '!(length(data("two_store")) && vlSelectionIdTest("two_store", datum, "union"))'
     );
 
     expect(expression(model, {not: {param: 'varHelloWorld'}})).toBe('!(!!varHelloWorld)');

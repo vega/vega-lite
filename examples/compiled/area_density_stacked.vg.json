@@ -17,7 +17,8 @@
           "field": "Body Mass (g)",
           "groupby": ["Species"],
           "extent": [2500, 6500],
-          "as": ["value", "density"]
+          "as": ["value", "density"],
+          "steps": 200
         },
         {
           "type": "impute",

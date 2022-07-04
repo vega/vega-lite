@@ -212,7 +212,7 @@ export function partLayerMixins<P extends PartsMixins<any>>(
           ...(color ? {color} : {}),
           ...(opacity ? {opacity} : {}),
           ...(isMarkDef(partBaseSpec.mark) ? partBaseSpec.mark : {type: partBaseSpec.mark}),
-          style: `${mark}-${part}`,
+          style: `${mark}-${String(part)}`,
           ...(isBoolean(markDef[part]) ? {} : (markDef[part] as MarkConfig<ExprRef | SignalRef>))
         }
       }

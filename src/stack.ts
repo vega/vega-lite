@@ -137,15 +137,7 @@ function getDimensionChannel(channel: 'x' | 'y' | 'theta' | 'radius') {
   }
 }
 
-// Note: CompassQL uses this method and only pass in required properties of each argument object.
-// If required properties change, make sure to update CompassQL.
-export function stack(
-  m: Mark | MarkDef,
-  encoding: Encoding<string>,
-  opt: {
-    disallowNonLinearStack?: boolean; // This option is for CompassQL
-  } = {}
-): StackProperties {
+export function stack(m: Mark | MarkDef, encoding: Encoding<string>): StackProperties {
   const mark = isMarkDef(m) ? m.type : m;
   // Should have stackable mark
   if (!STACKABLE_MARKS.has(mark)) {
@@ -241,11 +233,8 @@ export function stack(
 
   // warn when stacking non-linear
   if (stackedFieldDef?.scale?.type && stackedFieldDef?.scale?.type !== ScaleType.LINEAR) {
-    if (opt.disallowNonLinearStack) {
-      return null;
-    } else {
-      log.warn(log.message.cannotStackNonLinearScale(stackedFieldDef.scale.type));
-    }
+    log.warn(log.message.cannotStackNonLinearScale(stackedFieldDef.scale.type));
+    return null;
   }
 
   // Check if it is a ranged mark

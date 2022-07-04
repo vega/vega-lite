@@ -17,6 +17,26 @@
       "source": "source_0",
       "transform": [
         {
+          "type": "filter",
+          "expr": "!length(data(\"click_store\")) || vlSelectionTest(\"click_store\", datum)"
+        },
+        {
+          "field": "date",
+          "type": "timeunit",
+          "units": ["month", "date"],
+          "as": ["monthdate_date", "monthdate_date_end"]
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"monthdate_date\"]) || (isValid(datum[\"monthdate_date\"]) && isFinite(+datum[\"monthdate_date\"]))) && isValid(datum[\"temp_max\"]) && isFinite(+datum[\"temp_max\"]) && isValid(datum[\"precipitation\"]) && isFinite(+datum[\"precipitation\"])"
+        }
+      ]
+    },
+    {
+      "name": "data_1",
+      "source": "source_0",
+      "transform": [
+        {
           "field": "date",
           "type": "timeunit",
           "units": ["month", "date"],
@@ -32,26 +52,6 @@
           "ops": ["count"],
           "fields": [null],
           "as": ["__count"]
-        }
-      ]
-    },
-    {
-      "name": "data_1",
-      "source": "source_0",
-      "transform": [
-        {
-          "type": "filter",
-          "expr": "!length(data(\"click_store\")) || vlSelectionTest(\"click_store\", datum)"
-        },
-        {
-          "field": "date",
-          "type": "timeunit",
-          "units": ["month", "date"],
-          "as": ["monthdate_date", "monthdate_date_end"]
-        },
-        {
-          "type": "filter",
-          "expr": "(isDate(datum[\"monthdate_date\"]) || (isValid(datum[\"monthdate_date\"]) && isFinite(+datum[\"monthdate_date\"]))) && isValid(datum[\"temp_max\"]) && isFinite(+datum[\"temp_max\"]) && isValid(datum[\"precipitation\"]) && isFinite(+datum[\"precipitation\"])"
         }
       ]
     }
@@ -304,7 +304,7 @@
           "type": "symbol",
           "style": ["point"],
           "interactive": true,
-          "from": {"data": "data_1"},
+          "from": {"data": "data_0"},
           "encode": {
             "update": {
               "opacity": {"value": 0.7},
@@ -480,7 +480,7 @@
           "type": "rect",
           "style": ["bar"],
           "interactive": true,
-          "from": {"data": "data_0"},
+          "from": {"data": "data_1"},
           "encode": {
             "update": {
               "fill": [
@@ -555,7 +555,7 @@
     {
       "name": "concat_0_x",
       "type": "time",
-      "domain": {"data": "data_1", "field": "monthdate_date"},
+      "domain": {"data": "data_0", "field": "monthdate_date"},
       "range": [0, {"signal": "width"}]
     },
     {
@@ -568,7 +568,7 @@
     {
       "name": "concat_1_x",
       "type": "linear",
-      "domain": {"data": "data_0", "field": "__count"},
+      "domain": {"data": "data_1", "field": "__count"},
       "range": [0, {"signal": "width"}],
       "nice": true,
       "zero": true
@@ -576,7 +576,7 @@
     {
       "name": "concat_1_y",
       "type": "band",
-      "domain": {"data": "data_0", "field": "weather", "sort": true},
+      "domain": {"data": "data_1", "field": "weather", "sort": true},
       "range": {"step": {"signal": "concat_1_y_step"}},
       "paddingInner": 0.1,
       "paddingOuter": 0.05

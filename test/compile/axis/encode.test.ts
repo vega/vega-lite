@@ -49,5 +49,17 @@ describe('compile/axis/encode', () => {
       const labels = encode.labels(model, 'x', {});
       expect(labels.text.signal).toBe('customNumberFormat(datum.value)');
     });
+
+    it('applies custom format type from config', () => {
+      const model = parseUnitModelWithScale({
+        mark: 'point',
+        encoding: {
+          x: {field: 'a', type: 'quantitative'}
+        },
+        config: {customFormatTypes: true, numberFormat: 'abc', numberFormatType: 'customNumberFormat'}
+      });
+      const labels = encode.labels(model, 'x', {});
+      expect(labels.text.signal).toBe('customNumberFormat(datum.value, "abc")');
+    });
   });
 });

@@ -109,13 +109,13 @@ export type AllSortString = SortOrder | SortByChannel | SortByChannelDesc;
 export type Sort<F> = SortArray | AllSortString | EncodingSortField<F> | SortByEncoding | null;
 
 export function isSortByEncoding<F>(sort: Sort<F>): sort is SortByEncoding {
-  return !!sort && !!sort['encoding'];
+  return !!sort?.['encoding'];
 }
 
 export function isSortField<F>(sort: Sort<F>): sort is EncodingSortField<F> {
-  return !!sort && (sort['op'] === 'count' || !!sort['field']);
+  return sort && (sort['op'] === 'count' || !!sort['field']);
 }
 
 export function isSortArray<F>(sort: Sort<F>): sort is SortArray {
-  return !!sort && isArray(sort);
+  return sort && isArray(sort);
 }

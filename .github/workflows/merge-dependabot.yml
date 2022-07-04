@@ -13,4 +13,4 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           auto-merge: 'minor'
-          merge-method: 'rebase'
+          merge-method: 'squash'

@@ -107,3 +107,7 @@ export function assertIsLayerSpec(spec: BaseSpec): asserts spec is GenericLayerS
 export function without<T>(array: readonly T[], excludedItems: readonly T[]) {
   return array.filter(item => !contains(excludedItems, item));
 }
+
+export function range(start: number, stop: number, step: number) {
+  return Array.from({length: (stop - start) / step}, (_, i) => start + step * i);
+}

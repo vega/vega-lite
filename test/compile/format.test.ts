@@ -1,5 +1,11 @@
 import {vgField} from '../../src/channeldef';
-import {formatSignalRef, numberFormat, timeFormatExpression} from '../../src/compile/format';
+import {
+  formatSignalRef,
+  guideFormat,
+  guideFormatType,
+  numberFormat,
+  timeFormatExpression
+} from '../../src/compile/format';
 import {defaultConfig} from '../../src/config';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
 
@@ -116,7 +122,22 @@ describe('Format', () => {
       });
     });
 
-    it('should formats datumDef if format is present', () => {
+    it('correctly formats binned field defs if custom format config is present', () => {
+      expect(
+        formatSignalRef({
+          fieldOrDatumDef: {bin: true, field: 'foo', type: 'quantitative'},
+          format: undefined,
+          formatType: undefined,
+          expr: 'parent',
+          config: {numberFormat: 'abc', numberFormatType: 'customFormatter'}
+        })
+      ).toEqual({
+        signal:
+          '!isValid(parent["bin_maxbins_10_foo"]) || !isFinite(+parent["bin_maxbins_10_foo"]) ? "null" : format(parent["bin_maxbins_10_foo"], "abc") + " – " + format(parent["bin_maxbins_10_foo_end"], "abc")'
+      });
+    });
+
+    it('should format datumDef if format is present', () => {
       expect(
         formatSignalRef({
           fieldOrDatumDef: {datum: 200, type: 'quantitative'},
@@ -128,6 +149,65 @@ describe('Format', () => {
       ).toEqual({
         signal: 'format(200, ".2f")'
       });
+    });
+
+    it('should use a custom formatter datumDef if formatType is present', () => {
+      expect(
+        formatSignalRef({
+          fieldOrDatumDef: {datum: 200, type: 'quantitative'},
+          format: 'abc',
+          formatType: 'customFormatter',
+          expr: 'parent',
+          config: {}
+        })
+      ).toEqual({
+        signal: 'customFormatter(200, "abc")'
+      });
+    });
+
+    it('should use a custom formatter datumDef if config.numberFormatType is present', () => {
+      expect(
+        formatSignalRef({
+          fieldOrDatumDef: {datum: 200, type: 'quantitative'},
+          format: undefined,
+          formatType: undefined,
+          expr: 'parent',
+          config: {numberFormat: 'abc', numberFormatType: 'customFormatter', customFormatTypes: true}
+        })
+      ).toEqual({
+        signal: 'customFormatter(200, "abc")'
+      });
+    });
+  });
+
+  describe('guideFormat', () => {
+    it('returns undefined for custom formatType', () => {
+      const format = guideFormat({datum: 200, type: 'quantitative'}, 'quantitative', 'abc', 'custom', {}, false);
+      expect(format).toBeUndefined();
+    });
+    it('returns undefined for custom formatType in the config', () => {
+      const format = guideFormat(
+        {datum: 200, type: 'quantitative'},
+        'quantitative',
+        undefined,
+        undefined,
+        {numberFormat: 'abc', numberFormatType: 'customFormatter', customFormatTypes: true},
+        false
+      );
+      expect(format).toBeUndefined();
+    });
+  });
+
+  describe('guideFormatType()', () => {
+    it('should return existing format type', () => {
+      expect(guideFormatType('number', {field: ' foo', type: 'quantitative'}, 'ordinal')).toBe('number');
+      expect(guideFormatType('time', {field: ' foo', type: 'quantitative'}, 'ordinal')).toBe('time');
+    });
+
+    it('should return utc for utc time units', () => {
+      expect(
+        guideFormatType('', {field: ' foo', type: 'ordinal', timeUnit: {utc: true, unit: 'year'}}, 'ordinal')
+      ).toBe('utc');
     });
   });
 });

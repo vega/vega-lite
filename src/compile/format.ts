@@ -56,6 +56,23 @@ export function formatSignalRef({
   }
 
   const field = fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
+  const type = channelDefType(fieldOrDatumDef);
+
+  if (
+    type === 'quantitative' &&
+    format === undefined &&
+    formatType === undefined &&
+    config.customFormatTypes &&
+    config.numberFormatType
+  ) {
+    return formatCustomType({
+      fieldOrDatumDef,
+      format: config.numberFormat,
+      formatType: config.numberFormatType,
+      expr,
+      config
+    });
+  }
 
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
     const signal = timeFormatExpression(
@@ -68,7 +85,7 @@ export function formatSignalRef({
     return signal ? {signal} : undefined;
   }
 
-  format = numberFormat(channelDefType(fieldOrDatumDef), format, config);
+  format = numberFormat(type, format, config);
   if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
     const endField = vgField(fieldOrDatumDef, {expr, binSuffix: 'end'});
     return {
@@ -121,7 +138,11 @@ export function formatCustomType({
 }) {
   field ??= fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
 
-  if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
+  if (
+    field !== 'datum.value' && // For axis/legend, we can't correctly know the end of the bin from `datum`
+    isFieldDef(fieldOrDatumDef) &&
+    isBinning(fieldOrDatumDef.bin)
+  ) {
     const endField = vgField(fieldOrDatumDef, {expr, binSuffix: 'end'});
     return {
       signal: binFormatExpression(field, endField, format, formatType, config)
@@ -139,6 +160,8 @@ export function guideFormat(
   omitTimeFormatConfig: boolean // axis doesn't use config.timeFormat
 ) {
   if (isCustomFormatType(formatType)) {
+    return undefined; // handled in encode block
+  } else if (format === undefined && formatType === undefined && config.numberFormatType && config.customFormatTypes) {
     return undefined; // handled in encode block
   }
 
@@ -160,7 +183,7 @@ export function guideFormatType(
     return formatType;
   }
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef) && scaleType !== 'time' && scaleType !== 'utc') {
-    return 'time';
+    return isFieldDef(fieldOrDatumDef) && normalizeTimeUnit(fieldOrDatumDef?.timeUnit)?.utc ? 'utc' : 'time';
   }
   return undefined;
 }
@@ -216,7 +239,11 @@ export function binFormatExpression(
   format: string | Dict<unknown>,
   formatType: string,
   config: Config
-) {
+): string {
+  if (format === undefined && formatType === undefined && config.customFormatTypes && config.numberFormatType) {
+    return binFormatExpression(startField, endField, config.numberFormat, config.numberFormatType, config);
+  }
+
   const start = binNumberFormatExpr(startField, format, formatType, config);
   const end = binNumberFormatExpr(endField, format, formatType, config);
   return `${fieldValidPredicate(startField, false)} ? "null" : ${start} + "${BIN_RANGE_DELIMITER}" + ${end}`;

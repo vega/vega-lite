@@ -12,7 +12,7 @@ import {LayoutAlign, RowCol} from '../vega.schema';
 import {isConcatSpec, isVConcatSpec} from './concat';
 import {isFacetMapping, isFacetSpec} from './facet';
 
-export {TopLevel} from './toplevel';
+export type {TopLevel} from './toplevel';
 
 /**
  * Common properties for all types of specification

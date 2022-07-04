@@ -270,7 +270,7 @@ export type ConditionalAxisProperty<V extends Value | number[], ES extends ExprR
 export function isConditionalAxisValue<V extends Value | number[], ES extends ExprRef | SignalRef>(
   v: any
 ): v is ConditionalAxisProperty<V, ES> {
-  return v && v['condition'];
+  return v?.condition;
 }
 
 export type ConditionalAxisNumber<ES extends ExprRef | SignalRef = ExprRef | SignalRef> = ConditionalAxisProperty<

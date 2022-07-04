@@ -4,7 +4,10 @@
   "padding": 5,
   "style": "cell",
   "data": [
-    {"name": "highlight_store"},
+    {
+      "name": "highlight_store",
+      "transform": [{"type": "collect", "sort": {"field": "_vgsid_"}}]
+    },
     {
       "name": "source_0",
       "values": [
@@ -55,15 +58,11 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: highlight_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
       ]
-    },
-    {
-      "name": "highlight_tuple_fields",
-      "value": [{"type": "E", "field": "_vgsid_"}]
     },
     {
       "name": "highlight_toggle",
@@ -99,21 +98,21 @@
           "fill": {"scale": "fill", "field": "count"},
           "stroke": [
             {
-              "test": "length(data(\"highlight_store\")) && vlSelectionTest(\"highlight_store\", datum)",
+              "test": "length(data(\"highlight_store\")) && vlSelectionIdTest(\"highlight_store\", datum)",
               "value": "black"
             },
             {"value": null}
           ],
           "opacity": [
             {
-              "test": "!length(data(\"highlight_store\")) || vlSelectionTest(\"highlight_store\", datum)",
+              "test": "!length(data(\"highlight_store\")) || vlSelectionIdTest(\"highlight_store\", datum)",
               "value": 1
             },
             {"value": 0.5}
           ],
           "zindex": [
             {
-              "test": "!length(data(\"highlight_store\")) || vlSelectionTest(\"highlight_store\", datum)",
+              "test": "!length(data(\"highlight_store\")) || vlSelectionIdTest(\"highlight_store\", datum)",
               "value": 1
             },
             {"value": 0}

@@ -160,6 +160,10 @@
         "name": "isotype_bar_chart_emoji",
         "title": "Isotype Dot Plot with Emoji",
         "description": "This example was inspired by [@jakevdp](https://github.com/jakevdp) and Isotype Bar Chart by [@jwoLondon](https://github.com/jwoLondon)."
+      },
+      {
+        "name": "bar_percent_of_total",
+        "title": "Relative Bar Chart (Calculate Percentage of Total)"
       }
     ],
     "Scatter & Strip Plots": [
@@ -418,8 +422,8 @@
     ],
     "Advanced Calculations": [
       {
-        "name": "window_percent_of_total",
-        "title": "Calculate Percentage of Total"
+        "name": "bar_percent_of_total",
+        "title": "Relative Bar Chart (Calculate Percentage of Total)"
       },
       {
         "name": "joinaggregate_mean_difference",
@@ -772,6 +776,12 @@
         "title": "Projection explorer",
         "description": "Compare different projections.",
         "png": true
+      },
+      {
+	"name": "interactive_geo_earthquakes",
+	"title": "Earthquakes Example",
+	"description": "Interactive globe visualization of earthquakes",
+	"png": true
       }
     ]
   },
@@ -780,6 +790,10 @@
       {
         "name": "interactive_bar_select_highlight",
         "title": "Bar Chart with Highlighting on Hover and Selection on Click"
+      },
+      {
+        "name": "interactive_histogram_full_height_hover",
+        "title": "Histogram with Full-Height Hover Targets for Tooltip"
       },
       {
         "name": "interactive_legend",
@@ -818,8 +832,12 @@
       },
       {
         "name": "interactive_line_hover",
-        "title": "Multi Series Line Chart with Interactive Highlight",
+        "title": "Multi Series Line Chart with an Interactive Line Highlight",
         "description": "The plot below uses argmax to position text labels at the end of line.  It also applies single selection to highlight a hovered line.  Note that we can hidden thick lines to make it easier to hover."
+      },
+      {
+        "name": "interactive_line_point_hover",
+        "title": "Multi Series Line Chart with an Interactive Point Highlight"
       },
       {
         "name": "interactive_multi_line_label",

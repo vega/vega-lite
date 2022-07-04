@@ -14,20 +14,18 @@ import {RepeatSpec} from './repeat';
 import {TopLevel} from './toplevel';
 import {FacetedUnitSpec, GenericUnitSpec, NormalizedUnitSpec, TopLevelUnitSpec, UnitSpecWithFrame} from './unit';
 
-export {BaseSpec, LayoutSizeMixins} from './base';
-export {
-  GenericHConcatSpec,
-  GenericVConcatSpec,
-  isAnyConcatSpec,
-  isHConcatSpec,
-  isVConcatSpec,
-  NormalizedConcatSpec
-} from './concat';
-export {GenericFacetSpec, isFacetSpec, NormalizedFacetSpec} from './facet';
-export {GenericLayerSpec, isLayerSpec, LayerSpec, NormalizedLayerSpec} from './layer';
-export {isRepeatSpec, RepeatSpec} from './repeat';
-export {TopLevel} from './toplevel';
-export {FacetedUnitSpec, GenericUnitSpec, isUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
+export type {BaseSpec, LayoutSizeMixins} from './base';
+export type {GenericHConcatSpec, GenericVConcatSpec, NormalizedConcatSpec} from './concat';
+export {isAnyConcatSpec, isHConcatSpec, isVConcatSpec} from './concat';
+export type {GenericFacetSpec, NormalizedFacetSpec} from './facet';
+export {isFacetSpec} from './facet';
+export type {GenericLayerSpec, LayerSpec, NormalizedLayerSpec} from './layer';
+export {isLayerSpec} from './layer';
+export type {RepeatSpec} from './repeat';
+export {isRepeatSpec} from './repeat';
+export type {TopLevel} from './toplevel';
+export type {FacetedUnitSpec, GenericUnitSpec, NormalizedUnitSpec, UnitSpec} from './unit';
+export {isUnitSpec} from './unit';
 
 /**
  * Any specification in Vega-Lite.

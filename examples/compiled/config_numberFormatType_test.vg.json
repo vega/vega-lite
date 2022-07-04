@@ -1,0 +1,293 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Testing global number formatting config",
+  "background": "white",
+  "padding": 5,
+  "data": [
+    {
+      "name": "source_0",
+      "url": "data/cars.json",
+      "format": {"type": "json", "parse": {"Year": "date"}},
+      "transform": [
+        {
+          "type": "extent",
+          "field": "Weight_in_lbs",
+          "signal": "bin_maxbins_4_Weight_in_lbs_extent"
+        },
+        {
+          "type": "bin",
+          "field": "Weight_in_lbs",
+          "as": [
+            "bin_maxbins_4_Weight_in_lbs",
+            "bin_maxbins_4_Weight_in_lbs_end"
+          ],
+          "signal": "bin_maxbins_4_Weight_in_lbs_bins",
+          "extent": {"signal": "bin_maxbins_4_Weight_in_lbs_extent"},
+          "maxbins": 4
+        },
+        {
+          "type": "extent",
+          "field": "Displacement",
+          "signal": "child_bin_maxbins_6_Displacement_extent"
+        },
+        {
+          "type": "bin",
+          "field": "Displacement",
+          "as": [
+            "bin_maxbins_6_Displacement",
+            "bin_maxbins_6_Displacement_end"
+          ],
+          "signal": "child_bin_maxbins_6_Displacement_bins",
+          "extent": {"signal": "child_bin_maxbins_6_Displacement_extent"},
+          "maxbins": 6
+        },
+        {
+          "type": "filter",
+          "expr": "(isDate(datum[\"Year\"]) || (isValid(datum[\"Year\"]) && isFinite(+datum[\"Year\"]))) && isValid(datum[\"Miles_per_Gallon\"]) && isFinite(+datum[\"Miles_per_Gallon\"]) && isValid(datum[\"Acceleration\"]) && isFinite(+datum[\"Acceleration\"]) && isValid(datum[\"bin_maxbins_6_Displacement\"]) && isFinite(+datum[\"bin_maxbins_6_Displacement\"])"
+        }
+      ]
+    },
+    {
+      "name": "facet_domain",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "aggregate",
+          "groupby": [
+            "bin_maxbins_4_Weight_in_lbs",
+            "bin_maxbins_4_Weight_in_lbs_end"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "facet_domain_row",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {"signal": "ceil(length(data(\"facet_domain\")) / 3)"}
+        }
+      ]
+    },
+    {
+      "name": "facet_domain_column",
+      "transform": [
+        {
+          "type": "sequence",
+          "start": 0,
+          "stop": {"signal": "min(length(data(\"facet_domain\")), 3)"}
+        }
+      ]
+    }
+  ],
+  "signals": [
+    {"name": "child_width", "value": 150},
+    {"name": "child_height", "value": 150}
+  ],
+  "layout": {"padding": 20, "bounds": "full", "align": "all", "columns": 3},
+  "marks": [
+    {
+      "name": "facet-title",
+      "type": "group",
+      "role": "column-title",
+      "title": {
+        "text": "Weight_in_lbs (binned)",
+        "style": "guide-title",
+        "offset": 10
+      }
+    },
+    {
+      "name": "row_header",
+      "type": "group",
+      "role": "row-header",
+      "from": {"data": "facet_domain_row"},
+      "encode": {"update": {"height": {"signal": "child_height"}}},
+      "axes": [
+        {
+          "scale": "y",
+          "orient": "left",
+          "grid": false,
+          "title": "Miles_per_Gallon",
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "encode": {
+            "labels": {
+              "update": {"text": {"signal": "pow(datum.value, \"1.0\")"}}
+            }
+          },
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "column_footer",
+      "type": "group",
+      "role": "column-footer",
+      "from": {"data": "facet_domain_column"},
+      "encode": {"update": {"width": {"signal": "child_width"}}},
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "grid": false,
+          "title": "Year",
+          "labelFlush": true,
+          "labelOverlap": true,
+          "tickCount": {"signal": "ceil(child_width/40)"},
+          "zindex": 0
+        }
+      ]
+    },
+    {
+      "name": "cell",
+      "type": "group",
+      "title": {
+        "text": {
+          "signal": "!isValid(parent[\"bin_maxbins_4_Weight_in_lbs\"]) || !isFinite(+parent[\"bin_maxbins_4_Weight_in_lbs\"]) ? \"null\" : pow(parent[\"bin_maxbins_4_Weight_in_lbs\"], \"1.0\") + \" – \" + pow(parent[\"bin_maxbins_4_Weight_in_lbs_end\"], \"1.0\")"
+        },
+        "style": "guide-label",
+        "frame": "group",
+        "offset": 10
+      },
+      "style": "cell",
+      "from": {
+        "facet": {
+          "name": "facet",
+          "data": "source_0",
+          "groupby": [
+            "bin_maxbins_4_Weight_in_lbs",
+            "bin_maxbins_4_Weight_in_lbs_end"
+          ]
+        }
+      },
+      "sort": {
+        "field": ["datum[\"bin_maxbins_4_Weight_in_lbs\"]"],
+        "order": ["ascending"]
+      },
+      "encode": {
+        "update": {
+          "width": {"signal": "child_width"},
+          "height": {"signal": "child_height"}
+        }
+      },
+      "marks": [
+        {
+          "name": "child_marks",
+          "type": "symbol",
+          "style": ["point"],
+          "from": {"data": "facet"},
+          "encode": {
+            "update": {
+              "opacity": {"value": 0.7},
+              "tooltip": {
+                "signal": "{\"Year\": timeFormat(datum[\"Year\"], '%b %d, %Y'), \"Miles_per_Gallon\": pow(datum[\"Miles_per_Gallon\"], \"1.0\"), \"Acceleration\": pow(datum[\"Acceleration\"], \"1.0\"), \"Displacement (binned)\": !isValid(datum[\"bin_maxbins_6_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_6_Displacement\"]) ? \"null\" : pow(datum[\"bin_maxbins_6_Displacement\"], \"1.0\") + \" – \" + pow(datum[\"bin_maxbins_6_Displacement_end\"], \"1.0\")}"
+              },
+              "fill": {"value": "transparent"},
+              "stroke": {"scale": "color", "field": "Acceleration"},
+              "ariaRoleDescription": {"value": "point"},
+              "description": {
+                "signal": "\"Year: \" + (timeFormat(datum[\"Year\"], '%b %d, %Y')) + \"; Miles_per_Gallon: \" + (pow(datum[\"Miles_per_Gallon\"], \"1.0\")) + \"; Acceleration: \" + (pow(datum[\"Acceleration\"], \"1.0\")) + \"; Displacement (binned): \" + (!isValid(datum[\"bin_maxbins_6_Displacement\"]) || !isFinite(+datum[\"bin_maxbins_6_Displacement\"]) ? \"null\" : pow(datum[\"bin_maxbins_6_Displacement\"], \"1.0\") + \" – \" + pow(datum[\"bin_maxbins_6_Displacement_end\"], \"1.0\"))"
+              },
+              "x": {"scale": "x", "field": "Year"},
+              "y": {"scale": "y", "field": "Miles_per_Gallon"},
+              "size": {
+                "signal": "scale(\"size\", 0.5 * datum[\"bin_maxbins_6_Displacement\"] + 0.5 * datum[\"bin_maxbins_6_Displacement_end\"])"
+              }
+            }
+          }
+        }
+      ],
+      "axes": [
+        {
+          "scale": "x",
+          "orient": "bottom",
+          "gridScale": "y",
+          "grid": true,
+          "tickCount": {"signal": "ceil(child_width/40)"},
+          "domain": false,
+          "labels": false,
+          "aria": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        },
+        {
+          "scale": "y",
+          "orient": "left",
+          "gridScale": "x",
+          "grid": true,
+          "tickCount": {"signal": "ceil(child_height/40)"},
+          "domain": false,
+          "labels": false,
+          "aria": false,
+          "maxExtent": 0,
+          "minExtent": 0,
+          "ticks": false,
+          "zindex": 0
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "x",
+      "type": "time",
+      "domain": {"data": "source_0", "field": "Year"},
+      "range": [0, {"signal": "child_width"}]
+    },
+    {
+      "name": "y",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
+      "range": [{"signal": "child_height"}, 0],
+      "nice": true,
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "linear",
+      "domain": {"data": "source_0", "field": "Acceleration"},
+      "range": "ramp",
+      "interpolate": "hcl",
+      "zero": false
+    },
+    {
+      "name": "size",
+      "type": "linear",
+      "domain": {
+        "signal": "[child_bin_maxbins_6_Displacement_bins.start, child_bin_maxbins_6_Displacement_bins.stop]"
+      },
+      "range": [0, 361],
+      "bins": {"signal": "child_bin_maxbins_6_Displacement_bins"},
+      "zero": true
+    }
+  ],
+  "legends": [
+    {
+      "stroke": "color",
+      "gradientLength": {"signal": "clamp(child_height, 64, 200)"},
+      "title": "Acceleration",
+      "encode": {
+        "labels": {"update": {"text": {"signal": "pow(datum.value, \"1.0\")"}}},
+        "gradient": {"update": {"opacity": {"value": 0.7}}}
+      }
+    },
+    {
+      "size": "size",
+      "symbolType": "circle",
+      "title": "Displacement (binned)",
+      "encode": {
+        "labels": {"update": {"text": {"signal": "pow(datum.value, \"1.0\")"}}},
+        "symbols": {
+          "update": {
+            "fill": {"value": "transparent"},
+            "opacity": {"value": 0.7}
+          }
+        }
+      }
+    }
+  ],
+  "config": {"customFormatTypes": true}
+}

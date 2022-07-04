@@ -71,7 +71,7 @@
       "format": {
         "signal": "timeUnitSpecifier([\"hours\"], {\"year-month\":\"%b %Y \",\"year-month-date\":\"%b %d, %Y \"})"
       },
-      "formatType": "time",
+      "formatType": "utc",
       "labelOverlap": true,
       "zindex": 0
     }

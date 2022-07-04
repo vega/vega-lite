@@ -11,12 +11,11 @@
     ]
   },
   "transform": [{
-    "window": [{
+    "joinaggregate": [{
       "op": "sum",
       "field": "Time",
       "as": "TotalTime"
-    }],
-    "frame": [null, null]
+    }]
   },
   {
     "calculate": "datum.Time/datum.TotalTime * 100",

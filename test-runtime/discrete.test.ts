@@ -27,10 +27,7 @@ describe(`point selections at runtime in unit views`, () => {
       await embed(spec('unit', i, {type}));
       const store = await page.evaluate(pt('qq', i));
       expect(store).toHaveLength(1);
-      expect(store[0].fields).toHaveLength(1);
-      expect(store[0].values).toHaveLength(1);
-      expect(store[0].fields[0].field).toEqual(SELECTION_ID);
-      expect(store[0].fields[0].type).toBe('E');
+      expect(store[0]).toHaveProperty(SELECTION_ID);
       await testRender(`click_${i}`);
     }
   });

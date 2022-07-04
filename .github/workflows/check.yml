@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_PAT || github.token }}
 
       - name: Setup Node
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           cache: 'yarn'
 
@@ -35,7 +35,7 @@ jobs:
           sudo mv parallel sem /usr/local/bin
 
       - name: Format
-        if: github.ref != 'refs/heads/master'
+        if: github.ref != 'refs/heads/next'
         run: yarn format
 
       - name: Build Schema
@@ -52,16 +52,16 @@ jobs:
 
   toc:
     name: TOC
-    if: "!contains(github.event.head_commit.message, '[CI]')"
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           token: ${{ secrets.GH_PAT || github.token }}
 
       - name: Setup Node
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           cache: 'yarn'
 

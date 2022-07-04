@@ -3,7 +3,7 @@ name: Test
 on:
   push:
     branches:
-      - master
+      - next
   pull_request:
 
 jobs:
@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Node
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           cache: 'yarn'
 
@@ -36,10 +36,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Setup Node
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           cache: 'yarn'
 
@@ -54,13 +54,13 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
 
       - name: Setup Node
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           cache: 'yarn'
 
@@ -83,7 +83,7 @@ jobs:
         run: yarn jest test/ --collectCoverage=true
 
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2.1.0
+        uses: codecov/codecov-action@v3.1.0
 
   test-cli:
     name: CLI
@@ -93,13 +93,13 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
 
       - name: Setup Node
-        uses: actions/setup-node@v2.4.1
+        uses: actions/setup-node@v3
         with:
           cache: 'yarn'
 

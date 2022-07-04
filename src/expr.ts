@@ -10,7 +10,7 @@ export interface ExprRef {
 }
 
 export function isExprRef(o: any): o is ExprRef {
-  return o && !!o['expr'];
+  return !!o?.expr;
 }
 
 export function replaceExprRef<T extends Dict<any>>(index: T) {
