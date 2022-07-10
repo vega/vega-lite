@@ -69,7 +69,6 @@ export const hits = {
     facet: [2, 6, 9],
     facet_clear: [3, 4, 8]
   },
-
   interval: {
     drag: [
       [5, 14],
@@ -196,6 +195,18 @@ export function unitNameRegex(specType: ComposeType, idx: number) {
 
 export function parentSelector(compositeType: ComposeType, index: number) {
   return compositeType === 'facet' ? `cell > g:nth-child(${index + 1})` : `${UNIT_NAMES.repeat[index]}_group`;
+}
+
+export function clear(id: number, parent?: string, targetBrush?: boolean) {
+  return `pureClear(${id}, ${stringValue(parent)}, ${!!targetBrush})`;
+}
+
+export function region(id: number, parent?: string, targetBrush?: boolean) {
+  return `circleRegion(${stringValue(parent)}, ${!!targetBrush}, ${id})`;
+}
+
+export function regionByPolygon(id: number, polygon: [number, number][], parent?: string, targetBrush?: boolean) {
+  return `polygonRegion(${stringValue(parent)}, ${!!targetBrush}, ${id}, ${JSON.stringify(polygon)})`;
 }
 
 export function brush(key: string, idx: number, parent?: string, targetBrush?: boolean) {
