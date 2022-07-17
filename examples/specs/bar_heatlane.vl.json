@@ -12,7 +12,7 @@
       "as": ["bin_Horsepower_start", "bin_Horsepower_end"]
     },
     {
-      "aggregate": [{"op": "count"}],
+      "aggregate": [{"op": "count", "as": "count"}],
       "groupby": ["bin_Horsepower_start", "bin_Horsepower_end"]
     },
     {"bin": true, "field": "count", "as": ["bin_count_start", "bin_count_end"]},
