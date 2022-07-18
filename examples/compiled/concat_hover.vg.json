@@ -68,7 +68,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "mouseover"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_0\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
+              "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"concat_0\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
               "force": true
             },
             {
@@ -196,7 +196,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "mouseover"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"concat_1\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
+              "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"concat_1\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
               "force": true
             },
             {

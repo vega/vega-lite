@@ -49,7 +49,7 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "dblclick"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
+          "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"\", _vgsid_: (item().isVoronoi ? datum.datum : datum)[\"_vgsid_\"]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}

@@ -156,7 +156,7 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "mouseover"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1_layer_1\", fields: hovered_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"country\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"layer_1_layer_1\", fields: hovered_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"country\"]]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
@@ -180,7 +180,7 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_1_layer_1\", fields: clicked_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"country\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"layer_1_layer_1\", fields: clicked_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"country\"]]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}

@@ -213,7 +213,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child__column_distance_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_distance\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_distance_end\"]]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"child__column_distance_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_distance\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_distance_end\"]]]} : null",
               "force": true
             },
             {
@@ -358,7 +358,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child__column_delay_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_delay\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_delay_end\"]]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"child__column_delay_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_delay\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_delay_end\"]]]} : null",
               "force": true
             },
             {
@@ -503,7 +503,7 @@
           "on": [
             {
               "events": [{"source": "scope", "type": "click"}],
-              "update": "datum && item().mark.marktype !== 'group' ? {unit: \"child__column_time_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_time\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_time_end\"]]]} : null",
+              "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"child__column_time_layer_0\", fields: brush_tuple_fields, values: [[(item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_time\"], (item().isVoronoi ? datum.datum : datum)[\"bin_maxbins_20_time_end\"]]]} : null",
               "force": true
             },
             {

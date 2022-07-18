@@ -119,7 +119,7 @@
               "markname": "layer_0_voronoi"
             }
           ],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_0\", fields: index_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"layer_0\", fields: index_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"date\"]]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}
