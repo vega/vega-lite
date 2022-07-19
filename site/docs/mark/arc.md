@@ -67,6 +67,10 @@ You can also add a text layer to add labels to a pie chart.
 
 **Note:** For now, [you need to add `stack: true`](https://github.com/vega/vega-lite/issues/5078) to theta to force the text to apply the same polar stacking layout.
 
+Alternatively, setting `stack: "normalize"` allows for tooltips that display the percentage of the pie taken up by a each slice.
+
+<span class="vl-example" data-name="arc_pie_normalize_tooltip"></span>
+
 ## Arc Config
 
 ```js
