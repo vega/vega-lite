@@ -136,13 +136,13 @@
     tslib "2.1.0"
     url-join "^4.0.0"
 
-"@auto-it/npm@10.37.1":
-  version "10.37.1"
-  resolved "https://registry.yarnpkg.com/@auto-it/npm/-/npm-10.37.1.tgz#5996e212479a0fd5772329a54b6b500fde3615fc"
-  integrity sha512-W+VDRDDxwXfJBfzwP5cNCFjG6bF93Rfzm1GI2SD5ZCmHcgSyPC7dabmtHC1V1XQI+pcLsQe2JENSa13pfeFd6A==
+"@auto-it/npm@10.37.2":
+  version "10.37.2"
+  resolved "https://registry.yarnpkg.com/@auto-it/npm/-/npm-10.37.2.tgz#448cb26a641426085fe1754f3b96bbd87cd38f26"
+  integrity sha512-t+V7zzqzkE7WvlHdRUGpOt3E5LtlGnfs+vDUjaapcvOembLaUme0OfKn7PR768NiUaS9zT/o4w4Zo0g10VxQ1g==
   dependencies:
-    "@auto-it/core" "10.37.1"
-    "@auto-it/package-json-utils" "10.37.1"
+    "@auto-it/core" "10.37.2"
+    "@auto-it/package-json-utils" "10.37.2"
     await-to-js "^3.0.0"
     endent "^2.1.0"
     env-ci "^5.0.1"
@@ -156,32 +156,32 @@
     url-join "^4.0.0"
     user-home "^2.0.0"
 
-"@auto-it/package-json-utils@10.37.1":
-  version "10.37.1"
-  resolved "https://registry.yarnpkg.com/@auto-it/package-json-utils/-/package-json-utils-10.37.1.tgz#28b262b995b329e8801613fd90d04ca48d53d76b"
-  integrity sha512-FINnP3bbpXN+bd7tHxkBGFFYkLMEvk7Hr76QCB0EiFnS5BzoyLLIQ+AtOnkh6JVS4692G5mHYOZbJsxH+SEeQg==
+"@auto-it/package-json-utils@10.37.2":
+  version "10.37.2"
+  resolved "https://registry.yarnpkg.com/@auto-it/package-json-utils/-/package-json-utils-10.37.2.tgz#f09d200b2b700029820b734fbb9ef58ab41b7a1a"
+  integrity sha512-Dq65A6KkA6eTcVwzU9+vgTbvdPEWwCYVL1yJf6Dts3+UqST9/f4MqeTZUoP+ev6KQ3Iy/OmbA1ZRukx0hb5vMw==
   dependencies:
     parse-author "^2.0.0"
     parse-github-url "1.0.2"
 
-"@auto-it/released@10.37.1":
-  version "10.37.1"
-  resolved "https://registry.yarnpkg.com/@auto-it/released/-/released-10.37.1.tgz#9f68e5debb001c67fccfdae6966c0806f82ec3c0"
-  integrity sha512-2Ma+nd1FWIufPeP40mVJ6M7KlQPtI6M5sPKq4nyhBjiNUH0DbhhwnS4QOf7vrbrF3z94bcx2FnqKPP8+suwOLg==
+"@auto-it/released@10.37.2":
+  version "10.37.2"
+  resolved "https://registry.yarnpkg.com/@auto-it/released/-/released-10.37.2.tgz#cfe2e2c6d161cd61a9dd71470880190f7b1cbfa7"
+  integrity sha512-AueuCtcycEN6mXj3M+zY/YYIyliiG5r9///4cLHum3iz4XEhsoG9iKLwvMUrO2qVlo5tHpLhGkZ/ol44m/746g==
   dependencies:
-    "@auto-it/bot-list" "10.37.1"
-    "@auto-it/core" "10.37.1"
+    "@auto-it/bot-list" "10.37.2"
+    "@auto-it/core" "10.37.2"
     deepmerge "^4.0.0"
     fp-ts "^2.5.3"
     io-ts "^2.1.2"
     tslib "2.1.0"
 
-"@auto-it/version-file@10.37.1":
-  version "10.37.1"
-  resolved "https://registry.yarnpkg.com/@auto-it/version-file/-/version-file-10.37.1.tgz#8e92173a85bc56c09346ad67398522ab0e85386b"
-  integrity sha512-dPN5vppbCTpafA9WIWgW54oRzYKG4SjmHbtQd3G4L51qjjiL988T4CFWQnSanDwCvvJXjRskRsIqSf5kSXhC6A==
+"@auto-it/version-file@10.37.2":
+  version "10.37.2"
+  resolved "https://registry.yarnpkg.com/@auto-it/version-file/-/version-file-10.37.2.tgz#5a5dd7e879497ff85f90eead1c82cead404617d0"
+  integrity sha512-hG8hlvuCsm4Te3j38aJ7w8MLzf1tq4u0tYiUUQIFxAfFUFW6/Y1udpQv9lRy6htZnztWOVWU/09v/xIt2dILBA==
   dependencies:
-    "@auto-it/core" "10.37.1"
+    "@auto-it/core" "10.37.2"
     fp-ts "^2.5.3"
     io-ts "^2.1.2"
     semver "^7.0.0"
@@ -2455,14 +2455,14 @@ author-regex@^1.0.0:
   integrity sha1-0IiFvmubv5Q5/gh8dihyRfCoFFA=
 
 auto@^10.34.1:
-  version "10.37.1"
-  resolved "https://registry.yarnpkg.com/auto/-/auto-10.37.1.tgz#49c29de61646532c0f845f655f5aac89453f7268"
-  integrity sha512-WE/+4I2sIlpQQ4a5lbQzB1iptNG5wqA+nY1GWXNhvS1JKmz8J+rnLCbjaAVNwBKqLK8OCJHpW7izs0aOi/EncQ==
+  version "10.37.2"
+  resolved "https://registry.yarnpkg.com/auto/-/auto-10.37.2.tgz#fa45f10acafc14f7a800f73ad09f479330832f8d"
+  integrity sha512-H5xUQT+gQjbWl3FDnFKjo0PFSwesijbkXMzTQJYHpGf3ROxWkYco9o1qKVoR6zI+c4IERv0xSuwmILfhNHh5gg==
   dependencies:
-    "@auto-it/core" "10.37.1"
-    "@auto-it/npm" "10.37.1"
-    "@auto-it/released" "10.37.1"
-    "@auto-it/version-file" "10.37.1"
+    "@auto-it/core" "10.37.2"
+    "@auto-it/npm" "10.37.2"
+    "@auto-it/released" "10.37.2"
+    "@auto-it/version-file" "10.37.2"
     await-to-js "^3.0.0"
     chalk "^4.0.0"
     command-line-application "^0.10.1"
