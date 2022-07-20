@@ -47,6 +47,10 @@
         "title": "Normalized (Percentage) Stacked Bar Chart"
       },
       {
+        "name": "stacked_bar_normalize_custom_format",
+        "title": "Normalized (Percentage) Stacked Bar Chart With Custom Tooltip Format"
+      },
+      {
         "name": "stacked_bar_h_normalized_labeled",
         "title": "Normalized (Percentage) Stacked Bar Chart With Labels"
       },
@@ -778,10 +782,10 @@
         "png": true
       },
       {
-	"name": "interactive_geo_earthquakes",
-	"title": "Earthquakes Example",
-	"description": "Interactive globe visualization of earthquakes",
-	"png": true
+        "name": "interactive_geo_earthquakes",
+        "title": "Earthquakes Example",
+        "description": "Interactive globe visualization of earthquakes",
+        "png": true
       }
     ]
   },

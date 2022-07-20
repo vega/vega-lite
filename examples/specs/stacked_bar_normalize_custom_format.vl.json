@@ -18,5 +18,9 @@
       "field": "gender",
       "scale": {"range": ["#675193", "#ca8861"]}
     }
+  },
+  "config": {
+    "customFormatTypes": true,
+    "normalizedNumberFormat": ".4%"
   }
 }

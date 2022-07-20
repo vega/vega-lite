@@ -7,6 +7,7 @@ import {
   FieldDef,
   isFieldDef,
   isFieldOrDatumDefForTimeFormat,
+  isPositionFieldOrDatumDef,
   isScaleFieldDef,
   vgField
 } from '../channeldef';
@@ -74,6 +75,23 @@ export function formatSignalRef({
     });
   }
 
+  if (
+    normalizeStack &&
+    type === 'quantitative' &&
+    format === undefined &&
+    formatType === undefined &&
+    config.customFormatTypes &&
+    config.normalizedNumberFormatType
+  ) {
+    return formatCustomType({
+      fieldOrDatumDef,
+      format: config.normalizedNumberFormat,
+      formatType: config.normalizedNumberFormatType,
+      expr,
+      config
+    });
+  }
+
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
     const signal = timeFormatExpression(
       field,
@@ -85,7 +103,7 @@ export function formatSignalRef({
     return signal ? {signal} : undefined;
   }
 
-  format = numberFormat(type, format, config);
+  format = numberFormat(type, format, config, normalizeStack);
   if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
     const endField = vgField(fieldOrDatumDef, {expr, binSuffix: 'end'});
     return {
@@ -163,6 +181,15 @@ export function guideFormat(
     return undefined; // handled in encode block
   } else if (format === undefined && formatType === undefined && config.numberFormatType && config.customFormatTypes) {
     return undefined; // handled in encode block
+  } else if (
+    format === undefined &&
+    formatType === undefined &&
+    config.normalizedNumberFormatType &&
+    config.customFormatTypes &&
+    isPositionFieldOrDatumDef(fieldOrDatumDef) &&
+    fieldOrDatumDef.stack === 'normalize'
+  ) {
+    return undefined; // handled in encode block
   }
 
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
@@ -191,7 +218,12 @@ export function guideFormatType(
 /**
  * Returns number format for a fieldDef.
  */
-export function numberFormat(type: Type, specifiedFormat: string | Dict<unknown>, config: Config) {
+export function numberFormat(
+  type: Type,
+  specifiedFormat: string | Dict<unknown>,
+  config: Config,
+  normalizedStack?: boolean
+) {
   // Specified format in axis/legend has higher precedence than fieldDef.format
   if (isString(specifiedFormat)) {
     return specifiedFormat;
@@ -199,7 +231,7 @@ export function numberFormat(type: Type, specifiedFormat: string | Dict<unknown>
 
   if (type === QUANTITATIVE) {
     // we only apply the default if the field is quantitative
-    return config.numberFormat;
+    return normalizedStack ? config.normalizedNumberFormat : config.numberFormat;
   }
   return undefined;
 }
@@ -243,7 +275,6 @@ export function binFormatExpression(
   if (format === undefined && formatType === undefined && config.customFormatTypes && config.numberFormatType) {
     return binFormatExpression(startField, endField, config.numberFormat, config.numberFormatType, config);
   }
-
   const start = binNumberFormatExpr(startField, format, formatType, config);
   const end = binNumberFormatExpr(endField, format, formatType, config);
   return `${fieldValidPredicate(startField, false)} ? "null" : ${start} + "${BIN_RANGE_DELIMITER}" + ${end}`;

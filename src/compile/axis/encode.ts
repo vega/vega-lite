@@ -1,5 +1,5 @@
 import {getSecondaryRangeChannel, PositionScaleChannel} from '../../channel';
-import {channelDefType, getFieldOrDatumDef} from '../../channeldef';
+import {channelDefType, getFieldOrDatumDef, isPositionFieldOrDatumDef} from '../../channeldef';
 import {formatCustomType, isCustomFormatType} from '../format';
 import {UnitModel} from '../unit';
 
@@ -35,6 +35,25 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
         field: 'datum.value',
         format: config.numberFormat,
         formatType: config.numberFormatType,
+        config
+      }),
+      ...specifiedLabelsSpec
+    };
+  } else if (
+    format === undefined &&
+    formatType === undefined &&
+    config.customFormatTypes &&
+    config.normalizedNumberFormatType &&
+    isPositionFieldOrDatumDef(fieldOrDatumDef) &&
+    fieldOrDatumDef.stack === 'normalize' &&
+    channelDefType(fieldOrDatumDef) === 'quantitative'
+  ) {
+    return {
+      text: formatCustomType({
+        fieldOrDatumDef,
+        field: 'datum.value',
+        format: config.normalizedNumberFormat,
+        formatType: config.normalizedNumberFormatType,
         config
       }),
       ...specifiedLabelsSpec
