@@ -7665,14 +7665,7 @@
         "params": {
           "description": "Dynamic variables or selections that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/VariableParameter"
-              },
-              {
-                "$ref": "#/definitions/TopLevelSelectionParameter"
-              }
-            ]
+            "$ref": "#/definitions/TopLevelParameter"
           },
           "type": "array"
         },
@@ -9268,14 +9261,7 @@
         "params": {
           "description": "An array of parameters that may either be simple variables, or more complex selections that map user input to data queries.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/VariableParameter"
-              },
-              {
-                "$ref": "#/definitions/SelectionParameter"
-              }
-            ]
+            "$ref": "#/definitions/SelectionParameter"
           },
           "type": "array"
         },
@@ -11092,14 +11078,7 @@
         "params": {
           "description": "An array of parameters that may either be simple variables, or more complex selections that map user input to data queries.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/VariableParameter"
-              },
-              {
-                "$ref": "#/definitions/SelectionParameter"
-              }
-            ]
+            "$ref": "#/definitions/SelectionParameter"
           },
           "type": "array"
         },
@@ -28440,14 +28419,7 @@
         "params": {
           "description": "Dynamic variables or selections that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/VariableParameter"
-              },
-              {
-                "$ref": "#/definitions/TopLevelSelectionParameter"
-              }
-            ]
+            "$ref": "#/definitions/TopLevelParameter"
           },
           "type": "array"
         },
@@ -28584,14 +28556,7 @@
         "params": {
           "description": "Dynamic variables or selections that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/VariableParameter"
-              },
-              {
-                "$ref": "#/definitions/TopLevelSelectionParameter"
-              }
-            ]
+            "$ref": "#/definitions/TopLevelParameter"
           },
           "type": "array"
         },
@@ -28714,14 +28679,7 @@
         "params": {
           "description": "Dynamic variables or selections that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/VariableParameter"
-              },
-              {
-                "$ref": "#/definitions/TopLevelSelectionParameter"
-              }
-            ]
+            "$ref": "#/definitions/TopLevelParameter"
           },
           "type": "array"
         },
@@ -28872,14 +28830,7 @@
         "params": {
           "description": "Dynamic variables or selections that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/VariableParameter"
-              },
-              {
-                "$ref": "#/definitions/TopLevelSelectionParameter"
-              }
-            ]
+            "$ref": "#/definitions/TopLevelParameter"
           },
           "type": "array"
         },
@@ -29045,14 +28996,7 @@
             "params": {
               "description": "Dynamic variables or selections that parameterize a visualization.",
               "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/definitions/VariableParameter"
-                  },
-                  {
-                    "$ref": "#/definitions/TopLevelSelectionParameter"
-                  }
-                ]
+                "$ref": "#/definitions/TopLevelParameter"
               },
               "type": "array"
             },
@@ -29223,14 +29167,7 @@
             "params": {
               "description": "Dynamic variables or selections that parameterize a visualization.",
               "items": {
-                "anyOf": [
-                  {
-                    "$ref": "#/definitions/VariableParameter"
-                  },
-                  {
-                    "$ref": "#/definitions/TopLevelSelectionParameter"
-                  }
-                ]
+                "$ref": "#/definitions/TopLevelParameter"
               },
               "type": "array"
             },
@@ -29411,14 +29348,7 @@
         "params": {
           "description": "Dynamic variables or selections that parameterize a visualization.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/VariableParameter"
-              },
-              {
-                "$ref": "#/definitions/TopLevelSelectionParameter"
-              }
-            ]
+            "$ref": "#/definitions/TopLevelParameter"
           },
           "type": "array"
         },
@@ -29477,6 +29407,16 @@
         "spec"
       ],
       "type": "object"
+    },
+    "TopLevelParameter": {
+      "anyOf": [
+        {
+          "$ref": "#/definitions/VariableParameter"
+        },
+        {
+          "$ref": "#/definitions/TopLevelSelectionParameter"
+        }
+      ]
     },
     "TopLevelSelectionParameter": {
       "additionalProperties": false,
@@ -29711,14 +29651,7 @@
         "params": {
           "description": "An array of parameters that may either be simple variables, or more complex selections that map user input to data queries.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/VariableParameter"
-              },
-              {
-                "$ref": "#/definitions/SelectionParameter"
-              }
-            ]
+            "$ref": "#/definitions/TopLevelParameter"
           },
           "type": "array"
         },
@@ -30017,14 +29950,7 @@
         "params": {
           "description": "An array of parameters that may either be simple variables, or more complex selections that map user input to data queries.",
           "items": {
-            "anyOf": [
-              {
-                "$ref": "#/definitions/VariableParameter"
-              },
-              {
-                "$ref": "#/definitions/SelectionParameter"
-              }
-            ]
+            "$ref": "#/definitions/SelectionParameter"
           },
           "type": "array"
         },
