@@ -48,7 +48,7 @@ const topLevelSelectionNormalizer = new TopLevelSelectionsNormalizer();
  * And push top-level selection definitions down to unit specs.
  */
 function normalizeGenericSpec(
-  spec: NonNormalizedSpec | FacetedUnitSpec<Field> | RepeatSpec,
+  spec: NonNormalizedSpec | FacetedUnitSpec<Field, any> | RepeatSpec,
   config: Config<SignalRef> = {}
 ) {
   const normParams = {config};
