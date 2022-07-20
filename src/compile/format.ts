@@ -92,6 +92,23 @@ export function formatSignalRef({
     });
   }
 
+  if (
+    normalizeStack &&
+    type === 'quantitative' &&
+    format === undefined &&
+    formatType === undefined &&
+    config.customFormatTypes &&
+    config.normalizedNumberFormatType
+  ) {
+    return formatCustomType({
+      fieldOrDatumDef,
+      format: config.normalizedNumberFormat,
+      formatType: config.normalizedNumberFormatType,
+      expr,
+      config
+    });
+  }
+
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
     const signal = timeFormatExpression(
       field,
