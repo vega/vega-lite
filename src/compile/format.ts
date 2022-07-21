@@ -60,22 +60,6 @@ export function formatSignalRef({
   const type = channelDefType(fieldOrDatumDef);
 
   if (
-    type === 'quantitative' &&
-    format === undefined &&
-    formatType === undefined &&
-    config.customFormatTypes &&
-    config.numberFormatType
-  ) {
-    return formatCustomType({
-      fieldOrDatumDef,
-      format: config.numberFormat,
-      formatType: config.numberFormatType,
-      expr,
-      config
-    });
-  }
-
-  if (
     normalizeStack &&
     type === 'quantitative' &&
     format === undefined &&
@@ -87,6 +71,22 @@ export function formatSignalRef({
       fieldOrDatumDef,
       format: config.normalizedNumberFormat,
       formatType: config.normalizedNumberFormatType,
+      expr,
+      config
+    });
+  }
+
+  if (
+    type === 'quantitative' &&
+    format === undefined &&
+    formatType === undefined &&
+    config.customFormatTypes &&
+    config.numberFormatType
+  ) {
+    return formatCustomType({
+      fieldOrDatumDef,
+      format: config.numberFormat,
+      formatType: config.numberFormatType,
       expr,
       config
     });
