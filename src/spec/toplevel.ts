@@ -16,6 +16,8 @@ export type Padding = number | {top?: number; bottom?: number; left?: number; ri
 
 export type Datasets = Dict<InlineDataset>;
 
+export type TopLevelParameter = VariableParameter | TopLevelSelectionParameter;
+
 export type TopLevel<S extends BaseSpec> = S &
   TopLevelProperties & {
     /**
@@ -72,7 +74,7 @@ export interface TopLevelProperties<ES extends ExprRef | SignalRef = ExprRef | S
   /**
    * Dynamic variables or selections that parameterize a visualization.
    */
-  params?: (VariableParameter | TopLevelSelectionParameter)[];
+  params?: TopLevelParameter[];
 }
 
 export type FitType = 'fit' | 'fit-x' | 'fit-y';
