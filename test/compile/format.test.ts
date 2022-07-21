@@ -1,4 +1,4 @@
-import {vgField} from '../../src/channeldef';
+import {PositionDatumDef, vgField} from '../../src/channeldef';
 import {
   formatSignalRef,
   guideFormat,
@@ -256,6 +256,18 @@ describe('Format', () => {
         undefined,
         undefined,
         {numberFormat: 'abc', numberFormatType: 'customFormatter', customFormatTypes: true},
+        false
+      );
+      expect(format).toBeUndefined();
+    });
+
+    it('returns undefined for custom normalizedNumberFormatType in the config', () => {
+      const format = guideFormat(
+        {datum: 200, type: 'quantitative', stack: 'normalize'} as PositionDatumDef<string>,
+        'quantitative',
+        undefined,
+        undefined,
+        {normalizedNumberFormat: 'abc', normalizedNumberFormatType: 'customFormatter', customFormatTypes: true},
         false
       );
       expect(format).toBeUndefined();
