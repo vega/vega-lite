@@ -170,7 +170,7 @@ describe('compile/legend', () => {
   it('returns correct expression for custom format Type from config.numberFormatType', () => {
     const fieldDef: Encoding<string>['color'] = {
       field: 'a',
-      type: 'temporal'
+      type: 'quantitative'
     };
 
     const model = parseUnitModelWithScale({
