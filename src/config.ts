@@ -146,7 +146,7 @@ export interface VLOnlyConfig<ES extends ExprRef | SignalRef> {
 
   /**
    * If numberFormatType is not specified,
-   * D3 Number format for guide labels and text marks. For example `"s"` for SI units.
+   * D3 number format for guide labels, text marks, and tooltips of non-normalized fields (fields *without* `stack: "normalize"`). For example `"s"` for SI units.
    * Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
    *
    * If `config.numberFormatType` is specified and `config.customFormatTypes` is `true`, this value will be passed as `format` alongside `datum.value` to the `config.numberFormatType` function.
@@ -164,18 +164,17 @@ export interface VLOnlyConfig<ES extends ExprRef | SignalRef> {
 
   /**
    * If normalizedNumberFormatType is not specified,
-   * D3 Number format for guide labels and text marks. For example `"s"` for SI units.
+   * D3 number format for axis labels, text marks, and tooltips of normalized stacked fields (fields with `stack: "normalize"`). For example `"s"` for SI units.
    * Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
    *
    * If `config.normalizedNumberFormatType` is specified and `config.customFormatTypes` is `true`, this value will be passed as `format` alongside `datum.value` to the `config.numberFormatType` function.
    * __Default value:__ `.2%`
-   * __Note:__ You must be using a chart with `stack: "normalize"` to use this feature.
    */
   normalizedNumberFormat?: string;
 
   /**
    * [Custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type)
-   * for `config.numberFormat`.
+   * for `config.normalizedNumberFormat`.
    *
    * __Default value:__ `undefined` -- This is equilvalent to call D3-format, which is exposed as [`format` in Vega-Expression](https://vega.github.io/vega/docs/expressions/#format).
    * __Note:__ You must also set `customFormatTypes` to `true` to use this feature.
