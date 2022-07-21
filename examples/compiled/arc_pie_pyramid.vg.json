@@ -79,5 +79,6 @@
       "fill": "color",
       "symbolType": "circle"
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

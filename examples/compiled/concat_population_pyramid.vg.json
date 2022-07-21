@@ -300,5 +300,9 @@
       "paddingOuter": 0.05
     }
   ],
-  "config": {"axis": {"grid": false}, "style": {"cell": {"stroke": null}}}
+  "config": {
+    "normalizedNumberFormat": ".2%",
+    "axis": {"grid": false},
+    "style": {"cell": {"stroke": null}}
+  }
 }

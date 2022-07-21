@@ -391,5 +391,6 @@
       "zero": true
     }
   ],
-  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "location"}]
+  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "location"}],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

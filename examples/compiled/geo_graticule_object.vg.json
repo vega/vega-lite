@@ -31,5 +31,6 @@
       },
       "transform": [{"type": "geoshape", "projection": "projection"}]
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

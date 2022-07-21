@@ -187,5 +187,6 @@
       "range": "category"
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "square", "title": "country"}]
+  "legends": [{"fill": "color", "symbolType": "square", "title": "country"}],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

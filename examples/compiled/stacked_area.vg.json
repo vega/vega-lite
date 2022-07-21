@@ -161,5 +161,6 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "circle", "title": "series"}]
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "series"}],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

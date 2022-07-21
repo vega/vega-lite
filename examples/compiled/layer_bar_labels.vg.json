@@ -136,5 +136,6 @@
       "zindex": 0
     },
     {"scale": "y", "orient": "left", "grid": false, "title": "a", "zindex": 0}
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

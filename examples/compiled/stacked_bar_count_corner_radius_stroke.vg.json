@@ -188,5 +188,8 @@
       }
     }
   ],
-  "config": {"style": {"bar": {"strokeWidth": 2}}}
+  "config": {
+    "normalizedNumberFormat": ".2%",
+    "style": {"bar": {"strokeWidth": 2}}
+  }
 }

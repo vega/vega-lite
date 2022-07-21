@@ -79,5 +79,8 @@
       "zindex": 0
     }
   ],
-  "config": {"axis": {"domain": false, "grid": false}}
+  "config": {
+    "normalizedNumberFormat": ".2%",
+    "axis": {"domain": false, "grid": false}
+  }
 }

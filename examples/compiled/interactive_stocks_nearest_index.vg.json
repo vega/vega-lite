@@ -301,5 +301,8 @@
     }
   ],
   "legends": [{"stroke": "color", "symbolType": "stroke", "title": "symbol"}],
-  "config": {"style": {"text": {"align": "right", "dx": -5, "dy": 5}}}
+  "config": {
+    "normalizedNumberFormat": ".2%",
+    "style": {"text": {"align": "right", "dx": -5, "dy": 5}}
+  }
 }

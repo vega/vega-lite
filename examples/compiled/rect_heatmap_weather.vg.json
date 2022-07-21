@@ -123,5 +123,9 @@
   "legends": [
     {"fill": "color", "gradientLength": {"signal": "clamp(height, 64, 200)"}}
   ],
-  "config": {"axis": {"domain": false}, "style": {"cell": {"strokeWidth": 0}}}
+  "config": {
+    "normalizedNumberFormat": ".2%",
+    "axis": {"domain": false},
+    "style": {"cell": {"strokeWidth": 0}}
+  }
 }

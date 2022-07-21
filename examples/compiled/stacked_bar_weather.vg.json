@@ -128,5 +128,6 @@
   ],
   "legends": [
     {"title": "Weather type", "fill": "color", "symbolType": "square"}
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

@@ -199,5 +199,8 @@
       "zindex": 0
     }
   ],
-  "config": {"style": {"cell": {"stroke": null}}}
+  "config": {
+    "normalizedNumberFormat": ".2%",
+    "style": {"cell": {"stroke": null}}
+  }
 }

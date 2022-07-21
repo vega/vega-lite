@@ -135,5 +135,6 @@
       "range": [0, {"signal": "pow(earthquakeSize, 3)"}],
       "zero": true
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

@@ -617,5 +617,6 @@
       "stroke": "color",
       "symbolType": "stroke"
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

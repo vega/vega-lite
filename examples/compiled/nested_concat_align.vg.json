@@ -574,5 +574,9 @@
       "zero": true
     }
   ],
-  "config": {"axisX": {"titleLimit": 150}, "axisY": {"minExtent": 40}}
+  "config": {
+    "normalizedNumberFormat": ".2%",
+    "axisX": {"titleLimit": 150},
+    "axisY": {"minExtent": 40}
+  }
 }

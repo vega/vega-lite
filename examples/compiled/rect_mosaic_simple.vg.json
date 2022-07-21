@@ -103,5 +103,6 @@
       "zero": false
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "square", "title": "Origin"}]
+  "legends": [{"fill": "color", "symbolType": "square", "title": "Origin"}],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

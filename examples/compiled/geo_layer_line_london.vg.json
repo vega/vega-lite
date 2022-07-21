@@ -149,5 +149,6 @@
       "symbolType": "circle",
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

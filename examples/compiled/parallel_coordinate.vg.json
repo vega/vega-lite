@@ -281,6 +281,7 @@
     }
   ],
   "config": {
+    "normalizedNumberFormat": ".2%",
     "axisX": {
       "domain": false,
       "labelAngle": 0,

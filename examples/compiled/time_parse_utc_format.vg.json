@@ -81,5 +81,6 @@
       "labelOverlap": true,
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

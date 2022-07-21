@@ -160,5 +160,6 @@
       "title": "variety",
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

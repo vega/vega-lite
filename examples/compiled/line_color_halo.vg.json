@@ -303,5 +303,6 @@
       "zindex": 0
     }
   ],
-  "legends": [{"stroke": "stroke", "symbolType": "stroke"}]
+  "legends": [{"stroke": "stroke", "symbolType": "stroke"}],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

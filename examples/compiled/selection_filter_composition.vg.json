@@ -559,5 +559,6 @@
       "range": [{"signal": "childHeight"}, 0],
       "zero": true
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

@@ -53,10 +53,13 @@
       "from": {"data": "source_0"},
       "encode": {
         "update": {
+          "tooltip": {
+            "signal": "{\"age\": isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"], \"population\": format(datum[\"sum_people_end\"]-datum[\"sum_people_start\"], \".2%\"), \"gender\": isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"]}"
+          },
           "fill": {"scale": "color", "field": "gender"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people_end\"]-datum[\"sum_people_start\"], \"\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+            "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people_end\"]-datum[\"sum_people_start\"], \".2%\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
           },
           "x": {"scale": "x", "field": "age"},
           "width": {"scale": "x", "band": 1},
@@ -125,5 +128,6 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "square", "title": "gender"}]
+  "legends": [{"fill": "color", "symbolType": "square", "title": "gender"}],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

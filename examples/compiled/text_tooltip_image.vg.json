@@ -57,5 +57,6 @@
       "range": {"step": {"signal": "y_step"}},
       "padding": 0.5
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }
