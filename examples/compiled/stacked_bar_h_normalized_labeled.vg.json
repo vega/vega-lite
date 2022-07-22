@@ -157,6 +157,11 @@
       "labelFlush": true,
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(width/40)"},
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "format(datum.value, \".2%\")"}}
+        }
+      },
       "zindex": 0
     },
     {"scale": "y", "orient": "left", "grid": false, "title": "age", "zindex": 0}

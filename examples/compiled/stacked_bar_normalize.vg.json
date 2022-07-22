@@ -122,6 +122,11 @@
       "title": "population",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
+      "encode": {
+        "labels": {
+          "update": {"text": {"signal": "format(datum.value, \".2%\")"}}
+        }
+      },
       "zindex": 0
     }
   ],
