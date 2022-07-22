@@ -120,13 +120,9 @@
       "orient": "left",
       "grid": false,
       "title": "population",
+      "format": ".0%",
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
-      "encode": {
-        "labels": {
-          "update": {"text": {"signal": "format(datum.value, \".0%\")"}}
-        }
-      },
       "zindex": 0
     }
   ],

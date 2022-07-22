@@ -187,7 +187,6 @@ export function guideFormat(
   ) {
     if (
       config.normalizedNumberFormatType &&
-      config.customFormatTypes &&
       isPositionFieldOrDatumDef(fieldOrDatumDef) &&
       fieldOrDatumDef.stack === 'normalize'
     ) {
