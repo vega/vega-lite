@@ -25,23 +25,6 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   } else if (
     format === undefined &&
     formatType === undefined &&
-    config.customFormatTypes &&
-    config.numberFormatType &&
-    channelDefType(fieldOrDatumDef) === 'quantitative'
-  ) {
-    return {
-      text: formatCustomType({
-        fieldOrDatumDef,
-        field: 'datum.value',
-        format: config.numberFormat,
-        formatType: config.numberFormatType,
-        config
-      }),
-      ...specifiedLabelsSpec
-    };
-  } else if (
-    format === undefined &&
-    formatType === undefined &&
     isPositionFieldOrDatumDef(fieldOrDatumDef) &&
     fieldOrDatumDef.stack === 'normalize' &&
     channelDefType(fieldOrDatumDef) === 'quantitative'
@@ -60,7 +43,23 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
       }),
       ...specifiedLabelsSpec
     };
+  } else if (
+    format === undefined &&
+    formatType === undefined &&
+    config.customFormatTypes &&
+    config.numberFormatType &&
+    channelDefType(fieldOrDatumDef) === 'quantitative'
+  ) {
+    return {
+      text: formatCustomType({
+        fieldOrDatumDef,
+        field: 'datum.value',
+        format: config.numberFormat,
+        formatType: config.numberFormatType,
+        config
+      }),
+      ...specifiedLabelsSpec
+    };
   }
-
   return specifiedLabelsSpec;
 }
