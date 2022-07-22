@@ -351,7 +351,7 @@ export const defaultConfig: Config<SignalRef> = {
   facet: {spacing: DEFAULT_SPACING},
   concat: {spacing: DEFAULT_SPACING},
 
-  normalizedNumberFormat: '%'
+  normalizedNumberFormat: '.0%'
 };
 
 // Tableau10 color palette, copied from `vegaScale.scheme('tableau10')`
