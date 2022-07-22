@@ -182,7 +182,6 @@ export function guideFormat(
   } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
     if (
       config.normalizedNumberFormatType &&
-      config.customFormatTypes &&
       isPositionFieldOrDatumDef(fieldOrDatumDef) &&
       fieldOrDatumDef.stack === 'normalize' &&
       channelDefType(fieldOrDatumDef) === 'quantitative'
