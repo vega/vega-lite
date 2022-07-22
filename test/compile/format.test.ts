@@ -261,7 +261,7 @@ describe('Format', () => {
       expect(format).toBeUndefined();
     });
 
-    it('returns undefined for custom normalizedNumberFormatType in the config', () => {
+    it('returns undefined for normalized field if custom normalizedNumberFormatType is in the config', () => {
       const format = guideFormat(
         {datum: 200, type: 'quantitative', stack: 'normalize'} as PositionDatumDef<string>,
         'quantitative',
