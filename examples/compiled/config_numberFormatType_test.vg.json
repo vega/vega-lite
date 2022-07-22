@@ -289,5 +289,5 @@
       }
     }
   ],
-  "config": {"normalizedNumberFormat": ".2%", "customFormatTypes": true}
+  "config": {"customFormatTypes": true}
 }

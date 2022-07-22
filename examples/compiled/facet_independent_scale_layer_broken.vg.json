@@ -298,8 +298,5 @@
       "encode": {"symbols": {"update": {"fill": {"value": "transparent"}}}}
     }
   ],
-  "config": {
-    "normalizedNumberFormat": ".2%",
-    "style": {"cell": {"fill": "yellow"}}
-  }
+  "config": {"style": {"cell": {"fill": "yellow"}}}
 }

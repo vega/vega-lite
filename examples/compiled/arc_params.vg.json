@@ -163,6 +163,5 @@
       "zero": true
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "circle", "title": "category"}],
-  "config": {"normalizedNumberFormat": ".2%"}
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "category"}]
 }

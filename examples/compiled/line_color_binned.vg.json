@@ -164,6 +164,5 @@
       "symbolType": "stroke",
       "title": "Acceleration (binned)"
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

@@ -137,6 +137,5 @@
       "gradientLength": {"signal": "clamp(height, 64, 200)"},
       "encode": {"gradient": {"update": {"opacity": {"value": 0.7}}}}
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

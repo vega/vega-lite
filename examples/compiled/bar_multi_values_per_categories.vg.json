@@ -122,6 +122,5 @@
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

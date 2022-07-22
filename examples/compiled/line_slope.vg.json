@@ -127,6 +127,5 @@
       "zindex": 0
     }
   ],
-  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "site"}],
-  "config": {"normalizedNumberFormat": ".2%"}
+  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "site"}]
 }

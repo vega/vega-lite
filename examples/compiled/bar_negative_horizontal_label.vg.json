@@ -175,6 +175,5 @@
       "labelAlign": "right",
       "zindex": 0
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

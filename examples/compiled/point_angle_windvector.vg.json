@@ -101,9 +101,5 @@
       "aria": false
     }
   ],
-  "config": {
-    "normalizedNumberFormat": ".2%",
-    "aria": false,
-    "style": {"cell": {"fill": "black"}}
-  }
+  "config": {"aria": false, "style": {"cell": {"fill": "black"}}}
 }

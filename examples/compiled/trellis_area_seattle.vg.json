@@ -193,8 +193,5 @@
       "nice": true
     }
   ],
-  "config": {
-    "normalizedNumberFormat": ".2%",
-    "axis": {"grid": false, "domain": false}
-  }
+  "config": {"axis": {"grid": false, "domain": false}}
 }

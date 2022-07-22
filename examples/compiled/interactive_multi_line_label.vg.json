@@ -373,6 +373,5 @@
       "encode": {"symbols": {"update": {"opacity": {"value": 1}}}},
       "fill": "color"
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

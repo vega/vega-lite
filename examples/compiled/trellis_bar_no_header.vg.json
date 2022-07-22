@@ -169,6 +169,5 @@
       "range": ["#675193", "#ca8861"]
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "square", "title": "gender"}],
-  "config": {"normalizedNumberFormat": ".2%"}
+  "legends": [{"fill": "color", "symbolType": "square", "title": "gender"}]
 }

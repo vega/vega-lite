@@ -176,6 +176,5 @@
       "zero": false,
       "nice": true
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

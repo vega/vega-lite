@@ -160,6 +160,5 @@
       "title": "date (quarter)",
       "type": "symbol"
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

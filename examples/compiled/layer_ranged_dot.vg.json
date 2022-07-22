@@ -181,6 +181,5 @@
       "symbolType": "circle",
       "encode": {"symbols": {"update": {"opacity": {"value": 1}}}}
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

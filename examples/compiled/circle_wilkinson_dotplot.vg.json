@@ -85,6 +85,5 @@
       "labelBaseline": "middle",
       "zindex": 0
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

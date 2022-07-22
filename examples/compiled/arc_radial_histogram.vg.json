@@ -149,6 +149,5 @@
       "bins": {"signal": "layer_1_bin_maxbins_10_IMDB_Rating_bins"},
       "zero": false
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

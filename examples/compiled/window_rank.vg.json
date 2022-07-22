@@ -132,6 +132,5 @@
       "zindex": 0
     }
   ],
-  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "team"}],
-  "config": {"normalizedNumberFormat": ".2%"}
+  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "team"}]
 }

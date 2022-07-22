@@ -274,6 +274,5 @@
       "domain": {"data": "source_0", "field": "Cylinders", "sort": true},
       "range": "category"
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

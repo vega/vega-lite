@@ -322,8 +322,5 @@
       "zindex": 0
     }
   ],
-  "config": {
-    "normalizedNumberFormat": ".2%",
-    "style": {"text": {"fontWeight": "bold"}}
-  }
+  "config": {"style": {"text": {"fontWeight": "bold"}}}
 }

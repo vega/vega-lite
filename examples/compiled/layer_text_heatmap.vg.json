@@ -168,8 +168,5 @@
       "fill": "color"
     }
   ],
-  "config": {
-    "normalizedNumberFormat": ".2%",
-    "axis": {"grid": true, "tickBand": "extent"}
-  }
+  "config": {"axis": {"grid": true, "tickBand": "extent"}}
 }

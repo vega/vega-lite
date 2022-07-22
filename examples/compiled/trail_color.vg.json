@@ -136,6 +136,5 @@
   "legends": [
     {"stroke": "color", "symbolType": "stroke", "title": "symbol"},
     {"strokeWidth": "size", "symbolType": "stroke", "title": "price"}
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

@@ -149,6 +149,5 @@
       "title": "student",
       "zindex": 0
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

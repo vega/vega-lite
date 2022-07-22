@@ -256,6 +256,5 @@
       "interpolate": "hcl",
       "zero": false
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

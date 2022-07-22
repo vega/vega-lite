@@ -182,8 +182,5 @@
       "fill": "layer_0_color"
     }
   ],
-  "config": {
-    "normalizedNumberFormat": ".2%",
-    "axis": {"grid": true, "tickBand": "extent"}
-  }
+  "config": {"axis": {"grid": true, "tickBand": "extent"}}
 }

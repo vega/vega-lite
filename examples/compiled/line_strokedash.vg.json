@@ -133,6 +133,5 @@
       "title": "symbol",
       "encode": {"symbols": {"update": {"stroke": {"value": "#4c78a8"}}}}
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

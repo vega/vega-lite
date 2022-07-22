@@ -384,6 +384,5 @@
       "zindex": 0
     }
   ],
-  "legends": [{"title": "Response", "fill": "color", "symbolType": "square"}],
-  "config": {"normalizedNumberFormat": ".2%"}
+  "legends": [{"title": "Response", "fill": "color", "symbolType": "square"}]
 }

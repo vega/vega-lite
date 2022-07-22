@@ -182,7 +182,6 @@
     }
   ],
   "config": {
-    "normalizedNumberFormat": ".2%",
     "range": {"ramp": {"scheme": "yellowgreenblue"}},
     "axis": {"domain": false}
   }

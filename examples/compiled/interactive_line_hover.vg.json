@@ -347,8 +347,5 @@
       "zindex": 0
     }
   ],
-  "config": {
-    "normalizedNumberFormat": ".2%",
-    "style": {"cell": {"stroke": null}}
-  }
+  "config": {"style": {"cell": {"stroke": null}}}
 }

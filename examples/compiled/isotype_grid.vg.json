@@ -484,5 +484,5 @@
       "padding": 0.5
     }
   ],
-  "config": {"normalizedNumberFormat": ".2%", "style": {"cell": {"stroke": ""}}}
+  "config": {"style": {"cell": {"stroke": ""}}}
 }

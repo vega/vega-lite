@@ -248,6 +248,5 @@
       "direction": "horizontal",
       "symbolType": "square"
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

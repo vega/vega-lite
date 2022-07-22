@@ -201,8 +201,5 @@
     }
   ],
   "legends": [{"fill": "color", "symbolType": "square", "title": "group"}],
-  "config": {
-    "normalizedNumberFormat": ".2%",
-    "style": {"cell": {"stroke": "transparent"}}
-  }
+  "config": {"style": {"cell": {"stroke": "transparent"}}}
 }

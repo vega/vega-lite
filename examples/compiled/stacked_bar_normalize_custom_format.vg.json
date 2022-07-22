@@ -129,5 +129,5 @@
     }
   ],
   "legends": [{"fill": "color", "symbolType": "square", "title": "gender"}],
-  "config": {"normalizedNumberFormat": ".4%", "customFormatTypes": true}
+  "config": {"customFormatTypes": true}
 }

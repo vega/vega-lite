@@ -98,6 +98,5 @@
       "zindex": 0
     },
     {"scale": "y", "orient": "left", "grid": false, "title": "age", "zindex": 0}
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

@@ -164,8 +164,5 @@
       "zindex": 0
     }
   ],
-  "legends": [
-    {"fill": "color", "symbolType": "circle", "title": "Measurement"}
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "Measurement"}]
 }

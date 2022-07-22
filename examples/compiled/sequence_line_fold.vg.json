@@ -131,6 +131,5 @@
       "zindex": 0
     }
   ],
-  "legends": [{"stroke": "color", "symbolType": "stroke"}],
-  "config": {"normalizedNumberFormat": ".2%"}
+  "legends": [{"stroke": "color", "symbolType": "stroke"}]
 }

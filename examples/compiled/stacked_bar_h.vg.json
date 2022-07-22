@@ -120,6 +120,5 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "square", "title": "site"}],
-  "config": {"normalizedNumberFormat": ".2%"}
+  "legends": [{"fill": "color", "symbolType": "square", "title": "site"}]
 }

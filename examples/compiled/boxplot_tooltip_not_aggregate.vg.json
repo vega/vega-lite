@@ -305,6 +305,5 @@
       "title": "Species",
       "zindex": 0
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

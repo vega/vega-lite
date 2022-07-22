@@ -202,6 +202,5 @@
       "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
       "stroke": "color"
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }

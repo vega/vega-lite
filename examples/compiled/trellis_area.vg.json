@@ -183,6 +183,5 @@
       "domain": {"data": "source_0", "field": "symbol", "sort": true},
       "range": "category"
     }
-  ],
-  "config": {"normalizedNumberFormat": ".2%"}
+  ]
 }
