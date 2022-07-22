@@ -42,18 +42,20 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   } else if (
     format === undefined &&
     formatType === undefined &&
-    config.customFormatTypes &&
-    config.normalizedNumberFormatType &&
     isPositionFieldOrDatumDef(fieldOrDatumDef) &&
     fieldOrDatumDef.stack === 'normalize' &&
     channelDefType(fieldOrDatumDef) === 'quantitative'
   ) {
+    let fmt = 'format';
+    if (config.normalizedNumberFormatType && config.customFormatTypes) {
+      fmt = config.normalizedNumberFormatType;
+    }
     return {
       text: formatCustomType({
         fieldOrDatumDef,
         field: 'datum.value',
         format: config.normalizedNumberFormat,
-        formatType: config.normalizedNumberFormatType,
+        formatType: fmt,
         config
       }),
       ...specifiedLabelsSpec
