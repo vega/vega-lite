@@ -103,7 +103,7 @@ export function formatSignalRef({
     return signal ? {signal} : undefined;
   }
 
-  format = numberFormat(type, format, config, normalizeStack);
+  format = numberFormat({type, specifiedFormat: format, config, normalizeStack});
   if (isFieldDef(fieldOrDatumDef) && isBinning(fieldOrDatumDef.bin)) {
     const endField = vgField(fieldOrDatumDef, {expr, binSuffix: 'end'});
     return {
@@ -202,7 +202,11 @@ export function guideFormat(
     fieldOrDatumDef.stack === 'normalize' &&
     config.normalizedNumberFormat
   ) {
-    return numberFormat('quantitative', config.normalizedNumberFormat, config, true);
+    return numberFormat({
+      type: 'quantitative',
+      config,
+      normalizeStack: true
+    });
   }
 
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
@@ -211,7 +215,7 @@ export function guideFormat(
     return timeFormat(format as string, timeUnit, config, omitTimeFormatConfig);
   }
 
-  return numberFormat(type, format, config);
+  return numberFormat({type, specifiedFormat: format, config});
 }
 
 export function guideFormatType(
@@ -231,12 +235,17 @@ export function guideFormatType(
 /**
  * Returns number format for a fieldDef.
  */
-export function numberFormat(
-  type: Type,
-  specifiedFormat: string | Dict<unknown>,
-  config: Config,
-  normalizedStack?: boolean
-) {
+export function numberFormat({
+  type,
+  specifiedFormat,
+  config,
+  normalizeStack
+}: {
+  type: Type;
+  specifiedFormat?: string | Dict<unknown>;
+  config: Config;
+  normalizeStack?: boolean;
+}) {
   // Specified format in axis/legend has higher precedence than fieldDef.format
   if (isString(specifiedFormat)) {
     return specifiedFormat;
@@ -244,7 +253,7 @@ export function numberFormat(
 
   if (type === QUANTITATIVE) {
     // we only apply the default if the field is quantitative
-    return normalizedStack ? config.normalizedNumberFormat : config.numberFormat;
+    return normalizeStack ? config.normalizedNumberFormat : config.numberFormat;
   }
   return undefined;
 }

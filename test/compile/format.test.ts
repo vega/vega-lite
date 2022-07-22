@@ -79,35 +79,41 @@ describe('Format', () => {
 
   describe('numberFormat()', () => {
     it('should use number format for quantitative scale', () => {
-      expect(numberFormat(QUANTITATIVE, undefined, {numberFormat: 'd'})).toBe('d');
+      expect(numberFormat({type: QUANTITATIVE, config: {numberFormat: 'd'}})).toBe('d');
     });
 
     it('should use normalized number format for quantitative scale with stack: "normalize"', () => {
-      expect(numberFormat(QUANTITATIVE, undefined, {numberFormat: 'd', normalizedNumberFormat: 'c'}, true)).toBe('c');
+      expect(
+        numberFormat({
+          type: QUANTITATIVE,
+          config: {numberFormat: 'd', normalizedNumberFormat: 'c'},
+          normalizeStack: true
+        })
+      ).toBe('c');
     });
 
     it('should use number format for ordinal and nominal data but don not use config', () => {
       for (const type of [ORDINAL, NOMINAL]) {
-        expect(numberFormat(type, undefined, {numberFormat: 'd'})).toBeUndefined();
-        expect(numberFormat(type, 'd', {numberFormat: 'd'})).toBe('d');
+        expect(numberFormat({type, config: {numberFormat: 'd'}})).toBeUndefined();
+        expect(numberFormat({type, specifiedFormat: 'd', config: {numberFormat: 'd'}})).toBe('d');
       }
     });
 
     it('should support empty number format', () => {
-      expect(numberFormat(QUANTITATIVE, undefined, {numberFormat: ''})).toBe('');
+      expect(numberFormat({type: QUANTITATIVE, config: {numberFormat: ''}})).toBe('');
     });
 
     it('should use format if provided', () => {
-      expect(numberFormat(QUANTITATIVE, 'a', {})).toBe('a');
+      expect(numberFormat({type: QUANTITATIVE, specifiedFormat: 'a', config: {}})).toBe('a');
     });
 
     it('should not use number format for binned quantitative scale', () => {
-      expect(numberFormat(QUANTITATIVE, undefined, {})).toBeUndefined();
+      expect(numberFormat({type: QUANTITATIVE, config: {}})).toBeUndefined();
     });
 
     it('should not use number format for temporal scale', () => {
-      expect(numberFormat(TEMPORAL, undefined, {})).toBeUndefined();
-      expect(numberFormat(ORDINAL, undefined, {})).toBeUndefined();
+      expect(numberFormat({type: TEMPORAL, config: {}})).toBeUndefined();
+      expect(numberFormat({type: ORDINAL, config: {}})).toBeUndefined();
     });
   });
 
@@ -251,6 +257,18 @@ describe('Format', () => {
         false
       );
       expect(format).toBeUndefined();
+    });
+
+    it('returns format as normalizedNumberFormatType it is not in the config', () => {
+      const format = guideFormat(
+        {datum: 200, type: 'quantitative', stack: 'normalize'} as PositionDatumDef<string>,
+        'quantitative',
+        undefined,
+        undefined,
+        {normalizedNumberFormat: 'abc'},
+        false
+      );
+      expect(format).toBe('abc');
     });
   });
 
