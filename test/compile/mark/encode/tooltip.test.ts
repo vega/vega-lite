@@ -194,7 +194,7 @@ describe('compile/mark/encode/tooltip', () => {
           defaultConfig
         )
       ).toEqual({
-        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".2%")}`
+        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], "%")}`
       });
     });
 
