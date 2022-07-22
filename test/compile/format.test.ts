@@ -1,4 +1,4 @@
-import {vgField} from '../../src/channeldef';
+import {PositionDatumDef, vgField} from '../../src/channeldef';
 import {
   formatSignalRef,
   guideFormat,
@@ -80,6 +80,10 @@ describe('Format', () => {
   describe('numberFormat()', () => {
     it('should use number format for quantitative scale', () => {
       expect(numberFormat(QUANTITATIVE, undefined, {numberFormat: 'd'})).toBe('d');
+    });
+
+    it('should use normalized number format for quantitative scale with stack: "normalize"', () => {
+      expect(numberFormat(QUANTITATIVE, undefined, {numberFormat: 'd', normalizedNumberFormat: 'c'}, true)).toBe('c');
     });
 
     it('should use number format for ordinal and nominal data but don not use config', () => {
@@ -178,6 +182,66 @@ describe('Format', () => {
         signal: 'customFormatter(200, "abc")'
       });
     });
+
+    it('should use a custom formatter datumDef if config.normalizedNumberFormatType is present and stack is normalized', () => {
+      expect(
+        formatSignalRef({
+          fieldOrDatumDef: {datum: 200, type: 'quantitative'},
+          format: undefined,
+          formatType: undefined,
+          expr: 'parent',
+          normalizeStack: true,
+          config: {
+            normalizedNumberFormat: 'abc',
+            normalizedNumberFormatType: 'customFormatter',
+            customFormatTypes: true
+          }
+        })
+      ).toEqual({
+        signal: 'customFormatter(200, "abc")'
+      });
+    });
+
+    it('should prefer normalizedNumberFormat over numberFormat when stack is normalized', () => {
+      expect(
+        formatSignalRef({
+          fieldOrDatumDef: {datum: 200, type: 'quantitative'},
+          format: undefined,
+          formatType: undefined,
+          expr: 'parent',
+          normalizeStack: true,
+          config: {
+            numberFormat: 'def',
+            numberFormatType: 'customFormatter2',
+            normalizedNumberFormat: 'abc',
+            normalizedNumberFormatType: 'customFormatter',
+            customFormatTypes: true
+          }
+        })
+      ).toEqual({
+        signal: 'customFormatter(200, "abc")'
+      });
+    });
+
+    it('should prefer numberFormat over normalizedNumberFormat when stack is not normalized', () => {
+      expect(
+        formatSignalRef({
+          fieldOrDatumDef: {datum: 200, type: 'quantitative'},
+          format: undefined,
+          formatType: undefined,
+          expr: 'parent',
+          config: {
+            numberFormat: 'def',
+            numberFormatType: 'customFormatter2',
+            normalizedNumberFormat: 'abc',
+            normalizedNumberFormatType: 'customFormatter',
+            customFormatTypes: true
+          }
+        })
+      ).toEqual({
+        signal: 'customFormatter2(200, "def")'
+      });
+    });
   });
 
   describe('guideFormat', () => {
@@ -192,6 +256,18 @@ describe('Format', () => {
         undefined,
         undefined,
         {numberFormat: 'abc', numberFormatType: 'customFormatter', customFormatTypes: true},
+        false
+      );
+      expect(format).toBeUndefined();
+    });
+
+    it('returns undefined for custom normalizedNumberFormatType in the config', () => {
+      const format = guideFormat(
+        {datum: 200, type: 'quantitative', stack: 'normalize'} as PositionDatumDef<string>,
+        'quantitative',
+        undefined,
+        undefined,
+        {normalizedNumberFormat: 'abc', normalizedNumberFormatType: 'customFormatter', customFormatTypes: true},
         false
       );
       expect(format).toBeUndefined();

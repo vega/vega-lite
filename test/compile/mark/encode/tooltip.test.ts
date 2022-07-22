@@ -194,7 +194,32 @@ describe('compile/mark/encode/tooltip', () => {
           defaultConfig
         )
       ).toEqual({
-        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], "")}`
+        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".2%")}`
+      });
+    });
+
+    it('returns correct tooltip signal for formatted normalized stacked field', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            x: {
+              aggregate: 'sum',
+              field: 'IMDB_Rating',
+              type: 'quantitative'
+            }
+          },
+          {
+            fieldChannel: 'x',
+            groupbyChannels: [],
+            groupbyFields: new Set(),
+            offset: 'normalize',
+            impute: false,
+            stackBy: []
+          },
+          {...defaultConfig, normalizedNumberFormat: '.4%', customFormatTypes: true}
+        )
+      ).toEqual({
+        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".4%")}`
       });
     });
 
