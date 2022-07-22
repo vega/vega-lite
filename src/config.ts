@@ -168,7 +168,7 @@ export interface VLOnlyConfig<ES extends ExprRef | SignalRef> {
    * Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
    *
    * If `config.normalizedNumberFormatType` is specified and `config.customFormatTypes` is `true`, this value will be passed as `format` alongside `datum.value` to the `config.numberFormatType` function.
-   * __Default value:__ `.2%`
+   * __Default value:__ `%`
    */
   normalizedNumberFormat?: string;
 
@@ -351,7 +351,7 @@ export const defaultConfig: Config<SignalRef> = {
   facet: {spacing: DEFAULT_SPACING},
   concat: {spacing: DEFAULT_SPACING},
 
-  normalizedNumberFormat: '.2%'
+  normalizedNumberFormat: '%'
 };
 
 // Tableau10 color palette, copied from `vegaScale.scheme('tableau10')`
