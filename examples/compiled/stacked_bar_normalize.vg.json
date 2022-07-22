@@ -56,7 +56,7 @@
           "fill": {"scale": "color", "field": "gender"},
           "ariaRoleDescription": {"value": "bar"},
           "description": {
-            "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people_end\"]-datum[\"sum_people_start\"], \".2%\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
+            "signal": "\"age: \" + (isValid(datum[\"age\"]) ? datum[\"age\"] : \"\"+datum[\"age\"]) + \"; population: \" + (format(datum[\"sum_people_end\"]-datum[\"sum_people_start\"], \"%\")) + \"; gender: \" + (isValid(datum[\"gender\"]) ? datum[\"gender\"] : \"\"+datum[\"gender\"])"
           },
           "x": {"scale": "x", "field": "age"},
           "width": {"scale": "x", "band": 1},
@@ -123,9 +123,7 @@
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "encode": {
-        "labels": {
-          "update": {"text": {"signal": "format(datum.value, \".2%\")"}}
-        }
+        "labels": {"update": {"text": {"signal": "format(datum.value, \"%\")"}}}
       },
       "zindex": 0
     }
