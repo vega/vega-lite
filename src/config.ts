@@ -614,6 +614,8 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'concat',
   'numberFormat',
   'numberFormatType',
+  'normalizedNumberFormat',
+  'normalizedNumberFormatType',
   'timeFormat',
   'countTitle',
   'header',
