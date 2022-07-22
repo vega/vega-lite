@@ -179,13 +179,17 @@ export function guideFormat(
 ) {
   if (isCustomFormatType(formatType)) {
     return undefined; // handled in encode block
-  } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
+  } else if (
+    format === undefined &&
+    formatType === undefined &&
+    config.customFormatTypes &&
+    channelDefType(fieldOrDatumDef) === 'quantitative'
+  ) {
     if (
       config.normalizedNumberFormatType &&
       config.customFormatTypes &&
       isPositionFieldOrDatumDef(fieldOrDatumDef) &&
-      fieldOrDatumDef.stack === 'normalize' &&
-      channelDefType(fieldOrDatumDef) === 'quantitative'
+      fieldOrDatumDef.stack === 'normalize'
     ) {
       return undefined; // handled in encode block
     }

@@ -222,26 +222,6 @@ describe('Format', () => {
         signal: 'customFormatter(200, "abc")'
       });
     });
-
-    it('should prefer numberFormat over normalizedNumberFormat when stack is not normalized', () => {
-      expect(
-        formatSignalRef({
-          fieldOrDatumDef: {datum: 200, type: 'quantitative'},
-          format: undefined,
-          formatType: undefined,
-          expr: 'parent',
-          config: {
-            numberFormat: 'def',
-            numberFormatType: 'customFormatter2',
-            normalizedNumberFormat: 'abc',
-            normalizedNumberFormatType: 'customFormatter',
-            customFormatTypes: true
-          }
-        })
-      ).toEqual({
-        signal: 'customFormatter2(200, "def")'
-      });
-    });
   });
 
   describe('guideFormat', () => {
