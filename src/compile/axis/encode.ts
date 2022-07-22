@@ -25,41 +25,36 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
   } else if (
     format === undefined &&
     formatType === undefined &&
-    isPositionFieldOrDatumDef(fieldOrDatumDef) &&
-    fieldOrDatumDef.stack === 'normalize' &&
-    channelDefType(fieldOrDatumDef) === 'quantitative'
+    channelDefType(fieldOrDatumDef) === 'quantitative' &&
+    config.customFormatTypes
   ) {
-    let fmt = 'format';
-    if (config.normalizedNumberFormatType && config.customFormatTypes) {
-      fmt = config.normalizedNumberFormatType;
+    if (
+      isPositionFieldOrDatumDef(fieldOrDatumDef) &&
+      fieldOrDatumDef.stack === 'normalize' &&
+      config.normalizedNumberFormatType
+    ) {
+      return {
+        text: formatCustomType({
+          fieldOrDatumDef,
+          field: 'datum.value',
+          format: config.normalizedNumberFormat,
+          formatType: config.normalizedNumberFormatType,
+          config
+        }),
+        ...specifiedLabelsSpec
+      };
+    } else if (config.numberFormatType) {
+      return {
+        text: formatCustomType({
+          fieldOrDatumDef,
+          field: 'datum.value',
+          format: config.numberFormat,
+          formatType: config.numberFormatType,
+          config
+        }),
+        ...specifiedLabelsSpec
+      };
     }
-    return {
-      text: formatCustomType({
-        fieldOrDatumDef,
-        field: 'datum.value',
-        format: config.normalizedNumberFormat,
-        formatType: fmt,
-        config
-      }),
-      ...specifiedLabelsSpec
-    };
-  } else if (
-    format === undefined &&
-    formatType === undefined &&
-    config.customFormatTypes &&
-    config.numberFormatType &&
-    channelDefType(fieldOrDatumDef) === 'quantitative'
-  ) {
-    return {
-      text: formatCustomType({
-        fieldOrDatumDef,
-        field: 'datum.value',
-        format: config.numberFormat,
-        formatType: config.numberFormatType,
-        config
-      }),
-      ...specifiedLabelsSpec
-    };
   }
   return specifiedLabelsSpec;
 }

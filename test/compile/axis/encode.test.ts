@@ -77,19 +77,5 @@ describe('compile/axis/encode', () => {
       const labels = encode.labels(model, 'x', {});
       expect(labels.text.signal).toBe('customNumberFormat(datum.value, "abc")');
     });
-
-    it('applies default formatting to a normalized stack', () => {
-      const model = parseUnitModelWithScale({
-        mark: 'point',
-        encoding: {
-          x: {field: 'a', type: 'quantitative', stack: 'normalize'}
-        },
-        config: {
-          normalizedNumberFormat: 'abc'
-        }
-      });
-      const labels = encode.labels(model, 'x', {});
-      expect(labels.text.signal).toBe('format(datum.value, "abc")');
-    });
   });
 });

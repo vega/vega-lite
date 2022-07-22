@@ -92,23 +92,6 @@ export function formatSignalRef({
     });
   }
 
-  if (
-    normalizeStack &&
-    type === 'quantitative' &&
-    format === undefined &&
-    formatType === undefined &&
-    config.customFormatTypes &&
-    config.normalizedNumberFormatType
-  ) {
-    return formatCustomType({
-      fieldOrDatumDef,
-      format: config.normalizedNumberFormat,
-      formatType: config.normalizedNumberFormatType,
-      expr,
-      config
-    });
-  }
-
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
     const signal = timeFormatExpression(
       field,
@@ -196,17 +179,27 @@ export function guideFormat(
 ) {
   if (isCustomFormatType(formatType)) {
     return undefined; // handled in encode block
-  } else if (format === undefined && formatType === undefined && config.numberFormatType && config.customFormatTypes) {
-    return undefined; // handled in encode block
-  } else if (
-    format === undefined &&
-    formatType === undefined &&
-    config.normalizedNumberFormatType &&
-    config.customFormatTypes &&
+  } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
+    if (
+      config.normalizedNumberFormatType &&
+      config.customFormatTypes &&
+      isPositionFieldOrDatumDef(fieldOrDatumDef) &&
+      fieldOrDatumDef.stack === 'normalize' &&
+      channelDefType(fieldOrDatumDef) === 'quantitative'
+    ) {
+      return undefined; // handled in encode block
+    }
+    if (config.numberFormatType) {
+      return undefined; // handled in encode block
+    }
+  }
+
+  if (
     isPositionFieldOrDatumDef(fieldOrDatumDef) &&
-    fieldOrDatumDef.stack === 'normalize'
+    fieldOrDatumDef.stack === 'normalize' &&
+    config.normalizedNumberFormat
   ) {
-    return undefined; // handled in encode block
+    return numberFormat('quantitative', config.normalizedNumberFormat, config, true);
   }
 
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
