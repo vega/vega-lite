@@ -213,5 +213,6 @@
       "range": "category"
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "circle", "title": "symbol"}]
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "symbol"}],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

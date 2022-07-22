@@ -209,5 +209,6 @@
       "range": "category"
     }
   ],
-  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "symbol"}]
+  "legends": [{"stroke": "color", "symbolType": "stroke", "title": "symbol"}],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

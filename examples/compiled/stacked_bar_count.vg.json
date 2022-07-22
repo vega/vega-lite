@@ -126,5 +126,6 @@
       "zindex": 0
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "square", "title": "weather"}]
+  "legends": [{"fill": "color", "symbolType": "square", "title": "weather"}],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

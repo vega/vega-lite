@@ -262,5 +262,6 @@
       "range": [0, 1000],
       "zero": true
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

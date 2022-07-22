@@ -2074,5 +2074,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

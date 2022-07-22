@@ -54,5 +54,8 @@
       }
     }
   ],
-  "config": {"style": {"cell": {"stroke": "transparent"}}}
+  "config": {
+    "normalizedNumberFormat": ".2%",
+    "style": {"cell": {"stroke": "transparent"}}
+  }
 }

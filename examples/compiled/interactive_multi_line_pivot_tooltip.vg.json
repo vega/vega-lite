@@ -318,5 +318,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

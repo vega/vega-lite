@@ -229,5 +229,5 @@
       "zindex": 0
     }
   ],
-  "config": {"axisY": {"minExtent": 30}}
+  "config": {"normalizedNumberFormat": ".2%", "axisY": {"minExtent": 30}}
 }

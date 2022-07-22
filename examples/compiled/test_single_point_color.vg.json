@@ -22,5 +22,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

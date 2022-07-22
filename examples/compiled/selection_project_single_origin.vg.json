@@ -205,5 +205,6 @@
         }
       }
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

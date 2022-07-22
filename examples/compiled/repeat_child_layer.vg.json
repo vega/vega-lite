@@ -589,5 +589,6 @@
       "title": "location",
       "encode": {"symbols": {"update": {"opacity": {"value": 0.2}}}}
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

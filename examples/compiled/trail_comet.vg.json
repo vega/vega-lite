@@ -213,5 +213,8 @@
       "symbolType": "stroke"
     }
   ],
-  "config": {"legend": {"orient": "bottom", "direction": "horizontal"}}
+  "config": {
+    "normalizedNumberFormat": ".2%",
+    "legend": {"orient": "bottom", "direction": "horizontal"}
+  }
 }

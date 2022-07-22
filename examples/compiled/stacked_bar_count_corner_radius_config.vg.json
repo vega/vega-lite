@@ -176,6 +176,7 @@
   ],
   "legends": [{"fill": "color", "symbolType": "square", "title": "weather"}],
   "config": {
+    "normalizedNumberFormat": ".2%",
     "style": {"bar": {"cornerRadiusTopLeft": 8, "cornerRadiusTopRight": 8}}
   }
 }

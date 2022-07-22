@@ -253,6 +253,7 @@
     }
   ],
   "config": {
+    "normalizedNumberFormat": ".2%",
     "axis": {"domain": false, "ticks": false, "labels": false, "grid": false},
     "style": {"cell": {"stroke": ""}}
   }

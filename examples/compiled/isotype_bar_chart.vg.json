@@ -150,5 +150,5 @@
       ]
     }
   ],
-  "config": {"style": {"cell": {"stroke": ""}}}
+  "config": {"normalizedNumberFormat": ".2%", "style": {"cell": {"stroke": ""}}}
 }

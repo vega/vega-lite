@@ -332,5 +332,5 @@
       "zindex": 0
     }
   ],
-  "config": {"style": {"hilo": {"size": 20}}}
+  "config": {"normalizedNumberFormat": ".2%", "style": {"hilo": {"size": 20}}}
 }

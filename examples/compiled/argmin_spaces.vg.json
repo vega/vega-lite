@@ -142,5 +142,6 @@
       "title": "Fighter Name",
       "zindex": 0
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

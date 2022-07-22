@@ -351,6 +351,7 @@
     }
   ],
   "config": {
+    "normalizedNumberFormat": ".2%",
     "style": {
       "arrow-label": {"dy": 12, "fontSize": 9.5},
       "arrow-label2": {"dy": 24, "fontSize": 9.5},

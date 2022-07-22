@@ -326,6 +326,7 @@
     }
   ],
   "config": {
+    "normalizedNumberFormat": ".2%",
     "axis": {
       "title": null,
       "gridColor": "white",

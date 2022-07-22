@@ -664,5 +664,6 @@
       "range": {"step": {"signal": "concat_1_concat_2_y_step"}},
       "padding": 0.5
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

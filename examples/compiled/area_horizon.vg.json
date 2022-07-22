@@ -166,5 +166,8 @@
       "zindex": 0
     }
   ],
-  "config": {"style": {"area": {"interpolate": "monotone"}}}
+  "config": {
+    "normalizedNumberFormat": ".2%",
+    "style": {"area": {"interpolate": "monotone"}}
+  }
 }

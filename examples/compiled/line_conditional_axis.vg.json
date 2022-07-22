@@ -144,5 +144,8 @@
       "zindex": 0
     }
   ],
-  "config": {"axis": {"domainColor": "#ddd", "tickColor": "#ddd"}}
+  "config": {
+    "normalizedNumberFormat": ".2%",
+    "axis": {"domainColor": "#ddd", "tickColor": "#ddd"}
+  }
 }

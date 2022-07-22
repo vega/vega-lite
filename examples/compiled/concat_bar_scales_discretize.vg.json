@@ -297,5 +297,6 @@
       "domain": [30, 70],
       "range": [80, 200, 320]
     }
-  ]
+  ],
+  "config": {"normalizedNumberFormat": ".2%"}
 }

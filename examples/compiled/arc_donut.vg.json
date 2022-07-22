@@ -73,5 +73,6 @@
       "range": "category"
     }
   ],
-  "legends": [{"fill": "color", "symbolType": "circle", "title": "category"}]
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "category"}],
+  "config": {"normalizedNumberFormat": ".2%"}
 }
