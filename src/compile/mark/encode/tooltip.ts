@@ -1,6 +1,6 @@
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned} from '../../../bin';
-import {getMainRangeChannel, isXorY, Channel} from '../../../channel';
+import {getMainRangeChannel, isXorY, Channel, THETA, RADIUS} from '../../../channel';
 import {
   defaultTitle,
   getFieldDef,
@@ -91,11 +91,12 @@ export function tooltipData(
 
     let value: string;
 
-    if (isXorY(channel)) {
+    const xyChannel = isXorY(channel);
+    if (xyChannel || channel === THETA || channel === RADIUS) {
       const channel2 = channel === 'x' ? 'x2' : 'y2';
       const fieldDef2 = getFieldDef(encoding[channel2]);
 
-      if (isBinned(fieldDef.bin) && fieldDef2) {
+      if (xyChannel && isBinned(fieldDef.bin) && fieldDef2) {
         const startField = vgField(fieldDef, {expr});
         const endField = vgField(fieldDef2, {expr});
         const {format, formatType} = getFormatMixins(fieldDef);

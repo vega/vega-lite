@@ -173,7 +173,7 @@ describe('compile/mark/encode/tooltip', () => {
       });
     });
 
-    it('returns correct tooltip signal for normalized stacked field', () => {
+    it('returns correct tooltip signal for normalized x|y stacked field', () => {
       expect(
         tooltipRefForEncoding(
           {
@@ -185,6 +185,31 @@ describe('compile/mark/encode/tooltip', () => {
           },
           {
             fieldChannel: 'x',
+            groupbyChannels: [],
+            groupbyFields: new Set(),
+            offset: 'normalize',
+            impute: false,
+            stackBy: []
+          },
+          defaultConfig
+        )
+      ).toEqual({
+        signal: `{"Sum of IMDB_Rating": format(datum["sum_IMDB_Rating_end"]-datum["sum_IMDB_Rating_start"], ".0%")}`
+      });
+    });
+
+    it('returns correct tooltip signal for normalized theta stacked field', () => {
+      expect(
+        tooltipRefForEncoding(
+          {
+            theta: {
+              aggregate: 'sum',
+              field: 'IMDB_Rating',
+              type: 'quantitative'
+            }
+          },
+          {
+            fieldChannel: 'theta',
             groupbyChannels: [],
             groupbyFields: new Set(),
             offset: 'normalize',
