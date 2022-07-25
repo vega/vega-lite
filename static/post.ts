@@ -1,4 +1,4 @@
-// copied from https://github.com/vega/vega-embed/blob/master/src/post.ts
+// copied from https://github.com/vega/vega-embed/blob/next/src/post.ts
 
 import {Renderers} from 'vega';
 

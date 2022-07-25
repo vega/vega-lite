@@ -6,7 +6,7 @@ permalink: /ecosystem.html
 redirect_from: /applications.html
 ---
 
-This is an incomplete list of integrations, applications, and extensions of the Vega-Lite language and compiler. If you want to add a tool or library, [edit this file and send us a pull request](https://github.com/vega/vega-lite/blob/master/site/ecosystem.md).
+This is an incomplete list of integrations, applications, and extensions of the Vega-Lite language and compiler. If you want to add a tool or library, [edit this file and send us a pull request](https://github.com/vega/vega-lite/blob/next/site/ecosystem.md).
 
 We mark featured plugins and tools with a <span class="octicon octicon-star"></span>.
 
@@ -27,6 +27,14 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Deneb](https://deneb-viz.github.io), a Power BI custom visual with an editor for Vega-Lite or Vega specifications.
 - [VizLinter](https://vizlinter.idvxlab.com/), an online editor that detects and fixes encoding issues based on vega-lite-linter.
 - [Datapane](https://github.com/datapane/datapane), a Python framework for building interactive reports from open-source visualization formats such as Vega-Lite.
+- [Graphpad](https://www.figma.com/community/widget/1027276088284051809), an editor for creating Vega-Lite visualizations in the Figjam collaborative whiteboarding tool.
+
+## Tools for Scaling Vega-Lite Visualizations
+
+- [altair-transform](https://github.com/altair-viz/altair-transform), a Python library for pre-evaluating Altair/Vega-Lite transforms with Pandas.
+- [ibis-vega-transform](https://github.com/Quansight/ibis-vega-transform), a Python library and JupyterLab extension for evaluating Altair/Vega-Lite transforms with external databases using [Ibis](https://ibis-project.org/).
+- <span class="octicon octicon-star"></span> [VegaFusion](https://vegafusion.io/), a Rust library and Python API that provides server-side acceleration for interactive Altair/Vega-Lite visualizations using [Apache Arrow](https://arrow.apache.org/) and [DataFusion](https://arrow.apache.org/datafusion/).
+- [Scalable Vega](https://github.com/vega/scalable-vega), a demo of how to scale Vega to large datasets by implementing a custom transform that accepts SQL queries and requests data from an external database.
 
 ## Plug-ins for Vega-Lite
 
@@ -47,6 +55,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Vegas](https://github.com/aishfenton/Vegas) brings visualizations to Scala and Spark using Vega-Lite.
 - [Smile](https://haifengl.github.io/) is a machine learning engine for JVM using Vega-Lite.
 - [vegawidget](https://vegawidget.github.io/vegawidget), low-level interface in R to render Vega and Vega-Lite specifications as htmlwidgets, including functions to interact with data, events, and signals in [Shiny](https://shiny.rstudio.com).
+- [vegabrite](https://vegawidget.github.io/vegabrite), functional interface for building up Vega-Lite specifications in R. Built on top of the lower-level interface provided by vegawidget
 - [Hanami](https://github.com/jsa-aerial/hanami) A Clojure(Script) library for creating domain specific interactive visualization applications. Exposes a parameterized template system that uses recursive transformation to finished Vega-Lite and Vega specs. Built with [reagent](https://reagent-project.github.io/) (react) and [re-com](https://github.com/Day8/re-com) enabled.
 - [Vizard](https://github.com/yieldbot/vizard) tiny REPL client to visualize Clojure data in browser w/ Vega-Lite.
 - [Oz](https://github.com/metasoarous/oz) is a Vega & Vega-Lite based visualization and scientific document toolkit for Clojure & ClojureScript (Reagent). Originally a fork of Vizard, Oz adds support for Vega, publishing/sharing, markdown & hiccup extensions for embedding Vega-Lite & Vega visualizations in html documents, static html output, and Jupyter notebooks.
@@ -73,7 +82,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 ## Tools that use Vega-Lite
 
 - [Lyra](https://github.com/vega/lyra), an interactive, graphical Visualization Design Environment (VDE)
-- <span class="octicon octicon-star"></span> [PdVega](https://jakevdp.github.io/pdvega/), lets you create interactive Vega-Lite plots for Pandas. Uses [ipyvega](https://github.com/vega/ipyvega).
+- <span class="octicon octicon-star"></span> [PdVega](https://altair-viz.github.io/pdvega/), lets you create interactive Vega-Lite plots for Pandas. Uses [ipyvega](https://github.com/vega/ipyvega).
 - [Turi Create](https://github.com/apple/turicreate) Apple's tool to simplify the development of custom machine learning models.
 - [mondrian-rest-ui](https://github.com/jazzido/mondrian-rest-ui), an experimental UI for [`mondrian-rest`](https://github.com/jazzido/mondrian-rest) inspired by [Polestar](https://github.com/vega/polestar) and [CubesViewer](https://github.com/jjmontesl/cubesviewer).
 - [Django Chartflo](https://github.com/synw/django-chartflo), charts for the lazy ones in Django
@@ -91,6 +100,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [NL4DV](https://nl4dv.github.io/nl4dv/), a Python toolkit that generates analytic specifications (attributes + tasks + Vega-Lite visualizations) from natural language (NL) queries, helping people prototype NL systems for data visualization.
 - [Saite](https://github.com/jsa-aerial/saite) Interactive exploratory graphics and ad hoc visualization application for Clojure(Script). Built on top of [Hanami](https://github.com/jsa-aerial/hanami).
 - [Datablocks](https://datablocks.pro), a node-based editor for exploring, analyzing and transforming data without code.
+- [Rath](https://github.com/Kanaries/Rath) An augmented analysis tool including auto-EDA, pattern discovery, multi-dimensional visualization recommendation, and interactive dashboards generation.
 
 ## Tools for Embedding Vega-Lite Visualizations
 

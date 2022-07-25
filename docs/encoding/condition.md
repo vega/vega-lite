@@ -121,7 +121,7 @@ For example, in the following plot, the color of `rect` marks is driven by a con
 
 Condition value definitions and conditional datum definitions use a constant value encoding when data satisfy a [parameter](parameter.html) (e.g. fall withing a [selection parameter](parameter.html#select)) or satisfy a logical predicate. Another field, datum, or value definition can be specified as the "else" case when the condition is not satisfied.
 
-A condition value/datum definition must contain either [a `param` name or a `test` predicate](#condition) in addition to the encoded constant [`value`](encoding.html#value-def) or constant data value ([`datum`]](encoding.html#datum-def)).
+A condition value/datum definition must contain either [a `param` name or a `test` predicate](#condition) in addition to the encoded constant [`value`](encoding.html#value-def) or constant data value ([`datum`](encoding.html#datum-def)).
 
 For example, in the visualization below, a conditional value definition causes marks that fall within a dragged interval to be larger than those that lie outside it.
 
