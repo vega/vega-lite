@@ -96,7 +96,7 @@ export function tooltipData(
       const channel2 = channel === 'x' ? 'x2' : 'y2';
       const fieldDef2 = getFieldDef(encoding[channel2]);
 
-      if (xyChannel && isBinned(fieldDef.bin) && fieldDef2) {
+      if (isBinned(fieldDef.bin) && fieldDef2) {
         const startField = vgField(fieldDef, {expr});
         const endField = vgField(fieldDef2, {expr});
         const {format, formatType} = getFormatMixins(fieldDef);
