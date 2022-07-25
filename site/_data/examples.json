@@ -401,6 +401,11 @@
         "description": "A pie chart encodes proportional differences among a set of numeric values as the angular extent and area of a circular slice."
       },
       {
+        "name": "arc_pie_normalize_tooltip",
+        "title": "Pie Chart with percentage_tooltip",
+        "description": "A pie chart with a tooltip that shows the percentage covered by the hovered slice."
+      },
+      {
         "name": "arc_donut",
         "title": "Donut Chart",
         "description": "A donut chart encodes proportional differences among a set of numeric values using angular extents."
@@ -778,10 +783,10 @@
         "png": true
       },
       {
-	"name": "interactive_geo_earthquakes",
-	"title": "Earthquakes Example",
-	"description": "Interactive globe visualization of earthquakes",
-	"png": true
+        "name": "interactive_geo_earthquakes",
+        "title": "Earthquakes Example",
+        "description": "Interactive globe visualization of earthquakes",
+        "png": true
       }
     ]
   },
