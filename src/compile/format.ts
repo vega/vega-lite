@@ -59,37 +59,37 @@ export function formatSignalRef({
   const field = fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
   const type = channelDefType(fieldOrDatumDef);
 
-  if (
-    normalizeStack &&
-    type === 'quantitative' &&
-    format === undefined &&
-    formatType === undefined &&
-    config.customFormatTypes &&
-    config.normalizedNumberFormatType
-  ) {
-    return formatCustomType({
-      fieldOrDatumDef,
-      format: config.normalizedNumberFormat,
-      formatType: config.normalizedNumberFormatType,
-      expr,
-      config
-    });
-  }
-
-  if (
-    type === 'quantitative' &&
-    format === undefined &&
-    formatType === undefined &&
-    config.customFormatTypes &&
-    config.numberFormatType
-  ) {
-    return formatCustomType({
-      fieldOrDatumDef,
-      format: config.numberFormat,
-      formatType: config.numberFormatType,
-      expr,
-      config
-    });
+  if (format === undefined && formatType === undefined && config.customFormatTypes) {
+    if (type === 'quantitative') {
+      if (normalizeStack && config.normalizedNumberFormatType)
+        return formatCustomType({
+          fieldOrDatumDef,
+          format: config.normalizedNumberFormat,
+          formatType: config.normalizedNumberFormatType,
+          expr,
+          config
+        });
+      if (config.numberFormatType) {
+        return formatCustomType({
+          fieldOrDatumDef,
+          format: config.numberFormat,
+          formatType: config.numberFormatType,
+          expr,
+          config
+        });
+      }
+    }
+    if (type === 'temporal') {
+      if (config.timeFormatType) {
+        return formatCustomType({
+          fieldOrDatumDef,
+          format: config.timeFormat,
+          formatType: config.timeFormatType,
+          expr,
+          config
+        });
+      }
+    }
   }
 
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
@@ -179,20 +179,15 @@ export function guideFormat(
 ) {
   if (isCustomFormatType(formatType)) {
     return undefined; // handled in encode block
-  } else if (
-    format === undefined &&
-    formatType === undefined &&
-    config.customFormatTypes &&
-    channelDefType(fieldOrDatumDef) === 'quantitative'
-  ) {
+  } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
     if (
-      config.normalizedNumberFormatType &&
-      isPositionFieldOrDatumDef(fieldOrDatumDef) &&
-      fieldOrDatumDef.stack === 'normalize'
+      (channelDefType(fieldOrDatumDef) === 'quantitative' &&
+        ((config.normalizedNumberFormatType &&
+          isPositionFieldOrDatumDef(fieldOrDatumDef) &&
+          fieldOrDatumDef.stack === 'normalize') || // case: normalized number format
+          config.numberFormatType)) || // case: regular number format
+      (channelDefType(fieldOrDatumDef) === 'temporal' && config.timeFormatType) // case: time format
     ) {
-      return undefined; // handled in encode block
-    }
-    if (config.numberFormatType) {
       return undefined; // handled in encode block
     }
   }

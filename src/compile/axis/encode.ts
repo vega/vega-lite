@@ -22,34 +22,43 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
       }),
       ...specifiedLabelsSpec
     };
-  } else if (
-    format === undefined &&
-    formatType === undefined &&
-    channelDefType(fieldOrDatumDef) === 'quantitative' &&
-    config.customFormatTypes
-  ) {
-    if (
-      isPositionFieldOrDatumDef(fieldOrDatumDef) &&
-      fieldOrDatumDef.stack === 'normalize' &&
-      config.normalizedNumberFormatType
-    ) {
+  } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
+    if (channelDefType(fieldOrDatumDef) === 'quantitative') {
+      if (
+        isPositionFieldOrDatumDef(fieldOrDatumDef) &&
+        fieldOrDatumDef.stack === 'normalize' &&
+        config.normalizedNumberFormatType
+      ) {
+        return {
+          text: formatCustomType({
+            fieldOrDatumDef,
+            field: 'datum.value',
+            format: config.normalizedNumberFormat,
+            formatType: config.normalizedNumberFormatType,
+            config
+          }),
+          ...specifiedLabelsSpec
+        };
+      } else if (config.numberFormatType) {
+        return {
+          text: formatCustomType({
+            fieldOrDatumDef,
+            field: 'datum.value',
+            format: config.numberFormat,
+            formatType: config.numberFormatType,
+            config
+          }),
+          ...specifiedLabelsSpec
+        };
+      }
+    }
+    if (channelDefType(fieldOrDatumDef) === 'temporal') {
       return {
         text: formatCustomType({
           fieldOrDatumDef,
           field: 'datum.value',
-          format: config.normalizedNumberFormat,
-          formatType: config.normalizedNumberFormatType,
-          config
-        }),
-        ...specifiedLabelsSpec
-      };
-    } else if (config.numberFormatType) {
-      return {
-        text: formatCustomType({
-          fieldOrDatumDef,
-          field: 'datum.value',
-          format: config.numberFormat,
-          formatType: config.numberFormatType,
+          format: config.timeFormat,
+          formatType: config.timeFormatType,
           config
         }),
         ...specifiedLabelsSpec
