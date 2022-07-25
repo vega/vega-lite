@@ -306,7 +306,7 @@ describe('Selection', () => {
           params: [
             {
               name: 'index',
-              value: {x: {year: 2005, month: 1, date: 1}},
+              value: [{x: {year: 2005, month: 1, date: 1}}],
               select: {
                 type: 'point',
                 on: 'mouseover',

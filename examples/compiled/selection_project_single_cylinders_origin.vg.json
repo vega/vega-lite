@@ -36,7 +36,7 @@
       "on": [
         {
           "events": [{"source": "scope", "type": "click"}],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Cylinders\"], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"\", fields: pts_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"Cylinders\"], (item().isVoronoi ? datum.datum : datum)[\"Origin\"]]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}

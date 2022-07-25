@@ -146,7 +146,7 @@ export interface VLOnlyConfig<ES extends ExprRef | SignalRef> {
 
   /**
    * If numberFormatType is not specified,
-   * D3 Number format for guide labels and text marks. For example `"s"` for SI units.
+   * D3 number format for guide labels, text marks, and tooltips of non-normalized fields (fields *without* `stack: "normalize"`). For example `"s"` for SI units.
    * Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
    *
    * If `config.numberFormatType` is specified and `config.customFormatTypes` is `true`, this value will be passed as `format` alongside `datum.value` to the `config.numberFormatType` function.
@@ -161,6 +161,25 @@ export interface VLOnlyConfig<ES extends ExprRef | SignalRef> {
    * __Note:__ You must also set `customFormatTypes` to `true` to use this feature.
    */
   numberFormatType?: string;
+
+  /**
+   * If normalizedNumberFormatType is not specified,
+   * D3 number format for axis labels, text marks, and tooltips of normalized stacked fields (fields with `stack: "normalize"`). For example `"s"` for SI units.
+   * Use [D3's number format pattern](https://github.com/d3/d3-format#locale_format).
+   *
+   * If `config.normalizedNumberFormatType` is specified and `config.customFormatTypes` is `true`, this value will be passed as `format` alongside `datum.value` to the `config.numberFormatType` function.
+   * __Default value:__ `%`
+   */
+  normalizedNumberFormat?: string;
+
+  /**
+   * [Custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type)
+   * for `config.normalizedNumberFormat`.
+   *
+   * __Default value:__ `undefined` -- This is equilvalent to call D3-format, which is exposed as [`format` in Vega-Expression](https://vega.github.io/vega/docs/expressions/#format).
+   * __Note:__ You must also set `customFormatTypes` to `true` to use this feature.
+   */
+  normalizedNumberFormatType?: string;
 
   /**
    * Default time format for raw time values (without time units) in text marks, legend labels and header labels.
@@ -330,7 +349,9 @@ export const defaultConfig: Config<SignalRef> = {
   title: {},
 
   facet: {spacing: DEFAULT_SPACING},
-  concat: {spacing: DEFAULT_SPACING}
+  concat: {spacing: DEFAULT_SPACING},
+
+  normalizedNumberFormat: '.0%'
 };
 
 // Tableau10 color palette, copied from `vegaScale.scheme('tableau10')`
@@ -593,6 +614,8 @@ const VL_ONLY_CONFIG_PROPERTIES: (keyof Config)[] = [
   'concat',
   'numberFormat',
   'numberFormatType',
+  'normalizedNumberFormat',
+  'normalizedNumberFormatType',
   'timeFormat',
   'countTitle',
   'header',

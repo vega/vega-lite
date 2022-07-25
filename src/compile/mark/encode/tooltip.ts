@@ -1,6 +1,6 @@
 import {array, isArray, isObject, isString} from 'vega-util';
 import {isBinned} from '../../../bin';
-import {getMainRangeChannel, isXorY, Channel} from '../../../channel';
+import {getMainRangeChannel, isXorY, Channel, THETA, RADIUS} from '../../../channel';
 import {
   defaultTitle,
   getFieldDef,
@@ -101,17 +101,24 @@ export function tooltipData(
         const {format, formatType} = getFormatMixins(fieldDef);
         value = binFormatExpression(startField, endField, format, formatType, config);
         toSkip[channel2] = true;
-      } else if (stack && stack.fieldChannel === channel && stack.offset === 'normalize') {
-        const {format, formatType} = getFormatMixins(fieldDef);
-        value = formatSignalRef({
-          fieldOrDatumDef: fieldDef,
-          format,
-          formatType,
-          expr,
-          config,
-          normalizeStack: true
-        }).signal;
       }
+    }
+
+    if (
+      (isXorY(channel) || channel === THETA || channel === RADIUS) &&
+      stack &&
+      stack.fieldChannel === channel &&
+      stack.offset === 'normalize'
+    ) {
+      const {format, formatType} = getFormatMixins(fieldDef);
+      value = formatSignalRef({
+        fieldOrDatumDef: fieldDef,
+        format,
+        formatType,
+        expr,
+        config,
+        normalizeStack: true
+      }).signal;
     }
 
     value ??= textRef(fieldDef, config, expr).signal;

@@ -1,0 +1,80 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Pie Chart with percentage_tooltip",
+  "background": "white",
+  "padding": 5,
+  "width": 200,
+  "height": 200,
+  "data": [
+    {
+      "name": "source_0",
+      "values": [
+        {"category": 1, "value": 4},
+        {"category": 2, "value": 6},
+        {"category": 3, "value": 10},
+        {"category": 4, "value": 3},
+        {"category": 5, "value": 7},
+        {"category": 6, "value": 8}
+      ]
+    },
+    {
+      "name": "data_0",
+      "source": "source_0",
+      "transform": [
+        {
+          "type": "stack",
+          "groupby": [],
+          "field": "value",
+          "sort": {"field": ["category"], "order": ["ascending"]},
+          "as": ["value_start", "value_end"],
+          "offset": "normalize"
+        },
+        {
+          "type": "filter",
+          "expr": "isValid(datum[\"value\"]) && isFinite(+datum[\"value\"])"
+        }
+      ]
+    }
+  ],
+  "marks": [
+    {
+      "name": "marks",
+      "type": "arc",
+      "style": ["arc"],
+      "from": {"data": "data_0"},
+      "encode": {
+        "update": {
+          "tooltip": {
+            "signal": "{\"value\": format(datum[\"value_end\"]-datum[\"value_start\"], \".0%\"), \"category\": isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"]}"
+          },
+          "fill": {"scale": "color", "field": "category"},
+          "description": {
+            "signal": "\"value: \" + (format(datum[\"value_end\"]-datum[\"value_start\"], \".0%\")) + \"; category: \" + (isValid(datum[\"category\"]) ? datum[\"category\"] : \"\"+datum[\"category\"])"
+          },
+          "x": {"signal": "width", "mult": 0.5},
+          "y": {"signal": "height", "mult": 0.5},
+          "outerRadius": {"signal": "min(width,height)/2"},
+          "innerRadius": {"value": 0},
+          "startAngle": {"scale": "theta", "field": "value_end"},
+          "endAngle": {"scale": "theta", "field": "value_start"}
+        }
+      }
+    }
+  ],
+  "scales": [
+    {
+      "name": "theta",
+      "type": "linear",
+      "domain": [0, 1],
+      "range": [0, 6.283185307179586],
+      "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {"data": "data_0", "field": "category", "sort": true},
+      "range": "category"
+    }
+  ],
+  "legends": [{"fill": "color", "symbolType": "circle", "title": "category"}]
+}

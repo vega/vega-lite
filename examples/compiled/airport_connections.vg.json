@@ -138,7 +138,7 @@
               "markname": "layer_2_voronoi"
             }
           ],
-          "update": "datum && item().mark.marktype !== 'group' ? {unit: \"layer_2\", fields: org_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"origin\"]]} : null",
+          "update": "datum && item().mark.marktype !== 'group' && indexof(item().mark.role, 'legend') < 0 ? {unit: \"layer_2\", fields: org_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)[\"origin\"]]} : null",
           "force": true
         },
         {"events": [{"source": "view", "type": "dblclick"}], "update": "null"}

@@ -354,7 +354,7 @@ describe('Interactive Legends', () => {
                 }
               ],
               update:
-                'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: seven_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+                'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: seven_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
               force: true
             },
             {
@@ -380,7 +380,7 @@ describe('Interactive Legends', () => {
                 }
               ],
               update:
-                'datum && item().mark.marktype !== \'group\' ? {unit: "", fields: eight_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
+                'datum && item().mark.marktype !== \'group\' && indexof(item().mark.role, \'legend\') < 0 ? {unit: "", fields: eight_tuple_fields, values: [(item().isVoronoi ? datum.datum : datum)["Origin"]]} : null',
               force: true
             },
             {
