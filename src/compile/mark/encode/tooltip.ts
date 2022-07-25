@@ -91,8 +91,8 @@ export function tooltipData(
 
     let value: string;
 
-    const xyChannel = isXorY(channel);
-    if (xyChannel || channel === THETA || channel === RADIUS) {
+
+    if (isXorY(channel)) {
       const channel2 = channel === 'x' ? 'x2' : 'y2';
       const fieldDef2 = getFieldDef(encoding[channel2]);
 
@@ -102,17 +102,19 @@ export function tooltipData(
         const {format, formatType} = getFormatMixins(fieldDef);
         value = binFormatExpression(startField, endField, format, formatType, config);
         toSkip[channel2] = true;
-      } else if (stack && stack.fieldChannel === channel && stack.offset === 'normalize') {
-        const {format, formatType} = getFormatMixins(fieldDef);
-        value = formatSignalRef({
-          fieldOrDatumDef: fieldDef,
-          format,
-          formatType,
-          expr,
-          config,
-          normalizeStack: true
-        }).signal;
-      }
+      } 
+    } 
+    
+    if ((isXorY(channel) || channel === THETA || channel === RADIUS) && stack && stack.fieldChannel === channel && stack.offset === 'normalize') {
+      const {format, formatType} = getFormatMixins(fieldDef);
+      value = formatSignalRef({
+        fieldOrDatumDef: fieldDef,
+        format,
+        formatType,
+        expr,
+        config,
+        normalizeStack: true
+      }).signal;
     }
 
     value ??= textRef(fieldDef, config, expr).signal;
