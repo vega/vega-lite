@@ -101,7 +101,7 @@ We mark featured plugins and tools with a <span class="octicon octicon-star"></s
 - [Saite](https://github.com/jsa-aerial/saite) Interactive exploratory graphics and ad hoc visualization application for Clojure(Script). Built on top of [Hanami](https://github.com/jsa-aerial/hanami).
 - [Datablocks](https://datablocks.pro), a node-based editor for exploring, analyzing and transforming data without code.
 - [Rath](https://github.com/Kanaries/Rath) An augmented analysis tool including auto-EDA, pattern discovery, multi-dimensional visualization recommendation, and interactive dashboards generation.
-- [MarkText](https://github.com/marktext/marktext): A simple and elegant open-source markdown editor that focused on speed and usability.
+- [MarkText](https://github.com/marktext/marktext): An open-source markdown editor that supports vega-lite diagram. 
 
 ## Tools for Embedding Vega-Lite Visualizations
 
