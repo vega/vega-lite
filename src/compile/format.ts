@@ -93,13 +93,14 @@ export function formatSignalRef({
   }
 
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
-    const signal = timeFormatExpression(
+    const signal = timeFormatExpression({
       field,
-      isFieldDef(fieldOrDatumDef) ? normalizeTimeUnit(fieldOrDatumDef.timeUnit)?.unit : undefined,
+      timeUnit: isFieldDef(fieldOrDatumDef) ? normalizeTimeUnit(fieldOrDatumDef.timeUnit)?.unit : undefined,
       format,
-      config.timeFormat,
-      isScaleFieldDef(fieldOrDatumDef) && fieldOrDatumDef.scale?.type === ScaleType.UTC
-    );
+      formatType: config.timeFormatType,
+      rawTimeFormat: config.timeFormat,
+      isUTCScale: isScaleFieldDef(fieldOrDatumDef) && fieldOrDatumDef.scale?.type === ScaleType.UTC
+    });
     return signal ? {signal} : undefined;
   }
 
@@ -181,12 +182,11 @@ export function guideFormat(
     return undefined; // handled in encode block
   } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
     if (
-      (channelDefType(fieldOrDatumDef) === 'quantitative' &&
-        ((config.normalizedNumberFormatType &&
-          isPositionFieldOrDatumDef(fieldOrDatumDef) &&
-          fieldOrDatumDef.stack === 'normalize') || // case: normalized number format
-          config.numberFormatType)) || // case: regular number format
-      (channelDefType(fieldOrDatumDef) === 'temporal' && config.timeFormatType) // case: time format
+      channelDefType(fieldOrDatumDef) === 'quantitative' &&
+      ((config.normalizedNumberFormatType &&
+        isPositionFieldOrDatumDef(fieldOrDatumDef) &&
+        fieldOrDatumDef.stack === 'normalize') || // case: normalized number format
+        config.numberFormatType) // case: regular number format
     ) {
       return undefined; // handled in encode block
     }
@@ -206,6 +206,9 @@ export function guideFormat(
 
   if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
     const timeUnit = isFieldDef(fieldOrDatumDef) ? normalizeTimeUnit(fieldOrDatumDef.timeUnit)?.unit : undefined;
+    if (timeUnit === undefined && config.customFormatTypes && config.timeFormatType) {
+      return undefined; // hanlded in encode block
+    }
 
     return timeFormat(format as string, timeUnit, config, omitTimeFormatConfig);
   }
@@ -300,15 +303,26 @@ export function binFormatExpression(
 /**
  * Returns the time expression used for axis/legend labels or text mark for a temporal field
  */
-export function timeFormatExpression(
-  field: string,
-  timeUnit: TimeUnit,
-  format: string | Dict<unknown>,
-  rawTimeFormat: string, // should be provided only for actual text and headers, not axis/legend labels
-  isUTCScale: boolean
-): string {
+export function timeFormatExpression({
+  field,
+  timeUnit,
+  format,
+  formatType,
+  rawTimeFormat,
+  isUTCScale
+}: {
+  field: string;
+  timeUnit: TimeUnit;
+  format: string | Dict<unknown>;
+  formatType?: string;
+  rawTimeFormat: string; // should be provided only for actual text and headers, not axis/legend labels
+  isUTCScale: boolean;
+}): string {
   if (!timeUnit || format) {
     // If there is no time unit, or if user explicitly specifies format for axis/legend/text.
+    if (formatType) {
+      return `${formatType}(${field}, '${format}')`;
+    }
     format = isString(format) ? format : rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
     return `${isUTCScale ? 'utc' : 'time'}Format(${field}, '${format}')`;
   } else {
