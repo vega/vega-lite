@@ -286,16 +286,18 @@ describe('Format', () => {
       expect(format).toBeUndefined();
     });
 
-    it('returns prefers timeUnit to timeFormatType', () => {
+    it('Prefers timeUnit to timeFormatType', () => {
       const format = guideFormat(
-        {datum: 200, type: 'temporal', timeUnit: 'hours'},
+        {field: 'x', type: 'temporal', timeUnit: 'hours'},
         'temporal',
         undefined,
         undefined,
         {timeFormat: 'abc', timeFormatType: 'customFormatter', customFormatTypes: true},
         false
       );
-      expect(format).toBe('abc');
+      expect(format).toEqual({
+        signal: 'timeUnitSpecifier(["hours"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+      });
     });
 
     it('returns format as normalizedNumberFormatType it is not in the config', () => {
