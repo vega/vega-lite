@@ -52,7 +52,7 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
         };
       }
     }
-    if (channelDefType(fieldOrDatumDef) === 'temporal') {
+    if (channelDefType(fieldOrDatumDef) === 'temporal' && config.timeFormatType) {
       return {
         text: formatCustomType({
           fieldOrDatumDef,

@@ -50,9 +50,9 @@ A Vega-Lite `config` object can have the following top-level properties:
 
 ## Format Configuration
 
-These two config properties define the default number and time formats for text marks as well as axes, headers, and legends:
+These config properties define the default number and time formats for text marks as well as axes, headers, and legends:
 
-{% include table.html props="numberFormat,numberFormatType,timeFormat,customFormatTypes" source="Config" %}
+{% include table.html props="numberFormat,numberFormatType,normalizedNumberFormat,normalizedNumberFormatType,timeFormat,timeFormatType,customFormatTypes" source="Config" %}
 
 {:#custom-format-type}
 

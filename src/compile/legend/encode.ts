@@ -169,7 +169,12 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
         formatType: config.numberFormatType,
         config
       });
-    } else if (fieldOrDatumDef.type === 'temporal' && config.timeFormatType) {
+    } else if (
+      fieldOrDatumDef.type === 'temporal' &&
+      config.timeFormatType &&
+      isFieldDef(fieldOrDatumDef) &&
+      fieldOrDatumDef.timeUnit === undefined
+    ) {
       text = formatCustomType({
         fieldOrDatumDef,
         field: 'datum.value',

@@ -79,16 +79,14 @@ export function formatSignalRef({
         });
       }
     }
-    if (type === 'temporal') {
-      if (config.timeFormatType) {
-        return formatCustomType({
-          fieldOrDatumDef,
-          format: config.timeFormat,
-          formatType: config.timeFormatType,
-          expr,
-          config
-        });
-      }
+    if (type === 'temporal' && config.timeFormatType) {
+      return formatCustomType({
+        fieldOrDatumDef,
+        format: config.timeFormat,
+        formatType: config.timeFormatType,
+        expr,
+        config
+      });
     }
   }
 
