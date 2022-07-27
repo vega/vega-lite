@@ -1,5 +1,5 @@
 import {getSecondaryRangeChannel, PositionScaleChannel} from '../../channel';
-import {channelDefType, getFieldOrDatumDef, isPositionFieldOrDatumDef} from '../../channeldef';
+import {channelDefType, getFieldOrDatumDef, isFieldDef, isPositionFieldOrDatumDef} from '../../channeldef';
 import {formatCustomType, isCustomFormatType} from '../format';
 import {UnitModel} from '../unit';
 
@@ -52,7 +52,12 @@ export function labels(model: UnitModel, channel: PositionScaleChannel, specifie
         };
       }
     }
-    if (channelDefType(fieldOrDatumDef) === 'temporal' && config.timeFormatType) {
+    if (
+      channelDefType(fieldOrDatumDef) === 'temporal' &&
+      config.timeFormatType &&
+      isFieldDef(fieldOrDatumDef) &&
+      !fieldOrDatumDef.timeUnit
+    ) {
       return {
         text: formatCustomType({
           fieldOrDatumDef,
