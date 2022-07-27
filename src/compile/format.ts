@@ -208,7 +208,7 @@ export function guideFormat(
       return undefined; // hanlded in encode block
     }
 
-    return timeFormat(format as string, timeUnit, config, omitTimeFormatConfig);
+    return timeFormat({specifiedFormat: format as string, timeUnit, config, omitTimeFormatConfig});
   }
 
   return numberFormat({type, specifiedFormat: format, config});
@@ -257,7 +257,17 @@ export function numberFormat({
 /**
  * Returns time format for a fieldDef for use in guides.
  */
-export function timeFormat(specifiedFormat: string, timeUnit: TimeUnit, config: Config, omitTimeFormatConfig: boolean) {
+export function timeFormat({
+  specifiedFormat,
+  timeUnit,
+  config,
+  omitTimeFormatConfig
+}: {
+  specifiedFormat?: string;
+  timeUnit?: TimeUnit;
+  config: Config;
+  omitTimeFormatConfig?: boolean;
+}) {
   if (specifiedFormat) {
     return specifiedFormat;
   }

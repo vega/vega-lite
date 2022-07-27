@@ -4,7 +4,8 @@ import {
   guideFormat,
   guideFormatType,
   numberFormat,
-  timeFormatExpression
+  timeFormatExpression,
+  timeFormat
 } from '../../src/compile/format';
 import {defaultConfig} from '../../src/config';
 import {NOMINAL, ORDINAL, QUANTITATIVE, TEMPORAL} from '../../src/type';
@@ -88,6 +89,30 @@ describe('Format', () => {
         formatType: 'customFormat'
       });
       expect(expression).toBe(`timeFormat(datum["date_a"], '%Y')`);
+    });
+  });
+
+  describe('timeFormat()', () => {
+    it('returns the specifiedFormat if it exists', () => {
+      const formatted = timeFormat({specifiedFormat: 'abc', config: {}});
+      expect(formatted).toBe('abc');
+    });
+
+    it('returns the the formatted timeUnitExpression', () => {
+      const formatted = timeFormat({timeUnit: 'date', config: {}});
+      expect(formatted).toEqual({
+        signal: 'timeUnitSpecifier(["date"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "})'
+      });
+    });
+
+    it('omits the timeFormat when omitTimeFormatConfig and no specifiedFormat', () => {
+      const formatted = timeFormat({config: {timeFormat: '%y'}, omitTimeFormatConfig: true});
+      expect(formatted).toBeUndefined();
+    });
+
+    it('returns the timeFormat when !omitTimeFormatConfig and no specifiedFormat', () => {
+      const formatted = timeFormat({config: {timeFormat: '%y'}, omitTimeFormatConfig: false});
+      expect(formatted).toBe('%y');
     });
   });
 
