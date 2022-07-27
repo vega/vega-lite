@@ -185,4 +185,23 @@ describe('compile/legend', () => {
     );
     expect(label.text).toEqual({signal: 'customDateFormat(datum.value, "abc")'});
   });
+
+  it('returns correct expression for custom format Type from config.timeFormatType', () => {
+    const fieldDef: Encoding<string>['color'] = {
+      field: 'a',
+      type: 'temporal'
+    };
+
+    const model = parseUnitModelWithScale({
+      mark: 'point',
+      encoding: {color: fieldDef},
+      config: {customFormatTypes: true, timeFormat: 'abc', timeFormatType: 'customDateFormat'}
+    });
+
+    const label = encode.labels(
+      {},
+      {fieldOrDatumDef: fieldDef, model, channel: COLOR, legendCmpt: symbolLegend, legendType: 'symbol'}
+    );
+    expect(label.text).toEqual({signal: 'customDateFormat(datum.value, "abc")'});
+  });
 });

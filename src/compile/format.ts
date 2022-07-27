@@ -312,15 +312,15 @@ export function timeFormatExpression({
   isUTCScale
 }: {
   field: string;
-  timeUnit: TimeUnit;
-  format: string | Dict<unknown>;
+  timeUnit?: TimeUnit;
+  format?: string | Dict<unknown>;
   formatType?: string;
-  rawTimeFormat: string; // should be provided only for actual text and headers, not axis/legend labels
-  isUTCScale: boolean;
+  rawTimeFormat?: string; // should be provided only for actual text and headers, not axis/legend labels
+  isUTCScale?: boolean;
 }): string {
   if (!timeUnit || format) {
     // If there is no time unit, or if user explicitly specifies format for axis/legend/text.
-    if (formatType) {
+    if (!timeUnit && formatType) {
       return `${formatType}(${field}, '${format}')`;
     }
     format = isString(format) ? format : rawTimeFormat; // only use provided timeFormat if there is no timeUnit.

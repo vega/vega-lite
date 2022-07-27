@@ -16,9 +16,7 @@ describe('Format', () => {
       const expression = timeFormatExpression({
         field: vgField(fieldDef, {expr: 'datum'}),
         timeUnit: 'month',
-        format: undefined,
-        rawTimeFormat: defaultConfig.timeFormat,
-        isUTCScale: false
+        rawTimeFormat: defaultConfig.timeFormat
       });
       expect(expression).toBe(
         'timeFormat(datum["month_a"], timeUnitSpecifier(["month"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
@@ -31,8 +29,7 @@ describe('Format', () => {
         field: vgField(fieldDef, {expr: 'datum'}),
         timeUnit: 'month',
         format: '%Y',
-        rawTimeFormat: defaultConfig.timeFormat,
-        isUTCScale: false
+        rawTimeFormat: defaultConfig.timeFormat
       });
       expect(expression).toBe(`timeFormat(datum["yearmonth_a"], '%Y')`);
     });
@@ -42,9 +39,7 @@ describe('Format', () => {
       const expression = timeFormatExpression({
         field: vgField(fieldDef, {expr: 'datum'}),
         timeUnit: 'quarter',
-        format: undefined,
-        rawTimeFormat: defaultConfig.timeFormat,
-        isUTCScale: false
+        rawTimeFormat: defaultConfig.timeFormat
       });
       expect(expression).toBe(
         'timeFormat(datum["quarter_a"], timeUnitSpecifier(["quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
@@ -55,9 +50,7 @@ describe('Format', () => {
       const expression = timeFormatExpression({
         field: 'datum["data"]',
         timeUnit: 'yearquarter',
-        format: undefined,
-        rawTimeFormat: defaultConfig.timeFormat,
-        isUTCScale: false
+        rawTimeFormat: defaultConfig.timeFormat
       });
       expect(expression).toBe(
         'timeFormat(datum["data"], timeUnitSpecifier(["year","quarter"], {"year-month":"%b %Y ","year-month-date":"%b %d, %Y "}))'
@@ -74,6 +67,27 @@ describe('Format', () => {
         isUTCScale: true
       });
       expect(expression).toBe(`utcFormat(datum["yearmonth_a"], '%Y')`);
+    });
+
+    it('should get the right time expression for with a custom timeFormatType', () => {
+      const fieldDef = {field: 'a', type: TEMPORAL} as const;
+      const expression = timeFormatExpression({
+        field: vgField(fieldDef, {expr: 'datum'}),
+        format: '%Y',
+        formatType: 'customFormat'
+      });
+      expect(expression).toBe(`customFormat(datum["a"], '%Y')`);
+    });
+
+    it('should prefer timeUnit over timeFormatType', () => {
+      const fieldDef = {field: 'a', type: TEMPORAL, timeUnit: 'date'} as const;
+      const expression = timeFormatExpression({
+        field: vgField(fieldDef, {expr: 'datum'}),
+        format: '%Y',
+        timeUnit: 'date',
+        formatType: 'customFormat'
+      });
+      expect(expression).toBe(`timeFormat(datum["date_a"], '%Y')`);
     });
   });
 
