@@ -56,13 +56,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Node dependencies
-        run: yarn --frozen-lockfile
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           cache: 'yarn'
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
 
       - name: Install extra dependencies for Puppeteer
         run: sudo apt-get install libgbm1
@@ -95,13 +95,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
 
-      - name: Install Node dependencies
-        run: yarn --frozen-lockfile
-
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           cache: 'yarn'
+
+      - name: Install Node dependencies
+        run: yarn --frozen-lockfile
 
       - name: Build
         run: yarn build:only
