@@ -106,7 +106,7 @@
     "cheerio": "^1.0.0-rc.10",
     "conventional-changelog-cli": "^2.2.2",
     "d3": "^7.4.4",
-    "del-cli": "^4.0.1",
+    "del-cli": "^5.0.0",
     "eslint": "^8.11.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-jest": "^26.1.1",
