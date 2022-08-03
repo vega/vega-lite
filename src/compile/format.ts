@@ -79,7 +79,12 @@ export function formatSignalRef({
         });
       }
     }
-    if (type === 'temporal' && config.timeFormatType) {
+    if (
+      type === 'temporal' &&
+      config.timeFormatType &&
+      isFieldDef(fieldOrDatumDef) &&
+      fieldOrDatumDef.timeUnit === undefined
+    ) {
       return formatCustomType({
         fieldOrDatumDef,
         format: config.timeFormat,

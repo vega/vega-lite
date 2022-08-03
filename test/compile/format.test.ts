@@ -231,14 +231,14 @@ describe('Format', () => {
     it('should use a custom formatter datumDef if config.timeFormatType is present', () => {
       expect(
         formatSignalRef({
-          fieldOrDatumDef: {datum: 200, type: 'temporal'},
+          fieldOrDatumDef: {field: 'date', type: 'temporal'},
           format: undefined,
           formatType: undefined,
           expr: 'parent',
           config: {timeFormat: 'abc', timeFormatType: 'customFormatter', customFormatTypes: true}
         })
       ).toEqual({
-        signal: 'customFormatter(200, "abc")'
+        signal: 'customFormatter(parent["date"], "abc")'
       });
     });
 
