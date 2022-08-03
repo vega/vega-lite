@@ -184,14 +184,17 @@ export function guideFormat(
   if (isCustomFormatType(formatType)) {
     return undefined; // handled in encode block
   } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
-    if (
-      channelDefType(fieldOrDatumDef) === 'quantitative' &&
-      ((config.normalizedNumberFormatType &&
+    if (channelDefType(fieldOrDatumDef) === 'quantitative') {
+      if (
+        config.normalizedNumberFormatType &&
         isPositionFieldOrDatumDef(fieldOrDatumDef) &&
-        fieldOrDatumDef.stack === 'normalize') || // case: normalized number format
-        config.numberFormatType) // case: regular number format
-    ) {
-      return undefined; // handled in encode block
+        fieldOrDatumDef.stack === 'normalize'
+      ) {
+        return undefined; // handled in encode block
+      }
+      if (config.numberFormatType) {
+        return undefined; // handled in encode block
+      }
     }
   }
 
