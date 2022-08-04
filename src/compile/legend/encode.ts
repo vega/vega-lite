@@ -160,20 +160,29 @@ export function labels(specifiedlabelsSpec: any, {fieldOrDatumDef, model, channe
       formatType,
       config
     });
-  } else if (
-    fieldOrDatumDef.type === 'quantitative' &&
-    format === undefined &&
-    formatType === undefined &&
-    config.customFormatTypes &&
-    config.numberFormatType
-  ) {
-    text = formatCustomType({
-      fieldOrDatumDef,
-      field: 'datum.value',
-      format: config.numberFormat,
-      formatType: config.numberFormatType,
-      config
-    });
+  } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
+    if (fieldOrDatumDef.type === 'quantitative' && config.numberFormatType) {
+      text = formatCustomType({
+        fieldOrDatumDef,
+        field: 'datum.value',
+        format: config.numberFormat,
+        formatType: config.numberFormatType,
+        config
+      });
+    } else if (
+      fieldOrDatumDef.type === 'temporal' &&
+      config.timeFormatType &&
+      isFieldDef(fieldOrDatumDef) &&
+      fieldOrDatumDef.timeUnit === undefined
+    ) {
+      text = formatCustomType({
+        fieldOrDatumDef,
+        field: 'datum.value',
+        format: config.timeFormat,
+        formatType: config.timeFormatType,
+        config
+      });
+    }
   }
 
   const labelsSpec = {

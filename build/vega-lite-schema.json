@@ -7725,6 +7725,10 @@
           "description": "Default time format for raw time values (without time units) in text marks, legend labels and header labels.\n\n__Default value:__ `\"%b %d, %Y\"` __Note:__ Axes automatically determine the format for each label automatically so this config does not affect axes.",
           "type": "string"
         },
+        "timeFormatType": {
+          "description": "[Custom format type](https://vega.github.io/vega-lite/docs/config.html#custom-format-type) for `config.timeFormat`.\n\n__Default value:__ `undefined` -- This is equilvalent to call D3-time-format, which is exposed as [`timeFormat` in Vega-Expression](https://vega.github.io/vega/docs/expressions/#timeFormat). __Note:__ You must also set `customFormatTypes` to `true` and there must *not* be a `timeUnit` defined to use this feature.",
+          "type": "string"
+        },
         "title": {
           "$ref": "#/definitions/TitleConfig",
           "description": "Title configuration, which determines default properties for all [titles](https://vega.github.io/vega-lite/docs/title.html). For a full list of title configuration options, please see the [corresponding section of the title documentation](https://vega.github.io/vega-lite/docs/title.html#config)."
