@@ -19,7 +19,7 @@
           "as": ["lower_box_b", "upper_box_b"],
           "ops": ["q1", "q3"],
           "fields": ["b", "b"],
-          "groupby": ["a"]
+          "groupby": ["a", "a"]
         }
       ]
     },
@@ -87,7 +87,7 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": {"value": "transparent"},
-          "stroke": {"value": "#4c78a8"},
+          "stroke": {"scale": "color", "field": "a"},
           "ariaRoleDescription": {"value": "point"},
           "description": {
             "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
@@ -165,7 +165,7 @@
       "encode": {
         "update": {
           "ariaRoleDescription": {"value": "box"},
-          "fill": {"value": "#4c78a8"},
+          "fill": {"scale": "color", "field": "a"},
           "tooltip": {
             "signal": "{\"Max of b\": format(datum[\"max_b\"], \"\"), \"Q3 of b\": format(datum[\"upper_box_b\"], \"\"), \"Median of b\": format(datum[\"mid_box_b\"], \"\"), \"Q1 of b\": format(datum[\"lower_box_b\"], \"\"), \"Min of b\": format(datum[\"min_b\"], \"\"), \"a\": isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]}"
           },
@@ -201,7 +201,11 @@
         "update": {
           "opacity": {"value": 0.7},
           "fill": [
-            {"test": "datum['lower_box_b'] >= datum['upper_box_b']"},
+            {
+              "test": "datum['lower_box_b'] >= datum['upper_box_b']",
+              "scale": "color",
+              "field": "a"
+            },
             {"value": "white"}
           ],
           "tooltip": {
@@ -255,6 +259,18 @@
       "range": [{"signal": "height"}, 0],
       "nice": true,
       "zero": true
+    },
+    {
+      "name": "color",
+      "type": "ordinal",
+      "domain": {
+        "fields": [
+          {"data": "data_2", "field": "a"},
+          {"data": "data_4", "field": "a"}
+        ],
+        "sort": true
+      },
+      "range": "category"
     }
   ],
   "axes": [
@@ -289,6 +305,15 @@
       "labelOverlap": true,
       "tickCount": {"signal": "ceil(height/40)"},
       "zindex": 0
+    }
+  ],
+  "legends": [
+    {
+      "stroke": "color",
+      "symbolType": "circle",
+      "title": "a",
+      "encode": {"symbols": {"update": {"opacity": {"value": 0.7}}}},
+      "fill": "color"
     }
   ]
 }

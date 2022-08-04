@@ -12,7 +12,7 @@
             {"op": "q1", "field": "b", "as": "lower_box_b"},
             {"op": "q3", "field": "b", "as": "upper_box_b"}
           ],
-          "groupby": ["a"]
+          "groupby": ["a", "a"]
         }
       ],
       "layer": [
@@ -25,7 +25,8 @@
           "mark": {"type": "point", "style": "boxplot-outliers"},
           "encoding": {
             "y": {"field": "b", "type": "quantitative", "title": "b"},
-            "x": {"field": "a", "type": "nominal", "axis": {"labelAngle": 0}}
+            "x": {"field": "a", "type": "nominal", "axis": {"labelAngle": 0}},
+            "color": {"field": "a", "type": "nominal"}
           }
         },
         {
@@ -40,7 +41,7 @@
                 {"op": "min", "field": "lower_box_b", "as": "lower_box_b"},
                 {"op": "max", "field": "upper_box_b", "as": "upper_box_b"}
               ],
-              "groupby": ["a"]
+              "groupby": ["a", "a"]
             }
           ],
           "layer": [
@@ -126,7 +127,7 @@
             {"op": "min", "field": "b", "as": "min_b"},
             {"op": "max", "field": "b", "as": "max_b"}
           ],
-          "groupby": ["a"]
+          "groupby": ["a", "a"]
         }
       ],
       "layer": [
@@ -143,6 +144,7 @@
             "y": {"field": "lower_box_b", "type": "quantitative", "title": "b"},
             "y2": {"field": "upper_box_b"},
             "x": {"field": "a", "type": "nominal", "axis": {"labelAngle": 0}},
+            "color": {"field": "a", "type": "nominal"},
             "tooltip": [
               {"field": "max_b", "type": "quantitative", "title": "Max of b"},
               {
@@ -180,7 +182,9 @@
             "x": {"field": "a", "type": "nominal", "axis": {"labelAngle": 0}},
             "color": {
               "condition": {
-                "test": "datum['lower_box_b'] >= datum['upper_box_b']"
+                "test": "datum['lower_box_b'] >= datum['upper_box_b']",
+                "field": "a",
+                "type": "nominal"
               }
             },
             "tooltip": [

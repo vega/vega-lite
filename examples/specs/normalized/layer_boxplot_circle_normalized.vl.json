@@ -165,6 +165,11 @@
                   "title": "population"
                 },
                 "y": {"field": "age", "type": "ordinal"},
+                "color": {
+                  "condition": {
+                    "test": "datum['lower_box_people'] >= datum['upper_box_people']"
+                  }
+                },
                 "tooltip": [
                   {
                     "field": "max_people",

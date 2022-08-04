@@ -222,7 +222,14 @@
       "encode": {
         "update": {
           "opacity": {"value": 0.7},
-          "fill": {"value": "white"},
+          "fill": [
+            {
+              "test": "datum['lower_box_Body Mass (g)'] >= datum['upper_box_Body Mass (g)']",
+              "scale": "color",
+              "field": "Species"
+            },
+            {"value": "white"}
+          ],
           "tooltip": {
             "signal": "{\"Max of Body Mass (g)\": format(datum[\"max_Body Mass (g)\"], \"\"), \"Q3 of Body Mass (g)\": format(datum[\"upper_box_Body Mass (g)\"], \"\"), \"Median of Body Mass (g)\": format(datum[\"mid_box_Body Mass (g)\"], \"\"), \"Q1 of Body Mass (g)\": format(datum[\"lower_box_Body Mass (g)\"], \"\"), \"Min of Body Mass (g)\": format(datum[\"min_Body Mass (g)\"], \"\"), \"Species\": isValid(datum[\"Species\"]) ? datum[\"Species\"] : \"\"+datum[\"Species\"]}"
           },
