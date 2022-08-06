@@ -1,0 +1,55 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+   "description": "This is a faceted percentage based waffle chart. The transforms below perform the following functions: 1. Create a column that shows the count of all cars. 2. Create a column that shows the count of all cars grouped by Origin. 3. Divide transform 2 by transform 3 to get a percentage. 4. Aggregate the input table  to only have two columns (Origin and Percent) and 3 rows. 5. Create a sequence from 1 to 100 as an additional column. 6. Flatten the newly created sequence column so the table expands to 300 rows (100 rows per Origin). 7. Create a new column where each row is either coded as the Origin or blank. 8. Calculate row numbers. 9. Calculate column numbers.",
+  "data": {"url": "data/cars.json"},
+  "transform": [
+    {
+      "joinaggregate": [{"op": "count", "field": "Origin", "as": "TotalOrigin"}]
+    },
+    {
+      "joinaggregate": [
+        {"op": "count", "field": "Origin", "as": "TotalOriginGrouped"}
+      ],
+      "groupby": ["Origin"]
+    },
+    {
+      "calculate": "round(datum.TotalOriginGrouped/datum.TotalOrigin * 100)",
+      "as": "PercentOfTotal"
+    },
+    {
+      "aggregate": [{"op": "min", "field": "PercentOfTotal", "as": "Percent"}],
+      "groupby": ["Origin"]
+    },
+    {"calculate": "sequence(1,101)", "as": "Sequence"},
+    {"flatten": ["Sequence"]},
+    {
+      "calculate": "if(datum.Sequence <= datum.Percent, datum.Origin,'_blank')",
+      "as": "Plot"
+    },
+    {"calculate": "ceil (datum.Sequence / 10)", "as": "row"},
+    {"calculate": "datum.Sequence - datum.row * 10", "as": "col"}
+  ],
+  "facet": {"column": {"field": "Origin", "header": {"labelOrient": "bottom"}}},
+  "spec": {
+    "mark": {
+      "type": "circle",
+      "filled": true,
+      "tooltip": true,
+      "stroke": "#9e9b9b",
+      "strokeWidth": 0.7
+    },
+    "encoding": {
+      "x": {"field": "col", "type": "ordinal", "axis": null},
+      "y": {"field": "row", "type": "ordinal", "axis": null, "sort": "-y"},
+      "color": {
+        "condition": {"test": "datum.Plot == '_blank'", "value": "#e6e3e3"},
+        "scale": {"scheme": "set1"},
+        "field": "Plot",
+        "type": "nominal",
+        "legend": null
+      },
+      "size": {"value": 241},
+      "tooltip": [{"field": "Origin", "type": "nominal"}]
+    }
+  }
+}
