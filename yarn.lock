@@ -9,11 +9,6 @@
   dependencies:
     "@jridgewell/trace-mapping" "^0.3.0"
 
-"@auto-it/bot-list@10.37.3":
-  version "10.37.3"
-  resolved "https://registry.yarnpkg.com/@auto-it/bot-list/-/bot-list-10.37.3.tgz#b0adeca53b744142a502d8548a2d7ea6abe81173"
-  integrity sha512-mV7CxJzlraJYu6qy+ljCosFLfQZkXvdSX+2f5Na3KAuDPLbaFGLwZRa5i53JBYORsS9+n9pbEg5jC+M5HCC0xQ==
-
 "@auto-it/bot-list@10.37.4":
   version "10.37.4"
   resolved "https://registry.yarnpkg.com/@auto-it/bot-list/-/bot-list-10.37.4.tgz#bb1ba1d42ef6fed0ceb87279d8b7a80b12f4a163"
@@ -33,51 +28,6 @@
     fp-ts "^2.5.3"
     io-ts "^2.1.2"
     tslib "2.1.0"
-
-"@auto-it/core@10.37.3":
-  version "10.37.3"
-  resolved "https://registry.yarnpkg.com/@auto-it/core/-/core-10.37.3.tgz#6ebb76654bbebe9b761b5f43a99fded1ace426e2"
-  integrity sha512-ybaX1vgdH/vjbiDWXviwhW5yQiQAOrouXmFPF5nH6kGUXCuQsEHAcZsc/0/ifnVVWtYmsVXyP+a1cJ4lvLXmCA==
-  dependencies:
-    "@auto-it/bot-list" "10.37.3"
-    "@endemolshinegroup/cosmiconfig-typescript-loader" "^3.0.2"
-    "@octokit/plugin-enterprise-compatibility" "1.3.0"
-    "@octokit/plugin-retry" "^3.0.9"
-    "@octokit/plugin-throttling" "^3.6.2"
-    "@octokit/rest" "^18.12.0"
-    await-to-js "^3.0.0"
-    chalk "^4.0.0"
-    cosmiconfig "7.0.0"
-    deepmerge "^4.0.0"
-    dotenv "^8.0.0"
-    endent "^2.1.0"
-    enquirer "^2.3.4"
-    env-ci "^5.0.1"
-    fast-glob "^3.1.1"
-    fp-ts "^2.5.3"
-    fromentries "^1.2.0"
-    gitlog "^4.0.3"
-    https-proxy-agent "^5.0.0"
-    import-cwd "^3.0.0"
-    import-from "^3.0.0"
-    io-ts "^2.1.2"
-    lodash.chunk "^4.2.0"
-    log-symbols "^4.0.0"
-    node-fetch "2.6.7"
-    parse-author "^2.0.0"
-    parse-github-url "1.0.2"
-    pretty-ms "^7.0.0"
-    requireg "^0.2.2"
-    semver "^7.0.0"
-    signale "^1.4.0"
-    tapable "^2.2.0"
-    terminal-link "^2.1.1"
-    tinycolor2 "^1.4.1"
-    ts-node "^9.1.1"
-    tslib "2.1.0"
-    type-fest "^0.21.1"
-    typescript-memoize "^1.0.0-alpha.3"
-    url-join "^4.0.0"
 
 "@auto-it/core@10.37.4":
   version "10.37.4"
@@ -4002,9 +3952,9 @@ eslint-config-prettier@^8.5.0:
   integrity sha512-obmWKLUNCnhtQRKc+tmnYuQl0pFU1ibYJQ5BGhTVB08bHe9wC8qUeG7c08dj9XX+AuPj1YSGSQIHl1pnDHZR0Q==
 
 eslint-plugin-jest@^26.1.1:
-  version "26.7.0"
-  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-26.7.0.tgz#41d405ac9143e1284a3401282db47ed459436778"
-  integrity sha512-/YNitdfG3o3cC6juZziAdkk6nfJt01jXVfj4AgaYVLs7bupHzRDL5K+eipdzhDXtQsiqaX1TzfwSuRlEgeln1A==
+  version "26.8.0"
+  resolved "https://registry.yarnpkg.com/eslint-plugin-jest/-/eslint-plugin-jest-26.8.0.tgz#32471a6af11dbcb7d0ccf83e8edc83d256fd34a3"
+  integrity sha512-IyGhk+PpDgIA99OBPHo+l2aTtt8yAeB1IgPwXOQZSzi8ag/t1MsLZBN2MKL1sj6ahlkaxbkhlm7ll+NPcMcjaQ==
   dependencies:
     "@typescript-eslint/utils" "^5.10.0"
 
