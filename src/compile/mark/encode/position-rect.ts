@@ -77,7 +77,12 @@ function defaultSizeRef(
     if (scale) {
       const scaleType = scale.get('type');
       if (scaleType === 'band') {
-        return {scale: scaleName, band: bandSize.band};
+        let bandWidth = `bandwidth('${scaleName}')`;
+        if (bandSize.band !== 1) {
+          bandWidth = `${bandSize.band} * ${bandWidth}`;
+        }
+        // TODO(#8351): make 0.25 here configurable
+        return {signal: `max(0.25, ${bandWidth})`};
       } else if (bandSize.band !== 1) {
         log.warn(log.message.cannotUseRelativeBandSizeWithNonBandScale(scaleType));
         bandSize = undefined;
@@ -139,6 +144,7 @@ function positionAndSize(
       log.warn(log.message.cannotApplySizeToNonOrientedMark(markDef.type));
     }
   }
+  const hasFixedSizeMixins = !!sizeMixins;
 
   // Otherwise, apply default value
   const bandSize = getBandSize({channel, fieldDef, markDef, config, scaleType: scale?.get('type'), useVlSizeChannel});
@@ -156,7 +162,8 @@ function positionAndSize(
     If band is 0.6, the the x/y position in such case should be `(1 - band) / 2` = 0.2
    */
 
-  const defaultBandAlign = scale?.get('type') !== 'band' || !('band' in sizeMixins[vgSizeChannel]) ? 'middle' : 'top';
+  const defaultBandAlign =
+    scale?.get('type') === 'band' && isRelativeBandSize(bandSize) && !hasFixedSizeMixins ? 'top' : 'middle';
 
   const vgChannel = vgAlignedPositionChannel(channel, markDef, config, defaultBandAlign);
   const center = vgChannel === 'xc' || vgChannel === 'yc';
