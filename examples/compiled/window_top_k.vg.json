@@ -90,7 +90,7 @@
           "x": {"scale": "x", "field": "score_end"},
           "x2": {"scale": "x", "field": "score_start"},
           "y": {"scale": "y", "field": "student"},
-          "height": {"scale": "y", "band": 1}
+          "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }
     }

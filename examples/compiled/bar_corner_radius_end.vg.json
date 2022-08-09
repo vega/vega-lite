@@ -63,7 +63,7 @@
       "encode": {
         "update": {
           "x": {"scale": "x", "field": "a"},
-          "width": {"scale": "x", "band": 1},
+          "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {
             "signal": "min(scale('y',datum[\"min_b_start\"]),scale('y',datum[\"max_b_start\"]),scale('y',datum[\"min_b_end\"]),scale('y',datum[\"max_b_end\"]))"
           },

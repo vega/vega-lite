@@ -45,7 +45,7 @@
             "field": "Director",
             "offset": {"scale": "xOffset", "field": "Title"}
           },
-          "width": {"scale": "xOffset", "band": 1},
+          "width": {"signal": "max(0.25, bandwidth('xOffset'))"},
           "y": [
             {
               "test": "!isValid(datum[\"mean_Rotten Tomatoes Rating\"]) || !isFinite(+datum[\"mean_Rotten Tomatoes Rating\"])",
