@@ -45,9 +45,9 @@
             "signal": "\"Time: \" + (timeFormat(datum[\"yearmonthdate_date\"], '%Y')) + \"; symbol: \" + (isValid(datum[\"symbol\"]) ? datum[\"symbol\"] : \"\"+datum[\"symbol\"]) + \"; Price: \" + (format(datum[\"sum_price\"], \"\"))"
           },
           "x": {"scale": "x", "field": "yearmonthdate_date"},
-          "width": {"scale": "x", "band": 1},
+          "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "symbol"},
-          "height": {"scale": "y", "band": 1}
+          "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }
     }

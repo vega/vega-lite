@@ -149,7 +149,7 @@
                 "signal": "\"group: \" + (isValid(datum[\"group\"]) ? datum[\"group\"] : \"\"+datum[\"group\"]) + \"; value: \" + (format(datum[\"value\"], \"\"))"
               },
               "x": {"scale": "child_x", "field": "group"},
-              "width": {"scale": "child_x", "band": 1},
+              "width": {"signal": "max(0.25, bandwidth('child_x'))"},
               "y": {"scale": "y", "field": "value_end"},
               "y2": {"scale": "y", "field": "value_start"}
             }

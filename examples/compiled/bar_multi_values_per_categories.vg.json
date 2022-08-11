@@ -63,7 +63,7 @@
             "signal": "\"a: \" + (isValid(datum[\"a\"]) ? datum[\"a\"] : \"\"+datum[\"a\"]) + \"; b: \" + (format(datum[\"b\"], \"\"))"
           },
           "x": {"scale": "x", "field": "a"},
-          "width": {"scale": "x", "band": 1},
+          "width": {"signal": "max(0.25, bandwidth('x'))"},
           "y": {"scale": "y", "field": "b_end"},
           "y2": {"scale": "y", "field": "b_start"}
         }

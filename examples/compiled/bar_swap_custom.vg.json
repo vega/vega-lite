@@ -60,7 +60,7 @@
           "x": {"scale": "x", "field": "average_b"},
           "x2": {"scale": "x", "value": 0},
           "y": {"scale": "y", "field": "a"},
-          "height": {"scale": "y", "band": 1}
+          "height": {"signal": "max(0.25, bandwidth('y'))"}
         }
       }
     }
