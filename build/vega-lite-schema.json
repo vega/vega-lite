@@ -21608,6 +21608,10 @@
             }
           ],
           "description": "Reverse x-scale by default (useful for right-to-left charts)."
+        },
+        "zero": {
+          "description": "Default for ensuring that a zero baseline values for [`quantize`](https://vega.github.io/vega-lite/docs/scale.html#quantize) scale.\n\n\n__Default value:__ `true`",
+          "type": "boolean"
         }
       },
       "type": "object"

@@ -415,6 +415,15 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
    * Reverse x-scale by default (useful for right-to-left charts).
    */
   xReverse?: boolean | ES;
+
+  /**
+   * Default for ensuring that a zero baseline values for [`quantize`](https://vega.github.io/vega-lite/docs/scale.html#quantize) scale.
+   *
+   *
+   * __Default value:__ `true`
+   *
+   */
+  zero?: boolean;
 }
 
 export const defaultScaleConfig: ScaleConfig<SignalRef> = {
