@@ -144,7 +144,7 @@ function positionAndSize(
       log.warn(log.message.cannotApplySizeToNonOrientedMark(markDef.type));
     }
   }
-  const hasFixedSizeMixins = !!sizeMixins;
+  const hasSizeFromMarkOrEncoding = !!sizeMixins;
 
   // Otherwise, apply default value
   const bandSize = getBandSize({channel, fieldDef, markDef, config, scaleType: scale?.get('type'), useVlSizeChannel});
@@ -163,7 +163,7 @@ function positionAndSize(
    */
 
   const defaultBandAlign =
-    scale?.get('type') === 'band' && isRelativeBandSize(bandSize) && !hasFixedSizeMixins ? 'top' : 'middle';
+    scale?.get('type') === 'band' && isRelativeBandSize(bandSize) && !hasSizeFromMarkOrEncoding ? 'top' : 'middle';
 
   const vgChannel = vgAlignedPositionChannel(channel, markDef, config, defaultBandAlign);
   const center = vgChannel === 'xc' || vgChannel === 'yc';
