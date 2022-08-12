@@ -2,11 +2,6 @@
 
 set -euo pipefail
 
-GIT_BRANCH="${GITHUB_REF/refs\/heads\//}"
-git checkout $GIT_BRANCH
-
-echo "On branch $GIT_BRANCH."
-
 # Only push on human pull request branches. Exclude release, prerelease, and bot branches.
 if [ "$GIT_BRANCH" != "stable" ] && [ "$GIT_BRANCH" != "next" ] && [[ "$GIT_BRANCH" != dependabot/* ]]; then
   PUSH_BRANCH=true
