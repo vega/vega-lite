@@ -14,21 +14,30 @@ jobs:
     if: "!contains(github.event.head_commit.message, 'ci skip') && !contains(github.event.head_commit.message, 'skip ci')"
 
     name: Make a release and publish to NPM
-
     steps:
       - uses: actions/checkout@v3
-
-      - name: Prepare repository
-        run: git fetch --unshallow --tags
+        with:
+          fetch-depth: 0
 
       - uses: actions/setup-node@v3
         with:
           registry-url: 'https://registry.npmjs.org'
+          cache: 'yarn'
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
 
-      - run: npm run release
+      - name: Build
+        run: yarn build
+
+      - name: Check NPM deployment
+        run: ./scripts/check-npm.sh
+
+      - name: Create release
+        run: npm run shipit
         env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
