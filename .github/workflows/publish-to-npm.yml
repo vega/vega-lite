@@ -36,7 +36,7 @@ jobs:
         run: ./scripts/check-npm.sh
 
       - name: Create release
-        run: npx auto shipit
+        run: npm run shipit
         env:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
