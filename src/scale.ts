@@ -417,8 +417,7 @@ export interface ScaleConfig<ES extends ExprRef | SignalRef> {
   xReverse?: boolean | ES;
 
   /**
-   * Default for ensuring that a zero baseline values for [`quantize`](https://vega.github.io/vega-lite/docs/scale.html#quantize) scale.
-   *
+   * Override the default `scale.zero` for [`continuous`](https://vega.github.io/vega-lite/docs/scale.html#continuous) scale except for non-ranged bar or area charts.
    *
    * __Default value:__ `true`
    *
