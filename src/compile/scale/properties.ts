@@ -22,7 +22,7 @@ import {
 } from '../../channeldef';
 import {Config} from '../../config';
 import {isDateTime} from '../../datetime';
-import {channelHasNestedOffsetScale} from '../../encoding';
+import {channelHasNestedOffsetScale, encodingHasRangeChannels} from '../../encoding';
 import * as log from '../../log';
 import {Mark, MarkDef, RectConfig} from '../../mark';
 import {
@@ -120,7 +120,8 @@ function parseUnitScaleProperty(model: UnitModel, property: Exclude<keyof (Scale
                 domainMax: specifiedScale.domainMax,
                 markDef,
                 config,
-                hasNestedOffsetScale: channelHasNestedOffsetScale(encoding, channel)
+                hasNestedOffsetScale: channelHasNestedOffsetScale(encoding, channel),
+                hasRangeChannels: encodingHasRangeChannels(encoding)
               })
             : config.scale[property];
         if (value !== undefined) {
@@ -144,6 +145,7 @@ export interface ScaleRuleParams {
   domainMax: Scale['domainMax'];
   markDef: MarkDef<Mark, SignalRef>;
   config: Config<SignalRef>;
+  hasRangeChannels: boolean;
 }
 
 export const scaleRules: {
@@ -169,8 +171,8 @@ export const scaleRules: {
     const sort = isFieldDef(fieldOrDatumDef) ? fieldOrDatumDef.sort : undefined;
     return reverse(scaleType, sort, channel, config.scale);
   },
-  zero: ({channel, fieldOrDatumDef, domain, markDef, scaleType}) =>
-    zero(channel, fieldOrDatumDef, domain, markDef, scaleType)
+  zero: ({channel, fieldOrDatumDef, domain, markDef, scaleType, config, hasRangeChannels}) =>
+    zero(channel, fieldOrDatumDef, domain, markDef, scaleType, config.scale, hasRangeChannels)
 };
 
 // This method is here rather than in range.ts to avoid circular dependency.
@@ -399,7 +401,9 @@ export function zero(
   fieldDef: TypedFieldDef<string> | ScaleDatumDef,
   specifiedDomain: Domain,
   markDef: MarkDef,
-  scaleType: ScaleType
+  scaleType: ScaleType,
+  scaleConfig: ScaleConfig<SignalRef>,
+  hasRangeChannels: boolean
 ) {
   // If users explicitly provide a domain, we should not augment zero as that will be unexpected.
   const hasCustomDomain = !!specifiedDomain && specifiedDomain !== 'unaggregated';
@@ -418,18 +422,21 @@ export function zero(
     }
   }
 
-  // If there is no custom domain, return true only for the following cases:
+  const defaultZero = scaleConfig?.zero === undefined ? true : scaleConfig?.zero;
+
+  // If there is no custom domain, return configZero value (=`true` as default) only for the following cases:
 
   // 1) using quantitative field with size
   // While this can be either ratio or interval fields, our assumption is that
   // ratio are more common. However, if the scaleType is discretizing scale, we want to return
   // false so that range doesn't start at zero
   if (channel === 'size' && fieldDef.type === 'quantitative' && !isContinuousToDiscrete(scaleType)) {
-    return true;
+    return defaultZero;
   }
 
   // 2) non-binned, quantitative x-scale or y-scale
   // (For binning, we should not include zero by default because binning are calculated without zero.)
+  // (For area/bar charts with ratio scale chart, we should always include zero.)
   if (
     !(isFieldDef(fieldDef) && fieldDef.bin) &&
     util.contains([...POSITION_SCALE_CHANNELS, ...POLAR_POSITION_SCALE_CHANNELS], channel)
@@ -441,7 +448,11 @@ export function zero(
       }
     }
 
-    return true;
+    if (contains(['bar', 'area'], type) && !hasRangeChannels) {
+      return true;
+    }
+
+    return defaultZero;
   }
   return false;
 }

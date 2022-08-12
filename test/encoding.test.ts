@@ -14,6 +14,7 @@ import {isPositionFieldOrDatumDef} from '../src/channeldef';
 import {defaultConfig} from '../src/config';
 import {
   Encoding,
+  encodingHasRangeChannels,
   extractTransformsFromEncoding,
   fieldDefs,
   initEncoding,
@@ -542,6 +543,26 @@ describe('encoding', () => {
         {field: 'foo', type: 'quantitative'},
         {field: 'bar', test: 'datum.val > 12', type: 'quantitative'}
       ]);
+    });
+  });
+
+  describe('encodingHasRangeChannels', () => {
+    it('should return true if encoding has a pair of range channels', () => {
+      expect(
+        encodingHasRangeChannels({
+          x: {field: 'foo', type: 'quantitative'},
+          x2: {field: 'boo', type: 'quantitative'}
+        })
+      ).toBeTruthy();
+    });
+
+    it('should return false if encoding does not have a pair of range channels', () => {
+      expect(
+        encodingHasRangeChannels({
+          x: {field: 'foo', type: 'quantitative'},
+          y2: {field: 'boo', type: 'quantitative'}
+        })
+      ).toBeFalsy();
     });
   });
 });
