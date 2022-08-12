@@ -47,7 +47,7 @@
       "domain": {"data": "source_0", "field": "Horsepower"},
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": true
+      "zero": false
     },
     {
       "name": "y",
@@ -55,7 +55,7 @@
       "domain": {"data": "source_0", "field": "Miles_per_Gallon"},
       "range": [{"signal": "height"}, 0],
       "nice": true,
-      "zero": true
+      "zero": false
     }
   ],
   "axes": [

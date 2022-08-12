@@ -60,7 +60,7 @@
       "domain": {"data": "data_0", "fields": ["start", "end"]},
       "range": [0, {"signal": "width"}],
       "nice": true,
-      "zero": true
+      "zero": false
     },
     {
       "name": "y",
