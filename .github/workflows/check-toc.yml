@@ -2,14 +2,10 @@ name: Check
 
 on:
   workflow_dispatch:
-  push:
-    branches-ignore:
-      - stable
-      - next
+  pull_request:
     paths:
       - 'site/**'
       - 'scripts/**'
-  pull_request:
 
 jobs:
   toc:

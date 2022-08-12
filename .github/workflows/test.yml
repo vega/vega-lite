@@ -2,13 +2,12 @@ name: Test
 
 on:
   workflow_dispatch:
-  push:
-    branches-ignore:
-      - stable
   pull_request:
+    paths-ignore:
+      - 'site/**'
 
 jobs:
-  test-matrix:
+  test:
     name: Node
     runs-on: ubuntu-latest
 
