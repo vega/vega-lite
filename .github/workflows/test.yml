@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  test-matrix:
+  test:
     name: Node
     runs-on: ubuntu-latest
 
