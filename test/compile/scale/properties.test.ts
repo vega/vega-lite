@@ -199,10 +199,10 @@ describe('compile/scale', () => {
   });
 
   describe('zero', () => {
-    it('should return true when mapping a quantitative field to x with scale.domain = "unaggregated"', () => {
+    it('should return default (undefined) when mapping a quantitative field to x with scale.domain = "unaggregated"', () => {
       expect(
         rules.zero('x', {field: 'a', type: 'quantitative'}, 'unaggregated', {type: 'point'}, 'linear', undefined, false)
-      ).toBeTruthy();
+      ).toBeUndefined();
     });
 
     it('should return true when mapping a quantitative field to size', () => {
@@ -217,7 +217,7 @@ describe('compile/scale', () => {
       ).toBeTruthy();
     });
 
-    it('should return true when mapping a non-binned quantitative field to x/y of point', () => {
+    it('should return default (undefined) when mapping a non-binned quantitative field to x/y of point', () => {
       for (const channel of ['x', 'y'] as const) {
         expect(
           rules.zero(
@@ -229,7 +229,7 @@ describe('compile/scale', () => {
             undefined,
             false
           )
-        ).toBeTruthy();
+        ).toBeUndefined();
       }
     });
 
@@ -315,18 +315,6 @@ describe('compile/scale', () => {
       expect(
         rules.zero(
           'size',
-          {field: 'a', type: 'quantitative'},
-          undefined,
-          {type: 'point'},
-          'linear',
-          {zero: configZero},
-          false
-        )
-      ).toBe(configZero);
-
-      expect(
-        rules.zero(
-          'size',
           {field: 'a', type: 'ordinal'},
           undefined,
           {type: 'point'},
@@ -342,7 +330,7 @@ describe('compile/scale', () => {
       ).toBe(configZero);
     });
 
-    it(`should return true for non-ranged are/bar chart regardless to config`, () => {
+    it(`should return true for x/y scales of the non-ranged are/bar charts regardless to config`, () => {
       for (const mark of [BAR, AREA]) {
         for (const channel of ['x', 'y'] as const) {
           expect(
@@ -358,6 +346,20 @@ describe('compile/scale', () => {
           ).toBe(true);
         }
       }
+    });
+
+    it(`should return true for the continuous & quantitative size scale regardless to config`, () => {
+      expect(
+        rules.zero(
+          'size',
+          {field: 'a', type: 'quantitative'},
+          undefined,
+          {type: 'point'},
+          'linear',
+          {zero: false},
+          false
+        )
+      ).toBe(true);
     });
   });
 });

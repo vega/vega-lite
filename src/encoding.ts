@@ -12,7 +12,6 @@ import {
   FILL,
   FILLOPACITY,
   getMainChannelFromOffsetChannel,
-  getMainRangeChannel,
   getOffsetScaleChannel,
   HREF,
   isChannel,
@@ -29,7 +28,6 @@ import {
   ORDER,
   RADIUS,
   RADIUS2,
-  SECONDARY_RANGE_CHANNEL,
   SHAPE,
   SIZE,
   STROKE,
@@ -370,15 +368,6 @@ export function channelHasNestedOffsetScale<F extends Field>(
     }
   }
   return false;
-}
-export function encodingHasRangeChannels<F extends Field>(encoding: EncodingWithFacet<F>): boolean {
-  return some(SECONDARY_RANGE_CHANNEL, channel => {
-    if (channelHasField(encoding, channel)) {
-      const mainRangeChannel = getMainRangeChannel(channel);
-      return channelHasField(encoding, mainRangeChannel);
-    }
-    return false;
-  });
 }
 
 export function isAggregate(encoding: EncodingWithFacet<any>) {

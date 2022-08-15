@@ -444,7 +444,7 @@ To provide themes for all scales, the scale config (`config: {scale: {...}}`) ca
 
 #### Padding
 
-{% include table.html props="bandPaddingInner,barBandPaddingInner,rectBandPaddingInner,bandWithNestedOffsetPaddingInner,offsetBandPaddingInner,bandPaddingOuter,bandWithNestedOffsetPaddingOuter,offsetBandPaddingOuter,continuousPadding,pointPadding,zero" source="ScaleConfig" %}
+{% include table.html props="bandPaddingInner,barBandPaddingInner,rectBandPaddingInner,bandWithNestedOffsetPaddingInner,offsetBandPaddingInner,bandPaddingOuter,bandWithNestedOffsetPaddingOuter,offsetBandPaddingOuter,continuousPadding,pointPadding" source="ScaleConfig" %}
 
 #### Range
 
@@ -452,7 +452,7 @@ To provide themes for all scales, the scale config (`config: {scale: {...}}`) ca
 
 #### Other
 
-{% include table.html props="clamp,round,xReverse,useUnaggregatedDomain" source="ScaleConfig" %}
+{% include table.html props="clamp,round,xReverse,useUnaggregatedDomain,zero" source="ScaleConfig" %}
 
 {:#range-config}
 
