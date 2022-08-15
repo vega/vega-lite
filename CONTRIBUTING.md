@@ -200,6 +200,7 @@ Publishing is handled by a 2-branch [pre-release process](https://intuit.github.
   - When merging into `next`, please use the `squash and merge` strategy.
 - To release a new stable version, open a PR from `next` into `stable` using this [compare link](https://github.com/vega/vega-lite/compare/stable...next).
   - When merging from `next` into `stable`, please use the `create a merge commit` strategy.
+  - After the release note is generated (from commits), please take a look to clean up so the log is readable to the community.
 
 ## Suggested Programming Environment.
 
