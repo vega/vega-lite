@@ -95,6 +95,10 @@
       {
         "name": "bar_axis_space_saving",
         "title": "Bar Chart with a Spacing-Saving Y-Axis"
+      },
+      {
+        "name": "bar_heatlane",
+        "title": "Heat Lane Chart"
       }
     ],
     "Histograms, Density Plots, and Dot Plots": [

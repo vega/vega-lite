@@ -59931,30 +59931,49 @@
     const field = fieldToFormat(fieldOrDatumDef, expr, normalizeStack);
     const type = channelDefType(fieldOrDatumDef);
 
-    if (normalizeStack && type === 'quantitative' && format === undefined && formatType === undefined && config.customFormatTypes && config.normalizedNumberFormatType) {
-      return formatCustomType({
-        fieldOrDatumDef,
-        format: config.normalizedNumberFormat,
-        formatType: config.normalizedNumberFormatType,
-        expr,
-        config
-      });
-    }
+    if (format === undefined && formatType === undefined && config.customFormatTypes) {
+      if (type === 'quantitative') {
+        if (normalizeStack && config.normalizedNumberFormatType) return formatCustomType({
+          fieldOrDatumDef,
+          format: config.normalizedNumberFormat,
+          formatType: config.normalizedNumberFormatType,
+          expr,
+          config
+        });
 
-    if (type === 'quantitative' && format === undefined && formatType === undefined && config.customFormatTypes && config.numberFormatType) {
-      return formatCustomType({
-        fieldOrDatumDef,
-        format: config.numberFormat,
-        formatType: config.numberFormatType,
-        expr,
-        config
-      });
+        if (config.numberFormatType) {
+          return formatCustomType({
+            fieldOrDatumDef,
+            format: config.numberFormat,
+            formatType: config.numberFormatType,
+            expr,
+            config
+          });
+        }
+      }
+
+      if (type === 'temporal' && config.timeFormatType && isFieldDef(fieldOrDatumDef) && fieldOrDatumDef.timeUnit === undefined) {
+        return formatCustomType({
+          fieldOrDatumDef,
+          format: config.timeFormat,
+          formatType: config.timeFormatType,
+          expr,
+          config
+        });
+      }
     }
 
     if (isFieldOrDatumDefForTimeFormat(fieldOrDatumDef)) {
       var _normalizeTimeUnit, _fieldOrDatumDef$scal;
 
-      const signal = timeFormatExpression(field, isFieldDef(fieldOrDatumDef) ? (_normalizeTimeUnit = normalizeTimeUnit(fieldOrDatumDef.timeUnit)) === null || _normalizeTimeUnit === void 0 ? void 0 : _normalizeTimeUnit.unit : undefined, format, config.timeFormat, isScaleFieldDef(fieldOrDatumDef) && ((_fieldOrDatumDef$scal = fieldOrDatumDef.scale) === null || _fieldOrDatumDef$scal === void 0 ? void 0 : _fieldOrDatumDef$scal.type) === ScaleType.UTC);
+      const signal = timeFormatExpression({
+        field,
+        timeUnit: isFieldDef(fieldOrDatumDef) ? (_normalizeTimeUnit = normalizeTimeUnit(fieldOrDatumDef.timeUnit)) === null || _normalizeTimeUnit === void 0 ? void 0 : _normalizeTimeUnit.unit : undefined,
+        format,
+        formatType: config.timeFormatType,
+        rawTimeFormat: config.timeFormat,
+        isUTCScale: isScaleFieldDef(fieldOrDatumDef) && ((_fieldOrDatumDef$scal = fieldOrDatumDef.scale) === null || _fieldOrDatumDef$scal === void 0 ? void 0 : _fieldOrDatumDef$scal.type) === ScaleType.UTC
+      });
       return signal ? {
         signal
       } : undefined;
@@ -60038,13 +60057,15 @@
   function guideFormat(fieldOrDatumDef, type, format, formatType, config, omitTimeFormatConfig) {
     if (isCustomFormatType(formatType)) {
       return undefined; // handled in encode block
-    } else if (format === undefined && formatType === undefined && config.customFormatTypes && channelDefType(fieldOrDatumDef) === 'quantitative') {
-      if (config.normalizedNumberFormatType && isPositionFieldOrDatumDef(fieldOrDatumDef) && fieldOrDatumDef.stack === 'normalize') {
-        return undefined; // handled in encode block
-      }
+    } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
+      if (channelDefType(fieldOrDatumDef) === 'quantitative') {
+        if (config.normalizedNumberFormatType && isPositionFieldOrDatumDef(fieldOrDatumDef) && fieldOrDatumDef.stack === 'normalize') {
+          return undefined; // handled in encode block
+        }
 
-      if (config.numberFormatType) {
-        return undefined; // handled in encode block
+        if (config.numberFormatType) {
+          return undefined; // handled in encode block
+        }
       }
     }
 
@@ -60060,7 +60081,17 @@
       var _normalizeTimeUnit2;
 
       const timeUnit = isFieldDef(fieldOrDatumDef) ? (_normalizeTimeUnit2 = normalizeTimeUnit(fieldOrDatumDef.timeUnit)) === null || _normalizeTimeUnit2 === void 0 ? void 0 : _normalizeTimeUnit2.unit : undefined;
-      return timeFormat(format, timeUnit, config, omitTimeFormatConfig);
+
+      if (timeUnit === undefined && config.customFormatTypes && config.timeFormatType) {
+        return undefined; // hanlded in encode block
+      }
+
+      return timeFormat({
+        specifiedFormat: format,
+        timeUnit,
+        config,
+        omitTimeFormatConfig
+      });
     }
 
     return numberFormat({
@@ -60110,7 +60141,14 @@
    * Returns time format for a fieldDef for use in guides.
    */
 
-  function timeFormat(specifiedFormat, timeUnit, config, omitTimeFormatConfig) {
+  function timeFormat(_ref4) {
+    let {
+      specifiedFormat,
+      timeUnit,
+      config,
+      omitTimeFormatConfig
+    } = _ref4;
+
     if (specifiedFormat) {
       return specifiedFormat;
     }
@@ -60129,13 +60167,13 @@
   }
 
   function binNumberFormatExpr(field, format, formatType, config) {
-    var _ref4;
+    var _ref5;
 
     if (isCustomFormatType(formatType)) {
       return customFormatExpr(formatType, field, format);
     }
 
-    return formatExpr(field, (_ref4 = isString(format) ? format : undefined) !== null && _ref4 !== void 0 ? _ref4 : config.numberFormat);
+    return formatExpr(field, (_ref5 = isString(format) ? format : undefined) !== null && _ref5 !== void 0 ? _ref5 : config.numberFormat);
   }
 
   function binFormatExpression(startField, endField, format, formatType, config) {
@@ -60151,10 +60189,22 @@
    * Returns the time expression used for axis/legend labels or text mark for a temporal field
    */
 
-  function timeFormatExpression(field, timeUnit, format, rawTimeFormat, // should be provided only for actual text and headers, not axis/legend labels
-  isUTCScale) {
+  function timeFormatExpression(_ref6) {
+    let {
+      field,
+      timeUnit,
+      format,
+      formatType,
+      rawTimeFormat,
+      isUTCScale
+    } = _ref6;
+
     if (!timeUnit || format) {
       // If there is no time unit, or if user explicitly specifies format for axis/legend/text.
+      if (!timeUnit && formatType) {
+        return "".concat(formatType, "(").concat(field, ", '").concat(format, "')");
+      }
+
       format = isString(format) ? format : rawTimeFormat; // only use provided timeFormat if there is no timeUnit.
 
       return "".concat(isUTCScale ? 'utc' : 'time', "Format(").concat(field, ", '").concat(format, "')");
@@ -67732,9 +67782,15 @@
         const scaleType = scale.get('type');
 
         if (scaleType === 'band') {
+          let bandWidth = "bandwidth('".concat(scaleName, "')");
+
+          if (bandSize.band !== 1) {
+            bandWidth = "".concat(bandSize.band, " * ").concat(bandWidth);
+          } // TODO(#8351): make 0.25 here configurable
+
+
           return {
-            scale: scaleName,
-            band: bandSize.band
+            signal: "max(0.25, ".concat(bandWidth, ")")
           };
         } else if (bandSize.band !== 1) {
           warn(cannotUseRelativeBandSizeWithNonBandScale(scaleType));
@@ -67805,8 +67861,9 @@
       } else {
         warn(cannotApplySizeToNonOrientedMark(markDef.type));
       }
-    } // Otherwise, apply default value
+    }
 
+    const hasSizeFromMarkOrEncoding = !!sizeMixins; // Otherwise, apply default value
 
     const bandSize = getBandSize({
       channel,
@@ -67827,7 +67884,7 @@
       If band is 0.6, the the x/y position in such case should be `(1 - band) / 2` = 0.2
      */
 
-    const defaultBandAlign = (scale === null || scale === void 0 ? void 0 : scale.get('type')) !== 'band' || !('band' in sizeMixins[vgSizeChannel]) ? 'middle' : 'top';
+    const defaultBandAlign = (scale === null || scale === void 0 ? void 0 : scale.get('type')) === 'band' && isRelativeBandSize(bandSize) && !hasSizeFromMarkOrEncoding ? 'top' : 'middle';
     const vgChannel = vgAlignedPositionChannel(channel, markDef, config, defaultBandAlign);
     const center = vgChannel === 'xc' || vgChannel === 'yc';
     const {
@@ -70365,14 +70422,24 @@
         formatType,
         config
       });
-    } else if (fieldOrDatumDef.type === 'quantitative' && format === undefined && formatType === undefined && config.customFormatTypes && config.numberFormatType) {
-      text = formatCustomType({
-        fieldOrDatumDef,
-        field: 'datum.value',
-        format: config.numberFormat,
-        formatType: config.numberFormatType,
-        config
-      });
+    } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
+      if (fieldOrDatumDef.type === 'quantitative' && config.numberFormatType) {
+        text = formatCustomType({
+          fieldOrDatumDef,
+          field: 'datum.value',
+          format: config.numberFormat,
+          formatType: config.numberFormatType,
+          config
+        });
+      } else if (fieldOrDatumDef.type === 'temporal' && config.timeFormatType && isFieldDef(fieldOrDatumDef) && fieldOrDatumDef.timeUnit === undefined) {
+        text = formatCustomType({
+          fieldOrDatumDef,
+          field: 'datum.value',
+          format: config.timeFormat,
+          formatType: config.timeFormatType,
+          config
+        });
+      }
     }
 
     const labelsSpec = { ...(opacity ? {
@@ -78721,25 +78788,40 @@
         }),
         ...specifiedLabelsSpec
       };
-    } else if (format === undefined && formatType === undefined && channelDefType(fieldOrDatumDef) === 'quantitative' && config.customFormatTypes) {
-      if (isPositionFieldOrDatumDef(fieldOrDatumDef) && fieldOrDatumDef.stack === 'normalize' && config.normalizedNumberFormatType) {
+    } else if (format === undefined && formatType === undefined && config.customFormatTypes) {
+      if (channelDefType(fieldOrDatumDef) === 'quantitative') {
+        if (isPositionFieldOrDatumDef(fieldOrDatumDef) && fieldOrDatumDef.stack === 'normalize' && config.normalizedNumberFormatType) {
+          return {
+            text: formatCustomType({
+              fieldOrDatumDef,
+              field: 'datum.value',
+              format: config.normalizedNumberFormat,
+              formatType: config.normalizedNumberFormatType,
+              config
+            }),
+            ...specifiedLabelsSpec
+          };
+        } else if (config.numberFormatType) {
+          return {
+            text: formatCustomType({
+              fieldOrDatumDef,
+              field: 'datum.value',
+              format: config.numberFormat,
+              formatType: config.numberFormatType,
+              config
+            }),
+            ...specifiedLabelsSpec
+          };
+        }
+      }
+
+      if (channelDefType(fieldOrDatumDef) === 'temporal' && config.timeFormatType && isFieldDef(fieldOrDatumDef) && !fieldOrDatumDef.timeUnit) {
         return {
           text: formatCustomType({
             fieldOrDatumDef,
             field: 'datum.value',
-            format: config.normalizedNumberFormat,
-            formatType: config.normalizedNumberFormatType,
-            config
-          }),
-          ...specifiedLabelsSpec
-        };
-      } else if (config.numberFormatType) {
-        return {
-          text: formatCustomType({
-            fieldOrDatumDef,
-            field: 'datum.value',
-            format: config.numberFormat,
-            formatType: config.numberFormatType,
+            format: config.timeFormat,
+            formatType: config.timeFormatType,
             config
           }),
           ...specifiedLabelsSpec
