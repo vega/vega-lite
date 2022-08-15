@@ -3,10 +3,14 @@ name: Check
 on:
   workflow_dispatch:
   pull_request:
+    paths:
+      - 'site/**'
+      - 'scripts/**'
 
 jobs:
-  check:
-    name: Format, Schema, and Examples
+  toc:
+    name: TOC
+    if: "!contains(github.event.head_commit.message, '[ci skip]')"
     runs-on: ubuntu-latest
 
     steps:
@@ -23,28 +27,27 @@ jobs:
       - name: Install Node dependencies
         run: yarn --frozen-lockfile
 
+      - name: Setup Ruby
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: '2.x'
+
       - name: Setup data
         run: yarn data
 
-      - name: Install Parallel
+      - name: Build Jekyll
         run: |
-          # Faster than "sudo apt-get install parallel"
-          wget https://raw.githubusercontent.com/martinda/gnu-parallel/master/src/parallel
-          chmod +x parallel
-          cp parallel sem
-          sudo mv parallel sem /usr/local/bin
+          gem install bundler
+          pushd site
+          bundle install
+          bundle exec jekyll build -q
+          popd
 
-      - name: Format
-        run: yarn format
-
-      - name: Build Schema
-        run: yarn schema
-
-      - name: Check Schema
-        run: scripts/check-schema.sh
+      - name: Build TOC
+        run: scripts/generate-toc
 
       - name: Setup Git remote
         run: scripts/setup-git-ci.sh
 
       - name: Check and Commit
-        run: scripts/check-and-commit.sh
+        run: scripts/check-and-commit-toc.sh

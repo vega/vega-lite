@@ -27,7 +27,7 @@ jobs:
         run: yarn build
 
       - name: Setup Git remote
-        run: ./scripts/setup-git-ci.sh
+        run: scripts/setup-git-ci.sh
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -49,4 +49,4 @@ jobs:
           site-directory: 'site/'
 
       - name: Publish schema
-        run: ./scripts/deploy-schema.sh
+        run: scripts/deploy-schema.sh

@@ -7,6 +7,8 @@ on:
       - 'dependabot/**'
       # documentation site should not trigger releases
       - 'gh-pages'
+    paths-ignore:
+      - 'site/**'
 
 jobs:
   publish:
